@@ -1,0 +1,238 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{0A5E27B3-ACFB-4B6A-B637-74D56E425481}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Procon.UI.Default</RootNamespace>
+    <AssemblyName>Procon.UI.Default</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\builds\Debug\Extensions\Default\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\builds\Release\Extensions\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.XML" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Procon.Core\Procon.Core.csproj">
+      <Project>{153B5418-C6B3-43A5-A432-BAFFA8EFAA16}</Project>
+      <Name>Procon.Core</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\Procon.Net\Procon.Net.csproj">
+      <Project>{65C1DB17-18E0-4AC5-8709-3F7E04B88CA1}</Project>
+      <Name>Procon.Net</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\Procon.UI.API\Procon.UI.API.csproj">
+      <Project>{0AAFDE41-6F5B-406A-9001-D4C3EF4B8708}</Project>
+      <Name>Procon.UI.API</Name>
+      <Private>False</Private>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Commands.cs" />
+    <Compile Include="Panel-Root\Panel-Connection\Panel-Tabs\Control-Accounts %28Temp%29\Accounts.cs" />
+    <Compile Include="Panel-Root\Panel-Connection\Panel-Tabs\Control-Accounts %28Temp%29\AccountsView.xaml.cs">
+      <DependentUpon>AccountsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Panel-Root\Panel-Dashboard\Control-Feed\Feed.cs" />
+    <Compile Include="Panel-Root\Panel-Dashboard\Control-Feed\FeedView.xaml.cs">
+      <DependentUpon>FeedView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Panel-Root\Panel-Dashboard\Control-Statistics\Statistics.cs" />
+    <Compile Include="Panel-Root\Panel-Dashboard\Control-Statistics\StatisticsView.xaml.cs">
+      <DependentUpon>StatisticsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Panel-Root\Panel-Interface\Layout\Layout.cs" />
+    <Compile Include="Panel-Root\Panel-Interface\Layout\LayoutView.xaml.cs">
+      <DependentUpon>LayoutView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Properties.cs" />
+    <Compile Include="Panel-Root\Panel-Connection\Control-ChatAndEvents\ChatAndEvents.cs" />
+    <Compile Include="Panel-Root\Panel-Connection\Control-ChatAndEvents\ChatAndEventsView.xaml.cs">
+      <DependentUpon>ChatAndEventsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Panel-Root\Panel-Connection\Control-InfoBar\InfoBar.cs" />
+    <Compile Include="Panel-Root\Panel-Connection\Control-InfoBar\InfoBarView.xaml.cs">
+      <DependentUpon>InfoBarView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Panel-Root\Panel-Connection\Layout\Layout.cs" />
+    <Compile Include="Panel-Root\Panel-Connection\Layout\LayoutView.xaml.cs">
+      <DependentUpon>LayoutView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Panel-Root\Control-ConnectionSelector\ConnectionSelector.cs" />
+    <Compile Include="Panel-Root\Control-ConnectionSelector\ConnectionSelectorView.xaml.cs">
+      <DependentUpon>ConnectionSelectorView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Panel-Root\Layout\Layout.cs" />
+    <Compile Include="Panel-Root\Layout\LayoutView.xaml.cs">
+      <DependentUpon>LayoutView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Panel-Root\Control-InfoBar\InfoBar.cs" />
+    <Compile Include="Panel-Root\Control-InfoBar\InfoBarView.xaml.cs">
+      <DependentUpon>InfoBarView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Panel-Root\Panel-Connection\Panel-Tabs\Control-Bans\Bans.cs" />
+    <Compile Include="Panel-Root\Panel-Connection\Panel-Tabs\Control-Bans\BansView.xaml.cs">
+      <DependentUpon>BansView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Panel-Root\Panel-Connection\Panel-Tabs\Control-Maps\Maps.cs" />
+    <Compile Include="Panel-Root\Panel-Connection\Panel-Tabs\Control-Maps\MapsView.xaml.cs">
+      <DependentUpon>MapsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Panel-Root\Panel-Connection\Panel-Tabs\Control-Players\Players.cs" />
+    <Compile Include="Panel-Root\Panel-Connection\Panel-Tabs\Control-Players\PlayersView.xaml.cs">
+      <DependentUpon>PlayersView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Panel-Root\Panel-Connection\Panel-Tabs\Control-Plugins\Plugins.cs" />
+    <Compile Include="Panel-Root\Panel-Connection\Panel-Tabs\Control-Plugins\PluginsView.xaml.cs">
+      <DependentUpon>PluginsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Panel-Root\Panel-Connection\Panel-Tabs\Control-Settings\Settings.cs" />
+    <Compile Include="Panel-Root\Panel-Connection\Panel-Tabs\Control-Settings\SettingsView.xaml.cs">
+      <DependentUpon>SettingsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Panel-Root\Panel-Connection\Panel-Tabs\Layout\Layout.cs" />
+    <Compile Include="Panel-Root\Panel-Connection\Panel-Tabs\Layout\LayoutView.xaml.cs">
+      <DependentUpon>LayoutView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Panel-Root\Panel-Dashboard\Control-Introduction\Introduction.cs" />
+    <Compile Include="Panel-Root\Panel-Dashboard\Control-Introduction\IntroductionView.xaml.cs">
+      <DependentUpon>IntroductionView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Panel-Root\Panel-Dashboard\Layout\Layout.cs" />
+    <Compile Include="Panel-Root\Panel-Dashboard\Layout\LayoutView.xaml.cs">
+      <DependentUpon>LayoutView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Styles-All\Light.cs" />
+    <Compile Include="Styles-All\Dark.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Panel-Root\Panel-Connection\Control-ChatAndEvents\ChatAndEventsView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Panel-Root\Panel-Connection\Control-InfoBar\InfoBarView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Panel-Root\Panel-Connection\Layout\LayoutView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Panel-Root\Control-ConnectionSelector\ConnectionSelectorView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Panel-Root\Layout\LayoutView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Panel-Root\Control-InfoBar\InfoBarView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Panel-Root\Panel-Connection\Panel-Tabs\Control-Accounts %28Temp%29\AccountsView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Panel-Root\Panel-Connection\Panel-Tabs\Control-Bans\BansView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Panel-Root\Panel-Connection\Panel-Tabs\Control-Maps\MapsView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Panel-Root\Panel-Connection\Panel-Tabs\Control-Players\PlayersView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Panel-Root\Panel-Connection\Panel-Tabs\Control-Plugins\PluginsView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Panel-Root\Panel-Connection\Panel-Tabs\Control-Settings\SettingsView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Panel-Root\Panel-Connection\Panel-Tabs\Layout\LayoutView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Panel-Root\Panel-Dashboard\Control-Feed\FeedView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Panel-Root\Panel-Dashboard\Control-Introduction\IntroductionView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Panel-Root\Panel-Dashboard\Control-Statistics\StatisticsView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Panel-Root\Panel-Dashboard\Layout\LayoutView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Panel-Root\Panel-Interface\Layout\LayoutView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

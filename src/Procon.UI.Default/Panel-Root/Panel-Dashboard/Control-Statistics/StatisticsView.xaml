@@ -1,0 +1,74 @@
+﻿<!--
+Copyright 2011 Cameron 'Imisnew2' Gunnin
+
+http://www.phogue.net
+
+This file is part of Procon 2.
+
+Procon 2 is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Procon 2 is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Procon 2.  If not, see<http://www.gnu.org/licenses/>
+-->
+
+<WrapPanel x:Class="Procon.UI.Default.Root.Dashboard.Statistics.StatisticsView"
+           xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+           xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+           xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+           xmlns:sys="clr-namespace:System;assembly=mscorlib"
+           xmlns:conv="clr-namespace:Procon.UI.API.Converters;assembly=Procon.UI.API"
+           xmlns:view="clr-namespace:Procon.UI.API.ViewModels;assembly=Procon.UI.API"
+           Name="DashboardStatistics"
+           Orientation="Horizontal">
+    <WrapPanel.Resources>
+        <conv:TextLocalizationConverter x:Key="TextLoc" />
+        <conv:EnumLocalizationConverter x:Key="EnumLoc" />
+        <DataTemplate DataType="{x:Type sys:Enum}">
+            <TextBlock Text="{Binding Converter={StaticResource EnumLoc}}" />
+        </DataTemplate>
+    </WrapPanel.Resources>
+    
+    <TextBlock TextWrapping="Wrap"
+                Background="Gainsboro"
+                Width="350"
+                Height="200"
+                Margin="0, 0, 3, 3">
+        So, here would be like a set-width thingy with overall server statistics...
+    </TextBlock>
+    <TextBlock TextWrapping="Wrap"
+                Background="Gainsboro"
+                Width="150"
+                Height="200"
+                Margin="0, 0, 3, 3">
+        This one might be the most popular server (most people / time)...
+    </TextBlock>
+    <TextBlock TextWrapping="Wrap"
+                Background="Gainsboro"
+                Width="150"
+                Height="200"
+                Margin="0, 0, 3, 3">
+        This one might be the server with the most bans?...
+    </TextBlock>
+    <TextBlock TextWrapping="Wrap"
+                Background="Gainsboro"
+                Width="174"
+                Height="200"
+                Margin="0, 0, 3, 3">
+        Idk, I'm just throwing ideas out there.  Something will stick if I throw stuff long enough...
+    </TextBlock>
+    <TextBlock TextWrapping="Wrap"
+                Background="Gainsboro"
+                Width="173"
+                Height="200"
+                Margin="0, 0, 3, 3">
+        Kapoink, stick.  Stick you.  STICK YOU!
+    </TextBlock>
+</WrapPanel>

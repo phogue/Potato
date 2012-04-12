@@ -1,0 +1,158 @@
+﻿<!--
+Copyright 2011 Cameron 'Imisnew2' Gunnin
+
+http://www.phogue.net
+
+This file is part of Procon 2.
+
+Procon 2 is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Procon 2 is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Procon 2.  If not, see<http://www.gnu.org/licenses/>
+-->
+
+<TabItem x:Class="Procon.UI.Default.Root.Connection.Tabs.Accounts.AccountsView"
+         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+         xmlns:sys="clr-namespace:System;assembly=mscorlib"
+         xmlns:conv="clr-namespace:Procon.UI.API.Converters;assembly=Procon.UI.API"
+         xmlns:view="clr-namespace:Procon.UI.API.ViewModels;assembly=Procon.UI.API"
+         Name="ConnectionTabsAccounts">
+    <TabItem.Resources>
+        <conv:TextLocalizationConverter x:Key="TextLoc" />
+        <conv:EnumLocalizationConverter x:Key="EnumLoc" />
+        <DataTemplate DataType="{x:Type sys:Enum}">
+            <TextBlock Text="{Binding Converter={StaticResource EnumLoc}}" />
+        </DataTemplate>
+    </TabItem.Resources>
+    
+    <Grid Name="ConnectionTabsAccountsPanel">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="3" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        
+        <!--Groups-->
+        <Grid Name="ConnectionTabsAccountsGroupsPanel"
+              Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="3"    />
+                <RowDefinition Height="*"    />
+                <RowDefinition Height="3"    />
+                <RowDefinition Height="*"    />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="20*"  />
+                <ColumnDefinition Width="3"    />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="3"    />
+                <ColumnDefinition Width="15*"  />
+            </Grid.ColumnDefinitions>
+            
+            <!--Group Info-->
+            <Label Name="ConnectionTabsAccountsGroupsTitle"
+                   Grid.Row="0"
+                   Grid.Column="2"
+                   Content="Name: - Loc Later" />
+            <Label Name="ConnectionTabsAccountsGroupsInput"
+                   Grid.Row="0"
+                   Grid.Column="4"
+                   Content="Name Here - Bind Later" />
+
+            <!--List of Groups-->
+            <GroupBox Name="ConnectionTabsAccountsGroupsBox"
+                      Grid.Row="0"
+                      Grid.Column="0"
+                      Grid.RowSpan="5"
+                      Header="Groups - Loc Later">
+                <ListBox Name="ConnectionTabsAccountsGroupsList" />
+            </GroupBox>
+
+            <!--List of Permissions-->
+            <GroupBox Name="ConnectionTabsAccountsPermissionsBox"
+                      Grid.Row="2"
+                      Grid.Column="2"
+                      Grid.ColumnSpan="3"
+                      Header="Permissions - Loc Later">
+                <ListBox Name="ConnectionTabsAccountsPermissionsList" />
+            </GroupBox>
+
+            <!--List of Linked Accounts-->
+            <GroupBox Name="ConnectionTabsAccountsLinkedBox"
+                      Grid.Row="4"
+                      Grid.Column="2"
+                      Grid.ColumnSpan="3"
+                      Header="Linked Accounts- Loc Later">
+                <ListBox Name="ConnectionTabsAccountsLinkedList" />
+            </GroupBox>
+        </Grid>
+
+        <!--Accounts-->
+        <Grid Name="ConnectionTabsAccountsAccountsPanel"
+              Grid.Column="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="3"    />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="3"    />
+                <RowDefinition Height="*"    />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="20*"  />
+                <ColumnDefinition Width="3"    />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="3"    />
+                <ColumnDefinition Width="15*"  />
+            </Grid.ColumnDefinitions>
+            
+            <!--Account Info-->
+            <Label Name="ConnectionTabsAccountsAccountsTitle"
+                   Grid.Row="0"
+                   Grid.Column="2"
+                   Content="Name: - Loc Later" />
+            <Label Name="ConnectionTabsAccountsAccountInput"
+                   Grid.Row="0"
+                   Grid.Column="4"
+                   Content="Name Here - Bind Later" />
+
+            <Label Name="ConnectionTabsAccountsPasswordTitle"
+                   Grid.Row="2"
+                   Grid.Column="2"
+                   Content="Password: - Loc Later" />
+            <TextBox Name="ConnectionTabsAccountsPasswordInput"
+                     Grid.Row="2"
+                     Grid.Column="4"
+                     Text="Password Here - Bind Later" />
+
+            <!--List of Accounts-->
+            <GroupBox Name="ConnectionTabsAccountsAccountsBox"
+                      Grid.Row="0"
+                      Grid.Column="0"
+                      Grid.RowSpan="5"
+                      Header="Accounts - Loc Later">
+                <ListBox Name="ConnectionTabsAccountsAccountsList" />
+            </GroupBox>
+
+            <!--List of Assignments-->
+            <GroupBox Name="ConnectionTabsAccountsAssignmentsBox"
+                      Grid.Row="4"
+                      Grid.Column="2"
+                      Grid.ColumnSpan="3"
+                      Header="Assigned Games - Loc Later">
+                <ListBox Name="ConnectionTabsAccountsAssignmentsList" />
+            </GroupBox>
+        </Grid>
+        
+    </Grid>
+</TabItem>

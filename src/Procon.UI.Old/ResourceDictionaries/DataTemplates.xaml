@@ -1,0 +1,361 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <!--
+    FOR ALL DATA TEMPLATES:
+    Remember to multi-bind the information that you want INotifyPropertyChanged
+    events for.  Simply binding to the base object that is passed in (which is
+    subsituted by the blank <Binding /> tag) will NOT work.  You MUST bind to
+    the properties that, when changed, you want the UI to updated.  These are
+    generally not used in the converter class itself.
+    -->
+    
+    <!-- Interfaces Data Template -->
+    <DataTemplate x:Key="InterfacesTemplate">
+        <StackPanel>
+            <Label Style="{StaticResource style_LabelTopHeader}" FontSize="11" IsHitTestVisible="False">
+                <Label.Content>
+                    <MultiBinding Converter="{StaticResource interConv}" ConverterParameter="Main">
+                        <Binding />
+                        <Binding Path="Layer.ConnectionState" />
+                        <Binding Path="Layer.Hostname" />
+                        <Binding Path="Layer.Port" />
+                    </MultiBinding>
+                </Label.Content>
+            </Label>
+            <Label Style="{StaticResource style_LabelSubHeader}" FontSize="9"  IsHitTestVisible="False">
+                <Label.Content>
+                    <MultiBinding Converter="{StaticResource interConv}" ConverterParameter="Sub">
+                        <Binding  />
+                        <Binding Path="Connections.Count" />
+                    </MultiBinding>
+                </Label.Content>
+            </Label>
+        </StackPanel>
+    </DataTemplate>
+
+    
+
+    <!-- Connections Data Template -->
+    <DataTemplate x:Key="ConnectionsTemplate">
+        <StackPanel>
+            <Label Style="{StaticResource style_LabelTopHeader}" FontSize="11" IsHitTestVisible="False">
+                <Label.Content>
+                    <MultiBinding Converter="{StaticResource connConv}" ConverterParameter="Main">
+                        <Binding />
+                        <Binding Path="GameType" />
+                        <Binding Path="Hostname" />
+                        <Binding Path="Port" />
+                    </MultiBinding>
+                </Label.Content>
+            </Label>
+            <Label Style="{StaticResource style_LabelSubHeader}" FontSize="9"  IsHitTestVisible="False">
+                <Label.Content>
+                    <MultiBinding Converter="{StaticResource connConv}" ConverterParameter="Sub">
+                        <Binding />
+                        <Binding Path="GameState.ConnectionState" />
+                        <Binding Path="GameState" />
+                    </MultiBinding>
+                </Label.Content>
+            </Label>
+        </StackPanel>
+    </DataTemplate>
+    <!-- Connection Info Data Template -->
+    <DataTemplate x:Key="ConnectionInfoTemplate">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" SharedSizeGroup="Key" />
+                <ColumnDefinition Width="3" />
+                <ColumnDefinition Width="*"    MinWidth="100"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" Style="{StaticResource style_TextBlockTopHeader}" TextWrapping="Wrap" IsHitTestVisible="False">
+                <TextBlock.Text>
+                    <MultiBinding Converter="{StaticResource serverVarConv}" ConverterParameter="Main">
+                        <Binding />
+                        <Binding Path="Key" />
+                    </MultiBinding>
+                </TextBlock.Text>
+            </TextBlock>
+            <TextBlock Grid.Column="2" Style="{StaticResource style_TextBlockSubHeader}" TextWrapping="Wrap" IsHitTestVisible="False">
+                <TextBlock.Text>
+                    <MultiBinding Converter="{StaticResource serverVarConv}" ConverterParameter="Sub">
+                        <Binding />
+                        <Binding Path="Value" />
+                    </MultiBinding>
+                </TextBlock.Text>
+            </TextBlock>
+        </Grid>
+    </DataTemplate>
+
+    
+
+    <!-- Groups Data Template -->
+    <DataTemplate x:Key="GroupsTemplate">
+        <StackPanel>
+            <Label Style="{StaticResource style_LabelTopHeader}" FontSize="11" IsHitTestVisible="False">
+                <Label.Content>
+                    <MultiBinding Converter="{StaticResource groupConv}" ConverterParameter="Main">
+                        <Binding />
+                        <Binding Path="Name" />
+                    </MultiBinding>
+                </Label.Content>
+            </Label>
+            <Label Style="{StaticResource style_LabelSubHeader}" FontSize="9"  IsHitTestVisible="False">
+                <Label.Content>
+                    <MultiBinding Converter="{StaticResource groupConv}" ConverterParameter="Sub">
+                        <Binding />
+                        <Binding Path="AssignedAccounts" />
+                    </MultiBinding>
+                </Label.Content>
+            </Label>
+        </StackPanel>
+    </DataTemplate>
+    <!-- Groups Info Data Template -->
+    <DataTemplate x:Key="GroupInfoTemplate">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" SharedSizeGroup="Key" />
+                <ColumnDefinition Width="3" />
+                <ColumnDefinition Width="*"    MinWidth="100"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" Style="{StaticResource style_TextBlockTopHeader}" TextWrapping="Wrap" IsHitTestVisible="False">
+                <TextBlock.Text>
+                    <MultiBinding Converter="{StaticResource permisConv}" ConverterParameter="Main">
+                        <Binding />
+                        <Binding Path="Name" />
+                    </MultiBinding>
+                </TextBlock.Text>
+            </TextBlock>
+            <TextBlock Grid.Column="2" Style="{StaticResource style_TextBlockSubHeader}" TextWrapping="Wrap" IsHitTestVisible="False">
+                <TextBlock.Text>
+                    <MultiBinding Converter="{StaticResource permisConv}" ConverterParameter="Sub">
+                        <Binding />
+                        <Binding Path="Authority" />
+                    </MultiBinding>
+                </TextBlock.Text>
+            </TextBlock>
+        </Grid>
+    </DataTemplate>
+
+    
+
+    <!-- Accounts Data Template -->
+    <DataTemplate x:Key="AccountsTemplate">
+        <StackPanel>
+            <Label Style="{StaticResource style_LabelTopHeader}" FontSize="11" IsHitTestVisible="False">
+                <Label.Content>
+                    <MultiBinding Converter="{StaticResource accountConv}" ConverterParameter="Main">
+                        <Binding />
+                        <Binding Path="Username" />
+                    </MultiBinding>
+                </Label.Content>
+            </Label>
+            <Label Style="{StaticResource style_LabelSubHeader}" FontSize="9"  IsHitTestVisible="False">
+                <Label.Content>
+                    <MultiBinding Converter="{StaticResource accountConv}" ConverterParameter="Sub">
+                        <Binding />
+                        <Binding Path="Assignments" />
+                    </MultiBinding>
+                </Label.Content>
+            </Label>
+        </StackPanel>
+    </DataTemplate>
+    <!-- Accounts Info Data Template -->
+    <DataTemplate x:Key="AccountInfoTemplate">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" SharedSizeGroup="Key" />
+                <ColumnDefinition Width="3" />
+                <ColumnDefinition Width="*"    MinWidth="100"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" Style="{StaticResource style_TextBlockTopHeader}" TextWrapping="Wrap" IsHitTestVisible="False">
+                <TextBlock.Text>
+                    <MultiBinding Converter="{StaticResource assignConv}" ConverterParameter="Main">
+                        <Binding />
+                        <Binding Path="GameType" />
+                    </MultiBinding>
+                </TextBlock.Text>
+            </TextBlock>
+            <TextBlock Grid.Column="2" Style="{StaticResource style_TextBlockSubHeader}" TextWrapping="Wrap" IsHitTestVisible="False">
+                <TextBlock.Text>
+                    <MultiBinding Converter="{StaticResource assignConv}" ConverterParameter="Sub">
+                        <Binding />
+                        <Binding Path="UID" />
+                    </MultiBinding>
+                </TextBlock.Text>
+            </TextBlock>
+        </Grid>
+    </DataTemplate>
+
+    
+
+    <!-- Packages Data Template -->
+    <DataTemplate x:Key="PackagesTemplate">
+        <StackPanel>
+            <Label Style="{StaticResource style_LabelTopHeader}" FontSize="11" IsHitTestVisible="False">
+                <Label.Content>
+                    <MultiBinding Converter="{StaticResource packageConv}" ConverterParameter="Main">
+                        <Binding />
+                        <Binding Path="Name" />
+                    </MultiBinding>
+                </Label.Content>
+            </Label>
+            <Label Style="{StaticResource style_LabelSubHeader}" FontSize="9"  IsHitTestVisible="False">
+                <Label.Content>
+                    <MultiBinding Converter="{StaticResource packageConv}" ConverterParameter="Sub">
+                        <Binding />
+                        <Binding Path="PackageType" />
+                        <Binding Path="State" />
+                    </MultiBinding>
+                </Label.Content>
+            </Label>
+        </StackPanel>
+    </DataTemplate>
+
+
+
+    <!-- Game Mode Data Template -->
+    <DataTemplate x:Key="GameModeTemplate">
+        <TextBlock IsHitTestVisible="False" Text="{Binding Path=FriendlyName}" />
+    </DataTemplate>
+
+
+
+    <!-- Map Pool Info Data Template -->
+    <DataTemplate x:Key="MapPoolTemplate">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" SharedSizeGroup="Key" />
+                <ColumnDefinition Width="3" />
+                <ColumnDefinition Width="*"    MinWidth="100"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" Style="{StaticResource style_TextBlockTopHeader}" TextWrapping="Wrap" IsHitTestVisible="False">
+                <TextBlock.Text>
+                    <MultiBinding Converter="{StaticResource mapPoolConv}" ConverterParameter="Main">
+                        <Binding />
+                        <Binding Path="FriendlyName" />
+                    </MultiBinding>
+                </TextBlock.Text>
+            </TextBlock>
+            <TextBlock Grid.Column="2" Style="{StaticResource style_TextBlockSubHeader}" TextWrapping="Wrap" IsHitTestVisible="False">
+                <TextBlock.Text>
+                    <MultiBinding Converter="{StaticResource mapPoolConv}" ConverterParameter="Sub">
+                        <Binding />
+                        <Binding Path="GameMode.FriendlyName" />
+                    </MultiBinding>
+                </TextBlock.Text>
+            </TextBlock>
+        </Grid>
+    </DataTemplate>
+    <!-- Map List Info Data Template -->
+    <DataTemplate x:Key="MapListTemplate">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" SharedSizeGroup="Name" />
+                <ColumnDefinition Width="3" />
+                <ColumnDefinition Width="Auto" SharedSizeGroup="Mode" />
+                <ColumnDefinition Width="10" />
+                <ColumnDefinition Width="*"    MinWidth="100"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" Style="{StaticResource style_TextBlockTopHeader}" TextWrapping="Wrap" IsHitTestVisible="False">
+                <TextBlock.Text>
+                    <MultiBinding Converter="{StaticResource mapListConv}" ConverterParameter="Main">
+                        <Binding />
+                        <Binding Path="FriendlyName" />
+                        <Binding Path="Name" />
+                    </MultiBinding>
+                </TextBlock.Text>
+            </TextBlock>
+            <TextBlock Grid.Column="2" Style="{StaticResource style_TextBlockSubHeader}" TextWrapping="Wrap" IsHitTestVisible="False">
+                <TextBlock.Text>
+                    <MultiBinding Converter="{StaticResource mapListConv}" ConverterParameter="Sub">
+                        <Binding />
+                        <Binding Path="GameMode.FriendlyName" />
+                    </MultiBinding>
+                </TextBlock.Text>
+            </TextBlock>
+            <TextBlock Grid.Column="4" TextWrapping="Wrap" IsHitTestVisible="False">
+                <TextBlock.Text>
+                    <MultiBinding Converter="{StaticResource mapListConv}" ConverterParameter="Round">
+                        <Binding />
+                        <Binding Path="Rounds" />
+                    </MultiBinding>
+                </TextBlock.Text>
+            </TextBlock>
+        </Grid>
+    </DataTemplate>
+
+
+
+    <!-- Enum Data Template -->
+    <DataTemplate x:Key="EnumTemplate">
+        <Label IsHitTestVisible="False" Content="{Binding Converter={StaticResource enumConv}}" />
+    </DataTemplate>
+
+
+
+
+    <!-- Chat Box Data Template -->
+    <DataTemplate x:Key="ChatBoxTemplate">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" SharedSizeGroup="Time" />
+                <ColumnDefinition Width="3" />
+                <ColumnDefinition Width="Auto" SharedSizeGroup="Sender" />
+                <ColumnDefinition Width="3" />
+                <ColumnDefinition Width="Auto" SharedSizeGroup="Subset" />
+                <ColumnDefinition Width="3" />
+                <ColumnDefinition Width="Auto" SharedSizeGroup="Receiver" />
+                <ColumnDefinition Width="3" />
+                <ColumnDefinition Width="*" MinWidth="50"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" IsHitTestVisible="False" TextWrapping="NoWrap"
+                       Text="{Binding Path=Created, Converter={StaticResource dateConverter}}" />
+            <TextBlock Grid.Column="2" IsHitTestVisible="False" TextWrapping="NoWrap"
+                       Text="{Binding Path=Author.Name}" />
+            <TextBlock Grid.Column="4" IsHitTestVisible="False" TextWrapping="NoWrap"
+                       Text="{Binding Path=Subset.Context}" />
+            <TextBlock Grid.Column="6" IsHitTestVisible="False" TextWrapping="NoWrap">
+                    <TextBlock.Text>
+                        <PriorityBinding FallbackValue="All">
+                            <Binding Path="Subset.Player" Converter="{StaticResource nullToUnset}" />
+                            <Binding Path="Subset.Squad"  Converter="{StaticResource nullToUnset}" />
+                            <Binding Path="Subset.Team"   Converter="{StaticResource nullToUnset}" />
+                        </PriorityBinding>
+                    </TextBlock.Text>
+            </TextBlock>
+            <TextBlock Grid.Column="8" IsHitTestVisible="False" TextWrapping="NoWrap" Text="{Binding Path=Text}" />
+        </Grid>
+    </DataTemplate>
+    
+    
+    
+    <!-- Status Bar Data Template -->
+    <DataTemplate x:Key="StatusBarTemplate">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" SharedSizeGroup="Key" />
+                <ColumnDefinition Width="3" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="6" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" Style="{StaticResource style_TextBlockTopHeader}" TextWrapping="Wrap" IsHitTestVisible="False">
+                <TextBlock.Text>
+                    <MultiBinding Converter="{StaticResource serverVarConv}" ConverterParameter="Main">
+                        <Binding />
+                        <Binding Path="Key" />
+                    </MultiBinding>
+                </TextBlock.Text>
+            </TextBlock>
+            <TextBlock Grid.Column="2" Style="{StaticResource style_TextBlockSubHeader}" TextWrapping="Wrap" IsHitTestVisible="False">
+                <TextBlock.Text>
+                    <MultiBinding Converter="{StaticResource serverVarConv}" ConverterParameter="Sub">
+                        <Binding />
+                        <Binding Path="Value" />
+                    </MultiBinding>
+                </TextBlock.Text>
+            </TextBlock>
+            <Line Grid.Column="4" Y1="2" Y2="14" Stroke="Gray" />
+        </Grid>
+    </DataTemplate>
+</ResourceDictionary>

@@ -1,0 +1,172 @@
+﻿<!--
+Copyright 2011 Cameron 'Imisnew2' Gunnin
+
+http://www.phogue.net
+
+This file is part of Procon 2.
+
+Procon 2 is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Procon 2 is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Procon 2.  If not, see<http://www.gnu.org/licenses/>
+-->
+
+<DockPanel x:Class="Procon.UI.Default.Root.Connection.InfoBar.InfoBarView"
+           xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+           xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+           xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+           xmlns:sys="clr-namespace:System;assembly=mscorlib"
+           xmlns:conv="clr-namespace:Procon.UI.API.Converters;assembly=Procon.UI.API"
+           xmlns:view="clr-namespace:Procon.UI.API.ViewModels;assembly=Procon.UI.API"
+           Name="ConnectionInfoBar">
+    <DockPanel.Resources>
+        <conv:TextLocalizationConverter x:Key="TextLoc" />
+        <conv:EnumLocalizationConverter x:Key="EnumLoc" />
+        <DataTemplate DataType="{x:Type sys:Enum}">
+            <TextBlock Text="{Binding Converter={StaticResource EnumLoc}}" />
+        </DataTemplate>
+    </DockPanel.Resources>
+    
+    <Grid Name="ConnectionInfoBarArea">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="100*" MinWidth="85" />
+            <ColumnDefinition Width="390*" MinWidth="375" />
+            <ColumnDefinition Width="210*" MinWidth="190" />
+            <ColumnDefinition Width="150*" MinWidth="125" />
+        </Grid.ColumnDefinitions>
+
+        <!--Game Icon and Connection State Icon-->
+        <Image Name="ConnectionInfoBarGameType"
+               Grid.Column="0"
+               Margin="0, 0, 3, 0"
+               Stretch="Uniform"
+               Height="16"
+               Source="{Binding Path=GameTypeIcon}" />
+        <Image Name="ConnectionInfoBarConnectionState"
+               Grid.Column="1"
+               Margin="0, 0, 3, 0"
+               Stretch="Uniform"
+               Height="16"
+               Source="{Binding Path=ConnectionStateIcon}" />
+
+        <!--Player Information-->
+        <DockPanel Name="ConnectionInfoBarPlayersArea"
+                   Grid.Column="2">
+            <Image Name="ConnectionInfoBarPlayersImage"
+                   Margin="0, 0, 2, 0"
+                   Stretch="Uniform"
+                   Source="{Binding Source={x:Static view:InstanceViewModel.PublicProperties}, Path=[Images][Info][Players].Value}" />
+            <Label Name="ConnectionInfoBarPlayersLeft"
+                   Content="[" />
+            <Label Name="ConnectionInfoBarPlayersCount"
+                   HorizontalContentAlignment="Center"
+                   MinWidth="23"
+                   Content="{Binding Path=PlayerCount}" />
+            <Label Name="ConnectionInfoBarPlayersSlash"
+                   Content="/" />
+            <Label Name="ConnectionInfoBarPlayersMax"
+                   HorizontalContentAlignment="Center"
+                   MinWidth="23"
+                   Content="{Binding Path=MaxPlayerCount}" />
+            <Label Name="ConnectionInfoBarPlayersRight"
+                   Content="]" />
+        </DockPanel>
+
+        <!--Server Information-->
+        <DockPanel Name="ConnectionInfoBarGeneralArea"
+                   Grid.Column="3">
+            <Image Name="ConnectionInfoBarGeneralImage"
+                   Margin="20, 0, 2, 0"
+                   Stretch="Uniform"
+                   Source="{Binding Source={x:Static view:InstanceViewModel.PublicProperties}, Path=[Images][Info][General].Value}" />
+            <Label Name="ConnectionInfoBarGeneralLeft"
+                   Content="[" />
+            <Label Name="ConnectionInfoBarGeneralServerName"
+                   HorizontalContentAlignment="Center"
+                   MinWidth="187"
+                   Content="{Binding Path=ServerName}" />
+            <Label Name="ConnectionInfoBarGeneralLeftAngle"
+                   Content="&lt;" />
+            <Label Name="ConnectionInfoBarGeneralIp"
+                   HorizontalContentAlignment="Center"
+                   Content="{Binding Path=Hostname}" />
+            <Label Name="ConnectionInfoBarGeneralColon"
+                   Content=":" />
+            <Label Name="ConnectionInfoBarGeneralPort"
+                   HorizontalContentAlignment="Center"
+                   Content="{Binding Path=Port}" />
+            <Label Name="ConnectionInfoBarGeneralRightAngle"
+                   Content="&gt;" />
+            <Label Name="ConnectionInfoBarGeneralRight"
+                   Content="]" />
+        </DockPanel>
+
+        <!--Map and Game Mode Information-->
+        <DockPanel Name="ConnectionInfoBarCurrentArea"
+                   Grid.Column="4">
+            <Image Name="ConnectionInfoBarCurrentImage"
+                   Margin="20, 0, 2, 0"
+                   Stretch="Uniform"
+                   Source="{Binding Source={x:Static view:InstanceViewModel.PublicProperties}, Path=[Images][Info][Current].Value}" />
+            <Label Name="ConnectionInfoBarCurrentLeft"
+                   Content="[" />
+            <Label Name="ConnectionInfoBarCurrentMode"
+                   HorizontalContentAlignment="Center"
+                   MinWidth="25"
+                   Content="{Binding Path=GameModeName}" />
+            <Label Name="ConnectionInfoBarCurrentDash"
+                   HorizontalContentAlignment="Center"
+                   MinWidth="10"
+                   Content="-" />
+            <Label Name="ConnectionInfoBarCurrentMap"
+                   HorizontalContentAlignment="Center"
+                   MinWidth="25"
+                   Content="{Binding Path=MapName}" />
+            <Label Name="ConnectionInfoBarCurrentRight"
+                   Content="]" />
+        </DockPanel>
+
+        <!--Server Settings Information-->
+        <DockPanel Name="ConnectionInfoBarSettingArea"
+                   Grid.Column="5">
+            <Image Name="ConnectionInfoBarSettingImage"
+                   Margin="20, 0, 2, 0"
+                   Stretch="Uniform"
+                   Source="{Binding Source={x:Static view:InstanceViewModel.PublicProperties}, Path=[Images][Info][Setting].Value}" />
+            <Label Name="ConnectionInfoBarSettingLeft"
+                   Content="[" />
+            <Image Name="ConnectionInfoBarSettingAntiCheat"
+                   Margin="2, 0, 0, 0"
+                   Stretch="Uniform"
+                   Source="{Binding Path=AntiCheatIcon}" />
+            <Image Name="ConnectionInfoBarSettingPassworded"
+                   Margin="2, 0, 0, 0"
+                   Stretch="Uniform"
+                   Source="{Binding Path=PasswordedIcon}" />
+            <Image Name="ConnectionInfoBarSettingAutoBalanced"
+                   Margin="2, 0, 0, 0"
+                   Stretch="Uniform"
+                   Source="{Binding Path=AutoBalanceIcon}" />
+            <Image Name="ConnectionInfoBarSettingRanked"
+                   Margin="2, 0, 2, 0"
+                   Stretch="Uniform"
+                   Source="{Binding Path=RankedIcon}" />
+            <Label Name="ConnectionInfoBarSettingRight"
+                   Content="]" />
+        </DockPanel>
+    </Grid>
+    
+    <!--Padding-->
+    <Label Name="ConnectionInfoBarPadding" Margin="0" Content=" " />
+    
+</DockPanel>

@@ -1,0 +1,176 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{65C1DB17-18E0-4AC5-8709-3F7E04B88CA1}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Procon.Net</RootNamespace>
+    <AssemblyName>Procon.Net</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\builds\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\builds\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Attributes\DispatchPacketAttribute.cs" />
+    <Compile Include="Attributes\GameAttribute.cs" />
+    <Compile Include="Client.cs" />
+    <Compile Include="ClientEventArgs.cs" />
+    <Compile Include="ClientEventType.cs" />
+    <Compile Include="ConnectionState.cs" />
+    <Compile Include="Protocols\Daemon\DaemonClient.cs" />
+    <Compile Include="Protocols\Daemon\DaemonPacket.cs" />
+    <Compile Include="Protocols\Daemon\DaemonPacketSerializer.cs" />
+    <Compile Include="Protocols\Daemon\DaemonListener.cs" />
+    <Compile Include="Game.cs" />
+    <Compile Include="GameEventArgs.cs" />
+    <Compile Include="GameEventType.cs" />
+    <Compile Include="GameImplementation.cs" />
+    <Compile Include="IGame.cs" />
+    <Compile Include="Packet.cs" />
+    <Compile Include="PacketOrigin.cs" />
+    <Compile Include="PacketSerializer.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Protocols\CallOfDuty\BlackOps\CallOfDutyBlackOpsGame.cs" />
+    <Compile Include="Protocols\CallOfDuty\CallOfDutyClient.cs" />
+    <Compile Include="Protocols\CallOfDuty\CallOfDutyGame.cs" />
+    <Compile Include="Protocols\CallOfDuty\CallOfDutyLogfile.cs" />
+    <Compile Include="Protocols\CallOfDuty\CallOfDutyPacket.cs" />
+    <Compile Include="Protocols\CallOfDuty\CallOfDutyPacketSerializer.cs" />
+    <Compile Include="Protocols\CallOfDuty\Objects\CallOfDutyChat.cs" />
+    <Compile Include="Protocols\CallOfDuty\Objects\CallOfDutyConverter.cs" />
+    <Compile Include="Protocols\CallOfDuty\Objects\CallOfDutyKill.cs" />
+    <Compile Include="Protocols\CallOfDuty\Objects\CallOfDutyPlayer.cs" />
+    <Compile Include="Protocols\CallOfDuty\Objects\CallOfDutyPlayerList.cs" />
+    <Compile Include="Protocols\CallOfDuty\Objects\CallOfDutyServerInfo.cs" />
+    <Compile Include="Protocols\CallOfDuty\Objects\ICallOfDutyObject.cs" />
+    <Compile Include="Protocols\GameType.cs" />
+    <Compile Include="Protocols\Homefront\ChannelType.cs" />
+    <Compile Include="Protocols\Homefront\HomefrontClient.cs" />
+    <Compile Include="Protocols\Homefront\HomefrontGame.cs" />
+    <Compile Include="Protocols\Homefront\HomefrontPacket.cs" />
+    <Compile Include="Protocols\Homefront\HomefrontPacketSerializer.cs" />
+    <Compile Include="Protocols\Homefront\MessageType.cs" />
+    <Compile Include="Protocols\Homefront\Objects\HomefrontChat.cs" />
+    <Compile Include="Protocols\Homefront\Objects\HomefrontConverter.cs" />
+    <Compile Include="Protocols\Homefront\Objects\HomefrontKill.cs" />
+    <Compile Include="Protocols\Homefront\Objects\HomefrontPlayer.cs" />
+    <Compile Include="Protocols\Objects\Action.cs" />
+    <Compile Include="Protocols\Objects\Ban.cs" />
+    <Compile Include="Protocols\Objects\BanList.cs" />
+    <Compile Include="Protocols\Objects\BanActionType.cs" />
+    <Compile Include="Protocols\Objects\ChatActionType.cs" />
+    <Compile Include="Protocols\Objects\ChatOrigin.cs" />
+    <Compile Include="Protocols\Objects\Chat.cs" />
+    <Compile Include="Protocols\Objects\VariableList.cs" />
+    <Compile Include="Protocols\Objects\DataController.cs" />
+    <Compile Include="Protocols\Objects\DataVariable.cs" />
+    <Compile Include="Protocols\Objects\GameMode.cs" />
+    <Compile Include="Protocols\Objects\HitLocation.cs" />
+    <Compile Include="Protocols\Objects\Inventory.cs" />
+    <Compile Include="Protocols\Objects\Item.cs" />
+    <Compile Include="Protocols\Objects\Kick.cs" />
+    <Compile Include="Protocols\Objects\Kill.cs" />
+    <Compile Include="Protocols\Objects\Map.cs" />
+    <Compile Include="Protocols\Objects\MapList.cs" />
+    <Compile Include="Protocols\Objects\MapActionType.cs" />
+    <Compile Include="Protocols\Objects\Move.cs" />
+    <Compile Include="Protocols\Objects\MoveActionType.cs" />
+    <Compile Include="Protocols\Objects\PlayerList.cs" />
+    <Compile Include="Protocols\Objects\Point3D.cs" />
+    <Compile Include="Protocols\Objects\Player.cs" />
+    <Compile Include="Protocols\Objects\PlayerSubset.cs" />
+    <Compile Include="Protocols\Objects\PlayerSubsetContext.cs" />
+    <Compile Include="Protocols\Objects\ProtocolObject.cs" />
+    <Compile Include="Protocols\Objects\Role.cs" />
+    <Compile Include="Protocols\Objects\GameState.cs" />
+    <Compile Include="Protocols\Objects\Spawn.cs" />
+    <Compile Include="Protocols\Objects\Squad.cs" />
+    <Compile Include="Protocols\Objects\Team.cs" />
+    <Compile Include="Protocols\Objects\TimeSubset.cs" />
+    <Compile Include="Protocols\Objects\TimeSubsetContext.cs" />
+    <Compile Include="Protocols\Source\Logging\BroadcastListener\SourceBroadcastListener.cs" />
+    <Compile Include="Protocols\Source\Logging\BroadcastListener\SourceBroadcastListenerPacket.cs" />
+    <Compile Include="Protocols\Source\Logging\BroadcastListener\SourceBroadcastListenerPacketSerializer.cs" />
+    <Compile Include="Protocols\Source\Logging\BroadcastService\SourceBroadcastService.cs" />
+    <Compile Include="Protocols\Source\Logging\BroadcastService\SourceBroadcastServicePacket.cs" />
+    <Compile Include="Protocols\Source\Logging\BroadcastService\SourceBroadcastServicePacketSerializer.cs" />
+    <Compile Include="Protocols\Source\Objects\SourceKick.cs" />
+    <Compile Include="Protocols\Source\Objects\SourceDisconnection.cs" />
+    <Compile Include="Protocols\Source\Objects\ISourceObject.cs" />
+    <Compile Include="Protocols\Source\Objects\SourceChat.cs" />
+    <Compile Include="Protocols\Source\Objects\SourcePlayerList.cs" />
+    <Compile Include="Protocols\Source\Objects\SourceServerInfo.cs" />
+    <Compile Include="Protocols\Source\SourceClient.cs" />
+    <Compile Include="Protocols\Source\SourceResponseType.cs" />
+    <Compile Include="Protocols\Source\SourceGame.cs" />
+    <Compile Include="Protocols\Source\SourcePacket.cs" />
+    <Compile Include="Protocols\Source\SourcePacketSerializer.cs" />
+    <Compile Include="Protocols\Source\SourceRequestType.cs" />
+    <Compile Include="TCPClient.cs" />
+    <Compile Include="UDPClient.cs" />
+    <Compile Include="Utils\HTTP\Request.cs" />
+    <Compile Include="Utils\Maxmind\CountryLookup.cs" />
+    <Compile Include="Utils\MD5.cs" />
+    <Compile Include="Utils\PunkBuster\PB.cs" />
+    <Compile Include="Utils\PunkBuster\Objects\PunkBusterBeginPlayerList.cs" />
+    <Compile Include="Utils\PunkBuster\Objects\PunkBusterEndPlayerList.cs" />
+    <Compile Include="Utils\PunkBuster\PunkBusterObject.cs" />
+    <Compile Include="Utils\PunkBuster\Objects\PunkBusterPlayer.cs" />
+    <Compile Include="Utils\SHA1.cs" />
+    <Compile Include="Utils\StringExtensions.cs" />
+    <Compile Include="Utils\XElementExtensions.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="GeoIP.dat">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

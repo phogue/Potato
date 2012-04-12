@@ -1,0 +1,526 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<?iso-639-1 en?>
+<!DOCTYPE procon [
+  <!ATTLIST match regex CDATA #IMPLIED>
+  <!ATTLIST match text CDATA #IMPLIED>
+]>
+
+<procon>
+  <ui>
+    <!--
+      Universal API localization.
+      
+      Generally, localization for enums, constants, or other known values
+      ahead of time are localized here.  This is to make it easier for
+      extensions to access commonly used enums or constants.
+    -->
+    <api>
+      <loc key="To" value="To" />
+
+      <game>
+        <loc key="None"      value="None"/>
+        <loc key="BF_BC2"    value="Battlefield: Bad Company 2"/>
+        <loc key="BF_3"      value="Battlefield 3"/>
+        <loc key="COD_BO"    value="Call of Duty: Black Ops"/>
+        <loc key="MOH_2010"  value="Medal of Honor 2010"/>
+        <loc key="Homefront" value="Homefront"/>
+      </game>
+      
+      <team>
+        <loc key="NeutralOrSpectator" value="Neutral" />
+        <loc key="Team1"              value="Team 1" />
+        <loc key="Team2"              value="Team 2" />
+        <loc key="Team3"              value="Team 3" />
+        <loc key="Team4"              value="Team 4" />
+      </team>
+
+      <squad>
+        <loc key="None"   value="None" />
+        <loc key="Squad1" value="Alpha" />
+        <loc key="Squad2" value="Bravo" />
+        <loc key="Squad3" value="Charlie" />
+        <loc key="Squad4" value="Delta" />
+        <loc key="Squad5" value="Echo" />
+        <loc key="Squad6" value="Foxtrox" />
+        <loc key="Squad7" value="Gamma" />
+        <loc key="Squad8" value="Hotel" />
+      </squad>
+
+      <role>
+        <loc key="Assault"    value="Assault" />
+        <loc key="Demolition" value="Engineer" />
+        <loc key="Recon"      value="Recon" />
+        <loc key="Support"    value="Medic" />
+      </role>
+
+      <event>
+        <loc key="Join"  value="Joined" />
+        <loc key="Leave" value="Left" />
+        <loc key="Move"  value="Moved" />
+        <loc key="Kick"  value="Kicked" />
+        <loc key="Ban"   value="Banned" />
+        <loc key="Unban" value="Unbanned" />
+        <loc key="Chat"  value="Chat" />
+        <loc key="Kill"  value="Killed" />
+        <loc key="Spawn" value="Spawned" />
+      </event>
+
+      <subset>
+        <player>
+          <loc key="Server" value="Server" />
+          <loc key="All"    value="All" />
+          <loc key="Team"   value="Team" />
+          <loc key="Squad"  value="Squad" />
+          <loc key="Player" value="Player" />
+        </player>
+        <time>
+          <loc key="Permanent" value="Permanent" />
+          <loc key="Round"     value="Round" />
+          <loc key="Time"      value="Time" />
+        </time>
+      </subset>
+
+      <filter>
+        <type>
+          <loc key="Contains" value="Contains" />
+          <loc key="Excludes" value="Excludes" />
+          <loc key="Matches"  value="Matches" />
+        </type>
+        <chat>
+          <loc key="Time"      value="Time" />
+          <loc key="Type"      value="Type" />
+          <loc key="Sender"    value="Sender" />
+          <loc key="Recipient" value="Recipient" />
+          <loc key="Data"      value="Data" />
+        </chat>
+        <ban>
+          <loc key="Id"     value="Id" />
+          <loc key="Time"   value="Time" />
+          <loc key="Reason" value="Reason" />
+        </ban>
+      </filter>
+
+      <action>
+        <chat>
+          <loc key="Say"      value="Say" />
+          <loc key="Yell"     value="Say And Yell" />
+          <loc key="YellOnly" value="Yell" />
+        </chat>
+        <player>
+          <loc key="Move" value="Move" />
+          <loc key="Kick" value="Kick" />
+          <loc key="Kill" value="Kill" />
+          <loc key="Ban"  value="Ban" />
+        </player>
+        <map>
+          <loc key="Add"    value="Add To List" />
+          <loc key="Remove" value="Remove From List" />
+          <loc key="Up"     value="Move Up List" />
+          <loc key="Down"   value="Move Down List" />
+        </map>
+        <ban>
+          <loc key="Ban"         value="Ban" />
+          <loc key="Unban"       value="Un-ban" />
+          <loc key="ToPermanent" value="Convert To Permanent" />
+          <loc key="ToTemporary" value="Convert To Temporary" />
+        </ban>
+      </action>
+    </api>
+
+    <!--
+      Manager UI Localization.
+      
+      Contains localization for the Manager UI.  This really shouldn't be
+      messed with by anyone unless they're tweaking the manager.
+    -->
+    <manager>
+      <loc key="Assemblies"        value="Assembly Information"/>
+      <loc key="AssemblyList"      value="Assemblies Found:"/>
+      <loc key="AssemblyInfo"      value="Selected Assembly Information:"/>
+      <loc key="AssemblyName"      value="File Name:"/>
+      <loc key="AssemblyExtCount"  value="Extensions:"/>
+      <loc key="AssemblyConflicts" value="Assembly Level Conflicts:"/>
+
+      <loc key="Extensions"           value="Extension Information"/>
+      <loc key="ExtensionList"        value="Extensions Found:"/>
+      <loc key="ExtensionInfo"        value="Selected Extension Information:"/>
+      <loc key="ExtensionAuthor"      value="Author:"/>
+      <loc key="ExtensionLink"        value="Link:"/>
+      <loc key="ExtensionName"        value="Name:"/>
+      <loc key="ExtensionVersion"     value="Version:"/>
+      <loc key="ExtensionDescription" value="Description:"/>
+      <loc key="ExtensionConflicts"   value="Extension Level Conflicts:"/>
+
+      <loc key="Save"  value="Save"/>
+      <loc key="Close" value="Close"/>
+    </manager>
+
+    <!--
+      Default UI Localization.
+      
+      Contains various localizations in the UI that comes packages with
+      procon to begin with.  Extensions can either reuse these declarations
+      or add another localization file.
+    -->
+    <default>
+      <!--Commonly used labels associated with input.-->
+      <input>
+        <loc key="Type"       value="Type:" />
+        <loc key="Host"       value="Host / IP:" />
+        <loc key="Port"       value="Port:" />
+        <loc key="Pass"       value="Password:" />
+        <loc key="Additional" value="Additional:" />
+      </input>
+      
+      <!--Commonly used actions associated with buttons.-->
+      <button>
+        <loc key="Add" value="Add" />
+      </button>
+      
+      
+      
+      <!--Root and so-on localization.-->
+      <root>
+        <infobar>
+          <loc key="LocalInterface"  value="Viewing [Local] Layer" />
+          <loc key="RemoteInterface" value="Viewing [Remote] Layer" />
+        </infobar>
+        
+        <connectionselector>
+          <loc key="GameType"         value="The Type of Game for this Game Connection." />
+          <loc key="ConnectionState"  value="The State of the Connection for this Game Connection." />
+          <loc key="AddConnection"    value="Add a Game Connection." />
+          <loc key="RemoveConnection" value="Remove this Game Connection." />
+        </connectionselector>
+
+        <connection>
+          <infobar>
+            <loc key="Players"     value="Players:" />
+            <loc key="Information" value="Gen Info:" />
+            <loc key="Playing"     value="Currently Playing:" />
+            <loc key="Security"    value="Security:" />
+          </infobar>
+
+          <chatandevents>
+            <loc key="Title"       value="Chat &amp; Events" />
+            
+            <loc key="Time"        value="Time" />
+            <loc key="Type"        value="Type" />
+            <loc key="Sender"      value="Sender" />
+            <loc key="Recipient"   value="Recipient" />
+            <loc key="Data"        value="Information" />
+            
+            <loc key="Filter"      value="Filters" />
+            <loc key="Text"        value="Text:" />
+            <loc key="Method"      value="Type:" />
+            <loc key="Field"       value="Field:" />
+            <loc key="AddlFilters" value="Additional Filters" />
+            
+            <loc key="Send"        value="Send" />
+          </chatandevents>
+
+          <tabs>
+            <players>
+              <loc key="Title"       value="Players" />
+              
+              <loc key="Actions"     value="Administrative Action" />
+              <loc key="Action"      value="Type:" />
+              <loc key="Additional"  value="Details:" />
+              <loc key="None"        value="No Additional Options." />
+              <loc key="Length"      value="Length:" />
+              <loc key="Time"        value="Ban Type:" />
+              <loc key="Team"        value="Team:" />
+              <loc key="Squad"       value="Squad:" />
+              <loc key="Reason"      value="Reason:" />
+              <loc key="Perform"     value="Take Action" />
+
+              <loc key="NameHead"    value="Name" />
+              <loc key="TeamHead"    value="Team" />
+              <loc key="SquadHead"   value="Squad" />
+              <loc key="RoleHead"    value="Role" />
+              <loc key="KillsHead"   value="Kills" />
+              <loc key="DeathsHead"  value="Deaths" />
+              <loc key="ScoreHead"   value="Score" />
+              <loc key="PingHead"    value="Ping" />
+            </players>
+            
+            <maps>
+              <loc key="Title"   value="Maps" />
+              <loc key="Modes"   value="Game Modes:" />
+              <loc key="Pool"    value="Available Maps:" />
+              <loc key="Add"     value="Add To List" />
+              <loc key="Rounds1" value="For" />
+              <loc key="Rounds2" value="Rounds" />
+              <loc key="List"    value="Current Maps:" />
+              <loc key="Remove"  value="Remove From List" />
+              <loc key="Up"      value="Move Up" />
+              <loc key="Down"    value="Move Down" />
+            </maps>
+            
+            <bans>
+              <loc key="Title"       value="Bans" />
+
+              <loc key="Actions"     value="Administrative Action" />
+              <loc key="Action"      value="Type:" />
+              <loc key="Additional"  value="Details:" />
+              <loc key="None"        value="No Additional Options." />
+              <loc key="Uid"         value="Uid:" />
+              <loc key="Length"      value="Length:" />
+              <loc key="Time"        value="Ban Type:" />
+              <loc key="Reason"      value="Reason:" />
+              <loc key="Perform"     value="Take Action" />
+            </bans>
+            
+            <plugins>
+              <loc key="Title" value="Plugins" />
+            </plugins>
+            
+            <settings>
+              <loc key="Title" value="Settings" />
+              <loc key="Data"  value="Configurations:" />
+
+              <loc key="Basic"    value="Basic Settings" />
+              <loc key="Advanced" value="Advanced Settings" />
+
+              <loc key="InfoValue"       value="Value:" />
+              <loc key="InfoName"        value="Name:" />
+              <loc key="InfoDescription" value="Description:" />
+              <loc key="InfoNone"        value="None" />
+                
+              <loc key="ServerName"      value="Server Name:" />
+              <loc key="Banner"          value="Banner URL:" />
+              <loc key="Description"     value="Description:" />
+              <loc key="MaxPlayerCount"  value="Max Player Count:" />
+              
+              <loc key="Ranked"          value="Ranked" />
+              <loc key="AntiCheat"       value="Anti-cheat" />
+              <loc key="AutoBalance"     value="Auto Balance" />
+              <loc key="FriendlyFire"    value="Friendly Fire" />
+              <loc key="Passworded"      value="Passworded" />
+              
+              <loc key="Command"        value="Console:" />
+              <loc key="Send"           value="Send" />
+            </settings>
+
+            <!--Temporary Tab and Localization Settings-->
+            <accounts>
+              <loc key="Title" value="Accounts" />
+                
+              <loc key="Name" value="Name:" />
+              <loc key="Pass" value="Password:" />
+
+              <loc key="Group"         value="Groups" />
+              <loc key="Permission"    value="Permissions" />
+              <loc key="LinkedAccount" value="LinkedAccounts" />
+
+              <loc key="Account"      value="Accounts" />
+              <loc key="AssignedGame" value="Assigned Games" />
+            </accounts>
+          </tabs>
+        </connection>
+      </root>
+    </default>
+
+    <!--
+      Various Server Variable Localization
+      
+      Server variable localizations are among the most frequently updated
+      localizations simply because there are so many.  The keys are defined
+      in code rather than through the UI, is what makes server variable
+      localizations special.
+    -->
+    <variables>
+      <loc key="MAX_CONSOLE_LINES"  value="Maximum Console Lines" />
+      <loc key="SERVER_NAME"        value="Server Name" />
+      <loc key="SERVER_DESCRIPTION" value="Server Description" />
+      <loc key="BANNER_URL"         value="Banner Url" />
+      <loc key="RANKED"             value="Is Ranked" />
+      <loc key="ANTI_CHEAT"         value="Is Anti-Cheat On" />
+      <loc key="AUTO_BALANCE"       value="Is Auto Balance On" />
+      <loc key="FRIENDLY_FIRE"      value="Is Friendly Fire On" />
+      <loc key="PASSWORDED"         value="Is Passworded" />
+      <loc key="PASSWORD"           value="Server Password" />
+        
+      <loc key="MAX_CONSOLE_LINES_Description"  value="The maximum amount of characters that can be entered via the Procon chat window.  This value defaults to a safe value for each game type the Procon supports." />
+      <loc key="SERVER_NAME_Description"        value="The name of the server as it appears when searching for the server." />
+      <loc key="SERVER_DESCRIPTION_Description" value="The description of the server, usually displayed before or during loading the game.  Usually contains information about the server, its rules, who it is ran by, and how cool Imisnew2 is." />
+      <loc key="BANNER_URL_Description"         value="The url to an image that is usually displayed before or during loading the game." />
+      <loc key="RANKED_Description"             value="Whether the game server is considered 'Ranked' by the game developers." />
+      <loc key="ANTI_CHEAT_Description"         value="Whether anti-cheat software is being ran to remove players trying to circumvent normal game mechanics." />
+      <loc key="AUTO_BALANCE_Description"       value="Whether auto-balancing software is being ran to distribute players between teams evenly." />
+      <loc key="FRIENDLY_FIRE_Description"      value="Whether friendly fire is enabled." />
+      <loc key="PASSWORDED_Description"         value="Whether the server is password protected." />
+      <loc key="PASSWORD_Description"           value="The password to the server." />
+        
+      <frostbite>
+        <loc key="CROSS_HAIR"   value="Is Crosshair Visible" />
+        <loc key="HARDCORE"     value="Is Hardcore On" />
+        <loc key="IDLE_TIMEOUT" value="Idle Timeout Time (Seconds)" />
+        <loc key="KILL_CAM"     value="Is Kill-camera On" />
+        <loc key="MINI_MAP"     value="Is Mini-map On" />
+        <loc key="RANK_LIMIT"   value="Rank Limit Allowed" />
+      </frostbite>
+    </variables>
+    
+    
+
+    <!--Legacy stuff that I'm removing eventually.-->
+    <permission>
+      <loc key="InstanceAddRemoteInterface"               value="Add Procon Connection" />
+      <loc key="LanguageSetDefaultLanguage"               value="Set Default Language" />
+      <loc key="ConnectionsAddConnection"                 value="Add Game Connection" />
+      <loc key="ConnectionsRemoveConnection"              value="Remove Game Connection" />
+      <loc key="SecurityAccountsAddAccount"               value="Add Account" />
+      <loc key="SecurityAccountsRemoveAccount"            value="Delete Account" />
+      <loc key="SecurityAccountsAssign"                   value="Assign Game To Account" />
+      <loc key="SecurityAccountsRevoke"                   value="Revoke Game From Account" />
+      <loc key="SecurityAccountsSetPassword"              value="Change Account's Password" />
+      <loc key="SecurityAccountsSetPreferredLanguageCode" value="Set Account's Preferred Language" />
+      <loc key="SecurityGroupsAddGroup"                   value="Add Group" />
+      <loc key="SecurityGroupsRemoveGroup"                value="Delete Group" />
+      <loc key="SecurityGroupsAssignAccount"              value="Assign Account To Group" />
+      <loc key="SecurityGroupsRevokeAccount"              value="Remove Account From Group" />
+      <loc key="SecurityGroupsSetPermission"              value="Change Group's Permissions" />
+      <loc key="PackagesInstallPackage"                   value="Install Packages" />
+      <loc key="Get"                                      value="View Server Variables" />
+      <loc key="Set"                                      value="Set Server Variables (Temp)" />
+      <loc key="SetA"                                     value="Set Server Variables (Perm)" />
+      <loc key="PluginSetVariable"                        value="Edit Plugins" />
+      <loc key="InstanceLayerSetup"                       value="Edit Layer" />
+      <loc key="Say"                                      value="Say" />
+      <loc key="Kick"                                     value="Kick" />
+      <loc key="PermanentBan"                             value="Ban (Perm)" />
+      <loc key="UnBan"                                    value="Unban" />
+      <loc key="Nextmap"                                  value="Run Nextmap" />
+      <loc key="PlayerStatus"                             value="View Players" />
+    </permission>
+
+    <packagetype>
+      <loc key="Application" value="Application" />
+      <loc key="Config"      value="Config" />
+      <loc key="Language"    value="Language" />
+      <loc key="Mappack"     value="Map Pack" />
+      <loc key="Plugin"      value="Plugin" />
+    </packagetype>
+
+    <packagestate>
+      <loc key="Downloaded"      value="Downloaded" />
+      <loc key="Downloading"     value="Downloading" />
+      <loc key="Installed"       value="Installed" />
+      <loc key="Installing"      value="Installing" />
+      <loc key="NotInstalled"    value="Not Installed" />
+      <loc key="UpdateAvailable" value="Update Available" />
+      <loc key="UpdateInstalled" value="Up To Date" />
+    </packagestate>
+
+    
+      <packages>
+        <loc key="Title"  value="Packages" />
+
+        <loc key="Install"        value="Install" />
+        <loc key="Author"         value="Author:" />
+        <loc key="Discussion"     value="Discussion:" />
+        <loc key="DiscussionText" value="Click Here" />
+        <loc key="Description"    value="Description:" />
+        <loc key="Downloads"      value="Downloads:" />
+        <loc key="LastModified"   value="Last Modified:" />
+        <loc key="FileSize"       value="File Size:" />
+      </packages>
+
+
+
+      <layer>
+        <loc key="Title"  value="Layer" />
+
+        <loc key="Name"      value="Layer Name:" />
+        <loc key="Host"      value="Hostname/IP:" />
+        <loc key="Port"      value="Port:" />
+        <loc key="TurnOn"    value="Turn On" />
+        <loc key="TurnOff"   value="Turn Off" />
+        <loc key="ErrorHost" value="Invalid Hostname - Use 0.0.0.0 for any IP" />
+        <loc key="ErrorPort" value="Invalid Port Number" />
+
+        <loc key="Disconnected" value="Turn On" />
+        <loc key="Ready"        value="Turn Off" />
+      </layer>
+
+
+    <gamewindow>
+      <playerlist>
+        <loc key="Title" value="Players" />
+
+        <loc key="View"   value="View Detailed Information" />
+        <loc key="Search" value="Search Chat/Event" />
+        <loc key="Move"   value="Move To..." />
+        <loc key="Yell"   value="Yell To Player(s)" />
+        <loc key="Kill"   value="Kill Player(s)" />
+        <loc key="Kick"   value="Kick Player(s)" />
+        <loc key="Ban"    value="Ban Player(s)" />
+
+        <loc key="Uid"          value="Uid" />
+        <loc key="GUID"         value="GUID" />
+        <loc key="SlotID"       value="Slot ID" />
+        <loc key="ClanTag"      value="Clan Tag" />
+        <loc key="Name"         value="Name" />
+        <loc key="NameStripped" value="Safe Name" />
+        <loc key="Role"         value="Role" />
+        <loc key="Inventory"    value="Inventory" />
+        <loc key="Team"         value="Team" />
+        <loc key="Squad"        value="Squad" />
+        <loc key="Score"        value="Score" />
+        <loc key="Kills"        value="Kills" />
+        <loc key="Deaths"       value="Deaths" />
+        <loc key="Kdr"          value="Kdr" />
+        <loc key="Ping"         value="Ping" />
+        <loc key="Country"      value="Country" />
+        <loc key="CountryCode"  value="Country Code" />
+        <loc key="IP"           value="IP" />
+
+        <loc key="Teams"  value="Teams" />
+        <loc key="Squads" value="Squads" />
+
+        <move>
+          <loc key="MoveTitle"   value="Move Players" />
+          <loc key="MoveMessage" value="Choose where you want to move the players to." />
+          <loc key="MoveTeam"    value="Team:" />
+          <loc key="MoveSquad"   value="Squad:" />
+          <loc key="MoveOK"      value="OK" />
+          <loc key="MoveCancel"  value="Cancel" />
+        </move>
+
+        <warn>
+          <loc key="WarnTitle"         value="Warn Players" />
+          <loc key="WarnMessage"       value="Enter the warning message to be sent to all the selected players." />
+          <loc key="WarnOK"            value="OK" />
+          <loc key="WarnCancel"        value="Cancel" />
+          <loc key="WarnErrorReason"   value="You must have a reason." />
+          <loc key="WarnDefaultReason" value="Play as a team!" />
+        </warn>
+
+        <kick>
+          <loc key="KickTitle"         value="Kick Players" />
+          <loc key="KickMessage"       value="Enter the kick reason to be sent to all the selected players." />
+          <loc key="KickOK"            value="OK" />
+          <loc key="KickCancel"        value="Cancel" />
+          <loc key="KickErrorReason"   value="You must have a reason." />
+          <loc key="KickDefaultReason" value="Administrative Decision" />
+        </kick>
+
+        <ban>
+          <loc key="BanTitle"         value="Ban Players" />
+          <loc key="BanMessage"       value="Specify the ban information such as ban type and duration for all the selected players." />
+          <loc key="BanDurType"       value="Type:" />
+          <loc key="BanDur"           value="Duration:" />
+          <loc key="BanReason"        value="Reason:" />
+          <loc key="BanOK"            value="OK" />
+          <loc key="BanCancel"        value="Cancel" />
+          <loc key="BanErrorDur"      value="The duration must be a number > 0." />
+          <loc key="BanErrorReason"   value="You must have a reason." />
+          <loc key="BanDefaultReason" value="Administrative Decision" />
+        </ban>
+      </playerlist>
+      
+    </gamewindow>
+    
+  </ui>
+</procon>

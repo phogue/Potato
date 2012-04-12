@@ -1,0 +1,59 @@
+﻿<!--
+// Copyright 2011 Cameron 'Imisnew2' Gunnin
+// 
+// http://www.phogue.net
+//  
+// This file is part of Procon 2.
+// 
+// Procon 2 is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+// 
+// Procon 2 is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+// 
+// You should have received a copy of the GNU General Public License
+// along with Procon 2.  If not, see<http://www.gnu.org/licenses/> .
+-->
+
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:classes="clr-namespace:Procon.UI.Old.Classes">
+    <classes:InterfaceConverter  x:Key="interConv" />
+    <classes:ConnectionConverter x:Key="connConv" />
+    <classes:GroupConverter      x:Key="groupConv" />
+    <classes:AccountConverter    x:Key="accountConv" />
+    <classes:PackageConverter    x:Key="packageConv" />
+
+    <classes:ServerVariableConverter x:Key="serverVarConv" />
+    <classes:PermissionConverter     x:Key="permisConv" />
+    <classes:AssignmentConverter     x:Key="assignConv" />
+
+    <classes:LocalizePlayerContextConverter x:Key="localizePlayerConv" />
+    <classes:LocalizeBanContextConverter    x:Key="localizeBanConv" />
+    <classes:MapPoolConverter               x:Key="mapPoolConv" />
+    <classes:MapListConverter               x:Key="mapListConv" />
+
+    <classes:LocalizeConverter             x:Key="localizeConv" />
+    <classes:EnumConverter                 x:Key="enumConv" />
+    <classes:InterfaceIsLocalConverter     x:Key="isLocalInterConv" />
+    <classes:LayerStateConverter           x:Key="layerStateConv" />
+    <classes:LayerIsOffConverter           x:Key="isLayerOffConv" />
+    <classes:InterfaceVisibilityConverter  x:Key="isLocalInterVisConv" />
+    <classes:GameTypeVisibilityConverter   x:Key="isExtraGameConv" />
+    <classes:TimeSubsetVisibilityConverter x:Key="isTempBanConv" />
+
+
+
+    <classes:IsVisibleConverter x:Key="isVisible" />
+    <classes:NumberVisibility   x:Key="numVis" />
+
+    <classes:NumberReduction            x:Key="reduceTo" />
+    <classes:GameVariableConverter      x:Key="gameVars" />
+    
+    <classes:DateConverter x:Key="dateConverter" />
+    <classes:NullToUnsetConverter x:Key="nullToUnset" />
+</ResourceDictionary>

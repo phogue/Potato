@@ -1,0 +1,57 @@
+﻿<!--
+Copyright 2011 Cameron 'Imisnew2' Gunnin
+
+http://www.phogue.net
+
+This file is part of Procon 2.
+
+Procon 2 is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Procon 2 is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Procon 2.  If not, see<http://www.gnu.org/licenses/>
+-->
+
+<Grid x:Class="Procon.UI.Default.Root.Connection.Layout.LayoutView"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:sys="clr-namespace:System;assembly=mscorlib"
+      xmlns:conv="clr-namespace:Procon.UI.API.Converters;assembly=Procon.UI.API"
+      xmlns:view="clr-namespace:Procon.UI.API.ViewModels;assembly=Procon.UI.API"
+      DataContext="{Binding Source={x:Static view:InstanceViewModel.PublicProperties}, Path=[Connection].Value}"
+      Name="ConnectionLayout">
+    <!-- TODO:
+         Uncomment this block.
+         This is currently changed to accomodate an Alpha/Beta release so that only the connection window is active.
+    
+    <Grid.Style>
+        <Style TargetType="{x:Type Grid}">            
+            <Setter Property="Visibility" Value="Collapsed" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Source={x:Static view:InstanceViewModel.PublicProperties}, Path=[Panel].Value}" Value="{x:Type view:ConnectionViewModel}">
+                    <Setter Property="Visibility" Value="Visible" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </Grid.Style>
+    -->
+
+    <!--The layout of content-->
+    <Grid Name="ConnectionLayoutControl">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20" /> <!--Infobar-->
+            <RowDefinition Height="3"  />
+            <RowDefinition Height="*"  /> <!--Main Content-->
+            <RowDefinition Height="3"  />
+            <RowDefinition MinHeight="175" Height="175" MaxHeight="500" /> <!--Chat And Events-->
+        </Grid.RowDefinitions>
+    </Grid>
+</Grid>

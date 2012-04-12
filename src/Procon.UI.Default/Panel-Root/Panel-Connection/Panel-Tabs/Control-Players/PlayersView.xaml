@@ -1,0 +1,260 @@
+﻿<!--
+Copyright 2011 Cameron 'Imisnew2' Gunnin
+
+http://www.phogue.net
+
+This file is part of Procon 2.
+
+Procon 2 is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Procon 2 is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Procon 2.  If not, see<http://www.gnu.org/licenses/>
+-->
+
+<TabItem x:Class="Procon.UI.Default.Root.Connection.Tabs.Players.PlayersView"
+         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+         xmlns:sys="clr-namespace:System;assembly=mscorlib"
+         xmlns:conv="clr-namespace:Procon.UI.API.Converters;assembly=Procon.UI.API"
+         xmlns:view="clr-namespace:Procon.UI.API.ViewModels;assembly=Procon.UI.API"
+         Name="ConnectionTabsPlayers">
+    <TabItem.Resources>
+        <conv:TextLocalizationConverter x:Key="TextLoc" />
+        <conv:EnumLocalizationConverter x:Key="EnumLoc" />
+        <DataTemplate DataType="{x:Type sys:Enum}">
+            <TextBlock Text="{Binding Converter={StaticResource EnumLoc}}" />
+        </DataTemplate>
+
+        <TextBlock x:Key="NameText"   Text="{Binding Converter={StaticResource TextLoc}, ConverterParameter=Procon.UI.Default.Root.Connection.Tabs.Players.NameHead}" />
+        <TextBlock x:Key="TeamText"   Text="{Binding Converter={StaticResource TextLoc}, ConverterParameter=Procon.UI.Default.Root.Connection.Tabs.Players.TeamHead}" />
+        <TextBlock x:Key="SquadText"  Text="{Binding Converter={StaticResource TextLoc}, ConverterParameter=Procon.UI.Default.Root.Connection.Tabs.Players.SquadHead}" />
+        <TextBlock x:Key="RoleText"   Text="{Binding Converter={StaticResource TextLoc}, ConverterParameter=Procon.UI.Default.Root.Connection.Tabs.Players.RoleHead}" />
+        <TextBlock x:Key="KillsText"  Text="{Binding Converter={StaticResource TextLoc}, ConverterParameter=Procon.UI.Default.Root.Connection.Tabs.Players.KillsHead}" />
+        <TextBlock x:Key="DeathsText" Text="{Binding Converter={StaticResource TextLoc}, ConverterParameter=Procon.UI.Default.Root.Connection.Tabs.Players.DeathsHead}" />
+        <TextBlock x:Key="ScoreText"  Text="{Binding Converter={StaticResource TextLoc}, ConverterParameter=Procon.UI.Default.Root.Connection.Tabs.Players.ScoreHead}" />
+        <TextBlock x:Key="PingText"   Text="{Binding Converter={StaticResource TextLoc}, ConverterParameter=Procon.UI.Default.Root.Connection.Tabs.Players.PingHead}" />
+    </TabItem.Resources>
+
+    <DockPanel Name="ConnectionTabsPlayersPanel">
+        <!--Selected Player(s) Information/Action Portion-->
+        <GroupBox Name="ConnectionTabsPlayersActionPanel"
+                  DockPanel.Dock="Right"
+                  Width="175"
+                  Margin="3, 0, 0, 0"
+                  Header="{Binding Converter={StaticResource TextLoc}, ConverterParameter=Procon.UI.Default.Root.Connection.Tabs.Players.Actions}">
+            <DockPanel Name="ConnectionTabsPlayersActionsArea">
+                <!--Actions-->
+                <GroupBox Name="ConnectionTabsPlayersActionsActionPanel"
+                          DockPanel.Dock="Top"
+                          Margin="0, 0, 0, 3"
+                          Header="{Binding Converter={StaticResource TextLoc}, ConverterParameter=Procon.UI.Default.Root.Connection.Tabs.Players.Action}">
+                    <DockPanel Name="ConnectionTabsPlayersActionsActionArea">
+                        <ComboBox Name="ConnectionTabsPlayersActionsAction"
+                                  ItemsSource="{Binding  Source={x:Static view:InstanceViewModel.PublicProperties}, Path=[Connection][Action][Player][Types].Value}"
+                                  SelectedItem="{Binding Source={x:Static view:InstanceViewModel.PublicProperties}, Path=[Connection][Action][Player][Type].Value}" />
+                    </DockPanel>
+                </GroupBox>
+                <!--Additional Action Details-->
+                <GroupBox Name="ConnectionTabsPlayersActionsAdditionalPanel"
+                          DockPanel.Dock="Top"
+                          Margin="0, 0, 0, 3"
+                          Header="{Binding Converter={StaticResource TextLoc}, ConverterParameter=Procon.UI.Default.Root.Connection.Tabs.Players.Additional}">
+                    <Grid Name="ConnectionTabsPlayersActionsAddtionalArea">
+                        <!--Move Command-->
+                        <Grid Name="ConnectionTabsPlayersActionsAdditionalMoveArea">
+                            <Grid.Style>
+                                <Style TargetType="{x:Type Grid}">
+                                    <Setter Property="Visibility" Value="Collapsed" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Source={x:Static view:InstanceViewModel.PublicProperties}, Path=[Connection][Action][Player][Type].Value}" Value="Move">
+                                            <Setter Property="Visibility" Value="Visible" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Grid.Style>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="3" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="3" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Label Name="ConnectionTabsPlayersActionsAdditionalMoveTeamTitle"
+                                   Grid.Row="0"
+                                   Grid.Column="0"
+                                   Content="{Binding Converter={StaticResource TextLoc}, ConverterParameter=Procon.UI.Default.Root.Connection.Tabs.Players.Team}" />
+                            <Label Name="ConnectionTabsPlayersActionsAdditionalMoveSquadTitle"
+                                   Grid.Row="2"
+                                   Grid.Column="0"
+                                   Content="{Binding Converter={StaticResource TextLoc}, ConverterParameter=Procon.UI.Default.Root.Connection.Tabs.Players.Squad}" />
+
+                            <ComboBox Name="ConnectionTabsPlayersActionsAdditionalMoveTeam"
+                                      Grid.Row="0"
+                                      Grid.Column="2"
+                                      ItemsSource="{Binding  Source={x:Static view:InstanceViewModel.PublicProperties}, Path=[Connection][Action][Player][Move][Teams].Value}"
+                                      SelectedItem="{Binding Source={x:Static view:InstanceViewModel.PublicProperties}, Path=[Connection][Action][Player][Move][Team].Value}" />
+                            <ComboBox Name="ConnectionTabsPlayersActionsAdditionalMoveSquad"
+                                      Grid.Row="2"
+                                      Grid.Column="2"
+                                      ItemsSource="{Binding  Source={x:Static view:InstanceViewModel.PublicProperties}, Path=[Connection][Action][Player][Move][Squads].Value}"
+                                      SelectedItem="{Binding Source={x:Static view:InstanceViewModel.PublicProperties}, Path=[Connection][Action][Player][Move][Squad].Value}" />
+                        </Grid>
+                        <!--Kill/Kick Command-->
+                        <Grid Name="ConnectionTabsPlayersActionsAdditionalNoneArea">
+                            <Grid.Style>
+                                <Style TargetType="{x:Type Grid}">
+                                    <Setter Property="Visibility" Value="Collapsed" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Source={x:Static view:InstanceViewModel.PublicProperties}, Path=[Connection][Action][Player][Type].Value}" Value="Kill">
+                                            <Setter Property="Visibility" Value="Visible" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding Source={x:Static view:InstanceViewModel.PublicProperties}, Path=[Connection][Action][Player][Type].Value}" Value="Kick">
+                                            <Setter Property="Visibility" Value="Visible" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Grid.Style>
+                            <Label Name="ConnectionTabsPlayersActionsAdditionalNoneTitle"
+                                   Content="{Binding Converter={StaticResource TextLoc}, ConverterParameter=Procon.UI.Default.Root.Connection.Tabs.Players.None}" />
+                        </Grid>
+                        <!--Ban Command-->
+                        <Grid Name="ConnectionTabsPlayersActionsAdditionalBanArea">
+                            <Grid.Style>
+                                <Style TargetType="{x:Type Grid}">
+                                    <Setter Property="Visibility" Value="Collapsed" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Source={x:Static view:InstanceViewModel.PublicProperties}, Path=[Connection][Action][Player][Type].Value}" Value="Ban">
+                                            <Setter Property="Visibility" Value="Visible" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Grid.Style>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="3" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="3" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Label Name="ConnectionTabsPlayersActionsAdditionalBanTimeTitle"
+                                   Grid.Column="0"
+                                   Content="{Binding Converter={StaticResource TextLoc}, ConverterParameter=Procon.UI.Default.Root.Connection.Tabs.Players.Time}" />
+                            <Label Name="ConnectionTabsPlayersActionsAdditionalBanLengthTitle"
+                                   Grid.Row="2"
+                                   Grid.Column="0"
+                                   Content="{Binding Converter={StaticResource TextLoc}, ConverterParameter=Procon.UI.Default.Root.Connection.Tabs.Players.Length}">
+                                <Label.Style>
+                                    <Style TargetType="{x:Type Label}">
+                                        <Setter Property="Visibility" Value="Collapsed" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Source={x:Static view:InstanceViewModel.PublicProperties}, Path=[Connection][Action][Player][Ban][Time].Value}" Value="Time">
+                                                <Setter Property="Visibility" Value="Visible" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Label.Style>
+                            </Label>
+
+                            <ComboBox Name="ConnectionTabsPlayersActionsAdditionalBanTime"
+                                      Grid.Row="0"
+                                      Grid.Column="2"
+                                      ItemsSource="{Binding  Source={x:Static view:InstanceViewModel.PublicProperties}, Path=[Connection][Action][Player][Ban][Times].Value}"
+                                      SelectedItem="{Binding Source={x:Static view:InstanceViewModel.PublicProperties}, Path=[Connection][Action][Player][Ban][Time].Value}" />
+                            <TextBox Name="ConnectionTabsPlayersActionsAdditionalBanLength"
+                                     Grid.Row="2"
+                                     Grid.Column="2"
+                                     TextWrapping="Wrap"
+                                     Text="{Binding Source={x:Static view:InstanceViewModel.PublicProperties}, Path=[Connection][Action][Player][Ban][Length].Value, UpdateSourceTrigger=PropertyChanged}">
+                                <TextBox.Style>
+                                    <Style TargetType="{x:Type TextBox}">
+                                        <Setter Property="Visibility" Value="Collapsed" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Source={x:Static view:InstanceViewModel.PublicProperties}, Path=[Connection][Action][Player][Ban][Time].Value}" Value="Time">
+                                                <Setter Property="Visibility" Value="Visible" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBox.Style>
+                            </TextBox>
+                        </Grid>
+                    </Grid>
+                </GroupBox>
+                <!--Take Action Button-->
+                <Button Name="ConnectionTabsPlayersActionsPerform"
+                        DockPanel.Dock="Bottom"
+                        Command="{Binding Source={x:Static view:InstanceViewModel.PublicCommands}, Path=[Connection][Action][Player].Value}"
+                        CommandParameter="{Binding ElementName=ConnectionTabsPlayersList, Path=SelectedItems}"
+                        Content="{Binding Converter={StaticResource TextLoc}, ConverterParameter=Procon.UI.Default.Root.Connection.Tabs.Players.Perform}"/>
+                <!--Action Reason-->
+                <GroupBox Name="ConnectionTabsPlayersActionsReasonPanel"
+                          DockPanel.Dock="Top"
+                          Margin="0, 0, 0, 3"
+                          Header="{Binding Converter={StaticResource TextLoc}, ConverterParameter=Procon.UI.Default.Root.Connection.Tabs.Players.Reason}">
+                    <DockPanel Name="ConnectionTabsPlayersActionsReasonArea">
+                        <TextBox Name="ConnectionTabsPlayersActionsReason"
+                                 Grid.Row="4"
+                                 Grid.Column="2"
+                                 TextWrapping="Wrap"
+                                 Text="{Binding Source={x:Static view:InstanceViewModel.PublicProperties}, Path=[Connection][Action][Player][Reason].Value, UpdateSourceTrigger=PropertyChanged}" />
+                    </DockPanel>
+                </GroupBox>
+            </DockPanel>
+        </GroupBox>
+        
+        
+        
+        <!--Current Players Portion-->
+        <DataGrid Name="ConnectionTabsPlayersList"
+                  AutoGenerateColumns="False"
+                  CanUserAddRows="False"
+                  CanUserDeleteRows="False"
+                  CanUserResizeRows="False"
+                  GridLinesVisibility="Horizontal"
+                  IsReadOnly="True"
+                  IsTabStop="False"
+                  ScrollViewer.HorizontalScrollBarVisibility="Hidden"
+                  ItemsSource="{Binding Path=Players}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Width="100" 
+                                    Header="{StaticResource NameText}"
+                                    Binding="{Binding Path=Name}" />
+                <DataGridTextColumn Width="75" 
+                                    Header="{StaticResource TeamText}"
+                                    Binding="{Binding Path=TeamName}" />
+                <DataGridTextColumn Width="75" 
+                                    Header="{StaticResource SquadText}"
+                                    Binding="{Binding Path=SquadName}" />
+                <DataGridTextColumn Width="75"
+                                    Header="{StaticResource RoleText}"
+                                    Binding="{Binding Path=RoleName}" />
+                <DataGridTextColumn Width="60"
+                                    Header="{StaticResource KillsText}"
+                                    Binding="{Binding Path=Kills}" />
+                <DataGridTextColumn Width="60"
+                                    Header="{StaticResource DeathsText}"
+                                    Binding="{Binding Path=Deaths}" />
+                <DataGridTextColumn Width="60"
+                                    Header="{StaticResource ScoreText}"
+                                    Binding="{Binding Path=Score}" />
+                <DataGridTextColumn Width="60"
+                                    Header="{StaticResource PingText}"
+                                    Binding="{Binding Path=Ping}" />
+            </DataGrid.Columns>
+        </DataGrid>
+    </DockPanel>
+</TabItem>

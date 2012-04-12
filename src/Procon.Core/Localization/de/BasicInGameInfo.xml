@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<?iso-639-1 de?>
+<!DOCTYPE procon [
+  <!ATTLIST match regex CDATA #IMPLIED>
+  <!ATTLIST match text CDATA #IMPLIED>
+  <!ATTLIST loc key CDATA #IMPLIED>
+  <!ATTLIST loc value CDATA #IMPLIED>
+]>
+<procon>
+  <core>
+    <interfaces>
+      <connections>
+        <plugins>
+          <basicingameinfo>
+            <loc key="HelpCommand" value="Zeigt eine Liste von verfügbaren Befehlen" />
+            <loc key="HelpCommandHeader" value="'{0}help [befehl]' eingeben, um mehr Informationen über einen Befehl zu erhalten" />
+            <loc key="TestCommand" value="Einfacher Befehl, um die Ergebnisse einer NLP-Übereinstimmung auszugeben" />
+          </basicingameinfo>
+        </plugins>
+      </connections>
+    </interfaces>
+  </core>
+</procon>

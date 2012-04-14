@@ -11,8 +11,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procon.Console", "Procon.Co
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procon.Net.Console", "Procon.Net.Console\Procon.Net.Console.csproj", "{7769C77A-8479-4149-8364-65B49D5836FB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BasicInGameInfo", "Procon.Core.Interfaces.Connections.Plugins.BasicInGameInfo\BasicInGameInfo.csproj", "{8C6893B8-8273-487C-8A44-2C25917F40BA}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procon.NLP", "Procon.NLP\Procon.NLP.csproj", "{4B55557F-C2AA-4047-9ED9-3E4BBF9CF670}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procon.DB", "Procon.DB\Procon.DB.csproj", "{2A03B71C-D6DE-4EA3-B743-F0D34C5D55F5}"
@@ -33,6 +31,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procon.Net.Protocols.Frostbite", "Procon.Net.Protocols.Frostbite\Procon.Net.Protocols.Frostbite.csproj", "{299A4619-928D-4D7F-8857-644B5F57F6FC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procon.Core.NLP.Test", "Procon.NLP.Test\Procon.Core.NLP.Test.csproj", "{EC6141E9-FB3C-4B29-95F5-DEA232AE07CD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BasicInGameInfo", "BasicInGameInfo\BasicInGameInfo.csproj", "{8C6893B8-8273-487C-8A44-2C25917F40BA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -98,16 +98,6 @@ Global
 		{7769C77A-8479-4149-8364-65B49D5836FB}.Release|Mixed Platforms.Build.0 = Release|x86
 		{7769C77A-8479-4149-8364-65B49D5836FB}.Release|x86.ActiveCfg = Release|x86
 		{7769C77A-8479-4149-8364-65B49D5836FB}.Release|x86.Build.0 = Release|x86
-		{8C6893B8-8273-487C-8A44-2C25917F40BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8C6893B8-8273-487C-8A44-2C25917F40BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8C6893B8-8273-487C-8A44-2C25917F40BA}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{8C6893B8-8273-487C-8A44-2C25917F40BA}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{8C6893B8-8273-487C-8A44-2C25917F40BA}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{8C6893B8-8273-487C-8A44-2C25917F40BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8C6893B8-8273-487C-8A44-2C25917F40BA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8C6893B8-8273-487C-8A44-2C25917F40BA}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{8C6893B8-8273-487C-8A44-2C25917F40BA}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{8C6893B8-8273-487C-8A44-2C25917F40BA}.Release|x86.ActiveCfg = Release|Any CPU
 		{4B55557F-C2AA-4047-9ED9-3E4BBF9CF670}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{4B55557F-C2AA-4047-9ED9-3E4BBF9CF670}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4B55557F-C2AA-4047-9ED9-3E4BBF9CF670}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -198,6 +188,16 @@ Global
 		{EC6141E9-FB3C-4B29-95F5-DEA232AE07CD}.Release|Mixed Platforms.Build.0 = Release|x86
 		{EC6141E9-FB3C-4B29-95F5-DEA232AE07CD}.Release|x86.ActiveCfg = Release|x86
 		{EC6141E9-FB3C-4B29-95F5-DEA232AE07CD}.Release|x86.Build.0 = Release|x86
+		{8C6893B8-8273-487C-8A44-2C25917F40BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8C6893B8-8273-487C-8A44-2C25917F40BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8C6893B8-8273-487C-8A44-2C25917F40BA}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{8C6893B8-8273-487C-8A44-2C25917F40BA}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{8C6893B8-8273-487C-8A44-2C25917F40BA}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{8C6893B8-8273-487C-8A44-2C25917F40BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8C6893B8-8273-487C-8A44-2C25917F40BA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8C6893B8-8273-487C-8A44-2C25917F40BA}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{8C6893B8-8273-487C-8A44-2C25917F40BA}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{8C6893B8-8273-487C-8A44-2C25917F40BA}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

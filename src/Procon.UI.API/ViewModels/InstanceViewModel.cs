@@ -107,7 +107,9 @@ namespace Procon.UI.API.ViewModels
             }
 
             // Add the new interface.
-            Interfaces.Add(new InterfaceViewModel(item));
+            InterfaceViewModel tTemp = new InterfaceViewModel(item);
+            Interfaces.Add(tTemp);
+            OnInterfaceAdded(tTemp);
         }
         /// <summary>
         /// Lets the UI's view model know we removed an interface.
@@ -123,7 +125,9 @@ namespace Procon.UI.API.ViewModels
             // Remove the old interface.
             for (int i = 0; i < Interfaces.Count; i++)
                 if (Interfaces[i].ModelEquals(item)) {
-                    Interfaces.RemoveAt(i);
+                    InterfaceViewModel tTemp = Interfaces[i];
+                    Interfaces.Remove(tTemp);
+                    OnInterfaceRemoved(tTemp);
                     break;
                 }
         }
@@ -160,6 +164,22 @@ namespace Procon.UI.API.ViewModels
             }
             // Other.
             else OnPropertyChanged(this, e.PropertyName);
+        }
+
+
+        // Events.
+        public delegate void InterfaceHandler(InstanceViewModel parent, InterfaceViewModel item);
+        public event InterfaceHandler InterfaceAdded;
+        public event InterfaceHandler InterfaceRemoved;
+        protected void OnInterfaceAdded(InterfaceViewModel i)
+        {
+            if (InterfaceAdded != null)
+                InterfaceAdded(this, i);
+        }
+        protected void OnInterfaceRemoved(InterfaceViewModel i)
+        {
+            if (InterfaceRemoved != null)
+                InterfaceRemoved(this, i);
         }
     }
 }

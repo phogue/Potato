@@ -1,70 +1,70 @@
-﻿// Copyright 2011 Cameron 'Imisnew2' Gunnin
-// 
-// http://www.phogue.net
-//  
-// This file is part of Procon 2.
-// 
-// Procon 2 is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-// 
-// Procon 2 is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-// 
-// You should have received a copy of the GNU General Public License
-// along with Procon 2.  If not, see <http://www.gnu.org/licenses/>.
-
-using System;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Media.Imaging;
+using System.Xml.Linq;
 
 using Procon.Core;
-using Procon.UI.API.Converters;
 using Procon.UI.API.Utils;
 using Procon.UI.API.ViewModels;
 using Procon.UI.Extensions;
 
 namespace Procon.UI
 {
-    /// <summary>
-    /// Builds a UI by loading extensions via the extension controller.
-    /// The default UI is already built in Procon.UI.Default and is, by default
-    /// loaded and executed.  The behaviour of the UI can be altered by writing
-    /// and extension and using the Extension Manager to load that extension.
-    /// </summary>
-    class Entry
+    // Builds UI by loading in extensions at runtime.
+    // Manage which extensions get loaded by running the Ui Manager.
+    internal class Entry
     {
         [STAThread]
         static void Main(String[] args)
         {
-            // Create the root element of the UI, set its icon, and set its background.
-            Window root = new Window()
-            {
-                WindowStartupLocation = WindowStartupLocation.CenterScreen,
-                Name       = "Root", Title  = "Procon 2",
-                MinWidth   = 900,    Width  = 900,
-                MinHeight  = 650,    Height = 650
-            };
-            if (File.Exists(Defines.PROCON_ICON))
-                root.Icon = new BitmapImage(new Uri(Defines.PROCON_ICON, UriKind.RelativeOrAbsolute));
-
             // Start Procon.
             InstanceViewModel Procon = new InstanceViewModel(new Instance());
             InstanceViewModel.PublicProperties["Procon"].Value = Procon;
             Procon.Execute();
 
+            // Loads the settings file.
+            Settings.Load();
+
+            // Create the root element of the UI.
+            Window root = new Window()
+            {
+                WindowStartupLocation = WindowStartupLocation.CenterScreen,
+                WindowState           = Settings.Get<WindowState>("WindowState", WindowState.Normal),
+                Name       = "Root", Title  = "Procon 2",
+                MinWidth   = 900,    Width  = Settings.Get<Double>("Width",  1024),
+                MinHeight  = 650,    Height = Settings.Get<Double>("Height", 768)
+            };
+            if (File.Exists(Defines.PROCON_ICON))
+                root.Icon = new BitmapImage(new Uri(Defines.PROCON_ICON, UriKind.RelativeOrAbsolute));
+
+            // Save window settings before the window is disposed.
+            root.Closing += (s, e) => {
+                Settings.Set("Width",       root.Width);
+                Settings.Set("Height",      root.Height);
+                Settings.Set("WindowState", root.WindowState);
+            };
+
             // Load the extensions into the UI.
             ExtensionController.ReadConfig(Path.Combine(Defines.EXTENSIONS_DIRECTORY, Defines.EXTENSIONS_CONFIG), root);
+
+            // Load some settings related to the state of the program.
+            if (!Settings.Get<Boolean>("IsLocalInterface", true))
+                foreach (InterfaceViewModel inter in Procon.Interfaces)
+                    if (Settings.Get<String>("InterfaceHostname", null) == inter.Hostname && Settings.Get<UInt16>("InterfacePort", UInt16.MaxValue) == inter.Port)
+                        InstanceViewModel.PublicProperties["Interface"].Value = inter;
 
             // Set the Data Context and display the window.
             root.DataContext = Procon;
             root.ShowDialog();
+
+            // Save some settings related to the state of the program.
+            Settings.Set("IsLocalInterface",  (InstanceViewModel.PublicProperties["Interface"].Value as InterfaceViewModel).IsLocal);
+            Settings.Set("InterfaceHostname", (InstanceViewModel.PublicProperties["Interface"].Value as InterfaceViewModel).Hostname);
+            Settings.Set("InterfacePort",     (InstanceViewModel.PublicProperties["Interface"].Value as InterfaceViewModel).Port);
+            Settings.Save();
 
             // Shutdown Procon.
             Procon.Shutdown();

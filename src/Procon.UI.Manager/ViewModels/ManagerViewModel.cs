@@ -24,6 +24,7 @@ using System.Windows;
 using System.Windows.Input;
 
 using Procon.Net.Utils;
+using Procon.UI.API.Commands;
 using Procon.UI.API.Utils;
 using Procon.UI.Extensions;
 using Procon.UI.Manager.Extensions;

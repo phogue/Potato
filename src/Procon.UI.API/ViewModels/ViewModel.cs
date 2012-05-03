@@ -42,6 +42,17 @@ namespace Procon.UI.API.ViewModels
         private PropertyInfo[] mProperties;
 
         /// <summary>
+        /// Initializes the public properties of the ViewModel class.
+        /// </summary>
+        static ViewModel()
+        {
+            if (PublicProperties == null)
+                PublicProperties = new InfinityDictionary<String, Object>();
+            if (PublicCommands == null)
+                PublicCommands   = new InfinityDictionary<String, ICommand>();
+        }
+
+        /// <summary>
         /// Creates an instance of a ViewModel and initializes all the properties using the
         /// given model's instance.
         /// </summary>
@@ -51,10 +62,6 @@ namespace Procon.UI.API.ViewModels
             Model       = model;
             MainQueue   = Dispatcher.CurrentDispatcher;
             mProperties = GetType().GetProperties();
-            if (PublicProperties == null)
-                PublicProperties = new InfinityDictionary<String, Object>();
-            if (PublicCommands == null)
-                PublicCommands = new InfinityDictionary<String, ICommand>();
         }
 
         /// <summary>

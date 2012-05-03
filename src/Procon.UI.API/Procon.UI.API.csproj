@@ -64,6 +64,11 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\AttachedCommand.cs" />
+    <Compile Include="Commands\AttachedCommandArgs.cs" />
+    <Compile Include="Commands\AttachedCommandGroup.cs" />
+    <Compile Include="Commands\AttachedCommandItem.cs" />
+    <Compile Include="Commands\RelayCommand.cs" />
     <Compile Include="Converters\EnumLocalizationConverter.cs" />
     <Compile Include="Enums\ActionBanType.cs" />
     <Compile Include="Enums\ActionPlayerType.cs" />
@@ -80,8 +85,8 @@
     <Compile Include="Utils\Localizer.cs" />
     <Compile Include="Utils\Defines.cs" />
     <Compile Include="Utils\InfinityDictionary.cs" />
-    <Compile Include="Utils\RelayCommand.cs" />
     <Compile Include="Utils\Extensions.cs" />
+    <Compile Include="Utils\PasswordBoxBinding.cs" />
     <Compile Include="ViewModels\ConnectionViewModel.cs" />
     <Compile Include="Objects\Event.cs" />
     <Compile Include="ViewModels\BanViewModel.cs" />

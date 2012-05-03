@@ -163,6 +163,24 @@
       or add another localization file.
     -->
     <default>
+      
+      <!-- Start Window -->
+      <start>
+        <loc key="Local" value="LOCAL INTERFACE" />
+        <loc key="Remote" value="REMOTE INTERFACE" />
+        <remote>
+          <loc key="Host"  value="HOSTNAME" />
+          <loc key="Port"  value="PORT" />
+          <loc key="User"  value="USERNAME" />
+          <loc key="Pass"  value="PASSWORD" />
+        </remote>
+        <loc key="Agreement" value="©2012 Procon. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam eu mauris eget erat lobortis tempor ut ut nisl. Curabitur molestie ultricies urna vel fermentum. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per incepto. All Rights Reserved." />
+      </start>
+      
+      
+      
+      
+      
       <!--Commonly used labels associated with input.-->
       <input>
         <loc key="Type"       value="Type:" />

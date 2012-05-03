@@ -27,7 +27,7 @@ namespace Procon.Core {
 
     public abstract class ExecutableBase : MarshalByRefObject {
         // Static Objects
-        public static Config MasterConfig = new Config().LoadDirectory(new DirectoryInfo(Defines.CONFIGS_DIRECTORY));
+        public static Config             MasterConfig    = new Config().LoadDirectory(new DirectoryInfo(Defines.CONFIGS_DIRECTORY));
         public static LanguageController MasterLanguages = new LanguageController().Execute();
     }
 }

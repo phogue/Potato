@@ -1,0 +1,14 @@
+<Config>
+  <Assemblies>
+    <Assembly>Extensions\Default\Procon.UI.Default.dll</Assembly>
+  </Assemblies>
+  <Extensions>
+    <Extension>Default Properties</Extension>
+    <Extension>Default Commands</Extension>
+    <Extension>Root Layout</Extension>
+    <Extension>Start Layout</Extension>
+    <Extension>Main Layout</Extension>
+    <Extension>Light Style</Extension>
+    <Extension>Light Style</Extension>
+  </Extensions>
+</Config>

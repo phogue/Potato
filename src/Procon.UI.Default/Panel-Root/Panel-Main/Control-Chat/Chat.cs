@@ -1,16 +1,21 @@
 ﻿using System;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 using Procon.UI.API;
+using Procon.UI.API.Commands;
+using Procon.UI.API.Utils;
+using Procon.UI.API.ViewModels;
 
-namespace Procon.UI.Default.Root.Main.Layout
+namespace Procon.UI.Default.Root.Main.Chat
 {
     [Extension(
-        Alters    = new String[] { "RootLayout" },
+        Alters    = new String[] { "MainLayout" },
         Replaces  = new String[] { },
-        DependsOn = new String[] { "Root Layout" })]
-    public class Layout : IExtension
+        DependsOn = new String[] { "Main Layout" })]
+    public class NewInterface : IExtension
     {
         #region IExtension Properties
 
@@ -24,7 +29,7 @@ namespace Procon.UI.Default.Root.Main.Layout
         { get { return "Team Player Gaming"; } }
 
         public string Name
-        { get { return "Main Layout"; } }
+        { get { return "Main Chat"; } }
 
         public string Version
         { get { return "1.0.0.0"; } }
@@ -34,15 +39,20 @@ namespace Procon.UI.Default.Root.Main.Layout
 
         #endregion IExtension Properties
 
+        // An easy accessor for Properties and Commands of this control.
+        private InfinityDictionary<String, Object>   tProps = InstanceViewModel.PublicProperties["Main"]["Chat"];
+        private InfinityDictionary<String, ICommand> tCmmds = InstanceViewModel.PublicCommands["Main"]["Chat"];
+
         [STAThread]
         public bool Entry(Window root)
         {
             // Find the controls I want to use and check for issues.
-            Grid layout = ExtensionApi.FindControl<Grid>(root, "RootLayout");
+            Grid layout = ExtensionApi.FindControl<Grid>(root, "MainLayout");
             if  (layout == null) return false;
 
             // Do what I need to setup my control.
-            LayoutView view = new LayoutView();
+            ChatView view = new ChatView();
+            Grid.SetRow(view, 3);
             layout.Children.Add(view);
 
             // Exit with good status.

@@ -1,40 +1,16 @@
-﻿// Copyright 2011 Cameron 'Imisnew2' Gunnin
-// 
-// http://www.phogue.net
-//  
-// This file is part of Procon 2.
-// 
-// Procon 2 is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-// 
-// Procon 2 is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-// 
-// You should have received a copy of the GNU General Public License
-// along with Procon 2.  If not, see <http://www.gnu.org/licenses/>.
-
-using System;
+﻿using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
+using Procon.UI.API.Utils;
+using Procon.UI.API.ViewModels;
+
 namespace Procon.UI.API
 {
-    /// <summary>A class used to interface easily between extensions and the UI.</summary>
     public static class ExtensionApi
     {
-        /// <summary>
-        /// Finds the control that is a child in the visual tree of another control that
-        /// has a specific name and attemps to cast it as a specific type before returning it.
-        /// </summary>
-        /// <typeparam name="T">The type of control to cast to.</typeparam>
-        /// <param name="controlAncestor">The root node to start searching the visual tree at.</param>
-        /// <param name="controlName">The name of the control we're looking for.</param>
-        /// <returns>Null if error/not found.  Otherwise, returns the control casted as type T.</returns>
+        // Finds a control of the specified type that is under the specified ancestor with the specified name.
         public static T FindControl<T>(DependencyObject controlAncestor, String controlName) where T : DependencyObject
         {
             // Confirm parent and childName are valid. 
@@ -89,6 +65,36 @@ namespace Procon.UI.API
 
             // Return Child not found.
             return null;
+        }
+
+        // Easy Getter/Setter for [Settings], [Procon], [Interface], and [Connection] property.
+        public static InfinityDictionary<String, Object> Settings
+        {
+            get { return InstanceViewModel.PublicProperties["Settings"]; }
+        }
+        public static InstanceViewModel Procon
+        {
+            get { return InstanceViewModel.PublicProperties["Procon"].Value as InstanceViewModel; }
+        }
+        public static InterfaceViewModel Interface
+        {
+            get { return InstanceViewModel.PublicProperties["Interface"].Value as InterfaceViewModel; }
+            set {
+                InstanceViewModel.PublicProperties["Interface"].Value                    = value;
+                InstanceViewModel.PublicProperties["Settings"]["InterfaceIsLocal"].Value = (value != null) ? (Object)value.IsLocal  : null;
+                InstanceViewModel.PublicProperties["Settings"]["InterfaceHost"].Value    = (value != null) ? (Object)value.Hostname : null;
+                InstanceViewModel.PublicProperties["Settings"]["InterfacePort"].Value    = (value != null) ? (Object)value.Port     : null;
+            }
+        }
+        public static ConnectionViewModel Connection
+        {
+            get { return InstanceViewModel.PublicProperties["Connection"].Value as ConnectionViewModel; }
+            set {    
+                InstanceViewModel.PublicProperties["Connection"].Value                 = value;
+                InstanceViewModel.PublicProperties["Settings"]["ConnectionType"].Value = (value != null) ? (Object)value.GameType.ToString() : null;
+                InstanceViewModel.PublicProperties["Settings"]["ConnectionHost"].Value = (value != null) ? (Object)value.Hostname            : null;
+                InstanceViewModel.PublicProperties["Settings"]["ConnectionPort"].Value = (value != null) ? (Object)value.Port                : null;
+            }
         }
     }
 }

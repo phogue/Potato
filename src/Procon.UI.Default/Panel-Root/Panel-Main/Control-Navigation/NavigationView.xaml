@@ -1,4 +1,4 @@
-﻿<Grid x:Class="Procon.UI.Default.Root.Layout.LayoutView"
+﻿<Grid x:Class="Procon.UI.Default.Root.Main.Navigation.NavigationView"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -6,10 +6,15 @@
       xmlns:view="clr-namespace:Procon.UI.API.ViewModels;assembly=Procon.UI.API"
       xmlns:acmd="clr-namespace:Procon.UI.API.Commands;assembly=Procon.UI.API"
       xmlns:util="clr-namespace:Procon.UI.API.Utils;assembly=Procon.UI.API"
-      Name="RootLayout">
+      Name="MainNavigation">
     <Grid.Resources>
         <conv:TextLocalizationConverter x:Key="TextLoc" />
         <conv:EnumLocalizationConverter x:Key="EnumLoc" />
     </Grid.Resources>
     
+    <!-- Content -->
+    <DockPanel Name="MainNavigationContent"
+               Background="Blue"
+               Height="20">
+    </DockPanel>
 </Grid>

@@ -102,7 +102,7 @@ namespace Procon.UI.Manager.ViewModels
 
             // Convert the normal ExtensionAssemblys into ManagerExtensionAssemblys.
             List<ManagerExtensionAssembly> mngExtAssemblies = new List<ManagerExtensionAssembly>();
-            foreach (ExtensionAssembly extAssembly in ExtensionController.Assemblies)
+            foreach (Assembly2 extAssembly in ExtensionController.Assemblies)
                 mngExtAssemblies.Add(new ManagerExtensionAssembly(extAssembly));
 
             // Convert the normal Extensions into ManagerExtensions.
@@ -111,7 +111,7 @@ namespace Procon.UI.Manager.ViewModels
                 mngExtensions.Add(new ManagerExtension(ext));
 
             // Check the Procon Extension Config for setting the ShouldLoad and ShouldExecute properties.
-            ExtensionConfig extConfig = new ExtensionConfig();
+            Extensions extConfig = new Extensions();
             extConfig.ReadConfig(Path.Combine(Defines.EXTENSIONS_DIRECTORY, Defines.EXTENSIONS_CONFIG));
             foreach (ManagerExtensionAssembly mngExtAssembly in mngExtAssemblies)
                 foreach (String extAssemblyName in extConfig.GetAssemblies())
@@ -183,7 +183,7 @@ namespace Procon.UI.Manager.ViewModels
                     mngExtensions.Add(mngExtension.IExtension.Name);
 
             // Write out the config file.
-            ExtensionConfig.WriteConfig(Path.Combine(Defines.EXTENSIONS_DIRECTORY, Defines.EXTENSIONS_CONFIG), mngExtAssemblies, mngExtensions);
+            Extensions.WriteConfig(Path.Combine(Defines.EXTENSIONS_DIRECTORY, Defines.EXTENSIONS_CONFIG), mngExtAssemblies, mngExtensions);
 
             // All changes have been saved.
             mIsDirty = false;

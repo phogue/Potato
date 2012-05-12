@@ -37,20 +37,35 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Commands.cs" />
+    <Compile Include="CommandsAndProperties.cs" />
     <Compile Include="Panel-Root\Layout\Layout.cs" />
     <Compile Include="Panel-Root\Layout\LayoutView.xaml.cs">
       <DependentUpon>LayoutView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Panel-Root\Panel-Tutorial\Control-NewInterface\NewInterface.cs" />
+    <Compile Include="Panel-Root\Panel-Tutorial\Control-NewInterface\NewInterfaceView.xaml.cs">
+      <DependentUpon>NewInterfaceView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Panel-Root\Panel-Main\Control-Header\Header.cs" />
+    <Compile Include="Panel-Root\Panel-Main\Control-Header\HeaderView.xaml.cs">
+      <DependentUpon>HeaderView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Panel-Root\Panel-Main\Control-Navigation\Navigation.cs" />
+    <Compile Include="Panel-Root\Panel-Main\Control-Navigation\NavigationView.xaml.cs">
+      <DependentUpon>NavigationView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Panel-Root\Panel-Main\Control-Chat\Chat.cs" />
+    <Compile Include="Panel-Root\Panel-Main\Control-Chat\ChatView.xaml.cs">
+      <DependentUpon>ChatView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Panel-Root\Panel-Main\Layout\Layout.cs" />
     <Compile Include="Panel-Root\Panel-Main\Layout\LayoutView.xaml.cs">
       <DependentUpon>LayoutView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Panel-Root\Panel-Start\Layout.cs" />
-    <Compile Include="Panel-Root\Panel-Start\LayoutView.xaml.cs">
+    <Compile Include="Panel-Root\Panel-Tutorial\Layout\Layout.cs" />
+    <Compile Include="Panel-Root\Panel-Tutorial\Layout\LayoutView.xaml.cs">
       <DependentUpon>LayoutView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Properties.cs" />
     <Compile Include="Styles-All\Light.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -79,11 +94,27 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Panel-Root\Panel-Tutorial\Control-NewInterface\NewInterfaceView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Panel-Root\Panel-Main\Control-Header\HeaderView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Panel-Root\Panel-Main\Control-Navigation\NavigationView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Panel-Root\Panel-Main\Control-Chat\ChatView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Panel-Root\Panel-Main\Layout\LayoutView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Panel-Root\Panel-Start\LayoutView.xaml">
+    <Page Include="Panel-Root\Panel-Tutorial\Layout\LayoutView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

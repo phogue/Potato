@@ -37,8 +37,8 @@ namespace Procon.UI.Default.Root.Layout
         public bool Entry(Window root)
         {
             // Do what I need to setup my control.
-            LayoutView lv = new LayoutView();
-            root.Content = lv;
+            LayoutView view = new LayoutView();
+            root.Content = view;
 
             // Exit with good status.
             return true;

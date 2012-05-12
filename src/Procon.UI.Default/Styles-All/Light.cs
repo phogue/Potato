@@ -1,23 +1,4 @@
-﻿// Copyright 2011 Cameron 'Imisnew2' Gunnin
-// 
-// http://www.phogue.net
-//  
-// This file is part of Procon 2.
-// 
-// Procon 2 is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-// 
-// Procon 2 is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-// 
-// You should have received a copy of the GNU General Public License
-// along with Procon 2.  If not, see <http://www.gnu.org/licenses/>.
-
-using System;
+﻿using System;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -60,9 +41,10 @@ namespace Procon.UI.Default.Styles
         [STAThread]
         public bool Entry(Window root)
         {
-            Grid rootLayout  = ExtensionApi.FindControl<Grid>(root, "RootLayout");
-            Grid startLayout = ExtensionApi.FindControl<Grid>(root, "StartLayout");
-            if  (rootLayout == null || startLayout == null) return false;
+            Grid rootLayout     = ExtensionApi.FindControl<Grid>(root, "RootLayout");
+            Grid tutorialLayout = ExtensionApi.FindControl<Grid>(root, "TutorialLayout");
+            Grid mainLayout     = ExtensionApi.FindControl<Grid>(root, "MainLayout");
+            if  (rootLayout == null || tutorialLayout == null || mainLayout == null) return false;
 
             // Some colors for various controls.
             Color cTextColor          = Color.FromArgb(255, 35,   31,  32);
@@ -73,15 +55,16 @@ namespace Procon.UI.Default.Styles
             Color cBorderDarkColor    = Color.FromArgb(255, 163, 163, 163);
 
             // Some brushes using the colors we setup.
-            SolidColorBrush bTextBrush = new SolidColorBrush(cTextColor);
-            RadialGradientBrush bStartBackgroundBrush = new RadialGradientBrush();
-            bStartBackgroundBrush.GradientOrigin = new Point(0.5, 0.5);
-            bStartBackgroundBrush.Center         = new Point(0.5, 0.65);
-            bStartBackgroundBrush.RadiusX        = 0.4;
-            bStartBackgroundBrush.RadiusY        = 0.6;
-            bStartBackgroundBrush.GradientStops.Add(new GradientStop(cControlLightColor,  0.0));
-            bStartBackgroundBrush.GradientStops.Add(new GradientStop(cControlLightColor,  0.2));
-            bStartBackgroundBrush.GradientStops.Add(new GradientStop(cControlDarkColor,   1.0));
+            SolidColorBrush bTextBrush           = new SolidColorBrush(cTextColor);
+            SolidColorBrush bMainBackgroundBrush = new SolidColorBrush(cControlLightColor);
+            RadialGradientBrush bTutorialBackgroundBrush = new RadialGradientBrush();
+            bTutorialBackgroundBrush.GradientOrigin = new Point(0.5, 0.5);
+            bTutorialBackgroundBrush.Center         = new Point(0.5, 0.65);
+            bTutorialBackgroundBrush.RadiusX        = 0.4;
+            bTutorialBackgroundBrush.RadiusY        = 0.6;
+            bTutorialBackgroundBrush.GradientStops.Add(new GradientStop(cControlLightColor,  0.0));
+            bTutorialBackgroundBrush.GradientStops.Add(new GradientStop(cControlLightColor,  0.2));
+            bTutorialBackgroundBrush.GradientStops.Add(new GradientStop(cControlDarkColor,   1.0));
             LinearGradientBrush bControlBrush = new LinearGradientBrush();
             bControlBrush.StartPoint = new Point(0.5, 0);
             bControlBrush.EndPoint   = new Point(0.5, 1);
@@ -143,7 +126,8 @@ namespace Procon.UI.Default.Styles
             rootLayout.Resources.Add(typeof(TextBlock),   sTextBlock);
             rootLayout.Resources.Add(typeof(TextBox),     sTextBox);
             rootLayout.Resources.Add(typeof(PasswordBox), sPasswordBox);
-            startLayout.Background = bStartBackgroundBrush;
+            tutorialLayout.Background = bTutorialBackgroundBrush;
+            mainLayout.Background = bMainBackgroundBrush;
 
             return true;
         }

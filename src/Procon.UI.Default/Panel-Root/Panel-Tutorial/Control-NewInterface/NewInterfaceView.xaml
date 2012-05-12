@@ -1,0 +1,131 @@
+﻿<Grid x:Class="Procon.UI.Default.Root.Tutorial.NewInterface.NewInterfaceView"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:conv="clr-namespace:Procon.UI.API.Converters;assembly=Procon.UI.API"
+      xmlns:view="clr-namespace:Procon.UI.API.ViewModels;assembly=Procon.UI.API"
+      xmlns:acmd="clr-namespace:Procon.UI.API.Commands;assembly=Procon.UI.API"
+      xmlns:util="clr-namespace:Procon.UI.API.Utils;assembly=Procon.UI.API"
+      Name="TutorialNewInterface">
+    <Grid.Style>
+        <Style TargetType="{x:Type Grid}">
+            <Setter Property="Visibility" Value="Collapsed" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Source={x:Static view:InstanceViewModel.PublicProperties}, Path=[Settings][Tutorial].Value}" Value="Step 1">
+                    <Setter Property="Visibility" Value="Visible" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </Grid.Style>
+    <Grid.Resources>
+        <conv:TextLocalizationConverter x:Key="TextLoc" />
+        <conv:EnumLocalizationConverter x:Key="EnumLoc" />
+    </Grid.Resources>
+    <Grid.RowDefinitions>
+        <RowDefinition Height="0.10*" />
+        <RowDefinition Height="0.80*" />
+        <RowDefinition Height="0.10*" />
+    </Grid.RowDefinitions>
+    <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="*" />
+        <ColumnDefinition Width="600" />
+        <ColumnDefinition Width="*" />
+    </Grid.ColumnDefinitions>
+
+    <!-- Content -->
+    <DockPanel Name="TutorialNewInterfaceContent"
+               Grid.Row="1" Grid.Column="1">
+        <TextBlock Name="TutorialNewInterfaceAgreement"
+                   DockPanel.Dock="Bottom"
+                   Margin="0, 20, 0, 0"
+                   Opacity="0.6"
+                   TextWrapping="Wrap"
+                   Text="{Binding
+                       Converter={StaticResource TextLoc},
+                       ConverterParameter=Procon.UI.Default.Root.Tutorial.NewInterface.Agreement}" />
+        <Button Name="TutorialNewInterfaceRemote"
+                DockPanel.Dock="Bottom"
+                Margin="0, 15, 0, 0"
+                Command="{Binding
+                    Source={x:Static view:InstanceViewModel.PublicCommands},
+                    Path=[Tutorial][NewInterface][Remote].Value}"
+                Content="{Binding
+                    Converter={StaticResource TextLoc},
+                    ConverterParameter=Procon.UI.Default.Root.Tutorial.NewInterface.Remote}" />
+        <Grid Name="TutorialNewInterfaceInput"
+              DockPanel.Dock="Bottom"
+              Margin="0, 5, 0, 0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.50*" />
+                <ColumnDefinition Width="20" />
+                <ColumnDefinition Width="0.50*" />
+            </Grid.ColumnDefinitions>
+
+            <Label Name="TutorialNewInterfaceInputHostText"
+                   Grid.Row="0" Grid.Column="0"
+                   Content="{Binding 
+                       Converter={StaticResource TextLoc},
+                       ConverterParameter=Procon.UI.Default.Root.Tutorial.NewInterface.Host}" />
+            <Label Name="TutorialNewInterfaceInputPortText"
+                   Grid.Row="0" Grid.Column="2"
+                   Content="{Binding
+                       Converter={StaticResource TextLoc},
+                       ConverterParameter=Procon.UI.Default.Root.Tutorial.NewInterface.Port}" />
+            <Label Name="TutorialNewInterfaceInputUserText"
+                   Grid.Row="2" Grid.Column="0"
+                   Content="{Binding
+                       Converter={StaticResource TextLoc},
+                       ConverterParameter=Procon.UI.Default.Root.Tutorial.NewInterface.User}" />
+            <Label Name="TutorialNewInterfaceInputPassText"
+                   Grid.Row="2" Grid.Column="2"
+                   Content="{Binding
+                       Converter={StaticResource TextLoc},
+                       ConverterParameter=Procon.UI.Default.Root.Tutorial.NewInterface.Pass}" />
+            <TextBox Name="TutorialNewInterfaceInputHost"
+                     Grid.Row="1" Grid.Column="0"
+                     Height="35"
+                     Text="{Binding
+                         Source={x:Static view:InstanceViewModel.PublicProperties},
+                         Path=[Tutorial][NewInterface][Host].Value,
+                         UpdateSourceTrigger=PropertyChanged}" />
+            <TextBox Name="TutorialNewInterfaceInputPort"
+                     Grid.Row="1" Grid.Column="2"
+                     Height="35"
+                     Text="{Binding
+                         Source={x:Static view:InstanceViewModel.PublicProperties},
+                         Path=[Tutorial][NewInterface][Port].Value,
+                         UpdateSourceTrigger=PropertyChanged}" />
+            <TextBox Name="TutorialNewInterfaceInputUser"
+                     Grid.Row="3" Grid.Column="0"
+                     Height="35"
+                     Text="{Binding
+                         Source={x:Static view:InstanceViewModel.PublicProperties},
+                         Path=[Tutorial][NewInterface][User].Value,
+                         UpdateSourceTrigger=PropertyChanged}" />
+            <PasswordBox Name="TutorialNewInterfaceInputPass"
+                         Grid.Row="3" Grid.Column="2"
+                         Height="35"
+                         util:PasswordBoxBinding.Password="{Binding
+                             Source={x:Static view:InstanceViewModel.PublicCommands},
+                             Path=[Tutorial][NewInterface][Pass].Value}" />
+        </Grid>
+        <Button Name="TutorialNewInterfaceLocal"
+                DockPanel.Dock="Bottom"
+                Command="{Binding
+                    Source={x:Static view:InstanceViewModel.PublicCommands},
+                    Path=[Tutorial][NewInterface][Local].Value}"
+                Content="{Binding
+                    Converter={StaticResource TextLoc},
+                    ConverterParameter=Procon.UI.Default.Root.Tutorial.NewInterface.Local}" />
+        <Image Name="TutorialNewInterfaceImage"
+               Source="{Binding
+                   Source={x:Static view:InstanceViewModel.PublicProperties},
+                   Path=[Images][Procon][Large].Value}" />
+    </DockPanel>
+</Grid>

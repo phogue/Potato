@@ -25,6 +25,7 @@ using System.Windows.Data;
 
 using Procon.Net.Protocols.Objects;
 using Procon.UI.API;
+using Procon.UI.API.Commands;
 using Procon.UI.API.Enums;
 using Procon.UI.API.Objects;
 using Procon.UI.API.Utils;

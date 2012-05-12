@@ -31,7 +31,7 @@ namespace Procon.UI.Manager.Extensions
     /// to be made when using extensions.
     /// Wraps the implementation of ExtensionAssembly to add even more management functionality.
     /// </summary>
-    class ManagerExtensionAssembly : ExtensionAssembly, INotifyPropertyChanged
+    class ManagerExtensionAssembly : Assembly2, INotifyPropertyChanged
     {
         #region Properties
 
@@ -63,7 +63,7 @@ namespace Procon.UI.Manager.Extensions
 
         /// <summary>Wraps the original extension assembly with additional properties.</summary>
         /// <param name="baseExtensionAssembly">The original assembly.</param>
-        public ManagerExtensionAssembly(ExtensionAssembly baseExtensionAssembly) : base(baseExtensionAssembly)
+        public ManagerExtensionAssembly(Assembly2 baseExtensionAssembly) : base(baseExtensionAssembly)
         {
             Conflicts    = new List<String>();
             ShouldLoad   = false;

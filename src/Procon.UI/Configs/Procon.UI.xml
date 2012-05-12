@@ -1,0 +1,28 @@
+<procon>
+  <ui>
+    <settings>
+      <Tutorial type="System.String">Step 1</Tutorial>
+      <extensions>
+        <!-- Default Procon Assemblies -->
+        <assembly>Extensions\Default\Procon.UI.Default.dll</assembly>
+
+        <!-- Base Stuffs -->
+        <extension>Default Commands And Properties</extension>
+        <extension>Root Layout</extension>
+        
+        <!-- Tutorial Layout -->
+        <extension>Tutorial Layout</extension>
+        <extension>Tutorial New Interface</extension>
+        
+        <!-- Main Layout -->
+        <extension>Main Layout</extension>
+        <extension>Main Header</extension>
+        <extension>Main Navigation</extension>
+        <extension>Main Chat</extension>
+        
+        <!-- Default Styles -->
+        <extension>Light Style</extension>
+      </extensions>
+    </settings>
+  </ui>
+</procon>

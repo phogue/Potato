@@ -25,6 +25,7 @@ along with Procon 2.  If not, see<http://www.gnu.org/licenses/>
           xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
           xmlns:conv="clr-namespace:Procon.UI.API.Converters;assembly=Procon.UI.API"
           xmlns:view="clr-namespace:Procon.UI.API.ViewModels;assembly=Procon.UI.API"
+          xmlns:sys="clr-namespace:System;assembly=mscorlib"
           Name="ConnectionChatAndEvents"
           KeyboardNavigation.TabNavigation="Local">
     <GroupBox.Resources>

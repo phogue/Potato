@@ -13,33 +13,48 @@
     </Grid.Resources>
 
     <!-- Content -->
-    <DockPanel Name="MainHeaderContent">
+    <DockPanel Name="MainHeaderContent"
+               Height="38">
         <Button Name="MainHeaderSwap"
                 DockPanel.Dock="Left"
-                Padding="0"
-                Height="30">
-            <Image Source="{Binding
+                Command="{Binding
+                    Source={x:Static view:InstanceViewModel.PublicCommands},
+                    Path=[Main][Header][Swap].Value}">
+            <Image Width="32"
+                   Source="{Binding
                        Source={x:Static view:InstanceViewModel.PublicProperties},
                        Path=[Images][Connection][Swap].Value}" />
         </Button>
-        <Image Name="MainHeaderIcon"
-               DockPanel.Dock="Left"
-               Height="30"
-               Source="{Binding
-                   Source={x:Static view:InstanceViewModel.PublicProperties},
-                   Path=[Images][Connection][Swap].Value}"/>
-        <Label Name="MainHeaderName"
-               DockPanel.Dock="Left"
-               Height="30" />
-        <Label Name="MainHeaderUpTime"
-               DockPanel.Dock="Left"
-               Height="30" />
         <Image Name="MainHeaderLogo"
                DockPanel.Dock="Right"
-               Height="30"
+               Margin="0, 0, 10, 0"
                Source="{Binding
-                   Source={x:Static view:InstanceViewModel.PublicProperties},
-                   Path=[Images][Procon][Small].Value}"/>
-        <Label Name="MainHeaderPadding" Content=" " Height="30" />
+                    Source={x:Static view:InstanceViewModel.PublicProperties},
+                    Path=[Images][Procon][Small].Value}" />
+        <DockPanel Name="MainHeaderSubContent"
+                   Margin="15, 7">
+            <Image Name="MainHeaderIcon"
+                   DockPanel.Dock="Left"
+                   Margin="0, 0, 10, 0"
+                   Source="{Binding
+                       Source={x:Static view:InstanceViewModel.PublicProperties},
+                       Path=[Images][Connection][Icon].Value}"/>
+            <Label Name="MainHeaderName"
+                   DockPanel.Dock="Left"
+                   Margin="0, 0, 10, 0"
+                   Content="{Binding
+                       Source={x:Static view:InstanceViewModel.PublicProperties},
+                       Path=[Connection].Value.ServerName,
+                       FallbackValue='[???]'}" />
+            <Label Name="MainHeaderUpTime"
+                   DockPanel.Dock="Left"
+                   Margin="0, 0, 10, 0"
+                   Opacity="0.5"
+                   Content="{Binding
+                       Source={x:Static view:InstanceViewModel.PublicProperties},
+                       Path=[Connection].Value.UpTime,
+                       FallbackValue='[???]'}" />
+            <Label Name="MainHeaderPadding" Content=" "/>
+        </DockPanel>
     </DockPanel>
 </Grid>

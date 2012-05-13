@@ -1,6 +1,9 @@
 ﻿using System;
+using System.IO;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Markup;
 using System.Windows.Media;
 
 using Procon.UI.API.Utils;
@@ -10,7 +13,29 @@ namespace Procon.UI.API
 {
     public static class ExtensionApi
     {
-        // Finds a control of the specified type that is under the specified ancestor with the specified name.
+        // Sets up the parser context.
+        static ParserContext mParserContext = null;
+        static ExtensionApi()
+        {
+            if (mParserContext == null) {
+                mParserContext = new ParserContext();
+                mParserContext.XmlnsDictionary.Add("", "http://schemas.microsoft.com/winfx/2006/xaml/presentation");
+                mParserContext.XmlnsDictionary.Add("x", "http://schemas.microsoft.com/winfx/2006/xaml");
+                mParserContext.XmlnsDictionary.Add("mc", "http://schemas.openxmlformats.org/markup-compatibility/2006");
+                mParserContext.XmlnsDictionary.Add("conv", "clr-namespace:Procon.UI.API.Converters;assembly=Procon.UI.API");
+                mParserContext.XmlnsDictionary.Add("view", "clr-namespace:Procon.UI.API.ViewModels;assembly=Procon.UI.API");
+                mParserContext.XmlnsDictionary.Add("acmd", "clr-namespace:Procon.UI.API.Commands;assembly=Procon.UI.API");
+                mParserContext.XmlnsDictionary.Add("util", "clr-namespace:Procon.UI.API.Utils;assembly=Procon.UI.API");
+            }
+        }
+
+        // Used to parse xaml as a specific object.
+        public static T ParseXaml<T>(String xaml) where T : class
+        {
+            using (MemoryStream tStreamReader = new MemoryStream(Encoding.ASCII.GetBytes(xaml)))
+                return (T)XamlReader.Load(tStreamReader, mParserContext);
+        }
+        // Used to find controls under a specific element.
         public static T FindControl<T>(DependencyObject controlAncestor, String controlName) where T : DependencyObject
         {
             // Confirm parent and childName are valid. 
@@ -66,6 +91,7 @@ namespace Procon.UI.API
             // Return Child not found.
             return null;
         }
+
 
         // Easy Getter/Setter for [Settings], [Procon], [Interface], and [Connection] property.
         public static InfinityDictionary<String, Object> Settings

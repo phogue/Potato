@@ -5,12 +5,12 @@ namespace Procon.UI.API.Utils
 {
     public static class Defines
     {
-        /// Procon Specific Images.
+        // Procon Specific Images.
         public static readonly String PROCON_ICON  = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\Procon2.ico");
         public static readonly String PROCON_LARGE = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\Procon2Large.png");
         public static readonly String PROCON_SMALL = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\Procon2Small.png");
 
-        /// Game Icons.
+        // Game Icons.
         public static readonly String GAME_BF_BC2    = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\BadCompany2.png");
         public static readonly String GAME_BF_3      = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\Battlefield3.png");
         public static readonly String GAME_COD_BO    = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\CallOfDuty_BlackOps.png");
@@ -18,7 +18,10 @@ namespace Procon.UI.API.Utils
         public static readonly String GAME_MOH_2010  = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\MedalOfHonor_2010.png");
         public static readonly String GAME_TF_2      = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\TeamFortress2.png");
 
-        /// Arrow Icons.
+        // Backgrounds.
+        public static readonly String BACKGROUND_NAVIGATION = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\BlueDot.png");
+
+        // Arrow Icons.
         public static readonly String ARROW_DOWN         = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\ArrowDown.png");
         public static readonly String ARROW_LEFT         = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\ArrowLeft.png");
         public static readonly String ARROW_LEFT_DOUBLE  = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\ArrowLeftDouble.png");

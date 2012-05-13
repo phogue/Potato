@@ -14,7 +14,6 @@
     
     <!-- Content -->
     <DockPanel Name="MainNavigationContent"
-               Background="Blue"
-               Height="20">
+               Height="65">
     </DockPanel>
 </Grid>

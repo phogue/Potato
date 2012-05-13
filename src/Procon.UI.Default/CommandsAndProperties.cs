@@ -79,9 +79,10 @@ namespace Procon.UI.Default
             InstanceViewModel.PublicProperties["Images"]["Procon"]["Icon"].Value  = (File.Exists(Defines.PROCON_ICON))  ? new BitmapImage(new Uri(Defines.PROCON_ICON,  UriKind.RelativeOrAbsolute)) : new BitmapImage();
             InstanceViewModel.PublicProperties["Images"]["Procon"]["Large"].Value = (File.Exists(Defines.PROCON_LARGE)) ? new BitmapImage(new Uri(Defines.PROCON_LARGE, UriKind.RelativeOrAbsolute)) : new BitmapImage();
             InstanceViewModel.PublicProperties["Images"]["Procon"]["Small"].Value = (File.Exists(Defines.PROCON_SMALL)) ? new BitmapImage(new Uri(Defines.PROCON_SMALL, UriKind.RelativeOrAbsolute)) : new BitmapImage();
-            // [Connection] - Images related to actions that deal with connections.
-            //   [Swap] - Swap connections.
-            InstanceViewModel.PublicProperties["Images"]["Connection"]["Swap"].Value = (File.Exists(Defines.MEDIA_REPEAT)) ? new BitmapImage(new Uri(Defines.MEDIA_REPEAT, UriKind.RelativeOrAbsolute)) : new BitmapImage();
+
+            // [Background] - Background images.
+            //   [Navigation] - Navigation bg image.
+            InstanceViewModel.PublicProperties["Images"]["Background"]["Navigation"].Value = (File.Exists(Defines.BACKGROUND_NAVIGATION)) ? new BitmapImage(new Uri(Defines.BACKGROUND_NAVIGATION, UriKind.RelativeOrAbsolute)) : new BitmapImage();
 
             // We done here broski.
             return true;

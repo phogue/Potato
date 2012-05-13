@@ -142,6 +142,9 @@
     <Content Include="Configs\Procon.UI.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Images\BlueDot.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Images\Procon2Large.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

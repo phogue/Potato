@@ -14,6 +14,6 @@
     
     <!-- Content -->
     <DockPanel Name="MainChatContent"
-               Background="Yellow">
+               Background="Black">
     </DockPanel>
 </Grid>

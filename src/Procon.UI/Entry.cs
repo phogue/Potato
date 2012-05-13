@@ -27,11 +27,13 @@ namespace Procon.UI
             // Create the root element of the UI.
             Window tRoot = new Window()
             {
-                WindowStartupLocation = WindowStartupLocation.CenterScreen,
+                WindowStartupLocation = WindowStartupLocation.Manual,
                 WindowState           = Settings.Get<WindowState>("WindowState", WindowState.Normal),
+                Top                   = Settings.Get<Double>("Top",  Double.NaN),
+                Left                  = Settings.Get<Double>("Left", Double.NaN),
                 Name       = "Root", Title  = "Procon 2",
-                MinWidth   = 900,    Width  = Settings.Get<Double>("Width",  1024),
-                MinHeight  = 650,    Height = Settings.Get<Double>("Height", 768)
+                MinWidth   = 1024,   Width  = Settings.Get<Double>("Width",  1024),
+                MinHeight  = 768,    Height = Settings.Get<Double>("Height", 768)
             };
             if (File.Exists(Defines.PROCON_ICON))
                 tRoot.Icon = new BitmapImage(new Uri(Defines.PROCON_ICON, UriKind.RelativeOrAbsolute));
@@ -40,6 +42,8 @@ namespace Procon.UI
             tRoot.Closing += (s, e) => {
                 Settings.Set("Width",       tRoot.Width);
                 Settings.Set("Height",      tRoot.Height);
+                Settings.Set("Top",         tRoot.Top);
+                Settings.Set("Left",        tRoot.Left);
                 Settings.Set("WindowState", tRoot.WindowState);
             };
 

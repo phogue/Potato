@@ -1,12 +1,9 @@
 ﻿using System;
-using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
 
 using Procon.UI.API;
-using Procon.UI.API.Utils;
 
 namespace Procon.UI.Default.Styles
 {
@@ -46,88 +43,299 @@ namespace Procon.UI.Default.Styles
             Grid mainLayout     = ExtensionApi.FindControl<Grid>(root, "MainLayout");
             if  (rootLayout == null || tutorialLayout == null || mainLayout == null) return false;
 
-            // Some colors for various controls.
-            Color cTextColor          = Color.FromArgb(255, 35,   31,  32);
-            Color cControlLightColor  = Color.FromArgb(244, 244, 244, 244);
-            Color cControlMediumColor = Color.FromArgb(255, 230, 230, 230);
-            Color cControlDarkColor   = Color.FromArgb(255, 205, 205, 205);
-            Color cBorderLightColor   = Color.FromArgb(255, 252, 252, 252);
-            Color cBorderDarkColor    = Color.FromArgb(255, 163, 163, 163);
+            Grid headerLayout     = ExtensionApi.FindControl<Grid>(mainLayout, "MainHeader");
+            Grid navigationLayout = ExtensionApi.FindControl<Grid>(mainLayout, "MainNavigation");
+            if (headerLayout == null || navigationLayout == null) return false;
 
-            // Some brushes using the colors we setup.
-            SolidColorBrush bTextBrush           = new SolidColorBrush(cTextColor);
-            SolidColorBrush bMainBackgroundBrush = new SolidColorBrush(cControlLightColor);
-            RadialGradientBrush bTutorialBackgroundBrush = new RadialGradientBrush();
-            bTutorialBackgroundBrush.GradientOrigin = new Point(0.5, 0.5);
-            bTutorialBackgroundBrush.Center         = new Point(0.5, 0.65);
-            bTutorialBackgroundBrush.RadiusX        = 0.4;
-            bTutorialBackgroundBrush.RadiusY        = 0.6;
-            bTutorialBackgroundBrush.GradientStops.Add(new GradientStop(cControlLightColor,  0.0));
-            bTutorialBackgroundBrush.GradientStops.Add(new GradientStop(cControlLightColor,  0.2));
-            bTutorialBackgroundBrush.GradientStops.Add(new GradientStop(cControlDarkColor,   1.0));
-            LinearGradientBrush bControlBrush = new LinearGradientBrush();
-            bControlBrush.StartPoint = new Point(0.5, 0);
-            bControlBrush.EndPoint   = new Point(0.5, 1);
-            bControlBrush.GradientStops.Add(new GradientStop(cControlLightColor,  0.0));
-            bControlBrush.GradientStops.Add(new GradientStop(cControlMediumColor, 1.0));
-            LinearGradientBrush bBorderBrush = new LinearGradientBrush();
-            bBorderBrush.StartPoint = new Point(0.5, 0);
-            bBorderBrush.EndPoint   = new Point(0.5, 1);
-            bBorderBrush.GradientStops.Add(new GradientStop(cBorderLightColor, 0.0));
-            bBorderBrush.GradientStops.Add(new GradientStop(cBorderDarkColor, 1.0));
-            SolidColorBrush bSolidBorderBrush = new SolidColorBrush(cControlDarkColor);
 
-            // Setup my own styles for various controls.
-            Style sButton      = new Style(typeof(Button),      (Style)root.FindResource(typeof(Button)));
-            Style sLabel       = new Style(typeof(Label),       (Style)root.FindResource(typeof(Label)));
-            Style sTextBlock   = new Style(typeof(TextBlock),   (Style)root.FindResource(typeof(TextBlock)));
-            Style sTextBox     = new Style(typeof(TextBox),     (Style)root.FindResource(typeof(TextBox)));
-            Style sPasswordBox = new Style(typeof(PasswordBox), (Style)root.FindResource(typeof(PasswordBox)));
+            // Some color values.
+            String tTextColor          = "#FF231F20";
 
-            /* Button Style */ {
-                sButton.Setters.Add(new Setter(Button.PaddingProperty, new Thickness(0, 10, 0, 10)));
-                sButton.Setters.Add(new Setter(Button.BackgroundProperty,  bControlBrush));
-                sButton.Setters.Add(new Setter(Button.BorderBrushProperty, bBorderBrush));
-                sButton.Setters.Add(new Setter(Button.ForegroundProperty, bTextBrush));
-                sButton.Setters.Add(new Setter(Button.FontSizeProperty, 12.0));
-                sButton.Setters.Add(new Setter(Button.FontWeightProperty, FontWeights.Bold));
-                sButton.Setters.Add(new Setter(Button.FontFamilyProperty, new FontFamily("Arial")));
-            }
-            /* Label Style */ {
-                sLabel.Setters.Add(new Setter(Label.PaddingProperty, new Thickness(0, 10, 0, 10)));
-                sLabel.Setters.Add(new Setter(Label.VerticalAlignmentProperty, VerticalAlignment.Center));
-                sLabel.Setters.Add(new Setter(Label.ForegroundProperty, bTextBrush));
-                sLabel.Setters.Add(new Setter(Label.FontSizeProperty, 12.0));
-                sLabel.Setters.Add(new Setter(Label.FontWeightProperty, FontWeights.Bold));
-                sLabel.Setters.Add(new Setter(Label.FontFamilyProperty, new FontFamily("Arial")));
-            }
-            /* TextBlock Style */ {
-                sTextBlock.Setters.Add(new Setter(TextBlock.PaddingProperty, new Thickness(0, 10, 0, 10)));
-                sTextBlock.Setters.Add(new Setter(TextBlock.VerticalAlignmentProperty, VerticalAlignment.Top));
-                sTextBlock.Setters.Add(new Setter(TextBlock.ForegroundProperty, bTextBrush));
-                sTextBlock.Setters.Add(new Setter(TextBlock.FontSizeProperty, 12.0));
-                sTextBlock.Setters.Add(new Setter(TextBlock.FontWeightProperty, FontWeights.Bold));
-                sTextBlock.Setters.Add(new Setter(TextBlock.FontFamilyProperty, new FontFamily("Arial")));
-            }
-            /* TextBox Style */ {
-                sTextBox.Setters.Add(new Setter(TextBox.BorderBrushProperty, bSolidBorderBrush));
-                sTextBox.Setters.Add(new Setter(TextBox.FontSizeProperty, 12.0));
-                sTextBox.Setters.Add(new Setter(TextBox.VerticalContentAlignmentProperty, VerticalAlignment.Center));
-            }
-            /* PasswordBox Style */ {
-                sPasswordBox.Setters.Add(new Setter(PasswordBox.BorderBrushProperty, bSolidBorderBrush));
-                sPasswordBox.Setters.Add(new Setter(PasswordBox.FontSizeProperty, 12.0));
-                sPasswordBox.Setters.Add(new Setter(PasswordBox.VerticalContentAlignmentProperty, VerticalAlignment.Center));
-            }
+            String tControlLightColor  = "#FFF4F4F4";
+            String tControlMediumColor = "#FFE6E6E6";
+            String tControlDarkColor   = "#FFCDCDCD";
 
-            // Apply the styles where they're needed.
-            rootLayout.Resources.Add(typeof(Button),      sButton);
-            rootLayout.Resources.Add(typeof(Label),       sLabel);
-            rootLayout.Resources.Add(typeof(TextBlock),   sTextBlock);
-            rootLayout.Resources.Add(typeof(TextBox),     sTextBox);
-            rootLayout.Resources.Add(typeof(PasswordBox), sPasswordBox);
-            tutorialLayout.Background = bTutorialBackgroundBrush;
-            mainLayout.Background = bMainBackgroundBrush;
+            String tGlowLightColor     = "#FFBEEAF2";
+            String tGlowMediumColor    = "#FF96C2C9";
+            String tGlowDarkColor      = "#FF6D9A9F";
+
+            String tBlueLightColor     = "#FF00B1CE";
+            String tBlueMediumColor    = "#FF00A8C9";
+            String tBlueDarkColor      = "#FF0096BD";
+
+            String tBorderLightColor   = "#FFFCFCFC";
+            String tBorderMediumColor  = "#FFDFDFDF";
+            String tBorderDarkColor    = "#FFA3A3A3";
+
+
+            // Some brush values.
+            String tControlBackgroundBrush =
+                "<LinearGradientBrush StartPoint=\"0.5, 0.0\" EndPoint=\"0.5, 1.0\">" +
+                    "<GradientStop Offset=\"0.0\" Color=\""+tControlLightColor+"\" />" +
+                    "<GradientStop Offset=\"1.0\" Color=\""+tControlMediumColor+"\" />" +
+                "</LinearGradientBrush>";
+            String tControlHoverBackgroundBrush =
+                "<LinearGradientBrush StartPoint=\"0.5, 0.0\" EndPoint=\"0.5, 1.0\">" +
+                    "<GradientStop Offset=\"0.0\" Color=\""+tControlLightColor+"\" />" +
+                    "<GradientStop Offset=\"1.0\" Color=\""+tControlDarkColor+"\" />" +
+                "</LinearGradientBrush>";
+            String tControlPressedBackgroundBrush =
+                "<LinearGradientBrush StartPoint=\"0.5, 0.0\" EndPoint=\"0.5, 1.0\">" +
+                    "<GradientStop Offset=\"0.0\" Color=\""+tControlMediumColor+"\" />" +
+                    "<GradientStop Offset=\"1.0\" Color=\""+tControlDarkColor+"\" />" +
+                "</LinearGradientBrush>";
+
+            String tControlGlowBrush =
+                "<LinearGradientBrush StartPoint=\"0.5, 0.0\" EndPoint=\"0.5, 1.0\">" +
+                    "<GradientStop Offset=\"0.0\" Color=\""+tGlowLightColor+"\" />" +
+                    "<GradientStop Offset=\"1.0\" Color=\""+tGlowMediumColor+"\" />" +
+                "</LinearGradientBrush>";
+            String tControlHoverGlowBrush =
+                "<LinearGradientBrush StartPoint=\"0.5, 0.0\" EndPoint=\"0.5, 1.0\">" +
+                    "<GradientStop Offset=\"0.0\" Color=\"" + tGlowLightColor + "\" />" +
+                    "<GradientStop Offset=\"1.0\" Color=\"" + tGlowDarkColor + "\" />" +
+                "</LinearGradientBrush>";
+            String tControlPressedGlowBrush =
+                "<LinearGradientBrush StartPoint=\"0.5, 0.0\" EndPoint=\"0.5, 1.0\">" +
+                    "<GradientStop Offset=\"0.0\" Color=\"" + tGlowMediumColor + "\" />" +
+                    "<GradientStop Offset=\"1.0\" Color=\"" + tGlowDarkColor + "\" />" +
+                "</LinearGradientBrush>";
+
+            String tControlBorderBrush =
+                "<LinearGradientBrush StartPoint=\"0.5, 0.0\" EndPoint=\"0.5, 1.0\">" +
+                    "<GradientStop Offset=\"0.0\" Color=\""+tBorderLightColor+"\" />" +
+                    "<GradientStop Offset=\"1.0\" Color=\""+tBorderDarkColor+"\" />" +
+                "</LinearGradientBrush>";
+
+            String tTutorialBgBrush =
+                "<RadialGradientBrush GradientOrigin=\"0.5, 0.5\" Center=\"0.5, 0.65\" RadiusX=\"0.4\" RadiusY=\"0.6\">" +
+                    "<GradientStop Offset=\"0.0\" Color=\""+tControlLightColor+"\" />" +
+                    "<GradientStop Offset=\"0.2\" Color=\""+tControlLightColor+"\" />" +
+                    "<GradientStop Offset=\"1.0\" Color=\""+tControlDarkColor+"\" />" +
+                "</RadialGradientBrush>";
+            String tHeaderBgBrush =
+                "<LinearGradientBrush StartPoint=\"0.5, 0.0\" EndPoint=\"0.5, 1.0\">" +
+                    "<GradientStop Offset=\"0.0\" Color=\""+tBlueLightColor+"\" />" +
+                    "<GradientStop Offset=\"1.0\" Color=\""+tBlueDarkColor+"\" />" +
+                "</LinearGradientBrush>";
+            String tNavigationBgBrush = 
+                "<ImageBrush TileMode=\"Tile\" " +
+                    "Viewport=\"0, 0, 10, 10\" " +
+                    "ViewportUnits=\"Absolute\" " +
+                        "ImageSource=\"{Binding " +
+                            "Source={x:Static view:InstanceViewModel.PublicProperties}, " +
+                            "Path=[Images][Background][Navigation].Value}\" " +
+                "/>";
+
+
+            // Universal styles.
+            #region Button Style
+
+            rootLayout.Resources.Add(typeof(Button), ExtensionApi.ParseXaml<Style>(
+                "<Style x:Key=\"{x:Type Button}\" TargetType=\"{x:Type Button}\">\n" +
+                    "<Setter Property=\"Margin\"                     Value=\"0\"              />\n" +
+                    "<Setter Property=\"Padding\"                    Value=\"0, 10\"          />\n" +
+                    "<Setter Property=\"BorderThickness\"            Value=\"1\"              />\n" +
+                    "<Setter Property=\"FontSize\"                   Value=\"12.0\"           />\n" +
+                    "<Setter Property=\"FontWeight\"                 Value=\"Bold\"           />\n" +
+                    "<Setter Property=\"FontFamily\"                 Value=\"Arial\"          />\n" +
+                    "<Setter Property=\"VerticalContentAlignment\"   Value=\"Center\"         />\n" +
+                    "<Setter Property=\"HorizontalContentAlignment\" Value=\"Center\"         />\n" +
+                    "<Setter Property=\"OverridesDefaultStyle\"      Value=\"True\"           />\n" +
+                    "<Setter Property=\"Foreground\"                 Value=\""+tTextColor+"\" />\n" +
+                    "<Setter Property=\"Background\">\n" +
+                        "<Setter.Value>"+tControlBackgroundBrush+"</Setter.Value>\n" +
+                    "</Setter>\n" +
+                    "<Setter Property=\"BorderBrush\">\n" +
+                        "<Setter.Value>"+tControlBorderBrush+"</Setter.Value>\n" +
+                    "</Setter>\n" +
+
+                    // Remove all styles related to the state of the control.
+                    "<Setter Property=\"FocusVisualStyle\">\n" +
+                        "<Setter.Value>\n" +
+                            "<Style>\n" +
+                                "<Setter Property=\"Control.Template\">\n" +
+                                    "<Setter.Value>\n" +
+                                        "<ControlTemplate TargetType=\"{x:Type Control}\" />\n" +
+                                    "</Setter.Value>\n" +
+                                "</Setter>\n" +
+                            "</Style>\n" +
+                        "</Setter.Value>\n" +
+                    "</Setter>\n" +
+
+                    // Replace the looks of the button.
+                    "<Setter Property=\"Template\">\n" +
+                        "<Setter.Value>\n" +
+                            "<ControlTemplate TargetType=\"Button\">" +
+                                "<Border Name=\"border\" \n" +
+                                        "CornerRadius=\"2\" \n" +
+                                        "BorderBrush=\"{TemplateBinding BorderBrush}\" \n" +
+                                        "BorderThickness=\"{TemplateBinding BorderThickness}\" \n" +
+                                        "Padding=\"{TemplateBinding Padding}\" \n" +
+                                        "Background=\"{TemplateBinding Background}\">\n" +
+                                    "<ContentPresenter Name=\"content\" HorizontalAlignment=\"Center\" VerticalAlignment=\"Center\" />\n" +
+                                "</Border>\n" +
+                                "<ControlTemplate.Triggers>\n" +
+                                    "<Trigger Property=\"IsMouseOver\" Value=\"True\">\n" +
+                                        "<Setter Property=\"Background\">\n" +
+                                            "<Setter.Value>"+tControlHoverBackgroundBrush+"</Setter.Value>\n" +
+                                        "</Setter>\n" +
+                                    "</Trigger>\n" +
+                                    "<Trigger Property=\"IsPressed\" Value=\"True\">\n" +
+                                        "<Setter Property=\"Background\">\n" +
+                                            "<Setter.Value>"+tControlPressedBackgroundBrush+"</Setter.Value>\n" +
+                                        "</Setter>\n" +
+                                    "</Trigger>\n" +
+                                    "<Trigger Property=\"IsEnabled\" Value=\"False\">\n" +
+                                        "<Setter Property=\"Opacity\"    Value=\"0.7\" TargetName=\"border\"  />\n" +
+                                        "<Setter Property=\"Foreground\" Value=\"Gray\" />\n" +
+                                    "</Trigger>\n" +
+                                "</ControlTemplate.Triggers>\n" +
+                            "</ControlTemplate>\n" +
+                        "</Setter.Value>\n" +
+                    "</Setter>\n" +
+                "</Style>"));
+
+            #endregion
+            #region Label Style
+            
+            rootLayout.Resources.Add(typeof(Label), ExtensionApi.ParseXaml<Style>(
+                "<Style x:Key=\"{x:Type Label}\" TargetType=\"{x:Type Label}\">\n" +
+                    "<Setter Property=\"Margin\"                     Value=\"0\"              />\n" +
+                    "<Setter Property=\"Padding\"                    Value=\"0, 10, 0, 8\"    />\n" +
+                    "<Setter Property=\"FontSize\"                   Value=\"12.0\"           />\n" +
+                    "<Setter Property=\"FontWeight\"                 Value=\"Bold\"           />\n" +
+                    "<Setter Property=\"FontFamily\"                 Value=\"Arial\"          />\n" +
+                    "<Setter Property=\"VerticalContentAlignment\"   Value=\"Center\"         />\n" +
+                    "<Setter Property=\"HorizontalContentAlignment\" Value=\"Left\"           />\n" +
+                    "<Setter Property=\"Foreground\"                 Value=\""+tTextColor+"\" />\n" +
+                "</Style>"));
+
+            #endregion
+            #region TextBlock Style
+            
+            rootLayout.Resources.Add(typeof(TextBlock), ExtensionApi.ParseXaml<Style>(
+                "<Style x:Key=\"{x:Type TextBlock}\" TargetType=\"{x:Type TextBlock}\">\n" +
+                    "<Setter Property=\"Margin\"        Value=\"0\"              />\n" +
+                    "<Setter Property=\"Padding\"       Value=\"0, 10\"          />\n" +
+                    "<Setter Property=\"FontSize\"      Value=\"11.0\"           />\n" +
+                    "<Setter Property=\"FontWeight\"    Value=\"Bold\"           />\n" +
+                    "<Setter Property=\"FontFamily\"    Value=\"Arial\"          />\n" +
+                    "<Setter Property=\"TextAlignment\" Value=\"Left\"           />\n" +
+                    "<Setter Property=\"TextWrapping\"  Value=\"Wrap\"           />\n" +
+                    "<Setter Property=\"Foreground\"    Value=\""+tTextColor+"\" />\n" +
+                "</Style>"));
+
+            #endregion
+            #region TextBox Style
+            
+            rootLayout.Resources.Add(typeof(TextBox), ExtensionApi.ParseXaml<Style>(
+                "<Style x:Key=\"{x:Type TextBox}\" TargetType=\"{x:Type TextBox}\">\n" +
+                    "<Setter Property=\"Margin\"                     Value=\"0\"                     />\n" +
+                    "<Setter Property=\"Padding\"                    Value=\"3\"                     />\n" +
+                    "<Setter Property=\"FontSize\"                   Value=\"12.0\"                  />\n" +
+                    "<Setter Property=\"FontWeight\"                 Value=\"Bold\"                  />\n" +
+                    "<Setter Property=\"FontFamily\"                 Value=\"Arial\"                 />\n" +
+                    "<Setter Property=\"VerticalContentAlignment\"   Value=\"Center\"                />\n" +
+                    "<Setter Property=\"HorizontalContentAlignment\" Value=\"Left\"                  />\n" +
+                    "<Setter Property=\"Foreground\"                 Value=\""+tTextColor+"\"        />\n" +
+                    "<Setter Property=\"BorderBrush\"                Value=\""+tControlDarkColor+"\" />\n" +
+                "</Style>"));
+
+            #endregion
+            #region PasswordBox Style
+            
+            rootLayout.Resources.Add(typeof(PasswordBox), ExtensionApi.ParseXaml<Style>(
+                "<Style x:Key=\"{x:Type PasswordBox}\" TargetType=\"{x:Type PasswordBox}\">\n" +
+                    "<Setter Property=\"Margin\"                     Value=\"0\"                     />\n" +
+                    "<Setter Property=\"Padding\"                    Value=\"3\"                     />\n" +
+                    "<Setter Property=\"FontSize\"                   Value=\"12.0\"                  />\n" +
+                    "<Setter Property=\"FontWeight\"                 Value=\"Bold\"                  />\n" +
+                    "<Setter Property=\"FontFamily\"                 Value=\"Arial\"                 />\n" +
+                    "<Setter Property=\"VerticalContentAlignment\"   Value=\"Center\"                />\n" +
+                    "<Setter Property=\"HorizontalContentAlignment\" Value=\"Left\"                  />\n" +
+                    "<Setter Property=\"Foreground\"                 Value=\""+tTextColor+"\"        />\n" +
+                    "<Setter Property=\"BorderBrush\"                Value=\""+tControlDarkColor+"\" />\n" +
+                "</Style>"));
+
+            #endregion
+            #region Image Style
+            
+            rootLayout.Resources.Add(typeof(Image), ExtensionApi.ParseXaml<Style>(
+                "<Style x:Key=\"{x:Type Image}\" TargetType=\"{x:Type Image}\">\n" +
+                    "<Setter Property=\"Margin\"                 Value=\"0\"        />\n" +
+                    "<Setter Property=\"Stretch\"                Value=\"Uniform\"  />\n" +
+                    "<Setter Property=\"StretchDirection\"       Value=\"DownOnly\" />\n" +
+                    "<Setter Property=\"VerticalAlignment\"      Value=\"Center\"   />\n" +
+                    "<Setter Property=\"HorizontalAlignment\"    Value=\"Center\"   />\n" +
+                    "<Setter Property=\"RenderOptions.EdgeMode\" Value=\"Aliased\"  />\n" +
+                "</Style>"));
+
+            #endregion
+
+
+            // Header styles.
+            #region Button Style
+
+            headerLayout.Resources.Add(typeof(Button), ExtensionApi.ParseXaml<Style>(
+                "<Style x:Key=\"{x:Type Button}\" TargetType=\"{x:Type Button}\" BasedOn=\"{StaticResource {x:Type Button}}\">\n" +
+                    "<Setter Property=\"Padding\"         Value=\"7, 10\" />\n" +
+                    "<Setter Property=\"BorderThickness\" Value=\"0\"     />\n" +
+                    "<Setter Property=\"Background\">" +
+                        "<Setter.Value>"+tControlGlowBrush+"</Setter.Value>" +
+                    "</Setter>" +
+
+                    // Replace the looks of the button.
+                    "<Setter Property=\"Template\">\n" +
+                        "<Setter.Value>\n" +
+                            "<ControlTemplate TargetType=\"Button\">" +
+                                "<Border Name=\"border\" \n" +
+                                        "CornerRadius=\"0\" \n" +
+                                        "BorderBrush=\"{TemplateBinding BorderBrush}\" \n" +
+                                        "BorderThickness=\"{TemplateBinding BorderThickness}\" \n" +
+                                        "Padding=\"{TemplateBinding Padding}\" \n" +
+                                        "Background=\"{TemplateBinding Background}\">\n" +
+                                    "<ContentPresenter Name=\"content\" HorizontalAlignment=\"Center\" VerticalAlignment=\"Center\" />\n" +
+                                "</Border>\n" +
+                                "<ControlTemplate.Triggers>\n" +
+                                    "<Trigger Property=\"IsMouseOver\" Value=\"True\">\n" +
+                                        "<Setter Property=\"Background\">\n" +
+                                            "<Setter.Value>"+tControlHoverGlowBrush+"</Setter.Value>\n" +
+                                        "</Setter>\n" +
+                                    "</Trigger>\n" +
+                                    "<Trigger Property=\"IsPressed\" Value=\"True\">\n" +
+                                        "<Setter Property=\"Background\">\n" +
+                                            "<Setter.Value>"+tControlPressedGlowBrush+"</Setter.Value>\n" +
+                                        "</Setter>\n" +
+                                    "</Trigger>\n" +
+                                    "<Trigger Property=\"IsEnabled\" Value=\"False\">\n" +
+                                        "<Setter Property=\"Opacity\"    Value=\"0.7\" TargetName=\"border\"  />\n" +
+                                        "<Setter Property=\"Foreground\" Value=\"Gray\" />\n" +
+                                    "</Trigger>\n" +
+                                "</ControlTemplate.Triggers>\n" +
+                            "</ControlTemplate>\n" +
+                        "</Setter.Value>\n" +
+                    "</Setter>\n" +
+                "</Style>"));
+
+            #endregion
+            #region Label Style
+
+            headerLayout.Resources.Add(typeof(Label), ExtensionApi.ParseXaml<Style>(
+                "<Style x:Key=\"{x:Type Label}\" TargetType=\"{x:Type Label}\" BasedOn=\"{StaticResource {x:Type Label}}\">\n" +
+                    "<Setter Property=\"Padding\"             Value=\"0\"      />\n" +
+                    "<Setter Property=\"VerticalAlignment\"   Value=\"Center\" />\n" +
+                    "<Setter Property=\"HorizontalAlignment\" Value=\"Center\" />\n" +
+                "</Style>"));
+
+            #endregion
+
+
+            // Some backgrounds for specific controls.
+            tutorialLayout.Background   = ExtensionApi.ParseXaml<Brush>(tTutorialBgBrush);
+            mainLayout.Background       = ExtensionApi.ParseXaml<Brush>("<SolidColorBrush Color=\""+tControlLightColor+"\" />");
+            headerLayout.Background     = ExtensionApi.ParseXaml<Brush>(tHeaderBgBrush);
+            navigationLayout.Background = ExtensionApi.ParseXaml<Brush>(tNavigationBgBrush);
 
             return true;
         }

@@ -21,6 +21,28 @@ namespace Procon.UI.API.Utils
         // Backgrounds.
         public static readonly String BACKGROUND_NAVIGATION = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\BlueDot.png");
 
+        // Content Icons.
+        public static readonly String PLAYERS_DEFAULT   = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\PlayersDefault.png");
+        public static readonly String PLAYERS_HOVER     = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\PlayersHover.png");
+        public static readonly String PLAYERS_PRESSED   = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\PlayersActive.png");
+        public static readonly String PLAYERS_DISABLED  = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\PlayersDisabled.png");
+        public static readonly String MAPS_DEFAULT      = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\MapsDefault.png");
+        public static readonly String MAPS_HOVER        = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\MapsHover.png");
+        public static readonly String MAPS_PRESSED      = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\MapsActive.png");
+        public static readonly String MAPS_DISABLED     = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\MapsDisabled.png");
+        public static readonly String BANS_DEFAULT      = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\BansDefault.png");
+        public static readonly String BANS_HOVER        = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\BansHover.png");
+        public static readonly String BANS_PRESSED      = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\BansActive.png");
+        public static readonly String BANS_DISABLED     = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\BansDisabled.png");
+        public static readonly String PLUGINS_DEFAULT   = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\PluginsDefault.png");
+        public static readonly String PLUGINS_HOVER     = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\PluginsHover.png");
+        public static readonly String PLUGINS_PRESSED   = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\PluginsActive.png");
+        public static readonly String PLUGINS_DISABLED  = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\PluginsDisabled.png");
+        public static readonly String SETTINGS_DEFAULT  = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\SettingsDefault.png");
+        public static readonly String SETTINGS_HOVER    = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\SettingsHover.png");
+        public static readonly String SETTINGS_PRESSED  = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\SettingsActive.png");
+        public static readonly String SETTINGS_DISABLED = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\SettingsDisabled.png");
+
         // Arrow Icons.
         public static readonly String ARROW_DOWN         = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\ArrowDown.png");
         public static readonly String ARROW_LEFT         = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\ArrowLeft.png");

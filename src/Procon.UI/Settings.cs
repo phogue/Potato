@@ -9,7 +9,7 @@ using System.Xml.Linq;
 
 using Procon.Core;
 using Procon.UI.API;
-using Procon.UI.API.Utils;
+using Procon.UI.API.Classes;
 using Procon.UI.API.ViewModels;
 
 namespace Procon.UI
@@ -77,7 +77,7 @@ namespace Procon.UI
                             mAssemblies.Add(tAssembly);
                         } catch (Exception) { }
 
-                    // Mark all the extensions specified to be executed.
+                    // Keep only the specified extensions in the list.
                     foreach (XElement tNodeExtension in tNode.Elements("extension"))
                         if ((tExtension = tExtensions.FirstOrDefault(x => x.IExtension.Name == tNodeExtension.Value)) != null)
                             mExtensions.Add(tExtension);
@@ -105,7 +105,7 @@ namespace Procon.UI
             // Save each assembly and extension that was loaded.
             XElement tNode = new XElement("extensions");
             foreach (Assembly tAssembly in mAssemblies)
-                tNode.Add(new XElement("assembly", tAssembly.Location.GetRelativePath(AppDomain.CurrentDomain.BaseDirectory)));
+                tNode.Add(new XElement("assembly", AppDomain.CurrentDomain.BaseDirectory.RelativeTo(tAssembly.Location)));
             foreach (Extension tExtension in mExtensions)
                 tNode.Add(new XElement("extension", tExtension.IExtension.Name));
             tConfig.Root.Add(tNode);

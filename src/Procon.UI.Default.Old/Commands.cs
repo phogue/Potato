@@ -155,7 +155,7 @@ namespace Procon.UI.Default
         {
             try
             {
-                ActiveInstance.AddInterface(
+                ActiveInstance.CreateInterface(
                   (String)InstanceViewModel.PublicProperties["Interface"]["Add"]["Hostname"].Value,
                   UInt16.Parse((String)InstanceViewModel.PublicProperties["Interface"]["Add"]["Port"].Value),
                   (String)InstanceViewModel.PublicProperties["Interface"]["Add"]["Username"].Value,
@@ -167,7 +167,7 @@ namespace Procon.UI.Default
         {
             try
             {
-                ActiveInstance.RemoveInterface(
+                ActiveInstance.DestroyInterface(
                   view.Hostname,
                   view.Port);
             }
@@ -296,9 +296,9 @@ namespace Procon.UI.Default
                                 case FilterChatField.Type:
                                     return e.Type.ToLower().Contains(key.ToLower());
                                 case FilterChatField.Sender:
-                                    return e.Sender.ToLower().Contains(key.ToLower());
+                                    return e.Initiator.ToLower().Contains(key.ToLower());
                                 case FilterChatField.Recipient:
-                                    return e.Recipient.ToLower().Contains(key.ToLower());
+                                    return e.Sendee.ToLower().Contains(key.ToLower());
                                 case FilterChatField.Data:
                                     return e.Information.ToLower().Contains(key.ToLower());
                             }
@@ -311,9 +311,9 @@ namespace Procon.UI.Default
                                 case FilterChatField.Type:
                                     return !e.Type.ToLower().Contains(key.ToLower());
                                 case FilterChatField.Sender:
-                                    return !e.Sender.ToLower().Contains(key.ToLower());
+                                    return !e.Initiator.ToLower().Contains(key.ToLower());
                                 case FilterChatField.Recipient:
-                                    return !e.Recipient.ToLower().Contains(key.ToLower());
+                                    return !e.Sendee.ToLower().Contains(key.ToLower());
                                 case FilterChatField.Data:
                                     return !e.Information.ToLower().Contains(key.ToLower());
                             }
@@ -326,9 +326,9 @@ namespace Procon.UI.Default
                                 case FilterChatField.Type:
                                     return e.Type.ToLower() == key.ToLower();
                                 case FilterChatField.Sender:
-                                    return e.Sender.ToLower() == key.ToLower();
+                                    return e.Initiator.ToLower() == key.ToLower();
                                 case FilterChatField.Recipient:
-                                    return e.Recipient.ToLower() == key.ToLower();
+                                    return e.Sendee.ToLower() == key.ToLower();
                                 case FilterChatField.Data:
                                     return e.Information.ToLower() == key.ToLower();
                             }

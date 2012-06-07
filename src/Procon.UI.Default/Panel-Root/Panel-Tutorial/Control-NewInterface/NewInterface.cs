@@ -5,8 +5,8 @@ using System.Windows.Controls;
 using System.Windows.Input;
 
 using Procon.UI.API;
+using Procon.UI.API.Classes;
 using Procon.UI.API.Commands;
-using Procon.UI.API.Utils;
 using Procon.UI.API.ViewModels;
 
 namespace Procon.UI.Default.Root.Tutorial.NewInterface

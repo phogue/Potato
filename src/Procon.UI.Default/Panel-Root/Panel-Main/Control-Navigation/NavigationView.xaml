@@ -14,6 +14,28 @@
     
     <!-- Content -->
     <DockPanel Name="MainNavigationContent"
-               Height="65">
+               Height="35"
+               Margin="15">
+        <RadioButton Name="MainNavigationPlayers"
+                     DockPanel.Dock="Left"
+                     GroupName="MainNavigationGroup"
+                     IsChecked="True" />
+        <RadioButton Name="MainNavigationMaps"
+                     GroupName="MainNavigationGroup"
+                     DockPanel.Dock="Left" />
+        <RadioButton Name="MainNavigationBans"
+                     GroupName="MainNavigationGroup"
+                     DockPanel.Dock="Left" />
+        <RadioButton Name="MainNavigationPlugins"
+                     GroupName="MainNavigationGroup"
+                     DockPanel.Dock="Left" />
+        <RadioButton Name="MainNavigationSettings"
+                     GroupName="MainNavigationGroup"
+                     DockPanel.Dock="Left" />
+        <RadioButton Name="MainNavigationOptions"
+                     GroupName="MainNavigationGroup"
+                     DockPanel.Dock="Right" />
+        <TextBox Name="MainNavigationCommand"
+                 Margin="10, 0"/>
     </DockPanel>
 </Grid>

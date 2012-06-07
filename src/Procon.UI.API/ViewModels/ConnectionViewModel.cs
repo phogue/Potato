@@ -30,12 +30,11 @@ using Procon.Net;
 using Procon.Net.Protocols;
 using Procon.Net.Protocols.Objects;
 using Procon.UI.API.Enums;
-using Procon.UI.API.Objects;
 
 namespace Procon.UI.API.ViewModels
 {
     /// <summary>Wraps a Connection of Procon so that it can be used in the UI.</summary>
-    public class ConnectionViewModel : ViewModel<Connection>
+    public class ConnectionViewModel : ViewModelBase<Connection>
     {
         // Standard Model Properties
         public GameType GameType
@@ -293,16 +292,16 @@ namespace Procon.UI.API.ViewModels
         }
         private ObservableCollection<DataVariable> mVariables;
 
-        public  ObservableCollection<Event> Events
-        {
-            get { return mEvents; }
-            set
-            {
-                mEvents = value;
-                OnPropertyChanged(this, "Events");
-            }
-        }
-        private ObservableCollection<Event> mEvents;
+        //public  ObservableCollection<Event> Events
+        //{
+        //    get { return mEvents; }
+        //    set
+        //    {
+        //        mEvents = value;
+        //        OnPropertyChanged(this, "Events");
+        //    }
+        //}
+        //private ObservableCollection<Event> mEvents;
 
         /// <summary>Creates an instance of ConnectionViewModel and initalizes its properties.</summary>
         /// <param name="model">A reference to an instance of a connection in procon.</param>
@@ -324,7 +323,7 @@ namespace Procon.UI.API.ViewModels
             Variables    = new ObservableCollection<DataVariable>(Model.GameState.Variables.Variables.Where(x => !x.IsReadOnly).OrderBy(x => x.Name));
 
             // Manages a logging of events within the model:
-            Events = new ObservableCollection<Event>();
+            //Events = new ObservableCollection<Event>();
         }
 
 
@@ -346,15 +345,13 @@ namespace Procon.UI.API.ViewModels
         private void GameEventOccurred(Game sender, GameEventArgs e)
         {
             // Force the UI thread to execute this method.
-            if (Dispatcher.CurrentDispatcher != MainQueue) {
-                MainQueue.Invoke(new System.Action(() => GameEventOccurred(sender, e)));
+            if (ChangeDispatcher(() => GameEventOccurred(sender, e)))
                 return;
-            }
 
             Boolean add;
             Boolean remove;
             Boolean existing;
-            Event   newEvent;
+            //Event   newEvent;
             switch (e.EventType)
             {
                 /* Player Joined Event:
@@ -381,8 +378,8 @@ namespace Procon.UI.API.ViewModels
 
 
                     // -- [Events] --
-                    if ((newEvent = Event.CreateEvent(EventType.Join, e)).Type != String.Empty)
-                        Events.Insert(0, newEvent);
+                    //if ((newEvent = Event.CreateEvent(EventType.Join, e)).Type != String.Empty)
+                    //    Events.Insert(0, newEvent);
                     break;
                 #endregion
 
@@ -406,8 +403,8 @@ namespace Procon.UI.API.ViewModels
                         }
 
                     // -- [Events] --
-                    if ((newEvent = Event.CreateEvent(EventType.Leave, e)).Type != String.Empty)
-                        Events.Insert(0, newEvent);
+                    //if ((newEvent = Event.CreateEvent(EventType.Leave, e)).Type != String.Empty)
+                    //    Events.Insert(0, newEvent);
                     break;
                 #endregion
 
@@ -418,8 +415,8 @@ namespace Procon.UI.API.ViewModels
                 #region PlayerMoved
                 case GameEventType.PlayerMoved:
                     // -- [Events] --
-                    if ((newEvent = Event.CreateEvent(EventType.Move, e)).Type != String.Empty)
-                        Events.Insert(0, newEvent);
+                    //if ((newEvent = Event.CreateEvent(EventType.Move, e)).Type != String.Empty)
+                    //    Events.Insert(0, newEvent);
                     break;
                 #endregion
 
@@ -471,8 +468,8 @@ namespace Procon.UI.API.ViewModels
                 #region PlayerKicked
                 case GameEventType.PlayerKicked:
                     // -- [Events] --
-                    if ((newEvent = Event.CreateEvent(EventType.Kick, e)).Type != String.Empty)
-                        Events.Insert(0, newEvent);
+                    //if ((newEvent = Event.CreateEvent(EventType.Kick, e)).Type != String.Empty)
+                    //    Events.Insert(0, newEvent);
                     break;
                 #endregion
 
@@ -499,8 +496,8 @@ namespace Procon.UI.API.ViewModels
                         Bans.Add(new BanViewModel(e.Ban));
 
                     // -- [Events] --
-                    if ((newEvent = Event.CreateEvent(EventType.Ban, e)).Type != String.Empty)
-                        Events.Insert(0, newEvent);
+                    //if ((newEvent = Event.CreateEvent(EventType.Ban, e)).Type != String.Empty)
+                    //    Events.Insert(0, newEvent);
                     break;
 
                 #endregion
@@ -525,8 +522,8 @@ namespace Procon.UI.API.ViewModels
                         }
 
                     // -- [Events] --
-                    if ((newEvent = Event.CreateEvent(EventType.Unban, e)).Type != String.Empty)
-                        Events.Insert(0, newEvent);
+                    //if ((newEvent = Event.CreateEvent(EventType.Unban, e)).Type != String.Empty)
+                    //    Events.Insert(0, newEvent);
                     break;
                 #endregion
 
@@ -579,9 +576,9 @@ namespace Procon.UI.API.ViewModels
                 #region PlayerKill
                 case GameEventType.PlayerKill:
                     // -- [Events] --
-                    if (e.Kill != null && e.Kill.Target != null)
-                        if ((newEvent = Event.CreateEvent(EventType.Kill, e)).Type != String.Empty)
-                            Events.Insert(0, newEvent);
+                    //if (e.Kill != null && e.Kill.Target != null)
+                    //    if ((newEvent = Event.CreateEvent(EventType.Kill, e)).Type != String.Empty)
+                    //        Events.Insert(0, newEvent);
                     break;
                 #endregion
 
@@ -592,8 +589,8 @@ namespace Procon.UI.API.ViewModels
                 #region PlayerSpawn
                 case GameEventType.PlayerSpawn:
                     // -- [Events] --
-                    if ((newEvent = Event.CreateEvent(EventType.Spawn, e)).Type != String.Empty)
-                        Events.Insert(0, newEvent);
+                    //if ((newEvent = Event.CreateEvent(EventType.Spawn, e)).Type != String.Empty)
+                    //    Events.Insert(0, newEvent);
                     break;
                 #endregion
 
@@ -604,9 +601,9 @@ namespace Procon.UI.API.ViewModels
                 #region Chat
                 case GameEventType.Chat:
                     // -- [Events] --
-                    if (e.Chat != null && e.Chat.Origin != ChatOrigin.Reflected)
-                        if ((newEvent = Event.CreateEvent(EventType.Chat, e)).Type != String.Empty)
-                            Events.Insert(0, newEvent);
+                    //if (e.Chat != null && e.Chat.Origin != ChatOrigin.Reflected)
+                    //    if ((newEvent = Event.CreateEvent(EventType.Chat, e)).Type != String.Empty)
+                    //        Events.Insert(0, newEvent);
                     break;
                 #endregion
 
@@ -617,8 +614,8 @@ namespace Procon.UI.API.ViewModels
                 #region RoundChanged
                 case GameEventType.RoundChanged:
                     // -- [Events] --
-                    if ((newEvent = Event.CreateEvent(EventType.Round, e)).Type != String.Empty)
-                        Events.Insert(0, newEvent);
+                    //if ((newEvent = Event.CreateEvent(EventType.Round, e)).Type != String.Empty)
+                    //    Events.Insert(0, newEvent);
                     break;
                 #endregion
 
@@ -629,8 +626,8 @@ namespace Procon.UI.API.ViewModels
                 #region MapChanged
                 case GameEventType.MapChanged:
                     // -- [Events] --
-                    if ((newEvent = Event.CreateEvent(EventType.Map, e)).Type != String.Empty)
-                        Events.Insert(0, newEvent);
+                    //if ((newEvent = Event.CreateEvent(EventType.Map, e)).Type != String.Empty)
+                    //    Events.Insert(0, newEvent);
                     break;
                 #endregion
 
@@ -683,10 +680,8 @@ namespace Procon.UI.API.ViewModels
         private void Variables_DataAdded(DataController parent, DataVariable item)
         {
             // Force the UI thread to execute this method.
-            if (Dispatcher.CurrentDispatcher != MainQueue) {
-                MainQueue.Invoke(new System.Action(() => Variables_DataAdded(parent, item)));
+            if (ChangeDispatcher(() => Variables_DataAdded(parent, item)))
                 return;
-            }
 
             if (!item.IsReadOnly)
                 for (int i = 0; i < Variables.Count; i++)
@@ -701,10 +696,8 @@ namespace Procon.UI.API.ViewModels
         private void Variables_DataRemoved(DataController parent, DataVariable item)
         {
             // Force the UI thread to execute this method.
-            if (Dispatcher.CurrentDispatcher != MainQueue) {
-                MainQueue.Invoke(new System.Action(() => Variables_DataRemoved(parent, item)));
+            if (ChangeDispatcher(() => Variables_DataRemoved(parent, item)))
                 return;
-            }
 
             for (int i = 0; i < Variables.Count; i++)
                 if (item.Name == Variables[i].Name) {
@@ -718,10 +711,8 @@ namespace Procon.UI.API.ViewModels
         private void Variables_PropertyChanged(Object sender, PropertyChangedEventArgs e)
         {
             // Force the UI thread to execute this method.
-            if (Dispatcher.CurrentDispatcher != MainQueue) {
-                MainQueue.Invoke(new System.Action(() => Variables_PropertyChanged(sender, e)));
+            if (ChangeDispatcher(() => Variables_PropertyChanged(sender, e)))
                 return;
-            }
             
             // Connection State was updated.
             if (e.PropertyName == "ConnectionState") {
@@ -752,10 +743,8 @@ namespace Procon.UI.API.ViewModels
         private void Connection_PropertyChanged(Object sender, PropertyChangedEventArgs e)
         {
             // Force the UI thread to execute this method.
-            if (Dispatcher.CurrentDispatcher != MainQueue) {
-                MainQueue.Invoke(new System.Action(() => Connection_PropertyChanged(sender, e)));
+            if (ChangeDispatcher(() => Connection_PropertyChanged(sender, e)))
                 return;
-            }
 
             // PlayerList collection was re-set?
             if (e.PropertyName == "PlayerList") {

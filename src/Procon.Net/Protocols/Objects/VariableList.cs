@@ -1,23 +1,4 @@
-﻿// Copyright 2011 Cameron 'Imisnew2' Gunnin
-// 
-// http://www.phogue.net
-//  
-// This file is part of Procon 2.
-// 
-// Procon 2 is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-// 
-// Procon 2 is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-// 
-// You should have received a copy of the GNU General Public License
-// along with Procon 2.  If not, see <http://www.gnu.org/licenses/>.
-
-using System;
+﻿using System;
 using System.ComponentModel;
 
 namespace Procon.Net.Protocols.Objects {
@@ -76,166 +57,134 @@ namespace Procon.Net.Protocols.Objects {
         public virtual int MaxConsoleLines
         {
             get { return TryGetVariable<int>(C_MAX_CONSOLE_LINES, 0); }
-            set
-            {
+            set {
                 DataAddSet(C_MAX_CONSOLE_LINES, value);
                 OnPropertyChanged("MaxConsoleLines");
-            }
-        }
+        } }
 
         /// <summary>The current state of the connection between the game server and rcon port</summary>
         public virtual ConnectionState ConnectionState
         {
             get { return TryGetVariable<ConnectionState>(C_CONNECTION_STATE, 0); }
-            set
-            {
+            set {
                 DataAddSet(C_CONNECTION_STATE, value);
                 OnPropertyChanged("ConnectionState");
-            }
-        }
+        } }
         /// <summary>The amount of time the server has been running since it's last restart</summary>
         public virtual int UpTime
         {
             get { return TryGetVariable<int>(C_UP_TIME, 0); }
-            set
-            {
+            set {
                 DataAddSet(C_UP_TIME, value);
                 OnPropertyChanged("UpTime");
-            }
-        }
+        } }
         /// <summary>The version of the server</summary>
         public virtual string Version
         {
             get { return TryGetVariable<string>(C_VERSION, null); }
-            set
-            {
+            set {
                 DataAddSet(C_VERSION, value);
                 OnPropertyChanged("Version");
-            }
-        }
+        } }
 
         /// <summary>The visible name of the server</summary>
         public virtual string ServerName
         {
             get { return TryGetVariable<string>(C_SERVER_NAME, null); }
-            set
-            {
+            set {
                 DataAddSet(C_SERVER_NAME, value);
                 OnPropertyChanged("ServerName");
-            }
-        }
+        } }
         /// <summary>The description of the server</summary>
         public virtual string ServerDescription
         {
             get { return TryGetVariable<string>(C_SERVER_DESCRIPTION, null); }
-            set
-            {
+            set {
                 DataAddSet(C_SERVER_DESCRIPTION, value);
                 OnPropertyChanged("ServerDescription");
-            }
-        }
+        } }
         /// <summary>The url for the banner of the server</summary>
         public virtual string BannerUrl
         {
             get { return TryGetVariable<string>(C_BANNER_URL, null); }
-            set
-            {
+            set {
                 DataAddSet(C_BANNER_URL, value);
                 OnPropertyChanged("BannerUrl");
-            }
-        }
+        } }
         
         /// <summary>Whether the server is ranked</summary>
         public virtual bool Ranked
         {
             get { return TryGetVariable<bool>(C_RANKED, false); }
-            set
-            {
+            set {
                 DataAddSet(C_RANKED, value);
                 OnPropertyChanged("Ranked");
-            }
-        }
+        } }
         /// <summary>Whether the server is protected by anti-cheat software</summary>
         public virtual bool AntiCheat
         {
             get { return TryGetVariable<bool>(C_ANTI_CHEAT, false); }
-            set
-            {
+            set {
                 DataAddSet(C_ANTI_CHEAT, value);
                 OnPropertyChanged("AntiCheat");
-            }
-        }
+        } }
         /// <summary>Whether the server is auto-balanced</summary>
         public virtual bool AutoBalance
         {
             get { return TryGetVariable<bool>(C_AUTO_BALANCE, false); }
-            set
-            {
+            set {
                 DataAddSet(C_AUTO_BALANCE, value);
                 OnPropertyChanged("AutoBalance");
-            }
-        }
+        } }
         /// <summary>Whether the server has friendly-fire enabled</summary>
         public virtual bool FriendlyFire
         {
             get { return TryGetVariable<bool>(C_FRIENDLY_FIRE, false); }
-            set
-            {
+            set {
                 DataAddSet(C_FRIENDLY_FIRE, value);
                 OnPropertyChanged("FriendlyFire");
-            }
-        }
+        } }
         /// <summary>Whether the server is password protected</summary>
         public virtual bool Passworded
         {
             get { return TryGetVariable<bool>(C_PASSWORDED, false); }
-            set
-            {
+            set {
                 DataAddSet(C_PASSWORDED, value);
                 OnPropertyChanged("Passworded");
-            }
-        }
+        } }
         /// <summary>The password of the server, if password protected</summary>
         public virtual string Password
         {
             get { return TryGetVariable<string>(C_PASSWORD, null); }
-            set
-            {
+            set {
                 DataAddSet(C_PASSWORD, value);
                 OnPropertyChanged("Password");
-            }
-        }
+        } }
 
         /// <summary>How long the current round has been played</summary>
         public virtual int RoundTime
         {
             get { return TryGetVariable<int>(C_ROUND_TIME, 0); }
-            set
-            {
+            set {
                 DataAddSet(C_ROUND_TIME, value);
                 OnPropertyChanged("RoundTime");
-            }
-        }
+        } }
         /// <summary>The current round index being played</summary>
         public virtual int RoundIndex
         {
             get { return TryGetVariable<int>(C_ROUND_INDEX, 0); }
-            set
-            {
+            set {
                 DataAddSet(C_ROUND_INDEX, value);
                 OnPropertyChanged("RoundIndex");
-            }
-        }
+        } }
         /// <summary>The maximum number of rounds to be played</summary>
         public virtual int MaxRoundIndex
         {
             get { return TryGetVariable<int>(C_MAX_ROUND_INDEX, 0); }
-            set
-            {
+            set {
                 DataAddSet(C_MAX_ROUND_INDEX, value);
                 OnPropertyChanged("MaxRoundIndex");
-            }
-        }
+        } }
         
         /// <summary>How many players are currently playing in the server</summary>
         public virtual int PlayerCount
@@ -245,38 +194,31 @@ namespace Procon.Net.Protocols.Objects {
             {
                 DataAddSet(C_PLAYER_COUNT, value);
                 OnPropertyChanged("PlayerCount");
-            }
-        }
+        } }
         /// <summary>How many players are supported by the server</summary>
         public virtual int MaxPlayerCount
         {
             get { return TryGetVariable<int>(C_MAX_PLAYER_COUNT, 0); }
-            set
-            {
+            set {
                 DataAddSet(C_MAX_PLAYER_COUNT, value);
                 OnPropertyChanged("MaxPlayerCount");
-            }
-        }
+        } }
 
         /// <summary>The name of the current map</summary>
         public virtual string MapName
         {
             get { return TryGetVariable<string>(C_MAP_NAME, null); }
-            set
-            {
+            set {
                 DataAddSet(C_MAP_NAME, value);
                 OnPropertyChanged("MapName");
-            }
-        }
+        } }
         /// <summary>The name of the current game mode</summary>
         public virtual string GameModeName
         {
             get { return TryGetVariable<string>(C_GAME_MODE_NAME, null); }
-            set
-            {
+            set {
                 DataAddSet(C_GAME_MODE_NAME, value);
                 OnPropertyChanged("GameModeName");
-            }
-        }
+        } }
     }
 }

@@ -26,7 +26,7 @@ using Procon.UI.API.Utils;
 namespace Procon.UI.API.ViewModels
 {
     /// <summary>Wraps a Player of Procon so that it can be used in the UI.</summary>
-    public class PlayerViewModel : ViewModel<Player>
+    public class PlayerViewModel : ViewModelBase<Player>
     {
         // Standard Player Properties
         public String Uid
@@ -109,15 +109,15 @@ namespace Procon.UI.API.ViewModels
         // Custom Properties
         public String TeamName
         {
-            get { return Localizer.Loc("Procon.UI.API.Teams." + Team); }
+            get { return ExtensionApi.Localize("Procon.UI.API.Teams." + Team); }
         }
         public String SquadName
         {
-            get { return Localizer.Loc("Procon.UI.API.Squads." + Squad); }
+            get { return ExtensionApi.Localize("Procon.UI.API.Squads." + Squad); }
         }
         public String RoleName
         {
-            get { return Role != null ? Localizer.Loc("Procon.UI.API.Roles." + Role.Name) : null; }
+            get { return Role != null ? ExtensionApi.Localize("Procon.UI.API.Roles." + Role.Name) : null; }
         }
 
         /// <summary>Creates an instance of PlayerViewModel and initalizes its properties.</summary>

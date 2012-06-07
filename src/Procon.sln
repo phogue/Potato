@@ -10,7 +10,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procon.Console", "Procon.Co
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procon.Net.Console", "Procon.Net.Console\Procon.Net.Console.csproj", "{7769C77A-8479-4149-8364-65B49D5836FB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BasicInGameInfo", "Procon.Core.Interfaces.Connections.Plugins.BasicInGameInfo\BasicInGameInfo.csproj", "{8C6893B8-8273-487C-8A44-2C25917F40BA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BasicInGameInfo", "BasicInGameInfo\BasicInGameInfo.csproj", "{8C6893B8-8273-487C-8A44-2C25917F40BA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procon.NLP", "Procon.NLP\Procon.NLP.csproj", "{4B55557F-C2AA-4047-9ED9-3E4BBF9CF670}"
 EndProject
@@ -19,9 +19,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procon.DB.Test", "Procon.DB.Test\Procon.DB.Test.csproj", "{C486B9CE-F205-4E7F-892E-6CC130A1EC99}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procon.UI", "Procon.UI\Procon.UI.csproj", "{671B57AE-BFCA-4250-AC3B-6E72AE738290}"
-	ProjectSection(ProjectDependencies) = postProject
-		{0A5E27B3-ACFB-4B6A-B637-74D56E425481} = {0A5E27B3-ACFB-4B6A-B637-74D56E425481}
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procon.UI.Manager", "Procon.UI.Manager\Procon.UI.Manager.csproj", "{1771BFAC-173E-4CEC-BE48-1C30D9CF3FB5}"
 EndProject

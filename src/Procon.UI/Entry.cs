@@ -16,45 +16,42 @@ namespace Procon.UI
         [STAThread]
         static void Main(String[] args)
         {
-            // Start Procon.
+            // Start Procon and load the settings file.
             InstanceViewModel tProcon = new InstanceViewModel(new Instance());
             InstanceViewModel.PublicProperties["Procon"].Value = tProcon;
             tProcon.Execute();
-
-            // Load the settings file.
             Settings.Load();
 
             // Create the root element of the UI.
             Window tRoot = new Window()
             {
-                WindowStartupLocation = WindowStartupLocation.Manual,
+                Name  = "Root",
+                Title = "Procon 2",
+                Top    = Settings.Get<Double>("Top", Double.NaN),
+                Left   = Settings.Get<Double>("Left", Double.NaN),
+                Width  = Settings.Get<Double>("Width",  1024),
+                Height = Settings.Get<Double>("Height", 768),
+                MinWidth    = 1024,
+                MinHeight   = 768,
+                DataContext = tProcon,
                 WindowState           = Settings.Get<WindowState>("WindowState", WindowState.Normal),
-                Top                   = Settings.Get<Double>("Top",  Double.NaN),
-                Left                  = Settings.Get<Double>("Left", Double.NaN),
-                Name       = "Root", Title  = "Procon 2",
-                MinWidth   = 1024,   Width  = Settings.Get<Double>("Width",  1024),
-                MinHeight  = 768,    Height = Settings.Get<Double>("Height", 768)
+                WindowStartupLocation = WindowStartupLocation.Manual,
             };
             if (File.Exists(Defines.PROCON_ICON))
                 tRoot.Icon = new BitmapImage(new Uri(Defines.PROCON_ICON, UriKind.RelativeOrAbsolute));
 
-            // Save window settings before the window is disposed.
+            // Save window settings before the window closes.
             tRoot.Closing += (s, e) => {
-                Settings.Set("Width",       tRoot.Width);
-                Settings.Set("Height",      tRoot.Height);
                 Settings.Set("Top",         tRoot.Top);
                 Settings.Set("Left",        tRoot.Left);
+                Settings.Set("Width",       tRoot.Width);
+                Settings.Set("Height",      tRoot.Height);
                 Settings.Set("WindowState", tRoot.WindowState);
             };
 
-            // Load the extensions.
+            // Load the extensions, show the window, then save the settings.
             Settings.ExecuteExtensions(tRoot);
-
-            // Set the Data Context and display the window.
-            tRoot.DataContext = tProcon;
             tRoot.ShowDialog();
-
-            // Save the settings file.
             Settings.Save();
 
             // Shutdown Procon.

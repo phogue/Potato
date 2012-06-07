@@ -15,15 +15,13 @@
       extensions to access commonly used enums or constants.
     -->
     <api>
-      <loc key="To" value="To" />
-
       <game>
         <loc key="None"      value="None"/>
         <loc key="BF_BC2"    value="Battlefield: Bad Company 2"/>
         <loc key="BF_3"      value="Battlefield 3"/>
         <loc key="COD_BO"    value="Call of Duty: Black Ops"/>
         <loc key="MOH_2010"  value="Medal of Honor 2010"/>
-        <loc key="Homefront" value="Homefront"/>
+        <loc key="HOMEFRONT" value="Homefront"/>
       </game>
       
       <team>
@@ -41,15 +39,32 @@
       </team>
 
       <squad>
-        <loc key="None"   value="None" />
-        <loc key="Squad1" value="Alpha" />
-        <loc key="Squad2" value="Bravo" />
-        <loc key="Squad3" value="Charlie" />
-        <loc key="Squad4" value="Delta" />
-        <loc key="Squad5" value="Echo" />
-        <loc key="Squad6" value="Foxtrox" />
-        <loc key="Squad7" value="Gamma" />
-        <loc key="Squad8" value="Hotel" />
+        <loc key="None"    value="None" />
+        <loc key="Squad1"  value="Alpha" />
+        <loc key="Squad2"  value="Bravo" />
+        <loc key="Squad3"  value="Charlie" />
+        <loc key="Squad4"  value="Delta" />
+        <loc key="Squad5"  value="Echo" />
+        <loc key="Squad6"  value="Foxtrox" />
+        <loc key="Squad7"  value="Gamma" />
+        <loc key="Squad8"  value="Hotel" />
+        <loc key="Squad9"  value="India" />
+        <loc key="Squad10" value="Juliet" />
+        <loc key="Squad11" value="Kilo" />
+        <loc key="Squad12" value="Lima" />
+        <loc key="Squad13" value="November" />
+        <loc key="Squad14" value="Oscar" />
+        <loc key="Squad15" value="Papa" />
+        <loc key="Squad16" value="Quebec" />
+        <loc key="Squad17" value="Romeo" />
+        <loc key="Squad18" value="Sierra" />
+        <loc key="Squad19" value="Tango" />
+        <loc key="Squad21" value="Uniform" />
+        <loc key="Squad22" value="Victor" />
+        <loc key="Squad23" value="Whiskey" />
+        <loc key="Squad24" value="X-Ray" />
+        <loc key="Squad25" value="Yankee" />
+        <loc key="Squad26" value="Zulu" />
       </squad>
 
       <role>

@@ -44,22 +44,23 @@ namespace Procon.UI.Default
         public bool Entry(Window root)
         {
             // Setup Active Interface.
-            if (InstanceViewModel.PublicProperties["Settings"]["InterfaceIsLocal"].Value is Boolean
-                && InstanceViewModel.PublicProperties["Settings"]["InterfaceHost"].Value    is String
-                && InstanceViewModel.PublicProperties["Settings"]["InterfacePort"].Value    is UInt16)
+            if (ExtensionApi.Procon != null
+                && InstanceViewModel.PublicProperties["Settings"]["InterfaceType"].Value is Boolean
+                && InstanceViewModel.PublicProperties["Settings"]["InterfaceHost"].Value is String
+                && InstanceViewModel.PublicProperties["Settings"]["InterfacePort"].Value is UInt16)
                 ExtensionApi.Interface = ExtensionApi.Procon.Interfaces.FirstOrDefault(x =>
-                x.IsLocal  == (Boolean)InstanceViewModel.PublicProperties["Settings"]["InterfaceIsLocal"].Value &&
-                x.Hostname == (String)InstanceViewModel.PublicProperties["Settings"]["InterfaceHost"].Value     &&
-                x.Port     == (UInt16)InstanceViewModel.PublicProperties["Settings"]["InterfacePort"].Value);
+                    x.IsLocal == (Boolean)InstanceViewModel.PublicProperties["Settings"]["InterfaceType"].Value &&
+                    x.Hostname == (String)InstanceViewModel.PublicProperties["Settings"]["InterfaceHost"].Value &&
+                    x.Port     == (UInt16)InstanceViewModel.PublicProperties["Settings"]["InterfacePort"].Value);
             // Setup Active Connection.
             if (ExtensionApi.Interface != null
                 && InstanceViewModel.PublicProperties["Settings"]["ConnectionType"].Value is String
                 && InstanceViewModel.PublicProperties["Settings"]["ConnectionHost"].Value is String
                 && InstanceViewModel.PublicProperties["Settings"]["ConnectionPort"].Value is UInt16)
                 ExtensionApi.Connection = ExtensionApi.Interface.Connections.FirstOrDefault(x =>
-                x.GameType.ToString() == (String)InstanceViewModel.PublicProperties["Settings"]["ConnectionType"].Value &&
-                x.Hostname            == (String)InstanceViewModel.PublicProperties["Settings"]["ConnectionHost"].Value &&
-                x.Port                == (UInt16)InstanceViewModel.PublicProperties["Settings"]["ConnectionPort"].Value);
+                    x.GameType.ToString() == (String)InstanceViewModel.PublicProperties["Settings"]["ConnectionType"].Value &&
+                    x.Hostname            == (String)InstanceViewModel.PublicProperties["Settings"]["ConnectionHost"].Value &&
+                    x.Port                == (UInt16)InstanceViewModel.PublicProperties["Settings"]["ConnectionPort"].Value);
 
             // Commands.
             // [Interface] Level Commands.
@@ -80,6 +81,35 @@ namespace Procon.UI.Default
             InstanceViewModel.PublicProperties["Images"]["Procon"]["Large"].Value = (File.Exists(Defines.PROCON_LARGE)) ? new BitmapImage(new Uri(Defines.PROCON_LARGE, UriKind.RelativeOrAbsolute)) : new BitmapImage();
             InstanceViewModel.PublicProperties["Images"]["Procon"]["Small"].Value = (File.Exists(Defines.PROCON_SMALL)) ? new BitmapImage(new Uri(Defines.PROCON_SMALL, UriKind.RelativeOrAbsolute)) : new BitmapImage();
 
+            // Content.
+            // [Content] - Various images that represent tabs.
+            //   [Players]  - Represents the players tab.
+            //   [Maps]     - Represents the maps tab.
+            //   [Bans]     - Represents the bans tab.
+            //   [Plugins]  - Represents the plugins tab.
+            //   [Settings] - Represents the settings tab.
+            InstanceViewModel.PublicProperties["Images"]["Content"]["Players"]["Default"].Value   = (File.Exists(Defines.PLAYERS_DEFAULT))    ? new BitmapImage(new Uri(Defines.PLAYERS_DEFAULT,      UriKind.RelativeOrAbsolute)) : new BitmapImage();
+            InstanceViewModel.PublicProperties["Images"]["Content"]["Players"]["Hover"].Value     = (File.Exists(Defines.PLAYERS_HOVER))      ? new BitmapImage(new Uri(Defines.PLAYERS_HOVER,        UriKind.RelativeOrAbsolute)) : new BitmapImage();
+            InstanceViewModel.PublicProperties["Images"]["Content"]["Players"]["Press"].Value     = (File.Exists(Defines.PLAYERS_PRESSED))    ? new BitmapImage(new Uri(Defines.PLAYERS_PRESSED,      UriKind.RelativeOrAbsolute)) : new BitmapImage();
+            InstanceViewModel.PublicProperties["Images"]["Content"]["Players"]["Active"].Value    = (File.Exists(Defines.PLAYERS_PRESSED))    ? new BitmapImage(new Uri(Defines.PLAYERS_PRESSED,      UriKind.RelativeOrAbsolute)) : new BitmapImage();
+            InstanceViewModel.PublicProperties["Images"]["Content"]["Players"]["Disabled"].Value  = (File.Exists(Defines.PLAYERS_DISABLED))   ? new BitmapImage(new Uri(Defines.PLAYERS_DISABLED,     UriKind.RelativeOrAbsolute)) : new BitmapImage();
+            InstanceViewModel.PublicProperties["Images"]["Content"]["Maps"]["Default"].Value      = (File.Exists(Defines.MAPS_DEFAULT))       ? new BitmapImage(new Uri(Defines.MAPS_DEFAULT,         UriKind.RelativeOrAbsolute)) : new BitmapImage();
+            InstanceViewModel.PublicProperties["Images"]["Content"]["Maps"]["Hover"].Value        = (File.Exists(Defines.MAPS_HOVER))         ? new BitmapImage(new Uri(Defines.MAPS_HOVER,           UriKind.RelativeOrAbsolute)) : new BitmapImage();
+            InstanceViewModel.PublicProperties["Images"]["Content"]["Maps"]["Pressed"].Value      = (File.Exists(Defines.MAPS_PRESSED))       ? new BitmapImage(new Uri(Defines.MAPS_PRESSED,         UriKind.RelativeOrAbsolute)) : new BitmapImage();
+            InstanceViewModel.PublicProperties["Images"]["Content"]["Maps"]["Disabled"].Value     = (File.Exists(Defines.MAPS_DISABLED))      ? new BitmapImage(new Uri(Defines.MAPS_DISABLED,        UriKind.RelativeOrAbsolute)) : new BitmapImage();
+            InstanceViewModel.PublicProperties["Images"]["Content"]["Bans"]["Default"].Value      = (File.Exists(Defines.BANS_DEFAULT))       ? new BitmapImage(new Uri(Defines.BANS_DEFAULT,         UriKind.RelativeOrAbsolute)) : new BitmapImage();
+            InstanceViewModel.PublicProperties["Images"]["Content"]["Bans"]["Hover"].Value        = (File.Exists(Defines.BANS_HOVER))         ? new BitmapImage(new Uri(Defines.BANS_HOVER,           UriKind.RelativeOrAbsolute)) : new BitmapImage();
+            InstanceViewModel.PublicProperties["Images"]["Content"]["Bans"]["Pressed"].Value      = (File.Exists(Defines.BANS_PRESSED))       ? new BitmapImage(new Uri(Defines.BANS_PRESSED,         UriKind.RelativeOrAbsolute)) : new BitmapImage();
+            InstanceViewModel.PublicProperties["Images"]["Content"]["Bans"]["Disabled"].Value     = (File.Exists(Defines.BANS_DISABLED))      ? new BitmapImage(new Uri(Defines.BANS_DISABLED,        UriKind.RelativeOrAbsolute)) : new BitmapImage();
+            InstanceViewModel.PublicProperties["Images"]["Content"]["Plugins"]["Default"].Value   = (File.Exists(Defines.PLUGINS_DEFAULT))    ? new BitmapImage(new Uri(Defines.PLUGINS_DEFAULT,      UriKind.RelativeOrAbsolute)) : new BitmapImage();
+            InstanceViewModel.PublicProperties["Images"]["Content"]["Plugins"]["Hover"].Value     = (File.Exists(Defines.PLUGINS_HOVER))      ? new BitmapImage(new Uri(Defines.PLUGINS_HOVER,        UriKind.RelativeOrAbsolute)) : new BitmapImage();
+            InstanceViewModel.PublicProperties["Images"]["Content"]["Plugins"]["Pressed"].Value   = (File.Exists(Defines.PLUGINS_PRESSED))    ? new BitmapImage(new Uri(Defines.PLUGINS_PRESSED,      UriKind.RelativeOrAbsolute)) : new BitmapImage();
+            InstanceViewModel.PublicProperties["Images"]["Content"]["Plugins"]["Disabled"].Value  = (File.Exists(Defines.PLUGINS_DISABLED))   ? new BitmapImage(new Uri(Defines.PLUGINS_DISABLED,     UriKind.RelativeOrAbsolute)) : new BitmapImage();
+            InstanceViewModel.PublicProperties["Images"]["Content"]["Settings"]["Default"].Value  = (File.Exists(Defines.SETTINGS_DEFAULT))   ? new BitmapImage(new Uri(Defines.SETTINGS_DEFAULT,     UriKind.RelativeOrAbsolute)) : new BitmapImage();
+            InstanceViewModel.PublicProperties["Images"]["Content"]["Settings"]["Hover"].Value    = (File.Exists(Defines.SETTINGS_HOVER))     ? new BitmapImage(new Uri(Defines.SETTINGS_HOVER,       UriKind.RelativeOrAbsolute)) : new BitmapImage();
+            InstanceViewModel.PublicProperties["Images"]["Content"]["Settings"]["Pressed"].Value  = (File.Exists(Defines.SETTINGS_PRESSED))   ? new BitmapImage(new Uri(Defines.SETTINGS_PRESSED,     UriKind.RelativeOrAbsolute)) : new BitmapImage();
+            InstanceViewModel.PublicProperties["Images"]["Content"]["Settings"]["Disabled"].Value = (File.Exists(Defines.SETTINGS_DISABLED))  ? new BitmapImage(new Uri(Defines.SETTINGS_DISABLED,    UriKind.RelativeOrAbsolute)) : new BitmapImage();
+
             // [Background] - Background images.
             //   [Navigation] - Navigation bg image.
             InstanceViewModel.PublicProperties["Images"]["Background"]["Navigation"].Value = (File.Exists(Defines.BACKGROUND_NAVIGATION)) ? new BitmapImage(new Uri(Defines.BACKGROUND_NAVIGATION, UriKind.RelativeOrAbsolute)) : new BitmapImage();
@@ -92,7 +122,7 @@ namespace Procon.UI.Default
         // -- [Interface][Add]
         private void interfaceAdd(Object[] parameters)
         {
-            ExtensionApi.Procon.AddInterface(
+            ExtensionApi.Procon.CreateInterface(
                 (String)parameters[0],
                 UInt16.Parse((String)parameters[1]),
                 (String)parameters[2],
@@ -112,7 +142,7 @@ namespace Procon.UI.Default
         // -- [Interface][Remove]
         private void interfaceRemove(Object[] parameters)
         {
-            ExtensionApi.Procon.RemoveInterface(
+            ExtensionApi.Procon.DestroyInterface(
                 (String)parameters[0],
                 UInt16.Parse((String)parameters[1]));
         }

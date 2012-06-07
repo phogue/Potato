@@ -145,7 +145,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Procon.Net.Protocols.Frostbite\Procon.Net.Protocols.Frostbite.csproj">
-      <Project>{299A4619-928D-4D7F-8857-644B5F57F6FC}</Project>
+      <Project>{299a4619-928d-4d7f-8857-644b5f57f6fc}</Project>
       <Name>Procon.Net.Protocols.Frostbite</Name>
     </ProjectReference>
     <ProjectReference Include="..\Procon.Net\Procon.Net.csproj">

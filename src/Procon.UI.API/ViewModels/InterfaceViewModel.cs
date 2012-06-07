@@ -1,128 +1,102 @@
-﻿// Copyright 2011 Cameron 'Imisnew2' Gunnin
-// 
-// http://www.phogue.net
-//  
-// This file is part of Procon 2.
-// 
-// Procon 2 is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-// 
-// Procon 2 is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-// 
-// You should have received a copy of the GNU General Public License
-// along with Procon 2.  If not, see <http://www.gnu.org/licenses/>.
-
-using System;
+﻿using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
-using System.Windows.Media.Imaging;
-using System.Windows.Threading;
 
 using Procon.Core;
 using Procon.Core.Interfaces;
 using Procon.Core.Interfaces.Connections;
 using Procon.Core.Interfaces.Layer;
+using Procon.Core.Interfaces.Packages;
 using Procon.Net;
-using Procon.UI.API.Utils;
+using Procon.Net.Protocols.Objects;
 
 namespace Procon.UI.API.ViewModels
 {
-    /// <summary>Wraps an Interface of Procon so that it can be used in the UI.</summary>
-    public class InterfaceViewModel : ViewModel<Interface>
+    // Wraps an Interface
+    public class InterfaceViewModel : ViewModelBase<Interface>
     {
-        // Standard Model Properties
+        // View Model Public Accessors/Mutators.
         public String Hostname
         {
             get { return Model.Layer.Hostname; }
+            set { Model.Layer.Hostname = value; }
         }
         public UInt16 Port
         {
             get { return Model.Layer.Port; }
+            set { Model.Layer.Port = value; }
         }
         public String Username
         {
-            get { return (Model.Layer is LayerGame) ? (Model.Layer as LayerGame).Username : String.Empty; }
+            get { return (Model.Layer is LayerGame) ? (Model.Layer as LayerGame).Username : null; }
+            set { if (Model.Layer is LayerGame) (Model.Layer as LayerGame).Username = value; }
         }
         public String Password
         {
-            get { return (Model.Layer is LayerGame) ? (Model.Layer as LayerGame).Password : String.Empty; }
-        }
-        public Boolean IsCompressed
-        {
-            get { return Model.Layer.IsCompressed; }
-        }
-        public Boolean IsEncrypted
-        {
-            get { return Model.Layer.IsEncrypted; }
+            get { return (Model.Layer is LayerGame) ? (Model.Layer as LayerGame).Password : null; }
+            set { if (Model.Layer is LayerGame) (Model.Layer as LayerGame).Password = value; }
         }
         public ConnectionState ConnectionState
         {
             get { return Model.Layer.ConnectionState; }
         }
-
-        // Custom Properties
-        public BitmapImage ConnectionStateIcon
-        {
-            get
-            {
-                switch (ConnectionState)
-                {
-                    case ConnectionState.LoggedIn:
-                        return InstanceViewModel.PublicProperties["Images"]["Connection"]["Good"].Value as BitmapImage;
-                    case ConnectionState.Connecting:
-                    case ConnectionState.Connected:
-                    case ConnectionState.Ready:
-                        return InstanceViewModel.PublicProperties["Images"]["Connection"]["Flux"].Value as BitmapImage;
-                    case ConnectionState.Disconnecting:
-                    case ConnectionState.Disconnected:
-                    default:
-                        return InstanceViewModel.PublicProperties["Images"]["Connection"]["Bad"].Value as BitmapImage;
-                }
-            }
-        }
-        public Boolean IsLocal
-        {
-            get { return Model is LocalInterface; }
-        }
-
-        // View Model Properties
-        public  ObservableCollection<ConnectionViewModel> Connections
+        
+        public ObservableCollection<ConnectionViewModel> Connections
         {
             get { return mConnections; }
             protected set {
                 if (mConnections != value) {
                     mConnections = value;
                     OnPropertyChanged(this, "Connections");
-                }
-            }
-        }
-        private ObservableCollection<ConnectionViewModel> mConnections;
+        } } }
+        public ObservableCollection<PackageViewModel>    Packages
+        {
+            get { return mPackages; }
+            protected set {
+                if (mPackages != value) {
+                    mPackages = value;
+                    OnPropertyChanged(this, "Packages");
+        } } }
+        public ObservableCollection<DataVariable>        Variables
+        {
+            get { return mVariables; }
+            protected set {
+                if (mVariables != value) {
+                    mVariables = value;
+                    OnPropertyChanged(this, "Variables");
+        } } }
 
-        /// <summary>Creates an instance of InterfaceViewModel and initalizes its properties.</summary>
-        /// <param name="model">A reference to an instance of an interface in procon.</param>
+        // View Model Private Variables.
+        private ObservableCollection<ConnectionViewModel> mConnections;
+        private ObservableCollection<PackageViewModel>    mPackages;
+        private ObservableCollection<DataVariable>        mVariables;
+
+        // Custom Properties
+        public Boolean IsLocal
+        {
+            get { return Model is LocalInterface; }
+        }
+
+
+        // Constructor.
         public InterfaceViewModel(Interface model) : base(model)
         {
             // Listen for changes within the model:
-            Model.ConnectionAdded       += Connections_Added;
-            Model.ConnectionRemoved     += Connections_Removed;
-            Model.PropertyChanged       += Interface_PropertyChanged;
-            Model.Layer.PropertyChanged += Interface_PropertyChanged;
+            Model.ConnectionAdded          += Connections_Added;
+            Model.ConnectionRemoved        += Connections_Removed;
+            Model.Packages.PackageAdded    += Packages_Added;
+            Model.Packages.PackageRemoved  += Packages_Removed;
+            Model.PropertyChanged          += Interface_PropertyChanged;
+            Model.Layer.PropertyChanged    += Interface_PropertyChanged;
+            Model.Packages.PropertyChanged += Interface_PropertyChanged;
 
             // Expose collections within the model:
-            Connections = new ObservableCollection<ConnectionViewModel>(Model.Connections.Select(x => new ConnectionViewModel(x)));
+            Connections = new ObservableCollection<ConnectionViewModel>();
+            Packages    = new ObservableCollection<PackageViewModel>();
         }
-
-
-
-        /// <summary>
-        /// Attempts to add a connection to the interface.
-        /// </summary>
+        
+        // View Model Methods.
         public void AddConnection(String gameType, String hostname, UInt16 port, String password, String additional)
         {
             Model.AddConnection(
@@ -133,9 +107,6 @@ namespace Procon.UI.API.ViewModels
                 password,
                 additional);
         }
-        /// <summary>
-        /// Attempts to remove a connection from the interface.
-        /// </summary>
         public void RemoveConnection(String gameType, String hostname, UInt16 port)
         {
             Model.RemoveConnection(
@@ -146,77 +117,123 @@ namespace Procon.UI.API.ViewModels
         }
 
 
-
-        /// <summary>
-        /// Lets the UI's view model know we added a connection.
-        /// </summary>
+        // Wraps the ConnectionAdded/ConnectionRemoved events.
         private void Connections_Added(Interface parent, Connection item)
         {
             // Force the UI thread to execute this method.
-            if (Dispatcher.CurrentDispatcher != MainQueue) {
-                MainQueue.Invoke(new System.Action(() => Connections_Added(parent, item)));
+            if (ChangeDispatcher(() => Connections_Added(parent, item)))
                 return;
-            }
 
             // Add the new connection.
-            Connections.Add(new ConnectionViewModel(item));
+            ConnectionViewModel tViewModel = new ConnectionViewModel(item);
+            Connections.Add(tViewModel);
+            OnConnectionAdded(tViewModel);
         }
-        /// <summary>
-        /// Lets the UI's view model know we removed a connection.
-        /// </summary>
         private void Connections_Removed(Interface parent, Connection item)
         {
             // Force the UI thread to execute this method.
-            if (Dispatcher.CurrentDispatcher != MainQueue) {
-                MainQueue.Invoke(new System.Action(() => Connections_Removed(parent, item)));
+            if (ChangeDispatcher(() => Connections_Removed(parent, item)))
                 return;
-            }
 
             // Remove the old connection.
-            for (int i = 0; i < Connections.Count; i++)
-                if (Connections[i].ModelEquals(item)) {
-                    Connections.RemoveAt(i);
-                    break;
-                }
+            ConnectionViewModel tViewModel = Connections.SingleOrDefault(x => x.ModelEquals(item));
+            Connections.Remove(tViewModel);
+            OnConnectionRemoved(tViewModel);
         }
-        /// <summary>
-        /// Lets the UI's view model know a property in the model changed.
-        /// </summary>
+
+        // Wraps the Packages.PackageAdded/Packages.PackageRemoved events.
+        private void Packages_Added(PackageController parent, Package item)
+        {
+            // Force the UI thread to execute this method.
+            if (ChangeDispatcher(() => Packages_Added(parent, item)))
+                return;
+
+            // Add the new connection.
+            PackageViewModel tViewModel = new PackageViewModel(item);
+            Packages.Add(tViewModel);
+            OnPackageAdded(tViewModel);
+        }
+        private void Packages_Removed(PackageController parent, Package item)
+        {
+            // Force the UI thread to execute this method.
+            if (ChangeDispatcher(() => Packages_Removed(parent, item)))
+                return;
+
+            // Add the new connection.
+            PackageViewModel tViewModel = Packages.SingleOrDefault(x => x.ModelEquals(item));
+            Packages.Add(tViewModel);
+            OnPackageAdded(tViewModel);
+        }
+
+        // Wraps the Interface's property changed events.
         private void Interface_PropertyChanged(Object sender, PropertyChangedEventArgs e)
         {
             // Force the UI thread to execute this method.
-            if (Dispatcher.CurrentDispatcher != MainQueue) {
-                MainQueue.Invoke(new System.Action(() => Interface_PropertyChanged(sender, e)));
+            if (ChangeDispatcher(() => Interface_PropertyChanged(sender, e)))
                 return;
+
+            if (e.PropertyName == "Connections") {
+                // Removes models that no longer exist.
+                for (int i = 0; i < Connections.Count; i++)
+                    if (Model.Connections.SingleOrDefault(x => Connections[i].ModelEquals(x)) == null)
+                        Connections.RemoveAt(i--);
+                // Adds models that are new.
+                for (int i = 0; i < Model.Connections.Count; i++)
+                    if (Connections.SingleOrDefault(x => x.ModelEquals(Model.Connections[i])) == null)
+                        Connections.Add(new ConnectionViewModel(Model.Connections[i]));
             }
 
-            // Connections collection was re-set?
-            if (e.PropertyName == "Connections") {
-                Boolean exists;
+            if (e.PropertyName == "Packages") {
+                // Re-set the event listeners.
+                if (sender == Model) {
+                    Model.Packages.PackageAdded    += Packages_Added;
+                    Model.Packages.PackageRemoved  += Packages_Removed;
+                    Model.Packages.PropertyChanged += Interface_PropertyChanged;
+                }
                 // Removes models that no longer exist.
-                for (int i = 0; i < Connections.Count; i++) {
-                    exists = false;
-                    for (int j = 0; j < Model.Connections.Count; j++)
-                        if (exists = Connections[i].ModelEquals(Model.Connections[j]))
-                            break;
-                    if (!exists) Connections.RemoveAt(i--);
-                }
+                for (int i = 0; i < Packages.Count; i++)
+                    if (Model.Packages.Packages.SingleOrDefault(x => Packages[i].ModelEquals(x)) == null)
+                        Packages.RemoveAt(i--);
                 // Adds models that are new.
-                for (int i = 0; i < Model.Connections.Count; i++) {
-                    exists = false;
-                    for (int j = 0; j < Connections.Count; j++)
-                        if (exists = Connections[j].ModelEquals(Model.Connections[i]))
-                            break;
-                    if (exists) Connections.Add(new ConnectionViewModel(Model.Connections[i]));
-                }
+                for (int i = 0; i < Model.Packages.Packages.Count; i++)
+                    if (Packages.SingleOrDefault(x => x.ModelEquals(Model.Packages.Packages[i])) == null)
+                        Connections.Add(new ConnectionViewModel(Model.Connections[i]));
             }
-            // Connection State was updated.
-            else if (e.PropertyName == "ConnectionState") {
-                OnPropertyChanged(this, e.PropertyName);
-                OnPropertyChanged(this, e.PropertyName + "Icon");
-            }
-            // Other.
-            else OnPropertyChanged(this, e.PropertyName);
+
+            if (sender == Model.Layer)
+                if (e.PropertyName == "Hostname" || e.PropertyName == "Port"     ||
+                    e.PropertyName == "Username" || e.PropertyName == "Password" ||
+                    e.PropertyName == "ConnectionState")
+                    OnPropertyChanged(this, e.PropertyName);
+        }
+
+
+        // Events.
+        public delegate void ConnectionHandler(InterfaceViewModel parent, ConnectionViewModel item);
+        public delegate void PackageHandler(InterfaceViewModel parent, PackageViewModel item);
+        public event ConnectionHandler ConnectionAdded;
+        public event ConnectionHandler ConnectionRemoved;
+        public event PackageHandler PackageAdded;
+        public event PackageHandler PackageRemoved;
+        public void OnConnectionAdded(ConnectionViewModel i)
+        {
+            if (ConnectionAdded != null)
+                ConnectionAdded(this, i);
+        }
+        public void OnConnectionRemoved(ConnectionViewModel i)
+        {
+            if (ConnectionRemoved != null)
+                ConnectionRemoved(this, i);
+        }
+        public void OnPackageAdded(PackageViewModel i)
+        {
+            if (PackageAdded != null)
+                PackageAdded(this, i);
+        }
+        public void OnPackageRemoved(PackageViewModel i)
+        {
+            if (PackageRemoved != null)
+                PackageRemoved(this, i);
         }
     }
 }

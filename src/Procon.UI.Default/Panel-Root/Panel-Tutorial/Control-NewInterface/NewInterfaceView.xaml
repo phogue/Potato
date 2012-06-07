@@ -44,6 +44,7 @@
                        ConverterParameter=Procon.UI.Default.Root.Tutorial.NewInterface.Agreement}" />
         <Button Name="TutorialNewInterfaceRemote"
                 DockPanel.Dock="Bottom"
+                Padding="0, 10"
                 Margin="0, 15, 0, 0"
                 Command="{Binding
                     Source={x:Static view:InstanceViewModel.PublicCommands},
@@ -68,21 +69,25 @@
 
             <Label Name="TutorialNewInterfaceInputHostText"
                    Grid.Row="0" Grid.Column="0"
+                   Padding="0, 10"
                    Content="{Binding 
                        Converter={StaticResource TextLoc},
                        ConverterParameter=Procon.UI.Default.Root.Tutorial.NewInterface.Host}" />
             <Label Name="TutorialNewInterfaceInputPortText"
                    Grid.Row="0" Grid.Column="2"
+                   Padding="0, 10"
                    Content="{Binding
                        Converter={StaticResource TextLoc},
                        ConverterParameter=Procon.UI.Default.Root.Tutorial.NewInterface.Port}" />
             <Label Name="TutorialNewInterfaceInputUserText"
                    Grid.Row="2" Grid.Column="0"
+                   Padding="0, 10"
                    Content="{Binding
                        Converter={StaticResource TextLoc},
                        ConverterParameter=Procon.UI.Default.Root.Tutorial.NewInterface.User}" />
             <Label Name="TutorialNewInterfaceInputPassText"
                    Grid.Row="2" Grid.Column="2"
+                   Padding="0, 10"
                    Content="{Binding
                        Converter={StaticResource TextLoc},
                        ConverterParameter=Procon.UI.Default.Root.Tutorial.NewInterface.Pass}" />
@@ -116,6 +121,7 @@
         </Grid>
         <Button Name="TutorialNewInterfaceLocal"
                 DockPanel.Dock="Bottom"
+                Padding="0, 10"
                 Command="{Binding
                     Source={x:Static view:InstanceViewModel.PublicCommands},
                     Path=[Tutorial][NewInterface][Local].Value}"

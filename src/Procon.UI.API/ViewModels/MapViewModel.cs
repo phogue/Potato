@@ -25,7 +25,7 @@ using Procon.UI.API.Utils;
 namespace Procon.UI.API.ViewModels
 {
     /// <summary>Wraps a Map of Procon so that it can be used in the UI.</summary>
-    public class MapViewModel : ViewModel<Map>
+    public class MapViewModel : ViewModelBase<Map>
     {
         // Standard Map Properties
         public Int32 Index

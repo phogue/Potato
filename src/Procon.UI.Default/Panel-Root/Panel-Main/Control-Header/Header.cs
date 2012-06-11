@@ -13,7 +13,7 @@ namespace Procon.UI.Default.Root.Main.Header
         Alters    = new String[] { "MainLayout" },
         Replaces  = new String[] { },
         DependsOn = new String[] { "Main Layout" })]
-    public class NewInterface : IExtension
+    public class Header : IExtension
     {
         #region IExtension Properties
 

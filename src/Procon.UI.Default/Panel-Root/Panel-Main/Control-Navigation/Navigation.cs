@@ -13,7 +13,7 @@ namespace Procon.UI.Default.Root.Main.Navigation
         Alters    = new String[] { "MainLayout" },
         Replaces  = new String[] { },
         DependsOn = new String[] { "Main Layout" })]
-    public class NewInterface : IExtension
+    public class Navigation : IExtension
     {
         #region IExtension Properties
 
@@ -51,6 +51,7 @@ namespace Procon.UI.Default.Root.Main.Navigation
             // Do what I need to setup my control.
             NavigationView view = new NavigationView();
             Grid.SetRow(view, 1);
+            tProps["Players"].Value = true;
             layout.Children.Add(view);
 
             // Exit with good status.

@@ -1,5 +1,5 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 11
+# Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procon", "Procon\Procon.csproj", "{01BD74F9-866A-4A62-9158-BABEE8C7131E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procon.Core", "Procon.Core\Procon.Core.csproj", "{153B5418-C6B3-43A5-A432-BAFFA8EFAA16}"
@@ -19,6 +19,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procon.DB.Test", "Procon.DB.Test\Procon.DB.Test.csproj", "{C486B9CE-F205-4E7F-892E-6CC130A1EC99}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procon.UI", "Procon.UI\Procon.UI.csproj", "{671B57AE-BFCA-4250-AC3B-6E72AE738290}"
+	ProjectSection(ProjectDependencies) = postProject
+		{87B91B4A-ABCC-47CF-AC1F-E35A690C9F85} = {87B91B4A-ABCC-47CF-AC1F-E35A690C9F85}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procon.UI.Manager", "Procon.UI.Manager\Procon.UI.Manager.csproj", "{1771BFAC-173E-4CEC-BE48-1C30D9CF3FB5}"
 EndProject

@@ -1,0 +1,81 @@
+﻿<Grid x:Class="Procon.UI.Default.Root.Main.Players.List.ListView"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:conv="clr-namespace:Procon.UI.API.Converters;assembly=Procon.UI.API"
+      xmlns:view="clr-namespace:Procon.UI.API.ViewModels;assembly=Procon.UI.API"
+      xmlns:acmd="clr-namespace:Procon.UI.API.Commands;assembly=Procon.UI.API"
+      xmlns:util="clr-namespace:Procon.UI.API.Utils;assembly=Procon.UI.API"
+      Name="MainPlayersList">
+    <Grid.Resources>
+        <conv:TextLocalizationConverter x:Key="TextLoc" />
+        <conv:EnumLocalizationConverter x:Key="EnumLoc" />
+    </Grid.Resources>
+    
+    <!-- Content -->
+    <DockPanel Name="MainPlayersListContent">
+        
+        <!-- Title Labels -->
+        <DockPanel Name="MainPlayersListActions"
+                   DockPanel.Dock="Top"
+                   Background="Gray">
+
+            <Button Name="MainPlayersListBan"
+                    DockPanel.Dock="Left"
+                    MinWidth="80"
+                    Padding="0, 5"
+                    Margin="15, 10, 0, 10"
+                    Command="{Binding
+                        Source={x:Static view:InstanceViewModel.PublicCommands},
+                        Path=[Main][Players][List][Ban].Value}"
+                    Content="{Binding
+                        Converter={StaticResource TextLoc},
+                        ConverterParameter=Procon.UI.Default.Root.Main.Players.Ban}" />
+            <Button Name="MainPlayersListKick"
+                    DockPanel.Dock="Left"
+                    MinWidth="80"
+                    Padding="0, 5"
+                    Margin="10, 10, 0, 10"
+                    Command="{Binding
+                        Source={x:Static view:InstanceViewModel.PublicCommands},
+                        Path=[Main][Players][List][Kick].Value}"
+                    Content="{Binding
+                        Converter={StaticResource TextLoc},
+                        ConverterParameter=Procon.UI.Default.Root.Main.Players.Kick}" />
+            
+            
+            <RadioButton Name="MainPlayersListListView"
+                         DockPanel.Dock="Right"
+                         Margin="0, 10, 15, 10"
+                         Command="{Binding
+                             Source={x:Static view:InstanceViewModel.PublicCommands},
+                             Path=[Main][Players][List][ListView].Value}"
+                         Content="{Binding
+                             Source={x:Static view:InstanceViewModel.PublicProperties},
+                             Path=[Images][Players][ListView].Value}" />
+            <RadioButton Name="MainPlayersListGridView"
+                         DockPanel.Dock="Right"
+                         Margin="0, 10, 10, 10"
+                         Command="{Binding
+                             Source={x:Static view:InstanceViewModel.PublicCommands},
+                             Path=[Main][Players][List][GridView].Value}"
+                         Content="{Binding
+                             Source={x:Static view:InstanceViewModel.PublicProperties},
+                             Path=[Images][Players][GridView].Value}" />
+            <ToggleButton Name="MainPlayersListHighlight"
+                          DockPanel.Dock="Right"
+                          Margin="0, 10, 10, 10"
+                          Command="{Binding
+                              Source={x:Static view:InstanceViewModel.PublicCommands},
+                              Path=[Main][Players][List][Highlight].Value}"
+                          Content="{Binding
+                              Source={x:Static view:InstanceViewModel.PublicProperties},
+                              Path=[Images][Players][Highlight].Value}" />
+            
+            <Label Name="MainPlayersListPadding" Content=" "/>
+        </DockPanel>
+        
+        <Label Content=" " />
+        
+    </DockPanel>
+</Grid>

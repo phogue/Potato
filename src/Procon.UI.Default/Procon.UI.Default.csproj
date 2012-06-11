@@ -42,6 +42,38 @@
     <Compile Include="Panel-Root\Layout\LayoutView.xaml.cs">
       <DependentUpon>LayoutView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Panel-Root\Panel-Main\Panel-Bans\Layout\Layout.cs" />
+    <Compile Include="Panel-Root\Panel-Main\Panel-Bans\Layout\LayoutView.xaml.cs">
+      <DependentUpon>LayoutView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Panel-Root\Panel-Main\Panel-Maps\Layout\Layout.cs" />
+    <Compile Include="Panel-Root\Panel-Main\Panel-Maps\Layout\LayoutView.xaml.cs">
+      <DependentUpon>LayoutView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Panel-Root\Panel-Main\Panel-Options\Layout\Layout.cs" />
+    <Compile Include="Panel-Root\Panel-Main\Panel-Options\Layout\LayoutView.xaml.cs">
+      <DependentUpon>LayoutView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Panel-Root\Panel-Main\Panel-Players\Control-Title\Title.cs" />
+    <Compile Include="Panel-Root\Panel-Main\Panel-Players\Control-Title\TitleView.xaml.cs">
+      <DependentUpon>TitleView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Panel-Root\Panel-Main\Panel-Players\Control-List\List.cs" />
+    <Compile Include="Panel-Root\Panel-Main\Panel-Players\Control-List\ListView.xaml.cs">
+      <DependentUpon>ListView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Panel-Root\Panel-Main\Panel-Players\Layout\Layout.cs" />
+    <Compile Include="Panel-Root\Panel-Main\Panel-Players\Layout\LayoutView.xaml.cs">
+      <DependentUpon>LayoutView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Panel-Root\Panel-Main\Panel-Plugins\Layout\Layout.cs" />
+    <Compile Include="Panel-Root\Panel-Main\Panel-Plugins\Layout\LayoutView.xaml.cs">
+      <DependentUpon>LayoutView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Panel-Root\Panel-Main\Panel-Settings\Layout\Layout.cs" />
+    <Compile Include="Panel-Root\Panel-Main\Panel-Settings\Layout\LayoutView.xaml.cs">
+      <DependentUpon>LayoutView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Panel-Root\Panel-Tutorial\Control-NewInterface\NewInterface.cs" />
     <Compile Include="Panel-Root\Panel-Tutorial\Control-NewInterface\NewInterfaceView.xaml.cs">
       <DependentUpon>NewInterfaceView.xaml</DependentUpon>
@@ -94,6 +126,38 @@
     <Page Include="Panel-Root\Layout\LayoutView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Panel-Root\Panel-Main\Panel-Bans\Layout\LayoutView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Panel-Root\Panel-Main\Panel-Maps\Layout\LayoutView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Panel-Root\Panel-Main\Panel-Options\Layout\LayoutView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Panel-Root\Panel-Main\Panel-Players\Control-Title\TitleView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Panel-Root\Panel-Main\Panel-Players\Control-List\ListView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Panel-Root\Panel-Main\Panel-Players\Layout\LayoutView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Panel-Root\Panel-Main\Panel-Plugins\Layout\LayoutView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Panel-Root\Panel-Main\Panel-Settings\Layout\LayoutView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Panel-Root\Panel-Tutorial\Control-NewInterface\NewInterfaceView.xaml">
       <Generator>MSBuild:Compile</Generator>

@@ -1,0 +1,25 @@
+﻿<Grid x:Class="Procon.UI.Default.Root.Main.Settings.Layout.LayoutView"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:conv="clr-namespace:Procon.UI.API.Converters;assembly=Procon.UI.API"
+      xmlns:view="clr-namespace:Procon.UI.API.ViewModels;assembly=Procon.UI.API"
+      xmlns:acmd="clr-namespace:Procon.UI.API.Commands;assembly=Procon.UI.API"
+      xmlns:util="clr-namespace:Procon.UI.API.Utils;assembly=Procon.UI.API"
+      Name="MainSettingsLayout">
+    <Grid.Style>
+        <Style TargetType="{x:Type Grid}">
+            <Setter Property="Visibility" Value="Collapsed" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Source={x:Static view:InstanceViewModel.PublicProperties}, Path=[Main][Navigation][Settings].Value}" Value="True">
+                    <Setter Property="Visibility" Value="Visible" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </Grid.Style>
+    <Grid.Resources>
+        <conv:TextLocalizationConverter x:Key="TextLoc" />
+        <conv:EnumLocalizationConverter x:Key="EnumLoc" />
+    </Grid.Resources>
+    
+</Grid>

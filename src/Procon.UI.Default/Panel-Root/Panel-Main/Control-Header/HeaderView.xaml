@@ -17,10 +17,11 @@
                Height="38">
         <Button Name="MainHeaderSwap"
                 DockPanel.Dock="Left"
+                Width="48"
                 Command="{Binding
                     Source={x:Static view:InstanceViewModel.PublicCommands},
                     Path=[Main][Header][Swap].Value}">
-            <Image Width="32"
+            <Image Width="30"
                    Source="{Binding
                        Source={x:Static view:InstanceViewModel.PublicProperties},
                        Path=[Images][Connection][Swap].Value}" />
@@ -38,7 +39,7 @@
                    Margin="0, 0, 10, 0"
                    Source="{Binding
                        Source={x:Static view:InstanceViewModel.PublicProperties},
-                       Path=[Images][Connection][Icon].Value}"/>
+                       Path=[Images][Connection][Info].Value}"/>
             <Label Name="MainHeaderName"
                    DockPanel.Dock="Left"
                    Margin="0, 0, 10, 0"
@@ -49,7 +50,6 @@
             <Label Name="MainHeaderUpTime"
                    DockPanel.Dock="Left"
                    Margin="0, 0, 10, 0"
-                   Opacity="0.5"
                    Content="{Binding
                        Source={x:Static view:InstanceViewModel.PublicProperties},
                        Path=[Connection].Value.UpTime,

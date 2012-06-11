@@ -56,6 +56,11 @@ namespace Procon.UI.Default.Styles.Light
             RadioButton navOptions  = ExtensionApi.FindControl<RadioButton>(navigationLayout, "MainNavigationOptions");
             if (navPlayers == null || navMaps == null || navBans == null || navPlugins == null || navSettings == null || navOptions == null) return false;
 
+            Label headerUpTime = ExtensionApi.FindControl<Label>(headerLayout, "MainHeaderUpTime");
+            Label playersName  = ExtensionApi.FindControl<Label>(mainLayout, "MainPlayersTitleName");
+            Label playersMode  = ExtensionApi.FindControl<Label>(mainLayout, "MainPlayersTitleMode");
+            if (headerUpTime == null || playersName == null || playersMode == null) return false;
+
             // Load our resources.
             ResourceDictionary tResources = new ResourceDictionary() {
                 Source = new Uri("pack://application:,,,/Procon.UI.Default;component/Styles-All/Light/Light.xaml")
@@ -80,6 +85,12 @@ namespace Procon.UI.Default.Styles.Light
             navBans.Style     = tResources["StyleRadioButtonBans"]     as Style;
             navPlugins.Style  = tResources["StyleRadioButtonPlugins"]  as Style;
             navSettings.Style = tResources["StyleRadioButtonSettings"] as Style;
+            navOptions.Style  = tResources["StyleRadioButtonOptions"]  as Style;
+
+            // Setup various properties for controls.
+            headerUpTime.Foreground = tResources["BrushTextSoft"] as Brush;
+            playersName.Foreground  = tResources["BrushTextSoft"] as Brush;
+            playersMode.Foreground  = tResources["BrushTextSoft"] as Brush;
 
             // Setup the backgrounds for some controls.
             tutorialLayout.Background   = tResources["BrushSpotlight"]   as Brush;

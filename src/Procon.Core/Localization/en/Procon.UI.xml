@@ -199,6 +199,15 @@
           </newinterface>
         </tutorial>
         
+        <!-- Main Window -->
+        <main>
+          <players>
+            <loc key="Title" value="Player List" />
+            <loc key="Ban"   value="Ban" />
+            <loc key="Kick"  value="Kick" />
+          </players>
+        </main>
+        
       </root>
     </default>
 

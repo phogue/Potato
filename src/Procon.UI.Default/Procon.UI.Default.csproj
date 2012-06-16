@@ -38,6 +38,15 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="CommandsAndProperties.cs" />
+    <Compile Include="Controls\ToggleImageButton.xaml.cs">
+      <DependentUpon>ToggleImageButton.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ImageButton.xaml.cs">
+      <DependentUpon>ImageButton.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\RadioImageButton.xaml.cs">
+      <DependentUpon>RadioImageButton.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Panel-Root\Layout\Layout.cs" />
     <Compile Include="Panel-Root\Layout\LayoutView.xaml.cs">
       <DependentUpon>LayoutView.xaml</DependentUpon>
@@ -105,7 +114,11 @@
     <Reference Include="PresentationFramework" />
     <Reference Include="PresentationFramework.Aero" />
     <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xaml" />
+    <Reference Include="System.Xml" />
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
@@ -123,6 +136,18 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Controls\ToggleImageButton.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\ImageButton.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\RadioImageButton.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Panel-Root\Layout\LayoutView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

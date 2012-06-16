@@ -87,7 +87,7 @@ namespace Procon.Core.Interfaces {
         /// Saves nothing, as remote classes are saved by their local counterparts and synchronized
         /// when Procon is ran again.
         /// </summary>
-        protected override void WriteConfig(XElement xNamespace, ref FileInfo xFile) { }
+        protected override void WriteConfig(XElement xNamespace) { }
 
         #endregion
 

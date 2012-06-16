@@ -38,8 +38,8 @@ namespace Procon.UI.Default.Root.Main.Header
         #endregion IExtension Properties
 
         // An easy accessor for Properties and Commands of this control.
-        private InfinityDictionary<String, Object>   tProps = InstanceViewModel.PublicProperties["Main"]["Header"];
-        private InfinityDictionary<String, ICommand> tCmmds = InstanceViewModel.PublicCommands["Main"]["Header"];
+        private InfinityDictionary<String, Object>   tProps = ViewModelBase.PublicProperties["Main"]["Header"];
+        private InfinityDictionary<String, ICommand> tCmmds = ViewModelBase.PublicCommands["Main"]["Header"];
 
         [STAThread]
         public bool Entry(Window root)

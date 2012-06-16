@@ -6,7 +6,7 @@ using Procon.Core.Interfaces.RSS.Objects;
 namespace Procon.UI.API.ViewModels
 {
     // Wraps a Package
-    public class PackageViewModel : ViewModelBase<Package>
+    public class PackageViewModel : ViewModel<Package>
     {
         // View Model Public Accessors/Mutators.
         public String       Uid

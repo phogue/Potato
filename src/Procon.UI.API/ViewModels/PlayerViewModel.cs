@@ -26,7 +26,7 @@ using Procon.UI.API.Utils;
 namespace Procon.UI.API.ViewModels
 {
     /// <summary>Wraps a Player of Procon so that it can be used in the UI.</summary>
-    public class PlayerViewModel : ViewModelBase<Player>
+    public class PlayerViewModel : ViewModel<Player>
     {
         // Standard Player Properties
         public String Uid

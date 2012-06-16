@@ -20,22 +20,23 @@ namespace Procon.Core {
                     OnPropertyChanged(this, "Arguments");
         } } }
 
-        // Private Variables.
-        private List<String> mArguments;
-        private Dictionary<CommandAttribute, MethodInfo> mCommands;
+        // Internal Variables.
+        protected FileInfo     nFile;
+        private   List<String> mArguments;
+        private   Dictionary<CommandAttribute, MethodInfo> mCommands;
 
 
         // Constructor.
         public Executable() {
+            nFile     = new FileInfo(Path.Combine(Defines.CONFIGS_DIRECTORY, String.Format("{0}.xml", GetType().Namespace)));
             mCommands = new Dictionary<CommandAttribute, MethodInfo>();
             Arguments = new List<String>();
         }
         // Destructor.
         ~Executable() {
-            Config   mConfig = new Config().Generate(GetType());
-            FileInfo mFile   = new FileInfo(Path.Combine(Defines.CONFIGS_DIRECTORY, String.Format("{0}.xml", GetType().Namespace)));
-            WriteConfig(mConfig.Root, ref mFile);
-            mConfig.Save(mFile);
+            Config mConfig = new Config().Generate(GetType());
+            WriteConfig(mConfig.Root);
+            mConfig.Save(nFile);
         }
 
 
@@ -60,7 +61,7 @@ namespace Procon.Core {
         public virtual void Dispose() { }
         // WriteConfig:
         // -- Allows for an optional child implementation.
-        protected virtual void WriteConfig(XElement xNamespace, ref FileInfo xFile) { }
+        protected virtual void WriteConfig(XElement xNamespace) { }
 
 
         // Finds the commands specified in the config file and invokes them with the specified attributes.

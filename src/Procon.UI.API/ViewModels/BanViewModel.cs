@@ -25,7 +25,7 @@ using Procon.UI.API.Utils;
 namespace Procon.UI.API.ViewModels
 {
     /// <summary>Wraps a Ban of Procon so that it can be used in the UI.</summary>
-    public class BanViewModel : ViewModelBase<Ban>
+    public class BanViewModel : ViewModel<Ban>
     {
         // Standard Ban Properties
         public Player Target

@@ -5,9 +5,7 @@
                     xmlns:view="clr-namespace:Procon.UI.API.ViewModels;assembly=Procon.UI.API"
                     xmlns:acmd="clr-namespace:Procon.UI.API.Commands;assembly=Procon.UI.API"
                     xmlns:util="clr-namespace:Procon.UI.API.Utils;assembly=Procon.UI.API">
-    <!-- Colors -->
-    <Color x:Key="ColorText"          A="255" R="35"  G="31"  B="32"  />
-    <Color x:Key="ColorTextSoft"      A="255" R="63"  G="71"  B="79"  />
+    <!-- General Colors -->
     <Color x:Key="ColorDefaultLight"  A="255" R="244" G="244" B="244" />
     <Color x:Key="ColorDefaultMedium" A="255" R="230" G="230" B="230" />
     <Color x:Key="ColorDefaultDark"   A="255" R="205" G="205" B="205" />
@@ -21,9 +19,19 @@
     <Color x:Key="ColorBorderMedium"  A="255" R="223" G="223" B="223" />
     <Color x:Key="ColorBorderDark"    A="255" R="163" G="163" B="163" />
     
-    <!-- Brushes -->
-    <SolidColorBrush x:Key="BrushText"     Color="{StaticResource ColorText}"          />
-    <SolidColorBrush x:Key="BrushTextSoft" Color="{StaticResource ColorTextSoft}"      />
+    <!-- Text Colors -->
+    <Color x:Key="ColorText"     A="255" R="35" G="31" B="32" />
+    <Color x:Key="ColorTextSoft" A="255" R="63" G="71" B="79" />
+    
+    <!-- Specific Colors -->
+    <Color x:Key="ColorEmphasis"  A="255" R="217" G="218" B="219" />
+    <Color x:Key="ColorOffset"    A="255" R="233" G="233" B="233" />
+    <Color x:Key="ColorChatTitle" A="255" R="31"  G="32"  B="34"  />
+    <Color x:Key="ColorChatMain"  A="255" R="53"  G="56"  B="58"  />
+    <Color x:Key="ColorChatRow"   A="255" R="65"  G="68"  B="70"  />
+    <Color x:Key="ColorChatDark"  A="255" R="22"  G="23"  B="24"  />
+    
+    <!-- General Brushes -->
     <SolidColorBrush x:Key="BrushLight"    Color="{StaticResource ColorDefaultLight}"  />
     <SolidColorBrush x:Key="BrushMedium"   Color="{StaticResource ColorDefaultMedium}" />
     <SolidColorBrush x:Key="BrushDark"     Color="{StaticResource ColorDefaultDark}"   />
@@ -63,24 +71,40 @@
         <GradientStop Offset="0.0" Color="{StaticResource ColorSpecialDark}" />
         <GradientStop Offset="1.0" Color="{StaticResource ColorSpecialMedium}" />
     </LinearGradientBrush>
-    <LinearGradientBrush x:Key="BrushBorder"  StartPoint="0.5, 0.0" EndPoint="0.5, 1.0">
+    <LinearGradientBrush x:Key="BrushBorder"        StartPoint="0.5, 0.0" EndPoint="0.5, 1.0">
         <GradientStop Offset="0.1" Color="{StaticResource ColorBorderLight}"  />
         <GradientStop Offset="0.9" Color="{StaticResource ColorBorderMedium}" />
         <GradientStop Offset="1.0" Color="{StaticResource ColorBorderDark}"   />
     </LinearGradientBrush>
-    <RadialGradientBrush x:Key="BrushSpotlight"     GradientOrigin="0.5, 0.5" Center="0.5, 0.65" RadiusX="0.4" RadiusY="0.6">
+
+    <!-- Text Brushes -->
+    <SolidColorBrush x:Key="BrushText"     Color="{StaticResource ColorText}"     />
+    <SolidColorBrush x:Key="BrushTextSoft" Color="{StaticResource ColorTextSoft}" />
+    
+    <!-- Specific Brushes -->
+    <SolidColorBrush x:Key="BrushEmphasis"  Color="{StaticResource ColorEmphasis}"  />
+    <SolidColorBrush x:Key="BrushOffset"    Color="{StaticResource ColorOffset}"    />
+    <SolidColorBrush x:Key="BrushChatTitle" Color="{StaticResource ColorChatTitle}" />
+    <SolidColorBrush x:Key="BrushChatMain"  Color="{StaticResource ColorChatMain}"  />
+    <SolidColorBrush x:Key="BrushChatRow"   Color="{StaticResource ColorChatRow}"   />
+    <LinearGradientBrush x:Key="BrushChatBox" StartPoint="0.5, 0.0" EndPoint="0.5, 1.0">
+        <GradientStop Offset="0.0" Color="{StaticResource ColorChatDark}" />
+        <GradientStop Offset="0.1" Color="{StaticResource ColorChatMain}" />
+    </LinearGradientBrush>
+    
+    
+    <!-- Background Brushes -->
+    <RadialGradientBrush x:Key="BrushSpotlight" GradientOrigin="0.5, 0.5" Center="0.5, 0.65" RadiusX="0.4" RadiusY="0.6">
         <GradientStop Offset="0.0" Color="{StaticResource ColorDefaultLight}" />
         <GradientStop Offset="0.2" Color="{StaticResource ColorDefaultLight}" />
         <GradientStop Offset="1.0" Color="{StaticResource ColorDefaultDark}"  />
     </RadialGradientBrush>
-
-    <!-- Images -->
     <ImageBrush x:Key="BrushBlueDot"
                 TileMode="Tile"
                 Viewport="0, 0, 10, 10"
                 ViewportUnits="Absolute"
                 ImageSource="{Binding
-                    Source={x:Static view:InstanceViewModel.PublicProperties},
+                    Source={x:Static view:ViewModelBase.PublicProperties},
                     Path=[Images][Background][Navigation].Value}" />
     
     <!-- Focus Visual -->
@@ -149,252 +173,6 @@
             </Trigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>
-    <ControlTemplate x:Key="TemplateRadioButtonPlayers"  TargetType="{x:Type RadioButton}">
-        <Image Name="PART_Content"
-               Width="{TemplateBinding Width}"
-               Height="{TemplateBinding Height}"
-               Margin="{TemplateBinding Margin}"
-               VerticalAlignment="{TemplateBinding VerticalAlignment}"
-               HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
-               Source="{Binding
-                   Source={x:Static view:InstanceViewModel.PublicProperties},
-                   Path=[Images][Content][Players][Default].Value}" />
-        <ControlTemplate.Triggers>
-            <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Source"
-                        Value="{Binding
-                            Source={x:Static view:InstanceViewModel.PublicProperties},
-                            Path=[Images][Content][Players][Hover].Value}"
-                        TargetName="PART_Content" />
-            </Trigger>
-            <Trigger Property="IsPressed" Value="True">
-                <Setter Property="Source"
-                        Value="{Binding
-                            Source={x:Static view:InstanceViewModel.PublicProperties},
-                            Path=[Images][Content][Players][Press].Value}"
-                        TargetName="PART_Content" />
-            </Trigger>
-            <Trigger Property="IsChecked" Value="True">
-                <Setter Property="Source"
-                        Value="{Binding
-                            Source={x:Static view:InstanceViewModel.PublicProperties},
-                            Path=[Images][Content][Players][Active].Value}"
-                        TargetName="PART_Content" />
-            </Trigger>
-            <Trigger Property="IsEnabled" Value="False">
-                <Setter Property="Source"
-                        Value="{Binding
-                            Source={x:Static view:InstanceViewModel.PublicProperties},
-                            Path=[Images][Content][Players][Disabled].Value}"
-                        TargetName="PART_Content" />
-            </Trigger>
-        </ControlTemplate.Triggers>
-    </ControlTemplate>
-    <ControlTemplate x:Key="TemplateRadioButtonMaps"     TargetType="{x:Type RadioButton}">
-        <Image Name="PART_Content"
-               Width="{TemplateBinding Width}"
-               Height="{TemplateBinding Height}"
-               Margin="{TemplateBinding Margin}"
-               VerticalAlignment="{TemplateBinding VerticalAlignment}"
-               HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
-               Source="{Binding
-                   Source={x:Static view:InstanceViewModel.PublicProperties},
-                   Path=[Images][Content][Maps][Default].Value}" />
-        <ControlTemplate.Triggers>
-            <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Source"
-                        Value="{Binding
-                            Source={x:Static view:InstanceViewModel.PublicProperties},
-                            Path=[Images][Content][Maps][Hover].Value}"
-                        TargetName="PART_Content" />
-            </Trigger>
-            <Trigger Property="IsPressed" Value="True">
-                <Setter Property="Source"
-                        Value="{Binding
-                            Source={x:Static view:InstanceViewModel.PublicProperties},
-                            Path=[Images][Content][Maps][Press].Value}"
-                        TargetName="PART_Content" />
-            </Trigger>
-            <Trigger Property="IsChecked" Value="True">
-                <Setter Property="Source"
-                        Value="{Binding
-                            Source={x:Static view:InstanceViewModel.PublicProperties},
-                            Path=[Images][Content][Maps][Active].Value}"
-                        TargetName="PART_Content" />
-            </Trigger>
-            <Trigger Property="IsEnabled" Value="False">
-                <Setter Property="Source"
-                        Value="{Binding
-                            Source={x:Static view:InstanceViewModel.PublicProperties},
-                            Path=[Images][Content][Maps][Disabled].Value}"
-                        TargetName="PART_Content" />
-            </Trigger>
-        </ControlTemplate.Triggers>
-    </ControlTemplate>
-    <ControlTemplate x:Key="TemplateRadioButtonBans"     TargetType="{x:Type RadioButton}">
-        <Image Name="PART_Content"
-               Width="{TemplateBinding Width}"
-               Height="{TemplateBinding Height}"
-               Margin="{TemplateBinding Margin}"
-               VerticalAlignment="{TemplateBinding VerticalAlignment}"
-               HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
-               Source="{Binding
-                   Source={x:Static view:InstanceViewModel.PublicProperties},
-                   Path=[Images][Content][Bans][Default].Value}" />
-        <ControlTemplate.Triggers>
-            <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Source"
-                        Value="{Binding
-                            Source={x:Static view:InstanceViewModel.PublicProperties},
-                            Path=[Images][Content][Bans][Hover].Value}"
-                        TargetName="PART_Content" />
-            </Trigger>
-            <Trigger Property="IsPressed" Value="True">
-                <Setter Property="Source"
-                        Value="{Binding
-                            Source={x:Static view:InstanceViewModel.PublicProperties},
-                            Path=[Images][Content][Bans][Press].Value}"
-                        TargetName="PART_Content" />
-            </Trigger>
-            <Trigger Property="IsChecked" Value="True">
-                <Setter Property="Source"
-                        Value="{Binding
-                            Source={x:Static view:InstanceViewModel.PublicProperties},
-                            Path=[Images][Content][Bans][Active].Value}"
-                        TargetName="PART_Content" />
-            </Trigger>
-            <Trigger Property="IsEnabled" Value="False">
-                <Setter Property="Source"
-                        Value="{Binding
-                            Source={x:Static view:InstanceViewModel.PublicProperties},
-                            Path=[Images][Content][Bans][Disabled].Value}"
-                        TargetName="PART_Content" />
-            </Trigger>
-        </ControlTemplate.Triggers>
-    </ControlTemplate>
-    <ControlTemplate x:Key="TemplateRadioButtonPlugins"  TargetType="{x:Type RadioButton}">
-        <Image Name="PART_Content"
-               Width="{TemplateBinding Width}"
-               Height="{TemplateBinding Height}"
-               Margin="{TemplateBinding Margin}"
-               VerticalAlignment="{TemplateBinding VerticalAlignment}"
-               HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
-               Source="{Binding
-                   Source={x:Static view:InstanceViewModel.PublicProperties},
-                   Path=[Images][Content][Plugins][Default].Value}" />
-        <ControlTemplate.Triggers>
-            <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Source"
-                        Value="{Binding
-                            Source={x:Static view:InstanceViewModel.PublicProperties},
-                            Path=[Images][Content][Plugins][Hover].Value}"
-                        TargetName="PART_Content" />
-            </Trigger>
-            <Trigger Property="IsPressed" Value="True">
-                <Setter Property="Source"
-                        Value="{Binding
-                            Source={x:Static view:InstanceViewModel.PublicProperties},
-                            Path=[Images][Content][Plugins][Press].Value}"
-                        TargetName="PART_Content" />
-            </Trigger>
-            <Trigger Property="IsChecked" Value="True">
-                <Setter Property="Source"
-                        Value="{Binding
-                            Source={x:Static view:InstanceViewModel.PublicProperties},
-                            Path=[Images][Content][Plugins][Active].Value}"
-                        TargetName="PART_Content" />
-            </Trigger>
-            <Trigger Property="IsEnabled" Value="False">
-                <Setter Property="Source"
-                        Value="{Binding
-                            Source={x:Static view:InstanceViewModel.PublicProperties},
-                            Path=[Images][Content][Plugins][Disabled].Value}"
-                        TargetName="PART_Content" />
-            </Trigger>
-        </ControlTemplate.Triggers>
-    </ControlTemplate>
-    <ControlTemplate x:Key="TemplateRadioButtonSettings" TargetType="{x:Type RadioButton}">
-        <Image Name="PART_Content"
-               Width="{TemplateBinding Width}"
-               Height="{TemplateBinding Height}"
-               Margin="{TemplateBinding Margin}"
-               VerticalAlignment="{TemplateBinding VerticalAlignment}"
-               HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
-               Source="{Binding
-                   Source={x:Static view:InstanceViewModel.PublicProperties},
-                   Path=[Images][Content][Settings][Default].Value}" />
-        <ControlTemplate.Triggers>
-            <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Source"
-                        Value="{Binding
-                            Source={x:Static view:InstanceViewModel.PublicProperties},
-                            Path=[Images][Content][Settings][Hover].Value}"
-                        TargetName="PART_Content" />
-            </Trigger>
-            <Trigger Property="IsPressed" Value="True">
-                <Setter Property="Source"
-                        Value="{Binding
-                            Source={x:Static view:InstanceViewModel.PublicProperties},
-                            Path=[Images][Content][Settings][Press].Value}"
-                        TargetName="PART_Content" />
-            </Trigger>
-            <Trigger Property="IsChecked" Value="True">
-                <Setter Property="Source"
-                        Value="{Binding
-                            Source={x:Static view:InstanceViewModel.PublicProperties},
-                            Path=[Images][Content][Settings][Active].Value}"
-                        TargetName="PART_Content" />
-            </Trigger>
-            <Trigger Property="IsEnabled" Value="False">
-                <Setter Property="Source"
-                        Value="{Binding
-                            Source={x:Static view:InstanceViewModel.PublicProperties},
-                            Path=[Images][Content][Settings][Disabled].Value}"
-                        TargetName="PART_Content" />
-            </Trigger>
-        </ControlTemplate.Triggers>
-    </ControlTemplate>
-    <ControlTemplate x:Key="TemplateRadioButtonOptions"  TargetType="{x:Type RadioButton}">
-        <Image Name="PART_Content"
-               Width="{TemplateBinding Width}"
-               Height="{TemplateBinding Height}"
-               Margin="{TemplateBinding Margin}"
-               VerticalAlignment="{TemplateBinding VerticalAlignment}"
-               HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
-               Source="{Binding
-                   Source={x:Static view:InstanceViewModel.PublicProperties},
-                   Path=[Images][Content][Options][Default].Value}" />
-        <ControlTemplate.Triggers>
-            <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Source"
-                        Value="{Binding
-                            Source={x:Static view:InstanceViewModel.PublicProperties},
-                            Path=[Images][Content][Options][Hover].Value}"
-                        TargetName="PART_Content" />
-            </Trigger>
-            <Trigger Property="IsPressed" Value="True">
-                <Setter Property="Source"
-                        Value="{Binding
-                            Source={x:Static view:InstanceViewModel.PublicProperties},
-                            Path=[Images][Content][Options][Press].Value}"
-                        TargetName="PART_Content" />
-            </Trigger>
-            <Trigger Property="IsChecked" Value="True">
-                <Setter Property="Source"
-                        Value="{Binding
-                            Source={x:Static view:InstanceViewModel.PublicProperties},
-                            Path=[Images][Content][Options][Active].Value}"
-                        TargetName="PART_Content" />
-            </Trigger>
-            <Trigger Property="IsEnabled" Value="False">
-                <Setter Property="Source"
-                        Value="{Binding
-                            Source={x:Static view:InstanceViewModel.PublicProperties},
-                            Path=[Images][Content][Options][Disabled].Value}"
-                        TargetName="PART_Content" />
-            </Trigger>
-        </ControlTemplate.Triggers>
-    </ControlTemplate>
     
     <!-- Styles -->
     <Style x:Key="StyleButton"        TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
@@ -420,7 +198,7 @@
         <Setter Property="Template"              Value="{StaticResource TemplateButtonSpecial}" />
         <Setter Property="OverridesDefaultStyle" Value="True" />
     </Style>
-    <Style x:Key="StyleRadioButton"         TargetType="{x:Type RadioButton}" BasedOn="{StaticResource {x:Type RadioButton}}">
+    <Style x:Key="StyleRadioButton" TargetType="{x:Type RadioButton}" BasedOn="{StaticResource {x:Type RadioButton}}">
         <Setter Property="Margin"      Value="0" />
         <Setter Property="Padding"     Value="0" />
         <Setter Property="FontSize"    Value="12.0" />
@@ -429,30 +207,6 @@
         <Setter Property="Foreground"  Value="{StaticResource BrushText}" />
         <Setter Property="VerticalContentAlignment"   Value="Center" />
         <Setter Property="HorizontalContentAlignment" Value="Left" />
-    </Style>
-    <Style x:Key="StyleRadioButtonPlayers"  TargetType="{x:Type RadioButton}" BasedOn="{StaticResource StyleRadioButton}">
-        <Setter Property="Template"              Value="{StaticResource TemplateRadioButtonPlayers}" />
-        <Setter Property="OverridesDefaultStyle" Value="True" />
-    </Style>
-    <Style x:Key="StyleRadioButtonMaps"     TargetType="{x:Type RadioButton}" BasedOn="{StaticResource StyleRadioButton}">
-        <Setter Property="Template"              Value="{StaticResource TemplateRadioButtonMaps}" />
-        <Setter Property="OverridesDefaultStyle" Value="True" />
-    </Style>
-    <Style x:Key="StyleRadioButtonBans"     TargetType="{x:Type RadioButton}" BasedOn="{StaticResource StyleRadioButton}">
-        <Setter Property="Template"              Value="{StaticResource TemplateRadioButtonBans}" />
-        <Setter Property="OverridesDefaultStyle" Value="True" />
-    </Style>
-    <Style x:Key="StyleRadioButtonPlugins"  TargetType="{x:Type RadioButton}" BasedOn="{StaticResource StyleRadioButton}">
-        <Setter Property="Template"              Value="{StaticResource TemplateRadioButtonPlugins}" />
-        <Setter Property="OverridesDefaultStyle" Value="True" />
-    </Style>
-    <Style x:Key="StyleRadioButtonSettings" TargetType="{x:Type RadioButton}" BasedOn="{StaticResource StyleRadioButton}">
-        <Setter Property="Template"              Value="{StaticResource TemplateRadioButtonSettings}" />
-        <Setter Property="OverridesDefaultStyle" Value="True" />
-    </Style>
-    <Style x:Key="StyleRadioButtonOptions"  TargetType="{x:Type RadioButton}" BasedOn="{StaticResource StyleRadioButton}">
-        <Setter Property="Template"              Value="{StaticResource TemplateRadioButtonOptions}" />
-        <Setter Property="OverridesDefaultStyle" Value="True" />
     </Style>
     <Style x:Key="StyleTextBox"     TargetType="{x:Type TextBox}"     BasedOn="{StaticResource {x:Type TextBox}}">
         <Setter Property="Margin"      Value="0" />

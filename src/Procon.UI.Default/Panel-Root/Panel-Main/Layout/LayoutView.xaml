@@ -6,12 +6,15 @@
       xmlns:view="clr-namespace:Procon.UI.API.ViewModels;assembly=Procon.UI.API"
       xmlns:acmd="clr-namespace:Procon.UI.API.Commands;assembly=Procon.UI.API"
       xmlns:util="clr-namespace:Procon.UI.API.Utils;assembly=Procon.UI.API"
-      Name="MainLayout">
+      Name="MainLayout"
+      DataContext="{Binding
+          Source={x:Static view:ViewModelBase.PublicProperties},
+          Path=[Connection].Value}">
     <Grid.Style>
         <Style TargetType="{x:Type Grid}">
             <Setter Property="Visibility" Value="Collapsed" />
             <Style.Triggers>
-                <DataTrigger Binding="{Binding Source={x:Static view:InstanceViewModel.PublicProperties}, Path=[Settings][Tutorial].Value}" Value="Done">
+                <DataTrigger Binding="{Binding Source={x:Static view:ViewModelBase.PublicProperties}, Path=[Settings][Tutorial].Value}" Value="Done">
                     <Setter Property="Visibility" Value="Visible" />
                 </DataTrigger>
             </Style.Triggers>

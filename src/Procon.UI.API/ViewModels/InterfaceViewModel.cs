@@ -14,7 +14,7 @@ using Procon.Net.Protocols.Objects;
 namespace Procon.UI.API.ViewModels
 {
     // Wraps an Interface
-    public class InterfaceViewModel : ViewModelBase<Interface>
+    public class InterfaceViewModel : ViewModel<Interface>
     {
         // View Model Public Accessors/Mutators.
         public String Hostname
@@ -92,8 +92,8 @@ namespace Procon.UI.API.ViewModels
             Model.Packages.PropertyChanged += Interface_PropertyChanged;
 
             // Expose collections within the model:
-            Connections = new ObservableCollection<ConnectionViewModel>();
-            Packages    = new ObservableCollection<PackageViewModel>();
+            Connections = new ObservableCollection<ConnectionViewModel>(Model.Connections.Select(x => new ConnectionViewModel(x)));
+            Packages    = new ObservableCollection<PackageViewModel>(Model.Packages.Packages.Select(x => new PackageViewModel(x)));
         }
         
         // View Model Methods.

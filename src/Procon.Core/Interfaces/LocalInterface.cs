@@ -91,7 +91,7 @@ namespace Procon.Core.Interfaces {
         /// <summary>
         /// Saves information about each connection to the configuation file.
         /// </summary>
-        protected override void WriteConfig(XElement xNamespace, ref FileInfo xFile)
+        protected override void WriteConfig(XElement xNamespace)
         {
             foreach (Connection connection in this.Connections)
                 xNamespace.Add(new XElement("command",

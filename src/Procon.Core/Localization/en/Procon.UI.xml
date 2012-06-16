@@ -201,6 +201,9 @@
         
         <!-- Main Window -->
         <main>
+          <chat>
+            <loc key="Title" value="Chat" />
+          </chat>
           <players>
             <loc key="Title" value="Player List" />
             <loc key="Ban"   value="Ban" />

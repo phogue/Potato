@@ -11,7 +11,7 @@
         <Style TargetType="{x:Type Grid}">
             <Setter Property="Visibility" Value="Visible" />
             <Style.Triggers>
-                <DataTrigger Binding="{Binding Source={x:Static view:InstanceViewModel.PublicProperties}, Path=[Settings][Tutorial].Value}" Value="Done">
+                <DataTrigger Binding="{Binding Source={x:Static view:ViewModelBase.PublicProperties}, Path=[Settings][Tutorial].Value}" Value="Done">
                     <Setter Property="Visibility" Value="Collapsed" />
                 </DataTrigger>
             </Style.Triggers>

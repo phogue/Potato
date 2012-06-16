@@ -10,6 +10,113 @@
     <Grid.Resources>
         <conv:TextLocalizationConverter x:Key="TextLoc" />
         <conv:EnumLocalizationConverter x:Key="EnumLoc" />
+        
+        <Color           x:Key="ColorTeam1Dark"  A="255" R="124" G="207" B="224" />
+        <Color           x:Key="ColorTeam1Light" A="255" R="178" G="230" B="239" />
+        <Color           x:Key="ColorTeam2Dark"  A="255" R="255" G="160" B="148" />
+        <Color           x:Key="ColorTeam2Light" A="255" R="255" G="202" B="194" />
+        <SolidColorBrush x:Key="BrushTeam1Dark"  Color="{StaticResource ColorTeam1Dark}"  />
+        <SolidColorBrush x:Key="BrushTeam1Light" Color="{StaticResource ColorTeam1Light}" />
+        <SolidColorBrush x:Key="BrushTeam2Dark"  Color="{StaticResource ColorTeam2Dark}"  />
+        <SolidColorBrush x:Key="BrushTeam2Light" Color="{StaticResource ColorTeam2Light}" />
+        
+        <DataTemplate DataType="{x:Type view:PlayerViewModel}">
+            <DockPanel x:Name="PART_Content"
+                       Margin="5"
+                       Width="150">
+                
+                <DockPanel x:Name="PART_Title"
+                           DockPanel.Dock="Top">
+                    <Image x:Name="PART_Icon"
+                           DockPanel.Dock="Left"
+                           Width="16"
+                           Height="16"
+                           Margin="4" />
+                    <Image x:Name="PART_Country"
+                           DockPanel.Dock="Right"
+                           Width="16"
+                           Height="16"
+                           Margin="4" />
+                    <CheckBox x:Name="PART_Selected"
+                              DockPanel.Dock="Right"
+                              VerticalAlignment="Center"/>
+                    <TextBlock x:Name="PART_Name"
+                               DockPanel.Dock="Left"
+                               VerticalAlignment="Center"
+                               FontWeight="Bold"
+                               Text="{Binding Name}" />
+                </DockPanel>
+                
+                <Grid x:Name="PART_Data"
+                      DockPanel.Dock="Top">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="3" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="3" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="1.0*" />
+                    </Grid.ColumnDefinitions>
+                    
+                    <Image x:Name="PART_ScoreWarn"
+                           Grid.Row="1"
+                           Grid.Column="0"
+                           Width="16"
+                           Height="16"
+                           Margin="4, 0" />
+                    <Image x:Name="PART_KdrWarn"
+                           Grid.Row="2"
+                           Grid.Column="0"
+                           Width="16"
+                           Height="16"
+                           Margin="4, 0" />
+                    <Image x:Name="PART_PingWarn"
+                           Grid.Row="3"
+                           Grid.Column="0"
+                           Width="16"
+                           Height="16"
+                           Margin="4, 0" />
+                    
+                    <TextBlock x:Name="PART_Score"
+                               Grid.Row="1"
+                               Grid.Column="1"
+                               VerticalAlignment="Center"
+                               FontSize="11"
+                               Text="{Binding
+                                   StringFormat=Score: {0:0},
+                                   Path=Score}" />
+                    <TextBlock x:Name="PART_Kdr"
+                               Grid.Row="2"
+                               Grid.Column="1"
+                               VerticalAlignment="Center"
+                               FontSize="11"
+                               Text="{Binding
+                                   StringFormat=Kdr: {0:0.00},
+                                   Path=Kdr}" />
+                    <TextBlock x:Name="PART_Ping"
+                               Grid.Row="3"
+                               Grid.Column="1"
+                               VerticalAlignment="Center"
+                               FontSize="11"
+                               Text="{Binding
+                                   StringFormat=Ping: {0:0},
+                                   Path=Ping}" />
+                </Grid>
+            </DockPanel>
+            <DataTemplate.Triggers>
+                <DataTrigger Binding="{Binding Team}" Value="Team1">
+                    <Setter Property="Background" Value="{StaticResource BrushTeam1Dark}" TargetName="PART_Title" />
+                    <Setter Property="Background" Value="{StaticResource BrushTeam1Light}" TargetName="PART_Data" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Team}" Value="Team2">
+                    <Setter Property="Background" Value="{StaticResource BrushTeam2Dark}" TargetName="PART_Title" />
+                    <Setter Property="Background" Value="{StaticResource BrushTeam2Light}" TargetName="PART_Data" />
+                </DataTrigger>
+            </DataTemplate.Triggers>
+        </DataTemplate>
     </Grid.Resources>
     
     <!-- Content -->
@@ -17,8 +124,7 @@
         
         <!-- Title Labels -->
         <DockPanel Name="MainPlayersListActions"
-                   DockPanel.Dock="Top"
-                   Background="Gray">
+                   DockPanel.Dock="Top">
 
             <Button Name="MainPlayersListBan"
                     DockPanel.Dock="Left"
@@ -26,7 +132,7 @@
                     Padding="0, 5"
                     Margin="15, 10, 0, 10"
                     Command="{Binding
-                        Source={x:Static view:InstanceViewModel.PublicCommands},
+                        Source={x:Static view:ViewModelBase.PublicCommands},
                         Path=[Main][Players][List][Ban].Value}"
                     Content="{Binding
                         Converter={StaticResource TextLoc},
@@ -37,7 +143,7 @@
                     Padding="0, 5"
                     Margin="10, 10, 0, 10"
                     Command="{Binding
-                        Source={x:Static view:InstanceViewModel.PublicCommands},
+                        Source={x:Static view:ViewModelBase.PublicCommands},
                         Path=[Main][Players][List][Kick].Value}"
                     Content="{Binding
                         Converter={StaticResource TextLoc},
@@ -48,34 +154,49 @@
                          DockPanel.Dock="Right"
                          Margin="0, 10, 15, 10"
                          Command="{Binding
-                             Source={x:Static view:InstanceViewModel.PublicCommands},
+                             Source={x:Static view:ViewModelBase.PublicCommands},
                              Path=[Main][Players][List][ListView].Value}"
                          Content="{Binding
-                             Source={x:Static view:InstanceViewModel.PublicProperties},
+                             Source={x:Static view:ViewModelBase.PublicProperties},
                              Path=[Images][Players][ListView].Value}" />
             <RadioButton Name="MainPlayersListGridView"
                          DockPanel.Dock="Right"
                          Margin="0, 10, 10, 10"
                          Command="{Binding
-                             Source={x:Static view:InstanceViewModel.PublicCommands},
+                             Source={x:Static view:ViewModelBase.PublicCommands},
                              Path=[Main][Players][List][GridView].Value}"
                          Content="{Binding
-                             Source={x:Static view:InstanceViewModel.PublicProperties},
+                             Source={x:Static view:ViewModelBase.PublicProperties},
                              Path=[Images][Players][GridView].Value}" />
             <ToggleButton Name="MainPlayersListHighlight"
                           DockPanel.Dock="Right"
                           Margin="0, 10, 10, 10"
                           Command="{Binding
-                              Source={x:Static view:InstanceViewModel.PublicCommands},
+                              Source={x:Static view:ViewModelBase.PublicCommands},
                               Path=[Main][Players][List][Highlight].Value}"
                           Content="{Binding
-                              Source={x:Static view:InstanceViewModel.PublicProperties},
+                              Source={x:Static view:ViewModelBase.PublicProperties},
                               Path=[Images][Players][Highlight].Value}" />
             
             <Label Name="MainPlayersListPadding" Content=" "/>
         </DockPanel>
         
-        <Label Content=" " />
+        <!-- Players -->
+        <ItemsControl Name="MainPlayersListList"
+                      DockPanel.Dock="Bottom"
+                      Padding="5"
+                      ItemsSource="{Binding Players}">
+            <ItemsControl.Template>
+                <ControlTemplate>
+                    <ScrollViewer VerticalScrollBarVisibility="Auto"
+                                  HorizontalScrollBarVisibility="Disabled">
+                        <WrapPanel Width="{TemplateBinding Width}"
+                                   Height="{TemplateBinding Height}"
+                                   IsItemsHost="True" />
+                    </ScrollViewer>
+                </ControlTemplate>
+            </ItemsControl.Template>
+        </ItemsControl>
         
     </DockPanel>
 </Grid>

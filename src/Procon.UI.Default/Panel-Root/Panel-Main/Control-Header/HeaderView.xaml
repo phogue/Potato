@@ -19,18 +19,18 @@
                 DockPanel.Dock="Left"
                 Width="48"
                 Command="{Binding
-                    Source={x:Static view:InstanceViewModel.PublicCommands},
+                    Source={x:Static view:ViewModelBase.PublicCommands},
                     Path=[Main][Header][Swap].Value}">
             <Image Width="30"
                    Source="{Binding
-                       Source={x:Static view:InstanceViewModel.PublicProperties},
+                       Source={x:Static view:ViewModelBase.PublicProperties},
                        Path=[Images][Connection][Swap].Value}" />
         </Button>
         <Image Name="MainHeaderLogo"
                DockPanel.Dock="Right"
                Margin="0, 0, 10, 0"
                Source="{Binding
-                    Source={x:Static view:InstanceViewModel.PublicProperties},
+                    Source={x:Static view:ViewModelBase.PublicProperties},
                     Path=[Images][Procon][Small].Value}" />
         <DockPanel Name="MainHeaderSubContent"
                    Margin="15, 7">
@@ -38,20 +38,20 @@
                    DockPanel.Dock="Left"
                    Margin="0, 0, 10, 0"
                    Source="{Binding
-                       Source={x:Static view:InstanceViewModel.PublicProperties},
+                       Source={x:Static view:ViewModelBase.PublicProperties},
                        Path=[Images][Connection][Info].Value}"/>
             <Label Name="MainHeaderName"
                    DockPanel.Dock="Left"
                    Margin="0, 0, 10, 0"
                    Content="{Binding
-                       Source={x:Static view:InstanceViewModel.PublicProperties},
+                       Source={x:Static view:ViewModelBase.PublicProperties},
                        Path=[Connection].Value.ServerName,
                        FallbackValue='[???]'}" />
             <Label Name="MainHeaderUpTime"
                    DockPanel.Dock="Left"
                    Margin="0, 0, 10, 0"
                    Content="{Binding
-                       Source={x:Static view:InstanceViewModel.PublicProperties},
+                       Source={x:Static view:ViewModelBase.PublicProperties},
                        Path=[Connection].Value.UpTime,
                        FallbackValue='[???]'}" />
             <Label Name="MainHeaderPadding" Content=" "/>

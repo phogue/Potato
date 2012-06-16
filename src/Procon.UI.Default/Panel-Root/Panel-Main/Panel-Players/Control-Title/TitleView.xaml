@@ -40,7 +40,7 @@
                    Grid.Column="0" 
                    FontSize="14"
                    Content="{Binding
-                       Source={x:Static view:InstanceViewModel.PublicProperties},
+                       Source={x:Static view:ViewModelBase.PublicProperties},
                        Path=[Connection].Value.GameMode,
                        FallbackValue='[???]'}" />
             <Label Name="MainPlayersTitleCount"
@@ -50,10 +50,10 @@
                 <TextBlock FontSize="15">
                     <TextBlock.Text>
                         <MultiBinding StringFormat="{}{0}/{1}">
-                            <Binding Source="{x:Static view:InstanceViewModel.PublicProperties}"
+                            <Binding Source="{x:Static view:ViewModelBase.PublicProperties}"
                                      Path="[Connection].Value.PlayerCount"
                                      FallbackValue="?" />
-                            <Binding Source="{x:Static view:InstanceViewModel.PublicProperties}"
+                            <Binding Source="{x:Static view:ViewModelBase.PublicProperties}"
                                      Path="[Connection].Value.MaxPlayerCount"
                                      FallbackValue="?" />
                         </MultiBinding>

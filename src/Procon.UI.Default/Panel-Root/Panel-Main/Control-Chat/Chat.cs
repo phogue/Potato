@@ -38,8 +38,8 @@ namespace Procon.UI.Default.Root.Main.Chat
         #endregion IExtension Properties
 
         // An easy accessor for Properties and Commands of this control.
-        private InfinityDictionary<String, Object>   tProps = InstanceViewModel.PublicProperties["Main"]["Chat"];
-        private InfinityDictionary<String, ICommand> tCmmds = InstanceViewModel.PublicCommands["Main"]["Chat"];
+        private InfinityDictionary<String, Object>   tProps = ViewModelBase.PublicProperties["Main"]["Chat"];
+        private InfinityDictionary<String, ICommand> tCmmds = ViewModelBase.PublicCommands["Main"]["Chat"];
 
         [STAThread]
         public bool Entry(Window root)

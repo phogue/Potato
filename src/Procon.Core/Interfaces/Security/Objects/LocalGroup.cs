@@ -62,9 +62,9 @@ namespace Procon.Core.Interfaces.Security.Objects {
         /// <summary>
         /// Relies on children classes to implement this.
         /// </summary>
-        protected override void WriteConfig(XElement config, ref FileInfo xFile)
+        protected override void WriteConfig(XElement config)
         {
-            base.WriteConfig(config, ref xFile);
+            base.WriteConfig(config);
 
             foreach (Permission permission in Permissions) {
                 if (permission.Authority != null) {

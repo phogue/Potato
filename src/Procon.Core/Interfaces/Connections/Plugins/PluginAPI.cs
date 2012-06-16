@@ -259,7 +259,7 @@ namespace Procon.Core.Interfaces.Connections.Plugins {
             return base.Execute();
         }
 
-        protected override void WriteConfig(XElement xNamespace, ref FileInfo xFile)
+        protected override void WriteConfig(XElement xNamespace)
         {
             // TODO: Do Config Writing here.
             // Should look something like this (stolen from LocalInterface):
@@ -274,7 +274,7 @@ namespace Procon.Core.Interfaces.Connections.Plugins {
             //      new XElement("additional", connection.Additional)
             //  ));
 
-            xFile = new FileInfo(Path.Combine(ConfigDirectoryInfo.FullName, String.Format("{0}.xml", GetType().Name)));
+            nFile = new FileInfo(Path.Combine(ConfigDirectoryInfo.FullName, String.Format("{0}.xml", GetType().Name)));
         }
 
         public void LoadConfig() {

@@ -34,7 +34,7 @@ using Procon.UI.API.Enums;
 namespace Procon.UI.API.ViewModels
 {
     /// <summary>Wraps a Connection of Procon so that it can be used in the UI.</summary>
-    public class ConnectionViewModel : ViewModelBase<Connection>
+    public class ConnectionViewModel : ViewModel<Connection>
     {
         // Standard Model Properties
         public GameType GameType
@@ -324,6 +324,7 @@ namespace Procon.UI.API.ViewModels
 
             // Manages a logging of events within the model:
             //Events = new ObservableCollection<Event>();
+            ExtensionApi.Connection = this;
         }
 
 

@@ -39,34 +39,15 @@ namespace Procon.UI.Default.Styles.Light
         [STAThread]
         public bool Entry(Window root)
         {
-            Grid rootLayout     = ExtensionApi.FindControl<Grid>(root, "RootLayout");
-            Grid tutorialLayout = ExtensionApi.FindControl<Grid>(root, "TutorialLayout");
-            Grid mainLayout     = ExtensionApi.FindControl<Grid>(root, "MainLayout");
-            if  (rootLayout == null || tutorialLayout == null || mainLayout == null) return false;
-
-            Grid headerLayout     = ExtensionApi.FindControl<Grid>(mainLayout, "MainHeader");
-            Grid navigationLayout = ExtensionApi.FindControl<Grid>(mainLayout, "MainNavigation");
-            if (headerLayout == null || navigationLayout == null) return false;
-
-            RadioButton navPlayers  = ExtensionApi.FindControl<RadioButton>(navigationLayout, "MainNavigationPlayers");
-            RadioButton navMaps     = ExtensionApi.FindControl<RadioButton>(navigationLayout, "MainNavigationMaps");
-            RadioButton navBans     = ExtensionApi.FindControl<RadioButton>(navigationLayout, "MainNavigationBans");
-            RadioButton navPlugins  = ExtensionApi.FindControl<RadioButton>(navigationLayout, "MainNavigationPlugins");
-            RadioButton navSettings = ExtensionApi.FindControl<RadioButton>(navigationLayout, "MainNavigationSettings");
-            RadioButton navOptions  = ExtensionApi.FindControl<RadioButton>(navigationLayout, "MainNavigationOptions");
-            if (navPlayers == null || navMaps == null || navBans == null || navPlugins == null || navSettings == null || navOptions == null) return false;
-
-            Label headerUpTime = ExtensionApi.FindControl<Label>(headerLayout, "MainHeaderUpTime");
-            Label playersName  = ExtensionApi.FindControl<Label>(mainLayout, "MainPlayersTitleName");
-            Label playersMode  = ExtensionApi.FindControl<Label>(mainLayout, "MainPlayersTitleMode");
-            if (headerUpTime == null || playersName == null || playersMode == null) return false;
-
             // Load our resources.
             ResourceDictionary tResources = new ResourceDictionary() {
                 Source = new Uri("pack://application:,,,/Procon.UI.Default;component/Styles-All/Light/Light.xaml")
             };
 
-            // Setup the default styles.
+
+            // Setup base styles.
+            Grid rootLayout = ExtensionApi.FindControl<Grid>(root, "RootLayout");
+            if (rootLayout == null) return false;
             rootLayout.Resources.Add(typeof(Button),      tResources["StyleButton"]      as Style);
             rootLayout.Resources.Add(typeof(RadioButton), tResources["StyleRadioButton"] as Style);
             rootLayout.Resources.Add(typeof(TextBox),     tResources["StyleTextBox"]     as Style);
@@ -75,28 +56,47 @@ namespace Procon.UI.Default.Styles.Light
             rootLayout.Resources.Add(typeof(TextBlock),   tResources["StyleTextBlock"]   as Style);
             rootLayout.Resources.Add(typeof(Image),       tResources["StyleImage"]       as Style);
 
-            // Setup the page-specific styles.
-            tutorialLayout.Resources.Add(typeof(Button), tResources["StyleButtonDefault"] as Style);
-            headerLayout.Resources.Add(typeof(Button),   tResources["StyleButtonSpecial"] as Style);
 
-            // Setup the control-specific styles.
-            navPlayers.Style  = tResources["StyleRadioButtonPlayers"]  as Style;
-            navMaps.Style     = tResources["StyleRadioButtonMaps"]     as Style;
-            navBans.Style     = tResources["StyleRadioButtonBans"]     as Style;
-            navPlugins.Style  = tResources["StyleRadioButtonPlugins"]  as Style;
-            navSettings.Style = tResources["StyleRadioButtonSettings"] as Style;
-            navOptions.Style  = tResources["StyleRadioButtonOptions"]  as Style;
+            // Setup default styles.
+            Grid mainLayout = ExtensionApi.FindControl<Grid>(rootLayout, "MainLayout");
+            Grid tutLayout  = ExtensionApi.FindControl<Grid>(rootLayout, "TutorialLayout");
+            if (tutLayout == null || mainLayout == null) return false;
+            mainLayout.Resources.Add(typeof(Button), tResources["StyleButtonDefault"] as Style);
+            tutLayout.Resources.Add( typeof(Button), tResources["StyleButtonDefault"] as Style);
 
-            // Setup various properties for controls.
-            headerUpTime.Foreground = tResources["BrushTextSoft"] as Brush;
-            playersName.Foreground  = tResources["BrushTextSoft"] as Brush;
-            playersMode.Foreground  = tResources["BrushTextSoft"] as Brush;
 
-            // Setup the backgrounds for some controls.
-            tutorialLayout.Background   = tResources["BrushSpotlight"]   as Brush;
-            mainLayout.Background       = tResources["BrushLight"]       as Brush;
-            headerLayout.Background     = tResources["BrushHeaderHover"] as Brush;
-            navigationLayout.Background = tResources["BrushBlueDot"]     as Brush;
+            // Setup special styles.
+            Grid hdrLayout = ExtensionApi.FindControl<Grid>(mainLayout, "MainHeader");
+            Grid navLayout = ExtensionApi.FindControl<Grid>(mainLayout, "MainNavigation");
+            if (hdrLayout == null || navLayout == null) return false;
+            hdrLayout.Resources.Add(typeof(Button), tResources["StyleButtonSpecial"] as Style);
+
+
+            // Modify specific controls.
+            Label     hdrUpTime  = ExtensionApi.FindControl<Label>(hdrLayout, "MainHeaderUpTime");
+            Label     plrName    = ExtensionApi.FindControl<Label>(mainLayout, "MainPlayersTitleName");
+            Label     plrMode    = ExtensionApi.FindControl<Label>(mainLayout, "MainPlayersTitleMode");
+            DockPanel plrContent = ExtensionApi.FindControl<DockPanel>(mainLayout, "MainPlayersListContent");
+            DockPanel plrActions = ExtensionApi.FindControl<DockPanel>(mainLayout, "MainPlayersListActions");
+            DockPanel chtContent = ExtensionApi.FindControl<DockPanel>(mainLayout, "MainChatContent");
+            DockPanel chtTitle   = ExtensionApi.FindControl<DockPanel>(mainLayout, "MainChatTitle");
+            TextBox   chtBox     = ExtensionApi.FindControl<TextBox>(mainLayout, "MainChatBox");
+            if (hdrUpTime == null || plrName == null || plrMode == null) return false;
+            hdrUpTime.Foreground = tResources["BrushTextSoft"] as Brush;
+            plrName.Foreground   = tResources["BrushTextSoft"] as Brush;
+            plrMode.Foreground   = tResources["BrushTextSoft"] as Brush;
+            chtBox.Background    = tResources["BrushChatBox"]  as Brush;
+
+
+            // Update specific backgrounds.
+            mainLayout.Background = tResources["BrushLight"]       as Brush;
+            tutLayout.Background  = tResources["BrushSpotlight"]   as Brush;
+            hdrLayout.Background  = tResources["BrushHeaderHover"] as Brush;
+            navLayout.Background  = tResources["BrushBlueDot"]     as Brush;
+            plrContent.Background = tResources["BrushOffset"]      as Brush;
+            plrActions.Background = tResources["BrushEmphasis"]    as Brush;
+            chtContent.Background = tResources["BrushChatMain"]    as Brush;
+            chtTitle.Background   = tResources["BrushChatTitle"]   as Brush;
 
             return true;
         }

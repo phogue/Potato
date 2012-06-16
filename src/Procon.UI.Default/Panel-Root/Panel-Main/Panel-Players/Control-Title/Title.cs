@@ -38,8 +38,8 @@ namespace Procon.UI.Default.Root.Main.Players.Title
         #endregion IExtension Properties
 
         // An easy accessor for Properties and Commands of this control.
-        private InfinityDictionary<String, Object>   tProps = InstanceViewModel.PublicProperties["Main"]["Players"]["Title"];
-        private InfinityDictionary<String, ICommand> tCmmds = InstanceViewModel.PublicCommands["Main"]["Players"]["Title"];
+        private InfinityDictionary<String, Object>   tProps = ViewModelBase.PublicProperties["Main"]["Players"]["Title"];
+        private InfinityDictionary<String, ICommand> tCmmds = ViewModelBase.PublicCommands["Main"]["Players"]["Title"];
 
         [STAThread]
         public bool Entry(Window root)

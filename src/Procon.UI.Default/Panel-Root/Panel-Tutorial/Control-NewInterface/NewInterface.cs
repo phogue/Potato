@@ -40,8 +40,8 @@ namespace Procon.UI.Default.Root.Tutorial.NewInterface
         #endregion IExtension Properties
 
         // An easy accessor for Properties and Commands of this control.
-        private InfinityDictionary<String, Object>   tProps = InstanceViewModel.PublicProperties["Tutorial"]["NewInterface"];
-        private InfinityDictionary<String, ICommand> tCmmds = InstanceViewModel.PublicCommands["Tutorial"]["NewInterface"];
+        private InfinityDictionary<String, Object>   tProps = ViewModelBase.PublicProperties["Tutorial"]["NewInterface"];
+        private InfinityDictionary<String, ICommand> tCmmds = ViewModelBase.PublicCommands["Tutorial"]["NewInterface"];
 
         [STAThread]
         public bool Entry(Window root)
@@ -58,7 +58,7 @@ namespace Procon.UI.Default.Root.Tutorial.NewInterface
             tCmmds["Remote"].Value = new RelayCommand<Object>(
                 // -- Handles when the "Remote Interface" button is clicked.
                 x => {
-                    InstanceViewModel.PublicCommands["Interface"]["Add"].Value.Execute(
+                    ViewModelBase.PublicCommands["Interface"]["Add"].Value.Execute(
                         new Object[] {
                             tProps["Host"].Value,
                             tProps["Port"].Value,
@@ -70,8 +70,8 @@ namespace Procon.UI.Default.Root.Tutorial.NewInterface
                         ExtensionApi.Settings["Tutorial"].Value = "Done";
                 },
                 x => {
-                    return InstanceViewModel.PublicCommands["Interface"]["Add"].Value != null &&
-                           InstanceViewModel.PublicCommands["Interface"]["Add"].Value.CanExecute(
+                    return ViewModelBase.PublicCommands["Interface"]["Add"].Value != null &&
+                           ViewModelBase.PublicCommands["Interface"]["Add"].Value.CanExecute(
                             new Object[] {
                                 tProps["Host"].Value,
                                 tProps["Port"].Value,

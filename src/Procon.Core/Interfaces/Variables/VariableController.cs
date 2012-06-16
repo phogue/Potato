@@ -71,7 +71,7 @@ namespace Procon.Core.Interfaces.Variables {
         /// <summary>
         /// Does nothing.  Information about this object is handled via it's parent interface.
         /// </summary>
-        protected override void WriteConfig(XElement xNamespace, ref FileInfo xFile) { }
+        protected override void WriteConfig(XElement xNamespace) { }
 
         #endregion
 

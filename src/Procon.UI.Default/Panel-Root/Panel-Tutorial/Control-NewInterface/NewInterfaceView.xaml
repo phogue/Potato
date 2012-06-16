@@ -11,7 +11,7 @@
         <Style TargetType="{x:Type Grid}">
             <Setter Property="Visibility" Value="Collapsed" />
             <Style.Triggers>
-                <DataTrigger Binding="{Binding Source={x:Static view:InstanceViewModel.PublicProperties}, Path=[Settings][Tutorial].Value}" Value="Step 1">
+                <DataTrigger Binding="{Binding Source={x:Static view:ViewModelBase.PublicProperties}, Path=[Settings][Tutorial].Value}" Value="Step 1">
                     <Setter Property="Visibility" Value="Visible" />
                 </DataTrigger>
             </Style.Triggers>
@@ -47,7 +47,7 @@
                 Padding="0, 10"
                 Margin="0, 15, 0, 0"
                 Command="{Binding
-                    Source={x:Static view:InstanceViewModel.PublicCommands},
+                    Source={x:Static view:ViewModelBase.PublicCommands},
                     Path=[Tutorial][NewInterface][Remote].Value}"
                 Content="{Binding
                     Converter={StaticResource TextLoc},
@@ -95,42 +95,42 @@
                      Grid.Row="1" Grid.Column="0"
                      Height="39"
                      Text="{Binding
-                         Source={x:Static view:InstanceViewModel.PublicProperties},
+                         Source={x:Static view:ViewModelBase.PublicProperties},
                          Path=[Tutorial][NewInterface][Host].Value,
                          UpdateSourceTrigger=PropertyChanged}" />
             <TextBox Name="TutorialNewInterfaceInputPort"
                      Grid.Row="1" Grid.Column="2"
                      Height="39"
                      Text="{Binding
-                         Source={x:Static view:InstanceViewModel.PublicProperties},
+                         Source={x:Static view:ViewModelBase.PublicProperties},
                          Path=[Tutorial][NewInterface][Port].Value,
                          UpdateSourceTrigger=PropertyChanged}" />
             <TextBox Name="TutorialNewInterfaceInputUser"
                      Grid.Row="3" Grid.Column="0"
                      Height="39"
                      Text="{Binding
-                         Source={x:Static view:InstanceViewModel.PublicProperties},
+                         Source={x:Static view:ViewModelBase.PublicProperties},
                          Path=[Tutorial][NewInterface][User].Value,
                          UpdateSourceTrigger=PropertyChanged}" />
             <PasswordBox Name="TutorialNewInterfaceInputPass"
                          Grid.Row="3" Grid.Column="2"
                          Height="39"
                          util:PasswordBoxBinding.Password="{Binding
-                             Source={x:Static view:InstanceViewModel.PublicCommands},
+                             Source={x:Static view:ViewModelBase.PublicCommands},
                              Path=[Tutorial][NewInterface][Pass].Value}" />
         </Grid>
         <Button Name="TutorialNewInterfaceLocal"
                 DockPanel.Dock="Bottom"
                 Padding="0, 10"
                 Command="{Binding
-                    Source={x:Static view:InstanceViewModel.PublicCommands},
+                    Source={x:Static view:ViewModelBase.PublicCommands},
                     Path=[Tutorial][NewInterface][Local].Value}"
                 Content="{Binding
                     Converter={StaticResource TextLoc},
                     ConverterParameter=Procon.UI.Default.Root.Tutorial.NewInterface.Local}" />
         <Image Name="TutorialNewInterfaceImage"
                Source="{Binding
-                   Source={x:Static view:InstanceViewModel.PublicProperties},
+                   Source={x:Static view:ViewModelBase.PublicProperties},
                    Path=[Images][Procon][Large].Value}" />
     </DockPanel>
 </Grid>

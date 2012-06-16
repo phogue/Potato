@@ -67,7 +67,7 @@ namespace Procon.Core.Interfaces.Connections {
         /// Saves nothing, as remote classes are saved by their local counterparts and synchronized
         /// when Procon is ran again.
         /// </summary>
-        protected override void WriteConfig(XElement config, ref FileInfo xFile) { }
+        protected override void WriteConfig(XElement config) { }
 
         #endregion
 

@@ -95,7 +95,7 @@ namespace Procon.Core.Interfaces.Packages {
         /// <summary>
         /// Writes Nothing
         /// </summary>
-        protected override void WriteConfig(XElement config, ref FileInfo xFile) { }
+        protected override void WriteConfig(XElement config) { }
 
         #endregion
 

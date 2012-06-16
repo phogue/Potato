@@ -51,7 +51,7 @@ namespace Procon.Core {
         }
         // WriteConfig:
         // -- Saves all the interfaces to the config file.
-        protected override void WriteConfig(XElement config, ref FileInfo xFile)
+        protected override void WriteConfig(XElement config)
         {
             foreach (Interface @interface in Interfaces)
                 if (@interface is LocalInterface) {

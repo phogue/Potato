@@ -62,9 +62,9 @@ namespace Procon.Core.Interfaces.Security.Objects {
         /// <summary>
         /// Saves the password, preferred language, and all the account's assignemnts.
         /// </summary>
-        protected override void WriteConfig(XElement config, ref FileInfo xFile)
+        protected override void WriteConfig(XElement config)
         {
-            base.WriteConfig(config, ref xFile);
+            base.WriteConfig(config);
 
             config.Add(new XElement("command",
                 new XAttribute("name",   CommandName.SecurityAccountsSetPassword),

@@ -38,8 +38,8 @@ namespace Procon.UI.Default.Root.Main.Navigation
         #endregion IExtension Properties
 
         // An easy accessor for Properties and Commands of this control.
-        private InfinityDictionary<String, Object>   tProps = InstanceViewModel.PublicProperties["Main"]["Navigation"];
-        private InfinityDictionary<String, ICommand> tCmmds = InstanceViewModel.PublicCommands["Main"]["Navigation"];
+        private InfinityDictionary<String, Object>   tProps = ViewModelBase.PublicProperties["Main"]["Navigation"];
+        private InfinityDictionary<String, ICommand> tCmmds = ViewModelBase.PublicCommands["Main"]["Navigation"];
 
         [STAThread]
         public bool Entry(Window root)

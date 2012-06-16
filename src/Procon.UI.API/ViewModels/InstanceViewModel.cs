@@ -9,7 +9,7 @@ using Procon.Core.Interfaces;
 namespace Procon.UI.API.ViewModels
 {
     // Wraps an Instance
-    public class InstanceViewModel : ViewModelBase<Instance>
+    public class InstanceViewModel : ViewModel<Instance>
     {
         // View Model Public Accessors/Mutators.
         public ObservableCollection<InterfaceViewModel> Interfaces
@@ -34,7 +34,7 @@ namespace Procon.UI.API.ViewModels
             Model.PropertyChanged  += Instance_PropertyChanged;
 
             // Expose collections within the model:
-            Interfaces = new ObservableCollection<InterfaceViewModel>();
+            Interfaces = new ObservableCollection<InterfaceViewModel>(Model.Interfaces.Select(x => new InterfaceViewModel(x)));
         }
 
         // View Model Methods.

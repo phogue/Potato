@@ -78,7 +78,7 @@ namespace Procon.Core.Localization {
         /// <summary>
         /// Saves the default language.
         /// </summary>
-        protected override void WriteConfig(XElement xNamespace, ref FileInfo xFile)
+        protected override void WriteConfig(XElement xNamespace)
         {
             xNamespace.Add(new XElement("command",
                 new XAttribute("name", CommandName.LanguageSetDefaultLanguage),

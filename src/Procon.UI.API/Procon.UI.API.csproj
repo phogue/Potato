@@ -89,14 +89,14 @@
     <Compile Include="Classes\InfinityDictionary.cs" />
     <Compile Include="Utils\PasswordBoxBinding.cs" />
     <Compile Include="ViewModels\PackageViewModel.cs" />
-    <Compile Include="ViewModels\ViewModel.cs" />
+    <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="ViewModels\ConnectionViewModel.cs" />
     <Compile Include="ViewModels\BanViewModel.cs" />
     <Compile Include="ViewModels\MapViewModel.cs" />
     <Compile Include="ViewModels\InstanceViewModel.cs" />
     <Compile Include="ViewModels\InterfaceViewModel.cs" />
     <Compile Include="ViewModels\PlayerViewModel.cs" />
-    <Compile Include="ViewModels\ViewModelBase.cs" />
+    <Compile Include="ViewModels\ViewModel.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

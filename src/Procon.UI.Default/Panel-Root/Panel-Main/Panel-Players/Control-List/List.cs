@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-
+using Procon.Net.Protocols.Objects;
 using Procon.UI.API;
 using Procon.UI.API.Classes;
+using Procon.UI.API.Commands;
 using Procon.UI.API.ViewModels;
 
 namespace Procon.UI.Default.Root.Main.Players.List
@@ -52,6 +54,51 @@ namespace Procon.UI.Default.Root.Main.Players.List
             ListView view = new ListView();
             Grid.SetRow(view, 1);
             layout.Children.Add(view);
+            
+            // Commands.
+            List<PlayerViewModel> tSelectedPlayers = new List<PlayerViewModel>();
+            tCmmds["Select"].Value = new RelayCommand<PlayerViewModel>(
+                // -- Handles when player is selected/de-selected.
+                x => {
+                    if (tSelectedPlayers.Contains(x)) tSelectedPlayers.Remove(x);
+                    else                              tSelectedPlayers.Add(x);
+                });
+            tCmmds["Kick"].Value = new RelayCommand<Object>(
+                // -- Handles when the "Kick" button is clicked.
+                x => {
+                    foreach (PlayerViewModel tPlayer in tSelectedPlayers)
+                        ExtensionApi.Connection.Action(new Kick() {
+                            Target = new Player() {
+                                UID    = tPlayer.Uid,
+                                SlotID = tPlayer.SlotID,
+                                Name   = tPlayer.Name,
+                                IP     = tPlayer.IP
+                            },
+                            Reason = "Admin Decision."
+                        });
+                });
+            tCmmds["Ban"].Value = new RelayCommand<Object>(
+                // -- Handles when the "Ban" button is clicked.
+                x => {
+                    foreach (PlayerViewModel tPlayer in tSelectedPlayers)
+                        ExtensionApi.Connection.Action(new Ban() {
+                            BanActionType = BanActionType.Ban,
+                            Target = new Player() {
+                                UID    = tPlayer.Uid,
+                                SlotID = tPlayer.SlotID,
+                                Name   = tPlayer.Name,
+                                IP     = tPlayer.IP
+                            },
+                            Time = new TimeSubset() {
+                                Context = TimeSubsetContext.Permanent
+                            },
+                            Reason = "Admin Decision."
+                        });
+                });
+
+            tProps["Score"].Value = 2000.0;
+            tProps["Kdr"].Value   = 2.0;
+            tProps["Ping"].Value  = 150.0;
 
             // Exit with good status.
             return true;

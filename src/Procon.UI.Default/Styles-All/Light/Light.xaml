@@ -198,7 +198,7 @@
         <Setter Property="Template"              Value="{StaticResource TemplateButtonSpecial}" />
         <Setter Property="OverridesDefaultStyle" Value="True" />
     </Style>
-    <Style x:Key="StyleRadioButton" TargetType="{x:Type RadioButton}" BasedOn="{StaticResource {x:Type RadioButton}}">
+    <Style x:Key="StyleRadioButton"        TargetType="{x:Type RadioButton}" BasedOn="{StaticResource {x:Type RadioButton}}">
         <Setter Property="Margin"      Value="0" />
         <Setter Property="Padding"     Value="0" />
         <Setter Property="FontSize"    Value="12.0" />
@@ -250,6 +250,15 @@
         <Setter Property="TextAlignment" Value="Left" />
         <Setter Property="TextWrapping"  Value="Wrap" />
         <Setter Property="Foreground"    Value="{StaticResource BrushText}" />
+    </Style>
+    <Style x:Key="StyleListBox"     TargetType="{x:Type ListBox}"     BasedOn="{StaticResource {x:Type ListBox}}">
+        <Setter Property="Margin"     Value="0" />
+        <Setter Property="Padding"    Value="0" />
+        <Setter Property="FontSize"   Value="11.0" />
+        <Setter Property="FontWeight" Value="Bold" />
+        <Setter Property="FontFamily" Value="Arial" />
+        <Setter Property="Background" Value="{StaticResource BrushOffset}" />
+        <Setter Property="Foreground" Value="{StaticResource BrushText}" />
     </Style>
     <Style x:Key="StyleImage"       TargetType="{x:Type Image}">
         <Setter Property="Stretch"                Value="Uniform" />

@@ -99,22 +99,12 @@ namespace Procon.UI.API
         public static InterfaceViewModel Interface
         {
             get { return InstanceViewModel.PublicProperties["Interface"].Value as InterfaceViewModel; }
-            set {
-                InstanceViewModel.PublicProperties["Interface"].Value                    = value;
-                InstanceViewModel.PublicProperties["Settings"]["InterfaceType"].Value = (value != null) ? (Object)value.IsLocal  : null;
-                InstanceViewModel.PublicProperties["Settings"]["InterfaceHost"].Value = (value != null) ? (Object)value.Hostname : null;
-                InstanceViewModel.PublicProperties["Settings"]["InterfacePort"].Value = (value != null) ? (Object)value.Port     : null;
-            }
+            set { InstanceViewModel.PublicProperties["Interface"].Value = value; }
         }
         public static ConnectionViewModel Connection
         {
             get { return InstanceViewModel.PublicProperties["Connection"].Value as ConnectionViewModel; }
-            set {    
-                InstanceViewModel.PublicProperties["Connection"].Value                 = value;
-                InstanceViewModel.PublicProperties["Settings"]["ConnectionType"].Value = (value != null) ? (Object)value.GameType : null;
-                InstanceViewModel.PublicProperties["Settings"]["ConnectionHost"].Value = (value != null) ? (Object)value.Hostname : null;
-                InstanceViewModel.PublicProperties["Settings"]["ConnectionPort"].Value = (value != null) ? (Object)value.Port     : null;
-            }
+            set { InstanceViewModel.PublicProperties["Connection"].Value = value; }
         }
     }
 }

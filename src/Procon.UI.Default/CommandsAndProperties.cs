@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Media.Imaging;
+using Procon.Net.Protocols;
 
 using Procon.UI.API;
 using Procon.UI.API.Commands;
@@ -45,22 +46,23 @@ namespace Procon.UI.Default
         {
             // Setup Active Interface.
             if (ExtensionApi.Procon != null
-                && ViewModelBase.PublicProperties["Settings"]["InterfaceType"].Value is Boolean
-                && ViewModelBase.PublicProperties["Settings"]["InterfaceHost"].Value is String
-                && ViewModelBase.PublicProperties["Settings"]["InterfacePort"].Value is UInt16)
+                && ExtensionApi.Settings["InterfaceType"].Value is Boolean
+                && ExtensionApi.Settings["InterfaceHost"].Value is String
+                && ExtensionApi.Settings["InterfacePort"].Value is UInt16)
                 ExtensionApi.Interface = ExtensionApi.Procon.Interfaces.FirstOrDefault(x =>
-                    x.IsLocal == (Boolean)ViewModelBase.PublicProperties["Settings"]["InterfaceType"].Value &&
-                    x.Hostname == (String)ViewModelBase.PublicProperties["Settings"]["InterfaceHost"].Value &&
-                    x.Port     == (UInt16)ViewModelBase.PublicProperties["Settings"]["InterfacePort"].Value);
+                    x.IsLocal  == (Boolean)ExtensionApi.Settings["InterfaceType"].Value &&
+                    x.Hostname == (String) ExtensionApi.Settings["InterfaceHost"].Value &&
+                    x.Port     == (UInt16) ExtensionApi.Settings["InterfacePort"].Value);
+
             // Setup Active Connection.
             if (ExtensionApi.Interface != null
-                && ViewModelBase.PublicProperties["Settings"]["ConnectionType"].Value is String
-                && ViewModelBase.PublicProperties["Settings"]["ConnectionHost"].Value is String
-                && ViewModelBase.PublicProperties["Settings"]["ConnectionPort"].Value is UInt16)
+                && ExtensionApi.Settings["ConnectionType"].Value is GameType
+                && ExtensionApi.Settings["ConnectionHost"].Value is String
+                && ExtensionApi.Settings["ConnectionPort"].Value is UInt16)
                 ExtensionApi.Connection = ExtensionApi.Interface.Connections.FirstOrDefault(x =>
-                    x.GameType.ToString() == (String)ViewModelBase.PublicProperties["Settings"]["ConnectionType"].Value &&
-                    x.Hostname            == (String)ViewModelBase.PublicProperties["Settings"]["ConnectionHost"].Value &&
-                    x.Port                == (UInt16)ViewModelBase.PublicProperties["Settings"]["ConnectionPort"].Value);
+                    x.GameType == (GameType)ExtensionApi.Settings["ConnectionType"].Value &&
+                    x.Hostname == (String)  ExtensionApi.Settings["ConnectionHost"].Value &&
+                    x.Port     == (UInt16)  ExtensionApi.Settings["ConnectionPort"].Value);
 
             // Commands.
             // [Interface] Level Commands.
@@ -74,55 +76,75 @@ namespace Procon.UI.Default
 
             // Properties.
             // [Procon] - Procon images.
-            //   [Icon]  - The Procon Image by itself.
-            //   [Large] - A large Procon Image with large "Procon 2" text attached.
-            //   [Small] - A small Procon Image with large "Procon 2" text attached.
             ViewModelBase.PublicProperties["Images"]["Procon"]["Icon"].Value  = (File.Exists(Defines.PROCON_ICON))  ? new BitmapImage(new Uri(Defines.PROCON_ICON,  UriKind.RelativeOrAbsolute)) : new BitmapImage();
             ViewModelBase.PublicProperties["Images"]["Procon"]["Large"].Value = (File.Exists(Defines.PROCON_LARGE)) ? new BitmapImage(new Uri(Defines.PROCON_LARGE, UriKind.RelativeOrAbsolute)) : new BitmapImage();
             ViewModelBase.PublicProperties["Images"]["Procon"]["Small"].Value = (File.Exists(Defines.PROCON_SMALL)) ? new BitmapImage(new Uri(Defines.PROCON_SMALL, UriKind.RelativeOrAbsolute)) : new BitmapImage();
 
+            // Connection Types.
+            // [Interfaces] - Interface types.
+            ViewModelBase.PublicProperties["Images"]["Interfaces"]["Local"].Value  = (File.Exists(Defines.INTERFACE_LOCAL))  ? new BitmapImage(new Uri(Defines.INTERFACE_LOCAL,  UriKind.RelativeOrAbsolute)) : new BitmapImage();
+            ViewModelBase.PublicProperties["Images"]["Interfaces"]["Remote"].Value = (File.Exists(Defines.INTERFACE_REMOTE)) ? new BitmapImage(new Uri(Defines.INTERFACE_REMOTE, UriKind.RelativeOrAbsolute)) : new BitmapImage();
+            // [Connections] - Game types.
+            ViewModelBase.PublicProperties["Images"]["Connections"]["BF_3"].Value      = (File.Exists(Defines.CONNECTION_BF_3))      ? new BitmapImage(new Uri(Defines.CONNECTION_BF_3,      UriKind.RelativeOrAbsolute)) : new BitmapImage();
+            ViewModelBase.PublicProperties["Images"]["Connections"]["BF_BC2"].Value    = (File.Exists(Defines.CONNECTION_BF_BC2))    ? new BitmapImage(new Uri(Defines.CONNECTION_BF_BC2,    UriKind.RelativeOrAbsolute)) : new BitmapImage();
+            ViewModelBase.PublicProperties["Images"]["Connections"]["COD_BO"].Value    = (File.Exists(Defines.CONNECTION_COD_BO))    ? new BitmapImage(new Uri(Defines.CONNECTION_COD_BO,    UriKind.RelativeOrAbsolute)) : new BitmapImage();
+            ViewModelBase.PublicProperties["Images"]["Connections"]["HOMEFRONT"].Value = (File.Exists(Defines.CONNECTION_HOMEFRONT)) ? new BitmapImage(new Uri(Defines.CONNECTION_HOMEFRONT, UriKind.RelativeOrAbsolute)) : new BitmapImage();
+            ViewModelBase.PublicProperties["Images"]["Connections"]["MOH_2010"].Value  = (File.Exists(Defines.CONNECTION_MOH_2010))  ? new BitmapImage(new Uri(Defines.CONNECTION_MOH_2010,  UriKind.RelativeOrAbsolute)) : new BitmapImage();
+            ViewModelBase.PublicProperties["Images"]["Connections"]["TF_2"].Value      = (File.Exists(Defines.CONNECTION_TF_2))      ? new BitmapImage(new Uri(Defines.CONNECTION_TF_2,      UriKind.RelativeOrAbsolute)) : new BitmapImage();
+
+            // Connection Status.
+            // [Status] - Connection status.
+            ViewModelBase.PublicProperties["Images"]["Status"]["Good"].Value = (File.Exists(Defines.STATUS_GOOD)) ? new BitmapImage(new Uri(Defines.STATUS_GOOD, UriKind.RelativeOrAbsolute)) : new BitmapImage();
+            ViewModelBase.PublicProperties["Images"]["Status"]["Flux"].Value = (File.Exists(Defines.STATUS_FLUX)) ? new BitmapImage(new Uri(Defines.STATUS_FLUX, UriKind.RelativeOrAbsolute)) : new BitmapImage();
+            ViewModelBase.PublicProperties["Images"]["Status"]["Bad"].Value  = (File.Exists(Defines.STATUS_BAD))  ? new BitmapImage(new Uri(Defines.STATUS_BAD,  UriKind.RelativeOrAbsolute)) : new BitmapImage();
+
             // Content.
             // [Content] - Various images that represent tabs.
-            //   [Players]  - Represents the players per connection.
-            //   [Maps]     - Represents the maps per connection.
-            //   [Bans]     - Represents the bans per connection.
-            //   [Plugins]  - Represents the plugins per connection.
+            //   [Players] - Represents the players per connection.
+            ViewModelBase.PublicProperties["Images"]["Content"]["Players"]["Default"].Value  = (File.Exists(Defines.PLAYERS_DEFAULT))  ? new BitmapImage(new Uri(Defines.PLAYERS_DEFAULT,  UriKind.RelativeOrAbsolute)) : new BitmapImage();
+            ViewModelBase.PublicProperties["Images"]["Content"]["Players"]["Hover"].Value    = (File.Exists(Defines.PLAYERS_HOVER))    ? new BitmapImage(new Uri(Defines.PLAYERS_HOVER,    UriKind.RelativeOrAbsolute)) : new BitmapImage();
+            ViewModelBase.PublicProperties["Images"]["Content"]["Players"]["Press"].Value    = (File.Exists(Defines.PLAYERS_ACTIVE))   ? new BitmapImage(new Uri(Defines.PLAYERS_ACTIVE,   UriKind.RelativeOrAbsolute)) : new BitmapImage();
+            ViewModelBase.PublicProperties["Images"]["Content"]["Players"]["Active"].Value   = (File.Exists(Defines.PLAYERS_ACTIVE))   ? new BitmapImage(new Uri(Defines.PLAYERS_ACTIVE,   UriKind.RelativeOrAbsolute)) : new BitmapImage();
+            ViewModelBase.PublicProperties["Images"]["Content"]["Players"]["Disabled"].Value = (File.Exists(Defines.PLAYERS_DISABLED)) ? new BitmapImage(new Uri(Defines.PLAYERS_DISABLED, UriKind.RelativeOrAbsolute)) : new BitmapImage();
+            //   [Maps] - Represents the maps per connection.
+            ViewModelBase.PublicProperties["Images"]["Content"]["Maps"]["Default"].Value  = (File.Exists(Defines.MAPS_DEFAULT))  ? new BitmapImage(new Uri(Defines.MAPS_DEFAULT,  UriKind.RelativeOrAbsolute)) : new BitmapImage();
+            ViewModelBase.PublicProperties["Images"]["Content"]["Maps"]["Hover"].Value    = (File.Exists(Defines.MAPS_HOVER))    ? new BitmapImage(new Uri(Defines.MAPS_HOVER,    UriKind.RelativeOrAbsolute)) : new BitmapImage();
+            ViewModelBase.PublicProperties["Images"]["Content"]["Maps"]["Press"].Value    = (File.Exists(Defines.MAPS_ACTIVE))   ? new BitmapImage(new Uri(Defines.MAPS_ACTIVE,   UriKind.RelativeOrAbsolute)) : new BitmapImage();
+            ViewModelBase.PublicProperties["Images"]["Content"]["Maps"]["Active"].Value   = (File.Exists(Defines.MAPS_ACTIVE))   ? new BitmapImage(new Uri(Defines.MAPS_ACTIVE,   UriKind.RelativeOrAbsolute)) : new BitmapImage();
+            ViewModelBase.PublicProperties["Images"]["Content"]["Maps"]["Disabled"].Value = (File.Exists(Defines.MAPS_DISABLED)) ? new BitmapImage(new Uri(Defines.MAPS_DISABLED, UriKind.RelativeOrAbsolute)) : new BitmapImage();
+            //   [Bans] - Represents the bans per connection.
+            ViewModelBase.PublicProperties["Images"]["Content"]["Bans"]["Default"].Value  = (File.Exists(Defines.BANS_DEFAULT))  ? new BitmapImage(new Uri(Defines.BANS_DEFAULT,  UriKind.RelativeOrAbsolute)) : new BitmapImage();
+            ViewModelBase.PublicProperties["Images"]["Content"]["Bans"]["Hover"].Value    = (File.Exists(Defines.BANS_HOVER))    ? new BitmapImage(new Uri(Defines.BANS_HOVER,    UriKind.RelativeOrAbsolute)) : new BitmapImage();
+            ViewModelBase.PublicProperties["Images"]["Content"]["Bans"]["Press"].Value    = (File.Exists(Defines.BANS_ACTIVE))   ? new BitmapImage(new Uri(Defines.BANS_ACTIVE,   UriKind.RelativeOrAbsolute)) : new BitmapImage();
+            ViewModelBase.PublicProperties["Images"]["Content"]["Bans"]["Active"].Value   = (File.Exists(Defines.BANS_ACTIVE))   ? new BitmapImage(new Uri(Defines.BANS_ACTIVE,   UriKind.RelativeOrAbsolute)) : new BitmapImage();
+            ViewModelBase.PublicProperties["Images"]["Content"]["Bans"]["Disabled"].Value = (File.Exists(Defines.BANS_DISABLED)) ? new BitmapImage(new Uri(Defines.BANS_DISABLED, UriKind.RelativeOrAbsolute)) : new BitmapImage();
+            //   [Plugins] - Represents the plugins per connection.
+            ViewModelBase.PublicProperties["Images"]["Content"]["Plugins"]["Default"].Value   = (File.Exists(Defines.PLUGINS_DEFAULT))  ? new BitmapImage(new Uri(Defines.PLUGINS_DEFAULT,  UriKind.RelativeOrAbsolute)) : new BitmapImage();
+            ViewModelBase.PublicProperties["Images"]["Content"]["Plugins"]["Hover"].Value     = (File.Exists(Defines.PLUGINS_HOVER))    ? new BitmapImage(new Uri(Defines.PLUGINS_HOVER,    UriKind.RelativeOrAbsolute)) : new BitmapImage();
+            ViewModelBase.PublicProperties["Images"]["Content"]["Plugins"]["Press"].Value     = (File.Exists(Defines.PLUGINS_ACTIVE))   ? new BitmapImage(new Uri(Defines.PLUGINS_ACTIVE,   UriKind.RelativeOrAbsolute)) : new BitmapImage();
+            ViewModelBase.PublicProperties["Images"]["Content"]["Plugins"]["Active"].Value    = (File.Exists(Defines.PLUGINS_ACTIVE))   ? new BitmapImage(new Uri(Defines.PLUGINS_ACTIVE,   UriKind.RelativeOrAbsolute)) : new BitmapImage();
+            ViewModelBase.PublicProperties["Images"]["Content"]["Plugins"]["Disabled"].Value  = (File.Exists(Defines.PLUGINS_DISABLED)) ? new BitmapImage(new Uri(Defines.PLUGINS_DISABLED, UriKind.RelativeOrAbsolute)) : new BitmapImage();
             //   [Settings] - Represents the connection level settings.
-            //   [Options]  - Represents the interface level options.
-            ViewModelBase.PublicProperties["Images"]["Content"]["Players"]["Default"].Value   = (File.Exists(Defines.PLAYERS_DEFAULT))   ? new BitmapImage(new Uri(Defines.PLAYERS_DEFAULT,   UriKind.RelativeOrAbsolute)) : new BitmapImage();
-            ViewModelBase.PublicProperties["Images"]["Content"]["Players"]["Hover"].Value     = (File.Exists(Defines.PLAYERS_HOVER))     ? new BitmapImage(new Uri(Defines.PLAYERS_HOVER,     UriKind.RelativeOrAbsolute)) : new BitmapImage();
-            ViewModelBase.PublicProperties["Images"]["Content"]["Players"]["Press"].Value     = (File.Exists(Defines.PLAYERS_ACTIVE))    ? new BitmapImage(new Uri(Defines.PLAYERS_ACTIVE,    UriKind.RelativeOrAbsolute)) : new BitmapImage();
-            ViewModelBase.PublicProperties["Images"]["Content"]["Players"]["Active"].Value    = (File.Exists(Defines.PLAYERS_ACTIVE))    ? new BitmapImage(new Uri(Defines.PLAYERS_ACTIVE,    UriKind.RelativeOrAbsolute)) : new BitmapImage();
-            ViewModelBase.PublicProperties["Images"]["Content"]["Players"]["Disabled"].Value  = (File.Exists(Defines.PLAYERS_DISABLED))  ? new BitmapImage(new Uri(Defines.PLAYERS_DISABLED,  UriKind.RelativeOrAbsolute)) : new BitmapImage();
-            ViewModelBase.PublicProperties["Images"]["Content"]["Maps"]["Default"].Value      = (File.Exists(Defines.MAPS_DEFAULT))      ? new BitmapImage(new Uri(Defines.MAPS_DEFAULT,      UriKind.RelativeOrAbsolute)) : new BitmapImage();
-            ViewModelBase.PublicProperties["Images"]["Content"]["Maps"]["Hover"].Value        = (File.Exists(Defines.MAPS_HOVER))        ? new BitmapImage(new Uri(Defines.MAPS_HOVER,        UriKind.RelativeOrAbsolute)) : new BitmapImage();
-            ViewModelBase.PublicProperties["Images"]["Content"]["Maps"]["Press"].Value        = (File.Exists(Defines.MAPS_ACTIVE))       ? new BitmapImage(new Uri(Defines.MAPS_ACTIVE,       UriKind.RelativeOrAbsolute)) : new BitmapImage();
-            ViewModelBase.PublicProperties["Images"]["Content"]["Maps"]["Active"].Value       = (File.Exists(Defines.MAPS_ACTIVE))       ? new BitmapImage(new Uri(Defines.MAPS_ACTIVE,       UriKind.RelativeOrAbsolute)) : new BitmapImage();
-            ViewModelBase.PublicProperties["Images"]["Content"]["Maps"]["Disabled"].Value     = (File.Exists(Defines.MAPS_DISABLED))     ? new BitmapImage(new Uri(Defines.MAPS_DISABLED,     UriKind.RelativeOrAbsolute)) : new BitmapImage();
-            ViewModelBase.PublicProperties["Images"]["Content"]["Bans"]["Default"].Value      = (File.Exists(Defines.BANS_DEFAULT))      ? new BitmapImage(new Uri(Defines.BANS_DEFAULT,      UriKind.RelativeOrAbsolute)) : new BitmapImage();
-            ViewModelBase.PublicProperties["Images"]["Content"]["Bans"]["Hover"].Value        = (File.Exists(Defines.BANS_HOVER))        ? new BitmapImage(new Uri(Defines.BANS_HOVER,        UriKind.RelativeOrAbsolute)) : new BitmapImage();
-            ViewModelBase.PublicProperties["Images"]["Content"]["Bans"]["Press"].Value        = (File.Exists(Defines.BANS_ACTIVE))       ? new BitmapImage(new Uri(Defines.BANS_ACTIVE,       UriKind.RelativeOrAbsolute)) : new BitmapImage();
-            ViewModelBase.PublicProperties["Images"]["Content"]["Bans"]["Active"].Value       = (File.Exists(Defines.BANS_ACTIVE))       ? new BitmapImage(new Uri(Defines.BANS_ACTIVE,       UriKind.RelativeOrAbsolute)) : new BitmapImage();
-            ViewModelBase.PublicProperties["Images"]["Content"]["Bans"]["Disabled"].Value     = (File.Exists(Defines.BANS_DISABLED))     ? new BitmapImage(new Uri(Defines.BANS_DISABLED,     UriKind.RelativeOrAbsolute)) : new BitmapImage();
-            ViewModelBase.PublicProperties["Images"]["Content"]["Plugins"]["Default"].Value   = (File.Exists(Defines.PLUGINS_DEFAULT))   ? new BitmapImage(new Uri(Defines.PLUGINS_DEFAULT,   UriKind.RelativeOrAbsolute)) : new BitmapImage();
-            ViewModelBase.PublicProperties["Images"]["Content"]["Plugins"]["Hover"].Value     = (File.Exists(Defines.PLUGINS_HOVER))     ? new BitmapImage(new Uri(Defines.PLUGINS_HOVER,     UriKind.RelativeOrAbsolute)) : new BitmapImage();
-            ViewModelBase.PublicProperties["Images"]["Content"]["Plugins"]["Press"].Value     = (File.Exists(Defines.PLUGINS_ACTIVE))    ? new BitmapImage(new Uri(Defines.PLUGINS_ACTIVE,    UriKind.RelativeOrAbsolute)) : new BitmapImage();
-            ViewModelBase.PublicProperties["Images"]["Content"]["Plugins"]["Active"].Value    = (File.Exists(Defines.PLUGINS_ACTIVE))    ? new BitmapImage(new Uri(Defines.PLUGINS_ACTIVE,    UriKind.RelativeOrAbsolute)) : new BitmapImage();
-            ViewModelBase.PublicProperties["Images"]["Content"]["Plugins"]["Disabled"].Value  = (File.Exists(Defines.PLUGINS_DISABLED))  ? new BitmapImage(new Uri(Defines.PLUGINS_DISABLED,  UriKind.RelativeOrAbsolute)) : new BitmapImage();
             ViewModelBase.PublicProperties["Images"]["Content"]["Settings"]["Default"].Value  = (File.Exists(Defines.SETTINGS_DEFAULT))  ? new BitmapImage(new Uri(Defines.SETTINGS_DEFAULT,  UriKind.RelativeOrAbsolute)) : new BitmapImage();
             ViewModelBase.PublicProperties["Images"]["Content"]["Settings"]["Hover"].Value    = (File.Exists(Defines.SETTINGS_HOVER))    ? new BitmapImage(new Uri(Defines.SETTINGS_HOVER,    UriKind.RelativeOrAbsolute)) : new BitmapImage();
             ViewModelBase.PublicProperties["Images"]["Content"]["Settings"]["Press"].Value    = (File.Exists(Defines.SETTINGS_ACTIVE))   ? new BitmapImage(new Uri(Defines.SETTINGS_ACTIVE,   UriKind.RelativeOrAbsolute)) : new BitmapImage();
             ViewModelBase.PublicProperties["Images"]["Content"]["Settings"]["Active"].Value   = (File.Exists(Defines.SETTINGS_ACTIVE))   ? new BitmapImage(new Uri(Defines.SETTINGS_ACTIVE,   UriKind.RelativeOrAbsolute)) : new BitmapImage();
             ViewModelBase.PublicProperties["Images"]["Content"]["Settings"]["Disabled"].Value = (File.Exists(Defines.SETTINGS_DISABLED)) ? new BitmapImage(new Uri(Defines.SETTINGS_DISABLED, UriKind.RelativeOrAbsolute)) : new BitmapImage();
-            ViewModelBase.PublicProperties["Images"]["Content"]["Options"]["Default"].Value   = (File.Exists(Defines.OPTIONS_DEFAULT))   ? new BitmapImage(new Uri(Defines.OPTIONS_DEFAULT,   UriKind.RelativeOrAbsolute)) : new BitmapImage();
-            ViewModelBase.PublicProperties["Images"]["Content"]["Options"]["Hover"].Value     = (File.Exists(Defines.OPTIONS_HOVER))     ? new BitmapImage(new Uri(Defines.OPTIONS_HOVER,     UriKind.RelativeOrAbsolute)) : new BitmapImage();
-            ViewModelBase.PublicProperties["Images"]["Content"]["Options"]["Press"].Value     = (File.Exists(Defines.OPTIONS_ACTIVE))    ? new BitmapImage(new Uri(Defines.OPTIONS_ACTIVE,    UriKind.RelativeOrAbsolute)) : new BitmapImage();
-            ViewModelBase.PublicProperties["Images"]["Content"]["Options"]["Active"].Value    = (File.Exists(Defines.OPTIONS_ACTIVE))    ? new BitmapImage(new Uri(Defines.OPTIONS_ACTIVE,    UriKind.RelativeOrAbsolute)) : new BitmapImage();
-            ViewModelBase.PublicProperties["Images"]["Content"]["Options"]["Disabled"].Value  = (File.Exists(Defines.OPTIONS_DISABLED))  ? new BitmapImage(new Uri(Defines.OPTIONS_DISABLED,  UriKind.RelativeOrAbsolute)) : new BitmapImage();
+            //   [Options] - Represents the interface level options.
+            ViewModelBase.PublicProperties["Images"]["Content"]["Options"]["Default"].Value  = (File.Exists(Defines.OPTIONS_DEFAULT))  ? new BitmapImage(new Uri(Defines.OPTIONS_DEFAULT,  UriKind.RelativeOrAbsolute)) : new BitmapImage();
+            ViewModelBase.PublicProperties["Images"]["Content"]["Options"]["Hover"].Value    = (File.Exists(Defines.OPTIONS_HOVER))    ? new BitmapImage(new Uri(Defines.OPTIONS_HOVER,    UriKind.RelativeOrAbsolute)) : new BitmapImage();
+            ViewModelBase.PublicProperties["Images"]["Content"]["Options"]["Press"].Value    = (File.Exists(Defines.OPTIONS_ACTIVE))   ? new BitmapImage(new Uri(Defines.OPTIONS_ACTIVE,   UriKind.RelativeOrAbsolute)) : new BitmapImage();
+            ViewModelBase.PublicProperties["Images"]["Content"]["Options"]["Active"].Value   = (File.Exists(Defines.OPTIONS_ACTIVE))   ? new BitmapImage(new Uri(Defines.OPTIONS_ACTIVE,   UriKind.RelativeOrAbsolute)) : new BitmapImage();
+            ViewModelBase.PublicProperties["Images"]["Content"]["Options"]["Disabled"].Value = (File.Exists(Defines.OPTIONS_DISABLED)) ? new BitmapImage(new Uri(Defines.OPTIONS_DISABLED, UriKind.RelativeOrAbsolute)) : new BitmapImage();
+
+            // [General] - Images used across the program.
+            ViewModelBase.PublicProperties["Images"]["General"]["Player"].Value = (File.Exists(Defines.GENERAL_PLAYER)) ? new BitmapImage(new Uri(Defines.GENERAL_PLAYER, UriKind.RelativeOrAbsolute)) : new BitmapImage();
+            ViewModelBase.PublicProperties["Images"]["General"]["Good"].Value   = (File.Exists(Defines.GENERAL_GOOD))   ? new BitmapImage(new Uri(Defines.GENERAL_GOOD,   UriKind.RelativeOrAbsolute)) : new BitmapImage();
+            ViewModelBase.PublicProperties["Images"]["General"]["Bad"].Value    = (File.Exists(Defines.GENERAL_BAD))    ? new BitmapImage(new Uri(Defines.GENERAL_BAD,    UriKind.RelativeOrAbsolute)) : new BitmapImage();
+            ViewModelBase.PublicProperties["Images"]["General"]["Warn"].Value   = (File.Exists(Defines.GENERAL_WARN))   ? new BitmapImage(new Uri(Defines.GENERAL_WARN,   UriKind.RelativeOrAbsolute)) : new BitmapImage();
+            ViewModelBase.PublicProperties["Images"]["General"]["Notify"].Value = (File.Exists(Defines.GENERAL_NOTIFY)) ? new BitmapImage(new Uri(Defines.GENERAL_NOTIFY, UriKind.RelativeOrAbsolute)) : new BitmapImage();
 
             // [Connection] - Images associated with managing connections.
-            //   [Swap] - The image used to toggle between connections.
-            //   [Info] - The image used to mark information of the connection.
             ViewModelBase.PublicProperties["Images"]["Connection"]["Swap"].Value = (File.Exists(Defines.CONNECTION_SWAP)) ? new BitmapImage(new Uri(Defines.CONNECTION_SWAP, UriKind.RelativeOrAbsolute)) : new BitmapImage();
             ViewModelBase.PublicProperties["Images"]["Connection"]["Info"].Value = (File.Exists(Defines.CONNECTION_INFO)) ? new BitmapImage(new Uri(Defines.CONNECTION_INFO, UriKind.RelativeOrAbsolute)) : new BitmapImage();
 

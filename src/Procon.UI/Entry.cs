@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Media.Imaging;
 
 using Procon.Core;
+using Procon.UI.API;
 using Procon.UI.API.Utils;
 using Procon.UI.API.ViewModels;
 
@@ -47,6 +48,20 @@ namespace Procon.UI
                 Settings.Set("Width",       tRoot.Width);
                 Settings.Set("Height",      tRoot.Height);
                 Settings.Set("WindowState", tRoot.WindowState);
+            };
+
+            // Setup some setting management.
+            ViewModelBase.PublicProperties["Interface"].PropertyChanged +=
+            (s, e) => {
+                ExtensionApi.Settings["InterfaceType"].Value = (ExtensionApi.Interface != null) ? (Object)ExtensionApi.Interface.IsLocal  : null;
+                ExtensionApi.Settings["InterfaceHost"].Value = (ExtensionApi.Interface != null) ? (Object)ExtensionApi.Interface.Hostname : null;
+                ExtensionApi.Settings["InterfacePort"].Value = (ExtensionApi.Interface != null) ? (Object)ExtensionApi.Interface.Port     : null;
+            };
+            ViewModelBase.PublicProperties["Connection"].PropertyChanged +=
+            (s, e) => {
+                ExtensionApi.Settings["ConnectionType"].Value = (ExtensionApi.Connection != null) ? (Object)ExtensionApi.Connection.GameType : null;
+                ExtensionApi.Settings["ConnectionHost"].Value = (ExtensionApi.Connection != null) ? (Object)ExtensionApi.Connection.Hostname : null;
+                ExtensionApi.Settings["ConnectionPort"].Value = (ExtensionApi.Connection != null) ? (Object)ExtensionApi.Connection.Port     : null;
             };
 
             // Load the extensions, show the window, then save the settings.

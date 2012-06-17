@@ -201,6 +201,15 @@
         
         <!-- Main Window -->
         <main>
+          <views>
+            <loc key="Interfaces"       value="Procon Connections" />
+            <loc key="AddInterface"     value="Add" />
+            <loc key="RemoveInterface"  value="Disconnect" />
+            <loc key="Local"            value="Local Connection" />
+            <loc key="Connections"      value="Game Connections" />
+            <loc key="AddConnection"    value="Add" />
+            <loc key="RemoveConnection" value="Disconnect" />
+          </views>
           <chat>
             <loc key="Title" value="Chat" />
           </chat>

@@ -242,12 +242,12 @@ namespace Procon.UI.Default
              *   [HOMEFRONT] - Homefront.
              *   [MOH_2010]  - Medal of Honor: 2010.
              *   [TF_2]      - Team Fortress 2. */
-            InstanceViewModel.PublicProperties["Images"]["Games"]["BF_BC2"].Value    = (File.Exists(Defines.GAME_BF_BC2))    ? new BitmapImage(new Uri(Defines.GAME_BF_BC2, UriKind.RelativeOrAbsolute))    : new BitmapImage();
-            InstanceViewModel.PublicProperties["Images"]["Games"]["BF_3"].Value      = (File.Exists(Defines.GAME_BF_3))      ? new BitmapImage(new Uri(Defines.GAME_BF_3, UriKind.RelativeOrAbsolute))      : new BitmapImage();
-            InstanceViewModel.PublicProperties["Images"]["Games"]["COD_BO"].Value    = (File.Exists(Defines.GAME_COD_BO))    ? new BitmapImage(new Uri(Defines.GAME_COD_BO, UriKind.RelativeOrAbsolute))    : new BitmapImage();
-            InstanceViewModel.PublicProperties["Images"]["Games"]["HOMEFRONT"].Value = (File.Exists(Defines.GAME_HOMEFRONT)) ? new BitmapImage(new Uri(Defines.GAME_HOMEFRONT, UriKind.RelativeOrAbsolute)) : new BitmapImage();
-            InstanceViewModel.PublicProperties["Images"]["Games"]["MOH_2010"].Value  = (File.Exists(Defines.GAME_MOH_2010))  ? new BitmapImage(new Uri(Defines.GAME_MOH_2010, UriKind.RelativeOrAbsolute))  : new BitmapImage();
-            InstanceViewModel.PublicProperties["Images"]["Games"]["TF_2"].Value      = (File.Exists(Defines.GAME_TF_2))      ? new BitmapImage(new Uri(Defines.GAME_TF_2, UriKind.RelativeOrAbsolute))      : new BitmapImage();
+            InstanceViewModel.PublicProperties["Images"]["Games"]["BF_BC2"].Value    = (File.Exists(Defines.CONNECTION_BF_BC2))    ? new BitmapImage(new Uri(Defines.CONNECTION_BF_BC2, UriKind.RelativeOrAbsolute))    : new BitmapImage();
+            InstanceViewModel.PublicProperties["Images"]["Games"]["BF_3"].Value      = (File.Exists(Defines.CONNECTION_BF_3))      ? new BitmapImage(new Uri(Defines.CONNECTION_BF_3, UriKind.RelativeOrAbsolute))      : new BitmapImage();
+            InstanceViewModel.PublicProperties["Images"]["Games"]["COD_BO"].Value    = (File.Exists(Defines.CONNECTION_COD_BO))    ? new BitmapImage(new Uri(Defines.CONNECTION_COD_BO, UriKind.RelativeOrAbsolute))    : new BitmapImage();
+            InstanceViewModel.PublicProperties["Images"]["Games"]["HOMEFRONT"].Value = (File.Exists(Defines.CONNECTION_HOMEFRONT)) ? new BitmapImage(new Uri(Defines.CONNECTION_HOMEFRONT, UriKind.RelativeOrAbsolute)) : new BitmapImage();
+            InstanceViewModel.PublicProperties["Images"]["Games"]["MOH_2010"].Value  = (File.Exists(Defines.CONNECTION_MOH_2010))  ? new BitmapImage(new Uri(Defines.CONNECTION_MOH_2010, UriKind.RelativeOrAbsolute))  : new BitmapImage();
+            InstanceViewModel.PublicProperties["Images"]["Games"]["TF_2"].Value      = (File.Exists(Defines.CONNECTION_TF_2))      ? new BitmapImage(new Uri(Defines.CONNECTION_TF_2, UriKind.RelativeOrAbsolute))      : new BitmapImage();
 
             /* [Connection] - Represents an Action or State dealing with Connections.
              *   [Add]    - Create/Add a connection.

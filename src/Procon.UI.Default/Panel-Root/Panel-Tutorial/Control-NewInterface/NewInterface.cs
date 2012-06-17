@@ -54,7 +54,7 @@ namespace Procon.UI.Default.Root.Tutorial.NewInterface
             NewInterfaceView view = new NewInterfaceView();
             layout.Children.Add(view);
 
-            // Commands
+            // Commands.
             tCmmds["Remote"].Value = new RelayCommand<Object>(
                 // -- Handles when the "Remote Interface" button is clicked.
                 x => {

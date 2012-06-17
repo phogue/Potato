@@ -47,6 +47,9 @@
     <Compile Include="Controls\RadioImageButton.xaml.cs">
       <DependentUpon>RadioImageButton.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Converters\PingConverter.cs" />
+    <Compile Include="Converters\KdrConverter.cs" />
+    <Compile Include="Converters\ScoreConverter.cs" />
     <Compile Include="Panel-Root\Layout\Layout.cs" />
     <Compile Include="Panel-Root\Layout\LayoutView.xaml.cs">
       <DependentUpon>LayoutView.xaml</DependentUpon>
@@ -63,10 +66,6 @@
     <Compile Include="Panel-Root\Panel-Main\Panel-Options\Layout\LayoutView.xaml.cs">
       <DependentUpon>LayoutView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Panel-Root\Panel-Main\Panel-Players\Control-Title\Title.cs" />
-    <Compile Include="Panel-Root\Panel-Main\Panel-Players\Control-Title\TitleView.xaml.cs">
-      <DependentUpon>TitleView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Panel-Root\Panel-Main\Panel-Players\Control-List\List.cs" />
     <Compile Include="Panel-Root\Panel-Main\Panel-Players\Control-List\ListView.xaml.cs">
       <DependentUpon>ListView.xaml</DependentUpon>
@@ -81,6 +80,18 @@
     </Compile>
     <Compile Include="Panel-Root\Panel-Main\Panel-Settings\Layout\Layout.cs" />
     <Compile Include="Panel-Root\Panel-Main\Panel-Settings\Layout\LayoutView.xaml.cs">
+      <DependentUpon>LayoutView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Panel-Root\Panel-Main\Panel-Views\Control-Interfaces\Interfaces.cs" />
+    <Compile Include="Panel-Root\Panel-Main\Panel-Views\Control-Interfaces\InterfacesView.xaml.cs">
+      <DependentUpon>InterfacesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Panel-Root\Panel-Main\Panel-Views\Control-Connections\Connections.cs" />
+    <Compile Include="Panel-Root\Panel-Main\Panel-Views\Control-Connections\ConnectionsView.xaml.cs">
+      <DependentUpon>ConnectionsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Panel-Root\Panel-Main\Panel-Views\Layout\Layout.cs" />
+    <Compile Include="Panel-Root\Panel-Main\Panel-Views\Layout\LayoutView.xaml.cs">
       <DependentUpon>LayoutView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Panel-Root\Panel-Tutorial\Control-NewInterface\NewInterface.cs" />
@@ -164,10 +175,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Panel-Root\Panel-Main\Panel-Players\Control-Title\TitleView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Panel-Root\Panel-Main\Panel-Players\Control-List\ListView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -181,6 +188,18 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Panel-Root\Panel-Main\Panel-Settings\Layout\LayoutView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Panel-Root\Panel-Main\Panel-Views\Control-Interfaces\InterfacesView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Panel-Root\Panel-Main\Panel-Views\Control-Connections\ConnectionsView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Panel-Root\Panel-Main\Panel-Views\Layout\LayoutView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

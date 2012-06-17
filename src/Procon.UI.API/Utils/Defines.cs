@@ -10,6 +10,23 @@ namespace Procon.UI.API.Utils
         public static readonly String PROCON_LARGE = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\Procon2Large.png");
         public static readonly String PROCON_SMALL = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\Procon2Small.png");
 
+        // Interface Icons.
+        public static readonly String INTERFACE_LOCAL  = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\InterfaceLocal.png");
+        public static readonly String INTERFACE_REMOTE = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\InterfaceRemote.png");
+
+        // Connection Icons.
+        public static readonly String CONNECTION_BF_BC2    = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\BadCompany2.png");
+        public static readonly String CONNECTION_BF_3      = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\Battlefield3.png");
+        public static readonly String CONNECTION_COD_BO    = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\CallOfDuty_BlackOps.png");
+        public static readonly String CONNECTION_HOMEFRONT = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\Homefront.png");
+        public static readonly String CONNECTION_MOH_2010  = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\MedalOfHonor_2010.png");
+        public static readonly String CONNECTION_TF_2      = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\TeamFortress2.png");
+
+        // Connection Status Icons.
+        public static readonly String STATUS_GOOD = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\StatusGood.png");
+        public static readonly String STATUS_FLUX = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\StatusFlux.png");
+        public static readonly String STATUS_BAD  = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\StatusBad.png");
+
         // Content Icons.
         public static readonly String PLAYERS_DEFAULT   = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\PlayersDefault.png");
         public static readonly String PLAYERS_HOVER     = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\PlayersHover.png");
@@ -36,37 +53,18 @@ namespace Procon.UI.API.Utils
         public static readonly String OPTIONS_ACTIVE    = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\OptionsActive.png");
         public static readonly String OPTIONS_DISABLED  = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\OptionsDisabled.png");
 
+        // General Icons.
+        public static readonly String GENERAL_PLAYER = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\GeneralPlayer.png");
+        public static readonly String GENERAL_GOOD   = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\GeneralGood.png");
+        public static readonly String GENERAL_BAD    = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\GeneralBad.png");
+        public static readonly String GENERAL_WARN   = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\GeneralWarn.png");
+        public static readonly String GENERAL_NOTIFY = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\GeneralNotify.png");
+
         // Connection.
         public static readonly String CONNECTION_SWAP = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\ConnectionSwap.png");
         public static readonly String CONNECTION_INFO = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\ConnectionInfo.png");
 
         // Backgrounds.
         public static readonly String BACKGROUND_NAVIGATION = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\BackgroundNavigation.png");
-
-        // Game Icons.
-        public static readonly String GAME_BF_BC2    = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\BadCompany2.png");
-        public static readonly String GAME_BF_3      = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\Battlefield3.png");
-        public static readonly String GAME_COD_BO    = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\CallOfDuty_BlackOps.png");
-        public static readonly String GAME_HOMEFRONT = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\Homefront.png");
-        public static readonly String GAME_MOH_2010  = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\MedalOfHonor_2010.png");
-        public static readonly String GAME_TF_2      = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\TeamFortress2.png");
-
-        // Arrow Icons.
-        public static readonly String ARROW_DOWN         = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\ArrowDown.png");
-        public static readonly String ARROW_LEFT         = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\ArrowLeft.png");
-        public static readonly String ARROW_LEFT_DOUBLE  = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\ArrowLeftDouble.png");
-        public static readonly String ARROW_RIGHT        = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\ArrowRight.png");
-        public static readonly String ARROW_RIGHT_DOUBLE = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\ArrowRightDouble.png");
-        public static readonly String ARROW_UP           = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\ArrowUp.png");
-
-        // Media Icons.
-        public static readonly String MEDIA_PLAY         = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\MediaPlay.png");
-        public static readonly String MEDIA_PAUSE        = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\MediaPause.png");
-        public static readonly String MEDIA_STOP         = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\MediaStop.png");
-        public static readonly String MEDIA_NEXT         = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\MediaNext.png");
-        public static readonly String MEDIA_PREVIOUS     = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\MediaPrevious.png");
-        public static readonly String MEDIA_REFRESH      = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\MediaRefresh.png");
-        public static readonly String MEDIA_REPEAT       = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\MediaRepeat.png");
-        public static readonly String MEDIA_RECORD       = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\MediaRecord.png");
     }
 }

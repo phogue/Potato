@@ -1,4 +1,4 @@
-﻿<Grid x:Class="Procon.UI.Default.Root.Main.Maps.Layout.LayoutView"
+﻿<Grid x:Class="Procon.UI.Default.Root.Main.Views.Layout.LayoutView"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -6,12 +6,12 @@
       xmlns:view="clr-namespace:Procon.UI.API.ViewModels;assembly=Procon.UI.API"
       xmlns:acmd="clr-namespace:Procon.UI.API.Commands;assembly=Procon.UI.API"
       xmlns:util="clr-namespace:Procon.UI.API.Utils;assembly=Procon.UI.API"
-      Name="MainMapsLayout">
+      Name="MainViewsLayout">
     <Grid.Style>
         <Style TargetType="{x:Type Grid}">
             <Setter Property="Visibility" Value="Collapsed" />
             <Style.Triggers>
-                <DataTrigger Binding="{Binding Source={x:Static view:ViewModelBase.PublicProperties}, Path=[Settings][View].Value}" Value="Maps">
+                <DataTrigger Binding="{Binding Source={x:Static view:ViewModelBase.PublicProperties}, Path=[Settings][View].Value}" Value="Views">
                     <Setter Property="Visibility" Value="Visible" />
                 </DataTrigger>
             </Style.Triggers>
@@ -21,5 +21,9 @@
         <conv:TextLocalizationConverter x:Key="TextLoc" />
         <conv:EnumLocalizationConverter x:Key="EnumLoc" />
     </Grid.Resources>
+    <Grid.RowDefinitions>
+        <RowDefinition Height="0.33*" />
+        <RowDefinition Height="0.66*" />
+    </Grid.RowDefinitions>
     
 </Grid>

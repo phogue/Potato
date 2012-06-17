@@ -324,7 +324,6 @@ namespace Procon.UI.API.ViewModels
 
             // Manages a logging of events within the model:
             //Events = new ObservableCollection<Event>();
-            ExtensionApi.Connection = this;
         }
 
 

@@ -72,6 +72,10 @@
     <Compile Include="Commands\AttachedCommandGroup.cs" />
     <Compile Include="Commands\AttachedCommandItem.cs" />
     <Compile Include="Commands\RelayCommand.cs" />
+    <Compile Include="Converters\ConnectionTypeConverter.cs" />
+    <Compile Include="Converters\CountryConverter.cs" />
+    <Compile Include="Converters\StatusTypeConverter.cs" />
+    <Compile Include="Converters\InterfaceTypeConverter.cs" />
     <Compile Include="Converters\EnumLocalizationConverter.cs" />
     <Compile Include="Enums\ActionBanType.cs" />
     <Compile Include="Enums\ActionPlayerType.cs" />

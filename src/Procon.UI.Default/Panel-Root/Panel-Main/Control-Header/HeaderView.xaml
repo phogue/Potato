@@ -43,17 +43,7 @@
             <Label Name="MainHeaderName"
                    DockPanel.Dock="Left"
                    Margin="0, 0, 10, 0"
-                   Content="{Binding
-                       Source={x:Static view:ViewModelBase.PublicProperties},
-                       Path=[Connection].Value.ServerName,
-                       FallbackValue='[???]'}" />
-            <Label Name="MainHeaderUpTime"
-                   DockPanel.Dock="Left"
-                   Margin="0, 0, 10, 0"
-                   Content="{Binding
-                       Source={x:Static view:ViewModelBase.PublicProperties},
-                       Path=[Connection].Value.UpTime,
-                       FallbackValue='[???]'}" />
+                   Content="{Binding ServerName}" />
             <Label Name="MainHeaderPadding" Content=" "/>
         </DockPanel>
     </DockPanel>

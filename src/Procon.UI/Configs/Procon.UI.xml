@@ -19,8 +19,10 @@
         <extension>Main Header</extension>
         <extension>Main Navigation</extension>
         <extension>Main Chat</extension>
+        <extension>Main Views Layout</extension>
+        <extension>Main Views Interfaces</extension>
+        <extension>Main Views Connections</extension>
         <extension>Main Players Layout</extension>
-        <extension>Main Players Title</extension>
         <extension>Main Players List</extension>
         <extension>Main Maps Layout</extension>
         <extension>Main Bans Layout</extension>

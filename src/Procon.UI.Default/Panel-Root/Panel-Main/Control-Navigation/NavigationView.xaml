@@ -19,10 +19,6 @@
                Margin="15">
         <cont:RadioImageButton x:Name="MainNavigationPlayers"
                                DockPanel.Dock="Left"
-                               GroupName="MainNavigationGroup"
-                               IsChecked="{Binding
-                                   Source={x:Static view:ViewModelBase.PublicProperties},
-                                   Path=[Main][Navigation][Players].Value}"
                                NormalImage="{Binding
                                    Source={x:Static view:ViewModelBase.PublicProperties},
                                    Path=[Images][Content][Players][Default].Value}"
@@ -37,13 +33,13 @@
                                    Path=[Images][Content][Players][Active].Value}"
                                DisabledImage="{Binding
                                    Source={x:Static view:ViewModelBase.PublicProperties},
-                                   Path=[Images][Content][Players][Disabled].Value}" />
+                                   Path=[Images][Content][Players][Disabled].Value}"
+                               Command="{Binding
+                                   Source={x:Static view:ViewModelBase.PublicCommands},
+                                   Path=[Main][Navigation][Swap].Value}"
+                               CommandParameter="{Binding RelativeSource={RelativeSource Self}}"/>
         <cont:RadioImageButton x:Name="MainNavigationMaps"
                                DockPanel.Dock="Left"
-                               GroupName="MainNavigationGroup"
-                               IsChecked="{Binding
-                                   Source={x:Static view:ViewModelBase.PublicProperties},
-                                   Path=[Main][Navigation][Maps].Value}"
                                NormalImage="{Binding
                                    Source={x:Static view:ViewModelBase.PublicProperties},
                                    Path=[Images][Content][Maps][Default].Value}"
@@ -58,13 +54,13 @@
                                    Path=[Images][Content][Maps][Active].Value}"
                                DisabledImage="{Binding
                                    Source={x:Static view:ViewModelBase.PublicProperties},
-                                   Path=[Images][Content][Maps][Disabled].Value}" />
+                                   Path=[Images][Content][Maps][Disabled].Value}"
+                               Command="{Binding
+                                   Source={x:Static view:ViewModelBase.PublicCommands},
+                                   Path=[Main][Navigation][Swap].Value}"
+                               CommandParameter="{Binding RelativeSource={RelativeSource Self}}"/>
         <cont:RadioImageButton x:Name="MainNavigationBans"
                                DockPanel.Dock="Left"
-                               GroupName="MainNavigationGroup"
-                               IsChecked="{Binding
-                                   Source={x:Static view:ViewModelBase.PublicProperties},
-                                   Path=[Main][Navigation][Bans].Value}"
                                NormalImage="{Binding
                                    Source={x:Static view:ViewModelBase.PublicProperties},
                                    Path=[Images][Content][Bans][Default].Value}"
@@ -77,22 +73,22 @@
                                ActiveImage="{Binding
                                    Source={x:Static view:ViewModelBase.PublicProperties},
                                    Path=[Images][Content][Bans][Active].Value}"
-                               DisabledImage="{Binding
+                                DisabledImage="{Binding
                                    Source={x:Static view:ViewModelBase.PublicProperties},
-                                   Path=[Images][Content][Bans][Disabled].Value}" />
+                                   Path=[Images][Content][Bans][Disabled].Value}"
+                               Command="{Binding
+                                   Source={x:Static view:ViewModelBase.PublicCommands},
+                                   Path=[Main][Navigation][Swap].Value}"
+                               CommandParameter="{Binding RelativeSource={RelativeSource Self}}"/>
         <cont:RadioImageButton x:Name="MainNavigationPlugins"
                                DockPanel.Dock="Left"
-                               GroupName="MainNavigationGroup"
-                               IsChecked="{Binding
-                                   Source={x:Static view:ViewModelBase.PublicProperties},
-                                   Path=[Main][Navigation][Plugins].Value}"
                                NormalImage="{Binding
                                    Source={x:Static view:ViewModelBase.PublicProperties},
                                    Path=[Images][Content][Plugins][Default].Value}"
                                HoverImage="{Binding
                                    Source={x:Static view:ViewModelBase.PublicProperties},
                                    Path=[Images][Content][Plugins][Hover].Value}"
-                               PressedImage="{Binding
+                                PressedImage="{Binding
                                    Source={x:Static view:ViewModelBase.PublicProperties},
                                    Path=[Images][Content][Plugins][Press].Value}"
                                ActiveImage="{Binding
@@ -100,13 +96,13 @@
                                    Path=[Images][Content][Plugins][Active].Value}"
                                DisabledImage="{Binding
                                    Source={x:Static view:ViewModelBase.PublicProperties},
-                                   Path=[Images][Content][Plugins][Disabled].Value}" />
+                                   Path=[Images][Content][Plugins][Disabled].Value}"
+                               Command="{Binding
+                                   Source={x:Static view:ViewModelBase.PublicCommands},
+                                   Path=[Main][Navigation][Swap].Value}"
+                               CommandParameter="{Binding RelativeSource={RelativeSource Self}}"/>
         <cont:RadioImageButton x:Name="MainNavigationSettings"
                                DockPanel.Dock="Left"
-                               GroupName="MainNavigationGroup"
-                               IsChecked="{Binding
-                                   Source={x:Static view:ViewModelBase.PublicProperties},
-                                   Path=[Main][Navigation][Settings].Value}"
                                NormalImage="{Binding
                                    Source={x:Static view:ViewModelBase.PublicProperties},
                                    Path=[Images][Content][Settings][Default].Value}"
@@ -121,13 +117,13 @@
                                    Path=[Images][Content][Settings][Active].Value}"
                                DisabledImage="{Binding
                                    Source={x:Static view:ViewModelBase.PublicProperties},
-                                   Path=[Images][Content][Settings][Disabled].Value}" />
+                                   Path=[Images][Content][Settings][Disabled].Value}"
+                               Command="{Binding
+                                   Source={x:Static view:ViewModelBase.PublicCommands},
+                                   Path=[Main][Navigation][Swap].Value}"
+                               CommandParameter="{Binding RelativeSource={RelativeSource Self}}"/>
         <cont:RadioImageButton x:Name="MainNavigationOptions"
                                DockPanel.Dock="Right"
-                               GroupName="MainNavigationGroup"
-                               IsChecked="{Binding
-                                   Source={x:Static view:ViewModelBase.PublicProperties},
-                                   Path=[Main][Navigation][Options].Value}"
                                NormalImage="{Binding
                                    Source={x:Static view:ViewModelBase.PublicProperties},
                                    Path=[Images][Content][Options][Default].Value}"
@@ -142,7 +138,11 @@
                                    Path=[Images][Content][Options][Active].Value}"
                                DisabledImage="{Binding
                                    Source={x:Static view:ViewModelBase.PublicProperties},
-                                   Path=[Images][Content][Options][Disabled].Value}" />
+                                   Path=[Images][Content][Options][Disabled].Value}"
+                               Command="{Binding
+                                   Source={x:Static view:ViewModelBase.PublicCommands},
+                                   Path=[Main][Navigation][Swap].Value}"
+                               CommandParameter="{Binding RelativeSource={RelativeSource Self}}"/>
         <TextBox Name="MainNavigationCommand"
                  Margin="10, 0"/>
     </DockPanel>

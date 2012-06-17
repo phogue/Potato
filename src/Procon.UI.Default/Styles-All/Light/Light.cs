@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
 using System.Windows.Media;
 
 using Procon.UI.API;
@@ -54,6 +53,7 @@ namespace Procon.UI.Default.Styles.Light
             rootLayout.Resources.Add(typeof(PasswordBox), tResources["StylePasswordBox"] as Style);
             rootLayout.Resources.Add(typeof(Label),       tResources["StyleLabel"]       as Style);
             rootLayout.Resources.Add(typeof(TextBlock),   tResources["StyleTextBlock"]   as Style);
+            rootLayout.Resources.Add(typeof(ListBox),     tResources["StyleListBox"]     as Style);
             rootLayout.Resources.Add(typeof(Image),       tResources["StyleImage"]       as Style);
 
 
@@ -73,19 +73,28 @@ namespace Procon.UI.Default.Styles.Light
 
 
             // Modify specific controls.
-            Label     hdrUpTime  = ExtensionApi.FindControl<Label>(hdrLayout, "MainHeaderUpTime");
-            Label     plrName    = ExtensionApi.FindControl<Label>(mainLayout, "MainPlayersTitleName");
-            Label     plrMode    = ExtensionApi.FindControl<Label>(mainLayout, "MainPlayersTitleMode");
+            Label     viwInTtl   = ExtensionApi.FindControl<Label>(mainLayout, "MainViewsInterfacesLabel");
+            Label     viwInCnt   = ExtensionApi.FindControl<Label>(mainLayout, "MainViewsInterfacesCount");
+            Label     viwCnTtl   = ExtensionApi.FindControl<Label>(mainLayout, "MainViewsConnectionsLabel");
+            Label     viwCnCnt   = ExtensionApi.FindControl<Label>(mainLayout, "MainViewsConnectionsCount");
+            Label     plrName    = ExtensionApi.FindControl<Label>(mainLayout, "MainPlayersListName");
+            Label     plrMode    = ExtensionApi.FindControl<Label>(mainLayout, "MainPlayersListMode");
             DockPanel plrContent = ExtensionApi.FindControl<DockPanel>(mainLayout, "MainPlayersListContent");
             DockPanel plrActions = ExtensionApi.FindControl<DockPanel>(mainLayout, "MainPlayersListActions");
+            DockPanel viwInActs  = ExtensionApi.FindControl<DockPanel>(mainLayout, "MainViewsInterfacesActions");
+            DockPanel viwCnActs  = ExtensionApi.FindControl<DockPanel>(mainLayout, "MainViewsConnectionsActions");
             DockPanel chtContent = ExtensionApi.FindControl<DockPanel>(mainLayout, "MainChatContent");
             DockPanel chtTitle   = ExtensionApi.FindControl<DockPanel>(mainLayout, "MainChatTitle");
             TextBox   chtBox     = ExtensionApi.FindControl<TextBox>(mainLayout, "MainChatBox");
-            if (hdrUpTime == null || plrName == null || plrMode == null) return false;
-            hdrUpTime.Foreground = tResources["BrushTextSoft"] as Brush;
-            plrName.Foreground   = tResources["BrushTextSoft"] as Brush;
-            plrMode.Foreground   = tResources["BrushTextSoft"] as Brush;
-            chtBox.Background    = tResources["BrushChatBox"]  as Brush;
+            if (plrName    == null || plrMode    == null || viwInTtl   == null || viwInCnt == null || viwCnTtl == null || viwCnCnt == null ||
+                plrContent == null || plrActions == null || chtContent == null || chtTitle == null || chtBox   == null) return false;
+            viwInTtl.Foreground = tResources["BrushTextSoft"] as Brush;
+            viwInCnt.Foreground = tResources["BrushTextSoft"] as Brush;
+            viwCnTtl.Foreground = tResources["BrushTextSoft"] as Brush;
+            viwCnCnt.Foreground = tResources["BrushTextSoft"] as Brush;
+            plrName.Foreground  = tResources["BrushTextSoft"] as Brush;
+            plrMode.Foreground  = tResources["BrushTextSoft"] as Brush;
+            chtBox.Background   = tResources["BrushChatBox"]  as Brush;
 
 
             // Update specific backgrounds.
@@ -93,6 +102,8 @@ namespace Procon.UI.Default.Styles.Light
             tutLayout.Background  = tResources["BrushSpotlight"]   as Brush;
             hdrLayout.Background  = tResources["BrushHeaderHover"] as Brush;
             navLayout.Background  = tResources["BrushBlueDot"]     as Brush;
+            viwInActs.Background   = tResources["BrushEmphasis"]   as Brush;
+            viwCnActs.Background   = tResources["BrushEmphasis"]   as Brush;
             plrContent.Background = tResources["BrushOffset"]      as Brush;
             plrActions.Background = tResources["BrushEmphasis"]    as Brush;
             chtContent.Background = tResources["BrushChatMain"]    as Brush;

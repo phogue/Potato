@@ -30,7 +30,7 @@ namespace Procon.Net.Protocols.Homefront {
     using Procon.Net.Protocols.Objects;
     using Procon.Net.Protocols.Homefront.Objects;
 
-    [Game(GameType = GameType.Homefront)]
+    [Game(GameType = GameType.HOMEFRONT)]
     public class HomefrontGame : GameImplementation<HomefrontClient, HomefrontPacket> {
 
         public HomefrontGame(string hostName, ushort port) : base(hostName, port) {

@@ -24,12 +24,12 @@ namespace Procon.UI.API.Commands
         public void Execute(Object parameter)
         {
             if (CanExecute(parameter))
-                mExecute((T)parameter);
+                mExecute(parameter as T);
         }
         public bool CanExecute(Object parameter)
         {
             if (mCanExecute != null)
-                return mCanExecute((T)parameter);
+                return mCanExecute(parameter as T);
             return true;
         }
 

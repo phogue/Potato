@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
-
 using Procon.UI.API;
 
 namespace Procon.UI.Default.Root.Main.Maps.Layout
@@ -44,7 +43,6 @@ namespace Procon.UI.Default.Root.Main.Maps.Layout
             // Do what I need to setup my control.
             LayoutView view = new LayoutView();
             Grid.SetRow(view, 2);
-            view.Background = System.Windows.Media.Brushes.Blue;
             layout.Children.Add(view);
 
             // Exit with good status.

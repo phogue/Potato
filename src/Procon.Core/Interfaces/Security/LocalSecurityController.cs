@@ -47,24 +47,24 @@ namespace Procon.Core.Interfaces.Security {
         /// <summary>
         /// Relies on children classes to implement this.
         /// </summary>
-        protected override void WriteConfig(XElement config)
+        internal override void WriteConfig(Config config)
         {
             base.WriteConfig(config);
 
             foreach (Account account in this.Accounts)
-                config.Add(new XElement("command",
+                config.Root.Add(new XElement("command",
                     new XAttribute("name",   CommandName.SecurityAccountsAddAccount),
                     new XElement("username", account.Username)
                 ));
 
             foreach (Group group in this.Groups)
             {
-                config.Add(new XElement("command",
+                config.Root.Add(new XElement("command",
                     new XAttribute("name", CommandName.SecurityGroupsAddGroup),
                     new XElement("name",   group.Name)
                 ));
                 foreach (Account account in group.AssignedAccounts)
-                    config.Add(new XElement("command",
+                    config.Root.Add(new XElement("command",
                         new XAttribute("name",    CommandName.SecurityGroupsAssignAccount),
                         new XElement("groupName", group.Name),
                         new XElement("username",  account.Username)

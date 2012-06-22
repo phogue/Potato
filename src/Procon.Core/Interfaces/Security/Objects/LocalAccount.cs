@@ -62,24 +62,24 @@ namespace Procon.Core.Interfaces.Security.Objects {
         /// <summary>
         /// Saves the password, preferred language, and all the account's assignemnts.
         /// </summary>
-        protected override void WriteConfig(XElement config)
+        internal override void WriteConfig(Config config)
         {
             base.WriteConfig(config);
 
-            config.Add(new XElement("command",
+            config.Root.Add(new XElement("command",
                 new XAttribute("name",   CommandName.SecurityAccountsSetPassword),
                 new XElement("username", Username),
                 new XElement("password", Password)
             ));
 
-            config.Add(new XElement("command",
+            config.Root.Add(new XElement("command",
                 new XAttribute("name",       CommandName.SecurityAccountsSetPreferredLanguageCode),
                 new XElement("username",     Username),
                 new XElement("languageCode", PreferredLanguageCode)
             ));
 
             foreach (AccountAssignment assignment in Assignments) {
-                config.Add(new XElement("command",
+                config.Root.Add(new XElement("command",
                     new XAttribute("name",   CommandName.SecurityAccountsAssign),
                     new XElement("username", Username),
                     new XElement("gameType", assignment.GameType),

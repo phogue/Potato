@@ -34,7 +34,7 @@ namespace Procon.Net.Protocols {
         BF_BC2,
         BF_3,
         COD_BO,
-        Homefront,
+        HOMEFRONT,
         MOH_2010
     }
 }

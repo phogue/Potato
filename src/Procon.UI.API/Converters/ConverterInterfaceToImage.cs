@@ -1,16 +1,18 @@
 ﻿using System;
 using System.Windows.Data;
-using System.Windows.Media.Imaging;
+
+using Procon.UI.API.ViewModels;
 
 namespace Procon.UI.API.Converters
 {
-    public class CountryConverter : IValueConverter
+    public class ConverterInterfaceToImage : BaseConverter, IValueConverter
     {
-        // Value = The status to get the icon for.
+        // Value = The Interface View Model.
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            try               { return new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/" + value.ToString().ToLower() + ".png")); }
-            catch (Exception) { return new BitmapImage(); }
+            if (value is InterfaceViewModel)
+                return ViewModelBase.PublicProperties["Images"]["Interfaces"][((InterfaceViewModel)value).IsLocal ? "Local" : "Remote"].Value;
+            return ViewModelBase.PublicProperties["Images"]["Empty"].Value;
         }
 
         // Invalid.

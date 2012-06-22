@@ -3,7 +3,7 @@ using System.Windows.Data;
 
 namespace Procon.UI.API.Converters
 {
-    public class TextLocalizationConverter : IValueConverter
+    public class LocalizationText : BaseConverter, IValueConverter
     {
         // Value     = The key of the localized text (via a binding).
         // Parameter = The key of the localized text (via a command parameter).

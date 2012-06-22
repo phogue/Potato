@@ -62,13 +62,13 @@ namespace Procon.Core.Interfaces.Security.Objects {
         /// <summary>
         /// Relies on children classes to implement this.
         /// </summary>
-        protected override void WriteConfig(XElement config)
+        internal override void WriteConfig(Config config)
         {
             base.WriteConfig(config);
 
             foreach (Permission permission in Permissions) {
                 if (permission.Authority != null) {
-                    config.Add(new XElement("command",
+                    config.Root.Add(new XElement("command",
                         new XAttribute("name",         CommandName.SecurityGroupsSetPermission),
                         new XElement("groupName",      Name),
                         new XElement("permissionName", permission.Name),

@@ -203,7 +203,7 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Localization\en\Procon.UI.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <SubType>Designer</SubType>
     </Content>
   </ItemGroup>

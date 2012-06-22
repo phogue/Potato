@@ -1,24 +1,4 @@
-﻿// Copyright 2011 Geoffrey 'Phogue' Green
-// 
-// http://www.phogue.net
-//  
-// This file is part of Procon 2.
-// 
-// Procon 2 is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-// 
-// Procon 2 is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-// 
-// You should have received a copy of the GNU General Public License
-// along with Procon 2.  If not, see <http://www.gnu.org/licenses/>.
-
-using System;
-using System.IO;
+﻿using System;
 using System.Linq;
 using System.Xml.Linq;
 using Newtonsoft.Json;
@@ -32,12 +12,11 @@ namespace Procon.Core.Interfaces.Connections {
     using Procon.Net;
     using Procon.Net.Protocols.Objects;
 
-    public class LocalConnection<G> : Connection
-        where G : Game {
-
-        // Public Objects
+    public class LocalConnection<G> : Connection where G : Game
+    {
+        // Public Accessors/Mutators.
         public override GameState GameState {
-            get           { return this.Game != null ? this.Game.State : null; }
+            get           { return Game != null ? Game.State : null; }
             protected set { }
         }
 
@@ -52,7 +31,6 @@ namespace Procon.Core.Interfaces.Connections {
             }
         }
         private TaskController mTasks;
-
         [JsonIgnore]
         protected Game Game {
             get { return mGame; }
@@ -60,23 +38,32 @@ namespace Procon.Core.Interfaces.Connections {
                 if (mGame != value) {
                     mGame = value;
                     OnPropertyChanged(this, "Game");
-                }
-            }
-        }
+        } } }
         private   Game mGame;
 
-        // Default Initialization
+
+        // Constructor.
         public LocalConnection() : base() {
-            Tasks = new TaskController().Start();
+            Tasks = new TaskController();
+            Tasks.Add(
+                new Task() {
+                    Conditions = new Temporal() {
+                        x => x.Second % 10 == 0
+                    }
+                }
+            ).Tick += new Task.TickHandler(LocalConnection_Tick);
+            StateNLP = new StateNLP() {
+                Languages = MasterLanguages
+            }.Execute();
         }
 
-
-
-        #region Executable
-
-        /// <summary>
-        /// Executes the commands specified in the config file and returns a reference itself.
-        /// </summary>
+        
+        // Execute:
+        // -- Creates the connection to the game server.
+        // -- Assigns event handlers to deal with changes within the game and class.
+        // -- Starts the execution of this object's plugins and tasks.
+        // -- Adds a new task to execute every 10 seconds.
+        // -- Loads the configuration file.
         public override Connection Execute()
         {
             Game = (Game)Activator.CreateInstance(typeof(G), Hostname, Port);
@@ -87,133 +74,95 @@ namespace Procon.Core.Interfaces.Connections {
 
             AssignEvents();
 
-            StateNLP = new StateNLP() {
-                Languages = MasterLanguages
-            }.Execute();
-
             Plugins = new LocalPluginController() {
                 Connection = this,
                 Security   = Security,
                 Variables  = Variables,
                 Layer      = Layer
             }.Execute();
-
-            Tasks.Add(
-                new Task() {
-                    Conditions = new Temporal() {
-                        x => x.Second % 10 == 0
-                    }
-                }
-            ).Tick += new Task.TickHandler(LocalConnection_Tick);
+            Tasks.Start();
 
             return base.Execute();
         }
-
-        /// <summary>
-        /// Stops the plugins and tasks for this connection.
-        /// </summary>
+        // Dispose:
+        // -- Shuts down the connection to the game server.
+        // -- Disposes of this object's plugins and tasks.
         public override void Dispose()
         {
+            Game.Shutdown();
+
             Plugins.Dispose();
             Tasks.Stop();
         }
-
-        /// <summary>
-        /// Relies on children classes to implement this.
-        /// </summary>
-        protected override void WriteConfig(XElement config) { }
-
-        #endregion
+        // WriteConfig:
+        // -- TODO: Saves all the plugins to the config file.
+        internal override void WriteConfig(Config config) { }
 
 
-
-        /// <summary>
-        /// Assigns events to be handled by this class.
-        /// </summary>
+        // Assigns events to be handled by this class.
         protected override void AssignEvents()
         {
             ClientEvent += new Game.ClientEventHandler(LocalConnection_ClientEvent);
             GameEvent   += new Game.GameEventHandler(LocalConnection_GameEvent);
         }
-
-        /// <summary>
-        /// Assigns events in the game to be handled by this class.
-        /// </summary>
-        protected void AssignBubbledEvents()
+        private void LocalConnection_ClientEvent(Game sender, ClientEventArgs e) {
+            if (e.EventType == ClientEventType.ConnectionStateChange) ;
+        }
+        private void LocalConnection_GameEvent(Game sender, GameEventArgs e) {
+            if (e.EventType == GameEventType.Chat) {
+                if (e.Chat.Text.Length > 0) {
+                    String prefix = e.Chat.Text.First().ToString();
+                    String text   = e.Chat.Text.Remove(0, 1);
+                    if ((prefix = GetValidPrefix(prefix)) != null)
+                        StateNLP.Execute(Game.State,
+                            e.Chat.Author,
+                            Security.Account(GameType, e.Chat.Author.UID),
+                            prefix,
+                            text);
+                }
+            }
+            else if (e.EventType == GameEventType.ServerInfoUpdated) {
+                // TODO: Why is this here?
+            }
+        }
+        private void LocalConnection_Tick(Task sender, DateTime dt) {
+            if (Game != null && Game.State != null && Game.State.Variables.ConnectionState == ConnectionState.Disconnected)
+                AttemptConnection();
+            else
+                Game.Synchronize();
+        }
+        // Bubbles events fired by the game.
+        private void AssignBubbledEvents()
         {
             Game.ClientEvent += new Game.ClientEventHandler(Game_ClientEvent);
             Game.GameEvent   += new Game.GameEventHandler(Game_GameEvent);
         }
-
-        /// <summary>
-        /// Sends commands across the layer.
-        /// </summary>
-        protected void BubbleRequest(CommandName command, EventName @event, params object[] parameters)
-        {
-            Layer.Request(Layer.ServerContext(Hostname, Port), command, @event, parameters);
-        }
-
-        /// <summary>
-        /// Either attempt to reconnect or synchronize the game at each tick.
-        /// </summary>
-        private void LocalConnection_Tick(Task sender, DateTime dt)
-        {
-            if (Game != null && Game.State != null && Game.State.Variables.ConnectionState == ConnectionState.Disconnected)
-                this.AttemptConnection();
-            else
-                this.Game.Synchronize();
-        }
-
-        /// <summary>
-        /// Routes all the connection state change events to... not used?
-        /// </summary>
-        private void LocalConnection_ClientEvent(Game sender, ClientEventArgs e)
-        {
-            if (e.EventType == ClientEventType.ConnectionStateChange) ;
-        }
-
-        /// <summary>
-        /// Routes all the chat events to the NLP checker.
-        /// Routes all the server info events to... not used?
-        /// </summary>
-        private void LocalConnection_GameEvent(Game sender, GameEventArgs e)
-        {
-            if (e.EventType == GameEventType.Chat)
-            {
-                if (e.Chat.Text.Length > 0)
-                {
-                    string prefix = e.Chat.Text.First().ToString();
-                    string text   = e.Chat.Text.Remove(0, 1);
-                    if ((prefix = GetValidPrefix(prefix)) != null)
-                        StateNLP.Execute(Game.State,
-                                         e.Chat.Author,
-                                         Security.Account(GameType, e.Chat.Author.UID),
-                                         prefix,
-                                         text);
-                }
-            }
-            else if (e.EventType == GameEventType.ServerInfoUpdated) ;
-        }
-
-        /// <summary>
-        /// Bubbles all game events up the connection and across the layer.
-        /// </summary>
-        private void Game_GameEvent(Game sender, GameEventArgs e)
-        {
+        private void Game_GameEvent(Game sender, GameEventArgs e) {
             OnGameEvent(sender, e);
             BubbleRequest(CommandName.None, EventName.GameEvent, null, e);
         }
-
-        /// <summary>
-        /// Bubbles all client events up the connection and across the layer.
-        /// </summary>
-        private void Game_ClientEvent(Game sender, ClientEventArgs e)
-        {
+        private void Game_ClientEvent(Game sender, ClientEventArgs e) {
             OnClientEvent(sender, e);
             if (e.EventType != ClientEventType.PacketReceived && e.EventType != ClientEventType.PacketSent)
                 BubbleRequest(CommandName.None, EventName.ClientEvent, null, e);
         }
+        private void BubbleRequest(CommandName command, EventName @event, params Object[] parameters) {
+            Layer.Request(Layer.ServerContext(Hostname, Port), command, @event, parameters);
+        }
 
+        
+        // Attempts to begin communication with the game server.
+        public override void AttemptConnection()
+        {
+            if (Game != null)
+                Game.AttemptConnection();
+        }
+        // Performs a detailed action specified in the protocol object.
+        public override void Action(ProtocolObject action)
+        {
+            if (Game != null)
+                Game.Action(action);
+        }
 
 
         #region This may be moved to a NLP Controller at some point
@@ -237,26 +186,5 @@ namespace Procon.Core.Interfaces.Connections {
         }
 
         #endregion
-
-
-
-        /// <summary>
-        /// Attempts to establish a connection to the specified server and port.
-        /// Begins communications with the server based on the children of this class.
-        /// </summary>
-        public override void AttemptConnection()
-        {
-            if (Game != null)
-                Game.AttemptConnection();
-        }
-
-        /// <summary>
-        /// Performs an action detailed in the protocol object.
-        /// </summary>
-        public override void Action(ProtocolObject action)
-        {
-            if (Game != null)
-                Game.Action(action);
-        }
     }
 }

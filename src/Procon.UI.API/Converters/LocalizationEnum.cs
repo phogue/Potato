@@ -7,7 +7,7 @@ using Procon.UI.API.Enums;
 
 namespace Procon.UI.API.Converters
 {
-    public class EnumLocalizationConverter : IValueConverter
+    public class LocalizationEnum : BaseConverter, IValueConverter
     {
         // Value = The enum to localize.
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)

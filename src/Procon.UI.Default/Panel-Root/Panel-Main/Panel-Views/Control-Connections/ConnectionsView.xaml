@@ -1,101 +1,171 @@
 ﻿<Grid x:Class="Procon.UI.Default.Root.Main.Views.Connections.ConnectionsView"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:conv="clr-namespace:Procon.UI.API.Converters;assembly=Procon.UI.API"
       xmlns:view="clr-namespace:Procon.UI.API.ViewModels;assembly=Procon.UI.API"
       xmlns:acmd="clr-namespace:Procon.UI.API.Commands;assembly=Procon.UI.API"
       xmlns:util="clr-namespace:Procon.UI.API.Utils;assembly=Procon.UI.API"
+      xmlns:e="clr-namespace:Procon.Net.Protocols;assembly=Procon.Net"
       Name="MainViewsConnections"
       DataContext="{Binding
           Source={x:Static view:ViewModelBase.PublicProperties},
           Path=[Interface].Value}">
-    <Grid.Resources>
-        <conv:TextLocalizationConverter x:Key="TextLoc"    />
-        <conv:EnumLocalizationConverter x:Key="EnumLoc"    />
-        <conv:InterfaceTypeConverter    x:Key="ConnConv"   />
-        <conv:StatusTypeConverter       x:Key="StatusConv" />
-        
-        <DataTemplate DataType="{x:Type view:ConnectionViewModel}">
-            <DockPanel Name="PART_Content"
-                       Margin="15, 1">
-                <Image Name="PART_Type"
-                       Margin="0, 0, 5, 0"
-                       Width="24"
-                       DataContext="{Binding GameType}"
-                       Source="{Binding Converter={StaticResource ConnConv}}" />
-                <Image Name="PART_Status"
-                       Margin="0, 0, 5, 0"
-                       Width="24"
-                       DataContext="{Binding ConnectionState}"
-                       Source="{Binding Converter={StaticResource StatusConv}}" />
-                <TextBlock Name="PART_Name"
-                           Margin="0, 0, 5, 0"
-                           FontSize="12"
-                           VerticalAlignment="Center"
-                           Text="{Binding ServerName}" />
-                <TextBlock Name="PART_Players"
-                           Margin="0, 0, 5, 0"
-                           FontSize="12"
-                           VerticalAlignment="Center">
-                    <TextBlock.Text>
-                        <MultiBinding StringFormat="{}{0}/{1}">
-                            <Binding Path="PlayerCount" />
-                            <Binding Path="MaxPlayerCount" />
-                        </MultiBinding>
-                    </TextBlock.Text>
-                </TextBlock>
-            </DockPanel>
-        </DataTemplate>
-    </Grid.Resources>
     
     <!-- Content -->
     <DockPanel Name="MainViewsConnectionsContent">
         
         <!-- Title -->
-        <DockPanel Name="MainViewsConnectionsTitle"
-                   DockPanel.Dock="Top">
-            <Label Name="MainViewsConnectionsLabel"
-                   DockPanel.Dock="Left"
-                   Margin="15, 5"
-                   FontSize="20"
-                   Content="{Binding
-                       Converter={StaticResource TextLoc},
-                       ConverterParameter=Procon.UI.Default.Root.Main.Views.Connections}" />
-            <Label Name="MainViewsConnectionsCount"
-                   DockPanel.Dock="Left"
-                   FontSize="14"
-                   DataContext="{Binding Connections}"
-                   Content="{Binding Count}" />
-        </DockPanel>
-        
-        <!-- Actions -->
-        <DockPanel Name="MainViewsConnectionsActions"
+        <DockPanel Name="MainViewsConnectionsHeader"
                    DockPanel.Dock="Top">
             <Button Name="MainViewsConnectionsAdd"
-                    DockPanel.Dock="Left"
-                    MinWidth="80"
-                    Padding="0, 5"
-                    Margin="15, 10, 0, 10"
+                    DockPanel.Dock="Right"
+                    Width="200"
+                    Margin="0, 10, 15, 10"
                     Command="{Binding
                         Source={x:Static view:ViewModelBase.PublicCommands},
-                        Path=[Main][Views][Connections][Add].Value}"
+                        Path=[Main][Views][Connections][Add][Open].Value}"
                     Content="{Binding
-                        Converter={StaticResource TextLoc},
-                        ConverterParameter=Procon.UI.Default.Root.Main.Views.AddConnection}" />
-            <Button Name="MainViewsConnectionsRemove"
-                    DockPanel.Dock="Left"
-                    MinWidth="80"
-                    Padding="0, 5"
-                    Margin="10, 10, 0, 10"
-                    Command="{Binding
-                        Source={x:Static view:ViewModelBase.PublicCommands},
-                        Path=[Main][Views][Connections][Remove].Value}"
-                    Content="{Binding
-                        Converter={StaticResource TextLoc},
-                        ConverterParameter=Procon.UI.Default.Root.Main.Views.RemoveConnection}" />
-            
-            <Label Name="MainViewsConnectionsPadding" Content=" "/>
+                        Converter={conv:LocalizationText},
+                        ConverterParameter=Procon.UI.Default.Root.Main.Views.Connections.Add}" />
+            <Label Name="MainViewsConnectionsTitle"
+                   DockPanel.Dock="Left"
+                   HorizontalAlignment="Left"
+                   Margin="15, 5"
+                   FontSize="26"
+                   Content="{Binding
+                       Converter={conv:LocalizationText},
+                       ConverterParameter=Procon.UI.Default.Root.Main.Views.Connections}" />
+            <Popup Name="MainViewsConnectionsAddContainer"
+                   Width="375"
+                   Placement="Right"
+                   HorizontalOffset="-375"
+                   StaysOpen="False"
+                   PopupAnimation="Fade"
+                   AllowsTransparency="True">
+                <Border Name="MainViewsConnectionsAddBorder"
+                        CornerRadius="0, 0, 4, 4"
+                        Background="{Binding Background, RelativeSource={RelativeSource AncestorType={x:Type DockPanel}}}">
+                    <Grid Name="MainViewsConnectionsAddArea">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="5" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="25" />
+                            <RowDefinition Height="5" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="25" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="10" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="5" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="5" />
+                            <ColumnDefinition Width="0.50*" />
+                            <ColumnDefinition Width="15" />
+                            <ColumnDefinition Width="0.50*" />
+                            <ColumnDefinition Width="5" />
+                        </Grid.ColumnDefinitions>
+
+                        <!-- Labels. -->
+                        <Label Name="MainViewsConnectionsAddHostText"
+                               Grid.Row="1" Grid.Column="1"
+                               Content="{Binding 
+                                   Converter={conv:LocalizationText},
+                                   ConverterParameter=Procon.UI.Default.Root.Main.Views.Connections.Host}" />
+                        <Label Name="MainViewsConnectionsAddPortText"
+                               Grid.Row="1" Grid.Column="3"
+                               Content="{Binding
+                                   Converter={conv:LocalizationText},
+                                   ConverterParameter=Procon.UI.Default.Root.Main.Views.Connections.Port}" />
+                        <Label Name="MainViewsConnectionsAddTypeText"
+                               Grid.Row="4" Grid.Column="1"
+                               Content="{Binding
+                                   Converter={conv:LocalizationText},
+                                   ConverterParameter=Procon.UI.Default.Root.Main.Views.Connections.Type}" />
+                        <Label Name="MainViewsConnectionsAddPassText"
+                               Grid.Row="4" Grid.Column="3"
+                               Content="{Binding
+                                   Converter={conv:LocalizationText},
+                                   ConverterParameter=Procon.UI.Default.Root.Main.Views.Connections.Pass}" />
+                        
+                        <!-- Standard Input. -->
+                        <TextBox Name="MainViewsConnectionsAddHost"
+                                 Grid.Row="2" Grid.Column="1"
+                                 Text="{Binding
+                                     Source={x:Static view:ViewModelBase.PublicProperties},
+                                     Path=[Main][Views][Connections][Host].Value,
+                                     UpdateSourceTrigger=PropertyChanged}" />
+                        <TextBox Name="MainViewsConnectionsAddPort"
+                                 Grid.Row="2" Grid.Column="3"
+                                 Text="{Binding
+                                     Source={x:Static view:ViewModelBase.PublicProperties},
+                                     Path=[Main][Views][Connections][Port].Value,
+                                     UpdateSourceTrigger=PropertyChanged}" />
+                        <ComboBox Name="MainViewsConnectionsAddType"
+                                  Grid.Row="5" Grid.Column="1"
+                                  VerticalContentAlignment="Center"
+                                  ItemsSource="{Binding
+                                      Source={x:Static view:ViewModelBase.PublicProperties},
+                                      Path=[Types][Connection].Value}"
+                                  SelectedItem="{Binding
+                                      Source={x:Static view:ViewModelBase.PublicProperties},
+                                      Path=[Main][Views][Connections][Type].Value}"
+                                  SelectedIndex="0">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate DataType="{x:Type e:GameType}">
+                                    <TextBlock Text="{Binding Converter={conv:LocalizationEnum}}" />
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                        <PasswordBox Name="MainViewsConnectionsAddPass"
+                                     Grid.Row="5" Grid.Column="3"
+                                     util:PasswordBoxBinding.Password="{Binding
+                                         Source={x:Static view:ViewModelBase.PublicCommands},
+                                         Path=[Main][Views][Connections][Pass].Value}" />
+                        
+                        <!-- Optional Input. -->
+                        <DockPanel Name="MainViewsConnectionsAddAdditionalArea"
+                                   Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="3"
+                                   Margin="0, 5, 0, 0">
+                            <Label Name="MainViewsConnectionsAddAdditionalText"
+                                   DockPanel.Dock="Top"
+                                   Content="{Binding
+                                       Converter={conv:LocalizationText},
+                                       ConverterParameter=Procon.UI.Default.Root.Main.Views.Connections.Additional}" />
+                            <TextBox Name="MainViewsConnectionsAddAdditional"
+                                     DockPanel.Dock="Top"
+                                     Height="25"
+                                     Text="{Binding
+                                         Source={x:Static view:ViewModelBase.PublicProperties},
+                                         Path=[Main][Views][Connections][Additional].Value,
+                                         UpdateSourceTrigger=PropertyChanged}" />
+                            <DockPanel.Style>
+                                <Style TargetType="{x:Type DockPanel}">
+                                    <Setter Property="Visibility" Value="Collapsed" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding
+                                                        Source={x:Static view:ViewModelBase.PublicProperties},
+                                                        Path=[Main][Views][Connections][Type].Value}"
+                                                     Value="COD_BO">
+                                            <Setter Property="Visibility" Value="Visible" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </DockPanel.Style>
+                        </DockPanel>
+                    
+                        <!-- Add. -->
+                        <Button Name="MainViewsConnectionsAddAction"
+                                Grid.Row="8" Grid.Column="1" Grid.ColumnSpan="3"
+                                Command="{Binding
+                                    Source={x:Static view:ViewModelBase.PublicCommands},
+                                    Path=[Main][Views][Connections][Add][Confirm].Value}"
+                                Content="{Binding
+                                    Converter={conv:LocalizationText},
+                                    ConverterParameter=Procon.UI.Default.Root.Main.Views.Connections.Confirm}" />
+                    </Grid>
+                </Border>
+            </Popup>
         </DockPanel>
         
         <!-- List -->
@@ -105,6 +175,144 @@
                  ItemsSource="{Binding Connections}"
                  SelectedItem="{Binding
                      Source={x:Static view:ViewModelBase.PublicProperties},
-                     Path=[Connection].Value}"/>
+                     Path=[Connection].Value}">
+            <ListBox.Template>
+                <!-- Convert the list box into a wrap panel. -->
+                <ControlTemplate>
+                    <ScrollViewer VerticalScrollBarVisibility="Auto"
+                                  HorizontalScrollBarVisibility="Disabled">
+                        <WrapPanel IsItemsHost="True"
+                                   Margin="15, 5" />
+                    </ScrollViewer>
+                </ControlTemplate>
+            </ListBox.Template>
+            <ListBox.ItemTemplate>
+                <!-- Convert the list box items into a server monitor. -->
+                <DataTemplate DataType="{x:Type view:ConnectionViewModel}">
+                    <Border x:Name="PART_Border"
+                            Width="160"
+                            Height="225"
+                            Margin="5, 5, 8, 8"
+                            Padding="1"
+                            Background="{DynamicResource Background}">
+                        <Grid x:Name="PART_Container">
+                            <DockPanel x:Name="PART_Main">
+                                <!-- Header. -->
+                                <Border x:Name="PART_HeaderBorder"
+                                        DockPanel.Dock="Left"
+                                        Padding="2"
+                                        CornerRadius="2"
+                                        Background="#AA000000">
+                                    <DockPanel x:Name="PART_Header">
+                                        <Image x:Name="PART_Image"
+                                               DockPanel.Dock="Top"
+                                               Width="16"
+                                               Source="{Binding Converter={conv:ConverterConnectionToImage}}" />
+                                        <TextBlock x:Name="PART_Name"
+                                                   DockPanel.Dock="Top"
+                                                   Margin="0, 3, 0, 0"
+                                                   FontSize="14"
+                                                   HorizontalAlignment="Center"
+                                                   Foreground="White"
+                                                   Text="{Binding ServerName, FallbackValue='???'}">
+                                            <TextBlock.LayoutTransform>
+                                                <RotateTransform Angle="90" />
+                                            </TextBlock.LayoutTransform>
+                                        </TextBlock>
+                                    </DockPanel>
+                                </Border>
+                                <!-- Data. -->
+                                <Grid x:Name="PART_Data"
+                                      DockPanel.Dock="Left"
+                                      Margin="3, 0, 0, 0">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="16"   />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="16"   />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="16" />
+                                        <ColumnDefinition Width="*"  />
+                                    </Grid.ColumnDefinitions>
+                                
+                                    <!-- Address. -->
+                                    <Border x:Name="PART_AddressBorder"
+                                            Grid.Row="0"
+                                            Grid.ColumnSpan="2"
+                                            Margin="0, 0, 0, 5"
+                                            Padding="2"
+                                            CornerRadius="2"
+                                            Background="#30000000">
+                                        <TextBlock x:Name="PART_AddressHeader"
+                                                   Foreground="White"
+                                                   Text="{Binding
+                                                       Converter={conv:LocalizationText},
+                                                       ConverterParameter=Procon.UI.Default.Root.Main.Views.Connections.Address}" />
+                                    </Border>
+                                    <Image x:Name="PART_Connection"
+                                           Grid.Row="1"
+                                           DataContext="{Binding ConnectionState}"
+                                           Source="{Binding Converter={conv:ConverterConnectionStateToImage}}" />
+                                    <TextBlock x:Name="PART_Address"
+                                               Grid.Row="1"
+                                               Grid.Column="1"
+                                               VerticalAlignment="Center"
+                                               HorizontalAlignment="Left"
+                                               Text="{Binding Hostname}" />
+                                    <!-- Map. -->
+                                    <Border x:Name="PART_MapBorder"
+                                            Grid.Row="2"
+                                            Grid.ColumnSpan="2"
+                                            Margin="0, 5"
+                                            Padding="2"
+                                            CornerRadius="2"
+                                            Background="#30000000">
+                                        <TextBlock x:Name="PART_MapHeader"
+                                                   Foreground="White"
+                                                   Text="{Binding
+                                                       Converter={conv:LocalizationText},
+                                                       ConverterParameter=Procon.UI.Default.Root.Main.Views.Connections.Map}" />
+                                    </Border>
+                                    <TextBlock x:Name="PART_Map"
+                                               Grid.Row="3"
+                                               Grid.Column="1"
+                                               VerticalAlignment="Center"
+                                               HorizontalAlignment="Left"
+                                               Text="{Binding MapName}" />
+                                </Grid>
+                            </DockPanel>
+                            <!-- Close Button -->
+                            <Button x:Name="PART_CloseButton"
+                                    Width="18"
+                                    Height="18"
+                                    Margin="0, 2, 2, 0"
+                                    Padding="0"
+                                    Visibility="Collapsed"
+                                    VerticalAlignment="Top"
+                                    HorizontalAlignment="Right"
+                                    Content="X"
+                                    Command="{Binding
+                                        Source={x:Static view:ViewModelBase.PublicCommands},
+                                        Path=[Main][Views][Connections][Remove].Value}"
+                                    CommandParameter="{Binding
+                                        RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}},
+                                        Path=Content}" />
+                            </Grid>
+                        <Border.Effect>
+                            <DropShadowEffect Opacity="0.6"
+                                              Direction="-45"
+                                              BlurRadius="3"
+                                              ShadowDepth="3" />
+                        </Border.Effect>
+                    </Border>
+                    <DataTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Visibility" Value="Visible" TargetName="PART_CloseButton" />
+                        </Trigger>
+                    </DataTemplate.Triggers>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
     </DockPanel>
 </Grid>

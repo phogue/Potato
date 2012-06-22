@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
 
-namespace Procon.Core {
-    using Procon.Core.Utils;
+namespace Procon.Core
+{
 
     public abstract class Executable<T> : ExecutableBase, INotifyPropertyChanged, IDisposable where T : MarshalByRefObject
     {
@@ -19,24 +18,15 @@ namespace Procon.Core {
                     mArguments = value;
                     OnPropertyChanged(this, "Arguments");
         } } }
-
         // Internal Variables.
-        protected FileInfo     nFile;
-        private   List<String> mArguments;
-        private   Dictionary<CommandAttribute, MethodInfo> mCommands;
+        private List<String> mArguments;
+        private Dictionary<CommandAttribute, MethodInfo> mCommands;
 
 
         // Constructor.
         public Executable() {
-            nFile     = new FileInfo(Path.Combine(Defines.CONFIGS_DIRECTORY, String.Format("{0}.xml", GetType().Namespace)));
             mCommands = new Dictionary<CommandAttribute, MethodInfo>();
             Arguments = new List<String>();
-        }
-        // Destructor.
-        ~Executable() {
-            Config mConfig = new Config().Generate(GetType());
-            WriteConfig(mConfig.Root);
-            mConfig.Save(nFile);
         }
 
 
@@ -61,7 +51,7 @@ namespace Procon.Core {
         public virtual void Dispose() { }
         // WriteConfig:
         // -- Allows for an optional child implementation.
-        protected virtual void WriteConfig(XElement xNamespace) { }
+        internal virtual void WriteConfig(Config config) { }
 
 
         // Finds the commands specified in the config file and invokes them with the specified attributes.

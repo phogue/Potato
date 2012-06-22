@@ -124,7 +124,7 @@ namespace Procon.Core.Interfaces.Connections.Plugins {
         /// <summary>
         /// Relies on children classes to implement this.
         /// </summary>
-        protected override void WriteConfig(XElement config) { }
+        internal override void WriteConfig(Config config) { }
 
         #endregion
 

@@ -3,7 +3,6 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-
 using Procon.UI.API;
 using Procon.UI.API.Classes;
 using Procon.UI.API.Commands;
@@ -56,7 +55,7 @@ namespace Procon.UI.Default.Root.Tutorial.NewInterface
 
             // Commands.
             tCmmds["Remote"].Value = new RelayCommand<Object>(
-                // -- Handles when the "Remote Interface" button is clicked.
+            #region -- Handles when the "Remote Interface" button is clicked.
                 x => {
                     ViewModelBase.PublicCommands["Interface"]["Add"].Value.Execute(
                         new Object[] {
@@ -65,7 +64,7 @@ namespace Procon.UI.Default.Root.Tutorial.NewInterface
                             tProps["User"].Value,
                             tProps["Pass"].Value
                         });
-                    ExtensionApi.Interface = ExtensionApi.Procon.Interfaces.SingleOrDefault(y => y.Hostname.ToString() == tProps["Host"].Value && y.Port.ToString() == tProps["Port"].Value);
+                    ExtensionApi.Interface = ExtensionApi.Procon.Interfaces.SingleOrDefault(y => y.Hostname.ToString() == (String)tProps["Host"].Value && y.Port.ToString() == (String)tProps["Port"].Value);
                     if (ExtensionApi.Interface != null)
                         ExtensionApi.Settings["Tutorial"].Value = "Done";
                 },
@@ -79,8 +78,9 @@ namespace Procon.UI.Default.Root.Tutorial.NewInterface
                                 tProps["Pass"].Value
                             });
                 });
+            #endregion
             tCmmds["Local"].Value = new RelayCommand<Object>(
-                // -- Handles when the "Local Interface" button is clicked.
+            #region -- Handles when the "Local Interface" button is clicked.
                 x => {
                     ExtensionApi.Interface = ExtensionApi.Procon.Interfaces.SingleOrDefault(y => y.IsLocal);
                     if (ExtensionApi.Interface != null)
@@ -89,11 +89,13 @@ namespace Procon.UI.Default.Root.Tutorial.NewInterface
                 x => {
                     return ExtensionApi.Procon != null;
                 });
+            #endregion
             tCmmds["Pass"].Value = new RelayCommand<String>(
-                // -- Handles when the password changes.
+            #region -- Handles when the password changes.
                 pass => {
                     tProps["Pass"].Value = pass;
                 });
+            #endregion
 
             // Exit with good status.
             return true;

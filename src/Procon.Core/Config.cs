@@ -38,9 +38,20 @@ namespace Procon.Core
         /// Combines this configuration file with another configuration file.
         /// Returns a reference back to this config.
         /// </summary>
-        public virtual Config Add(Config mConfig) {
-            if (Root != null && mConfig.Root != null)
-                Root.Add(mConfig.Root.Descendants());
+        public virtual Config Add(Config config) {
+            if (Document != null && config.Document != null) {
+                XElement tThisRoot = Document.Root;
+                XElement tThatRoot = config.Document.Root;
+                while (tThisRoot != null && tThatRoot != null) {
+                    if (tThisRoot.Name != tThatRoot.Name) {
+                        if (tThisRoot.Parent != null)
+                            tThisRoot.Parent.Add(tThatRoot);
+                        break;
+                    }
+                    tThisRoot = tThisRoot.Descendants().FirstOrDefault();
+                    tThatRoot = tThatRoot.Descendants().FirstOrDefault();
+                }
+            }
             return this;
         }
 

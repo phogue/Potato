@@ -44,7 +44,7 @@ namespace Procon.Core.Interfaces.Security.Objects {
         /// <summary>
         /// Relies on children classes to implement 
         /// </summary>
-        protected override void WriteConfig(XElement config) { }
+        internal override void WriteConfig(Config config) { }
 
         #endregion
 

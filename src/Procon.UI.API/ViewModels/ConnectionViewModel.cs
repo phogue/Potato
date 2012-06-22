@@ -161,7 +161,7 @@ namespace Procon.UI.API.ViewModels
                         return InstanceViewModel.PublicProperties["Images"]["Games"]["BF_3"].Value as BitmapImage;
                     case GameType.COD_BO:
                         return InstanceViewModel.PublicProperties["Images"]["Games"]["COD_BO"].Value as BitmapImage;
-                    case GameType.Homefront:
+                    case GameType.HOMEFRONT:
                         return InstanceViewModel.PublicProperties["Images"]["Games"]["Homefront"].Value as BitmapImage;
                     case GameType.MOH_2010:
                         return InstanceViewModel.PublicProperties["Images"]["Games"]["MOH_2010"].Value as BitmapImage;

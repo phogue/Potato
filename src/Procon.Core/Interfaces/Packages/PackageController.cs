@@ -81,7 +81,7 @@ namespace Procon.Core.Interfaces.Packages {
         /// <summary>
         /// Relies on children classes to implement this.
         /// </summary>
-        protected override void WriteConfig(XElement config) { }
+        internal override void WriteConfig(Config config) { }
 
         #endregion
         #region Events

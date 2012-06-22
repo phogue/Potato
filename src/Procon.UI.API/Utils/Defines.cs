@@ -15,12 +15,13 @@ namespace Procon.UI.API.Utils
         public static readonly String INTERFACE_REMOTE = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\InterfaceRemote.png");
 
         // Connection Icons.
-        public static readonly String CONNECTION_BF_BC2    = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\BadCompany2.png");
-        public static readonly String CONNECTION_BF_3      = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\Battlefield3.png");
-        public static readonly String CONNECTION_COD_BO    = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\CallOfDuty_BlackOps.png");
-        public static readonly String CONNECTION_HOMEFRONT = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\Homefront.png");
-        public static readonly String CONNECTION_MOH_2010  = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\MedalOfHonor_2010.png");
-        public static readonly String CONNECTION_TF_2      = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\TeamFortress2.png");
+        public static readonly String CONNECTION_BF_BC2    = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\GameBadCompany2.png");
+        public static readonly String CONNECTION_BF_3      = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\GameBattlefield3.png");
+        public static readonly String CONNECTION_COD_BO    = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\GameCallOfDuty_BlackOps.png");
+        public static readonly String CONNECTION_HOMEFRONT = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\GameHomefront.png");
+        public static readonly String CONNECTION_MOH_2010  = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\GameMedalOfHonor_2010.png");
+        public static readonly String CONNECTION_TF_2      = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\GameTeamFortress2.png");
+        public static readonly String CONNECTION_UNKNOWN   = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\Unknown.png");
 
         // Connection Status Icons.
         public static readonly String STATUS_GOOD = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\StatusGood.png");

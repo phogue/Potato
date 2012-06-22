@@ -47,9 +47,6 @@
     <Compile Include="Controls\RadioImageButton.xaml.cs">
       <DependentUpon>RadioImageButton.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Converters\PingConverter.cs" />
-    <Compile Include="Converters\KdrConverter.cs" />
-    <Compile Include="Converters\ScoreConverter.cs" />
     <Compile Include="Panel-Root\Layout\Layout.cs" />
     <Compile Include="Panel-Root\Layout\LayoutView.xaml.cs">
       <DependentUpon>LayoutView.xaml</DependentUpon>
@@ -57,6 +54,10 @@
     <Compile Include="Panel-Root\Panel-Main\Panel-Bans\Layout\Layout.cs" />
     <Compile Include="Panel-Root\Panel-Main\Panel-Bans\Layout\LayoutView.xaml.cs">
       <DependentUpon>LayoutView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Panel-Root\Panel-Main\Panel-Maps\Control-List\List.cs" />
+    <Compile Include="Panel-Root\Panel-Main\Panel-Maps\Control-List\ListView.xaml.cs">
+      <DependentUpon>ListView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Panel-Root\Panel-Main\Panel-Maps\Layout\Layout.cs" />
     <Compile Include="Panel-Root\Panel-Main\Panel-Maps\Layout\LayoutView.xaml.cs">
@@ -164,6 +165,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Panel-Root\Panel-Main\Panel-Bans\Layout\LayoutView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Panel-Root\Panel-Main\Panel-Maps\Control-List\ListView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

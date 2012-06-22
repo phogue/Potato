@@ -94,7 +94,7 @@ namespace Procon.Core.Interfaces.Security {
         /// <summary>
         /// Relies on children classes to implement this.
         /// </summary>
-        protected override void WriteConfig(XElement config) { }
+        internal override void WriteConfig(Config config) { }
 
         #endregion
         #region Events
@@ -284,7 +284,7 @@ namespace Procon.Core.Interfaces.Security {
         {
             return (initiator_authority.HasValue) ? 
                        (target_authority.HasValue) ? 
-                           (initiator_authority > target_authority) : initiator_authority > 0 : false;
+                           (initiator_authority > target_authority) : initiator_authority > 0 : true;
         }
 
         /// <summary>

@@ -69,7 +69,7 @@ namespace Procon.Core.Interfaces.RSS {
         /// <summary>
         /// Does nothing.  Information about this object is handled via it's parent interface.
         /// </summary>
-        protected override void WriteConfig(XElement xNamespace) { }
+        internal override void WriteConfig(Config config) { }
 
         #endregion
 

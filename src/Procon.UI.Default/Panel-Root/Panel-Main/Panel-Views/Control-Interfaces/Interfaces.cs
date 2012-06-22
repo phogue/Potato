@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-
 using Procon.UI.API;
 using Procon.UI.API.Classes;
+using Procon.UI.API.Commands;
 using Procon.UI.API.ViewModels;
 
 namespace Procon.UI.Default.Root.Main.Views.Interfaces
@@ -51,6 +52,67 @@ namespace Procon.UI.Default.Root.Main.Views.Interfaces
             // Do what I need to setup my control.
             InterfacesView view = new InterfacesView();
             layout.Children.Add(view);
+            
+            // Commands.
+            List<PlayerViewModel> tSelectedPlayers = new List<PlayerViewModel>();
+            tCmmds["Add"]["Open"].Value = new RelayCommand<Object>(
+            #region -- Handles when the "Add" button is clicked.
+                x => {
+                    view.MainViewsInterfacesAddContainer.VerticalOffset = view.MainViewsInterfacesHeader.ActualHeight;
+                    view.MainViewsInterfacesAddContainer.IsOpen = true;
+                    view.MainViewsInterfacesAddHost.Focus();
+                });
+            #endregion
+            tCmmds["Add"]["Confirm"].Value = new RelayCommand<Object>(
+            #region -- Handles when the "Connect" button is clicked.
+                x => {
+                    ViewModelBase.PublicCommands["Interface"]["Add"].Value.Execute(
+                        new Object[] {
+                            tProps["Host"].Value,
+                            tProps["Port"].Value,
+                            tProps["User"].Value,
+                            tProps["Pass"].Value
+                        });
+                    view.MainViewsInterfacesAddContainer.IsOpen = false;
+                    view.MainViewsInterfacesAddHost.Text        = String.Empty;
+                    view.MainViewsInterfacesAddPort.Text        = String.Empty;
+                    view.MainViewsInterfacesAddUser.Text        = String.Empty;
+                    view.MainViewsInterfacesAddPass.Password    = String.Empty;
+                },
+                x => {
+                    return ViewModelBase.PublicCommands["Interface"]["Add"].Value != null &&
+                           ViewModelBase.PublicCommands["Interface"]["Add"].Value.CanExecute(
+                            new Object[] {
+                                tProps["Host"].Value,
+                                tProps["Port"].Value,
+                                tProps["User"].Value,
+                                tProps["Pass"].Value
+                            });
+                });
+            #endregion
+            tCmmds["Remove"].Value = new RelayCommand<InterfaceViewModel>(
+            #region -- Handles when the "Remove" button is clicked.
+                x => {
+                    ViewModelBase.PublicCommands["Interface"]["Remove"].Value.Execute(new Object[] {
+                        x.Hostname,
+                        x.Port.ToString()
+                    });
+                },
+                x => {
+                    return x != null &&
+                           ViewModelBase.PublicCommands["Interface"]["Remove"].Value != null &&
+                           ViewModelBase.PublicCommands["Interface"]["Remove"].Value.CanExecute(new Object[] {
+                               x.Hostname,
+                               x.Port.ToString()
+                           });
+                });
+            #endregion
+            tCmmds["Pass"].Value = new RelayCommand<String>(
+            #region -- Handles when the password changes.
+                pass => {
+                    tProps["Pass"].Value = pass;
+                });
+            #endregion
 
             // Exit with good status.
             return true;

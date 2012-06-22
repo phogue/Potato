@@ -1,17 +1,12 @@
 ﻿<Grid x:Class="Procon.UI.Default.Root.Main.Chat.ChatView"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-      xmlns:cont="clr-namespace:Procon.UI.Default.Controls"
       xmlns:conv="clr-namespace:Procon.UI.API.Converters;assembly=Procon.UI.API"
       xmlns:view="clr-namespace:Procon.UI.API.ViewModels;assembly=Procon.UI.API"
       xmlns:acmd="clr-namespace:Procon.UI.API.Commands;assembly=Procon.UI.API"
       xmlns:util="clr-namespace:Procon.UI.API.Utils;assembly=Procon.UI.API"
+      xmlns:c="clr-namespace:Procon.UI.Default.Controls"
       Name="MainChat">
-    <Grid.Resources>
-        <conv:TextLocalizationConverter x:Key="TextLoc" />
-        <conv:EnumLocalizationConverter x:Key="EnumLoc" />
-    </Grid.Resources>
     
     <!-- Content -->
     <DockPanel Name="MainChatContent">
@@ -22,34 +17,34 @@
             <Image Name="MainChatIcon"
                    DockPanel.Dock="Left"
                    Margin="15, 10, 5, 10" />
-            <cont:ImageButton x:Name="MainChatMinMax"
-                              DockPanel.Dock="Right"
-                              Margin="5, 10, 15, 10"
-                              NormalImage="{Binding
-                                  Source={x:Static view:ViewModelBase.PublicProperties},
-                                  Path=[Images][Chat][Min][Default].Value}"
-                              HoverImage="{Binding
-                                  Source={x:Static view:ViewModelBase.PublicProperties},
-                                  Path=[Images][Chat][Min][Hover].Value}"
-                              PressedImage="{Binding
-                                  Source={x:Static view:ViewModelBase.PublicProperties},
-                                  Path=[Images][Chat][Min][Press].Value}"
-                              DisabledImage="{Binding
-                                  Source={x:Static view:ViewModelBase.PublicProperties},
-                                  Path=[Images][Chat][Min][Disabled].Value}"
-                              Command="{Binding
-                                  Source={x:Static view:ViewModelBase.PublicCommands},
-                                  Path=[Main][Chat][MinMax].Value}" />
+            <c:ImageButton x:Name="MainChatMinMax"
+                           DockPanel.Dock="Right"
+                           Margin="5, 10, 15, 10"
+                           NormalImage="{Binding
+                               Source={x:Static view:ViewModelBase.PublicProperties},
+                               Path=[Images][Chat][Min][Default].Value}"
+                           HoverImage="{Binding
+                               Source={x:Static view:ViewModelBase.PublicProperties},
+                               Path=[Images][Chat][Min][Hover].Value}"
+                           PressedImage="{Binding
+                               Source={x:Static view:ViewModelBase.PublicProperties},
+                               Path=[Images][Chat][Min][Press].Value}"
+                           DisabledImage="{Binding
+                               Source={x:Static view:ViewModelBase.PublicProperties},
+                               Path=[Images][Chat][Min][Disabled].Value}"
+                           Command="{Binding
+                               Source={x:Static view:ViewModelBase.PublicCommands},
+                               Path=[Main][Chat][MinMax].Value}" />
             <TextBlock Name="MainChatLabel"
                        DockPanel.Dock="Left"
                        Foreground="White"
                        VerticalAlignment="Center"
                        FontSize="16"
                        Text="{Binding
-                           Converter={StaticResource TextLoc},
+                           Converter={conv:LocalizationText},
                            ConverterParameter=Procon.UI.Default.Root.Main.Chat.Title}"/>
         </DockPanel>
-        
+
         <!-- Chat Box -->
         <TextBox Name="MainChatBox"
                  DockPanel.Dock="Bottom"
@@ -57,7 +52,7 @@
                  Text="{Binding
                      Source={x:Static view:ViewModelBase.PublicProperties},
                      Path=[Main][Chat][Text].Value}" />
-        
+
         <!-- Chat & Events -->
         <ListBox Name="MainChatEvents"
                  DockPanel.Dock="Top"

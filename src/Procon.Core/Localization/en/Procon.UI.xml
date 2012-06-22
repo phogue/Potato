@@ -202,13 +202,31 @@
         <!-- Main Window -->
         <main>
           <views>
-            <loc key="Interfaces"       value="Procon Connections" />
-            <loc key="AddInterface"     value="Add" />
-            <loc key="RemoveInterface"  value="Disconnect" />
-            <loc key="Local"            value="Local Connection" />
-            <loc key="Connections"      value="Game Connections" />
-            <loc key="AddConnection"    value="Add" />
-            <loc key="RemoveConnection" value="Disconnect" />
+            <loc key="Interfaces"  value="Procon Connections" />
+            <loc key="Connections" value="Game Connections" />
+            <interfaces>
+              <loc key="Local"       value="Local" />
+              <loc key="Remote"      value="Remote" />
+              <loc key="Host"        value="Hostname" />
+              <loc key="Port"        value="Port" />
+              <loc key="User"        value="Username" />
+              <loc key="Pass"        value="Password" />
+              <loc key="Add"         value="Connect to a Procon Server" />
+              <loc key="Confirm"     value="Connect!" />
+              <loc key="Information" value="Information" />
+              <loc key="Games"       value="Game Connections" />
+            </interfaces>
+            <connections>
+              <loc key="Host"       value="Hostname" />
+              <loc key="Port"       value="Port" />
+              <loc key="Type"       value="Game Type" />
+              <loc key="Pass"       value="Password" />
+              <loc key="Additional" value="Additional Information" />
+              <loc key="Add"        value="Connect to a Game Server" />
+              <loc key="Confirm"    value="Connect!" />
+              <loc key="Address"    value="Hostname" />
+              <loc key="Map"        value="Map" />
+            </connections>
           </views>
           <chat>
             <loc key="Title" value="Chat" />

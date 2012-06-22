@@ -2,7 +2,6 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-
 using Procon.UI.API;
 
 namespace Procon.UI.Default.Styles.Light
@@ -47,54 +46,56 @@ namespace Procon.UI.Default.Styles.Light
             // Setup base styles.
             Grid rootLayout = ExtensionApi.FindControl<Grid>(root, "RootLayout");
             if (rootLayout == null) return false;
-            rootLayout.Resources.Add(typeof(Button),      tResources["StyleButton"]      as Style);
-            rootLayout.Resources.Add(typeof(RadioButton), tResources["StyleRadioButton"] as Style);
-            rootLayout.Resources.Add(typeof(TextBox),     tResources["StyleTextBox"]     as Style);
-            rootLayout.Resources.Add(typeof(PasswordBox), tResources["StylePasswordBox"] as Style);
-            rootLayout.Resources.Add(typeof(Label),       tResources["StyleLabel"]       as Style);
-            rootLayout.Resources.Add(typeof(TextBlock),   tResources["StyleTextBlock"]   as Style);
-            rootLayout.Resources.Add(typeof(ListBox),     tResources["StyleListBox"]     as Style);
-            rootLayout.Resources.Add(typeof(Image),       tResources["StyleImage"]       as Style);
+            rootLayout.Resources.Add(typeof(Button),      tResources["StyleButton"]);
+            rootLayout.Resources.Add(typeof(RadioButton), tResources["StyleRadioButton"]);
+            rootLayout.Resources.Add(typeof(TextBox),     tResources["StyleTextBox"]);
+            rootLayout.Resources.Add(typeof(PasswordBox), tResources["StylePasswordBox"]);
+            rootLayout.Resources.Add(typeof(Label),       tResources["StyleLabel"]);
+            rootLayout.Resources.Add(typeof(TextBlock),   tResources["StyleTextBlock"]);
+            rootLayout.Resources.Add(typeof(ListBox),     tResources["StyleListBox"]);
+            rootLayout.Resources.Add(typeof(Image),       tResources["StyleImage"]);
 
 
             // Setup default styles.
             Grid mainLayout = ExtensionApi.FindControl<Grid>(rootLayout, "MainLayout");
             Grid tutLayout  = ExtensionApi.FindControl<Grid>(rootLayout, "TutorialLayout");
             if (tutLayout == null || mainLayout == null) return false;
-            mainLayout.Resources.Add(typeof(Button), tResources["StyleButtonDefault"] as Style);
-            tutLayout.Resources.Add( typeof(Button), tResources["StyleButtonDefault"] as Style);
+            mainLayout.Resources.Add(typeof(Button), tResources["StyleButtonDefault"]);
+            tutLayout.Resources.Add( typeof(Button), tResources["StyleButtonDefault"]);
 
 
             // Setup special styles.
-            Grid hdrLayout = ExtensionApi.FindControl<Grid>(mainLayout, "MainHeader");
-            Grid navLayout = ExtensionApi.FindControl<Grid>(mainLayout, "MainNavigation");
-            if (hdrLayout == null || navLayout == null) return false;
-            hdrLayout.Resources.Add(typeof(Button), tResources["StyleButtonSpecial"] as Style);
+            Grid    hdrLayout   = ExtensionApi.FindControl<Grid>(mainLayout, "MainHeader");
+            Grid    navLayout   = ExtensionApi.FindControl<Grid>(mainLayout, "MainNavigation");
+            ListBox vieIntrList = ExtensionApi.FindControl<ListBox>(mainLayout, "MainViewsInterfacesList");
+            ListBox vieConnList = ExtensionApi.FindControl<ListBox>(mainLayout, "MainViewsConnectionsList");
+            if (hdrLayout == null || navLayout == null || vieConnList == null || vieIntrList == null) return false;
+            hdrLayout.Resources.Add(typeof(Button), tResources["StyleButtonSpecial"]);
+            vieIntrList.Resources.Add("Background", tResources["BrushMedium"]);
+            vieConnList.Resources.Add("Background", tResources["BrushMedium"]);
 
 
             // Modify specific controls.
-            Label     viwInTtl   = ExtensionApi.FindControl<Label>(mainLayout, "MainViewsInterfacesLabel");
-            Label     viwInCnt   = ExtensionApi.FindControl<Label>(mainLayout, "MainViewsInterfacesCount");
-            Label     viwCnTtl   = ExtensionApi.FindControl<Label>(mainLayout, "MainViewsConnectionsLabel");
-            Label     viwCnCnt   = ExtensionApi.FindControl<Label>(mainLayout, "MainViewsConnectionsCount");
             Label     plrName    = ExtensionApi.FindControl<Label>(mainLayout, "MainPlayersListName");
             Label     plrMode    = ExtensionApi.FindControl<Label>(mainLayout, "MainPlayersListMode");
             DockPanel plrContent = ExtensionApi.FindControl<DockPanel>(mainLayout, "MainPlayersListContent");
             DockPanel plrActions = ExtensionApi.FindControl<DockPanel>(mainLayout, "MainPlayersListActions");
-            DockPanel viwInActs  = ExtensionApi.FindControl<DockPanel>(mainLayout, "MainViewsInterfacesActions");
-            DockPanel viwCnActs  = ExtensionApi.FindControl<DockPanel>(mainLayout, "MainViewsConnectionsActions");
+            DockPanel vieIntrTtl = ExtensionApi.FindControl<DockPanel>(mainLayout, "MainViewsInterfacesHeader");
+            DockPanel vieConnTtl = ExtensionApi.FindControl<DockPanel>(mainLayout, "MainViewsConnectionsHeader");
             DockPanel chtContent = ExtensionApi.FindControl<DockPanel>(mainLayout, "MainChatContent");
             DockPanel chtTitle   = ExtensionApi.FindControl<DockPanel>(mainLayout, "MainChatTitle");
             TextBox   chtBox     = ExtensionApi.FindControl<TextBox>(mainLayout, "MainChatBox");
-            if (plrName    == null || plrMode    == null || viwInTtl   == null || viwInCnt == null || viwCnTtl == null || viwCnCnt == null ||
-                plrContent == null || plrActions == null || chtContent == null || chtTitle == null || chtBox   == null) return false;
-            viwInTtl.Foreground = tResources["BrushTextSoft"] as Brush;
-            viwInCnt.Foreground = tResources["BrushTextSoft"] as Brush;
-            viwCnTtl.Foreground = tResources["BrushTextSoft"] as Brush;
-            viwCnCnt.Foreground = tResources["BrushTextSoft"] as Brush;
-            plrName.Foreground  = tResources["BrushTextSoft"] as Brush;
-            plrMode.Foreground  = tResources["BrushTextSoft"] as Brush;
-            chtBox.Background   = tResources["BrushChatBox"]  as Brush;
+            if (plrName    == null || plrMode    == null || plrContent == null || plrActions == null ||
+                vieIntrTtl == null || vieConnTtl == null || chtContent == null || chtTitle   == null || chtBox == null) return false;
+            plrName.Foreground    = tResources["BrushTextSoft"]     as Brush;
+            plrMode.Foreground    = tResources["BrushTextSoft"]     as Brush;
+            plrContent.Background = tResources["BrushOffset"]       as Brush;
+            plrActions.Background = tResources["BrushEmphasis"]     as Brush;
+            vieIntrTtl.Background = tResources["BrushEmphasis"]     as Brush;
+            vieConnTtl.Background = tResources["BrushEmphasis"]     as Brush;
+            chtContent.Background = tResources["BrushDarkEmphasis"] as Brush;
+            chtTitle.Background   = tResources["BrushDarkHeader"]   as Brush;
+            chtBox.Background     = tResources["BrushChatBox"]      as Brush;
 
 
             // Update specific backgrounds.
@@ -102,12 +103,7 @@ namespace Procon.UI.Default.Styles.Light
             tutLayout.Background  = tResources["BrushSpotlight"]   as Brush;
             hdrLayout.Background  = tResources["BrushHeaderHover"] as Brush;
             navLayout.Background  = tResources["BrushBlueDot"]     as Brush;
-            viwInActs.Background   = tResources["BrushEmphasis"]   as Brush;
-            viwCnActs.Background   = tResources["BrushEmphasis"]   as Brush;
-            plrContent.Background = tResources["BrushOffset"]      as Brush;
-            plrActions.Background = tResources["BrushEmphasis"]    as Brush;
-            chtContent.Background = tResources["BrushChatMain"]    as Brush;
-            chtTitle.Background   = tResources["BrushChatTitle"]   as Brush;
+
 
             return true;
         }

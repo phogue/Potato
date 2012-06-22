@@ -1,8 +1,8 @@
 ﻿using System;
 using System.IO;
 using System.Windows;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
-
 using Procon.Core;
 using Procon.UI.API;
 using Procon.UI.API.Utils;
@@ -36,10 +36,11 @@ namespace Procon.UI
                 MinHeight   = 768,
                 DataContext = tProcon,
                 WindowState           = Settings.Get<WindowState>("WindowState", WindowState.Normal),
-                WindowStartupLocation = WindowStartupLocation.Manual,
+                WindowStartupLocation = WindowStartupLocation.Manual
             };
             if (File.Exists(Defines.PROCON_ICON))
                 tRoot.Icon = new BitmapImage(new Uri(Defines.PROCON_ICON, UriKind.RelativeOrAbsolute));
+            TextOptions.SetTextFormattingMode(tRoot, TextFormattingMode.Display);
 
             // Save window settings before the window closes.
             tRoot.Closing += (s, e) => {

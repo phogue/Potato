@@ -7,20 +7,19 @@ using System.Xml.Linq;
 namespace Procon.Core {
     using Procon.Core.Interfaces;
     using Procon.Core.Interfaces.Layer;
+    using Procon.Core.Utils;
 
     public class Instance : Executable<Instance>
     {
         // Public Accessors/Mutators.
-        public List<Interface> Interfaces
-        {
+        public List<Interface> Interfaces {
             get { return mInterfaces;  }
             protected set {
                 if (mInterfaces != value) {
                     mInterfaces = value;
                     OnPropertyChanged(this, "Interfaces");
         } } }
-
-        // Private Variables.
+        // Internal Variables.
         private List<Interface> mInterfaces;
 
 
@@ -28,6 +27,7 @@ namespace Procon.Core {
         public Instance() : base() {
             Interfaces = new List<Interface>();
         }
+
 
         // Execute:
         // -- Creates the local interface.
@@ -41,36 +41,42 @@ namespace Procon.Core {
             return base.Execute();
         }
         // Dispose:
-        // -- Disposes of all it's interfaces.
-        // -- Requests the base class to dispose itself.
+        // -- Preps and saves the settings for this instance of procon.
+        // -- Disposes of all interfaces.
         public override void Dispose()
         {
+            Config mConfig = new Config().Generate(GetType());
+            WriteConfig(mConfig);
             foreach (Interface i in Interfaces)
                 i.Dispose();
-            base.Dispose();
+            mConfig.Save(new FileInfo(Path.Combine(Defines.CONFIGS_DIRECTORY, String.Format("{0}.xml", GetType().Namespace))));
+            Interfaces.Clear();
         }
         // WriteConfig:
         // -- Saves all the interfaces to the config file.
-        protected override void WriteConfig(XElement config)
+        internal override void WriteConfig(Config config)
         {
-            foreach (Interface @interface in Interfaces)
-                if (@interface is LocalInterface) {
-                    LayerListener l = @interface.Layer as LayerListener;
-                    config.Add(new XElement("command", // hostname, port, isCompressed, isEncrypted
+            foreach (Interface tInterface in Interfaces)
+                if (tInterface is LocalInterface) {
+                    LayerListener tLayer  = tInterface.Layer as LayerListener;
+                    Config        tConfig = new Config().Generate(tInterface.GetType());
+                    config.Root.Add(new XElement("command", // hostname, port, isCompressed, isEncrypted
                         new XAttribute("name", CommandName.InstanceLayerSetup),
-                        new XElement("hostname",     l.Hostname),
-                        new XElement("port",         l.Port),
-                        new XElement("isCompressed", l.IsCompressed),
-                        new XElement("isEncrypted",  l.IsEncrypted)));
+                        new XElement("hostname",     tLayer.Hostname),
+                        new XElement("port",         tLayer.Port),
+                        new XElement("isCompressed", tLayer.IsCompressed),
+                        new XElement("isEncrypted",  tLayer.IsEncrypted)));
+                    tInterface.WriteConfig(tConfig);
+                    config.Add(tConfig);
                 }
                 else {
-                    LayerGame l = @interface.Layer as LayerGame;
-                    config.Add(new XElement("command", // hostname, port, isCompressed, isEncrypted
+                    LayerGame tLayer  = tInterface.Layer as LayerGame;
+                    config.Root.Add(new XElement("command", // hostname, port, username, password
                         new XAttribute("name", CommandName.InstanceAddRemoteInterface),
-                        new XElement("hostname", l.Hostname),
-                        new XElement("port",     l.Port),
-                        new XElement("username", l.Username),
-                        new XElement("password", l.Password)));
+                        new XElement("hostname", tLayer.Hostname),
+                        new XElement("port",     tLayer.Port),
+                        new XElement("username", tLayer.Username),
+                        new XElement("password", tLayer.Password)));
                 }
         }
 
@@ -82,8 +88,7 @@ namespace Procon.Core {
             Interface local = Interfaces
                                   .Where(x => x is LocalInterface)
                                   .FirstOrDefault();
-            if (local != null)
-            {
+            if (local != null) {
                 local.Layer.Hostname     = hostname;
                 local.Layer.Port         = port;
                 local.Layer.IsEncrypted  = isEncrypted;
@@ -94,11 +99,14 @@ namespace Procon.Core {
         [Command(Command = CommandName.InstanceAddRemoteInterface)]
         public RemoteInterface CreateRemoteInterface(CommandInitiator initiator, String hostname, UInt16 port, String username, String password)
         {
-            Interface remote = new RemoteInterface(hostname, port, username, password).Execute();
-
-            Interfaces.Add(remote);
-            OnInterfaceAdded(this, remote);
-
+            Interface remote = Interfaces
+                                   .Where(x => x.Layer.Hostname == hostname && x.Layer.Port == port)
+                                   .FirstOrDefault();
+            if (remote == null) {
+                remote = new RemoteInterface(hostname, port, username, password).Execute();
+                Interfaces.Add(remote);
+                OnInterfaceAdded(this, remote);
+            }
             return remote as RemoteInterface;
         }
         [Command(Command = CommandName.InstanceRemoveRemoteInterface)]
@@ -107,17 +115,16 @@ namespace Procon.Core {
             Interface remote = Interfaces
                                    .Where(x => x.Layer.Hostname == hostname && x.Layer.Port == port)
                                    .FirstOrDefault();
-            if (remote != null)
-            {
-                remote.Dispose();
+            if (remote != null) {
                 Interfaces.Remove(remote);
                 OnInterfaceRemoved(this, remote);
+                remote.Dispose();
             }
             return remote as RemoteInterface;
         }
 
 
-        // Events
+        // Events.
         public delegate void InterfaceHandler(Instance parent, Interface item);
         public event InterfaceHandler InterfaceAdded;
         public event InterfaceHandler InterfaceRemoved;

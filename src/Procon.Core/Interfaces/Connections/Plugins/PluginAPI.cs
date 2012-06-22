@@ -259,7 +259,7 @@ namespace Procon.Core.Interfaces.Connections.Plugins {
             return base.Execute();
         }
 
-        protected override void WriteConfig(XElement xNamespace)
+        internal override void WriteConfig(Config config)
         {
             // TODO: Do Config Writing here.
             // Should look something like this (stolen from LocalInterface):
@@ -274,7 +274,14 @@ namespace Procon.Core.Interfaces.Connections.Plugins {
             //      new XElement("additional", connection.Additional)
             //  ));
 
-            nFile = new FileInfo(Path.Combine(ConfigDirectoryInfo.FullName, String.Format("{0}.xml", GetType().Name)));
+            try
+            {
+                // TODO
+                // Sometimes the base app domain is disposed before the plugin???
+                // Fix this.
+                // nFile = new FileInfo(Path.Combine(ConfigDirectoryInfo.FullName, String.Format("{0}.xml", GetType().Name)));
+            }
+            catch (Exception) { }
         }
 
         public void LoadConfig() {

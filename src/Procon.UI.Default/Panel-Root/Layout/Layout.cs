@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Windows;
-
 using Procon.UI.API;
 
 namespace Procon.UI.Default.Root.Layout

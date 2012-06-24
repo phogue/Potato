@@ -5,7 +5,8 @@
       xmlns:view="clr-namespace:Procon.UI.API.ViewModels;assembly=Procon.UI.API"
       xmlns:acmd="clr-namespace:Procon.UI.API.Commands;assembly=Procon.UI.API"
       xmlns:util="clr-namespace:Procon.UI.API.Utils;assembly=Procon.UI.API"
-      Name="MainHeader">
+      Name="MainHeader"
+      Background="{DynamicResource BrushHeader}">
 
     <!-- Content -->
     <DockPanel Name="MainHeaderContent"
@@ -15,7 +16,8 @@
                 Width="48"
                 Command="{Binding
                     Source={x:Static view:ViewModelBase.PublicCommands},
-                    Path=[Main][Header][Swap].Value}">
+                    Path=[Main][Header][Swap].Value}"
+                Style="{DynamicResource StyleButtonSpecial}">
             <Image Width="30"
                    Source="{Binding
                        Source={x:Static view:ViewModelBase.PublicProperties},

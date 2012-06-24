@@ -6,6 +6,7 @@
       xmlns:acmd="clr-namespace:Procon.UI.API.Commands;assembly=Procon.UI.API"
       xmlns:util="clr-namespace:Procon.UI.API.Utils;assembly=Procon.UI.API"
       Name="MainLayout"
+      Background="{DynamicResource BrushLight}"
       DataContext="{Binding
           Source={x:Static view:ViewModelBase.PublicProperties},
           Path=[Connection].Value}">
@@ -23,7 +24,7 @@
         <RowDefinition Height="Auto" />
         <RowDefinition Height="Auto" />
         <RowDefinition Height=".66*" />
-        <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" MinHeight="115" MaxHeight="375" />
     </Grid.RowDefinitions>
     
 </Grid>

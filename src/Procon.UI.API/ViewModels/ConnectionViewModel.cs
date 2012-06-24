@@ -1,310 +1,169 @@
-﻿// Copyright 2011 Cameron 'Imisnew2' Gunnin
-// 
-// http://www.phogue.net
-//  
-// This file is part of Procon 2.
-// 
-// Procon 2 is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-// 
-// Procon 2 is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-// 
-// You should have received a copy of the GNU General Public License
-// along with Procon 2.  If not, see <http://www.gnu.org/licenses/>.
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Data;
 using System.Linq;
-using System.Windows.Media.Imaging;
-using System.Windows.Threading;
-
+using System.Reflection;
+using System.Windows.Data;
 using Procon.Core.Interfaces.Connections;
 using Procon.Net;
 using Procon.Net.Protocols;
 using Procon.Net.Protocols.Objects;
-using Procon.UI.API.Enums;
 
 namespace Procon.UI.API.ViewModels
 {
-    /// <summary>Wraps a Connection of Procon so that it can be used in the UI.</summary>
     public class ConnectionViewModel : ViewModel<Connection>
     {
         // Standard Model Properties
-        public GameType GameType
-        {
+        public GameType GameType {
             get { return Model.GameType; }
         }
-        public String Hostname
-        {
+        public String Hostname {
             get { return Model.Hostname; }
         }
-        public UInt16 Port
-        {
+        public UInt16 Port {
             get { return Model.Port; }
         }
-        public String Additional
-        {
+        public String Additional {
             get { return Model.Additional; }
         }
 
         // Standard Variables
-        public Int32 MaxConsoleLines
-        {
-            get { return Model.GameState.Variables.MaxConsoleLines;  }
+        public Int32 MaxConsoleLines {
+            get { return Model.GameState.Variables.MaxConsoleLines; }
             set { Model.GameState.Variables.MaxConsoleLines = value; }
         }
-        public ConnectionState ConnectionState
-        {
+        public Net.ConnectionState ConnectionState {
             get { return Model.GameState.Variables.ConnectionState; }
         }
-        public Int32 UpTime
-        {
+        public Int32 UpTime {
             get { return Model.GameState.Variables.UpTime; }
         }
-        public String Version
-        {
+        public String Version {
             get { return Model.GameState.Variables.Version; }
         }
-        public String ServerName
-        {
+        public String ServerName {
             get { return Model.GameState.Variables.ServerName; }
             set { Model.GameState.Variables.ServerName = value; }
         }
-        public String ServerDescription
-        {
+        public String ServerDescription {
             get { return Model.GameState.Variables.ServerDescription; }
             set { Model.GameState.Variables.ServerDescription = value; }
         }
-        public String BannerUrl
-        {
+        public String BannerUrl {
             get { return Model.GameState.Variables.BannerUrl; }
             set { Model.GameState.Variables.BannerUrl = value; }
         }
-        public Boolean Ranked
-        {
+        public Boolean Ranked {
             get { return Model.GameState.Variables.Ranked; }
             set { Model.GameState.Variables.Ranked = value; }
         }
-        public Boolean AntiCheat
-        {
+        public Boolean AntiCheat {
             get { return Model.GameState.Variables.AntiCheat; }
             set { Model.GameState.Variables.AntiCheat = value; }
         }
-        public Boolean AutoBalance
-        {
+        public Boolean AutoBalance {
             get { return Model.GameState.Variables.AutoBalance; }
             set { Model.GameState.Variables.AutoBalance = value; }
         }
-        public Boolean FriendlyFire
-        {
+        public Boolean FriendlyFire {
             get { return Model.GameState.Variables.FriendlyFire; }
             set { Model.GameState.Variables.FriendlyFire = value; }
         }
-        public Boolean Passworded
-        {
+        public Boolean Passworded {
             get { return Model.GameState.Variables.Passworded; }
             set { Model.GameState.Variables.Passworded = value; }
         }
-        public String Password
-        {
+        public String Password {
             get { return Model.GameState.Variables.Password; }
             set { Model.GameState.Variables.Password = value; }
         }
-        public Int32 RoundTime
-        {
+        public Int32 RoundTime {
             get { return Model.GameState.Variables.RoundTime; }
         }
-        public Int32 RoundIndex
-        {
+        public Int32 RoundIndex {
             get { return Model.GameState.Variables.RoundIndex; }
         }
-        public Int32 MaxRoundIndex
-        {
+        public Int32 MaxRoundIndex {
             get { return Model.GameState.Variables.MaxRoundIndex; }
             set { Model.GameState.Variables.MaxRoundIndex = value; }
         }
-        public Int32 PlayerCount
-        {
+        public Int32 PlayerCount {
             get { return Model.GameState.Variables.PlayerCount; }
         }
-        public Int32 MaxPlayerCount
-        {
+        public Int32 MaxPlayerCount {
             get { return Model.GameState.Variables.MaxPlayerCount; }
             set { Model.GameState.Variables.MaxPlayerCount = value; }
         }
-        public String MapName
-        {
+        public String MapName {
             get { return Model.GameState.Variables.MapName; }
         }
-        public String GameModeName
-        {
+        public String GameModeName {
             get { return Model.GameState.Variables.GameModeName; }
         }
 
-        // Custom Properties
-        public BitmapImage GameTypeIcon
-        {
-            get
-            {
-                switch (GameType)
-                {
-                    case GameType.BF_BC2:
-                        return InstanceViewModel.PublicProperties["Images"]["Games"]["BF_BC2"].Value as BitmapImage;
-                    case GameType.BF_3:
-                        return InstanceViewModel.PublicProperties["Images"]["Games"]["BF_3"].Value as BitmapImage;
-                    case GameType.COD_BO:
-                        return InstanceViewModel.PublicProperties["Images"]["Games"]["COD_BO"].Value as BitmapImage;
-                    case GameType.HOMEFRONT:
-                        return InstanceViewModel.PublicProperties["Images"]["Games"]["Homefront"].Value as BitmapImage;
-                    case GameType.MOH_2010:
-                        return InstanceViewModel.PublicProperties["Images"]["Games"]["MOH_2010"].Value as BitmapImage;
-                    default:
-                        return new BitmapImage();
-
-                }
-            }
-        }
-        public BitmapImage ConnectionStateIcon
-        {
-            get
-            {
-                switch (ConnectionState)
-                {
-                    case ConnectionState.LoggedIn:
-                        return InstanceViewModel.PublicProperties["Images"]["Connection"]["Good"].Value as BitmapImage;
-                    case ConnectionState.Connecting:
-                    case ConnectionState.Connected:
-                    case ConnectionState.Ready:
-                        return InstanceViewModel.PublicProperties["Images"]["Connection"]["Flux"].Value as BitmapImage;
-                    case ConnectionState.Disconnecting:
-                    case ConnectionState.Disconnected:
-                        return InstanceViewModel.PublicProperties["Images"]["Connection"]["Bad"].Value as BitmapImage;
-                    default:
-                        return new BitmapImage();
-                }
-            }
-        }
-        public BitmapImage RankedIcon
-        {
-            get {
-                if (Ranked)
-                    return InstanceViewModel.PublicProperties["Images"]["Info"]["Ranked"].Value as BitmapImage;
-                return InstanceViewModel.PublicProperties["Images"]["Info"]["NotRanked"].Value as BitmapImage;
-            }
-        }
-        public BitmapImage AntiCheatIcon
-        {
-            get {
-                if (AntiCheat)
-                    return InstanceViewModel.PublicProperties["Images"]["Info"]["Secure"].Value as BitmapImage;
-                return InstanceViewModel.PublicProperties["Images"]["Info"]["NotSecure"].Value as BitmapImage;
-            }
-        }
-        public BitmapImage PasswordedIcon
-        {
-            get {
-                if (Passworded)
-                    return InstanceViewModel.PublicProperties["Images"]["Info"]["Passworded"].Value as BitmapImage;
-                return InstanceViewModel.PublicProperties["Images"]["Info"]["NotPassworded"].Value as BitmapImage;
-            }
-        }
-        public BitmapImage AutoBalanceIcon
-        {
-            get {
-                if (AutoBalance)
-                    return InstanceViewModel.PublicProperties["Images"]["Info"]["AutoBalanced"].Value as BitmapImage;
-                return InstanceViewModel.PublicProperties["Images"]["Info"]["NotAutoBalanced"].Value as BitmapImage;
-            }
-        }
-
         // View Model Properties
-        public  ObservableCollection<PlayerViewModel> Players
-        {
+        public ObservableCollection<Player>          Players {
             get { return mPlayers; }
-            set
-            {
-                mPlayers = value;
-                OnPropertyChanged(this, "Players");
-            }
-        }
-        private ObservableCollection<PlayerViewModel> mPlayers;
-
-        public  ObservableCollection<MapViewModel> Maps
-        {
-            get { return mMapList; }
-            set
-            {
-                mMapList = value;
-                OnPropertyChanged(this, "MapList");
-            }
-        }
-        private ObservableCollection<MapViewModel> mMapList;
-
-        public  ObservableCollection<BanViewModel> Bans
+            set {
+                if (mPlayers != value) {
+                    mPlayers = value;
+                    OnPropertyChanged(this, "Players");
+        } } }
+        public ObservableCollection<MapViewModel>    Maps {
+            get { return mMaps; }
+            set {
+                if (mMaps != value) {
+                    mMaps = value;
+                    OnPropertyChanged(this, "MapList");
+        } } }
+        public ObservableCollection<BanViewModel>    Bans
         {
             get { return mBans; }
-            set
-            {
-                mBans = value;
-                OnPropertyChanged(this, "Bans");
-            }
-        }
-        private ObservableCollection<BanViewModel> mBans;
-
+            set {
+                if (mBans != value) {
+                    mBans = value;
+                    OnPropertyChanged(this, "Bans");
+        } } }
+        public ObservableCollection<String>          GameModePool {
         // TODO: This should use GameModeViewModel?
-        public ObservableCollection<String> GameModePool
-        {
             get { return mGameModePool; }
-            set
-            {
-                mGameModePool = value;
-                OnPropertyChanged(this, "GameModePool");
-            }
-        }
-        private ObservableCollection<String> mGameModePool;
-
-        public  ObservableCollection<MapViewModel> MapPool
-        {
+            set {
+                if (mGameModePool != value) {
+                    mGameModePool = value;
+                    OnPropertyChanged(this, "GameModePool");
+        } } }
+        public ObservableCollection<MapViewModel>    MapPool {
             get { return mMapPool; }
-            set
-            {
-                mMapPool = value;
-                OnPropertyChanged(this, "MapPool");
-            }
-        }
-        private ObservableCollection<MapViewModel> mMapPool;
-
-        public  ObservableCollection<DataVariable> Variables
-        {
+            set {
+                if (mMapPool != value) {
+                    mMapPool = value;
+                    OnPropertyChanged(this, "MapPool");
+        } } }
+        public ObservableCollection<DataVariable>    Variables {
             get { return mVariables; }
-            set
-            {
-                mVariables = value;
-                OnPropertyChanged(this, "Variables");
-            }
-        }
-        private ObservableCollection<DataVariable> mVariables;
+            set {
+                if (mVariables != value) {
+                    mVariables = value;
+                    OnPropertyChanged(this, "Variables");
+        } } }
 
-        //public  ObservableCollection<Event> Events
-        //{
-        //    get { return mEvents; }
-        //    set
-        //    {
-        //        mEvents = value;
-        //        OnPropertyChanged(this, "Events");
-        //    }
-        //}
-        //private ObservableCollection<Event> mEvents;
+        private ObservableCollection<Player>          mPlayers;
+        private ObservableCollection<MapViewModel>    mMaps;
+        private ObservableCollection<BanViewModel>    mBans;
+        private ObservableCollection<String>          mGameModePool;
+        private ObservableCollection<MapViewModel>    mMapPool;
+        private ObservableCollection<DataVariable>    mVariables;
 
-        /// <summary>Creates an instance of ConnectionViewModel and initalizes its properties.</summary>
-        /// <param name="model">A reference to an instance of a connection in procon.</param>
+        private ICollectionView mPlayersView;
+        private ICollectionView mMapsView;
+        private ICollectionView mBansView;
+        private ICollectionView mGameModePoolView;
+        private ICollectionView mMapPoolView;
+        private ICollectionView mVariablesView;
+
+        // Constructor.
         public ConnectionViewModel(Connection model) : base(model)
         {
             // Listen for changes within the model:
@@ -315,15 +174,22 @@ namespace Procon.UI.API.ViewModels
             Model.GameEvent                           += GameEventOccurred;
 
             // Expose collections within the model:
-            Players      = new ObservableCollection<PlayerViewModel>(Model.GameState.PlayerList.Select(x => new PlayerViewModel(x)));
+            Players      = new ObservableCollection<Player>(Model.GameState.PlayerList);
             Maps         = new ObservableCollection<MapViewModel>(Model.GameState.MapList.Select(x => new MapViewModel(x)));
             Bans         = new ObservableCollection<BanViewModel>(Model.GameState.BanList.Select(x => new BanViewModel(x)));
             GameModePool = new ObservableCollection<String>(Model.GameState.GameModePool.Select(x => x.FriendlyName));
             MapPool      = new ObservableCollection<MapViewModel>(Model.GameState.MapPool.Select(x => new MapViewModel(x)));
             Variables    = new ObservableCollection<DataVariable>(Model.GameState.Variables.Variables.Where(x => !x.IsReadOnly).OrderBy(x => x.Name));
 
-            // Manages a logging of events within the model:
-            //Events = new ObservableCollection<Event>();
+            mPlayersView      = CollectionViewSource.GetDefaultView(Players);
+            mMapsView         = CollectionViewSource.GetDefaultView(Maps);
+            mBansView         = CollectionViewSource.GetDefaultView(Bans);
+            mGameModePoolView = CollectionViewSource.GetDefaultView(GameModePool);
+            mMapPoolView      = CollectionViewSource.GetDefaultView(MapPool);
+            mVariablesView    = CollectionViewSource.GetDefaultView(Variables);
+
+            mPlayersView.SortDescriptions.Add(new SortDescription("Team", ListSortDirection.Ascending));
+            mPlayersView.SortDescriptions.Add(new SortDescription("Name", ListSortDirection.Ascending));
         }
 
 
@@ -351,7 +217,6 @@ namespace Procon.UI.API.ViewModels
             Boolean add;
             Boolean remove;
             Boolean existing;
-            //Event   newEvent;
             switch (e.EventType)
             {
                 /* Player Joined Event:
@@ -366,16 +231,10 @@ namespace Procon.UI.API.ViewModels
                 #region PlayerJoin
                 case GameEventType.PlayerJoin:
                     // -- [Players] --
-                    existing = false;
-                    foreach (PlayerViewModel pvm in Players)
-                        if (pvm.Uid == e.Player.UID)
-                        {
-                            existing = true;
-                            break;
-                        }
-                    if (!existing)
-                        Players.Add(new PlayerViewModel(e.Player));
-
+                    if (!Players.Contains(e.Player)) {
+                        Players.Add(e.Player);
+                        e.Player.PropertyChanged += Player_PropertyChanged;
+                    }
 
                     // -- [Events] --
                     //if ((newEvent = Event.CreateEvent(EventType.Join, e)).Type != String.Empty)
@@ -395,12 +254,10 @@ namespace Procon.UI.API.ViewModels
                 #region PlayerLeave
                 case GameEventType.PlayerLeave:
                     // -- [Players] --
-                    foreach (PlayerViewModel pvm in Players)
-                        if (pvm.Uid == e.Player.UID)
-                        {
-                            Players.Remove(pvm);
-                            break;
-                        }
+                    if (Players.Contains(e.Player)) {
+                        e.Player.PropertyChanged -= Player_PropertyChanged;
+                        Players.Remove(e.Player);
+                    }
 
                     // -- [Events] --
                     //if ((newEvent = Event.CreateEvent(EventType.Leave, e)).Type != String.Empty)
@@ -432,28 +289,18 @@ namespace Procon.UI.API.ViewModels
                 #region PlayerlistUpdated
                 case GameEventType.PlayerlistUpdated:
                     // -- [Players] --
-                    // Remove Old Entries:
+                    // Remove Old Items.
                     for (int i = 0; i < Players.Count; i++)
-                    {
-                        remove = true;
-                        foreach (Player p in Model.GameState.PlayerList)
-                            if (Players[i].Uid == p.UID) {
-                                remove = false;
-                                break; }
-                        if (remove)
-                            Players.RemoveAt(i--);
-                    }
-                    // Add New Entries:
-                    for (int i = 0; i < Model.GameState.PlayerList.Count; i++)
-                    {
-                        add = true;
-                        foreach (PlayerViewModel pvm in Players)
-                            if (Model.GameState.PlayerList[i].UID == pvm.Uid) {
-                                add = false;
-                                break; }
-                        if (add)
-                            Players.Add(new PlayerViewModel(Model.GameState.PlayerList[i]));
-                    }
+                        if (!e.GameState.PlayerList.Contains(Players[i])) {
+                            Players[i].PropertyChanged -= Player_PropertyChanged;
+                            Players.Remove(Players[i]);
+                        }
+                    // Add New Items.
+                    for (int i = 0; i < e.GameState.PlayerList.Count; i++)
+                        if (!Players.Contains(e.GameState.PlayerList[i])) {
+                            e.GameState.PlayerList[i].PropertyChanged += Player_PropertyChanged;
+                            Players.Add(e.GameState.PlayerList[i]);
+                        }
                     break;
                 #endregion
 
@@ -674,6 +521,20 @@ namespace Procon.UI.API.ViewModels
                     break;
             }
         }
+
+
+        private void Player_PropertyChanged(Object sender, PropertyChangedEventArgs e)
+        {
+            // Force the UI thread to execute this method.
+            if (ChangeDispatcher(() => Player_PropertyChanged(sender, e)))
+                return;
+
+            // Refresh the collection.
+            if (mPlayersView.SortDescriptions.FirstOrDefault(x => x.PropertyName == e.PropertyName).PropertyName != null)
+                mPlayersView.Refresh();
+        }
+
+
         /// <summary>
         /// Is notified when a new data variable is added to the class.
         /// </summary>
@@ -747,27 +608,27 @@ namespace Procon.UI.API.ViewModels
                 return;
 
             // PlayerList collection was re-set?
-            if (e.PropertyName == "PlayerList") {
-                Boolean exists;
-                // Removes models that no longer exist.
-                for (int i = 0; i < Players.Count; i++) {
-                    exists = false;
-                    for (int j = 0; j < Model.GameState.PlayerList.Count; j++)
-                        if (exists = Players[i].ModelEquals(Model.GameState.PlayerList[j]))
-                            break;
-                    if (!exists) Players.RemoveAt(i--);
-                }
-                // Adds models that are new.
-                for (int i = 0; i < Model.GameState.PlayerList.Count; i++) {
-                    exists = false;
-                    for (int j = 0; j < Players.Count; j++)
-                        if (exists = Players[j].ModelEquals(Model.GameState.PlayerList[i]))
-                            break;
-                    if (!exists) Players.Add(new PlayerViewModel(Model.GameState.PlayerList[i]));
-                }
-            }
+            //if (e.PropertyName == "PlayerList") {
+            //    Boolean exists;
+            //    // Removes models that no longer exist.
+            //    for (int i = 0; i < Players.Count; i++) {
+            //        exists = false;
+            //        for (int j = 0; j < Model.GameState.PlayerList.Count; j++)
+            //            if (exists = Players[i].ModelEquals(Model.GameState.PlayerList[j]))
+            //                break;
+            //        if (!exists) Players.RemoveAt(i--);
+            //    }
+            //    // Adds models that are new.
+            //    for (int i = 0; i < Model.GameState.PlayerList.Count; i++) {
+            //        exists = false;
+            //        for (int j = 0; j < Players.Count; j++)
+            //            if (exists = Players[j].ModelEquals(Model.GameState.PlayerList[i]))
+            //                break;
+            //        if (!exists) Players.Add(new PlayerViewModel(Model.GameState.PlayerList[i]));
+            //    }
+            //}
             // MapList collection was re-set?
-            else if (e.PropertyName == "MapList") {
+             if (e.PropertyName == "MapList") {
                 Boolean exists;
                 // Removes models that no longer exist.
                 for (int i = 0; i < Maps.Count; i++) {

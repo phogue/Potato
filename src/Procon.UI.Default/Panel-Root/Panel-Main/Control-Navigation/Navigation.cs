@@ -56,7 +56,7 @@ namespace Procon.UI.Default.Root.Main.Navigation
             
             // Commands
             tCmmds["Swap"].Value = new RelayCommand<RadioImageButton>(
-                // -- Handles when the "Swap Connections" button is clicked.
+            #region -- Handles when the "Swap Connections" button is clicked.
                 x => {
                     if (view.MainNavigationPlayers == x)
                         ExtensionApi.Settings["View"].Value = "Players";
@@ -74,6 +74,7 @@ namespace Procon.UI.Default.Root.Main.Navigation
                 x => {
                     return ExtensionApi.Connection != null;
                 });
+            #endregion
 
             // Allow other views to be used other than these.
             ExtensionApi.Settings["View"].PropertyChanged += (s, e) => {

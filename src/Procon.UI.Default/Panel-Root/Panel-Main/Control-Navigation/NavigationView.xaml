@@ -6,7 +6,8 @@
       xmlns:acmd="clr-namespace:Procon.UI.API.Commands;assembly=Procon.UI.API"
       xmlns:util="clr-namespace:Procon.UI.API.Utils;assembly=Procon.UI.API"
       xmlns:c="clr-namespace:Procon.UI.Default.Controls"
-      Name="MainNavigation">
+      Name="MainNavigation"
+      Background="{DynamicResource BrushNavigation}">
     
     <!-- Content -->
     <DockPanel Name="MainNavigationContent"

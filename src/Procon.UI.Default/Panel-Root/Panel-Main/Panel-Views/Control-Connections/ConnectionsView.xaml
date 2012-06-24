@@ -20,7 +20,8 @@
             <Button Name="MainViewsConnectionsAdd"
                     DockPanel.Dock="Right"
                     Width="200"
-                    Margin="0, 10, 15, 10"
+                    Margin="0, 0, 15, 0"
+                    VerticalAlignment="Center"
                     Command="{Binding
                         Source={x:Static view:ViewModelBase.PublicCommands},
                         Path=[Main][Views][Connections][Add][Open].Value}"
@@ -32,6 +33,7 @@
                    HorizontalAlignment="Left"
                    Margin="15, 5"
                    FontSize="26"
+                   Foreground="{DynamicResource BrushTextDarkSoft}"
                    Content="{Binding
                        Converter={conv:LocalizationText},
                        ConverterParameter=Procon.UI.Default.Root.Main.Views.Connections}" />
@@ -43,8 +45,10 @@
                    PopupAnimation="Fade"
                    AllowsTransparency="True">
                 <Border Name="MainViewsConnectionsAddBorder"
-                        CornerRadius="0, 0, 4, 4"
-                        Background="{Binding Background, RelativeSource={RelativeSource AncestorType={x:Type DockPanel}}}">
+                        CornerRadius="0, 0, 0, 4"
+                        BorderThickness="1, 0, 0, 1"
+                        BorderBrush="{DynamicResource BrushMild}"
+                        Background="{DynamicResource BrushLight}">
                     <Grid Name="MainViewsConnectionsAddArea">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="5" />
@@ -171,7 +175,6 @@
         <!-- List -->
         <ListBox Name="MainViewsConnectionsList"
                  DockPanel.Dock="Top"
-                 BorderThickness="0"
                  ItemsSource="{Binding Connections}"
                  SelectedItem="{Binding
                      Source={x:Static view:ViewModelBase.PublicProperties},
@@ -179,7 +182,8 @@
             <ListBox.Template>
                 <!-- Convert the list box into a wrap panel. -->
                 <ControlTemplate>
-                    <ScrollViewer VerticalScrollBarVisibility="Auto"
+                    <ScrollViewer Background="{DynamicResource BrushContentLight}"
+                                  VerticalScrollBarVisibility="Auto"
                                   HorizontalScrollBarVisibility="Disabled">
                         <WrapPanel IsItemsHost="True"
                                    Margin="15, 5" />
@@ -194,7 +198,7 @@
                             Height="225"
                             Margin="5, 5, 8, 8"
                             Padding="1"
-                            Background="{DynamicResource Background}">
+                            Background="{DynamicResource BrushContentLight}">
                         <Grid x:Name="PART_Container">
                             <DockPanel x:Name="PART_Main">
                                 <!-- Header. -->

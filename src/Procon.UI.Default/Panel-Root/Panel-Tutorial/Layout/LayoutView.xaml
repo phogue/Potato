@@ -5,7 +5,8 @@
       xmlns:view="clr-namespace:Procon.UI.API.ViewModels;assembly=Procon.UI.API"
       xmlns:acmd="clr-namespace:Procon.UI.API.Commands;assembly=Procon.UI.API"
       xmlns:util="clr-namespace:Procon.UI.API.Utils;assembly=Procon.UI.API"
-      Name="TutorialLayout">
+      Name="TutorialLayout"
+      Background="{DynamicResource BrushSpotlight}">
     <Grid.Style>
         <Style TargetType="{x:Type Grid}">
             <Setter Property="Visibility" Value="Visible" />

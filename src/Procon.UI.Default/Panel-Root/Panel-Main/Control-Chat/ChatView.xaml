@@ -9,11 +9,13 @@
       Name="MainChat">
     
     <!-- Content -->
-    <DockPanel Name="MainChatContent">
+    <DockPanel Name="MainChatContent"
+               Background="{DynamicResource BrushContentDark}">
         
         <!-- Title Bar -->
-        <DockPanel Name="MainChatTitle"
-                   DockPanel.Dock="Top">
+        <DockPanel Name="MainChatHeader"
+                   DockPanel.Dock="Top"
+                   Background="{DynamicResource BrushHeaderDark}">
             <Image Name="MainChatIcon"
                    DockPanel.Dock="Left"
                    Margin="15, 10, 5, 10" />
@@ -35,20 +37,23 @@
                            Command="{Binding
                                Source={x:Static view:ViewModelBase.PublicCommands},
                                Path=[Main][Chat][MinMax].Value}" />
-            <TextBlock Name="MainChatLabel"
+            <TextBlock Name="MainChatTitle"
                        DockPanel.Dock="Left"
-                       Foreground="White"
                        VerticalAlignment="Center"
                        FontSize="16"
+                       Foreground="{DynamicResource BrushTextLight}"
                        Text="{Binding
                            Converter={conv:LocalizationText},
-                           ConverterParameter=Procon.UI.Default.Root.Main.Chat.Title}"/>
+                           ConverterParameter=Procon.UI.Default.Root.Main.Chat.Title}" />
         </DockPanel>
 
         <!-- Chat Box -->
         <TextBox Name="MainChatBox"
                  DockPanel.Dock="Bottom"
                  Margin="15"
+                 Background="{DynamicResource  BrushHeaderDark}"
+                 Foreground="{DynamicResource  BrushInputTextLight}"
+                 BorderBrush="{DynamicResource BrushMild}"
                  Text="{Binding
                      Source={x:Static view:ViewModelBase.PublicProperties},
                      Path=[Main][Chat][Text].Value}" />
@@ -56,7 +61,9 @@
         <!-- Chat & Events -->
         <ListBox Name="MainChatEvents"
                  DockPanel.Dock="Top"
-                 Background="Transparent"
-                 BorderThickness="0"/>
+                 Background="{DynamicResource BrushEmphasisDark}"
+                 BorderThickness="0">
+            
+        </ListBox>
     </DockPanel>
 </Grid>

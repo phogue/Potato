@@ -4,60 +4,61 @@
                     xmlns:view="clr-namespace:Procon.UI.API.ViewModels;assembly=Procon.UI.API"
                     xmlns:acmd="clr-namespace:Procon.UI.API.Commands;assembly=Procon.UI.API"
                     xmlns:util="clr-namespace:Procon.UI.API.Utils;assembly=Procon.UI.API">
-    <!-- General Colors -->
-    <Color x:Key="ColorLight"         A="255" R="244" G="244" B="244" />
-    <Color x:Key="ColorMedium"        A="255" R="230" G="230" B="230" />
-    <Color x:Key="ColorDark"          A="255" R="205" G="205" B="205" />
-    <Color x:Key="ColorHeaderLight"   A="255" R="0"   G="177" B="206" />
-    <Color x:Key="ColorHeaderMedium"  A="255" R="0"   G="168" B="201" />
-    <Color x:Key="ColorHeaderDark"    A="255" R="0"   G="150" B="189" />
+    <!-- Control Colors -->
+    <Color x:Key="ColorControlLight"  A="255" R="244" G="244" B="244" />
+    <Color x:Key="ColorControlMedium" A="255" R="230" G="230" B="230" />
+    <Color x:Key="ColorControlDark"   A="255" R="205" G="205" B="205" />
     <Color x:Key="ColorSpecialLight"  A="255" R="190" G="234" B="242" />
     <Color x:Key="ColorSpecialMedium" A="255" R="150" G="194" B="201" />
-    <Color x:Key="ColorSpecialDark"   A="255" R="109" G="154" B="159" />
+    <Color x:Key="ColorSpecialDark"   A="255" R="129" G="174" B="179" />
     <Color x:Key="ColorBorderLight"   A="255" R="252" G="252" B="252" />
     <Color x:Key="ColorBorderMedium"  A="255" R="223" G="223" B="223" />
     <Color x:Key="ColorBorderDark"    A="255" R="163" G="163" B="163" />
     
     <!-- Text Colors -->
-    <Color x:Key="ColorText"     A="255" R="35" G="31" B="32" />
-    <Color x:Key="ColorTextSoft" A="255" R="63" G="71" B="79" />
+    <Color x:Key="ColorTextLight"      A="255" R="220" G="224" B="223" />
+    <Color x:Key="ColorTextLightSoft"  A="255" R="192" G="184" B="176" />
+    <Color x:Key="ColorTextDark"       A="255" R="35"  G="31"  B="32"  />
+    <Color x:Key="ColorTextDarkSoft"   A="255" R="63"  G="71"  B="79"  />
+    <Color x:Key="ColorInputTextLight" A="255" R="205" G="205" B="205" />
+    <Color x:Key="ColorInputTextDark"  A="255" R="50"  G="50"  B="50"  />
     
     <!-- Specific Colors -->
-    <Color x:Key="ColorMild"         A="255" R="160" G="160" B="160" />
-    <Color x:Key="ColorHeader"       A="255" R="200" G="200" B="200" />
-    <Color x:Key="ColorEmphasis"     A="255" R="217" G="218" B="219" />
-    <Color x:Key="ColorOffset"       A="255" R="233" G="233" B="233" />
-    <Color x:Key="ColorDarkHeader"   A="255" R="22"  G="23"  B="24"  />
-    <Color x:Key="ColorDarkEmphasis" A="255" R="53"  G="56"  B="58"  />
-    <Color x:Key="ColorDarkOffset"   A="255" R="65"  G="68"  B="70"  />
+    <Color x:Key="ColorLight"         A="255" R="245" G="245" B="245" />
+    <Color x:Key="ColorMild"          A="255" R="125" G="125" B="125" />
+    <Color x:Key="ColorDark"          A="255" R="10"  G="10"  B="10"  />
+    <Color x:Key="ColorHeaderLight"   A="255" R="200" G="200" B="200" />
+    <Color x:Key="ColorEmphasisLight" A="255" R="217" G="218" B="219" />
+    <Color x:Key="ColorContentLight"  A="255" R="233" G="233" B="233" />
+    <Color x:Key="ColorHeaderDark"    A="255" R="22"  G="23"  B="24"  />
+    <Color x:Key="ColorEmphasisDark"  A="255" R="53"  G="56"  B="58"  />
+    <Color x:Key="ColorContentDark"   A="255" R="65"  G="68"  B="70"  />
     
-    <!-- General Brushes -->
-    <SolidColorBrush x:Key="BrushLight"    Color="{StaticResource ColorLight}"  />
-    <SolidColorBrush x:Key="BrushMedium"   Color="{StaticResource ColorMedium}" />
-    <SolidColorBrush x:Key="BrushDark"     Color="{StaticResource ColorDark}"   />
-    <LinearGradientBrush x:Key="BrushDefaultNormal" StartPoint="0.5, 0.0" EndPoint="0.5, 1.0">
-        <GradientStop Offset="0.0" Color="{StaticResource ColorLight}" />
-        <GradientStop Offset="1.0" Color="{StaticResource ColorMedium}" />
+    <!-- Team Colors -->
+    <Color x:Key="ColorTeam0Header"  A="255" R="123" G="123" B="123" />
+    <Color x:Key="ColorTeam0Content" A="255" R="182" G="182" B="182" />
+    <Color x:Key="ColorTeam1Header"  A="255" R="124" G="207" B="224" />
+    <Color x:Key="ColorTeam1Content" A="255" R="178" G="230" B="239" />
+    <Color x:Key="ColorTeam2Header"  A="255" R="255" G="160" B="148" />
+    <Color x:Key="ColorTeam2Content" A="255" R="255" G="202" B="194" />
+    <Color x:Key="ColorTeam3Header"  A="255" R="100" G="100" B="100" />
+    <Color x:Key="ColorTeam3Content" A="255" R="100" G="100" B="100" />
+    <Color x:Key="ColorTeam4Header"  A="255" R="100" G="100" B="100" />
+    <Color x:Key="ColorTeam4Content" A="255" R="100" G="100" B="100" />
+    
+    
+    <!-- Control Brushes -->
+    <LinearGradientBrush x:Key="BrushControlNormal" StartPoint="0.5, 0.0" EndPoint="0.5, 1.0">
+        <GradientStop Offset="0.0" Color="{StaticResource ColorControlLight}" />
+        <GradientStop Offset="1.0" Color="{StaticResource ColorControlMedium}" />
     </LinearGradientBrush>
-    <LinearGradientBrush x:Key="BrushDefaultHover"  StartPoint="0.5, 0.0" EndPoint="0.5, 1.0">
-        <GradientStop Offset="0.0" Color="{StaticResource ColorLight}" />
-        <GradientStop Offset="1.0" Color="{StaticResource ColorDark}" />
+    <LinearGradientBrush x:Key="BrushControlHover"  StartPoint="0.5, 0.0" EndPoint="0.5, 1.0">
+        <GradientStop Offset="0.0" Color="{StaticResource ColorControlLight}" />
+        <GradientStop Offset="1.0" Color="{StaticResource ColorControlDark}" />
     </LinearGradientBrush>
-    <LinearGradientBrush x:Key="BrushDefaultPress"  StartPoint="0.5, 0.0" EndPoint="0.5, 1.0">
-        <GradientStop Offset="0.0" Color="{StaticResource ColorDark}" />
-        <GradientStop Offset="1.0" Color="{StaticResource ColorMedium}" />
-    </LinearGradientBrush>
-    <LinearGradientBrush x:Key="BrushHeaderNormal"  StartPoint="0.5, 0.0" EndPoint="0.5, 1.0">
-        <GradientStop Offset="0.0" Color="{StaticResource ColorHeaderLight}" />
-        <GradientStop Offset="1.0" Color="{StaticResource ColorHeaderMedium}" />
-    </LinearGradientBrush>
-    <LinearGradientBrush x:Key="BrushHeaderHover"   StartPoint="0.5, 0.0" EndPoint="0.5, 1.0">
-        <GradientStop Offset="0.0" Color="{StaticResource ColorHeaderLight}" />
-        <GradientStop Offset="1.0" Color="{StaticResource ColorHeaderDark}" />
-    </LinearGradientBrush>
-    <LinearGradientBrush x:Key="BrushHeaderPress"   StartPoint="0.5, 0.0" EndPoint="0.5, 1.0">
-        <GradientStop Offset="0.0" Color="{StaticResource ColorHeaderDark}" />
-        <GradientStop Offset="1.0" Color="{StaticResource ColorHeaderMedium}" />
+    <LinearGradientBrush x:Key="BrushControlPress"  StartPoint="0.5, 0.0" EndPoint="0.5, 1.0">
+        <GradientStop Offset="0.0" Color="{StaticResource ColorControlDark}" />
+        <GradientStop Offset="1.0" Color="{StaticResource ColorControlMedium}" />
     </LinearGradientBrush>
     <LinearGradientBrush x:Key="BrushSpecialNormal" StartPoint="0.5, 0.0" EndPoint="0.5, 1.0">
         <GradientStop Offset="0.0" Color="{StaticResource ColorSpecialLight}" />
@@ -78,104 +79,60 @@
     </LinearGradientBrush>
 
     <!-- Text Brushes -->
-    <SolidColorBrush x:Key="BrushText"     Color="{StaticResource ColorText}"     />
-    <SolidColorBrush x:Key="BrushTextSoft" Color="{StaticResource ColorTextSoft}" />
+    <SolidColorBrush x:Key="BrushTextLight"      Color="{StaticResource ColorTextLight}"      />
+    <SolidColorBrush x:Key="BrushTextLightSoft"  Color="{StaticResource ColorTextLightSoft}"  />
+    <SolidColorBrush x:Key="BrushTextDark"       Color="{StaticResource ColorTextDark}"       />
+    <SolidColorBrush x:Key="BrushTextDarkSoft"   Color="{StaticResource ColorTextDarkSoft}"   />
+    <SolidColorBrush x:Key="BrushInputTextLight" Color="{StaticResource ColorInputTextLight}" />
+    <SolidColorBrush x:Key="BrushInputTextDark"  Color="{StaticResource ColorInputTextDark}"  />
     
     <!-- Specific Brushes -->
-    <SolidColorBrush x:Key="BrushMild"         Color="{StaticResource ColorMild}"       />
-    <SolidColorBrush x:Key="BrushHeader"       Color="{StaticResource ColorHeader}"       />
-    <SolidColorBrush x:Key="BrushEmphasis"     Color="{StaticResource ColorEmphasis}"     />
-    <SolidColorBrush x:Key="BrushOffset"       Color="{StaticResource ColorOffset}"       />
-    <SolidColorBrush x:Key="BrushDarkHeader"   Color="{StaticResource ColorDarkHeader}"   />
-    <SolidColorBrush x:Key="BrushDarkEmphasis" Color="{StaticResource ColorDarkEmphasis}" />
-    <SolidColorBrush x:Key="BrushDarkOffset"   Color="{StaticResource ColorDarkOffset}"   />
-    <LinearGradientBrush x:Key="BrushChatBox" StartPoint="0.5, 0.0" EndPoint="0.5, 1.0">
-        <GradientStop Offset="0.0" Color="{StaticResource ColorDarkHeader}" />
-        <GradientStop Offset="0.1" Color="{StaticResource ColorDarkEmphasis}" />
-    </LinearGradientBrush>
+    <SolidColorBrush x:Key="BrushLight"         Color="{StaticResource ColorLight}"         />
+    <SolidColorBrush x:Key="BrushMild"          Color="{StaticResource ColorMild}"          />
+    <SolidColorBrush x:Key="BrushDark"          Color="{StaticResource ColorDark}"          />
+    <SolidColorBrush x:Key="BrushHeaderLight"   Color="{StaticResource ColorHeaderLight}"   />
+    <SolidColorBrush x:Key="BrushEmphasisLight" Color="{StaticResource ColorEmphasisLight}" />
+    <SolidColorBrush x:Key="BrushContentLight"  Color="{StaticResource ColorContentLight}"  />
+    <SolidColorBrush x:Key="BrushHeaderDark"    Color="{StaticResource ColorHeaderDark}"    />
+    <SolidColorBrush x:Key="BrushEmphasisDark"  Color="{StaticResource ColorEmphasisDark}"  />
+    <SolidColorBrush x:Key="BrushContentDark"   Color="{StaticResource ColorContentDark}"   />
     
+    <!-- Team Brushes -->
+    <SolidColorBrush x:Key="BrushTeam0Header"  Color="{StaticResource ColorTeam0Header}"  />
+    <SolidColorBrush x:Key="BrushTeam0Content" Color="{StaticResource ColorTeam0Content}" />
+    <SolidColorBrush x:Key="BrushTeam1Header"  Color="{StaticResource ColorTeam1Header}"  />
+    <SolidColorBrush x:Key="BrushTeam1Content" Color="{StaticResource ColorTeam1Content}" />
+    <SolidColorBrush x:Key="BrushTeam2Header"  Color="{StaticResource ColorTeam2Header}"  />
+    <SolidColorBrush x:Key="BrushTeam2Content" Color="{StaticResource ColorTeam2Content}" />
+    <SolidColorBrush x:Key="BrushTeam3Header"  Color="{StaticResource ColorTeam3Header}"  />
+    <SolidColorBrush x:Key="BrushTeam3Content" Color="{StaticResource ColorTeam3Content}" />
+    <SolidColorBrush x:Key="BrushTeam4Header"  Color="{StaticResource ColorTeam4Header}"  />
+    <SolidColorBrush x:Key="BrushTeam4Content" Color="{StaticResource ColorTeam4Content}" />
     
     <!-- Background Brushes -->
     <RadialGradientBrush x:Key="BrushSpotlight" GradientOrigin="0.5, 0.5" Center="0.5, 0.65" RadiusX="0.4" RadiusY="0.6">
-        <GradientStop Offset="0.0" Color="{StaticResource ColorLight}" />
-        <GradientStop Offset="0.2" Color="{StaticResource ColorLight}" />
-        <GradientStop Offset="1.0" Color="{StaticResource ColorDark}"  />
+        <GradientStop Offset="0.0" Color="{StaticResource ColorControlLight}" />
+        <GradientStop Offset="0.2" Color="{StaticResource ColorControlLight}" />
+        <GradientStop Offset="1.0" Color="{StaticResource ColorControlDark}"  />
     </RadialGradientBrush>
-    <ImageBrush x:Key="BrushBlueDot"
+    <LinearGradientBrush x:Key="BrushHeader" StartPoint="0.5, 0.0" EndPoint="0.5, 1.0">
+        <GradientStop Offset="0.0">
+            <GradientStop.Color>
+                <Color A="255" R="0" G="177" B="206" />
+            </GradientStop.Color>
+        </GradientStop>
+        <GradientStop Offset="1.0">
+            <GradientStop.Color>
+                <Color A="255" R="0" G="150" B="189" />
+            </GradientStop.Color>
+        </GradientStop>
+    </LinearGradientBrush>
+    <ImageBrush x:Key="BrushNavigation"
                 TileMode="Tile"
                 Viewport="0, 0, 10, 10"
                 ViewportUnits="Absolute"
-                ImageSource="{Binding
-                    Source={x:Static view:ViewModelBase.PublicProperties},
-                    Path=[Images][Background][Navigation].Value}" />
+                ImageSource="/Procon.UI;component/Images/Backgrounds/tile.png" />
     
-    <!-- Templates -->
-    <ControlTemplate x:Key="TemplateButtonDefault" TargetType="{x:Type Button}">
-        <Border Name="PART_Border"
-                Width="{TemplateBinding Width}"
-                Height="{TemplateBinding Height}"
-                Padding="{TemplateBinding Padding}"
-                Background="{TemplateBinding Background}"
-                BorderBrush="{TemplateBinding BorderBrush}"
-                BorderThickness="{TemplateBinding BorderThickness}"
-                VerticalAlignment="{TemplateBinding VerticalAlignment}"
-                HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
-                CornerRadius="2">
-            <ContentPresenter Name="PART_Content"
-                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" />
-        </Border>
-        <ControlTemplate.Triggers>
-            <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background" Value="{StaticResource BrushDefaultHover}" />
-            </Trigger>
-            <Trigger Property="IsPressed" Value="True">
-                <Setter Property="Background" Value="{StaticResource BrushDefaultPress}" />
-            </Trigger>
-            <Trigger Property="IsEnabled" Value="False">
-                <Setter Property="Opacity"    Value="0.7" TargetName="PART_Border" />
-                <Setter Property="Foreground" Value="Gray" />
-            </Trigger>
-        </ControlTemplate.Triggers>
-    </ControlTemplate>
-    <ControlTemplate x:Key="TemplateButtonSpecial" TargetType="{x:Type Button}">
-        <Border Name="PART_Border"
-                Width="{TemplateBinding Width}"
-                Height="{TemplateBinding Height}"
-                Padding="{TemplateBinding Padding}"
-                Background="{TemplateBinding Background}"
-                BorderBrush="{TemplateBinding BorderBrush}"
-                BorderThickness="{TemplateBinding BorderThickness}"
-                VerticalAlignment="{TemplateBinding VerticalAlignment}"
-                HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
-                CornerRadius="0">
-            <ContentPresenter Name="PART_Content"
-                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" />
-        </Border>
-        <ControlTemplate.Triggers>
-            <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background" Value="{StaticResource BrushSpecialHover}" />
-            </Trigger>
-            <Trigger Property="IsPressed" Value="True">
-                <Setter Property="Background" Value="{StaticResource BrushSpecialPress}" />
-            </Trigger>
-            <Trigger Property="IsEnabled" Value="False">
-                <Setter Property="Opacity"    Value="0.7" TargetName="PART_Border" />
-                <Setter Property="Foreground" Value="Gray" />
-            </Trigger>
-        </ControlTemplate.Triggers>
-    </ControlTemplate>
-    <ControlTemplate x:Key="TemplateListBoxItem"   TargetType="{x:Type ListBoxItem}">
-        <Border x:Name="PART_Border" SnapsToDevicePixels="True">
-            <ContentPresenter />
-        </Border>
-        <ControlTemplate.Triggers>
-            <Trigger Property="IsSelected" Value="True">
-                <Setter Property="Background" Value="{StaticResource BrushSpecialHover}" TargetName="PART_Border" />
-            </Trigger>
-        </ControlTemplate.Triggers>
-    </ControlTemplate>
     
     <!-- Styles -->
     <Style x:Key="StyleButton"        TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
@@ -184,66 +141,133 @@
         <Setter Property="FontSize"        Value="12.0" />
         <Setter Property="FontWeight"      Value="Bold" />
         <Setter Property="FontFamily"      Value="Arial" />
-        <Setter Property="Foreground"      Value="{StaticResource BrushText}" />
-        <Setter Property="Background"      Value="{StaticResource BrushDefaultNormal}" />
-        <Setter Property="BorderBrush"     Value="{StaticResource BrushBorder}" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="VerticalContentAlignment"   Value="Center" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
     </Style>
     <Style x:Key="StyleButtonDefault" TargetType="{x:Type Button}" BasedOn="{StaticResource StyleButton}">
-        <Setter Property="Template"              Value="{StaticResource TemplateButtonDefault}" />
+        <Setter Property="Foreground"            Value="{StaticResource BrushTextDark}" />
+        <Setter Property="BorderBrush"           Value="{StaticResource BrushBorder}" />
+        <Setter Property="Background"            Value="{StaticResource BrushControlNormal}" />
         <Setter Property="OverridesDefaultStyle" Value="True" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border Name="PART_Border"
+                            Width="{TemplateBinding Width}"
+                            Height="{TemplateBinding Height}"
+                            Padding="{TemplateBinding Padding}"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            VerticalAlignment="{TemplateBinding VerticalAlignment}"
+                            HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
+                            CornerRadius="2">
+                        <ContentPresenter Name="PART_Content"
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="{StaticResource BrushControlHover}" />
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Background" Value="{StaticResource BrushControlPress}" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity"    Value="0.7" TargetName="PART_Border" />
+                            <Setter Property="Foreground" Value="Gray" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
     </Style>
     <Style x:Key="StyleButtonSpecial" TargetType="{x:Type Button}" BasedOn="{StaticResource StyleButton}">
-        <Setter Property="Background"            Value="{StaticResource BrushSpecialNormal}" />
         <Setter Property="BorderThickness"       Value="0" />
-        <Setter Property="Template"              Value="{StaticResource TemplateButtonSpecial}" />
+        <Setter Property="Foreground"            Value="{StaticResource BrushTextDark}" />
+        <Setter Property="BorderBrush"           Value="{StaticResource BrushBorder}" />
+        <Setter Property="Background"            Value="{StaticResource BrushSpecialNormal}" />
         <Setter Property="OverridesDefaultStyle" Value="True" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border Name="PART_Border"
+                            Width="{TemplateBinding Width}"
+                            Height="{TemplateBinding Height}"
+                            Padding="{TemplateBinding Padding}"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            VerticalAlignment="{TemplateBinding VerticalAlignment}"
+                            HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
+                            CornerRadius="0">
+                        <ContentPresenter Name="PART_Content"
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="{StaticResource BrushSpecialHover}" />
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Background" Value="{StaticResource BrushSpecialPress}" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity"    Value="0.7" TargetName="PART_Border" />
+                            <Setter Property="Foreground" Value="Gray" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
     </Style>
-    <Style x:Key="StyleRadioButton"        TargetType="{x:Type RadioButton}" BasedOn="{StaticResource {x:Type RadioButton}}">
+    <Style x:Key="StyleRadioButton"   TargetType="{x:Type RadioButton}" BasedOn="{StaticResource {x:Type RadioButton}}">
         <Setter Property="Margin"      Value="0" />
         <Setter Property="Padding"     Value="0" />
         <Setter Property="FontSize"    Value="12.0" />
         <Setter Property="FontWeight"  Value="Bold" />
         <Setter Property="FontFamily"  Value="Arial" />
-        <Setter Property="Foreground"  Value="{StaticResource BrushText}" />
+        <Setter Property="Foreground"  Value="{StaticResource BrushTextDark}" />
         <Setter Property="VerticalContentAlignment"   Value="Center" />
         <Setter Property="HorizontalContentAlignment" Value="Left" />
     </Style>
-    <Style x:Key="StyleTextBox"     TargetType="{x:Type TextBox}"     BasedOn="{StaticResource {x:Type TextBox}}">
+    <Style x:Key="StyleTextBox"       TargetType="{x:Type TextBox}"     BasedOn="{StaticResource {x:Type TextBox}}">
         <Setter Property="Margin"      Value="0" />
         <Setter Property="Padding"     Value="0" />
         <Setter Property="FontSize"    Value="12.0" />
         <Setter Property="FontWeight"  Value="Bold" />
         <Setter Property="FontFamily"  Value="Arial" />
-        <Setter Property="Foreground"  Value="Gray" />
-        <Setter Property="BorderBrush" Value="{StaticResource BrushDark}" />
+        <Setter Property="Foreground"  Value="{StaticResource BrushInputTextDark}" />
+        <Setter Property="BorderBrush" Value="{StaticResource BrushHeaderLight}" />
         <Setter Property="VerticalContentAlignment"   Value="Center" />
         <Setter Property="HorizontalContentAlignment" Value="Left" />
     </Style>
-    <Style x:Key="StylePasswordBox" TargetType="{x:Type PasswordBox}" BasedOn="{StaticResource {x:Type PasswordBox}}">
+    <Style x:Key="StylePasswordBox"   TargetType="{x:Type PasswordBox}" BasedOn="{StaticResource {x:Type PasswordBox}}">
         <Setter Property="Margin"      Value="0" />
         <Setter Property="Padding"     Value="0" />
         <Setter Property="FontSize"    Value="12.0" />
         <Setter Property="FontWeight"  Value="Bold" />
         <Setter Property="FontFamily"  Value="Arial" />
-        <Setter Property="Foreground"  Value="Gray" />
-        <Setter Property="BorderBrush" Value="{StaticResource BrushDark}" />
+        <Setter Property="Foreground"  Value="{StaticResource BrushInputTextDark}" />
+        <Setter Property="BorderBrush" Value="{StaticResource BrushHeaderLight}" />
         <Setter Property="VerticalContentAlignment"   Value="Center" />
         <Setter Property="HorizontalContentAlignment" Value="Left" />
     </Style>
-    <Style x:Key="StyleLabel"       TargetType="{x:Type Label}"       BasedOn="{StaticResource {x:Type Label}}">
+    <Style x:Key="StyleLabel"         TargetType="{x:Type Label}"       BasedOn="{StaticResource {x:Type Label}}">
         <Setter Property="Margin"      Value="0" />
         <Setter Property="Padding"     Value="0" />
         <Setter Property="FontSize"    Value="12.0" />
         <Setter Property="FontWeight"  Value="Bold" />
         <Setter Property="FontFamily"  Value="Arial" />
-        <Setter Property="Foreground"  Value="{StaticResource BrushText}" />
+        <Setter Property="Foreground"  Value="{StaticResource BrushTextDark}" />
         <Setter Property="VerticalContentAlignment"   Value="Center" />
         <Setter Property="HorizontalContentAlignment" Value="Left" />
     </Style>
-    <Style x:Key="StyleTextBlock"   TargetType="{x:Type TextBlock}"   BasedOn="{StaticResource {x:Type TextBlock}}">
+    <Style x:Key="StyleLabelSoft"     TargetType="{x:Type Label}"       BasedOn="{StaticResource StyleLabel}">
+        <Setter Property="Foreground" Value="{StaticResource BrushTextDarkSoft}" />
+    </Style>
+    <Style x:Key="StyleTextBlock"     TargetType="{x:Type TextBlock}"   BasedOn="{StaticResource {x:Type TextBlock}}">
         <Setter Property="Margin"        Value="0" />
         <Setter Property="Padding"       Value="0" />
         <Setter Property="Opacity"       Value="0.6" />
@@ -252,22 +276,38 @@
         <Setter Property="FontFamily"    Value="Arial" />
         <Setter Property="TextAlignment" Value="Left" />
         <Setter Property="TextWrapping"  Value="Wrap" />
-        <Setter Property="Foreground"    Value="{StaticResource BrushText}" />
+        <Setter Property="Foreground"    Value="{StaticResource BrushTextDark}" />
     </Style>
-    <Style x:Key="StyleListBoxItem" TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource {x:Type ListBoxItem}}">
-        <Setter Property="Template" Value="{StaticResource TemplateListBoxItem}" />
+    <Style x:Key="StyleTextBlockSoft" TargetType="{x:Type TextBlock}"   BasedOn="{StaticResource StyleTextBlock}">
+        <Setter Property="Foreground" Value="{StaticResource BrushTextDarkSoft}" />
     </Style>
-    <Style x:Key="StyleListBox"     TargetType="{x:Type ListBox}"     BasedOn="{StaticResource {x:Type ListBox}}">
+    <Style x:Key="StyleListBoxItem"   TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource {x:Type ListBoxItem}}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                    <Border x:Name="PART_Border" SnapsToDevicePixels="True">
+                        <ContentPresenter />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="Background" Value="{StaticResource BrushSpecialHover}" TargetName="PART_Border" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="StyleListBox"       TargetType="{x:Type ListBox}"     BasedOn="{StaticResource {x:Type ListBox}}">
         <Setter Property="Margin"             Value="0" />
         <Setter Property="Padding"            Value="0" />
         <Setter Property="FontSize"           Value="11.0" />
         <Setter Property="FontWeight"         Value="Bold" />
         <Setter Property="FontFamily"         Value="Arial" />
         <Setter Property="Background"         Value="Transparent" />
-        <Setter Property="Foreground"         Value="{StaticResource BrushText}" />
+        <Setter Property="Foreground"         Value="{StaticResource BrushTextDark}" />
         <Setter Property="ItemContainerStyle" Value="{StaticResource StyleListBoxItem}" />
     </Style>
-    <Style x:Key="StyleImage"       TargetType="{x:Type Image}">
+    <Style x:Key="StyleImage"         TargetType="{x:Type Image}">
         <Setter Property="Stretch"                Value="Uniform" />
         <Setter Property="StretchDirection"       Value="DownOnly" />
         <Setter Property="VerticalAlignment"      Value="Center" />

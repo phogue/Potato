@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 using Procon.UI.API;
 using Procon.UI.API.Classes;
 using Procon.UI.API.ViewModels;
@@ -48,9 +49,17 @@ namespace Procon.UI.Default.Root.Main.Chat
             if  (layout == null) return false;
 
             // Do what I need to setup my control.
-            ChatView view = new ChatView();
+            ChatView     view = new ChatView();
+            GridSplitter splt = new GridSplitter();
             Grid.SetRow(view, 3);
+            Grid.SetRow(splt, 3);
+            splt.Height = 10;
+            splt.Background = Brushes.Transparent;
+            splt.ResizeBehavior = GridResizeBehavior.PreviousAndCurrent;
+            splt.VerticalAlignment = VerticalAlignment.Top;
+            splt.HorizontalAlignment = HorizontalAlignment.Stretch;
             layout.Children.Add(view);
+            layout.Children.Add(splt);
 
             // Exit with good status.
             return true;

@@ -1,27 +1,7 @@
-﻿// Copyright 2011 Geoffrey 'Phogue' Green
-// 
-// Altered by Cameron 'Imisnew2' Gunnin
-// 
-// http://www.phogue.net
-// 
-// This file is part of Procon 2.
-// 
-// Procon 2 is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-// 
-// Procon 2 is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-// 
-// You should have received a copy of the GNU General Public License
-// along with Procon 2.  If not, see <http://www.gnu.org/licenses/>.
-
-using System;
+﻿using System;
 using System.ComponentModel;
 using System.Linq;
+
 using Procon.Net.Utils;
 using Procon.Net.Utils.Maxmind;
 
@@ -79,171 +59,139 @@ namespace Procon.Net.Protocols.Objects
         }
 
         /// <summary>A Unique Identifier.</summary>
-        public virtual string UID
-        {
+        public virtual string UID {
             get { return TryGetVariable<string>(C_UID, null); }
-            set
-            {
-                DataAddSet(C_UID, value);
-                OnPropertyChanged("UID");
-            }
-        }
+            set {
+                if (UID != value) {
+                    DataAddSet(C_UID, value);
+                    OnPropertyChanged("UID");
+        } } }
         /// <summary>A Game-specific Unique Identifier.</summary>
-        public virtual string GUID
-        {
+        public virtual string GUID {
             get { return TryGetVariable<string>(C_GUID, null); }
-            set
-            {
+            set {
+                if (GUID != value) {
                 DataAddSet(C_GUID, value);
                 OnPropertyChanged("GUID");
-            }
-        }
+        } } }
         /// <summary>A Player Number assigned by the server to this player.</summary>
-        public virtual uint SlotID
-        {
+        public virtual uint SlotID {
             get { return TryGetVariable<uint>(C_SLOT_ID, 0); }
-            set
-            {
+            set {
+                if (SlotID != value) {
                 DataAddSet(C_SLOT_ID, value);
                 OnPropertyChanged("SlotID");
-            }
-        }
+        } } }
 
         /// <summary>A string of characters that prefixes this player's name.</summary>
-        public virtual string ClanTag
-        {
+        public virtual string ClanTag {
             get { return TryGetVariable<string>(C_CLAN_TAG, null); }
-            set
-            {
+            set {
+                if (ClanTag != value) {
                 DataAddSet(C_CLAN_TAG, value);
                 OnPropertyChanged("ClanTag");
-            }
-        }
+        } } }
         /// <summary>This player's Name.</summary>
-        public virtual string Name
-        {
+        public virtual string Name {
             get { return TryGetVariable<string>(C_NAME, null); }
-            set
-            {
+            set {
+                if (Name != value) {
                 DataAddSet(C_NAME, value);
                 DataAddSet(C_NAME_STRIPPED, value.Strip());
                 OnPropertyChanged("Name");
                 OnPropertyChanged("NameStripped");
-            }
-        }
+        } } }
         /// <summary>This player's Name, with diacratics/l33t/etc replaced with ANSI equivalents.</summary>
-        public virtual string NameStripped
-        {
+        public virtual string NameStripped {
             get { return TryGetVariable<string>(C_NAME_STRIPPED, null); }
         }
 
         /// <summary>This player's Team (e.g, Team1).</summary>
-        public virtual Team Team
-        {
+        public virtual Team Team {
             get { return TryGetVariable<Team>(C_TEAM, Team.None); }
-            set
-            {
+            set {
+                if (Team != value) {
                 DataAddSet(C_TEAM, value);
                 OnPropertyChanged("Team");
-            }
-        }
+        } } }
         /// <summary>This player's Squad (e.g, Alpha).</summary>
-        public virtual Squad Squad
-        {
+        public virtual Squad Squad {
             get { return TryGetVariable<Squad>(C_SQUAD, Squad.None); }
-            set
-            {
+            set {
+                if (Squad != value) {
                 DataAddSet(C_SQUAD, value);
                 OnPropertyChanged("Squad");
-            }
-        }
+        } } }
         /// <summary>This player's Score.</summary>
-        public virtual int Score
-        {
+        public virtual int Score {
             get { return TryGetVariable<int>(C_SCORE, 0); }
-            set
-            {
+            set {
+                if (Score != value) {
                 DataAddSet(C_SCORE, value);
                 OnPropertyChanged("Score");
-            }
-        }
+        } } }
         /// <summary>This player's Kill count.</summary>
-        public virtual int Kills
-        {
+        public virtual int Kills {
             get { return TryGetVariable<int>(C_KILLS, 0); }
-            set
-            {
+            set {
+                if (Kills != value) {
                 DataAddSet(C_KILLS, value);
                 OnPropertyChanged("Kills");
                 OnPropertyChanged("Kdr");
-            }
-        }
+        } } }
         /// <summary>This player's Death count.</summary>
-        public virtual int Deaths
-        {
+        public virtual int Deaths {
             get { return TryGetVariable<int>(C_DEATHS, 0); }
-            set
-            {
+            set {
+                if (Deaths != value) {
                 DataAddSet(C_DEATHS, value);
                 OnPropertyChanged("Deaths");
                 OnPropertyChanged("Kdr");
-            }
-        }
+        } } }
         /// <summary>This player's Kill to Death ratio.</summary>
-        public virtual float Kdr
-        {
+        public virtual float Kdr {
             get { return (Deaths <= 0) ? Kills : Kills / (float)Deaths; }
         }
 
         /// <summary>A Game-specific job/class the player assumes (e.g, Sniper, Medic).</summary>
         [TypeConverter(typeof(ExpandableObjectConverter))]
-        public virtual Role Role
-        {
+        public virtual Role Role {
             get { return TryGetVariable<Role>(C_ROLE, null); }
-            set
-            {
+            set {
+                if (Role != value) {
                 DataAddSet(C_ROLE, value);
                 OnPropertyChanged("Role");
-            }
-        }
+        } } }
         /// <summary>A Game-specific collection of items the player has (e.g, Armor, AK-47, HE Grenade).</summary>
         [TypeConverter(typeof(ExpandableObjectConverter))]
-        public virtual Inventory Inventory
-        {
+        public virtual Inventory Inventory {
             get { return TryGetVariable<Inventory>(C_INVENTORY, null); }
-            set
-            {
+            set {
+                if (Inventory != value) {
                 DataAddSet(C_INVENTORY, value);
                 OnPropertyChanged("Inventory");
-            }
-        }
+        } } }
 
         /// <summary>This player's latency to the game server.</summary>
-        public virtual uint Ping
-        {
+        public virtual uint Ping {
             get { return TryGetVariable<uint>(C_PING, 0); }
-            set
-            {
+            set {
+                if (Ping != value) {
                 DataAddSet(C_PING, value);
                 OnPropertyChanged("Ping");
-            }
-        }
+        } } }
         /// <summary>This player's Full Country Name he/she is playing from.</summary>
-        public virtual string CountryName
-        {
+        public virtual string CountryName {
             get { return TryGetVariable<string>(C_COUNTRY_NAME, null); }
         }
         /// <summary>This player's Abbreviated Country Name he/she is playing from.</summary>
-        public virtual string CountryCode
-        {
+        public virtual string CountryCode {
             get { return TryGetVariable<string>(C_COUNTRY_CODE, null); }
         }
         /// <summary>This player's IP Address.</summary>
-        public virtual string IP
-        {
+        public virtual string IP {
             get { return TryGetVariable<string>(C_IP, null); }
-            set
-            {
+            set {
                 string mIP   = null;
                 string mPort = null;
                 // Validate Ip has colon before trying to split.
@@ -277,8 +225,7 @@ namespace Procon.Net.Protocols.Objects
             }
         }
         /// <summary>The player's Port Address.</summary>
-        public virtual string Port
-        {
+        public virtual string Port {
             get { return TryGetVariable<string>(C_PORT, null); }
         }
 

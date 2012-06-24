@@ -5,223 +5,27 @@
       xmlns:view="clr-namespace:Procon.UI.API.ViewModels;assembly=Procon.UI.API"
       xmlns:acmd="clr-namespace:Procon.UI.API.Commands;assembly=Procon.UI.API"
       xmlns:util="clr-namespace:Procon.UI.API.Utils;assembly=Procon.UI.API"
+      xmlns:c="clr-namespace:Procon.Net.Protocols.Objects;assembly=Procon.Net"
       Name="MainPlayersList">
-    <Grid.Resources>
-        <Color           x:Key="ColorTeam1Dark"  A="255" R="124" G="207" B="224" />
-        <Color           x:Key="ColorTeam1Light" A="255" R="178" G="230" B="239" />
-        <Color           x:Key="ColorTeam2Dark"  A="255" R="255" G="160" B="148" />
-        <Color           x:Key="ColorTeam2Light" A="255" R="255" G="202" B="194" />
-        <SolidColorBrush x:Key="BrushTeam1Dark"  Color="{StaticResource ColorTeam1Dark}"  />
-        <SolidColorBrush x:Key="BrushTeam1Light" Color="{StaticResource ColorTeam1Light}" />
-        <SolidColorBrush x:Key="BrushTeam2Dark"  Color="{StaticResource ColorTeam2Dark}"  />
-        <SolidColorBrush x:Key="BrushTeam2Light" Color="{StaticResource ColorTeam2Light}" />
-        
-        <DataTemplate DataType="{x:Type view:PlayerViewModel}">
-            <ToggleButton x:Name="PART_Content"
-                          Width="190"
-                          Margin="5, 5, 0, 0"
-                          Padding="0"
-                          BorderThickness="0"
-                          Command="{Binding
-                              Source={x:Static view:ViewModelBase.PublicCommands},
-                              Path=[Main][Players][List][Select].Value}"
-                          CommandParameter="{Binding}">
-                <ToggleButton.Style>
-                    <Style TargetType="{x:Type ToggleButton}" BasedOn="{StaticResource {x:Type ToggleButton}}">
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="{x:Type ToggleButton}">
-                                    <Border x:Name="PART_Border"
-                                            Margin="{TemplateBinding Margin}"
-                                            BorderBrush="{TemplateBinding BorderBrush}"
-                                            BorderThickness="{TemplateBinding BorderThickness}"
-                                            VerticalAlignment="{TemplateBinding VerticalAlignment}"
-                                            HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
-                                            CornerRadius="0">
-                                        <ContentPresenter x:Name="PART_Content"
-                                                          Width="{TemplateBinding Width}"
-                                                          Height="{TemplateBinding Height}"
-                                                          Margin="{TemplateBinding Padding}" />
-                                    </Border>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                    </Style>
-                </ToggleButton.Style>
-                <ToggleButton.ContextMenu>
-                    <!-- Context Menu -->
-                    <ContextMenu x:Name="PART_ContextMenu"
-                                 Placement="Mouse">
-                        <MenuItem x:Name="PART_ContextMenuBan"
-                                  Command="{Binding
-                                      Source={x:Static view:ViewModelBase.PublicCommands},
-                                      Path=[Main][Players][List][BanPlayer].Value}"
-                                  Header="{Binding
-                                      Converter={conv:LocalizationText},
-                                      ConverterParameter=Procon.UI.Default.Root.Main.Players.Ban}" />
-                        <MenuItem x:Name="PART_ContextMenuKick"
-                                  Command="{Binding
-                                      Source={x:Static view:ViewModelBase.PublicCommands},
-                                      Path=[Main][Players][List][KickPlayer].Value}"
-                                  Header="{Binding
-                                      Converter={conv:LocalizationText},
-                                      ConverterParameter=Procon.UI.Default.Root.Main.Players.Kick}" />
-                        <MenuItem x:Name="PART_ContextMenuMove"
-                                  Command="{Binding
-                                      Source={x:Static view:ViewModelBase.PublicCommands},
-                                      Path=[Main][Players][List][MovePlayer].Value}"
-                                  Header="{Binding
-                                      Converter={conv:LocalizationText},
-                                      ConverterParameter=Procon.UI.Default.Root.Main.Players.Move}" />
-                    </ContextMenu>
-                </ToggleButton.ContextMenu>
-                <DockPanel x:Name="PART_Container">
-                    <!-- Title Portion -->
-                    <DockPanel x:Name="PART_Title"
-                               DockPanel.Dock="Top">
-                        <Image x:Name="PART_Icon"
-                               DockPanel.Dock="Left"
-                               Width="16"
-                               Margin="4"
-                               Source="{Binding
-                                   Source={x:Static view:ViewModelBase.PublicProperties},
-                                   Path=[Images][General][Player].Value}" />
-                        <Image x:Name="PART_Country"
-                               DockPanel.Dock="Right"
-                               Width="16"
-                               Margin="4, 4, 10, 4"
-                               DataContext="{Binding CountryCode}"
-                               Source="{Binding Converter={conv:ConverterCountryCodeToImage}}" />
-                        <CheckBox x:Name="PART_Selected"
-                                  DockPanel.Dock="Right"
-                                  VerticalAlignment="Center"
-                                  IsChecked="{Binding
-                                      RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ToggleButton}},
-                                      Path=IsChecked}" />
-                        <TextBlock x:Name="PART_Name"
-                                   DockPanel.Dock="Left"
-                                   FontWeight="Bold"
-                                   VerticalAlignment="Center"
-                                   Text="{Binding Name}" />
-                    </DockPanel>
-                    
-                    <!-- Data Portion -->
-                    <Grid x:Name="PART_Data"
-                          DockPanel.Dock="Top">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="3" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="3" />
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="1.0*" />
-                        </Grid.ColumnDefinitions>
-                    
-                        <Image x:Name="PART_ScoreWarn"
-                               Grid.Row="1"
-                               Height="16"
-                               Margin="4, 0"
-                               DataContext="{Binding Score}"
-                               Source="{Binding
-                                   Converter={conv:CheckerPlayerProperty},
-                                   ConverterParameter=Score}" />
-                        <Image x:Name="PART_KdrWarn"
-                               Grid.Row="2"
-                               Height="16"
-                               Margin="4, 0"
-                               DataContext="{Binding Kdr}"
-                               Source="{Binding
-                                   Converter={conv:CheckerPlayerProperty},
-                                   ConverterParameter=Kdr}" />
-                        <Image x:Name="PART_PingWarn"
-                               Grid.Row="3"
-                               Height="16"
-                               Margin="4, 0"
-                               DataContext="{Binding Ping}"
-                               Source="{Binding
-                                   Converter={conv:CheckerPlayerProperty},
-                                   ConverterParameter=Ping}" />
-                    
-                        <TextBlock x:Name="PART_Score"
-                                   Grid.Row="1"
-                                   Grid.Column="1"
-                                   VerticalAlignment="Center"
-                                   FontSize="11"
-                                   Text="{Binding
-                                       StringFormat=Score: {0:0},
-                                       Path=Score}" />
-                        <TextBlock x:Name="PART_Kdr"
-                                   Grid.Row="2"
-                                   Grid.Column="1"
-                                   VerticalAlignment="Center"
-                                   FontSize="11"
-                                   Text="{Binding
-                                       StringFormat=Kdr: {0:0.00},
-                                       Path=Kdr}" />
-                        <TextBlock x:Name="PART_Ping"
-                                   Grid.Row="3"
-                                   Grid.Column="1"
-                                   VerticalAlignment="Center"
-                                   FontSize="11"
-                                   Text="{Binding
-                                       StringFormat=Ping: {0:0},
-                                       Path=Ping}" />
-                    </Grid>
-                </DockPanel>
-            </ToggleButton>
-
-            <DataTemplate.Triggers>
-                <DataTrigger Binding="{Binding Team}" Value="Team1">
-                    <Setter Property="Background" Value="{StaticResource BrushTeam1Dark}" TargetName="PART_Title" />
-                    <Setter Property="Background" Value="{StaticResource BrushTeam1Light}" TargetName="PART_Data" />
-                </DataTrigger>
-                <DataTrigger Binding="{Binding Team}" Value="Team2">
-                    <Setter Property="Background" Value="{StaticResource BrushTeam2Dark}" TargetName="PART_Title" />
-                    <Setter Property="Background" Value="{StaticResource BrushTeam2Light}" TargetName="PART_Data" />
-                </DataTrigger>
-            </DataTemplate.Triggers>
-        </DataTemplate>
-    </Grid.Resources>
     
     <!-- Content -->
     <DockPanel Name="MainPlayersListContent">
         
         <!-- Title -->
-        <Grid Name="MainPlayersListTitle"
-              DockPanel.Dock="Top">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="1.0*" />
-            </Grid.ColumnDefinitions>
-            
-            <Label Name="MainPlayersListName"
-                   Grid.Row="0"
-                   Grid.Column="0"
-                   Margin="15, 15, 15, 0"
+        <DockPanel Name="MainPlayersListHeader"
+                   DockPanel.Dock="Top">
+            <Label Name="MainPlayersListTitle"
+                   DockPanel.Dock="Left"
+                   Margin="15, 5"
                    FontSize="26"
+                   Foreground="{DynamicResource BrushTextDarkSoft}"
                    Content="{Binding
                        Converter={conv:LocalizationText},
                        ConverterParameter=Procon.UI.Default.Root.Main.Players.Title}" />
-            <Label Name="MainPlayersListMode"
-                   Grid.Row="1"
-                   Grid.Column="0" 
-                   Margin="15, 0, 15, 15"
-                   FontSize="14"
-                   Content="{Binding GameMode, FallbackValue='???'}" />
             <TextBlock Name="MainPlayersListCount"
-                       Grid.Row="0"
-                       Grid.Column="1"
-                       Margin="0, 15, 0, 0"
-                       FontSize="15"
-                       VerticalAlignment="Center">
+                       DockPanel.Dock="Left"
+                       VerticalAlignment="Center"
+                       FontSize="15">
                 <TextBlock.Text>
                     <MultiBinding StringFormat="{}{0}/{1}">
                         <Binding Path="PlayerCount"    FallbackValue="?" />
@@ -232,22 +36,19 @@
             
             <!-- Player Statistics -->
             <StackPanel Name="MainPlayersTitleStats"
-                        Grid.Row="0"
-                        Grid.RowSpan="2"
-                        Grid.Column="2"
-                        Margin="0, 0, 15, 0"
+                        DockPanel.Dock="Right"
                         Orientation="Horizontal"
                         HorizontalAlignment="Center">
                 <Label Content="Score Thingy Goes Here." Margin="10, 0" />
                 <Label Content="KDR Thingy Goes Here."   Margin="10, 0" />
                 <Label Content="Ping Thingy Goes Here."  Margin="10, 0" />
             </StackPanel>
-            
-        </Grid>
+        </DockPanel>
         
         <!-- Actions -->
         <DockPanel Name="MainPlayersListActions"
-                   DockPanel.Dock="Top">
+                   DockPanel.Dock="Top"
+                   Background="{DynamicResource BrushContentLight}">
 
             <Button Name="MainPlayersListBan"
                     DockPanel.Dock="Left"
@@ -305,10 +106,11 @@
         </DockPanel>
         
         <!-- Players -->
-        <ItemsControl Name="MainPlayersListList"
+        <ListBox Name="MainPlayersListList"
                       DockPanel.Dock="Bottom"
+                      SelectionMode="Extended"
                       ItemsSource="{Binding Players}">
-            <ItemsControl.Template>
+            <ListBox.Template>
                 <ControlTemplate>
                     <ScrollViewer VerticalScrollBarVisibility="Auto"
                                   HorizontalScrollBarVisibility="Disabled">
@@ -318,8 +120,194 @@
                                    IsItemsHost="True" />
                     </ScrollViewer>
                 </ControlTemplate>
-            </ItemsControl.Template>
-        </ItemsControl>
+            </ListBox.Template>
+            <ListBox.ItemTemplate>
+                <DataTemplate DataType="{x:Type c:Player}">
+                    <ToggleButton x:Name="PART_Content"
+                                  Width="190"
+                                  Margin="5, 5, 0, 0"
+                                  Padding="0"
+                                  BorderThickness="0"
+                                  IsChecked="{Binding 
+                                      RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBoxItem}},
+                                      Path=IsSelected}"
+                                  Command="{Binding
+                                      Source={x:Static view:ViewModelBase.PublicCommands},
+                                      Path=[Main][Players][List][Select].Value}"
+                                  CommandParameter="{Binding}">
+                        <ToggleButton.Style>
+                            <Style TargetType="{x:Type ToggleButton}" BasedOn="{StaticResource {x:Type ToggleButton}}">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="{x:Type ToggleButton}">
+                                            <Border x:Name="PART_Border"
+                                                    Margin="{TemplateBinding Margin}"
+                                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                                    VerticalAlignment="{TemplateBinding VerticalAlignment}"
+                                                    HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
+                                                    CornerRadius="0">
+                                                <ContentPresenter x:Name="PART_Content"
+                                                                  Width="{TemplateBinding Width}"
+                                                                  Height="{TemplateBinding Height}"
+                                                                  Margin="{TemplateBinding Padding}" />
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </ToggleButton.Style>
+                        <ToggleButton.ContextMenu>
+                            <!-- Context Menu -->
+                            <ContextMenu x:Name="PART_ContextMenu"
+                                         Placement="Mouse">
+                                <MenuItem x:Name="PART_ContextMenuBan"
+                                          Command="{Binding
+                                              Source={x:Static view:ViewModelBase.PublicCommands},
+                                              Path=[Main][Players][List][BanPlayer].Value}"
+                                          Header="{Binding
+                                              Converter={conv:LocalizationText},
+                                              ConverterParameter=Procon.UI.Default.Root.Main.Players.Ban}" />
+                                <MenuItem x:Name="PART_ContextMenuKick"
+                                          Command="{Binding
+                                              Source={x:Static view:ViewModelBase.PublicCommands},
+                                              Path=[Main][Players][List][KickPlayer].Value}"
+                                          Header="{Binding
+                                              Converter={conv:LocalizationText},
+                                              ConverterParameter=Procon.UI.Default.Root.Main.Players.Kick}" />
+                                <MenuItem x:Name="PART_ContextMenuMove"
+                                          Command="{Binding
+                                              Source={x:Static view:ViewModelBase.PublicCommands},
+                                              Path=[Main][Players][List][MovePlayer].Value}"
+                                          Header="{Binding
+                                              Converter={conv:LocalizationText},
+                                              ConverterParameter=Procon.UI.Default.Root.Main.Players.Move}" />
+                            </ContextMenu>
+                        </ToggleButton.ContextMenu>
+                        <DockPanel x:Name="PART_Container">
+                            <!-- Title Portion -->
+                            <DockPanel x:Name="PART_Title"
+                                       DockPanel.Dock="Top"
+                                       Background="{DynamicResource BrushTeam0Header}">
+                                <Image x:Name="PART_Icon"
+                                       DockPanel.Dock="Left"
+                                       Width="16"
+                                       Margin="4"
+                                       Source="{Binding
+                                           Source={x:Static view:ViewModelBase.PublicProperties},
+                                           Path=[Images][General][Player].Value}" />
+                                <Image x:Name="PART_Country"
+                                       DockPanel.Dock="Right"
+                                       Width="16"
+                                       Margin="4, 4, 10, 4"
+                                       DataContext="{Binding CountryCode}"
+                                       Source="{Binding Converter={conv:ConverterCountryCodeToImage}}" />
+                                <CheckBox x:Name="PART_Selected"
+                                          DockPanel.Dock="Right"
+                                          VerticalAlignment="Center"
+                                          IsChecked="{Binding
+                                              RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ToggleButton}},
+                                              Path=IsChecked}" />
+                                <TextBlock x:Name="PART_Name"
+                                           DockPanel.Dock="Left"
+                                           FontWeight="Bold"
+                                           VerticalAlignment="Center"
+                                           Text="{Binding Name}" />
+                            </DockPanel>
+                    
+                            <!-- Data Portion -->
+                            <Grid x:Name="PART_Data"
+                                  DockPanel.Dock="Top"
+                                  Background="{DynamicResource BrushTeam0Content}">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="3" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="3" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="1.0*" />
+                                </Grid.ColumnDefinitions>
+                    
+                                <Image x:Name="PART_ScoreWarn"
+                                       Grid.Row="1"
+                                       Height="16"
+                                       Margin="4, 0"
+                                       DataContext="{Binding Score}"
+                                       Source="{Binding
+                                           Converter={conv:CheckerPlayerProperty},
+                                           ConverterParameter=Score}" />
+                                <Image x:Name="PART_KdrWarn"
+                                       Grid.Row="2"
+                                       Height="16"
+                                       Margin="4, 0"
+                                       DataContext="{Binding Kdr}"
+                                       Source="{Binding
+                                           Converter={conv:CheckerPlayerProperty},
+                                           ConverterParameter=Kdr}" />
+                                <Image x:Name="PART_PingWarn"
+                                       Grid.Row="3"
+                                       Height="16"
+                                       Margin="4, 0"
+                                       DataContext="{Binding Ping}"
+                                       Source="{Binding
+                                           Converter={conv:CheckerPlayerProperty},
+                                           ConverterParameter=Ping}" />
+                    
+                                <TextBlock x:Name="PART_Score"
+                                           Grid.Row="1"
+                                           Grid.Column="1"
+                                           VerticalAlignment="Center"
+                                           FontSize="11"
+                                           Text="{Binding
+                                               StringFormat=Score: {0:0},
+                                               Path=Score}" />
+                                <TextBlock x:Name="PART_Kdr"
+                                           Grid.Row="2"
+                                           Grid.Column="1"
+                                           VerticalAlignment="Center"
+                                           FontSize="11"
+                                           Text="{Binding
+                                               StringFormat=Kdr: {0:0.00},
+                                               Path=Kdr}" />
+                                <TextBlock x:Name="PART_Ping"
+                                           Grid.Row="3"
+                                           Grid.Column="1"
+                                           VerticalAlignment="Center"
+                                           FontSize="11"
+                                           Text="{Binding
+                                               StringFormat=Ping: {0:0},
+                                               Path=Ping}" />
+                            </Grid>
+                        </DockPanel>
+                    </ToggleButton>
+
+                    <DataTemplate.Triggers>
+                        <DataTrigger Binding="{Binding Team}" Value="2">
+                            <Setter Property="Background" Value="{DynamicResource BrushTeam1Header}"  TargetName="PART_Title" />
+                            <Setter Property="Background" Value="{DynamicResource BrushTeam1Content}" TargetName="PART_Data"  />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Team}" Value="3">
+                            <Setter Property="Background" Value="{DynamicResource BrushTeam2Header}"  TargetName="PART_Title" />
+                            <Setter Property="Background" Value="{DynamicResource BrushTeam2Content}" TargetName="PART_Data"  />
+                        </DataTrigger>
+                    </DataTemplate.Triggers>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="{x:Type ListBoxItem}">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                                <ContentPresenter />
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </ListBox.ItemContainerStyle>
+        </ListBox>
         
     </DockPanel>
 </Grid>

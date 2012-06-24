@@ -52,7 +52,6 @@ namespace Procon.UI.Default
                     x.IsLocal  == (Boolean)ExtensionApi.Settings["InterfaceType"].Value &&
                     x.Hostname == (String) ExtensionApi.Settings["InterfaceHost"].Value &&
                     x.Port     == (UInt16) ExtensionApi.Settings["InterfacePort"].Value);
-
             // Setup Active Connection.
             if (ExtensionApi.Interface != null
                 && ExtensionApi.Settings["ConnectionType"].Value is GameType
@@ -63,10 +62,8 @@ namespace Procon.UI.Default
                     x.Hostname == (String)  ExtensionApi.Settings["ConnectionHost"].Value &&
                     x.Port     == (UInt16)  ExtensionApi.Settings["ConnectionPort"].Value);
 
-            // Types.
-            ViewModelBase.PublicProperties["Types"]["Connection"].Value = Enum.GetValues(typeof(GameType)).Cast<GameType>().Where(x => x != GameType.None);
 
-            // Commands.
+
             // [Interface] Level Commands.
             ViewModelBase.PublicCommands["Interface"]["Add"].Value    = new RelayCommand<Object[]>(interfaceAdd, interfaceAddCan);
             ViewModelBase.PublicCommands["Interface"]["Remove"].Value = new RelayCommand<Object[]>(interfaceRemove, interfaceRemoveCan);
@@ -76,21 +73,23 @@ namespace Procon.UI.Default
             ViewModelBase.PublicCommands["Connection"]["Remove"].Value = new RelayCommand<Object[]>(connectionRemove, connectionRemoveCan);
             ViewModelBase.PublicCommands["Connection"]["Set"].Value    = new RelayCommand<ConnectionViewModel>(connectionSet);
 
-            // Properties.
+
+
+            // Types.
+            ViewModelBase.PublicProperties["Types"]["Connection"].Value = Enum.GetValues(typeof(GameType)).Cast<GameType>().Where(x => x != GameType.None);
+
+            // Images.
             ViewModelBase.PublicProperties["Images"]["Empty"].Value = new BitmapImage();
 
-            // Procon Logos.
             // [Procon] - Procon images.
             ViewModelBase.PublicProperties["Images"]["Procon"]["Icon"].Value  = (File.Exists(Defines.PROCON_ICON))  ? new BitmapImage(new Uri(Defines.PROCON_ICON,  UriKind.RelativeOrAbsolute)) : ViewModelBase.PublicProperties["Images"]["Empty"].Value;
             ViewModelBase.PublicProperties["Images"]["Procon"]["Large"].Value = (File.Exists(Defines.PROCON_LARGE)) ? new BitmapImage(new Uri(Defines.PROCON_LARGE, UriKind.RelativeOrAbsolute)) : ViewModelBase.PublicProperties["Images"]["Empty"].Value;
             ViewModelBase.PublicProperties["Images"]["Procon"]["Small"].Value = (File.Exists(Defines.PROCON_SMALL)) ? new BitmapImage(new Uri(Defines.PROCON_SMALL, UriKind.RelativeOrAbsolute)) : ViewModelBase.PublicProperties["Images"]["Empty"].Value;
 
-            // Interfaces.
             // [Interfaces] - Interface types.
             ViewModelBase.PublicProperties["Images"]["Interfaces"]["Local"].Value  = (File.Exists(Defines.INTERFACE_LOCAL))  ? new BitmapImage(new Uri(Defines.INTERFACE_LOCAL,  UriKind.RelativeOrAbsolute)) : ViewModelBase.PublicProperties["Images"]["Empty"].Value;
             ViewModelBase.PublicProperties["Images"]["Interfaces"]["Remote"].Value = (File.Exists(Defines.INTERFACE_REMOTE)) ? new BitmapImage(new Uri(Defines.INTERFACE_REMOTE, UriKind.RelativeOrAbsolute)) : ViewModelBase.PublicProperties["Images"]["Empty"].Value;
 
-            // Games.
             // [Connections] - Game types.
             ViewModelBase.PublicProperties["Images"]["Connections"]["BF_3"].Value      = (File.Exists(Defines.CONNECTION_BF_3))      ? new BitmapImage(new Uri(Defines.CONNECTION_BF_3,      UriKind.RelativeOrAbsolute)) : ViewModelBase.PublicProperties["Images"]["Empty"].Value;
             ViewModelBase.PublicProperties["Images"]["Connections"]["BF_BC2"].Value    = (File.Exists(Defines.CONNECTION_BF_BC2))    ? new BitmapImage(new Uri(Defines.CONNECTION_BF_BC2,    UriKind.RelativeOrAbsolute)) : ViewModelBase.PublicProperties["Images"]["Empty"].Value;
@@ -100,7 +99,6 @@ namespace Procon.UI.Default
             ViewModelBase.PublicProperties["Images"]["Connections"]["TF_2"].Value      = (File.Exists(Defines.CONNECTION_TF_2))      ? new BitmapImage(new Uri(Defines.CONNECTION_TF_2,      UriKind.RelativeOrAbsolute)) : ViewModelBase.PublicProperties["Images"]["Empty"].Value;
             ViewModelBase.PublicProperties["Images"]["Connections"]["Unkown"].Value    = (File.Exists(Defines.CONNECTION_UNKNOWN))   ? new BitmapImage(new Uri(Defines.CONNECTION_UNKNOWN,   UriKind.RelativeOrAbsolute)) : ViewModelBase.PublicProperties["Images"]["Empty"].Value;
 
-            // Connection Status.
             // [Status] - Connection status.
             ViewModelBase.PublicProperties["Images"]["Status"]["LoggedIn"].Value      = (File.Exists(Defines.STATUS_GOOD)) ? new BitmapImage(new Uri(Defines.STATUS_GOOD, UriKind.RelativeOrAbsolute))  : ViewModelBase.PublicProperties["Images"]["Empty"].Value;
             ViewModelBase.PublicProperties["Images"]["Status"]["Connecting"].Value    = (File.Exists(Defines.STATUS_FLUX)) ? new BitmapImage(new Uri(Defines.STATUS_FLUX, UriKind.RelativeOrAbsolute))  : ViewModelBase.PublicProperties["Images"]["Empty"].Value;
@@ -109,7 +107,6 @@ namespace Procon.UI.Default
             ViewModelBase.PublicProperties["Images"]["Status"]["Disconnecting"].Value = (File.Exists(Defines.STATUS_BAD))  ? new BitmapImage(new Uri(Defines.STATUS_BAD,  UriKind.RelativeOrAbsolute)) : ViewModelBase.PublicProperties["Images"]["Empty"].Value;
             ViewModelBase.PublicProperties["Images"]["Status"]["Disconnected"].Value  = (File.Exists(Defines.STATUS_BAD))  ? new BitmapImage(new Uri(Defines.STATUS_BAD,  UriKind.RelativeOrAbsolute)) : ViewModelBase.PublicProperties["Images"]["Empty"].Value;
 
-            // Countries.
             // [Countries] - The country flags.
             #region Country Flags
 
@@ -364,7 +361,6 @@ namespace Procon.UI.Default
 
             #endregion
 
-            // Content.
             // [Content] - Various images that represent tabs.
             //   [Players] - Represents the players per connection.
             ViewModelBase.PublicProperties["Images"]["Content"]["Players"]["Default"].Value  = (File.Exists(Defines.PLAYERS_DEFAULT))  ? new BitmapImage(new Uri(Defines.PLAYERS_DEFAULT,  UriKind.RelativeOrAbsolute)) : ViewModelBase.PublicProperties["Images"]["Empty"].Value;
@@ -414,14 +410,12 @@ namespace Procon.UI.Default
             ViewModelBase.PublicProperties["Images"]["Connection"]["Swap"].Value = (File.Exists(Defines.CONNECTION_SWAP)) ? new BitmapImage(new Uri(Defines.CONNECTION_SWAP, UriKind.RelativeOrAbsolute)) : ViewModelBase.PublicProperties["Images"]["Empty"].Value;
             ViewModelBase.PublicProperties["Images"]["Connection"]["Info"].Value = (File.Exists(Defines.CONNECTION_INFO)) ? new BitmapImage(new Uri(Defines.CONNECTION_INFO, UriKind.RelativeOrAbsolute)) : ViewModelBase.PublicProperties["Images"]["Empty"].Value;
 
-            // [Background] - Background images.
-            ViewModelBase.PublicProperties["Images"]["Background"]["Navigation"].Value = (File.Exists(Defines.BACKGROUND_NAVIGATION)) ? new BitmapImage(new Uri(Defines.BACKGROUND_NAVIGATION, UriKind.RelativeOrAbsolute)) : ViewModelBase.PublicProperties["Images"]["Empty"].Value;
-
             // We done here broski.
             return true;
         }
 
-        // [Interface] Level Commands
+
+
         // -- [Interface][Add]
         private void interfaceAdd(Object[] parameters)
         {
@@ -463,7 +457,6 @@ namespace Procon.UI.Default
             ExtensionApi.Interface = view;
         }
 
-        // [Connection] Level Commands
         // -- [Connection][Add]
         private void connectionAdd(Object[] parameters)
         {

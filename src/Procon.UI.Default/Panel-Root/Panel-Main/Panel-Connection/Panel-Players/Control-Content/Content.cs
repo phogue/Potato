@@ -212,20 +212,26 @@ namespace Procon.UI.Default.Root.Main.Connection.Players.Content
             tPlayerUpdated =
             #region -- Sorts the player whenever their team changes.
                 (s, e) => {
-                    if (e.PropertyName == "Team")
-                        root.Dispatcher.Invoke(tSortPlayer, s);
-
                     Player tPlayer = s as Player;
                     Double tDouble = Double.MaxValue;
-                    if (e.PropertyName == "Score")
-                        if (Double.TryParse(tProps["Score"].Value.ToString(), out tDouble))
-                            tPlayer.DataSet("ui.Score", tPlayer.Score >= tDouble ? Visibility.Visible : Visibility.Hidden);
-                    if (e.PropertyName == "Kdr")
-                        if (Double.TryParse(tProps["Kdr"].Value.ToString(), out tDouble))
-                            tPlayer.DataSet("ui.Kdr", tPlayer.Kdr >= tDouble ? Visibility.Visible : Visibility.Hidden);
-                    if (e.PropertyName == "Ping")
-                        if (Double.TryParse(tProps["Ping"].Value.ToString(), out tDouble))
-                            tPlayer.DataSet("ui.Ping", tPlayer.Kdr >= tDouble ? Visibility.Visible : Visibility.Hidden);
+                    switch (e.PropertyName) {
+                        case "Team":
+                            root.Dispatcher.Invoke(tSortPlayer, s);
+                            break;
+
+                        case "Score":
+                            if (Double.TryParse(tProps["Score"].Value.ToString(), out tDouble))
+                                tPlayer.DataSet("ui.Score", tPlayer.Score >= tDouble ? Visibility.Visible : Visibility.Hidden);
+                            break;
+                        case "Kdr":
+                            if (Double.TryParse(tProps["Kdr"].Value.ToString(), out tDouble))
+                                tPlayer.DataSet("ui.Kdr", tPlayer.Kdr >= tDouble ? Visibility.Visible : Visibility.Hidden);
+                            break;
+                        case "Ping":
+                            if (Double.TryParse(tProps["Ping"].Value.ToString(), out tDouble))
+                                tPlayer.DataSet("ui.Ping", tPlayer.Kdr >= tDouble ? Visibility.Visible : Visibility.Hidden);
+                            break;
+                    }
                 };
             #endregion
             tResetPlayers = 
@@ -249,6 +255,7 @@ namespace Procon.UI.Default.Root.Main.Connection.Players.Content
                             tPlayerUpdated(player, new PropertyChangedEventArgs("Ping"));
                             tSorted.Add(player);
                             tSortPlayer(player);
+                            player.PropertyChanged += tPlayerUpdated;
                         }
                         tBoundPlayers.CollectionChanged += tPlayersUpdated;
                     }

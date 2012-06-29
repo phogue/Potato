@@ -5,6 +5,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using Procon.UI.API;
 using Procon.UI.API.Classes;
+using Procon.UI.API.Commands;
 
 namespace Procon.UI.Default.Root.Main.Connection.Chat
 {
@@ -60,6 +61,24 @@ namespace Procon.UI.Default.Root.Main.Connection.Chat
             splt.HorizontalAlignment = HorizontalAlignment.Stretch;
             layout.Children.Add(view);
             layout.Children.Add(splt);
+            
+            // Commands.
+            GridLength tHeight    = new GridLength(1.0, GridUnitType.Star);
+            Boolean    tMinimized = true;
+            tCmmds["MinMax"].Value = new RelayCommand<AttachedCommandArgs>(
+            #region  -- Handles when the chat box title is clicked.
+                x => {
+                    RowDefinition tRowDef = layout.RowDefinitions.Count > 2 ? layout.RowDefinitions[2] : null;
+                    if (tRowDef != null) {
+                        if (!tMinimized) {
+                            tHeight = tRowDef.Height;
+                            tRowDef.Height = new GridLength(tRowDef.MinHeight);
+                        }
+                        else tRowDef.Height = tHeight;
+                        tMinimized ^= true;
+                    }
+                });
+            #endregion
 
             // Exit with good status.
             return true;

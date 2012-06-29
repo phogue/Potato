@@ -25,6 +25,9 @@
     <Color x:Key="ColorInputTextLight" A="255" R="205" G="205" B="205" />
     <Color x:Key="ColorInputTextDark"  A="255" R="50"  G="50"  B="50"  />
     
+    <!-- Chat box Colors -->
+    <Color x:Key="ColorChatTimestamp" A="255" R="135" G="137" B="138" />
+    
     <!-- Specific Colors -->
     <Color x:Key="ColorLight"         A="255" R="245" G="245" B="245" />
     <Color x:Key="ColorMild"          A="255" R="125" G="125" B="125" />
@@ -87,6 +90,9 @@
     <SolidColorBrush x:Key="BrushTextDarkSoft"   Color="{StaticResource ColorTextDarkSoft}"   />
     <SolidColorBrush x:Key="BrushInputTextLight" Color="{StaticResource ColorInputTextLight}" />
     <SolidColorBrush x:Key="BrushInputTextDark"  Color="{StaticResource ColorInputTextDark}"  />
+
+    <!-- Chat box Brushes -->
+    <SolidColorBrush x:Key="BrushChatTimestamp" Color="{StaticResource ColorChatTimestamp}" />
     
     <!-- Specific Brushes -->
     <SolidColorBrush x:Key="BrushLight"         Color="{StaticResource ColorLight}"         />
@@ -137,7 +143,7 @@
     
     
     <!-- Styles -->
-    <Style x:Key="StyleButton"        TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
+    <Style x:Key="StyleButton"           TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
         <Setter Property="Margin"          Value="0" />
         <Setter Property="Padding"         Value="0, 5" />
         <Setter Property="FontSize"        Value="12.0" />
@@ -147,10 +153,10 @@
         <Setter Property="VerticalContentAlignment"   Value="Center" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
     </Style>
-    <Style x:Key="StyleButtonDefault" TargetType="{x:Type Button}" BasedOn="{StaticResource StyleButton}">
-        <Setter Property="Foreground"            Value="{StaticResource BrushTextDark}" />
-        <Setter Property="BorderBrush"           Value="{StaticResource BrushBorder}" />
-        <Setter Property="Background"            Value="{StaticResource BrushControlNormal}" />
+    <Style x:Key="StyleButtonDefault"    TargetType="{x:Type Button}" BasedOn="{StaticResource StyleButton}">
+        <Setter Property="Foreground"            Value="{DynamicResource BrushTextDark}" />
+        <Setter Property="BorderBrush"           Value="{DynamicResource BrushBorder}" />
+        <Setter Property="Background"            Value="{DynamicResource BrushControlNormal}" />
         <Setter Property="OverridesDefaultStyle" Value="True" />
         <Setter Property="Template">
             <Setter.Value>
@@ -171,10 +177,10 @@
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Background" Value="{StaticResource BrushControlHover}" />
+                            <Setter Property="Background" Value="{DynamicResource BrushControlHover}" />
                         </Trigger>
                         <Trigger Property="IsPressed" Value="True">
-                            <Setter Property="Background" Value="{StaticResource BrushControlPress}" />
+                            <Setter Property="Background" Value="{DynamicResource BrushControlPress}" />
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
                             <Setter Property="Opacity"    Value="0.7" TargetName="PART_Border" />
@@ -185,11 +191,11 @@
             </Setter.Value>
         </Setter>
     </Style>
-    <Style x:Key="StyleButtonSpecial" TargetType="{x:Type Button}" BasedOn="{StaticResource StyleButton}">
+    <Style x:Key="StyleButtonSpecial"    TargetType="{x:Type Button}" BasedOn="{StaticResource StyleButton}">
         <Setter Property="BorderThickness"       Value="0" />
-        <Setter Property="Foreground"            Value="{StaticResource BrushTextDark}" />
-        <Setter Property="BorderBrush"           Value="{StaticResource BrushBorder}" />
-        <Setter Property="Background"            Value="{StaticResource BrushSpecialNormal}" />
+        <Setter Property="Foreground"            Value="{DynamicResource BrushTextDark}" />
+        <Setter Property="BorderBrush"           Value="{DynamicResource BrushBorder}" />
+        <Setter Property="Background"            Value="{DynamicResource BrushSpecialNormal}" />
         <Setter Property="OverridesDefaultStyle" Value="True" />
         <Setter Property="Template">
             <Setter.Value>
@@ -210,10 +216,10 @@
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Background" Value="{StaticResource BrushSpecialHover}" />
+                            <Setter Property="Background" Value="{DynamicResource BrushSpecialHover}" />
                         </Trigger>
                         <Trigger Property="IsPressed" Value="True">
-                            <Setter Property="Background" Value="{StaticResource BrushSpecialPress}" />
+                            <Setter Property="Background" Value="{DynamicResource BrushSpecialPress}" />
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
                             <Setter Property="Opacity"    Value="0.7" TargetName="PART_Border" />
@@ -224,52 +230,52 @@
             </Setter.Value>
         </Setter>
     </Style>
-    <Style x:Key="StyleRadioButton"   TargetType="{x:Type RadioButton}" BasedOn="{StaticResource {x:Type RadioButton}}">
+    <Style x:Key="StyleRadioButton"      TargetType="{x:Type RadioButton}" BasedOn="{StaticResource {x:Type RadioButton}}">
         <Setter Property="Margin"      Value="0" />
         <Setter Property="Padding"     Value="0" />
         <Setter Property="FontSize"    Value="12.0" />
         <Setter Property="FontWeight"  Value="Bold" />
         <Setter Property="FontFamily"  Value="Arial" />
-        <Setter Property="Foreground"  Value="{StaticResource BrushTextDark}" />
+        <Setter Property="Foreground"  Value="{DynamicResource BrushTextDark}" />
         <Setter Property="VerticalContentAlignment"   Value="Center" />
         <Setter Property="HorizontalContentAlignment" Value="Left" />
     </Style>
-    <Style x:Key="StyleTextBox"       TargetType="{x:Type TextBox}"     BasedOn="{StaticResource {x:Type TextBox}}">
+    <Style x:Key="StyleTextBox"          TargetType="{x:Type TextBox}"     BasedOn="{StaticResource {x:Type TextBox}}">
         <Setter Property="Margin"      Value="0" />
         <Setter Property="Padding"     Value="0" />
         <Setter Property="FontSize"    Value="12.0" />
         <Setter Property="FontWeight"  Value="Bold" />
         <Setter Property="FontFamily"  Value="Arial" />
-        <Setter Property="Foreground"  Value="{StaticResource BrushInputTextDark}" />
-        <Setter Property="BorderBrush" Value="{StaticResource BrushHeaderLight}" />
+        <Setter Property="Foreground"  Value="{DynamicResource BrushInputTextDark}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource BrushHeaderLight}" />
         <Setter Property="VerticalContentAlignment"   Value="Center" />
         <Setter Property="HorizontalContentAlignment" Value="Left" />
     </Style>
-    <Style x:Key="StylePasswordBox"   TargetType="{x:Type PasswordBox}" BasedOn="{StaticResource {x:Type PasswordBox}}">
+    <Style x:Key="StylePasswordBox"      TargetType="{x:Type PasswordBox}" BasedOn="{StaticResource {x:Type PasswordBox}}">
         <Setter Property="Margin"      Value="0" />
         <Setter Property="Padding"     Value="0" />
         <Setter Property="FontSize"    Value="12.0" />
         <Setter Property="FontWeight"  Value="Bold" />
         <Setter Property="FontFamily"  Value="Arial" />
-        <Setter Property="Foreground"  Value="{StaticResource BrushInputTextDark}" />
-        <Setter Property="BorderBrush" Value="{StaticResource BrushHeaderLight}" />
+        <Setter Property="Foreground"  Value="{DynamicResource BrushInputTextDark}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource BrushHeaderLight}" />
         <Setter Property="VerticalContentAlignment"   Value="Center" />
         <Setter Property="HorizontalContentAlignment" Value="Left" />
     </Style>
-    <Style x:Key="StyleLabel"         TargetType="{x:Type Label}"       BasedOn="{StaticResource {x:Type Label}}">
+    <Style x:Key="StyleLabel"            TargetType="{x:Type Label}"       BasedOn="{StaticResource {x:Type Label}}">
         <Setter Property="Margin"      Value="0" />
         <Setter Property="Padding"     Value="0" />
         <Setter Property="FontSize"    Value="12.0" />
         <Setter Property="FontWeight"  Value="Bold" />
         <Setter Property="FontFamily"  Value="Arial" />
-        <Setter Property="Foreground"  Value="{StaticResource BrushTextDark}" />
+        <Setter Property="Foreground"  Value="{DynamicResource BrushTextDark}" />
         <Setter Property="VerticalContentAlignment"   Value="Center" />
         <Setter Property="HorizontalContentAlignment" Value="Left" />
     </Style>
-    <Style x:Key="StyleLabelSoft"     TargetType="{x:Type Label}"       BasedOn="{StaticResource StyleLabel}">
-        <Setter Property="Foreground" Value="{StaticResource BrushTextDarkSoft}" />
+    <Style x:Key="StyleLabelSoft"        TargetType="{x:Type Label}"       BasedOn="{StaticResource StyleLabel}">
+        <Setter Property="Foreground" Value="{DynamicResource BrushTextDarkSoft}" />
     </Style>
-    <Style x:Key="StyleTextBlock"     TargetType="{x:Type TextBlock}"   BasedOn="{StaticResource {x:Type TextBlock}}">
+    <Style x:Key="StyleTextBlock"        TargetType="{x:Type TextBlock}"   BasedOn="{StaticResource {x:Type TextBlock}}">
         <Setter Property="Margin"        Value="0" />
         <Setter Property="Padding"       Value="0" />
         <Setter Property="Opacity"       Value="0.6" />
@@ -278,28 +284,12 @@
         <Setter Property="FontFamily"    Value="Arial" />
         <Setter Property="TextAlignment" Value="Left" />
         <Setter Property="TextWrapping"  Value="Wrap" />
-        <Setter Property="Foreground"    Value="{StaticResource BrushTextDark}" />
+        <Setter Property="Foreground"    Value="{DynamicResource BrushTextDark}" />
     </Style>
-    <Style x:Key="StyleTextBlockSoft" TargetType="{x:Type TextBlock}"   BasedOn="{StaticResource StyleTextBlock}">
-        <Setter Property="Foreground" Value="{StaticResource BrushTextDarkSoft}" />
+    <Style x:Key="StyleTextBlockSoft"    TargetType="{x:Type TextBlock}"   BasedOn="{StaticResource StyleTextBlock}">
+        <Setter Property="Foreground" Value="{DynamicResource BrushTextDarkSoft}" />
     </Style>
-    <Style x:Key="StyleListBoxItem"   TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource {x:Type ListBoxItem}}">
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type ListBoxItem}">
-                    <Border x:Name="PART_Border" SnapsToDevicePixels="True">
-                        <ContentPresenter />
-                    </Border>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsSelected" Value="True">
-                            <Setter Property="Background" Value="{StaticResource BrushSpecialHover}" TargetName="PART_Border" />
-                        </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-    <Style x:Key="StyleListBoxItemPlain" TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource {x:Type ListBoxItem}}">
+    <Style x:Key="StyleListBoxItem"      TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource {x:Type ListBoxItem}}">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ListBoxItem}">
@@ -308,17 +298,33 @@
             </Setter.Value>
         </Setter>
     </Style>
-    <Style x:Key="StyleListBox"       TargetType="{x:Type ListBox}"     BasedOn="{StaticResource {x:Type ListBox}}">
+    <Style x:Key="StyleListBoxItemColor" TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource {x:Type ListBoxItem}}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                    <Border x:Name="PART_Border" SnapsToDevicePixels="True">
+                        <ContentPresenter />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="Background" Value="{DynamicResource BrushSpecialHover}" TargetName="PART_Border" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="StyleListBox"          TargetType="{x:Type ListBox}"     BasedOn="{StaticResource {x:Type ListBox}}">
         <Setter Property="Margin"             Value="0" />
         <Setter Property="Padding"            Value="0" />
         <Setter Property="FontSize"           Value="11.0" />
         <Setter Property="FontWeight"         Value="Bold" />
         <Setter Property="FontFamily"         Value="Arial" />
         <Setter Property="Background"         Value="Transparent" />
-        <Setter Property="Foreground"         Value="{StaticResource BrushTextDark}" />
-        <Setter Property="ItemContainerStyle" Value="{StaticResource StyleListBoxItem}" />
+        <Setter Property="Foreground"         Value="{DynamicResource BrushTextDark}" />
+        <Setter Property="ItemContainerStyle" Value="{DynamicResource StyleListBoxItem}" />
     </Style>
-    <Style x:Key="StyleImage"         TargetType="{x:Type Image}">
+    <Style x:Key="StyleImage"            TargetType="{x:Type Image}">
         <Setter Property="Stretch"                Value="Uniform" />
         <Setter Property="StretchDirection"       Value="DownOnly" />
         <Setter Property="VerticalAlignment"      Value="Center" />
@@ -575,6 +581,30 @@
         </DataTemplate.Triggers>
     </DataTemplate>
     
+    <DataTemplate x:Key="DataTemplateChat" DataType="{x:Type c:Chat}">
+        <ListBoxItem x:Name="PART_Content">
+            <DockPanel x:Name="PART_Container"
+                       Margin="15, 5">
+                <TextBlock x:Name="PART_Timestamp"
+                           DockPanel.Dock="Left"
+                           Foreground="{DynamicResource BrushChatTimestamp}"
+                           Text="{Binding Path=Created, StringFormat='[{0:dd-hh:mm:ss}]'}" />
+                <TextBlock x:Name="PART_Text"
+                           DockPanel.Dock="Left"
+                           Margin="15, 0, 0, 0"
+                           Foreground="{DynamicResource BrushTextLightSoft}">
+                    <TextBlock.Text>
+                        <MultiBinding StringFormat="[{0}] {1}: {2}">
+                            <Binding Path="Subset.Team" />
+                            <Binding Path="Author.Name" />
+                            <Binding Path="Text" />
+                        </MultiBinding>
+                    </TextBlock.Text>
+                </TextBlock>
+            </DockPanel>
+        </ListBoxItem>
+    </DataTemplate>
+    
     <DataTemplate x:Key="DataTemplatePlayer" DataType="{x:Type c:Player}">
         <ToggleButton x:Name="PART_Content"
                       Width="190"
@@ -753,6 +783,30 @@
             <DataTrigger Binding="{Binding Team}" Value="3">
                 <Setter Property="Background" Value="{DynamicResource BrushTeam2Header}"  TargetName="PART_Title" />
                 <Setter Property="Background" Value="{DynamicResource BrushTeam2Content}" TargetName="PART_Data"  />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Team}" Value="4">
+                <Setter Property="Background" Value="{DynamicResource BrushTeam3Header}"  TargetName="PART_Title" />
+                <Setter Property="Background" Value="{DynamicResource BrushTeam3Content}" TargetName="PART_Data"  />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Team}" Value="5">
+                <Setter Property="Background" Value="{DynamicResource BrushTeam4Header}"  TargetName="PART_Title" />
+                <Setter Property="Background" Value="{DynamicResource BrushTeam4Content}" TargetName="PART_Data"  />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Team}" Value="6">
+                <Setter Property="Background" Value="{DynamicResource BrushTeam5Header}"  TargetName="PART_Title" />
+                <Setter Property="Background" Value="{DynamicResource BrushTeam5Content}" TargetName="PART_Data"  />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Team}" Value="7">
+                <Setter Property="Background" Value="{DynamicResource BrushTeam6Header}"  TargetName="PART_Title" />
+                <Setter Property="Background" Value="{DynamicResource BrushTeam6Content}" TargetName="PART_Data"  />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Team}" Value="8">
+                <Setter Property="Background" Value="{DynamicResource BrushTeam7Header}"  TargetName="PART_Title" />
+                <Setter Property="Background" Value="{DynamicResource BrushTeam7Content}" TargetName="PART_Data"  />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Team}" Value="9">
+                <Setter Property="Background" Value="{DynamicResource BrushTeam8Header}"  TargetName="PART_Title" />
+                <Setter Property="Background" Value="{DynamicResource BrushTeam8Content}" TargetName="PART_Data"  />
             </DataTrigger>
         </DataTemplate.Triggers>
     </DataTemplate>

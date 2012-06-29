@@ -63,7 +63,8 @@ namespace Procon.UI.API.Utils
             if (tElement == null)
                 return;
 
-            tElement.Source = ExtensionApi.Properties["Images"]["Countries"][GetCountryCode(tElement)].Value as BitmapImage;
+            if (GetCountryCode(tElement) != null)
+                tElement.Source = ExtensionApi.Properties["Images"]["Countries"][GetCountryCode(tElement)].Value as BitmapImage;
         }
         private static void CommandParameterChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
         {

@@ -12,7 +12,7 @@
         <Style TargetType="{x:Type Grid}">
             <Setter Property="Visibility" Value="Collapsed" />
             <Style.Triggers>
-                <DataTrigger Binding="{Binding Source={x:Static eapi:ExtensionApi.Properties}, Path=[Settings][Tutorial].Value}" Value="Done">
+                <DataTrigger Binding="{Binding Source={x:Static eapi:ExtensionApi.Settings}, Path=[Tutorial].Value}" Value="Done">
                     <Setter Property="Visibility" Value="Visible" />
                 </DataTrigger>
             </Style.Triggers>

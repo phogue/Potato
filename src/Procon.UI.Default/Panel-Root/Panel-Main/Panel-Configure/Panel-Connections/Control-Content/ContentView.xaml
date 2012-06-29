@@ -18,7 +18,7 @@
                  SelectedItem="{Binding
                      Source={x:Static eapi:ExtensionApi.Properties},
                      Path=[Connection].Value}"
-                 ItemTemplate="{DynamicResource DataTemplateConnectionViewModel}">
+                 ItemContainerStyle="{DynamicResource StyleListBoxItemColor}">
             <ListBox.Template>
                 <!-- Convert the list box into a wrap panel. -->
                 <ControlTemplate>

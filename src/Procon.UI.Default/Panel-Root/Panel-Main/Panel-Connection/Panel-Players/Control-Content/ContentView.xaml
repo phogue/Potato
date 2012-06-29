@@ -9,12 +9,13 @@
       Name="MainConnectionPlayersContent">
     
     <!-- Content -->
-    <DockPanel Name="ConnectionPlayersContentContent">
+    <DockPanel Name="ConnectionPlayersContentContent"
+               Background="{DynamicResource BrushContentLight}">
         
         <!-- Actions -->
         <DockPanel Name="ConnectionPlayersContentActions"
                    DockPanel.Dock="Top"
-                   Background="{DynamicResource BrushContentLight}">
+                   Background="{DynamicResource BrushEmphasisLight}">
 
             <Button Name="ConnectionPlayersContentBan"
                     DockPanel.Dock="Left"
@@ -48,9 +49,7 @@
                  SelectionMode="Extended"
                  ItemsSource="{Binding
                      Source={x:Static eapi:ExtensionApi.Properties},
-                     Path=[Main][Connection][Players].Value}"
-                 ItemTemplate="{DynamicResource DataTemplatePlayer}"
-                 ItemContainerStyle="{DynamicResource StyleListBoxItemPlain}">
+                     Path=[Main][Connection][Players].Value}">
             <ListBox.Template>
                 <ControlTemplate>
                     <ScrollViewer VerticalScrollBarVisibility="Auto"

@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
+using Procon.Net.Protocols.Objects;
 using Procon.UI.API;
+using Procon.UI.API.ViewModels;
 
 namespace Procon.UI.Default.Styles.Light
 {
@@ -61,12 +63,13 @@ namespace Procon.UI.Default.Styles.Light
 
             // Setup optional styles.
             rootLayout.Resources["StyleButtonSpecial"]    = tResources["StyleButtonSpecial"];
-            rootLayout.Resources["StyleListBoxItemPlain"] = tResources["StyleListBoxItemPlain"];
+            rootLayout.Resources["StyleListBoxItemColor"] = tResources["StyleListBoxItemColor"];
 
             // Setup templates.
-            rootLayout.Resources["DataTemplateConnectionViewModel"] = tResources["DataTemplateConnectionViewModel"];
-            rootLayout.Resources["DataTemplateInterfaceViewModel"]  = tResources["DataTemplateInterfaceViewModel"];
-            rootLayout.Resources["DataTemplatePlayer"]              = tResources["DataTemplatePlayer"];
+            rootLayout.Resources[new DataTemplateKey(typeof(ConnectionViewModel))] = tResources["DataTemplateConnectionViewModel"];
+            rootLayout.Resources[new DataTemplateKey(typeof(InterfaceViewModel))]  = tResources["DataTemplateInterfaceViewModel"];
+            rootLayout.Resources[new DataTemplateKey(typeof(Chat))]                = tResources["DataTemplateChat"];
+            rootLayout.Resources[new DataTemplateKey(typeof(Player))]              = tResources["DataTemplatePlayer"];
 
             // Setup control brushes.
             rootLayout.Resources["BrushControlNormal"] = tResources["BrushControlNormal"];
@@ -84,6 +87,9 @@ namespace Procon.UI.Default.Styles.Light
             rootLayout.Resources["BrushTextDarkSoft"]   = tResources["BrushTextDarkSoft"];
             rootLayout.Resources["BrushInputTextLight"] = tResources["BrushInputTextLight"];
             rootLayout.Resources["BrushInputTextDark"]  = tResources["BrushInputTextDark"];
+
+            // Chat box brushes.
+            rootLayout.Resources["BrushChatTimestamp"] = tResources["BrushChatTimestamp"];
 
             // Setup specific brushes.
             rootLayout.Resources["BrushLight"]         = tResources["BrushLight"];

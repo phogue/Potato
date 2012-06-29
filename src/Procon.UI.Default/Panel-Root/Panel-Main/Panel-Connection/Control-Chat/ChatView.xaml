@@ -16,28 +16,15 @@
         <!-- Title Bar -->
         <DockPanel Name="ConnectionChatHeader"
                    DockPanel.Dock="Top"
-                   Background="{DynamicResource BrushHeaderDark}">
+                   Height="40"
+                   Background="{DynamicResource BrushHeaderDark}"
+                   acmd:AttachedCommand.Event="PreviewMouseUp"
+                   acmd:AttachedCommand.Command="{Binding
+                       Source={x:Static eapi:ExtensionApi.Commands},
+                       Path=[Main][Connection][Chat][MinMax].Value}">
             <Image Name="ConnectionChatIcon"
                    DockPanel.Dock="Left"
                    Margin="15, 10, 5, 10" />
-            <c:ImageButton x:Name="ConnectionChatMinMax"
-                           DockPanel.Dock="Right"
-                           Margin="5, 10, 15, 10"
-                           NormalImage="{Binding
-                               Source={x:Static eapi:ExtensionApi.Properties},
-                               Path=[Images][Chat][Min][Default].Value}"
-                           HoverImage="{Binding
-                               Source={x:Static eapi:ExtensionApi.Properties},
-                               Path=[Images][Chat][Min][Hover].Value}"
-                           PressedImage="{Binding
-                               Source={x:Static eapi:ExtensionApi.Properties},
-                               Path=[Images][Chat][Min][Press].Value}"
-                           DisabledImage="{Binding
-                               Source={x:Static eapi:ExtensionApi.Properties},
-                               Path=[Images][Chat][Min][Disabled].Value}"
-                           Command="{Binding
-                               Source={x:Static eapi:ExtensionApi.Commands},
-                               Path=[Main][Connection][Chat][MinMax].Value}" />
             <TextBlock Name="ConnectionChatTitle"
                        DockPanel.Dock="Left"
                        VerticalAlignment="Center"
@@ -62,9 +49,19 @@
         <!-- Chat & Events -->
         <ListBox Name="ConnectionChatEvents"
                  DockPanel.Dock="Top"
+                 BorderThickness="0"
+                 AlternationCount="2"
                  Background="{DynamicResource BrushEmphasisDark}"
-                 BorderThickness="0">
-            
+                 ItemsSource="{Binding Events}">
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="{x:Type ListBoxItem}">
+                    <Style.Triggers>
+                        <Trigger Property="ListBox.AlternationIndex" Value="1">
+                            <Setter Property="Background" Value="{DynamicResource BrushContentDark}"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </ListBox.ItemContainerStyle>
         </ListBox>
     </DockPanel>
 </Grid>

@@ -3,16 +3,13 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
-using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Input;
 using Procon.Net.Protocols.Objects;
 using Procon.UI.API;
 using Procon.UI.API.Classes;
 using Procon.UI.API.Commands;
-using Procon.UI.API.ViewModels;
 
 namespace Procon.UI.Default.Root.Main.Connection.Players.Content
 {
@@ -61,16 +58,19 @@ namespace Procon.UI.Default.Root.Main.Connection.Players.Content
             Grid.SetRow(view, 1);
             layout.Children.Add(view);
 
-            tProps["Reason"].Value = "Admin Decision.";
-            tProps["Length"].Value = new TimeSubset() { Context = TimeSubsetContext.Permanent };
+            tProps["Action"]["Reason"].Value = "Admin Decision.";
+            tProps["Action"]["Length"].Value = new TimeSubset() { Context = TimeSubsetContext.Permanent };
 
             // Commands.
             List<Player> tSelectedPlayers = new List<Player>();
             tCmmds["Select"].Value = new RelayCommand<AttachedCommandArgs>(
             #region  -- Handles when player is selected/de-selected.
                 x => {
+                    // For some reason, the selection is cleared if the right mouse button is used.
                     if ((x.Args as MouseButtonEventArgs).ChangedButton == MouseButton.Right)
                         tSelectedPlayers.Clear();
+
+                    // Add or remove the player, depending on whether the player was in the list or not.
                     Player tPlayer = x.Parameter as Player;
                     if (tSelectedPlayers.Contains(tPlayer))
                         tSelectedPlayers.Remove(tPlayer);
@@ -85,7 +85,7 @@ namespace Procon.UI.Default.Root.Main.Connection.Players.Content
                     ExtensionApi.Commands["Player"]["Move"].Value.Execute(new Object[] {
                         (x.Parameter),
                         (x.Sender as FrameworkElement).DataContext,
-                        tProps["Reason"].Value
+                        tProps["Action"]["Reason"].Value
                     });
                 },
                 x => {
@@ -94,7 +94,7 @@ namespace Procon.UI.Default.Root.Main.Connection.Players.Content
                            ExtensionApi.Commands["Player"]["Move"].Value.CanExecute(new Object[] {
                                (x.Parameter),
                                (x.Sender as FrameworkElement).DataContext,
-                               tProps["Reason"].Value
+                               tProps["Action"]["Reason"].Value
                            });
                 });
             #endregion
@@ -103,7 +103,7 @@ namespace Procon.UI.Default.Root.Main.Connection.Players.Content
                 x => {
                     ExtensionApi.Commands["Player"]["Kick"].Value.Execute(new Object[] {
                         x,
-                        tProps["Reason"].Value
+                        tProps["Action"]["Reason"].Value
                     });
                 },
                 x => {
@@ -111,7 +111,7 @@ namespace Procon.UI.Default.Root.Main.Connection.Players.Content
                            ExtensionApi.Commands["Player"]["Kick"].Value != null &&
                            ExtensionApi.Commands["Player"]["Kick"].Value.CanExecute(new Object[] {
                                x,
-                               tProps["Reason"].Value
+                               tProps["Action"]["Reason"].Value
                            });
                 });
             #endregion
@@ -120,8 +120,8 @@ namespace Procon.UI.Default.Root.Main.Connection.Players.Content
                 x => {
                     ExtensionApi.Commands["Player"]["Ban"].Value.Execute(new Object[] {
                         x,
-                        tProps["Length"].Value,
-                        tProps["Reason"].Value
+                        tProps["Action"]["Length"].Value,
+                        tProps["Action"]["Reason"].Value
                     });
                 },
                 x => {
@@ -129,18 +129,19 @@ namespace Procon.UI.Default.Root.Main.Connection.Players.Content
                            ExtensionApi.Commands["Player"]["Ban"].Value != null &&
                            ExtensionApi.Commands["Player"]["Ban"].Value.CanExecute(new Object[] {
                                x,
-                               tProps["Length"].Value,
-                               tProps["Reason"].Value
+                               tProps["Action"]["Length"].Value,
+                               tProps["Action"]["Reason"].Value
                            });
                 });
             #endregion
+
             tCmmds["Kick"]["Selection"].Value = new RelayCommand<Object>(
             #region  -- Handles when the "Kick" button is clicked.
                 x => {
                     foreach (Player player in tSelectedPlayers)
                         ExtensionApi.Commands["Player"]["Kick"].Value.Execute(new Object[] {
                             player,
-                            tProps["Reason"].Value
+                            tProps["Action"]["Reason"].Value
                         });
                     tSelectedPlayers.Clear();
                 });
@@ -151,55 +152,57 @@ namespace Procon.UI.Default.Root.Main.Connection.Players.Content
                     foreach (Player player in tSelectedPlayers)
                         ExtensionApi.Commands["Player"]["Ban"].Value.Execute(new Object[] {
                             player,
-                            tProps["Length"].Value,
-                            tProps["Reason"].Value
+                            tProps["Action"]["Length"].Value,
+                            tProps["Action"]["Reason"].Value
                         });
                     tSelectedPlayers.Clear();
                 });
             #endregion
 
-            // Manage the player's collection.
+            // Used to manage the player's collection.
             ObservableCollection<Player>        tBoundPlayers   = null;
             Action<Player>                      tSortPlayer     = null;
             NotifyCollectionChangedEventHandler tPlayersUpdated = null;
             PropertyChangedEventHandler         tPlayerUpdated  = null;
             PropertyChangedEventHandler         tResetPlayers   = null;
+
+            // Manage the player's collection.
             tSortPlayer =
             #region -- Sorts the player to the correct spot in the player list.
                 x => {
+                    Int32                        tMod    = 0;
                     Int32                        tIndex  = 0;
                     ObservableCollection<Player> tSorted = tProps.Value as ObservableCollection<Player>;
-                    while (tIndex < tSorted.Count)
-                        if (tSorted[tIndex] != x)
-                            // Move to the correct team.
-                            if (tSorted[tIndex].Team < x.Team)
-                                tIndex++;
-                            // Move to the correct name placement.
-                            else if (tSorted[tIndex].Team == x.Team && tSorted[tIndex].Name.CompareTo(x.Name) < 0)
-                                tIndex++;
-                            // We're at the correct spot.
-                            else {
-                                tSorted.Move(tSorted.IndexOf(x), tIndex - (tSorted.IndexOf(x) < tIndex ? 1 : 0));
-                                break;
-                            }
-                        else tIndex++;
+                    while (tIndex < tSorted.Count) {
+                        // Still moving the index.
+                        if (tSorted[tIndex] == x)
+                            tIndex += (tMod = 1);
+                        // Move to the correct team.
+                        else if (tSorted[tIndex].Team < x.Team)
+                            tIndex++;
+                        // Move to the correct name placement.
+                        else if (tSorted[tIndex].Team == x.Team && tSorted[tIndex].Name.CompareTo(x.Name) < 0)
+                            tIndex++;
+                        // We're at the correct spot.
+                        else
+                            break;
+                    }
+                    tSorted.Move(tSorted.IndexOf(x), tIndex - tMod);
+
                         
                 };
             #endregion
             tPlayersUpdated =
-            #region -- Manages the player list whenever a player is added or removed.
+            #region -- Handles updates due to a player being added or removed.
                 (s, e) => {
                     Player                       tPlayer = null;
                     ObservableCollection<Player> tSorted = tProps.Value as ObservableCollection<Player>;
                     // Add and sort the player.
                     if (e.Action == NotifyCollectionChangedAction.Add) {
                         tPlayer = e.NewItems[0] as Player;
-                        tPlayerUpdated(tPlayer, new PropertyChangedEventArgs("Score"));
-                        tPlayerUpdated(tPlayer, new PropertyChangedEventArgs("Kdr"));
-                        tPlayerUpdated(tPlayer, new PropertyChangedEventArgs("Ping"));
                         tSorted.Add(tPlayer);
-                        tSortPlayer(tPlayer);
                         tPlayer.PropertyChanged += tPlayerUpdated;
+                        tSortPlayer(tPlayer);
                     }
                     // Remove the player.
                     else if (e.Action == NotifyCollectionChangedAction.Remove) {
@@ -207,10 +210,13 @@ namespace Procon.UI.Default.Root.Main.Connection.Players.Content
                         tPlayer.PropertyChanged -= tPlayerUpdated;
                         tSorted.Remove(tPlayer);
                     }
+                    tPlayerUpdated(tPlayer, new PropertyChangedEventArgs("Score"));
+                    tPlayerUpdated(tPlayer, new PropertyChangedEventArgs("Kdr"));
+                    tPlayerUpdated(tPlayer, new PropertyChangedEventArgs("Ping"));
                 };
             #endregion
             tPlayerUpdated =
-            #region -- Sorts the player whenever their team changes.
+            #region -- Handles updates due to a player's property changing.
                 (s, e) => {
                     Player tPlayer = s as Player;
                     Double tDouble = Double.MaxValue;
@@ -254,8 +260,8 @@ namespace Procon.UI.Default.Root.Main.Connection.Players.Content
                             tPlayerUpdated(player, new PropertyChangedEventArgs("Kdr"));
                             tPlayerUpdated(player, new PropertyChangedEventArgs("Ping"));
                             tSorted.Add(player);
-                            tSortPlayer(player);
                             player.PropertyChanged += tPlayerUpdated;
+                            tSortPlayer(player);
                         }
                         tBoundPlayers.CollectionChanged += tPlayersUpdated;
                     }

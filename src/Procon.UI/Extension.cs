@@ -5,7 +5,6 @@ using Procon.UI.API;
 
 namespace Procon.UI
 {
-    // Wraps an IExtension object to add execution functionality.
     public class Extension
     {
         // Accessors & Mutators for public variables.
@@ -15,7 +14,7 @@ namespace Procon.UI
         // Constructors.
         public Extension(IExtension extension)
         {
-            IExtension  = extension;
+            IExtension = extension;
             IsExecuted = false;
         }
         public Extension(Extension extension)

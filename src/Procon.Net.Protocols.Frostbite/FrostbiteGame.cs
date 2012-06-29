@@ -136,8 +136,8 @@ namespace Procon.Net.Protocols.Frostbite {
                 this.State.Variables.Passworded      = info.Passworded;
                 this.State.Variables.UpTime          = info.ServerUptime;
                 this.State.Variables.RoundTime       = info.RoundTime;
-                this.State.Variables.DataAddSet(C_MOD, info.GameMod.ToString());
-                this.State.Variables.DataAddSet(C_MAP_PACK, info.Mappack);
+                this.State.Variables.DataSet(C_MOD, info.GameMod.ToString());
+                this.State.Variables.DataSet(C_MAP_PACK, info.Mappack);
 
                 if (info.GameMod == GameMods.None) {
                     this.ExecuteGameConfig(this.GameType.ToString().ToLower());
@@ -353,7 +353,7 @@ namespace Procon.Net.Protocols.Frostbite {
         [DispatchPacket(MatchText = "vars.hardCore")]
         public void VarsHardcoreDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
             if (response.Words.Count >= 2) {
-                this.State.Variables.DataAddSet(C_HARDCORE, response.Words[1]);
+                this.State.Variables.DataSet(C_HARDCORE, response.Words[1]);
             }
         }
 
@@ -368,7 +368,7 @@ namespace Procon.Net.Protocols.Frostbite {
         [DispatchPacket(MatchText = "vars.rankLimit")]
         public void VarsRankLimitDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
             if (response.Words.Count >= 2) {
-                this.State.Variables.DataAddSet(C_RANK_LIMIT, response.Words[1]);
+                this.State.Variables.DataSet(C_RANK_LIMIT, response.Words[1]);
             }
         }
 
@@ -405,35 +405,35 @@ namespace Procon.Net.Protocols.Frostbite {
         [DispatchPacket(MatchText = "vars.killCam")]
         public void VarsKillCamDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
             if (response.Words.Count >= 2) {
-                this.State.Variables.DataAddSet(C_KILL_CAM, response.Words[1]);
+                this.State.Variables.DataSet(C_KILL_CAM, response.Words[1]);
             }
         }
 
         [DispatchPacket(MatchText = "vars.miniMap")]
         public void VarsMiniMapDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
             if (response.Words.Count >= 2) {
-                this.State.Variables.DataAddSet(C_MINI_MAP, response.Words[1]);
+                this.State.Variables.DataSet(C_MINI_MAP, response.Words[1]);
             }
         }
 
         [DispatchPacket(MatchText = "vars.crossHair")]
         public void VarsCrossHairDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
             if (response.Words.Count >= 2) {
-                this.State.Variables.DataAddSet(C_CROSS_HAIR, response.Words[1]);
+                this.State.Variables.DataSet(C_CROSS_HAIR, response.Words[1]);
             }
         }
 
         [DispatchPacket(MatchText = "vars.idleTimeout")]
         public void VarsIdleTimeoutDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
             if (response.Words.Count >= 2) {
-                this.State.Variables.DataAddSet(C_IDLE_TIMEOUT, response.Words[1]);
+                this.State.Variables.DataSet(C_IDLE_TIMEOUT, response.Words[1]);
             }
         }
 
         [DispatchPacket(MatchText = "vars.profanityFilter")]
         public void VarsProfanityFilterDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
             if (response.Words.Count >= 2) {
-                this.State.Variables.DataAddSet(C_PROFANITY_FILTER, response.Words[1]);
+                this.State.Variables.DataSet(C_PROFANITY_FILTER, response.Words[1]);
             }
         }
 

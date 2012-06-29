@@ -1,0 +1,70 @@
+﻿<Grid x:Class="Procon.UI.Default.Root.Main.Connection.Chat.ChatView"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:eapi="clr-namespace:Procon.UI.API;assembly=Procon.UI.API"
+      xmlns:conv="clr-namespace:Procon.UI.API.Converters;assembly=Procon.UI.API"
+      xmlns:view="clr-namespace:Procon.UI.API.ViewModels;assembly=Procon.UI.API"
+      xmlns:acmd="clr-namespace:Procon.UI.API.Commands;assembly=Procon.UI.API"
+      xmlns:util="clr-namespace:Procon.UI.API.Utils;assembly=Procon.UI.API"
+      xmlns:c="clr-namespace:Procon.UI.Default.Controls"
+      Name="MainConnectionChat">
+    
+    <!-- Content -->
+    <DockPanel Name="ConnectionChatContent"
+               Background="{DynamicResource BrushContentDark}">
+        
+        <!-- Title Bar -->
+        <DockPanel Name="ConnectionChatHeader"
+                   DockPanel.Dock="Top"
+                   Background="{DynamicResource BrushHeaderDark}">
+            <Image Name="ConnectionChatIcon"
+                   DockPanel.Dock="Left"
+                   Margin="15, 10, 5, 10" />
+            <c:ImageButton x:Name="ConnectionChatMinMax"
+                           DockPanel.Dock="Right"
+                           Margin="5, 10, 15, 10"
+                           NormalImage="{Binding
+                               Source={x:Static eapi:ExtensionApi.Properties},
+                               Path=[Images][Chat][Min][Default].Value}"
+                           HoverImage="{Binding
+                               Source={x:Static eapi:ExtensionApi.Properties},
+                               Path=[Images][Chat][Min][Hover].Value}"
+                           PressedImage="{Binding
+                               Source={x:Static eapi:ExtensionApi.Properties},
+                               Path=[Images][Chat][Min][Press].Value}"
+                           DisabledImage="{Binding
+                               Source={x:Static eapi:ExtensionApi.Properties},
+                               Path=[Images][Chat][Min][Disabled].Value}"
+                           Command="{Binding
+                               Source={x:Static eapi:ExtensionApi.Commands},
+                               Path=[Main][Connection][Chat][MinMax].Value}" />
+            <TextBlock Name="ConnectionChatTitle"
+                       DockPanel.Dock="Left"
+                       VerticalAlignment="Center"
+                       FontSize="16"
+                       Foreground="{DynamicResource BrushTextLight}"
+                       Text="{Binding
+                           Converter={conv:LocalizationText},
+                           ConverterParameter=Procon.UI.Default.Root.Main.Connection.Chat.Title}" />
+        </DockPanel>
+
+        <!-- Chat Box -->
+        <TextBox Name="ConnectionChatBox"
+                 DockPanel.Dock="Bottom"
+                 Margin="15"
+                 Background="{DynamicResource  BrushHeaderDark}"
+                 Foreground="{DynamicResource  BrushInputTextLight}"
+                 BorderBrush="{DynamicResource BrushMild}"
+                 Text="{Binding
+                     Source={x:Static eapi:ExtensionApi.Properties},
+                     Path=[Main][Connection][Chat][Text].Value}" />
+
+        <!-- Chat & Events -->
+        <ListBox Name="ConnectionChatEvents"
+                 DockPanel.Dock="Top"
+                 Background="{DynamicResource BrushEmphasisDark}"
+                 BorderThickness="0">
+            
+        </ListBox>
+    </DockPanel>
+</Grid>

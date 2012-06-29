@@ -76,7 +76,7 @@ namespace Procon.Net.Protocols.Frostbite.Objects
                             Ping = uintValue;
                         break;
                     default:
-                        DataAddSet("frostbite." + parameters[i], variables[i]);
+                        DataSet("frostbite." + parameters[i], variables[i]);
                         break;
                 }
             }

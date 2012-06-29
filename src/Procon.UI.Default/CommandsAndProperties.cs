@@ -4,6 +4,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Media.Imaging;
 using Procon.Net.Protocols;
+using Procon.Net.Protocols.Objects;
 using Procon.UI.API;
 using Procon.UI.API.Commands;
 using Procon.UI.API.Utils;
@@ -29,7 +30,7 @@ namespace Procon.UI.Default
         { get { return "Team Player Gaming"; } }
 
         public string Name
-        { get { return "Default Commands And Properties"; } }
+        { get { return "Commands And Properties"; } }
 
         public string Version
         { get { return "1.0.0.0"; } }
@@ -65,350 +66,358 @@ namespace Procon.UI.Default
 
 
             // [Interface] Level Commands.
-            ViewModelBase.PublicCommands["Interface"]["Add"].Value    = new RelayCommand<Object[]>(interfaceAdd, interfaceAddCan);
-            ViewModelBase.PublicCommands["Interface"]["Remove"].Value = new RelayCommand<Object[]>(interfaceRemove, interfaceRemoveCan);
-            ViewModelBase.PublicCommands["Interface"]["Set"].Value    = new RelayCommand<InterfaceViewModel>(interfaceSet);
+            ExtensionApi.Commands["Interface"]["Add"].Value    = new RelayCommand<Object[]>(interfaceAdd, interfaceAddCan);
+            ExtensionApi.Commands["Interface"]["Remove"].Value = new RelayCommand<Object[]>(interfaceRemove, interfaceRemoveCan);
+            ExtensionApi.Commands["Interface"]["Set"].Value    = new RelayCommand<InterfaceViewModel>(interfaceSet);
+
             // [Connection] Level Commands.
-            ViewModelBase.PublicCommands["Connection"]["Add"].Value    = new RelayCommand<Object[]>(connectionAdd, connectionAddCan);
-            ViewModelBase.PublicCommands["Connection"]["Remove"].Value = new RelayCommand<Object[]>(connectionRemove, connectionRemoveCan);
-            ViewModelBase.PublicCommands["Connection"]["Set"].Value    = new RelayCommand<ConnectionViewModel>(connectionSet);
+            ExtensionApi.Commands["Connection"]["Add"].Value    = new RelayCommand<Object[]>(connectionAdd, connectionAddCan);
+            ExtensionApi.Commands["Connection"]["Remove"].Value = new RelayCommand<Object[]>(connectionRemove, connectionRemoveCan);
+            ExtensionApi.Commands["Connection"]["Set"].Value    = new RelayCommand<ConnectionViewModel>(connectionSet);
+
+            // [Player] Level Commands.
+            ExtensionApi.Commands["Player"]["Move"].Value = new RelayCommand<Object[]>(playerMove, playerMoveCan);
+            ExtensionApi.Commands["Player"]["Kick"].Value = new RelayCommand<Object[]>(playerKick, playerKickCan);
+            ExtensionApi.Commands["Player"]["Ban"].Value  = new RelayCommand<Object[]>(playerBan,  playerBanCan);
 
 
 
-            // Types.
-            ViewModelBase.PublicProperties["Types"]["Connection"].Value = Enum.GetValues(typeof(GameType)).Cast<GameType>().Where(x => x != GameType.None);
+            // [Connection] - Game Types.
+            ExtensionApi.Properties["Types"]["Connection"].Value = Enum.GetValues(typeof(GameType)).Cast<GameType>().Where(x => x != GameType.None);
 
-            // Images.
-            ViewModelBase.PublicProperties["Images"]["Empty"].Value = new BitmapImage();
+
+
+            // [Empty] - A null image.
+            ExtensionApi.Properties["Images"]["Empty"].Value = new BitmapImage();
 
             // [Procon] - Procon images.
-            ViewModelBase.PublicProperties["Images"]["Procon"]["Icon"].Value  = (File.Exists(Defines.PROCON_ICON))  ? new BitmapImage(new Uri(Defines.PROCON_ICON,  UriKind.RelativeOrAbsolute)) : ViewModelBase.PublicProperties["Images"]["Empty"].Value;
-            ViewModelBase.PublicProperties["Images"]["Procon"]["Large"].Value = (File.Exists(Defines.PROCON_LARGE)) ? new BitmapImage(new Uri(Defines.PROCON_LARGE, UriKind.RelativeOrAbsolute)) : ViewModelBase.PublicProperties["Images"]["Empty"].Value;
-            ViewModelBase.PublicProperties["Images"]["Procon"]["Small"].Value = (File.Exists(Defines.PROCON_SMALL)) ? new BitmapImage(new Uri(Defines.PROCON_SMALL, UriKind.RelativeOrAbsolute)) : ViewModelBase.PublicProperties["Images"]["Empty"].Value;
+            ExtensionApi.Properties["Images"]["Procon"]["Icon"].Value  = (File.Exists(Defines.PROCON_ICON))  ? new BitmapImage(new Uri(Defines.PROCON_ICON,  UriKind.RelativeOrAbsolute)) : ExtensionApi.Properties["Images"]["Empty"].Value;
+            ExtensionApi.Properties["Images"]["Procon"]["Large"].Value = (File.Exists(Defines.PROCON_LARGE)) ? new BitmapImage(new Uri(Defines.PROCON_LARGE, UriKind.RelativeOrAbsolute)) : ExtensionApi.Properties["Images"]["Empty"].Value;
+            ExtensionApi.Properties["Images"]["Procon"]["Small"].Value = (File.Exists(Defines.PROCON_SMALL)) ? new BitmapImage(new Uri(Defines.PROCON_SMALL, UriKind.RelativeOrAbsolute)) : ExtensionApi.Properties["Images"]["Empty"].Value;
 
             // [Interfaces] - Interface types.
-            ViewModelBase.PublicProperties["Images"]["Interfaces"]["Local"].Value  = (File.Exists(Defines.INTERFACE_LOCAL))  ? new BitmapImage(new Uri(Defines.INTERFACE_LOCAL,  UriKind.RelativeOrAbsolute)) : ViewModelBase.PublicProperties["Images"]["Empty"].Value;
-            ViewModelBase.PublicProperties["Images"]["Interfaces"]["Remote"].Value = (File.Exists(Defines.INTERFACE_REMOTE)) ? new BitmapImage(new Uri(Defines.INTERFACE_REMOTE, UriKind.RelativeOrAbsolute)) : ViewModelBase.PublicProperties["Images"]["Empty"].Value;
+            ExtensionApi.Properties["Images"]["Interfaces"]["Local"].Value  = (File.Exists(Defines.INTERFACE_LOCAL))  ? new BitmapImage(new Uri(Defines.INTERFACE_LOCAL,  UriKind.RelativeOrAbsolute)) : ExtensionApi.Properties["Images"]["Empty"].Value;
+            ExtensionApi.Properties["Images"]["Interfaces"]["Remote"].Value = (File.Exists(Defines.INTERFACE_REMOTE)) ? new BitmapImage(new Uri(Defines.INTERFACE_REMOTE, UriKind.RelativeOrAbsolute)) : ExtensionApi.Properties["Images"]["Empty"].Value;
 
             // [Connections] - Game types.
-            ViewModelBase.PublicProperties["Images"]["Connections"]["BF_3"].Value      = (File.Exists(Defines.CONNECTION_BF_3))      ? new BitmapImage(new Uri(Defines.CONNECTION_BF_3,      UriKind.RelativeOrAbsolute)) : ViewModelBase.PublicProperties["Images"]["Empty"].Value;
-            ViewModelBase.PublicProperties["Images"]["Connections"]["BF_BC2"].Value    = (File.Exists(Defines.CONNECTION_BF_BC2))    ? new BitmapImage(new Uri(Defines.CONNECTION_BF_BC2,    UriKind.RelativeOrAbsolute)) : ViewModelBase.PublicProperties["Images"]["Empty"].Value;
-            ViewModelBase.PublicProperties["Images"]["Connections"]["COD_BO"].Value    = (File.Exists(Defines.CONNECTION_COD_BO))    ? new BitmapImage(new Uri(Defines.CONNECTION_COD_BO,    UriKind.RelativeOrAbsolute)) : ViewModelBase.PublicProperties["Images"]["Empty"].Value;
-            ViewModelBase.PublicProperties["Images"]["Connections"]["HOMEFRONT"].Value = (File.Exists(Defines.CONNECTION_HOMEFRONT)) ? new BitmapImage(new Uri(Defines.CONNECTION_HOMEFRONT, UriKind.RelativeOrAbsolute)) : ViewModelBase.PublicProperties["Images"]["Empty"].Value;
-            ViewModelBase.PublicProperties["Images"]["Connections"]["MOH_2010"].Value  = (File.Exists(Defines.CONNECTION_MOH_2010))  ? new BitmapImage(new Uri(Defines.CONNECTION_MOH_2010,  UriKind.RelativeOrAbsolute)) : ViewModelBase.PublicProperties["Images"]["Empty"].Value;
-            ViewModelBase.PublicProperties["Images"]["Connections"]["TF_2"].Value      = (File.Exists(Defines.CONNECTION_TF_2))      ? new BitmapImage(new Uri(Defines.CONNECTION_TF_2,      UriKind.RelativeOrAbsolute)) : ViewModelBase.PublicProperties["Images"]["Empty"].Value;
-            ViewModelBase.PublicProperties["Images"]["Connections"]["Unkown"].Value    = (File.Exists(Defines.CONNECTION_UNKNOWN))   ? new BitmapImage(new Uri(Defines.CONNECTION_UNKNOWN,   UriKind.RelativeOrAbsolute)) : ViewModelBase.PublicProperties["Images"]["Empty"].Value;
+            ExtensionApi.Properties["Images"]["Connections"]["BF_3"].Value      = (File.Exists(Defines.CONNECTION_BF_3))      ? new BitmapImage(new Uri(Defines.CONNECTION_BF_3,      UriKind.RelativeOrAbsolute)) : ExtensionApi.Properties["Images"]["Empty"].Value;
+            ExtensionApi.Properties["Images"]["Connections"]["BF_BC2"].Value    = (File.Exists(Defines.CONNECTION_BF_BC2))    ? new BitmapImage(new Uri(Defines.CONNECTION_BF_BC2,    UriKind.RelativeOrAbsolute)) : ExtensionApi.Properties["Images"]["Empty"].Value;
+            ExtensionApi.Properties["Images"]["Connections"]["COD_BO"].Value    = (File.Exists(Defines.CONNECTION_COD_BO))    ? new BitmapImage(new Uri(Defines.CONNECTION_COD_BO,    UriKind.RelativeOrAbsolute)) : ExtensionApi.Properties["Images"]["Empty"].Value;
+            ExtensionApi.Properties["Images"]["Connections"]["HOMEFRONT"].Value = (File.Exists(Defines.CONNECTION_HOMEFRONT)) ? new BitmapImage(new Uri(Defines.CONNECTION_HOMEFRONT, UriKind.RelativeOrAbsolute)) : ExtensionApi.Properties["Images"]["Empty"].Value;
+            ExtensionApi.Properties["Images"]["Connections"]["MOH_2010"].Value  = (File.Exists(Defines.CONNECTION_MOH_2010))  ? new BitmapImage(new Uri(Defines.CONNECTION_MOH_2010,  UriKind.RelativeOrAbsolute)) : ExtensionApi.Properties["Images"]["Empty"].Value;
+            ExtensionApi.Properties["Images"]["Connections"]["TF_2"].Value      = (File.Exists(Defines.CONNECTION_TF_2))      ? new BitmapImage(new Uri(Defines.CONNECTION_TF_2,      UriKind.RelativeOrAbsolute)) : ExtensionApi.Properties["Images"]["Empty"].Value;
+            ExtensionApi.Properties["Images"]["Connections"]["Unkown"].Value    = (File.Exists(Defines.CONNECTION_UNKNOWN))   ? new BitmapImage(new Uri(Defines.CONNECTION_UNKNOWN,   UriKind.RelativeOrAbsolute)) : ExtensionApi.Properties["Images"]["Empty"].Value;
 
             // [Status] - Connection status.
-            ViewModelBase.PublicProperties["Images"]["Status"]["LoggedIn"].Value      = (File.Exists(Defines.STATUS_GOOD)) ? new BitmapImage(new Uri(Defines.STATUS_GOOD, UriKind.RelativeOrAbsolute))  : ViewModelBase.PublicProperties["Images"]["Empty"].Value;
-            ViewModelBase.PublicProperties["Images"]["Status"]["Connecting"].Value    = (File.Exists(Defines.STATUS_FLUX)) ? new BitmapImage(new Uri(Defines.STATUS_FLUX, UriKind.RelativeOrAbsolute))  : ViewModelBase.PublicProperties["Images"]["Empty"].Value;
-            ViewModelBase.PublicProperties["Images"]["Status"]["Connected"].Value     = (File.Exists(Defines.STATUS_FLUX)) ? new BitmapImage(new Uri(Defines.STATUS_FLUX, UriKind.RelativeOrAbsolute))  : ViewModelBase.PublicProperties["Images"]["Empty"].Value;
-            ViewModelBase.PublicProperties["Images"]["Status"]["Ready"].Value         = (File.Exists(Defines.STATUS_FLUX)) ? new BitmapImage(new Uri(Defines.STATUS_FLUX, UriKind.RelativeOrAbsolute))  : ViewModelBase.PublicProperties["Images"]["Empty"].Value;
-            ViewModelBase.PublicProperties["Images"]["Status"]["Disconnecting"].Value = (File.Exists(Defines.STATUS_BAD))  ? new BitmapImage(new Uri(Defines.STATUS_BAD,  UriKind.RelativeOrAbsolute)) : ViewModelBase.PublicProperties["Images"]["Empty"].Value;
-            ViewModelBase.PublicProperties["Images"]["Status"]["Disconnected"].Value  = (File.Exists(Defines.STATUS_BAD))  ? new BitmapImage(new Uri(Defines.STATUS_BAD,  UriKind.RelativeOrAbsolute)) : ViewModelBase.PublicProperties["Images"]["Empty"].Value;
+            ExtensionApi.Properties["Images"]["Status"]["LoggedIn"].Value      = (File.Exists(Defines.STATUS_GOOD)) ? new BitmapImage(new Uri(Defines.STATUS_GOOD, UriKind.RelativeOrAbsolute))  : ExtensionApi.Properties["Images"]["Empty"].Value;
+            ExtensionApi.Properties["Images"]["Status"]["Connecting"].Value    = (File.Exists(Defines.STATUS_FLUX)) ? new BitmapImage(new Uri(Defines.STATUS_FLUX, UriKind.RelativeOrAbsolute))  : ExtensionApi.Properties["Images"]["Empty"].Value;
+            ExtensionApi.Properties["Images"]["Status"]["Connected"].Value     = (File.Exists(Defines.STATUS_FLUX)) ? new BitmapImage(new Uri(Defines.STATUS_FLUX, UriKind.RelativeOrAbsolute))  : ExtensionApi.Properties["Images"]["Empty"].Value;
+            ExtensionApi.Properties["Images"]["Status"]["Ready"].Value         = (File.Exists(Defines.STATUS_FLUX)) ? new BitmapImage(new Uri(Defines.STATUS_FLUX, UriKind.RelativeOrAbsolute))  : ExtensionApi.Properties["Images"]["Empty"].Value;
+            ExtensionApi.Properties["Images"]["Status"]["Disconnecting"].Value = (File.Exists(Defines.STATUS_BAD))  ? new BitmapImage(new Uri(Defines.STATUS_BAD,  UriKind.RelativeOrAbsolute)) : ExtensionApi.Properties["Images"]["Empty"].Value;
+            ExtensionApi.Properties["Images"]["Status"]["Disconnected"].Value  = (File.Exists(Defines.STATUS_BAD))  ? new BitmapImage(new Uri(Defines.STATUS_BAD,  UriKind.RelativeOrAbsolute)) : ExtensionApi.Properties["Images"]["Empty"].Value;
 
             // [Countries] - The country flags.
             #region Country Flags
 
-            ViewModelBase.PublicProperties["Images"]["Countries"]["AD"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/ad.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["AE"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/ae.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["AF"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/af.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["AG"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/ag.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["AI"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/ai.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["AL"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/al.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["AM"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/am.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["AN"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/an.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["AO"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/ao.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["AR"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/ar.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["AS"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/as.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["AT"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/at.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["AU"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/au.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["AW"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/aw.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["AX"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/ax.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["AZ"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/az.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["BA"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/ba.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["BB"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/bb.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["BD"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/bd.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["BE"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/be.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["BF"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/bf.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["BG"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/bg.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["BH"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/bh.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["BI"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/bi.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["BJ"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/bj.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["BM"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/bm.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["BN"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/bn.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["BO"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/bo.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["BR"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/br.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["BS"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/bs.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["BT"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/bt.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["BV"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/bv.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["BW"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/bw.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["BY"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/by.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["BZ"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/bz.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["CA"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/ca.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["CAT"].Value = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/catalonia.png",     UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["CC"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/cc.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["CD"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/cd.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["CF"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/cf.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["CG"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/cg.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["CH"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/ch.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["CI"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/ci.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["CK"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/ck.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["CL"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/cl.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["CM"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/cm.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["CN"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/cn.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["CO"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/co.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["CR"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/cr.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["CS"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/cs.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["CU"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/cu.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["CV"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/cv.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["CX"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/cx.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["CY"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/cy.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["CZ"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/cz.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["DE"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/de.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["DJ"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/dj.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["DK"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/dk.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["DM"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/dm.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["DO"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/do.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["DZ"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/dz.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["EC"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/ec.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["EE"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/ee.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["EG"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/eg.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["EH"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/eh.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["ENG"].Value = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/england.png",       UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["ER"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/er.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["ES"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/es.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["ET"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/et.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["EUR"].Value = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/europeanunion.png", UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["FAM"].Value = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/fam.png",           UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["FI"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/fi.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["FJ"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/fj.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["FK"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/fk.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["FM"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/fm.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["FO"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/fo.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["FR"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/fr.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["GA"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/ga.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["GB"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/gb.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["GD"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/gd.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["GE"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/ge.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["GF"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/gf.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["GH"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/gh.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["GI"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/gi.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["GL"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/gl.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["GM"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/gm.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["GN"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/gn.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["GP"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/gp.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["GQ"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/gq.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["GR"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/gr.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["GS"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/gs.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["GT"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/gt.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["GU"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/gu.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["GW"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/gw.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["GY"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/gy.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["HK"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/hk.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["HM"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/hm.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["HN"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/hn.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["HR"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/hr.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["HT"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/ht.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["HU"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/hu.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["ID"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/id.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["IE"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/ie.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["IL"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/il.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["IN"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/in.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["IO"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/io.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["IQ"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/iq.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["IR"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/ir.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["IS"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/is.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["IT"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/it.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["JM"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/jm.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["JO"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/jo.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["JP"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/jp.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["KE"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/ke.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["KG"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/kg.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["KH"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/kh.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["KI"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/ki.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["KM"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/km.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["KN"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/kn.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["KP"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/kp.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["KR"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/kr.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["KW"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/kw.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["KY"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/ky.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["KZ"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/kz.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["LA"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/la.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["LB"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/lb.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["LC"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/lc.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["LI"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/li.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["LK"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/lk.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["LR"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/lr.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["LS"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/ls.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["LT"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/lt.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["LU"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/lu.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["LV"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/lv.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["LY"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/ly.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["MA"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/ma.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["MC"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/mc.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["MD"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/md.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["ME"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/me.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["MG"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/mg.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["MH"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/mh.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["MK"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/mk.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["ML"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/ml.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["MM"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/mm.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["MN"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/mn.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["MO"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/mo.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["MP"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/mp.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["MQ"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/mq.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["MR"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/mr.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["MS"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/ms.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["MT"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/mt.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["MU"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/mu.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["MV"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/mv.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["MW"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/mw.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["MX"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/mx.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["MY"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/my.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["MZ"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/mz.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["NA"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/na.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["NC"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/nc.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["NE"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/ne.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["NF"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/nf.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["NG"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/ng.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["NI"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/ni.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["NL"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/nl.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["NO"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/no.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["NP"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/np.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["NR"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/nr.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["NU"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/nu.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["NZ"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/nz.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["OM"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/om.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["PA"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/pa.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["PE"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/pe.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["PF"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/pf.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["PG"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/pg.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["PH"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/ph.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["PK"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/pk.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["PL"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/pl.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["PM"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/pm.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["PN"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/pn.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["PR"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/pr.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["PS"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/ps.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["PT"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/pt.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["PW"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/pw.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["PY"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/py.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["QA"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/qa.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["RE"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/re.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["RO"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/ro.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["RS"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/rs.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["RU"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/ru.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["RW"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/rw.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["SA"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/sa.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["SB"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/sb.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["SC"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/sc.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["SCO"].Value = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/scotland.png",      UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["SD"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/sd.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["SE"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/se.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["SG"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/sg.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["SH"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/sh.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["SI"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/si.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["SJ"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/sj.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["SK"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/sk.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["SL"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/sl.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["SM"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/sm.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["SN"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/sn.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["SO"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/so.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["SR"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/sr.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["ST"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/st.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["SV"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/sv.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["SY"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/sy.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["SZ"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/sz.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["TC"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/tc.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["TD"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/td.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["TF"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/tf.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["TG"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/tg.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["TH"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/th.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["TJ"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/tj.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["TK"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/tk.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["TL"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/tl.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["TM"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/tm.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["TN"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/tn.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["TO"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/to.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["TR"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/tr.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["TT"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/tt.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["TV"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/tv.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["TW"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/tw.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["TZ"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/tz.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["UA"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/ua.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["UG"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/ug.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["UM"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/um.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["UNK"].Value = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/unknown.png",       UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["US"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/us.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["UY"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/uy.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["UZ"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/uz.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["VA"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/va.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["VC"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/vc.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["VE"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/ve.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["VG"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/vg.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["VI"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/vi.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["VN"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/vn.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["VU"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/vu.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["WAL"].Value = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/wales.png",         UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["WF"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/wf.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["WS"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/ws.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["YE"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/ye.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["YT"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/yt.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["ZA"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/za.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["ZM"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/zm.png",            UriKind.RelativeOrAbsolute));
-            ViewModelBase.PublicProperties["Images"]["Countries"]["ZW"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/zw.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["AD"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/ad.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["AE"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/ae.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["AF"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/af.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["AG"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/ag.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["AI"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/ai.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["AL"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/al.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["AM"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/am.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["AN"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/an.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["AO"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/ao.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["AR"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/ar.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["AS"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/as.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["AT"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/at.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["AU"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/au.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["AW"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/aw.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["AX"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/ax.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["AZ"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/az.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["BA"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/ba.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["BB"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/bb.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["BD"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/bd.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["BE"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/be.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["BF"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/bf.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["BG"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/bg.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["BH"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/bh.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["BI"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/bi.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["BJ"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/bj.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["BM"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/bm.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["BN"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/bn.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["BO"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/bo.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["BR"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/br.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["BS"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/bs.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["BT"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/bt.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["BV"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/bv.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["BW"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/bw.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["BY"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/by.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["BZ"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/bz.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["CA"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/ca.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["CAT"].Value = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/catalonia.png",     UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["CC"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/cc.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["CD"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/cd.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["CF"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/cf.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["CG"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/cg.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["CH"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/ch.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["CI"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/ci.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["CK"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/ck.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["CL"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/cl.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["CM"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/cm.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["CN"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/cn.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["CO"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/co.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["CR"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/cr.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["CS"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/cs.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["CU"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/cu.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["CV"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/cv.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["CX"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/cx.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["CY"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/cy.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["CZ"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/cz.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["DE"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/de.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["DJ"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/dj.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["DK"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/dk.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["DM"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/dm.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["DO"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/do.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["DZ"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/dz.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["EC"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/ec.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["EE"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/ee.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["EG"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/eg.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["EH"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/eh.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["ENG"].Value = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/england.png",       UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["ER"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/er.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["ES"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/es.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["ET"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/et.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["EUR"].Value = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/europeanunion.png", UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["FAM"].Value = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/fam.png",           UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["FI"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/fi.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["FJ"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/fj.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["FK"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/fk.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["FM"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/fm.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["FO"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/fo.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["FR"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/fr.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["GA"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/ga.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["GB"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/gb.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["GD"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/gd.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["GE"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/ge.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["GF"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/gf.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["GH"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/gh.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["GI"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/gi.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["GL"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/gl.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["GM"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/gm.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["GN"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/gn.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["GP"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/gp.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["GQ"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/gq.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["GR"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/gr.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["GS"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/gs.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["GT"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/gt.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["GU"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/gu.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["GW"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/gw.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["GY"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/gy.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["HK"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/hk.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["HM"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/hm.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["HN"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/hn.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["HR"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/hr.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["HT"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/ht.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["HU"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/hu.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["ID"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/id.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["IE"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/ie.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["IL"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/il.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["IN"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/in.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["IO"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/io.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["IQ"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/iq.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["IR"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/ir.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["IS"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/is.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["IT"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/it.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["JM"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/jm.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["JO"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/jo.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["JP"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/jp.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["KE"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/ke.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["KG"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/kg.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["KH"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/kh.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["KI"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/ki.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["KM"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/km.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["KN"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/kn.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["KP"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/kp.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["KR"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/kr.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["KW"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/kw.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["KY"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/ky.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["KZ"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/kz.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["LA"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/la.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["LB"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/lb.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["LC"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/lc.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["LI"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/li.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["LK"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/lk.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["LR"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/lr.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["LS"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/ls.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["LT"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/lt.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["LU"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/lu.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["LV"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/lv.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["LY"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/ly.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["MA"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/ma.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["MC"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/mc.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["MD"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/md.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["ME"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/me.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["MG"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/mg.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["MH"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/mh.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["MK"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/mk.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["ML"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/ml.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["MM"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/mm.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["MN"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/mn.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["MO"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/mo.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["MP"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/mp.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["MQ"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/mq.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["MR"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/mr.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["MS"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/ms.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["MT"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/mt.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["MU"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/mu.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["MV"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/mv.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["MW"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/mw.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["MX"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/mx.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["MY"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/my.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["MZ"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/mz.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["NA"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/na.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["NC"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/nc.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["NE"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/ne.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["NF"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/nf.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["NG"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/ng.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["NI"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/ni.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["NL"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/nl.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["NO"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/no.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["NP"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/np.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["NR"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/nr.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["NU"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/nu.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["NZ"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/nz.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["OM"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/om.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["PA"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/pa.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["PE"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/pe.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["PF"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/pf.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["PG"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/pg.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["PH"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/ph.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["PK"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/pk.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["PL"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/pl.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["PM"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/pm.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["PN"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/pn.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["PR"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/pr.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["PS"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/ps.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["PT"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/pt.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["PW"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/pw.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["PY"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/py.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["QA"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/qa.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["RE"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/re.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["RO"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/ro.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["RS"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/rs.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["RU"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/ru.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["RW"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/rw.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["SA"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/sa.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["SB"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/sb.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["SC"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/sc.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["SCO"].Value = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/scotland.png",      UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["SD"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/sd.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["SE"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/se.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["SG"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/sg.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["SH"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/sh.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["SI"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/si.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["SJ"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/sj.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["SK"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/sk.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["SL"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/sl.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["SM"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/sm.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["SN"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/sn.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["SO"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/so.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["SR"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/sr.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["ST"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/st.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["SV"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/sv.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["SY"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/sy.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["SZ"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/sz.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["TC"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/tc.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["TD"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/td.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["TF"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/tf.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["TG"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/tg.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["TH"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/th.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["TJ"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/tj.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["TK"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/tk.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["TL"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/tl.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["TM"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/tm.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["TN"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/tn.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["TO"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/to.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["TR"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/tr.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["TT"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/tt.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["TV"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/tv.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["TW"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/tw.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["TZ"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/tz.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["UA"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/ua.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["UG"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/ug.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["UM"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/um.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["UNK"].Value = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/unknown.png",       UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["US"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/us.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["UY"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/uy.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["UZ"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/uz.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["VA"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/va.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["VC"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/vc.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["VE"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/ve.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["VG"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/vg.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["VI"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/vi.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["VN"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/vn.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["VU"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/vu.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["WAL"].Value = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/wales.png",         UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["WF"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/wf.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["WS"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/ws.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["YE"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/ye.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["YT"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/yt.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["ZA"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/za.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["ZM"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/zm.png",            UriKind.RelativeOrAbsolute));
+            ExtensionApi.Properties["Images"]["Countries"]["ZW"].Value  = new BitmapImage(new Uri("pack://application:,,,/Procon.UI;component/Images/Countries/zw.png",            UriKind.RelativeOrAbsolute));
 
             #endregion
 
             // [Content] - Various images that represent tabs.
             //   [Players] - Represents the players per connection.
-            ViewModelBase.PublicProperties["Images"]["Content"]["Players"]["Default"].Value  = (File.Exists(Defines.PLAYERS_DEFAULT))  ? new BitmapImage(new Uri(Defines.PLAYERS_DEFAULT,  UriKind.RelativeOrAbsolute)) : ViewModelBase.PublicProperties["Images"]["Empty"].Value;
-            ViewModelBase.PublicProperties["Images"]["Content"]["Players"]["Hover"].Value    = (File.Exists(Defines.PLAYERS_HOVER))    ? new BitmapImage(new Uri(Defines.PLAYERS_HOVER,    UriKind.RelativeOrAbsolute)) : ViewModelBase.PublicProperties["Images"]["Empty"].Value;
-            ViewModelBase.PublicProperties["Images"]["Content"]["Players"]["Press"].Value    = (File.Exists(Defines.PLAYERS_ACTIVE))   ? new BitmapImage(new Uri(Defines.PLAYERS_ACTIVE,   UriKind.RelativeOrAbsolute)) : ViewModelBase.PublicProperties["Images"]["Empty"].Value;
-            ViewModelBase.PublicProperties["Images"]["Content"]["Players"]["Active"].Value   = (File.Exists(Defines.PLAYERS_ACTIVE))   ? new BitmapImage(new Uri(Defines.PLAYERS_ACTIVE,   UriKind.RelativeOrAbsolute)) : ViewModelBase.PublicProperties["Images"]["Empty"].Value;
-            ViewModelBase.PublicProperties["Images"]["Content"]["Players"]["Disabled"].Value = (File.Exists(Defines.PLAYERS_DISABLED)) ? new BitmapImage(new Uri(Defines.PLAYERS_DISABLED, UriKind.RelativeOrAbsolute)) : ViewModelBase.PublicProperties["Images"]["Empty"].Value;
+            ExtensionApi.Properties["Images"]["Content"]["Players"]["Default"].Value  = (File.Exists(Defines.PLAYERS_DEFAULT))  ? new BitmapImage(new Uri(Defines.PLAYERS_DEFAULT,  UriKind.RelativeOrAbsolute)) : ExtensionApi.Properties["Images"]["Empty"].Value;
+            ExtensionApi.Properties["Images"]["Content"]["Players"]["Hover"].Value    = (File.Exists(Defines.PLAYERS_HOVER))    ? new BitmapImage(new Uri(Defines.PLAYERS_HOVER,    UriKind.RelativeOrAbsolute)) : ExtensionApi.Properties["Images"]["Empty"].Value;
+            ExtensionApi.Properties["Images"]["Content"]["Players"]["Press"].Value    = (File.Exists(Defines.PLAYERS_ACTIVE))   ? new BitmapImage(new Uri(Defines.PLAYERS_ACTIVE,   UriKind.RelativeOrAbsolute)) : ExtensionApi.Properties["Images"]["Empty"].Value;
+            ExtensionApi.Properties["Images"]["Content"]["Players"]["Active"].Value   = (File.Exists(Defines.PLAYERS_ACTIVE))   ? new BitmapImage(new Uri(Defines.PLAYERS_ACTIVE,   UriKind.RelativeOrAbsolute)) : ExtensionApi.Properties["Images"]["Empty"].Value;
+            ExtensionApi.Properties["Images"]["Content"]["Players"]["Disabled"].Value = (File.Exists(Defines.PLAYERS_DISABLED)) ? new BitmapImage(new Uri(Defines.PLAYERS_DISABLED, UriKind.RelativeOrAbsolute)) : ExtensionApi.Properties["Images"]["Empty"].Value;
             //   [Maps] - Represents the maps per connection.
-            ViewModelBase.PublicProperties["Images"]["Content"]["Maps"]["Default"].Value  = (File.Exists(Defines.MAPS_DEFAULT))  ? new BitmapImage(new Uri(Defines.MAPS_DEFAULT,  UriKind.RelativeOrAbsolute)) : ViewModelBase.PublicProperties["Images"]["Empty"].Value;
-            ViewModelBase.PublicProperties["Images"]["Content"]["Maps"]["Hover"].Value    = (File.Exists(Defines.MAPS_HOVER))    ? new BitmapImage(new Uri(Defines.MAPS_HOVER,    UriKind.RelativeOrAbsolute)) : ViewModelBase.PublicProperties["Images"]["Empty"].Value;
-            ViewModelBase.PublicProperties["Images"]["Content"]["Maps"]["Press"].Value    = (File.Exists(Defines.MAPS_ACTIVE))   ? new BitmapImage(new Uri(Defines.MAPS_ACTIVE,   UriKind.RelativeOrAbsolute)) : ViewModelBase.PublicProperties["Images"]["Empty"].Value;
-            ViewModelBase.PublicProperties["Images"]["Content"]["Maps"]["Active"].Value   = (File.Exists(Defines.MAPS_ACTIVE))   ? new BitmapImage(new Uri(Defines.MAPS_ACTIVE,   UriKind.RelativeOrAbsolute)) : ViewModelBase.PublicProperties["Images"]["Empty"].Value;
-            ViewModelBase.PublicProperties["Images"]["Content"]["Maps"]["Disabled"].Value = (File.Exists(Defines.MAPS_DISABLED)) ? new BitmapImage(new Uri(Defines.MAPS_DISABLED, UriKind.RelativeOrAbsolute)) : ViewModelBase.PublicProperties["Images"]["Empty"].Value;
+            ExtensionApi.Properties["Images"]["Content"]["Maps"]["Default"].Value  = (File.Exists(Defines.MAPS_DEFAULT))  ? new BitmapImage(new Uri(Defines.MAPS_DEFAULT,  UriKind.RelativeOrAbsolute)) : ExtensionApi.Properties["Images"]["Empty"].Value;
+            ExtensionApi.Properties["Images"]["Content"]["Maps"]["Hover"].Value    = (File.Exists(Defines.MAPS_HOVER))    ? new BitmapImage(new Uri(Defines.MAPS_HOVER,    UriKind.RelativeOrAbsolute)) : ExtensionApi.Properties["Images"]["Empty"].Value;
+            ExtensionApi.Properties["Images"]["Content"]["Maps"]["Press"].Value    = (File.Exists(Defines.MAPS_ACTIVE))   ? new BitmapImage(new Uri(Defines.MAPS_ACTIVE,   UriKind.RelativeOrAbsolute)) : ExtensionApi.Properties["Images"]["Empty"].Value;
+            ExtensionApi.Properties["Images"]["Content"]["Maps"]["Active"].Value   = (File.Exists(Defines.MAPS_ACTIVE))   ? new BitmapImage(new Uri(Defines.MAPS_ACTIVE,   UriKind.RelativeOrAbsolute)) : ExtensionApi.Properties["Images"]["Empty"].Value;
+            ExtensionApi.Properties["Images"]["Content"]["Maps"]["Disabled"].Value = (File.Exists(Defines.MAPS_DISABLED)) ? new BitmapImage(new Uri(Defines.MAPS_DISABLED, UriKind.RelativeOrAbsolute)) : ExtensionApi.Properties["Images"]["Empty"].Value;
             //   [Bans] - Represents the bans per connection.
-            ViewModelBase.PublicProperties["Images"]["Content"]["Bans"]["Default"].Value  = (File.Exists(Defines.BANS_DEFAULT))  ? new BitmapImage(new Uri(Defines.BANS_DEFAULT,  UriKind.RelativeOrAbsolute)) : ViewModelBase.PublicProperties["Images"]["Empty"].Value;
-            ViewModelBase.PublicProperties["Images"]["Content"]["Bans"]["Hover"].Value    = (File.Exists(Defines.BANS_HOVER))    ? new BitmapImage(new Uri(Defines.BANS_HOVER,    UriKind.RelativeOrAbsolute)) : ViewModelBase.PublicProperties["Images"]["Empty"].Value;
-            ViewModelBase.PublicProperties["Images"]["Content"]["Bans"]["Press"].Value    = (File.Exists(Defines.BANS_ACTIVE))   ? new BitmapImage(new Uri(Defines.BANS_ACTIVE,   UriKind.RelativeOrAbsolute)) : ViewModelBase.PublicProperties["Images"]["Empty"].Value;
-            ViewModelBase.PublicProperties["Images"]["Content"]["Bans"]["Active"].Value   = (File.Exists(Defines.BANS_ACTIVE))   ? new BitmapImage(new Uri(Defines.BANS_ACTIVE,   UriKind.RelativeOrAbsolute)) : ViewModelBase.PublicProperties["Images"]["Empty"].Value;
-            ViewModelBase.PublicProperties["Images"]["Content"]["Bans"]["Disabled"].Value = (File.Exists(Defines.BANS_DISABLED)) ? new BitmapImage(new Uri(Defines.BANS_DISABLED, UriKind.RelativeOrAbsolute)) : ViewModelBase.PublicProperties["Images"]["Empty"].Value;
+            ExtensionApi.Properties["Images"]["Content"]["Bans"]["Default"].Value  = (File.Exists(Defines.BANS_DEFAULT))  ? new BitmapImage(new Uri(Defines.BANS_DEFAULT,  UriKind.RelativeOrAbsolute)) : ExtensionApi.Properties["Images"]["Empty"].Value;
+            ExtensionApi.Properties["Images"]["Content"]["Bans"]["Hover"].Value    = (File.Exists(Defines.BANS_HOVER))    ? new BitmapImage(new Uri(Defines.BANS_HOVER,    UriKind.RelativeOrAbsolute)) : ExtensionApi.Properties["Images"]["Empty"].Value;
+            ExtensionApi.Properties["Images"]["Content"]["Bans"]["Press"].Value    = (File.Exists(Defines.BANS_ACTIVE))   ? new BitmapImage(new Uri(Defines.BANS_ACTIVE,   UriKind.RelativeOrAbsolute)) : ExtensionApi.Properties["Images"]["Empty"].Value;
+            ExtensionApi.Properties["Images"]["Content"]["Bans"]["Active"].Value   = (File.Exists(Defines.BANS_ACTIVE))   ? new BitmapImage(new Uri(Defines.BANS_ACTIVE,   UriKind.RelativeOrAbsolute)) : ExtensionApi.Properties["Images"]["Empty"].Value;
+            ExtensionApi.Properties["Images"]["Content"]["Bans"]["Disabled"].Value = (File.Exists(Defines.BANS_DISABLED)) ? new BitmapImage(new Uri(Defines.BANS_DISABLED, UriKind.RelativeOrAbsolute)) : ExtensionApi.Properties["Images"]["Empty"].Value;
             //   [Plugins] - Represents the plugins per connection.
-            ViewModelBase.PublicProperties["Images"]["Content"]["Plugins"]["Default"].Value   = (File.Exists(Defines.PLUGINS_DEFAULT))  ? new BitmapImage(new Uri(Defines.PLUGINS_DEFAULT,  UriKind.RelativeOrAbsolute)) : ViewModelBase.PublicProperties["Images"]["Empty"].Value;
-            ViewModelBase.PublicProperties["Images"]["Content"]["Plugins"]["Hover"].Value     = (File.Exists(Defines.PLUGINS_HOVER))    ? new BitmapImage(new Uri(Defines.PLUGINS_HOVER,    UriKind.RelativeOrAbsolute)) : ViewModelBase.PublicProperties["Images"]["Empty"].Value;
-            ViewModelBase.PublicProperties["Images"]["Content"]["Plugins"]["Press"].Value     = (File.Exists(Defines.PLUGINS_ACTIVE))   ? new BitmapImage(new Uri(Defines.PLUGINS_ACTIVE,   UriKind.RelativeOrAbsolute)) : ViewModelBase.PublicProperties["Images"]["Empty"].Value;
-            ViewModelBase.PublicProperties["Images"]["Content"]["Plugins"]["Active"].Value    = (File.Exists(Defines.PLUGINS_ACTIVE))   ? new BitmapImage(new Uri(Defines.PLUGINS_ACTIVE,   UriKind.RelativeOrAbsolute)) : ViewModelBase.PublicProperties["Images"]["Empty"].Value;
-            ViewModelBase.PublicProperties["Images"]["Content"]["Plugins"]["Disabled"].Value  = (File.Exists(Defines.PLUGINS_DISABLED)) ? new BitmapImage(new Uri(Defines.PLUGINS_DISABLED, UriKind.RelativeOrAbsolute)) : ViewModelBase.PublicProperties["Images"]["Empty"].Value;
+            ExtensionApi.Properties["Images"]["Content"]["Plugins"]["Default"].Value   = (File.Exists(Defines.PLUGINS_DEFAULT))  ? new BitmapImage(new Uri(Defines.PLUGINS_DEFAULT,  UriKind.RelativeOrAbsolute)) : ExtensionApi.Properties["Images"]["Empty"].Value;
+            ExtensionApi.Properties["Images"]["Content"]["Plugins"]["Hover"].Value     = (File.Exists(Defines.PLUGINS_HOVER))    ? new BitmapImage(new Uri(Defines.PLUGINS_HOVER,    UriKind.RelativeOrAbsolute)) : ExtensionApi.Properties["Images"]["Empty"].Value;
+            ExtensionApi.Properties["Images"]["Content"]["Plugins"]["Press"].Value     = (File.Exists(Defines.PLUGINS_ACTIVE))   ? new BitmapImage(new Uri(Defines.PLUGINS_ACTIVE,   UriKind.RelativeOrAbsolute)) : ExtensionApi.Properties["Images"]["Empty"].Value;
+            ExtensionApi.Properties["Images"]["Content"]["Plugins"]["Active"].Value    = (File.Exists(Defines.PLUGINS_ACTIVE))   ? new BitmapImage(new Uri(Defines.PLUGINS_ACTIVE,   UriKind.RelativeOrAbsolute)) : ExtensionApi.Properties["Images"]["Empty"].Value;
+            ExtensionApi.Properties["Images"]["Content"]["Plugins"]["Disabled"].Value  = (File.Exists(Defines.PLUGINS_DISABLED)) ? new BitmapImage(new Uri(Defines.PLUGINS_DISABLED, UriKind.RelativeOrAbsolute)) : ExtensionApi.Properties["Images"]["Empty"].Value;
             //   [Settings] - Represents the connection level settings.
-            ViewModelBase.PublicProperties["Images"]["Content"]["Settings"]["Default"].Value  = (File.Exists(Defines.SETTINGS_DEFAULT))  ? new BitmapImage(new Uri(Defines.SETTINGS_DEFAULT,  UriKind.RelativeOrAbsolute)) : ViewModelBase.PublicProperties["Images"]["Empty"].Value;
-            ViewModelBase.PublicProperties["Images"]["Content"]["Settings"]["Hover"].Value    = (File.Exists(Defines.SETTINGS_HOVER))    ? new BitmapImage(new Uri(Defines.SETTINGS_HOVER,    UriKind.RelativeOrAbsolute)) : ViewModelBase.PublicProperties["Images"]["Empty"].Value;
-            ViewModelBase.PublicProperties["Images"]["Content"]["Settings"]["Press"].Value    = (File.Exists(Defines.SETTINGS_ACTIVE))   ? new BitmapImage(new Uri(Defines.SETTINGS_ACTIVE,   UriKind.RelativeOrAbsolute)) : ViewModelBase.PublicProperties["Images"]["Empty"].Value;
-            ViewModelBase.PublicProperties["Images"]["Content"]["Settings"]["Active"].Value   = (File.Exists(Defines.SETTINGS_ACTIVE))   ? new BitmapImage(new Uri(Defines.SETTINGS_ACTIVE,   UriKind.RelativeOrAbsolute)) : ViewModelBase.PublicProperties["Images"]["Empty"].Value;
-            ViewModelBase.PublicProperties["Images"]["Content"]["Settings"]["Disabled"].Value = (File.Exists(Defines.SETTINGS_DISABLED)) ? new BitmapImage(new Uri(Defines.SETTINGS_DISABLED, UriKind.RelativeOrAbsolute)) : ViewModelBase.PublicProperties["Images"]["Empty"].Value;
+            ExtensionApi.Properties["Images"]["Content"]["Settings"]["Default"].Value  = (File.Exists(Defines.SETTINGS_DEFAULT))  ? new BitmapImage(new Uri(Defines.SETTINGS_DEFAULT,  UriKind.RelativeOrAbsolute)) : ExtensionApi.Properties["Images"]["Empty"].Value;
+            ExtensionApi.Properties["Images"]["Content"]["Settings"]["Hover"].Value    = (File.Exists(Defines.SETTINGS_HOVER))    ? new BitmapImage(new Uri(Defines.SETTINGS_HOVER,    UriKind.RelativeOrAbsolute)) : ExtensionApi.Properties["Images"]["Empty"].Value;
+            ExtensionApi.Properties["Images"]["Content"]["Settings"]["Press"].Value    = (File.Exists(Defines.SETTINGS_ACTIVE))   ? new BitmapImage(new Uri(Defines.SETTINGS_ACTIVE,   UriKind.RelativeOrAbsolute)) : ExtensionApi.Properties["Images"]["Empty"].Value;
+            ExtensionApi.Properties["Images"]["Content"]["Settings"]["Active"].Value   = (File.Exists(Defines.SETTINGS_ACTIVE))   ? new BitmapImage(new Uri(Defines.SETTINGS_ACTIVE,   UriKind.RelativeOrAbsolute)) : ExtensionApi.Properties["Images"]["Empty"].Value;
+            ExtensionApi.Properties["Images"]["Content"]["Settings"]["Disabled"].Value = (File.Exists(Defines.SETTINGS_DISABLED)) ? new BitmapImage(new Uri(Defines.SETTINGS_DISABLED, UriKind.RelativeOrAbsolute)) : ExtensionApi.Properties["Images"]["Empty"].Value;
             //   [Options] - Represents the interface level options.
-            ViewModelBase.PublicProperties["Images"]["Content"]["Options"]["Default"].Value  = (File.Exists(Defines.OPTIONS_DEFAULT))  ? new BitmapImage(new Uri(Defines.OPTIONS_DEFAULT,  UriKind.RelativeOrAbsolute)) : ViewModelBase.PublicProperties["Images"]["Empty"].Value;
-            ViewModelBase.PublicProperties["Images"]["Content"]["Options"]["Hover"].Value    = (File.Exists(Defines.OPTIONS_HOVER))    ? new BitmapImage(new Uri(Defines.OPTIONS_HOVER,    UriKind.RelativeOrAbsolute)) : ViewModelBase.PublicProperties["Images"]["Empty"].Value;
-            ViewModelBase.PublicProperties["Images"]["Content"]["Options"]["Press"].Value    = (File.Exists(Defines.OPTIONS_ACTIVE))   ? new BitmapImage(new Uri(Defines.OPTIONS_ACTIVE,   UriKind.RelativeOrAbsolute)) : ViewModelBase.PublicProperties["Images"]["Empty"].Value;
-            ViewModelBase.PublicProperties["Images"]["Content"]["Options"]["Active"].Value   = (File.Exists(Defines.OPTIONS_ACTIVE))   ? new BitmapImage(new Uri(Defines.OPTIONS_ACTIVE,   UriKind.RelativeOrAbsolute)) : ViewModelBase.PublicProperties["Images"]["Empty"].Value;
-            ViewModelBase.PublicProperties["Images"]["Content"]["Options"]["Disabled"].Value = (File.Exists(Defines.OPTIONS_DISABLED)) ? new BitmapImage(new Uri(Defines.OPTIONS_DISABLED, UriKind.RelativeOrAbsolute)) : ViewModelBase.PublicProperties["Images"]["Empty"].Value;
+            ExtensionApi.Properties["Images"]["Content"]["Options"]["Default"].Value  = (File.Exists(Defines.OPTIONS_DEFAULT))  ? new BitmapImage(new Uri(Defines.OPTIONS_DEFAULT,  UriKind.RelativeOrAbsolute)) : ExtensionApi.Properties["Images"]["Empty"].Value;
+            ExtensionApi.Properties["Images"]["Content"]["Options"]["Hover"].Value    = (File.Exists(Defines.OPTIONS_HOVER))    ? new BitmapImage(new Uri(Defines.OPTIONS_HOVER,    UriKind.RelativeOrAbsolute)) : ExtensionApi.Properties["Images"]["Empty"].Value;
+            ExtensionApi.Properties["Images"]["Content"]["Options"]["Press"].Value    = (File.Exists(Defines.OPTIONS_ACTIVE))   ? new BitmapImage(new Uri(Defines.OPTIONS_ACTIVE,   UriKind.RelativeOrAbsolute)) : ExtensionApi.Properties["Images"]["Empty"].Value;
+            ExtensionApi.Properties["Images"]["Content"]["Options"]["Active"].Value   = (File.Exists(Defines.OPTIONS_ACTIVE))   ? new BitmapImage(new Uri(Defines.OPTIONS_ACTIVE,   UriKind.RelativeOrAbsolute)) : ExtensionApi.Properties["Images"]["Empty"].Value;
+            ExtensionApi.Properties["Images"]["Content"]["Options"]["Disabled"].Value = (File.Exists(Defines.OPTIONS_DISABLED)) ? new BitmapImage(new Uri(Defines.OPTIONS_DISABLED, UriKind.RelativeOrAbsolute)) : ExtensionApi.Properties["Images"]["Empty"].Value;
 
             // [General] - Images used across the program.
-            ViewModelBase.PublicProperties["Images"]["General"]["Player"].Value = (File.Exists(Defines.GENERAL_PLAYER)) ? new BitmapImage(new Uri(Defines.GENERAL_PLAYER, UriKind.RelativeOrAbsolute)) : ViewModelBase.PublicProperties["Images"]["Empty"].Value;
-            ViewModelBase.PublicProperties["Images"]["General"]["Good"].Value   = (File.Exists(Defines.GENERAL_GOOD))   ? new BitmapImage(new Uri(Defines.GENERAL_GOOD,   UriKind.RelativeOrAbsolute)) : ViewModelBase.PublicProperties["Images"]["Empty"].Value;
-            ViewModelBase.PublicProperties["Images"]["General"]["Bad"].Value    = (File.Exists(Defines.GENERAL_BAD))    ? new BitmapImage(new Uri(Defines.GENERAL_BAD,    UriKind.RelativeOrAbsolute)) : ViewModelBase.PublicProperties["Images"]["Empty"].Value;
-            ViewModelBase.PublicProperties["Images"]["General"]["Warn"].Value   = (File.Exists(Defines.GENERAL_WARN))   ? new BitmapImage(new Uri(Defines.GENERAL_WARN,   UriKind.RelativeOrAbsolute)) : ViewModelBase.PublicProperties["Images"]["Empty"].Value;
-            ViewModelBase.PublicProperties["Images"]["General"]["Notify"].Value = (File.Exists(Defines.GENERAL_NOTIFY)) ? new BitmapImage(new Uri(Defines.GENERAL_NOTIFY, UriKind.RelativeOrAbsolute)) : ViewModelBase.PublicProperties["Images"]["Empty"].Value;
+            ExtensionApi.Properties["Images"]["General"]["Player"].Value = (File.Exists(Defines.GENERAL_PLAYER)) ? new BitmapImage(new Uri(Defines.GENERAL_PLAYER, UriKind.RelativeOrAbsolute)) : ExtensionApi.Properties["Images"]["Empty"].Value;
+            ExtensionApi.Properties["Images"]["General"]["Good"].Value   = (File.Exists(Defines.GENERAL_GOOD))   ? new BitmapImage(new Uri(Defines.GENERAL_GOOD,   UriKind.RelativeOrAbsolute)) : ExtensionApi.Properties["Images"]["Empty"].Value;
+            ExtensionApi.Properties["Images"]["General"]["Bad"].Value    = (File.Exists(Defines.GENERAL_BAD))    ? new BitmapImage(new Uri(Defines.GENERAL_BAD,    UriKind.RelativeOrAbsolute)) : ExtensionApi.Properties["Images"]["Empty"].Value;
+            ExtensionApi.Properties["Images"]["General"]["Warn"].Value   = (File.Exists(Defines.GENERAL_WARN))   ? new BitmapImage(new Uri(Defines.GENERAL_WARN,   UriKind.RelativeOrAbsolute)) : ExtensionApi.Properties["Images"]["Empty"].Value;
+            ExtensionApi.Properties["Images"]["General"]["Notify"].Value = (File.Exists(Defines.GENERAL_NOTIFY)) ? new BitmapImage(new Uri(Defines.GENERAL_NOTIFY, UriKind.RelativeOrAbsolute)) : ExtensionApi.Properties["Images"]["Empty"].Value;
 
             // [Connection] - Images associated with managing connections.
-            ViewModelBase.PublicProperties["Images"]["Connection"]["Swap"].Value = (File.Exists(Defines.CONNECTION_SWAP)) ? new BitmapImage(new Uri(Defines.CONNECTION_SWAP, UriKind.RelativeOrAbsolute)) : ViewModelBase.PublicProperties["Images"]["Empty"].Value;
-            ViewModelBase.PublicProperties["Images"]["Connection"]["Info"].Value = (File.Exists(Defines.CONNECTION_INFO)) ? new BitmapImage(new Uri(Defines.CONNECTION_INFO, UriKind.RelativeOrAbsolute)) : ViewModelBase.PublicProperties["Images"]["Empty"].Value;
+            ExtensionApi.Properties["Images"]["Connection"]["Swap"].Value = (File.Exists(Defines.CONNECTION_SWAP)) ? new BitmapImage(new Uri(Defines.CONNECTION_SWAP, UriKind.RelativeOrAbsolute)) : ExtensionApi.Properties["Images"]["Empty"].Value;
+            ExtensionApi.Properties["Images"]["Connection"]["Info"].Value = (File.Exists(Defines.CONNECTION_INFO)) ? new BitmapImage(new Uri(Defines.CONNECTION_INFO, UriKind.RelativeOrAbsolute)) : ExtensionApi.Properties["Images"]["Empty"].Value;
 
             // We done here broski.
             return true;
@@ -420,10 +429,10 @@ namespace Procon.UI.Default
         private void interfaceAdd(Object[] parameters)
         {
             ExtensionApi.Procon.CreateInterface(
-                (String)parameters[0],
-                UInt16.Parse((String)parameters[1]),
-                (String)parameters[2],
-                (String)parameters[3]);
+                ((String)parameters[0]).Trim(),
+                UInt16.Parse(((String)parameters[1]).Trim()),
+                ((String)parameters[2]).Trim(),
+                ((String)parameters[3]).Trim());
         }
         private bool interfaceAddCan(Object[] parameters)
         {
@@ -440,7 +449,7 @@ namespace Procon.UI.Default
         private void interfaceRemove(Object[] parameters)
         {
             ExtensionApi.Procon.DestroyInterface(
-                (String)parameters[0],
+                ((String)parameters[0]).Trim(),
                 UInt16.Parse((String)parameters[1]));
         }
         private bool interfaceRemoveCan(Object[] parameters)
@@ -461,11 +470,11 @@ namespace Procon.UI.Default
         private void connectionAdd(Object[] parameters)
         {
             ExtensionApi.Interface.AddConnection(
-                (String)parameters[0],
-                (String)parameters[1],
+                ((String)parameters[0]).Trim(),
+                ((String)parameters[1]).Trim(),
                 UInt16.Parse((String)parameters[2]),
-                (String)parameters[3],
-                (String)parameters[4]);
+                ((String)parameters[3]).Trim(),
+                ((String)parameters[4]).Trim());
         }
         private bool connectionAddCan(Object[] parameters)
         {
@@ -483,8 +492,8 @@ namespace Procon.UI.Default
         private void connectionRemove(Object[] parameters)
         {
             ExtensionApi.Interface.RemoveConnection(
-                (String)parameters[0],
-                (String)parameters[1],
+                ((String)parameters[0]).Trim(),
+                ((String)parameters[1]).Trim(),
                 UInt16.Parse((String)parameters[2]));
         }
         private bool connectionRemoveCan(Object[] parameters)
@@ -502,20 +511,81 @@ namespace Procon.UI.Default
         {
             ExtensionApi.Connection = view;
         }
-
         
+        // -- [Player][Move]
+        private void playerMove(Object[] parameters)
+        {
+            ExtensionApi.Connection.Action(
+                new Move() {
+                    MoveActionType = MoveActionType.ForceRotate,
+                    Target         = ((Player)parameters[0]),
+                    Destination    = ((PlayerSubset)parameters[1]),
+                    Reason         = ((String)parameters[2]).Trim()
+                });
+        }
+        private bool playerMoveCan(Object[] parameters)
+        {
+            Player       tPlayer;
+            PlayerSubset tSubset;
+            String       tString;
+            return
+                ExtensionApi.Connection != null && parameters.Length >= 3
+                && (tPlayer = parameters[0] as Player)       != null && tPlayer.UID    != String.Empty
+                && (tSubset = parameters[1] as PlayerSubset) != null
+                && (tString = parameters[1] as String)       != null && tString.Trim() != String.Empty;
+        }
+        // -- [Player][Kick]
+        private void playerKick(Object[] parameters)
+        {
+            ExtensionApi.Connection.Action(
+                new Kick() {
+                    Target = ((Player)parameters[0]),
+                    Reason = ((String)parameters[1]).Trim()
+                });
+        }
+        private bool playerKickCan(Object[] parameters)
+        {
+            Player tPlayer;
+            String tString;
+            return
+                ExtensionApi.Connection != null && parameters.Length >= 2
+                && (tPlayer = parameters[0] as Player) != null && tPlayer.UID    != String.Empty
+                && (tString = parameters[1] as String) != null && tString.Trim() != String.Empty;
+        }
+        // -- [Player][Ban]
+        private void playerBan(Object[] parameters)
+        {
+            ExtensionApi.Connection.Action(
+                new Ban() {
+                    BanActionType = BanActionType.Ban,
+                    Target        = ((Player)parameters[0]),
+                    Time          = ((TimeSubset)parameters[1]),
+                    Reason        = ((String)parameters[2]).Trim()
+                });
+        }
+        private bool playerBanCan(Object[] parameters)
+        {
+            Player     tPlayer;
+            TimeSubset tSubset;
+            String     tString;
+            return
+                ExtensionApi.Connection != null && parameters.Length >= 3
+                && (tPlayer = parameters[0] as Player)     != null && tPlayer.UID    != String.Empty
+                && (tSubset = parameters[1] as TimeSubset) != null 
+                && (tString = parameters[2] as String)     != null && tString.Trim() != String.Empty;
+        }
 
 
-        //ViewModelBase.PublicCommands["Connection"]["Filter"]["Chat"].Value = new RelayCommand<Object>(filterChatChanged);
-        //ViewModelBase.PublicCommands["Connection"]["Filter"]["Ban"].Value  = new RelayCommand<Object>(filterBanChanged);
+        //ExtensionApi.Commands["Connection"]["Filter"]["Chat"].Value = new RelayCommand<Object>(filterChatChanged);
+        //ExtensionApi.Commands["Connection"]["Filter"]["Ban"].Value  = new RelayCommand<Object>(filterBanChanged);
 
-        //ViewModelBase.PublicCommands["Connection"]["Action"]["Chat"].Value          = new RelayCommand<Object>(actionChat,     actionChatCan);
-        //ViewModelBase.PublicCommands["Connection"]["Action"]["Player"].Value        = new RelayCommand<IList>(actionPlayer,    actionPlayerCan);
-        //ViewModelBase.PublicCommands["Connection"]["Action"]["Map"]["Add"].Value    = new RelayCommand<IList>(actionMapAdd,    actionMapCan);
-        //ViewModelBase.PublicCommands["Connection"]["Action"]["Map"]["Remove"].Value = new RelayCommand<IList>(actionMapRemove, actionMapCan);
-        //ViewModelBase.PublicCommands["Connection"]["Action"]["Map"]["Up"].Value     = new RelayCommand<IList>(actionMapUp,     actionMapCan);
-        //ViewModelBase.PublicCommands["Connection"]["Action"]["Map"]["Down"].Value   = new RelayCommand<IList>(actionMapDown,   actionMapCan);
-        //ViewModelBase.PublicCommands["Connection"]["Action"]["Ban"].Value           = new RelayCommand<IList>(actionBan,       actionBanCan);   
+        //ExtensionApi.Commands["Connection"]["Action"]["Chat"].Value          = new RelayCommand<Object>(actionChat,     actionChatCan);
+        //ExtensionApi.Commands["Connection"]["Action"]["Player"].Value        = new RelayCommand<IList>(actionPlayer,    actionPlayerCan);
+        //ExtensionApi.Commands["Connection"]["Action"]["Map"]["Add"].Value    = new RelayCommand<IList>(actionMapAdd,    actionMapCan);
+        //ExtensionApi.Commands["Connection"]["Action"]["Map"]["Remove"].Value = new RelayCommand<IList>(actionMapRemove, actionMapCan);
+        //ExtensionApi.Commands["Connection"]["Action"]["Map"]["Up"].Value     = new RelayCommand<IList>(actionMapUp,     actionMapCan);
+        //ExtensionApi.Commands["Connection"]["Action"]["Map"]["Down"].Value   = new RelayCommand<IList>(actionMapDown,   actionMapCan);
+        //ExtensionApi.Commands["Connection"]["Action"]["Ban"].Value           = new RelayCommand<IList>(actionBan,       actionBanCan);   
 
         //private bool actionChatCan(Object nothing)
         //{
@@ -560,13 +630,13 @@ namespace Procon.UI.Default
         //    try
         //    {
         //        Event           e     = (Event)item;
-        //        String          key   = (String)ViewModelBase.PublicProperties["Connection"]["Filter"]["Chat"]["Data"].Value;
-        //        FilterType      type  = (FilterType)ViewModelBase.PublicProperties["Connection"]["Filter"]["Chat"]["Type"].Value;
-        //        FilterChatField field = (FilterChatField)ViewModelBase.PublicProperties["Connection"]["Filter"]["Chat"]["Field"].Value;
+        //        String          key   = (String)ExtensionApi.Properties["Connection"]["Filter"]["Chat"]["Data"].Value;
+        //        FilterType      type  = (FilterType)ExtensionApi.Properties["Connection"]["Filter"]["Chat"]["Type"].Value;
+        //        FilterChatField field = (FilterChatField)ExtensionApi.Properties["Connection"]["Filter"]["Chat"]["Field"].Value;
 
         //        // Add "Additional Filter" support here by doing things like:
         //        // [Code]
-        //        //   Boolean fSpawn = (Boolean)ViewModelBase.PublicPropertyies[...]["Spawn"].Value;
+        //        //   Boolean fSpawn = (Boolean)ExtensionApi.Propertyies[...]["Spawn"].Value;
         //        //   Boolean fChat  = ...
         //        //   ...
         //        // [End Code]
@@ -642,18 +712,18 @@ namespace Procon.UI.Default
         //    {
         //        ActiveConnection.Action(new Chat()
         //        {
-        //            Text           = (String)ViewModelBase.PublicProperties["Connection"]["Action"]["Chat"]["Data"].Value,
-        //            ChatActionType = (ChatActionType)ViewModelBase.PublicProperties["Connection"]["Action"]["Chat"]["Type"].Value,
+        //            Text           = (String)ExtensionApi.Properties["Connection"]["Action"]["Chat"]["Data"].Value,
+        //            ChatActionType = (ChatActionType)ExtensionApi.Properties["Connection"]["Action"]["Chat"]["Type"].Value,
         //            Subset         = new PlayerSubset()
         //            {
-        //                Context = (PlayerSubsetContext)ViewModelBase.PublicProperties["Connection"]["Action"]["Chat"]["Subset"].Value,
-        //                Team    = (Team)ViewModelBase.PublicProperties["Connection"]["Action"]["Chat"]["Subset"]["Team"].Value,
-        //                Squad   = (Squad)ViewModelBase.PublicProperties["Connection"]["Action"]["Chat"]["Subset"]["Squad"].Value,
-        //                Player  = (Player)ViewModelBase.PublicProperties["Connection"]["Action"]["Chat"]["Subset"]["Player"].Value
+        //                Context = (PlayerSubsetContext)ExtensionApi.Properties["Connection"]["Action"]["Chat"]["Subset"].Value,
+        //                Team    = (Team)ExtensionApi.Properties["Connection"]["Action"]["Chat"]["Subset"]["Team"].Value,
+        //                Squad   = (Squad)ExtensionApi.Properties["Connection"]["Action"]["Chat"]["Subset"]["Squad"].Value,
+        //                Player  = (Player)ExtensionApi.Properties["Connection"]["Action"]["Chat"]["Subset"]["Player"].Value
         //            }
 
         //        });
-        //        ViewModelBase.PublicProperties["Connection"]["Action"]["Chat"]["Data"].Value = String.Empty;
+        //        ExtensionApi.Properties["Connection"]["Action"]["Chat"]["Data"].Value = String.Empty;
         //    }
         //    catch (Exception) { }
         //}
@@ -661,7 +731,7 @@ namespace Procon.UI.Default
         //{
         //    try
         //    {
-        //        switch ((ActionPlayerType)ViewModelBase.PublicProperties["Connection"]["Action"]["Player"]["Type"].Value)
+        //        switch ((ActionPlayerType)ExtensionApi.Properties["Connection"]["Action"]["Player"]["Type"].Value)
         //        {
         //            // ------- ------- Move Player(s) ------- ------- //
         //            case ActionPlayerType.Move:
@@ -672,8 +742,8 @@ namespace Procon.UI.Default
         //                        Destination = new PlayerSubset()
         //                        {
         //                            Context = PlayerSubsetContext.Squad,
-        //                            Team    = (Team)ViewModelBase.PublicProperties["Connection"]["Action"]["Player"]["Move"]["Team"].Value,
-        //                            Squad   = (Squad)ViewModelBase.PublicProperties["Connection"]["Action"]["Player"]["Move"]["Squad"].Value
+        //                            Team    = (Team)ExtensionApi.Properties["Connection"]["Action"]["Player"]["Move"]["Team"].Value,
+        //                            Squad   = (Squad)ExtensionApi.Properties["Connection"]["Action"]["Player"]["Move"]["Squad"].Value
         //                        },
         //                        Target = new Player()
         //                        {
@@ -682,7 +752,7 @@ namespace Procon.UI.Default
         //                            Name   = pvm.Name,
         //                            IP     = pvm.IP
         //                        },
-        //                        Reason = (String)ViewModelBase.PublicProperties["Connection"]["Action"]["Player"]["Reason"].Value
+        //                        Reason = (String)ExtensionApi.Properties["Connection"]["Action"]["Player"]["Reason"].Value
         //                    });
         //                break;
         //            // ------- ------- Kill Player(s) ------- ------- //
@@ -697,7 +767,7 @@ namespace Procon.UI.Default
         //                            Name   = pvm.Name,
         //                            IP     = pvm.IP
         //                        },
-        //                        Reason = (String)ViewModelBase.PublicProperties["Connection"]["Action"]["Player"]["Reason"].Value
+        //                        Reason = (String)ExtensionApi.Properties["Connection"]["Action"]["Player"]["Reason"].Value
         //                    });
         //                break;
         //            // ------- ------- Kick Player(s) ------- ------- //
@@ -712,7 +782,7 @@ namespace Procon.UI.Default
         //                            Name   = pvm.Name,
         //                            IP     = pvm.IP
         //                        },
-        //                        Reason = (String)ViewModelBase.PublicProperties["Connection"]["Action"]["Player"]["Reason"].Value
+        //                        Reason = (String)ExtensionApi.Properties["Connection"]["Action"]["Player"]["Reason"].Value
         //                    });
         //                break;
         //            // ------- ------- Ban Player(s) ------- ------- //
@@ -723,9 +793,9 @@ namespace Procon.UI.Default
         //                        BanActionType = BanActionType.Ban,
         //                        Time = new TimeSubset()
         //                        {
-        //                            Context = (TimeSubsetContext)ViewModelBase.PublicProperties["Connection"]["Action"]["Player"]["Ban"]["Time"].Value,
+        //                            Context = (TimeSubsetContext)ExtensionApi.Properties["Connection"]["Action"]["Player"]["Ban"]["Time"].Value,
         //                            Length  = TimeSpan.ParseExact(
-        //                                          (String)ViewModelBase.PublicProperties["Connection"]["Action"]["Player"]["Ban"]["Length"].Value,
+        //                                          (String)ExtensionApi.Properties["Connection"]["Action"]["Player"]["Ban"]["Length"].Value,
         //                                          new String[] { "%d\\:%h\\:%m", "%h\\:%m", "%m" },
         //                                          null)
         //                        },
@@ -736,7 +806,7 @@ namespace Procon.UI.Default
         //                            Name   = pvm.Name,
         //                            IP     = pvm.IP
         //                        },
-        //                        Reason = (String)ViewModelBase.PublicProperties["Connection"]["Action"]["Player"]["Reason"].Value
+        //                        Reason = (String)ExtensionApi.Properties["Connection"]["Action"]["Player"]["Reason"].Value
         //                    });
         //                break;
         //        }
@@ -747,7 +817,7 @@ namespace Procon.UI.Default
         //{
         //    try
         //    {
-        //        Int32 rounds = Int32.Parse((String)ViewModelBase.PublicProperties["Connection"]["Action"]["Map"]["Round"].Value);
+        //        Int32 rounds = Int32.Parse((String)ExtensionApi.Properties["Connection"]["Action"]["Map"]["Round"].Value);
         //        // Create a temp list to sort the maps we want to add.
         //        List<MapViewModel> sMaps = new List<MapViewModel>();
         //        foreach (MapViewModel map in maps)
@@ -847,7 +917,7 @@ namespace Procon.UI.Default
         //        List<BanViewModel> sBans = new List<BanViewModel>();
         //        foreach (BanViewModel bvm in bans)
         //            sBans.Add(bvm);
-        //        switch ((ActionBanType)ViewModelBase.PublicProperties["Connection"]["Action"]["Ban"]["Type"].Value)
+        //        switch ((ActionBanType)ExtensionApi.Properties["Connection"]["Action"]["Ban"]["Type"].Value)
         //        {
         //            // ------- ------- Ban Player ------- ------- //
         //            case ActionBanType.Ban:
@@ -855,20 +925,20 @@ namespace Procon.UI.Default
         //                {
         //                    Target = new Player()
         //                    {
-        //                        UID  = (String)ViewModelBase.PublicProperties["Connection"]["Action"]["Ban"]["Uid"].Value,
-        //                        GUID = (String)ViewModelBase.PublicProperties["Connection"]["Action"]["Ban"]["Uid"].Value,
-        //                        Name = (String)ViewModelBase.PublicProperties["Connection"]["Action"]["Ban"]["Uid"].Value
+        //                        UID  = (String)ExtensionApi.Properties["Connection"]["Action"]["Ban"]["Uid"].Value,
+        //                        GUID = (String)ExtensionApi.Properties["Connection"]["Action"]["Ban"]["Uid"].Value,
+        //                        Name = (String)ExtensionApi.Properties["Connection"]["Action"]["Ban"]["Uid"].Value
         //                    },
         //                    BanActionType = BanActionType.Ban,
         //                    Time          = new TimeSubset()
         //                    {
-        //                        Context = (TimeSubsetContext)ViewModelBase.PublicProperties["Connection"]["Action"]["Ban"]["Time"].Value,
+        //                        Context = (TimeSubsetContext)ExtensionApi.Properties["Connection"]["Action"]["Ban"]["Time"].Value,
         //                        Length  = TimeSpan.ParseExact(
-        //                                      (String)ViewModelBase.PublicProperties["Connection"]["Action"]["Ban"]["Length"].Value,
+        //                                      (String)ExtensionApi.Properties["Connection"]["Action"]["Ban"]["Length"].Value,
         //                                      new String[] { "%d\\:%h\\:%m", "%h\\:%m", "%m" },
         //                                      null)
         //                    },
-        //                    Reason = (String)ViewModelBase.PublicProperties["Connection"]["Action"]["Ban"]["Reason"].Value
+        //                    Reason = (String)ExtensionApi.Properties["Connection"]["Action"]["Ban"]["Reason"].Value
         //                });
         //                break;
         //            // ------- ------- Unban Player(s) ------- ------- //
@@ -918,7 +988,7 @@ namespace Procon.UI.Default
         //                        {
         //                            Context = TimeSubsetContext.Time,
         //                            Length  = TimeSpan.ParseExact(
-        //                                          (String)ViewModelBase.PublicProperties["Connection"]["Action"]["Ban"]["Length"].Value,
+        //                                          (String)ExtensionApi.Properties["Connection"]["Action"]["Ban"]["Length"].Value,
         //                                          new String[] { "%d\\:%h\\:%m", "%h\\:%m", "%m" },
         //                                          null)
         //                        },
@@ -938,17 +1008,17 @@ namespace Procon.UI.Default
         // *   [Data]  - The text to filter by.
         // *   [Type]  - The method used to filter with.
         // *   [Field] - The data to filter on. */
-        //ViewModelBase.PublicProperties["Connection"]["Filter"]["Chat"]["Data"].Value  = String.Empty;
-        //ViewModelBase.PublicProperties["Connection"]["Filter"]["Chat"]["Type"].Value  = FilterType.Contains;
-        //ViewModelBase.PublicProperties["Connection"]["Filter"]["Chat"]["Field"].Value = FilterChatField.Data;
+        //ExtensionApi.Properties["Connection"]["Filter"]["Chat"]["Data"].Value  = String.Empty;
+        //ExtensionApi.Properties["Connection"]["Filter"]["Chat"]["Type"].Value  = FilterType.Contains;
+        //ExtensionApi.Properties["Connection"]["Filter"]["Chat"]["Field"].Value = FilterChatField.Data;
 
         ///* [Filter][Ban] - Contains information necessary to filter through bans.
         // *   [Data]  - The text to filter by.
         // *   [Type]  - The method used to filter with.
         // *   [Field] - The data to filter on. */
-        //ViewModelBase.PublicProperties["Connection"]["Filter"]["Ban"]["Data"].Value  = String.Empty;
-        //ViewModelBase.PublicProperties["Connection"]["Filter"]["Ban"]["Type"].Value  = FilterType.Contains;
-        //ViewModelBase.PublicProperties["Connection"]["Filter"]["Ban"]["Field"].Value = FilterBanField.Id;
+        //ExtensionApi.Properties["Connection"]["Filter"]["Ban"]["Data"].Value  = String.Empty;
+        //ExtensionApi.Properties["Connection"]["Filter"]["Ban"]["Type"].Value  = FilterType.Contains;
+        //ExtensionApi.Properties["Connection"]["Filter"]["Ban"]["Field"].Value = FilterBanField.Id;
 
         ///* [Action][Chat] - Contains information necessary to send a message to a game server.
         // *   [Type]     - How to display the text.
@@ -957,12 +1027,12 @@ namespace Procon.UI.Default
         // *     [Squad]  - Which squad to display the text to.
         // *     [Player] - Which player to display the text to.
         // *   [Data]     - The text to send. */
-        //ViewModelBase.PublicProperties["Connection"]["Action"]["Chat"]["Type"].Value             = ChatActionType.Say;
-        //ViewModelBase.PublicProperties["Connection"]["Action"]["Chat"]["Subset"].Value           = PlayerSubsetContext.All;
-        //ViewModelBase.PublicProperties["Connection"]["Action"]["Chat"]["Subset"]["Team"].Value   = Team.Team1;
-        //ViewModelBase.PublicProperties["Connection"]["Action"]["Chat"]["Subset"]["Squad"].Value  = Squad.None;
-        //ViewModelBase.PublicProperties["Connection"]["Action"]["Chat"]["Subset"]["Player"].Value = null;
-        //ViewModelBase.PublicProperties["Connection"]["Action"]["Chat"]["Data"].Value             = String.Empty;
+        //ExtensionApi.Properties["Connection"]["Action"]["Chat"]["Type"].Value             = ChatActionType.Say;
+        //ExtensionApi.Properties["Connection"]["Action"]["Chat"]["Subset"].Value           = PlayerSubsetContext.All;
+        //ExtensionApi.Properties["Connection"]["Action"]["Chat"]["Subset"]["Team"].Value   = Team.Team1;
+        //ExtensionApi.Properties["Connection"]["Action"]["Chat"]["Subset"]["Squad"].Value  = Squad.None;
+        //ExtensionApi.Properties["Connection"]["Action"]["Chat"]["Subset"]["Player"].Value = null;
+        //ExtensionApi.Properties["Connection"]["Action"]["Chat"]["Data"].Value             = String.Empty;
 
         ///* [Action][Player] - Contains information necessary to perform player administrative actions.
         // *   [Type]        - The type of player action to perform.
@@ -971,18 +1041,18 @@ namespace Procon.UI.Default
         // *   [Ban][Time]   - If banning player, the time context to ban them for.
         // *   [Ban][Length] - If banning player, the time length to ban them for.
         // *   [Reason]      - Why the action is being performed. */
-        //ViewModelBase.PublicProperties["Connection"]["Action"]["Player"]["Type"].Value          = ActionPlayerType.Kill;
-        //ViewModelBase.PublicProperties["Connection"]["Action"]["Player"]["Move"]["Team"].Value  = Team.Team1;
-        //ViewModelBase.PublicProperties["Connection"]["Action"]["Player"]["Move"]["Squad"].Value = Squad.Squad1;
-        //ViewModelBase.PublicProperties["Connection"]["Action"]["Player"]["Ban"]["Time"].Value   = TimeSubsetContext.Permanent;
-        //ViewModelBase.PublicProperties["Connection"]["Action"]["Player"]["Ban"]["Length"].Value = "1:00";
-        //ViewModelBase.PublicProperties["Connection"]["Action"]["Player"]["Reason"].Value        = String.Empty;
+        //ExtensionApi.Properties["Connection"]["Action"]["Player"]["Type"].Value          = ActionPlayerType.Kill;
+        //ExtensionApi.Properties["Connection"]["Action"]["Player"]["Move"]["Team"].Value  = Team.Team1;
+        //ExtensionApi.Properties["Connection"]["Action"]["Player"]["Move"]["Squad"].Value = Squad.Squad1;
+        //ExtensionApi.Properties["Connection"]["Action"]["Player"]["Ban"]["Time"].Value   = TimeSubsetContext.Permanent;
+        //ExtensionApi.Properties["Connection"]["Action"]["Player"]["Ban"]["Length"].Value = "1:00";
+        //ExtensionApi.Properties["Connection"]["Action"]["Player"]["Reason"].Value        = String.Empty;
 
         ///* [Action][Map] - Contains the information necessary to perform map administrative actions.
         // *   [Mode]  - UNSURE AS OF YET.
         // *   [Round] - The number of rounds a map should be added for. */
-        //ViewModelBase.PublicProperties["Connection"]["Action"]["Map"]["Mode"].Value  = String.Empty;
-        //ViewModelBase.PublicProperties["Connection"]["Action"]["Map"]["Round"].Value = "2";
+        //ExtensionApi.Properties["Connection"]["Action"]["Map"]["Mode"].Value  = String.Empty;
+        //ExtensionApi.Properties["Connection"]["Action"]["Map"]["Round"].Value = "2";
 
         ///* [Action][Ban] - Contains information necessary to perform ban administrative actions.
         // *   [Type]   - The type of ban action to perform.
@@ -990,11 +1060,11 @@ namespace Procon.UI.Default
         // *   [Time]   - If banning, the time context to ban for.
         // *   [Length] - If banning or to temp., the time length to ban them for.
         // *   [Reason] - If banning, why the action is being performed. */
-        //ViewModelBase.PublicProperties["Connection"]["Action"]["Ban"]["Type"].Value   = ActionBanType.Ban;
-        //ViewModelBase.PublicProperties["Connection"]["Action"]["Ban"]["Uid"].Value    = String.Empty;
-        //ViewModelBase.PublicProperties["Connection"]["Action"]["Ban"]["Time"].Value   = TimeSubsetContext.Permanent;
-        //ViewModelBase.PublicProperties["Connection"]["Action"]["Ban"]["Length"].Value = "1:00";
-        //ViewModelBase.PublicProperties["Connection"]["Action"]["Ban"]["Reason"].Value = String.Empty;
+        //ExtensionApi.Properties["Connection"]["Action"]["Ban"]["Type"].Value   = ActionBanType.Ban;
+        //ExtensionApi.Properties["Connection"]["Action"]["Ban"]["Uid"].Value    = String.Empty;
+        //ExtensionApi.Properties["Connection"]["Action"]["Ban"]["Time"].Value   = TimeSubsetContext.Permanent;
+        //ExtensionApi.Properties["Connection"]["Action"]["Ban"]["Length"].Value = "1:00";
+        //ExtensionApi.Properties["Connection"]["Action"]["Ban"]["Reason"].Value = String.Empty;
 
 
 
@@ -1002,30 +1072,30 @@ namespace Procon.UI.Default
         //// TYPES - Enumerations used for various reasons within the UI. //
         //// ------------------------------------------------------------ //
         //// Valid Game Types of connections that can be created.
-        //ViewModelBase.PublicProperties["Connection"]["Add"]["Types"].Value  = Enum.GetValues(typeof(GameType)).Cast<GameType>().Where(x => x != GameType.None);
+        //ExtensionApi.Properties["Connection"]["Add"]["Types"].Value  = Enum.GetValues(typeof(GameType)).Cast<GameType>().Where(x => x != GameType.None);
 
         //// Valid Filter Methods and Chat Fields that can be used to filter and filter on, respectively.
-        //ViewModelBase.PublicProperties["Connection"]["Filter"]["Chat"]["Types"].Value  = Enum.GetValues(typeof(FilterType)).Cast<FilterType>().Where(x => true);
-        //ViewModelBase.PublicProperties["Connection"]["Filter"]["Chat"]["Fields"].Value = Enum.GetValues(typeof(FilterChatField)).Cast<FilterChatField>().Where(x => true);
+        //ExtensionApi.Properties["Connection"]["Filter"]["Chat"]["Types"].Value  = Enum.GetValues(typeof(FilterType)).Cast<FilterType>().Where(x => true);
+        //ExtensionApi.Properties["Connection"]["Filter"]["Chat"]["Fields"].Value = Enum.GetValues(typeof(FilterChatField)).Cast<FilterChatField>().Where(x => true);
 
         //// Valid Filter Methods and Ban Fields that can be used to filter and filter on, respectively.
-        //ViewModelBase.PublicProperties["Connection"]["Filter"]["Ban"]["Types"].Value  = Enum.GetValues(typeof(FilterType)).Cast<FilterType>().Where(x => true);
-        //ViewModelBase.PublicProperties["Connection"]["Filter"]["Ban"]["Fields"].Value = Enum.GetValues(typeof(FilterBanField)).Cast<FilterChatField>().Where(x => true);
+        //ExtensionApi.Properties["Connection"]["Filter"]["Ban"]["Types"].Value  = Enum.GetValues(typeof(FilterType)).Cast<FilterType>().Where(x => true);
+        //ExtensionApi.Properties["Connection"]["Filter"]["Ban"]["Fields"].Value = Enum.GetValues(typeof(FilterBanField)).Cast<FilterChatField>().Where(x => true);
 
         //// Valid Methods to display a chat message and subsets to send a chat message to.
-        //ViewModelBase.PublicProperties["Connection"]["Action"]["Chat"]["Types"].Value   = Enum.GetValues(typeof(ActionChatType)).Cast<ActionChatType>().Where(x => true);
-        //ViewModelBase.PublicProperties["Connection"]["Action"]["Chat"]["Subsets"].Value = Enum.GetValues(typeof(PlayerSubsetContext)).Cast<PlayerSubsetContext>().Where(x => (x != PlayerSubsetContext.Server));
-        //ViewModelBase.PublicProperties["Connection"]["Action"]["Chat"]["Teams"].Value   = Enum.GetValues(typeof(Team)).Cast<Team>().Where(x => (x != Team.None));
-        //ViewModelBase.PublicProperties["Connection"]["Action"]["Chat"]["Squads"].Value  = Enum.GetValues(typeof(Squad)).Cast<Squad>().Where(x => true);
+        //ExtensionApi.Properties["Connection"]["Action"]["Chat"]["Types"].Value   = Enum.GetValues(typeof(ActionChatType)).Cast<ActionChatType>().Where(x => true);
+        //ExtensionApi.Properties["Connection"]["Action"]["Chat"]["Subsets"].Value = Enum.GetValues(typeof(PlayerSubsetContext)).Cast<PlayerSubsetContext>().Where(x => (x != PlayerSubsetContext.Server));
+        //ExtensionApi.Properties["Connection"]["Action"]["Chat"]["Teams"].Value   = Enum.GetValues(typeof(Team)).Cast<Team>().Where(x => (x != Team.None));
+        //ExtensionApi.Properties["Connection"]["Action"]["Chat"]["Squads"].Value  = Enum.GetValues(typeof(Squad)).Cast<Squad>().Where(x => true);
 
         //// Valid Player Actions to take, and selections for various player actions.
-        //ViewModelBase.PublicProperties["Connection"]["Action"]["Player"]["Types"].Value          = Enum.GetValues(typeof(ActionPlayerType)).Cast<ActionPlayerType>().Where(x => true);
-        //ViewModelBase.PublicProperties["Connection"]["Action"]["Player"]["Move"]["Teams"].Value  = Enum.GetValues(typeof(Team)).Cast<Team>().Where(x => (x != Team.None));
-        //ViewModelBase.PublicProperties["Connection"]["Action"]["Player"]["Move"]["Squads"].Value = Enum.GetValues(typeof(Squad)).Cast<Squad>().Where(x => true);
-        //ViewModelBase.PublicProperties["Connection"]["Action"]["Player"]["Ban"]["Times"].Value   = Enum.GetValues(typeof(TimeSubsetContext)).Cast<TimeSubsetContext>().Where(x => (x != TimeSubsetContext.None));
+        //ExtensionApi.Properties["Connection"]["Action"]["Player"]["Types"].Value          = Enum.GetValues(typeof(ActionPlayerType)).Cast<ActionPlayerType>().Where(x => true);
+        //ExtensionApi.Properties["Connection"]["Action"]["Player"]["Move"]["Teams"].Value  = Enum.GetValues(typeof(Team)).Cast<Team>().Where(x => (x != Team.None));
+        //ExtensionApi.Properties["Connection"]["Action"]["Player"]["Move"]["Squads"].Value = Enum.GetValues(typeof(Squad)).Cast<Squad>().Where(x => true);
+        //ExtensionApi.Properties["Connection"]["Action"]["Player"]["Ban"]["Times"].Value   = Enum.GetValues(typeof(TimeSubsetContext)).Cast<TimeSubsetContext>().Where(x => (x != TimeSubsetContext.None));
 
         //// Valid Ban Time Contexts for banning players.
-        //ViewModelBase.PublicProperties["Connection"]["Action"]["Ban"]["Types"].Value = Enum.GetValues(typeof(ActionBanType)).Cast<ActionBanType>().Where(x => true);
-        //ViewModelBase.PublicProperties["Connection"]["Action"]["Ban"]["Times"].Value = Enum.GetValues(typeof(TimeSubsetContext)).Cast<TimeSubsetContext>().Where(x => (x != TimeSubsetContext.None) && (x != TimeSubsetContext.Round));
+        //ExtensionApi.Properties["Connection"]["Action"]["Ban"]["Types"].Value = Enum.GetValues(typeof(ActionBanType)).Cast<ActionBanType>().Where(x => true);
+        //ExtensionApi.Properties["Connection"]["Action"]["Ban"]["Times"].Value = Enum.GetValues(typeof(TimeSubsetContext)).Cast<TimeSubsetContext>().Where(x => (x != TimeSubsetContext.None) && (x != TimeSubsetContext.Round));
     }
 }

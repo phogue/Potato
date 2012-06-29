@@ -3,6 +3,7 @@ using System.IO;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+
 using Procon.Core;
 using Procon.UI.API;
 using Procon.UI.API.Utils;
@@ -19,7 +20,7 @@ namespace Procon.UI
         {
             // Start Procon and load the settings file.
             InstanceViewModel tProcon = new InstanceViewModel(new Instance());
-            InstanceViewModel.PublicProperties["Procon"].Value = tProcon;
+            ExtensionApi.Properties["Procon"].Value = tProcon;
             tProcon.Execute();
             Settings.Load();
 
@@ -52,13 +53,13 @@ namespace Procon.UI
             };
 
             // Setup some setting management.
-            ViewModelBase.PublicProperties["Interface"].PropertyChanged +=
+            ExtensionApi.Properties["Interface"].PropertyChanged +=
             (s, e) => {
                 ExtensionApi.Settings["InterfaceType"].Value = (ExtensionApi.Interface != null) ? (Object)ExtensionApi.Interface.IsLocal  : null;
                 ExtensionApi.Settings["InterfaceHost"].Value = (ExtensionApi.Interface != null) ? (Object)ExtensionApi.Interface.Hostname : null;
                 ExtensionApi.Settings["InterfacePort"].Value = (ExtensionApi.Interface != null) ? (Object)ExtensionApi.Interface.Port     : null;
             };
-            ViewModelBase.PublicProperties["Connection"].PropertyChanged +=
+            ExtensionApi.Properties["Connection"].PropertyChanged +=
             (s, e) => {
                 ExtensionApi.Settings["ConnectionType"].Value = (ExtensionApi.Connection != null) ? (Object)ExtensionApi.Connection.GameType : null;
                 ExtensionApi.Settings["ConnectionHost"].Value = (ExtensionApi.Connection != null) ? (Object)ExtensionApi.Connection.Hostname : null;

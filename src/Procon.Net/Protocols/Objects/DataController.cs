@@ -23,8 +23,7 @@ namespace Procon.Net.Protocols.Objects
     [Serializable]
     public class DataController : INotifyPropertyChanged
     {
-        // Back-end implementation.
-        private List<DataVariable> mVariables = new List<DataVariable>();
+        // Properties.
         public  List<DataVariable> Variables {
             get { return mVariables; }
             set {
@@ -32,62 +31,45 @@ namespace Procon.Net.Protocols.Objects
                     mVariables = value;
                     OnPropertyChanged("Variables");
         } } }
+        private List<DataVariable> mVariables = new List<DataVariable>();
+
 
         // Front-end "Single" accessor/mutator for the data.
         public DataVariable this[String key]
         {
-            get { return mVariables.FirstOrDefault(x => x.Name == key); }
-            set
+            get
             {
-                DataVariable vKey = this[key];
-                if      (vKey == null && value != null) _DataAdd(value);
-                else if (vKey != null && value == null) _DataRemove(vKey);
-                else if (vKey != null && value != null) _DataSet(vKey, value);
+                if (!DataContains(key)) {
+                    DataVariable vKey = new DataVariable(key);
+                    _DataAdd(vKey);
+                    return vKey;
+                }
+                return mVariables.First(x => x.Name == key);
             }
+            set { _DataSet(this[key], value != null ? value : new DataVariable(key)); }
         }
 
-        #region Mutators
-
-        // Front-end mutators for the data.
-        public void DataAdd(String key, DataVariable value)
+        // Mutators for the data.
+        public void DataSet(DataVariable value)
         {
-            DataVariable vKey = this[key];
-            if (vKey == null) _DataAdd(value);
-        }
-        public void DataAdd(String key, Object value)
-        {
-            DataVariable vKey = this[key];
-            if (vKey == null) _DataAdd(new DataVariable(key, value));
-        }
-        public void DataAddSet(String key, DataVariable value)
-        {
-            DataVariable vKey = this[key];
-            if (vKey == null) _DataAdd(value);
-            else              _DataSet(vKey, value);
-        }
-        public void DataAddSet(String key, Object value)
-        {
-            DataVariable vKey = this[key];
-            if (vKey == null) _DataAdd(new DataVariable(key, value));
-            else              _DataSet(vKey, value);
-        }
-        public void DataSet(String key, DataVariable value)
-        {
-            DataVariable vKey = this[key];
-            if (vKey != null) _DataSet(vKey, value);
+            if (value != null && value.Name != null)
+                _DataSet(this[value.Name], value);
         }
         public void DataSet(String key, Object value)
         {
-            DataVariable vKey = this[key];
-            if (vKey != null) _DataSet(vKey, value);
+            _DataSet(this[key], value);
         }
         public void DataRemove(String key)
         {
-            DataVariable vKey = this[key];
-            if (vKey != null) _DataRemove(vKey);
+            if (DataContains(key))
+                _DataRemove(this[key]);
+        }
+        public void DataClear()
+        {
+            mVariables.Clear();
         }
 
-        // Back-end mutators for the data.
+        // Back-end implementation for the mutators.
         private void _DataAdd(DataVariable value)
         {
             mVariables.Add(value);
@@ -100,12 +82,10 @@ namespace Procon.Net.Protocols.Objects
             oValue.IsReadOnly   = nValue.IsReadOnly;
             oValue.FriendlyName = nValue.FriendlyName;
             oValue.Description  = nValue.Description;
-            OnDataChanged(this, oValue);
         }
         private void _DataSet(DataVariable oValue, Object nValue)
         {
             oValue.Value = nValue;
-            OnDataChanged(this, oValue);
         }
         private void _DataRemove(DataVariable value)
         {
@@ -114,40 +94,34 @@ namespace Procon.Net.Protocols.Objects
             value.PropertyChanged -= Data_PropertyChanged;
         }
 
-        #endregion
-        #region Misc.
 
-        // Misc. Properties.
-        public Int32 DataCount { get { return mVariables.Count; } }
+        // Data Validation.
+        public Int32   DataCount { get { return mVariables.Count; } }
+        public Boolean DataContains(String key) { return mVariables.FirstOrDefault(x => x.Name == key) != null; }
 
-        // Misc. Functions.
-        public Boolean DataContains(String key) { return mVariables.Count(x => x.Name == key) > 0; }
-        public void    DataClear()              { mVariables.Clear(); }
-        
-        // Misc. Accessor.
+        // Data Validation Accessor.
         public T TryGetVariable<T>(String key, T fallback = default(T))
         {
             if (DataContains(key))
-                try               { return this[key].TryGetValue<T>(fallback); }
-                catch (Exception) { }
+                return this[key].TryGetValue<T>(fallback);
             return fallback;
         }
 
-        #endregion
-        #region Events
+        // Data Notified Property Changed events.
+        private void Data_PropertyChanged(Object sender, PropertyChangedEventArgs e)
+        {
+            OnDataChanged(this, (DataVariable)sender);
+        }
 
-        // Data Added / Removed / Changed events.
+
+        // Events.
         public delegate void DataAlteredHandler(DataController parent, DataVariable item);
-
         [field: NonSerialized]
         public event DataAlteredHandler DataAdded;
-
         [field: NonSerialized]
         public event DataAlteredHandler DataRemoved;
-
         [field: NonSerialized]
         public event DataAlteredHandler DataChanged;
-
         protected void OnDataAdded(DataController parent, DataVariable item)
         {
             if (DataAdded != null)
@@ -164,24 +138,16 @@ namespace Procon.Net.Protocols.Objects
                 DataChanged(parent, item);
         }
 
-        // Data Notified Property Changed events.
-        private void Data_PropertyChanged(Object sender, PropertyChangedEventArgs e)
-        {
-            OnDataChanged(this, (DataVariable)sender);
-        }
-
         #region INotifyPropertyChanged
 
         // Allows for external applications/classes to know when properties have been updated.
         [field: NonSerialized]
         public    event PropertyChangedEventHandler PropertyChanged;
-        protected void  OnPropertyChanged(String name)
+        protected void  OnPropertyChanged(String property)
         {
             if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(name));
+                PropertyChanged(this, new PropertyChangedEventArgs(property));
         }
-
-        #endregion
 
         #endregion
     }

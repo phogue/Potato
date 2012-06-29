@@ -58,7 +58,7 @@ namespace Procon.Net.Protocols.Objects {
         {
             get { return TryGetVariable<int>(C_MAX_CONSOLE_LINES, 0); }
             set {
-                DataAddSet(C_MAX_CONSOLE_LINES, value);
+                DataSet(C_MAX_CONSOLE_LINES, value);
                 OnPropertyChanged("MaxConsoleLines");
         } }
 
@@ -67,7 +67,7 @@ namespace Procon.Net.Protocols.Objects {
         {
             get { return TryGetVariable<ConnectionState>(C_CONNECTION_STATE, 0); }
             set {
-                DataAddSet(C_CONNECTION_STATE, value);
+                DataSet(C_CONNECTION_STATE, value);
                 OnPropertyChanged("ConnectionState");
         } }
         /// <summary>The amount of time the server has been running since it's last restart</summary>
@@ -75,7 +75,7 @@ namespace Procon.Net.Protocols.Objects {
         {
             get { return TryGetVariable<int>(C_UP_TIME, 0); }
             set {
-                DataAddSet(C_UP_TIME, value);
+                DataSet(C_UP_TIME, value);
                 OnPropertyChanged("UpTime");
         } }
         /// <summary>The version of the server</summary>
@@ -83,7 +83,7 @@ namespace Procon.Net.Protocols.Objects {
         {
             get { return TryGetVariable<string>(C_VERSION, null); }
             set {
-                DataAddSet(C_VERSION, value);
+                DataSet(C_VERSION, value);
                 OnPropertyChanged("Version");
         } }
 
@@ -92,7 +92,7 @@ namespace Procon.Net.Protocols.Objects {
         {
             get { return TryGetVariable<string>(C_SERVER_NAME, null); }
             set {
-                DataAddSet(C_SERVER_NAME, value);
+                DataSet(C_SERVER_NAME, value);
                 OnPropertyChanged("ServerName");
         } }
         /// <summary>The description of the server</summary>
@@ -100,7 +100,7 @@ namespace Procon.Net.Protocols.Objects {
         {
             get { return TryGetVariable<string>(C_SERVER_DESCRIPTION, null); }
             set {
-                DataAddSet(C_SERVER_DESCRIPTION, value);
+                DataSet(C_SERVER_DESCRIPTION, value);
                 OnPropertyChanged("ServerDescription");
         } }
         /// <summary>The url for the banner of the server</summary>
@@ -108,7 +108,7 @@ namespace Procon.Net.Protocols.Objects {
         {
             get { return TryGetVariable<string>(C_BANNER_URL, null); }
             set {
-                DataAddSet(C_BANNER_URL, value);
+                DataSet(C_BANNER_URL, value);
                 OnPropertyChanged("BannerUrl");
         } }
         
@@ -117,7 +117,7 @@ namespace Procon.Net.Protocols.Objects {
         {
             get { return TryGetVariable<bool>(C_RANKED, false); }
             set {
-                DataAddSet(C_RANKED, value);
+                DataSet(C_RANKED, value);
                 OnPropertyChanged("Ranked");
         } }
         /// <summary>Whether the server is protected by anti-cheat software</summary>
@@ -125,7 +125,7 @@ namespace Procon.Net.Protocols.Objects {
         {
             get { return TryGetVariable<bool>(C_ANTI_CHEAT, false); }
             set {
-                DataAddSet(C_ANTI_CHEAT, value);
+                DataSet(C_ANTI_CHEAT, value);
                 OnPropertyChanged("AntiCheat");
         } }
         /// <summary>Whether the server is auto-balanced</summary>
@@ -133,7 +133,7 @@ namespace Procon.Net.Protocols.Objects {
         {
             get { return TryGetVariable<bool>(C_AUTO_BALANCE, false); }
             set {
-                DataAddSet(C_AUTO_BALANCE, value);
+                DataSet(C_AUTO_BALANCE, value);
                 OnPropertyChanged("AutoBalance");
         } }
         /// <summary>Whether the server has friendly-fire enabled</summary>
@@ -141,7 +141,7 @@ namespace Procon.Net.Protocols.Objects {
         {
             get { return TryGetVariable<bool>(C_FRIENDLY_FIRE, false); }
             set {
-                DataAddSet(C_FRIENDLY_FIRE, value);
+                DataSet(C_FRIENDLY_FIRE, value);
                 OnPropertyChanged("FriendlyFire");
         } }
         /// <summary>Whether the server is password protected</summary>
@@ -149,7 +149,7 @@ namespace Procon.Net.Protocols.Objects {
         {
             get { return TryGetVariable<bool>(C_PASSWORDED, false); }
             set {
-                DataAddSet(C_PASSWORDED, value);
+                DataSet(C_PASSWORDED, value);
                 OnPropertyChanged("Passworded");
         } }
         /// <summary>The password of the server, if password protected</summary>
@@ -157,7 +157,7 @@ namespace Procon.Net.Protocols.Objects {
         {
             get { return TryGetVariable<string>(C_PASSWORD, null); }
             set {
-                DataAddSet(C_PASSWORD, value);
+                DataSet(C_PASSWORD, value);
                 OnPropertyChanged("Password");
         } }
 
@@ -166,7 +166,7 @@ namespace Procon.Net.Protocols.Objects {
         {
             get { return TryGetVariable<int>(C_ROUND_TIME, 0); }
             set {
-                DataAddSet(C_ROUND_TIME, value);
+                DataSet(C_ROUND_TIME, value);
                 OnPropertyChanged("RoundTime");
         } }
         /// <summary>The current round index being played</summary>
@@ -174,7 +174,7 @@ namespace Procon.Net.Protocols.Objects {
         {
             get { return TryGetVariable<int>(C_ROUND_INDEX, 0); }
             set {
-                DataAddSet(C_ROUND_INDEX, value);
+                DataSet(C_ROUND_INDEX, value);
                 OnPropertyChanged("RoundIndex");
         } }
         /// <summary>The maximum number of rounds to be played</summary>
@@ -182,7 +182,7 @@ namespace Procon.Net.Protocols.Objects {
         {
             get { return TryGetVariable<int>(C_MAX_ROUND_INDEX, 0); }
             set {
-                DataAddSet(C_MAX_ROUND_INDEX, value);
+                DataSet(C_MAX_ROUND_INDEX, value);
                 OnPropertyChanged("MaxRoundIndex");
         } }
         
@@ -192,7 +192,7 @@ namespace Procon.Net.Protocols.Objects {
             get { return TryGetVariable<int>(C_PLAYER_COUNT, 0); }
             set
             {
-                DataAddSet(C_PLAYER_COUNT, value);
+                DataSet(C_PLAYER_COUNT, value);
                 OnPropertyChanged("PlayerCount");
         } }
         /// <summary>How many players are supported by the server</summary>
@@ -200,7 +200,7 @@ namespace Procon.Net.Protocols.Objects {
         {
             get { return TryGetVariable<int>(C_MAX_PLAYER_COUNT, 0); }
             set {
-                DataAddSet(C_MAX_PLAYER_COUNT, value);
+                DataSet(C_MAX_PLAYER_COUNT, value);
                 OnPropertyChanged("MaxPlayerCount");
         } }
 
@@ -209,7 +209,7 @@ namespace Procon.Net.Protocols.Objects {
         {
             get { return TryGetVariable<string>(C_MAP_NAME, null); }
             set {
-                DataAddSet(C_MAP_NAME, value);
+                DataSet(C_MAP_NAME, value);
                 OnPropertyChanged("MapName");
         } }
         /// <summary>The name of the current game mode</summary>
@@ -217,7 +217,7 @@ namespace Procon.Net.Protocols.Objects {
         {
             get { return TryGetVariable<string>(C_GAME_MODE_NAME, null); }
             set {
-                DataAddSet(C_GAME_MODE_NAME, value);
+                DataSet(C_GAME_MODE_NAME, value);
                 OnPropertyChanged("GameModeName");
         } }
     }

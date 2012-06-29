@@ -10,14 +10,13 @@ using System.Xml.Linq;
 using Procon.Core;
 using Procon.UI.API;
 using Procon.UI.API.Classes;
-using Procon.UI.API.ViewModels;
 
 namespace Procon.UI
 {
-    public static class Settings
+    internal static class Settings
     {
         // Holds the information for the Settings, Assemblies, and Extensions.
-        private static InfinityDictionary<String, Object> mSettings   = InstanceViewModel.PublicProperties["Settings"];
+        private static InfinityDictionary<String, Object> mSettings   = ExtensionApi.Properties["Settings"];
         private static List<Assembly>                     mAssemblies = new List<Assembly>();
         private static List<Extension>                    mExtensions = new List<Extension>();
 
@@ -45,13 +44,13 @@ namespace Procon.UI
                 Type       tAttribType = null;
 
                 // Iterate over each setting and save it in the "Settings" array.
-                foreach (XElement tNodeSetting in tNode.Elements())
-                    if ((tAttribute = tNodeSetting.Attributes("type").FirstOrDefault()) != null &&
+                foreach (XElement nodeSetting in tNode.Elements())
+                    if ((tAttribute = nodeSetting.Attributes("type").FirstOrDefault()) != null &&
                         (tAttribType = Type.GetType(tAttribute.Value))                  != null)
                         if (tAttribType.IsPrimitive)
-                            mSettings.Add(tNodeSetting.Name.LocalName, Convert.ChangeType(tNodeSetting.Value, tAttribType));
+                            mSettings.Add(nodeSetting.Name.LocalName, Convert.ChangeType(nodeSetting.Value, tAttribType));
                         else
-                            mSettings.Add(tNodeSetting.Name.LocalName, TypeDescriptor.GetConverter(tAttribType).ConvertFrom(tNodeSetting.Value));
+                            mSettings.Add(nodeSetting.Name.LocalName, TypeDescriptor.GetConverter(tAttribType).ConvertFrom(nodeSetting.Value));
 
                 // Load the assemblies and extensions from the config file.
                 if ((tNode = tNode.Element("extensions")) != null) {
@@ -61,15 +60,15 @@ namespace Procon.UI
                     List<Type>      tTypes      = null;
 
                     // Load all the assemblies specified into the app domain.
-                    foreach (XElement tNodeAssembly in tNode.Elements("assembly"))
+                    foreach (XElement nodeAssembly in tNode.Elements("assembly"))
                         try {
-                            tAssembly = Assembly.LoadFrom(tNodeAssembly.Value);
+                            tAssembly = Assembly.LoadFrom(nodeAssembly.Value);
                             tTypes    = new List<Type>(tAssembly.GetTypes().Where(x => typeof(IExtension).IsAssignableFrom(x)));
 
                             // Create an instance of each extension contained in the assemblies.
-                            foreach (Type tType in tTypes)
+                            foreach (Type type in tTypes)
                                 try {
-                                    tExtension = new Extension((IExtension)tAssembly.CreateInstance(tType.FullName));
+                                    tExtension = new Extension((IExtension)tAssembly.CreateInstance(type.FullName));
                                     if (tExtension.IExtension != null)
                                         tExtensions.Add(tExtension);
                                 } catch (Exception) { }
@@ -78,8 +77,8 @@ namespace Procon.UI
                         } catch (Exception) { }
 
                     // Keep only the specified extensions in the list.
-                    foreach (XElement tNodeExtension in tNode.Elements("extension"))
-                        if ((tExtension = tExtensions.FirstOrDefault(x => x.IExtension.Name == tNodeExtension.Value)) != null)
+                    foreach (XElement nodeExtension in tNode.Elements("extension"))
+                        if ((tExtension = tExtensions.FirstOrDefault(x => x.IExtension.Name == nodeExtension.Value)) != null)
                             mExtensions.Add(tExtension);
                 }
             }
@@ -90,24 +89,24 @@ namespace Procon.UI
             Config tConfig = new Config().Generate(typeof(Settings));
 
             // Save each item in the "Settings" array.
-            foreach (String tKey in mSettings.Keys)
-                if (mSettings[tKey].Value != null)
+            foreach (String key in mSettings.Keys)
+                if (mSettings[key].Value != null)
                     tConfig.Root.Add(
-                        new XElement(tKey,
+                        new XElement(key,
                             new XAttribute("type",
-                                (mSettings[tKey].Value.GetType().Module.Name == "mscorlib.dll") ?
-                                    mSettings[tKey].Value.GetType().FullName :
-                                    mSettings[tKey].Value.GetType().AssemblyQualifiedName
+                                (mSettings[key].Value.GetType().Module.Name == "mscorlib.dll") ?
+                                    mSettings[key].Value.GetType().FullName :
+                                    mSettings[key].Value.GetType().AssemblyQualifiedName
                             ),
-                            mSettings[tKey].Value
+                            mSettings[key].Value
                     ));
 
             // Save each assembly and extension that was loaded.
             XElement tNode = new XElement("extensions");
-            foreach (Assembly tAssembly in mAssemblies)
-                tNode.Add(new XElement("assembly", AppDomain.CurrentDomain.BaseDirectory.RelativeTo(tAssembly.Location)));
-            foreach (Extension tExtension in mExtensions)
-                tNode.Add(new XElement("extension", tExtension.IExtension.Name));
+            foreach (Assembly assembly in mAssemblies)
+                tNode.Add(new XElement("assembly", AppDomain.CurrentDomain.BaseDirectory.RelativeTo(assembly.Location)));
+            foreach (Extension extension in mExtensions)
+                tNode.Add(new XElement("extension", extension.IExtension.Name));
             tConfig.Root.Add(tNode);
 
             // Write the config file.
@@ -117,8 +116,8 @@ namespace Procon.UI
         // Executes the extensions that should be and have not been executed.
         public static void ExecuteExtensions(Window root)
         {
-            foreach (Extension tExtension in mExtensions.Where(x => !x.IsExecuted))
-                tExtension.Execute(root);
+            foreach (Extension extension in mExtensions.Where(x => !x.IsExecuted))
+                extension.Execute(root);
         }
     }
 }

@@ -6,7 +6,7 @@ namespace Procon.Net.Protocols.Objects
     [Serializable]
     public class DataVariable : INotifyPropertyChanged
     {
-        // Public Accessors/Mutators.
+        // Properties.
         public String  Name
         {
             get { return mName; }
@@ -50,12 +50,11 @@ namespace Procon.Net.Protocols.Objects
             }
         }
 
-        // Private Variables.
-        private String mName;
-        private Object mValue;
+        private String  mName;
+        private Object  mValue;
         private Boolean mIsReadOnly;
-        private String mFriendlyName;
-        private String mDescription;
+        private String  mFriendlyName;
+        private String  mDescription;
 
 
         // Constructor.
@@ -72,18 +71,22 @@ namespace Procon.Net.Protocols.Objects
         public T TryGetValue<T>(T fallback = default(T))
         {
             if (Value != null)
-                return (T)Value;
+                try               { return (T)Value; }
+                catch (Exception) { }
             return fallback;
         }
 
+        #region INotifyPropertyChanged
 
-        // Events.
+        // Allows for external applications/classes to know when properties have been updated.
         [field: NonSerialized]
         public    event PropertyChangedEventHandler PropertyChanged;
-        protected void  OnPropertyChanged(String name)
+        protected void  OnPropertyChanged(String property)
         {
             if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(name));
+                PropertyChanged(this, new PropertyChangedEventArgs(property));
         }
+
+        #endregion
     }
 }

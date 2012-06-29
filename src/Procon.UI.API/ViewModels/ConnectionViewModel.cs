@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Data;
 using System.Linq;
-using System.Reflection;
-using System.Windows.Data;
+
 using Procon.Core.Interfaces.Connections;
+using Procon.Core.Interfaces.Connections.Plugins;
 using Procon.Net;
 using Procon.Net.Protocols;
 using Procon.Net.Protocols.Objects;
@@ -15,700 +13,396 @@ namespace Procon.UI.API.ViewModels
 {
     public class ConnectionViewModel : ViewModel<Connection>
     {
-        // Standard Model Properties
+        // Properties.
         public GameType GameType {
-            get { return Model.GameType; }
+            get { return nModel.GameType; }
         }
-        public String Hostname {
-            get { return Model.Hostname; }
+        public String   Hostname {
+            get { return nModel.Hostname; }
         }
-        public UInt16 Port {
-            get { return Model.Port; }
+        public UInt16   Port {
+            get { return nModel.Port; }
         }
-        public String Additional {
-            get { return Model.Additional; }
+        public String   Additional {
+            get { return nModel.Additional; }
         }
-
-        // Standard Variables
-        public Int32 MaxConsoleLines {
-            get { return Model.GameState.Variables.MaxConsoleLines; }
-            set { Model.GameState.Variables.MaxConsoleLines = value; }
+        
+        public ConnectionState ConnectionState {
+            get { return nModel.GameState.Variables.ConnectionState; }
         }
-        public Net.ConnectionState ConnectionState {
-            get { return Model.GameState.Variables.ConnectionState; }
+        public Int32   MaxConsoleLines {
+            get { return nModel.GameState.Variables.MaxConsoleLines; }
+            set { nModel.GameState.Variables.MaxConsoleLines = value; }
         }
-        public Int32 UpTime {
-            get { return Model.GameState.Variables.UpTime; }
+        public Int32   UpTime {
+            get { return nModel.GameState.Variables.UpTime; }
         }
-        public String Version {
-            get { return Model.GameState.Variables.Version; }
+        public String  Version {
+            get { return nModel.GameState.Variables.Version; }
         }
-        public String ServerName {
-            get { return Model.GameState.Variables.ServerName; }
-            set { Model.GameState.Variables.ServerName = value; }
+        public String  ServerName {
+            get { return nModel.GameState.Variables.ServerName; }
+            set { nModel.GameState.Variables.ServerName = value; }
         }
-        public String ServerDescription {
-            get { return Model.GameState.Variables.ServerDescription; }
-            set { Model.GameState.Variables.ServerDescription = value; }
+        public String  ServerDescription {
+            get { return nModel.GameState.Variables.ServerDescription; }
+            set { nModel.GameState.Variables.ServerDescription = value; }
         }
-        public String BannerUrl {
-            get { return Model.GameState.Variables.BannerUrl; }
-            set { Model.GameState.Variables.BannerUrl = value; }
+        public String  BannerUrl {
+            get { return nModel.GameState.Variables.BannerUrl; }
+            set { nModel.GameState.Variables.BannerUrl = value; }
         }
         public Boolean Ranked {
-            get { return Model.GameState.Variables.Ranked; }
-            set { Model.GameState.Variables.Ranked = value; }
+            get { return nModel.GameState.Variables.Ranked; }
+            set { nModel.GameState.Variables.Ranked = value; }
         }
         public Boolean AntiCheat {
-            get { return Model.GameState.Variables.AntiCheat; }
-            set { Model.GameState.Variables.AntiCheat = value; }
+            get { return nModel.GameState.Variables.AntiCheat; }
+            set { nModel.GameState.Variables.AntiCheat = value; }
         }
         public Boolean AutoBalance {
-            get { return Model.GameState.Variables.AutoBalance; }
-            set { Model.GameState.Variables.AutoBalance = value; }
+            get { return nModel.GameState.Variables.AutoBalance; }
+            set { nModel.GameState.Variables.AutoBalance = value; }
         }
         public Boolean FriendlyFire {
-            get { return Model.GameState.Variables.FriendlyFire; }
-            set { Model.GameState.Variables.FriendlyFire = value; }
+            get { return nModel.GameState.Variables.FriendlyFire; }
+            set { nModel.GameState.Variables.FriendlyFire = value; }
         }
         public Boolean Passworded {
-            get { return Model.GameState.Variables.Passworded; }
-            set { Model.GameState.Variables.Passworded = value; }
+            get { return nModel.GameState.Variables.Passworded; }
+            set { nModel.GameState.Variables.Passworded = value; }
         }
-        public String Password {
-            get { return Model.GameState.Variables.Password; }
-            set { Model.GameState.Variables.Password = value; }
+        public String  Password {
+            get { return nModel.GameState.Variables.Password; }
+            set { nModel.GameState.Variables.Password = value; }
         }
-        public Int32 RoundTime {
-            get { return Model.GameState.Variables.RoundTime; }
+        public Int32   RoundTime {
+            get { return nModel.GameState.Variables.RoundTime; }
         }
-        public Int32 RoundIndex {
-            get { return Model.GameState.Variables.RoundIndex; }
+        public Int32   RoundIndex {
+            get { return nModel.GameState.Variables.RoundIndex; }
         }
-        public Int32 MaxRoundIndex {
-            get { return Model.GameState.Variables.MaxRoundIndex; }
-            set { Model.GameState.Variables.MaxRoundIndex = value; }
+        public Int32   MaxRoundIndex {
+            get { return nModel.GameState.Variables.MaxRoundIndex; }
+            set { nModel.GameState.Variables.MaxRoundIndex = value; }
         }
-        public Int32 PlayerCount {
-            get { return Model.GameState.Variables.PlayerCount; }
+        public Int32   PlayerCount {
+            get { return nModel.GameState.Variables.PlayerCount; }
         }
-        public Int32 MaxPlayerCount {
-            get { return Model.GameState.Variables.MaxPlayerCount; }
-            set { Model.GameState.Variables.MaxPlayerCount = value; }
+        public Int32   MaxPlayerCount {
+            get { return nModel.GameState.Variables.MaxPlayerCount; }
+            set { nModel.GameState.Variables.MaxPlayerCount = value; }
         }
-        public String MapName {
-            get { return Model.GameState.Variables.MapName; }
+        public String  MapName {
+            get { return nModel.GameState.Variables.MapName; }
         }
-        public String GameModeName {
-            get { return Model.GameState.Variables.GameModeName; }
+        public String  GameModeName {
+            get { return nModel.GameState.Variables.GameModeName; }
         }
 
-        // View Model Properties
-        public ObservableCollection<Player>          Players {
+        // Observable Properties.
+        public ObservableCollection<Plugin>       Plugins {
+            get { return mPlugins; }
+            set {
+                if (mPlugins != value) {
+                    mPlugins = value;
+                    OnPropertyChanged("Plugins");
+        } } }
+        public ObservableCollection<Player>       Players {
             get { return mPlayers; }
             set {
                 if (mPlayers != value) {
                     mPlayers = value;
-                    OnPropertyChanged(this, "Players");
+                    OnPropertyChanged("Players");
         } } }
-        public ObservableCollection<MapViewModel>    Maps {
+        public ObservableCollection<Map>          Maps {
             get { return mMaps; }
             set {
                 if (mMaps != value) {
                     mMaps = value;
-                    OnPropertyChanged(this, "MapList");
+                    OnPropertyChanged("MapList");
         } } }
-        public ObservableCollection<BanViewModel>    Bans
+        public ObservableCollection<Ban>          Bans
         {
             get { return mBans; }
             set {
                 if (mBans != value) {
                     mBans = value;
-                    OnPropertyChanged(this, "Bans");
+                    OnPropertyChanged("Bans");
         } } }
-        public ObservableCollection<String>          GameModePool {
-        // TODO: This should use GameModeViewModel?
+        public ObservableCollection<GameMode>     GameModePool {
             get { return mGameModePool; }
             set {
                 if (mGameModePool != value) {
                     mGameModePool = value;
-                    OnPropertyChanged(this, "GameModePool");
+                    OnPropertyChanged("GameModePool");
         } } }
-        public ObservableCollection<MapViewModel>    MapPool {
+        public ObservableCollection<Map>          MapPool {
             get { return mMapPool; }
             set {
                 if (mMapPool != value) {
                     mMapPool = value;
-                    OnPropertyChanged(this, "MapPool");
+                    OnPropertyChanged("MapPool");
         } } }
-        public ObservableCollection<DataVariable>    Variables {
+        public ObservableCollection<DataVariable> Variables {
             get { return mVariables; }
             set {
                 if (mVariables != value) {
                     mVariables = value;
-                    OnPropertyChanged(this, "Variables");
+                    OnPropertyChanged("Variables");
         } } }
+        
+        private ObservableCollection<Plugin>       mPlugins;
+        private ObservableCollection<Player>       mPlayers;
+        private ObservableCollection<Map>          mMaps;
+        private ObservableCollection<Ban>          mBans;
+        private ObservableCollection<GameMode>     mGameModePool;
+        private ObservableCollection<Map>          mMapPool;
+        private ObservableCollection<DataVariable> mVariables;
 
-        private ObservableCollection<Player>          mPlayers;
-        private ObservableCollection<MapViewModel>    mMaps;
-        private ObservableCollection<BanViewModel>    mBans;
-        private ObservableCollection<String>          mGameModePool;
-        private ObservableCollection<MapViewModel>    mMapPool;
-        private ObservableCollection<DataVariable>    mVariables;
-
-        private ICollectionView mPlayersView;
-        private ICollectionView mMapsView;
-        private ICollectionView mBansView;
-        private ICollectionView mGameModePoolView;
-        private ICollectionView mMapPoolView;
-        private ICollectionView mVariablesView;
 
         // Constructor.
         public ConnectionViewModel(Connection model) : base(model)
         {
             // Listen for changes within the model:
-            Model.PropertyChanged                     += Connection_PropertyChanged;
-            Model.GameState.Variables.DataAdded       += Variables_DataAdded;
-            Model.GameState.Variables.DataRemoved     += Variables_DataRemoved;
-            Model.GameState.Variables.PropertyChanged += Variables_PropertyChanged;
-            Model.GameEvent                           += GameEventOccurred;
+            nModel.Plugins.PluginAdded             += Plugins_Added;
+            nModel.Plugins.PluginRemoved           += Plugins_Removed;
+            nModel.GameState.Variables.DataAdded   += Variables_DataAdded;
+            nModel.GameState.Variables.DataRemoved += Variables_DataRemoved;
+            nModel.GameState.Variables.DataChanged += Variables_DataChanged;
+            nModel.PropertyChanged                 += Connection_PropertyChanged;
+            nModel.GameEvent                       += GameEventOccurred;
 
             // Expose collections within the model:
-            Players      = new ObservableCollection<Player>(Model.GameState.PlayerList);
-            Maps         = new ObservableCollection<MapViewModel>(Model.GameState.MapList.Select(x => new MapViewModel(x)));
-            Bans         = new ObservableCollection<BanViewModel>(Model.GameState.BanList.Select(x => new BanViewModel(x)));
-            GameModePool = new ObservableCollection<String>(Model.GameState.GameModePool.Select(x => x.FriendlyName));
-            MapPool      = new ObservableCollection<MapViewModel>(Model.GameState.MapPool.Select(x => new MapViewModel(x)));
-            Variables    = new ObservableCollection<DataVariable>(Model.GameState.Variables.Variables.Where(x => !x.IsReadOnly).OrderBy(x => x.Name));
-
-            mPlayersView      = CollectionViewSource.GetDefaultView(Players);
-            mMapsView         = CollectionViewSource.GetDefaultView(Maps);
-            mBansView         = CollectionViewSource.GetDefaultView(Bans);
-            mGameModePoolView = CollectionViewSource.GetDefaultView(GameModePool);
-            mMapPoolView      = CollectionViewSource.GetDefaultView(MapPool);
-            mVariablesView    = CollectionViewSource.GetDefaultView(Variables);
-
-            mPlayersView.SortDescriptions.Add(new SortDescription("Team", ListSortDirection.Ascending));
-            mPlayersView.SortDescriptions.Add(new SortDescription("Name", ListSortDirection.Ascending));
+            Plugins      = new ObservableCollection<Plugin>(nModel.Plugins.Plugins);
+            Players      = new ObservableCollection<Player>(nModel.GameState.PlayerList);
+            Maps         = new ObservableCollection<Map>(nModel.GameState.MapList);
+            Bans         = new ObservableCollection<Ban>(nModel.GameState.BanList);
+            GameModePool = new ObservableCollection<GameMode>(nModel.GameState.GameModePool);
+            MapPool      = new ObservableCollection<Map>(nModel.GameState.MapPool);
+            Variables    = new ObservableCollection<DataVariable>(nModel.GameState.Variables.Variables.Where(x => !x.IsReadOnly).OrderBy(x => x.Name));
         }
 
 
-
-        /// <summary>
-        /// Attempts to perform the specified action for the connection.
-        /// </summary>
+        // View Model Methods.
         public void Action(ProtocolObject action)
         {
-            Model.Action(action);
+            nModel.Action(action);
         }
 
 
-
-        /// <summary>
-        /// Is notified when a change in the game is made.  We monitor the notification to alter
-        /// visible collections so the UI knows the collections have been changed.
-        /// </summary>
-        private void GameEventOccurred(Game sender, GameEventArgs e)
+        // Wraps the Added & Removed events.
+        private void Plugins_Added(PluginController parent, Plugin item)
         {
             // Force the UI thread to execute this method.
-            if (ChangeDispatcher(() => GameEventOccurred(sender, e)))
+            if (ChangeDispatcher(() => Plugins_Added(parent, item)))
                 return;
 
-            Boolean add;
-            Boolean remove;
-            Boolean existing;
-            switch (e.EventType)
-            {
-                /* Player Joined Event:
-                 * 
-                 * [Players Collection]
-                 * Updates the player list with the new player, if he is not in 
-                 * the list already.  Adds the new player to the list without
-                 * affecting the user's selection.
-                 * 
-                 * [Events Collection]
-                 * Adds a PlayerJoined event to the chat and events log. */
-                #region PlayerJoin
-                case GameEventType.PlayerJoin:
-                    // -- [Players] --
-                    if (!Players.Contains(e.Player)) {
-                        Players.Add(e.Player);
-                        e.Player.PropertyChanged += Player_PropertyChanged;
-                    }
-
-                    // -- [Events] --
-                    //if ((newEvent = Event.CreateEvent(EventType.Join, e)).Type != String.Empty)
-                    //    Events.Insert(0, newEvent);
-                    break;
-                #endregion
-
-                /* Player Left Event:
-                 * 
-                 * [Players Collection]
-                 * Removes the player from the player list, if he/she is in the
-                 * player list.  Does not affect the user's selection, unless the
-                 * player removed is selected.
-                 * 
-                 * [Events Collection]
-                 * Adds a PlayerLeft event to the chat and events log. */
-                #region PlayerLeave
-                case GameEventType.PlayerLeave:
-                    // -- [Players] --
-                    if (Players.Contains(e.Player)) {
-                        e.Player.PropertyChanged -= Player_PropertyChanged;
-                        Players.Remove(e.Player);
-                    }
-
-                    // -- [Events] --
-                    //if ((newEvent = Event.CreateEvent(EventType.Leave, e)).Type != String.Empty)
-                    //    Events.Insert(0, newEvent);
-                    break;
-                #endregion
-
-                /* Player Moved Event:
-                 * 
-                 * [Events Collection]
-                 * Adds a PlayerMoved event to the chat and events log. */
-                #region PlayerMoved
-                case GameEventType.PlayerMoved:
-                    // -- [Events] --
-                    //if ((newEvent = Event.CreateEvent(EventType.Move, e)).Type != String.Empty)
-                    //    Events.Insert(0, newEvent);
-                    break;
-                #endregion
-
-                /* Player List Updated Event:
-                 * 
-                 * [Players Collection]
-                 * This is a combination of Remove Old and Add New entries.
-                 * So instead of doing a "Clear" and "Add New" method, which
-                 * gets rid of the user's current selection, I took a little
-                 * more expensive route and manually updated all the properties
-                 * in each view model, removed all the old entries, and added
-                 * all the new entries. */
-                #region PlayerlistUpdated
-                case GameEventType.PlayerlistUpdated:
-                    // -- [Players] --
-                    // Remove Old Items.
-                    for (int i = 0; i < Players.Count; i++)
-                        if (!e.GameState.PlayerList.Contains(Players[i])) {
-                            Players[i].PropertyChanged -= Player_PropertyChanged;
-                            Players.Remove(Players[i]);
-                        }
-                    // Add New Items.
-                    for (int i = 0; i < e.GameState.PlayerList.Count; i++)
-                        if (!Players.Contains(e.GameState.PlayerList[i])) {
-                            e.GameState.PlayerList[i].PropertyChanged += Player_PropertyChanged;
-                            Players.Add(e.GameState.PlayerList[i]);
-                        }
-                    break;
-                #endregion
-
-
-
-
-
-                /* Player Kicked Event:
-                 * 
-                 * [Events Collection]
-                 * Adds a PlayerKicked event to the chat and events log. */
-                #region PlayerKicked
-                case GameEventType.PlayerKicked:
-                    // -- [Events] --
-                    //if ((newEvent = Event.CreateEvent(EventType.Kick, e)).Type != String.Empty)
-                    //    Events.Insert(0, newEvent);
-                    break;
-                #endregion
-
-                /* Player Banned Event:
-                 * 
-                 * [Bans Collection]
-                 * Updates the ban list with the new ban, if it is not in 
-                 * the list already.  Adds the new ban to the list without
-                 * affecting the user's selection.
-                 * 
-                 * [Events Collection]
-                 * Adds a PlayerBanned event to the chat and events log. */
-                #region PlayerBanned
-                case GameEventType.PlayerBanned:
-                    // -- [Bans] --
-                    existing = false;
-                    foreach (BanViewModel bvm in Bans)
-                        if (bvm.Target.GUID == e.Ban.Target.GUID)
-                        {
-                            existing = true;
-                            break;
-                        }
-                    if (!existing)
-                        Bans.Add(new BanViewModel(e.Ban));
-
-                    // -- [Events] --
-                    //if ((newEvent = Event.CreateEvent(EventType.Ban, e)).Type != String.Empty)
-                    //    Events.Insert(0, newEvent);
-                    break;
-
-                #endregion
-
-                /* Player Unbanned Event:
-                 * 
-                 * [Bans Collection]
-                 * Removes the ban from the player list, if it is in the
-                 * ban list.  Does not affect the user's selection, unless the
-                 * ban removed is selected.
-                 * 
-                 * [Events Collection]
-                 * Adds a PlayerUnbanned event to the chat and events log. */
-                #region PlayerUnbanned
-                case GameEventType.PlayerUnbanned:
-                    // -- [Bans] --
-                    foreach (BanViewModel bvm in Bans)
-                        if (bvm.Target.GUID == e.Ban.Target.GUID)
-                        {
-                            Bans.Remove(bvm);
-                            break;
-                        }
-
-                    // -- [Events] --
-                    //if ((newEvent = Event.CreateEvent(EventType.Unban, e)).Type != String.Empty)
-                    //    Events.Insert(0, newEvent);
-                    break;
-                #endregion
-
-                /* Ban List Updated Event:
-                 * 
-                 * [Bans Collection]
-                 * This is a combination of Remove Old and Add New entries.
-                 * So instead of doing a "Clear" and "Add New" method, which
-                 * gets rid of the user's current selection, I took a little
-                 * more expensive route and manually updated all the properties
-                 * in each view model, removed all the old entries, and added
-                 * all the new entries. */
-                #region BanlistUpdated
-                case GameEventType.BanlistUpdated:
-                    // -- [Bans] --
-                    // Remove Old Entries:
-                    for (int i = 0; i < Bans.Count; i++)
-                    {
-                        remove = true;
-                        foreach (Ban b in Model.GameState.BanList)
-                            if (Bans[i].Target.GUID == b.Target.GUID) {
-                                remove = false;
-                                break; }
-                        if (remove)
-                            Bans.RemoveAt(i--);
-                    }
-                    // Update/Add New Entries:
-                    for (int i = 0; i < Model.GameState.BanList.Count; i++)
-                    {
-                        add = true;
-                        foreach (BanViewModel bvm in Bans)
-                            if (Model.GameState.BanList[i].Target.GUID == bvm.Target.GUID) {
-                                bvm.Length = Model.GameState.BanList[i].Time.Length;
-                                add = false;
-                                break; }
-                        if (add)
-                            Bans.Add(new BanViewModel(Model.GameState.BanList[i]));
-                    }
-                    break;
-                #endregion
-
-
-
-
-
-                /* Player Killed Event:
-                 * 
-                 * [Events Collection]
-                 * Adds a PlayerKilled event to the chat and events log. */
-                #region PlayerKill
-                case GameEventType.PlayerKill:
-                    // -- [Events] --
-                    //if (e.Kill != null && e.Kill.Target != null)
-                    //    if ((newEvent = Event.CreateEvent(EventType.Kill, e)).Type != String.Empty)
-                    //        Events.Insert(0, newEvent);
-                    break;
-                #endregion
-
-                /* Player Spawned Event:
-                 * 
-                 * [Events Collection]
-                 * Adds a PlayerSpawned event to the chat and events log. */
-                #region PlayerSpawn
-                case GameEventType.PlayerSpawn:
-                    // -- [Events] --
-                    //if ((newEvent = Event.CreateEvent(EventType.Spawn, e)).Type != String.Empty)
-                    //    Events.Insert(0, newEvent);
-                    break;
-                #endregion
-
-                /* Player Chat Event:
-                 * 
-                 * [Events Collection]
-                 * Adds a Chat event to the chat and events log. */
-                #region Chat
-                case GameEventType.Chat:
-                    // -- [Events] --
-                    //if (e.Chat != null && e.Chat.Origin != ChatOrigin.Reflected)
-                    //    if ((newEvent = Event.CreateEvent(EventType.Chat, e)).Type != String.Empty)
-                    //        Events.Insert(0, newEvent);
-                    break;
-                #endregion
-
-                /* Round Changed Event:
-                 * 
-                 * [Events Collection]
-                 * Adds a RoundChanged event to the chat and events log. */
-                #region RoundChanged
-                case GameEventType.RoundChanged:
-                    // -- [Events] --
-                    //if ((newEvent = Event.CreateEvent(EventType.Round, e)).Type != String.Empty)
-                    //    Events.Insert(0, newEvent);
-                    break;
-                #endregion
-
-                /* Map Changed Event:
-                 * 
-                 * [Events Collection]
-                 * Adds a MapChanged event to the chat and events log. */
-                #region MapChanged
-                case GameEventType.MapChanged:
-                    // -- [Events] --
-                    //if ((newEvent = Event.CreateEvent(EventType.Map, e)).Type != String.Empty)
-                    //    Events.Insert(0, newEvent);
-                    break;
-                #endregion
-
-                /* Map List Updated Event:
-                 * 
-                 * [Maps Collection]
-                 * This is a combination of Remove Old and Add New entries.
-                 * So instead of doing a "Clear" and "Add New" method, which
-                 * gets rid of the user's current selection, I took a little
-                 * more expensive route and manually updated all the properties
-                 * in each view model, removed all the old entries, and added
-                 * all the new entries. */
-                #region MaplistUpdated
-                case GameEventType.MaplistUpdated:
-                    // -- [Maps] --
-                    // Remove Old Entries:
-                    for (int i = 0; i < Maps.Count; i++)
-                    {
-                        remove = true;
-                        foreach (Map m in Model.GameState.MapList)
-                            if (Maps[i].Name == m.Name && Maps[i].Index == m.Index) {
-                                remove = false;
-                                break; }
-                        if (remove)
-                            Maps.RemoveAt(i--);
-                    }
-                    // Update/Add New Entries:
-                    for (int i = 0; i < Model.GameState.MapList.Count; i++)
-                    {
-                        add = true;
-                        foreach (MapViewModel mvm in Maps)
-                            if (Model.GameState.MapList[i].Name == mvm.Name && Model.GameState.MapList[i].Index == mvm.Index) {
-                                add = false;
-                                break; }
-                        if (add)
-                            Maps.Add(new MapViewModel(Model.GameState.MapList[i]));
-                    }
-                    break;
-                #endregion
-
-                case GameEventType.ServerInfoUpdated:
-                    break;
-                case GameEventType.GameConfigExecuted:
-                    break;
-            }
+            // Add the new plugin.
+            Plugins.Add(item);
         }
-
-
-        private void Player_PropertyChanged(Object sender, PropertyChangedEventArgs e)
+        private void Plugins_Removed(PluginController parent, Plugin item)
         {
             // Force the UI thread to execute this method.
-            if (ChangeDispatcher(() => Player_PropertyChanged(sender, e)))
+            if (ChangeDispatcher(() => Plugins_Removed(parent, item)))
                 return;
 
-            // Refresh the collection.
-            if (mPlayersView.SortDescriptions.FirstOrDefault(x => x.PropertyName == e.PropertyName).PropertyName != null)
-                mPlayersView.Refresh();
+            // Remove the old plugin.
+            Plugins.Add(item);
         }
-
-
-        /// <summary>
-        /// Is notified when a new data variable is added to the class.
-        /// </summary>
         private void Variables_DataAdded(DataController parent, DataVariable item)
         {
             // Force the UI thread to execute this method.
             if (ChangeDispatcher(() => Variables_DataAdded(parent, item)))
                 return;
 
-            if (!item.IsReadOnly)
-                for (int i = 0; i < Variables.Count; i++)
-                    if (item.Name.CompareTo(Variables[i].Name) < 0) {
-                        Variables.Insert(i, item);
-                        break;
-                    }
+            // Add the new variable.
+            if (!item.IsReadOnly) {
+                DataVariable tVariable = Variables.SingleOrDefault(x => item.Name.CompareTo(x.Name) < 0);
+                if (tVariable != null) Variables.Insert(Variables.IndexOf(tVariable), item);
+                else                   Variables.Add(item);
+            }
         }
-        /// <summary>
-        /// Is notified when a data variable is removed from the class all-together.
-        /// </summary>
         private void Variables_DataRemoved(DataController parent, DataVariable item)
         {
             // Force the UI thread to execute this method.
             if (ChangeDispatcher(() => Variables_DataRemoved(parent, item)))
                 return;
 
-            for (int i = 0; i < Variables.Count; i++)
-                if (item.Name == Variables[i].Name) {
-                    Variables.RemoveAt(i);
-                    break;
-                }
+            // Remove the old variable.
+            Variables.Remove(item);
         }
-        /// <summary>
-        /// Is notified when a data variable is changed in the class.
-        /// </summary>
-        private void Variables_PropertyChanged(Object sender, PropertyChangedEventArgs e)
+        private void Variables_DataChanged(DataController parent, DataVariable item)
         {
             // Force the UI thread to execute this method.
-            if (ChangeDispatcher(() => Variables_PropertyChanged(sender, e)))
+            if (ChangeDispatcher(() => Variables_DataChanged(parent, item)))
                 return;
-            
-            // Connection State was updated.
-            if (e.PropertyName == "ConnectionState") {
-                OnPropertyChanged(this, e.PropertyName);
-                OnPropertyChanged(this, e.PropertyName + "Icon");
-            }
-            if (e.PropertyName == "Ranked") {
-                OnPropertyChanged(this, e.PropertyName);
-                OnPropertyChanged(this, e.PropertyName + "Icon");
-            }
-            if (e.PropertyName == "AntiCheat") {
-                OnPropertyChanged(this, e.PropertyName);
-                OnPropertyChanged(this, e.PropertyName + "Icon");
-            }
-            if (e.PropertyName == "Passworded") {
-                OnPropertyChanged(this, e.PropertyName);
-                OnPropertyChanged(this, e.PropertyName + "Icon");
-            }
-            if (e.PropertyName == "AutoBalance") {
-                OnPropertyChanged(this, e.PropertyName);
-                OnPropertyChanged(this, e.PropertyName + "Icon");
-            }
-            else OnPropertyChanged(this, e.PropertyName);
+
+            // Notify that the variable changed.
+            if (item.Name.Contains('.') && item.Name.IndexOf('.') + 1 < item.Name.Length)
+                OnPropertyChanged(item.Name.Substring(item.Name.IndexOf('.') + 1));
+            else 
+                OnPropertyChanged(item.Name);
         }
-        /// <summary>
-        /// Lets the UI's view model know a property in the model changed.
-        /// </summary>
+        // Wraps the Connection's property changed events.
         private void Connection_PropertyChanged(Object sender, PropertyChangedEventArgs e)
         {
             // Force the UI thread to execute this method.
             if (ChangeDispatcher(() => Connection_PropertyChanged(sender, e)))
                 return;
 
-            // PlayerList collection was re-set?
-            //if (e.PropertyName == "PlayerList") {
-            //    Boolean exists;
-            //    // Removes models that no longer exist.
-            //    for (int i = 0; i < Players.Count; i++) {
-            //        exists = false;
-            //        for (int j = 0; j < Model.GameState.PlayerList.Count; j++)
-            //            if (exists = Players[i].ModelEquals(Model.GameState.PlayerList[j]))
-            //                break;
-            //        if (!exists) Players.RemoveAt(i--);
-            //    }
-            //    // Adds models that are new.
-            //    for (int i = 0; i < Model.GameState.PlayerList.Count; i++) {
-            //        exists = false;
-            //        for (int j = 0; j < Players.Count; j++)
-            //            if (exists = Players[j].ModelEquals(Model.GameState.PlayerList[i]))
-            //                break;
-            //        if (!exists) Players.Add(new PlayerViewModel(Model.GameState.PlayerList[i]));
-            //    }
-            //}
-            // MapList collection was re-set?
-             if (e.PropertyName == "MapList") {
-                Boolean exists;
-                // Removes models that no longer exist.
-                for (int i = 0; i < Maps.Count; i++) {
-                    exists = false;
-                    for (int j = 0; j < Model.GameState.MapList.Count; j++)
-                        if (exists = Maps[i].ModelEquals(Model.GameState.MapList[j]))
-                            break;
-                    if (!exists) Maps.RemoveAt(i--);
-                }
-                // Adds models that are new.
-                for (int i = 0; i < Model.GameState.MapList.Count; i++) {
-                    exists = false;
-                    for (int j = 0; j < Maps.Count; j++)
-                        if (exists = Maps[j].ModelEquals(Model.GameState.MapList[i]))
-                            break;
-                    if (!exists) Maps.Add(new MapViewModel(Model.GameState.MapList[i]));
-                }
+            OnPropertyChanged(e.PropertyName);
+        }
+
+
+        // Synchronizes the view model's information with the game.
+        private void GameEventOccurred(Game sender, GameEventArgs e)
+        {
+            // Force the UI thread to execute this method.
+            if (ChangeDispatcher(() => GameEventOccurred(sender, e)))
+                return;
+
+            switch (e.EventType)
+            {
+                /* Player Joined Event:
+                 * 
+                 * [Players Collection]
+                 * Updates the player list with the new player, if he is not in 
+                 * the list already. */
+                case GameEventType.PlayerJoin:
+                    if (!Players.Contains(e.Player))
+                        Players.Add(e.Player);
+                    break;
+
+                /* Player Left Event:
+                 * 
+                 * [Players Collection]
+                 * Removes the player from the player list, if he/she is in the
+                 * player list. */
+                case GameEventType.PlayerLeave:
+                    if (Players.Contains(e.Player))
+                        Players.Remove(e.Player);
+                    break;
+
+                /* Player Moved Event: */
+                case GameEventType.PlayerMoved:
+                    break;
+
+                /* Player List Updated Event:
+                 * 
+                 * [Players Collection]
+                 * Removes the entries that no longer exist and adds entries
+                 * that are new. This was performed instead of a "Clear" and
+                 * "Add" in an attempt to remedy selection issues. */
+                case GameEventType.PlayerlistUpdated:
+                    // Remove Old Items.
+                    for (int i = 0; i < Players.Count; i++)
+                        if (!e.GameState.PlayerList.Contains(Players[i]))
+                            Players.RemoveAt(i--);
+                    // Add New Items.
+                    for (int i = 0; i < e.GameState.PlayerList.Count; i++)
+                        if (!Players.Contains(e.GameState.PlayerList[i]))
+                            Players.Add(e.GameState.PlayerList[i]);
+                    break;
+
+
+
+
+
+                /* Player Kicked Event: */
+                case GameEventType.PlayerKicked:
+                    break;
+
+                /* Player Banned Event:
+                 * 
+                 * [Bans Collection]
+                 * Updates the ban list with the new ban, if it is not in 
+                 * the list already. */
+                case GameEventType.PlayerBanned:
+                    if (!Bans.Contains(e.Ban))
+                        Bans.Add(e.Ban);
+                    break;
+
+                /* Player Unbanned Event:
+                 * 
+                 * [Bans Collection]
+                 * Removes the ban from the player list, if it is in the
+                 * ban list. */
+                case GameEventType.PlayerUnbanned:
+                    if (Bans.Contains(e.Ban))
+                        Bans.Remove(e.Ban);
+                    break;
+
+                /* Ban List Updated Event:
+                 * 
+                 * [Bans Collection]
+                 * Removes the entries that no longer exist and adds entries
+                 * that are new. This was performed instead of a "Clear" and
+                 * "Add" in an attempt to remedy selection issues. */
+                case GameEventType.BanlistUpdated:
+                    // Remove Old Items.
+                    for (int i = 0; i < Bans.Count; i++)
+                        if (!e.GameState.BanList.Contains(Bans[i]))
+                            Bans.RemoveAt(i--);
+                    // Add New Items.
+                    for (int i = 0; i < e.GameState.BanList.Count; i++)
+                        if (!Bans.Contains(e.GameState.BanList[i]))
+                            Bans.Add(e.GameState.BanList[i]);
+                    break;
+
+
+
+
+
+                /* Player Killed Event: */
+                case GameEventType.PlayerKill:
+                    break;
+
+                /* Player Spawned Event: */
+                case GameEventType.PlayerSpawn:
+                    break;
+
+                /* Player Chat Event: */
+                case GameEventType.Chat:
+                    break;
+
+                /* Round Changed Event: */
+                case GameEventType.RoundChanged:
+                    break;
+
+                /* Map Changed Event: */
+                case GameEventType.MapChanged:
+                    break;
+
+                /* Map List Updated Event:
+                 * 
+                 * [Maps Collection]
+                 * Removes the entries that no longer exist and adds entries
+                 * that are new. This was performed instead of a "Clear" and
+                 * "Add" in an attempt to remedy selection issues. */
+                case GameEventType.MaplistUpdated:
+                    // Remove Old Items.
+                    for (int i = 0; i < Maps.Count; i++)
+                        if (!e.GameState.MapList.Contains(Maps[i]))
+                            Maps.RemoveAt(i--);
+                    // Add New Items.
+                    for (int i = 0; i < e.GameState.MapList.Count; i++)
+                        if (!Maps.Contains(e.GameState.MapList[i]))
+                            Maps.Add(e.GameState.MapList[i]);
+                    break;
+
+
+
+
+
+                /* Server Info Updated Event: */
+                case GameEventType.ServerInfoUpdated:
+                    break;
+
+                /* Game Config Executed Event: */
+                case GameEventType.GameConfigExecuted:
+                    break;
             }
-            // BanList collection was re-set?
-            else if (e.PropertyName == "BanList") {
-                Boolean exists;
-                // Removes models that no longer exist.
-                for (int i = 0; i < Bans.Count; i++) {
-                    exists = false;
-                    for (int j = 0; j < Model.GameState.BanList.Count; j++)
-                        if (exists = Bans[i].ModelEquals(Model.GameState.BanList[j]))
-                            break;
-                    if (!exists) Bans.RemoveAt(i--);
-                }
-                // Adds models that are new.
-                for (int i = 0; i < Model.GameState.BanList.Count; i++) {
-                    exists = false;
-                    for (int j = 0; j < Bans.Count; j++)
-                        if (exists = Bans[j].ModelEquals(Model.GameState.BanList[i]))
-                            break;
-                    if (!exists) Bans.Add(new BanViewModel(Model.GameState.BanList[i]));
-                }
-            }
-            // GameModePool collection was re-set?
-            else if (e.PropertyName == "GameModePool") {
-                Boolean exists;
-                // Removes models that no longer exist.
-                for (int i = 0; i < GameModePool.Count; i++) {
-                    exists = false;
-                    for (int j = 0; j < Model.GameState.GameModePool.Count; j++)
-                        if (exists = GameModePool[i] == Model.GameState.GameModePool[j].FriendlyName)
-                            break;
-                    if (!exists) GameModePool.RemoveAt(i--);
-                }
-                // Adds models that are new.
-                for (int i = 0; i < Model.GameState.GameModePool.Count; i++) {
-                    exists = false;
-                    for (int j = 0; j < GameModePool.Count; j++)
-                        if (exists = GameModePool[j] == Model.GameState.GameModePool[i].FriendlyName)
-                            break;
-                    if (!exists) GameModePool.Add(Model.GameState.GameModePool[i].FriendlyName);
-                }
-            }
-            // MapPool collection was re-set?
-            else if (e.PropertyName == "MapPool") {
-                Boolean exists;
-                // Removes models that no longer exist.
-                for (int i = 0; i < MapPool.Count; i++) {
-                    exists = false;
-                    for (int j = 0; j < Model.GameState.MapPool.Count; j++)
-                        if (exists = MapPool[i].ModelEquals(Model.GameState.MapPool[j]))
-                            break;
-                    if (!exists) MapPool.RemoveAt(i--);
-                }
-                // Adds models that are new.
-                for (int i = 0; i < Model.GameState.MapPool.Count; i++) {
-                    exists = false;
-                    for (int j = 0; j < MapPool.Count; j++)
-                        if (exists = MapPool[j].ModelEquals(Model.GameState.MapPool[i]))
-                            break;
-                    if (!exists) MapPool.Add(new MapViewModel(Model.GameState.MapPool[i]));
-                }
-            }
-            // Other.
-            else OnPropertyChanged(this, e.PropertyName);
         }
     }
 }

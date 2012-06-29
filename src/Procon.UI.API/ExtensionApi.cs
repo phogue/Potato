@@ -2,6 +2,7 @@
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 
 using Procon.Core;
@@ -12,6 +13,41 @@ namespace Procon.UI.API
 {
     public static class ExtensionApi
     {
+        // The Properties and Commands of the UI.
+        public static InfinityDictionary<String, Object>   Properties { get; set; }
+        public static InfinityDictionary<String, ICommand> Commands   { get; set; }
+
+        // Easy access to the currently selected Procon instance, Interface, and Connection.
+        public static InstanceViewModel Procon
+        {
+            get { return Properties["Procon"].Value as InstanceViewModel; }
+        }
+        public static InterfaceViewModel Interface
+        {
+            get { return Properties["Interface"].Value as InterfaceViewModel; }
+            set { Properties["Interface"].Value = value; }
+        }
+        public static ConnectionViewModel Connection
+        {
+            get { return Properties["Connection"].Value as ConnectionViewModel; }
+            set { Properties["Connection"].Value = value; }
+        }
+
+        // Uniform access to the settings that will be saved and loaded when closing and opening Procon.
+        public static InfinityDictionary<String, Object> Settings
+        {
+            get { return Properties["Settings"]; }
+        }
+
+
+        // Static Constructor.
+        static ExtensionApi()
+        {
+            Properties = new InfinityDictionary<String, Object>();
+            Commands   = new InfinityDictionary<String, ICommand>();
+        }
+
+
         // Find a control under a specific element.
         public static T FindControl<T>(DependencyObject controlAncestor, String controlName) where T : DependencyObject
         {
@@ -85,26 +121,6 @@ namespace Procon.UI.API
                 new Uri(from).MakeRelativeUri(
                     new Uri(to)).ToString())
                 .Replace('/', Path.DirectorySeparatorChar);
-        }
-
-        // Easy Getter/Setter for [Settings], [Procon], [Interface], and [Connection] property.
-        public static InfinityDictionary<String, Object> Settings
-        {
-            get { return InstanceViewModel.PublicProperties["Settings"]; }
-        }
-        public static InstanceViewModel Procon
-        {
-            get { return InstanceViewModel.PublicProperties["Procon"].Value as InstanceViewModel; }
-        }
-        public static InterfaceViewModel Interface
-        {
-            get { return InstanceViewModel.PublicProperties["Interface"].Value as InterfaceViewModel; }
-            set { InstanceViewModel.PublicProperties["Interface"].Value = value; }
-        }
-        public static ConnectionViewModel Connection
-        {
-            get { return InstanceViewModel.PublicProperties["Connection"].Value as ConnectionViewModel; }
-            set { InstanceViewModel.PublicProperties["Connection"].Value = value; }
         }
     }
 }

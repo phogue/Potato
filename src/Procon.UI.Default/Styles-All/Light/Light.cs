@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
 using Procon.UI.API;
 
 namespace Procon.UI.Default.Styles.Light
@@ -61,7 +60,13 @@ namespace Procon.UI.Default.Styles.Light
             tutLayout.Resources[typeof(Button)] = tResources["StyleButtonDefault"];
 
             // Setup optional styles.
-            rootLayout.Resources["StyleButtonSpecial"] = tResources["StyleButtonSpecial"];
+            rootLayout.Resources["StyleButtonSpecial"]    = tResources["StyleButtonSpecial"];
+            rootLayout.Resources["StyleListBoxItemPlain"] = tResources["StyleListBoxItemPlain"];
+
+            // Setup templates.
+            rootLayout.Resources["DataTemplateConnectionViewModel"] = tResources["DataTemplateConnectionViewModel"];
+            rootLayout.Resources["DataTemplateInterfaceViewModel"]  = tResources["DataTemplateInterfaceViewModel"];
+            rootLayout.Resources["DataTemplatePlayer"]              = tResources["DataTemplatePlayer"];
 
             // Setup control brushes.
             rootLayout.Resources["BrushControlNormal"] = tResources["BrushControlNormal"];
@@ -107,35 +112,6 @@ namespace Procon.UI.Default.Styles.Light
             rootLayout.Resources["BrushSpotlight"]  = tResources["BrushSpotlight"];
             rootLayout.Resources["BrushHeader"]     = tResources["BrushHeader"];
             rootLayout.Resources["BrushNavigation"] = tResources["BrushNavigation"];
-
-
-            //// Setup special styles.
-            //ListBox vieIntrList = ExtensionApi.FindControl<ListBox>(manLayout, "MainViewsInterfacesList");
-            //ListBox vieConnList = ExtensionApi.FindControl<ListBox>(manLayout, "MainViewsConnectionsList");
-            ////vieIntrList.Resources["Background"] = tResources["BrushContentLight"];
-            ////vieConnList.Resources["Background"] = tResources["BrushContentLight"];
-
-
-            //// Players List
-            //Label     plrName    = ExtensionApi.FindControl<Label>(manLayout, "MainPlayersListName");
-            //Label     plrMode    = ExtensionApi.FindControl<Label>(manLayout, "MainPlayersListMode");
-            //DockPanel plrContent = ExtensionApi.FindControl<DockPanel>(manLayout, "MainPlayersListContent");
-            //DockPanel plrActions = ExtensionApi.FindControl<DockPanel>(manLayout, "MainPlayersListActions");
-            //DockPanel vieIntrTtl = ExtensionApi.FindControl<DockPanel>(manLayout, "MainViewsInterfacesHeader");
-            //DockPanel vieConnTtl = ExtensionApi.FindControl<DockPanel>(manLayout, "MainViewsConnectionsHeader");
-            //DockPanel chtContent = ExtensionApi.FindControl<DockPanel>(manLayout, "MainChatContent");
-            //DockPanel chtTitle   = ExtensionApi.FindControl<DockPanel>(manLayout, "MainChatTitle");
-            //TextBox   chtBox     = ExtensionApi.FindControl<TextBox>(manLayout, "MainChatBox");
-            //plrName.Foreground    = tResources["BrushTextSoft"]     as Brush;
-            //plrMode.Foreground    = tResources["BrushTextSoft"]     as Brush;
-            //plrContent.Background = tResources["BrushOffset"]       as Brush;
-            //plrActions.Background = tResources["BrushEmphasis"]     as Brush;
-            //vieIntrTtl.Background = tResources["BrushEmphasis"]     as Brush;
-            //vieConnTtl.Background = tResources["BrushEmphasis"]     as Brush;
-            //chtContent.Background = tResources["BrushDarkEmphasis"] as Brush;
-            //chtTitle.Background   = tResources["BrushDarkHeader"]   as Brush;
-            //chtBox.Background     = tResources["BrushChatBox"]      as Brush;
-
 
             return true;
         }

@@ -11,8 +11,8 @@ namespace Procon.UI.API.Converters
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
             if (value is InterfaceViewModel)
-                return ViewModelBase.PublicProperties["Images"]["Interfaces"][((InterfaceViewModel)value).IsLocal ? "Local" : "Remote"].Value;
-            return ViewModelBase.PublicProperties["Images"]["Empty"].Value;
+                return ExtensionApi.Properties["Images"]["Interfaces"][((InterfaceViewModel)value).IsLocal ? "Local" : "Remote"].Value;
+            return ExtensionApi.Properties["Images"]["Empty"].Value;
         }
 
         // Invalid.

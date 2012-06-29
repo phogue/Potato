@@ -38,7 +38,7 @@ namespace Procon.UI.Default.Root.Main.Layout
         {
             // Find the controls I want to use and check for issues.
             Grid layout = ExtensionApi.FindControl<Grid>(root, "RootLayout");
-            if  (layout == null) return false;
+            if (layout == null) return false;
 
             // Do what I need to setup my control.
             LayoutView view = new LayoutView();

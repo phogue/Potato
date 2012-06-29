@@ -12,11 +12,11 @@ namespace Procon.UI.API.Converters
         {
             if (value is ConnectionViewModel) {
                 String tValue = ((ConnectionViewModel)value).GameType.ToString();
-                if (ViewModelBase.PublicProperties["Images"]["Connections"].ContainsKey(tValue) && ViewModelBase.PublicProperties["Images"]["Connections"][tValue].Value != null)
-                    return ViewModelBase.PublicProperties["Images"]["Connections"][tValue].Value;
-                return ViewModelBase.PublicProperties["Images"]["Connections"]["Unknown"].Value;
+                if (ExtensionApi.Properties["Images"]["Connections"].ContainsKey(tValue) && ExtensionApi.Properties["Images"]["Connections"][tValue].Value != null)
+                    return ExtensionApi.Properties["Images"]["Connections"][tValue].Value;
+                return ExtensionApi.Properties["Images"]["Connections"]["Unknown"].Value;
             }
-            return ViewModelBase.PublicProperties["Images"]["Empty"].Value;
+            return ExtensionApi.Properties["Images"]["Empty"].Value;
         }
 
         // Invalid.

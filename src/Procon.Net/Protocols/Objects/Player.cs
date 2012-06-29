@@ -34,23 +34,23 @@ namespace Procon.Net.Protocols.Objects
         #endregion
 
         public Player() {
-            this[C_UID]           = new DataVariable(C_UID,           null, false, "Player.UID",           "Player.UID_Description");
-            this[C_GUID]          = new DataVariable(C_GUID,          null, false, "Player.GUID",          "Player.GUID_Description");
-            this[C_SLOT_ID]       = new DataVariable(C_SLOT_ID,       null, false, "Player.SLOT_ID",       "Player.SLOT_ID_Description");
-            this[C_CLAN_TAG]      = new DataVariable(C_CLAN_TAG,      null, false, "Player.CLAN_TAG",      "Player.CLAN_TAG_Description");
-            this[C_NAME]          = new DataVariable(C_NAME,          null, false, "Player.NAME",          "Player.NAME_Description");
-            this[C_NAME_STRIPPED] = new DataVariable(C_NAME_STRIPPED, null, false, "Player.NAME_STRIPPED", "Player.NAME_STRIPPED_Description");
-            this[C_TEAM]          = new DataVariable(C_TEAM,          null, false, "Player.TEAM",          "Player.TEAM_Description");
-            this[C_SQUAD]         = new DataVariable(C_SQUAD,         null, false, "Player.SQUAD",         "Player.SQUAD_Description");
-            this[C_KILLS]         = new DataVariable(C_KILLS,         null, false, "Player.KILLS",         "Player.KILLS_Description");
-            this[C_DEATHS]        = new DataVariable(C_DEATHS,        null, false, "Player.DEATHS",        "Player.DEATHS_Description");
-            this[C_ROLE]          = new DataVariable(C_ROLE,          null, false, "Player.ROLE",          "Player.ROLE_Description");
-            this[C_INVENTORY]     = new DataVariable(C_INVENTORY,     null, false, "Player.INVENTORY",     "Player.INVENTORY_Description");
-            this[C_PING]          = new DataVariable(C_PING,          null, false, "Player.PING",          "Player.PING_Description");
-            this[C_COUNTRY_NAME]  = new DataVariable(C_COUNTRY_NAME,  null, false, "Player.COUNTRY_NAME",  "Player.COUNTRY_NAME_Description");
-            this[C_COUNTRY_CODE]  = new DataVariable(C_COUNTRY_CODE,  null, false, "Player.COUNTRY_CODE",  "Player.COUNTRY_CODE_Description");
-            this[C_IP]            = new DataVariable(C_IP,            null, false, "Player.IP",            "Player.IP_Description");
-            this[C_PORT]          = new DataVariable(C_PORT,          null, false, "Player.PORT",          "Player.PORT_Description");
+            DataSet(new DataVariable(C_UID,           null, false, "Player.UID",           "Player.UID_Description"));
+            DataSet(new DataVariable(C_GUID,          null, false, "Player.GUID",          "Player.GUID_Description"));
+            DataSet(new DataVariable(C_SLOT_ID,       null, false, "Player.SLOT_ID",       "Player.SLOT_ID_Description"));
+            DataSet(new DataVariable(C_CLAN_TAG,      null, false, "Player.CLAN_TAG",      "Player.CLAN_TAG_Description"));
+            DataSet(new DataVariable(C_NAME,          null, false, "Player.NAME",          "Player.NAME_Description"));
+            DataSet(new DataVariable(C_NAME_STRIPPED, null, false, "Player.NAME_STRIPPED", "Player.NAME_STRIPPED_Description"));
+            DataSet(new DataVariable(C_TEAM,          null, false, "Player.TEAM",          "Player.TEAM_Description"));
+            DataSet(new DataVariable(C_SQUAD,         null, false, "Player.SQUAD",         "Player.SQUAD_Description"));
+            DataSet(new DataVariable(C_KILLS,         null, false, "Player.KILLS",         "Player.KILLS_Description"));
+            DataSet(new DataVariable(C_DEATHS,        null, false, "Player.DEATHS",        "Player.DEATHS_Description"));
+            DataSet(new DataVariable(C_ROLE,          null, false, "Player.ROLE",          "Player.ROLE_Description"));
+            DataSet(new DataVariable(C_INVENTORY,     null, false, "Player.INVENTORY",     "Player.INVENTORY_Description"));
+            DataSet(new DataVariable(C_PING,          null, false, "Player.PING",          "Player.PING_Description"));
+            DataSet(new DataVariable(C_COUNTRY_NAME,  null, false, "Player.COUNTRY_NAME",  "Player.COUNTRY_NAME_Description"));
+            DataSet(new DataVariable(C_COUNTRY_CODE,  null, false, "Player.COUNTRY_CODE",  "Player.COUNTRY_CODE_Description"));
+            DataSet(new DataVariable(C_IP,            null, false, "Player.IP",            "Player.IP_Description"));
+            DataSet(new DataVariable(C_PORT,          null, false, "Player.PORT",          "Player.PORT_Description"));
 
             UID     = String.Empty;
             GUID    = String.Empty;
@@ -63,7 +63,7 @@ namespace Procon.Net.Protocols.Objects
             get { return TryGetVariable<string>(C_UID, null); }
             set {
                 if (UID != value) {
-                    DataAddSet(C_UID, value);
+                    DataSet(C_UID, value);
                     OnPropertyChanged("UID");
         } } }
         /// <summary>A Game-specific Unique Identifier.</summary>
@@ -71,7 +71,7 @@ namespace Procon.Net.Protocols.Objects
             get { return TryGetVariable<string>(C_GUID, null); }
             set {
                 if (GUID != value) {
-                DataAddSet(C_GUID, value);
+                DataSet(C_GUID, value);
                 OnPropertyChanged("GUID");
         } } }
         /// <summary>A Player Number assigned by the server to this player.</summary>
@@ -79,7 +79,7 @@ namespace Procon.Net.Protocols.Objects
             get { return TryGetVariable<uint>(C_SLOT_ID, 0); }
             set {
                 if (SlotID != value) {
-                DataAddSet(C_SLOT_ID, value);
+                DataSet(C_SLOT_ID, value);
                 OnPropertyChanged("SlotID");
         } } }
 
@@ -88,7 +88,7 @@ namespace Procon.Net.Protocols.Objects
             get { return TryGetVariable<string>(C_CLAN_TAG, null); }
             set {
                 if (ClanTag != value) {
-                DataAddSet(C_CLAN_TAG, value);
+                DataSet(C_CLAN_TAG, value);
                 OnPropertyChanged("ClanTag");
         } } }
         /// <summary>This player's Name.</summary>
@@ -96,8 +96,8 @@ namespace Procon.Net.Protocols.Objects
             get { return TryGetVariable<string>(C_NAME, null); }
             set {
                 if (Name != value) {
-                DataAddSet(C_NAME, value);
-                DataAddSet(C_NAME_STRIPPED, value.Strip());
+                DataSet(C_NAME, value);
+                DataSet(C_NAME_STRIPPED, value.Strip());
                 OnPropertyChanged("Name");
                 OnPropertyChanged("NameStripped");
         } } }
@@ -111,7 +111,7 @@ namespace Procon.Net.Protocols.Objects
             get { return TryGetVariable<Team>(C_TEAM, Team.None); }
             set {
                 if (Team != value) {
-                DataAddSet(C_TEAM, value);
+                DataSet(C_TEAM, value);
                 OnPropertyChanged("Team");
         } } }
         /// <summary>This player's Squad (e.g, Alpha).</summary>
@@ -119,7 +119,7 @@ namespace Procon.Net.Protocols.Objects
             get { return TryGetVariable<Squad>(C_SQUAD, Squad.None); }
             set {
                 if (Squad != value) {
-                DataAddSet(C_SQUAD, value);
+                DataSet(C_SQUAD, value);
                 OnPropertyChanged("Squad");
         } } }
         /// <summary>This player's Score.</summary>
@@ -127,7 +127,7 @@ namespace Procon.Net.Protocols.Objects
             get { return TryGetVariable<int>(C_SCORE, 0); }
             set {
                 if (Score != value) {
-                DataAddSet(C_SCORE, value);
+                DataSet(C_SCORE, value);
                 OnPropertyChanged("Score");
         } } }
         /// <summary>This player's Kill count.</summary>
@@ -135,7 +135,7 @@ namespace Procon.Net.Protocols.Objects
             get { return TryGetVariable<int>(C_KILLS, 0); }
             set {
                 if (Kills != value) {
-                DataAddSet(C_KILLS, value);
+                DataSet(C_KILLS, value);
                 OnPropertyChanged("Kills");
                 OnPropertyChanged("Kdr");
         } } }
@@ -144,7 +144,7 @@ namespace Procon.Net.Protocols.Objects
             get { return TryGetVariable<int>(C_DEATHS, 0); }
             set {
                 if (Deaths != value) {
-                DataAddSet(C_DEATHS, value);
+                DataSet(C_DEATHS, value);
                 OnPropertyChanged("Deaths");
                 OnPropertyChanged("Kdr");
         } } }
@@ -159,7 +159,7 @@ namespace Procon.Net.Protocols.Objects
             get { return TryGetVariable<Role>(C_ROLE, null); }
             set {
                 if (Role != value) {
-                DataAddSet(C_ROLE, value);
+                DataSet(C_ROLE, value);
                 OnPropertyChanged("Role");
         } } }
         /// <summary>A Game-specific collection of items the player has (e.g, Armor, AK-47, HE Grenade).</summary>
@@ -168,7 +168,7 @@ namespace Procon.Net.Protocols.Objects
             get { return TryGetVariable<Inventory>(C_INVENTORY, null); }
             set {
                 if (Inventory != value) {
-                DataAddSet(C_INVENTORY, value);
+                DataSet(C_INVENTORY, value);
                 OnPropertyChanged("Inventory");
         } } }
 
@@ -177,7 +177,7 @@ namespace Procon.Net.Protocols.Objects
             get { return TryGetVariable<uint>(C_PING, 0); }
             set {
                 if (Ping != value) {
-                DataAddSet(C_PING, value);
+                DataSet(C_PING, value);
                 OnPropertyChanged("Ping");
         } } }
         /// <summary>This player's Full Country Name he/she is playing from.</summary>
@@ -203,14 +203,14 @@ namespace Procon.Net.Protocols.Objects
                 // Validate Ip string was valid before continuing.
                 if (mIP != null && mIP != IP && mIP.Length > 0 && mIP.Contains('.'))
                 {
-                    DataAddSet(C_IP, mIP);
+                    DataSet(C_IP, mIP);
                     OnPropertyChanged("IP");
 
                     // Try: In-case GeoIP.dat is not loaded properly
                     try
                     {
-                        DataAddSet(C_COUNTRY_NAME, mCountryLookup.lookupCountryName(mIP));
-                        DataAddSet(C_COUNTRY_CODE, mCountryLookup.lookupCountryCode(mIP));
+                        DataSet(C_COUNTRY_NAME, mCountryLookup.lookupCountryName(mIP));
+                        DataSet(C_COUNTRY_CODE, mCountryLookup.lookupCountryCode(mIP));
                         OnPropertyChanged("CountryName");
                         OnPropertyChanged("CountryCode");
                     }
@@ -219,7 +219,7 @@ namespace Procon.Net.Protocols.Objects
                 // Validate Port string was valid before continuing.
                 if (mPort != null && mPort != Port && mPort.Length > 0 && !mPort.Contains('.'))
                 {
-                    DataAddSet(C_PORT, mPort);
+                    DataSet(C_PORT, mPort);
                     OnPropertyChanged("Port");
                 }
             }

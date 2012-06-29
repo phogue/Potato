@@ -7,7 +7,6 @@
         <assembly>Extensions\Default\Procon.UI.Default.dll</assembly>
 
         <!-- Base Stuffs -->
-        <extension>Default Commands And Properties</extension>
         <extension>Root Layout</extension>
         
         <!-- Tutorial Layout -->
@@ -17,11 +16,22 @@
         <!-- Main Layout -->
         <extension>Main Layout</extension>
         <extension>Main Header</extension>
-        <extension>Main Navigation</extension>
-        <extension>Main Chat</extension>
-        <extension>Main Views Layout</extension>
-        <extension>Main Views Interfaces</extension>
-        <extension>Main Views Connections</extension>
+        <extension>Main Configure Layout</extension>
+        <extension>Main Configure Interfaces Layout</extension>
+        <extension>Main Configure Interfaces Header</extension>
+        <extension>Main Configure Interfaces Content</extension>
+        <extension>Main Configure Interfaces Info</extension>
+        <extension>Main Configure Connections Layout</extension>
+        <extension>Main Configure Connections Header</extension>
+        <extension>Main Configure Connections Content</extension>
+        <extension>Main Configure Connections Info</extension>
+        <extension>Main Connection Layout</extension>
+        <extension>Main Connection Navigation</extension>
+        <extension>Main Connection Chat</extension>
+        <extension>Main Connection Players Layout</extension>
+        <extension>Main Connection Players Header</extension>
+        <extension>Main Connection Players Content</extension>
+        <!--
         <extension>Main Players Layout</extension>
         <extension>Main Players List</extension>
         <extension>Main Maps Layout</extension>
@@ -30,9 +40,11 @@
         <extension>Main Plugins Layout</extension>
         <extension>Main Settings Layout</extension>
         <extension>Main Options Layout</extension>
+        -->
         
-        <!-- Default Styles -->
+        <!-- Styles & Commands -->
         <extension>Light Style</extension>
+        <extension>Commands And Properties</extension>
       </extensions>
     </settings>
   </ui>

@@ -201,41 +201,44 @@
         
         <!-- Main Window -->
         <main>
-          <views>
-            <loc key="Interfaces"  value="Procon Connections" />
-            <loc key="Connections" value="Game Connections" />
+          
+          <configure>
+            <loc key="Type"    value="Game Type" />
+            <loc key="Host"    value="Hostname" />
+            <loc key="Port"    value="Port" />
+            <loc key="User"    value="Username" />
+            <loc key="Pass"    value="Password" />
+            <loc key="Confirm" value="Connect!" />
             <interfaces>
-              <loc key="Local"       value="Local" />
-              <loc key="Remote"      value="Remote" />
-              <loc key="Host"        value="Hostname" />
-              <loc key="Port"        value="Port" />
-              <loc key="User"        value="Username" />
-              <loc key="Pass"        value="Password" />
-              <loc key="Add"         value="Connect to a Procon Server" />
-              <loc key="Confirm"     value="Connect!" />
-              <loc key="Information" value="Information" />
-              <loc key="Games"       value="Game Connections" />
+              <loc key="Title"  value="Procon Connections" />
+              <loc key="Local"  value="Local" />
+              <loc key="Remote" value="Remote" />
+              <loc key="Add"    value="Connect to a Procon Server" />
+              <loc key="Info"   value="Information" />
+              <loc key="Games"  value="Game Connections" />
             </interfaces>
             <connections>
-              <loc key="Host"       value="Hostname" />
-              <loc key="Port"       value="Port" />
-              <loc key="Type"       value="Game Type" />
-              <loc key="Pass"       value="Password" />
+              <loc key="Title"      value="Game Connections" />
               <loc key="Additional" value="Additional Information" />
               <loc key="Add"        value="Connect to a Game Server" />
               <loc key="Confirm"    value="Connect!" />
               <loc key="Address"    value="Hostname" />
               <loc key="Map"        value="Map" />
             </connections>
-          </views>
-          <chat>
-            <loc key="Title" value="Chat" />
-          </chat>
-          <players>
-            <loc key="Title" value="Player List" />
-            <loc key="Ban"   value="Ban" />
-            <loc key="Kick"  value="Kick" />
-          </players>
+          </configure>
+
+          <connection>
+            <chat>
+              <loc key="Title" value="Chat" />
+            </chat>
+          
+            <players>
+              <loc key="Title" value="Player List" />
+              <loc key="Ban"   value="Ban" />
+              <loc key="Kick"  value="Kick" />
+              <loc key="Move"  value="Move" />
+            </players>
+          </connection>
         </main>
         
       </root>

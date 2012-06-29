@@ -12,11 +12,11 @@ namespace Procon.UI.API.Converters
         {
             if (value is Procon.Net.ConnectionState) {
                 String tValue = value.ToString();
-                if (ViewModelBase.PublicProperties["Images"]["Status"].ContainsKey(tValue) && ViewModelBase.PublicProperties["Images"]["Status"][tValue].Value != null)
-                    return ViewModelBase.PublicProperties["Images"]["Status"][tValue].Value;
-                return ViewModelBase.PublicProperties["Images"]["Status"]["Unknown"].Value;
+                if (ExtensionApi.Properties["Images"]["Status"].ContainsKey(tValue) && ExtensionApi.Properties["Images"]["Status"][tValue].Value != null)
+                    return ExtensionApi.Properties["Images"]["Status"][tValue].Value;
+                return ExtensionApi.Properties["Images"]["Status"]["Unknown"].Value;
             }
-            return ViewModelBase.PublicProperties["Images"]["Empty"].Value;
+            return ExtensionApi.Properties["Images"]["Empty"].Value;
         }
 
         // Invalid.

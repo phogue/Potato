@@ -5,7 +5,6 @@ using System.Windows.Input;
 using Procon.UI.API;
 using Procon.UI.API.Classes;
 using Procon.UI.API.Commands;
-using Procon.UI.API.ViewModels;
 
 namespace Procon.UI.Default.Root.Main.Header
 {
@@ -38,31 +37,32 @@ namespace Procon.UI.Default.Root.Main.Header
         #endregion IExtension Properties
 
         // An easy accessor for Properties and Commands of this control.
-        private InfinityDictionary<String, Object>   tProps = ViewModelBase.PublicProperties["Main"]["Header"];
-        private InfinityDictionary<String, ICommand> tCmmds = ViewModelBase.PublicCommands["Main"]["Header"];
+        private InfinityDictionary<String, Object>   tProps = ExtensionApi.Properties["Main"]["Header"];
+        private InfinityDictionary<String, ICommand> tCmmds = ExtensionApi.Commands["Main"]["Header"];
+
 
         [STAThread]
         public bool Entry(Window root)
         {
             // Find the controls I want to use and check for issues.
             Grid layout = ExtensionApi.FindControl<Grid>(root, "MainLayout");
-            if  (layout == null) return false;
+            if (layout == null) return false;
 
             // Do what I need to setup my control.
             HeaderView view = new HeaderView();
-            Grid.SetRow(view, 0);
             layout.Children.Add(view);
 
             // Commands
             tCmmds["Swap"].Value = new RelayCommand<Object>(
-                // -- Handles when the "Swap Connections" button is clicked.
+            #region -- Handles when the "Swap Connections" button is clicked.
                 x => {
-                    ExtensionApi.Settings["View"].Value = "Views";
+                    ExtensionApi.Settings["View"].Value = "Configure";
                 });
+            #endregion
 
             // Setup the settings.
             if (ExtensionApi.Settings["View"].Value == null)
-                ExtensionApi.Settings["View"].Value = "Views";
+                ExtensionApi.Settings["View"].Value = "Configure";
 
             // Exit with good status.
             return true;

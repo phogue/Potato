@@ -1,4 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using System.Reflection.Emit;
 using System.Windows;
 using System.Windows.Input;
 
@@ -7,21 +11,21 @@ namespace Procon.UI.API.Commands
     public static class AttachedCommand
     {
         // Allows for easy use of only a single event to be bound to.
+        public static DependencyProperty EventProperty =
+            DependencyProperty.RegisterAttached("Event",
+                typeof(String),
+                typeof(AttachedCommand),
+                new FrameworkPropertyMetadata(null));
+        public static DependencyProperty ParameterProperty =
+            DependencyProperty.RegisterAttached("Parameter",
+                typeof(Object),
+                typeof(AttachedCommand),
+                new FrameworkPropertyMetadata(null));
         public static DependencyProperty CommandProperty =
             DependencyProperty.RegisterAttached("Command",
                 typeof(ICommand),
                 typeof(AttachedCommand),
                 new FrameworkPropertyMetadata(null, CommandPropertyChanged));
-        public static DependencyProperty RoutedEventProperty =
-            DependencyProperty.RegisterAttached("RoutedEvent",
-                typeof(RoutedEvent),
-                typeof(AttachedCommand),
-                new FrameworkPropertyMetadata(null));
-        public static DependencyProperty CustomParameterProperty =
-            DependencyProperty.RegisterAttached("CustomParameter",
-                typeof(Object),
-                typeof(AttachedCommand),
-                new FrameworkPropertyMetadata(null));
         // Allows for multiple events to be bound to.
         public static DependencyProperty CommandsProperty =
             DependencyProperty.RegisterAttached("Commands",
@@ -30,23 +34,69 @@ namespace Procon.UI.API.Commands
                 new FrameworkPropertyMetadata(null, CommandsPropertyChanged));
 
         // Accessors / Mutators for the dependency properties.
-        public static void SetCommand(        DependencyObject element, ICommand             item) { element.SetValue(CommandProperty,         item); }
-        public static void SetRoutedEvent(    DependencyObject element, RoutedEvent          item) { element.SetValue(RoutedEventProperty,     item); }
-        public static void SetCustomParameter(DependencyObject element, Object               item) { element.SetValue(CustomParameterProperty, item); }
-        public static void SetCommands(       DependencyObject element, AttachedCommandGroup item) { element.SetValue(CommandsProperty,        item); }
-        public static ICommand             GetCommand(        DependencyObject element) { return (ICommand)            element.GetValue(CommandProperty);         }
-        public static RoutedEvent          GetRoutedEvent(    DependencyObject element) { return (RoutedEvent)         element.GetValue(RoutedEventProperty);     }
-        public static Object               GetCustomParameter(DependencyObject element) { return (Object)              element.GetValue(CustomParameterProperty); }
-        public static AttachedCommandGroup GetCommands(       DependencyObject element) { return (AttachedCommandGroup)element.GetValue(CommandsProperty);        }
+        public static void SetCommand(  DependencyObject element, ICommand             item) { element.SetValue(CommandProperty,         item); }
+        public static void SetEvent(    DependencyObject element, String               item) { element.SetValue(EventProperty,           item); }
+        public static void SetParameter(DependencyObject element, Object               item) { element.SetValue(ParameterProperty,       item); }
+        public static void SetCommands( DependencyObject element, AttachedCommandGroup item) { element.SetValue(CommandsProperty,        item); }
+        public static ICommand             GetCommand(  DependencyObject element) { return (ICommand)            element.GetValue(CommandProperty);   }
+        public static String               GetEvent(    DependencyObject element) { return (String)              element.GetValue(EventProperty);     }
+        public static Object               GetParameter(DependencyObject element) { return (Object)              element.GetValue(ParameterProperty); }
+        public static AttachedCommandGroup GetCommands( DependencyObject element) { return (AttachedCommandGroup)element.GetValue(CommandsProperty);  }
+
+        // Cache for the proxy handlers.
+        private static Dictionary<String, Delegate> mHandlers = new Dictionary<String, Delegate>();
 
         // Attaches a single command to the element's event.
         private static void CommandPropertyChanged(DependencyObject sender, DependencyPropertyChangedEventArgs args)
         {
-            FrameworkElement tElement    = sender        as FrameworkElement;
-            ICommand         tOldCommand = args.OldValue as ICommand;
-            ICommand         tNewCommand = args.NewValue as ICommand;
-            if (tElement != null && tOldCommand == null && tNewCommand != null)
-                tElement.AddHandler(GetRoutedEvent(tElement), (RoutedEventHandler)((s, e) => tNewCommand.Execute(new AttachedCommandArgs(s, e, GetCustomParameter(tElement)))));
+            FrameworkElement tElement   = sender as FrameworkElement;
+            String           tEventName = GetEvent(tElement);
+            // If the dependency properties were set.
+            if (tElement != null && tEventName != null) {
+                EventInfo tEventInfo = tElement.GetType().GetEvent(tEventName);
+                if (tEventInfo != null)
+                    // We're attempting to bind to a new command.
+                    if (args.OldValue == null && args.NewValue != null) {
+                        if (!mHandlers.ContainsKey(tEventName)) {
+                            // Hard-code the handler to the method defined in our class.
+                            Action<Object, Object> tHandler = OnEventFired;
+
+                            // Get the event handler type and the method parent type.
+                            Type tEventType   = tEventInfo.EventHandlerType;
+                            Type tHandlerType = tHandler.GetType();
+
+                            // Get all the parameters for the specified event handler type.
+                            List<Type> tEventParams = new List<Type>();
+                            tEventParams.Add(tHandlerType);
+                            tEventParams.AddRange(tEventType.GetMethod("Invoke").GetParameters().Select(x => x.ParameterType));
+
+                            // Create a dynamic method with the specified name, return type, and parameters.  Create the method body.
+                            DynamicMethod tProxyMethod = new DynamicMethod("Proxy: " + tEventName, typeof(void), tEventParams.ToArray(), tHandlerType, true);
+                            ILGenerator   tProxyBody   = tProxyMethod.GetILGenerator();
+                            tProxyBody.Emit(OpCodes.Ldarg_1);
+                            tProxyBody.Emit(OpCodes.Ldarg_2);
+                            tProxyBody.Emit(OpCodes.Call, tHandler.Method);
+                            tProxyBody.Emit(OpCodes.Ret);
+
+                            // Finally, create the delegate that represents this method and add it to our cache.
+                            mHandlers.Add(tEventName, tProxyMethod.CreateDelegate(tEventType, tHandler.Target));
+                        }
+                        // Bind to the event handler.
+                        if (mHandlers[tEventName] != null)
+                            tEventInfo.AddEventHandler(tElement, mHandlers[tEventName]);
+                    }
+                    // We're attempting to remove the previous binding.
+                    else if (args.OldValue != null && args.NewValue == null)
+                        tEventInfo.RemoveEventHandler(tElement, mHandlers[tEventName]);
+            }
+        }
+        private static void OnEventFired(Object sender, Object args)
+        {
+            FrameworkElement tElement   = sender as FrameworkElement;
+            ICommand         tCommand   = GetCommand(tElement);
+            Object           tParameter = GetParameter(tElement);
+            if (tCommand != null)
+                tCommand.Execute(new AttachedCommandArgs(sender, args, tParameter));
         }
 
         // Attaches multiple commands to the element's various events.

@@ -367,13 +367,13 @@
             <!-- Horizontal ScrollBar -->
             <Trigger Property="Orientation" Value="Horizontal">
                 <Setter Property="Width"      Value="Auto"/>
-                <Setter Property="Height"     Value="18" />
+                <Setter Property="Height"     Value="30" />
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="{x:Type ScrollBar}">
                             <!-- ScrollBar Background -->
                             <Border x:Name="PART_Border"
-                                    Margin="15, 6"
+                                    Margin="15, 12"
                                     CornerRadius="2"
                                     Background="{DynamicResource BrushScrollHorz}">
                                 <!-- ScrollBar Bar -->
@@ -419,14 +419,14 @@
             </Trigger>
             <!-- Vertical ScrollBar -->
             <Trigger Property="Orientation" Value="Vertical">
-                <Setter Property="Width"  Value="18" />
+                <Setter Property="Width"  Value="30" />
                 <Setter Property="Height" Value="Auto" />
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="{x:Type ScrollBar}">
                             <!-- ScrollBar Background -->
                             <Border x:Name="PART_Border"
-                                    Margin="6, 15"
+                                    Margin="12, 15"
                                     CornerRadius="2"
                                     Background="{DynamicResource BrushScrollVert}">
                                 <!-- ScrollBar Bar -->
@@ -814,7 +814,7 @@
     
     <DataTemplate x:Key="DataTemplatePlayer" DataType="{x:Type c:Player}">
         <ToggleButton x:Name="PART_Content"
-                      Width="190"
+                      Width="189"
                       Margin="5, 5, 0, 0"
                       Padding="0"
                       BorderThickness="0"
@@ -1017,7 +1017,4 @@
             </DataTrigger>
         </DataTemplate.Triggers>
     </DataTemplate>
-    
-    
-    
 </ResourceDictionary>

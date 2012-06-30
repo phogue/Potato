@@ -194,7 +194,6 @@
             <!-- Chat Panel-->
             <chat>
               <loc key="Title" value="Chat" />
-              <!-- Teams -->
               <team>
                 <loc key="None"  value="None"   />
                 <loc key="Team1" value="Team 1" />
@@ -206,7 +205,6 @@
                 <loc key="Team7" value="Team 7" />
                 <loc key="Team8" value="Team 8" />
               </team>
-              <!-- Squads -->
               <squad>
                 <loc key="None"    value="None"     />
                 <loc key="Squad1"  value="Alpha"    />

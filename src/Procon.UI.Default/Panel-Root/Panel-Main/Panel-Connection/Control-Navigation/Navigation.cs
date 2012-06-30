@@ -1,10 +1,12 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+
 using Procon.UI.API;
-using Procon.UI.API.Classes;
 using Procon.UI.API.Commands;
+using Procon.UI.API.Utils;
 using Procon.UI.Default.Controls;
 
 namespace Procon.UI.Default.Root.Main.Connection.Navigation
@@ -38,8 +40,8 @@ namespace Procon.UI.Default.Root.Main.Connection.Navigation
         #endregion IExtension Properties
 
         // An easy accessor for Properties and Commands of this control.
-        private InfinityDictionary<String, Object>   tProps = ExtensionApi.Properties["Main"]["Connection"]["Navigation"];
-        private InfinityDictionary<String, ICommand> tCmmds = ExtensionApi.Commands["Main"]["Connection"]["Navigation"];
+        private ArrayDictionary<String, Object>   tProps = ExtensionApi.Properties["Main"]["Connection"]["Navigation"];
+        private ArrayDictionary<String, ICommand> tCmmds = ExtensionApi.Commands["Main"]["Connection"]["Navigation"];
 
 
         [STAThread]
@@ -76,15 +78,23 @@ namespace Procon.UI.Default.Root.Main.Connection.Navigation
             #endregion
 
             // Allow other panes to be used other than these.
-            ExtensionApi.Settings["Pane"].PropertyChanged += (s, e) => {
-                view.ConnectionNavigationPlayers.IsChecked  = (String)ExtensionApi.Settings["Pane"].Value == "Players";
-                view.ConnectionNavigationMaps.IsChecked     = (String)ExtensionApi.Settings["Pane"].Value == "Maps";
-                view.ConnectionNavigationBans.IsChecked     = (String)ExtensionApi.Settings["Pane"].Value == "Bans";
-                view.ConnectionNavigationPlugins.IsChecked  = (String)ExtensionApi.Settings["Pane"].Value == "Plugins";
-                view.ConnectionNavigationSettings.IsChecked = (String)ExtensionApi.Settings["Pane"].Value == "Settings";
-                view.ConnectionNavigationOptions.IsChecked  = (String)ExtensionApi.Settings["Pane"].Value == "Options";
-            };
-            ExtensionApi.Settings["Pane"].Value = ExtensionApi.Settings["Pane"].Value;
+            PropertyChangedEventHandler tResetPane =
+            #region -- Handles when the pane changes.
+                (s, e) => {
+                    view.ConnectionNavigationPlayers.IsChecked  = (String)ExtensionApi.Settings["Pane"].Value == "Players";
+                    view.ConnectionNavigationMaps.IsChecked     = (String)ExtensionApi.Settings["Pane"].Value == "Maps";
+                    view.ConnectionNavigationBans.IsChecked     = (String)ExtensionApi.Settings["Pane"].Value == "Bans";
+                    view.ConnectionNavigationPlugins.IsChecked  = (String)ExtensionApi.Settings["Pane"].Value == "Plugins";
+                    view.ConnectionNavigationSettings.IsChecked = (String)ExtensionApi.Settings["Pane"].Value == "Settings";
+                    view.ConnectionNavigationOptions.IsChecked  = (String)ExtensionApi.Settings["Pane"].Value == "Options";
+                };
+            #endregion
+
+            // Set the default settings.
+            if (ExtensionApi.Settings["Pane"].Value == null)
+                ExtensionApi.Settings["Pane"].Value = "Players";
+            ExtensionApi.Settings["Pane"].PropertyChanged += tResetPane;
+            tResetPane(null, null);
 
             // Exit with good status.
             return true;

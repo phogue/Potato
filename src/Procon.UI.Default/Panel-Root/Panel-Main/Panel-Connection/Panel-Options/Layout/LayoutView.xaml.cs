@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace Procon.UI.Default.Root.Main.Options.Layout
+namespace Procon.UI.Default.Root.Main.Connection.Options.Layout
 {
     public partial class LayoutView : Grid
     {

@@ -9,14 +9,14 @@ using System.Xml.Linq;
 
 using Procon.Core;
 using Procon.UI.API;
-using Procon.UI.API.Classes;
+using Procon.UI.API.Utils;
 
 namespace Procon.UI
 {
     internal static class Settings
     {
         // Holds the information for the Settings, Assemblies, and Extensions.
-        private static InfinityDictionary<String, Object> mSettings   = ExtensionApi.Properties["Settings"];
+        private static ArrayDictionary<String, Object> mSettings   = ExtensionApi.Properties["Settings"];
         private static List<Assembly>                     mAssemblies = new List<Assembly>();
         private static List<Extension>                    mExtensions = new List<Extension>();
 

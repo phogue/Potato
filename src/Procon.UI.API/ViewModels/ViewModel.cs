@@ -4,7 +4,6 @@ using System.Windows.Threading;
 
 namespace Procon.UI.API.ViewModels
 {
-    // Allows any class to be converted into a view model.
     public abstract class ViewModel<TModel> : INotifyPropertyChanged where TModel : class
     {
         // Variables.

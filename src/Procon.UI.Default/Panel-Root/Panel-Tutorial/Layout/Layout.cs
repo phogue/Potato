@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
+
 using Procon.UI.API;
 
 namespace Procon.UI.Default.Root.Tutorial.Layout
@@ -38,7 +39,7 @@ namespace Procon.UI.Default.Root.Tutorial.Layout
         {
             // Find the controls I want to use and check for issues.
             Grid layout = ExtensionApi.FindControl<Grid>(root, "RootLayout");
-            if  (layout == null) return false;
+            if (layout == null) return false;
 
             // Do what I need to setup my control.
             LayoutView view = new LayoutView();

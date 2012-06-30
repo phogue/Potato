@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
+
 using Procon.UI.API;
 
-namespace Procon.UI.Default.Root.Main.Maps.Layout
+namespace Procon.UI.Default.Root.Main.Connection.Maps.Layout
 {
     [Extension(
-        Alters    = new String[] { "MainLayout" },
+        Alters    = new String[] { "MainConnectionLayout" },
         Replaces  = new String[] { },
-        DependsOn = new String[] { "Main Layout" })]
+        DependsOn = new String[] { "Main Connection Layout" })]
     public class Layout : IExtension
     {
         #region IExtension Properties
@@ -23,7 +24,7 @@ namespace Procon.UI.Default.Root.Main.Maps.Layout
         { get { return "Team Player Gaming"; } }
 
         public string Name
-        { get { return "Main Maps Layout"; } }
+        { get { return "Main Connection Maps Layout"; } }
 
         public string Version
         { get { return "1.0.0.0"; } }
@@ -37,12 +38,12 @@ namespace Procon.UI.Default.Root.Main.Maps.Layout
         public bool Entry(Window root)
         {
             // Find the controls I want to use and check for issues.
-            Grid layout = ExtensionApi.FindControl<Grid>(root, "MainLayout");
+            Grid layout = ExtensionApi.FindControl<Grid>(root, "MainConnectionLayout");
             if  (layout == null) return false;
 
             // Do what I need to setup my control.
             LayoutView view = new LayoutView();
-            Grid.SetRow(view, 2);
+            Grid.SetRow(view, 1);
             layout.Children.Add(view);
 
             // Exit with good status.

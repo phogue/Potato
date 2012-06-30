@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
+
 using Procon.UI.API;
 
-namespace Procon.UI.Default.Root.Main.Plugins.Layout
+namespace Procon.UI.Default.Root.Main.Connection.Plugins.Layout
 {
     [Extension(
         Alters    = new String[] { "MainLayout" },
@@ -23,7 +24,7 @@ namespace Procon.UI.Default.Root.Main.Plugins.Layout
         { get { return "Team Player Gaming"; } }
 
         public string Name
-        { get { return "Main Plugins Layout"; } }
+        { get { return "Main Connection Plugins Layout"; } }
 
         public string Version
         { get { return "1.0.0.0"; } }
@@ -38,12 +39,11 @@ namespace Procon.UI.Default.Root.Main.Plugins.Layout
         {
             // Find the controls I want to use and check for issues.
             Grid layout = ExtensionApi.FindControl<Grid>(root, "MainLayout");
-            if  (layout == null) return false;
+            if (layout == null) return false;
 
             // Do what I need to setup my control.
             LayoutView view = new LayoutView();
-            Grid.SetRow(view, 2);
-            view.Background = System.Windows.Media.Brushes.Orange;
+            Grid.SetRow(view, 1);
             layout.Children.Add(view);
 
             // Exit with good status.

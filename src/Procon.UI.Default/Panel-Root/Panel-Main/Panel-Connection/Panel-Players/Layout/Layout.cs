@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
+
 using Procon.UI.API;
 
 namespace Procon.UI.Default.Root.Main.Connection.Players.Layout
@@ -38,7 +39,7 @@ namespace Procon.UI.Default.Root.Main.Connection.Players.Layout
         {
             // Find the controls I want to use and check for issues.
             Grid layout = ExtensionApi.FindControl<Grid>(root, "MainConnectionLayout");
-            if  (layout == null) return false;
+            if (layout == null) return false;
 
             // Do what I need to setup my control.
             LayoutView view = new LayoutView();

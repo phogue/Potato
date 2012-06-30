@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Media.Imaging;
+
 using Procon.Net.Protocols;
 using Procon.Net.Protocols.Objects;
 using Procon.UI.API;
@@ -53,6 +54,7 @@ namespace Procon.UI.Default
                     x.IsLocal  == (Boolean)ExtensionApi.Settings["InterfaceType"].Value &&
                     x.Hostname == (String) ExtensionApi.Settings["InterfaceHost"].Value &&
                     x.Port     == (UInt16) ExtensionApi.Settings["InterfacePort"].Value);
+
             // Setup Active Connection.
             if (ExtensionApi.Interface != null
                 && ExtensionApi.Settings["ConnectionType"].Value is GameType
@@ -85,8 +87,6 @@ namespace Procon.UI.Default
             // [Connection] - Game Types.
             ExtensionApi.Properties["Types"]["Connection"].Value = Enum.GetValues(typeof(GameType)).Cast<GameType>().Where(x => x != GameType.None);
 
-
-
             // [Empty] - A null image.
             ExtensionApi.Properties["Images"]["Empty"].Value = new BitmapImage();
 
@@ -106,15 +106,22 @@ namespace Procon.UI.Default
             ExtensionApi.Properties["Images"]["Connections"]["HOMEFRONT"].Value = (File.Exists(Defines.CONNECTION_HOMEFRONT)) ? new BitmapImage(new Uri(Defines.CONNECTION_HOMEFRONT, UriKind.RelativeOrAbsolute)) : ExtensionApi.Properties["Images"]["Empty"].Value;
             ExtensionApi.Properties["Images"]["Connections"]["MOH_2010"].Value  = (File.Exists(Defines.CONNECTION_MOH_2010))  ? new BitmapImage(new Uri(Defines.CONNECTION_MOH_2010,  UriKind.RelativeOrAbsolute)) : ExtensionApi.Properties["Images"]["Empty"].Value;
             ExtensionApi.Properties["Images"]["Connections"]["TF_2"].Value      = (File.Exists(Defines.CONNECTION_TF_2))      ? new BitmapImage(new Uri(Defines.CONNECTION_TF_2,      UriKind.RelativeOrAbsolute)) : ExtensionApi.Properties["Images"]["Empty"].Value;
-            ExtensionApi.Properties["Images"]["Connections"]["Unkown"].Value    = (File.Exists(Defines.CONNECTION_UNKNOWN))   ? new BitmapImage(new Uri(Defines.CONNECTION_UNKNOWN,   UriKind.RelativeOrAbsolute)) : ExtensionApi.Properties["Images"]["Empty"].Value;
+            ExtensionApi.Properties["Images"]["Connections"]["Unknown"].Value   = (File.Exists(Defines.CONNECTION_UNKNOWN))   ? new BitmapImage(new Uri(Defines.CONNECTION_UNKNOWN,   UriKind.RelativeOrAbsolute)) : ExtensionApi.Properties["Images"]["Empty"].Value;
 
             // [Status] - Connection status.
-            ExtensionApi.Properties["Images"]["Status"]["LoggedIn"].Value      = (File.Exists(Defines.STATUS_GOOD)) ? new BitmapImage(new Uri(Defines.STATUS_GOOD, UriKind.RelativeOrAbsolute))  : ExtensionApi.Properties["Images"]["Empty"].Value;
-            ExtensionApi.Properties["Images"]["Status"]["Connecting"].Value    = (File.Exists(Defines.STATUS_FLUX)) ? new BitmapImage(new Uri(Defines.STATUS_FLUX, UriKind.RelativeOrAbsolute))  : ExtensionApi.Properties["Images"]["Empty"].Value;
-            ExtensionApi.Properties["Images"]["Status"]["Connected"].Value     = (File.Exists(Defines.STATUS_FLUX)) ? new BitmapImage(new Uri(Defines.STATUS_FLUX, UriKind.RelativeOrAbsolute))  : ExtensionApi.Properties["Images"]["Empty"].Value;
-            ExtensionApi.Properties["Images"]["Status"]["Ready"].Value         = (File.Exists(Defines.STATUS_FLUX)) ? new BitmapImage(new Uri(Defines.STATUS_FLUX, UriKind.RelativeOrAbsolute))  : ExtensionApi.Properties["Images"]["Empty"].Value;
+            ExtensionApi.Properties["Images"]["Status"]["LoggedIn"].Value      = (File.Exists(Defines.STATUS_GOOD)) ? new BitmapImage(new Uri(Defines.STATUS_GOOD, UriKind.RelativeOrAbsolute)) : ExtensionApi.Properties["Images"]["Empty"].Value;
+            ExtensionApi.Properties["Images"]["Status"]["Connecting"].Value    = (File.Exists(Defines.STATUS_FLUX)) ? new BitmapImage(new Uri(Defines.STATUS_FLUX, UriKind.RelativeOrAbsolute)) : ExtensionApi.Properties["Images"]["Empty"].Value;
+            ExtensionApi.Properties["Images"]["Status"]["Connected"].Value     = (File.Exists(Defines.STATUS_FLUX)) ? new BitmapImage(new Uri(Defines.STATUS_FLUX, UriKind.RelativeOrAbsolute)) : ExtensionApi.Properties["Images"]["Empty"].Value;
+            ExtensionApi.Properties["Images"]["Status"]["Ready"].Value         = (File.Exists(Defines.STATUS_FLUX)) ? new BitmapImage(new Uri(Defines.STATUS_FLUX, UriKind.RelativeOrAbsolute)) : ExtensionApi.Properties["Images"]["Empty"].Value;
             ExtensionApi.Properties["Images"]["Status"]["Disconnecting"].Value = (File.Exists(Defines.STATUS_BAD))  ? new BitmapImage(new Uri(Defines.STATUS_BAD,  UriKind.RelativeOrAbsolute)) : ExtensionApi.Properties["Images"]["Empty"].Value;
             ExtensionApi.Properties["Images"]["Status"]["Disconnected"].Value  = (File.Exists(Defines.STATUS_BAD))  ? new BitmapImage(new Uri(Defines.STATUS_BAD,  UriKind.RelativeOrAbsolute)) : ExtensionApi.Properties["Images"]["Empty"].Value;
+
+            // [General] - Images used across the program.
+            ExtensionApi.Properties["Images"]["General"]["Player"].Value = (File.Exists(Defines.GENERAL_PLAYER)) ? new BitmapImage(new Uri(Defines.GENERAL_PLAYER, UriKind.RelativeOrAbsolute)) : ExtensionApi.Properties["Images"]["Empty"].Value;
+            ExtensionApi.Properties["Images"]["General"]["Good"].Value   = (File.Exists(Defines.GENERAL_GOOD))   ? new BitmapImage(new Uri(Defines.GENERAL_GOOD,   UriKind.RelativeOrAbsolute)) : ExtensionApi.Properties["Images"]["Empty"].Value;
+            ExtensionApi.Properties["Images"]["General"]["Bad"].Value    = (File.Exists(Defines.GENERAL_BAD))    ? new BitmapImage(new Uri(Defines.GENERAL_BAD,    UriKind.RelativeOrAbsolute)) : ExtensionApi.Properties["Images"]["Empty"].Value;
+            ExtensionApi.Properties["Images"]["General"]["Warn"].Value   = (File.Exists(Defines.GENERAL_WARN))   ? new BitmapImage(new Uri(Defines.GENERAL_WARN,   UriKind.RelativeOrAbsolute)) : ExtensionApi.Properties["Images"]["Empty"].Value;
+            ExtensionApi.Properties["Images"]["General"]["Notify"].Value = (File.Exists(Defines.GENERAL_NOTIFY)) ? new BitmapImage(new Uri(Defines.GENERAL_NOTIFY, UriKind.RelativeOrAbsolute)) : ExtensionApi.Properties["Images"]["Empty"].Value;
 
             // [Countries] - The country flags.
             #region Country Flags
@@ -408,13 +415,6 @@ namespace Procon.UI.Default
             ExtensionApi.Properties["Images"]["Content"]["Options"]["Active"].Value   = (File.Exists(Defines.OPTIONS_ACTIVE))   ? new BitmapImage(new Uri(Defines.OPTIONS_ACTIVE,   UriKind.RelativeOrAbsolute)) : ExtensionApi.Properties["Images"]["Empty"].Value;
             ExtensionApi.Properties["Images"]["Content"]["Options"]["Disabled"].Value = (File.Exists(Defines.OPTIONS_DISABLED)) ? new BitmapImage(new Uri(Defines.OPTIONS_DISABLED, UriKind.RelativeOrAbsolute)) : ExtensionApi.Properties["Images"]["Empty"].Value;
 
-            // [General] - Images used across the program.
-            ExtensionApi.Properties["Images"]["General"]["Player"].Value = (File.Exists(Defines.GENERAL_PLAYER)) ? new BitmapImage(new Uri(Defines.GENERAL_PLAYER, UriKind.RelativeOrAbsolute)) : ExtensionApi.Properties["Images"]["Empty"].Value;
-            ExtensionApi.Properties["Images"]["General"]["Good"].Value   = (File.Exists(Defines.GENERAL_GOOD))   ? new BitmapImage(new Uri(Defines.GENERAL_GOOD,   UriKind.RelativeOrAbsolute)) : ExtensionApi.Properties["Images"]["Empty"].Value;
-            ExtensionApi.Properties["Images"]["General"]["Bad"].Value    = (File.Exists(Defines.GENERAL_BAD))    ? new BitmapImage(new Uri(Defines.GENERAL_BAD,    UriKind.RelativeOrAbsolute)) : ExtensionApi.Properties["Images"]["Empty"].Value;
-            ExtensionApi.Properties["Images"]["General"]["Warn"].Value   = (File.Exists(Defines.GENERAL_WARN))   ? new BitmapImage(new Uri(Defines.GENERAL_WARN,   UriKind.RelativeOrAbsolute)) : ExtensionApi.Properties["Images"]["Empty"].Value;
-            ExtensionApi.Properties["Images"]["General"]["Notify"].Value = (File.Exists(Defines.GENERAL_NOTIFY)) ? new BitmapImage(new Uri(Defines.GENERAL_NOTIFY, UriKind.RelativeOrAbsolute)) : ExtensionApi.Properties["Images"]["Empty"].Value;
-
             // [Connection] - Images associated with managing connections.
             ExtensionApi.Properties["Images"]["Connection"]["Swap"].Value = (File.Exists(Defines.CONNECTION_SWAP)) ? new BitmapImage(new Uri(Defines.CONNECTION_SWAP, UriKind.RelativeOrAbsolute)) : ExtensionApi.Properties["Images"]["Empty"].Value;
             ExtensionApi.Properties["Images"]["Connection"]["Info"].Value = (File.Exists(Defines.CONNECTION_INFO)) ? new BitmapImage(new Uri(Defines.CONNECTION_INFO, UriKind.RelativeOrAbsolute)) : ExtensionApi.Properties["Images"]["Empty"].Value;
@@ -531,7 +531,7 @@ namespace Procon.UI.Default
             return
                 ExtensionApi.Connection != null && parameters.Length >= 3
                 && (tPlayer = parameters[0] as Player)       != null && tPlayer.UID    != String.Empty
-                && (tSubset = parameters[1] as PlayerSubset) != null
+                && (tSubset = parameters[1] as PlayerSubset) != null && (tSubset.Team  != Team.None || tSubset.Squad != Squad.None)
                 && (tString = parameters[1] as String)       != null && tString.Trim() != String.Empty;
         }
         // -- [Player][Kick]
@@ -570,9 +570,9 @@ namespace Procon.UI.Default
             String     tString;
             return
                 ExtensionApi.Connection != null && parameters.Length >= 3
-                && (tPlayer = parameters[0] as Player)     != null && tPlayer.UID    != String.Empty
-                && (tSubset = parameters[1] as TimeSubset) != null 
-                && (tString = parameters[2] as String)     != null && tString.Trim() != String.Empty;
+                && (tPlayer = parameters[0] as Player)     != null && tPlayer.UID      != String.Empty
+                && (tSubset = parameters[1] as TimeSubset) != null && (tSubset.Context != TimeSubsetContext.Time ? tSubset.Context != TimeSubsetContext.None : tSubset.Length.HasValue)
+                && (tString = parameters[2] as String)     != null && tString.Trim()   != String.Empty;
         }
 
 
@@ -587,22 +587,6 @@ namespace Procon.UI.Default
         //ExtensionApi.Commands["Connection"]["Action"]["Map"]["Down"].Value   = new RelayCommand<IList>(actionMapDown,   actionMapCan);
         //ExtensionApi.Commands["Connection"]["Action"]["Ban"].Value           = new RelayCommand<IList>(actionBan,       actionBanCan);   
 
-        //private bool actionChatCan(Object nothing)
-        //{
-        //    return ActiveConnection != null;
-        //}
-        //private bool actionPlayerCan(IList players)
-        //{
-        //    return ActiveConnection != null && players != null && players.Count > 0;
-        //}
-        //private bool actionMapCan(IList maps)
-        //{
-        //    return ActiveConnection != null && maps != null && maps.Count > 0;
-        //}
-        //private bool actionBanCan(IList bans)
-        //{
-        //    return ActiveConnection != null;
-        //}
 
 
         //private void filterChatChanged(Object collection)

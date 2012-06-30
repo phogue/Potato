@@ -1,11 +1,18 @@
 ﻿using System;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.ComponentModel;
+using System.Linq;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+
+using Procon.Net.Protocols.Objects;
 using Procon.UI.API;
-using Procon.UI.API.Classes;
 using Procon.UI.API.Commands;
+using Procon.UI.API.Utils;
 
 namespace Procon.UI.Default.Root.Main.Connection.Chat
 {
@@ -38,8 +45,8 @@ namespace Procon.UI.Default.Root.Main.Connection.Chat
         #endregion IExtension Properties
 
         // An easy accessor for Properties and Commands of this control.
-        private InfinityDictionary<String, Object>   tProps = ExtensionApi.Properties["Main"]["Connection"]["Chat"];
-        private InfinityDictionary<String, ICommand> tCmmds = ExtensionApi.Commands["Main"]["Connection"]["Chat"];
+        private ArrayDictionary<String, Object>   tProps = ExtensionApi.Properties["Main"]["Connection"]["Chat"];
+        private ArrayDictionary<String, ICommand> tCmmds = ExtensionApi.Commands["Main"]["Connection"]["Chat"];
 
 
         [STAThread]
@@ -63,7 +70,7 @@ namespace Procon.UI.Default.Root.Main.Connection.Chat
             layout.Children.Add(splt);
             
             // Commands.
-            GridLength tHeight    = new GridLength(1.0, GridUnitType.Star);
+            GridLength tHeight    = new GridLength(Double.MaxValue);
             Boolean    tMinimized = true;
             tCmmds["MinMax"].Value = new RelayCommand<AttachedCommandArgs>(
             #region  -- Handles when the chat box title is clicked.
@@ -79,6 +86,47 @@ namespace Procon.UI.Default.Root.Main.Connection.Chat
                     }
                 });
             #endregion
+
+            // Used to manage the chat list.
+            ObservableCollection<ProtocolObject> tEvents      = null;
+            NotifyCollectionChangedEventHandler  tEventAdded  = null;
+            PropertyChangedEventHandler          tResetEvents = null;
+
+            // Manage the events's collection.
+            tEventAdded =
+            #region -- Handles updates due to an event being added.
+                (s, e) => {
+                    // Scroll to the bottom if we're at the bottom.
+                    if (e.Action == NotifyCollectionChangedAction.Add) {
+                        if (tEvents.Count > 1) {
+                            new Thread(x => {
+                                Thread.Sleep(100);
+                                view.Dispatcher.Invoke(() => {
+                                    view.ConnectionChatEvents.ScrollIntoView(tEvents.Last());
+                                });
+                            }).Start();
+                        }
+                    }
+                };
+            #endregion
+            tResetEvents = 
+            #region -- Detaches the old list, re-creates the list correctly sorted, retaches the new list.
+                (s, e) => {
+                    // Cleanup old stuff.
+                    if (tEvents != null) {
+                        tEvents.CollectionChanged -= tEventAdded;
+                        tEvents = null;
+                    }
+                    // Bind to new list of events.
+                    if (ExtensionApi.Connection != null) {
+                        tEvents = ExtensionApi.Connection.Events;
+                        tEvents.CollectionChanged += tEventAdded;
+                    }
+                };
+            #endregion
+
+            // Let the managing begin.
+            ExtensionApi.Properties["Connection"].PropertyChanged += tResetEvents;
 
             // Exit with good status.
             return true;

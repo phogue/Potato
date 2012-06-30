@@ -2,8 +2,9 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+
 using Procon.UI.API;
-using Procon.UI.API.Classes;
+using Procon.UI.API.Utils;
 
 namespace Procon.UI.Default.Root.Main.Connection.Players.Header
 {
@@ -36,8 +37,8 @@ namespace Procon.UI.Default.Root.Main.Connection.Players.Header
         #endregion IExtension Properties
 
         // An easy accessor for Properties and Commands of this control.
-        private InfinityDictionary<String, Object>   tProps = ExtensionApi.Properties["Main"]["Connection"]["Players"];
-        private InfinityDictionary<String, ICommand> tCmmds = ExtensionApi.Commands["Main"]["Connection"]["Players"];
+        private ArrayDictionary<String, Object>   tProps = ExtensionApi.Properties["Main"]["Connection"]["Players"];
+        private ArrayDictionary<String, ICommand> tCmmds = ExtensionApi.Commands["Main"]["Connection"]["Players"];
 
 
         [STAThread]
@@ -47,13 +48,13 @@ namespace Procon.UI.Default.Root.Main.Connection.Players.Header
             Grid layout = ExtensionApi.FindControl<Grid>(root, "MainConnectionPlayersLayout");
             if (layout == null) return false;
 
-            tProps["Score"].Value = 2000;
-            tProps["Kdr"].Value   = 2.0;
-            tProps["Ping"].Value  = 150;
-
             // Do what I need to setup my control.
             HeaderView view = new HeaderView();
             layout.Children.Add(view);
+            
+            tProps["Score"].Value = 2000;
+            tProps["Kdr"].Value   = 2.0;
+            tProps["Ping"].Value  = 150;
 
             // Exit with good status.
             return true;

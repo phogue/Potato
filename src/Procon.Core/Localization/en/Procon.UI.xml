@@ -23,49 +23,6 @@
         <loc key="MOH_2010"  value="Medal of Honor 2010"/>
         <loc key="HOMEFRONT" value="Homefront"/>
       </game>
-      
-      <team>
-        <loc key="NeutralOrSpectator" value="Neutral" />
-        <loc key="Team1"              value="Team 1" />
-        <loc key="Team2"              value="Team 2" />
-        <loc key="Team3"              value="Team 3" />
-        <loc key="Team4"              value="Team 4" />
-        <loc key="Team5"              value="Team 5" />
-        <loc key="Team6"              value="Team 6" />
-        <loc key="Team7"              value="Team 7" />
-        <loc key="Team8"              value="Team 8" />
-        <loc key="Team9"              value="Team 9" />
-        <loc key="Team10"             value="Team 10" />
-      </team>
-
-      <squad>
-        <loc key="None"    value="None" />
-        <loc key="Squad1"  value="Alpha" />
-        <loc key="Squad2"  value="Bravo" />
-        <loc key="Squad3"  value="Charlie" />
-        <loc key="Squad4"  value="Delta" />
-        <loc key="Squad5"  value="Echo" />
-        <loc key="Squad6"  value="Foxtrox" />
-        <loc key="Squad7"  value="Gamma" />
-        <loc key="Squad8"  value="Hotel" />
-        <loc key="Squad9"  value="India" />
-        <loc key="Squad10" value="Juliet" />
-        <loc key="Squad11" value="Kilo" />
-        <loc key="Squad12" value="Lima" />
-        <loc key="Squad13" value="November" />
-        <loc key="Squad14" value="Oscar" />
-        <loc key="Squad15" value="Papa" />
-        <loc key="Squad16" value="Quebec" />
-        <loc key="Squad17" value="Romeo" />
-        <loc key="Squad18" value="Sierra" />
-        <loc key="Squad19" value="Tango" />
-        <loc key="Squad21" value="Uniform" />
-        <loc key="Squad22" value="Victor" />
-        <loc key="Squad23" value="Whiskey" />
-        <loc key="Squad24" value="X-Ray" />
-        <loc key="Squad25" value="Yankee" />
-        <loc key="Squad26" value="Zulu" />
-      </squad>
 
       <role>
         <loc key="Assault"    value="Assault" />
@@ -202,6 +159,7 @@
         <!-- Main Window -->
         <main>
           
+          <!-- Configuration Panel -->
           <configure>
             <loc key="Type"    value="Game Type" />
             <loc key="Host"    value="Hostname" />
@@ -209,6 +167,8 @@
             <loc key="User"    value="Username" />
             <loc key="Pass"    value="Password" />
             <loc key="Confirm" value="Connect!" />
+            
+            <!-- Interfaces -->
             <interfaces>
               <loc key="Title"  value="Procon Connections" />
               <loc key="Local"  value="Local" />
@@ -217,6 +177,7 @@
               <loc key="Info"   value="Information" />
               <loc key="Games"  value="Game Connections" />
             </interfaces>
+            <!-- Connections-->
             <connections>
               <loc key="Title"      value="Game Connections" />
               <loc key="Additional" value="Additional Information" />
@@ -227,11 +188,56 @@
             </connections>
           </configure>
 
+          <!-- Connection Panel-->
           <connection>
+            
+            <!-- Chat Panel-->
             <chat>
               <loc key="Title" value="Chat" />
+              <!-- Teams -->
+              <team>
+                <loc key="None"  value="None"   />
+                <loc key="Team1" value="Team 1" />
+                <loc key="Team2" value="Team 2" />
+                <loc key="Team3" value="Team 3" />
+                <loc key="Team4" value="Team 4" />
+                <loc key="Team5" value="Team 5" />
+                <loc key="Team6" value="Team 6" />
+                <loc key="Team7" value="Team 7" />
+                <loc key="Team8" value="Team 8" />
+              </team>
+              <!-- Squads -->
+              <squad>
+                <loc key="None"    value="None"     />
+                <loc key="Squad1"  value="Alpha"    />
+                <loc key="Squad2"  value="Bravo"    />
+                <loc key="Squad3"  value="Charlie"  />
+                <loc key="Squad4"  value="Delta"    />
+                <loc key="Squad5"  value="Echo"     />
+                <loc key="Squad6"  value="Foxtrox"  />
+                <loc key="Squad7"  value="Gamma"    />
+                <loc key="Squad8"  value="Hotel"    />
+                <loc key="Squad9"  value="India"    />
+                <loc key="Squad10" value="Juliet"   />
+                <loc key="Squad11" value="Kilo"     />
+                <loc key="Squad12" value="Lima"     />
+                <loc key="Squad13" value="November" />
+                <loc key="Squad14" value="Oscar"    />
+                <loc key="Squad15" value="Papa"     />
+                <loc key="Squad16" value="Quebec"   />
+                <loc key="Squad17" value="Romeo"    />
+                <loc key="Squad18" value="Sierra"   />
+                <loc key="Squad19" value="Tango"    />
+                <loc key="Squad21" value="Uniform"  />
+                <loc key="Squad22" value="Victor"   />
+                <loc key="Squad23" value="Whiskey"  />
+                <loc key="Squad24" value="X-Ray"    />
+                <loc key="Squad25" value="Yankee"   />
+                <loc key="Squad26" value="Zulu"     />
+              </squad>
             </chat>
           
+            <!-- Players Panel -->
             <players>
               <loc key="Title" value="Player List" />
               <loc key="Ban"   value="Ban" />

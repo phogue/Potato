@@ -90,10 +90,6 @@
     <Compile Include="Panel-Root\Panel-Main\Panel-Connection\Panel-Bans\Layout\LayoutView.xaml.cs">
       <DependentUpon>LayoutView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Panel-Root\Panel-Main\Panel-Connection\Panel-Maps\Control-List\List.cs" />
-    <Compile Include="Panel-Root\Panel-Main\Panel-Connection\Panel-Maps\Control-List\ListView.xaml.cs">
-      <DependentUpon>ListView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Panel-Root\Panel-Main\Panel-Connection\Panel-Maps\Layout\Layout.cs" />
     <Compile Include="Panel-Root\Panel-Main\Panel-Connection\Panel-Maps\Layout\LayoutView.xaml.cs">
       <DependentUpon>LayoutView.xaml</DependentUpon>
@@ -225,10 +221,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Panel-Root\Panel-Main\Panel-Connection\Panel-Bans\Layout\LayoutView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Panel-Root\Panel-Main\Panel-Connection\Panel-Maps\Control-List\ListView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

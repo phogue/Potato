@@ -3,8 +3,9 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+
 using Procon.UI.API;
-using Procon.UI.API.Classes;
+using Procon.UI.API.Utils;
 using Procon.UI.API.Commands;
 using Procon.UI.API.ViewModels;
 
@@ -39,8 +40,9 @@ namespace Procon.UI.Default.Root.Tutorial.NewInterface
         #endregion IExtension Properties
 
         // An easy accessor for Properties and Commands of this control.
-        private InfinityDictionary<String, Object>   tProps = ExtensionApi.Properties["Tutorial"]["NewInterface"];
-        private InfinityDictionary<String, ICommand> tCmmds = ExtensionApi.Commands["Tutorial"]["NewInterface"];
+        private ArrayDictionary<String, Object>   tProps = ExtensionApi.Properties["Tutorial"]["NewInterface"];
+        private ArrayDictionary<String, ICommand> tCmmds = ExtensionApi.Commands["Tutorial"]["NewInterface"];
+
 
         [STAThread]
         public bool Entry(Window root)

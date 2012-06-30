@@ -10,7 +10,7 @@ namespace Procon.UI.API.ViewModels
 {
     public class InstanceViewModel : ViewModel<Instance>
     {
-        // Properties.
+        // Observable Properties.
         public  ObservableCollection<InterfaceViewModel> Interfaces
         {
             get { return mInterfaces; }

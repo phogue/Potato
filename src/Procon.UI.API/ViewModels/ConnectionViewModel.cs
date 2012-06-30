@@ -14,22 +14,22 @@ namespace Procon.UI.API.ViewModels
     public class ConnectionViewModel : ViewModel<Connection>
     {
         // Properties.
-        public GameType GameType {
+        public GameType        GameType {
             get { return nModel.GameType; }
         }
-        public String   Hostname {
+        public String          Hostname {
             get { return nModel.Hostname; }
         }
-        public UInt16   Port {
+        public UInt16          Port {
             get { return nModel.Port; }
         }
-        public String   Additional {
+        public String          Additional {
             get { return nModel.Additional; }
         }
-        
         public ConnectionState ConnectionState {
             get { return nModel.GameState.Variables.ConnectionState; }
         }
+
         public Int32   MaxConsoleLines {
             get { return nModel.GameState.Variables.MaxConsoleLines; }
             set { nModel.GameState.Variables.MaxConsoleLines = value; }
@@ -373,7 +373,8 @@ namespace Procon.UI.API.ViewModels
 
                 /* Player Chat Event: */
                 case GameEventType.Chat:
-                    Events.Add(e.Chat);
+                    if (e.Chat.Origin != ChatOrigin.Reflected)
+                        Events.Add(e.Chat);
                     break;
 
                 /* Round Changed Event: */

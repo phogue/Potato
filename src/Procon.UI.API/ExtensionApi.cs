@@ -6,7 +6,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 
 using Procon.Core;
-using Procon.UI.API.Classes;
+using Procon.UI.API.Utils;
 using Procon.UI.API.ViewModels;
 
 namespace Procon.UI.API
@@ -14,8 +14,8 @@ namespace Procon.UI.API
     public static class ExtensionApi
     {
         // The Properties and Commands of the UI.
-        public static InfinityDictionary<String, Object>   Properties { get; set; }
-        public static InfinityDictionary<String, ICommand> Commands   { get; set; }
+        public static ArrayDictionary<String, Object>   Properties { get; set; }
+        public static ArrayDictionary<String, ICommand> Commands   { get; set; }
 
         // Easy access to the currently selected Procon instance, Interface, and Connection.
         public static InstanceViewModel Procon
@@ -34,7 +34,7 @@ namespace Procon.UI.API
         }
 
         // Uniform access to the settings that will be saved and loaded when closing and opening Procon.
-        public static InfinityDictionary<String, Object> Settings
+        public static ArrayDictionary<String, Object> Settings
         {
             get { return Properties["Settings"]; }
         }
@@ -43,8 +43,8 @@ namespace Procon.UI.API
         // Static Constructor.
         static ExtensionApi()
         {
-            Properties = new InfinityDictionary<String, Object>();
-            Commands   = new InfinityDictionary<String, ICommand>();
+            Properties = new ArrayDictionary<String, Object>();
+            Commands   = new ArrayDictionary<String, ICommand>();
         }
 
 

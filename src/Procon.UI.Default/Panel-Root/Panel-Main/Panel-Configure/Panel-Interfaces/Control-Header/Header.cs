@@ -2,8 +2,9 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+
 using Procon.UI.API;
-using Procon.UI.API.Classes;
+using Procon.UI.API.Utils;
 using Procon.UI.API.Commands;
 
 namespace Procon.UI.Default.Root.Main.Configure.Interfaces.Header
@@ -37,8 +38,8 @@ namespace Procon.UI.Default.Root.Main.Configure.Interfaces.Header
         #endregion IExtension Properties
 
         // An easy accessor for Properties and Commands of this control.
-        private InfinityDictionary<String, Object>   tProps = ExtensionApi.Properties["Main"]["Configure"]["Interfaces"];
-        private InfinityDictionary<String, ICommand> tCmmds = ExtensionApi.Commands["Main"]["Configure"]["Interfaces"];
+        private ArrayDictionary<String, Object>   tProps = ExtensionApi.Properties["Main"]["Configure"]["Interfaces"];
+        private ArrayDictionary<String, ICommand> tCmmds = ExtensionApi.Commands["Main"]["Configure"]["Interfaces"];
 
 
         [STAThread]

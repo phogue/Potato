@@ -5,18 +5,16 @@ namespace Procon.UI.API.Converters
 {
     public class LocalizationText : BaseConverter, IValueConverter
     {
-        // Value     = The key of the localized text (via a binding).
-        // Parameter = The key of the localized text (via a command parameter).
+        // Value     = The key of the localized text.
+        // Parameter = The namespace of the localized text.
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            String locKey = (parameter as String);
-            if (locKey != null && locKey is String)
-                return ExtensionApi.Localize(locKey);
+            String locKey       = (value     as String);
+            String locNamespace = (parameter as String);
 
-            locKey = (value as String);
-            if (locKey != null && locKey is String)
-                return ExtensionApi.Localize(locKey.Contains("Procon.UI.") ? locKey : "Procon.UI." + locKey);
-
+            if      (locKey != null && locNamespace != null) return ExtensionApi.Localize(locNamespace + "." + locKey);
+            else if (locKey != null && locNamespace == null) return ExtensionApi.Localize("Procon.UI." + locKey);
+            else if (locKey == null && locNamespace != null) return ExtensionApi.Localize(locNamespace);
             return String.Empty;
         }
 

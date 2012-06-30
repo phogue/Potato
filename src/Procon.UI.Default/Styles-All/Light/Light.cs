@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using Procon.Net.Protocols.Objects;
 using Procon.UI.API;
 using Procon.UI.API.ViewModels;
@@ -53,6 +54,7 @@ namespace Procon.UI.Default.Styles.Light
             rootLayout.Resources[typeof(TextBlock)]   = tResources["StyleTextBlock"];
             rootLayout.Resources[typeof(ListBoxItem)] = tResources["StyleListBoxItem"];
             rootLayout.Resources[typeof(ListBox)]     = tResources["StyleListBox"];
+            rootLayout.Resources[typeof(ScrollBar)]   = tResources["StyleScrollBar"];
             rootLayout.Resources[typeof(Image)]       = tResources["StyleImage"];
 
             // Setup refined styles.
@@ -61,15 +63,15 @@ namespace Procon.UI.Default.Styles.Light
             manLayout.Resources[typeof(Button)] = tResources["StyleButtonDefault"];
             tutLayout.Resources[typeof(Button)] = tResources["StyleButtonDefault"];
 
-            // Setup optional styles.
-            rootLayout.Resources["StyleButtonSpecial"]    = tResources["StyleButtonSpecial"];
-            rootLayout.Resources["StyleListBoxItemColor"] = tResources["StyleListBoxItemColor"];
-
             // Setup templates.
             rootLayout.Resources[new DataTemplateKey(typeof(ConnectionViewModel))] = tResources["DataTemplateConnectionViewModel"];
             rootLayout.Resources[new DataTemplateKey(typeof(InterfaceViewModel))]  = tResources["DataTemplateInterfaceViewModel"];
             rootLayout.Resources[new DataTemplateKey(typeof(Chat))]                = tResources["DataTemplateChat"];
             rootLayout.Resources[new DataTemplateKey(typeof(Player))]              = tResources["DataTemplatePlayer"];
+
+            // Setup optional styles.
+            rootLayout.Resources["StyleButtonSpecial"]    = tResources["StyleButtonSpecial"];
+            rootLayout.Resources["StyleListBoxItemColor"] = tResources["StyleListBoxItemColor"];
 
             // Setup control brushes.
             rootLayout.Resources["BrushControlNormal"] = tResources["BrushControlNormal"];
@@ -79,6 +81,10 @@ namespace Procon.UI.Default.Styles.Light
             rootLayout.Resources["BrushSpecialHover"]  = tResources["BrushSpecialHover"];
             rootLayout.Resources["BrushSpecialPress"]  = tResources["BrushSpecialPress"];
             rootLayout.Resources["BrushBorder"]        = tResources["BrushBorder"];
+            rootLayout.Resources["BrushScrollHorz"]    = tResources["BrushScrollHorz"];
+            rootLayout.Resources["BrushScrollVert"]    = tResources["BrushScrollVert"];
+            rootLayout.Resources["BrushScrBarHorz"]    = tResources["BrushScrBarHorz"];
+            rootLayout.Resources["BrushScrBarVert"]    = tResources["BrushScrBarVert"];
 
             // Setup text brushes.
             rootLayout.Resources["BrushTextLight"]      = tResources["BrushTextLight"];

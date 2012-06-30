@@ -2,16 +2,15 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 
-namespace Procon.UI.API.Classes
+namespace Procon.UI.API.Utils
 {
-    // An array of arrays that works similar to a "Map" in C++ or "Array" in PhP.
-    public class InfinityDictionary<TKey, TValue> : INotifyPropertyChanged
+    public class ArrayDictionary<TKey, TValue> : INotifyPropertyChanged
     {
-        // Private Variables.
+        // Variables
         private TValue mValue;
-        private Dictionary<TKey, InfinityDictionary<TKey, TValue>> mArray;
+        private Dictionary<TKey, ArrayDictionary<TKey, TValue>> mArray;
 
-        // Public Accessors/Mutators.
+        // Properties.
         public TValue Value
         {
             get { return mValue; }
@@ -19,8 +18,7 @@ namespace Procon.UI.API.Classes
                 mValue = value;
                 if (PropertyChanged != null)
                     PropertyChanged(this, new PropertyChangedEventArgs("Value"));
-            }
-        }
+        } }
         public ICollection<TKey> Keys
         {
             get { return mArray.Keys; }
@@ -31,20 +29,21 @@ namespace Procon.UI.API.Classes
         }
 
 
-        // Constructors.
-        public InfinityDictionary(TValue value = default(TValue))
+        // Constructor.
+        public ArrayDictionary(TValue value = default(TValue))
         {
             mValue = value;
-            mArray = new Dictionary<TKey, InfinityDictionary<TKey, TValue>>();
+            mArray = new Dictionary<TKey, ArrayDictionary<TKey, TValue>>();
         }
+
 
         // Get: Adds the entry if it doesn't exist, then returns the entry.
         // Set: Adds the entry if it doesn't exist, then replaces the entry.
-        public InfinityDictionary<TKey, TValue> this[TKey key]
+        public ArrayDictionary<TKey, TValue> this[TKey key]
         {
             get {
                 if (!mArray.ContainsKey(key))
-                    mArray.Add(key, new InfinityDictionary<TKey, TValue>());
+                    mArray.Add(key, new ArrayDictionary<TKey, TValue>());
                 return mArray[key];
             }
             set {
@@ -58,7 +57,7 @@ namespace Procon.UI.API.Classes
         public void Add(TKey key, TValue value)
         {
             if (!mArray.ContainsKey(key))
-                mArray.Add(key, new InfinityDictionary<TKey, TValue>(value));
+                mArray.Add(key, new ArrayDictionary<TKey, TValue>(value));
         }
         public void Set(TKey key, TValue value)
         {

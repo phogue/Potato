@@ -2,9 +2,10 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+
 using Procon.UI.API;
-using Procon.UI.API.Classes;
 using Procon.UI.API.Commands;
+using Procon.UI.API.Utils;
 
 namespace Procon.UI.Default.Root.Main.Configure.Connections.Header
 {
@@ -37,8 +38,8 @@ namespace Procon.UI.Default.Root.Main.Configure.Connections.Header
         #endregion IExtension Properties
 
         // An easy accessor for Properties and Commands of this control.
-        private InfinityDictionary<String, Object>   tProps = ExtensionApi.Properties["Main"]["Configure"]["Connections"];
-        private InfinityDictionary<String, ICommand> tCmmds = ExtensionApi.Commands["Main"]["Configure"]["Connections"];
+        private ArrayDictionary<String, Object>   tProps = ExtensionApi.Properties["Main"]["Configure"]["Connections"];
+        private ArrayDictionary<String, ICommand> tCmmds = ExtensionApi.Commands["Main"]["Configure"]["Connections"];
 
 
         [STAThread]
@@ -51,6 +52,8 @@ namespace Procon.UI.Default.Root.Main.Configure.Connections.Header
             // Do what I need to setup my control.
             HeaderView view = new HeaderView();
             layout.Children.Add(view);
+
+            tProps["Additional"].Value = String.Empty;
             
             // Commands.
             tCmmds["Add"]["Open"].Value = new RelayCommand<Object>(
@@ -100,8 +103,6 @@ namespace Procon.UI.Default.Root.Main.Configure.Connections.Header
                     tProps["Pass"].Value = pass;
                 });
             #endregion
-
-            tProps["Additional"].Value = String.Empty;
 
             // Exit with good status.
             return true;

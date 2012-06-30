@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace Procon.UI.Default.Root.Main.Bans.Layout
+namespace Procon.UI.Default.Root.Main.Connection.Bans.Layout
 {
     public partial class LayoutView : Grid
     {

@@ -5,6 +5,7 @@
                     xmlns:conv="clr-namespace:Procon.UI.API.Converters;assembly=Procon.UI.API"
                     xmlns:util="clr-namespace:Procon.UI.API.Utils;assembly=Procon.UI.API"
                     xmlns:view="clr-namespace:Procon.UI.API.ViewModels;assembly=Procon.UI.API"
+                    xmlns:e="clr-namespace:Procon.UI.API.Events;assembly=Procon.UI.API"
                     xmlns:c="clr-namespace:Procon.Net.Protocols.Objects;assembly=Procon.Net">
     <!-- Control Colors -->
     <Color x:Key="ColorControlLight"  A="255" R="244" G="244" B="244" />
@@ -32,6 +33,9 @@
     
     <!-- Chat box Colors -->
     <Color x:Key="ColorChatTimestamp" A="255" R="135" G="137" B="138" />
+    <Color x:Key="ColorChatMessage"   A="255" R="192" G="184" B="176" />
+    <Color x:Key="ColorChatPrivate"   A="255" R="181" G="160" B="255" />
+    <Color x:Key="ColorChatEvent"     A="255" R="233" G="233" B="233" />
     
     <!-- Specific Colors -->
     <Color x:Key="ColorLight"         A="255" R="245" G="245" B="245" />
@@ -55,96 +59,115 @@
     <Color x:Key="ColorTeam3Content" A="255" R="100" G="100" B="100" />
     <Color x:Key="ColorTeam4Header"  A="255" R="100" G="100" B="100" />
     <Color x:Key="ColorTeam4Content" A="255" R="100" G="100" B="100" />
+    <Color x:Key="ColorTeam5Header"  A="255" R="100" G="100" B="100" />
+    <Color x:Key="ColorTeam5Content" A="255" R="100" G="100" B="100" />
+    <Color x:Key="ColorTeam6Header"  A="255" R="100" G="100" B="100" />
+    <Color x:Key="ColorTeam6Content" A="255" R="100" G="100" B="100" />
+    <Color x:Key="ColorTeam7Header"  A="255" R="100" G="100" B="100" />
+    <Color x:Key="ColorTeam7Content" A="255" R="100" G="100" B="100" />
+    <Color x:Key="ColorTeam8Header"  A="255" R="100" G="100" B="100" />
+    <Color x:Key="ColorTeam8Content" A="255" R="100" G="100" B="100" />
     
     
     <!-- Control Brushes -->
     <LinearGradientBrush x:Key="BrushControlNormal" StartPoint="0.5, 0.0" EndPoint="0.5, 1.0">
-        <GradientStop Offset="0.0" Color="{StaticResource ColorControlLight}" />
-        <GradientStop Offset="1.0" Color="{StaticResource ColorControlMedium}" />
+        <GradientStop Offset="0.0" Color="{DynamicResource ColorControlLight}" />
+        <GradientStop Offset="1.0" Color="{DynamicResource ColorControlMedium}" />
     </LinearGradientBrush>
     <LinearGradientBrush x:Key="BrushControlHover"  StartPoint="0.5, 0.0" EndPoint="0.5, 1.0">
-        <GradientStop Offset="0.0" Color="{StaticResource ColorControlLight}" />
-        <GradientStop Offset="1.0" Color="{StaticResource ColorControlDark}" />
+        <GradientStop Offset="0.0" Color="{DynamicResource ColorControlLight}" />
+        <GradientStop Offset="1.0" Color="{DynamicResource ColorControlDark}" />
     </LinearGradientBrush>
     <LinearGradientBrush x:Key="BrushControlPress"  StartPoint="0.5, 0.0" EndPoint="0.5, 1.0">
-        <GradientStop Offset="0.0" Color="{StaticResource ColorControlDark}" />
-        <GradientStop Offset="1.0" Color="{StaticResource ColorControlMedium}" />
+        <GradientStop Offset="0.0" Color="{DynamicResource ColorControlDark}" />
+        <GradientStop Offset="1.0" Color="{DynamicResource ColorControlMedium}" />
     </LinearGradientBrush>
     <LinearGradientBrush x:Key="BrushSpecialNormal" StartPoint="0.5, 0.0" EndPoint="0.5, 1.0">
-        <GradientStop Offset="0.0" Color="{StaticResource ColorSpecialLight}" />
-        <GradientStop Offset="1.0" Color="{StaticResource ColorSpecialMedium}" />
+        <GradientStop Offset="0.0" Color="{DynamicResource ColorSpecialLight}" />
+        <GradientStop Offset="1.0" Color="{DynamicResource ColorSpecialMedium}" />
     </LinearGradientBrush>
     <LinearGradientBrush x:Key="BrushSpecialHover"  StartPoint="0.5, 0.0" EndPoint="0.5, 1.0">
-        <GradientStop Offset="0.0" Color="{StaticResource ColorSpecialLight}" />
-        <GradientStop Offset="1.0" Color="{StaticResource ColorSpecialDark}" />
+        <GradientStop Offset="0.0" Color="{DynamicResource ColorSpecialLight}" />
+        <GradientStop Offset="1.0" Color="{DynamicResource ColorSpecialDark}" />
     </LinearGradientBrush>
     <LinearGradientBrush x:Key="BrushSpecialPress"  StartPoint="0.5, 0.0" EndPoint="0.5, 1.0">
-        <GradientStop Offset="0.0" Color="{StaticResource ColorSpecialDark}" />
-        <GradientStop Offset="1.0" Color="{StaticResource ColorSpecialMedium}" />
+        <GradientStop Offset="0.0" Color="{DynamicResource ColorSpecialDark}" />
+        <GradientStop Offset="1.0" Color="{DynamicResource ColorSpecialMedium}" />
     </LinearGradientBrush>
     <LinearGradientBrush x:Key="BrushBorder"        StartPoint="0.5, 0.0" EndPoint="0.5, 1.0">
-        <GradientStop Offset="0.1" Color="{StaticResource ColorBorderLight}"  />
-        <GradientStop Offset="0.9" Color="{StaticResource ColorBorderMedium}" />
-        <GradientStop Offset="1.0" Color="{StaticResource ColorBorderDark}"   />
+        <GradientStop Offset="0.1" Color="{DynamicResource ColorBorderLight}"  />
+        <GradientStop Offset="0.9" Color="{DynamicResource ColorBorderMedium}" />
+        <GradientStop Offset="1.0" Color="{DynamicResource ColorBorderDark}"   />
     </LinearGradientBrush>
     <LinearGradientBrush x:Key="BrushScrollVert"    StartPoint="0.0, 0.5" EndPoint="1.0, 0.5">
-        <GradientStop Offset="0.0" Color="{StaticResource ColorScrollDark}" />
-        <GradientStop Offset="0.1" Color="{StaticResource ColorScrollMedium}" />
-        <GradientStop Offset="1.0" Color="{StaticResource ColorScrollLight}" />
+        <GradientStop Offset="0.0" Color="{DynamicResource ColorScrollDark}" />
+        <GradientStop Offset="0.1" Color="{DynamicResource ColorScrollMedium}" />
+        <GradientStop Offset="1.0" Color="{DynamicResource ColorScrollLight}" />
     </LinearGradientBrush>
     <LinearGradientBrush x:Key="BrushScrollHorz"    StartPoint="0.5, 0.0" EndPoint="0.5, 1.0">
-        <GradientStop Offset="0.0" Color="{StaticResource ColorScrollDark}" />
-        <GradientStop Offset="0.1" Color="{StaticResource ColorScrollMedium}" />
-        <GradientStop Offset="1.0" Color="{StaticResource ColorScrollLight}" />
+        <GradientStop Offset="0.0" Color="{DynamicResource ColorScrollDark}" />
+        <GradientStop Offset="0.1" Color="{DynamicResource ColorScrollMedium}" />
+        <GradientStop Offset="1.0" Color="{DynamicResource ColorScrollLight}" />
     </LinearGradientBrush>
     <LinearGradientBrush x:Key="BrushScrBarVert"    StartPoint="0.0, 0.5" EndPoint="1.0, 0.5">
-        <GradientStop Offset="0.0" Color="{StaticResource ColorScrBarDark}" />
-        <GradientStop Offset="1.0" Color="{StaticResource ColorScrBarLight}" />
+        <GradientStop Offset="0.0" Color="{DynamicResource ColorScrBarDark}" />
+        <GradientStop Offset="1.0" Color="{DynamicResource ColorScrBarLight}" />
     </LinearGradientBrush>
     <LinearGradientBrush x:Key="BrushScrBarHorz"    StartPoint="0.5, 0.0" EndPoint="0.5, 1.0">
-        <GradientStop Offset="0.0" Color="{StaticResource ColorScrBarDark}" />
-        <GradientStop Offset="1.0" Color="{StaticResource ColorScrBarLight}" />
+        <GradientStop Offset="0.0" Color="{DynamicResource ColorScrBarDark}" />
+        <GradientStop Offset="1.0" Color="{DynamicResource ColorScrBarLight}" />
     </LinearGradientBrush>
 
     <!-- Text Brushes -->
-    <SolidColorBrush x:Key="BrushTextLight"      Color="{StaticResource ColorTextLight}"      />
-    <SolidColorBrush x:Key="BrushTextLightSoft"  Color="{StaticResource ColorTextLightSoft}"  />
-    <SolidColorBrush x:Key="BrushTextDark"       Color="{StaticResource ColorTextDark}"       />
-    <SolidColorBrush x:Key="BrushTextDarkSoft"   Color="{StaticResource ColorTextDarkSoft}"   />
-    <SolidColorBrush x:Key="BrushInputTextLight" Color="{StaticResource ColorInputTextLight}" />
-    <SolidColorBrush x:Key="BrushInputTextDark"  Color="{StaticResource ColorInputTextDark}"  />
+    <SolidColorBrush x:Key="BrushTextLight"      Color="{DynamicResource ColorTextLight}"      />
+    <SolidColorBrush x:Key="BrushTextLightSoft"  Color="{DynamicResource ColorTextLightSoft}"  />
+    <SolidColorBrush x:Key="BrushTextDark"       Color="{DynamicResource ColorTextDark}"       />
+    <SolidColorBrush x:Key="BrushTextDarkSoft"   Color="{DynamicResource ColorTextDarkSoft}"   />
+    <SolidColorBrush x:Key="BrushInputTextLight" Color="{DynamicResource ColorInputTextLight}" />
+    <SolidColorBrush x:Key="BrushInputTextDark"  Color="{DynamicResource ColorInputTextDark}"  />
 
     <!-- Chat box Brushes -->
-    <SolidColorBrush x:Key="BrushChatTimestamp" Color="{StaticResource ColorChatTimestamp}" />
+    <SolidColorBrush x:Key="BrushChatTimestamp" Color="{DynamicResource ColorChatTimestamp}" />
+    <SolidColorBrush x:Key="BrushChatMessage"   Color="{DynamicResource ColorChatMessage}"   />
+    <SolidColorBrush x:Key="BrushChatPrivate"   Color="{DynamicResource ColorChatPrivate}"   />
+    <SolidColorBrush x:Key="BrushChatEvent"     Color="{DynamicResource ColorChatEvent}"     />
     
     <!-- Specific Brushes -->
-    <SolidColorBrush x:Key="BrushLight"         Color="{StaticResource ColorLight}"         />
-    <SolidColorBrush x:Key="BrushMild"          Color="{StaticResource ColorMild}"          />
-    <SolidColorBrush x:Key="BrushDark"          Color="{StaticResource ColorDark}"          />
-    <SolidColorBrush x:Key="BrushHeaderLight"   Color="{StaticResource ColorHeaderLight}"   />
-    <SolidColorBrush x:Key="BrushEmphasisLight" Color="{StaticResource ColorEmphasisLight}" />
-    <SolidColorBrush x:Key="BrushContentLight"  Color="{StaticResource ColorContentLight}"  />
-    <SolidColorBrush x:Key="BrushHeaderDark"    Color="{StaticResource ColorHeaderDark}"    />
-    <SolidColorBrush x:Key="BrushEmphasisDark"  Color="{StaticResource ColorEmphasisDark}"  />
-    <SolidColorBrush x:Key="BrushContentDark"   Color="{StaticResource ColorContentDark}"   />
+    <SolidColorBrush x:Key="BrushLight"         Color="{DynamicResource ColorLight}"         />
+    <SolidColorBrush x:Key="BrushMild"          Color="{DynamicResource ColorMild}"          />
+    <SolidColorBrush x:Key="BrushDark"          Color="{DynamicResource ColorDark}"          />
+    <SolidColorBrush x:Key="BrushHeaderLight"   Color="{DynamicResource ColorHeaderLight}"   />
+    <SolidColorBrush x:Key="BrushEmphasisLight" Color="{DynamicResource ColorEmphasisLight}" />
+    <SolidColorBrush x:Key="BrushContentLight"  Color="{DynamicResource ColorContentLight}"  />
+    <SolidColorBrush x:Key="BrushHeaderDark"    Color="{DynamicResource ColorHeaderDark}"    />
+    <SolidColorBrush x:Key="BrushEmphasisDark"  Color="{DynamicResource ColorEmphasisDark}"  />
+    <SolidColorBrush x:Key="BrushContentDark"   Color="{DynamicResource ColorContentDark}"   />
     
     <!-- Team Brushes -->
-    <SolidColorBrush x:Key="BrushTeam0Header"  Color="{StaticResource ColorTeam0Header}"  />
-    <SolidColorBrush x:Key="BrushTeam0Content" Color="{StaticResource ColorTeam0Content}" />
-    <SolidColorBrush x:Key="BrushTeam1Header"  Color="{StaticResource ColorTeam1Header}"  />
-    <SolidColorBrush x:Key="BrushTeam1Content" Color="{StaticResource ColorTeam1Content}" />
-    <SolidColorBrush x:Key="BrushTeam2Header"  Color="{StaticResource ColorTeam2Header}"  />
-    <SolidColorBrush x:Key="BrushTeam2Content" Color="{StaticResource ColorTeam2Content}" />
-    <SolidColorBrush x:Key="BrushTeam3Header"  Color="{StaticResource ColorTeam3Header}"  />
-    <SolidColorBrush x:Key="BrushTeam3Content" Color="{StaticResource ColorTeam3Content}" />
-    <SolidColorBrush x:Key="BrushTeam4Header"  Color="{StaticResource ColorTeam4Header}"  />
-    <SolidColorBrush x:Key="BrushTeam4Content" Color="{StaticResource ColorTeam4Content}" />
+    <SolidColorBrush x:Key="BrushTeam0Header"  Color="{DynamicResource ColorTeam0Header}"  />
+    <SolidColorBrush x:Key="BrushTeam0Content" Color="{DynamicResource ColorTeam0Content}" />
+    <SolidColorBrush x:Key="BrushTeam1Header"  Color="{DynamicResource ColorTeam1Header}"  />
+    <SolidColorBrush x:Key="BrushTeam1Content" Color="{DynamicResource ColorTeam1Content}" />
+    <SolidColorBrush x:Key="BrushTeam2Header"  Color="{DynamicResource ColorTeam2Header}"  />
+    <SolidColorBrush x:Key="BrushTeam2Content" Color="{DynamicResource ColorTeam2Content}" />
+    <SolidColorBrush x:Key="BrushTeam3Header"  Color="{DynamicResource ColorTeam3Header}"  />
+    <SolidColorBrush x:Key="BrushTeam3Content" Color="{DynamicResource ColorTeam3Content}" />
+    <SolidColorBrush x:Key="BrushTeam4Header"  Color="{DynamicResource ColorTeam4Header}"  />
+    <SolidColorBrush x:Key="BrushTeam4Content" Color="{DynamicResource ColorTeam4Content}" />
+    <SolidColorBrush x:Key="BrushTeam5Header"  Color="{DynamicResource ColorTeam5Header}"  />
+    <SolidColorBrush x:Key="BrushTeam5Content" Color="{DynamicResource ColorTeam5Content}" />
+    <SolidColorBrush x:Key="BrushTeam6Header"  Color="{DynamicResource ColorTeam6Header}"  />
+    <SolidColorBrush x:Key="BrushTeam6Content" Color="{DynamicResource ColorTeam6Content}" />
+    <SolidColorBrush x:Key="BrushTeam7Header"  Color="{DynamicResource ColorTeam7Header}"  />
+    <SolidColorBrush x:Key="BrushTeam7Content" Color="{DynamicResource ColorTeam7Content}" />
+    <SolidColorBrush x:Key="BrushTeam8Header"  Color="{DynamicResource ColorTeam8Header}"  />
+    <SolidColorBrush x:Key="BrushTeam8Content" Color="{DynamicResource ColorTeam8Content}" />
     
     <!-- Background Brushes -->
     <RadialGradientBrush x:Key="BrushSpotlight" GradientOrigin="0.5, 0.5" Center="0.5, 0.65" RadiusX="0.4" RadiusY="0.6">
-        <GradientStop Offset="0.0" Color="{StaticResource ColorControlLight}" />
-        <GradientStop Offset="0.2" Color="{StaticResource ColorControlLight}" />
-        <GradientStop Offset="1.0" Color="{StaticResource ColorControlDark}"  />
+        <GradientStop Offset="0.0" Color="{DynamicResource ColorControlLight}" />
+        <GradientStop Offset="0.2" Color="{DynamicResource ColorControlLight}" />
+        <GradientStop Offset="1.0" Color="{DynamicResource ColorControlDark}"  />
     </RadialGradientBrush>
     <LinearGradientBrush x:Key="BrushHeader" StartPoint="0.5, 0.0" EndPoint="0.5, 1.0">
         <GradientStop Offset="0.0">
@@ -337,6 +360,22 @@
             </Setter.Value>
         </Setter>
     </Style>
+    <Style x:Key="StyleListBoxItemChat"  TargetType="{x:Type ListBoxItem}"  BasedOn="{StaticResource {x:Type ListBoxItem}}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate x:Name="PART_Content" TargetType="{x:Type ListBoxItem}">
+                    <Border x:Name="PART_Border" Background="{TemplateBinding Background}">
+                        <ContentPresenter />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="ListBox.AlternationIndex" Value="1">
+                <Setter Property="Background" Value="{DynamicResource BrushContentDark}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
     <Style x:Key="StyleListBox"          TargetType="{x:Type ListBox}"      BasedOn="{StaticResource {x:Type ListBox}}">
         <Setter Property="Margin"             Value="0" />
         <Setter Property="Padding"            Value="0" />
@@ -404,12 +443,12 @@
                                     <Track.DecreaseRepeatButton>
                                         <RepeatButton x:Name="PART_DecreaseButton"
                                                       Command="ScrollBar.PageLeftCommand"
-                                                      Style="{StaticResource ScrollBarPageButton}" />
+                                                      Style="{StaticResource StyleRepeatButton}" />
                                     </Track.DecreaseRepeatButton>
                                     <Track.IncreaseRepeatButton>
                                         <RepeatButton x:Name="PART_IncreaseButton"
                                                       Command="ScrollBar.PageRightCommand"
-                                                      Style="{StaticResource ScrollBarPageButton}" />
+                                                      Style="{StaticResource StyleRepeatButton}" />
                                     </Track.IncreaseRepeatButton>
                                 </Track>
                             </Border>
@@ -729,7 +768,44 @@
         </DataTemplate.Triggers>
     </DataTemplate>
     
-    <DataTemplate x:Key="DataTemplateChat" DataType="{x:Type c:Chat}">
+    <DataTemplate x:Key="DataTemplateEvent"     DataType="{x:Type e:Event}">
+        <ListBoxItem x:Name="PART_Content">
+            <DockPanel x:Name="PART_Container"
+                       Margin="15, 5"
+                       Focusable="False"
+                       IsHitTestVisible="False">
+                <TextBlock x:Name="PART_Timestamp"
+                           DockPanel.Dock="Left"
+                           Margin="0, 0, 10, 0"
+                           Foreground="{DynamicResource BrushChatTimestamp}"
+                           Text="{Binding Path=Timestamp, StringFormat='[{0:dd - HH:mm:ss}]'}" />
+                <TextBlock x:Name="PART_Event"
+                           DockPanel.Dock="Left"
+                           Foreground="{DynamicResource BrushChatEvent}"
+                           Text="{Binding Path=Eventstamp, StringFormat='[{0}] '}" />
+                <TextBlock x:Name="PART_Name"
+                           DockPanel.Dock="Left"
+                           Foreground="{DynamicResource BrushChatMessage}"
+                           Text="{Binding Path=Name}" />
+                <TextBlock x:Name="PART_Text"
+                           DockPanel.Dock="Left"
+                           Foreground="{DynamicResource BrushChatMessage}"
+                           Text="{Binding Path=Text}" />
+            </DockPanel>
+        </ListBoxItem>
+        <DataTemplate.Triggers>
+            <DataTrigger Binding="{Binding Eventstamp}" Value="{x:Null}">
+                <Setter TargetName="PART_Event" Property="Visibility" Value="Collapsed" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Name}" Value="{x:Null}">
+                <Setter TargetName="PART_Name" Property="Visibility" Value="Collapsed" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Text}" Value="{x:Null}">
+                <Setter TargetName="PART_Text" Property="Visibility" Value="Collapsed" />
+            </DataTrigger>
+        </DataTemplate.Triggers>
+    </DataTemplate>
+    <DataTemplate x:Key="DataTemplateChatEvent" DataType="{x:Type e:ChatEvent}">
         <ListBoxItem x:Name="PART_Content">
             <DockPanel x:Name="PART_Container"
                        Margin="15, 5">
@@ -737,74 +813,86 @@
                            DockPanel.Dock="Left"
                            Margin="0, 0, 10, 0"
                            Foreground="{DynamicResource BrushChatTimestamp}"
-                           Text="{Binding Path=Created, StringFormat='[{0:dd-hh:mm:ss}]'}" />
+                           Text="{Binding Path=Timestamp, StringFormat='[{0:dd - HH:mm:ss}]'}" />
                 <TextBlock x:Name="PART_Team"
                            DockPanel.Dock="Left"
+                           Visibility="Collapsed"
                            Text="{Binding
                                Converter={conv:LocalizationEnum},
                                ConverterParameter=Procon.UI.Root.Main.Connection.Chat.Team,
                                StringFormat='[{0}] ',
-                               Path=Subset.Team}" />
+                               Path=Team}" />
                 <TextBlock x:Name="PART_Squad"
                            DockPanel.Dock="Left"
+                           Visibility="Collapsed"
                            Text="{Binding
                                Converter={conv:LocalizationEnum},
                                ConverterParameter=Procon.UI.Root.Main.Connection.Chat.Squad,
                                StringFormat='[{0}] ',
-                               Path=Subset.Squad}" />
+                               Path=Squad}" />
+                <TextBlock x:Name="PART_Player"
+                           DockPanel.Dock="Left"
+                           Foreground="{DynamicResource BrushChatPrivate}"
+                           Text="{Binding Path=Player.Name, StringFormat='[{0}] '}" />
                 <TextBlock x:Name="PART_Name"
                            DockPanel.Dock="Left"
-                           Foreground="{DynamicResource BrushTextLightSoft}"
-                           Text="{Binding StringFormat='{}{0}: ', Path=Author.Name}" />
+                           Foreground="{DynamicResource BrushChatPrivate}"
+                           Text="{Binding Path=Name, StringFormat='{}{0}: '}" />
                 <TextBlock x:Name="PART_Text"
                            DockPanel.Dock="Left"
-                           Foreground="{DynamicResource BrushTextLightSoft}"
+                           Foreground="{DynamicResource BrushChatMessage}"
                            Text="{Binding Path=Text}" />
             </DockPanel>
         </ListBoxItem>
         <DataTemplate.Triggers>
-            <DataTrigger Binding="{Binding Path=Subset.Squad}" Value="None">
+            <DataTrigger Binding="{Binding Path=Player}" Value="{x:Null}">
+                <Setter TargetName="PART_Team"   Property="Visibility" Value="Visible"   />
+                <Setter TargetName="PART_Squad"  Property="Visibility" Value="Visible"   />
+                <Setter TargetName="PART_Player" Property="Visibility" Value="Collapsed" />
+                <Setter TargetName="PART_Name"   Property="Foreground" Value="{DynamicResource BrushChatMessage}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Path=Squad}" Value="None">
                 <Setter TargetName="PART_Squad" Property="Visibility" Value="Collapsed" />
             </DataTrigger>
-            <DataTrigger Binding="{Binding Path=Subset.Team}" Value="None">
+            <DataTrigger Binding="{Binding Path=Team}" Value="None">
                 <Setter TargetName="PART_Team"  Property="Visibility" Value="Collapsed" />
             </DataTrigger>
-            <DataTrigger Binding="{Binding Path=Subset.Team}" Value="2">
+            <DataTrigger Binding="{Binding Path=Team}" Value="2">
                 <Setter TargetName="PART_Team"  Property="Foreground" Value="{DynamicResource BrushTeam1Content}" />
                 <Setter TargetName="PART_Squad" Property="Foreground" Value="{DynamicResource BrushTeam1Content}" />
                 <Setter TargetName="PART_Name"  Property="Foreground" Value="{DynamicResource BrushTeam1Content}" />
             </DataTrigger>
-            <DataTrigger Binding="{Binding Path=Subset.Team}" Value="3">
+            <DataTrigger Binding="{Binding Path=Team}" Value="3">
                 <Setter TargetName="PART_Team"  Property="Foreground" Value="{DynamicResource BrushTeam2Content}" />
                 <Setter TargetName="PART_Squad" Property="Foreground" Value="{DynamicResource BrushTeam2Content}" />
                 <Setter TargetName="PART_Name"  Property="Foreground" Value="{DynamicResource BrushTeam2Content}" />
             </DataTrigger>
-            <DataTrigger Binding="{Binding Path=Subset.Team}" Value="4">
+            <DataTrigger Binding="{Binding Path=Team}" Value="4">
                 <Setter TargetName="PART_Team"  Property="Foreground" Value="{DynamicResource BrushTeam3Content}" />
                 <Setter TargetName="PART_Squad" Property="Foreground" Value="{DynamicResource BrushTeam3Content}" />
                 <Setter TargetName="PART_Name"  Property="Foreground" Value="{DynamicResource BrushTeam3Content}" />
             </DataTrigger>
-            <DataTrigger Binding="{Binding Path=Subset.Team}" Value="5">
+            <DataTrigger Binding="{Binding Path=Team}" Value="5">
                 <Setter TargetName="PART_Team"  Property="Foreground" Value="{DynamicResource BrushTeam4Content}" />
                 <Setter TargetName="PART_Squad" Property="Foreground" Value="{DynamicResource BrushTeam4Content}" />
                 <Setter TargetName="PART_Name"  Property="Foreground" Value="{DynamicResource BrushTeam4Content}" />
             </DataTrigger>
-            <DataTrigger Binding="{Binding Path=Subset.Team}" Value="6">
+            <DataTrigger Binding="{Binding Path=Team}" Value="6">
                 <Setter TargetName="PART_Team"  Property="Foreground" Value="{DynamicResource BrushTeam5Content}" />
                 <Setter TargetName="PART_Squad" Property="Foreground" Value="{DynamicResource BrushTeam5Content}" />
                 <Setter TargetName="PART_Name"  Property="Foreground" Value="{DynamicResource BrushTeam5Content}" />
             </DataTrigger>
-            <DataTrigger Binding="{Binding Path=Subset.Team}" Value="7">
+            <DataTrigger Binding="{Binding Path=Team}" Value="7">
                 <Setter TargetName="PART_Team"  Property="Foreground" Value="{DynamicResource BrushTeam6Content}" />
                 <Setter TargetName="PART_Squad" Property="Foreground" Value="{DynamicResource BrushTeam6Content}" />
                 <Setter TargetName="PART_Name"  Property="Foreground" Value="{DynamicResource BrushTeam6Content}" />
             </DataTrigger>
-            <DataTrigger Binding="{Binding Path=Subset.Team}" Value="8">
+            <DataTrigger Binding="{Binding Path=Team}" Value="8">
                 <Setter TargetName="PART_Team"  Property="Foreground" Value="{DynamicResource BrushTeam7Content}" />
                 <Setter TargetName="PART_Squad" Property="Foreground" Value="{DynamicResource BrushTeam7Content}" />
                 <Setter TargetName="PART_Name"  Property="Foreground" Value="{DynamicResource BrushTeam7Content}" />
             </DataTrigger>
-            <DataTrigger Binding="{Binding Path=Subset.Team}" Value="9">
+            <DataTrigger Binding="{Binding Path=Team}" Value="9">
                 <Setter TargetName="PART_Team"  Property="Foreground" Value="{DynamicResource BrushTeam8Content}" />
                 <Setter TargetName="PART_Squad" Property="Foreground" Value="{DynamicResource BrushTeam8Content}" />
                 <Setter TargetName="PART_Name"  Property="Foreground" Value="{DynamicResource BrushTeam8Content}" />

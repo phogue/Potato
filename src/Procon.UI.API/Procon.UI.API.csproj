@@ -77,6 +77,9 @@
     <Compile Include="Converters\LocalizationEnum.cs" />
     <Compile Include="Converters\ConverterInterfaceToImage.cs" />
     <Compile Include="Converters\ConverterConnectionStateToImage.cs" />
+    <Compile Include="Events\ChatEvent.cs" />
+    <Compile Include="Events\Event.cs" />
+    <Compile Include="Events\EventBuilder.cs" />
     <Compile Include="ExtensionApi.cs" />
     <Compile Include="ExtensionAttribute.cs" />
     <Compile Include="IExtension.cs" />

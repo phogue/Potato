@@ -8,10 +8,9 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-
-using Procon.Net.Protocols.Objects;
 using Procon.UI.API;
 using Procon.UI.API.Commands;
+using Procon.UI.API.Events;
 using Procon.UI.API.Utils;
 
 namespace Procon.UI.Default.Root.Main.Connection.Chat
@@ -68,29 +67,38 @@ namespace Procon.UI.Default.Root.Main.Connection.Chat
             splt.HorizontalAlignment = HorizontalAlignment.Stretch;
             layout.Children.Add(view);
             layout.Children.Add(splt);
+
+            // Load/Save the chat box height setting (unable to bind to it).
+            if (ExtensionApi.Settings["ChatHeight"].Value != null) {
+                if (layout.RowDefinitions.Count > 2)
+                    layout.RowDefinitions[2].Height = (GridLength)ExtensionApi.Settings["ChatHeight"].Value;
+            }
+            root.Closing +=
+                (s, e) => {
+                    if (layout.RowDefinitions.Count > 2)
+                        ExtensionApi.Settings["ChatHeight"].Value = layout.RowDefinitions[2].Height;
+                };
             
             // Commands.
-            GridLength tHeight    = new GridLength(Double.MaxValue);
-            Boolean    tMinimized = true;
+            GridLength tHeight = new GridLength(Double.MaxValue);
             tCmmds["MinMax"].Value = new RelayCommand<AttachedCommandArgs>(
             #region  -- Handles when the chat box title is clicked.
                 x => {
                     RowDefinition tRowDef = layout.RowDefinitions.Count > 2 ? layout.RowDefinitions[2] : null;
                     if (tRowDef != null) {
-                        if (!tMinimized) {
+                        if (tRowDef.Height.Value != tRowDef.MinHeight) {
                             tHeight = tRowDef.Height;
                             tRowDef.Height = new GridLength(tRowDef.MinHeight);
                         }
                         else tRowDef.Height = tHeight;
-                        tMinimized ^= true;
                     }
                 });
             #endregion
 
             // Used to manage the chat list.
-            ObservableCollection<ProtocolObject> tEvents      = null;
-            NotifyCollectionChangedEventHandler  tEventAdded  = null;
-            PropertyChangedEventHandler          tResetEvents = null;
+            ObservableCollection<Event>         tEvents      = null;
+            NotifyCollectionChangedEventHandler tEventAdded  = null;
+            PropertyChangedEventHandler         tResetEvents = null;
 
             // Manage the events's collection.
             tEventAdded =

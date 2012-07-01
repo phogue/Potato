@@ -7,5 +7,4 @@
       xmlns:util="clr-namespace:Procon.UI.API.Utils;assembly=Procon.UI.API"
       xmlns:view="clr-namespace:Procon.UI.API.ViewModels;assembly=Procon.UI.API"
       Name="RootLayout">
-    
 </Grid>

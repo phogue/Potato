@@ -51,17 +51,8 @@
                  BorderThickness="0"
                  AlternationCount="2"
                  ScrollViewer.VerticalScrollBarVisibility="Visible"
+                 ItemContainerStyle="{DynamicResource StyleListBoxItemChat}"
                  Background="{DynamicResource BrushEmphasisDark}"
-                 ItemsSource="{Binding Events}">
-            <ListBox.ItemContainerStyle>
-                <Style TargetType="{x:Type ListBoxItem}">
-                    <Style.Triggers>
-                        <Trigger Property="ListBox.AlternationIndex" Value="1">
-                            <Setter Property="Background" Value="{DynamicResource BrushContentDark}"/>
-                        </Trigger>
-                    </Style.Triggers>
-                </Style>
-            </ListBox.ItemContainerStyle>
-        </ListBox>
+                 ItemsSource="{Binding Events}" />
     </DockPanel>
 </Grid>

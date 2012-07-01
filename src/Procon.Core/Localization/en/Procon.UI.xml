@@ -193,20 +193,42 @@
             
             <!-- Chat Panel-->
             <chat>
-              <loc key="Title" value="Chat" />
+              <loc key="Title"          value="Chat &amp; Events"   />
+              <loc key="PlayerJoin"     value="Joined"    />
+              <loc key="PlayerLeave"    value="Left"      />
+              <loc key="PlayerMoved"    value="Moved"     />
+              <loc key="PlayerKicked"   value="Kicked"    />
+              <loc key="PlayerBanned"   value="Banned"    />
+              <loc key="PlayerUnbanned" value="Unbanned"  />
+              <loc key="PlayerKill"     value="Kill"      />
+              <loc key="PlayerSpawn"    value="Spawn"     />
+              <loc key="MapChanged"     value="Map End"   />
+              <loc key="RoundChanged"   value="Round End" />
+              <events>
+                <loc key="PlayerJoin"     value=" joined the game." />
+                <loc key="PlayerLeave"    value=" left the game." />
+                <loc key="PlayerMoved"    value=" moved to {0} - {1}." />
+                <loc key="PlayerKicked"   value=" was kicked." />
+                <loc key="PlayerBanned"   value=" was banned." />
+                <loc key="PlayerUnbanned" value=" was unbanned." />
+                <loc key="PlayerKill"     value=" was used by {0} to kill {1}." />
+                <loc key="PlayerSpawn"    value=" spawned as {0}." />
+                <loc key="MapChanged"     value="Map ended." />
+                <loc key="RoundChanged"   value="Round ended." />
+              </events>
               <team>
-                <loc key="None"  value="None"   />
-                <loc key="Team1" value="Team 1" />
-                <loc key="Team2" value="Team 2" />
-                <loc key="Team3" value="Team 3" />
-                <loc key="Team4" value="Team 4" />
-                <loc key="Team5" value="Team 5" />
-                <loc key="Team6" value="Team 6" />
-                <loc key="Team7" value="Team 7" />
-                <loc key="Team8" value="Team 8" />
+                <loc key="None"  value="No Team" />
+                <loc key="Team1" value="Team 1"  />
+                <loc key="Team2" value="Team 2"  />
+                <loc key="Team3" value="Team 3"  />
+                <loc key="Team4" value="Team 4"  />
+                <loc key="Team5" value="Team 5"  />
+                <loc key="Team6" value="Team 6"  />
+                <loc key="Team7" value="Team 7"  />
+                <loc key="Team8" value="Team 8"  />
               </team>
               <squad>
-                <loc key="None"    value="None"     />
+                <loc key="None"    value="No Squad" />
                 <loc key="Squad1"  value="Alpha"    />
                 <loc key="Squad2"  value="Bravo"    />
                 <loc key="Squad3"  value="Charlie"  />

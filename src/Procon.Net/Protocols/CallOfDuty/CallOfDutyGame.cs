@@ -143,7 +143,9 @@ namespace Procon.Net.Protocols.CallOfDuty {
             Match match = null;
             foreach (KeyValuePair<Regex, string> packetType in CallOfDutyGame.PacketTypes) {
                 if ((match = packetType.Key.Match(packet.Message)).Success == true) {
-                    this.Dispatch(packetType.Value, null, packet);
+                    this.Dispatch(new DispatchPacketAttribute() {
+                        MatchText = packetType.Value
+                    }, null, packet);
                 }
             }
         }

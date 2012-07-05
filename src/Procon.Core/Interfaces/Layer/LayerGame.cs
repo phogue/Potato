@@ -236,16 +236,22 @@ namespace Procon.Core.Interfaces.Layer {
         /// </summary>
         protected override void Dispatch(LayerPacket packet)
         {
-            if (packet.Response == null)
-                Dispatch(packet.Request.Command.ToString(), packet, null);
-            else
-                Dispatch(packet.Response.Command.ToString(), packet, packet);
+            if (packet.Response == null) {
+                this.Dispatch(new DispatchPacketAttribute() {
+                    MatchText = packet.Request.Command.ToString()
+                }, packet, null);
+            }
+            else {
+                this.Dispatch(new DispatchPacketAttribute() {
+                    MatchText = packet.Response.Command.ToString()
+                }, packet, packet);
+            }
         }
 
         /// <summary>
         /// Fires ProcessLayerEvent whenever the method to invoke could not be found.
         /// </summary>
-        protected override void DispatchFailed(String identifer, LayerPacket request, LayerPacket response)
+        protected override void DispatchFailed(DispatchPacketAttribute identifer, LayerPacket request, LayerPacket response)
         {
             if (this.Client.ConnectionState == ConnectionState.LoggedIn)
                 if (request.Response == null)

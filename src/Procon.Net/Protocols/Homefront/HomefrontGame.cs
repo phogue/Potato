@@ -91,7 +91,7 @@ namespace Procon.Net.Protocols.Homefront {
                 packet.MessageWords.InsertRange(0, splitCommand);
 
                 if (packet.MessageWords.Count >= 1) {
-                    this.Dispatch(packet.MessageWords[0], packet, null);
+                    this.Dispatch(new DispatchPacketAttribute() { MatchText = packet.MessageWords[0] }, packet, null);
                 }
             }
 

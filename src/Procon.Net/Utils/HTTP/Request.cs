@@ -131,7 +131,7 @@ namespace Procon.Net.Utils.HTTP {
             this.Method = WebRequestMethods.Http.Get;
         }
 
-        public void EndDownload() {
+        public void EndRequest() {
             this.FileDownloading = false;
         }
 
@@ -348,6 +348,10 @@ namespace Procon.Net.Utils.HTTP {
 
                 //Thread.Sleep(100);
             }
+        }
+
+        public String GetResponseContent() {
+            return Encoding.UTF8.GetString(this.CompleteFileData);
         }
 
     }

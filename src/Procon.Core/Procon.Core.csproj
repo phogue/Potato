@@ -94,6 +94,15 @@
     <Compile Include="Interfaces\Packages\LocalPackageController.cs" />
     <Compile Include="Interfaces\Packages\RemotePackage.cs" />
     <Compile Include="Interfaces\Packages\RemotePackageController.cs" />
+    <Compile Include="Interfaces\Repositories\LocalPackageController.cs" />
+    <Compile Include="Interfaces\Repositories\FlatPackedPackage.cs" />
+    <Compile Include="Interfaces\Repositories\Objects\Package.cs" />
+    <Compile Include="Interfaces\Repositories\Objects\PackageFile.cs" />
+    <Compile Include="Interfaces\Repositories\Objects\PackageVersion.cs" />
+    <Compile Include="Interfaces\Repositories\Objects\Repository.cs" />
+    <Compile Include="Interfaces\Repositories\PackageState.cs" />
+    <Compile Include="Interfaces\Repositories\PackageType.cs" />
+    <Compile Include="Interfaces\Repositories\PackageController.cs" />
     <Compile Include="Interfaces\Security\Objects\Account.cs" />
     <Compile Include="Interfaces\Security\Objects\LocalAccount.cs" />
     <Compile Include="Interfaces\Security\Objects\LocalGroup.cs" />

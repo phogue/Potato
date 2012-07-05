@@ -42,10 +42,10 @@ namespace Procon.Net.Protocols.Source {
 
                     // If the sent command was successful
                     if (packet.String1Words.Count >= 1 && packet.RequestType != SourceRequestType.SERVERDATA_ALLBAD) {
-                        this.Dispatch(requestPacket.String1Words[0], requestPacket, packet);
+                        this.Dispatch(new DispatchPacketAttribute() { MatchText = requestPacket.String1Words[0] }, requestPacket, packet);
                     }
                     else { // The command sent failed for some reason.
-                        this.Dispatch(packet.String1Words[0], requestPacket, packet);
+                        this.Dispatch(new DispatchPacketAttribute() { MatchText = packet.String1Words[0] }, requestPacket, packet);
                     }
                 }
             }

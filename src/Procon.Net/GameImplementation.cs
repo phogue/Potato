@@ -44,7 +44,7 @@ namespace Procon.Net {
         [TypeConverter(typeof(ExpandableObjectConverter))]
         public Client<P> Client { get; protected set; }
 
-        protected Dictionary<string, MethodInfo> m_dispatchHandlers;
+        protected Dictionary<DispatchPacketAttribute, MethodInfo> m_dispatchHandlers;
 
         public override string Hostname { get { return this.Client != null ? this.Client.Hostname : String.Empty; } }
         public override ushort Port { get { return this.Client != null ? this.Client.Port : (ushort)0; } }
@@ -211,7 +211,7 @@ namespace Procon.Net {
             this.Client = client;
             this.AssignEvents();
 
-            this.m_dispatchHandlers = new Dictionary<string, MethodInfo>();
+            this.m_dispatchHandlers = new Dictionary<DispatchPacketAttribute, MethodInfo>();
 
             foreach (MethodInfo method in this.GetType().GetMethods()) {
 
@@ -221,12 +221,9 @@ namespace Procon.Net {
 
                     object[] attributes = method.GetCustomAttributes(typeof(DispatchPacketAttribute), false);
 
-                    if (attributes.Length > 0) {
-
-                        DispatchPacketAttribute attribute = (DispatchPacketAttribute)attributes[0];
-
-                        if (this.m_dispatchHandlers.ContainsKey(attribute.MatchText) == false) {
-                            this.m_dispatchHandlers.Add(attribute.MatchText, method);
+                    foreach (DispatchPacketAttribute attribute in attributes) {
+                        if (this.m_dispatchHandlers.ContainsKey(attribute) == false) {
+                            this.m_dispatchHandlers.Add(attribute, method);
                         }
                     }
                 }
@@ -277,18 +274,27 @@ namespace Procon.Net {
 
             this.Dispatch(packet);
         }
-        
-        protected void Dispatch(string identifer, P request, P response) {
 
-            if (this.m_dispatchHandlers.ContainsKey(identifer) == true) {
-                this.m_dispatchHandlers[identifer].Invoke(this, new object[] { request, response });
+        protected void Dispatch(DispatchPacketAttribute identifer, P request, P response) {
+
+            var dispatchMethods = (
+                from dispatcher in this.m_dispatchHandlers
+                where dispatcher.Key.MatchText == identifer.MatchText &&
+                    ( dispatcher.Key.PacketOrigin == PacketOrigin.None || dispatcher.Key.PacketOrigin == identifer.PacketOrigin)
+                select dispatcher.Value
+            );
+
+            if (dispatchMethods.Count() > 0) {
+                foreach (MethodInfo dispatchMethod in dispatchMethods) {
+                    dispatchMethod.Invoke(this, new object[] { request, response });
+                }
             }
             else {
                 this.DispatchFailed(identifer, request, response);
             }
         }
 
-        protected virtual void DispatchFailed(string identifer, P request, P response) {
+        protected virtual void DispatchFailed(DispatchPacketAttribute identifer, P request, P response) {
 
         }
 

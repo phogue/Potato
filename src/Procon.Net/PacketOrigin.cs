@@ -24,6 +24,10 @@ using System.Text;
 namespace Procon.Net {
     public enum PacketOrigin {
         /// <summary>
+        /// Unknown origin
+        /// </summary>
+        None,
+        /// <summary>
         /// Packet was generated and sent by the server
         /// </summary>
         Server,

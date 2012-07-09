@@ -5,6 +5,7 @@ using System.Text;
 using System.Xml.Linq;
 using System.IO;
 using System.Text.RegularExpressions;
+using System.Net;
 
 namespace Procon.Core.Interfaces.Repositories.Objects {
     using Procon.Core.Utils;
@@ -77,12 +78,25 @@ namespace Procon.Core.Interfaces.Repositories.Objects {
         }
         private String mName;
 
-        protected Request mRequest;
+        /// <summary>
+        /// Username is only used for methods that require authentication
+        /// </summary>
+        public String Username { get; set; }
+
+        /// <summary>
+        /// Password is only used for methods that require authentication
+        /// </summary>
+        public String Password { get; set; }
+
+        protected Request mQueryRequest;
 
         #region events
 
-        public delegate void RepositoryLoadedHandler(Repository repository);
-        public event RepositoryLoadedHandler RepositoryLoaded;
+        public delegate void RepositoryEventHandler(Repository repository);
+        public event RepositoryEventHandler RepositoryLoaded;
+
+        public event RepositoryEventHandler AuthenticationSuccess;
+        public event RepositoryEventHandler AuthenticationFailed;
 
         #endregion
 
@@ -100,13 +114,6 @@ namespace Procon.Core.Interfaces.Repositories.Objects {
             stub = Regex.Replace(stub, "[^\\w]+", "");
 
             return stub;
-        }
-
-        protected void CancelUpdate() {
-            if (this.mRequest != null) {
-                this.mRequest.EndRequest();
-                this.mRequest = null;
-            }
         }
 
         /// <summary>
@@ -136,15 +143,22 @@ namespace Procon.Core.Interfaces.Repositories.Objects {
             }
         }
 
+        protected void CancelLoading() {
+            if (this.mQueryRequest != null) {
+                this.mQueryRequest.EndRequest();
+                this.mQueryRequest = null;
+            }
+        }
+
         public void BeginLoading() {
             if (this.Url.Length > 0) {
-                this.CancelUpdate();
+                this.CancelLoading();
 
-                this.mRequest = new Request(this.Url + "1/query/repository/format/xml");
+                this.mQueryRequest = new Request(this.Url + "1/query/repository/format/xml");
 
-                this.mRequest.RequestComplete += new Request.RequestEventDelegate(mRequest_RequestComplete);
+                this.mQueryRequest.RequestComplete += new Request.RequestEventDelegate(mQueryRequest_RequestComplete);
 
-                this.mRequest.BeginRequest();
+                this.mQueryRequest.BeginRequest();
             }
         }
 
@@ -154,7 +168,7 @@ namespace Procon.Core.Interfaces.Repositories.Objects {
             }
         }
 
-        private void mRequest_RequestComplete(Request sender) {
+        private void mQueryRequest_RequestComplete(Request sender) {
             String data = sender.GetResponseContent();
 
             try {
@@ -167,6 +181,51 @@ namespace Procon.Core.Interfaces.Repositories.Objects {
             }
             catch (Exception) {
                 // More than likely syntax error in the xml.
+            }
+        }
+
+        protected Request mAuhenticationTestRequest;
+
+        protected void CancelAuthenticationTest() {
+            if (this.mAuhenticationTestRequest != null) {
+                this.mAuhenticationTestRequest.EndRequest();
+                this.mAuhenticationTestRequest = null;
+            }
+        }
+
+        public void BeginAuthenticationTest() {
+            if (this.Url.Length > 0) {
+                this.CancelAuthenticationTest();
+
+                Uri uri = new Uri(this.Url + "1/publish/authentication_test/format/xml");
+
+                this.mAuhenticationTestRequest = new Request(uri.OriginalString);
+
+                this.mAuhenticationTestRequest.CredentialCache.Add(
+                    new Uri(uri.GetLeftPart(UriPartial.Authority)),
+                    "Digest",
+                    new NetworkCredential(
+                        this.Username, 
+                        this.Password
+                    )
+                );
+
+                this.mAuhenticationTestRequest.RequestError += new Request.RequestEventDelegate(mAuhenticationTestRequest_RequestError);
+                this.mAuhenticationTestRequest.RequestComplete += new Request.RequestEventDelegate(mAuhenticationTestRequest_RequestComplete);
+
+                this.mAuhenticationTestRequest.BeginRequest();
+            }
+        }
+
+        private void mAuhenticationTestRequest_RequestError(Request sender) {
+            if (this.AuthenticationFailed != null) {
+                this.AuthenticationFailed(this);
+            }
+        }
+
+        private void mAuhenticationTestRequest_RequestComplete(Request sender) {
+            if (this.AuthenticationSuccess != null) {
+                this.AuthenticationSuccess(this);
             }
         }
 

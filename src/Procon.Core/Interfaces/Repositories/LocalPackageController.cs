@@ -26,14 +26,14 @@ namespace Procon.Core.Interfaces.Repositories {
 
         protected void LoadRemoteRepositories() {
             foreach (Repository repository in this.RemoteRepositories) {
-                repository.RepositoryLoaded += new Repository.RepositoryLoadedHandler(repository_RepositoryLoaded);
+                repository.RepositoryLoaded += new Repository.RepositoryEventHandler(repository_RepositoryLoaded);
 
                 repository.BeginLoading();
             }
         }
 
         private void repository_RepositoryLoaded(Repository repository) {
-            repository.RepositoryLoaded -= new Repository.RepositoryLoadedHandler(repository_RepositoryLoaded);
+            repository.RepositoryLoaded -= new Repository.RepositoryEventHandler(repository_RepositoryLoaded);
 
             lock (new Object()) {
                 this.BuildFlatPackedPackages();

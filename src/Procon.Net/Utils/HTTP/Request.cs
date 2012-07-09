@@ -95,6 +95,8 @@ namespace Procon.Net.Utils.HTTP {
         /// </summary>
         public string RequestContent { get; set; }
 
+        public CredentialCache CredentialCache { get; protected set; }
+
         private int m_timeout;
         /// <summary>
         /// ReadTimeout of the stream in milliseconds.  Default is 10 seconds.
@@ -126,6 +128,8 @@ namespace Procon.Net.Utils.HTTP {
 
         public Request(string downloadSource) {
             this.DownloadSource = downloadSource;
+
+            this.CredentialCache = new CredentialCache();
 
             this.m_timeout = 10000;
             this.Method = WebRequestMethods.Http.Get;
@@ -183,6 +187,8 @@ namespace Procon.Net.Utils.HTTP {
                 //this.m_wrRequest.Headers.Add(System.Net.HttpRequestHeader.Range, "bytes=-10000");
                 this.m_webRequest.Headers.Add(System.Net.HttpRequestHeader.AcceptEncoding, "gzip");
 
+                this.m_webRequest.Credentials = this.CredentialCache;
+
                 this.m_webRequest.Proxy = null;
 
                 if (this.RequestContent != null && this.RequestContent.Length > 0) {
@@ -211,7 +217,7 @@ namespace Procon.Net.Utils.HTTP {
 
         private void ResponseCallback(IAsyncResult ar) {
             //Request cdfParent = (Request)ar.AsyncState;
-            
+
             try {
                 this.m_webResponse = this.m_webRequest.EndGetResponse(ar);
 
@@ -239,6 +245,15 @@ namespace Procon.Net.Utils.HTTP {
                 IAsyncResult arResult = this.m_responseStream.BeginRead(this.ma_bBufferStream, 0, Request.INT_BUFFER_SIZE, new AsyncCallback(this.ReadCallBack), this);
 
                 ThreadPool.RegisterWaitForSingleObject(arResult.AsyncWaitHandle, new WaitOrTimerCallback(this.ReadTimeoutCallback), this, this.m_timeout, true);
+            }
+            catch (WebException e) {
+                this.FileDownloading = false;
+                if (this.RequestError != null) {
+                    this.Error = e.Message;
+
+                    //FrostbiteConnection.RaiseEvent(cdfParent.DownloadError.GetInvocationList(), cdfParent);
+                    this.RequestError(this);
+                }
             }
             catch (Exception e) {
                 this.FileDownloading = false;

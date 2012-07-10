@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Xml.Linq;
+using System.IO;
 
 namespace Procon.Core.Interfaces.Repositories.Objects {
-    using Procon.Core.Utils;
+    //using Procon.Core.Utils;
+    using Procon.Net.Utils;
 
     public class PackageVersion {
         public Version Version { get; protected set; }
@@ -37,5 +39,10 @@ namespace Procon.Core.Interfaces.Repositories.Objects {
 
             return this;
         }
+
+        public IEnumerable<PackageFile> ModifiedFilesAt(String path) {
+            return this.Files.Where(file => String.Compare(file.MD5, MD5.File(Path.Combine(path, file.RelativePath)), true) != 0);
+        }
+
     }
 }

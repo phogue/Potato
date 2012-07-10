@@ -89,10 +89,16 @@ namespace Procon.Core.Interfaces.Repositories {
         protected void AddOrUpdateFlatPackage(Repository repository, Package package, FlatPackedPackage flatPackage, PackageState defaultState = PackageState.NotInstalled) {
             FlatPackedPackage existingFlatPackage = this.GetExistingFlatPackage(repository, package);
 
+            // I'm not a fan of this if/elseif/elseif doing nearly the same task.
+            // Though it is required to differentiate the locale of the package
+            // it could have a little bit more thought so the code is not overly
+            // complex.
+
             if (defaultState == PackageState.Installed) {
                 if (existingFlatPackage != null) {
                     existingFlatPackage.SetInstalledVersion(flatPackage.LatestVersion);
                     existingFlatPackage.Copy<Package>(flatPackage);
+                    existingFlatPackage.Repository = repository;
                 }
                 else {
                     flatPackage.SetInstalledVersion(flatPackage.LatestVersion);
@@ -103,6 +109,7 @@ namespace Procon.Core.Interfaces.Repositories {
                 if (existingFlatPackage != null) {
                     existingFlatPackage.SetUpdatedVersion(flatPackage.LatestVersion);
                     existingFlatPackage.Copy<Package>(flatPackage);
+                    existingFlatPackage.Repository = repository;
                 }
                 else {
                     flatPackage.SetUpdatedVersion(flatPackage.LatestVersion);
@@ -113,45 +120,13 @@ namespace Procon.Core.Interfaces.Repositories {
                 if (existingFlatPackage != null) {
                     existingFlatPackage.SetAvailableVersion(flatPackage.LatestVersion);
                     existingFlatPackage.Copy<Package>(flatPackage);
+                    existingFlatPackage.Repository = repository;
                 }
                 else {
                     flatPackage.SetAvailableVersion(flatPackage.LatestVersion);
                     this.Packages.Add(flatPackage);
                 }
             }
-        }
-
-        protected void PopulateInstalledPackages() {
-            foreach (Repository repository in this.LocalInstalledRepositories) {
-                foreach (Package package in repository.Packages) {
-                    FlatPackedPackage existingFlatPackage = this.GetExistingFlatPackage(repository, package);
-                    
-                    FlatPackedPackage flatPackage = (FlatPackedPackage)new FlatPackedPackage() {
-                        Repository = repository
-                    }.Copy<Package>(package);
-                    flatPackage.SetInstalledVersion(flatPackage.LatestVersion);
-
-                    if (existingFlatPackage == null) {
-                        
-                        this.Packages.Add(flatPackage);
-                    }
-                    else {
-                        existingFlatPackage.SetInstalledVersion(flatPackage.LatestVersion);
-                        existingFlatPackage.Copy<Package>(flatPackage);
-                    }
-                }
-            }
-        }
-
-        protected List<FlatPackedPackage> FlattenRepositories(List<Repository> repositories) {
-            List<FlatPackedPackage> flattenedPackages = new List<FlatPackedPackage>();
-
-            foreach (Repository repository in this.LocalInstalledRepositories) {
-                foreach (Package package in repository.Packages) {
-                }
-            }
-
-            return flattenedPackages;
         }
 
         protected void PopulatePackages(List<Repository> repositories, PackageState defaultState) {

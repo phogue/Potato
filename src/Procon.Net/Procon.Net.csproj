@@ -147,6 +147,7 @@
     <Compile Include="Protocols\Source\SourceRequestType.cs" />
     <Compile Include="TCPClient.cs" />
     <Compile Include="UDPClient.cs" />
+    <Compile Include="Utils\HTTP\QueryStringBuilder.cs" />
     <Compile Include="Utils\HTTP\Request.cs" />
     <Compile Include="Utils\Maxmind\CountryLookup.cs" />
     <Compile Include="Utils\MD5.cs" />

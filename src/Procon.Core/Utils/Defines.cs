@@ -60,6 +60,7 @@ namespace Procon.Core.Utils {
         public static readonly string CONFIGS_GROUPS_DIRECTORY   = Path.Combine(Defines.CONFIGS_DIRECTORY, "Groups");
         public static readonly string PACKAGES_DIRECTORY         = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Packages");
         public static readonly string PACKAGES_UPDATES_DIRECTORY = Path.Combine(Defines.UPDATES_DIRECTORY, "Packages");
+        public static readonly string TEMPORARY_UPDATES_DIRECTORY = Path.Combine(Defines.UPDATES_DIRECTORY, "Temporary");
 
         /// <summary>
         /// Paths to files

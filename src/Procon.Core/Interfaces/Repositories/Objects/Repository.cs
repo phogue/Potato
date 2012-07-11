@@ -93,9 +93,24 @@ namespace Procon.Core.Interfaces.Repositories.Objects {
         #region events
 
         public delegate void RepositoryEventHandler(Repository repository);
+
+        /// <summary>
+        /// Fired once the repository has been loaded. This means
+        /// the repository has been loaded from file (installed/updates)
+        /// or has been loaded from the remote repository.
+        /// </summary>
         public event RepositoryEventHandler RepositoryLoaded;
 
+        /// <summary>
+        /// Fired when a basic authentication test succeeds.
+        /// </summary>
         public event RepositoryEventHandler AuthenticationSuccess;
+
+        /// <summary>
+        /// Fired when a basic authentication test fails.
+        /// Failure occurs when the url, username or password
+        /// are incorrect.
+        /// </summary>
         public event RepositoryEventHandler AuthenticationFailed;
 
         #endregion
@@ -150,6 +165,9 @@ namespace Procon.Core.Interfaces.Repositories.Objects {
             }
         }
 
+        /// <summary>
+        /// Begin asynchronous loading of the remote repository. 
+        /// </summary>
         public void BeginLoading() {
             if (this.Url.Length > 0) {
                 this.CancelLoading();
@@ -193,6 +211,12 @@ namespace Procon.Core.Interfaces.Repositories.Objects {
             }
         }
 
+        /// <summary>
+        /// Begin asynchronous authentication test. This does not essentially do anything
+        /// but test that the user has setup their repository properly.
+        /// 
+        /// This method is only ever relevant for publishing updates to a repository.
+        /// </summary>
         public void BeginAuthenticationTest() {
             if (this.Url.Length > 0) {
                 this.CancelAuthenticationTest();

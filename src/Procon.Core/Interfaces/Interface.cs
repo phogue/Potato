@@ -7,45 +7,58 @@ namespace Procon.Core.Interfaces {
     using Procon.Core.Interfaces.Connections;
     using Procon.Core.Interfaces.Layer;
     using Procon.Core.Interfaces.Layer.Objects;
-    using Procon.Core.Interfaces.Packages;
+    //using Procon.Core.Interfaces.Packages;
+    using Procon.Core.Interfaces.Repositories;
     using Procon.Core.Interfaces.Security;
     using Procon.Core.Interfaces.Variables;
 
     public abstract class Interface : Executable<Interface>
     {
         // Public Accessors/Mutators.
-        public List<Connection>   Connections {
+        public List<Connection> Connections {
             get { return mConnections; }
             protected set {
                 if (mConnections != value) {
                     mConnections = value;
                     OnPropertyChanged(this, "Connection");
-        } } }
+                }
+            }
+        }
+
         public SecurityController Security {
             get { return mSecurity; }
             set {
                 if (mSecurity != value) {
                     mSecurity = value;
                     OnPropertyChanged(this, "Security");
-        } } }
-        public PackageController  Packages {
+                }
+            }
+        }
+
+        public PackageController Packages {
             get { return mPackages; }
             set {
                 if (mPackages != value) {
                     mPackages = value;
                     OnPropertyChanged(this, "Packages");
-        } } }
+                }
+            }
+        }
+
         public VariableController Variables {
             get { return mVariables; }
             set {
                 if (mVariables != value) {
                     mVariables = value;
                     OnPropertyChanged(this, "Variables");
-        } } }
+                }
+            }
+        }
+
         // Internal Variables.
         private List<Connection>   mConnections;
         private SecurityController mSecurity;
-        private PackageController  mPackages;
+        private PackageController mPackages;
         private VariableController mVariables;
 
         [JsonIgnore]

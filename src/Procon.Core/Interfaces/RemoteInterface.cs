@@ -5,7 +5,7 @@ namespace Procon.Core.Interfaces {
     using Procon.Core.Interfaces.Connections;
     using Procon.Core.Interfaces.Layer;
     using Procon.Core.Interfaces.Layer.Objects;
-    using Procon.Core.Interfaces.Packages;
+    using Procon.Core.Interfaces.Repositories;
     using Procon.Core.Interfaces.Security;
     using Procon.Core.Interfaces.Variables;
 

@@ -53,7 +53,7 @@ namespace Procon.Core.Interfaces.Repositories.Objects {
         /// </summary>
         /// <param name="other">The package to clone into this package</param>
         /// <returns>itself</returns>
-        public T Copy<T>(T other) where T : Package {
+        public T Copy<T>(Package other) where T : Package {
             foreach (PropertyInfo info in typeof(T)
                                               .GetProperties(BindingFlags.Instance
                                                            | BindingFlags.Public)) {

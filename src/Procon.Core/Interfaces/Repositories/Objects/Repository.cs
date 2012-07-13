@@ -154,7 +154,7 @@ namespace Procon.Core.Interfaces.Repositories.Objects {
                 // @todo add this back in once were set for events. OnPackageAdded(this, package);
             }
             else {
-                currentPackage.Copy(package);
+                currentPackage.Copy<FlatPackedPackage>(package);
             }
         }
 
@@ -250,6 +250,45 @@ namespace Procon.Core.Interfaces.Repositories.Objects {
         private void mAuhenticationTestRequest_RequestComplete(Request sender) {
             if (this.AuthenticationSuccess != null) {
                 this.AuthenticationSuccess(this);
+            }
+        }
+
+
+
+        protected Request mPublishRequest;
+
+        protected void CancelPublish() {
+            if (this.mPublishRequest != null) {
+                this.mPublishRequest.EndRequest();
+                this.mPublishRequest = null;
+            }
+        }
+
+        public void BeginPublish(Package package, PackageVersion packageVersion) {
+            if (this.Url.Length > 0) {
+                this.CancelAuthenticationTest();
+
+                Uri uri = new Uri(this.Url + "1/publish/submit/format/xml");
+
+                this.mPublishRequest = new Request(uri.OriginalString);
+                this.mPublishRequest.Method = "POST";
+
+                QueryStringBuilder builder = new QueryStringBuilder();
+                builder.Add("name", package.Name);
+                builder.Add("version", packageVersion.Version.ToString());
+
+                this.mPublishRequest.CredentialCache.Add(
+                    new Uri(uri.GetLeftPart(UriPartial.Authority)),
+                    "Digest",
+                    new NetworkCredential(
+                        this.Username,
+                        this.Password
+                    )
+                );
+
+                this.mPublishRequest.RequestContent = builder.ToString();
+
+                this.mPublishRequest.BeginRequest();
             }
         }
 

@@ -7,8 +7,7 @@ using System.Web;
 using System.Collections.Specialized;
 using Ionic.Zip;
 
-namespace Procon.Core.Interfaces.Repositories {
-    using Procon.Core.Interfaces.Repositories.Objects;
+namespace Procon.Core.Interfaces.Repositories.Objects {
     using Procon.Core.Utils;
     using Procon.Net.Utils;
     using Procon.Net.Utils.HTTP;
@@ -31,7 +30,7 @@ namespace Procon.Core.Interfaces.Repositories {
     /// nothing outside of Core really needs to know specifically how a package is 
     /// updated or structured just that they exist, can be installed and updated.
     /// </summary>
-    public class FlatPackedPackage : Package {
+    public abstract class FlatPackedPackage : Package {
 
         /// <summary>
         /// What repository this package belongs to
@@ -45,7 +44,7 @@ namespace Procon.Core.Interfaces.Repositories {
         /// 
         /// @todo this should be firing an event when changed.
         /// </summary>
-        public PackageState State { get; protected set; }
+        public PackageState State { get; set; }
 
         /// <summary>
         /// The currently installed (or awaiting restart for update)

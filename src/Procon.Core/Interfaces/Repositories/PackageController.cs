@@ -14,45 +14,27 @@ namespace Procon.Core.Interfaces.Repositories {
         /// <summary>
         /// List of repositories external to procon that have packages to download
         /// </summary>
-        public List<Repository> RemoteRepositories {
-            get { return mRemoteRepositories; }
-            protected set {
-                if (mRemoteRepositories != value) {
-                    mRemoteRepositories = value;
-                    OnPropertyChanged(this, "RemoteRepositories");
-                }
-            }
+        protected List<Repository> RemoteRepositories {
+            get;
+            set;
         }
-        private List<Repository> mRemoteRepositories;
 
         /// <summary>
         /// A list of repositories with any packages that have been installed
         /// </summary>
-        public List<Repository> LocalInstalledRepositories {
-            get { return mLocalInstalledRepositories; }
-            protected set {
-                if (mLocalInstalledRepositories != value) {
-                    mLocalInstalledRepositories = value;
-                    OnPropertyChanged(this, "LocalInstalledRepositories");
-                }
-            }
+        protected List<Repository> LocalInstalledRepositories {
+            get;
+            set;
         }
-        private List<Repository> mLocalInstalledRepositories;
 
         /// <summary>
         /// A list of repositories with any packages that have been downloaded, unzipped
         /// but are waiting for Procon to restart before they are installed.
         /// </summary>
-        public List<Repository> LocalUpdatedRepositories {
-            get { return mLocalUpdatedRepositories; }
-            protected set {
-                if (mLocalUpdatedRepositories != value) {
-                    mLocalUpdatedRepositories = value;
-                    OnPropertyChanged(this, "LocalUpdatedRepositories");
-                }
-            }
+        protected List<Repository> LocalUpdatedRepositories {
+            get;
+            set;
         }
-        private List<Repository> mLocalUpdatedRepositories;
 
         /// <summary>
         /// List of flat packed packages that give a nice combined
@@ -147,8 +129,6 @@ namespace Procon.Core.Interfaces.Repositories {
             return this.Packages.Where(x => x.Repository.UrlStub == repository.UrlStub && x.Uid == package.Uid).FirstOrDefault();
         }
 
-
-
         /// <summary>
         /// Listens for changes to do with the layer.
         /// Only changes to either the connection state or processing of an event are captured.
@@ -156,7 +136,6 @@ namespace Procon.Core.Interfaces.Repositories {
         protected virtual void AssignEvents() {
             Layer.ProcessLayerEvent += Layer_ProcessLayerEvent;
         }
-
 
         /// <summary>
         /// Handle events related to when the layer receives a command to be processed.
@@ -177,8 +156,6 @@ namespace Procon.Core.Interfaces.Repositories {
                 );
             }
         }
-
-
 
         /// <summary>
         /// Attempts to install the package on the given interface that is running the local version.

@@ -6,6 +6,7 @@ using System.IO;
 
 namespace Procon.Core.Interfaces.Repositories {
     using Procon.Core.Interfaces.Repositories.Objects;
+    using Procon.Net.Utils;
     using Procon.Core.Utils;
     using Procon.Core.Interfaces.Security;
 
@@ -70,12 +71,40 @@ namespace Procon.Core.Interfaces.Repositories {
         /// </summary>
         [Command(Command = CommandName.PackagesInstallPackage)]
         public override void InstallPackage(CommandInitiator initiator, String urlStub, String packageUid) {
-            if (initiator.CommandOrigin == CommandOrigin.Remote && Security.Can(Security.Account(initiator.Username), initiator.Command)) {
+            if (initiator.CommandOrigin == CommandOrigin.Local || Security.Can(Security.Account(initiator.Username), initiator.Command)) {
 
                 FlatPackedPackage package = this.GetExistingFlatPackage(urlStub, packageUid);
 
                 if (package != null) {
                     package.InstallOrUpdate();
+                }
+            }
+        }
+
+        [Command(Command = CommandName.PackagesAddRemoteRepository)]
+        public override void AddRemoteRepository(CommandInitiator initiator, String url) {
+            if (initiator.CommandOrigin == CommandOrigin.Local || Security.Can(Security.Account(initiator.Username), initiator.Command)) {
+                Repository repository = this.GetRemoteRepositoryByUrlStub(url.UrlStub());
+
+                if (repository == null) {
+                    this.RemoteRepositories.Add(new Repository() {
+                        Url = url
+                    });
+
+                    this.LoadRemoteRepositories();
+                }
+            }
+        }
+
+        [Command(Command = CommandName.PackagesRemoveRemoteRepository)]
+        public override void RemoveRemoteRepository(CommandInitiator initiator, String urlStub) {
+            if (initiator.CommandOrigin == CommandOrigin.Local || Security.Can(Security.Account(initiator.Username), initiator.Command)) {
+                Repository repository = this.GetRemoteRepositoryByUrlStub(urlStub);
+
+                if (repository != null) {
+                    this.RemoteRepositories.Remove(repository);
+
+                    this.LoadRemoteRepositories();
                 }
             }
         }

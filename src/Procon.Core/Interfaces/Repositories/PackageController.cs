@@ -129,6 +129,10 @@ namespace Procon.Core.Interfaces.Repositories {
             return this.Packages.Where(x => x.Repository.UrlStub == repository.UrlStub && x.Uid == package.Uid).FirstOrDefault();
         }
 
+        protected Repository GetRemoteRepositoryByUrlStub(String urlStub) {
+            return this.RemoteRepositories.Where(x => x.UrlStub == urlStub).FirstOrDefault();
+        }
+
         /// <summary>
         /// Listens for changes to do with the layer.
         /// Only changes to either the connection state or processing of an event are captured.
@@ -161,6 +165,23 @@ namespace Procon.Core.Interfaces.Repositories {
         /// Attempts to install the package on the given interface that is running the local version.
         /// </summary>
         public abstract void InstallPackage(CommandInitiator initiator, String urlStub, String packageUid);
+
+        /// <summary>
+        /// Adds, then updates a remote repository given the url specified. If the repository was 
+        /// successfully added this will trigger an update of the repository, which in turn will
+        /// trigger the packages being rebuilt.
+        /// </summary>
+        /// <param name="initiator"></param>
+        /// <param name="url"></param>
+        public abstract void AddRemoteRepository(CommandInitiator initiator, String url);
+
+        /// <summary>
+        /// Removes the remote repository. If successfully removed (it existed in the first place)
+        /// the packages will be rebuilt.
+        /// </summary>
+        /// <param name="initiator"></param>
+        /// <param name="urlStub"></param>
+        public abstract void RemoveRemoteRepository(CommandInitiator initiator, String urlStub);
 
     }
 }

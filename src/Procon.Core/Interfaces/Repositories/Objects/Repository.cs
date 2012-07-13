@@ -9,6 +9,7 @@ using System.Net;
 
 namespace Procon.Core.Interfaces.Repositories.Objects {
     using Procon.Core.Utils;
+    using Procon.Net.Utils;
     using Procon.Net.Utils.HTTP;
 
     public class Repository : Executable<Repository> {
@@ -35,7 +36,7 @@ namespace Procon.Core.Interfaces.Repositories.Objects {
             set {
                 if (mUrl != value) {
                     mUrl = value;
-                    this.UrlStub = this.GetUrlStub();
+                    this.UrlStub = this.Url.UrlStub();
 
                     OnPropertyChanged(this, "Url");
                 }
@@ -118,17 +119,6 @@ namespace Procon.Core.Interfaces.Repositories.Objects {
         // Default Initialization
         public Repository() : base() {
             this.Packages = new List<Package>();
-        }
-
-        protected String GetUrlStub() {
-            Uri uri = new Uri(this.Url);
-
-            String stub = uri.Host + uri.PathAndQuery;
-
-            stub = Regex.Replace(stub, "[/]+", "_").Trim('_');
-            stub = Regex.Replace(stub, "[^\\w]+", "");
-
-            return stub;
         }
 
         /// <summary>

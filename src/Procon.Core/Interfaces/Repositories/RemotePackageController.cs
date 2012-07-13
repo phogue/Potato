@@ -23,6 +23,32 @@ namespace Procon.Core.Interfaces.Repositories {
         }
 
         /// <summary>
+        /// Sends a request to the layer to add a remote repository
+        /// </summary>
+        [Command(Command = CommandName.PackagesAddRemoteRepository)]
+        public override void AddRemoteRepository(CommandInitiator initiator, String url) {
+            this.Layer.Request(
+                new Context() { ContextType = ContextType.All },
+                CommandName.PackagesAddRemoteRepository,
+                EventName.None,
+                url
+            );
+        }
+
+        /// <summary>
+        /// Sends a request to the layer to remove a remote repository
+        /// </summary>
+        [Command(Command = CommandName.PackagesRemoveRemoteRepository)]
+        public override void RemoveRemoteRepository(CommandInitiator initiator, String urlStub) {
+            this.Layer.Request(
+                new Context() { ContextType = ContextType.All },
+                CommandName.PackagesRemoveRemoteRepository,
+                EventName.None,
+                urlStub
+            );
+        }
+
+        /// <summary>
         /// Synchronizes the Remote Package Controller by copying all of the packages from the layer
         /// into this package controller.
         /// </summary>

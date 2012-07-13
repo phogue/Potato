@@ -135,16 +135,6 @@
     <Compile Include="Interfaces\Layer\Objects\LayerCommand.cs" />
     <Compile Include="Interfaces\Layer\LayerListener.cs" />
     <Compile Include="Localization\LanguageController.cs" />
-    <Compile Include="Interfaces\RSS\Objects\RSSDocument.cs" />
-    <Compile Include="Interfaces\RSS\Objects\RSSDonation.cs" />
-    <Compile Include="Interfaces\RSS\Objects\IPackage.cs" />
-    <Compile Include="Interfaces\RSS\Objects\RSSNews.cs" />
-    <Compile Include="Interfaces\RSS\Objects\RSSPackage.cs" />
-    <Compile Include="Interfaces\RSS\Objects\PackageType.cs" />
-    <Compile Include="Interfaces\RSS\Objects\RSSProcon2.cs" />
-    <Compile Include="Interfaces\RSS\Objects\RSS.cs" />
-    <Compile Include="Interfaces\RSS\Objects\RSSPromotion.cs" />
-    <Compile Include="Interfaces\RSS\RSSController.cs" />
     <Compile Include="Interfaces\Security\Objects\AccountAssignment.cs" />
     <Compile Include="Interfaces\Security\Objects\Group.cs" />
     <Compile Include="Interfaces\Security\Objects\Permission.cs" />

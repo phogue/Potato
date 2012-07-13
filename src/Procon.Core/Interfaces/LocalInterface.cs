@@ -66,6 +66,8 @@ namespace Procon.Core.Interfaces {
         // -- Saves all the connections to the config file.
         internal override void WriteConfig(Config config)
         {
+            this.Packages.WriteConfig(config);
+
             foreach (Connection tConnection in this.Connections) {
                 Config tConfig = new Config().Generate(tConnection.GetType());
                 config.Root.Add(new XElement("command",

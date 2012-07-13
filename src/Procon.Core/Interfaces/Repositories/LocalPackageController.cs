@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml.Linq;
 using System.Text;
 using System.IO;
 
@@ -55,6 +56,8 @@ namespace Procon.Core.Interfaces.Repositories {
             }
         }
 
+        #region Executable
+
         public override PackageController Execute() {
 
             this.LoadLocalRepository(this.LocalInstalledRepositories, Defines.PACKAGES_DIRECTORY);
@@ -65,6 +68,26 @@ namespace Procon.Core.Interfaces.Repositories {
 
             return base.Execute();
         }
+
+        /// <summary>
+        /// Relies on children classes to implement this.
+        /// </summary>
+        internal override void WriteConfig(Config config) {
+            // base.WriteConfig(config);
+
+            Config tConfig = new Config().Generate(this.GetType());
+
+            foreach (Repository repository in this.RemoteRepositories) {
+                tConfig.Root.Add(new XElement("command",
+                    new XAttribute("name", CommandName.PackagesAddRemoteRepository),
+                    new XElement("url", repository.Url)
+                ));
+            }
+
+            config.Add(tConfig);
+        }
+
+        #endregion
 
         /// <summary>
         /// Attempts to install the package.

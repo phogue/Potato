@@ -58,6 +58,8 @@ namespace Procon.Core {
         /// Packages
         ///
         PackagesInstallPackage,
+        PackagesAddRemoteRepository,
+        PackagesRemoveRemoteRepository,
 
         Set,
         Get,

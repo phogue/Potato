@@ -95,6 +95,13 @@ namespace Procon.Net.Utils.HTTP {
         /// </summary>
         public string RequestContent { get; set; }
 
+        /// <summary>
+        /// The contents to build up a multipart request.
+        /// 
+        /// I'd like this to replace RequestContent at some point
+        /// </summary>
+        public PostContent PostContent { get; protected set; }
+
         public CredentialCache CredentialCache { get; protected set; }
 
         private int m_timeout;
@@ -129,6 +136,7 @@ namespace Procon.Net.Utils.HTTP {
         public Request(string downloadSource) {
             this.DownloadSource = downloadSource;
 
+            this.PostContent = new PostContent();
             this.CredentialCache = new CredentialCache();
 
             this.m_timeout = 10000;
@@ -154,6 +162,39 @@ namespace Procon.Net.Utils.HTTP {
 
         public void BeginRequest() {
             new Thread(new ThreadStart(this.BeginRequestCallback)).Start();
+        }
+
+        private void ProcessPostRequest() {
+            if (this.RequestContent != null && this.RequestContent.Length > 0) {
+                this.m_webRequest.ContentType = "application/x-www-form-urlencoded";
+                this.m_webRequest.ContentLength = this.RequestContent.Length;
+
+                using (Stream postStream = this.m_webRequest.GetRequestStream()) {
+                    postStream.Write(Encoding.UTF8.GetBytes(this.RequestContent), 0, this.RequestContent.Length);
+                }
+                //Stream newStream = this.m_webRequest.GetRequestStream();
+                // Send the data.
+                //newStream.Write(Encoding.UTF8.GetBytes(this.RequestContent), 0, this.RequestContent.Length);
+                //newStream.Close();
+            }
+        }
+
+        private void ProcessMultipartPostRequest() {
+            if (this.PostContent.Params.Count > 0) {
+
+                byte[] payload = this.PostContent.BuildPostData();
+
+                // Ignores the specified method
+                this.m_webRequest.Method = "POST";
+                this.m_webRequest.ContentLength = payload.Length;
+                this.m_webRequest.ContentType = "multipart/form-data; boundary=" + this.PostContent.Boundry;
+
+                String b = Encoding.UTF8.GetString(payload);
+
+                using (Stream postStream = this.m_webRequest.GetRequestStream()) {
+                    postStream.Write(payload);
+                }
+            }
         }
 
         private void BeginRequestCallback() {
@@ -191,15 +232,9 @@ namespace Procon.Net.Utils.HTTP {
 
                 this.m_webRequest.Proxy = null;
 
-                if (this.RequestContent != null && this.RequestContent.Length > 0) {
-                    this.m_webRequest.ContentType = "application/x-www-form-urlencoded";
-                    this.m_webRequest.ContentLength = this.RequestContent.Length;
+                this.ProcessPostRequest();
 
-                    Stream newStream = this.m_webRequest.GetRequestStream();
-                    // Send the data.
-                    newStream.Write(Encoding.UTF8.GetBytes(this.RequestContent), 0, this.RequestContent.Length);
-                    newStream.Close();
-                }
+                this.ProcessMultipartPostRequest();
 
                 if (this.m_webRequest != null) {
                     IAsyncResult arResult = this.m_webRequest.BeginGetResponse(new AsyncCallback(this.ResponseCallback), this);

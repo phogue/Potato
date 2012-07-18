@@ -91,6 +91,13 @@ namespace Procon.Core.Interfaces.Repositories.Objects {
 
         protected Request mQueryRequest;
 
+        protected Request mAuthenticationTestRequest;
+
+        protected Request mRebuildCacheRequest;
+
+        protected Request mPublishRequest;
+
+
         #region events
 
         public delegate void RepositoryEventHandler(Repository repository);
@@ -114,6 +121,12 @@ namespace Procon.Core.Interfaces.Repositories.Objects {
         /// </summary>
         public event RepositoryEventHandler AuthenticationFailed;
 
+        public event RepositoryEventHandler RebuildCacheSuccess;
+        public event RepositoryEventHandler RebuildCacheFailed;
+
+        public event RepositoryEventHandler PublishSuccess;
+        public event RepositoryEventHandler PublishFailed;
+        
         #endregion
 
         // Default Initialization
@@ -144,7 +157,7 @@ namespace Procon.Core.Interfaces.Repositories.Objects {
                 // @todo add this back in once were set for events. OnPackageAdded(this, package);
             }
             else {
-                currentPackage.Copy<FlatPackedPackage>(package);
+                currentPackage.Copy<Package>(package);
             }
         }
 
@@ -192,12 +205,10 @@ namespace Procon.Core.Interfaces.Repositories.Objects {
             }
         }
 
-        protected Request mAuhenticationTestRequest;
-
         protected void CancelAuthenticationTest() {
-            if (this.mAuhenticationTestRequest != null) {
-                this.mAuhenticationTestRequest.EndRequest();
-                this.mAuhenticationTestRequest = null;
+            if (this.mAuthenticationTestRequest != null) {
+                this.mAuthenticationTestRequest.EndRequest();
+                this.mAuthenticationTestRequest = null;
             }
         }
 
@@ -213,9 +224,9 @@ namespace Procon.Core.Interfaces.Repositories.Objects {
 
                 Uri uri = new Uri(this.Url + "1/publish/authentication_test/format/xml");
 
-                this.mAuhenticationTestRequest = new Request(uri.OriginalString);
+                this.mAuthenticationTestRequest = new Request(uri.OriginalString);
 
-                this.mAuhenticationTestRequest.CredentialCache.Add(
+                this.mAuthenticationTestRequest.CredentialCache.Add(
                     new Uri(uri.GetLeftPart(UriPartial.Authority)),
                     "Digest",
                     new NetworkCredential(
@@ -224,20 +235,20 @@ namespace Procon.Core.Interfaces.Repositories.Objects {
                     )
                 );
 
-                this.mAuhenticationTestRequest.RequestError += new Request.RequestEventDelegate(mAuhenticationTestRequest_RequestError);
-                this.mAuhenticationTestRequest.RequestComplete += new Request.RequestEventDelegate(mAuhenticationTestRequest_RequestComplete);
+                this.mAuthenticationTestRequest.RequestError += new Request.RequestEventDelegate(mAuthenticationTestRequest_RequestError);
+                this.mAuthenticationTestRequest.RequestComplete += new Request.RequestEventDelegate(mAuthenticationTestRequest_RequestComplete);
 
-                this.mAuhenticationTestRequest.BeginRequest();
+                this.mAuthenticationTestRequest.BeginRequest();
             }
         }
 
-        private void mAuhenticationTestRequest_RequestError(Request sender) {
+        private void mAuthenticationTestRequest_RequestError(Request sender) {
             if (this.AuthenticationFailed != null) {
                 this.AuthenticationFailed(this);
             }
         }
 
-        private void mAuhenticationTestRequest_RequestComplete(Request sender) {
+        private void mAuthenticationTestRequest_RequestComplete(Request sender) {
             if (this.AuthenticationSuccess != null) {
                 this.AuthenticationSuccess(this);
             }
@@ -245,7 +256,70 @@ namespace Procon.Core.Interfaces.Repositories.Objects {
 
 
 
-        protected Request mPublishRequest;
+
+
+
+
+
+
+        protected void CancelRebuildCache() {
+            if (this.mRebuildCacheRequest != null) {
+                this.mRebuildCacheRequest.EndRequest();
+                this.mRebuildCacheRequest = null;
+            }
+        }
+
+        /// <summary>
+        /// Begin asynchronous authentication test. This does not essentially do anything
+        /// but test that the user has setup their repository properly.
+        /// 
+        /// This method is only ever relevant for publishing updates to a repository.
+        /// </summary>
+        public void BeginRebuildCache() {
+            if (this.Url.Length > 0) {
+                this.CancelRebuildCache();
+
+                Uri uri = new Uri(this.Url + "1/publish/authentication_test/format/xml");
+
+                this.mRebuildCacheRequest = new Request(uri.OriginalString);
+
+                this.mRebuildCacheRequest.CredentialCache.Add(
+                    new Uri(uri.GetLeftPart(UriPartial.Authority)),
+                    "Digest",
+                    new NetworkCredential(
+                        this.Username,
+                        this.Password
+                    )
+                );
+
+                this.mRebuildCacheRequest.RequestError += new Request.RequestEventDelegate(mRebuildCacheRequest_RequestError);
+                this.mRebuildCacheRequest.RequestComplete += new Request.RequestEventDelegate(mRebuildCacheRequest_RequestComplete);
+
+                this.mRebuildCacheRequest.BeginRequest();
+            }
+        }
+
+        private void mRebuildCacheRequest_RequestError(Request sender) {
+            if (this.RebuildCacheFailed != null) {
+                this.RebuildCacheFailed(this);
+            }
+        }
+
+        private void mRebuildCacheRequest_RequestComplete(Request sender) {
+            if (this.RebuildCacheSuccess != null) {
+                this.RebuildCacheSuccess(this);
+            }
+        }
+
+
+
+
+
+
+
+
+
+
 
         protected void CancelPublish() {
             if (this.mPublishRequest != null) {
@@ -254,18 +328,19 @@ namespace Procon.Core.Interfaces.Repositories.Objects {
             }
         }
 
-        public void BeginPublish(Package package, PackageVersion packageVersion) {
+        public void BeginPublish(Package package, Version version, MemoryStream zippedPackage) {
             if (this.Url.Length > 0) {
                 this.CancelAuthenticationTest();
 
                 Uri uri = new Uri(this.Url + "1/publish/submit/format/xml");
 
                 this.mPublishRequest = new Request(uri.OriginalString);
-                this.mPublishRequest.Method = "POST";
 
-                QueryStringBuilder builder = new QueryStringBuilder();
-                builder.Add("name", package.Name);
-                builder.Add("version", packageVersion.Version.ToString());
+                this.mPublishRequest.PostContent.Params.Add(new PostParameter("uid", package.Uid, PostParameterType.Field));
+                this.mPublishRequest.PostContent.Params.Add(new PostParameter("name", package.Name, PostParameterType.Field));
+                this.mPublishRequest.PostContent.Params.Add(new PostParameter("version", version.ToString(), PostParameterType.Field));
+
+                this.mPublishRequest.PostContent.Params.Add(new PostParameter("package", String.Format("{0}_{1}.zip", package.Uid, version.ToString()), zippedPackage, "application/x-zip-compressed", PostParameterType.File));
 
                 this.mPublishRequest.CredentialCache.Add(
                     new Uri(uri.GetLeftPart(UriPartial.Authority)),
@@ -276,11 +351,23 @@ namespace Procon.Core.Interfaces.Repositories.Objects {
                     )
                 );
 
-                this.mPublishRequest.RequestContent = builder.ToString();
+                this.mPublishRequest.RequestError += new Request.RequestEventDelegate(mPublishRequest_RequestError);
+                this.mPublishRequest.RequestComplete += new Request.RequestEventDelegate(mPublishRequest_RequestComplete);
 
                 this.mPublishRequest.BeginRequest();
             }
         }
 
+        private void mPublishRequest_RequestComplete(Request sender) {
+            if (this.PublishSuccess != null) {
+                this.PublishSuccess(this);
+            }
+        }
+
+        private void mPublishRequest_RequestError(Request sender) {
+            if (this.PublishFailed != null) {
+                this.PublishFailed(this);
+            }
+        }
     }
 }

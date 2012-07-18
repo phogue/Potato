@@ -18,7 +18,7 @@ namespace Procon.Core.Interfaces.Repositories.Objects {
         /// <summary>
         ///  The type of package (Application, Plugin etc)
         /// </summary>
-        PackageType PackageType { get; set; }
+        public PackageType PackageType { get; set; }
 
         /// <summary>
         /// The latest version found for this package
@@ -33,7 +33,7 @@ namespace Procon.Core.Interfaces.Repositories.Objects {
         /// <summary>
         /// The full friendly name of the package
         /// </summary>
-        public String Name { get; protected set; }
+        public String Name { get; set; }
 
         public XElement SerializedElement { get; protected set; }
 

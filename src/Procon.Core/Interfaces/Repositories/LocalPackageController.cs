@@ -66,6 +66,9 @@ namespace Procon.Core.Interfaces.Repositories {
 
             this.LoadRemoteRepositories();
 
+            // Add the default repository if its not there already
+            this.AddRemoteRepository(CommandInitiator.Local, Defines.MYRCON_COM_REPO_PROCON2);
+
             return base.Execute();
         }
 

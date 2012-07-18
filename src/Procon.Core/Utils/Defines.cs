@@ -82,5 +82,7 @@ namespace Procon.Core.Utils {
         /// Urls
         /// </summary>
         public static readonly string PHOGUE_NET_PHOGUE_RSS_PHP = "http://phogue.net/feed/";
+
+        public static readonly string MYRCON_COM_REPO_PROCON2 = "http://localhost/open/repo/src/index.php/";
     }
 }

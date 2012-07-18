@@ -206,15 +206,17 @@ namespace Procon.Net.Utils {
             return stripped;
         }
 
+        public static String SanitizeDirectory(this String s) {
+            s = Regex.Replace(s, "[/]+", "_").Trim('_');
+            s = Regex.Replace(s, "[^\\w]+", "");
+
+            return s;
+        }
+
         public static String UrlStub(this String s) {
             Uri uri = new Uri(s);
 
-            String stub = uri.Host + uri.PathAndQuery;
-
-            stub = Regex.Replace(stub, "[/]+", "_").Trim('_');
-            stub = Regex.Replace(stub, "[^\\w]+", "");
-
-            return stub;
+            return (uri.Host + uri.PathAndQuery).SanitizeDirectory();
         }
     }
 }

@@ -48,6 +48,28 @@ namespace Procon.Core.Interfaces.Repositories {
             );
         }
 
+        [Command(Command = CommandName.PackagesAddAutomaticUpdatePackage)]
+        public override void AddAutomaticUpdatePackage(CommandInitiator initiator, string urlStub, string packageUid) {
+            this.Layer.Request(
+                new Context() { ContextType = ContextType.All },
+                CommandName.PackagesAddAutomaticUpdatePackage,
+                EventName.None,
+                urlStub,
+                packageUid
+            );
+        }
+
+        [Command(Command = CommandName.PackagesRemoveAutomaticUpdatePackage)]
+        public override void RemoveAutomaticUpdatePackage(CommandInitiator initiator, string urlStub, string packageUid) {
+            this.Layer.Request(
+                new Context() { ContextType = ContextType.All },
+                CommandName.PackagesRemoveAutomaticUpdatePackage,
+                EventName.None,
+                urlStub,
+                packageUid
+            );
+        }
+
         /// <summary>
         /// Synchronizes the Remote Package Controller by copying all of the packages from the layer
         /// into this package controller.

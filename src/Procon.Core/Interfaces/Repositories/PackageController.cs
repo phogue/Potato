@@ -51,6 +51,23 @@ namespace Procon.Core.Interfaces.Repositories {
         }
         private List<FlatPackedPackage> mPackages;
 
+        /// <summary>
+        /// List of flat packed packages that will be automatically
+        /// updated when the packages are rebuilt.
+        /// 
+        /// Any references here will be automatically updated.
+        /// </summary>
+        public List<FlatPackedPackage> AutoUpdatePackages {
+            get { return mAutoUpdatePackages; }
+            protected set {
+                if (mAutoUpdatePackages != value) {
+                    mAutoUpdatePackages = value;
+                    OnPropertyChanged(this, "AutoUpdatePackages");
+                }
+            }
+        }
+        private List<FlatPackedPackage> mAutoUpdatePackages;
+
         [JsonIgnore]
         public ILayer Layer {
             get { return mLayer; }
@@ -182,6 +199,22 @@ namespace Procon.Core.Interfaces.Repositories {
         /// <param name="initiator"></param>
         /// <param name="urlStub"></param>
         public abstract void RemoveRemoteRepository(CommandInitiator initiator, String urlStub);
+        
+        /// <summary>
+        /// Adds a repository/packageuid to automatically install/update when a new version
+        /// is available.
+        /// </summary>
+        /// <param name="initiator"></param>
+        /// <param name="urlStub"></param>
+        /// <param name="packageUid"></param>
+        public abstract void AddAutomaticUpdatePackage(CommandInitiator initiator, String urlStub, String packageUid);
 
+        /// <summary>
+        /// Removes a repository/packageuid from the automatic update
+        /// </summary>
+        /// <param name="initiator"></param>
+        /// <param name="urlStub"></param>
+        /// <param name="packageUid"></param>
+        public abstract void RemoveAutomaticUpdatePackage(CommandInitiator initiator, String urlStub, String packageUid);
     }
 }

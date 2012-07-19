@@ -97,6 +97,7 @@
     <Compile Include="Interfaces\Repositories\Objects\PackageFile.cs" />
     <Compile Include="Interfaces\Repositories\Objects\PackageVersion.cs" />
     <Compile Include="Interfaces\Repositories\Objects\Repository.cs" />
+    <Compile Include="Interfaces\Repositories\Objects\RepositoryPackageReference.cs" />
     <Compile Include="Interfaces\Repositories\PackageState.cs" />
     <Compile Include="Interfaces\Repositories\PackageType.cs" />
     <Compile Include="Interfaces\Repositories\PackageController.cs" />

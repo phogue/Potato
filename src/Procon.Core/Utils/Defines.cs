@@ -81,7 +81,7 @@ namespace Procon.Core.Utils {
         /// <summary>
         /// Repositories
         /// </summary>
-        public static readonly string MYRCON_COM_REPO_PROCON2 = "http://localhost/open/repo/src/index.php/";
+        public static readonly string MYRCON_COM_REPO_PROCON2 = "http://repo.myrcon.com/procon2/";
 
         public static readonly string MYRCON_COM_REPO_PROCON2_PACKAGE_PROCON2 = "procon_2";
 

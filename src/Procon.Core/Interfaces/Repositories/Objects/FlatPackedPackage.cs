@@ -120,28 +120,31 @@ namespace Procon.Core.Interfaces.Repositories.Objects {
         public void InstallOrUpdate() {
             if (this.AvailableVersion != null && this.Repository.Url != null) {
 
-                this.CancelInstalling();
+                // Make sure the state is set to an update or install.
+                if (this.State == PackageState.NotInstalled || this.State == PackageState.UpdateAvailable) {
+                    this.CancelInstalling();
 
-                this.DownloadRequest = new Request(this.Repository.Url + "1/query/download/format/xml");
-                this.DownloadRequest.Method = "POST";
+                    this.DownloadRequest = new Request(this.Repository.Url + "1/query/download/format/xml");
+                    this.DownloadRequest.Method = "POST";
 
-                QueryStringBuilder builder = new QueryStringBuilder();
-                builder.Add("name", this.Name);
-                builder.Add("version", this.AvailableVersion.Version.ToString());
+                    QueryStringBuilder builder = new QueryStringBuilder();
+                    builder.Add("name", this.Name);
+                    builder.Add("version", this.AvailableVersion.Version.ToString());
 
-                // If we're updating
-                if (this.InstalledVersion != null) {
-                    builder.Add("relative_paths", this.GetModifiedRelativePaths().Cast<Object>().ToList());
+                    // If we're updating
+                    if (this.InstalledVersion != null) {
+                        builder.Add("relative_paths", this.GetModifiedRelativePaths().Cast<Object>().ToList());
+                    }
+
+                    this.DownloadRequest.RequestContent = builder.ToString();
+
+                    this.DownloadRequest.RequestError += new Request.RequestEventDelegate(DownloadRequest_RequestError);
+                    this.DownloadRequest.RequestComplete += new Request.RequestEventDelegate(mDownloadRequest_RequestComplete);
+
+                    this.State = PackageState.Downloading;
+
+                    this.DownloadRequest.BeginRequest();
                 }
-
-                this.DownloadRequest.RequestContent = builder.ToString();
-
-                this.DownloadRequest.RequestError += new Request.RequestEventDelegate(DownloadRequest_RequestError);
-                this.DownloadRequest.RequestComplete += new Request.RequestEventDelegate(mDownloadRequest_RequestComplete);
-
-                this.State = PackageState.Downloading;
-
-                this.DownloadRequest.BeginRequest();
             }
         }
 

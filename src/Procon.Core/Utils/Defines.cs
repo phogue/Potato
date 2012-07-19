@@ -79,10 +79,17 @@ namespace Procon.Core.Utils {
         public static readonly string UPDATES_DIRECTORY_PROCON_PDB = Path.Combine(UPDATES_DIRECTORY, Defines.PROCON_PDB);
 
         /// <summary>
+        /// Repositories
+        /// </summary>
+        public static readonly string MYRCON_COM_REPO_PROCON2 = "http://localhost/open/repo/src/index.php/";
+
+        public static readonly string MYRCON_COM_REPO_PROCON2_PACKAGE_PROCON2 = "procon_2";
+
+        /// <summary>
         /// Urls
         /// </summary>
         public static readonly string PHOGUE_NET_PHOGUE_RSS_PHP = "http://phogue.net/feed/";
 
-        public static readonly string MYRCON_COM_REPO_PROCON2 = "http://localhost/open/repo/src/index.php/";
+        
     }
 }

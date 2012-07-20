@@ -27,7 +27,6 @@ using Procon.DB;
 using Procon.Core;
 using Procon.Core.Interfaces;
 using Procon.Core.Interfaces.Connections;
-using Procon.Core.Interfaces.Packages;
 using Procon.Core.Interfaces.Security.Objects;
 using Procon.Net;
 using Procon.Net.Protocols;

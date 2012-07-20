@@ -147,9 +147,14 @@
     <Compile Include="Protocols\Source\SourceRequestType.cs" />
     <Compile Include="TCPClient.cs" />
     <Compile Include="UDPClient.cs" />
+    <Compile Include="Utils\HTTP\PostContent.cs" />
+    <Compile Include="Utils\HTTP\PostParameter.cs" />
+    <Compile Include="Utils\HTTP\PostParameterType.cs" />
+    <Compile Include="Utils\HTTP\QueryStringBuilder.cs" />
     <Compile Include="Utils\HTTP\Request.cs" />
     <Compile Include="Utils\Maxmind\CountryLookup.cs" />
     <Compile Include="Utils\MD5.cs" />
+    <Compile Include="Utils\StreamExtensions.cs" />
     <Compile Include="Utils\PunkBuster\PB.cs" />
     <Compile Include="Utils\PunkBuster\Objects\PunkBusterBeginPlayerList.cs" />
     <Compile Include="Utils\PunkBuster\Objects\PunkBusterEndPlayerList.cs" />

@@ -60,6 +60,7 @@ namespace Procon.Core.Utils {
         public static readonly string CONFIGS_GROUPS_DIRECTORY   = Path.Combine(Defines.CONFIGS_DIRECTORY, "Groups");
         public static readonly string PACKAGES_DIRECTORY         = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Packages");
         public static readonly string PACKAGES_UPDATES_DIRECTORY = Path.Combine(Defines.UPDATES_DIRECTORY, "Packages");
+        public static readonly string TEMPORARY_UPDATES_DIRECTORY = Path.Combine(Defines.UPDATES_DIRECTORY, "Temporary");
 
         /// <summary>
         /// Paths to files
@@ -78,8 +79,17 @@ namespace Procon.Core.Utils {
         public static readonly string UPDATES_DIRECTORY_PROCON_PDB = Path.Combine(UPDATES_DIRECTORY, Defines.PROCON_PDB);
 
         /// <summary>
+        /// Repositories
+        /// </summary>
+        public static readonly string MYRCON_COM_REPO_PROCON2 = "http://repo.myrcon.com/procon2/";
+
+        public static readonly string MYRCON_COM_REPO_PROCON2_PACKAGE_PROCON2 = "Procon2";
+
+        /// <summary>
         /// Urls
         /// </summary>
         public static readonly string PHOGUE_NET_PHOGUE_RSS_PHP = "http://phogue.net/feed/";
+
+        
     }
 }

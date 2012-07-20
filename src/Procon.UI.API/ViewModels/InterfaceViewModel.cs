@@ -7,7 +7,8 @@ using Procon.Core;
 using Procon.Core.Interfaces;
 using Procon.Core.Interfaces.Connections;
 using Procon.Core.Interfaces.Layer;
-using Procon.Core.Interfaces.Packages;
+using Procon.Core.Interfaces.Repositories;
+using Procon.Core.Interfaces.Repositories.Objects;
 using Procon.Net;
 
 namespace Procon.UI.API.ViewModels
@@ -55,7 +56,7 @@ namespace Procon.UI.API.ViewModels
                     mConnections = value;
                     OnPropertyChanged("Connections");
         } } }
-        public ObservableCollection<Package>             Packages
+        public ObservableCollection<FlatPackedPackage>             Packages
         {
             get { return mPackages; }
             protected set {
@@ -65,7 +66,7 @@ namespace Procon.UI.API.ViewModels
         } } }
 
         private ObservableCollection<ConnectionViewModel> mConnections;
-        private ObservableCollection<Package>             mPackages;
+        private ObservableCollection<FlatPackedPackage> mPackages;
 
 
         // Constructor.
@@ -82,7 +83,7 @@ namespace Procon.UI.API.ViewModels
 
             // Expose collections within the model:
             Connections = new ObservableCollection<ConnectionViewModel>(nModel.Connections.Select(x => new ConnectionViewModel(x)));
-            Packages    = new ObservableCollection<Package>(nModel.Packages.Packages);
+            Packages = new ObservableCollection<FlatPackedPackage>(nModel.Packages.Packages);
         }
         
 
@@ -126,7 +127,7 @@ namespace Procon.UI.API.ViewModels
             // Remove the old connection.
             Connections.Remove(Connections.SingleOrDefault(x => x.ModelEquals(item)));
         }
-        private void Packages_Added(PackageController parent, Package item)
+        private void Packages_Added(PackageController parent, FlatPackedPackage item)
         {
             // Force the UI thread to execute this method.
             if (ChangeDispatcher(() => Packages_Added(parent, item)))
@@ -135,7 +136,7 @@ namespace Procon.UI.API.ViewModels
             // Add the new package.
             Packages.Add(item);
         }
-        private void Packages_Removed(PackageController parent, Package item)
+        private void Packages_Removed(PackageController parent, FlatPackedPackage item)
         {
             // Force the UI thread to execute this method.
             if (ChangeDispatcher(() => Packages_Removed(parent, item)))

@@ -47,5 +47,8 @@ namespace Procon.Net.Utils {
             return stringifyHash.ToString();
         }
 
+        public static string String(string data) {
+            return SHA1.Data(Encoding.ASCII.GetBytes(data));
+        }
     }
 }

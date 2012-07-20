@@ -22,7 +22,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Procon.Core.Interfaces.Packages {
+namespace Procon.Core.Interfaces.Repositories {
     public enum PackageState {
         /// <summary>
         /// Package is not installed and is available on remote server

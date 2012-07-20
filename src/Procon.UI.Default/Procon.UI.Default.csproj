@@ -41,82 +41,52 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="CommandsAndProperties.cs" />
-    <Compile Include="Controls\ToggleImageButton.xaml.cs">
-      <DependentUpon>ToggleImageButton.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\ImageButton.xaml.cs">
-      <DependentUpon>ImageButton.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\RadioImageButton.xaml.cs">
-      <DependentUpon>RadioImageButton.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Panel-Root\Layout\Layout.cs" />
     <Compile Include="Panel-Root\Layout\LayoutView.xaml.cs">
       <DependentUpon>LayoutView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Panel-Root\Panel-Main\Panel-Configure\Layout\Layout.cs" />
-    <Compile Include="Panel-Root\Panel-Main\Panel-Configure\Layout\LayoutView.xaml.cs">
+    <Compile Include="Panel-Root\Panel-Main\Panel-Connection\Control-Chat\Chat.cs" />
+    <Compile Include="Panel-Root\Panel-Main\Panel-Connection\Control-Chat\ChatView.xaml.cs">
+      <DependentUpon>ChatView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Panel-Root\Panel-Main\Panel-Connection\Control-Overview\Overview.cs" />
+    <Compile Include="Panel-Root\Panel-Main\Panel-Connection\Control-Overview\OverviewView.xaml.cs">
+      <DependentUpon>OverviewView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Panel-Root\Panel-Main\Panel-Connection\Control-Players\Players.cs" />
+    <Compile Include="Panel-Root\Panel-Main\Panel-Connection\Control-Players\PlayersView.xaml.cs">
+      <DependentUpon>PlayersView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Panel-Root\Panel-Main\Panel-Interface\Layout\Layout.cs" />
+    <Compile Include="Panel-Root\Panel-Main\Panel-Interface\Layout\LayoutView.xaml.cs">
       <DependentUpon>LayoutView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Panel-Root\Panel-Main\Panel-Configure\Panel-Connections\Control-Content\Content.cs" />
-    <Compile Include="Panel-Root\Panel-Main\Panel-Configure\Panel-Connections\Control-Content\ContentView.xaml.cs">
+    <Compile Include="Panel-Root\Panel-Main\Panel-Interface\Panel-Connections\Control-Content\Content.cs" />
+    <Compile Include="Panel-Root\Panel-Main\Panel-Interface\Panel-Connections\Control-Content\ContentView.xaml.cs">
       <DependentUpon>ContentView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Panel-Root\Panel-Main\Panel-Configure\Panel-Connections\Control-Header\Header.cs" />
-    <Compile Include="Panel-Root\Panel-Main\Panel-Configure\Panel-Connections\Control-Header\HeaderView.xaml.cs">
+    <Compile Include="Panel-Root\Panel-Main\Panel-Interface\Panel-Connections\Control-Header\Header.cs" />
+    <Compile Include="Panel-Root\Panel-Main\Panel-Interface\Panel-Connections\Control-Header\HeaderView.xaml.cs">
       <DependentUpon>HeaderView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Panel-Root\Panel-Main\Panel-Configure\Panel-Connections\Layout\Layout.cs" />
-    <Compile Include="Panel-Root\Panel-Main\Panel-Configure\Panel-Connections\Layout\LayoutView.xaml.cs">
+    <Compile Include="Panel-Root\Panel-Main\Panel-Interface\Panel-Connections\Layout\Layout.cs" />
+    <Compile Include="Panel-Root\Panel-Main\Panel-Interface\Panel-Connections\Layout\LayoutView.xaml.cs">
       <DependentUpon>LayoutView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Panel-Root\Panel-Main\Panel-Configure\Panel-Interfaces\Control-Content\Content.cs" />
-    <Compile Include="Panel-Root\Panel-Main\Panel-Configure\Panel-Interfaces\Control-Content\ContentView.xaml.cs">
+    <Compile Include="Panel-Root\Panel-Main\Panel-Interface\Panel-Interfaces\Control-Content\Content.cs" />
+    <Compile Include="Panel-Root\Panel-Main\Panel-Interface\Panel-Interfaces\Control-Content\ContentView.xaml.cs">
       <DependentUpon>ContentView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Panel-Root\Panel-Main\Panel-Configure\Panel-Interfaces\Control-Header\Header.cs" />
-    <Compile Include="Panel-Root\Panel-Main\Panel-Configure\Panel-Interfaces\Control-Header\HeaderView.xaml.cs">
+    <Compile Include="Panel-Root\Panel-Main\Panel-Interface\Panel-Interfaces\Control-Header\Header.cs" />
+    <Compile Include="Panel-Root\Panel-Main\Panel-Interface\Panel-Interfaces\Control-Header\HeaderView.xaml.cs">
       <DependentUpon>HeaderView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Panel-Root\Panel-Main\Panel-Configure\Panel-Interfaces\Layout\Layout.cs" />
-    <Compile Include="Panel-Root\Panel-Main\Panel-Configure\Panel-Interfaces\Layout\LayoutView.xaml.cs">
+    <Compile Include="Panel-Root\Panel-Main\Panel-Interface\Panel-Interfaces\Layout\Layout.cs" />
+    <Compile Include="Panel-Root\Panel-Main\Panel-Interface\Panel-Interfaces\Layout\LayoutView.xaml.cs">
       <DependentUpon>LayoutView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Panel-Root\Panel-Main\Panel-Connection\Layout\Layout.cs" />
     <Compile Include="Panel-Root\Panel-Main\Panel-Connection\Layout\LayoutView.xaml.cs">
-      <DependentUpon>LayoutView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Panel-Root\Panel-Main\Panel-Connection\Panel-Bans\Layout\Layout.cs" />
-    <Compile Include="Panel-Root\Panel-Main\Panel-Connection\Panel-Bans\Layout\LayoutView.xaml.cs">
-      <DependentUpon>LayoutView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Panel-Root\Panel-Main\Panel-Connection\Panel-Maps\Layout\Layout.cs" />
-    <Compile Include="Panel-Root\Panel-Main\Panel-Connection\Panel-Maps\Layout\LayoutView.xaml.cs">
-      <DependentUpon>LayoutView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Panel-Root\Panel-Main\Panel-Connection\Panel-Options\Layout\Layout.cs" />
-    <Compile Include="Panel-Root\Panel-Main\Panel-Connection\Panel-Options\Layout\LayoutView.xaml.cs">
-      <DependentUpon>LayoutView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Panel-Root\Panel-Main\Panel-Connection\Panel-Players\Control-Content\Content.cs" />
-    <Compile Include="Panel-Root\Panel-Main\Panel-Connection\Panel-Players\Control-Content\ContentView.xaml.cs">
-      <DependentUpon>ContentView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Panel-Root\Panel-Main\Panel-Connection\Panel-Players\Control-Header\HeaderView.xaml.cs">
-      <SubType>Code</SubType>
-      <DependentUpon>HeaderView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Panel-Root\Panel-Main\Panel-Connection\Panel-Players\Control-Header\Header.cs" />
-    <Compile Include="Panel-Root\Panel-Main\Panel-Connection\Panel-Players\Layout\Layout.cs" />
-    <Compile Include="Panel-Root\Panel-Main\Panel-Connection\Panel-Players\Layout\LayoutView.xaml.cs">
-      <DependentUpon>LayoutView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Panel-Root\Panel-Main\Panel-Connection\Panel-Plugins\Layout\Layout.cs" />
-    <Compile Include="Panel-Root\Panel-Main\Panel-Connection\Panel-Plugins\Layout\LayoutView.xaml.cs">
-      <DependentUpon>LayoutView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Panel-Root\Panel-Main\Panel-Connection\Panel-Settings\Layout\Layout.cs" />
-    <Compile Include="Panel-Root\Panel-Main\Panel-Connection\Panel-Settings\Layout\LayoutView.xaml.cs">
       <DependentUpon>LayoutView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Panel-Root\Panel-Tutorial\Control-NewInterface\NewInterface.cs" />
@@ -130,10 +100,6 @@
     <Compile Include="Panel-Root\Panel-Main\Panel-Connection\Control-Navigation\Navigation.cs" />
     <Compile Include="Panel-Root\Panel-Main\Panel-Connection\Control-Navigation\NavigationView.xaml.cs">
       <DependentUpon>NavigationView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Panel-Root\Panel-Main\Panel-Connection\Control-Chat\Chat.cs" />
-    <Compile Include="Panel-Root\Panel-Main\Panel-Connection\Control-Chat\ChatView.xaml.cs">
-      <DependentUpon>ChatView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Panel-Root\Panel-Main\Layout\Layout.cs" />
     <Compile Include="Panel-Root\Panel-Main\Layout\LayoutView.xaml.cs">
@@ -172,83 +138,51 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Controls\ToggleImageButton.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Controls\ImageButton.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Controls\RadioImageButton.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Panel-Root\Layout\LayoutView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Panel-Root\Panel-Main\Panel-Configure\Layout\LayoutView.xaml">
+    <Page Include="Panel-Root\Panel-Main\Panel-Connection\Control-Chat\ChatView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Panel-Root\Panel-Main\Panel-Configure\Panel-Connections\Control-Content\ContentView.xaml">
+    <Page Include="Panel-Root\Panel-Main\Panel-Connection\Control-Overview\OverviewView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Panel-Root\Panel-Main\Panel-Configure\Panel-Connections\Control-Header\HeaderView.xaml">
+    <Page Include="Panel-Root\Panel-Main\Panel-Connection\Control-Players\PlayersView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Panel-Root\Panel-Main\Panel-Configure\Panel-Connections\Layout\LayoutView.xaml">
+    <Page Include="Panel-Root\Panel-Main\Panel-Interface\Layout\LayoutView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Panel-Root\Panel-Main\Panel-Configure\Panel-Interfaces\Control-Content\ContentView.xaml">
+    <Page Include="Panel-Root\Panel-Main\Panel-Interface\Panel-Connections\Control-Content\ContentView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Panel-Root\Panel-Main\Panel-Configure\Panel-Interfaces\Control-Header\HeaderView.xaml">
+    <Page Include="Panel-Root\Panel-Main\Panel-Interface\Panel-Connections\Control-Header\HeaderView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Panel-Root\Panel-Main\Panel-Configure\Panel-Interfaces\Layout\LayoutView.xaml">
+    <Page Include="Panel-Root\Panel-Main\Panel-Interface\Panel-Connections\Layout\LayoutView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Panel-Root\Panel-Main\Panel-Interface\Panel-Interfaces\Control-Content\ContentView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Panel-Root\Panel-Main\Panel-Interface\Panel-Interfaces\Control-Header\HeaderView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Panel-Root\Panel-Main\Panel-Interface\Panel-Interfaces\Layout\LayoutView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Panel-Root\Panel-Main\Panel-Connection\Layout\LayoutView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Panel-Root\Panel-Main\Panel-Connection\Panel-Bans\Layout\LayoutView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Panel-Root\Panel-Main\Panel-Connection\Panel-Maps\Layout\LayoutView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Panel-Root\Panel-Main\Panel-Connection\Panel-Options\Layout\LayoutView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Panel-Root\Panel-Main\Panel-Connection\Panel-Players\Control-Content\ContentView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Panel-Root\Panel-Main\Panel-Connection\Panel-Players\Control-Header\HeaderView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Panel-Root\Panel-Main\Panel-Connection\Panel-Players\Layout\LayoutView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Panel-Root\Panel-Main\Panel-Connection\Panel-Plugins\Layout\LayoutView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Panel-Root\Panel-Main\Panel-Connection\Panel-Settings\Layout\LayoutView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -261,10 +195,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Panel-Root\Panel-Main\Panel-Connection\Control-Navigation\NavigationView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Panel-Root\Panel-Main\Panel-Connection\Control-Chat\ChatView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -282,8 +212,8 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Panel-Root\Panel-Main\Panel-Configure\Panel-Connections\Control-Info\" />
-    <Folder Include="Panel-Root\Panel-Main\Panel-Configure\Panel-Interfaces\Control-Info\" />
+    <Folder Include="Panel-Root\Panel-Main\Panel-Interface\Panel-Connections\Control-Info\" />
+    <Folder Include="Panel-Root\Panel-Main\Panel-Interface\Panel-Interfaces\Control-Info\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

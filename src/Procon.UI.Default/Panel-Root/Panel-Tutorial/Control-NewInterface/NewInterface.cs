@@ -5,16 +5,15 @@ using System.Windows.Controls;
 using System.Windows.Input;
 
 using Procon.UI.API;
-using Procon.UI.API.Utils;
 using Procon.UI.API.Commands;
-using Procon.UI.API.ViewModels;
+using Procon.UI.API.Utils;
 
 namespace Procon.UI.Default.Root.Tutorial.NewInterface
 {
     [Extension(
-        Alters    = new String[] { "TutorialLayout" },
+        Alters    = new String[] { },
         Replaces  = new String[] { },
-        DependsOn = new String[] { "Tutorial Layout" })]
+        DependsOn = new String[] { })]
     public class NewInterface : IExtension
     {
         #region IExtension Properties
@@ -48,12 +47,11 @@ namespace Procon.UI.Default.Root.Tutorial.NewInterface
         public bool Entry(Window root)
         {
             // Find the controls I want to use and check for issues.
-            Grid layout = ExtensionApi.FindControl<Grid>(root, "TutorialLayout");
-            if  (layout == null) return false;
+            Grid tLayout = ExtensionApi.FindControl<Grid>(root, "TutorialLayout");
 
             // Do what I need to setup my control.
-            NewInterfaceView view = new NewInterfaceView();
-            layout.Children.Add(view);
+            NewInterfaceView tView = new NewInterfaceView();
+            tLayout.Children.Add(tView);
 
             // Commands.
             tCmmds["Remote"].Value = new RelayCommand<Object>(

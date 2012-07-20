@@ -12,9 +12,9 @@ namespace Procon.UI.API.Converters
             String locKey       = (value     as String);
             String locNamespace = (parameter as String);
 
-            if      (locKey != null && locNamespace != null) return ExtensionApi.Localize(locNamespace + "." + locKey);
+            if      (locKey != null && locNamespace != null) return ExtensionApi.Localize("Procon.UI." + locNamespace + "." + locKey);
             else if (locKey != null && locNamespace == null) return ExtensionApi.Localize("Procon.UI." + locKey);
-            else if (locKey == null && locNamespace != null) return ExtensionApi.Localize(locNamespace);
+            else if (locKey == null && locNamespace != null) return ExtensionApi.Localize("Procon.UI." + locNamespace);
             return String.Empty;
         }
 

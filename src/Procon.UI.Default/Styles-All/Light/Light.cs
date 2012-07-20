@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Media;
+
 using Procon.Net.Protocols.Objects;
 using Procon.UI.API;
 using Procon.UI.API.Events;
@@ -68,6 +69,7 @@ namespace Procon.UI.Default.Styles.Light
             rootLayout.Resources[typeof(TextBlock)]   = tResources["StyleTextBlock"];
             rootLayout.Resources[typeof(ListBoxItem)] = tResources["StyleListBoxItem"];
             rootLayout.Resources[typeof(ListBox)]     = tResources["StyleListBox"];
+            rootLayout.Resources[typeof(ComboBox)]    = tResources["StyleComboBox"];
             rootLayout.Resources[typeof(ScrollBar)]   = tResources["StyleScrollBar"];
             rootLayout.Resources[typeof(Image)]       = tResources["StyleImage"];
 
@@ -76,9 +78,10 @@ namespace Procon.UI.Default.Styles.Light
             tutoLayout.Resources[typeof(Button)] = tResources["StyleButtonDefault"];
 
             // Setup optional styles.
-            rootLayout.Resources["StyleButtonSpecial"] = tResources["StyleButtonSpecial"];
+            rootLayout.Resources["StyleRadioButtonImage"] = tResources["StyleRadioButtonImage"];
             rootLayout.Resources["StyleListBoxItemColor"] = tResources["StyleListBoxItemColor"];
-            rootLayout.Resources["StyleListBoxItemChat"] = tResources["StyleListBoxItemChat"];
+            rootLayout.Resources["StyleListBoxItemChat"]  = tResources["StyleListBoxItemChat"];
+            rootLayout.Resources["StyleComboBoxHeader"]   = tResources["StyleComboBoxHeader"];
 
             // Setup templates.
             rootLayout.Resources[new DataTemplateKey(typeof(ConnectionViewModel))] = tResources["DataTemplateConnectionViewModel"];

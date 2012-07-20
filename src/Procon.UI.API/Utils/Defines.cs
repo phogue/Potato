@@ -5,67 +5,59 @@ namespace Procon.UI.API.Utils
 {
     public static class Defines
     {
+        // Images Directory.
+        public static readonly String DIR_IMAGES    = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images");
+        public static readonly String DIR_LIGHT_128 = Path.Combine(DIR_IMAGES, @"Light\128px");
+        public static readonly String DIR_LIGHT_24  = Path.Combine(DIR_IMAGES, @"Light\24px");
+        public static readonly String DIR_DARK_128  = Path.Combine(DIR_IMAGES, @"Dark\128px");
+        public static readonly String DIR_DARK_24   = Path.Combine(DIR_IMAGES, @"Dark\24px");
+
+
         // Procon Specific Images.
-        public static readonly String PROCON_ICON  = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\Procon2.ico");
-        public static readonly String PROCON_LARGE = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\Procon2Large.png");
-        public static readonly String PROCON_SMALL = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\Procon2Small.png");
+        public static readonly String PROCON_ICON  = Path.Combine(DIR_IMAGES, "Procon2.ico");
+        public static readonly String PROCON_LARGE = Path.Combine(DIR_IMAGES, "Procon2Large.png");
+        public static readonly String PROCON_SMALL = Path.Combine(DIR_IMAGES, "Procon2Small.png");
 
         // Interface Icons.
-        public static readonly String INTERFACE_LOCAL  = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\InterfaceLocal.png");
-        public static readonly String INTERFACE_REMOTE = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\InterfaceRemote.png");
+        public static readonly String INTERFACE_LOCAL  = Path.Combine(DIR_IMAGES, "InterfaceLocal.png");
+        public static readonly String INTERFACE_REMOTE = Path.Combine(DIR_IMAGES, "InterfaceRemote.png");
 
         // Connection Icons.
-        public static readonly String CONNECTION_BF_BC2    = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\GameBadCompany2.png");
-        public static readonly String CONNECTION_BF_3      = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\GameBattlefield3.png");
-        public static readonly String CONNECTION_COD_BO    = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\GameCallOfDuty_BlackOps.png");
-        public static readonly String CONNECTION_HOMEFRONT = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\GameHomefront.png");
-        public static readonly String CONNECTION_MOH_2010  = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\GameMedalOfHonor_2010.png");
-        public static readonly String CONNECTION_TF_2      = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\GameTeamFortress2.png");
-        public static readonly String CONNECTION_UNKNOWN   = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\Unknown.png");
+        public static readonly String CONNECTION_BF_BC2    = Path.Combine(DIR_IMAGES, "GameBadCompany2.png");
+        public static readonly String CONNECTION_BF_3      = Path.Combine(DIR_IMAGES, "GameBattlefield3.png");
+        public static readonly String CONNECTION_COD_BO    = Path.Combine(DIR_IMAGES, "GameCallOfDuty_BlackOps.png");
+        public static readonly String CONNECTION_HOMEFRONT = Path.Combine(DIR_IMAGES, "GameHomefront.png");
+        public static readonly String CONNECTION_MOH_2010  = Path.Combine(DIR_IMAGES, "GameMedalOfHonor_2010.png");
+        public static readonly String CONNECTION_TF_2      = Path.Combine(DIR_IMAGES, "GameTeamFortress2.png");
+        public static readonly String CONNECTION_UNKNOWN   = Path.Combine(DIR_IMAGES, "Unknown.png");
 
         // Connection Status Icons.
-        public static readonly String STATUS_GOOD = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\StatusGood.png");
-        public static readonly String STATUS_FLUX = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\StatusFlux.png");
-        public static readonly String STATUS_BAD  = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\StatusBad.png");
+        public static readonly String STATUS_GOOD_L24 = Path.Combine(DIR_LIGHT_24, "cstatus3.png");
+        public static readonly String STATUS_FLUX_L24 = Path.Combine(DIR_LIGHT_24, "cstatus2.png");
+        public static readonly String STATUS_BAD_L24  = Path.Combine(DIR_LIGHT_24, "cstatus1.png");
+        public static readonly String STATUS_UNK_L24  = Path.Combine(DIR_LIGHT_24, "cstatus0.png");
+        public static readonly String STATUS_GOOD_D24 = Path.Combine(DIR_DARK_24,  "cstatus3.png");
+        public static readonly String STATUS_FLUX_D24 = Path.Combine(DIR_DARK_24,  "cstatus2.png");
+        public static readonly String STATUS_BAD_D24  = Path.Combine(DIR_DARK_24,  "cstatus1.png");
+        public static readonly String STATUS_UNK_D24  = Path.Combine(DIR_DARK_24,  "cstatus0.png");
 
         // Content Icons.
-        public static readonly String PLAYERS_DEFAULT   = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\PlayersDefault.png");
-        public static readonly String PLAYERS_HOVER     = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\PlayersHover.png");
-        public static readonly String PLAYERS_ACTIVE    = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\PlayersActive.png");
-        public static readonly String PLAYERS_DISABLED  = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\PlayersDisabled.png");
-        public static readonly String MAPS_DEFAULT      = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\MapsDefault.png");
-        public static readonly String MAPS_HOVER        = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\MapsHover.png");
-        public static readonly String MAPS_ACTIVE       = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\MapsActive.png");
-        public static readonly String MAPS_DISABLED     = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\MapsDisabled.png");
-        public static readonly String BANS_DEFAULT      = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\BansDefault.png");
-        public static readonly String BANS_HOVER        = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\BansHover.png");
-        public static readonly String BANS_ACTIVE       = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\BansActive.png");
-        public static readonly String BANS_DISABLED     = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\BansDisabled.png");
-        public static readonly String PLUGINS_DEFAULT   = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\PluginsDefault.png");
-        public static readonly String PLUGINS_HOVER     = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\PluginsHover.png");
-        public static readonly String PLUGINS_ACTIVE    = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\PluginsActive.png");
-        public static readonly String PLUGINS_DISABLED  = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\PluginsDisabled.png");
-        public static readonly String SETTINGS_DEFAULT  = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\SettingsDefault.png");
-        public static readonly String SETTINGS_HOVER    = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\SettingsHover.png");
-        public static readonly String SETTINGS_ACTIVE   = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\SettingsActive.png");
-        public static readonly String SETTINGS_DISABLED = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\SettingsDisabled.png");
-        public static readonly String OPTIONS_DEFAULT   = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\OptionsDefault.png");
-        public static readonly String OPTIONS_HOVER     = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\OptionsHover.png");
-        public static readonly String OPTIONS_ACTIVE    = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\OptionsActive.png");
-        public static readonly String OPTIONS_DISABLED  = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\OptionsDisabled.png");
+        public static readonly String NAVIGATION_PLAYERS  = Path.Combine(DIR_IMAGES, "nplayer_32.png");
+        public static readonly String NAVIGATION_MAPS     = Path.Combine(DIR_IMAGES, "nmap_32.png");
+        public static readonly String NAVIGATION_BANS     = Path.Combine(DIR_IMAGES, "nban_32.png");
+        public static readonly String NAVIGATION_PLUGINS  = Path.Combine(DIR_IMAGES, "nplugin_32.png");
+        public static readonly String NAVIGATION_SETTINGS = Path.Combine(DIR_IMAGES, "nsetting_32.png");
+        public static readonly String NAVIGATION_OPTIONS  = Path.Combine(DIR_IMAGES, "nconfig_32.png");
 
         // General Icons.
-        public static readonly String GENERAL_PLAYER = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\GeneralPlayer.png");
-        public static readonly String GENERAL_GOOD   = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\GeneralGood.png");
-        public static readonly String GENERAL_BAD    = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\GeneralBad.png");
-        public static readonly String GENERAL_WARN   = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\GeneralWarn.png");
-        public static readonly String GENERAL_NOTIFY = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\GeneralNotify.png");
+        public static readonly String GENERAL_PLAYER = Path.Combine(DIR_IMAGES, "GeneralPlayer.png");
+        public static readonly String GENERAL_GOOD   = Path.Combine(DIR_IMAGES, "GeneralGood.png");
+        public static readonly String GENERAL_BAD    = Path.Combine(DIR_IMAGES, "GeneralBad.png");
+        public static readonly String GENERAL_WARN   = Path.Combine(DIR_IMAGES, "GeneralWarn.png");
+        public static readonly String GENERAL_NOTIFY = Path.Combine(DIR_IMAGES, "GeneralNotify.png");
 
         // Connection.
-        public static readonly String CONNECTION_SWAP = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\ConnectionSwap.png");
-        public static readonly String CONNECTION_INFO = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\ConnectionInfo.png");
-
-        // Backgrounds.
-        public static readonly String BACKGROUND_NAVIGATION = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images\BackgroundNavigation.png");
+        public static readonly String CONNECTION_SWAP = Path.Combine(DIR_IMAGES, @"ConnectionSwap.png");
+        public static readonly String CONNECTION_INFO = Path.Combine(DIR_IMAGES, @"ConnectionInfo.png");
     }
 }

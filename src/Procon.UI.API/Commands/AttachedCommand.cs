@@ -54,9 +54,15 @@ namespace Procon.UI.API.Commands
             // If the dependency properties were set.
             if (tElement != null && tEventName != null) {
                 EventInfo tEventInfo = tElement.GetType().GetEvent(tEventName);
-                if (tEventInfo != null)
+                if (tEventInfo != null) {
+                    // We're attempting to remove the previous binding.
+                    if (args.OldValue != null) {
+                        if (mHandlers.ContainsKey(tEventName))
+                            tEventInfo.RemoveEventHandler(tElement, mHandlers[tEventName]);
+                    }
                     // We're attempting to bind to a new command.
-                    if (args.OldValue == null && args.NewValue != null) {
+                    if (args.NewValue != null) {
+                        // The command hasn't been created yet.
                         if (!mHandlers.ContainsKey(tEventName)) {
                             // Hard-code the handler to the method defined in our class.
                             Action<Object, Object> tHandler = OnEventFired;
@@ -73,8 +79,14 @@ namespace Procon.UI.API.Commands
                             // Create a dynamic method with the specified name, return type, and parameters.  Create the method body.
                             DynamicMethod tProxyMethod = new DynamicMethod("Proxy: " + tEventName, typeof(void), tEventParams.ToArray(), tHandlerType, true);
                             ILGenerator   tProxyBody   = tProxyMethod.GetILGenerator();
+
+                            // Load the sender and args onto the stack, boxing the value types for saftey.
                             tProxyBody.Emit(OpCodes.Ldarg_1);
+                            if (tEventParams[1].IsValueType)
+                                tProxyBody.Emit(OpCodes.Box, tEventParams[1]);
                             tProxyBody.Emit(OpCodes.Ldarg_2);
+                            if (tEventParams[2].IsValueType)
+                                tProxyBody.Emit(OpCodes.Box, tEventParams[2]);
                             tProxyBody.Emit(OpCodes.Call, tHandler.Method);
                             tProxyBody.Emit(OpCodes.Ret);
 
@@ -85,9 +97,7 @@ namespace Procon.UI.API.Commands
                         if (mHandlers[tEventName] != null)
                             tEventInfo.AddEventHandler(tElement, mHandlers[tEventName]);
                     }
-                    // We're attempting to remove the previous binding.
-                    else if (args.OldValue != null && args.NewValue == null)
-                        tEventInfo.RemoveEventHandler(tElement, mHandlers[tEventName]);
+                }
             }
         }
         private static void OnEventFired(Object sender, Object args)

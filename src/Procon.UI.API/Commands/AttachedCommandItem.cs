@@ -14,17 +14,17 @@ namespace Procon.UI.API.Commands
         public static readonly DependencyProperty EventProperty =
             DependencyProperty.Register("Event",
                 typeof(String),
-                typeof(AttachedCommand),
+                typeof(AttachedCommandItem),
                 new FrameworkPropertyMetadata(null));
         public static readonly DependencyProperty ParameterProperty =
             DependencyProperty.Register("Parameter",
                 typeof(Object),
-                typeof(AttachedCommand),
+                typeof(AttachedCommandItem),
                 new FrameworkPropertyMetadata(null));
         public static readonly DependencyProperty CommandProperty =
             DependencyProperty.Register("Command",
                 typeof(ICommand),
-                typeof(AttachedCommand),
+                typeof(AttachedCommandItem),
                 new FrameworkPropertyMetadata(null));
 
         // Accessors / Mutators for the dependency properties.
@@ -69,8 +69,14 @@ namespace Procon.UI.API.Commands
                     // Create a dynamic method with the specified name, return type, and parameters.  Create the method body.
                     DynamicMethod tProxyMethod = new DynamicMethod("Proxy: " + tEventName, typeof(void), tEventParams.ToArray(), tHandlerType, true);
                     ILGenerator   tProxyBody   = tProxyMethod.GetILGenerator();
+
+                    // Load the sender and args onto the stack, boxing the value types for saftey.
                     tProxyBody.Emit(OpCodes.Ldarg_1);
+                    if (tEventParams[1].IsValueType)
+                        tProxyBody.Emit(OpCodes.Box, tEventParams[1]);
                     tProxyBody.Emit(OpCodes.Ldarg_2);
+                    if (tEventParams[2].IsValueType)
+                        tProxyBody.Emit(OpCodes.Box, tEventParams[2]);
                     tProxyBody.Emit(OpCodes.Call, tHandler.Method);
                     tProxyBody.Emit(OpCodes.Ret);
 

@@ -11,9 +11,6 @@
     <Color x:Key="ColorControlLight"  A="255" R="244" G="244" B="244" />
     <Color x:Key="ColorControlMedium" A="255" R="230" G="230" B="230" />
     <Color x:Key="ColorControlDark"   A="255" R="205" G="205" B="205" />
-    <Color x:Key="ColorSpecialLight"  A="255" R="190" G="234" B="242" />
-    <Color x:Key="ColorSpecialMedium" A="255" R="150" G="194" B="201" />
-    <Color x:Key="ColorSpecialDark"   A="255" R="129" G="174" B="179" />
     <Color x:Key="ColorBorderLight"   A="255" R="252" G="252" B="252" />
     <Color x:Key="ColorBorderMedium"  A="255" R="223" G="223" B="223" />
     <Color x:Key="ColorBorderDark"    A="255" R="163" G="163" B="163" />
@@ -49,8 +46,6 @@
     <Color x:Key="ColorContentDark"   A="255" R="65"  G="68"  B="70"  />
     
     <!-- Team Colors -->
-    <Color x:Key="ColorTeam0Header"  A="255" R="123" G="123" B="123" />
-    <Color x:Key="ColorTeam0Content" A="255" R="182" G="182" B="182" />
     <Color x:Key="ColorTeam1Header"  A="255" R="124" G="207" B="224" />
     <Color x:Key="ColorTeam1Content" A="255" R="178" G="230" B="239" />
     <Color x:Key="ColorTeam2Header"  A="255" R="255" G="160" B="148" />
@@ -67,6 +62,8 @@
     <Color x:Key="ColorTeam7Content" A="255" R="100" G="100" B="100" />
     <Color x:Key="ColorTeam8Header"  A="255" R="100" G="100" B="100" />
     <Color x:Key="ColorTeam8Content" A="255" R="100" G="100" B="100" />
+    <Color x:Key="ColorTeam0Header"  A="255" R="123" G="123" B="123" />
+    <Color x:Key="ColorTeam0Content" A="255" R="182" G="182" B="182" />
     
     
     <!-- Control Brushes -->
@@ -81,18 +78,6 @@
     <LinearGradientBrush x:Key="BrushControlPress"  StartPoint="0.5, 0.0" EndPoint="0.5, 1.0">
         <GradientStop Offset="0.0" Color="{DynamicResource ColorControlDark}" />
         <GradientStop Offset="1.0" Color="{DynamicResource ColorControlMedium}" />
-    </LinearGradientBrush>
-    <LinearGradientBrush x:Key="BrushSpecialNormal" StartPoint="0.5, 0.0" EndPoint="0.5, 1.0">
-        <GradientStop Offset="0.0" Color="{DynamicResource ColorSpecialLight}" />
-        <GradientStop Offset="1.0" Color="{DynamicResource ColorSpecialMedium}" />
-    </LinearGradientBrush>
-    <LinearGradientBrush x:Key="BrushSpecialHover"  StartPoint="0.5, 0.0" EndPoint="0.5, 1.0">
-        <GradientStop Offset="0.0" Color="{DynamicResource ColorSpecialLight}" />
-        <GradientStop Offset="1.0" Color="{DynamicResource ColorSpecialDark}" />
-    </LinearGradientBrush>
-    <LinearGradientBrush x:Key="BrushSpecialPress"  StartPoint="0.5, 0.0" EndPoint="0.5, 1.0">
-        <GradientStop Offset="0.0" Color="{DynamicResource ColorSpecialDark}" />
-        <GradientStop Offset="1.0" Color="{DynamicResource ColorSpecialMedium}" />
     </LinearGradientBrush>
     <LinearGradientBrush x:Key="BrushBorder"        StartPoint="0.5, 0.0" EndPoint="0.5, 1.0">
         <GradientStop Offset="0.1" Color="{DynamicResource ColorBorderLight}"  />
@@ -144,8 +129,6 @@
     <SolidColorBrush x:Key="BrushContentDark"   Color="{DynamicResource ColorContentDark}"   />
     
     <!-- Team Brushes -->
-    <SolidColorBrush x:Key="BrushTeam0Header"  Color="{DynamicResource ColorTeam0Header}"  />
-    <SolidColorBrush x:Key="BrushTeam0Content" Color="{DynamicResource ColorTeam0Content}" />
     <SolidColorBrush x:Key="BrushTeam1Header"  Color="{DynamicResource ColorTeam1Header}"  />
     <SolidColorBrush x:Key="BrushTeam1Content" Color="{DynamicResource ColorTeam1Content}" />
     <SolidColorBrush x:Key="BrushTeam2Header"  Color="{DynamicResource ColorTeam2Header}"  />
@@ -162,6 +145,8 @@
     <SolidColorBrush x:Key="BrushTeam7Content" Color="{DynamicResource ColorTeam7Content}" />
     <SolidColorBrush x:Key="BrushTeam8Header"  Color="{DynamicResource ColorTeam8Header}"  />
     <SolidColorBrush x:Key="BrushTeam8Content" Color="{DynamicResource ColorTeam8Content}" />
+    <SolidColorBrush x:Key="BrushTeam0Header"  Color="{DynamicResource ColorTeam0Header}"  />
+    <SolidColorBrush x:Key="BrushTeam0Content" Color="{DynamicResource ColorTeam0Content}" />
     
     <!-- Background Brushes -->
     <RadialGradientBrush x:Key="BrushSpotlight" GradientOrigin="0.5, 0.5" Center="0.5, 0.65" RadiusX="0.4" RadiusY="0.6">
@@ -169,18 +154,6 @@
         <GradientStop Offset="0.2" Color="{DynamicResource ColorControlLight}" />
         <GradientStop Offset="1.0" Color="{DynamicResource ColorControlDark}"  />
     </RadialGradientBrush>
-    <LinearGradientBrush x:Key="BrushHeader" StartPoint="0.5, 0.0" EndPoint="0.5, 1.0">
-        <GradientStop Offset="0.0">
-            <GradientStop.Color>
-                <Color A="255" R="0" G="177" B="206" />
-            </GradientStop.Color>
-        </GradientStop>
-        <GradientStop Offset="1.0">
-            <GradientStop.Color>
-                <Color A="255" R="0" G="150" B="189" />
-            </GradientStop.Color>
-        </GradientStop>
-    </LinearGradientBrush>
     <ImageBrush x:Key="BrushNavigation"
                 TileMode="Tile"
                 Viewport="0, 0, 10, 10"
@@ -237,46 +210,19 @@
             </Setter.Value>
         </Setter>
     </Style>
-    <Style x:Key="StyleButtonSpecial"    TargetType="{x:Type Button}"       BasedOn="{StaticResource StyleButton}">
-        <Setter Property="BorderThickness"       Value="0" />
-        <Setter Property="Foreground"            Value="{DynamicResource BrushTextDark}" />
-        <Setter Property="BorderBrush"           Value="{DynamicResource BrushBorder}" />
-        <Setter Property="Background"            Value="{DynamicResource BrushSpecialNormal}" />
-        <Setter Property="OverridesDefaultStyle" Value="True" />
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type Button}">
-                    <Border Name="PART_Border"
-                            Width="{TemplateBinding Width}"
-                            Height="{TemplateBinding Height}"
-                            Padding="{TemplateBinding Padding}"
-                            Background="{TemplateBinding Background}"
-                            BorderBrush="{TemplateBinding BorderBrush}"
-                            BorderThickness="{TemplateBinding BorderThickness}"
-                            VerticalAlignment="{TemplateBinding VerticalAlignment}"
-                            HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
-                            CornerRadius="0">
-                        <ContentPresenter Name="PART_Content"
-                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" />
-                    </Border>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Background" Value="{DynamicResource BrushSpecialHover}" />
-                        </Trigger>
-                        <Trigger Property="IsPressed" Value="True">
-                            <Setter Property="Background" Value="{DynamicResource BrushSpecialPress}" />
-                        </Trigger>
-                        <Trigger Property="IsEnabled" Value="False">
-                            <Setter Property="Opacity"    Value="0.7" TargetName="PART_Border" />
-                            <Setter Property="Foreground" Value="Gray" />
-                        </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
     <Style x:Key="StyleRadioButton"      TargetType="{x:Type RadioButton}"  BasedOn="{StaticResource {x:Type RadioButton}}">
+        <Setter Property="Margin"      Value="0" />
+        <Setter Property="Padding"     Value="0" />
+        <Setter Property="FontSize"    Value="12.0" />
+        <Setter Property="FontWeight"  Value="Bold" />
+        <Setter Property="FontFamily"  Value="Arial" />
+        <Setter Property="Foreground"  Value="{DynamicResource BrushTextDark}" />
+        <Setter Property="VerticalAlignment"   Value="Center" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="VerticalContentAlignment"   Value="Center" />
+        <Setter Property="HorizontalContentAlignment" Value="Left" />
+    </Style>
+    <Style x:Key="StyleRadioButtonImage" TargetType="{x:Type RadioButton}"  BasedOn="{StaticResource StyleRadioButton}">
         <Setter Property="Margin"      Value="0" />
         <Setter Property="Padding"     Value="0" />
         <Setter Property="FontSize"    Value="12.0" />
@@ -285,6 +231,42 @@
         <Setter Property="Foreground"  Value="{DynamicResource BrushTextDark}" />
         <Setter Property="VerticalContentAlignment"   Value="Center" />
         <Setter Property="HorizontalContentAlignment" Value="Left" />
+        <Setter Property="OverridesDefaultStyle" Value="True" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type RadioButton}">
+                    <Border Name="PART_Border">
+                        <ContentPresenter />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="PART_Border" Property="Effect">
+                                <Setter.Value>
+                                    <DropShadowEffect Color="White"   Opacity="0.4"
+                                                      Direction="270" BlurRadius="15" ShadowDepth="0" />
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="PART_Border" Property="Effect">
+                                <Setter.Value>
+                                    <DropShadowEffect Color="White"   Opacity="0.7"
+                                                      Direction="270" BlurRadius="10" ShadowDepth="0" />
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter TargetName="PART_Border" Property="Effect">
+                                <Setter.Value>
+                                    <DropShadowEffect Color="White"   Opacity="1.0"
+                                                      Direction="270" BlurRadius="5" ShadowDepth="0" />
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
     </Style>
     <Style x:Key="StyleTextBox"          TargetType="{x:Type TextBox}"      BasedOn="{StaticResource {x:Type TextBox}}">
         <Setter Property="Margin"      Value="0" />
@@ -315,6 +297,8 @@
         <Setter Property="FontWeight"  Value="Bold" />
         <Setter Property="FontFamily"  Value="Arial" />
         <Setter Property="Foreground"  Value="{DynamicResource BrushTextDark}" />
+        <Setter Property="VerticalAlignment"   Value="Center" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
         <Setter Property="VerticalContentAlignment"   Value="Center" />
         <Setter Property="HorizontalContentAlignment" Value="Left" />
     </Style>
@@ -324,21 +308,19 @@
     <Style x:Key="StyleTextBlock"        TargetType="{x:Type TextBlock}"    BasedOn="{StaticResource {x:Type TextBlock}}">
         <Setter Property="Margin"        Value="0" />
         <Setter Property="Padding"       Value="0" />
-        <Setter Property="Opacity"       Value="0.6" />
         <Setter Property="FontSize"      Value="11.0" />
         <Setter Property="FontWeight"    Value="Bold" />
         <Setter Property="FontFamily"    Value="Arial" />
         <Setter Property="TextAlignment" Value="Left" />
         <Setter Property="TextWrapping"  Value="Wrap" />
         <Setter Property="Foreground"    Value="{DynamicResource BrushTextDark}" />
-    </Style>
-    <Style x:Key="StyleTextBlockSoft"    TargetType="{x:Type TextBlock}"    BasedOn="{StaticResource StyleTextBlock}">
-        <Setter Property="Foreground" Value="{DynamicResource BrushTextDarkSoft}" />
+        <Setter Property="VerticalAlignment"   Value="Center" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
     </Style>
     <Style x:Key="StyleListBoxItem"      TargetType="{x:Type ListBoxItem}"  BasedOn="{StaticResource {x:Type ListBoxItem}}">
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate x:Name="PART_Content" TargetType="{x:Type ListBoxItem}">
+                <ControlTemplate TargetType="{x:Type ListBoxItem}">
                     <ContentPresenter />
                 </ControlTemplate>
             </Setter.Value>
@@ -348,8 +330,8 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ListBoxItem}">
-                    <Border x:Name="PART_Border" SnapsToDevicePixels="True">
-                        <ContentPresenter x:Name="PART_Content" />
+                    <Border Name="PART_Border">
+                        <ContentPresenter Name="PART_Content" />
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsSelected" Value="True">
@@ -363,8 +345,8 @@
     <Style x:Key="StyleListBoxItemChat"  TargetType="{x:Type ListBoxItem}"  BasedOn="{StaticResource {x:Type ListBoxItem}}">
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate x:Name="PART_Content" TargetType="{x:Type ListBoxItem}">
-                    <Border x:Name="PART_Border" Background="{TemplateBinding Background}">
+                <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                    <Border Name="PART_Border" Background="{TemplateBinding Background}">
                         <ContentPresenter />
                     </Border>
                 </ControlTemplate>
@@ -386,8 +368,145 @@
         <Setter Property="Foreground"         Value="{DynamicResource BrushTextDark}" />
         <Setter Property="ItemContainerStyle" Value="{DynamicResource StyleListBoxItem}" />
     </Style>
+    <Style x:Key="StyleComboBox"         TargetType="{x:Type ComboBox}"     BasedOn="{StaticResource {x:Type ComboBox}}">
+        <Setter Property="Margin"          Value="0" />
+        <Setter Property="Padding"         Value="5, 0, 5, 3" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="FocusVisualStyle"    Value="{x:Null}" />
+        <Setter Property="VerticalAlignment"   Value="Center" />
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+        <Setter Property="VerticalContentAlignment"   Value="Center" />
+        <Setter Property="HorizontalContentAlignment" Value="Left" />
+    </Style>
+    <Style x:Key="StyleComboBoxHeader"   TargetType="{x:Type ComboBox}"     BasedOn="{StaticResource StyleComboBox}">
+        <Setter Property="Foreground"            Value="{DynamicResource BrushTextLight}" />
+        <Setter Property="Background"            Value="{DynamicResource BrushEmphasisDark}" />
+        <Setter Property="BorderBrush"           Value="{DynamicResource BrushMild}" />
+        <Setter Property="OverridesDefaultStyle" Value="True" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ComboBox}">
+                    <Grid Name="PART_Grid">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1.0*" />
+                            <ColumnDefinition Width="25"   />
+                        </Grid.ColumnDefinitions>
+                        
+                        <!-- Left Button -->
+                        <Border Name="PART_Border"
+                                Grid.Column="0"
+                                Opacity="0"
+                                CornerRadius="0"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}">
+                        </Border>
+                        <ContentPresenter Name="PART_Content"
+                                          Grid.Column="0"
+                                          IsHitTestVisible="False"
+                                          Margin="{TemplateBinding Padding}"
+                                          Content="{TemplateBinding SelectionBoxItem}"
+                                          ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
+                                          ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
+                                          ContentStringFormat="{TemplateBinding SelectionBoxItemStringFormat}"
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" />
+                        
+                        <!-- Right Button -->
+                        <ToggleButton Name="PART_Button"
+                                      Grid.Column="1"
+                                      Opacity="0"
+                                      Foreground="{TemplateBinding Foreground}"
+                                      Background="{TemplateBinding Background}"
+                                      BorderBrush="{TemplateBinding BorderBrush}"
+                                      BorderThickness="{TemplateBinding BorderThickness}"
+                                      IsChecked="{Binding
+                                          RelativeSource={RelativeSource TemplatedParent},
+                                          Path=IsDropDownOpen}">
+                            <ToggleButton.Template>
+                                <ControlTemplate TargetType="{x:Type ToggleButton}">
+                                    <Border Name="PART_Border"
+                                            Background="{TemplateBinding Background}"
+                                            BorderBrush="{TemplateBinding BorderBrush}"
+                                            BorderThickness="{TemplateBinding BorderThickness}"
+                                            CornerRadius="0">
+                                            <Path Name="PART_Arrow"
+                                                  Fill="{TemplateBinding Foreground}"
+                                                  Data="M 0 0 L 3.5 4 L 7 0 Z"
+                                                  VerticalAlignment="Center"
+                                                  HorizontalAlignment="Center" />
+                                    </Border>
+                                </ControlTemplate>
+                            </ToggleButton.Template>
+                        </ToggleButton>
+                        
+                        <!-- Drop Down -->
+                        <Popup Name="PART_Popup"
+                               Grid.ColumnSpan="2"
+                               Placement="Bottom"
+                               PopupAnimation="Slide"
+                               AllowsTransparency="True"
+                               IsOpen="{Binding
+                                   RelativeSource={RelativeSource TemplatedParent},
+                                   Path=IsDropDownOpen}">
+                            <Border Name="PART_PopupBorder"
+                                    Padding="3"
+                                    MinWidth="{Binding ElementName=PART_Grid, Path=ActualWidth}"
+                                    MaxHeight="{TemplateBinding MaxDropDownHeight}"
+                                    Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}">
+                                <ScrollViewer Name="PART_PopupScrollViewer">
+                                    <ItemsPresenter Name="PART_PopupItemsPresenter"
+                                                    KeyboardNavigation.DirectionalNavigation="Contained" />
+                                </ScrollViewer>
+                            </Border>
+                        </Popup>
+                    </Grid>
+                    <ControlTemplate.Resources>
+                        <Storyboard x:Key="StoryboardButtonGlow">
+                            <DoubleAnimation Storyboard.TargetName="PART_Button"
+                                             Storyboard.TargetProperty="Opacity"
+                                             Duration="0:0:0.1" From="0" To="1" />
+                        </Storyboard>
+                        <Storyboard x:Key="StoryboardButtonDim">
+                            <DoubleAnimation Storyboard.TargetName="PART_Button"
+                                             Storyboard.TargetProperty="Opacity"
+                                             Duration="0:0:0.1" From="1" To="0" />
+                        </Storyboard>
+                        <Storyboard x:Key="StoryboardBorderGlow">
+                            <DoubleAnimation Storyboard.TargetName="PART_Border"
+                                             Storyboard.TargetProperty="Opacity"
+                                             Duration="0:0:0.1" From="0" To="1" />
+                        </Storyboard>
+                        <Storyboard x:Key="StoryboardBorderDim">
+                            <DoubleAnimation Storyboard.TargetName="PART_Border"
+                                             Storyboard.TargetProperty="Opacity"
+                                             Duration="0:0:0.1" From="1" To="0" />
+                        </Storyboard>
+                    </ControlTemplate.Resources>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter Property="Opacity" Value="0.6" />
+                        </Trigger>
+                        <EventTrigger RoutedEvent="MouseEnter" SourceName="PART_Button">
+                            <BeginStoryboard Storyboard="{StaticResource StoryboardButtonGlow}" />
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="MouseLeave" SourceName="PART_Button">
+                            <BeginStoryboard Storyboard="{StaticResource StoryboardButtonDim}" />
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="MouseEnter" SourceName="PART_Border">
+                            <BeginStoryboard Storyboard="{StaticResource StoryboardBorderGlow}" />
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="MouseLeave" SourceName="PART_Border">
+                            <BeginStoryboard Storyboard="{StaticResource StoryboardBorderDim}" />
+                        </EventTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
     <Style x:Key="StyleRepeatButton"     TargetType="{x:Type RepeatButton}" BasedOn="{StaticResource {x:Type RepeatButton}}">
-        <Setter Property="SnapsToDevicePixels"   Value="True"/>
         <Setter Property="OverridesDefaultStyle" Value="True"/>
         <Setter Property="IsTabStop"             Value="False"/>
         <Setter Property="Focusable"             Value="False"/>
@@ -400,7 +519,6 @@
         </Setter>
     </Style>
     <Style x:Key="StyleScrollBar"        TargetType="{x:Type ScrollBar}"    BasedOn="{StaticResource {x:Type ScrollBar}}">
-        <Setter Property="SnapsToDevicePixels"   Value="True"/>
         <Setter Property="OverridesDefaultStyle" Value="True"/>
         <Style.Triggers>
             <!-- Horizontal ScrollBar -->
@@ -411,26 +529,25 @@
                     <Setter.Value>
                         <ControlTemplate TargetType="{x:Type ScrollBar}">
                             <!-- ScrollBar Background -->
-                            <Border x:Name="PART_Border"
+                            <Border Name="PART_Border"
                                     Margin="15, 12"
                                     CornerRadius="2"
                                     Background="{DynamicResource BrushScrollHorz}">
                                 <!-- ScrollBar Bar -->
-                                <Track x:Name="PART_Track"
+                                <Track Name="PART_Track"
                                        Height="6"
                                        IsDirectionReversed="False">
                                     <Track.Thumb>
                                         <Thumb>
                                             <Thumb.Style>
                                                 <Style TargetType="{x:Type Thumb}">
-                                                    <Setter Property="SnapsToDevicePixels"   Value="True"/>
                                                     <Setter Property="OverridesDefaultStyle" Value="True"/>
                                                     <Setter Property="IsTabStop"             Value="False"/>
                                                     <Setter Property="Focusable"             Value="False"/>
                                                     <Setter Property="Template">
                                                         <Setter.Value>
                                                             <ControlTemplate TargetType="{x:Type Thumb}">
-                                                                <Border x:Name="PART_Border"
+                                                                <Border Name="PART_Border"
                                                                         CornerRadius="2"
                                                                         Background="{DynamicResource BrushScrBarHorz}" />
                                                             </ControlTemplate>
@@ -441,12 +558,12 @@
                                         </Thumb>
                                     </Track.Thumb>
                                     <Track.DecreaseRepeatButton>
-                                        <RepeatButton x:Name="PART_DecreaseButton"
+                                        <RepeatButton Name="PART_DecreaseButton"
                                                       Command="ScrollBar.PageLeftCommand"
                                                       Style="{StaticResource StyleRepeatButton}" />
                                     </Track.DecreaseRepeatButton>
                                     <Track.IncreaseRepeatButton>
-                                        <RepeatButton x:Name="PART_IncreaseButton"
+                                        <RepeatButton Name="PART_IncreaseButton"
                                                       Command="ScrollBar.PageRightCommand"
                                                       Style="{StaticResource StyleRepeatButton}" />
                                     </Track.IncreaseRepeatButton>
@@ -464,26 +581,25 @@
                     <Setter.Value>
                         <ControlTemplate TargetType="{x:Type ScrollBar}">
                             <!-- ScrollBar Background -->
-                            <Border x:Name="PART_Border"
+                            <Border Name="PART_Border"
                                     Margin="12, 15"
                                     CornerRadius="2"
                                     Background="{DynamicResource BrushScrollVert}">
                                 <!-- ScrollBar Bar -->
-                                <Track x:Name="PART_Track"
+                                <Track Name="PART_Track"
                                        Width="6"
                                        IsDirectionReversed="True">
                                     <Track.Thumb>
                                         <Thumb>
                                             <Thumb.Style>
                                                 <Style TargetType="{x:Type Thumb}">
-                                                    <Setter Property="SnapsToDevicePixels"   Value="True"/>
                                                     <Setter Property="OverridesDefaultStyle" Value="True"/>
                                                     <Setter Property="IsTabStop"             Value="False"/>
                                                     <Setter Property="Focusable"             Value="False"/>
                                                     <Setter Property="Template">
                                                         <Setter.Value>
                                                             <ControlTemplate TargetType="{x:Type Thumb}">
-                                                                <Border x:Name="PART_Border"
+                                                                <Border Name="PART_Border"
                                                                         CornerRadius="2"
                                                                         Background="{DynamicResource BrushScrBarVert}" />
                                                             </ControlTemplate>
@@ -494,12 +610,12 @@
                                         </Thumb>
                                     </Track.Thumb>
                                     <Track.DecreaseRepeatButton>
-                                        <RepeatButton x:Name="PART_DecreaseButton"
+                                        <RepeatButton Name="PART_DecreaseButton"
                                                       Command="ScrollBar.PageUpCommand"
                                                       Style="{StaticResource StyleRepeatButton}" />
                                     </Track.DecreaseRepeatButton>
                                     <Track.IncreaseRepeatButton>
-                                        <RepeatButton x:Name="PART_IncreaseButton"
+                                        <RepeatButton Name="PART_IncreaseButton"
                                                       Command="ScrollBar.PageDownCommand"
                                                       Style="{StaticResource StyleRepeatButton}" />
                                     </Track.IncreaseRepeatButton>
@@ -522,7 +638,7 @@
     
     <!-- Data Templates -->
     <DataTemplate x:Key="DataTemplateConnectionViewModel" DataType="{x:Type view:ConnectionViewModel}">
-        <Border x:Name="PART_Border"
+        <Border Name="PART_Border"
                 Width="160"
                 Height="225"
                 Margin="5, 5, 8, 8"
@@ -533,20 +649,20 @@
                     Source={x:Static eapi:ExtensionApi.Commands},
                     Path=[Main][Configure][Connections][View].Value}"
                 acmd:AttachedCommand.Parameter="Bob">
-            <Grid x:Name="PART_Container">
-                <DockPanel x:Name="PART_Main">
+            <Grid Name="PART_Container">
+                <DockPanel Name="PART_Main">
                     <!-- Header -->
-                    <Border x:Name="PART_HeaderBorder"
+                    <Border Name="PART_HeaderBorder"
                             DockPanel.Dock="Left"
                             Padding="2"
                             CornerRadius="2"
                             Background="#AA000000">
-                        <DockPanel x:Name="PART_HeaderContainer">
-                            <Image x:Name="PART_HeaderImage"
+                        <DockPanel Name="PART_HeaderContainer">
+                            <Image Name="PART_HeaderImage"
                                     DockPanel.Dock="Top"
                                     Width="16"
                                     Source="{Binding Converter={conv:ConverterConnectionToImage}}" />
-                            <TextBlock x:Name="PART_HeaderName"
+                            <TextBlock Name="PART_HeaderName"
                                         DockPanel.Dock="Top"
                                         Margin="0, 3, 0, 0"
                                         FontSize="14"
@@ -561,32 +677,31 @@
                     </Border>
                     
                     <!-- Data -->
-                    <StackPanel x:Name="PART_Data"
+                    <StackPanel Name="PART_Data"
                                 DockPanel.Dock="Left"
                                 Margin="3, 0, 0, 0">
                         <!-- Address -->
-                        <DockPanel x:Name="PART_AddressContainer"
+                        <DockPanel Name="PART_AddressContainer"
                                    Margin="0, 0, 0, 5">
                             <!-- Header -->
-                            <Border x:Name="PART_AddressHeaderBorder"
+                            <Border Name="PART_AddressHeaderBorder"
                                     DockPanel.Dock="Top"
                                     Padding="2"
                                     CornerRadius="2"
                                     Background="#30000000">
-                                <TextBlock x:Name="PART_AddressHeader"
+                                <TextBlock Name="PART_AddressHeader"
                                            Foreground="White"
                                            Text="{Binding
                                                Converter={conv:LocalizationText},
                                                ConverterParameter=Procon.UI.Default.Root.Main.Configure.Connections.Address}" />
                             </Border>
                             <!-- Data -->
-                            <Image x:Name="PART_AddressState"
+                            <Image Name="PART_AddressState"
                                    DockPanel.Dock="Left"
-                                   DataContext="{Binding ConnectionState}"
+                                   Width="16"
                                    Source="{Binding
-                                       Converter={conv:ConverterConnectionStateToImage},
                                        Path=ConnectionState}" />
-                            <TextBlock x:Name="PART_AddressName"
+                            <TextBlock Name="PART_AddressName"
                                        DockPanel.Dock="Left"
                                        Margin="5, 5, 0, 0"
                                        VerticalAlignment="Center"
@@ -594,24 +709,24 @@
                                        Text="{Binding Hostname}" />
                         </DockPanel>
                         <!-- Map -->
-                        <DockPanel x:Name="PART_MapContainer"
+                        <DockPanel Name="PART_MapContainer"
                                    Margin="0, 0, 0, 5">
                             <!-- Header -->
-                            <Border x:Name="PART_MapHeaderBorder"
+                            <Border Name="PART_MapHeaderBorder"
                                     DockPanel.Dock="Top"
                                     Padding="2"
                                     CornerRadius="2"
                                     Background="#30000000">
-                                <TextBlock x:Name="PART_MapHeader"
+                                <TextBlock Name="PART_MapHeader"
                                            Foreground="White"
                                            Text="{Binding
                                                Converter={conv:LocalizationText},
                                                ConverterParameter=Procon.UI.Default.Root.Main.Configure.Connections.Map}" />
                             </Border>
                             <!-- Data -->
-                            <Image x:Name="PART_MapIcon"
+                            <Image Name="PART_MapIcon"
                                    DockPanel.Dock="Left" />
-                            <TextBlock x:Name="PART_MapName"
+                            <TextBlock Name="PART_MapName"
                                        DockPanel.Dock="Left"
                                        Margin="5, 5, 0, 0"
                                        VerticalAlignment="Center"
@@ -622,7 +737,7 @@
                 </DockPanel>
                 
                 <!-- Close Button -->
-                <Button x:Name="PART_Close"
+                <Button Name="PART_Close"
                         Width="18"
                         Height="18"
                         Margin="0, 2, 2, 0"
@@ -652,26 +767,26 @@
         </DataTemplate.Triggers>
     </DataTemplate>
     <DataTemplate x:Key="DataTemplateInterfaceViewModel"  DataType="{x:Type view:InterfaceViewModel}">
-        <Border x:Name="PART_Border"
+        <Border Name="PART_Border"
                 Width="160"
                 Height="90"
                 Margin="5, 5, 8, 8"
                 Padding="1"
                 Background="{DynamicResource BrushContentLight}">
-            <Grid x:Name="PART_Container">
-                <DockPanel x:Name="PART_Main">
+            <Grid Name="PART_Container">
+                <DockPanel Name="PART_Main">
                     <!-- Header -->
-                    <Border x:Name="PART_HeaderBorder"
+                    <Border Name="PART_HeaderBorder"
                             DockPanel.Dock="Left"
                             Padding="2"
                             CornerRadius="2"
                             Background="#AA000000">
-                        <DockPanel x:Name="PART_HeaderContainer">
-                            <Image x:Name="PART_HeaderImage"
+                        <DockPanel Name="PART_HeaderContainer">
+                            <Image Name="PART_HeaderImage"
                                     DockPanel.Dock="Top"
                                     Width="16"
                                     Source="{Binding Converter={conv:ConverterInterfaceToImage}}" />
-                            <TextBlock x:Name="PART_HeaderName"
+                            <TextBlock Name="PART_HeaderName"
                                         DockPanel.Dock="Top"
                                         Margin="0, 3, 0, 0"
                                         FontSize="14"
@@ -688,32 +803,31 @@
                     </Border>
                     
                     <!-- Data. -->
-                    <StackPanel x:Name="PART_Data"
+                    <StackPanel Name="PART_Data"
                                 DockPanel.Dock="Left"
                                 Margin="3, 0, 0, 0">
                         <!-- Info -->
-                        <DockPanel x:Name="PART_InfoContainer"
+                        <DockPanel Name="PART_InfoContainer"
                                    Margin="0, 0, 0, 5">
                             <!-- Header -->
-                            <Border x:Name="PART_InfoHeaderBorder"
+                            <Border Name="PART_InfoHeaderBorder"
                                     DockPanel.Dock="Top"
                                     Padding="2"
                                     CornerRadius="2"
                                     Background="#30000000">
-                                <TextBlock x:Name="PART_InfoHeader"
+                                <TextBlock Name="PART_InfoHeader"
                                            Foreground="White"
                                            Text="{Binding
                                                Converter={conv:LocalizationText},
                                                ConverterParameter=Procon.UI.Default.Root.Main.Configure.Interfaces.Info}" />
                             </Border>
                             <!-- Data -->
-                            <Image x:Name="PART_InfoState"
+                            <Image Name="PART_InfoState"
                                    DockPanel.Dock="Left"
-                                   DataContext="{Binding ConnectionState}"
+                                   Width="16"
                                    Source="{Binding
-                                       Converter={conv:ConverterConnectionStateToImage},
                                        Path=ConnectionState}" />
-                            <TextBlock x:Name="PART_InfoName"
+                            <TextBlock Name="PART_InfoName"
                                        DockPanel.Dock="Left"
                                        Margin="5, 5, 0, 0"
                                        VerticalAlignment="Center"
@@ -730,7 +844,7 @@
                 </DockPanel>
                 
                 <!-- Close Button. -->
-                <Button x:Name="PART_Close"
+                <Button Name="PART_Close"
                         Width="18"
                         Height="18"
                         Margin="0, 2, 2, 0"
@@ -769,340 +883,173 @@
     </DataTemplate>
     
     <DataTemplate x:Key="DataTemplateEvent"     DataType="{x:Type e:Event}">
-        <ListBoxItem x:Name="PART_Content">
-            <DockPanel x:Name="PART_Container"
+        <ListBoxItem Name="PART_Content">
+            <DockPanel Name="PART_Container"
                        Margin="15, 5"
                        Focusable="False"
                        IsHitTestVisible="False">
-                <TextBlock x:Name="PART_Timestamp"
+                <TextBlock Name="PART_Timestamp"
                            DockPanel.Dock="Left"
                            Margin="0, 0, 10, 0"
                            Foreground="{DynamicResource BrushChatTimestamp}"
                            Text="{Binding Path=Timestamp, StringFormat='[{0:dd - HH:mm:ss}]'}" />
-                <TextBlock x:Name="PART_Event"
+                <TextBlock Name="PART_Event"
                            DockPanel.Dock="Left"
                            Foreground="{DynamicResource BrushChatEvent}"
-                           Text="{Binding Path=Eventstamp, StringFormat='[{0}] '}" />
-                <TextBlock x:Name="PART_Name"
+                           Text="{Binding Path=Eventstamp, StringFormat='[{0}] ', FallbackValue=''}" />
+                <TextBlock Name="PART_Name"
                            DockPanel.Dock="Left"
                            Foreground="{DynamicResource BrushChatMessage}"
-                           Text="{Binding Path=Name}" />
-                <TextBlock x:Name="PART_Text"
+                           Text="{Binding Path=Name, FallbackValue=''}" />
+                <TextBlock Name="PART_Text"
                            DockPanel.Dock="Left"
                            Foreground="{DynamicResource BrushChatMessage}"
-                           Text="{Binding Path=Text}" />
+                           Text="{Binding Path=Text, FallbackValue=''}" />
             </DockPanel>
         </ListBoxItem>
-        <DataTemplate.Triggers>
-            <DataTrigger Binding="{Binding Eventstamp}" Value="{x:Null}">
-                <Setter TargetName="PART_Event" Property="Visibility" Value="Collapsed" />
-            </DataTrigger>
-            <DataTrigger Binding="{Binding Name}" Value="{x:Null}">
-                <Setter TargetName="PART_Name" Property="Visibility" Value="Collapsed" />
-            </DataTrigger>
-            <DataTrigger Binding="{Binding Text}" Value="{x:Null}">
-                <Setter TargetName="PART_Text" Property="Visibility" Value="Collapsed" />
-            </DataTrigger>
-        </DataTemplate.Triggers>
     </DataTemplate>
     <DataTemplate x:Key="DataTemplateChatEvent" DataType="{x:Type e:ChatEvent}">
-        <ListBoxItem x:Name="PART_Content">
-            <DockPanel x:Name="PART_Container"
+        <ListBoxItem Name="PART_Content">
+            <DockPanel Name="PART_Container"
                        Margin="15, 5">
-                <TextBlock x:Name="PART_Timestamp"
+                <TextBlock Name="PART_Timestamp"
                            DockPanel.Dock="Left"
                            Margin="0, 0, 10, 0"
                            Foreground="{DynamicResource BrushChatTimestamp}"
                            Text="{Binding Path=Timestamp, StringFormat='[{0:dd - HH:mm:ss}]'}" />
-                <TextBlock x:Name="PART_Team"
+                <TextBlock Name="PART_Team"
                            DockPanel.Dock="Left"
-                           Visibility="Collapsed"
+                           Visibility="{Binding [ui.TeamVs].Value}"
+                           Foreground="{Binding [ui.TeamFg].Value}"
                            Text="{Binding
                                Converter={conv:LocalizationEnum},
                                ConverterParameter=Procon.UI.Root.Main.Connection.Chat.Team,
                                StringFormat='[{0}] ',
                                Path=Team}" />
-                <TextBlock x:Name="PART_Squad"
+                <TextBlock Name="PART_Squad"
                            DockPanel.Dock="Left"
-                           Visibility="Collapsed"
+                           Visibility="{Binding [ui.SquadVs].Value}"
+                           Foreground="{Binding [ui.SquadFg].Value}"
                            Text="{Binding
                                Converter={conv:LocalizationEnum},
                                ConverterParameter=Procon.UI.Root.Main.Connection.Chat.Squad,
                                StringFormat='[{0}] ',
                                Path=Squad}" />
-                <TextBlock x:Name="PART_Player"
+                <TextBlock Name="PART_Player"
                            DockPanel.Dock="Left"
-                           Foreground="{DynamicResource BrushChatPrivate}"
+                           Visibility="{Binding [ui.PlayerVs].Value}"
+                           Foreground="{Binding [ui.PlayerFg].Value}"
                            Text="{Binding Path=Player.Name, StringFormat='[{0}] '}" />
-                <TextBlock x:Name="PART_Name"
+                <TextBlock Name="PART_Name"
                            DockPanel.Dock="Left"
-                           Foreground="{DynamicResource BrushChatPrivate}"
+                           Foreground="{Binding [ui.NameFg].Value}"
                            Text="{Binding Path=Name, StringFormat='{}{0}: '}" />
-                <TextBlock x:Name="PART_Text"
+                <TextBlock Name="PART_Text"
                            DockPanel.Dock="Left"
                            Foreground="{DynamicResource BrushChatMessage}"
                            Text="{Binding Path=Text}" />
             </DockPanel>
         </ListBoxItem>
-        <DataTemplate.Triggers>
-            <DataTrigger Binding="{Binding Path=Player}" Value="{x:Null}">
-                <Setter TargetName="PART_Team"   Property="Visibility" Value="Visible"   />
-                <Setter TargetName="PART_Squad"  Property="Visibility" Value="Visible"   />
-                <Setter TargetName="PART_Player" Property="Visibility" Value="Collapsed" />
-                <Setter TargetName="PART_Name"   Property="Foreground" Value="{DynamicResource BrushChatMessage}" />
-            </DataTrigger>
-            <DataTrigger Binding="{Binding Path=Squad}" Value="None">
-                <Setter TargetName="PART_Squad" Property="Visibility" Value="Collapsed" />
-            </DataTrigger>
-            <DataTrigger Binding="{Binding Path=Team}" Value="None">
-                <Setter TargetName="PART_Team"  Property="Visibility" Value="Collapsed" />
-            </DataTrigger>
-            <DataTrigger Binding="{Binding Path=Team}" Value="2">
-                <Setter TargetName="PART_Team"  Property="Foreground" Value="{DynamicResource BrushTeam1Content}" />
-                <Setter TargetName="PART_Squad" Property="Foreground" Value="{DynamicResource BrushTeam1Content}" />
-                <Setter TargetName="PART_Name"  Property="Foreground" Value="{DynamicResource BrushTeam1Content}" />
-            </DataTrigger>
-            <DataTrigger Binding="{Binding Path=Team}" Value="3">
-                <Setter TargetName="PART_Team"  Property="Foreground" Value="{DynamicResource BrushTeam2Content}" />
-                <Setter TargetName="PART_Squad" Property="Foreground" Value="{DynamicResource BrushTeam2Content}" />
-                <Setter TargetName="PART_Name"  Property="Foreground" Value="{DynamicResource BrushTeam2Content}" />
-            </DataTrigger>
-            <DataTrigger Binding="{Binding Path=Team}" Value="4">
-                <Setter TargetName="PART_Team"  Property="Foreground" Value="{DynamicResource BrushTeam3Content}" />
-                <Setter TargetName="PART_Squad" Property="Foreground" Value="{DynamicResource BrushTeam3Content}" />
-                <Setter TargetName="PART_Name"  Property="Foreground" Value="{DynamicResource BrushTeam3Content}" />
-            </DataTrigger>
-            <DataTrigger Binding="{Binding Path=Team}" Value="5">
-                <Setter TargetName="PART_Team"  Property="Foreground" Value="{DynamicResource BrushTeam4Content}" />
-                <Setter TargetName="PART_Squad" Property="Foreground" Value="{DynamicResource BrushTeam4Content}" />
-                <Setter TargetName="PART_Name"  Property="Foreground" Value="{DynamicResource BrushTeam4Content}" />
-            </DataTrigger>
-            <DataTrigger Binding="{Binding Path=Team}" Value="6">
-                <Setter TargetName="PART_Team"  Property="Foreground" Value="{DynamicResource BrushTeam5Content}" />
-                <Setter TargetName="PART_Squad" Property="Foreground" Value="{DynamicResource BrushTeam5Content}" />
-                <Setter TargetName="PART_Name"  Property="Foreground" Value="{DynamicResource BrushTeam5Content}" />
-            </DataTrigger>
-            <DataTrigger Binding="{Binding Path=Team}" Value="7">
-                <Setter TargetName="PART_Team"  Property="Foreground" Value="{DynamicResource BrushTeam6Content}" />
-                <Setter TargetName="PART_Squad" Property="Foreground" Value="{DynamicResource BrushTeam6Content}" />
-                <Setter TargetName="PART_Name"  Property="Foreground" Value="{DynamicResource BrushTeam6Content}" />
-            </DataTrigger>
-            <DataTrigger Binding="{Binding Path=Team}" Value="8">
-                <Setter TargetName="PART_Team"  Property="Foreground" Value="{DynamicResource BrushTeam7Content}" />
-                <Setter TargetName="PART_Squad" Property="Foreground" Value="{DynamicResource BrushTeam7Content}" />
-                <Setter TargetName="PART_Name"  Property="Foreground" Value="{DynamicResource BrushTeam7Content}" />
-            </DataTrigger>
-            <DataTrigger Binding="{Binding Path=Team}" Value="9">
-                <Setter TargetName="PART_Team"  Property="Foreground" Value="{DynamicResource BrushTeam8Content}" />
-                <Setter TargetName="PART_Squad" Property="Foreground" Value="{DynamicResource BrushTeam8Content}" />
-                <Setter TargetName="PART_Name"  Property="Foreground" Value="{DynamicResource BrushTeam8Content}" />
-            </DataTrigger>
-        </DataTemplate.Triggers>
     </DataTemplate>
     
     <DataTemplate x:Key="DataTemplatePlayer" DataType="{x:Type c:Player}">
-        <ToggleButton x:Name="PART_Content"
-                      Width="189"
-                      Margin="5, 5, 0, 0"
-                      Padding="0"
-                      BorderThickness="0"
-                      IsChecked="{Binding 
-                          RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBoxItem}},
-                          Path=IsSelected}"
-                      acmd:AttachedCommand.Event="PreviewMouseUp"
-                      acmd:AttachedCommand.Command="{Binding
-                          Source={x:Static eapi:ExtensionApi.Commands},
-                          Path=[Main][Connection][Players][Select].Value}"
-                      acmd:AttachedCommand.Parameter="{Binding}">
-            <ToggleButton.Style>
-                <Style TargetType="{x:Type ToggleButton}" BasedOn="{StaticResource {x:Type ToggleButton}}">
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate TargetType="{x:Type ToggleButton}">
-                                <Border x:Name="PART_Border"
-                                        Margin="{TemplateBinding Margin}"
-                                        BorderBrush="{TemplateBinding BorderBrush}"
-                                        BorderThickness="{TemplateBinding BorderThickness}"
-                                        VerticalAlignment="{TemplateBinding VerticalAlignment}"
-                                        HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
-                                        CornerRadius="0">
-                                    <ContentPresenter x:Name="PART_Content"
-                                                      Width="{TemplateBinding Width}"
-                                                      Height="{TemplateBinding Height}"
-                                                      Margin="{TemplateBinding Padding}" />
-                                </Border>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                </Style>
-            </ToggleButton.Style>
-            <ToggleButton.ContextMenu>
-                <!-- Context Menu -->
-                <ContextMenu x:Name="PART_ContextMenu"
+        <Border Name="PART_Border"
+                Width="188"
+                Margin="5, 5, 3, 3">
+            <!-- Context Menu -->
+            <Border.ContextMenu>
+                <ContextMenu Name="PART_ContextMenu"
                              DataContext="{Binding RelativeSource={RelativeSource Self}, Path=PlacementTarget.DataContext}">
-                    <MenuItem x:Name="PART_ContextMenuMove"
-                              ItemsSource="{Binding
-                                  Source={x:Static eapi:ExtensionApi.Properties},
-                                  Path=[Main][Connection][Players][Move][Types].Value}"
+                    <MenuItem Name="PART_ContextMenuMove"
                               Header="{Binding
                                   Converter={conv:LocalizationText},
-                                  ConverterParameter=Procon.UI.Default.Root.Main.Connection.Players.Move}" />
-                    <MenuItem x:Name="PART_ContextMenuKick"
+                                  ConverterParameter=Procon.UI.Default.Root.Main.Connection.Players.Move}"
+                              ItemsSource="{Binding
+                                  Source={x:Static eapi:ExtensionApi.Properties},
+                                  Path=[Main][Connection][Players][Move][Types].Value}" />
+                    <MenuItem Name="PART_ContextMenuKick"
+                              Header="{Binding
+                                  Converter={conv:LocalizationText},
+                                  ConverterParameter=Procon.UI.Default.Root.Main.Connection.Players.Kick}"
                               Command="{Binding
                                   Source={x:Static eapi:ExtensionApi.Commands},
                                   Path=[Main][Connection][Players][Kick].Value}"
-                              CommandParameter="{Binding}"
+                              CommandParameter="{Binding}" />
+                    <MenuItem Name="PART_ContextMenuBan"
                               Header="{Binding
                                   Converter={conv:LocalizationText},
-                                  ConverterParameter=Procon.UI.Default.Root.Main.Connection.Players.Kick}" />
-                    <MenuItem x:Name="PART_ContextMenuBan"
+                                  ConverterParameter=Procon.UI.Default.Root.Main.Connection.Players.Ban}"
                               Command="{Binding
                                   Source={x:Static eapi:ExtensionApi.Commands},
                                   Path=[Main][Connection][Players][Ban].Value}"
-                              CommandParameter="{Binding}"
-                              Header="{Binding
-                                  Converter={conv:LocalizationText},
-                                  ConverterParameter=Procon.UI.Default.Root.Main.Connection.Players.Ban}" />
+                              CommandParameter="{Binding}" />
                 </ContextMenu>
-            </ToggleButton.ContextMenu>
-            <DockPanel x:Name="PART_Container">
-                <!-- Title Portion -->
-                <DockPanel x:Name="PART_Title"
+            </Border.ContextMenu>
+
+            <DockPanel Name="PART_Container">
+                <!-- Header Portion -->
+                <DockPanel Name="PART_Header"
                            DockPanel.Dock="Top"
-                           Background="{DynamicResource BrushTeam0Header}">
-                    <Image x:Name="PART_Icon"
+                           Background="{Binding [ui.Header].Value}">
+                    <Image Name="PART_Country"
+                           DockPanel.Dock="Right"
+                           Width="16"
+                           Margin="4"
+                           VerticalAlignment="Center"
+                           Source="{Binding [ui.CountryCode].Value}" />
+                    <CheckBox Name="PART_Selected"
+                              DockPanel.Dock="Right"
+                               Margin="0, 4"
+                              IsChecked="{Binding 
+                                  RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBoxItem}},
+                                  Path=IsSelected}" />
+                    <Image Name="PART_Icon"
                            DockPanel.Dock="Left"
                            Width="16"
                            Margin="4"
+                           VerticalAlignment="Center"
                            Source="{Binding
                                Source={x:Static eapi:ExtensionApi.Properties},
                                Path=[Images][General][Player].Value}" />
-                    <Image x:Name="PART_Country"
-                           DockPanel.Dock="Right"
-                           Width="16"
-                           Margin="4, 4, 10, 4"
-                           util:ImageBinding.CountryCode="{Binding CountryCode}" />
-                    <CheckBox x:Name="PART_Selected"
-                              DockPanel.Dock="Right"
-                              VerticalAlignment="Center"
-                              IsChecked="{Binding
-                                  RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ToggleButton}},
-                                  Path=IsChecked}" />
-                    <TextBlock x:Name="PART_Name"
+                    <TextBlock Name="PART_Name"
                                DockPanel.Dock="Left"
+                               Margin="0, 4"
                                FontWeight="Bold"
-                               VerticalAlignment="Center"
                                Text="{Binding Name}" />
                 </DockPanel>
-                    
+                
                 <!-- Data Portion -->
-                <Grid x:Name="PART_Data"
-                      DockPanel.Dock="Top"
-                      Background="{DynamicResource BrushTeam0Content}">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="3" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="3" />
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="1.0*" />
-                    </Grid.ColumnDefinitions>
+                <DockPanel Name="PART_Data"
+                           DockPanel.Dock="Top"
+                           Background="{Binding [ui.Content].Value}">
                     
-                    <Image x:Name="PART_ScoreWarn"
-                           Grid.Row="1"
-                           Width="16"
-                           Margin="4, 0"
-                           Visibility="{Binding Path=[ui.Score].Value}"
-                           Source="{Binding
-                               Source={x:Static eapi:ExtensionApi.Properties},
-                               Path=[Images][General][Warn].Value}" />
-                    <Image x:Name="PART_KdrWarn"
-                           Grid.Row="2"
-                           Width="16"
-                           Margin="4, 0"
-                           Visibility="{Binding Path=[ui.Kdr].Value}"
-                           Source="{Binding
-                               Source={x:Static eapi:ExtensionApi.Properties},
-                               Path=[Images][General][Warn].Value}" />
-                    <Image x:Name="PART_PingWarn"
-                           Grid.Row="3"
-                           Width="16"
-                           Margin="4, 0"
-                           Visibility="{Binding Path=[ui.Ping].Value}"
-                           Source="{Binding
-                               Source={x:Static eapi:ExtensionApi.Properties},
-                               Path=[Images][General][Warn].Value}" />
-                    
-                    <TextBlock x:Name="PART_Score"
-                               Grid.Row="1"
-                               Grid.Column="1"
-                               VerticalAlignment="Center"
+                    <TextBlock Name="PART_Score"
+                               DockPanel.Dock="Top"
+                               Margin="4, 4, 4, 0"
                                FontSize="11"
-                               Text="{Binding
-                                   StringFormat=Score: {0:0},
-                                   Path=Score}" />
-                    <TextBlock x:Name="PART_Kdr"
-                               Grid.Row="2"
-                               Grid.Column="1"
-                               VerticalAlignment="Center"
+                               Foreground="{Binding [ui.Score].Value}"
+                               Text="{Binding Score, StringFormat=Score: {0:0}}" />
+                    <TextBlock Name="PART_Kdr"
+                               DockPanel.Dock="Top"
+                               Margin="4, 0"
                                FontSize="11"
-                               Text="{Binding
-                                   StringFormat=Kdr: {0:0.00},
-                                   Path=Kdr}" />
-                    <TextBlock x:Name="PART_Ping"
-                               Grid.Row="3"
-                               Grid.Column="1"
-                               VerticalAlignment="Center"
+                               Foreground="{Binding [ui.Kdr].Value}"
+                               Text="{Binding Kdr, StringFormat=Kdr: {0:0}}" />
+                    <TextBlock Name="PART_Ping"
+                               DockPanel.Dock="Top"
+                               Margin="4, 0, 4, 4"
                                FontSize="11"
-                               Text="{Binding
-                                   StringFormat=Ping: {0:0},
-                                   Path=Ping}" />
-                </Grid>
+                               Foreground="{Binding [ui.Ping].Value}"
+                               Text="{Binding Ping, StringFormat=Ping: {0:0}}" />
+                </DockPanel>
             </DockPanel>
-            <ToggleButton.Effect>
+            
+            <Border.Effect>
                 <DropShadowEffect Opacity="0.6"
-                                    Direction="-45"
-                                    BlurRadius="3"
-                                    ShadowDepth="3" />
-            </ToggleButton.Effect>
-        </ToggleButton>
-
-        <DataTemplate.Triggers>
-            <DataTrigger Binding="{Binding Team}" Value="2">
-                <Setter Property="Background" Value="{DynamicResource BrushTeam1Header}"  TargetName="PART_Title" />
-                <Setter Property="Background" Value="{DynamicResource BrushTeam1Content}" TargetName="PART_Data"  />
-            </DataTrigger>
-            <DataTrigger Binding="{Binding Team}" Value="3">
-                <Setter Property="Background" Value="{DynamicResource BrushTeam2Header}"  TargetName="PART_Title" />
-                <Setter Property="Background" Value="{DynamicResource BrushTeam2Content}" TargetName="PART_Data"  />
-            </DataTrigger>
-            <DataTrigger Binding="{Binding Team}" Value="4">
-                <Setter Property="Background" Value="{DynamicResource BrushTeam3Header}"  TargetName="PART_Title" />
-                <Setter Property="Background" Value="{DynamicResource BrushTeam3Content}" TargetName="PART_Data"  />
-            </DataTrigger>
-            <DataTrigger Binding="{Binding Team}" Value="5">
-                <Setter Property="Background" Value="{DynamicResource BrushTeam4Header}"  TargetName="PART_Title" />
-                <Setter Property="Background" Value="{DynamicResource BrushTeam4Content}" TargetName="PART_Data"  />
-            </DataTrigger>
-            <DataTrigger Binding="{Binding Team}" Value="6">
-                <Setter Property="Background" Value="{DynamicResource BrushTeam5Header}"  TargetName="PART_Title" />
-                <Setter Property="Background" Value="{DynamicResource BrushTeam5Content}" TargetName="PART_Data"  />
-            </DataTrigger>
-            <DataTrigger Binding="{Binding Team}" Value="7">
-                <Setter Property="Background" Value="{DynamicResource BrushTeam6Header}"  TargetName="PART_Title" />
-                <Setter Property="Background" Value="{DynamicResource BrushTeam6Content}" TargetName="PART_Data"  />
-            </DataTrigger>
-            <DataTrigger Binding="{Binding Team}" Value="8">
-                <Setter Property="Background" Value="{DynamicResource BrushTeam7Header}"  TargetName="PART_Title" />
-                <Setter Property="Background" Value="{DynamicResource BrushTeam7Content}" TargetName="PART_Data"  />
-            </DataTrigger>
-            <DataTrigger Binding="{Binding Team}" Value="9">
-                <Setter Property="Background" Value="{DynamicResource BrushTeam8Header}"  TargetName="PART_Title" />
-                <Setter Property="Background" Value="{DynamicResource BrushTeam8Content}" TargetName="PART_Data"  />
-            </DataTrigger>
-        </DataTemplate.Triggers>
+                                  Direction="-45"
+                                  BlurRadius="3"
+                                  ShadowDepth="3" />
+            </Border.Effect>
+        </Border>
     </DataTemplate>
 </ResourceDictionary>

@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Markup;
 using System.Windows.Media;
 
 using Procon.Core;
@@ -13,6 +15,11 @@ namespace Procon.UI.API
 {
     public static class ExtensionApi
     {
+        // Internal variables.
+        private static Dictionary<Object, Panel> mTemplates { get; set; }
+        private static ParserContext             mContext   { get; set; }
+
+
         // The Properties and Commands of the UI.
         public static ArrayDictionary<String, Object>   Properties { get; set; }
         public static ArrayDictionary<String, ICommand> Commands   { get; set; }
@@ -43,57 +50,44 @@ namespace Procon.UI.API
         // Static Constructor.
         static ExtensionApi()
         {
+            mTemplates = new Dictionary<Object, Panel>();
+            mContext   = new ParserContext();
+
             Properties = new ArrayDictionary<String, Object>();
             Commands   = new ArrayDictionary<String, ICommand>();
         }
 
 
         // Find a control under a specific element.
-        public static T FindControl<T>(DependencyObject controlAncestor, String controlName) where T : DependencyObject
+        public static T FindControl<T>(UIElement controlAncestor, String controlName) where T : UIElement
         {
-            // Confirm parent and childName are valid. 
+            // Confirm controlAncestor and controlName are valid. 
             if (controlAncestor == null || String.IsNullOrEmpty(controlName))
                 return null;
 
-            // Check to see if it is a content control...
-            // Otherwise, check all of it's children to see if they're what we're looking for.
-            ContentControl controlAncestorCC = controlAncestor as ContentControl;
-            if (controlAncestorCC != null)
-            {
-                // Get it's content and see if it's the type of element we're looking for.
-                FrameworkElement controlContent = (controlAncestorCC.Content as FrameworkElement);
-                if (controlContent != null)
-                {
-                    // Check to see if the names match...
-                    // Otherwise, check this control's children for a match.
-                    if (controlContent.Name == controlName)
-                        return controlContent as T;
-                    else
-                    {
-                        T controlContentChild = FindControl<T>(controlContent, controlName);
-                        if (controlContentChild != null)
-                            return controlContentChild;
-                    }
-                }
+            ContentControl tContent = controlAncestor as ContentControl;
+            // If it's a content control...
+            if (tContent != null) {
+                // Check to see if the child matches our specifications...
+                FrameworkElement tChild = (tContent.Content as FrameworkElement);
+                if (tChild != null)
+                    if (tChild.Name == controlName) return tChild as T;
+                    else                            return FindControl<T>(tChild, controlName);
             }
-            else
-            {
-                // Get the number of children this control has and iterate through them all.
-                Int32 childCount = VisualTreeHelper.GetChildrenCount(controlAncestor);
-                for (Int32 i = 0; i < childCount; i++)
-                {
-                    // Get the current child and...
-                    // Compare the child's name to see if this child is the control we're looking for.
-                    FrameworkElement child = VisualTreeHelper.GetChild(controlAncestor, i) as FrameworkElement;
-                    if (child != null)
-                    {
-                        // Check to see if the names match...
-                        // Otherwise, check this control's children for a match.
-                        if (child.Name == controlName)
-                            return child as T;
-                        else
-                        {
-                            T childChild = FindControl<T>(child, controlName);
+            // Else, it's a normal control...
+            else {
+                // Iterate over all the childen in the control...
+                Int32 tCount = VisualTreeHelper.GetChildrenCount(controlAncestor);
+                for (Int32 i = 0; i < tCount; i++) {
+                    // Get the current child we're dealing with...
+                    FrameworkElement tChild = VisualTreeHelper.GetChild(controlAncestor, i) as FrameworkElement;
+                    if (tChild != null) {
+                        // Check to see if the child matches our specifications...
+                        if (tChild.Name == controlName) {
+                            return tChild as T;
+                        }
+                        else {
+                            T childChild = FindControl<T>(tChild, controlName);
                             if (childChild != null)
                                 return childChild;
                         }
@@ -102,6 +96,62 @@ namespace Procon.UI.API
             }
 
             // Return Child not found.
+            return null;
+        }
+        public static T ParseControl<T>(String controlXaml) where T : class
+        {
+            if (mContext.XmlnsDictionary.Count == 0) {
+                mContext.XmlnsDictionary.Add("",     "http://schemas.microsoft.com/winfx/2006/xaml/presentation");
+                mContext.XmlnsDictionary.Add("x",    "http://schemas.microsoft.com/winfx/2006/xaml");
+                mContext.XmlnsDictionary.Add("eapi", "clr-namespace:Procon.UI.API;assembly=Procon.UI.API");
+                mContext.XmlnsDictionary.Add("acmd", "clr-namespace:Procon.UI.API.Commands;assembly=Procon.UI.API");
+                mContext.XmlnsDictionary.Add("conv", "clr-namespace:Procon.UI.API.Converters;assembly=Procon.UI.API");
+                mContext.XmlnsDictionary.Add("util", "clr-namespace:Procon.UI.API.Utils;assembly=Procon.UI.API");
+                mContext.XmlnsDictionary.Add("view", "clr-namespace:Procon.UI.API.ViewModels;assembly=Procon.UI.API");
+            }
+            return XamlReader.Parse(controlXaml, mContext) as T;
+        }
+
+        // Methods used to build a data template from the code behind.
+        public static void CreateTemplate(String key, Panel content)
+        {
+            if (mTemplates.ContainsKey(key))
+                mTemplates.Remove(key);
+            mTemplates.Add(key, content);
+        }
+        public static void CreateTemplate(Type   key, Panel content)
+        {
+            if (mTemplates.ContainsKey(key))
+                mTemplates.Remove(key);
+            mTemplates.Add(key, content);
+        }
+        public static T GetTemplateControl<T>(String key) where T : Panel
+        {
+            if (mTemplates.ContainsKey(key))
+                return mTemplates[key] as T;
+            return null;
+        }
+        public static T GetTemplateControl<T>(Type   key) where T : Panel
+        {
+            if (mTemplates.ContainsKey(key))
+                return mTemplates[key] as T;
+            return null;
+        }
+        public static DataTemplate GetTemplate(String key)
+        {
+            if (mTemplates.ContainsKey(key)) {
+                DataTemplate tTemplate = ParseControl<DataTemplate>("<DataTemplate>" + XamlWriter.Save(mTemplates[key]) + "</DataTemplate>");
+                return tTemplate;
+            }
+            return null;
+        }
+        public static DataTemplate GetTemplate(Type   key)
+        {
+            if (mTemplates.ContainsKey(key)) {
+                DataTemplate tTemplate = ParseControl<DataTemplate>("<DataTemplate>" + XamlWriter.Save(mTemplates[key]) + "</DataTemplate>");
+                tTemplate.DataType = key;
+                return tTemplate;
+            }
             return null;
         }
 

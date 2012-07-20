@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
@@ -6,19 +8,22 @@ using System.Linq;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
+using Procon.Net.Protocols.Objects;
 using Procon.UI.API;
 using Procon.UI.API.Commands;
 using Procon.UI.API.Events;
 using Procon.UI.API.Utils;
+using Procon.UI.API.ViewModels;
 
 namespace Procon.UI.Default.Root.Main.Connection.Chat
 {
     [Extension(
-        Alters    = new String[] { "MainConnectionLayout" },
+        Alters    = new String[] { },
         Replaces  = new String[] { },
-        DependsOn = new String[] { "Main Connection Layout" })]
+        DependsOn = new String[] { })]
     public class Chat : IExtension
     {
         #region IExtension Properties
@@ -52,39 +57,27 @@ namespace Procon.UI.Default.Root.Main.Connection.Chat
         public bool Entry(Window root)
         {
             // Find the controls I want to use and check for issues.
-            Grid layout = ExtensionApi.FindControl<Grid>(root, "MainConnectionLayout");
-            if (layout == null) return false;
+            Grid tLayout = ExtensionApi.FindControl<Grid>(root, "MainConnectionLayout");
 
             // Do what I need to setup my control.
-            ChatView     view = new ChatView();
-            GridSplitter splt = new GridSplitter();
-            Grid.SetRow(view, 2);
-            Grid.SetRow(splt, 2);
-            splt.Height = 10;
-            splt.Background = Brushes.Transparent;
-            splt.ResizeBehavior = GridResizeBehavior.PreviousAndCurrent;
-            splt.VerticalAlignment = VerticalAlignment.Top;
-            splt.HorizontalAlignment = HorizontalAlignment.Stretch;
-            layout.Children.Add(view);
-            layout.Children.Add(splt);
-
-            // Load/Save the chat box height setting (unable to bind to it).
-            if (ExtensionApi.Settings["ChatHeight"].Value != null) {
-                if (layout.RowDefinitions.Count > 2)
-                    layout.RowDefinitions[2].Height = (GridLength)ExtensionApi.Settings["ChatHeight"].Value;
-            }
-            root.Closing +=
-                (s, e) => {
-                    if (layout.RowDefinitions.Count > 2)
-                        ExtensionApi.Settings["ChatHeight"].Value = layout.RowDefinitions[2].Height;
-                };
+            ChatView     tView = new ChatView();
+            GridSplitter tSplt = new GridSplitter();
+            Grid.SetRow(tView, 2);
+            Grid.SetRow(tSplt, 2);
+            tSplt.Height = 10;
+            tSplt.Background = Brushes.Transparent;
+            tSplt.ResizeBehavior = GridResizeBehavior.PreviousAndCurrent;
+            tSplt.VerticalAlignment = VerticalAlignment.Top;
+            tSplt.HorizontalAlignment = HorizontalAlignment.Stretch;
+            tLayout.Children.Add(tView);
+            tLayout.Children.Add(tSplt);
             
             // Commands.
             GridLength tHeight = new GridLength(Double.MaxValue);
             tCmmds["MinMax"].Value = new RelayCommand<AttachedCommandArgs>(
             #region  -- Handles when the chat box title is clicked.
                 x => {
-                    RowDefinition tRowDef = layout.RowDefinitions.Count > 2 ? layout.RowDefinitions[2] : null;
+                    RowDefinition tRowDef = tLayout.RowDefinitions.Count > 2 ? tLayout.RowDefinitions[2] : null;
                     if (tRowDef != null) {
                         if (tRowDef.Height.Value != tRowDef.MinHeight) {
                             tHeight = tRowDef.Height;
@@ -95,46 +88,73 @@ namespace Procon.UI.Default.Root.Main.Connection.Chat
                 });
             #endregion
 
-            // Used to manage the chat list.
-            ObservableCollection<Event>         tEvents      = null;
-            NotifyCollectionChangedEventHandler tEventAdded  = null;
-            PropertyChangedEventHandler         tResetEvents = null;
+            // Player management methods.
+            NotifiableCollection<Event>         tEvents  = null;
+            NotifiableCollection<Event>         tManaged = new NotifiableCollection<Event>();
+            NotifyCollectionChangedEventHandler tColl = (s, e) => ((Action<IList>)tProps["List"]["Coll"].Value)(e.NewItems);
 
-            // Manage the events's collection.
-            tEventAdded =
-            #region -- Handles updates due to an event being added.
-                (s, e) => {
-                    // Scroll to the bottom if we're at the bottom.
-                    if (e.Action == NotifyCollectionChangedAction.Add) {
-                        if (tEvents.Count > 1) {
-                            new Thread(x => {
-                                Thread.Sleep(100);
-                                view.Dispatcher.Invoke(() => {
-                                    view.ConnectionChatEvents.ScrollIntoView(tEvents.Last());
-                                });
-                            }).Start();
+            tProps["List"]["Coll"].Value = new Action<IList>(
+            #region -- Updates the managed players list.
+                e => {
+                    // For each event added.
+                    foreach (ChatEvent @event in e.OfType<ChatEvent>()) {
+                        Visibility tTeam        = Visibility.Collapsed;
+                        Visibility tSquad       = Visibility.Collapsed;
+                        Visibility tPlayer      = Visibility.Visible;
+                        Object     tTeamBrush   = tView.TryFindResource("BrushChatMessage");
+                        Object     tSquadBrush  = tView.TryFindResource("BrushChatMessage");
+                        Object     tPlayerBrush = tView.TryFindResource("BrushChatPrivate");
+                        Object     tNameBrush   = tView.TryFindResource("BrushChatPrivate");
+
+                        // Chat is not to a player.
+                        if (@event.Player == null) {
+                            tTeam      = Visibility.Visible;
+                            tSquad     = Visibility.Visible;
+                            tPlayer    = Visibility.Collapsed;
+                            tNameBrush = tView.TryFindResource("BrushChatMessage");
                         }
+                        // Chat is not to a squad.
+                        if (@event.Squad == Squad.None)
+                            tSquad = Visibility.Collapsed;
+                        // Chat is not to a team.
+                        if (@event.Team == Team.None)
+                            tTeam = Visibility.Collapsed;
+                        // Chat is to a team.
+                        else
+                            tTeamBrush = tSquadBrush = tNameBrush = tView.TryFindResource("Brush" + @event.Team.ToString() + "Content");
+
+                        // Setup values.
+                        @event.DataSet("ui.TeamVs",   tTeam);
+                        @event.DataSet("ui.TeamFg",   tTeamBrush);
+                        @event.DataSet("ui.SquadVs",  tSquad);
+                        @event.DataSet("ui.SquadFg",  tSquadBrush);
+                        @event.DataSet("ui.PlayerVs", tPlayer);
+                        @event.DataSet("ui.PlayerFg", tPlayerBrush);
+                        @event.DataSet("ui.NameFg",   tNameBrush);
                     }
-                };
+                });
             #endregion
-            tResetEvents = 
-            #region -- Detaches the old list, re-creates the list correctly sorted, retaches the new list.
-                (s, e) => {
+            tProps["List"]["Swap"].Value = new Action<ConnectionViewModel>(
+            #region -- Detaches the old list and creates a new list.
+                x => {
                     // Cleanup old stuff.
                     if (tEvents != null) {
-                        tEvents.CollectionChanged -= tEventAdded;
+                        tEvents.CollectionChanged -= tColl;
+                        tManaged.Clear();
                         tEvents = null;
                     }
-                    // Bind to new list of events.
-                    if (ExtensionApi.Connection != null) {
-                        tEvents = ExtensionApi.Connection.Events;
-                        tEvents.CollectionChanged += tEventAdded;
+                    // Setup new stuff.
+                    if (x != null) {
+                        tEvents = x.Events;
+                        tManaged.AddRange(tEvents);
+                        tEvents.CollectionChanged += tColl;
+                        tColl(null, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, new List<Event>(tEvents)));
                     }
-                };
+                });
             #endregion
 
-            // Let the managing begin.
-            ExtensionApi.Properties["Connection"].PropertyChanged += tResetEvents;
+            tProps.Value = tManaged;
+            ExtensionApi.Properties["Connection"].PropertyChanged += (s, e) => ((Action<ConnectionViewModel>)tProps["List"]["Swap"].Value)(ExtensionApi.Connection);
 
             // Exit with good status.
             return true;

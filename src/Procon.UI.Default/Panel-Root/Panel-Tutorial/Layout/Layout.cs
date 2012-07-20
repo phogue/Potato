@@ -7,9 +7,9 @@ using Procon.UI.API;
 namespace Procon.UI.Default.Root.Tutorial.Layout
 {
     [Extension(
-        Alters    = new String[] { "RootLayout" },
+        Alters    = new String[] { },
         Replaces  = new String[] { },
-        DependsOn = new String[] { "Root Layout" })]
+        DependsOn = new String[] { })]
     public class Layout : IExtension
     {
         #region IExtension Properties
@@ -38,12 +38,11 @@ namespace Procon.UI.Default.Root.Tutorial.Layout
         public bool Entry(Window root)
         {
             // Find the controls I want to use and check for issues.
-            Grid layout = ExtensionApi.FindControl<Grid>(root, "RootLayout");
-            if (layout == null) return false;
+            Grid tLayout = ExtensionApi.FindControl<Grid>(root, "RootLayout");
 
             // Do what I need to setup my control.
-            LayoutView view = new LayoutView();
-            layout.Children.Add(view);
+            LayoutView tView = new LayoutView();
+            tLayout.Children.Add(tView);
 
             // Exit with good status.
             return true;

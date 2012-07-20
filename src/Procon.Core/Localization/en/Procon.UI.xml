@@ -158,6 +158,27 @@
         
         <!-- Main Window -->
         <main>
+
+
+          <!-- Interfaces -->
+          <interface>
+            <loc key="Title"  value="Procon Connections" />
+            <loc key="Local"  value="Local" />
+            <loc key="Remote" value="Remote" />
+            <loc key="Add"    value="Connect to a Procon Server" />
+            <loc key="Info"   value="Information" />
+            <loc key="Games"  value="Game Connections" />
+          </interface>
+          
+          <!-- Connections-->
+          <connection>
+            <loc key="Title"      value="Game Connections" />
+            <loc key="Additional" value="Additional Information" />
+            <loc key="Add"        value="Connect to a Game Server" />
+            <loc key="Confirm"    value="Connect!" />
+            <loc key="Address"    value="Hostname" />
+            <loc key="Map"        value="Map" />
+          </connection>
           
           <!-- Configuration Panel -->
           <configure>
@@ -167,25 +188,6 @@
             <loc key="User"    value="Username" />
             <loc key="Pass"    value="Password" />
             <loc key="Confirm" value="Connect!" />
-            
-            <!-- Interfaces -->
-            <interfaces>
-              <loc key="Title"  value="Procon Connections" />
-              <loc key="Local"  value="Local" />
-              <loc key="Remote" value="Remote" />
-              <loc key="Add"    value="Connect to a Procon Server" />
-              <loc key="Info"   value="Information" />
-              <loc key="Games"  value="Game Connections" />
-            </interfaces>
-            <!-- Connections-->
-            <connections>
-              <loc key="Title"      value="Game Connections" />
-              <loc key="Additional" value="Additional Information" />
-              <loc key="Add"        value="Connect to a Game Server" />
-              <loc key="Confirm"    value="Connect!" />
-              <loc key="Address"    value="Hostname" />
-              <loc key="Map"        value="Map" />
-            </connections>
           </configure>
 
           <!-- Connection Panel-->

@@ -9,6 +9,7 @@ using Procon.Net;
 using Procon.Net.Protocols;
 using Procon.Net.Protocols.Objects;
 using Procon.UI.API.Events;
+using Procon.UI.API.Utils;
 
 namespace Procon.UI.API.ViewModels
 {
@@ -102,28 +103,28 @@ namespace Procon.UI.API.ViewModels
         }
 
         // Observable Properties.
-        public ObservableCollection<Plugin>       Plugins {
+        public NotifiableCollection<Plugin>       Plugins {
             get { return mPlugins; }
             set {
                 if (mPlugins != value) {
                     mPlugins = value;
                     OnPropertyChanged("Plugins");
         } } }
-        public ObservableCollection<Player>       Players {
+        public NotifiableCollection<Player>       Players {
             get { return mPlayers; }
             set {
                 if (mPlayers != value) {
                     mPlayers = value;
                     OnPropertyChanged("Players");
         } } }
-        public ObservableCollection<Map>          Maps {
+        public NotifiableCollection<Map>          Maps {
             get { return mMaps; }
             set {
                 if (mMaps != value) {
                     mMaps = value;
                     OnPropertyChanged("MapList");
         } } }
-        public ObservableCollection<Ban>          Bans
+        public NotifiableCollection<Ban>          Bans
         {
             get { return mBans; }
             set {
@@ -131,28 +132,28 @@ namespace Procon.UI.API.ViewModels
                     mBans = value;
                     OnPropertyChanged("Bans");
         } } }
-        public ObservableCollection<GameMode>     GameModePool {
+        public NotifiableCollection<GameMode>     GameModePool {
             get { return mGameModePool; }
             set {
                 if (mGameModePool != value) {
                     mGameModePool = value;
                     OnPropertyChanged("GameModePool");
         } } }
-        public ObservableCollection<Map>          MapPool {
+        public NotifiableCollection<Map>          MapPool {
             get { return mMapPool; }
             set {
                 if (mMapPool != value) {
                     mMapPool = value;
                     OnPropertyChanged("MapPool");
         } } }
-        public ObservableCollection<DataVariable> Variables {
+        public NotifiableCollection<DataVariable> Variables {
             get { return mVariables; }
             set {
                 if (mVariables != value) {
                     mVariables = value;
                     OnPropertyChanged("Variables");
         } } }
-        public ObservableCollection<Event>        Events {
+        public NotifiableCollection<Event>        Events {
             get { return mEvents; }
             set {
                 if (mEvents != value) {
@@ -160,14 +161,14 @@ namespace Procon.UI.API.ViewModels
                     OnPropertyChanged("Events");
         } } }
         
-        private ObservableCollection<Plugin>       mPlugins;
-        private ObservableCollection<Player>       mPlayers;
-        private ObservableCollection<Map>          mMaps;
-        private ObservableCollection<Ban>          mBans;
-        private ObservableCollection<GameMode>     mGameModePool;
-        private ObservableCollection<Map>          mMapPool;
-        private ObservableCollection<DataVariable> mVariables;
-        private ObservableCollection<Event>        mEvents;
+        private NotifiableCollection<Plugin>       mPlugins;
+        private NotifiableCollection<Player>       mPlayers;
+        private NotifiableCollection<Map>          mMaps;
+        private NotifiableCollection<Ban>          mBans;
+        private NotifiableCollection<GameMode>     mGameModePool;
+        private NotifiableCollection<Map>          mMapPool;
+        private NotifiableCollection<DataVariable> mVariables;
+        private NotifiableCollection<Event>        mEvents;
 
 
         // Constructor.
@@ -183,14 +184,14 @@ namespace Procon.UI.API.ViewModels
             nModel.GameEvent                       += GameEventOccurred;
 
             // Expose collections within the model:
-            Plugins      = new ObservableCollection<Plugin>(nModel.Plugins.Plugins);
-            Players      = new ObservableCollection<Player>(nModel.GameState.PlayerList);
-            Maps         = new ObservableCollection<Map>(nModel.GameState.MapList);
-            Bans         = new ObservableCollection<Ban>(nModel.GameState.BanList);
-            GameModePool = new ObservableCollection<GameMode>(nModel.GameState.GameModePool);
-            MapPool      = new ObservableCollection<Map>(nModel.GameState.MapPool);
-            Variables    = new ObservableCollection<DataVariable>(nModel.GameState.Variables.Variables.Where(x => !x.IsReadOnly).OrderBy(x => x.Name));
-            Events       = new ObservableCollection<Event>();
+            Plugins      = new NotifiableCollection<Plugin>(nModel.Plugins.Plugins);
+            Players      = new NotifiableCollection<Player>(nModel.GameState.PlayerList);
+            Maps         = new NotifiableCollection<Map>(nModel.GameState.MapList);
+            Bans         = new NotifiableCollection<Ban>(nModel.GameState.BanList);
+            GameModePool = new NotifiableCollection<GameMode>(nModel.GameState.GameModePool);
+            MapPool      = new NotifiableCollection<Map>(nModel.GameState.MapPool);
+            Variables    = new NotifiableCollection<DataVariable>(nModel.GameState.Variables.Variables.Where(x => !x.IsReadOnly).OrderBy(x => x.Name));
+            Events       = new NotifiableCollection<Event>();
         }
 
 

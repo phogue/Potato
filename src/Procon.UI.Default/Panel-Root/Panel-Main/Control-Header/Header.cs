@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media.Imaging;
 
 using Procon.UI.API;
 using Procon.UI.API.Commands;
@@ -10,9 +11,9 @@ using Procon.UI.API.Utils;
 namespace Procon.UI.Default.Root.Main.Header
 {
     [Extension(
-        Alters    = new String[] { "MainLayout" },
+        Alters    = new String[] { },
         Replaces  = new String[] { },
-        DependsOn = new String[] { "Main Layout" })]
+        DependsOn = new String[] { })]
     public class Header : IExtension
     {
         #region IExtension Properties
@@ -46,24 +47,37 @@ namespace Procon.UI.Default.Root.Main.Header
         public bool Entry(Window root)
         {
             // Find the controls I want to use and check for issues.
-            Grid layout = ExtensionApi.FindControl<Grid>(root, "MainLayout");
-            if (layout == null) return false;
+            Grid tLayout = ExtensionApi.FindControl<Grid>(root, "MainLayout");
 
             // Do what I need to setup my control.
-            HeaderView view = new HeaderView();
-            layout.Children.Add(view);
+            HeaderView tView = new HeaderView();
+            tLayout.Children.Add(tView);
 
-            // Commands
-            tCmmds["Swap"].Value = new RelayCommand<Object>(
-            #region -- Handles when the "Swap Connections" button is clicked.
+            // Commands.
+            tCmmds["State"].Value = new RelayCommand<AttachedCommandArgs>(
+            #region -- Handles when the connection status changes.
                 x => {
-                    ExtensionApi.Settings["View"].Value = "Configure";
+                    Image                              tSender = (Image)x.Sender;
+                    DependencyPropertyChangedEventArgs tArgs   = (DependencyPropertyChangedEventArgs)x.Args;
+                    if (tSender != null && tSender != null)
+                        if (ExtensionApi.Properties["Images"]["Status"]["Light"].ContainsKey(tArgs.NewValue.ToString()))
+                            tSender.Source = ExtensionApi.Properties["Images"]["Status"]["Light"][tArgs.NewValue.ToString()].Value as BitmapImage;
+                        else
+                            tSender.Source = ExtensionApi.Properties["Images"]["Status"]["Light"]["Unknown"].Value as BitmapImage;
                 });
             #endregion
-
-            // Setup the settings.
-            if (ExtensionApi.Settings["View"].Value == null)
-                ExtensionApi.Settings["View"].Value = "Configure";
+            tCmmds["Overview"].Value = new RelayCommand<AttachedCommandArgs>(
+            #region -- Handles when an interface or connection is selected.
+                x => {
+                    ComboBox tSender = x.Sender as ComboBox;
+                    if (tSender != null)
+                        if (tSender.Name == "MainHeaderInterfaces")
+                            ExtensionApi.Settings["View"].Value = "Interface";
+                        else if (tSender.Name == "MainHeaderConnections") {
+                            ExtensionApi.Settings["View"].Value = "Connection";
+                    }
+                });
+            #endregion
 
             // Exit with good status.
             return true;

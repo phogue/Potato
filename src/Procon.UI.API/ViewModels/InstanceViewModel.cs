@@ -5,13 +5,14 @@ using System.Linq;
 
 using Procon.Core;
 using Procon.Core.Interfaces;
+using Procon.UI.API.Utils;
 
 namespace Procon.UI.API.ViewModels
 {
     public class InstanceViewModel : ViewModel<Instance>
     {
         // Observable Properties.
-        public  ObservableCollection<InterfaceViewModel> Interfaces
+        public  NotifiableCollection<InterfaceViewModel> Interfaces
         {
             get { return mInterfaces; }
             protected set {
@@ -19,7 +20,7 @@ namespace Procon.UI.API.ViewModels
                     mInterfaces = value;
                     OnPropertyChanged("Interfaces");
         } } }
-        private ObservableCollection<InterfaceViewModel> mInterfaces;
+        private NotifiableCollection<InterfaceViewModel> mInterfaces;
 
         
         // Constructor.
@@ -31,7 +32,7 @@ namespace Procon.UI.API.ViewModels
             nModel.PropertyChanged  += Instance_PropertyChanged;
 
             // Expose collections within the model:
-            Interfaces = new ObservableCollection<InterfaceViewModel>(nModel.Interfaces.Select(x => new InterfaceViewModel(x)));
+            Interfaces = new NotifiableCollection<InterfaceViewModel>(nModel.Interfaces.Select(x => new InterfaceViewModel(x)));
         }
 
 

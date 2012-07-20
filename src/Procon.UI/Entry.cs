@@ -36,6 +36,8 @@ namespace Procon.UI
                 MinWidth    = 1024,
                 MinHeight   = 768,
                 DataContext = tProcon,
+                UseLayoutRounding   = true,
+                SnapsToDevicePixels = true,
                 WindowState           = Settings.Get<WindowState>("WindowState", WindowState.Normal),
                 WindowStartupLocation = WindowStartupLocation.Manual
             };

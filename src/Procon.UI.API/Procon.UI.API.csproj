@@ -76,7 +76,6 @@
     <Compile Include="Converters\ConverterConnectionToImage.cs" />
     <Compile Include="Converters\LocalizationEnum.cs" />
     <Compile Include="Converters\ConverterInterfaceToImage.cs" />
-    <Compile Include="Converters\ConverterConnectionStateToImage.cs" />
     <Compile Include="Events\ChatEvent.cs" />
     <Compile Include="Events\Event.cs" />
     <Compile Include="Events\EventBuilder.cs" />
@@ -84,9 +83,9 @@
     <Compile Include="ExtensionAttribute.cs" />
     <Compile Include="IExtension.cs" />
     <Compile Include="Converters\LocalizationText.cs" />
-    <Compile Include="Utils\ImageBinding.cs" />
     <Compile Include="Utils\Defines.cs" />
     <Compile Include="Utils\ArrayDictionary.cs" />
+    <Compile Include="Utils\NotifiableCollection.cs" />
     <Compile Include="Utils\PasswordBoxBinding.cs" />
     <Compile Include="ViewModels\ConnectionViewModel.cs" />
     <Compile Include="ViewModels\InstanceViewModel.cs" />

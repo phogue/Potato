@@ -9,6 +9,7 @@ using Procon.Core.Interfaces.Connections;
 using Procon.Core.Interfaces.Layer;
 using Procon.Core.Interfaces.Packages;
 using Procon.Net;
+using Procon.UI.API.Utils;
 
 namespace Procon.UI.API.ViewModels
 {
@@ -47,7 +48,7 @@ namespace Procon.UI.API.ViewModels
         }
         
         // Observable Properties.
-        public ObservableCollection<ConnectionViewModel> Connections
+        public NotifiableCollection<ConnectionViewModel> Connections
         {
             get { return mConnections; }
             protected set {
@@ -64,7 +65,7 @@ namespace Procon.UI.API.ViewModels
                     OnPropertyChanged("Packages");
         } } }
 
-        private ObservableCollection<ConnectionViewModel> mConnections;
+        private NotifiableCollection<ConnectionViewModel> mConnections;
         private ObservableCollection<Package>             mPackages;
 
 
@@ -81,7 +82,7 @@ namespace Procon.UI.API.ViewModels
             nModel.Packages.PropertyChanged += Interface_PropertyChanged;
 
             // Expose collections within the model:
-            Connections = new ObservableCollection<ConnectionViewModel>(nModel.Connections.Select(x => new ConnectionViewModel(x)));
+            Connections = new NotifiableCollection<ConnectionViewModel>(nModel.Connections.Select(x => new ConnectionViewModel(x)));
             Packages    = new ObservableCollection<Package>(nModel.Packages.Packages);
         }
         

@@ -9,11 +9,11 @@
       Name="MainConnectionChat">
     
     <!-- Content -->
-    <DockPanel Name="ConnectionChatContent"
+    <DockPanel Name="MainConnectionChatContent"
                Background="{DynamicResource BrushContentDark}">
         
         <!-- Title Bar -->
-        <DockPanel Name="ConnectionChatHeader"
+        <DockPanel Name="MainConnectionChatHeader"
                    DockPanel.Dock="Top"
                    Height="40"
                    Background="{DynamicResource BrushHeaderDark}"
@@ -21,21 +21,20 @@
                    acmd:AttachedCommand.Command="{Binding
                        Source={x:Static eapi:ExtensionApi.Commands},
                        Path=[Main][Connection][Chat][MinMax].Value}">
-            <Image Name="ConnectionChatIcon"
+            <Image Name="MainConnectionChatIcon"
                    DockPanel.Dock="Left"
                    Margin="15, 10, 5, 10" />
             <TextBlock Name="ConnectionChatTitle"
                        DockPanel.Dock="Left"
-                       VerticalAlignment="Center"
                        FontSize="16"
                        Foreground="{DynamicResource BrushTextLight}"
                        Text="{Binding
                            Converter={conv:LocalizationText},
-                           ConverterParameter=Procon.UI.Default.Root.Main.Connection.Chat.Title}" />
+                           ConverterParameter=Default.Root.Main.Connection.Chat.Title}" />
         </DockPanel>
 
         <!-- Chat Box -->
-        <TextBox Name="ConnectionChatBox"
+        <TextBox Name="MainConnectionChatBox"
                  DockPanel.Dock="Bottom"
                  Margin="15"
                  Background="{DynamicResource  BrushHeaderDark}"
@@ -46,13 +45,15 @@
                      Path=[Main][Connection][Chat][Text].Value}" />
 
         <!-- Chat & Events -->
-        <ListBox Name="ConnectionChatEvents"
+        <ListBox Name="MainConnectionChatEvents"
                  DockPanel.Dock="Top"
                  BorderThickness="0"
                  AlternationCount="2"
                  ScrollViewer.VerticalScrollBarVisibility="Visible"
                  ItemContainerStyle="{DynamicResource StyleListBoxItemChat}"
                  Background="{DynamicResource BrushEmphasisDark}"
-                 ItemsSource="{Binding Events}" />
+                 ItemsSource="{Binding
+                     Source={x:Static eapi:ExtensionApi.Properties},
+                     Path=[Main][Connection][Chat].Value}" />
     </DockPanel>
 </Grid>

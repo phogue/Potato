@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -7,14 +6,13 @@ using System.Windows.Input;
 using Procon.UI.API;
 using Procon.UI.API.Commands;
 using Procon.UI.API.Utils;
-using Procon.UI.Default.Controls;
 
 namespace Procon.UI.Default.Root.Main.Connection.Navigation
 {
     [Extension(
-        Alters    = new String[] { "MainConnectionLayout" },
+        Alters    = new String[] { },
         Replaces  = new String[] { },
-        DependsOn = new String[] { "Main Connection Layout" })]
+        DependsOn = new String[] { })]
     public class Navigation : IExtension
     {
         #region IExtension Properties
@@ -48,53 +46,37 @@ namespace Procon.UI.Default.Root.Main.Connection.Navigation
         public bool Entry(Window root)
         {
             // Find the controls I want to use and check for issues.
-            Grid layout = ExtensionApi.FindControl<Grid>(root, "MainConnectionLayout");
-            if (layout == null) return false;
+            Grid tLayout = ExtensionApi.FindControl<Grid>(root, "MainConnectionLayout");
 
             // Do what I need to setup my control.
-            NavigationView view = new NavigationView();
-            layout.Children.Add(view);
+            NavigationView tView = new NavigationView();
+            tLayout.Children.Add(tView);
             
             // Commands
-            tCmmds["Swap"].Value = new RelayCommand<RadioImageButton>(
+            tCmmds["Swap"].Value = new RelayCommand<RadioButton>(
             #region -- Handles when a radio button is clicked.
                 x => {
-                    if (view.ConnectionNavigationPlayers == x)
+                    if (x.Name == "MainConnectionNavigationPlayers")
                         ExtensionApi.Settings["Pane"].Value = "Players";
-                    else if (view.ConnectionNavigationMaps == x)
+                    else if (x.Name == "MainConnectionNavigationMaps")
                         ExtensionApi.Settings["Pane"].Value = "Maps";
-                    else if (view.ConnectionNavigationBans == x)
+                    else if (x.Name == "MainConnectionNavigationBans")
                         ExtensionApi.Settings["Pane"].Value = "Bans";
-                    else if (view.ConnectionNavigationPlugins == x)
+                    else if (x.Name == "MainConnectionNavigationPlugins")
                         ExtensionApi.Settings["Pane"].Value = "Plugins";
-                    else if (view.ConnectionNavigationSettings == x)
+                    else if (x.Name == "MainConnectionNavigationSettings")
                         ExtensionApi.Settings["Pane"].Value = "Settings";
-                    else if (view.ConnectionNavigationOptions == x)
-                        ExtensionApi.Settings["Pane"].Value = "Options";
-                },
-                x => {
-                    return ExtensionApi.Connection != null;
                 });
             #endregion
 
-            // Allow other panes to be used other than these.
-            PropertyChangedEventHandler tResetPane =
-            #region -- Handles when the pane changes.
-                (s, e) => {
-                    view.ConnectionNavigationPlayers.IsChecked  = (String)ExtensionApi.Settings["Pane"].Value == "Players";
-                    view.ConnectionNavigationMaps.IsChecked     = (String)ExtensionApi.Settings["Pane"].Value == "Maps";
-                    view.ConnectionNavigationBans.IsChecked     = (String)ExtensionApi.Settings["Pane"].Value == "Bans";
-                    view.ConnectionNavigationPlugins.IsChecked  = (String)ExtensionApi.Settings["Pane"].Value == "Plugins";
-                    view.ConnectionNavigationSettings.IsChecked = (String)ExtensionApi.Settings["Pane"].Value == "Settings";
-                    view.ConnectionNavigationOptions.IsChecked  = (String)ExtensionApi.Settings["Pane"].Value == "Options";
-                };
-            #endregion
-
-            // Set the default settings.
+            // Setup the default settings.
             if (ExtensionApi.Settings["Pane"].Value == null)
                 ExtensionApi.Settings["Pane"].Value = "Players";
-            ExtensionApi.Settings["Pane"].PropertyChanged += tResetPane;
-            tResetPane(null, null);
+            tView.MainConnectionNavigationPlayers.IsChecked  = (String)ExtensionApi.Settings["Pane"].Value == "Players";
+            tView.MainConnectionNavigationMaps.IsChecked     = (String)ExtensionApi.Settings["Pane"].Value == "Maps";
+            tView.MainConnectionNavigationBans.IsChecked     = (String)ExtensionApi.Settings["Pane"].Value == "Bans";
+            tView.MainConnectionNavigationPlugins.IsChecked  = (String)ExtensionApi.Settings["Pane"].Value == "Plugins";
+            tView.MainConnectionNavigationSettings.IsChecked = (String)ExtensionApi.Settings["Pane"].Value == "Settings";
 
             // Exit with good status.
             return true;

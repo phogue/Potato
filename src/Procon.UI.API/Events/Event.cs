@@ -1,17 +1,58 @@
 ﻿using System;
 
 using Procon.Net;
+using Procon.Net.Protocols.Objects;
 
 namespace Procon.UI.API.Events
 {
-    public class Event
+    public class Event : DataController
     {
+        #region Default (Normalized) keys used to access common event information.
+
+        protected static readonly string C_TYPE       = "procon.Type";
+        protected static readonly string C_TIMESTAMP  = "procon.Timestamp";
+        protected static readonly string C_EVENTSTAMP = "procon.Eventstamp";
+        protected static readonly string C_NAME       = "procon.Name";
+        protected static readonly string C_TEXT       = "procon.Text";
+
+        #endregion
+
         // Properties.
-        public GameEventType Type       { get; private set; }
-        public DateTime      Timestamp  { get; private set; }
-        public String        Eventstamp { get; private set; }
-        public String        Name       { get; private set; }
-        public String        Text       { get; private set; }
+        public GameEventType Type {
+            get         { return TryGetVariable<GameEventType>(C_TYPE, GameEventType.Chat); }
+            private set {
+                if (Type != value) {
+                    DataSet(C_TYPE, value);
+                    OnPropertyChanged("Type");
+        } } }
+        public DateTime Timestamp {
+            get         { return TryGetVariable<DateTime>(C_TIMESTAMP, DateTime.MinValue); }
+            private set {
+                if (Timestamp != value) {
+                    DataSet(C_TIMESTAMP, value);
+                    OnPropertyChanged("Timestamp");
+        } } }
+        public String Eventstamp {
+            get         { return TryGetVariable<String>(C_EVENTSTAMP, null); }
+            private set {
+                if (Eventstamp != value) {
+                    DataSet(C_EVENTSTAMP, value);
+                    OnPropertyChanged("Eventstamp");
+        } } }
+        public String Name {
+            get         { return TryGetVariable<String>(C_NAME, null); }
+            private set {
+                if (Name != value) {
+                    DataSet(C_NAME, value);
+                    OnPropertyChanged("Name");
+        } } }
+        public String Text {
+            get         { return TryGetVariable<String>(C_TEXT, null); }
+            private set {
+                if (Text != value) {
+                    DataSet(C_TEXT, value);
+                    OnPropertyChanged("Text");
+        } } }
 
         // Constructor.
         internal Event(GameEventArgs e)

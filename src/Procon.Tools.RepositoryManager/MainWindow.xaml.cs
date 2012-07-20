@@ -212,6 +212,8 @@ namespace Procon.Tools.RepositoryManager {
         }
 
         private void btnQuery_Click(object sender, RoutedEventArgs e) {
+            this.Repository.Packages.Clear();
+
             this.QueryRepository();
         }
 

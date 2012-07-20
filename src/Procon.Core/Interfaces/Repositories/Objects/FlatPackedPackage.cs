@@ -119,16 +119,15 @@ namespace Procon.Core.Interfaces.Repositories.Objects {
         /// </summary>
         public void InstallOrUpdate() {
             if (this.AvailableVersion != null && this.Repository.Url != null) {
-
                 // Make sure the state is set to an update or install.
                 if (this.State == PackageState.NotInstalled || this.State == PackageState.UpdateAvailable) {
                     this.CancelInstalling();
 
-                    this.DownloadRequest = new Request(this.Repository.Url + "1/query/download/format/xml");
+                    this.DownloadRequest = new Request(this.Repository.Url + "1/query/download");
                     this.DownloadRequest.Method = "POST";
 
                     QueryStringBuilder builder = new QueryStringBuilder();
-                    builder.Add("name", this.Name);
+                    builder.Add("uid", this.Uid);
                     builder.Add("version", this.AvailableVersion.Version.ToString());
 
                     // If we're updating

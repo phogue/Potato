@@ -44,6 +44,10 @@ namespace Procon.Core.Interfaces.Repositories {
         /// </summary>
         private List<RepositoryPackageReference> CachedAutoUpdateReferences;
 
+        public LocalPackageController() : base() {
+            this.CachedAutoUpdateReferences = new List<RepositoryPackageReference>();
+        }
+
         protected void LoadLocalRepository(List<Repository> target, String directory) {
             target.Clear();
 

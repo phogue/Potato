@@ -85,6 +85,7 @@ namespace Procon.Core.Interfaces.Repositories {
             this.RemoteRepositories = new List<Repository>();
             this.LocalInstalledRepositories = new List<Repository>();
             this.LocalUpdatedRepositories = new List<Repository>();
+            this.AutoUpdatePackages = new List<FlatPackedPackage>();
 
             this.Packages = new List<FlatPackedPackage>();
         }

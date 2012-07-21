@@ -20,6 +20,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Globalization;
@@ -203,6 +204,19 @@ namespace Procon.Net.Utils {
             }
 
             return stripped;
+        }
+
+        public static String SanitizeDirectory(this String s) {
+            s = Regex.Replace(s, "[/]+", "_").Trim('_');
+            s = Regex.Replace(s, "[^\\w]+", "");
+
+            return s;
+        }
+
+        public static String UrlStub(this String s) {
+            Uri uri = new Uri(s);
+
+            return (uri.Host + uri.PathAndQuery).SanitizeDirectory();
         }
     }
 }

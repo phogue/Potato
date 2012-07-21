@@ -53,7 +53,7 @@ namespace Procon.Net.Protocols.Frostbite.BF.BF3 {
 
         }
 
-        [DispatchPacket(MatchText = "admin.listPlayers")]
+        [DispatchPacket(MatchText = "admin.listPlayers", PacketOrigin = PacketOrigin.Client)]
         public override void AdminListPlayersResponseDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
             BF3PlayerList players = new BF3PlayerList() {
                 Subset = new FrostbitePlayerSubset().Parse(request.Words.GetRange(1, request.Words.Count - 1))
@@ -62,7 +62,7 @@ namespace Procon.Net.Protocols.Frostbite.BF.BF3 {
             this.AdminListPlayersFinalize(players);
         }
 
-        [DispatchPacket(MatchText = "mapList.list")]
+        [DispatchPacket(MatchText = "mapList.list", PacketOrigin = PacketOrigin.Client)]
         public override void MapListListDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
             if (request.Words.Count >= 1) {
 

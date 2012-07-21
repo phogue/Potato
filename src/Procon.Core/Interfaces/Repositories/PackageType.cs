@@ -20,31 +20,15 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Xml.Linq;
 using System.Text;
 
-namespace Procon.Core.Interfaces.RSS.Objects {
-    using Procon.Core.Utils;
-
-    public class RSSProcon2 : RSS<RSSProcon2> {
-
-        public List<RSSPackage> Packages { get; private set; }
-
-        public RSSProcon2() {
-            this.Packages = new List<RSSPackage>();
-        }
-
-        public RSSProcon2 Parse(XElement element) {
-
-            XElement procon2Element = element.Descendants("procon2").FirstOrDefault();
-
-            if (procon2Element != null) {
-                foreach (XElement packageElement in procon2Element.Descendants("packages").Descendants("package")) {
-                    this.Packages.Add(new RSSPackage().Parse(packageElement));
-                }
-            }
-
-            return this;
-        }
+namespace Procon.Core.Interfaces.Repositories {
+    public enum PackageType {
+        None,
+        Plugin,
+        Language,
+        Mappack,
+        Application,
+        Config
     }
 }

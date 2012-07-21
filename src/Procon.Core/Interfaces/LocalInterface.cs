@@ -7,7 +7,7 @@ namespace Procon.Core.Interfaces {
     using Procon.Core.Interfaces.Connections;
     using Procon.Core.Interfaces.Layer;
     using Procon.Core.Interfaces.Layer.Objects;
-    using Procon.Core.Interfaces.Packages;
+    using Procon.Core.Interfaces.Repositories;
     using Procon.Core.Interfaces.Security;
     using Procon.Core.Interfaces.Variables;
     using Procon.Net;
@@ -66,6 +66,8 @@ namespace Procon.Core.Interfaces {
         // -- Saves all the connections to the config file.
         internal override void WriteConfig(Config config)
         {
+            this.Packages.WriteConfig(config);
+
             foreach (Connection tConnection in this.Connections) {
                 Config tConfig = new Config().Generate(tConnection.GetType());
                 config.Root.Add(new XElement("command",
@@ -156,14 +158,16 @@ namespace Procon.Core.Interfaces {
             ((LayerListener)Layer).ClientRemoved += Layer_ClientRemoved;
             ConnectionAdded                      += Connections_ConnectionAdded;
             ConnectionRemoved                    += Connections_ConnectionRemoved;
-            Packages.CoreUpdateAvailable         += Packages_CoreUpdateAvailable;
         }
+
         private void Layer_ClientAdded(LayerListener parent, LayerGame item) {
             item.PropertyChanged += Client_ConnectionStateChanged;
         }
+
         private void Layer_ClientRemoved(LayerListener parent, LayerGame item) {
             item.PropertyChanged -= Client_ConnectionStateChanged;
         }
+
         private void Client_ConnectionStateChanged(Object sender, PropertyChangedEventArgs e) {
             if (e.PropertyName == "ConnectionState") {
                 LayerGame parent = (LayerGame)sender;
@@ -176,6 +180,7 @@ namespace Procon.Core.Interfaces {
                     );
             }
         }
+
         private void Connections_ConnectionAdded(Interface parent, Connection item) {
             Layer.Request(
                 new Layer.Objects.Context() { ContextType = ContextType.All },
@@ -184,6 +189,7 @@ namespace Procon.Core.Interfaces {
                 item
             );
         }
+
         private void Connections_ConnectionRemoved(Interface parent, Connection item) {
             Layer.Request(
                 new Context() { ContextType = ContextType.All },
@@ -191,10 +197,6 @@ namespace Procon.Core.Interfaces {
                 EventName.ConnectionsConnectionRemoved,
                 item
             );
-        }
-        private void Packages_CoreUpdateAvailable(PackageController sender, Package package) {
-            // TODO: Add option to control "automatic updating"
-            ((LocalPackage)package).Install();
         }
     }
 }

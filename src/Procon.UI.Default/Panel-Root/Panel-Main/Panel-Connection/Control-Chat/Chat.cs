@@ -89,15 +89,27 @@ namespace Procon.UI.Default.Root.Main.Connection.Chat
             #endregion
 
             // Player management methods.
-            NotifiableCollection<Event>         tEvents  = null;
-            NotifiableCollection<Event>         tManaged = new NotifiableCollection<Event>();
-            NotifyCollectionChangedEventHandler tColl = (s, e) => ((Action<IList>)tProps["List"]["Coll"].Value)(e.NewItems);
+            NotifiableCollection<Event>            tEvents  = null;
+            NotifiableCollection<Event>            tManaged = new NotifiableCollection<Event>();
+            Dictionary<ConnectionViewModel, Int32> tConn = new Dictionary<ConnectionViewModel, Int32>();
+            NotifyCollectionChangedEventHandler    tColl = (s, e) => {
+                if (!tConn.ContainsKey(ExtensionApi.Connection))
+                    tConn.Add(ExtensionApi.Connection, 0);
+                Int32 tIndex = tConn[ExtensionApi.Connection];
+                tConn[ExtensionApi.Connection] += e.NewItems.Count;
+                if (s == tManaged)
+                    ((Action<IList>)tProps["List"]["Coll"].Value)(new List<Event>(e.NewItems.OfType<Event>().Skip(tIndex).OfType<ChatEvent>()));
+                else {
+                    tManaged.Add((Event)e.NewItems[0]);
+                    ((Action<IList>)tProps["List"]["Coll"].Value)(new List<Event>(e.NewItems.OfType<ChatEvent>()));
+                }
+            };
 
             tProps["List"]["Coll"].Value = new Action<IList>(
             #region -- Updates the managed players list.
                 e => {
                     // For each event added.
-                    foreach (ChatEvent @event in e.OfType<ChatEvent>()) {
+                    foreach (ChatEvent @event in e) {
                         Visibility tTeam        = Visibility.Collapsed;
                         Visibility tSquad       = Visibility.Collapsed;
                         Visibility tPlayer      = Visibility.Visible;
@@ -148,7 +160,7 @@ namespace Procon.UI.Default.Root.Main.Connection.Chat
                         tEvents = x.Events;
                         tManaged.AddRange(tEvents);
                         tEvents.CollectionChanged += tColl;
-                        tColl(null, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, new List<Event>(tEvents)));
+                        tColl(tManaged, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, new List<Event>(tEvents)));
                     }
                 });
             #endregion

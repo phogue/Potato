@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Windows.Threading;
 
 namespace Procon.UI.API.Utils
@@ -356,30 +357,68 @@ namespace Procon.UI.API.Utils
 
         // Events.
         [field: NonSerialized]
-        public event ItemChangedEventHandler ItemChanged;
+        private ItemChangedEventHandler             mItemChanged;
         [field: NonSerialized]
-        public event PropertyChangedEventHandler PropertyChanged;
+        private PropertyChangedEventHandler         mPublicPropertyChanged;
         [field: NonSerialized]
-        public event NotifyCollectionChangedEventHandler CollectionChanged;
+        private PropertyChangedEventHandler         mPrivatePropertyChanged;
+        [field: NonSerialized]
+        private NotifyCollectionChangedEventHandler mPublicCollectionChanged;
+        [field: NonSerialized]
+        private NotifyCollectionChangedEventHandler mPrivateCollectionChanged;
+
+        public event ItemChangedEventHandler             ItemChanged
+        {
+            [MethodImpl(MethodImplOptions.Synchronized)]
+            add { mItemChanged = (ItemChangedEventHandler)Delegate.Combine(mItemChanged, value); }
+            [MethodImpl(MethodImplOptions.Synchronized)]
+            remove { mItemChanged = (ItemChangedEventHandler)Delegate.Remove(mItemChanged, value); }
+        }
+        public event PropertyChangedEventHandler         PropertyChanged
+        {
+            [MethodImpl(MethodImplOptions.Synchronized)]
+            add { mPublicPropertyChanged = (PropertyChangedEventHandler)Delegate.Combine(mPublicPropertyChanged, value); }
+            [MethodImpl(MethodImplOptions.Synchronized)]
+            remove { mPublicPropertyChanged = (PropertyChangedEventHandler)Delegate.Remove(mPublicPropertyChanged, value); }
+        }
+        public event NotifyCollectionChangedEventHandler CollectionChanged
+        {
+            [MethodImpl(MethodImplOptions.Synchronized)]
+            add { mPublicCollectionChanged = (NotifyCollectionChangedEventHandler)Delegate.Combine(mPublicCollectionChanged, value); }
+            [MethodImpl(MethodImplOptions.Synchronized)]
+            remove { mPublicCollectionChanged = (NotifyCollectionChangedEventHandler)Delegate.Remove(mPublicCollectionChanged, value); }
+        }
+        event PropertyChangedEventHandler         INotifyPropertyChanged.PropertyChanged
+        {
+            [MethodImpl(MethodImplOptions.Synchronized)]
+            add { mPrivatePropertyChanged = (PropertyChangedEventHandler)Delegate.Combine(mPrivatePropertyChanged, value); }
+            [MethodImpl(MethodImplOptions.Synchronized)]
+            remove { mPrivatePropertyChanged = (PropertyChangedEventHandler)Delegate.Remove(mPrivatePropertyChanged, value); }
+        }
+        event NotifyCollectionChangedEventHandler INotifyCollectionChanged.CollectionChanged
+        {
+            [MethodImpl(MethodImplOptions.Synchronized)]
+            add { mPrivateCollectionChanged = (NotifyCollectionChangedEventHandler)Delegate.Combine(mPrivateCollectionChanged, value); }
+            [MethodImpl(MethodImplOptions.Synchronized)]
+            remove { mPrivateCollectionChanged = (NotifyCollectionChangedEventHandler)Delegate.Remove(mPrivateCollectionChanged, value); }
+        }
+
         protected virtual void OnItemChanged(ItemChangedEventArgs args)
         {
-            if (ItemChanged != null) {
-                if (Dispatcher.CurrentDispatcher != mDispatcher) {
-                    mDispatcher.Invoke(ItemChanged, this, args);
-                    return;
-                }
-                ItemChanged(this, args);
-            }
+            if (mItemChanged != null)
+                mItemChanged(this, args);
         }
         protected virtual void OnPropertyChanged(PropertyChangedEventArgs args)
         {
             if (mNotifyOn) {
-                if (PropertyChanged != null) {
+                if (mPublicPropertyChanged != null)
+                    mPublicPropertyChanged(this, args);
+                if (mPrivatePropertyChanged != null) {
                     if (Dispatcher.CurrentDispatcher != mDispatcher) {
-                        mDispatcher.Invoke(PropertyChanged, this, args);
+                        mDispatcher.Invoke(mPrivatePropertyChanged, DispatcherPriority.DataBind, this, args);
                         return;
                     }
-                    PropertyChanged(this, args);
+                    mPrivatePropertyChanged(this, args);
                 }
             }
         }
@@ -387,14 +426,16 @@ namespace Procon.UI.API.Utils
         {
             if (mNotifyOn) {
                 mNotifying = true;
-                if (CollectionChanged != null) {
+                if (mPublicCollectionChanged != null)
+                    mPublicCollectionChanged(this, args);
+                if (mPrivateCollectionChanged != null) {
                     if (Dispatcher.CurrentDispatcher != mDispatcher) {
-                        mDispatcher.Invoke(CollectionChanged, this, args);
+                        mDispatcher.Invoke(mPrivateCollectionChanged, DispatcherPriority.DataBind, this, args);
                         mNotifying = false;
                         return;
                     }
-                    CollectionChanged(this, args);
-                }
+                    mPrivateCollectionChanged(this, args);
+                }   
                 mNotifying = false;
             }
         }
@@ -403,6 +444,7 @@ namespace Procon.UI.API.Utils
         {
             OnItemChanged(new ItemChangedEventArgs(sender, mItems.IndexOf((T)sender), args.PropertyName));
         }
+
     }
 
     // Event Args.

@@ -205,28 +205,16 @@ namespace Procon.UI.API.ViewModels
         // Wraps the Added & Removed events.
         private void Plugins_Added(PluginController parent, Plugin item)
         {
-            // Force the UI thread to execute this method.
-            if (ChangeDispatcher(() => Plugins_Added(parent, item)))
-                return;
-
             // Add the new plugin.
             Plugins.Add(item);
         }
         private void Plugins_Removed(PluginController parent, Plugin item)
         {
-            // Force the UI thread to execute this method.
-            if (ChangeDispatcher(() => Plugins_Removed(parent, item)))
-                return;
-
             // Remove the old plugin.
             Plugins.Add(item);
         }
         private void Variables_DataAdded(DataController parent, DataVariable item)
         {
-            // Force the UI thread to execute this method.
-            if (ChangeDispatcher(() => Variables_DataAdded(parent, item)))
-                return;
-
             // Add the new variable.
             if (!item.IsReadOnly) {
                 DataVariable tVariable = Variables.SingleOrDefault(x => item.Name.CompareTo(x.Name) < 0);
@@ -236,10 +224,6 @@ namespace Procon.UI.API.ViewModels
         }
         private void Variables_DataRemoved(DataController parent, DataVariable item)
         {
-            // Force the UI thread to execute this method.
-            if (ChangeDispatcher(() => Variables_DataRemoved(parent, item)))
-                return;
-
             // Remove the old variable.
             Variables.Remove(item);
         }
@@ -269,10 +253,6 @@ namespace Procon.UI.API.ViewModels
         // Synchronizes the view model's information with the game.
         private void GameEventOccurred(Game sender, GameEventArgs e)
         {
-            // Force the UI thread to execute this method.
-            if (ChangeDispatcher(() => GameEventOccurred(sender, e)))
-                return;
-
             switch (e.EventType)
             {
                 /* Player Joined Event:

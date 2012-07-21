@@ -34,20 +34,24 @@ namespace Procon.UI.Default.Root.Main.Connection.Layout
 
         #endregion IExtension Properties
 
+
         [STAThread]
         public bool Entry(Window root)
         {
             // Find the controls I want to use and check for issues.
             Grid tLayout = ExtensionApi.FindControl<Grid>(root, "MainLayout");
 
+
             // Do what I need to setup my control.
             LayoutView tView = new LayoutView();
             Grid.SetRow(tView, 1);
             tLayout.Children.Add(tView);
 
+
             // Setup the default settings.
-            if (ExtensionApi.Settings["Connection"].Value == null)
-                ExtensionApi.Settings["Connection"].Value = "Overview";
+            if (ExtensionApi.Settings["Pane"].Value == null)
+                ExtensionApi.Settings["Pane"].Value = "Overview";
+
 
             // Exit with good status.
             return true;

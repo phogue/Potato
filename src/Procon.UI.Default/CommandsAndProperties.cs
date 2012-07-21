@@ -386,6 +386,8 @@ namespace Procon.UI.Default
                     x.IsLocal  == (Boolean)ExtensionApi.Settings["InterfaceType"].Value &&
                     x.Hostname == (String) ExtensionApi.Settings["InterfaceHost"].Value &&
                     x.Port     == (UInt16) ExtensionApi.Settings["InterfacePort"].Value);
+            if (ExtensionApi.Interface == null)
+                ExtensionApi.Interface = ExtensionApi.Procon.Interfaces.FirstOrDefault();
 
             // Setup Active Connection.
             if (ExtensionApi.Interface != null
@@ -396,6 +398,8 @@ namespace Procon.UI.Default
                     x.GameType == (GameType)ExtensionApi.Settings["ConnectionType"].Value &&
                     x.Hostname == (String)  ExtensionApi.Settings["ConnectionHost"].Value &&
                     x.Port     == (UInt16)  ExtensionApi.Settings["ConnectionPort"].Value);
+            if (ExtensionApi.Connection == null)
+                ExtensionApi.Connection = ExtensionApi.Interface.Connections.FirstOrDefault();
 
 
 

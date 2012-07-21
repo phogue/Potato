@@ -1,16 +1,13 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Collections.Specialized;
-using System.ComponentModel;
 using System.Linq;
-using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
+
 using Procon.Net.Protocols.Objects;
 using Procon.UI.API;
 using Procon.UI.API.Commands;
@@ -59,6 +56,7 @@ namespace Procon.UI.Default.Root.Main.Connection.Chat
             // Find the controls I want to use and check for issues.
             Grid tLayout = ExtensionApi.FindControl<Grid>(root, "MainConnectionLayout");
 
+
             // Do what I need to setup my control.
             ChatView     tView = new ChatView();
             GridSplitter tSplt = new GridSplitter();
@@ -72,6 +70,7 @@ namespace Procon.UI.Default.Root.Main.Connection.Chat
             tLayout.Children.Add(tView);
             tLayout.Children.Add(tSplt);
             
+
             // Commands.
             GridLength tHeight = new GridLength(Double.MaxValue);
             tCmmds["MinMax"].Value = new RelayCommand<AttachedCommandArgs>(
@@ -88,66 +87,88 @@ namespace Procon.UI.Default.Root.Main.Connection.Chat
                 });
             #endregion
 
-            // Player management methods.
-            NotifiableCollection<Event>            tEvents  = null;
-            NotifiableCollection<Event>            tManaged = new NotifiableCollection<Event>();
-            Dictionary<ConnectionViewModel, Int32> tConn = new Dictionary<ConnectionViewModel, Int32>();
-            NotifyCollectionChangedEventHandler    tColl = (s, e) => {
-                if (!tConn.ContainsKey(ExtensionApi.Connection))
-                    tConn.Add(ExtensionApi.Connection, 0);
-                Int32 tIndex = tConn[ExtensionApi.Connection];
-                tConn[ExtensionApi.Connection] += e.NewItems.Count;
-                if (s == tManaged)
-                    ((Action<IList>)tProps["List"]["Coll"].Value)(new List<Event>(e.NewItems.OfType<Event>().Skip(tIndex).OfType<ChatEvent>()));
-                else {
-                    tManaged.Add((Event)e.NewItems[0]);
-                    ((Action<IList>)tProps["List"]["Coll"].Value)(new List<Event>(e.NewItems.OfType<ChatEvent>()));
+
+            // Information management.
+            NotifiableCollection<Event> tEvents  = null;
+            NotifiableCollection<Event> tManaged = new NotifiableCollection<Event>();
+
+            NotifyCollectionChangedEventHandler tColl = (s, e) =>
+            #region -- Calls tProps["List"]["Coll"]
+            {
+                var tCollAction = (Action<IList, NotifyCollectionChangedAction>)tProps["List"]["Coll"].Value;
+                switch (e.Action) {
+                    case NotifyCollectionChangedAction.Add:
+                        tCollAction(e.NewItems, NotifyCollectionChangedAction.Add);
+                        break;
+                    case NotifyCollectionChangedAction.Remove:
+                        tCollAction(e.OldItems, NotifyCollectionChangedAction.Remove);
+                        break;
+                    case NotifyCollectionChangedAction.Reset:
+                        tCollAction(null, NotifyCollectionChangedAction.Reset);
+                        break;
                 }
             };
+            #endregion
 
-            tProps["List"]["Coll"].Value = new Action<IList>(
-            #region -- Updates the managed players list.
-                e => {
-                    // For each event added.
-                    foreach (ChatEvent @event in e) {
-                        Visibility tTeam        = Visibility.Collapsed;
-                        Visibility tSquad       = Visibility.Collapsed;
-                        Visibility tPlayer      = Visibility.Visible;
-                        Object     tTeamBrush   = tView.TryFindResource("BrushChatMessage");
-                        Object     tSquadBrush  = tView.TryFindResource("BrushChatMessage");
-                        Object     tPlayerBrush = tView.TryFindResource("BrushChatPrivate");
-                        Object     tNameBrush   = tView.TryFindResource("BrushChatPrivate");
-
-                        // Chat is not to a player.
-                        if (@event.Player == null) {
-                            tTeam      = Visibility.Visible;
-                            tSquad     = Visibility.Visible;
-                            tPlayer    = Visibility.Collapsed;
-                            tNameBrush = tView.TryFindResource("BrushChatMessage");
-                        }
-                        // Chat is not to a squad.
-                        if (@event.Squad == Squad.None)
-                            tSquad = Visibility.Collapsed;
-                        // Chat is not to a team.
-                        if (@event.Team == Team.None)
-                            tTeam = Visibility.Collapsed;
-                        // Chat is to a team.
-                        else
-                            tTeamBrush = tSquadBrush = tNameBrush = tView.TryFindResource("Brush" + @event.Team.ToString() + "Content");
-
-                        // Setup values.
-                        @event.DataSet("ui.TeamVs",   tTeam);
-                        @event.DataSet("ui.TeamFg",   tTeamBrush);
-                        @event.DataSet("ui.SquadVs",  tSquad);
-                        @event.DataSet("ui.SquadFg",  tSquadBrush);
-                        @event.DataSet("ui.PlayerVs", tPlayer);
-                        @event.DataSet("ui.PlayerFg", tPlayerBrush);
-                        @event.DataSet("ui.NameFg",   tNameBrush);
+            tProps["List"]["Coll"].Value = new Action<IList, NotifyCollectionChangedAction>(
+            #region -- Updates the managed events list.
+                (i, a) => {
+                    switch (a) {
+                        case NotifyCollectionChangedAction.Add:
+                            foreach (Event @event in i)
+                                tManaged.Add(@event);
+                            break;
+                        case NotifyCollectionChangedAction.Remove:
+                            foreach (Event @event in i)
+                                tManaged.Remove(@event);
+                            break;
+                        case NotifyCollectionChangedAction.Reset:
+                            tManaged.Clear();
+                            break;
                     }
+
+                    // Setup properties for new items being added.
+                    if (a == NotifyCollectionChangedAction.Add)
+                        foreach (ChatEvent @event in i.OfType<ChatEvent>().Where(e => !e.DataContains("uiTeamVs"))) {
+                            Visibility tTeam        = Visibility.Collapsed;
+                            Visibility tSquad       = Visibility.Collapsed;
+                            Visibility tPlayer      = Visibility.Visible;
+                            Object     tTeamBrush   = tView.TryFindResource("BrushChatMessage");
+                            Object     tSquadBrush  = tView.TryFindResource("BrushChatMessage");
+                            Object     tPlayerBrush = tView.TryFindResource("BrushChatPrivate");
+                            Object     tNameBrush   = tView.TryFindResource("BrushChatPrivate");
+
+                            // Chat is not to a player.
+                            if (@event.Player == null) {
+                                tTeam      = Visibility.Visible;
+                                tSquad     = Visibility.Visible;
+                                tPlayer    = Visibility.Collapsed;
+                                tNameBrush = tView.TryFindResource("BrushChatMessage");
+                            }
+                            // Chat is not to a squad.
+                            if (@event.Squad == Squad.None)
+                                tSquad = Visibility.Collapsed;
+                            // Chat is not to a team.
+                            if (@event.Team == Team.None)
+                                tTeam = Visibility.Collapsed;
+                            // Chat is to a team.
+                            else
+                                tTeamBrush = tSquadBrush = tNameBrush = tView.TryFindResource("Brush" + @event.Team.ToString() + "Content");
+
+                            // Setup values.
+                            @event.DataSet("ui.TeamVs",   tTeam);
+                            @event.DataSet("ui.TeamFg",   tTeamBrush);
+                            @event.DataSet("ui.SquadVs",  tSquad);
+                            @event.DataSet("ui.SquadFg",  tSquadBrush);
+                            @event.DataSet("ui.PlayerVs", tPlayer);
+                            @event.DataSet("ui.PlayerFg", tPlayerBrush);
+                            @event.DataSet("ui.NameFg",   tNameBrush);
+                        }
                 });
             #endregion
-            tProps["List"]["Swap"].Value = new Action<ConnectionViewModel>(
-            #region -- Detaches the old list and creates a new list.
+
+            tProps["Swap"].Value = new Action<ConnectionViewModel>(
+            #region -- Changes the lists being viewed.
                 x => {
                     // Cleanup old stuff.
                     if (tEvents != null) {
@@ -158,15 +179,17 @@ namespace Procon.UI.Default.Root.Main.Connection.Chat
                     // Setup new stuff.
                     if (x != null) {
                         tEvents = x.Events;
-                        tManaged.AddRange(tEvents);
+                        tColl(tEvents, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, new List<Event>(tEvents.Skip(tEvents.Count - 15))));
                         tEvents.CollectionChanged += tColl;
-                        tColl(tManaged, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, new List<Event>(tEvents)));
                     }
                 });
             #endregion
 
             tProps.Value = tManaged;
-            ExtensionApi.Properties["Connection"].PropertyChanged += (s, e) => ((Action<ConnectionViewModel>)tProps["List"]["Swap"].Value)(ExtensionApi.Connection);
+            ExtensionApi.Properties["Connection"].PropertyChanged += (s, e) => {
+                ((Action<ConnectionViewModel>)tProps["Swap"].Value)(ExtensionApi.Connection);
+            };
+
 
             // Exit with good status.
             return true;

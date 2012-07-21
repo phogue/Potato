@@ -51,6 +51,7 @@
     <Image Name="MainHeaderLogo"
            DockPanel.Dock="Right"
            Margin="10, 0"
+           Height="40"
            Source="{Binding
                Source={x:Static eapi:ExtensionApi.Properties},
                Path=[Images][Procon][Small].Value}" />
@@ -68,7 +69,7 @@
     <!-- Interfaces -->
     <ComboBox Name="MainHeaderInterfaces"
               Margin="0, 5"
-              Height="35"
+              Height="30"
               FontSize="15"
               FontWeight="Bold"
               Style="{DynamicResource StyleComboBoxHeader}"
@@ -88,7 +89,7 @@
     <!-- Connections -->
     <ComboBox Name="MainHeaderConnections"
               Margin="0, 5"
-              Height="35"
+              Height="30"
               FontSize="15"
               FontStyle="Italic"
               Style="{DynamicResource StyleComboBoxHeader}"

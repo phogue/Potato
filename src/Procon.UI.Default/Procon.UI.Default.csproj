@@ -41,6 +41,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="CommandsAndProperties.cs" />
+    <Compile Include="Template.cs" />
     <Compile Include="Panel-Root\Layout\Layout.cs" />
     <Compile Include="Panel-Root\Layout\LayoutView.xaml.cs">
       <DependentUpon>LayoutView.xaml</DependentUpon>
@@ -56,6 +57,10 @@
     <Compile Include="Panel-Root\Panel-Main\Panel-Connection\Control-Players\Players.cs" />
     <Compile Include="Panel-Root\Panel-Main\Panel-Connection\Control-Players\PlayersView.xaml.cs">
       <DependentUpon>PlayersView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Panel-Root\Panel-Main\Panel-Connection\Control-Maps\Maps.cs" />
+    <Compile Include="Panel-Root\Panel-Main\Panel-Connection\Control-Maps\MapsView.xaml.cs">
+      <DependentUpon>MapsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Panel-Root\Panel-Main\Panel-Interface\Layout\Layout.cs" />
     <Compile Include="Panel-Root\Panel-Main\Panel-Interface\Layout\LayoutView.xaml.cs">
@@ -151,6 +156,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Panel-Root\Panel-Main\Panel-Connection\Control-Players\PlayersView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Panel-Root\Panel-Main\Panel-Connection\Control-Maps\MapsView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

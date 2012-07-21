@@ -49,9 +49,11 @@ namespace Procon.UI.Default.Root.Main.Header
             // Find the controls I want to use and check for issues.
             Grid tLayout = ExtensionApi.FindControl<Grid>(root, "MainLayout");
 
+
             // Do what I need to setup my control.
             HeaderView tView = new HeaderView();
             tLayout.Children.Add(tView);
+
 
             // Commands.
             tCmmds["State"].Value = new RelayCommand<AttachedCommandArgs>(
@@ -71,13 +73,15 @@ namespace Procon.UI.Default.Root.Main.Header
                 x => {
                     ComboBox tSender = x.Sender as ComboBox;
                     if (tSender != null)
-                        if (tSender.Name == "MainHeaderInterfaces")
+                        if (tSender.Name == "MainHeaderInterfaces") {
                             ExtensionApi.Settings["View"].Value = "Interface";
+                        }
                         else if (tSender.Name == "MainHeaderConnections") {
                             ExtensionApi.Settings["View"].Value = "Connection";
-                    }
+                        }
                 });
             #endregion
+
 
             // Exit with good status.
             return true;

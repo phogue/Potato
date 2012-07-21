@@ -33,12 +33,19 @@ namespace Procon.UI.Default.Root.Layout
 
         #endregion IExtension Properties
 
+
         [STAThread]
         public bool Entry(Window root)
         {
             // Do what I need to setup my control.
             LayoutView tView = new LayoutView();
             root.Content = tView;
+
+
+            // Setup the default settings.
+            if (ExtensionApi.Settings["Tutorial"].Value == null)
+                ExtensionApi.Settings["Tutorial"].Value = "Step 1";
+
 
             // Exit with good status.
             return true;

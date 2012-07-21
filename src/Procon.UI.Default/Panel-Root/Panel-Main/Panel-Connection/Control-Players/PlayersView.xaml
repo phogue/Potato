@@ -103,10 +103,10 @@
                  SelectionMode="Multiple"
                  ItemsSource="{Binding
                      Source={x:Static eapi:ExtensionApi.Properties},
-                     Path=[Main][Connection][Players].Value}">
+                     Path=[Main][Connection][Players][List].Value}">
             <ListBox.Template>
                 <ControlTemplate>
-                    <ScrollViewer VerticalScrollBarVisibility="Auto"
+                    <ScrollViewer VerticalScrollBarVisibility="Visible"
                                   HorizontalScrollBarVisibility="Disabled">
                         <WrapPanel Margin="10" IsItemsHost="True" />
                     </ScrollViewer>

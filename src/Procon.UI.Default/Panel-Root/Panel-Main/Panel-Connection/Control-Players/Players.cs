@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Threading;
+
 using Procon.Net.Protocols.Objects;
 using Procon.UI.API;
 using Procon.UI.API.Commands;
@@ -52,17 +54,21 @@ namespace Procon.UI.Default.Root.Main.Connection.Players
             // Find the controls I want to use and check for issues.
             Grid tLayout = ExtensionApi.FindControl<Grid>(root, "MainConnectionLayout");
 
+
             // Do what I need to setup my control.
             PlayersView tView = new PlayersView();
             Grid.SetRow(tView, 1);
             tLayout.Children.Add(tView);
 
+
+            // Setup default property values.
             tProps["Score"].Value = 2000;
             tProps["Kdr"].Value   = 2.0;
             tProps["Ping"].Value  = 150;
 
             tProps["Action"]["Reason"].Value = "Admin Decision.";
             tProps["Action"]["Length"].Value = new TimeSubset() { Context = TimeSubsetContext.Permanent };
+
 
             // Commands.
             tCmmds["Move"].Value = new RelayCommand<AttachedCommandArgs>(
@@ -143,44 +149,71 @@ namespace Procon.UI.Default.Root.Main.Connection.Players
                 });
             #endregion
 
-            // Player management methods.
-            NotifiableCollection<Player>        tPlayers = null;
-            NotifiableCollection<Player>        tManaged = new NotifiableCollection<Player>();
-            Action<Player>                      tSort = (p)    => ((Action<Player>)        tProps["List"]["Sort"].Value)(p);
-            ItemChangedEventHandler             tItem = (s, e) => ((Action<Player, String>)tProps["List"]["Item"].Value)((Player)e.Item, e.PropertyName);
-            NotifyCollectionChangedEventHandler tColl = (s, e) => ((Action<Player, String>)tProps["List"]["Coll"].Value)(e.NewItems != null ? (Player)e.NewItems[0] : (Player)e.OldItems[0], e.Action.ToString());
-            tManaged.ItemChanged += tItem;
 
-            tProps["List"]["Sort"].Value     = new Action<Player>(
+            // Information management.
+            NotifiableCollection<Player> tPlayers = null;
+            NotifiableCollection<Player> tManaged = new NotifiableCollection<Player>();
+
+            Action<Player> tSort = p =>
+            #region -- Calls tProps["List"]["Sort"]
+            {
+                ((Action<Player>)tProps["List"]["Sort"].Value)(p);
+            };
+            #endregion
+            ItemChangedEventHandler tItem = (s, e) =>
+            #region -- Calls tProps["List"]["Item"]
+            {
+                ((Action<Player, String>)tProps["List"]["Item"].Value)((Player)e.Item, e.PropertyName);
+            };
+            #endregion
+            NotifyCollectionChangedEventHandler tColl = (s, e) =>
+            #region -- Calls tProps["List"]["Coll"]
+            {
+                var tCollAction = (Action<IList, NotifyCollectionChangedAction>)tProps["List"]["Coll"].Value;
+                switch (e.Action) {
+                    case NotifyCollectionChangedAction.Add:
+                        tCollAction(e.NewItems, NotifyCollectionChangedAction.Add);
+                        break;
+                    case NotifyCollectionChangedAction.Remove:
+                        tCollAction(e.OldItems, NotifyCollectionChangedAction.Remove);
+                        break;
+                    case NotifyCollectionChangedAction.Reset:
+                        tCollAction(null, NotifyCollectionChangedAction.Reset);
+                        break;
+                }
+            };
+            #endregion
+
+            tProps["List"]["Sort"].Value = new Action<Player>(
             #region -- Moves the player to the correct position in the player list.
-                x => {
+                p => {
                     Int32 tMod   = 0;
                     Int32 tIndex = 0;
 
                     while (tIndex < tManaged.Count) {
                         // Still moving the index.
-                        if (tManaged[tIndex] == x)
+                        if (tManaged[tIndex] == p)
                             tIndex += (tMod = 1);
                         // Move to the correct team.
-                        else if (tManaged[tIndex].Team < x.Team)
+                        else if (tManaged[tIndex].Team < p.Team)
                             tIndex++;
                         // Move to the correct name placement.
-                        else if (tManaged[tIndex].Team == x.Team && tManaged[tIndex].Name.CompareTo(x.Name) < 0)
+                        else if (tManaged[tIndex].Team == p.Team && tManaged[tIndex].Name.CompareTo(p.Name) < 0)
                             tIndex++;
                         // We're at the correct spot.
                         else
                             break;
                     }
-                    tManaged.Move(tManaged.IndexOf(x), tIndex - tMod);
+                    tManaged.Move(tManaged.IndexOf(p), tIndex - tMod);
                 });
             #endregion
             tProps["List"]["Item"].Value = new Action<Player, String>(
             #region -- Updates the player's managed properties.
-                (s, e) => {
+                (s, n) => {
                     Double tDouble = Double.MaxValue;
 
                     // Update Team brushes.
-                    if (e == null || e == "Team") {
+                    if (n == null || n == "Team") {
                         Object tHeaderBrush  = tView.TryFindResource("BrushTeam0Header");
                         Object tContentBrush = tView.TryFindResource("BrushTeam0Content");
                         if (s.Team >= Team.Team1) {
@@ -188,51 +221,54 @@ namespace Procon.UI.Default.Root.Main.Connection.Players
                             tContentBrush = tView.TryFindResource("Brush" + s.Team.ToString() + "Content");
                         }
                         s.DataSet("ui.Header",  tHeaderBrush);
-                        s.DataSet("ui.Content", tContentBrush); 
-                        if (Dispatcher.CurrentDispatcher != root.Dispatcher) {
-                            root.Dispatcher.Invoke(tSort, s);
-                            return;
-                        }
+                        s.DataSet("ui.Content", tContentBrush);
                         tSort(s);
                     }
                     // Update Country Code image.
-                    if (e == null || e == "CountryCode") {
+                    if (n == null || n == "CountryCode") {
                         if (s.CountryCode != null && ExtensionApi.Properties["Images"]["Countries"].ContainsKey(s.CountryCode))
                             s.DataSet("ui.CountryCode", ExtensionApi.Properties["Images"]["Countries"][s.CountryCode].Value);
                         else 
                             s.DataSet("ui.CountryCode", ExtensionApi.Properties["Images"]["Countries"]["UNK"].Value);
                     }
                     // Update score/kdr/ping brushes.
-                    if (e == null || e == "Score") {
+                    if (n == null || n == "Score") {
                         if (Double.TryParse(tProps["Score"].Value.ToString(), out tDouble))
                             s.DataSet("ui.Score", s.Score >= tDouble ? tView.TryFindResource("BrushTeam2Header") : tView.TryFindResource("BrushTextDark"));
                     }
-                    if (e == null || e == "Kdr") {
+                    if (n == null || n == "Kdr") {
                         if (Double.TryParse(tProps["Kdr"].Value.ToString(), out tDouble))
                             s.DataSet("ui.Kdr", s.Kdr >= tDouble ? tView.TryFindResource("BrushTeam2Header") : tView.TryFindResource("BrushTextDark"));
                     }
-                    if (e == null || e == "Ping") {
+                    if (n == null || n == "Ping") {
                         if (Double.TryParse(tProps["Ping"].Value.ToString(), out tDouble))
                             s.DataSet("ui.Ping", s.Kdr >= tDouble ? tView.TryFindResource("BrushTeam2Header") : tView.TryFindResource("BrushTextDark"));
                     }
                 });
             #endregion
-            tProps["List"]["Coll"].Value  = new Action<Player, String>(
+            tProps["List"]["Coll"].Value = new Action<IList, NotifyCollectionChangedAction>(
             #region -- Updates the managed players list.
-                (s, e) => {
-                    // Add and sort the player.
-                    if (e == "Add") {
-                        tManaged.Add(s);
-                        tItem(null, new ItemChangedEventArgs(s, -1, null));
+                (i, a) => {
+                    switch (a) {
+                        case NotifyCollectionChangedAction.Add:
+                            foreach (Player player in i) {
+                                tManaged.Add(player);
+                                tItem(null, new ItemChangedEventArgs(player, -1, null));
+                            }
+                            break;
+                        case NotifyCollectionChangedAction.Remove:
+                            foreach (Player player in i)
+                                tManaged.Remove(player);
+                            break;
+                        case NotifyCollectionChangedAction.Reset:
+                            tManaged.Clear();
+                            break;
                     }
-
-                    // Remove the player.
-                    else if (e == "Remove")
-                        tManaged.Remove(s);
                 });
             #endregion
-            tProps["List"]["Swap"].Value = new Action<ConnectionViewModel>(
-            #region -- Detaches the old list and creates a new list, sorting the players as they're added.
+
+            tProps["Swap"].Value = new Action<ConnectionViewModel>(
+            #region -- Changes the lists being viewed.
                 x => {
                     // Cleanup old stuff.
                     if (tPlayers != null) {
@@ -243,16 +279,18 @@ namespace Procon.UI.Default.Root.Main.Connection.Players
                     // Setup new stuff.
                     if (x != null) {
                         tPlayers = x.Players;
-                        tManaged.AddRange(tPlayers);
+                        tColl(tPlayers, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, new List<Player>(tPlayers)));
                         tPlayers.CollectionChanged += tColl;
-                        foreach (Player player in tPlayers)
-                            tItem(null, new ItemChangedEventArgs(player, -1, null));
                     }
                 });
             #endregion
 
-            tProps.Value = tManaged;
-            ExtensionApi.Properties["Connection"].PropertyChanged += (s, e) => ((Action<ConnectionViewModel>)tProps["List"]["Swap"].Value)(ExtensionApi.Connection);
+            tManaged.ItemChanged += tItem;
+            tProps["List"].Value = tManaged;
+            ExtensionApi.Properties["Connection"].PropertyChanged += (s, e) => {
+                ((Action<ConnectionViewModel>)tProps["Swap"].Value)(ExtensionApi.Connection);
+            };
+
 
             // Exit with good status.
             return true;

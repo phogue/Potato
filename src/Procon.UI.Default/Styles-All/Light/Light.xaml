@@ -954,7 +954,7 @@
     
     <DataTemplate x:Key="DataTemplatePlayer" DataType="{x:Type c:Player}">
         <Border Name="PART_Border"
-                Width="188"
+                Width="183"
                 Margin="5, 5, 3, 3">
             <!-- Context Menu -->
             <Border.ContextMenu>

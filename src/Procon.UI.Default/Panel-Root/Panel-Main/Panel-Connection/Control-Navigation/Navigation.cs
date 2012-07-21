@@ -48,11 +48,13 @@ namespace Procon.UI.Default.Root.Main.Connection.Navigation
             // Find the controls I want to use and check for issues.
             Grid tLayout = ExtensionApi.FindControl<Grid>(root, "MainConnectionLayout");
 
+
             // Do what I need to setup my control.
             NavigationView tView = new NavigationView();
             tLayout.Children.Add(tView);
-            
-            // Commands
+
+
+            // Commands.
             tCmmds["Swap"].Value = new RelayCommand<RadioButton>(
             #region -- Handles when a radio button is clicked.
                 x => {
@@ -69,6 +71,7 @@ namespace Procon.UI.Default.Root.Main.Connection.Navigation
                 });
             #endregion
 
+
             // Setup the default settings.
             if (ExtensionApi.Settings["Pane"].Value == null)
                 ExtensionApi.Settings["Pane"].Value = "Players";
@@ -77,6 +80,7 @@ namespace Procon.UI.Default.Root.Main.Connection.Navigation
             tView.MainConnectionNavigationBans.IsChecked     = (String)ExtensionApi.Settings["Pane"].Value == "Bans";
             tView.MainConnectionNavigationPlugins.IsChecked  = (String)ExtensionApi.Settings["Pane"].Value == "Plugins";
             tView.MainConnectionNavigationSettings.IsChecked = (String)ExtensionApi.Settings["Pane"].Value == "Settings";
+
 
             // Exit with good status.
             return true;

@@ -195,16 +195,16 @@
             
             <!-- Chat Panel-->
             <chat>
-              <loc key="Title"          value="Chat &amp; Events"   />
-              <loc key="PlayerJoin"     value="Joined"    />
-              <loc key="PlayerLeave"    value="Left"      />
-              <loc key="PlayerMoved"    value="Moved"     />
-              <loc key="PlayerKicked"   value="Kicked"    />
-              <loc key="PlayerBanned"   value="Banned"    />
-              <loc key="PlayerUnbanned" value="Unbanned"  />
-              <loc key="PlayerKill"     value="Kill"      />
-              <loc key="PlayerSpawn"    value="Spawn"     />
-              <loc key="MapChanged"     value="Map End"   />
+              <loc key="Title"          value="Chat &amp; Events" />
+              <loc key="PlayerJoin"     value="Joined" />
+              <loc key="PlayerLeave"    value="Left" />
+              <loc key="PlayerMoved"    value="Moved" />
+              <loc key="PlayerKicked"   value="Kicked" />
+              <loc key="PlayerBanned"   value="Banned" />
+              <loc key="PlayerUnbanned" value="Unbanned" />
+              <loc key="PlayerKill"     value="Kill" />
+              <loc key="PlayerSpawn"    value="Spawn" />
+              <loc key="MapChanged"     value="Map End" />
               <loc key="RoundChanged"   value="Round End" />
               <events>
                 <loc key="PlayerJoin"     value=" joined the game." />
@@ -266,6 +266,13 @@
               <loc key="Kick"  value="Kick" />
               <loc key="Move"  value="Move" />
             </players>
+            <maps>
+              <loc key="Title" value="Map List" />
+              <loc key="RestartMap"   value="Restart Map" />
+              <loc key="RestartRound" value="Restart Round" />
+              <loc key="NextRound"    value="Next Round" />
+              <loc key="NextMap"      value="Next Map" />
+            </maps>
           </connection>
         </main>
         

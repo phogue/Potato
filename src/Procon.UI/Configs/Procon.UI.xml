@@ -1,7 +1,6 @@
 <procon>
   <ui>
     <settings>
-      <Tutorial type="System.String">Step 1</Tutorial>
       <extensions>
         <!-- Default Procon Assemblies -->
         <assembly>Extensions\Default\Procon.UI.Default.dll</assembly>
@@ -20,6 +19,7 @@
         <extension>Main Connection Layout</extension>
         <extension>Main Connection Navigation</extension>
         <extension>Main Connection Players</extension>
+        <extension>Main Connection Maps</extension>
         <extension>Main Connection Chat</extension>
         
         <!-- Styles & Commands -->

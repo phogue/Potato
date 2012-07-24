@@ -13,6 +13,7 @@ namespace Procon.Core.Interfaces.Connections {
     using Procon.Net.Protocols.Objects;
 
     public class LocalConnection<G> : Connection where G : Game {
+
         // Public Accessors/Mutators.
         public override GameState GameState {
             get { return Game != null ? Game.State : null; }
@@ -55,7 +56,8 @@ namespace Procon.Core.Interfaces.Connections {
                 }
             ).Tick += new Task.TickHandler(LocalConnection_Tick);
 
-            StateNLP = new StateNLP() {
+            TextCommand = new LocalTextCommandController() {
+                Connection = this,
                 Languages = MasterLanguages
             }.Execute();
         }
@@ -105,29 +107,10 @@ namespace Procon.Core.Interfaces.Connections {
         // Assigns events to be handled by this class.
         protected override void AssignEvents() {
             ClientEvent += new Game.ClientEventHandler(LocalConnection_ClientEvent);
-            GameEvent += new Game.GameEventHandler(LocalConnection_GameEvent);
         }
 
         private void LocalConnection_ClientEvent(Game sender, ClientEventArgs e) {
             if (e.EventType == ClientEventType.ConnectionStateChange) ;
-        }
-
-        private void LocalConnection_GameEvent(Game sender, GameEventArgs e) {
-            if (e.EventType == GameEventType.Chat) {
-                if (e.Chat.Text.Length > 0) {
-
-                    String prefix = e.Chat.Text.First().ToString();
-                    String text = e.Chat.Text.Remove(0, 1);
-
-                    if ((prefix = GetValidPrefix(prefix)) != null) {
-                        StateNLP.Execute(Game.State,
-                            e.Chat.Author,
-                            Security.Account(GameType, e.Chat.Author.UID),
-                            prefix,
-                            text);
-                    }
-                }
-            }
         }
 
         private void LocalConnection_Tick(Task sender, DateTime dt) {
@@ -180,23 +163,7 @@ namespace Procon.Core.Interfaces.Connections {
 
         #region This may be moved to a NLP Controller at some point
 
-        /// <summary>
-        /// Checks if a prefix is an allowed prefix
-        /// </summary>
-        /// <param name="prefix">The prefix to check (e.g !, @ etc.)</param>
-        /// <returns>The parameter prefix, or null if the prefix is invalid</returns>
-        private string GetValidPrefix(string prefix) {
 
-            string result = null;
-
-            if (prefix == Variables.Get<String>(CommandInitiator.Local, CommonVariableNames.TextCommandPublicPrefix) ||
-                prefix == Variables.Get<String>(CommandInitiator.Local, CommonVariableNames.TextCommandProtectedPrefix) ||
-                prefix == Variables.Get<String>(CommandInitiator.Local, CommonVariableNames.TextCommandPrivatePrefix)) {
-                result = prefix;
-            }
-
-            return result;
-        }
 
         #endregion
     }

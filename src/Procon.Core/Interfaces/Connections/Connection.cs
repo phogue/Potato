@@ -116,16 +116,16 @@ namespace Procon.Core.Interfaces.Connections {
         private ILayer mLayer;
 
         [JsonIgnore]
-        public ICoreNLP StateNLP {
-            get { return mStateNLP; }
+        public TextCommandController TextCommand {
+            get { return mTextCommand; }
             protected set {
-                if (mStateNLP != value) {
-                    mStateNLP = value;
+                if (mTextCommand != value) {
+                    mTextCommand = value;
                     OnPropertyChanged(this, "StateNLP");
                 }
             }
         }
-        private ICoreNLP mStateNLP;
+        private TextCommandController mTextCommand;
 
         public abstract GameState GameState {
             get;

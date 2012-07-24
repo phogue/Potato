@@ -35,12 +35,14 @@ namespace Procon.Core.Interfaces.Connections.Text {
     using Procon.NLP.Tokens.Primitive.Temporal;
     using Procon.NLP.Tokens.Reduction;
     using Procon.Core.Localization;
+    using Procon.Core.Interfaces.Variables;
     using Procon.Core.Interfaces.Connections;
     using Procon.Core.Interfaces.Security.Objects;
+    using Procon.Net;
     using Procon.Net.Protocols;
     using Procon.Net.Protocols.Objects;
 
-    public class StateNLP : TextCommandController, IStateNLP {
+    public class LocalTextCommandController : TextCommandController, IStateNLP {
 
         // Elsewhere.
         public XElement Document { get; set; }
@@ -52,20 +54,14 @@ namespace Procon.Core.Interfaces.Connections.Text {
 
         public Dictionary<Type, ParameterExpression> LinqParameterExpressions { get; set; }
 
-        public GameState GameState { get; set; }
+        //public GameState GameState { get; set; }
 
         public Player Speaker { get; protected set; }
         public Account SpeakerAccount { get; protected set; }
 
         public LanguageController Languages { get; set; }
 
-        #region Events
-
-        //public override event TextCommandEventHandler TextCommandEvent;
-
-        #endregion
-
-        public StateNLP() {
+        public LocalTextCommandController() {
             this.LinqParameterExpressions = new Dictionary<Type, ParameterExpression>() {
                 { typeof(Player), Expression.Parameter(typeof(Player), "x") },
                 { typeof(Map), Expression.Parameter(typeof(Map), "m") }
@@ -80,7 +76,7 @@ namespace Procon.Core.Interfaces.Connections.Text {
 
             PropertyInfo aliasId = this.GetPropertyInfo<Map>("Name");
 
-            var mapNames = from map in this.GameState.MapPool
+            var mapNames = from map in this.Connection.GameState.MapPool
                               let similarity = Math.Max(map.FriendlyName.DePluralLevenshtein(phrase.Text), map.Name.DePluralLevenshtein(phrase.Text))
                               where similarity >= 60
                               select new ThingObjectToken() {
@@ -100,7 +96,7 @@ namespace Procon.Core.Interfaces.Connections.Text {
             
             PropertyInfo aliasId = this.GetPropertyInfo<Player>("UID");
 
-            var playerNames = from player in this.GameState.PlayerList
+            var playerNames = from player in this.Connection.GameState.PlayerList
                               let similarity = Math.Max(player.NameStripped.DePluralLevenshtein(phrase.Text), player.Name.DePluralLevenshtein(phrase.Text))
                               where similarity >= 60
                               select new ThingObjectToken() {
@@ -119,7 +115,7 @@ namespace Procon.Core.Interfaces.Connections.Text {
         protected void ParseCountryNames(Phrase phrase) {
             PropertyInfo countryName = this.GetPropertyInfo<Player>("CountryName");
 
-            var playerCountries = from player in this.GameState.PlayerList
+            var playerCountries = from player in this.Connection.GameState.PlayerList
                                   let similarity = player.CountryName.LevenshteinSubsetBonusRatio(phrase.Text)
                                   where similarity >= 60
                                   select new ThingObjectToken() {
@@ -222,7 +218,7 @@ namespace Procon.Core.Interfaces.Connections.Text {
 
         #endregion
 
-        #region Execution
+        #region NLP
 
         protected List<ThingObjectToken> GetThings(Sentence sentence, PropertyInfo referenceProperty) {
 
@@ -327,14 +323,14 @@ namespace Procon.Core.Interfaces.Connections.Text {
             // I know this breaks the generic right here, but it's just a foot holder for now
             // as I convert the NLP over for use in procon.
             if (typeof(T) == typeof(Player)) {
-                foreach (Player player in this.GameState.PlayerList) {
+                foreach (Player player in this.Connection.GameState.PlayerList) {
                     if (predicate.Invoke(player as T) == true) {
                         result.Add(player as T);
                     }
                 }
             }
             else if (typeof(T) == typeof(Map)) {
-                foreach (Map map in this.GameState.MapPool) {
+                foreach (Map map in this.Connection.GameState.MapPool) {
                     if (predicate.Invoke(map as T) == true) {
                         result.Add(map as T);
                     }
@@ -416,7 +412,7 @@ namespace Procon.Core.Interfaces.Connections.Text {
             DateTimePatternNLP interval = timeTokens.Where(x => x.Pattern != null && x.Pattern.Modifier == TimeModifier.Interval)
                                            .Select(x => x.Pattern)
                                            .FirstOrDefault();
-            
+
             TimeSpan? period = timeTokens.Where(x => x.Pattern != null && (x.Pattern.Modifier == TimeModifier.Period || x.Pattern.Modifier == TimeModifier.None))
                                          .Select(x => x.Pattern.ToTimeSpan())
                                          .FirstOrDefault();
@@ -439,7 +435,6 @@ namespace Procon.Core.Interfaces.Connections.Text {
                             Delay = delay,
                             Period = period,
                             Interval = interval,
-                           // DateTime = (timeToken != null && timeToken.Pattern != null) ? timeToken.Pattern.ToDateTime() : null,
                             Text = originalSentence,
                             Quotes = quotes
                         }
@@ -450,11 +445,63 @@ namespace Procon.Core.Interfaces.Connections.Text {
             return sentence;
         }
 
-        // TODO: Better support for multiple languages.
-        public override Sentence Execute(GameState gameState, Player speaker, Account speakerAccount, string prefix, string sentence) {
+        #endregion
+
+        #region Execution
+
+        /// <summary>
+        /// Checks if a prefix is an allowed prefix
+        /// </summary>
+        /// <param name="prefix">The prefix to check (e.g !, @ etc.)</param>
+        /// <returns>The parameter prefix, or null if the prefix is invalid</returns>
+        private string GetValidPrefix(string prefix) {
+
+            string result = null;
+
+            if (prefix == this.Connection.Variables.Get<String>(CommandInitiator.Local, CommonVariableNames.TextCommandPublicPrefix) ||
+                prefix == this.Connection.Variables.Get<String>(CommandInitiator.Local, CommonVariableNames.TextCommandProtectedPrefix) ||
+                prefix == this.Connection.Variables.Get<String>(CommandInitiator.Local, CommonVariableNames.TextCommandPrivatePrefix)) {
+                result = prefix;
+            }
+
+            return result;
+        }
+
+        protected override void AssignEvents() {
+            this.Connection.GameEvent += new Game.GameEventHandler(Connection_GameEvent);
+        }
+
+        private void Connection_GameEvent(Game sender, GameEventArgs e) {
+            if (e.EventType == GameEventType.Chat) {
+                if (e.Chat.Text.Length > 0) {
+
+                    String prefix = e.Chat.Text.First().ToString();
+                    String text = e.Chat.Text.Remove(0, 1);
+
+                    if ((prefix = GetValidPrefix(prefix)) != null) {
+                        this.Execute(
+                            e.Chat.Author,
+                            this.Connection.Security.Account(this.Connection.GameType, e.Chat.Author.UID),
+                            prefix,
+                            text
+                        );
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// This method is only ever called internally as a result of a call from
+        /// a game event firing, i.e chat within a game.
+        /// </summary>
+        /// <param name="speaker"></param>
+        /// <param name="speakerAccount"></param>
+        /// <param name="prefix"></param>
+        /// <param name="?"></param>
+        /// <returns></returns>
+        protected Sentence Execute(Player speaker, Account speakerAccount, String prefix, String text) {
             Sentence result = null;
             
-            this.GameState = gameState;
             this.Speaker = speaker;
             this.SpeakerAccount = speakerAccount;
 
@@ -469,8 +516,8 @@ namespace Procon.Core.Interfaces.Connections.Text {
             if (selectedLanguage != null) {
                 this.Document = selectedLanguage.Root;
 
-                result = new Sentence().Parse(this, sentence).Reduce(this);
-                this.Execute(result, prefix, sentence);
+                result = new Sentence().Parse(this, text).Reduce(this);
+                this.Execute(result, prefix, text);
             }
 
             return result;

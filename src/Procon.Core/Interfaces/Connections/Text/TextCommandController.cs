@@ -21,15 +21,28 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
 using System.Xml.Linq;
+using Newtonsoft.Json;
 
 namespace Procon.Core.Interfaces.Connections.Text {
     using Procon.Core.Interfaces.Security.Objects;
     using Procon.Net.Protocols.Objects;
     using Procon.NLP;
 
-    public abstract class TextCommandController : Executable<TextCommandController>, ICoreNLP {
+    public abstract class TextCommandController : Executable<TextCommandController> {
 
         public List<TextCommand> TextCommands { get; protected set; }
+
+        [JsonIgnore]
+        public Connection Connection {
+            get { return mConnection; }
+            set {
+                if (mConnection != value) {
+                    mConnection = value;
+                    OnPropertyChanged(this, "Connection");
+                }
+            }
+        }
+        private Connection mConnection;
 
         #region Events
 
@@ -106,7 +119,7 @@ namespace Procon.Core.Interfaces.Connections.Text {
             }
         }
 
-        public abstract Sentence Execute(GameState gameState, Player speaker, Account speakerAccount, string prefix, string sentence);
+        //public abstract Sentence Execute(GameState gameState, Player speaker, Account speakerAccount, string text);
 
 
     }

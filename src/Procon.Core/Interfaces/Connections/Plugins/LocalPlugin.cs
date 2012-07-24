@@ -114,7 +114,7 @@ namespace Procon.Core.Interfaces.Connections.Plugins {
                 
                 this.Connection.ClientEvent += new Game.ClientEventHandler(Connection_ClientEvent);
                 this.Connection.GameEvent += new Game.GameEventHandler(Connection_GameEvent);
-                this.Connection.StateNLP.TextCommandEvent += new TextCommandController.TextCommandEventHandler(StateNLP_TextCommandEvent);
+                this.Connection.TextCommand.TextCommandEvent += new TextCommandController.TextCommandEventHandler(StateNLP_TextCommandEvent);
 
                 this.AppDomainPlugin.ProconVersion = Assembly.GetExecutingAssembly().GetName().Version;
 
@@ -218,15 +218,15 @@ namespace Procon.Core.Interfaces.Connections.Plugins {
                 command.UidCallback = this.Uid;
             }
 
-            TextCommand registeredCommand = this.Connection.StateNLP.TextCommands.Find(x => x.UidCallback == this.Uid && x.MethodCallback == command.MethodCallback);
+            TextCommand registeredCommand = this.Connection.TextCommand.TextCommands.Find(x => x.UidCallback == this.Uid && x.MethodCallback == command.MethodCallback);
 
             if (registeredCommand == null) {
-                this.Connection.StateNLP.TextCommands.Add(command);
+                this.Connection.TextCommand.TextCommands.Add(command);
             }
         }
 
         public void UnregisterCommand(TextCommand command) {
-            this.Connection.StateNLP.TextCommands.RemoveAll(x => x.UidCallback == this.Uid && x.MethodCallback == command.MethodCallback);
+            this.Connection.TextCommand.TextCommands.RemoveAll(x => x.UidCallback == this.Uid && x.MethodCallback == command.MethodCallback);
         }
 
         protected string Loc(string languageCode, string @namespace, string key, params object[] args) {

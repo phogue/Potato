@@ -64,7 +64,6 @@
     <Compile Include="ExecutableBase.cs" />
     <Compile Include="EventName.cs" />
     <Compile Include="Interfaces\Connections\Connection.cs" />
-    <Compile Include="Interfaces\Connections\Text\ICoreNLP.cs" />
     <Compile Include="Interfaces\Connections\Text\Match.cs" />
     <Compile Include="Interfaces\Connections\Text\Parser.cs" />
     <Compile Include="Interfaces\Connections\Text\SecurityIntersection.cs" />
@@ -143,7 +142,7 @@
     <Compile Include="Interfaces\Security\SecurityController.cs" />
     <Compile Include="Interfaces\LocalInterface.cs" />
     <Compile Include="Interfaces\RemoteInterface.cs" />
-    <Compile Include="Interfaces\Connections\Text\StateNLP.cs" />
+    <Compile Include="Interfaces\Connections\Text\LocalTextCommandController.cs" />
     <Compile Include="Localization\Language.cs" />
     <Compile Include="Scheduler\Task.cs" />
     <Compile Include="Scheduler\TaskController.cs" />

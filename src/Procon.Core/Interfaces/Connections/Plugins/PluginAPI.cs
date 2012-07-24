@@ -27,7 +27,7 @@ using System.Text;
 using System.Xml.Linq;
 
 namespace Procon.Core.Interfaces.Connections.Plugins {
-    using Procon.Core.Interfaces.Connections.NLP;
+    using Procon.Core.Interfaces.Connections.Text;
     using Procon.Core.Interfaces.Connections.Plugins.Variables;
     using Procon.Core.Interfaces.Security;
     using Procon.Core.Interfaces.Security.Objects;

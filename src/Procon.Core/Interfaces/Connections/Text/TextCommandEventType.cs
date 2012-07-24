@@ -22,20 +22,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Procon.Core.Interfaces.Connections.NLP {
-    using Procon.Net.Utils;
-    using Procon.Core.Interfaces.Security.Objects;
-    using Procon.NLP;
-    using Procon.NLP.Tokens.Object;
-    using Procon.Net.Protocols.Objects;
+namespace Procon.Core.Interfaces.Connections.Text {
 
-    public interface ICoreNLP {
-
-        event TextCommandController.TextCommandEventHandler TextCommandEvent;
-
-        List<TextCommand> TextCommands { get; }
-
-        Sentence Execute(GameState gameState, Player speaker, Account speakerAccount, string prefix, string sentence);
-
+    [Serializable]
+    public enum TextCommandEventType {
+        None,
+        Registered,
+        Unregistered,
+        Matched
     }
 }

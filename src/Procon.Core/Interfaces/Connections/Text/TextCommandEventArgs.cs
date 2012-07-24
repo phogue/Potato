@@ -22,22 +22,37 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Procon.Core.Interfaces.Connections.NLP {
+namespace Procon.Core.Interfaces.Connections.Text {
+    using Procon.Core.Interfaces.Security.Objects;
+    using Procon.Net.Protocols.Objects;
 
     [Serializable]
-    public enum TextCommandPriority {
-        Low = 0,
+    public class TextCommandEventArgs : EventArgs {
 
         /// <summary>
-        /// Default priority for a command.  You should not raise the priority unless
-        /// you are writing a command to influence other commands.
+        /// The type of event - registered, unregistered or matched
         /// </summary>
-        Medium = 1,
+        public TextCommandEventType EventType { get; set; }
 
         /// <summary>
-        /// High is generally used when a command will have the names
-        /// of other commands in it.  Say "Help" in the default basic in game info
+        /// The command that was registered, unregistered or matched
         /// </summary>
-        High = 2
+        public TextCommand Command { get; set; }
+
+        /// <summary>
+        /// List of lesser matching that didn't make the cut to be executed,
+        /// but could be useful elsewhere.
+        /// </summary>
+        public List<TextCommand> AlternativeCommands { get; set; }
+
+        /// <summary>
+        /// The results of the match if applicable
+        /// </summary>
+        public Match Match { get; set; }
+
+        /// <summary>
+        /// The player that initiated the text command
+        /// </summary>
+        public Player Speaker { get; set; }
     }
 }

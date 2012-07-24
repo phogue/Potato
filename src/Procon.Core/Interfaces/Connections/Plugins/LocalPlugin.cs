@@ -29,7 +29,7 @@ using Newtonsoft.Json;
 namespace Procon.Core.Interfaces.Connections.Plugins {
     using Procon.Core.Interfaces.Variables;
     using Procon.Core.Interfaces.Connections.Plugins.Variables;
-    using Procon.Core.Interfaces.Connections.NLP;
+    using Procon.Core.Interfaces.Connections.Text;
     using Procon.Core.Interfaces.Security;
     using Procon.Core.Interfaces.Security.Objects;
     using Procon.Core.Localization;

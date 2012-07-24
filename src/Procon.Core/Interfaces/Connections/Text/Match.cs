@@ -22,7 +22,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Procon.Core.Interfaces.Connections.NLP {
+namespace Procon.Core.Interfaces.Connections.Text {
     using Procon.Net.Protocols.Objects;
     using Procon.NLP.Tokens.Primitive.Temporal;
 

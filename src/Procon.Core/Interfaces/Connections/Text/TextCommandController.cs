@@ -18,6 +18,7 @@
 // along with Procon 2.  If not, see <http://www.gnu.org/licenses/>.
 
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.IO;
 using System.Xml.Linq;
 
@@ -26,7 +27,7 @@ namespace Procon.Core.Interfaces.Connections.Text {
     using Procon.Net.Protocols.Objects;
     using Procon.NLP;
 
-    public class TextCommandController : Executable<TextCommandController>, ICoreNLP {
+    public abstract class TextCommandController : Executable<TextCommandController>, ICoreNLP {
 
         public List<TextCommand> TextCommands { get; protected set; }
 
@@ -40,8 +41,6 @@ namespace Procon.Core.Interfaces.Connections.Text {
         public TextCommandController() {
             this.TextCommands = new List<TextCommand>();
         }
-
-
 
         #region Executable
 
@@ -67,14 +66,12 @@ namespace Procon.Core.Interfaces.Connections.Text {
 
         #endregion
 
-
-
         protected virtual void AssignEvents() {
             // this.TextCommands.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(TextCommands_CollectionChanged);
         }
 
         private void TextCommands_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e) {
-            if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add) {
+            if (e.Action == NotifyCollectionChangedAction.Add) {
                 foreach (TextCommand item in e.NewItems) {
                     this.ThrowTextCommandEvent(
                         new TextCommandEventArgs() {
@@ -84,7 +81,7 @@ namespace Procon.Core.Interfaces.Connections.Text {
                     );
                 }
             }
-            else if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Remove) {
+            else if (e.Action == NotifyCollectionChangedAction.Remove) {
                 foreach (TextCommand item in e.OldItems) {
                     this.ThrowTextCommandEvent(
                         new TextCommandEventArgs() {
@@ -109,9 +106,7 @@ namespace Procon.Core.Interfaces.Connections.Text {
             }
         }
 
-        public virtual Sentence Execute(GameState gameState, Player speaker, Account speakerAccount, string prefix, string sentence) {
-            return null;
-        }
+        public abstract Sentence Execute(GameState gameState, Player speaker, Account speakerAccount, string prefix, string sentence);
 
 
     }

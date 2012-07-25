@@ -64,6 +64,7 @@
     <Compile Include="ExecutableBase.cs" />
     <Compile Include="EventName.cs" />
     <Compile Include="Interfaces\Connections\Connection.cs" />
+    <Compile Include="Interfaces\Connections\TextCommands\RemoteTextCommandController.cs" />
     <Compile Include="Interfaces\Connections\TextCommands\Match.cs" />
     <Compile Include="Interfaces\Connections\TextCommands\ParserType.cs" />
     <Compile Include="Interfaces\Connections\TextCommands\SecurityIntersectionType.cs" />

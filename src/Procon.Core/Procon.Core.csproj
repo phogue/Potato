@@ -66,14 +66,14 @@
     <Compile Include="Interfaces\Connections\Connection.cs" />
     <Compile Include="Interfaces\Connections\Text\Match.cs" />
     <Compile Include="Interfaces\Connections\Text\ParserType.cs" />
-    <Compile Include="Interfaces\Connections\Text\SecurityIntersection.cs" />
+    <Compile Include="Interfaces\Connections\Text\SecurityIntersectionType.cs" />
     <Compile Include="Interfaces\Connections\Text\TextCommand.cs" />
     <Compile Include="Interfaces\Connections\Text\TextCommandController.cs" />
     <Compile Include="Interfaces\Connections\Text\TextCommandEventArgs.cs" />
     <Compile Include="Interfaces\Connections\Text\TextCommandEventType.cs" />
     <Compile Include="Interfaces\Connections\Text\TextCommandNLPParser.cs" />
     <Compile Include="Interfaces\Connections\Text\TextCommandParser.cs" />
-    <Compile Include="Interfaces\Connections\Text\TextCommandPriority.cs" />
+    <Compile Include="Interfaces\Connections\Text\PriorityType.cs" />
     <Compile Include="Interfaces\Connections\Plugins\IPluginAPI.cs" />
     <Compile Include="Interfaces\Connections\Plugins\LocalPlugin.cs" />
     <Compile Include="Interfaces\Connections\Plugins\LocalPluginController.cs" />

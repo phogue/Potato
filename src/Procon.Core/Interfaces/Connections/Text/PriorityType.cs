@@ -25,7 +25,7 @@ using System.Text;
 namespace Procon.Core.Interfaces.Connections.Text {
 
     [Serializable]
-    public enum TextCommandPriority {
+    public enum PriorityType {
         Low = 0,
 
         /// <summary>

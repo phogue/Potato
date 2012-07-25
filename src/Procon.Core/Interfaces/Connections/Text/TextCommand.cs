@@ -64,7 +64,7 @@ namespace Procon.Core.Interfaces.Connections.Text {
         /// Defaults to Medium.  This setting should only be raised if you
         /// are writing a command to influence other commands.
         /// </summary>
-        public TextCommandPriority Priority { get; set; }
+        public PriorityType Priority { get; set; }
 
         /// <summary>
         /// A key to be used in a localization lookup for the registered Uid's
@@ -94,7 +94,7 @@ namespace Procon.Core.Interfaces.Connections.Text {
 
             this.Commands = new List<string>();
 
-            this.Priority = TextCommandPriority.Medium;
+            this.Priority = PriorityType.Medium;
         }
     }
 }

@@ -69,7 +69,7 @@ namespace Procon.Core.Interfaces.Connections.Plugins {
                 this.RegisterTextCommand(
                     new Text.TextCommand() {
                         MethodCallback = "HelpCommand",
-                        Priority = TextCommandPriority.High,
+                        Priority = PriorityType.High,
                         DescriptionKey = "HelpCommandDescription",
                         Commands = new List<string>() {
                             "Help"

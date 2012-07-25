@@ -119,8 +119,6 @@ namespace Procon.Core.Interfaces.Connections.Text {
             }
         }
 
-        //public abstract Sentence Execute(GameState gameState, Player speaker, Account speakerAccount, string text);
-
 
     }
 }

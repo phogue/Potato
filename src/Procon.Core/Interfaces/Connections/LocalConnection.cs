@@ -159,12 +159,5 @@ namespace Procon.Core.Interfaces.Connections {
                 Game.Action(action);
             } 
         }
-
-
-        #region This may be moved to a NLP Controller at some point
-
-
-
-        #endregion
     }
 }

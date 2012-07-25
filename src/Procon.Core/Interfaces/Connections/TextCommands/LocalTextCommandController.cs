@@ -70,7 +70,7 @@ namespace Procon.Core.Interfaces.Connections.TextCommands {
         /// </summary>
         /// <param name="prefix">The prefix to check (e.g !, @ etc.)</param>
         /// <returns>The parameter prefix, or null if the prefix is invalid</returns>
-        private string GetValidPrefix(string prefix) {
+        protected string GetValidPrefix(string prefix) {
 
             string result = null;
 
@@ -177,7 +177,7 @@ namespace Procon.Core.Interfaces.Connections.TextCommands {
         /// </summary>
         /// <param name="speaker"></param>
         /// <returns></returns>
-        private Player GetSpeakerAccountsPlayer(Account speaker) {
+        protected Player GetSpeakerAccountsPlayer(Account speaker) {
             Player player = null;
 
             if (speaker != null) {
@@ -197,7 +197,7 @@ namespace Procon.Core.Interfaces.Connections.TextCommands {
         /// <param name="initiator"></param>
         /// <param name="text"></param>
         [Command(Command = CommandName.TextCommandsParse)]
-        public void ParseTextCommand(CommandInitiator initiator, String text) {
+        public override void ParseTextCommand(CommandInitiator initiator, String text) {
             Account speakerAccount = this.Connection.Security.Account(initiator.Username);
 
             String prefix = this.Connection.Variables.Get<String>(CommandInitiator.Local, CommonVariableNames.TextCommandPublicPrefix);
@@ -213,7 +213,7 @@ namespace Procon.Core.Interfaces.Connections.TextCommands {
         /// <param name="initiator"></param>
         /// <param name="text"></param>
         [Command(Command = CommandName.TextCommandsPreview)]
-        public void PreviewTextCommand(CommandInitiator initiator, String text) {
+        public override void PreviewTextCommand(CommandInitiator initiator, String text) {
             Account speakerAccount = this.Connection.Security.Account(initiator.Username);
 
             String prefix = this.Connection.Variables.Get<String>(CommandInitiator.Local, CommonVariableNames.TextCommandPublicPrefix);

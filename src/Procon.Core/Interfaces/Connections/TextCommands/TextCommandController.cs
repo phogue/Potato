@@ -17,6 +17,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Procon 2.  If not, see <http://www.gnu.org/licenses/>.
 
+using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
@@ -119,6 +120,9 @@ namespace Procon.Core.Interfaces.Connections.TextCommands {
             }
         }
 
+        public abstract void ParseTextCommand(CommandInitiator initiator, String text);
+
+        public abstract void PreviewTextCommand(CommandInitiator initiator, String text);
 
     }
 }

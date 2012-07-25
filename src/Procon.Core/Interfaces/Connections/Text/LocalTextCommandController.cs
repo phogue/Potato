@@ -26,6 +26,7 @@ using System.Text;
 using System.Reflection;
 
 namespace Procon.Core.Interfaces.Connections.Text {
+    using Procon.Core.Interfaces.Connections.Text.Parsers;
     using Procon.NLP;
     using Procon.NLP.Utils;
     using Procon.NLP.Tokens.Object;
@@ -127,7 +128,7 @@ namespace Procon.Core.Interfaces.Connections.Text {
             }
 
             if (selectedLanguage != null) {
-                TextCommandNLPParser parser = new TextCommandNLPParser() {
+                NLP parser = new NLP() {
                     Connection = this.Connection,
                     TextCommands = commands,
                     Document = selectedLanguage.Root,

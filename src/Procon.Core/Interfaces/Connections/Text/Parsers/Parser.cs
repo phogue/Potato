@@ -6,7 +6,7 @@ using System.Text;
 using System.Xml.Linq;
 using System.Reflection;
 
-namespace Procon.Core.Interfaces.Connections.Text {
+namespace Procon.Core.Interfaces.Connections.Text.Parsers {
     using Procon.NLP;
     using Procon.NLP.Utils;
     using Procon.NLP.Tokens.Object;
@@ -17,7 +17,7 @@ namespace Procon.Core.Interfaces.Connections.Text {
     using Procon.Core.Interfaces.Security;
     using Procon.Core.Interfaces.Security.Objects;
 
-    public abstract class TextCommandParser : IStateNLP {
+    public abstract class Parser : IStateNLP {
 
         public List<TextCommand> TextCommands { get; set; }
 

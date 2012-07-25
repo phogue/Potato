@@ -25,7 +25,7 @@ using System.Text;
 namespace Procon.Core.Interfaces.Connections.Text {
 
     [Serializable]
-    public enum SecurityIntersection {
+    public enum SecurityIntersectionType {
         /// <summary>
         /// No one can execute this command
         /// </summary>

@@ -81,14 +81,14 @@ namespace Procon.Core.Interfaces.Connections.Text {
         /// 
         /// SecurityChecks on the method are done during execution within the plugin.
         /// </summary>
-        public SecurityIntersection SecurityIntersection { get; set; }
+        public SecurityIntersectionType SecurityIntersection { get; set; }
 
         public TextCommand() {
             this.UidCallback = String.Empty;
             this.MethodCallback = String.Empty;
             this.DescriptionKey = String.Empty;
 
-            this.SecurityIntersection = Text.SecurityIntersection.All;
+            this.SecurityIntersection = Text.SecurityIntersectionType.All;
 
             this.Parser = Text.ParserType.NLP;
 

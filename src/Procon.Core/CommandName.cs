@@ -55,6 +55,9 @@ namespace Procon.Core {
 
         PluginSetVariable,
 
+        TextCommandsParse,
+        TextCommandsPreview,
+
         /// Packages
         ///
         PackagesInstallPackage,

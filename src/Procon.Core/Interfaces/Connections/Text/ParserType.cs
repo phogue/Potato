@@ -25,7 +25,7 @@ using System.Text;
 namespace Procon.Core.Interfaces.Connections.Text {
 
     [Serializable]
-    public enum Parser {
+    public enum ParserType {
         NLP
     }
 }

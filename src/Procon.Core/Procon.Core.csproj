@@ -65,7 +65,7 @@
     <Compile Include="EventName.cs" />
     <Compile Include="Interfaces\Connections\Connection.cs" />
     <Compile Include="Interfaces\Connections\Text\Match.cs" />
-    <Compile Include="Interfaces\Connections\Text\Parser.cs" />
+    <Compile Include="Interfaces\Connections\Text\ParserType.cs" />
     <Compile Include="Interfaces\Connections\Text\SecurityIntersection.cs" />
     <Compile Include="Interfaces\Connections\Text\TextCommand.cs" />
     <Compile Include="Interfaces\Connections\Text\TextCommandController.cs" />

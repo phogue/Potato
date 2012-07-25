@@ -49,7 +49,7 @@ namespace Procon.Core.Interfaces.Connections.Text {
         /// 
         /// NLP is set by default.
         /// </summary>
-        public Parser Parser { get; set; }
+        public ParserType Parser { get; set; }
 
         /// <summary>
         /// List of commands to find in the string.
@@ -90,7 +90,7 @@ namespace Procon.Core.Interfaces.Connections.Text {
 
             this.SecurityIntersection = Text.SecurityIntersection.All;
 
-            this.Parser = Text.Parser.NLP;
+            this.Parser = Text.ParserType.NLP;
 
             this.Commands = new List<string>();
 

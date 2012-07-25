@@ -71,6 +71,8 @@
     <Compile Include="Interfaces\Connections\Text\TextCommandController.cs" />
     <Compile Include="Interfaces\Connections\Text\TextCommandEventArgs.cs" />
     <Compile Include="Interfaces\Connections\Text\TextCommandEventType.cs" />
+    <Compile Include="Interfaces\Connections\Text\TextCommandNLPParser.cs" />
+    <Compile Include="Interfaces\Connections\Text\TextCommandParser.cs" />
     <Compile Include="Interfaces\Connections\Text\TextCommandPriority.cs" />
     <Compile Include="Interfaces\Connections\Plugins\IPluginAPI.cs" />
     <Compile Include="Interfaces\Connections\Plugins\LocalPlugin.cs" />

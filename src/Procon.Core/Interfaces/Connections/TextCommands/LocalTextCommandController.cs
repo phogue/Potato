@@ -25,8 +25,8 @@ using System.Xml.Linq;
 using System.Text;
 using System.Reflection;
 
-namespace Procon.Core.Interfaces.Connections.Text {
-    using Procon.Core.Interfaces.Connections.Text.Parsers;
+namespace Procon.Core.Interfaces.Connections.TextCommands {
+    using Procon.Core.Interfaces.Connections.TextCommands.Parsers;
     using Procon.NLP;
     using Procon.NLP.Utils;
     using Procon.NLP.Tokens.Object;

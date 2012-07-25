@@ -23,7 +23,7 @@ using System.IO;
 using System.Xml.Linq;
 using Newtonsoft.Json;
 
-namespace Procon.Core.Interfaces.Connections.Text {
+namespace Procon.Core.Interfaces.Connections.TextCommands {
     using Procon.Core.Interfaces.Security.Objects;
     using Procon.Net.Protocols.Objects;
     using Procon.NLP;

@@ -22,21 +22,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Procon.Core.Interfaces.Connections.Text {
+namespace Procon.Core.Interfaces.Connections.TextCommands {
 
     [Serializable]
-    public enum SecurityIntersectionType {
+    public enum PriorityType {
+        Low = 0,
+
         /// <summary>
-        /// No one can execute this command
+        /// Default priority for a command.  You should not raise the priority unless
+        /// you are writing a command to influence other commands.
         /// </summary>
-        None,
+        Medium = 1,
+
         /// <summary>
-        /// Everyone can execute this command
+        /// High is generally used when a command will have the names
+        /// of other commands in it.  Say "Help" in the default basic in game info
         /// </summary>
-        All,
-        /// <summary>
-        /// Only those with an account can execute this command
-        /// </summary>
-        Account
+        High = 2
     }
 }

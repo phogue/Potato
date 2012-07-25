@@ -22,7 +22,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Procon.Core.Interfaces.Connections.Text {
+namespace Procon.Core.Interfaces.Connections.TextCommands {
 
     [Serializable]
     public class TextCommand {
@@ -88,9 +88,9 @@ namespace Procon.Core.Interfaces.Connections.Text {
             this.MethodCallback = String.Empty;
             this.DescriptionKey = String.Empty;
 
-            this.SecurityIntersection = Text.SecurityIntersectionType.All;
+            this.SecurityIntersection = TextCommands.SecurityIntersectionType.All;
 
-            this.Parser = Text.ParserType.NLP;
+            this.Parser = TextCommands.ParserType.NLP;
 
             this.Commands = new List<string>();
 

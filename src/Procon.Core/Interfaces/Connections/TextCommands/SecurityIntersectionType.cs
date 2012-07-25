@@ -22,14 +22,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Procon.Core.Interfaces.Connections.Text {
+namespace Procon.Core.Interfaces.Connections.TextCommands {
 
     [Serializable]
-    public enum TextCommandEventType {
+    public enum SecurityIntersectionType {
+        /// <summary>
+        /// No one can execute this command
+        /// </summary>
         None,
-        Registered,
-        Unregistered,
-        Matched,
-        Previewed
+        /// <summary>
+        /// Everyone can execute this command
+        /// </summary>
+        All,
+        /// <summary>
+        /// Only those with an account can execute this command
+        /// </summary>
+        Account
     }
 }

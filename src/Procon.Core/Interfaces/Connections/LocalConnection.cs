@@ -4,7 +4,7 @@ using System.Xml.Linq;
 using Newtonsoft.Json;
 
 namespace Procon.Core.Interfaces.Connections {
-    using Procon.Core.Interfaces.Connections.Text;
+    using Procon.Core.Interfaces.Connections.TextCommands;
     using Procon.Core.Interfaces.Connections.Plugins;
     using Procon.Core.Interfaces.Variables;
     using Procon.Core.Scheduler;

@@ -28,7 +28,7 @@ namespace Procon.Core.Interfaces.Connections.Plugins {
     using Procon.Net.Utils;
     using Procon.Net.Protocols.Objects;
     using Procon.Core.Scheduler;
-    using Procon.Core.Interfaces.Connections.Text;
+    using Procon.Core.Interfaces.Connections.TextCommands;
     using Procon.Core.Interfaces.Security.Objects;
 
     public class BasicInGameInfo : PluginAPI
@@ -57,7 +57,7 @@ namespace Procon.Core.Interfaces.Connections.Plugins {
 
             if (e.EventType == PluginEventType.CallbacksRegistered) {
                 this.RegisterTextCommand(
-                    new Text.TextCommand() {
+                    new TextCommands.TextCommand() {
                         MethodCallback = "TestCommand",
                         DescriptionKey = "TestCommandDescription",
                         Commands = new List<string>() {
@@ -67,7 +67,7 @@ namespace Procon.Core.Interfaces.Connections.Plugins {
                 );
 
                 this.RegisterTextCommand(
-                    new Text.TextCommand() {
+                    new TextCommands.TextCommand() {
                         MethodCallback = "HelpCommand",
                         Priority = PriorityType.High,
                         DescriptionKey = "HelpCommandDescription",

@@ -1,6 +1,7 @@
 ﻿using System;
 
 namespace Procon.Core.Interfaces.Connections {
+    using Procon.Core.Interfaces.Connections.TextCommands;
     using Procon.Core.Interfaces.Connections.Plugins;
     using Procon.Core.Interfaces.Layer;
     using Procon.Core.Interfaces.Layer.Objects;
@@ -35,6 +36,12 @@ namespace Procon.Core.Interfaces.Connections {
         // -- Starts the execution of this object's plugins.
         // -- Loads the configuration file.
         public override Connection Execute() {
+
+            this.TextCommand = new RemoteTextCommandController() {
+                Connection = this,
+                Layer = this.Layer
+            }.Execute();
+
             Plugins = new RemotePluginController() {
                 Connection = this,
                 Layer = Layer

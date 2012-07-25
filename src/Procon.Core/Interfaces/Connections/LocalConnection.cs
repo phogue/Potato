@@ -55,11 +55,6 @@ namespace Procon.Core.Interfaces.Connections {
                     }
                 }
             ).Tick += new Task.TickHandler(LocalConnection_Tick);
-
-            TextCommand = new LocalTextCommandController() {
-                Connection = this,
-                Languages = MasterLanguages
-            }.Execute();
         }
 
 
@@ -77,6 +72,12 @@ namespace Procon.Core.Interfaces.Connections {
             AssignBubbledEvents();
 
             AssignEvents();
+
+            this.TextCommand = new LocalTextCommandController() {
+                Connection = this,
+                Languages = MasterLanguages,
+                Layer = this.Layer
+            }.Execute();
 
             Plugins = new LocalPluginController() {
                 Connection = this,

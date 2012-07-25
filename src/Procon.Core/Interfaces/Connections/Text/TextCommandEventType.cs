@@ -29,6 +29,7 @@ namespace Procon.Core.Interfaces.Connections.Text {
         None,
         Registered,
         Unregistered,
-        Matched
+        Matched,
+        Previewed
     }
 }

@@ -83,6 +83,12 @@ namespace Procon.Net.Protocols.Frostbite.BF.BF3 {
             }
         }
 
+        protected override void SendEventsEnabledPacket() {
+            this.Send(this.Create("admin.eventsEnabled true"));
+        }
+
+        #region Packet Helpers
+
         protected override void Action(Chat chat) {
             if (chat.Subset != null) {
                 string subset = String.Empty;
@@ -117,9 +123,63 @@ namespace Procon.Net.Protocols.Frostbite.BF.BF3 {
             }
         }
 
-        protected override void SendEventsEnabledPacket() {
-            this.Send(this.Create("admin.eventsEnabled true"));
+        protected override void Action(Map map) {
+
+            if (map.MapActionType == MapActionType.Append) {
+                // mapList.add <map: string> <gamemode: string> <rounds: integer> [index: integer]
+                this.Send(this.Create("mapList.append \"{0}\" \"{1}\" {2}", map.Name, map.GameMode.Name, map.Rounds));
+
+                this.Send(this.Create("mapList.save"));
+
+                this.Send(this.Create("mapList.list"));
+            }
+            // Added by Imisnew2 - You should check this phogue!
+            else if (map.MapActionType == MapActionType.ChangeMode) {
+                if (map.GameMode != null) {
+                    this.Send(this.Create("admin.setPlaylist \"{0}\"", map.GameMode.Name));
+                }
+            }
+            else if (map.MapActionType == MapActionType.Insert) {
+                // mapList.add <map: string> <gamemode: string> <rounds: integer> [index: integer]
+                this.Send(this.Create("mapList.append \"{0}\" \"{1}\" {2} {3}", map.Name, map.GameMode.Name, map.Rounds, map.Index));
+
+                this.Send(this.Create("mapList.save"));
+
+                this.Send(this.Create("mapList.list"));
+            }
+            else if (map.MapActionType == MapActionType.Remove) {
+                var matchingMaps = this.State.MapList.Where(x => x.Name == map.Name).OrderByDescending(x => x.Index);
+
+                foreach (Map match in matchingMaps) {
+                    this.Send(this.Create("mapList.remove {0}", match.Index));
+                }
+                
+                this.Send(this.Create("mapList.save"));
+
+                this.Send(this.Create("mapList.list"));
+            }
+            else if (map.MapActionType == MapActionType.RemoveIndex) {
+                this.Send(this.Create("mapList.remove {0}", map.Index));
+
+                this.Send(this.Create("mapList.list"));
+            }
+            else if (map.MapActionType == MapActionType.NextMapIndex) {
+                this.Send(this.Create("mapList.setNextMapIndex {0}", map.Index));
+            }
+            else if (map.MapActionType == MapActionType.RestartMap || map.MapActionType == MapActionType.RestartRound) {
+                this.Send(this.Create("mapList.restartRound"));
+            }
+            else if (map.MapActionType == MapActionType.NextMap || map.MapActionType == MapActionType.NextRound) {
+                this.Send(this.Create("mapList.runNextRound"));
+            }
+            else if (map.MapActionType == MapActionType.Clear) {
+                this.Send(this.Create("mapList.clear"));
+
+                this.Send(this.Create("mapList.save"));
+            }
         }
+
+        #endregion
 
     }
 }

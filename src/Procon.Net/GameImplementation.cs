@@ -308,10 +308,6 @@ namespace Procon.Net {
 
         protected abstract P Create(string format, params object[] args);
 
-        public override void Raw(string format, params object[] args) {
-            this.Send(this.Create(format, args));
-        }
-
         public override void Login(string password) {
             
         }
@@ -334,6 +330,9 @@ namespace Procon.Net {
             }
             else if (action is Move) {
                 this.Action(action as Move);
+            }
+            else if (action is Raw) {
+                this.Action(action as Raw);
             }
         }
 
@@ -359,6 +358,12 @@ namespace Procon.Net {
 
         protected virtual void Action(Move move) {
 
+        }
+
+        protected virtual void Action(Raw raw) {
+            if (raw.RawActionType == RawActionType.Send) {
+                this.Send(this.Create(raw.PacketText));
+            }
         }
 
         #endregion

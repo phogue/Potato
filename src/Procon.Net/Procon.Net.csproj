@@ -100,6 +100,8 @@
     <Compile Include="Protocols\Objects\ChatActionType.cs" />
     <Compile Include="Protocols\Objects\ChatOrigin.cs" />
     <Compile Include="Protocols\Objects\Chat.cs" />
+    <Compile Include="Protocols\Objects\Raw.cs" />
+    <Compile Include="Protocols\Objects\RawActionType.cs" />
     <Compile Include="Protocols\Objects\VariableList.cs" />
     <Compile Include="Protocols\Objects\DataController.cs" />
     <Compile Include="Protocols\Objects\DataVariable.cs" />

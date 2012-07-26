@@ -101,8 +101,6 @@ namespace Procon.Net {
 
         #region Helper Methods
 
-        public abstract void Raw(string format, params object[] args);
-
         // These may get transfered to a Interface used by Game and PacketFactory
         public abstract void Login(string password);
 

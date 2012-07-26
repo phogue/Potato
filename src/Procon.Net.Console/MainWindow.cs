@@ -32,6 +32,7 @@ using System.Timers;
 namespace Procon.Net.Console {
     using Procon.Net;
     using Procon.Net.Protocols;
+    using Procon.Net.Protocols.Objects;
     using Procon.Net.Console.Utils;
 
     public partial class MainWindow : Form {
@@ -220,7 +221,7 @@ namespace Procon.Net.Console {
         private void Execute(string commandText) {
 
             if (this.ActiveGame != null) {
-                this.ActiveGame.Raw(commandText);
+                this.ActiveGame.Action(new Raw(commandText) { RawActionType = RawActionType.Send });
             }
         }
 

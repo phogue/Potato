@@ -29,7 +29,7 @@ namespace Procon.Net {
     public abstract class Client<P>
         where P : Packet {
 
-        public string Hostname { get; protected set; }
+        public String Hostname { get; protected set; }
         public UInt16 Port { get; protected set; }
 
         public IPEndPoint LocalEndPoint { get; protected set; }

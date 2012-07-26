@@ -225,22 +225,23 @@ namespace Procon.Net {
         }
 
         public override void AttemptConnection() {
-            try {
+            if (this.Hostname != null && this.Port != 0) {
+                try {
+                    this.ClearConnection();
 
-                this.ClearConnection();
+                    this.ConnectionState = Net.ConnectionState.Connecting;
 
-                this.ConnectionState = Net.ConnectionState.Connecting;
+                    this.m_tcpClient = new TcpClient();
+                    this.m_tcpClient.NoDelay = true;
 
-                this.m_tcpClient = new TcpClient();
-                this.m_tcpClient.NoDelay = true;
-
-                this.m_tcpClient.BeginConnect(this.Hostname, this.Port, this.ConnectedCallback, this);
-            }
-            catch (SocketException se) {
-                this.Shutdown(se);
-            }
-            catch (Exception e) {
-                this.Shutdown(e);
+                    this.m_tcpClient.BeginConnect(this.Hostname, this.Port, this.ConnectedCallback, this);
+                }
+                catch (SocketException se) {
+                    this.Shutdown(se);
+                }
+                catch (Exception e) {
+                    this.Shutdown(e);
+                }
             }
         }
 

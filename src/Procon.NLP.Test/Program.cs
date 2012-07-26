@@ -2,22 +2,79 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.IO;
+using System.Net;
 
 namespace Procon.NLP.Test {
-    using Procon.Core.Interfaces.Connections.NLP;
+    using Procon.Core;
+    using Procon.Core.Utils;
+    using Procon.Core.Interfaces.Connections.TextCommands;
     using Procon.Net.Protocols.Objects;
     using Procon.Net;
     using Procon.Net.Protocols.Frostbite.BF.BFBC2;
+    using Procon.Net.Protocols.Frostbite.BF.BF3;
     using Procon.NLP;
     using Procon.Core.Localization;
+    using Procon.Core.Interfaces.Variables;
+    using Procon.Core.Interfaces.Layer;
+    using Procon.Core.Interfaces.Connections;
+    using Procon.Core.Interfaces.Security;
     using Procon.Core.Interfaces.Security.Objects;
+
+    using Procon.Core.Interfaces.Repositories;
+    using Procon.Core.Interfaces.Repositories.Objects;
+    using Procon.Net.Utils.HTTP;
+
     class Program {
         static void Main(string[] args) {
+            /*
+            Uri uri = new Uri("http://localhost/open/repo/src/index.php/1/publish/submit?XDEBUG_SESSION_START=netbeans-xdebug");
 
+            Request r = new Request(uri.OriginalString);
+            r.CredentialCache.Add(
+                new Uri(uri.GetLeftPart(UriPartial.Authority)),
+                "Digest",
+                new NetworkCredential(
+                    "admin",
+                    "1234"
+                )
+            );
+
+            r.PostContent.Params.Add(new PostParameter("name", "lolzor", PostParameterType.Field));
+
+            r.PostContent.Params.Add(new PostParameter("version", "1.2.3.4", PostParameterType.Field));
+            FileStream s = new FileStream("C:\\Users\\P\\Documents\\Projects\\open\\repo\\tmp\\toast\\submit_tests\\SubmitTest_1.0.0.0.zip", FileMode.Open);
+            
+            r.PostContent.Params.Add(new PostParameter("package", "SubmitTest_1.0.0.0.zip", s, "application/x-zip-compressed", PostParameterType.File));
+
+            r.BeginRequest();
+
+            System.Console.ReadKey();
+            
+             * */
+            
             LanguageController languages = new LanguageController().Execute();
 
-            StateNLP nlp = new StateNLP() {
-                Languages = languages
+            LayerListener layer = new LayerListener();
+
+            LocalSecurityController security = new LocalSecurityController() {
+                Layer = layer
+            };
+            security.AddAccount(CommandInitiator.Local, "Phogue");
+            security.Account("Phogue").Assign(CommandInitiator.Local, "Phogue", Net.Protocols.GameType.BF_BC2, "EA_63A9F96745B22DFB509C558FC8B5C50F");
+
+            LocalTextCommandController nlp = new LocalTextCommandController() {
+                Languages = languages,
+                Connection = new LocalConnection<BF3Game>() {
+                    Hostname = "173.199.81.69",
+                    Port = 25200,
+                    Password = "ballsofsteel",
+                    Additional = "",
+                    Layer = layer,
+                    Security = security,
+                    Variables = new LocalVariableController(),
+                    GameType = Net.Protocols.GameType.BF_BC2
+                }.Execute()
             };
             nlp.TextCommandEvent += new TextCommandController.TextCommandEventHandler(nlp_TextCommandEvent);
 
@@ -126,11 +183,16 @@ namespace Procon.NLP.Test {
 
             do {
                 text = Console.ReadLine();
+                
+                nlp.ExecuteTextCommand(new CommandInitiator() {
+                    Username = "Phogue",
+                    CommandOrigin = CommandOrigin.Remote
+                }, text);
 
-                nlp.Execute(state, speakerPlayer, speakerAccount, "!", text);
+                //nlp.Execute(state, speakerPlayer, speakerAccount, "!", text);
             } while (text.Length > 0);
 
-
+            
         }
 
         static void nlp_TextCommandEvent(TextCommandController sender, TextCommandEventArgs e) {
@@ -190,7 +252,33 @@ namespace Procon.NLP.Test {
 
                 Console.WriteLine("Quotes: " + final);
             }
+        }
 
+        static void repo_AuthenticationFailed(Repository repository) {
+            Console.WriteLine("Authentication: Failed");
+        }
+
+        static void repo_AuthenticationSuccess(Repository repository) {
+            Console.WriteLine("Authentication: Success");
+        }
+
+        static void controller_PackagesRebuilt(PackageController sender) {
+
+            foreach (FlatPackedPackage package in sender.Packages) {
+                Console.WriteLine("{0} - {1} - [Installed: {2}], [Available: {3}] - {4}",
+                    package.Repository.Name,
+                    package.Uid,
+                    package.InstalledVersion != null ? package.InstalledVersion.Version.ToString() : "null",
+                    package.AvailableVersion != null ? package.AvailableVersion.Version.ToString() : "null",
+                    package.State
+                );
+            }
+
+            sender.Packages.Where(p => p.Name == "DownloadCacheTest").First().InstallOrUpdate();
+
+            //sender.Packages[2].InstallOrUpdate();
+
+            var x = 0;
         }
     }
 }

@@ -59,11 +59,11 @@ namespace Procon.UI.Default.Root.Main.Header
             tCmmds["State"].Value = new RelayCommand<AttachedCommandArgs>(
             #region -- Handles when the connection status changes.
                 x => {
-                    Image                              tSender = (Image)x.Sender;
-                    DependencyPropertyChangedEventArgs tArgs   = (DependencyPropertyChangedEventArgs)x.Args;
+                    Image              tSender = (Image)x.Sender;
+                    DependencyProperty tArgs   = (DependencyProperty)x.Args;
                     if (tSender != null && tSender != null)
-                        if (ExtensionApi.Properties["Images"]["Status"]["Light"].ContainsKey(tArgs.NewValue.ToString()))
-                            tSender.Source = ExtensionApi.Properties["Images"]["Status"]["Light"][tArgs.NewValue.ToString()].Value as BitmapImage;
+                        if (ExtensionApi.Properties["Images"]["Status"]["Light"].ContainsKey(tSender.GetValue(tArgs).ToString()))
+                            tSender.Source = ExtensionApi.Properties["Images"]["Status"]["Light"][tSender.GetValue(tArgs).ToString()].Value as BitmapImage;
                         else
                             tSender.Source = ExtensionApi.Properties["Images"]["Status"]["Light"]["Unknown"].Value as BitmapImage;
                 });
@@ -71,14 +71,7 @@ namespace Procon.UI.Default.Root.Main.Header
             tCmmds["Overview"].Value = new RelayCommand<AttachedCommandArgs>(
             #region -- Handles when an interface or connection is selected.
                 x => {
-                    ComboBox tSender = x.Sender as ComboBox;
-                    if (tSender != null)
-                        if (tSender.Name == "MainHeaderInterfaces") {
-                            ExtensionApi.Settings["View"].Value = "Interface";
-                        }
-                        else if (tSender.Name == "MainHeaderConnections") {
-                            ExtensionApi.Settings["View"].Value = "Connection";
-                        }
+                    ExtensionApi.Settings["View"].Value = "Overview";
                 });
             #endregion
 

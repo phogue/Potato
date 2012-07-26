@@ -4,7 +4,7 @@ using System.Windows.Controls;
 
 using Procon.UI.API;
 
-namespace Procon.UI.Default.Root.Main.Interface.Layout
+namespace Procon.UI.Default.Root.Main.Overview.Layout
 {
     [Extension(
         Alters    = new String[] { },
@@ -24,7 +24,7 @@ namespace Procon.UI.Default.Root.Main.Interface.Layout
         { get { return "Team Player Gaming"; } }
 
         public string Name
-        { get { return "Main Interface Layout"; } }
+        { get { return "Main Overview Layout"; } }
 
         public string Version
         { get { return "1.0.0.0"; } }

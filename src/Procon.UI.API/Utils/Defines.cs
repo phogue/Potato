@@ -41,6 +41,10 @@ namespace Procon.UI.API.Utils
         public static readonly String STATUS_BAD_D24  = Path.Combine(DIR_DARK_24,  "cstatus1.png");
         public static readonly String STATUS_UNK_D24  = Path.Combine(DIR_DARK_24,  "cstatus0.png");
 
+        // Header Icons.
+        public static readonly String HEADER_OVERVIEW_L24 = Path.Combine(DIR_LIGHT_24, "overview.png");
+        public static readonly String HEADER_OVERVIEW_D24 = Path.Combine(DIR_DARK_24,  "overview.png");
+
         // Content Icons.
         public static readonly String NAVIGATION_PLAYERS  = Path.Combine(DIR_IMAGES, "nplayer_32.png");
         public static readonly String NAVIGATION_MAPS     = Path.Combine(DIR_IMAGES, "nmap_32.png");

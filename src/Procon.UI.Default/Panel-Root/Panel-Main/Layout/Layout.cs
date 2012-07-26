@@ -49,7 +49,7 @@ namespace Procon.UI.Default.Root.Main.Layout
 
             // Setup the default settings.
             if (ExtensionApi.Settings["View"].Value == null)
-                ExtensionApi.Settings["View"].Value = "Interface";
+                ExtensionApi.Settings["View"].Value = "Overview";
 
 
             // Exit with good status.

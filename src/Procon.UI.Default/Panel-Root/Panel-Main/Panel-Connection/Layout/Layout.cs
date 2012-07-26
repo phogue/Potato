@@ -50,7 +50,7 @@ namespace Procon.UI.Default.Root.Main.Connection.Layout
 
             // Setup the default settings.
             if (ExtensionApi.Settings["Pane"].Value == null)
-                ExtensionApi.Settings["Pane"].Value = "Overview";
+                ExtensionApi.Settings["Pane"].Value = "Players";
 
 
             // Exit with good status.

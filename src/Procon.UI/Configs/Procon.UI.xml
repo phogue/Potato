@@ -15,6 +15,9 @@
         <!-- Main Layout -->
         <extension>Main Layout</extension>
         <extension>Main Header</extension>
+        <extension>Main Overview Layout</extension>
+        <extension>Main Overview Interfaces</extension>
+        <extension>Main Overview Connections</extension>
         <extension>Main Interface Layout</extension>
         <extension>Main Connection Layout</extension>
         <extension>Main Connection Navigation</extension>

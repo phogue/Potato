@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -129,7 +130,7 @@ namespace Procon.UI.Default.Root.Main.Connection.Chat
 
                     // Setup properties for new items being added.
                     if (a == NotifyCollectionChangedAction.Add)
-                        foreach (ChatEvent @event in i.OfType<ChatEvent>().Where(e => !e.DataContains("uiTeamVs"))) {
+                        foreach (ChatEvent @event in i.OfType<ChatEvent>().Where(e => !e.DataContains("ui.TeamVs"))) {
                             Visibility tTeam        = Visibility.Collapsed;
                             Visibility tSquad       = Visibility.Collapsed;
                             Visibility tPlayer      = Visibility.Visible;
@@ -179,7 +180,7 @@ namespace Procon.UI.Default.Root.Main.Connection.Chat
                     // Setup new stuff.
                     if (x != null) {
                         tEvents = x.Events;
-                        tColl(tEvents, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, new List<Event>(tEvents.Skip(tEvents.Count - 15))));
+                        tColl(tEvents, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, new List<Event>(tEvents)));
                         tEvents.CollectionChanged += tColl;
                     }
                 });
@@ -187,7 +188,9 @@ namespace Procon.UI.Default.Root.Main.Connection.Chat
 
             tProps.Value = tManaged;
             ExtensionApi.Properties["Connection"].PropertyChanged += (s, e) => {
-                ((Action<ConnectionViewModel>)tProps["Swap"].Value)(ExtensionApi.Connection);
+                new Thread(() => {
+                    ((Action<ConnectionViewModel>)tProps["Swap"].Value)(ExtensionApi.Connection);
+                }).Start();
             };
 
 

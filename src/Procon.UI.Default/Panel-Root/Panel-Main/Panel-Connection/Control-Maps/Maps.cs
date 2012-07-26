@@ -3,7 +3,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
-using Procon.Net.Protocols.Objects;
 using Procon.UI.API;
 using Procon.UI.API.Commands;
 using Procon.UI.API.Utils;
@@ -14,7 +13,7 @@ namespace Procon.UI.Default.Root.Main.Connection.Maps
         Alters    = new String[] { },
         Replaces  = new String[] { },
         DependsOn = new String[] { })]
-    public class Players : IExtension
+    public class Maps : IExtension
     {
         #region IExtension Properties
 
@@ -54,6 +53,49 @@ namespace Procon.UI.Default.Root.Main.Connection.Maps
             MapsView tView = new MapsView();
             Grid.SetRow(tView, 1);
             tLayout.Children.Add(tView);
+
+
+            // Commands.
+            tCmmds["Restart"]["Map"].Value = new RelayCommand<Object>(
+            #region -- Restarts the current map.
+                x => {
+                    ExtensionApi.Commands["Map"]["RestartMap"].Value.Execute(new Object[] { });
+                },
+                x => {
+                    return ExtensionApi.Commands["Map"]["RestartMap"].Value != null &&
+                           ExtensionApi.Commands["Map"]["RestartMap"].Value.CanExecute(new Object[] { });
+                });
+            #endregion
+            tCmmds["Restart"]["Round"].Value = new RelayCommand<Object>(
+            #region -- Restarts the current round.
+                x => {
+                    ExtensionApi.Commands["Map"]["RestartRound"].Value.Execute(new Object[] { });
+                },
+                x => {
+                    return ExtensionApi.Commands["Map"]["RestartRound"].Value != null &&
+                           ExtensionApi.Commands["Map"]["RestartRound"].Value.CanExecute(new Object[] { });
+                });
+            #endregion
+            tCmmds["Next"]["Round"].Value = new RelayCommand<Object>(
+            #region -- Advances to the next round.
+                x => {
+                    ExtensionApi.Commands["Map"]["NextRound"].Value.Execute(new Object[] { });
+                },
+                x => {
+                    return ExtensionApi.Commands["Map"]["NextRound"].Value != null &&
+                           ExtensionApi.Commands["Map"]["NextRound"].Value.CanExecute(new Object[] { });
+                });
+            #endregion
+            tCmmds["Next"]["Map"].Value = new RelayCommand<Object>(
+            #region -- Advances to the next map.
+                x => {
+                    ExtensionApi.Commands["Map"]["NextMap"].Value.Execute(new Object[] { });
+                },
+                x => {
+                    return ExtensionApi.Commands["Map"]["NextMap"].Value != null &&
+                           ExtensionApi.Commands["Map"]["NextMap"].Value.CanExecute(new Object[] { });
+                });
+            #endregion
 
 
             // Exit with good status.

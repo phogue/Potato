@@ -354,7 +354,7 @@ namespace Procon.Core.Interfaces.Connections.TextCommands.Parsers {
 
         #endregion
 
-        public override TextCommandEventArgs BuildEvent(string prefix, string text, TextCommandEventType eventType = TextCommandEventType.Matched) {
+        public override TextCommandEventArgs BuildEvent(string prefix, string text, TextCommandEventType eventType = TextCommandEventType.Executed) {
             Sentence sentence = new Sentence().Parse(this, text).Reduce(this);
             
             TextCommandEventArgs textCommandEvent = null;

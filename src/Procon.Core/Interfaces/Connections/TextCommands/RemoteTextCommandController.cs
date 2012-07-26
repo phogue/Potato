@@ -15,7 +15,7 @@ namespace Procon.Core.Interfaces.Connections.TextCommands {
         /// <summary>
         /// Sends a request to the layer to execute a text command.
         /// </summary>
-        public override void ParseTextCommand(CommandInitiator initiator, String text) {
+        public override void ExecuteTextCommand(CommandInitiator initiator, String text) {
             this.Layer.Request(
                 new Context() { ContextType = ContextType.All },
                 CommandName.TextCommandsParse,

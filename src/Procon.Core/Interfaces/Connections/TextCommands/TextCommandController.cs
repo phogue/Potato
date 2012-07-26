@@ -114,7 +114,7 @@ namespace Procon.Core.Interfaces.Connections.TextCommands {
             }
         }
 
-        public abstract void ParseTextCommand(CommandInitiator initiator, String text);
+        public abstract void ExecuteTextCommand(CommandInitiator initiator, String text);
 
         public abstract void PreviewTextCommand(CommandInitiator initiator, String text);
 

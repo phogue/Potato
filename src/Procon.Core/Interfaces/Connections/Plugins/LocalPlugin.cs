@@ -198,7 +198,7 @@ namespace Procon.Core.Interfaces.Connections.Plugins {
         
         private void StateNLP_TextCommandEvent(TextCommandController sender, TextCommandEventArgs e) {
             if (this.AppDomainPlugin != null) {
-                if (e.EventType == TextCommandEventType.Matched && e.Command.UidCallback == this.Uid) {
+                if (e.EventType == TextCommandEventType.Executed && e.Command.UidCallback == this.Uid) {
                     this.AppDomainPlugin.TextCommandEvent(e);
                 }
                 else if (e.EventType == TextCommandEventType.Registered || e.EventType == TextCommandEventType.Unregistered) {

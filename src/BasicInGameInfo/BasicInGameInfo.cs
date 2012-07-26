@@ -249,7 +249,7 @@ namespace Procon.Core.Interfaces.Connections.Plugins {
             else if (e.EventType == TextCommandEventType.Unregistered) {
                 this.Commands.Remove(e.Command);
             }
-            else if (e.EventType == TextCommandEventType.Matched) {
+            else if (e.EventType == TextCommandEventType.Executed) {
 
                 if (e.Command.MethodCallback == "HelpCommand") {
                     this.HelpCommand(e);

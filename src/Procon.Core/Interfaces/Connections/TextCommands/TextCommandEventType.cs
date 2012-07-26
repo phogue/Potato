@@ -29,7 +29,7 @@ namespace Procon.Core.Interfaces.Connections.TextCommands {
         None,
         Registered,
         Unregistered,
-        Matched,
+        Executed,
         Previewed
     }
 }

@@ -118,7 +118,7 @@ namespace Procon.Core.Interfaces.Connections.TextCommands {
         /// <param name="commands">A list of commands to check against </param>
         /// <param name="prefix">The first valid character of the command being executed</param>
         /// <param name="text">The next, minus the first character</param>
-        protected void ParseNLP(Player speaker, Account speakerAccount, List<TextCommand> commands, String prefix, String text, TextCommandEventType eventType = TextCommandEventType.Matched) {
+        protected void ParseNLP(Player speaker, Account speakerAccount, List<TextCommand> commands, String prefix, String text, TextCommandEventType eventType = TextCommandEventType.Executed) {
             Language selectedLanguage = null;
             if (speakerAccount != null && speakerAccount.PreferredLanguageCode != String.Empty) {
                 selectedLanguage = this.Languages.Languages.Find(x => x.LanguageCode == speakerAccount.PreferredLanguageCode);
@@ -157,7 +157,7 @@ namespace Procon.Core.Interfaces.Connections.TextCommands {
         /// <param name="prefix"></param>
         /// <param name="text"></param>
         /// <param name="eventType"></param>
-        protected void Parse(Player speaker, Account speakerAccount, String prefix, String text, TextCommandEventType eventType = TextCommandEventType.Matched) {
+        protected void Parse(Player speaker, Account speakerAccount, String prefix, String text, TextCommandEventType eventType = TextCommandEventType.Executed) {
             
             // This could execute more in the future, in which case
             // this.TextCommands.Where(x => x.Parser == Parser.NLP).ToList()
@@ -197,12 +197,12 @@ namespace Procon.Core.Interfaces.Connections.TextCommands {
         /// <param name="initiator"></param>
         /// <param name="text"></param>
         [Command(Command = CommandName.TextCommandsParse)]
-        public override void ParseTextCommand(CommandInitiator initiator, String text) {
+        public override void ExecuteTextCommand(CommandInitiator initiator, String text) {
             Account speakerAccount = this.Connection.Security.Account(initiator.Username);
 
             String prefix = this.Connection.Variables.Get<String>(CommandInitiator.Local, CommonVariableNames.TextCommandPublicPrefix);
             
-            this.Parse(this.GetSpeakerAccountsPlayer(speakerAccount), speakerAccount, prefix, text, TextCommandEventType.Matched);
+            this.Parse(this.GetSpeakerAccountsPlayer(speakerAccount), speakerAccount, prefix, text, TextCommandEventType.Executed);
         }
         
         /// <summary>

@@ -263,12 +263,20 @@
               <loc key="Kick"  value="Kick" />
               <loc key="Move"  value="Move" />
             </players>
+            
+            <!-- Maps Panel -->
             <maps>
-              <loc key="Title" value="Map List" />
+              <loc key="Title"        value="Map List" />
+              <loc key="Pool"         value="Map Pool" />
+              <loc key="List"         value="Map List" />
               <loc key="RestartMap"   value="Restart Map" />
               <loc key="RestartRound" value="Restart Round" />
               <loc key="NextRound"    value="Next Round" />
               <loc key="NextMap"      value="Next Map" />
+              <loc key="Add"          value="&#x2192;" />
+              <loc key="Remove"       value="&#x2190;" />
+              <loc key="MoveUp"       value="&#x2191;" />
+              <loc key="MoveDown"     value="&#x2193;" />
             </maps>
           </connection>
         </main>

@@ -12,40 +12,6 @@
                Source={x:Static eapi:ExtensionApi.Properties},
                Path=[Connection].Value}"
            Background="{DynamicResource BrushHeaderDark}">
-    <DockPanel.Resources>
-        <DataTemplate DataType="{x:Type view:InterfaceViewModel}">
-            <ComboBoxItem Name="PART_Item"
-                          IsHitTestVisible="False">
-                <TextBlock Name="PART_Text">
-                    <TextBlock.Text>
-                        <MultiBinding StringFormat="[{0}] {1}:{2}">
-                            <Binding Converter="{conv:LocalizationText}"
-                                     ConverterParameter="Default.Root.Main.Interface.Remote" />
-                            <Binding Path="Hostname" />
-                            <Binding Path="Port" />
-                        </MultiBinding>
-                    </TextBlock.Text>
-                </TextBlock>
-            </ComboBoxItem>
-            <DataTemplate.Triggers>
-                <DataTrigger Binding="{Binding IsLocal}" Value="True">
-                    <Setter TargetName="PART_Text"
-                            Property="Text"
-                            Value="{Binding
-                                Converter={conv:LocalizationText},
-                                ConverterParameter=Default.Root.Main.Interface.Local,
-                                StringFormat='[{0}]'}" />
-                </DataTrigger>
-            </DataTemplate.Triggers>
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type view:ConnectionViewModel}">
-            <ComboBoxItem Name="PART_Item"
-                          IsHitTestVisible="False">
-                <TextBlock Name="PART_Text"
-                           Text="{Binding ServerName}" />
-            </ComboBoxItem>
-        </DataTemplate>
-    </DockPanel.Resources>
 
     <!-- Logo -->
     <Image Name="MainHeaderLogo"
@@ -55,6 +21,20 @@
            Source="{Binding
                Source={x:Static eapi:ExtensionApi.Properties},
                Path=[Images][Procon][Small].Value}" />
+
+    <!-- Overview -->
+    <Button Name="MainHeaderOverviewButton"
+            Padding="15, 5"
+            FontSize="14"
+            Style="{DynamicResource StyleButtonHeader}"
+            acmd:AttachedCommand.Event="Click"
+            acmd:AttachedCommand.Command="{Binding
+                Source={x:Static eapi:ExtensionApi.Commands},
+                Path=[Main][Header][Overview].Value}">
+        <Image Source="{Binding
+                   Source={x:Static eapi:ExtensionApi.Properties},
+                   Path=[Images][Header][Light][Overview].Value}" />
+    </Button>
 
     <!-- Status -->
     <Image Name="MainHeaderState"
@@ -66,43 +46,10 @@
                Source={x:Static eapi:ExtensionApi.Commands},
                Path=[Main][Header][State].Value}" />
 
-    <!-- Interfaces -->
-    <ComboBox Name="MainHeaderInterfaces"
-              Margin="0, 5"
-              Height="30"
-              FontSize="15"
-              FontWeight="Bold"
-              Style="{DynamicResource StyleComboBoxHeader}"
-              DataContext="{Binding
-                  Source={x:Static eapi:ExtensionApi.Properties},
-                  Path=[Procon].Value}"
-              SelectedItem="{Binding
-                  Delay=50,
-                  Source={x:Static eapi:ExtensionApi.Properties},
-                  Path=[Interface].Value}"
-              ItemsSource="{Binding Interfaces}"
-              acmd:AttachedCommand.Event="MouseUp"
-              acmd:AttachedCommand.Command="{Binding
-                  Source={x:Static eapi:ExtensionApi.Commands},
-                  Path=[Main][Header][Overview].Value}" />
-    
-    <!-- Connections -->
-    <ComboBox Name="MainHeaderConnections"
-              Margin="0, 5"
-              Height="30"
-              FontSize="15"
-              FontStyle="Italic"
-              Style="{DynamicResource StyleComboBoxHeader}"
-              DataContext="{Binding
-                  Source={x:Static eapi:ExtensionApi.Properties},
-                  Path=[Interface].Value}"
-              SelectedItem="{Binding
-                  Delay=50,
-                  Source={x:Static eapi:ExtensionApi.Properties},
-                  Path=[Connection].Value}"
-              ItemsSource="{Binding Connections}"
-              acmd:AttachedCommand.Event="MouseUp"
-              acmd:AttachedCommand.Command="{Binding
-                  Source={x:Static eapi:ExtensionApi.Commands},
-                  Path=[Main][Header][Overview].Value}" />
+    <!-- Connection -->
+    <TextBlock Name="MainHeaderConnection"
+               Margin="0, 5"
+               FontSize="14"
+               Foreground="{DynamicResource BrushTextLight}"
+               Text="{Binding ServerName}" />
 </DockPanel>

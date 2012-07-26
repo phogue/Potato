@@ -6,6 +6,7 @@
       xmlns:conv="clr-namespace:Procon.UI.API.Converters;assembly=Procon.UI.API"
       xmlns:util="clr-namespace:Procon.UI.API.Utils;assembly=Procon.UI.API"
       xmlns:view="clr-namespace:Procon.UI.API.ViewModels;assembly=Procon.UI.API"
+      xmlns:c="clr-namespace:Procon.Net.Protocols.Objects;assembly=Procon.Net"
       Name="MainConnectionMaps">
     <Grid.Style>
         <Style TargetType="{x:Type Grid}">
@@ -17,6 +18,31 @@
             </Style.Triggers>
         </Style>
     </Grid.Style>
+    <Grid.Resources>
+        <DataTemplate x:Key="PoolItem" DataType="{x:Type c:Map}">
+            <DockPanel Name="PART_Container">
+                <TextBlock Name="PART_Mode"
+                            DockPanel.Dock="Left"
+                            Text="{Binding Path=GameMode.FriendlyName, StringFormat='[{0}]'}" />
+                <TextBlock Name="PART_Name"
+                            DockPanel.Dock="Left"
+                            Text="{Binding Path=FriendlyName, StringFormat=' {0}'}" />
+            </DockPanel>
+        </DataTemplate>
+        <DataTemplate x:Key="ListItem" DataType="{x:Type c:Map}">
+            <DockPanel Name="PART_Container" Background="Transparent">
+                <TextBlock Name="PART_Rounds"
+                            DockPanel.Dock="Left"
+                            Text="{Binding Path=Rounds, StringFormat='{}{0}'}" />
+                <TextBlock Name="PART_Mode"
+                            DockPanel.Dock="Left"
+                            Text="{Binding Path=GameMode.Name, StringFormat=' [{0}]'}" />
+                <TextBlock Name="PART_Name"
+                            DockPanel.Dock="Left"
+                            Text="{Binding Path=Name, StringFormat=' {0}'}" />
+            </DockPanel>
+        </DataTemplate>
+    </Grid.Resources>
     <Grid.RowDefinitions>
         <RowDefinition Height="Auto" />
         <RowDefinition Height="1.0*" />
@@ -123,16 +149,19 @@
         <ListBox Name="MainConnectionMapsPool"
                  Grid.Row="1"
                  Grid.Column="0"
-                 Margin="15, 15, 0, 0"
+                 Padding="15, 15, 0, 0"
                  BorderThickness="0"
-                 SelectionMode="Multiple"
-                 ItemsSource="{Binding Path=MapPool}" />
+                 ScrollViewer.VerticalScrollBarVisibility="Visible"
+                 ItemsSource="{Binding Path=MapPool}"
+                 ItemTemplate="{DynamicResource PoolItem}" />
         <ListBox Name="MainConnectionMapsList"
                  Grid.Row="1"
                  Grid.Column="1"
-                 Margin="0, 15, 15, 0"
+                 Padding="0, 15, 15, 0"
                  BorderThickness="0"
-                 SelectionMode="Multiple"
-                 ItemsSource="{Binding Path=Maps}" />
+                 ScrollViewer.VerticalScrollBarVisibility="Visible"
+                 ItemsSource="{Binding Path=Maps}"
+                 ItemTemplate="{DynamicResource ListItem}"
+                 ItemContainerStyle="{DynamicResource StyleListBoxItemColor}" />
     </Grid>
 </Grid>

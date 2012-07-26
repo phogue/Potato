@@ -60,6 +60,15 @@ namespace Procon.UI.Default
             ExtensionApi.Commands["Player"]["Kick"].Value = new RelayCommand<Object[]>(playerKick, playerKickCan);
             ExtensionApi.Commands["Player"]["Ban"].Value  = new RelayCommand<Object[]>(playerBan,  playerBanCan);
 
+            // [Map] Level Commands.
+            ExtensionApi.Commands["Map"]["NextMap"].Value      = new RelayCommand<Object[]>(mapNextMap,      mapNextMapCan);
+            ExtensionApi.Commands["Map"]["NextRound"].Value    = new RelayCommand<Object[]>(mapNextRound,    mapNextRoundCan);
+            ExtensionApi.Commands["Map"]["RestartMap"].Value   = new RelayCommand<Object[]>(mapRestartMap,   mapRestartMapCan);
+            ExtensionApi.Commands["Map"]["RestartRound"].Value = new RelayCommand<Object[]>(mapRestartRound, mapRestartRoundCan);
+            ExtensionApi.Commands["Map"]["Insert"].Value       = new RelayCommand<Object[]>(mapInsert,       mapInsertCan);
+            ExtensionApi.Commands["Map"]["Remove"].Value       = new RelayCommand<Object[]>(mapRemove,       mapRemoveCan);
+            ExtensionApi.Commands["Map"]["Move"].Value         = new RelayCommand<Object[]>(mapMove,         mapMoveCan);
+
 
 
             // [Connection] - Game Types.
@@ -101,6 +110,10 @@ namespace Procon.UI.Default
             ExtensionApi.Properties["Images"]["Status"]["Dark"]["Disconnecting"].Value  = (File.Exists(Defines.STATUS_BAD_D24))  ? new BitmapImage(new Uri(Defines.STATUS_BAD_D24,  UriKind.RelativeOrAbsolute)) : ExtensionApi.Properties["Images"]["Empty"].Value;
             ExtensionApi.Properties["Images"]["Status"]["Dark"]["Disconnected"].Value   = (File.Exists(Defines.STATUS_BAD_D24))  ? new BitmapImage(new Uri(Defines.STATUS_BAD_D24,  UriKind.RelativeOrAbsolute)) : ExtensionApi.Properties["Images"]["Empty"].Value;
             ExtensionApi.Properties["Images"]["Status"]["Dark"]["Unknown"].Value        = (File.Exists(Defines.STATUS_UNK_D24))  ? new BitmapImage(new Uri(Defines.STATUS_UNK_D24,  UriKind.RelativeOrAbsolute)) : ExtensionApi.Properties["Images"]["Empty"].Value;
+
+            // [Header] - Icons used in the header.
+            ExtensionApi.Properties["Images"]["Header"]["Light"]["Overview"].Value = (File.Exists(Defines.HEADER_OVERVIEW_L24)) ? new BitmapImage(new Uri(Defines.HEADER_OVERVIEW_L24, UriKind.RelativeOrAbsolute)) : ExtensionApi.Properties["Images"]["Empty"].Value;
+            ExtensionApi.Properties["Images"]["Header"]["Dark"]["Overview"].Value  = (File.Exists(Defines.HEADER_OVERVIEW_D24)) ? new BitmapImage(new Uri(Defines.HEADER_OVERVIEW_D24, UriKind.RelativeOrAbsolute)) : ExtensionApi.Properties["Images"]["Empty"].Value;
 
             // [General] - Images used across the program.
             ExtensionApi.Properties["Images"]["General"]["Player"].Value = (File.Exists(Defines.GENERAL_PLAYER)) ? new BitmapImage(new Uri(Defines.GENERAL_PLAYER, UriKind.RelativeOrAbsolute)) : ExtensionApi.Properties["Images"]["Empty"].Value;
@@ -372,7 +385,6 @@ namespace Procon.UI.Default
             ExtensionApi.Properties["Images"]["Navigation"]["Options"].Value  = (File.Exists(Defines.NAVIGATION_OPTIONS))  ? new BitmapImage(new Uri(Defines.NAVIGATION_OPTIONS,  UriKind.RelativeOrAbsolute)) : ExtensionApi.Properties["Images"]["Empty"].Value;
 
             // [Connection] - Images associated with managing connections.
-            ExtensionApi.Properties["Images"]["Connection"]["Swap"].Value = (File.Exists(Defines.CONNECTION_SWAP)) ? new BitmapImage(new Uri(Defines.CONNECTION_SWAP, UriKind.RelativeOrAbsolute)) : ExtensionApi.Properties["Images"]["Empty"].Value;
             ExtensionApi.Properties["Images"]["Connection"]["Info"].Value = (File.Exists(Defines.CONNECTION_INFO)) ? new BitmapImage(new Uri(Defines.CONNECTION_INFO, UriKind.RelativeOrAbsolute)) : ExtensionApi.Properties["Images"]["Empty"].Value;
 
 
@@ -557,6 +569,122 @@ namespace Procon.UI.Default
                 && (tPlayer = parameters[0] as Player)     != null && tPlayer.UID      != String.Empty
                 && (tSubset = parameters[1] as TimeSubset) != null && (tSubset.Context != TimeSubsetContext.Time ? tSubset.Context != TimeSubsetContext.None : tSubset.Length.HasValue)
                 && (tString = parameters[2] as String)     != null && tString.Trim()   != String.Empty;
+        }
+
+        // -- [Map][NextMap]
+        private void mapNextMap(Object[] parameters)
+        {
+            ExtensionApi.Connection.Action(
+                new Map() {
+                    MapActionType = MapActionType.NextMap
+                });
+        }
+        private bool mapNextMapCan(Object parameters)
+        {
+            return ExtensionApi.Connection != null;
+        }
+        // -- [Map][NextRound]
+        private void mapNextRound(Object[] parameters)
+        {
+            ExtensionApi.Connection.Action(
+                new Map() {
+                    MapActionType = MapActionType.NextRound
+                });
+        }
+        private bool mapNextRoundCan(Object parameters)
+        {
+            return ExtensionApi.Connection != null;
+        }
+        // -- [Map][RestartMap]
+        private void mapRestartMap(Object[] parameters)
+        {
+            ExtensionApi.Connection.Action(
+                new Map() {
+                    MapActionType = MapActionType.RestartMap
+                });
+        }
+        private bool mapRestartMapCan(Object parameters)
+        {
+            return ExtensionApi.Connection != null;
+        }
+        // -- [Map][RestartRound]
+        private void mapRestartRound(Object[] parameters)
+        {
+            ExtensionApi.Connection.Action(
+                new Map() {
+                    MapActionType = MapActionType.RestartRound
+                });
+        }
+        private bool mapRestartRoundCan(Object parameters)
+        {
+            return ExtensionApi.Connection != null;
+        }
+
+        // -- [Map][Add]
+        private void mapInsert(Object[] parameters)
+        {
+            ExtensionApi.Connection.Action(
+                new Map() {
+                    MapActionType = MapActionType.Insert,
+                    Index         = Int32.Parse((String)parameters[0]),
+                    Name          = ((String)parameters[1]),
+                    Rounds        = Int32.Parse((String)parameters[2])
+                });
+        }
+        private bool mapInsertCan(Object[] parameters)
+        {
+            String tString;
+            Int32  tInt32;
+            return
+                ExtensionApi.Connection != null && parameters.Length >= 3
+                && Int32.TryParse(parameters[0] as String, out tInt32) != null && tInt32 >= 0
+                && (tString = parameters[1]     as String) != null && tString.Trim() != String.Empty
+                && Int32.TryParse(parameters[2] as String, out tInt32) != null && tInt32 > 0;
+        }
+        // -- [Map][Remove]
+        private void mapRemove(Object[] parameters)
+        {
+            ExtensionApi.Connection.Action(
+                new Map() {
+                    MapActionType = MapActionType.RemoveIndex,
+                    Index = ((Int32)parameters[0])
+                });
+        }
+        private bool mapRemoveCan(Object[] parameters)
+        {
+            Int32  tInt32;
+            return
+                ExtensionApi.Connection != null && parameters.Length >= 1
+                && Int32.TryParse(parameters[1] as String, out tInt32) != null && tInt32 > 0;
+        }
+        // -- [Map][Move]
+        private void mapMove(Object[] parameters)
+        {
+            Int32 tTo   = Int32.Parse((String)parameters[0]);
+            Int32 tFrom = Int32.Parse((String)parameters[1]);
+            ExtensionApi.Connection.Action(
+                new Map() {
+                    MapActionType = MapActionType.RemoveIndex,
+                    Index         = tFrom
+                });
+            ExtensionApi.Connection.Action(
+                new Map() {
+                    MapActionType = MapActionType.Insert,
+                    Index         = tTo + (tTo > tFrom ? -1 : 0),
+                    Name          = (String)parameters[2],
+                    Rounds        = Int32.Parse((String)parameters[3])
+                });
+        }
+        private bool mapMoveCan(Object[] parameters)
+        {
+            String tString;
+            Int32  tInt32;
+            return
+                ExtensionApi.Connection != null && parameters.Length >= 4
+                && Int32.TryParse(parameters[0] as String, out tInt32) != null && tInt32 >= 0
+                && Int32.TryParse(parameters[1] as String, out tInt32) != null && tInt32 >= 0
+                && (tString = parameters[2]     as String) != null && tString.Trim() != String.Empty
+                && Int32.TryParse(parameters[3] as String, out tInt32) != null && tInt32 > 0;
         }
 
 
@@ -778,102 +906,6 @@ namespace Procon.UI.Default
         //                    });
         //                break;
         //        }
-        //    }
-        //    catch (Exception) { }
-        //}
-        //private void actionMapAdd(IList maps)
-        //{
-        //    try
-        //    {
-        //        Int32 rounds = Int32.Parse((String)ExtensionApi.Properties["Connection"]["Action"]["Map"]["Round"].Value);
-        //        // Create a temp list to sort the maps we want to add.
-        //        List<MapViewModel> sMaps = new List<MapViewModel>();
-        //        foreach (MapViewModel map in maps)
-        //            sMaps.Add(map);
-        //        sMaps.Sort((x, y) => String.Compare(x.Name, y.Name));
-        //        // Add the maps to the map list.
-        //        foreach (MapViewModel map in sMaps)
-        //            ActiveConnection.Action(new Map()
-        //            {
-        //                Name          = map.Name,
-        //                Rounds        = rounds,
-        //                MapActionType = MapActionType.Append
-        //            });
-        //    }
-        //    catch (Exception) { }
-        //}
-        //private void actionMapRemove(IList maps)
-        //{
-        //    try
-        //    {
-        //        // Create a temp list to sort the maps we want to remove.
-        //        List<MapViewModel> sMaps = new List<MapViewModel>();
-        //        foreach (MapViewModel map in maps)
-        //            sMaps.Add(map);
-        //        sMaps.Sort((x, y) => y.Index - x.Index);
-        //        // Remove the maps from the map list.
-        //        foreach (MapViewModel map in sMaps)
-        //            ActiveConnection.Action(new Map()
-        //            {
-        //                Index         = map.Index,
-        //                MapActionType = MapActionType.RemoveIndex
-        //            });
-        //    }
-        //    catch (Exception) { }
-        //}
-        //private void actionMapUp(IList maps)
-        //{
-        //    try
-        //    {
-        //        // Create a temp list to sort the maps we want to move up.
-        //        List<MapViewModel> sMaps = new List<MapViewModel>();
-        //        foreach (MapViewModel map in maps)
-        //            sMaps.Add(map);
-        //        sMaps.Sort((x, y) => y.Index - x.Index);
-        //        // Remove the maps from the map list.
-        //        foreach (MapViewModel map in sMaps)
-        //            ActiveConnection.Action(new Map()
-        //            {
-        //                Index         = map.Index,
-        //                MapActionType = MapActionType.RemoveIndex
-        //            });
-        //        sMaps.Sort((x, y) => x.Index - y.Index);
-        //        // Add the selected items back 1 index up.
-        //        foreach (MapViewModel map in sMaps)
-        //            ActiveConnection.Action(new Map()
-        //            {
-        //                Name          = map.Name,
-        //                Index         = map.Index - 1,
-        //                MapActionType = MapActionType.Insert
-        //            });
-        //    }
-        //    catch (Exception) { }
-        //}
-        //private void actionMapDown(IList maps)
-        //{
-        //    try
-        //    {
-        //        // Create a temp list to sort the maps we want to move down.
-        //        List<MapViewModel> sMaps = new List<MapViewModel>();
-        //        foreach (MapViewModel map in maps)
-        //            sMaps.Add(map);
-        //        sMaps.Sort((x, y) => y.Index - x.Index);
-        //        // Remove the maps from the map list.
-        //        foreach (MapViewModel map in sMaps)
-        //            ActiveConnection.Action(new Map()
-        //            {
-        //                Index         = map.Index,
-        //                MapActionType = MapActionType.RemoveIndex
-        //            });
-        //        sMaps.Sort((x, y) => x.Index - y.Index);
-        //        // Add the selected items back 1 index up.
-        //        foreach (MapViewModel map in sMaps)
-        //            ActiveConnection.Action(new Map()
-        //            {
-        //                Name          = map.Name,
-        //                Index         = map.Index + 1,
-        //                MapActionType = MapActionType.Insert
-        //            });
         //    }
         //    catch (Exception) { }
         //}

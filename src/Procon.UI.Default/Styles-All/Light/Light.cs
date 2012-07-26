@@ -60,7 +60,7 @@ namespace Procon.UI.Default.Styles.Light
                 if (tResources[key] is Brush)
                     rootLayout.Resources[key] = tResources[key];
 
-            // Setup base styles.
+            //// Setup base styles.
             rootLayout.Resources[typeof(Button)]      = tResources["StyleButton"];
             rootLayout.Resources[typeof(RadioButton)] = tResources["StyleRadioButton"];
             rootLayout.Resources[typeof(TextBox)]     = tResources["StyleTextBox"];
@@ -78,10 +78,10 @@ namespace Procon.UI.Default.Styles.Light
             tutoLayout.Resources[typeof(Button)] = tResources["StyleButtonDefault"];
 
             // Setup optional styles.
+            rootLayout.Resources["StyleButtonHeader"]     = tResources["StyleButtonHeader"];
             rootLayout.Resources["StyleRadioButtonImage"] = tResources["StyleRadioButtonImage"];
             rootLayout.Resources["StyleListBoxItemColor"] = tResources["StyleListBoxItemColor"];
             rootLayout.Resources["StyleListBoxItemChat"]  = tResources["StyleListBoxItemChat"];
-            rootLayout.Resources["StyleComboBoxHeader"]   = tResources["StyleComboBoxHeader"];
 
             // Setup templates.
             rootLayout.Resources[new DataTemplateKey(typeof(ConnectionViewModel))] = tResources["DataTemplateConnectionViewModel"];

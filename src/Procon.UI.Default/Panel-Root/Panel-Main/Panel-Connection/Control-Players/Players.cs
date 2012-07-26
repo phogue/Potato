@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -130,7 +130,7 @@ namespace Procon.UI.Default.Root.Main.Connection.Players
             tCmmds["Kick"]["Selection"].Value = new RelayCommand<AttachedCommandArgs>(
             #region -- Handles when the "Kick" button is clicked.
                 x => {
-                    foreach (Player player in (ObservableCollection<Object>)x.Parameter)
+                    foreach (Player player in (NotifiableCollection<Object>)x.Parameter)
                         ExtensionApi.Commands["Player"]["Kick"].Value.Execute(new Object[] {
                             player,
                             tProps["Action"]["Reason"].Value
@@ -140,7 +140,7 @@ namespace Procon.UI.Default.Root.Main.Connection.Players
             tCmmds["Ban"]["Selection"].Value = new RelayCommand<AttachedCommandArgs>(
             #region -- Handles when the "Ban" button is clicked.
                 x => {
-                    foreach (Player player in (ObservableCollection<Object>)x.Parameter)
+                    foreach (Player player in (NotifiableCollection<Object>)x.Parameter)
                         ExtensionApi.Commands["Player"]["Ban"].Value.Execute(new Object[] {
                             player,
                             tProps["Action"]["Length"].Value,
@@ -288,7 +288,9 @@ namespace Procon.UI.Default.Root.Main.Connection.Players
             tManaged.ItemChanged += tItem;
             tProps["List"].Value = tManaged;
             ExtensionApi.Properties["Connection"].PropertyChanged += (s, e) => {
-                ((Action<ConnectionViewModel>)tProps["Swap"].Value)(ExtensionApi.Connection);
+                new Thread(() => {
+                    ((Action<ConnectionViewModel>)tProps["Swap"].Value)(ExtensionApi.Connection);
+                }).Start();
             };
 
 

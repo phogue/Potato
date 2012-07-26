@@ -69,7 +69,9 @@
   <ItemGroup>
     <Compile Include="Commands\AttachedCommand.cs" />
     <Compile Include="Commands\AttachedCommandArgs.cs" />
-    <Compile Include="Commands\AttachedCommandGroup.cs" />
+    <Compile Include="Commands\AttachedCommands.cs" />
+    <Compile Include="Commands\AttachedCommandRoutine.cs" />
+    <Compile Include="Commands\AttachedCommandCollection.cs" />
     <Compile Include="Commands\AttachedCommandItem.cs" />
     <Compile Include="Commands\RelayCommand.cs" />
     <Compile Include="Converters\BaseConverter.cs" />

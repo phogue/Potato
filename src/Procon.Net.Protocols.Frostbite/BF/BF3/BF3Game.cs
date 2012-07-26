@@ -127,7 +127,7 @@ namespace Procon.Net.Protocols.Frostbite.BF.BF3 {
 
             if (map.MapActionType == MapActionType.Append) {
                 // mapList.add <map: string> <gamemode: string> <rounds: integer> [index: integer]
-                this.Send(this.Create("mapList.append \"{0}\" \"{1}\" {2}", map.Name, map.GameMode.Name, map.Rounds));
+                this.Send(this.Create("mapList.add \"{0}\" \"{1}\" {2}", map.Name, map.GameMode.Name, map.Rounds));
 
                 this.Send(this.Create("mapList.save"));
 
@@ -141,7 +141,7 @@ namespace Procon.Net.Protocols.Frostbite.BF.BF3 {
             }
             else if (map.MapActionType == MapActionType.Insert) {
                 // mapList.add <map: string> <gamemode: string> <rounds: integer> [index: integer]
-                this.Send(this.Create("mapList.append \"{0}\" \"{1}\" {2} {3}", map.Name, map.GameMode.Name, map.Rounds, map.Index));
+                this.Send(this.Create("mapList.add \"{0}\" \"{1}\" {2} {3}", map.Name, map.GameMode.Name, map.Rounds, map.Index));
 
                 this.Send(this.Create("mapList.save"));
 

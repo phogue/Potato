@@ -637,9 +637,9 @@ namespace Procon.UI.Default
             Int32  tInt32;
             return
                 ExtensionApi.Connection != null && parameters.Length >= 3
-                && Int32.TryParse(parameters[0] as String, out tInt32) != null && tInt32 >= 0
+                && Int32.TryParse(parameters[0] as String, out tInt32) && tInt32 >= 0
                 && (tString = parameters[1]     as String) != null && tString.Trim() != String.Empty
-                && Int32.TryParse(parameters[2] as String, out tInt32) != null && tInt32 > 0;
+                && Int32.TryParse(parameters[2] as String, out tInt32) && tInt32 > 0;
         }
         // -- [Map][Remove]
         private void mapRemove(Object[] parameters)
@@ -647,7 +647,7 @@ namespace Procon.UI.Default
             ExtensionApi.Connection.Action(
                 new Map() {
                     MapActionType = MapActionType.RemoveIndex,
-                    Index = ((Int32)parameters[0])
+                    Index = Int32.Parse((String)parameters[0])
                 });
         }
         private bool mapRemoveCan(Object[] parameters)
@@ -655,7 +655,7 @@ namespace Procon.UI.Default
             Int32  tInt32;
             return
                 ExtensionApi.Connection != null && parameters.Length >= 1
-                && Int32.TryParse(parameters[1] as String, out tInt32) != null && tInt32 > 0;
+                && Int32.TryParse(parameters[0] as String, out tInt32) && tInt32 >= 0;
         }
         // -- [Map][Move]
         private void mapMove(Object[] parameters)
@@ -681,10 +681,10 @@ namespace Procon.UI.Default
             Int32  tInt32;
             return
                 ExtensionApi.Connection != null && parameters.Length >= 4
-                && Int32.TryParse(parameters[0] as String, out tInt32) != null && tInt32 >= 0
-                && Int32.TryParse(parameters[1] as String, out tInt32) != null && tInt32 >= 0
+                && Int32.TryParse(parameters[0] as String, out tInt32) && tInt32 >= 0
+                && Int32.TryParse(parameters[1] as String, out tInt32) && tInt32 >= 0
                 && (tString = parameters[2]     as String) != null && tString.Trim() != String.Empty
-                && Int32.TryParse(parameters[3] as String, out tInt32) != null && tInt32 > 0;
+                && Int32.TryParse(parameters[3] as String, out tInt32) && tInt32 > 0;
         }
 
 

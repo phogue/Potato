@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-
+using Procon.Net.Protocols.Objects;
 using Procon.UI.API;
 using Procon.UI.API.Commands;
 using Procon.UI.API.Utils;
@@ -94,6 +94,82 @@ namespace Procon.UI.Default.Root.Main.Connection.Maps
                 x => {
                     return ExtensionApi.Commands["Map"]["NextMap"].Value != null &&
                            ExtensionApi.Commands["Map"]["NextMap"].Value.CanExecute(new Object[] { });
+                });
+            #endregion
+            tCmmds["Add"].Value = new RelayCommand<Map>(
+            #region -- Adds a map to the map list.
+                x => {
+                    ExtensionApi.Commands["Map"]["Insert"].Value.Execute(new Object[] {
+                        ExtensionApi.Connection.Maps.Count,
+                        x.Name,
+                        "2"
+                    });
+                },
+                x => {
+                    return x != null && ExtensionApi.Connection != null &&
+                           ExtensionApi.Commands["Map"]["Insert"].Value != null &&
+                           ExtensionApi.Commands["Map"]["Insert"].Value.CanExecute(new Object[] {
+                               ExtensionApi.Connection.Maps.Count,
+                               x.Name,
+                               "2"
+                           });
+                });
+            #endregion
+            tCmmds["Remove"].Value = new RelayCommand<Map>(
+            #region -- Removes a map from the map list.
+                x => {
+                    ExtensionApi.Commands["Map"]["Remove"].Value.Execute(new Object[] {
+                        x.Index.ToString()
+                    });
+                },
+                x => {
+                    return x != null &&
+                           ExtensionApi.Commands["Map"]["Remove"].Value != null &&
+                           ExtensionApi.Commands["Map"]["Remove"].Value.CanExecute(new Object[] {
+                               x.Index.ToString()
+                           });
+                });
+            #endregion
+            tCmmds["MoveUp"].Value = new RelayCommand<Map>(
+            #region -- Moves a map up one in the list.
+                x => {
+                    ExtensionApi.Commands["Map"]["Move"].Value.Execute(new Object[] {
+                        (x.Index - 1).ToString(),
+                        x.Index.ToString(),
+                        x.Name,
+                        x.Rounds.ToString()
+                    });
+                },
+                x => {
+                    return x != null &&
+                           ExtensionApi.Commands["Map"]["Move"].Value != null &&
+                           ExtensionApi.Commands["Map"]["Move"].Value.CanExecute(new Object[] {
+                               (x.Index - 1).ToString(),
+                               x.Index.ToString(),
+                               x.Name,
+                               x.Rounds.ToString()
+                           });
+                });
+            #endregion
+            tCmmds["MoveDown"].Value = new RelayCommand<Map>(
+            #region -- Removes a map down one in the list.
+                x => {
+                    ExtensionApi.Commands["Map"]["Move"].Value.Execute(new Object[] {
+                        (x.Index + 1).ToString(),
+                        x.Index.ToString(),
+                        x.Name,
+                        x.Rounds.ToString()
+                    });
+                },
+                x => {
+                    return x != null && 
+                           ExtensionApi.Commands["Map"]["Move"].Value != null &&
+                           ExtensionApi.Commands["Map"]["Move"].Value.CanExecute(new Object[] {
+                               (x.Index + 1).ToString(),
+                               x.Index.ToString(),
+                               x.Name,
+                               x.Rounds.ToString()
+                           });
                 });
             #endregion
 

@@ -84,13 +84,14 @@
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="0.5*" />
+            <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="0.5*" />
         </Grid.ColumnDefinitions>
         
         <!-- Actions -->
         <DockPanel Name="MainConnectionMapsActions"
                    Grid.Row="0"
-                   Grid.ColumnSpan="2"
+                   Grid.ColumnSpan="3"
                    Background="{DynamicResource BrushEmphasisLight}">
 
             <Button Name="MainConnectionMapsRestartMap"
@@ -145,23 +146,128 @@
             <Label Name="MainConnectionMapsPadding" Content=" "/>
         </DockPanel>
         
-        <!-- Map -->
+        <!-- List Management -->
+        <Grid Name="MainConnectionMapsManagement"
+              Grid.Row="1"
+              Grid.Column="1"
+              Background="{DynamicResource BrushEmphasisLight}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0.25*" />
+                <RowDefinition Height="0.25*" />
+                <RowDefinition Height="0.25*" />
+                <RowDefinition Height="0.25*" />
+            </Grid.RowDefinitions>
+            
+            <Button Name="MainConnectionMapsAdd"
+                    Grid.Row="0"
+                    Margin="10, 10, 10, 5"
+                    Padding="3, 0"
+                    FontSize="15"
+                    Content="{Binding
+                        Converter={conv:LocalizationText},
+                        ConverterParameter=Default.Root.Main.Connection.Maps.Add}"
+                    Command="{Binding
+                        Source={x:Static eapi:ExtensionApi.Commands},
+                        Path=[Main][Connection][Maps][Add].Value}"
+                    CommandParameter="{Binding
+                        Source={x:Static eapi:ExtensionApi.Properties},
+                        Path=[Main][Connection][Maps][Pool].Value}" />
+            <Button Name="MainConnectionMapsMoveUp"
+                    Grid.Row="1"
+                    Margin="10, 0, 10, 5"
+                    Padding="3, 0"
+                    FontSize="15"
+                    Content="{Binding
+                        Converter={conv:LocalizationText},
+                        ConverterParameter=Default.Root.Main.Connection.Maps.MoveUp}"
+                    Command="{Binding
+                        Source={x:Static eapi:ExtensionApi.Commands},
+                        Path=[Main][Connection][Maps][MoveUp].Value}"
+                    CommandParameter="{Binding
+                        Source={x:Static eapi:ExtensionApi.Properties},
+                        Path=[Main][Connection][Maps][List].Value}" />
+            <Button Name="MainConnectionMapsMoveDown"
+                    Grid.Row="2"
+                    Margin="10, 0, 10, 5"
+                    Padding="3, 0"
+                    FontSize="15"
+                    Content="{Binding
+                        Converter={conv:LocalizationText},
+                        ConverterParameter=Default.Root.Main.Connection.Maps.MoveDown}"
+                    Command="{Binding
+                        Source={x:Static eapi:ExtensionApi.Commands},
+                        Path=[Main][Connection][Maps][MoveDown].Value}"
+                    CommandParameter="{Binding
+                        Source={x:Static eapi:ExtensionApi.Properties},
+                        Path=[Main][Connection][Maps][List].Value}" />
+            <Button Name="MainConnectionMapsRemove"
+                    Grid.Row="3"
+                    Margin="10, 0, 10, 10"
+                    Padding="3, 0"
+                    FontSize="15"
+                    Content="{Binding
+                        Converter={conv:LocalizationText},
+                        ConverterParameter=Default.Root.Main.Connection.Maps.Remove}"
+                    Command="{Binding
+                        Source={x:Static eapi:ExtensionApi.Commands},
+                        Path=[Main][Connection][Maps][Remove].Value}"
+                    CommandParameter="{Binding
+                        Source={x:Static eapi:ExtensionApi.Properties},
+                        Path=[Main][Connection][Maps][List].Value}" />
+        </Grid>
+        
+        <!-- Pool -->
+        <TextBlock Name="MainConnectionMapsPoolMark"
+                   Grid.Row="1"
+                   Grid.Column="0"
+                   Opacity="0.2"
+                   FontSize="45"
+                   VerticalAlignment="Center"
+                   HorizontalAlignment="Center"
+                   Text="{Binding
+                       Converter={conv:LocalizationText},
+                       ConverterParameter=Default.Root.Main.Connection.Maps.Pool}">
+            <TextBlock.LayoutTransform>
+                <RotateTransform Angle="90" />
+            </TextBlock.LayoutTransform>
+        </TextBlock>
         <ListBox Name="MainConnectionMapsPool"
                  Grid.Row="1"
                  Grid.Column="0"
-                 Padding="15, 15, 0, 0"
+                 Padding="10"
                  BorderThickness="0"
-                 ScrollViewer.VerticalScrollBarVisibility="Visible"
                  ItemsSource="{Binding Path=MapPool}"
-                 ItemTemplate="{DynamicResource PoolItem}" />
+                 ItemTemplate="{DynamicResource PoolItem}"
+                 ItemContainerStyle="{DynamicResource StyleListBoxItemColor}"
+                 SelectedItem="{Binding
+                     Source={x:Static eapi:ExtensionApi.Properties},
+                     Path=[Main][Connection][Maps][Pool].Value}"/>
+        
+        <!-- List -->
+        <TextBlock Name="MainConnectionMapsListMark"
+                   Grid.Row="1"
+                   Grid.Column="2"
+                   Opacity="0.2"
+                   FontSize="45"
+                   VerticalAlignment="Center"
+                   HorizontalAlignment="Center"
+                   Text="{Binding
+                       Converter={conv:LocalizationText},
+                       ConverterParameter=Default.Root.Main.Connection.Maps.List}">
+            <TextBlock.LayoutTransform>
+                <RotateTransform Angle="90" />
+            </TextBlock.LayoutTransform>
+        </TextBlock>
         <ListBox Name="MainConnectionMapsList"
                  Grid.Row="1"
-                 Grid.Column="1"
-                 Padding="0, 15, 15, 0"
+                 Grid.Column="2"
+                 Padding="10"
                  BorderThickness="0"
-                 ScrollViewer.VerticalScrollBarVisibility="Visible"
                  ItemsSource="{Binding Path=Maps}"
                  ItemTemplate="{DynamicResource ListItem}"
-                 ItemContainerStyle="{DynamicResource StyleListBoxItemColor}" />
+                 ItemContainerStyle="{DynamicResource StyleListBoxItemColor}"
+                 SelectedItem="{Binding
+                     Source={x:Static eapi:ExtensionApi.Properties},
+                     Path=[Main][Connection][Maps][List].Value}" />
     </Grid>
 </Grid>

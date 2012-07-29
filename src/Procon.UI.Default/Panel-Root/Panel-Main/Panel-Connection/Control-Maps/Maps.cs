@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -100,8 +101,9 @@ namespace Procon.UI.Default.Root.Main.Connection.Maps
             #region -- Adds a map to the map list.
                 x => {
                     ExtensionApi.Commands["Map"]["Insert"].Value.Execute(new Object[] {
-                        ExtensionApi.Connection.Maps.Count,
+                        ExtensionApi.Connection.Maps.Count.ToString(),
                         x.Name,
+                        x.GameMode,
                         "2"
                     });
                 },
@@ -109,8 +111,9 @@ namespace Procon.UI.Default.Root.Main.Connection.Maps
                     return x != null && ExtensionApi.Connection != null &&
                            ExtensionApi.Commands["Map"]["Insert"].Value != null &&
                            ExtensionApi.Commands["Map"]["Insert"].Value.CanExecute(new Object[] {
-                               ExtensionApi.Connection.Maps.Count,
+                               ExtensionApi.Connection.Maps.Count.ToString(),
                                x.Name,
+                               x.GameMode,
                                "2"
                            });
                 });
@@ -134,19 +137,24 @@ namespace Procon.UI.Default.Root.Main.Connection.Maps
             #region -- Moves a map up one in the list.
                 x => {
                     ExtensionApi.Commands["Map"]["Move"].Value.Execute(new Object[] {
-                        (x.Index - 1).ToString(),
                         x.Index.ToString(),
+                        (x.Index - 1).ToString(),
                         x.Name,
+                        x.GameMode,
                         x.Rounds.ToString()
                     });
                 },
                 x => {
                     return x != null &&
+                           ExtensionApi.Connection != null &&
+                           ExtensionApi.Connection.Maps.Count > 0 &&
+                           ExtensionApi.Connection.Maps.Min(y => y.Index) != x.Index &&
                            ExtensionApi.Commands["Map"]["Move"].Value != null &&
                            ExtensionApi.Commands["Map"]["Move"].Value.CanExecute(new Object[] {
-                               (x.Index - 1).ToString(),
                                x.Index.ToString(),
+                               (x.Index - 1).ToString(),
                                x.Name,
+                               x.GameMode,
                                x.Rounds.ToString()
                            });
                 });
@@ -155,19 +163,24 @@ namespace Procon.UI.Default.Root.Main.Connection.Maps
             #region -- Removes a map down one in the list.
                 x => {
                     ExtensionApi.Commands["Map"]["Move"].Value.Execute(new Object[] {
-                        (x.Index + 1).ToString(),
                         x.Index.ToString(),
+                        (x.Index + 1).ToString(),
                         x.Name,
+                        x.GameMode,
                         x.Rounds.ToString()
                     });
                 },
                 x => {
-                    return x != null && 
+                    return x != null &&
+                           ExtensionApi.Connection != null &&
+                           ExtensionApi.Connection.Maps.Count > 0 &&
+                           ExtensionApi.Connection.Maps.Max(y => y.Index) != x.Index &&
                            ExtensionApi.Commands["Map"]["Move"].Value != null &&
                            ExtensionApi.Commands["Map"]["Move"].Value.CanExecute(new Object[] {
-                               (x.Index + 1).ToString(),
                                x.Index.ToString(),
+                               (x.Index + 1).ToString(),
                                x.Name,
+                               x.GameMode,
                                x.Rounds.ToString()
                            });
                 });

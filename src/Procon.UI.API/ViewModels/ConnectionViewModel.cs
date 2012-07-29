@@ -96,10 +96,18 @@ namespace Procon.UI.API.ViewModels
             set { nModel.GameState.Variables.MaxPlayerCount = value; }
         }
         public String  MapName {
-            get { return nModel.GameState.Variables.MapName; }
+            get {
+                Map tMap = MapPool.FirstOrDefault(x => x.Name == nModel.GameState.Variables.MapName);
+                if (tMap != null) return tMap.FriendlyName;
+                return nModel.GameState.Variables.MapName;
+            }
         }
         public String  GameModeName {
-            get { return nModel.GameState.Variables.GameModeName; }
+            get {
+                GameMode tMode = GameModePool.FirstOrDefault(x => x.Name == nModel.GameState.Variables.GameModeName);
+                if (tMode != null) return tMode.FriendlyName;
+                return nModel.GameState.Variables.GameModeName;
+            }
         }
 
         // Observable Properties.
@@ -390,8 +398,22 @@ namespace Procon.UI.API.ViewModels
                 case GameEventType.ServerInfoUpdated:
                     break;
 
-                /* Game Config Executed Event: */
+                /* Game Config Executed Event:
+                 * 
+                 * [GameModePool Collection]
+                 * All the game modes in the game mode pool have been
+                 * loaded by this point.  So here we can safely
+                 * re-initialize the game mode pool and have it contain
+                 * all the game mode pool items.
+                 * 
+                 * [MapPool Collection]
+                 * All maps in the map pool have been loaded by this
+                 * point. So here we can safely re-initialize the map
+                 * pool and have it contain all the map pool items.
+                 * */
                 case GameEventType.GameConfigExecuted:
+                    GameModePool = new NotifiableCollection<GameMode>(e.GameState.GameModePool);
+                    MapPool      = new NotifiableCollection<Map>(e.GameState.MapPool);
                     break;
             }
 

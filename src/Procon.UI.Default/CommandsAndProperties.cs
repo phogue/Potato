@@ -628,18 +628,21 @@ namespace Procon.UI.Default
                     MapActionType = MapActionType.Insert,
                     Index         = Int32.Parse((String)parameters[0]),
                     Name          = ((String)parameters[1]),
-                    Rounds        = Int32.Parse((String)parameters[2])
+                    GameMode      = (GameMode)parameters[2],
+                    Rounds        = Int32.Parse((String)parameters[3])
                 });
         }
         private bool mapInsertCan(Object[] parameters)
         {
-            String tString;
-            Int32  tInt32;
+            GameMode tMode;
+            String   tString;
+            Int32    tInt32;
             return
-                ExtensionApi.Connection != null && parameters.Length >= 3
+                ExtensionApi.Connection != null && parameters.Length >= 4
                 && Int32.TryParse(parameters[0] as String, out tInt32) && tInt32 >= 0
-                && (tString = parameters[1]     as String) != null && tString.Trim() != String.Empty
-                && Int32.TryParse(parameters[2] as String, out tInt32) && tInt32 > 0;
+                && (tString = parameters[1]     as String)   != null && tString.Trim()    != String.Empty
+                && (tMode   = parameters[2]     as GameMode) != null && tMode.Name.Trim() != String.Empty
+                && Int32.TryParse(parameters[3] as String, out tInt32) && tInt32 > 0;
         }
         // -- [Map][Remove]
         private void mapRemove(Object[] parameters)
@@ -660,31 +663,32 @@ namespace Procon.UI.Default
         // -- [Map][Move]
         private void mapMove(Object[] parameters)
         {
-            Int32 tTo   = Int32.Parse((String)parameters[0]);
-            Int32 tFrom = Int32.Parse((String)parameters[1]);
             ExtensionApi.Connection.Action(
                 new Map() {
                     MapActionType = MapActionType.RemoveIndex,
-                    Index         = tFrom
+                    Index         = Int32.Parse((String)parameters[0])
                 });
             ExtensionApi.Connection.Action(
                 new Map() {
                     MapActionType = MapActionType.Insert,
-                    Index         = tTo + (tTo > tFrom ? -1 : 0),
+                    Index         = Int32.Parse((String)parameters[1]),
                     Name          = (String)parameters[2],
-                    Rounds        = Int32.Parse((String)parameters[3])
+                    GameMode      = (GameMode)parameters[3],
+                    Rounds        = Int32.Parse((String)parameters[4])
                 });
         }
         private bool mapMoveCan(Object[] parameters)
         {
-            String tString;
-            Int32  tInt32;
+            GameMode tMode;
+            String   tString;
+            Int32    tInt32;
             return
-                ExtensionApi.Connection != null && parameters.Length >= 4
+                ExtensionApi.Connection != null && parameters.Length >= 5
                 && Int32.TryParse(parameters[0] as String, out tInt32) && tInt32 >= 0
                 && Int32.TryParse(parameters[1] as String, out tInt32) && tInt32 >= 0
-                && (tString = parameters[2]     as String) != null && tString.Trim() != String.Empty
-                && Int32.TryParse(parameters[3] as String, out tInt32) && tInt32 > 0;
+                && (tString = parameters[2]     as String)   != null && tString.Trim()    != String.Empty
+                && (tMode   = parameters[3]     as GameMode) != null && tMode.Name.Trim() != String.Empty
+                && Int32.TryParse(parameters[4] as String, out tInt32) && tInt32 > 0;
         }
 
 

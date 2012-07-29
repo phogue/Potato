@@ -36,10 +36,10 @@
                             Text="{Binding Path=Rounds, StringFormat='{}{0}'}" />
                 <TextBlock Name="PART_Mode"
                             DockPanel.Dock="Left"
-                            Text="{Binding Path=GameMode.Name, StringFormat=' [{0}]'}" />
+                            Text="{Binding Path=GameMode.FriendlyName, StringFormat=' [{0}]'}" />
                 <TextBlock Name="PART_Name"
                             DockPanel.Dock="Left"
-                            Text="{Binding Path=Name, StringFormat=' {0}'}" />
+                            Text="{Binding Path=FriendlyName, StringFormat=' {0}'}" />
             </DockPanel>
         </DataTemplate>
     </Grid.Resources>

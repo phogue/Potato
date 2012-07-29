@@ -65,6 +65,14 @@
     <Color x:Key="ColorTeam0Header"  A="255" R="123" G="123" B="123" />
     <Color x:Key="ColorTeam0Content" A="255" R="182" G="182" B="182" />
     
+    <!-- Header Colors -->
+    <Color x:Key="ColorHeaderBarLight"  A="255" R="0"   G="177" B="206" />
+    <Color x:Key="ColorHeaderBarMedium" A="255" R="0"   G="168" B="201" />
+    <Color x:Key="ColorHeaderBarDark"   A="255" R="0"   G="150" B="189" />
+    <Color x:Key="ColorHeaderBtnLight"  A="255" R="190" G="234" B="242" />
+    <Color x:Key="ColorHeaderBtnMedium" A="255" R="160" G="201" B="208" />
+    <Color x:Key="ColorHeaderBtnDark"   A="255" R="130" G="171" B="178" />
+    
     
     <!-- Control Brushes -->
     <LinearGradientBrush x:Key="BrushControlNormal" StartPoint="0.5, 0.0" EndPoint="0.5, 1.0">
@@ -148,6 +156,18 @@
     <SolidColorBrush x:Key="BrushTeam0Header"  Color="{DynamicResource ColorTeam0Header}"  />
     <SolidColorBrush x:Key="BrushTeam0Content" Color="{DynamicResource ColorTeam0Content}" />
     
+    <!-- Header Brushes -->
+    <SolidColorBrush x:Key="BrushHeaderBarLight"  Color="{DynamicResource ColorHeaderBarLight}"  />
+    <SolidColorBrush x:Key="BrushHeaderBarMedium" Color="{DynamicResource ColorHeaderBarMedium}" />
+    <SolidColorBrush x:Key="BrushHeaderBarDark"   Color="{DynamicResource ColorHeaderBarDark}"   />
+    <SolidColorBrush x:Key="BrushHeaderBtnLight"  Color="{DynamicResource ColorHeaderBtnLight}"  />
+    <SolidColorBrush x:Key="BrushHeaderBtnMedium" Color="{DynamicResource ColorHeaderBtnMedium}" />
+    <SolidColorBrush x:Key="BrushHeaderBtnDark"   Color="{DynamicResource ColorHeaderBtnDark}"   />
+    <LinearGradientBrush x:Key="BrushHeaderBar" StartPoint="0.5, 0.0" EndPoint="0.5, 1.0">
+        <GradientStop Offset="0.0" Color="{DynamicResource ColorHeaderBarMedium}" />
+        <GradientStop Offset="1.0" Color="{DynamicResource ColorHeaderBarDark}"  />
+    </LinearGradientBrush>
+    
     <!-- Background Brushes -->
     <RadialGradientBrush x:Key="BrushSpotlight" GradientOrigin="0.5, 0.5" Center="0.5, 0.65" RadiusX="0.4" RadiusY="0.6">
         <GradientStop Offset="0.0" Color="{DynamicResource ColorControlLight}" />
@@ -211,8 +231,8 @@
         </Setter>
     </Style>
     <Style x:Key="StyleButtonHeader"     TargetType="{x:Type Button}"       BasedOn="{StaticResource StyleButton}">
-        <Setter Property="Foreground"            Value="{DynamicResource BrushTextLight}" />
-        <Setter Property="Background"            Value="{DynamicResource BrushContentDark}" />
+        <Setter Property="Foreground"            Value="{DynamicResource BrushTextDark}" />
+        <Setter Property="Background"            Value="{DynamicResource BrushHeaderBtnLight}" />
         <Setter Property="BorderThickness"       Value="0" />
         <Setter Property="OverridesDefaultStyle" Value="True" />
         <Setter Property="Template">
@@ -234,10 +254,10 @@
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Background" Value="{DynamicResource BrushEmphasisDark}" />
+                            <Setter Property="Background" Value="{DynamicResource BrushHeaderBtnMedium}" />
                         </Trigger>
                         <Trigger Property="IsPressed" Value="True">
-                            <Setter Property="Background" Value="{DynamicResource BrushDark}" />
+                            <Setter Property="Background" Value="{DynamicResource BrushHeaderBtnDark}" />
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
                             <Setter Property="Opacity"    Value="0.7" TargetName="PART_Border" />
@@ -363,8 +383,10 @@
     </Style>
     <Style x:Key="StyleListBoxItemColor" TargetType="{x:Type ListBoxItem}"  BasedOn="{StaticResource StyleListBoxItem}">
         <Style.Resources>
-            <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="CornflowerBlue" />
-            <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}"   Color="Gray" />
+            <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}"     Color="{StaticResource ColorHeaderBarMedium}" />
+            <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="{StaticResource ColorTextDark}" />
+            <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}"       Color="Gray" />
+            <SolidColorBrush x:Key="{x:Static SystemColors.ControlTextBrushKey}"   Color="{StaticResource ColorTextDark}" />
         </Style.Resources>
     </Style>
     <Style x:Key="StyleListBoxItemChat"  TargetType="{x:Type ListBoxItem}"  BasedOn="{StaticResource StyleListBoxItem}">
@@ -587,14 +609,23 @@
                             <Image Name="PART_AddressState"
                                    DockPanel.Dock="Left"
                                    Width="16"
-                                   Source="{Binding
-                                       Path=ConnectionState}" />
+                                   DataContext="{Binding ConnectionState}"
+                                   acmd:AttachedCommand.Event="DataContextChanged"
+                                   acmd:AttachedCommand.Command="{Binding
+                                       Source={x:Static eapi:ExtensionApi.Commands},
+                                       Path=[Main][Header][State].Value}" />
                             <TextBlock Name="PART_AddressName"
                                        DockPanel.Dock="Left"
                                        Margin="5, 5, 0, 0"
                                        VerticalAlignment="Center"
-                                       HorizontalAlignment="Left"
-                                       Text="{Binding Hostname}" />
+                                       HorizontalAlignment="Left">
+                                <TextBlock.Text>
+                                    <MultiBinding StringFormat="{}{0}:{1}">
+                                        <Binding Path="Hostname" />
+                                        <Binding Path="Port" />
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
                         </DockPanel>
                         <!-- Map -->
                         <DockPanel Name="PART_MapContainer"

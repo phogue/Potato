@@ -61,11 +61,13 @@ namespace Procon.UI.Default.Root.Main.Header
                 x => {
                     Image              tSender = (Image)x.Sender;
                     DependencyProperty tArgs   = (DependencyProperty)x.Args;
-                    if (tSender != null && tSender != null)
-                        if (ExtensionApi.Properties["Images"]["Status"]["Light"].ContainsKey(tSender.GetValue(tArgs).ToString()))
-                            tSender.Source = ExtensionApi.Properties["Images"]["Status"]["Light"][tSender.GetValue(tArgs).ToString()].Value as BitmapImage;
+                    if (tSender != null && tSender != null) {
+                        String tState = tSender.GetValue(tArgs).ToString();
+                        if (ExtensionApi.Properties["Images"]["Status"]["Dark"].ContainsKey(tState))
+                            tSender.Source = ExtensionApi.Properties["Images"]["Status"]["Dark"][tState].Value as BitmapImage;
                         else
-                            tSender.Source = ExtensionApi.Properties["Images"]["Status"]["Light"]["Unknown"].Value as BitmapImage;
+                            tSender.Source = ExtensionApi.Properties["Images"]["Status"]["Dark"]["Unknown"].Value as BitmapImage;
+                    }
                 });
             #endregion
             tCmmds["Overview"].Value = new RelayCommand<AttachedCommandArgs>(

@@ -11,13 +11,13 @@
            DataContext="{Binding
                Source={x:Static eapi:ExtensionApi.Properties},
                Path=[Connection].Value}"
-           Background="{DynamicResource BrushHeaderDark}">
+           Background="{DynamicResource BrushHeaderBar}">
 
     <!-- Logo -->
     <Image Name="MainHeaderLogo"
            DockPanel.Dock="Right"
            Margin="10, 0"
-           Height="40"
+           Height="38"
            Source="{Binding
                Source={x:Static eapi:ExtensionApi.Properties},
                Path=[Images][Procon][Small].Value}" />
@@ -33,7 +33,7 @@
                 Path=[Main][Header][Overview].Value}">
         <Image Source="{Binding
                    Source={x:Static eapi:ExtensionApi.Properties},
-                   Path=[Images][Header][Light][Overview].Value}" />
+                   Path=[Images][Header][Dark][Overview].Value}" />
     </Button>
 
     <!-- Status -->
@@ -50,6 +50,6 @@
     <TextBlock Name="MainHeaderConnection"
                Margin="0, 5"
                FontSize="14"
-               Foreground="{DynamicResource BrushTextLight}"
+               Foreground="{DynamicResource BrushTextDark}"
                Text="{Binding ServerName}" />
 </DockPanel>

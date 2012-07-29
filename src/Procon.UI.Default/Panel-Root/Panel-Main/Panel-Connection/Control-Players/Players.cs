@@ -190,21 +190,27 @@ namespace Procon.UI.Default.Root.Main.Connection.Players
                     Int32 tMod   = 0;
                     Int32 tIndex = 0;
 
-                    while (tIndex < tManaged.Count) {
-                        // Still moving the index.
-                        if (tManaged[tIndex] == p)
-                            tIndex += (tMod = 1);
-                        // Move to the correct team.
-                        else if (tManaged[tIndex].Team < p.Team)
-                            tIndex++;
-                        // Move to the correct name placement.
-                        else if (tManaged[tIndex].Team == p.Team && tManaged[tIndex].Name.CompareTo(p.Name) < 0)
-                            tIndex++;
-                        // We're at the correct spot.
-                        else
-                            break;
+                    tManaged.Lock();
+                    Int32 tIndexOf = tManaged.IndexOf(p);
+                    // Threading error check.
+                    if (tIndexOf != -1) {
+                        while (tIndex < tManaged.Count) {
+                            // Still moving the index.
+                            if (tManaged[tIndex] == p)
+                                tIndex += (tMod = 1);
+                            // Move to the correct team.
+                            else if (tManaged[tIndex].Team < p.Team)
+                                tIndex++;
+                            // Move to the correct name placement.
+                            else if (tManaged[tIndex].Team == p.Team && tManaged[tIndex].Name.CompareTo(p.Name) < 0)
+                                tIndex++;
+                            // We're at the correct spot.
+                            else
+                                break;
+                        }
+                        tManaged.Move(tIndexOf, tIndex - tMod);
                     }
-                    tManaged.Move(tManaged.IndexOf(p), tIndex - tMod);
+                    tManaged.Unlock();
                 });
             #endregion
             tProps["List"]["Item"].Value = new Action<Player, String>(

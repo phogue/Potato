@@ -5,6 +5,7 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Threading;
 using System.Windows.Threading;
 
 namespace Procon.UI.API.Utils
@@ -22,6 +23,8 @@ namespace Procon.UI.API.Utils
         private Boolean mNotifyOn  = true;
         private Boolean mNotifying = false;
 
+        [field: NonSerialized]
+        private Mutex mMutex = new Mutex();
         [field:NonSerialized]
         private Dispatcher mDispatcher = null;
 
@@ -55,83 +58,109 @@ namespace Procon.UI.API.Utils
                 Add(item);
         }
 
-        // Various methods.
-        public Boolean Contains(T item)
-        {
-            return mItems.Contains(item);
-        }
-        public Int32 IndexOf(T item)
-        {
-            return mItems.IndexOf(item);
-        }
-        public void CopyTo(T[] array, Int32 arrayIndex)
-        {
-            mItems.CopyTo(array, arrayIndex);
-        }
-
         // Indexer.
         public T this[Int32 index]
         {
-            get { return mItems[index];  }
-            set { mItems[index] = value; }
+            get {
+                try {
+                    Lock();
+                    return mItems[index];
+                }
+                finally { Unlock(); }
+            }
+            set {
+                try {
+                    Lock();
+                    mItems[index] = value;
+                }
+                finally { Unlock(); }
+            }
         }
         
         // Single methods.
         public void Clear()
         {
-            // Check Stuff.
-            CheckNotifying();
-            ClearItems();
+            try {
+                // Check Stuff.
+                Lock();
+                CheckNotifying();
+                ClearItems();
+            }
+            finally { Unlock(); }
         }
         public void Add(T item)
         {
-            // Check Stuff.
-            CheckNotifying();
-            AddItem(item);
+            try {
+                // Check Stuff.
+                Lock();
+                CheckNotifying();
+                AddItem(item);
+            }
+            finally { Unlock(); }
         }
         public void Insert(Int32 index, T item)
         {
-            // Check Stuff.
-            CheckNotifying();
-            if (index < 0 || index > Count)
-                throw new ArgumentOutOfRangeException("index");
-            InsertItem(index, item);
+            try {
+                // Check Stuff.
+                Lock();
+                CheckNotifying();
+                if (index < 0 || index > Count)
+                    throw new ArgumentOutOfRangeException("index");
+                InsertItem(index, item);
+            }
+            finally { Unlock(); }
         }
         public void Set(Int32 index, T item)
         {
-            // Check Stuff.
-            CheckNotifying();
-            if (index < 0 || index >= Count)
-                throw new ArgumentOutOfRangeException("index");
-            SetItem(index, item);
+            try {
+                // Check Stuff.
+                Lock();
+                CheckNotifying();
+                if (index < 0 || index >= Count)
+                    throw new ArgumentOutOfRangeException("index");
+                SetItem(index, item);
+            }
+            finally { Unlock(); }
         }
         public void Move(Int32 oldIndex, Int32 newIndex)
         {
-            // Check Stuff.
-            CheckNotifying();
-            if (oldIndex < 0 || oldIndex >= Count)
-                throw new ArgumentOutOfRangeException("oldIndex");
-            if (newIndex < 0 || newIndex >= Count)
-                throw new ArgumentOutOfRangeException("newIndex");
-            MoveItem(oldIndex, newIndex);
+            try {
+                // Check Stuff.
+                Lock();
+                CheckNotifying();
+                if (oldIndex < 0 || oldIndex >= Count)
+                    throw new ArgumentOutOfRangeException("oldIndex");
+                if (newIndex < 0 || newIndex >= Count)
+                    throw new ArgumentOutOfRangeException("newIndex");
+                MoveItem(oldIndex, newIndex);
+            }
+            finally { Unlock(); }
         }
         public bool Remove(T item)
         {
-            // Check Stuff.
-            Int32   index;
-            Boolean contained;
-            CheckNotifying();
-            if ((contained = (index = mItems.IndexOf(item)) >= 0))
-                RemoveItem(index);
-            return contained;
+            try {
+                // Check Stuff.
+                Int32   index;
+                Boolean contained;
+                Lock();
+                CheckNotifying();
+                if ((contained = (index = mItems.IndexOf(item)) >= 0))
+                    RemoveItem(index);
+                return contained;
+            }
+            finally { Unlock(); }
         }
         public void RemoveAt(Int32 index)
         {
-            // Check Stuff.
-            CheckNotifying();
-            if (index < 0 || index >= Count)
-                throw new ArgumentOutOfRangeException("index");
-            RemoveItem(index);
+            try {
+                // Check Stuff.
+                Lock();
+                CheckNotifying();
+                if (index < 0 || index >= Count)
+                    throw new ArgumentOutOfRangeException("index");
+                RemoveItem(index);
+            }
+            finally { Unlock(); }
         }
 
         // Bulk methods.
@@ -333,6 +362,42 @@ namespace Procon.UI.API.Utils
             mNotifyOn = true;
         }
 
+        // Synchronization methods.
+        public void Lock()
+        {
+            mMutex.WaitOne();
+        }
+        public void Unlock()
+        {
+            mMutex.ReleaseMutex();
+        }
+
+        // Various methods.
+        public Boolean Contains(T item)
+        {
+            try {
+                Lock();
+                return mItems.Contains(item);
+            }
+            finally { Unlock(); }
+        }
+        public Int32 IndexOf(T item)
+        {
+            try {
+                Lock();
+                return mItems.IndexOf(item);
+            }
+            finally { Unlock(); }
+        }
+        public void CopyTo(T[] array, Int32 arrayIndex)
+        {
+            try {
+                Lock();
+                mItems.CopyTo(array, arrayIndex);
+            }
+            finally { Unlock(); }
+        }
+
         #region ICollection
 
         Boolean ICollection<T>.IsReadOnly
@@ -435,7 +500,7 @@ namespace Procon.UI.API.Utils
                         return;
                     }
                     mPrivateCollectionChanged(this, args);
-                }   
+                }
                 mNotifying = false;
             }
         }

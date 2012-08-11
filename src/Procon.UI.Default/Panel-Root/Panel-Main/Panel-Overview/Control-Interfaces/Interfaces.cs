@@ -108,10 +108,12 @@ namespace Procon.UI.Default.Root.Main.Overview.Interfaces
                            });
                 });
             #endregion
-            tCmmds["Pass"].Value = new RelayCommand<String>(
+            tCmmds["Pass"].Value = new RelayCommand<AttachedCommandArgs>(
             #region -- Handles when the password changes.
-                pass => {
-                    tProps["Pass"].Value = pass;
+                x => {
+                    PasswordBox tElement = x.Sender as PasswordBox;
+                    if (tElement != null)
+                        tProps["Pass"].Value = tElement.Password;
                 });
             #endregion
 

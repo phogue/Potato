@@ -12,12 +12,12 @@
            VerticalAlignment="Center"
            HorizontalAlignment="Center">
     <TextBlock Name="TutorialNewInterfaceAgreement"
-                DockPanel.Dock="Bottom"
-                Margin="0, 20, 0, 0"
-                Opacity="0.5"
-                Text="{Binding
-                    Converter={conv:LocalizationText},
-                    ConverterParameter=Default.Root.Tutorial.NewInterface.Agreement}" />
+               DockPanel.Dock="Bottom"
+               Margin="0, 20, 0, 0"
+               Opacity="0.5"
+               Text="{Binding
+                   Converter={conv:LocalizationText},
+                   ConverterParameter=Default.Root.Tutorial.NewInterface.Agreement}" />
     <Button Name="TutorialNewInterfaceRemote"
             DockPanel.Dock="Bottom"
             Margin="0, 15, 0, 0"
@@ -29,7 +29,7 @@
                 Converter={conv:LocalizationText},
                 ConverterParameter=Default.Root.Tutorial.NewInterface.Remote}" />
     <Grid Name="TutorialNewInterfaceInput"
-            DockPanel.Dock="Bottom">
+          DockPanel.Dock="Bottom">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
@@ -43,56 +43,57 @@
         </Grid.ColumnDefinitions>
 
         <Label Name="TutorialNewInterfaceInputHostText"
-                Grid.Row="0" Grid.Column="0"
-                Padding="0, 10"
-                Content="{Binding 
-                    Converter={conv:LocalizationText},
-                    ConverterParameter=Default.Root.Tutorial.NewInterface.Host}" />
+               Grid.Row="0" Grid.Column="0"
+               Padding="0, 10"
+               Content="{Binding 
+                   Converter={conv:LocalizationText},
+                   ConverterParameter=Default.Root.Tutorial.NewInterface.Host}" />
         <Label Name="TutorialNewInterfaceInputPortText"
-                Grid.Row="0" Grid.Column="2"
-                Padding="0, 10"
-                Content="{Binding
-                    Converter={conv:LocalizationText},
-                    ConverterParameter=Default.Root.Tutorial.NewInterface.Port}" />
+               Grid.Row="0" Grid.Column="2"
+               Padding="0, 10"
+               Content="{Binding
+                   Converter={conv:LocalizationText},
+                   ConverterParameter=Default.Root.Tutorial.NewInterface.Port}" />
         <Label Name="TutorialNewInterfaceInputUserText"
-                Grid.Row="2" Grid.Column="0"
-                Padding="0, 10"
-                Content="{Binding
-                    Converter={conv:LocalizationText},
-                    ConverterParameter=Default.Root.Tutorial.NewInterface.User}" />
+               Grid.Row="2" Grid.Column="0"
+               Padding="0, 10"
+               Content="{Binding
+                   Converter={conv:LocalizationText},
+                   ConverterParameter=Default.Root.Tutorial.NewInterface.User}" />
         <Label Name="TutorialNewInterfaceInputPassText"
-                Grid.Row="2" Grid.Column="2"
-                Padding="0, 10"
-                Content="{Binding
-                    Converter={conv:LocalizationText},
-                    ConverterParameter=Default.Root.Tutorial.NewInterface.Pass}" />
+               Grid.Row="2" Grid.Column="2"
+               Padding="0, 10"
+               Content="{Binding
+                   Converter={conv:LocalizationText},
+                   ConverterParameter=Default.Root.Tutorial.NewInterface.Pass}" />
         <TextBox Name="TutorialNewInterfaceInputHost"
-                    Grid.Row="1" Grid.Column="0"
-                    Height="39"
-                    Text="{Binding
-                        Source={x:Static eapi:ExtensionApi.Properties},
-                        Path=[Tutorial][NewInterface][Host].Value,
-                        UpdateSourceTrigger=PropertyChanged}" />
+                 Grid.Row="1" Grid.Column="0"
+                 Height="39"
+                 Text="{Binding
+                     Source={x:Static eapi:ExtensionApi.Properties},
+                     Path=[Tutorial][NewInterface][Host].Value,
+                     UpdateSourceTrigger=PropertyChanged}" />
         <TextBox Name="TutorialNewInterfaceInputPort"
-                    Grid.Row="1" Grid.Column="2"
-                    Height="39"
-                    Text="{Binding
-                        Source={x:Static eapi:ExtensionApi.Properties},
-                        Path=[Tutorial][NewInterface][Port].Value,
-                        UpdateSourceTrigger=PropertyChanged}" />
+                 Grid.Row="1" Grid.Column="2"
+                 Height="39"
+                 Text="{Binding
+                     Source={x:Static eapi:ExtensionApi.Properties},
+                     Path=[Tutorial][NewInterface][Port].Value,
+                     UpdateSourceTrigger=PropertyChanged}" />
         <TextBox Name="TutorialNewInterfaceInputUser"
-                    Grid.Row="3" Grid.Column="0"
-                    Height="39"
-                    Text="{Binding
-                        Source={x:Static eapi:ExtensionApi.Properties},
-                        Path=[Tutorial][NewInterface][User].Value,
-                        UpdateSourceTrigger=PropertyChanged}" />
+                 Grid.Row="3" Grid.Column="0"
+                 Height="39"
+                 Text="{Binding
+                     Source={x:Static eapi:ExtensionApi.Properties},
+                     Path=[Tutorial][NewInterface][User].Value,
+                     UpdateSourceTrigger=PropertyChanged}" />
         <PasswordBox Name="TutorialNewInterfaceInputPass"
-                        Grid.Row="3" Grid.Column="2"
-                        Height="39"
-                        util:PasswordBoxBinding.Password="{Binding
-                            Source={x:Static eapi:ExtensionApi.Commands},
-                            Path=[Tutorial][NewInterface][Pass].Value}" />
+                     Grid.Row="3" Grid.Column="2"
+                     Height="39"
+                     acmd:AttachedCommand.Event="PasswordChanged"
+                     acmd:AttachedCommand.Command="{Binding
+                         Source={x:Static eapi:ExtensionApi.Commands},
+                         Path=[Tutorial][NewInterface][Pass].Value}" />
     </Grid>
     <Button Name="TutorialNewInterfaceLocal"
             DockPanel.Dock="Bottom"
@@ -105,7 +106,7 @@
                 Converter={conv:LocalizationText},
                 ConverterParameter=Default.Root.Tutorial.NewInterface.Local}" />
     <Image Name="TutorialNewInterfaceImage"
-            Source="{Binding
-                Source={x:Static eapi:ExtensionApi.Properties},
-                Path=[Images][Procon][Large].Value}" />
+           Source="{Binding
+               Source={x:Static eapi:ExtensionApi.Properties},
+               Path=[Images][Procon][Large].Value}" />
 </DockPanel>

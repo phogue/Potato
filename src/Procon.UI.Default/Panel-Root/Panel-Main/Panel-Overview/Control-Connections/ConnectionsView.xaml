@@ -129,7 +129,8 @@
                     </ComboBox>
                     <PasswordBox Name="MainOverviewConnectionsAddPass"
                                  Grid.Row="5" Grid.Column="3"
-                                 util:PasswordBoxBinding.Password="{Binding
+                                 acmd:AttachedCommand.Event="PasswordChanged"
+                                 acmd:AttachedCommand.Command="{Binding
                                      Source={x:Static eapi:ExtensionApi.Commands},
                                      Path=[Main][Overview][Connections][Pass].Value}" />
                         

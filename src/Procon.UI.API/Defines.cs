@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace Procon.UI.API.Utils
+namespace Procon.UI.API
 {
     public static class Defines
     {

@@ -5,6 +5,7 @@ using System.Linq;
 
 using Procon.Core.Interfaces.Connections;
 using Procon.Core.Interfaces.Connections.Plugins;
+using Procon.Core.Interfaces.Connections.TextCommands;
 using Procon.Net;
 using Procon.Net.Protocols;
 using Procon.Net.Protocols.Objects;
@@ -110,6 +111,12 @@ namespace Procon.UI.API.ViewModels
             }
         }
 
+        public event TextCommandController.TextCommandEventHandler TextEvent
+        {
+            add    { nModel.TextCommand.TextCommandEvent += value; }
+            remove { nModel.TextCommand.TextCommandEvent -= value; }
+        }
+
         // Observable Properties.
         public NotifiableCollection<Plugin>       Plugins {
             get { return mPlugins; }
@@ -207,6 +214,14 @@ namespace Procon.UI.API.ViewModels
         public void Action(ProtocolObject action)
         {
             nModel.Action(action);
+        }
+        public void TextPreview(String command)
+        {
+            nModel.TextCommand.PreviewTextCommand(Core.CommandInitiator.Local, command);
+        }
+        public void TextCommand(String command)
+        {
+            nModel.TextCommand.ExecuteTextCommand(Core.CommandInitiator.Local, command);
         }
 
 

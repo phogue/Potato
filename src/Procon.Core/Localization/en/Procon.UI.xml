@@ -190,6 +190,12 @@
 
           <!-- Connection Panel-->
           <connection>
+            <!-- Omnibar -->
+            <omnibar>
+              <loc key="Text"    value="The results for the command" />
+              <loc key="Command" value="Key(s)" />
+            </omnibar>
+            
             <!-- Chat Panel-->
             <chat>
               <loc key="Title"          value="Chat &amp; Events" />

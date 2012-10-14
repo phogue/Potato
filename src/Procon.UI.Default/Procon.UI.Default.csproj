@@ -41,6 +41,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="CommandsAndProperties.cs" />
+    <Compile Include="Panel-Root\Panel-Main\Panel-Connection\Control-Plugins\Plugins.cs" />
+    <Compile Include="Panel-Root\Panel-Main\Panel-Connection\Control-Plugins\PluginsView.xaml.cs">
+      <DependentUpon>PluginsView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Panel-Root\Panel-Main\Panel-Interface\Layout\Layout.cs" />
     <Compile Include="Panel-Root\Panel-Main\Panel-Interface\Layout\LayoutView.xaml.cs">
       <DependentUpon>LayoutView.xaml</DependentUpon>
@@ -148,6 +152,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Panel-Root\Panel-Main\Panel-Connection\Control-Maps\MapsView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Panel-Root\Panel-Main\Panel-Connection\Control-Plugins\PluginsView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

@@ -239,9 +239,10 @@
                  ItemsSource="{Binding Path=MapPool}"
                  ItemTemplate="{DynamicResource PoolItem}"
                  ItemContainerStyle="{DynamicResource StyleListBoxItemColor}"
+                 ScrollViewer.VerticalScrollBarVisibility="Visible"
                  SelectedItem="{Binding
                      Source={x:Static eapi:ExtensionApi.Properties},
-                     Path=[Main][Connection][Maps][Pool].Value}"/>
+                     Path=[Main][Connection][Maps][Pool].Value}" />
         
         <!-- List -->
         <TextBlock Name="MainConnectionMapsListMark"
@@ -266,6 +267,7 @@
                  ItemsSource="{Binding Path=Maps}"
                  ItemTemplate="{DynamicResource ListItem}"
                  ItemContainerStyle="{DynamicResource StyleListBoxItemColor}"
+                 ScrollViewer.VerticalScrollBarVisibility="Visible"
                  SelectedItem="{Binding
                      Source={x:Static eapi:ExtensionApi.Properties},
                      Path=[Main][Connection][Maps][List].Value}" />

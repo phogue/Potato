@@ -212,15 +212,11 @@ namespace Procon.Core.Interfaces.Connections.Plugins {
         /// </summary>
         private void LoadPlugins(DirectoryInfo pluginDirectory) 
         {
-            // Find all the dll files in this directory.
-            FileInfo[] dllFiles = pluginDirectory.GetFiles("*.dll").Where(x => 
+            // Find all the dll files recursively within the folder and folders within the specified directory.
+            FileInfo[] dllFiles = pluginDirectory.GetFiles("*.dll", SearchOption.AllDirectories).Where(x => 
                                                                   x.Name != Defines.PROCON_CORE_DLL &&
                                                                   x.Name != Defines.PROCON_NET_DLL  &&
                                                                   x.Name != Defines.NEWTONSOFT_JSON_NET35_DLL).ToArray();
-
-            // Recursively load plugins within folders of the specified directory.
-            foreach (DirectoryInfo subDirectory in pluginDirectory.GetDirectories())
-                LoadPlugins(subDirectory);
 
             // If there are dll files in this directory, setup the plugins.
             if (dllFiles.Length > 0)

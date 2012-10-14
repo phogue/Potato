@@ -284,6 +284,14 @@
               <loc key="MoveUp"       value="&#x2191;" />
               <loc key="MoveDown"     value="&#x2193;" />
             </maps>
+            
+            <!-- Plugins Panel -->
+            <plugins>
+              <loc key="Title"  value="Plugin List" />
+              <loc key="Count"  value="Plugins" />
+              <loc key="Get"    value="Get Plugins" />
+              <loc key="Update" value="Update" />
+            </plugins>
           </connection>
         </main>
         

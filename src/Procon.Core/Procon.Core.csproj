@@ -168,9 +168,6 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <WCFMetadata Include="Service References\" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Localization\de\Procon.Net.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

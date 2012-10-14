@@ -38,6 +38,7 @@
                        Path=[Images][Navigation][Maps].Value}" />
         </RadioButton>
         <RadioButton Name="MainConnectionNavigationBans"
+                     IsEnabled="False"
                      DockPanel.Dock="Left"
                      GroupName="MainConnectionNavigation"
                      Style="{DynamicResource StyleRadioButtonImage}"
@@ -62,6 +63,7 @@
                        Path=[Images][Navigation][Plugins].Value}" />
         </RadioButton>
         <RadioButton Name="MainConnectionNavigationSettings"
+                     IsEnabled="False"
                      DockPanel.Dock="Left"
                      GroupName="MainConnectionNavigation"
                      Style="{DynamicResource StyleRadioButtonImage}"

@@ -23,6 +23,7 @@
         <extension>Main Connection Navigation</extension>
         <extension>Main Connection Players</extension>
         <extension>Main Connection Maps</extension>
+        <extension>Main Connection Plugins</extension>
         <extension>Main Connection Chat</extension>
         
         <!-- Styles & Commands -->

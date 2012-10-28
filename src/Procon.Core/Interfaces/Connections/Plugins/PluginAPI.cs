@@ -251,7 +251,7 @@ namespace Procon.Core.Interfaces.Connections.Plugins {
 
         public virtual void SetPluginVariable(Variable variable) {
 
-            throw new NotImplementedException();
+            // throw new NotImplementedException();
             //this.SaveConfig();
         }
 

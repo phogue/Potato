@@ -74,6 +74,32 @@ namespace Procon.UI.Default.Root.Main.Connection.Chat
 
             // Commands.
             GridLength tHeight = new GridLength(Double.MaxValue);
+            tCmmds["Send"].Value = new RelayCommand<AttachedCommandArgs>(
+            #region  -- Handles when the user presses Enter in the chat box.
+                x => {
+                    ExtensionApi.Commands["Chat"]["Send"].Value.Execute(new Object[] {
+                        tProps["Text"].Value,
+                        ChatActionType.Say,
+                        new PlayerSubset() {
+                            Context = PlayerSubsetContext.All
+                        }
+                    });
+                    tProps["Text"].Value = String.Empty;
+                },
+                x => {
+                    var tEventArgs = (KeyEventArgs)x.Args;
+                    return tEventArgs     != null &&
+                           tEventArgs.Key == Key.Return &&
+                           ExtensionApi.Commands["Chat"]["Send"].Value != null &&
+                           ExtensionApi.Commands["Chat"]["Send"].Value.CanExecute(new Object[] {
+                               tProps["Text"].Value,
+                               ChatActionType.Say,
+                               new PlayerSubset() {
+                                   Context = PlayerSubsetContext.All
+                               }
+                           });
+                });
+            #endregion
             tCmmds["MinMax"].Value = new RelayCommand<AttachedCommandArgs>(
             #region  -- Handles when the chat box title is clicked.
                 x => {

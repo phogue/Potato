@@ -42,7 +42,12 @@
                  BorderBrush="{DynamicResource BrushMild}"
                  Text="{Binding
                      Source={x:Static eapi:ExtensionApi.Properties},
-                     Path=[Main][Connection][Chat][Text].Value}" />
+                     Path=[Main][Connection][Chat][Text].Value,
+                     UpdateSourceTrigger=PropertyChanged}"
+                 acmd:AttachedCommand.Event="KeyDown"
+                 acmd:AttachedCommand.Command="{Binding
+                     Source={x:Static eapi:ExtensionApi.Commands},
+                     Path=[Main][Connection][Chat][Send].Value}"/>
 
         <!-- Chat & Events -->
         <ListBox Name="MainConnectionChatEvents"

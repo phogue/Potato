@@ -55,6 +55,9 @@ namespace Procon.UI.Default
             ExtensionApi.Commands["Connection"]["Remove"].Value = new RelayCommand<Object[]>(connectionRemove, connectionRemoveCan);
             ExtensionApi.Commands["Connection"]["Set"].Value    = new RelayCommand<ConnectionViewModel>(connectionSet);
 
+            // [Chat] Level Commands.
+            ExtensionApi.Commands["Chat"]["Send"].Value = new RelayCommand<Object[]>(chatSend, chatSendCan);
+
             // [Player] Level Commands.
             ExtensionApi.Commands["Player"]["Move"].Value = new RelayCommand<Object[]>(playerMove, playerMoveCan);
             ExtensionApi.Commands["Player"]["Kick"].Value = new RelayCommand<Object[]>(playerKick, playerKickCan);
@@ -506,6 +509,27 @@ namespace Procon.UI.Default
         private void connectionSet(ConnectionViewModel view)
         {
             ExtensionApi.Connection = view;
+        }
+
+        // -- [Chat][Send]
+        private void chatSend(Object[] parameters)
+        {
+            ExtensionApi.Connection.Action(
+                new Chat() {
+                    Text           = ((String)parameters[0]),
+                    ChatActionType = ((ChatActionType)parameters[1]),
+                    Subset         = ((PlayerSubset)parameters[2])
+                });
+        }
+        private bool chatSendCan(Object[] parameters)
+        {
+            String       tString;
+            PlayerSubset tSubset;
+            return
+                ExtensionApi.Connection != null && parameters.Length >= 3
+                && (tString = parameters[0] as String)       != null && tString.Trim()  != String.Empty
+                && parameters[1] is ChatActionType
+                && (tSubset = parameters[2] as PlayerSubset) != null && tSubset.Context != PlayerSubsetContext.Server;
         }
         
         // -- [Player][Move]

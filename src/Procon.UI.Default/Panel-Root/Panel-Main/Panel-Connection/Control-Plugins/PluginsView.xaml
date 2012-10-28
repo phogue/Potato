@@ -112,9 +112,9 @@
                         Path=[Main][Connection][Plugins][Update].Value}"
                     acmd:AttachedCommand.Parameter="{Binding
                         Source={x:Static eapi:ExtensionApi.Properties},
-                        Path=[Main][Connection][Plugins][Selected].Value}"/>
+                        Path=[Main][Connection][Plugins][Selected].Value}" />
             
-            <Label Name="MainConnectionPluginsPadding" Content=" "/>
+            <Label Name="MainConnectionPluginsPadding" Content=" " />
         </DockPanel>
         
         <!-- Plugin List -->
@@ -129,17 +129,21 @@
                  ScrollViewer.VerticalScrollBarVisibility="Visible"
                  SelectedItem="{Binding
                      Source={x:Static eapi:ExtensionApi.Properties},
+                     Path=[Main][Connection][Plugins][Selected].Value}"
+                 acmd:AttachedCommand.Event="SelectionChanged"
+                 acmd:AttachedCommand.Command="{Binding
+                     Source={x:Static eapi:ExtensionApi.Commands},
                      Path=[Main][Connection][Plugins][Selected].Value}" />
         
         <!-- Plugin Management -->
-        <DockPanel Name="MainConnectionPluginsManagement"
+        <DockPanel Name="MainConnectionPluginsDefault"
                    Grid.Row="1"
                    Grid.Column="1"
                    DataContext="{Binding
                        Source={x:Static eapi:ExtensionApi.Properties},
                        Path=[Main][Connection][Plugins][Selected].Value}">
-            
-            <TextBlock Name="MainConnectionPluginsSelectedTitle"
+
+            <TextBlock Name="MainConnectionPluginsDefaultTitle"
                        DockPanel.Dock="Top"
                        Margin="0, 10, 0, 0"
                        FontSize="22"
@@ -153,15 +157,51 @@
                     </MultiBinding>
                 </TextBlock.Text>
             </TextBlock>
+
             
-            <ListBox Name="MainConnectionPluginsSelectedList"
-                     DockPanel.Dock="Top"
-                     Padding="10"
-                     BorderThickness="0"
-                     ItemsSource="{Binding Path=Variables}"
-                     ItemTemplate="{DynamicResource VariableItem}"
-                     ItemContainerStyle="{DynamicResource StyleListBoxItemColor}"
-                     ScrollViewer.VerticalScrollBarVisibility="Visible" />
+            <ItemsControl Name="MainConnectionPluginsDefaultVariables"
+                          DockPanel.Dock="Top"
+                          Margin="10"
+                          ItemsSource="{Binding
+                              Source={x:Static eapi:ExtensionApi.Properties},
+                              Path=[Main][Connection][Plugins][Variables].Value}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Expander Name="PART_GroupExpander"
+                                  IsExpanded="True"
+                                  Header="{Binding Path=Item1}">
+                            <ItemsControl Name="PART_GroupVariables"
+                                          ItemsSource="{Binding Path=Item2}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid Name="PART_VariableDetails">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="0.5*" />
+                                                <ColumnDefinition Width="0.5*" />
+                                            </Grid.ColumnDefinitions>
+                                            
+                                            <TextBox Name="PART_VariableName"
+                                                     Grid.Column="0"
+                                                     IsTabStop="False"
+                                                     IsReadOnly="True"
+                                                     IsHitTestVisible="False"
+                                                     Text="{Binding Path=Name}" />
+                                            <TextBox Name="PART_VariableValue"
+                                                     Grid.Column="1"
+                                                     Text="{Binding Path=Value, UpdateSourceTrigger=PropertyChanged}"
+                                                     acmd:AttachedCommand.Event="TextChanged"
+                                                     acmd:AttachedCommand.Command="{Binding
+                                                         Source={x:Static eapi:ExtensionApi.Commands},
+                                                         Path=[Main][Connection][Plugins][SetVariable].Value}"
+                                                     acmd:AttachedCommand.Parameter="{Binding}" />
+                                        </Grid>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </Expander>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
         </DockPanel>
     </Grid>
 </Grid>

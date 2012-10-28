@@ -118,6 +118,35 @@ namespace Procon.Core.Interfaces.Connections.Plugins {
             : base() {
             this.Tasks = new TaskController().Start();
             this.Variables = new List<Variable>();
+
+            // TEST DATA
+            // TEST DATA
+            // TEST DATA
+            this.Name = "Plugin Name";
+            this.ProconVersion = new Version(0, 0, 0, 0);
+            this.Variables.Add(new Variables.StringVariable() {
+                Name = "Var 1",
+                Group = "Group 1",
+                Value = "Value 1"
+            });
+            this.Variables.Add(new Variables.StringVariable() {
+                Name = "Var 2",
+                Group = "Group 1",
+                Value = "Value 2"
+            });
+            this.Variables.Add(new Variables.StringVariable() {
+                Name = "Var 3",
+                Group = "Group 2",
+                Value = "Value 3"
+            });
+            this.Variables.Add(new Variables.StringVariable() {
+                Name = "Var 4",
+                Group = "Group 2",
+                Value = "Value 4"
+            });
+            // TEST DATA
+            // TEST DATA
+            // TEST DATA
         }
 
         ~PluginAPI() {

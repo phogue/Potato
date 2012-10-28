@@ -17,8 +17,8 @@ namespace Procon.UI
     {
         // Holds the information for the Settings, Assemblies, and Extensions.
         private static ArrayDictionary<String, Object> mSettings   = ExtensionApi.Properties["Settings"];
-        private static List<Assembly>                     mAssemblies = new List<Assembly>();
-        private static List<Extension>                    mExtensions = new List<Extension>();
+        private static List<Assembly>                  mAssemblies = new List<Assembly>();
+        private static List<Extension>                 mExtensions = new List<Extension>();
 
         // Easy to use accessor/mutator for the settings.
         public static T Get<T>(String key, T fallback = default(T))
@@ -38,14 +38,14 @@ namespace Procon.UI
             // Load the settings from the config file.
             XElement tNode = ExecutableBase.MasterConfig.Root;
             if (tNode != null
-                && (tNode = tNode.Element("ui"))         != null
-                && (tNode = tNode.Element("settings"))   != null) {
+                && (tNode = tNode.Element("ui"))       != null
+                && (tNode = tNode.Element("settings")) != null) {
                 XAttribute tAttribute  = null;
                 Type       tAttribType = null;
 
                 // Iterate over each setting and save it in the "Settings" array.
                 foreach (XElement nodeSetting in tNode.Elements())
-                    if ((tAttribute = nodeSetting.Attributes("type").FirstOrDefault()) != null &&
+                    if ((tAttribute  = nodeSetting.Attributes("type").FirstOrDefault()) != null &&
                         (tAttribType = Type.GetType(tAttribute.Value))                  != null)
                         if (tAttribType.IsPrimitive)
                             mSettings.Add(nodeSetting.Name.LocalName, Convert.ChangeType(nodeSetting.Value, tAttribType));

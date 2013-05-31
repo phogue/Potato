@@ -7,15 +7,14 @@ using System.Windows.Input;
 using System.Windows.Markup;
 using System.Windows.Media;
 
-using Procon.Core;
-using Procon.UI.API.Utils;
-using Procon.UI.API.ViewModels;
-
 namespace Procon.UI.API
 {
+    using Procon.Core;
+    using Procon.UI.API.Utils;
+    using Procon.UI.API.ViewModels;
+
     public static class ExtensionApi
     {
-        // Internal variables.
         private static Dictionary<Object, Panel> mTemplates { get; set; }
         private static ParserContext             mContext   { get; set; }
 
@@ -24,7 +23,14 @@ namespace Procon.UI.API
         public static ArrayDictionary<String, Object>   Properties { get; set; }
         public static ArrayDictionary<String, ICommand> Commands   { get; set; }
 
-        // Easy access to the currently selected Procon instance, Interface, and Connection.
+        // Standardized place where settings can be saved to.
+        public static ArrayDictionary<String, Object> Settings
+        {
+            get { return Properties["Settings"]; }
+        }
+
+
+        // Access to the active instance, interface, and connection.
         public static InstanceViewModel Procon
         {
             get { return Properties["Procon"].Value as InstanceViewModel; }
@@ -40,10 +46,17 @@ namespace Procon.UI.API
             set { Properties["Connection"].Value = value; }
         }
 
-        // Uniform access to the settings that will be saved and loaded when closing and opening Procon.
-        public static ArrayDictionary<String, Object> Settings
+        public static Boolean ProconExists
         {
-            get { return Properties["Settings"]; }
+            get { return Procon != null; }
+        }
+        public static Boolean InterfaceExists
+        {
+            get { return Interface != null; }
+        }
+        public static Boolean ConnectionExists
+        {
+            get { return Connection != null; }
         }
 
 
@@ -55,6 +68,25 @@ namespace Procon.UI.API
 
             Properties = new ArrayDictionary<String, Object>();
             Commands   = new ArrayDictionary<String, ICommand>();
+        }
+
+
+        // Get's a preconstructed array dictionary based on the namespace of the type passed in.
+        public static ArrayDictionary<String, Object> GetProperties(Type controlType)
+        {
+            var properties = Properties;
+            foreach (String qualifier in controlType.Namespace.Split('.')) {
+                properties = properties[qualifier];
+            }
+            return properties;
+        }
+        public static ArrayDictionary<String, ICommand> GetCommands(Type controlType)
+        {
+            var commands = Commands;
+            foreach (String qualifier in controlType.Namespace.Split('.')) {
+                commands = commands[qualifier];
+            }
+            return commands;
         }
 
 
@@ -119,7 +151,7 @@ namespace Procon.UI.API
                 mTemplates.Remove(key);
             mTemplates.Add(key, content);
         }
-        public static void CreateTemplate(Type   key, Panel content)
+        public static void CreateTemplate(Type key, Panel content)
         {
             if (mTemplates.ContainsKey(key))
                 mTemplates.Remove(key);
@@ -131,7 +163,7 @@ namespace Procon.UI.API
                 return mTemplates[key] as T;
             return null;
         }
-        public static T GetTemplateControl<T>(Type   key) where T : Panel
+        public static T GetTemplateControl<T>(Type key) where T : Panel
         {
             if (mTemplates.ContainsKey(key))
                 return mTemplates[key] as T;
@@ -145,7 +177,7 @@ namespace Procon.UI.API
             }
             return null;
         }
-        public static DataTemplate GetTemplate(Type   key)
+        public static DataTemplate GetTemplate(Type key)
         {
             if (mTemplates.ContainsKey(key)) {
                 DataTemplate tTemplate = ParseControl<DataTemplate>("<DataTemplate>" + XamlWriter.Save(mTemplates[key]) + "</DataTemplate>");

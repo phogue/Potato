@@ -11,7 +11,8 @@ namespace Procon.UI.API.Commands
                 typeof(AttachedCommands),
                 new FrameworkPropertyMetadata((AttachedCommandCollection)null));
         public static readonly DependencyProperty RoutinesProperty = RoutinesPropertyKey.DependencyProperty;
-        public static void                      SetRoutines(DependencyObject element, AttachedCommandCollection collection)
+
+        public static void SetRoutines(DependencyObject element, AttachedCommandCollection collection)
         {
             element.SetValue(RoutinesPropertyKey, collection);
         }

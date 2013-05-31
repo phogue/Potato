@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Windows.Data;
 
-using Procon.UI.API.ViewModels;
-
 namespace Procon.UI.API.Converters
 {
+    using Procon.UI.API.ViewModels;
+
     public class ConverterInterfaceToImage : BaseConverter, IValueConverter
     {
         // Value = The Interface View Model.

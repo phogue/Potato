@@ -12,7 +12,8 @@ namespace Procon.UI.API.Commands
                 typeof(AttachedCommandRoutine),
                 typeof(AttachedCommand),
                 new FrameworkPropertyMetadata(null));
-        private static void                   SetRoutine(DependencyObject element, AttachedCommandRoutine routine)
+
+        private static void SetRoutine(DependencyObject element, AttachedCommandRoutine routine)
         {
             element.SetValue(RoutineProperty, routine);
         }

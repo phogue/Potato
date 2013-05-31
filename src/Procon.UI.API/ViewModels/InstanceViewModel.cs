@@ -3,12 +3,12 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 
-using Procon.Core;
-using Procon.Core.Interfaces;
-using Procon.UI.API.Utils;
-
 namespace Procon.UI.API.ViewModels
 {
+    using Procon.Core;
+    using Procon.Core.Interfaces;
+    using Procon.UI.API.Utils;
+
     public class InstanceViewModel : ViewModel<Instance>
     {
         // Observable Properties.
@@ -48,15 +48,15 @@ namespace Procon.UI.API.ViewModels
         public void ExecuteLayer()
         {
             Interface local = nModel.Interfaces
-                                  .Where(x => x is LocalInterface)
-                                  .FirstOrDefault();
+                .Where(x => x is LocalInterface)
+                .Single();
             local.Layer.Begin();
         }
         public void ShutdownLayer()
         {
             Interface local = nModel.Interfaces
-                                  .Where(x => x is LocalInterface)
-                                  .FirstOrDefault();
+                .Where(x => x is LocalInterface)
+                .Single();
             local.Layer.Shutdown();
         }
         public void CreateInterface(String hostname, UInt16 port, String username, String password)
@@ -80,24 +80,21 @@ namespace Procon.UI.API.ViewModels
         // Wraps the Added & Removed events.
         private void Interfaces_Added(Instance parent, Interface item)
         {
-            // Force the UI thread to execute this method.
             if (ChangeDispatcher(() => Interfaces_Added(parent, item)))
                 return;
 
-            // Add the new interface.
             InterfaceViewModel tViewModel = new InterfaceViewModel(item);
             Interfaces.Add(tViewModel);
         }
         private void Interfaces_Removed(Instance parent, Interface item)
         {
-            // Force the UI thread to execute this method.
             if (ChangeDispatcher(() => Interfaces_Removed(parent, item)))
                 return;
 
-            // Remove the old interface.
             InterfaceViewModel tViewModel = Interfaces.Single(x => x.ModelEquals(item));
             Interfaces.Remove(tViewModel);
         }
+
         // Wraps the Instances's property changed events.
         private void Instance_PropertyChanged(Object sender, PropertyChangedEventArgs e)
         {

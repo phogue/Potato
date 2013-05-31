@@ -3,17 +3,17 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 
-using Procon.Core;
-using Procon.Core.Interfaces;
-using Procon.Core.Interfaces.Connections;
-using Procon.Core.Interfaces.Layer;
-using Procon.Core.Interfaces.Repositories;
-using Procon.Core.Interfaces.Repositories.Objects;
-using Procon.Net;
-using Procon.UI.API.Utils;
-
 namespace Procon.UI.API.ViewModels
 {
+    using Procon.Core;
+    using Procon.Core.Interfaces;
+    using Procon.Core.Interfaces.Connections;
+    using Procon.Core.Interfaces.Layer;
+    using Procon.Core.Interfaces.Repositories;
+    using Procon.Core.Interfaces.Repositories.Objects;
+    using Procon.Net;
+    using Procon.UI.API.Utils;
+
     public class InterfaceViewModel : ViewModel<Interface>
     {
         // Properties.
@@ -57,7 +57,7 @@ namespace Procon.UI.API.ViewModels
                     mConnections = value;
                     OnPropertyChanged("Connections");
         } } }
-        public NotifiableCollection<FlatPackedPackage>             Packages
+        public NotifiableCollection<FlatPackedPackage>   Packages
         {
             get { return mPackages; }
             protected set {
@@ -146,6 +146,7 @@ namespace Procon.UI.API.ViewModels
             // Remove the old package.
             Packages.Remove(item);
         }
+
         // Wraps the Interface's property changed events.
         private void Interface_PropertyChanged(Object sender, PropertyChangedEventArgs e)
         {

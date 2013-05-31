@@ -5,63 +5,54 @@ namespace Procon.UI.API
 {
     public static class Defines
     {
-        // Images Directory.
-        public static readonly String DIR_IMAGES    = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Images");
-        public static readonly String DIR_LIGHT_128 = Path.Combine(DIR_IMAGES, @"Light\128px");
-        public static readonly String DIR_LIGHT_24  = Path.Combine(DIR_IMAGES, @"Light\24px");
-        public static readonly String DIR_DARK_128  = Path.Combine(DIR_IMAGES, @"Dark\128px");
-        public static readonly String DIR_DARK_24   = Path.Combine(DIR_IMAGES, @"Dark\24px");
-
+        // Ui Images Directory.
+        public static readonly String DIR_IMAGES = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Images");
 
         // Procon Specific Images.
         public static readonly String PROCON_ICON  = Path.Combine(DIR_IMAGES, "Procon2.ico");
-        public static readonly String PROCON_LARGE = Path.Combine(DIR_IMAGES, "Procon2Large.png");
-        public static readonly String PROCON_SMALL = Path.Combine(DIR_IMAGES, "Procon2Small.png");
+        public static readonly String PROCON_LARGE = Path.Combine(DIR_IMAGES, "Procon2_Large.png");
+        public static readonly String PROCON_SMALL = Path.Combine(DIR_IMAGES, "Procon2_Small.png");
+        public static readonly String PROCON_TEXT  = Path.Combine(DIR_IMAGES, "Procon2_Text.png");
 
         // Interface Icons.
-        public static readonly String INTERFACE_LOCAL  = Path.Combine(DIR_IMAGES, "InterfaceLocal.png");
-        public static readonly String INTERFACE_REMOTE = Path.Combine(DIR_IMAGES, "InterfaceRemote.png");
+        public static readonly String INTERFACE_LOCAL  = Path.Combine(DIR_IMAGES, "Interface_Local.png");
+        public static readonly String INTERFACE_REMOTE = Path.Combine(DIR_IMAGES, "Interface_Remote.png");
 
         // Connection Icons.
-        public static readonly String CONNECTION_BF_BC2    = Path.Combine(DIR_IMAGES, "GameBadCompany2.png");
-        public static readonly String CONNECTION_BF_3      = Path.Combine(DIR_IMAGES, "GameBattlefield3.png");
-        public static readonly String CONNECTION_COD_BO    = Path.Combine(DIR_IMAGES, "GameCallOfDuty_BlackOps.png");
-        public static readonly String CONNECTION_HOMEFRONT = Path.Combine(DIR_IMAGES, "GameHomefront.png");
-        public static readonly String CONNECTION_MOH_2010  = Path.Combine(DIR_IMAGES, "GameMedalOfHonor_2010.png");
-        public static readonly String CONNECTION_TF_2      = Path.Combine(DIR_IMAGES, "GameTeamFortress2.png");
-        public static readonly String CONNECTION_UNKNOWN   = Path.Combine(DIR_IMAGES, "Unknown.png");
+        public static readonly String CONNECTION_BF_BC2    = Path.Combine(DIR_IMAGES, "Game_BadCompany2.png");
+        public static readonly String CONNECTION_BF_3      = Path.Combine(DIR_IMAGES, "Game_Battlefield3.png");
+        public static readonly String CONNECTION_COD_BO    = Path.Combine(DIR_IMAGES, "Game_CallOfDuty_BlackOps.png");
+        public static readonly String CONNECTION_HOMEFRONT = Path.Combine(DIR_IMAGES, "Game_Homefront.png");
+        public static readonly String CONNECTION_MOH_2010  = Path.Combine(DIR_IMAGES, "Game_MedalOfHonor_2010.png");
+        public static readonly String CONNECTION_TF_2      = Path.Combine(DIR_IMAGES, "Game_TeamFortress2.png");
+        public static readonly String CONNECTION_UNK       = Path.Combine(DIR_IMAGES, "Game_Unknown.png");
 
-        // Connection Status Icons.
-        public static readonly String STATUS_GOOD_L24 = Path.Combine(DIR_LIGHT_24, "cstatus3.png");
-        public static readonly String STATUS_FLUX_L24 = Path.Combine(DIR_LIGHT_24, "cstatus2.png");
-        public static readonly String STATUS_BAD_L24  = Path.Combine(DIR_LIGHT_24, "cstatus1.png");
-        public static readonly String STATUS_UNK_L24  = Path.Combine(DIR_LIGHT_24, "cstatus0.png");
-        public static readonly String STATUS_GOOD_D24 = Path.Combine(DIR_DARK_24,  "cstatus3.png");
-        public static readonly String STATUS_FLUX_D24 = Path.Combine(DIR_DARK_24,  "cstatus2.png");
-        public static readonly String STATUS_BAD_D24  = Path.Combine(DIR_DARK_24,  "cstatus1.png");
-        public static readonly String STATUS_UNK_D24  = Path.Combine(DIR_DARK_24,  "cstatus0.png");
+        // Signal Status Icons.
+        public static readonly String STATUS_GOOD = Path.Combine(DIR_IMAGES, "Status_Good.png");
+        public static readonly String STATUS_FLUX = Path.Combine(DIR_IMAGES, "Status_Flux.png");
+        public static readonly String STATUS_BAD  = Path.Combine(DIR_IMAGES, "Status_Bad.png");
+        public static readonly String STATUS_UNK  = Path.Combine(DIR_IMAGES, "Status_Off.png");
 
-        // Header Icons.
-        public static readonly String HEADER_OVERVIEW_L24 = Path.Combine(DIR_LIGHT_24, "overview.png");
-        public static readonly String HEADER_OVERVIEW_D24 = Path.Combine(DIR_DARK_24,  "overview.png");
-
-        // Content Icons.
-        public static readonly String NAVIGATION_PLAYERS  = Path.Combine(DIR_IMAGES, "nplayer_32.png");
-        public static readonly String NAVIGATION_MAPS     = Path.Combine(DIR_IMAGES, "nmap_32.png");
-        public static readonly String NAVIGATION_BANS     = Path.Combine(DIR_IMAGES, "nban_32.png");
-        public static readonly String NAVIGATION_PLUGINS  = Path.Combine(DIR_IMAGES, "nplugin_32.png");
-        public static readonly String NAVIGATION_SETTINGS = Path.Combine(DIR_IMAGES, "nsetting_32.png");
-        public static readonly String NAVIGATION_OPTIONS  = Path.Combine(DIR_IMAGES, "nconfig_32.png");
+        // Navigation Icons.
+        public static readonly String NAVIGATION_LGRING   = Path.Combine(DIR_IMAGES, "Nav_LgRing.png");
+        public static readonly String NAVIGATION_SMRING   = Path.Combine(DIR_IMAGES, "Nav_SmRing.png");
+        public static readonly String NAVIGATION_OVERVIEW = Path.Combine(DIR_IMAGES, "Nav_Overview.png");
+        public static readonly String NAVIGATION_PLAYERS  = Path.Combine(DIR_IMAGES, "Nav_Players.png");
+        public static readonly String NAVIGATION_BANS     = Path.Combine(DIR_IMAGES, "Nav_Bans.png");
+        public static readonly String NAVIGATION_MAPS     = Path.Combine(DIR_IMAGES, "Nav_Maps.png");
+        public static readonly String NAVIGATION_PLUGINS  = Path.Combine(DIR_IMAGES, "Nav_Plugins.png");
+        public static readonly String NAVIGATION_SETTINGS = Path.Combine(DIR_IMAGES, "Nav_Settings.png");
+        public static readonly String NAVIGATION_INTERFACES  = Path.Combine(DIR_IMAGES, "19px.png");
+        public static readonly String NAVIGATION_CONNECTIONS = Path.Combine(DIR_IMAGES, "19px.png");
 
         // General Icons.
-        public static readonly String GENERAL_PLAYER = Path.Combine(DIR_IMAGES, "GeneralPlayer.png");
-        public static readonly String GENERAL_GOOD   = Path.Combine(DIR_IMAGES, "GeneralGood.png");
-        public static readonly String GENERAL_BAD    = Path.Combine(DIR_IMAGES, "GeneralBad.png");
-        public static readonly String GENERAL_WARN   = Path.Combine(DIR_IMAGES, "GeneralWarn.png");
-        public static readonly String GENERAL_NOTIFY = Path.Combine(DIR_IMAGES, "GeneralNotify.png");
-
-        // Connection.
-        public static readonly String CONNECTION_SWAP = Path.Combine(DIR_IMAGES, @"ConnectionSwap.png");
-        public static readonly String CONNECTION_INFO = Path.Combine(DIR_IMAGES, @"ConnectionInfo.png");
+        public static readonly String GENERAL_ADD    = Path.Combine(DIR_IMAGES, "General_Add.png");
+        public static readonly String GENERAL_EDIT   = Path.Combine(DIR_IMAGES, "General_Edit.png");
+        public static readonly String GENERAL_REMOVE = Path.Combine(DIR_IMAGES, "General_Remove.png");
+        public static readonly String GENERAL_PLAYER = Path.Combine(DIR_IMAGES, "General_Player.png");
+        public static readonly String GENERAL_GOOD   = Path.Combine(DIR_IMAGES, "General_Good.png");
+        public static readonly String GENERAL_BAD    = Path.Combine(DIR_IMAGES, "General_Bad.png");
+        public static readonly String GENERAL_WARN   = Path.Combine(DIR_IMAGES, "General_Warn.png");
+        public static readonly String GENERAL_NOTIFY = Path.Combine(DIR_IMAGES, "General_Notify.png");
     }
 }

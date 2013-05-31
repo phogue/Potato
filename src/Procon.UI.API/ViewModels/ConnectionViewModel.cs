@@ -3,17 +3,17 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 
-using Procon.Core.Interfaces.Connections;
-using Procon.Core.Interfaces.Connections.Plugins;
-using Procon.Core.Interfaces.Connections.TextCommands;
-using Procon.Net;
-using Procon.Net.Protocols;
-using Procon.Net.Protocols.Objects;
-using Procon.UI.API.Events;
-using Procon.UI.API.Utils;
-
 namespace Procon.UI.API.ViewModels
 {
+    using Procon.Core.Interfaces.Connections;
+    using Procon.Core.Interfaces.Connections.Plugins;
+    using Procon.Core.Interfaces.Connections.TextCommands;
+    using Procon.Net;
+    using Procon.Net.Protocols;
+    using Procon.Net.Protocols.Objects;
+    using Procon.UI.API.Events;
+    using Procon.UI.API.Utils;
+
     public class ConnectionViewModel : ViewModel<Connection>
     {
         // Properties.
@@ -262,6 +262,7 @@ namespace Procon.UI.API.ViewModels
             else 
                 OnPropertyChanged(item.Name);
         }
+
         // Wraps the Connection's property changed events.
         private void Connection_PropertyChanged(Object sender, PropertyChangedEventArgs e)
         {

@@ -5,20 +5,41 @@ namespace Procon.UI.API
 {
     public interface IExtension
     {
-        // Should return the name of the author of the extension.
+        /// <summary>
+        /// Name of the author of this extension.
+        /// </summary>
         String Author { get; }
-        // Should return the URL to the author's website.
-        String Link { get; }
-        // Should return the text for the link to the author's website.
+
+        /// <summary>
+        /// Address of the author's website.
+        /// </summary>
+        Uri Link { get; }
+
+        /// <summary>
+        /// Visible text for the author's website link.
+        /// </summary>
         String LinkText { get; }
-        // Should return the name of the extension.
+
+
+        /// <summary>
+        /// Name of the extension.
+        /// </summary>
         String Name { get; }
-        // Should return the version of the extension.
-        String Version { get; }
-        // Should return a brief description of the extension.
+
+        /// <summary>
+        /// Description of the extension.
+        /// </summary>
         String Description { get; }
 
-        // The main entry point into the extension.
+        /// <summary>
+        /// Version of the extension.
+        /// </summary>
+        Version Version { get; }
+
+
+        /// <summary>
+        /// The main entry point for the extension.
+        /// </summary>
         Boolean Entry(Window root);
     }
 }

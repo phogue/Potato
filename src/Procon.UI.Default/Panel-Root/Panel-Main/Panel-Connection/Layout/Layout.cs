@@ -2,10 +2,10 @@
 using System.Windows;
 using System.Windows.Controls;
 
-using Procon.UI.API;
-
 namespace Procon.UI.Default.Root.Main.Connection.Layout
 {
+    using Procon.UI.API;
+
     [Extension(
         Alters    = new String[] { },
         Replaces  = new String[] { },
@@ -14,23 +14,23 @@ namespace Procon.UI.Default.Root.Main.Connection.Layout
     {
         #region IExtension Properties
 
-        public string Author
+        public String Author
         { get { return "Imisnew2"; } }
 
-        public string Link
-        { get { return "www.TeamPlayerGaming.com/members/Imisnew2.html"; } }
+        public Uri Link
+        { get { return new Uri("www.TeamPlayerGaming.com/members/Imisnew2.html"); } }
 
-        public string LinkText
+        public String LinkText
         { get { return "Team Player Gaming"; } }
 
-        public string Name
+        public String Name
         { get { return "Main Connection Layout"; } }
 
-        public string Version
-        { get { return "1.0.0.0"; } }
-
-        public string Description
+        public String Description
         { get { return ""; } }
+
+        public Version Version
+        { get { return new Version(1, 0, 0, 0); } }
 
         #endregion IExtension Properties
 
@@ -49,8 +49,9 @@ namespace Procon.UI.Default.Root.Main.Connection.Layout
 
 
             // Setup the default settings.
-            if (ExtensionApi.Settings["Pane"].Value == null)
-                ExtensionApi.Settings["Pane"].Value = "Players";
+            if (ExtensionApi.Settings["View"]["Connection"].Value == null) {
+                ExtensionApi.Settings["View"]["Connection"].Value = "Players";
+            }
 
 
             // Exit with good status.

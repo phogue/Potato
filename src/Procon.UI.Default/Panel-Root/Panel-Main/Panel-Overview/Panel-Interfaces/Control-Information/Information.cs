@@ -1,16 +1,18 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 
-namespace Procon.UI.Default.Root.Main.Overview.Layout
+namespace Procon.UI.Default.Root.Main.Overview.Interfaces.Information
 {
     using Procon.UI.API;
+    using Procon.UI.API.Utils;
 
     [Extension(
         Alters    = new String[] { },
         Replaces  = new String[] { },
         DependsOn = new String[] { })]
-    public class Layout : IExtension
+    public class Information : IExtension
     {
         #region IExtension Properties
 
@@ -34,27 +36,32 @@ namespace Procon.UI.Default.Root.Main.Overview.Layout
 
         #endregion IExtension Properties
 
+        
+        // An easy accessor for Properties and Commands of this control.
+        private readonly ArrayDictionary<String, Object>   mProps;
+        private readonly ArrayDictionary<String, ICommand> mComms;
+        public Information()
+        {
+            mProps = ExtensionApi.GetProperties(GetType());
+            mComms = ExtensionApi.GetCommands(GetType());
+        }
+
 
         [STAThread]
         public bool Entry(Window root)
         {
             // Find the controls I want to use and check for issues.
-            Grid tLayout = ExtensionApi.FindControl<Grid>(root, "MainLayout");
+            Grid tLayout = ExtensionApi.FindControl<Grid>(root, "MainOverviewInterfacesLayout");
             if (tLayout == null) {
                 return false;
             }
 
 
             // Do what I need to setup my control.
-            LayoutView tView = new LayoutView();
-            Grid.SetRow(tView, 1);
+            InformationView tView = new InformationView();
+            Grid.SetRowSpan(tView, 2);
+            Grid.SetColumn(tView, 1);
             tLayout.Children.Add(tView);
-
-
-            // Setup the default settings.
-            if (ExtensionApi.Settings["View"]["Overview"].Value == null) {
-                ExtensionApi.Settings["View"]["Overview"].Value = "Interfaces";
-            }
 
 
             // Exit with good status.

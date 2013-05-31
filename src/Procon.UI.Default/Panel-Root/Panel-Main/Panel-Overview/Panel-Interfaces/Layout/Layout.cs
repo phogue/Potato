@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 
-namespace Procon.UI.Default.Root.Main.Overview.Layout
+namespace Procon.UI.Default.Root.Main.Overview.Interfaces.Layout
 {
     using Procon.UI.API;
 
@@ -39,7 +39,7 @@ namespace Procon.UI.Default.Root.Main.Overview.Layout
         public bool Entry(Window root)
         {
             // Find the controls I want to use and check for issues.
-            Grid tLayout = ExtensionApi.FindControl<Grid>(root, "MainLayout");
+            Grid tLayout = ExtensionApi.FindControl<Grid>(root, "MainOverviewLayout");
             if (tLayout == null) {
                 return false;
             }
@@ -49,12 +49,6 @@ namespace Procon.UI.Default.Root.Main.Overview.Layout
             LayoutView tView = new LayoutView();
             Grid.SetRow(tView, 1);
             tLayout.Children.Add(tView);
-
-
-            // Setup the default settings.
-            if (ExtensionApi.Settings["View"]["Overview"].Value == null) {
-                ExtensionApi.Settings["View"]["Overview"].Value = "Interfaces";
-            }
 
 
             // Exit with good status.

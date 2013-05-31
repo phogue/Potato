@@ -1,0 +1,359 @@
+﻿<Grid x:Class="Procon.UI.Default.Root.Main.Overview.Interfaces.Settings.SettingsView"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:eapi="clr-namespace:Procon.UI.API;assembly=Procon.UI.API"
+      xmlns:acmd="clr-namespace:Procon.UI.API.Commands;assembly=Procon.UI.API"
+      xmlns:conv="clr-namespace:Procon.UI.API.Converters;assembly=Procon.UI.API"
+      xmlns:util="clr-namespace:Procon.UI.API.Utils;assembly=Procon.UI.API"
+      xmlns:view="clr-namespace:Procon.UI.API.ViewModels;assembly=Procon.UI.API"
+      xmlns:ctrl="clr-namespace:Procon.UI.Default.Setup.Controls"
+      Name="MainOverviewInterfacesSettings">
+    <Grid.Resources>
+        <LinearGradientBrush x:Key="HeaderBackground" StartPoint="0.5, 0.0" EndPoint="0.5, 1.0">
+            <GradientStop Offset="0.0" Color="{DynamicResource Color1Normal}" />
+            <GradientStop Offset="0.6" Color="{DynamicResource Color1Normal}" />
+            <GradientStop Offset="1.0" Color="{DynamicResource Color2Bright}" />
+        </LinearGradientBrush>
+        <ControlTemplate x:Key="AccountsTemplate" TargetType="{x:Type RadioButton}">
+            <Border
+                x:Name="AccountsBorder"
+                BorderThickness="1"
+                BorderBrush="{DynamicResource Brush2Dark}"
+                Background="{DynamicResource Brush1Normal}">
+                <Grid x:Name="AccountsGrid">
+                    <Image
+                        x:Name="AccountsImage"
+                        Stretch="None"
+                        Source="{Binding
+                            Source={x:Static eapi:ExtensionApi.Properties},
+                            Path=[Images][Navigation][Overview][Interfaces][Accounts].Value}" />
+                </Grid>
+            </Border>
+        </ControlTemplate>
+
+        <ControlTemplate x:Key="GroupsTemplate" TargetType="{x:Type RadioButton}">
+            <Border
+                x:Name="GroupsBorder"
+                BorderThickness="1"
+                BorderBrush="{DynamicResource Brush2Dark}"
+                Background="{DynamicResource Brush1Normal}">
+                <Grid x:Name="GroupsGrid">
+                    <Image
+                        x:Name="GroupsImage"
+                        Stretch="None"
+                        Source="{Binding
+                            Source={x:Static eapi:ExtensionApi.Properties},
+                            Path=[Images][Navigation][Overview][Interfaces][Groups].Value}" />
+                </Grid>
+            </Border>
+        </ControlTemplate>
+
+        <ControlTemplate x:Key="LayerTemplate" TargetType="{x:Type RadioButton}">
+            <Border
+                x:Name="LayerBorder"
+                BorderThickness="1"
+                BorderBrush="{DynamicResource Brush2Dark}"
+                Background="{DynamicResource Brush1Normal}">
+                <Grid x:Name="LayerGrid">
+                    <Image
+                        x:Name="LayerImage"
+                        Stretch="None"
+                        Source="{Binding
+                            Source={x:Static eapi:ExtensionApi.Properties},
+                            Path=[Images][Navigation][Overview][Interfaces][Layer].Value}" />
+                    <Rectangle x:Name="Lense" Fill="DarkGray" Opacity="0.3" Visibility="Collapsed" />
+                </Grid>
+            </Border>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsEnabled" Value="false">
+                    <Setter TargetName="Lense" Property="Visibility" Value="Visible" />
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+    </Grid.Resources>
+    <Grid.RowDefinitions>
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="1.0*" />
+    </Grid.RowDefinitions>
+
+    <Grid
+        Name="MoisHeaderPanel"
+        Grid.Row="1"
+        Background="{DynamicResource HeaderBackground}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="15" />
+            <ColumnDefinition Width="1.0*" />
+        </Grid.ColumnDefinitions>
+
+        <ctrl:Banner
+            x:Name="MoisHeader"
+            Grid.ColumnSpan="2"
+            FontFamily="Arial"
+            FontWeight="Bold"
+            Highlight="{DynamicResource BrushHighlight2}"
+            Content="{Binding
+                Converter={conv:LocalizationText},
+                ConverterParameter=Default.Root.Main.Overview.Interfaces.Settings.Title}" />
+
+        <DockPanel
+            Name="MoisHeaderTabsPanel"
+            Grid.Row="1"
+            Grid.Column="1"
+            Margin="0, 0, 0, 5">
+            
+            <RadioButton
+                Name="MoisAccounts"
+                DockPanel.Dock="Left"
+                Margin="0, 0, 10, 0"
+                GroupName="MoisNavigation"
+                Template="{DynamicResource AccountsTemplate}"
+                acmd:AttachedCommand.Event="Checked"
+                acmd:AttachedCommand.Command="{Binding
+                    Source={x:Static eapi:ExtensionApi.Commands},
+                    Path=[Procon][UI][Default][Root][Main][Overview][Interfaces][Settings][View].Value}"
+                acmd:AttachedCommand.Parameter="Accounts" />
+
+            <RadioButton
+                Name="MoisGroups"
+                DockPanel.Dock="Left"
+                Margin="0, 0, 10, 0"
+                GroupName="MoisNavigation"
+                Template="{DynamicResource GroupsTemplate}"
+                acmd:AttachedCommand.Event="Checked"
+                acmd:AttachedCommand.Command="{Binding
+                    Source={x:Static eapi:ExtensionApi.Commands},
+                    Path=[Procon][UI][Default][Root][Main][Overview][Interfaces][Settings][View].Value}"
+                acmd:AttachedCommand.Parameter="Groups" />
+
+            <RadioButton
+                Name="MoisLayer"
+                DockPanel.Dock="Left"
+                GroupName="MoisNavigation"
+                Template="{DynamicResource LayerTemplate}"
+                acmd:AttachedCommand.Event="Checked"
+                acmd:AttachedCommand.Command="{Binding
+                    Source={x:Static eapi:ExtensionApi.Commands},
+                    Path=[Procon][UI][Default][Root][Main][Overview][Interfaces][Settings][View].Value}"
+                acmd:AttachedCommand.Parameter="Layer" />
+        </DockPanel>
+
+        <Image
+            Name="MoisSelected"
+            Grid.Row="1"
+            Grid.Column="1"
+            Margin="0, 0, 0, 5"
+            Stretch="None"
+            Source="{Binding
+                Source={x:Static eapi:ExtensionApi.Properties},
+                Path=[Images][Navigation][SmRing].Value}" 
+            HorizontalAlignment="Left" />
+    </Grid>
+
+    <!-- Content -->
+    <Border
+        Name="MoisContentContainer"
+        Grid.Row="2"
+        Background="{DynamicResource Brush2Bright}"
+        BorderBrush="{DynamicResource Brush1Bright}"
+        BorderThickness="0, 0, 0, 1"
+        CornerRadius="0">
+        <ScrollViewer Name="MoisContentScroll">
+            <DockPanel Name="MoisContentPanel">
+                <AdornerDecorator
+                    Name="MoisOpenAdorner"
+                    DockPanel.Dock="Bottom">
+                    <Button
+                        Name="MoisOpen"
+                        Margin="15, 5"
+                        Padding="15"
+                        Style="{DynamicResource StyleButtonAdd}"
+                        Content="{Binding
+                            Converter={conv:LocalizationText},
+                            ConverterParameter=Default.Root.Main.Overview.Interfaces.Manage.Add}"
+                        Command="{Binding
+                            Source={x:Static eapi:ExtensionApi.Commands},
+                            Path=[Procon][UI][Default][Root][Main][Overview][Interfaces][Manage][Open].Value}" />
+                </AdornerDecorator>
+                <ListBox
+                    Name="MoisList"
+                    ItemsSource="{Binding Interfaces}"
+                    SelectedItem="{Binding
+                        Source={x:Static eapi:ExtensionApi.Properties},
+                        Path=[Interface].Value}"
+                    ItemContainerStyle="{DynamicResource StyleListBoxItemColor}">
+                    <ListBox.Template>
+                        <ControlTemplate>
+                            <WrapPanel Margin="15, 5" IsItemsHost="True" />
+                        </ControlTemplate>
+                    </ListBox.Template>
+                </ListBox>
+            </DockPanel>
+        </ScrollViewer>
+    </Border>
+
+    <!-- Hidden Add Interface Portion. -->
+    <Grid Name="MoisAddContainer"
+          Grid.Row="1"
+          Margin="0, 0, 0, 1"
+          Visibility="Collapsed"
+          Background="{DynamicResource Brush2Bright}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="10*" />
+            <RowDefinition Height="130" />
+            <RowDefinition Height="10*" />
+        </Grid.RowDefinitions>
+
+        <Grid Name="MoisAddArea"
+              Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0.1*" />
+                <RowDefinition Height="5"    />
+                <RowDefinition Height="0.4*" />
+                <RowDefinition Height="5"    />
+                <RowDefinition Height="0.4*" />
+                <RowDefinition Height="5"    />
+                <RowDefinition Height="0.1*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.05*" />
+                <ColumnDefinition Width="0.90*" />
+                <ColumnDefinition Width="0.05*" />
+            </Grid.ColumnDefinitions>
+            
+            <!-- The three lines behind the buttons. -->
+            <Rectangle Name="MoisLine1"
+                       Grid.Row="1"
+                       Grid.ColumnSpan="3"
+                       Fill="{DynamicResource BrushHighlight2}" />
+            <Rectangle Name="MoisLine2"
+                       Grid.Row="3"
+                       Grid.ColumnSpan="3"
+                       Fill="{DynamicResource BrushHighlight2}" />
+            <Rectangle Name="MoisLine3"
+                       Grid.Row="5"
+                       Grid.ColumnSpan="3"
+                       Fill="{DynamicResource BrushHighlight2}" />
+
+            <Grid Name="MoisButtonsContent"
+                  Grid.Row="0"
+                  Grid.RowSpan="7"
+                  Grid.Column="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="20"   />
+                    <ColumnDefinition Width="0.5*" />
+                    <ColumnDefinition Width="20"   />
+                    <ColumnDefinition Width="0.5*" />
+                </Grid.ColumnDefinitions>
+
+                <!-- Remote Interface Input Boxes. -->
+                <Border Name="MoisInputContainer"
+                        Grid.Column="0"
+                        Padding="10"
+                        Width="300"
+                        Background="{DynamicResource BrushControlNormal}"
+                        BorderBrush="{DynamicResource BrushHighlight1}"
+                        BorderThickness="2"
+                        CornerRadius="3"
+                        VerticalAlignment="Center">
+                    <Grid Name="MoisInputContent"
+                          DockPanel.Dock="Bottom">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="0.50*" />
+                            <ColumnDefinition Width="20" />
+                            <ColumnDefinition Width="0.50*" />
+                        </Grid.ColumnDefinitions>
+
+                        <Label Name="MoisInputHostText"
+                               Grid.Row="0" Grid.Column="0"
+                               Content="{Binding 
+                                   Converter={conv:LocalizationText},
+                                   ConverterParameter=Default.Root.Main.Overview.Host}" />
+                        <Label Name="MoisInputPortText"
+                               Grid.Row="0" Grid.Column="2"
+                               Content="{Binding
+                                   Converter={conv:LocalizationText},
+                                   ConverterParameter=Default.Root.Main.Overview.Port}" />
+                        <Label Name="MoisInputUserText"
+                               Grid.Row="2" Grid.Column="0"
+                               Margin="0, 10, 0, 0"
+                               Content="{Binding
+                                   Converter={conv:LocalizationText},
+                                   ConverterParameter=Default.Root.Main.Overview.User}" />
+                        <Label Name="MoisInputPassText"
+                               Grid.Row="2" Grid.Column="2"
+                               Margin="0, 10, 0, 0"
+                               Content="{Binding
+                                   Converter={conv:LocalizationText},
+                                   ConverterParameter=Default.Root.Main.Overview.Pass}" />
+                        
+                        <TextBox Name="MoisInputHost"
+                                 Grid.Row="1" Grid.Column="0"
+                                 Height="29"
+                                 Text="{Binding
+                                     Source={x:Static eapi:ExtensionApi.Properties},
+                                     Path=[Procon][UI][Default][Root][Main][Overview][Interfaces][Manage][Host].Value,
+                                     UpdateSourceTrigger=PropertyChanged}" />
+                        <TextBox Name="MoisInputPort"
+                                 Grid.Row="1" Grid.Column="2"
+                                 Height="29"
+                                 Text="{Binding
+                                     Source={x:Static eapi:ExtensionApi.Properties},
+                                     Path=[Procon][UI][Default][Root][Main][Overview][Interfaces][Manage][Port].Value,
+                                     UpdateSourceTrigger=PropertyChanged}" />
+                        <TextBox Name="MoisInputUser"
+                                 Grid.Row="3" Grid.Column="0"
+                                 Height="29"
+                                 Text="{Binding
+                                     Source={x:Static eapi:ExtensionApi.Properties},
+                                     Path=[Procon][UI][Default][Root][Main][Overview][Interfaces][Manage][User].Value,
+                                     UpdateSourceTrigger=PropertyChanged}" />
+                        <PasswordBox Name="MoisInputPass"
+                                     Grid.Row="3" Grid.Column="2"
+                                     Height="29"
+                                     acmd:AttachedCommand.Event="PasswordChanged"
+                                     acmd:AttachedCommand.Command="{Binding
+                                         Source={x:Static eapi:ExtensionApi.Commands},
+                                         Path=[Procon][UI][Default][Root][Main][Overview][Interfaces][Manage][Pass].Value}" />
+                    </Grid>
+                </Border>
+
+                <!-- Finish and Cancel buttons. -->
+                <Button Name="MoisFinish"
+                        Grid.Column="2"
+                        Padding="10"
+                        BorderBrush="{DynamicResource BrushHighlight1}"
+                        Command="{Binding
+                            Source={x:Static eapi:ExtensionApi.Commands},
+                            Path=[Procon][UI][Default][Root][Main][Overview][Interfaces][Manage][Add].Value}"
+                        Content="{Binding
+                            Converter={conv:LocalizationText},
+                            ConverterParameter=Default.Root.Main.Overview.Interfaces.Confirm}"
+                        HorizontalAlignment="Stretch" />
+
+                <Button Name="MoisCancel"
+                        Grid.Column="4"
+                        Padding="10"
+                        BorderBrush="{DynamicResource BrushHighlight1}"
+                        Command="{Binding
+                            Source={x:Static eapi:ExtensionApi.Commands},
+                            Path=[Procon][UI][Default][Root][Main][Overview][Interfaces][Manage][Close].Value}"
+                        Content="{Binding
+                            Converter={conv:LocalizationText},
+                            ConverterParameter=Default.Root.Main.Overview.Interfaces.Cancel}"
+                        HorizontalAlignment="Stretch" />
+            </Grid>
+        </Grid>
+    </Grid>
+</Grid>

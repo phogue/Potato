@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Windows;
 
-using Procon.UI.API;
-
 namespace Procon.UI.Default.Root.Layout
 {
+    using Procon.UI.API;
+
     [Extension(
         Alters    = new String[] { },
         Replaces  = new String[] { },
@@ -13,23 +13,23 @@ namespace Procon.UI.Default.Root.Layout
     {
         #region IExtension Properties
 
-        public string Author
+        public String Author
         { get { return "Imisnew2"; } }
 
-        public string Link
-        { get { return "www.TeamPlayerGaming.com/members/Imisnew2.html"; } }
+        public Uri Link
+        { get { return new Uri("www.TeamPlayerGaming.com/members/Imisnew2.html"); } }
 
-        public string LinkText
-        { get { return "Team Player Gaming"; } }
+        public String LinkText
+        { get { return "TeamPlayer Gaming"; } }
 
-        public string Name
-        { get { return "Root Layout"; } }
+        public String Name
+        { get { return GetType().Namespace; } }
 
-        public string Version
-        { get { return "1.0.0.0"; } }
-
-        public string Description
+        public String Description
         { get { return ""; } }
+
+        public Version Version
+        { get { return new Version(1, 0, 0, 0); } }
 
         #endregion IExtension Properties
 
@@ -40,11 +40,6 @@ namespace Procon.UI.Default.Root.Layout
             // Do what I need to setup my control.
             LayoutView tView = new LayoutView();
             root.Content = tView;
-
-
-            // Setup the default settings.
-            if (ExtensionApi.Settings["Tutorial"].Value == null)
-                ExtensionApi.Settings["Tutorial"].Value = "Step 1";
 
 
             // Exit with good status.

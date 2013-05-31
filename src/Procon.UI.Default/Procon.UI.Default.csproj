@@ -40,27 +40,49 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="CommandsAndProperties.cs" />
+    <Compile Include="Panel-Root\Panel-Main\Panel-Overview\Panel-Interfaces\Control-Information\Information.cs" />
+    <Compile Include="Panel-Root\Panel-Main\Panel-Overview\Panel-Interfaces\Control-Information\InformationView.xaml.cs">
+      <DependentUpon>InformationView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Panel-Root\Panel-Main\Panel-Overview\Panel-Interfaces\Control-Settings\Settings.cs" />
+    <Compile Include="Panel-Root\Panel-Main\Panel-Overview\Panel-Interfaces\Control-Settings\SettingsView.xaml.cs">
+      <DependentUpon>SettingsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Setup\Adorners\DottedBorderAdorner.cs" />
+    <Compile Include="Setup\Commands.cs" />
     <Compile Include="Panel-Root\Panel-Main\Panel-Connection\Control-Plugins\Plugins.cs" />
     <Compile Include="Panel-Root\Panel-Main\Panel-Connection\Control-Plugins\PluginsView.xaml.cs">
       <DependentUpon>PluginsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Panel-Root\Panel-Main\Panel-Interface\Layout\Layout.cs" />
-    <Compile Include="Panel-Root\Panel-Main\Panel-Interface\Layout\LayoutView.xaml.cs">
-      <DependentUpon>LayoutView.xaml</DependentUpon>
+    <Compile Include="Panel-Root\Panel-Main\Panel-Overview\Control-Header\Header.cs" />
+    <Compile Include="Panel-Root\Panel-Main\Panel-Overview\Control-Header\HeaderView.xaml.cs">
+      <DependentUpon>HeaderView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Panel-Root\Panel-Main\Panel-Overview\Control-Connections\Connections.cs" />
-    <Compile Include="Panel-Root\Panel-Main\Panel-Overview\Control-Connections\ConnectionsView.xaml.cs">
+    <Compile Include="Panel-Root\Panel-Main\Panel-Overview\Panel-Connections\Control-Connections\Connections.cs" />
+    <Compile Include="Panel-Root\Panel-Main\Panel-Overview\Panel-Connections\Control-Connections\ConnectionsView.xaml.cs">
       <DependentUpon>ConnectionsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Panel-Root\Panel-Main\Panel-Overview\Control-Interfaces\Interfaces.cs" />
-    <Compile Include="Panel-Root\Panel-Main\Panel-Overview\Control-Interfaces\InterfacesView.xaml.cs">
-      <DependentUpon>InterfacesView.xaml</DependentUpon>
+    <Compile Include="Panel-Root\Panel-Main\Panel-Overview\Panel-Connections\Layout\Layout.cs" />
+    <Compile Include="Panel-Root\Panel-Main\Panel-Overview\Panel-Connections\Layout\LayoutView.xaml.cs">
+      <DependentUpon>LayoutView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Panel-Root\Panel-Main\Panel-Overview\Panel-Interfaces\Control-Manage\Manage.cs" />
+    <Compile Include="Panel-Root\Panel-Main\Panel-Overview\Panel-Interfaces\Control-Manage\ManageView.xaml.cs">
+      <DependentUpon>ManageView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Panel-Root\Panel-Main\Panel-Overview\Layout\Layout.cs" />
     <Compile Include="Panel-Root\Panel-Main\Panel-Overview\Layout\LayoutView.xaml.cs">
       <DependentUpon>LayoutView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Panel-Root\Panel-Main\Panel-Overview\Panel-Interfaces\Layout\Layout.cs" />
+    <Compile Include="Panel-Root\Panel-Main\Panel-Overview\Panel-Interfaces\Layout\LayoutView.xaml.cs">
+      <DependentUpon>LayoutView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Setup\Controls\Banner.xaml.cs">
+      <DependentUpon>Banner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Setup\Debug.cs" />
+    <Compile Include="Setup\Properties.cs" />
     <Compile Include="Template.cs" />
     <Compile Include="Panel-Root\Layout\Layout.cs" />
     <Compile Include="Panel-Root\Layout\LayoutView.xaml.cs">
@@ -86,9 +108,9 @@
     <Compile Include="Panel-Root\Panel-Main\Panel-Connection\Layout\LayoutView.xaml.cs">
       <DependentUpon>LayoutView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Panel-Root\Panel-Tutorial\Control-NewInterface\NewInterface.cs" />
-    <Compile Include="Panel-Root\Panel-Tutorial\Control-NewInterface\NewInterfaceView.xaml.cs">
-      <DependentUpon>NewInterfaceView.xaml</DependentUpon>
+    <Compile Include="Panel-Root\Control-Introduction\Introduction.cs" />
+    <Compile Include="Panel-Root\Control-Introduction\Introduction.xaml.cs">
+      <DependentUpon>Introduction.xaml</DependentUpon>
     </Compile>
     <Compile Include="Panel-Root\Panel-Main\Control-Header\Header.cs" />
     <Compile Include="Panel-Root\Panel-Main\Control-Header\HeaderView.xaml.cs">
@@ -102,11 +124,7 @@
     <Compile Include="Panel-Root\Panel-Main\Layout\LayoutView.xaml.cs">
       <DependentUpon>LayoutView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Panel-Root\Panel-Tutorial\Layout\Layout.cs" />
-    <Compile Include="Panel-Root\Panel-Tutorial\Layout\LayoutView.xaml.cs">
-      <DependentUpon>LayoutView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Styles-All\Light\Light.cs" />
+    <Compile Include="Setup\Style.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="PresentationCore" />
@@ -163,15 +181,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Panel-Root\Panel-Main\Panel-Interface\Layout\LayoutView.xaml">
+    <Page Include="Panel-Root\Panel-Main\Panel-Overview\Control-Header\HeaderView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Panel-Root\Panel-Main\Panel-Overview\Control-Connections\ConnectionsView.xaml">
+    <Page Include="Panel-Root\Panel-Main\Panel-Overview\Panel-Connections\Control-Connections\ConnectionsView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Panel-Root\Panel-Main\Panel-Overview\Control-Interfaces\InterfacesView.xaml">
+    <Page Include="Panel-Root\Panel-Main\Panel-Overview\Panel-Connections\Layout\LayoutView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Panel-Root\Panel-Main\Panel-Overview\Panel-Interfaces\Control-Manage\ManageView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -179,7 +201,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Panel-Root\Panel-Tutorial\Control-NewInterface\NewInterfaceView.xaml">
+    <Page Include="Panel-Root\Control-Introduction\Introduction.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -195,18 +217,28 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Panel-Root\Panel-Tutorial\Layout\LayoutView.xaml">
+    <Page Include="Panel-Root\Panel-Main\Panel-Overview\Panel-Interfaces\Control-Information\InformationView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Styles-All\Light\Light.xaml">
+    <Page Include="Panel-Root\Panel-Main\Panel-Overview\Panel-Interfaces\Control-Settings\SettingsView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Panel-Root\Panel-Main\Panel-Overview\Panel-Interfaces\Layout\LayoutView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Setup\Controls\Banner.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Setup\Style.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Panel-Root\Panel-Main\Panel-Overview\Control-Additional\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

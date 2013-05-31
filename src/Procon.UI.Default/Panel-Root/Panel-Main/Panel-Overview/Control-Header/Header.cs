@@ -4,7 +4,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
 
-namespace Procon.UI.Default.Root.Main.Header
+namespace Procon.UI.Default.Root.Main.Overview.Header
 {
     using Procon.UI.API;
     using Procon.UI.API.Commands;
@@ -53,7 +53,7 @@ namespace Procon.UI.Default.Root.Main.Header
         public bool Entry(Window root)
         {
             // Find the controls I want to use and check for issues.
-            Grid tLayout = ExtensionApi.FindControl<Grid>(root, "MainLayout");
+            Grid tLayout = ExtensionApi.FindControl<Grid>(root, "MainOverviewLayout");
             if (tLayout == null) {
                 return false;
             }
@@ -61,19 +61,16 @@ namespace Procon.UI.Default.Root.Main.Header
 
             // Do what I need to setup my control.
             HeaderView tView = new HeaderView();
-            Grid.SetRow(tView, 0);
             tLayout.Children.Add(tView);
 
 
             // Setup the default settings.
-            mProps["Selected"].Value = tView.MhSelected;
-            View_Checked(new AttachedCommandArgs(null, null, ExtensionApi.Settings["View"].Value));
+            mProps["Selected"].Value = tView.MohSelected;
+            View_Checked(new AttachedCommandArgs(null, null, ExtensionApi.Settings["ViewMo"].Value));
 
 
             // Commands.
-            mComms["View"].Value     = new RelayCommand<AttachedCommandArgs>(View_Checked);
-            mComms["OmniText"].Value = new RelayCommand<AttachedCommandArgs>(Omni_TextChanged);
-            mComms["OmniSend"].Value = new RelayCommand<AttachedCommandArgs>(Omni_KeyDown);
+            mComms["View"].Value = new RelayCommand<AttachedCommandArgs>(View_Checked);
 
 
             // Exit with good status.
@@ -87,13 +84,7 @@ namespace Procon.UI.Default.Root.Main.Header
         private void View_Checked(AttachedCommandArgs args)
         {
             // Set the next view.
-            if ((String)args.Parameter != "Overview") {
-                ExtensionApi.Settings["View"].Value = "Connection";
-                ExtensionApi.Settings["ViewMoc"].Value = args.Parameter;
-            }
-            else {
-                ExtensionApi.Settings["View"].Value = args.Parameter;
-            }
+            ExtensionApi.Settings["ViewMo"].Value = args.Parameter;
 
 
             // Get the selected ring for animation.
@@ -101,13 +92,10 @@ namespace Procon.UI.Default.Root.Main.Header
             if (tSelected != null) {
 
                 // Calculate the offset given which view we're navigating to.
-                Int32 tOffset = 
-                    (String)args.Parameter == "Players"  ? 52  :
-                    (String)args.Parameter == "Bans"     ? 104 :
-                    (String)args.Parameter == "Maps"     ? 156 :
-                    (String)args.Parameter == "Plugins"  ? 208 :
-                    (String)args.Parameter == "Settings" ? 260 :
-                    /* Overview */ 0;
+                Int32 tOffset = 0;
+                if ((String)args.Parameter == "Connections") {
+                    tOffset = 78;
+                }
 
                 // Animate the ring moving to the new value.
                 Storyboard story = new Storyboard();
@@ -122,33 +110,6 @@ namespace Procon.UI.Default.Root.Main.Header
 
                 story.Children.Add(movement);
                 story.Begin();
-            }
-        }
-        
-
-        /// <summary>
-        /// Handles sending the omni command when enter is pressed.
-        /// </summary>
-        private void Omni_TextChanged(AttachedCommandArgs args)
-        {
-            TextChangedEventArgs tTextArgs = args.Args as TextChangedEventArgs;
-            if (tTextArgs != null) {
-
-                // TODO: Update omni command mProps.
-                String tText = mProps["Omni"].Value as String;
-            }
-        }
-
-        /// <summary>
-        /// Handles sending the omni command when enter is pressed.
-        /// </summary>
-        private void Omni_KeyDown(AttachedCommandArgs args)
-        {
-            KeyEventArgs tKeyArgs = args.Args as KeyEventArgs;
-            if (tKeyArgs != null && tKeyArgs.Key == Key.Return) {
-
-                // TODO: Select or Send the omni command.
-                mProps["Omni"].Value = String.Empty;
             }
         }
     }

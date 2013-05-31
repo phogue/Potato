@@ -1,0 +1,226 @@
+﻿<Grid x:Class="Procon.UI.Default.Root.Introduction.IntroductionView"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:eapi="clr-namespace:Procon.UI.API;assembly=Procon.UI.API"
+      xmlns:acmd="clr-namespace:Procon.UI.API.Commands;assembly=Procon.UI.API"
+      xmlns:conv="clr-namespace:Procon.UI.API.Converters;assembly=Procon.UI.API"
+      xmlns:util="clr-namespace:Procon.UI.API.Utils;assembly=Procon.UI.API"
+      xmlns:view="clr-namespace:Procon.UI.API.ViewModels;assembly=Procon.UI.API"
+      Name="RootIntroduction">
+    <Grid.Style>
+        <!-- Close the introduction window when we're done. -->
+        <Style TargetType="{x:Type Grid}">
+            <Setter Property="Visibility" Value="Collapsed" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Source={x:Static eapi:ExtensionApi.Settings}, Path=[Introduction].Value}" Value="Step 1">
+                    <Setter Property="Visibility" Value="Visible" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </Grid.Style>
+    <Grid.Resources>
+        <LinearGradientBrush x:Key="IntroductionBg1" StartPoint="0.5, 0.0" EndPoint="0.5, 1.0">
+            <GradientStop Offset="0.0" Color="{DynamicResource Color2Dark}" />
+            <GradientStop Offset="1.0" Color="{DynamicResource Color3Dark}" />
+        </LinearGradientBrush>
+        <LinearGradientBrush x:Key="IntroductionEllipse1" StartPoint="0.0, 0.5" EndPoint="1.0, 0.5">
+            <GradientStop Offset="0.0" Color="{DynamicResource Color2Dark}"   />
+            <GradientStop Offset="0.5" Color="{DynamicResource Color2Bright}" />
+            <GradientStop Offset="1.0" Color="{DynamicResource Color2Dark}"   />
+        </LinearGradientBrush>
+        <RadialGradientBrush x:Key="IntroductionEllipse2" Center="0.5, 1.0" GradientOrigin="0.5, 1.0" RadiusX="0.8" RadiusY="0.8">
+            <GradientStop Offset="0.0" Color="{DynamicResource Color1Bright}" />
+            <GradientStop Offset="1.0" Color="{DynamicResource Color2Bright}" />
+        </RadialGradientBrush>
+    </Grid.Resources>
+    <Grid.RowDefinitions>
+        <RowDefinition Height=".1*" />
+        <RowDefinition Height="150" />
+        <RowDefinition Height="200" />
+        <RowDefinition Height="350" />
+    </Grid.RowDefinitions>
+
+    <!-- Background Colors -->
+    <Rectangle Name="RiBackgroundUpper"
+               Grid.Row="0" Grid.RowSpan="2"
+               Fill="{DynamicResource Brush1Bright}" />
+    <Rectangle Name="RiBackgroundMiddle"
+               Grid.Row="2"
+               Fill="{DynamicResource Brush2Bright}" />
+    <Rectangle Name="RiBackgroundLower"
+               Grid.Row="3"
+               Fill="{DynamicResource IntroductionBg1}" />
+    
+    <!-- Logo Disks -->
+    <Ellipse Name="RiEllipseBottom"
+             Grid.Row="1" Grid.RowSpan="3"
+             Margin="0, -150, 0, 0"
+             Width="1600"
+             Height="350"
+             Fill="{DynamicResource IntroductionEllipse1}"
+             HorizontalAlignment="Center" />
+    <Ellipse Name="RiEllipseTop"
+             Grid.Row="1" Grid.RowSpan="3"
+             Margin="0, -200, 0, 0"
+             Width="1600"
+             Height="350"
+             Fill="{DynamicResource IntroductionEllipse2}"
+             HorizontalAlignment="Center" />
+
+    <!-- Actual Content -->
+    <DockPanel Name="RiContent"
+               Grid.Row="1"
+               Grid.RowSpan="3">
+        
+        <!-- Agreement block on bottom of page. -->
+        <TextBlock Name="RiAgreement"
+                   DockPanel.Dock="Bottom"
+                   Margin="0, 20, 0, 20"
+                   Width="700"
+                   Text="{Binding
+                       Converter={conv:LocalizationText},
+                       ConverterParameter=Default.Root.Introduction.Agreement}"
+                   Foreground="{DynamicResource BrushTextLightSoft}"
+                   HorizontalAlignment="Center" />
+
+        <!-- The Local Interface and Remote Interface buttons stacks sideways. -->
+        <Grid Name="RiButtons"
+              DockPanel.Dock="Bottom">
+            <Grid.RowDefinitions>
+                <RowDefinition Height=".1*" />
+                <RowDefinition Height="5" />
+                <RowDefinition Height=".4*" />
+                <RowDefinition Height="5" />
+                <RowDefinition Height=".4*" />
+                <RowDefinition Height="5" />
+                <RowDefinition Height=".1*" />
+            </Grid.RowDefinitions>
+            
+            <!-- The three lines behind the buttons. -->
+            <Rectangle Name="RiLine1"
+                       Grid.Row="1"
+                       Fill="{DynamicResource BrushHighlight2}" />
+            <Rectangle Name="RiLine2"
+                       Grid.Row="3"
+                       Fill="{DynamicResource BrushHighlight2}" />
+            <Rectangle Name="RiLine3"
+                       Grid.Row="5"
+                       Fill="{DynamicResource BrushHighlight2}" />
+
+            <StackPanel Name="RiButtonsContent"
+                        Grid.Row="0"
+                        Grid.RowSpan="7"
+                        Orientation="Horizontal"
+                        HorizontalAlignment="Center">
+
+                <!-- Local Interface Button. -->
+                <Button Name="RiLocal"
+                        Margin="0, 0, 20, 0"
+                        Padding="10"
+                        Width="300"
+                        BorderBrush="{DynamicResource BrushHighlight1}"
+                        Command="{Binding
+                            Source={x:Static eapi:ExtensionApi.Commands},
+                            Path=[Procon][UI][Default][Root][Introduction][Local].Value}"
+                        Content="{Binding
+                            Converter={conv:LocalizationText},
+                            ConverterParameter=Default.Root.Introduction.Local}" />
+
+                <!-- Remote Interface Input Boxes. -->
+                <Border Name="RiInput"
+                        Padding="10"
+                        Width="300"
+                        Background="{DynamicResource BrushControlNormal}"
+                        BorderBrush="{DynamicResource BrushHighlight1}"
+                        BorderThickness="2"
+                        CornerRadius="3">
+                    <Grid Name="RiInputContent"
+                          DockPanel.Dock="Bottom">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="0.50*" />
+                            <ColumnDefinition Width="20" />
+                            <ColumnDefinition Width="0.50*" />
+                        </Grid.ColumnDefinitions>
+
+                        <Label Name="RiInputHostText"
+                               Grid.Row="0" Grid.Column="0"
+                               Content="{Binding 
+                                   Converter={conv:LocalizationText},
+                                   ConverterParameter=Default.Root.Introduction.Host}" />
+                        <Label Name="RiInputPortText"
+                               Grid.Row="0" Grid.Column="2"
+                               Content="{Binding
+                                   Converter={conv:LocalizationText},
+                                   ConverterParameter=Default.Root.Introduction.Port}" />
+                        <Label Name="RiInputUserText"
+                               Grid.Row="2" Grid.Column="0"
+                               Margin="0, 10, 0, 0"
+                               Content="{Binding
+                                   Converter={conv:LocalizationText},
+                                   ConverterParameter=Default.Root.Introduction.User}" />
+                        <Label Name="RiInputPassText"
+                               Grid.Row="2" Grid.Column="2"
+                               Margin="0, 10, 0, 0"
+                               Content="{Binding
+                                   Converter={conv:LocalizationText},
+                                   ConverterParameter=Default.Root.Introduction.Pass}" />
+                        <TextBox Name="RiInputHost"
+                                 Grid.Row="1" Grid.Column="0"
+                                 Height="29"
+                                 Text="{Binding
+                                     Source={x:Static eapi:ExtensionApi.Properties},
+                                     Path=[Procon][UI][Default][Root][Introduction][Host].Value,
+                                     UpdateSourceTrigger=PropertyChanged}" />
+                        <TextBox Name="RiInputPort"
+                                 Grid.Row="1" Grid.Column="2"
+                                 Height="29"
+                                 Text="{Binding
+                                     Source={x:Static eapi:ExtensionApi.Properties},
+                                     Path=[Procon][UI][Default][Root][Introduction][Port].Value,
+                                     UpdateSourceTrigger=PropertyChanged}" />
+                        <TextBox Name="RiInputUser"
+                                 Grid.Row="3" Grid.Column="0"
+                                 Height="29"
+                                 Text="{Binding
+                                     Source={x:Static eapi:ExtensionApi.Properties},
+                                     Path=[Procon][UI][Default][Root][Introduction][User].Value,
+                                     UpdateSourceTrigger=PropertyChanged}" />
+                        <PasswordBox Name="RiInputPass"
+                                     Grid.Row="3" Grid.Column="2"
+                                     Height="29"
+                                     acmd:AttachedCommand.Event="PasswordChanged"
+                                     acmd:AttachedCommand.Command="{Binding
+                                         Source={x:Static eapi:ExtensionApi.Commands},
+                                         Path=[Procon][UI][Default][Root][Introduction][Pass].Value}" />
+                    </Grid>
+                </Border>
+
+                <!-- Remote Interface Buttons. -->
+                <Button Name="RiRemote"
+                        Margin="20, 0, 0, 0"
+                        Padding="10"
+                        Width="300"
+                        BorderBrush="{DynamicResource BrushHighlight1}"
+                        Command="{Binding
+                            Source={x:Static eapi:ExtensionApi.Commands},
+                            Path=[Procon][UI][Default][Root][Introduction][Remote].Value}"
+                        Content="{Binding
+                            Converter={conv:LocalizationText},
+                            ConverterParameter=Default.Root.Introduction.Remote}" />
+            </StackPanel>
+        </Grid>
+        
+        <!-- Procon Logo & Text. -->
+        <Image Name="RiImage"
+               Margin="0, 0, 0, 200"
+               Source="{Binding
+                   Source={x:Static eapi:ExtensionApi.Properties},
+                   Path=[Images][Procon][Large].Value}" />
+    </DockPanel>
+</Grid>

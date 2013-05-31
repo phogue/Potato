@@ -18,23 +18,23 @@ namespace Procon.UI.Default.Root.Main.Connection.Maps
     {
         #region IExtension Properties
 
-        public string Author
+        public String Author
         { get { return "Imisnew2"; } }
 
-        public string Link
-        { get { return "www.TeamPlayerGaming.com/members/Imisnew2.html"; } }
+        public Uri Link
+        { get { return new Uri("www.TeamPlayerGaming.com/members/Imisnew2.html"); } }
 
-        public string LinkText
+        public String LinkText
         { get { return "Team Player Gaming"; } }
 
-        public string Name
+        public String Name
         { get { return "Main Connection Maps"; } }
 
-        public string Version
-        { get { return "1.0.0.0"; } }
-
-        public string Description
+        public String Description
         { get { return ""; } }
+
+        public Version Version
+        { get { return new Version(1, 0, 0, 0); } }
 
         #endregion IExtension Properties
 

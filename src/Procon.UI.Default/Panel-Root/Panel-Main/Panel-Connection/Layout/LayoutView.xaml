@@ -6,11 +6,9 @@
       xmlns:conv="clr-namespace:Procon.UI.API.Converters;assembly=Procon.UI.API"
       xmlns:util="clr-namespace:Procon.UI.API.Utils;assembly=Procon.UI.API"
       xmlns:view="clr-namespace:Procon.UI.API.ViewModels;assembly=Procon.UI.API"
-      Name="MainConnectionLayout"
-      DataContext="{Binding
-          Source={x:Static eapi:ExtensionApi.Properties},
-          Path=[Connection].Value}">
+      Name="MainConnectionLayout">
     <Grid.Style>
+        <!-- Connection Window. -->
         <Style TargetType="{x:Type Grid}">
             <Setter Property="Visibility" Value="Collapsed" />
             <Style.Triggers>

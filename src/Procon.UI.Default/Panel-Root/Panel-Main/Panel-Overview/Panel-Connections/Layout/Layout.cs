@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 
-namespace Procon.UI.Default.Root.Main.Overview.Layout
+namespace Procon.UI.Default.Root.Main.Overview.Connections.Layout
 {
     using Procon.UI.API;
 
@@ -21,10 +21,10 @@ namespace Procon.UI.Default.Root.Main.Overview.Layout
         { get { return new Uri("www.TeamPlayerGaming.com/members/Imisnew2.html"); } }
 
         public String LinkText
-        { get { return "TeamPlayer Gaming"; } }
+        { get { return "Team Player Gaming"; } }
 
         public String Name
-        { get { return GetType().Namespace; } }
+        { get { return "Main Overview Connections Layout"; } }
 
         public String Description
         { get { return ""; } }
@@ -39,22 +39,13 @@ namespace Procon.UI.Default.Root.Main.Overview.Layout
         public bool Entry(Window root)
         {
             // Find the controls I want to use and check for issues.
-            Grid tLayout = ExtensionApi.FindControl<Grid>(root, "MainLayout");
-            if (tLayout == null) {
-                return false;
-            }
+            Grid tLayout = ExtensionApi.FindControl<Grid>(root, "MainOverviewLayout");
 
 
             // Do what I need to setup my control.
             LayoutView tView = new LayoutView();
             Grid.SetRow(tView, 1);
             tLayout.Children.Add(tView);
-
-
-            // Setup the default settings.
-            if (ExtensionApi.Settings["View"]["Overview"].Value == null) {
-                ExtensionApi.Settings["View"]["Overview"].Value = "Interfaces";
-            }
 
 
             // Exit with good status.

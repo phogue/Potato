@@ -8,6 +8,7 @@
       xmlns:view="clr-namespace:Procon.UI.API.ViewModels;assembly=Procon.UI.API"
       Name="MainOverviewLayout">
     <Grid.Style>
+        <!-- Overview Window. -->
         <Style TargetType="{x:Type Grid}">
             <Setter Property="Visibility" Value="Collapsed" />
             <Style.Triggers>
@@ -18,8 +19,7 @@
         </Style>
     </Grid.Style>
     <Grid.RowDefinitions>
-        <RowDefinition Height="0.25*" />
-        <RowDefinition Height="0.55*" />
-        <RowDefinition Height="0.20*" />
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="1.0*" />
     </Grid.RowDefinitions>
 </Grid>

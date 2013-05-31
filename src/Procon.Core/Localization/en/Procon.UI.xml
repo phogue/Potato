@@ -144,40 +144,88 @@
       <root>
       
         <!-- Tutorial Window -->
-        <tutorial>
-          <newinterface>
-            <loc key="Local"     value="LOCAL INTERFACE" />
-            <loc key="Host"      value="HOSTNAME" />
-            <loc key="Port"      value="PORT" />
-            <loc key="User"      value="USERNAME" />
-            <loc key="Pass"      value="PASSWORD" />
-            <loc key="Remote"    value="REMOTE INTERFACE" />
-            <loc key="Agreement" value="©2012 Procon. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam eu mauris eget erat lobortis tempor ut ut nisl. Curabitur molestie ultricies urna vel fermentum. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per incepto. All Rights Reserved." />
-          </newinterface>
-        </tutorial>
+        <introduction>
+          <loc key="Local"     value="LOCAL INTERFACE" />
+          <loc key="Host"      value="HOSTNAME" />
+          <loc key="Port"      value="PORT" />
+          <loc key="User"      value="USERNAME" />
+          <loc key="Pass"      value="PASSWORD" />
+          <loc key="Remote"    value="REMOTE INTERFACE" />
+          <loc key="Agreement" value="©2012-2013 Procon. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam eu mauris eget erat lobortis tempor ut ut nisl. Curabitur molestie ultricies urna vel fermentum. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per incepto. All Rights Reserved." />
+        </introduction>
         
         <!-- Main Window -->
         <main>
+          
           <!-- Overview Panel -->
           <overview>
-            <loc key="Type"    value="Game Type" />
-            <loc key="Host"    value="Hostname" />
-            <loc key="Port"    value="Port" />
-            <loc key="User"    value="Username" />
-            <loc key="Pass"    value="Password" />
-            <loc key="Confirm" value="Connect!" />
+            <loc key="Type" value="Game Type" />
+            <loc key="Ip"   value="Ip Address" />
+            <loc key="Host" value="Hostname" />
+            <loc key="Port" value="Port" />
+            <loc key="User" value="Username" />
+            <loc key="Pass" value="Password" />
             
-            <!-- Interfaces -->
+            <!-- Overview: Interfaces -->
             <interfaces>
-              <loc key="Title"  value="Procon Connections" />
-              <loc key="Local"  value="Local" />
-              <loc key="Remote" value="Remote" />
-              <loc key="Add"    value="Connect to a Procon Server" />
-              <loc key="Info"   value="Information" />
-              <loc key="Games"  value="Game Connections" />
+              
+              <settings>
+                <loc key="Title" value="Layer Settings" />
+
+                <accounts>
+                  <loc key="Title"   value="Accounts" />
+                  <loc key="Add"     value="Create Account" />
+                  <loc key="Games"   value="Game Uids:" />
+                  <loc key="Groups"  value="Assigned to Groups:" />
+                  <loc key="Name"    value="Name:" />
+                  <loc key="Link"    value="Link" />
+                  <loc key="Assign"  value="Assign" />
+                  <add>
+                    <loc key="Cancel"  value="Cancel" />
+                    <loc key="Confirm" value="Create" />
+                  </add>
+                </accounts>
+
+                <groups>
+                  <loc key="Title"       value="Groups" />
+                  <loc key="Add"         value="Create Group" />
+                  <loc key="Permissions" value="Permissions:" />
+                  <loc key="Accounts"    value="Assigned Accounts:" />
+                  <loc key="Name"        value="Name:" />
+                  <loc key="Assign"      value="Assign" />
+                  <add>
+                    <loc key="Cancel"  value="Cancel" />
+                    <loc key="Confirm" value="Create" />
+                  </add>
+                </groups>
+
+                <layer>
+                  <loc key="Title"       value="Layer" />
+                  <loc key="LayerOn"     value="Activate Layer" />
+                  <loc key="LayerOff"    value="Deactivate Layer" />
+                  <loc key="Description" value="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam eu mauris eget erat lobortis tempor ut ut nisl. Curabitur molestie ultricies urna vel fermentum. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per incepto. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam eu mauris eget erat lobortis tempor ut ut nisl." />
+                </layer>
+              </settings>
+              
+              <information>
+                <loc key="Title" value="Layer Information" />
+              </information>
+
+              <manage>
+                <loc key="Title"   value="Layers" />
+                <loc key="Add"     value="+ Add Remote Procon Instance +" />
+              </manage>
+
+              <loc key="Remove"  value="Disconnect" />
+              <loc key="Confirm" value="Connect" />
+              <loc key="Cancel"  value="Cancel" />
+              <loc key="Local"   value="Local" />
+              <loc key="Remote"  value="Remote" />
+              <loc key="Info"    value="Information" />
+              <loc key="Games"   value="Game Connections" />
             </interfaces>
             
-            <!-- Connections-->
+            <!-- Overview: Connections -->
             <connections>
               <loc key="Title"      value="Game Connections" />
               <loc key="Additional" value="Additional Information" />
@@ -188,15 +236,23 @@
             </connections>
           </overview>
 
-          <!-- Connection Panel-->
+          
+          <!-- Connection Panel -->
           <connection>
+            
             <!-- Omnibar -->
             <omnibar>
               <loc key="Text"    value="The results for the command" />
               <loc key="Command" value="Key(s)" />
             </omnibar>
             
-            <!-- Chat Panel-->
+            <!--
+            Chat Panel
+            
+            Most of the keys here cannot be changed as they are localizations for
+            enumerations within Procon. If the enumeration is changed, then these
+            keys will need to be updated to work properly.
+            -->
             <chat>
               <loc key="Title"          value="Chat &amp; Events" />
               <loc key="PlayerJoin"     value="Joined" />

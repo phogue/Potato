@@ -81,15 +81,15 @@ namespace Procon.Core.Localization
             String result = String.Empty;
 
             // Drill down to namespace that was specified.
-            var descendants = Document.Elements();
+            var children = Document.Elements();
             foreach (String name in @namespace.ToLower().Split('.').Skip(1))
-                descendants = descendants.DescendantsAndSelf(name);
+                children = children.Elements(name);
 
             // Attempt to find key.
-            var loc = descendants.Descendants("loc")
-                                 .Where(x => x.Attribute("key") != null && x.Attribute("key").Value == key)
-                                 .Select(x => x.Attribute("value"))
-                                 .FirstOrDefault();
+            var loc = children.Elements("loc")
+                               .Where(x => x.Attribute("key") != null && x.Attribute("key").Value == key)
+                               .Select(x => x.Attribute("value"))
+                               .FirstOrDefault();
 
             // Attempt to format key.
             if (loc != null)

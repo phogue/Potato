@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Windows;
 
-using Procon.UI.API;
-
 namespace Procon.UI
 {
+    using Procon.UI.API;
+
     public class Extension
     {
         // Accessors & Mutators for public variables.

@@ -6,17 +6,23 @@
         <assembly>Extensions\Default\Procon.UI.Default.dll</assembly>
 
         <!-- Base Stuffs -->
-        <extension>Root Layout</extension>
-        
-        <!-- Tutorial Layout -->
-        <extension>Tutorial Layout</extension>
-        <extension>Tutorial New Interface</extension>
-        
+        <extension>Procon.UI.Default.Root.Layout</extension>
+        <extension>Procon.UI.Default.Root.Introduction</extension>
+
         <!-- Main Layout -->
-        <extension>Main Layout</extension>
-        <extension>Main Header</extension>
-        <extension>Main Overview Layout</extension>
-        <extension>Main Overview Interfaces</extension>
+        <extension>Procon.UI.Default.Root.Main.Layout</extension>
+        <extension>Procon.UI.Default.Root.Main.Header</extension>
+        
+        <extension>Procon.UI.Default.Root.Main.Overview.Layout</extension>
+        <extension>Procon.UI.Default.Root.Main.Overview.Header</extension>
+        
+        <extension>Procon.UI.Default.Root.Main.Overview.Interfaces.Layout</extension>
+        <extension>Procon.UI.Default.Root.Main.Overview.Interfaces.Manage</extension>
+        <extension>Procon.UI.Default.Root.Main.Overview.Interfaces.Settings</extension>
+        <extension>Procon.UI.Default.Root.Main.Overview.Interfaces.Information</extension>
+        
+        <!--
+        <extension>Main Overview Connections Layout</extension>
         <extension>Main Overview Connections</extension>
         <extension>Main Interface Layout</extension>
         <extension>Main Connection Layout</extension>
@@ -25,10 +31,13 @@
         <extension>Main Connection Maps</extension>
         <extension>Main Connection Plugins</extension>
         <extension>Main Connection Chat</extension>
+        -->
         
         <!-- Styles & Commands -->
-        <extension>Light Style</extension>
-        <extension>Commands And Properties</extension>
+        <extension>Procon.UI.Default.Debug</extension>
+        <extension>Commands</extension>
+        <extension>Properties</extension>
+        <extension>Style</extension>
       </extensions>
     </settings>
   </ui>

@@ -20,6 +20,12 @@ namespace Procon.Core.Test.Repositories {
 
         [TestInitialize]
         public void Initialize() {
+            Directory.CreateDirectory(ExecuteInstalledPath);
+            Directory.CreateDirectory(ExecutePackagesInstalledPath);
+            Directory.CreateDirectory(ExecuteUpdatesPath);
+            Directory.CreateDirectory(ExecutePackagesUpdatesPath);
+            Directory.CreateDirectory(ExecuteTemporaryUpdatesPath);
+             
             // Remove all files and directories within the execute installed path for each test.
             new DirectoryInfo(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Repositories\RepositoryController\Execute\Installed")).Clean();
         }

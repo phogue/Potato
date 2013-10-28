@@ -19,6 +19,15 @@ namespace Procon.Core.Test.Repositories {
         protected static String ExecutePackagesUpdatesPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Repositories\RepositoryController\Commands\Installed\Updates\Packages");
         protected static String ExecuteTemporaryUpdatesPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Repositories\RepositoryController\Commands\Installed\Updates\Temporary");
 
+        [TestInitialize]
+        public void Initialize() {
+            Directory.CreateDirectory(ExecuteInstalledPath);
+            Directory.CreateDirectory(ExecutePackagesInstalledPath);
+            Directory.CreateDirectory(ExecuteUpdatesPath);
+            Directory.CreateDirectory(ExecutePackagesUpdatesPath);
+            Directory.CreateDirectory(ExecuteTemporaryUpdatesPath);
+        }
+
         protected RepositoryController SetupRepositoryController() {
             RepositoryController repository = new RepositoryController() {
                 PackagesPath = ExecutePackagesInstalledPath,

@@ -32,48 +32,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procon.Service.Shared", "Procon.Service.Shared\Procon.Service.Shared.csproj", "{3F9E6801-A015-4F7E-9B67-7015F1F58B18}"
 EndProject
 Global
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 13
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = http://dev.myrcon.com:8080/tfs/procon
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = Procon.Core\\Procon.Core.csproj
-		SccProjectName1 = Procon.Core
-		SccLocalPath1 = Procon.Core
-		SccProjectUniqueName2 = Procon.Net\\Procon.Net.csproj
-		SccProjectName2 = Procon.Net
-		SccLocalPath2 = Procon.Net
-		SccProjectUniqueName3 = Procon.NLP\\Procon.Nlp.csproj
-		SccProjectName3 = Procon.NLP
-		SccLocalPath3 = Procon.NLP
-		SccProjectUniqueName4 = Procon.Net.Protocols.Frostbite\\Procon.Net.Protocols.Frostbite.csproj
-		SccProjectName4 = Procon.Net.Protocols.Frostbite
-		SccLocalPath4 = Procon.Net.Protocols.Frostbite
-		SccProjectUniqueName5 = Procon.Tools.RepositoryManager\\Procon.Tools.RepositoryManager.csproj
-		SccProjectName5 = Procon.Tools.RepositoryManager
-		SccLocalPath5 = Procon.Tools.RepositoryManager
-		SccProjectUniqueName6 = Procon.Tools.NetworkConsole\\Procon.Tools.NetworkConsole.csproj
-		SccProjectName6 = Procon.Tools.NetworkConsole
-		SccLocalPath6 = Procon.Tools.NetworkConsole
-		SccProjectUniqueName7 = Procon.Core.Test\\Procon.Core.Test.csproj
-		SccProjectName7 = Procon.Core.Test
-		SccLocalPath7 = Procon.Core.Test
-		SccProjectUniqueName8 = TestPlugin\\TestPlugin.csproj
-		SccProjectName8 = TestPlugin
-		SccLocalPath8 = TestPlugin
-		SccProjectUniqueName9 = Procon\\Procon.csproj
-		SccProjectName9 = Procon
-		SccLocalPath9 = Procon
-		SccProjectUniqueName10 = Procon.Net.Test\\Procon.Net.Test.csproj
-		SccProjectName10 = Procon.Net.Test
-		SccLocalPath10 = Procon.Net.Test
-		SccProjectUniqueName11 = Procon.Service\\Procon.Service.csproj
-		SccProjectName11 = Procon.Service
-		SccLocalPath11 = Procon.Service
-		SccProjectUniqueName12 = Procon.Service.Shared\\Procon.Service.Shared.csproj
-		SccProjectName12 = Procon.Service.Shared
-		SccLocalPath12 = Procon.Service.Shared
-	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Procon.vsmdi
 	EndGlobalSection

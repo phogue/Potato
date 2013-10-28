@@ -242,7 +242,8 @@ if "%25ERRORLEVEL%25"=="0" taskkill /f /im QTAgent32.exe
 exit 0</PreBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PostBuildEvent>move /Y "$(TargetDir)TestPlugin.dll" "$(TargetDir)plugins\TestPlugin.dll"</PostBuildEvent>
+    <PostBuildEvent>mkdir "$(TargetDir)plugins\"
+move /Y "$(TargetDir)TestPlugin.dll" "$(TargetDir)plugins\TestPlugin.dll"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -1,16 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Procon.NLP.Tokens.Primitive.Temporal {
+﻿namespace Procon.Nlp.Tokens.Primitive.Temporal {
     public enum TimeModifier {
+        /// <summary>
+        /// Nada
+        /// </summary>
         None,
-        // in 20 minutes
+        /// <summary>
+        /// A delay, should used as an offset for +now e.g "in 20 minutes"
+        /// </summary>
         Delay,
-        // for 20 minutes
+        /// <summary>
+        /// A period of time, without thought to the current time e.g "for 20 minutes"
+        /// </summary>
         Period,
-        // every 20 minutes
+        /// <summary>
+        /// An interval of time, without thought to the current time e.g "every 20 minutes"
+        /// </summary>
         Interval
     }
 }

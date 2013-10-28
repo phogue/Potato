@@ -1,55 +1,72 @@
-﻿// Copyright 2011 Geoffrey 'Phogue' Green
-// 
-// http://www.phogue.net
-//  
-// This file is part of Procon 2.
-// 
-// Procon 2 is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-// 
-// Procon 2 is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-// 
-// You should have received a copy of the GNU General Public License
-// along with Procon 2.  If not, see <http://www.gnu.org/licenses/>.
-
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Timers;
 
 namespace Procon.Core.Scheduler {
 
+    /// <summary>
+    /// I should really catch up on 4.0's security changes so we can use a BlockingCollection here.
+    /// </summary>
     [Serializable]
-    public class TaskController : List<Task>, ICloneable {
+    public class TaskController : List<Task>, IDisposable {
 
         /// <summary>
-        /// The timer to tick every second, checking against
-        /// the Tasks
+        /// The timer to tick every second, checking against the Tasks
         /// </summary>
-        private Timer Ticker;
+        protected Timer Ticker { get; set; }
 
-        public TaskController() {
-            this.Ticker = new Timer(1000);
+        /// <summary>
+        /// Simple boolean used in start/stop as a flag to determine if tasks should be
+        /// processed or not. We don't rely on the enabled propery o the ticker to allow
+        /// for unit testing.
+        /// </summary>
+        public bool Enabled { get; set; }
+
+        public TaskController(double interval = 1000) {
+            this.Ticker = new Timer(interval);
             this.Ticker.Elapsed += new ElapsedEventHandler(Ticker_Elapsed);
         }
 
-        private void Ticker_Elapsed(object sender, ElapsedEventArgs e) {
+        public void Dispose() {
+            lock (this) {
+                this.Stop();
 
-            DateTime now = DateTime.Now;
+                foreach (Task task in this) {
+                    task.Dispose();
+                }
 
-            // Clones the enumerator to avoid threading problems when altering the list
-            foreach (Task task in this.Clone() as TaskController) {
-                task.Check(now);
+                this.Clear();
             }
+        }
 
-            // Removes all tasks that have expired
-            this.RemoveAll(x => x.IsExpired(now) == true);
+        private void Ticker_Elapsed(object sender, ElapsedEventArgs e) {
+            this.Tick();
+        }
+
+        public void Tick(DateTime? now = null) {
+            if (this.Enabled == true) {
+                if (now.HasValue == false) {
+                    now = DateTime.Now;
+                }
+
+                lock (this) {
+                    // Clones the enumerator to avoid threading problems when altering the list
+                    foreach (Task task in this) {
+                        task.Check(now.Value);
+                    }
+
+                    // Dispose any tasks that have expired.
+                    this.ForEach(task => {
+                        if (task.IsExpired(now.Value) == true) {
+                            task.Dispose();
+                        }
+                    });
+
+                    // Removes all tasks that have expired
+                    this.RemoveAll(task => task.IsExpired(now.Value) == true);
+
+                }
+            }
         }
 
         /// <summary>
@@ -58,9 +75,23 @@ namespace Procon.Core.Scheduler {
         /// <param name="item">The item to add</param>
         /// <returns>The added item</returns>
         public new Task Add(Task item) {
-            base.Add(item);
+            lock (this) {
+                base.Add(item);
+            }
 
             return item;
+        }
+
+        public new TaskController Clear() {
+            lock (this) {
+                foreach (Task task in this) {
+                    task.Dispose();
+                }
+
+                base.Clear();
+            }
+
+            return this;
         }
 
         /// <summary>
@@ -71,6 +102,8 @@ namespace Procon.Core.Scheduler {
         public TaskController Start() {
             this.Ticker.Enabled = true;
             this.Ticker.Start();
+
+            this.Enabled = true;
 
             return this;
         }
@@ -83,15 +116,9 @@ namespace Procon.Core.Scheduler {
             this.Ticker.Enabled = false;
             this.Ticker.Stop();
 
-            return this;
-        }
+            this.Enabled = false;
 
-        /// <summary>
-        /// Clones the current object
-        /// </summary>
-        /// <returns>The cloned object</returns>
-        public object Clone() {
-            return this.MemberwiseClone();
+            return this;
         }
     }
 }

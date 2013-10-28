@@ -1,69 +1,56 @@
-﻿// Copyright 2011 Geoffrey 'Phogue' Green
-// 
-// http://www.phogue.net
-//  
-// This file is part of Procon 2.
-// 
-// Procon 2 is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-// 
-// Procon 2 is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-// 
-// You should have received a copy of the GNU General Public License
-// along with Procon 2.  If not, see <http://www.gnu.org/licenses/>.
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Reflection;
 using System.Text.RegularExpressions;
-using System.Xml;
 using System.Xml.Linq;
 
-namespace Procon.NLP.Tokens {
-    using Procon.NLP.Utils;
+namespace Procon.Nlp.Tokens {
+    using Procon.Nlp.Utils;
 
     public class TokenReflection {
 
+        public delegate Phrase ParseDelegateHandler(IStateNlp state, Phrase phrase);
+
         private static Dictionary<XElement, Dictionary<Type, List<XElement>>> SelectedDescendants { get; set; }
+        private static Dictionary<XElement, Dictionary<Type, List<XElement>>> SelectedMatchDescendants { get; set; }
         private static Dictionary<string, List<Type>> TokenClasses { get; set; }
-        private static Dictionary<string, List<MethodInfo>> ParseMethods { get; set; }
+        private static Dictionary<string, List<Delegate>> ParseMethods { get; set; }
         private static Dictionary<string, List<MethodInfo>> CombineMethods { get; set; }
         private static Dictionary<string, List<MethodInfo>> ReduceMethods { get; set; }
         private static Dictionary<string, Regex> CompiledRegexes { get; set; }
 
-        public static List<MethodInfo> GetParseMethods(string tokenNamespace) {
+        public static List<Delegate> GetParseMethods(string tokenNamespace) {
 
             if (TokenReflection.ParseMethods == null) {
-                TokenReflection.ParseMethods = new Dictionary<string, List<MethodInfo>>();
+                TokenReflection.ParseMethods = new Dictionary<string, List<Delegate>>();
             }
 
             if (TokenReflection.ParseMethods.ContainsKey(tokenNamespace) == false) {
 
-                List<MethodInfo> returnMethods = new List<MethodInfo>();
+                List<Delegate> returnMethods = new List<Delegate>();
 
                 foreach (Type token in TokenReflection.GetTokenClasses(tokenNamespace)) {
 
-                    var methods = from method in token.GetMethods(BindingFlags.Public | BindingFlags.Static)
-                                  let parameters = method.GetParameters()
-                                  where String.Compare(method.Name, "Parse") == 0
-                                     && method.ReturnType == typeof(Phrase)
-                                     && parameters.Length >= 2
-                                     && parameters[0].ParameterType == typeof(IStateNLP)
-                                     && parameters[1].ParameterType == typeof(Phrase)
-                                  select method;
+                    var methods = token.GetMethods(BindingFlags.Public | BindingFlags.Static).Select(method => new {
+                        Method = method,
+                        Parameters = method.GetParameters()
+                    }).Where(method => String.CompareOrdinal(method.Method.Name, "Parse") == 0)
+                    .Where(method => method.Method.ReturnType == typeof(Phrase))
+                    .Where(method => method.Parameters.Length >= 2)
+                    .Where(method => method.Parameters[0].ParameterType == typeof(IStateNlp))
+                    .Where(method => method.Parameters[1].ParameterType == typeof(Phrase))
+                    .Select(method => Delegate.CreateDelegate(typeof(ParseDelegateHandler), method.Method));
 
                     returnMethods.AddRange(methods.ToList());
                 }
 
                 // This makes it so reduction methods of inherited methods are called before their parents
-                returnMethods = returnMethods.OrderByDescending(x => x.DeclaringType.Namespace.Length).ToList();
+                returnMethods = returnMethods.Where(method => method.Method.DeclaringType != null && method.Method.DeclaringType.Namespace != null)
+// ReSharper disable PossibleNullReferenceException
+                                             .OrderByDescending(method => method.Method.DeclaringType.Namespace.Length)
+// ReSharper restore PossibleNullReferenceException
+                                             .ToList();
 
                 TokenReflection.ParseMethods.Add(tokenNamespace, returnMethods);
             }
@@ -82,20 +69,25 @@ namespace Procon.NLP.Tokens {
 
                 foreach (Type token in TokenReflection.GetTokenClasses(tokenNamespace)) {
 
-                    var methods = from method in token.GetMethods(BindingFlags.Public | BindingFlags.Static)
-                                  let parameters = method.GetParameters()
-                                  where String.Compare(method.Name, "Combine") == 0
-                                     && method.ReturnType == typeof(Phrase)
-                                     && parameters.Length >= 2
-                                     && parameters[0].ParameterType == typeof(IStateNLP)
-                                     && parameters.Where(x => typeof(Token).IsAssignableFrom(x.ParameterType)).Count() == parameters.Length - 1
-                                  select method;
+                    var methods = token.GetMethods(BindingFlags.Public | BindingFlags.Static).Select(method => new {
+                        Method = method,
+                        Parameters = method.GetParameters()
+                    }).Where(method => String.CompareOrdinal(method.Method.Name, "Combine") == 0)
+                    .Where(method => method.Method.ReturnType == typeof(Phrase))
+                    .Where(method => method.Parameters.Length >= 2)
+                    .Where(method => method.Parameters[0].ParameterType == typeof(IStateNlp))
+                    .Where(method => method.Parameters.Count(x => typeof(Token).IsAssignableFrom(x.ParameterType)) == method.Parameters.Length - 1)
+                    .Select(method => method.Method);
 
                     returnMethods.AddRange(methods.ToList());
                 }
 
                 // This makes it so reduction methods of inherited methods are called before their parents
-                returnMethods = returnMethods.OrderByDescending(x => x.DeclaringType.Namespace.Length).ToList();
+                returnMethods = returnMethods.Where(method => method.DeclaringType != null && method.DeclaringType.Namespace != null)
+                    // ReSharper disable PossibleNullReferenceException
+                                             .OrderByDescending(method => method.DeclaringType.Namespace.Length)
+                    // ReSharper restore PossibleNullReferenceException
+                                             .ToList();
 
                 TokenReflection.CombineMethods.Add(tokenNamespace, returnMethods);
             }
@@ -114,21 +106,26 @@ namespace Procon.NLP.Tokens {
                 List<MethodInfo> returnMethods = new List<MethodInfo>();
 
                 foreach (Type token in TokenReflection.GetTokenClasses(tokenNamespace)) {
-                    
-                    var methods = from method in token.GetMethods(BindingFlags.Public | BindingFlags.Static)
-                                  let parameters = method.GetParameters()
-                                  where String.Compare(method.Name, "Reduce") == 0
-                                     && method.ReturnType == typeof(Phrase)
-                                     && parameters.Length >= 2
-                                     && parameters[0].ParameterType == typeof(IStateNLP)
-                                     && parameters.Where(x => typeof(Token).IsAssignableFrom(x.ParameterType)).Count() == parameters.Length - 1
-                                  select method;
+
+                    var methods = token.GetMethods(BindingFlags.Public | BindingFlags.Static).Select(method => new {
+                        Method = method,
+                        Parameters = method.GetParameters()
+                    }).Where(method => String.CompareOrdinal(method.Method.Name, "Reduce") == 0)
+                    .Where(method => method.Method.ReturnType == typeof(Phrase))
+                    .Where(method => method.Parameters.Length >= 2)
+                    .Where(method => method.Parameters[0].ParameterType == typeof(IStateNlp))
+                    .Where(method => method.Parameters.Count(x => typeof(Token).IsAssignableFrom(x.ParameterType)) == method.Parameters.Length - 1)
+                    .Select(method => method.Method);
 
                     returnMethods.AddRange(methods.ToList());
                 }
 
                 // This makes it so reduction methods of inherited methods are called before their parents
-                returnMethods = returnMethods.OrderByDescending(x => x.DeclaringType.Namespace.Length).ToList();
+                returnMethods = returnMethods.Where(method => method.DeclaringType != null && method.DeclaringType.Namespace != null)
+                    // ReSharper disable PossibleNullReferenceException
+                                             .OrderByDescending(method => method.DeclaringType.Namespace.Length)
+                    // ReSharper restore PossibleNullReferenceException
+                                             .ToList();
                 
                 TokenReflection.ReduceMethods.Add(tokenNamespace, returnMethods);
             }
@@ -144,7 +141,7 @@ namespace Procon.NLP.Tokens {
 
             if (TokenReflection.TokenClasses.ContainsKey(tokenNamespace) == false) {
 
-                Regex tokenNamespame = new Regex(String.Format(@"^{0}[\.]?.*$", tokenNamespace.Replace(".", "\\."), RegexOptions.Compiled));
+                Regex tokenNamespame = new Regex(String.Format(@"^{0}[\.]?.*$", tokenNamespace.Replace(".", "\\.")), RegexOptions.Compiled);
 
                 var classes = from type in Assembly.GetExecutingAssembly().GetTypes()
                               where type != null
@@ -162,27 +159,28 @@ namespace Procon.NLP.Tokens {
 
         protected static void AddStrippedDiacriticsAttributes(XElement document) {
 
-            var replacements = (from l in document.Descendants("nlp")
-                                                  .Descendants("tokens")
-                                                  .Descendants("tokenreflection")
-                                                  .Descendants("diacritic")
-                                select l
-                               ).ToLookup(x => x.Attribute("key").Value, x => x.Attribute("value").Value);
+            var replacements = document.Descendants("Nlp").Descendants("Tokens").Descendants("TokenReflection").Descendants("Diacritic").Select(element => element).ToLookup(element => {
+                XAttribute key = element.Attribute("key");
 
-            foreach (XElement element in document.Descendants("nlp").Descendants("match")) {
-                if (element.Attribute("text") != null && element.Attribute("replaced_diacritics") == null) {
+                return key != null ? key.Value : null;
+            }, element => {
+                XAttribute value = element.Attribute("value");
 
-                    string replaced_diacritics = element.Attribute("text").Value;
+                return value != null ? value.Value : null;
+            });
 
-                    foreach (var diacritic in replacements) {
-                        replaced_diacritics = replaced_diacritics.Replace(diacritic.Key, diacritic.First());
-                    }
+            foreach (XElement element in document.Descendants("Nlp").Descendants("Match")) {
+                XAttribute text = element.Attribute("text");
+                if (text != null && element.Attribute("replacedDiacritics") == null) {
+                    string replacedDiacritics = text.Value;
 
-                    element.SetAttributeValue("replaced_diacritics", replaced_diacritics.RemoveDiacritics());
+                    replacedDiacritics = replacements.Aggregate(replacedDiacritics, (current, diacritic) => current.Replace(diacritic.Key, diacritic.First()));
+
+                    element.SetAttributeValue("replacedDiacritics", replacedDiacritics.RemoveDiacritics());
                 }
 
-                if (element.Attribute("text") != null && element.Attribute("removed_diacritics") == null) {
-                    element.SetAttributeValue("removed_diacritics", element.Attribute("text").Value.RemoveDiacritics());
+                if (text != null && element.Attribute("removedDiacritics") == null) {
+                    element.SetAttributeValue("removedDiacritics", text.Value.RemoveDiacritics());
                 }
             }
         }
@@ -199,28 +197,43 @@ namespace Procon.NLP.Tokens {
                 TokenReflection.SelectedDescendants.Add(document, new Dictionary<Type,List<XElement>>());
             }
 
-            if (TokenReflection.SelectedDescendants[document].ContainsKey(type) == false) {
+            if (TokenReflection.SelectedDescendants[document].ContainsKey(type) == false && type.Namespace != null) {
 
-                var descendants = document.Elements();
-
-                foreach (string name in type.Namespace.Split('.').Skip(1)) {
-                    descendants = descendants.DescendantsAndSelf(name.ToLower());
-                }
+                var descendants = type.Namespace.Split('.').Skip(1).Aggregate(document.Elements(), (current, name) => current.DescendantsAndSelf(name));
 
                 TokenReflection.SelectedDescendants[document][type] = descendants.ToList();
             }
 
             return TokenReflection.SelectedDescendants[document][type];
+        }
 
-            /*
-            var returnList = document.Elements();
-
-            foreach (string name in type.Namespace.Split('.').Skip(1)) {
-                returnList = returnList.DescendantsAndSelf(name.ToLower());
+        /// <summary>
+        /// Finds and caches all "match" elements in a given types namespace.
+        /// </summary>
+        /// <param name="document"></param>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        private static IEnumerable<XElement> SelectMatchDescendants(XElement document, Type type) {
+            if (TokenReflection.SelectedMatchDescendants == null) {
+                TokenReflection.SelectedMatchDescendants = new Dictionary<XElement, Dictionary<Type, List<XElement>>>();
             }
 
-            return returnList.ToList();
-            */
+            if (TokenReflection.SelectedMatchDescendants.ContainsKey(document) == false) {
+                TokenReflection.AddStrippedDiacriticsAttributes(document);
+
+                TokenReflection.SelectedMatchDescendants.Add(document, new Dictionary<Type, List<XElement>>());
+            }
+
+            if (TokenReflection.SelectedMatchDescendants[document].ContainsKey(type) == false && type.Namespace != null) {
+
+                var descendants = type.Namespace.Split('.').Skip(1).Aggregate(document.Elements(), (current, name) => current.DescendantsAndSelf(name));
+
+                descendants = descendants.Descendants(type.Name).Descendants("Match");
+
+                TokenReflection.SelectedMatchDescendants[document][type] = descendants.ToList();
+            }
+
+            return TokenReflection.SelectedMatchDescendants[document][type];
         }
 
         protected static T CreateToken<T>(XElement element, Phrase phrase) where T : Token, new() {
@@ -231,36 +244,37 @@ namespace Procon.NLP.Tokens {
                 TokenReflection.CompiledRegexes = new Dictionary<string,Regex>();
             }
 
-            if (element.Attribute("text") != null && element.Attribute("replaced_diacritics") != null && element.Attribute("removed_diacritics") != null) {
+            XAttribute text = element.Attribute("text");
+            XAttribute value = element.Attribute("value");
+            XAttribute regex = element.Attribute("regex");
+            XAttribute replacedDiacritics = element.Attribute("replacedDiacritics");
+            XAttribute removedDiacritics = element.Attribute("removedDiacritics");
+
+            if (text != null && replacedDiacritics != null && removedDiacritics != null) {
                 float similarity =  Math.Max(
                         Math.Max(
-                            element.Attribute("text").Value.LevenshteinRatio(phrase.Text),
-                            element.Attribute("replaced_diacritics").Value.LevenshteinRatio(phrase.Text)
-                        ), element.Attribute("removed_diacritics").Value.LevenshteinRatio(phrase.Text)
+                            text.Value.LevenshteinRatio(phrase.Text),
+                            replacedDiacritics.Value.LevenshteinRatio(phrase.Text)
+                        ), removedDiacritics.Value.LevenshteinRatio(phrase.Text)
                     );
                 
-                if (similarity >= Token.MINIMUM_SIMILARITY) {
+                if (similarity >= Token.MinimumSimilarity) {
                     token = new T() {
                         Text = phrase.Text,
                         Similarity = similarity
                     };
 
-                    if (element.Attribute("value") == null) {
-                        token.Value = element.Attribute("text").Value;
-                    }
-                    else {
-                        token.Value = element.Attribute("value").Value;
-                    }
+                    token.Value = value == null ? text.Value : value.Value;
                 }
             }
-            else if (element.Attribute("regex") != null) {
-                
-                if (TokenReflection.CompiledRegexes.ContainsKey(element.Attribute("regex").Value) == false) {
-                    TokenReflection.CompiledRegexes.Add(element.Attribute("regex").Value, new Regex(element.Attribute("regex").Value, RegexOptions.IgnoreCase | RegexOptions.Compiled));
+            else if (regex != null) {
+
+                if (TokenReflection.CompiledRegexes.ContainsKey(regex.Value) == false) {
+                    TokenReflection.CompiledRegexes.Add(regex.Value, new Regex(regex.Value, RegexOptions.IgnoreCase | RegexOptions.Compiled));
                 }
 
                 Match match = null;
-                if ((match = TokenReflection.CompiledRegexes[element.Attribute("regex").Value].Match(phrase.Text)).Success == true) {
+                if ((match = TokenReflection.CompiledRegexes[regex.Value].Match(phrase.Text)).Success == true) {
                     token = new T() {
                         Text = phrase.Text,
                         Value = match.Groups["value"].Value,
@@ -272,33 +286,28 @@ namespace Procon.NLP.Tokens {
             return token;
         }
 
-        public static Phrase CreateDescendants<T>(IStateNLP state, Phrase phrase, out List<T> created) where T : Token, new() {
+        public static Phrase CreateDescendants<T>(IStateNlp state, Phrase phrase, out List<T> created) where T : Token, new() {
 
-            var list = (from element in TokenReflection.SelectDescendants(state.Document, typeof(T))
-                           .Descendants(typeof(T).Name.ToLower())
-                           .Descendants("match")
+            var list = (from element in TokenReflection.SelectMatchDescendants(state.Document, typeof(T))
                         let token = TokenReflection.CreateToken<T>(element, phrase)
                         where token != null
                         select token).ToList();
 
             created = list;
 
-            list.ToList().ForEach(x => phrase.Add(x));
-            //phrase.AddRange(list.AsEnumerable() as IEnumerable<Token>);
+            list.ToList().ForEach(phrase.Add);
 
             return phrase;
         }
 
-        public static Phrase CreateDescendants<T>(IStateNLP state, Phrase phrase) where T : Token, new() {
+        public static Phrase CreateDescendants<T>(IStateNlp state, Phrase phrase) where T : Token, new() {
 
-            var list = from element in TokenReflection.SelectDescendants(state.Document, typeof(T))
-                           .Descendants(typeof(T).Name.ToLower())
-                           .Descendants("match")
+            var list = from element in TokenReflection.SelectMatchDescendants(state.Document, typeof(T))
                        let token = TokenReflection.CreateToken<T>(element, phrase)
                        where token != null
                        select token;
 
-            list.ToList().ForEach(x => phrase.Add(x));
+            list.ToList().ForEach(phrase.Add);
 
             return phrase;
         }

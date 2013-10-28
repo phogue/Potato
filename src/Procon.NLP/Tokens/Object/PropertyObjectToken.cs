@@ -1,52 +1,31 @@
-﻿// Copyright 2011 Geoffrey 'Phogue' Green
-// 
-// http://www.phogue.net
-//  
-// This file is part of Procon 2.
-// 
-// Procon 2 is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-// 
-// Procon 2 is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-// 
-// You should have received a copy of the GNU General Public License
-// along with Procon 2.  If not, see <http://www.gnu.org/licenses/>.
-
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Linq;
-using System.Text;
-using System.Xml;
 using System.Xml.Linq;
 
-namespace Procon.NLP.Tokens.Object {
-    using Procon.NLP.Utils;
+namespace Procon.Nlp.Tokens.Object {
+    using Procon.Nlp.Utils;
 
     public class PropertyObjectToken : ObjectToken {
 
+        /// <summary>
+        /// The name of the property being referred to by this token.
+        /// </summary>
         public string PropertyName { get; set; }
 
-        public static Phrase Parse(IStateNLP state, Phrase phrase) {
+        public new static Phrase Parse(IStateNlp state, Phrase phrase) {
+            TokenReflection.SelectDescendants(state.Document, typeof(PropertyObjectToken)).Descendants("Properties").Descendants("Match").Select(element => {
+                var text = element.Attribute("text");
+                var propertyName = element.Parent != null ? element.Parent.Attribute("name") : null;
 
-            var list = from element in TokenReflection.SelectDescendants(state.Document, typeof(PropertyObjectToken))
-                           .Descendants("properties")
-                           .Descendants("property")
-                           .Descendants("match")
-                       select new PropertyObjectToken() {
-                           Text = phrase.Text,
-                           Value = element.Attribute("text").Value,
-                           PropertyName = element.Parent.Attribute("name").Value,
-                           Similarity = element.Attribute("text").Value.LevenshteinRatio(phrase.Text)
-                       };
-
-            list.Where(x => x.Similarity >= Token.MINIMUM_SIMILARITY)
-                .ToList()
-                .ForEach(x => phrase.Add(x));
+                return new PropertyObjectToken() {
+                    Text = phrase.Text,
+                    Value = text != null ? text.Value : null,
+                    PropertyName = propertyName != null ? propertyName.Value : null,
+                    Similarity = text != null ? text.Value.LevenshteinRatio(phrase.Text) : 0 
+                };
+            }).Where(property => property.Similarity >= Token.MinimumSimilarity)
+            .ToList()
+            .ForEach(phrase.Add);
 
             return phrase;
         }

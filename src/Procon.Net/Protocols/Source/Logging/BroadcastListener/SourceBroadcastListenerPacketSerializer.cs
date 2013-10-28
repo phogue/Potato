@@ -1,6 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Net;
 using System.Text;
 
 namespace Procon.Net.Protocols.Source.Logging.BroadcastListener {
@@ -21,7 +20,7 @@ namespace Procon.Net.Protocols.Source.Logging.BroadcastListener {
 
             if (packetData[0] == 0xFF && packetData[1] == 0xFF && packetData[2] == 0xFF && packetData[3] == 0xFF) {
 
-                packet.RemoteEndPoint = new System.Net.IPEndPoint(BitConverter.ToUInt32(packetData, 4), BitConverter.ToUInt16(packetData, 8));
+                packet.RemoteEndPoint = new IPEndPoint(BitConverter.ToUInt32(packetData, 4), BitConverter.ToUInt16(packetData, 8));
 
                 for (int offset = 10; offset < packetData.Length; offset++) {
                     if (packetData[offset] == 0) {
@@ -36,7 +35,7 @@ namespace Procon.Net.Protocols.Source.Logging.BroadcastListener {
             return packet;
         }
 
-        public override uint ReadPacketSize(byte[] packetData) {
+        public override long ReadPacketSize(byte[] packetData) {
             //throw new NotImplementedException();
 
             return 0;

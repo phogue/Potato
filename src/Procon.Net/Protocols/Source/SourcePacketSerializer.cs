@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 
 namespace Procon.Net.Protocols.Source {
@@ -61,14 +59,14 @@ namespace Procon.Net.Protocols.Source {
             return packet;
         }
 
-        public override uint ReadPacketSize(byte[] packetData) {
-            UInt32 returnPacketSize = 0;
+        public override long ReadPacketSize(byte[] packetData) {
+            long length = 0;
 
             if (packetData.Length >= this.PacketHeaderSize) {
-                returnPacketSize = BitConverter.ToUInt32(packetData, 0) + sizeof(int);
+                length = BitConverter.ToUInt32(packetData, 0) + sizeof(int);
             }
 
-            return returnPacketSize;
+            return length;
         }
 
     }

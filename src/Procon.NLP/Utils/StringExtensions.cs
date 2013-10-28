@@ -1,85 +1,138 @@
-﻿// Copyright 2011 Geoffrey 'Phogue' Green
-// 
-// http://www.phogue.net
-//  
-// This file is part of Procon 2.
-// 
-// Procon 2 is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-// 
-// Procon 2 is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-// 
-// You should have received a copy of the GNU General Public License
-// along with Procon 2.  If not, see <http://www.gnu.org/licenses/>.
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Globalization;
 
-namespace Procon.NLP.Utils {
+namespace Procon.Nlp.Utils {
     public static class StringExtensions {
 
         public static string RemoveDiacritics(this string s) {
             string normalized = s.Normalize(NormalizationForm.FormD);
             StringBuilder stringBuilder = new StringBuilder();
 
-            for (int i = 0; i < normalized.Length; i++) {
-                if (CharUnicodeInfo.GetUnicodeCategory(normalized[i]) != UnicodeCategory.NonSpacingMark) {
-                    stringBuilder.Append(normalized[i]);
-                }
+            foreach (char c in normalized.Where(c => CharUnicodeInfo.GetUnicodeCategory(c) != UnicodeCategory.NonSpacingMark)) {
+                stringBuilder.Append(c);
             }
 
             return stringBuilder.ToString();
         }
 
-        // Thanks Dr. Levenshtein and Sam Allen @ http://dotnetperls.com/levenshtein
+        /// <summary>
+        /// Helper method to determine if a levenshtein lookup is necessary, or if we should just trash
+        /// the lookup. This is an optimization which pretty much cut the unit tests in half.
+        /// </summary>
+        /// <param name="s">The first string</param>
+        /// <param name="t">THe second string to compare it against</param>
+        /// <returns>True if the strings are vagely similar lengths, false if they are no where near.</returns>
+        public static bool HaltLevenshtein(string s, string t) {
+            // Note, this might be changed to 0.3F. It's 
+            // This function isn't supposed to do any filtering, but instead just prevent a check
+            // that couldn't possibly yield over a 50% match.
+            return (s == null || t == null || Math.Min(s.Length, t.Length) < Math.Max(s.Length, t.Length) * 0.4F);
+        }
+
+        public static float Sift3Distance(this string s1, string s2, int maxOffset) {
+            if (String.IsNullOrEmpty(s1)) {
+                return String.IsNullOrEmpty(s2) ? 0 : s2.Length;
+            }
+            if (String.IsNullOrEmpty(s2)) {
+                return s1.Length;
+            }
+            int c = 0;
+            int offset1 = 0;
+            int offset2 = 0;
+            int lcs = 0;
+            while ((c + offset1 < s1.Length) && (c + offset2 < s2.Length)) {
+                if (s1[c + offset1] == s2[c + offset2])
+                    lcs++;
+                else {
+                    offset1 = 0;
+                    offset2 = 0;
+                    for (int i = 0; i < maxOffset; i++) {
+                        if ((c + i < s1.Length) && (s1[c + i] == s2[c])) {
+                            offset1 = i;
+                            break;
+                        }
+                        if ((c + i < s2.Length) && (s1[c] == s2[c + i])) {
+                            offset2 = i;
+                            break;
+                        }
+                    }
+                }
+                c++;
+            }
+            return (s1.Length + s2.Length) / 2 - lcs;
+        }
+
+        /// <summary>
+        /// Compute Levenshtein distance
+        /// Single Dimensional array vector version
+        /// Memory efficient version
+        /// Sten Hjelmqvist
+        /// http://www.codeproject.com/cs/algorithms/Levenshtein.asp
+        /// </summary>
+        /// <returns>Levenshtein edit distance</returns>
         public static int Levenshtein(this string s, string t) {
-            int n = s.Length;
-            int m = t.Length;
-            int[,] d = new int[n + 1, m + 1];
+            int n = s.Length;       // length of s
+            int m = t.Length;       // length of t
+            int cost;               // cost
 
             // Step 1
-            if (n == 0) {
-                return m;
-            }
+            if (n == 0) return m;
+            if (m == 0) return n;
 
-            if (m == 0) {
-                return n;
-            }
+            // Create the two vectors
+            int[] v0 = new int[n + 1];
+            int[] v1 = new int[n + 1];
+            int[] vTmp;
+
 
             // Step 2
-            for (int i = 0; i <= n; d[i, 0] = i++) {
-            }
+            // Initialize the first vector
+            for (int i = 1; i <= n; i++) v0[i] = i;
 
-            for (int j = 0; j <= m; d[0, j] = j++) {
-            }
 
             // Step 3
-            for (int i = 1; i <= n; i++) {
-                //Step 4
-                for (int j = 1; j <= m; j++) {
+            // Fore each column
+            for (int j = 1; j <= m; j++) {
+                // Set the 0'th element to the column number
+                v1[0] = j;
+
+                // Step 4
+                // Fore each row
+                for (int i = 1; i <= n; i++) {
+
                     // Step 5
-                    int cost = (t[j - 1] == s[i - 1]) ? 0 : 1;
+                    cost = (s[i - 1] == t[j - 1]) ? 0 : 1;
 
                     // Step 6
-                    d[i, j] = Math.Min(
-                        Math.Min(d[i - 1, j] + 1, d[i, j - 1] + 1),
-                        d[i - 1, j - 1] + cost);
+                    // Find minimum
+                    int m_min = v0[i] + 1;
+                    int b = v1[i - 1] + 1;
+                    int c = v0[i - 1] + cost;
+
+                    if (b < m_min) m_min = b;
+                    if (c < m_min) m_min = c;
+
+                    v1[i] = m_min;
                 }
+
+                // Swap the vectors
+                vTmp = v0;
+                v0 = v1;
+                v1 = vTmp;
             }
+
             // Step 7
-            return d[n, m];
+            return v0[n];
         }
 
         // Mostly an english hack - will enhance
         public static int DePluralLevenshtein(this string s, string t) {
+            if (StringExtensions.HaltLevenshtein(s, t) == true) {
+                return 0;
+            }
 
             int returnRatio = s.LevenshteinSubsetBonusRatio(t);
 
@@ -101,29 +154,26 @@ namespace Procon.NLP.Utils {
         }
 
         public static int LevenshteinRatio(this string s, string t) {
-            if (s == null || t == null) {
+            if (StringExtensions.HaltLevenshtein(s, t) == true) {
                 return 0;
             }
 
-            double levenshtein = (double)s.ToLower().Levenshtein(t.ToLower());
-
-            // Direct subsets earn a bonus towards the final score.
-            //if (levenshtein > 0.0D && s.Length != t.Length && s.ToLower().IndexOf(t.ToLower()) >= 0) {
-            //    levenshtein = Math.Max(0.1D, levenshtein - Math.Min(s.Length, t.Length) / 2.0D);
-            //}
+            double levenshtein = s.ToLower().Levenshtein(t.ToLower());
+            //double levenshtein = s.ToLower().Sift3Distance(t.ToLower(), 5);
 
             return (int)Math.Round((1.0D - levenshtein / Math.Max(s.Length, t.Length)) * 100.0D);
         }
 
         public static int LevenshteinSubsetBonusRatio(this string s, string t) {
-            if (s == null || t == null) {
+            if (StringExtensions.HaltLevenshtein(s, t) == true) {
                 return 0;
             }
 
-            double levenshtein = (double)s.ToLower().Levenshtein(t.ToLower());
+            double levenshtein = s.ToLower().Levenshtein(t.ToLower());
+            //double levenshtein = s.ToLower().Sift3Distance(t.ToLower(), 5);
 
             // Direct subsets earn a bonus towards the final score.
-            if (levenshtein > 0.0D && s.Length != t.Length && s.ToLower().IndexOf(t.ToLower()) >= 0) {
+            if (levenshtein > 0.0D && s.Length != t.Length && s.ToLower().IndexOf(t.ToLower(), StringComparison.Ordinal) >= 0) {
                 levenshtein = Math.Max(0.1D, levenshtein - Math.Min(s.Length, t.Length) / 2.0D);
             }
 
@@ -131,8 +181,7 @@ namespace Procon.NLP.Utils {
         }
 
         public static int GetClosestMatch(this string input, List<string> dictionary, out string matchedDictionaryKey) {
-            int iSimilarity = int.MaxValue;
-            int iScore = 0;
+            int similarity = int.MaxValue;
 
             matchedDictionaryKey = String.Empty;
 
@@ -142,9 +191,10 @@ namespace Procon.NLP.Utils {
 
                 // Build array of default matches from the dictionary to store a rank for each match.
                 // (it's designed to work on smaller dictionaries with say.. 32 player names in it =)
-                List<MatchDictionaryKey> lstMatches = new List<MatchDictionaryKey>();
+                List<MatchDictionaryKey> matches = new List<MatchDictionaryKey>();
+
                 foreach (string strDictionaryKey in dictionary) {
-                    lstMatches.Add(new MatchDictionaryKey(strDictionaryKey));
+                    matches.Add(new MatchDictionaryKey(strDictionaryKey));
 
                     if (strDictionaryKey.Length > iLargestDictionaryKey) {
                         iLargestDictionaryKey = strDictionaryKey.Length;
@@ -159,43 +209,44 @@ namespace Procon.NLP.Utils {
                     if (x + 1 < input.Length && input[x] != ' ')
                         continue;
 
-                    for (int i = 0; i < lstMatches.Count; i++) {
-                        iScore = input.Substring(0, x).ToLower().Levenshtein(lstMatches[i].LowerCaseMatchedText);
+                    foreach (MatchDictionaryKey match in matches) {
+                        int score = input.Substring(0, x).ToLower().Levenshtein(match.LowerCaseMatchedText);
 
-                        if (iScore < lstMatches[i].MatchedScore || (iScore == lstMatches[i].MatchedScore && x > lstMatches[i].MatchedScoreCharacters)) {
-                            lstMatches[i].MatchedScore = iScore;
-                            lstMatches[i].MatchedScoreCharacters = x;
+                        if (score < match.MatchedScore || (score == match.MatchedScore && x > match.MatchedScoreCharacters)) {
+                            match.MatchedScore = score;
+                            match.MatchedScoreCharacters = x;
                         }
                     }
                 }
 
                 // Sort the matches
-                lstMatches.Sort();
+                matches.Sort();
 
-                int iBestCharactersMatched = lstMatches[0].MatchedScoreCharacters;
-                iSimilarity = lstMatches[0].MatchedScore;
-                matchedDictionaryKey = lstMatches[0].MatchedText;
+                int bestCharactersMatched = matches[0].MatchedScoreCharacters;
+                similarity = matches[0].MatchedScore;
+                matchedDictionaryKey = matches[0].MatchedText;
 
                 // Now though we want to loop through from start to end and see if a subset of what we entered is found.
                 // if so then this will find the highest ranked item with a subset of what was entered and favour that instead.
-                string strBestCharsSubstringLower = input.Substring(0, iBestCharactersMatched).ToLower();
-                for (int i = 0; i < lstMatches.Count; i++) {
-                    if (lstMatches[i].LowerCaseMatchedText.Contains(strBestCharsSubstringLower) == true) {
-                        iSimilarity = lstMatches[i].MatchedScore;
-                        matchedDictionaryKey = lstMatches[i].MatchedText;
-                        iBestCharactersMatched = lstMatches[i].MatchedScoreCharacters;
+                string bestCharsSubstringLower = input.Substring(0, bestCharactersMatched).ToLower();
+
+                foreach (MatchDictionaryKey match in matches) {
+                    if (match.LowerCaseMatchedText.Contains(bestCharsSubstringLower) == true) {
+                        similarity = match.MatchedScore;
+                        matchedDictionaryKey = match.MatchedText;
+                        bestCharactersMatched = match.MatchedScoreCharacters;
 
                         break;
                     }
                 }
 
-                if (iBestCharactersMatched < input.Length) {
-                    iSimilarity = int.MaxValue;
+                if (bestCharactersMatched < input.Length) {
+                    similarity = int.MaxValue;
                 }
 
             }
 
-            return iSimilarity;
+            return similarity;
         }
 
         public static List<string> Wordify(this string input) {
@@ -205,9 +256,8 @@ namespace Procon.NLP.Utils {
             int quoteStack = 0;
             bool isEscaped = false;
 
-            char[] punctuation = new char[] { '(', ')', ',', '.', '?', '!', '/', '*', '-', '+', ':' };
+            char[] punctuation = new[] { '(', ')', ',', '.', '?', '!', '/', '*', '-', '+', ':' };
 
-            //for (int i = 0; i < strCommand.Length; i++) {
             foreach (char c in input) {
 
                 if (c == ' ') {

@@ -1,16 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 
 namespace Procon.Net.Protocols.Source {
     using Procon.Net.Attributes;
-    using Procon.Net.Utils;
     using Procon.Net.Protocols.Objects;
     using Procon.Net.Protocols.Source.Objects;
 
-    public class SourceGame : GameImplementation<SourceClient, SourcePacket> {
+    public class SourceGame : GameImplementation<SourcePacket> {
 
         public ushort SourceLogServicePort { get; set; }
         public ushort? SourceLogListenPort { get; set; }
@@ -34,7 +32,7 @@ namespace Procon.Net.Protocols.Source {
             if (packet.Origin == PacketOrigin.Client && packet.IsResponse == true) {
                 SourcePacket requestPacket = ((SourceClient)this.Client).GetRequestPacket(packet);
 
-                if (packet.ResponseType == SourceResponseType.SERVERDATA_AUTH_RESPONSE) {
+                if (packet.ResponseType == SourceResponseType.ServerDataAuthResponse) {
                     this.ServerAuthDispatchHandler(requestPacket, packet);
                 }
                 // If the request packet is valid and has at least one word.
@@ -94,7 +92,7 @@ namespace Procon.Net.Protocols.Source {
             // "Name<uid><wonid><team>" say "message"
             // "Name<uid><wonid><team>" say_team "message"
             { new Regex(@": ""(?<name>.*?)<(?<userid>[0-9]{1,3})><(?<uniqueid>STEAM_[0-9:]+?)><(?<team>[A-Za-z]+?)>"" (?<context>say|say_team) ""(?<text>.*)""$", RegexOptions.IgnoreCase | RegexOptions.Compiled), typeof(SourceChat) },
-            // { new Regex(@"^.*?(?<Command>K);(?<V_GUID>[0-9]*?);(?<V_ID>[0-9]*?);(?<V_TeamName>[a-zA-Z]*);(?<V_Name>.*);(?<K_GUID>[0-9]*?);(?<K_ID>[0-9]*?);(?<K_TeamName>[a-zA-Z]*);(?<K_Name>.*);(?<Weapon>[a-zA-Z0-9_]*);(?<Damage>[0-9]*?);(?<DamageType>[a-zA-Z_]*);(?<HitLocation>[a-zA-Z_]*)[\r]?$", RegexOptions.IgnoreCase | RegexOptions.Compiled), typeof(CallOfDutyKill) }
+            // { new Regex(@"^.*?(?<Command>K);(?<V_Uid>[0-9]*?);(?<V_ID>[0-9]*?);(?<V_TeamName>[a-zA-Z]*);(?<V_Name>.*);(?<K_Uid>[0-9]*?);(?<K_ID>[0-9]*?);(?<K_TeamName>[a-zA-Z]*);(?<K_Name>.*);(?<Weapon>[a-zA-Z0-9_]*);(?<Damage>[0-9]*?);(?<DamageType>[a-zA-Z_]*);(?<HitLocation>[a-zA-Z_]*)[\r]?$", RegexOptions.IgnoreCase | RegexOptions.Compiled), typeof(CallOfDutyKill) }
         };
         
         protected void ParseLogEvent(SourcePacket packet) {
@@ -104,38 +102,40 @@ namespace Procon.Net.Protocols.Source {
                 Match matchedCommand = command.Key.Match(packet.String1);
 
                 if (matchedCommand.Success == true) {
-                    ISourceObject newObject = ((ISourceObject)Activator.CreateInstance(command.Value)).Parse(matchedCommand);
 
-                    if (newObject is SourceChat) {
-                        this.PostProcessChatHandler(packet, (SourceChat)newObject);
+                    NetworkObject newObject = ((ISourceObject)Activator.CreateInstance(command.Value)).Parse(matchedCommand);
+
+                    if (newObject is Chat) {
+                        this.PostProcessChatHandler(packet, (Chat)newObject);
                     }
-                    else if (newObject is SourceDisconnection) {
-                        this.PostProcessDisconnectionHandler(packet, (SourceDisconnection)newObject);
-                    }
-                    //else if (newObject is CallOfDutyKill && this.KillEntry != null) {
-                    //    this.KillEntry(this, entryTime, (CallOfDutyKill)newObject);
+                    //else if (newObject is SourceDisconnection) {
+                    //    this.PostProcessDisconnectionHandler(packet, (SourceDisconnection)newObject);
                     //}
                 }
             }
         }
 
-        protected void PostProcessChatHandler(SourcePacket packet, SourceChat chat) {
-            // Find the full details of the player..
-            chat.Author = this.State.PlayerList.Where(x => x.GUID == chat.Author.GUID).FirstOrDefault();
+        protected void PostProcessChatHandler(SourcePacket packet, Chat chat) {
+            if (chat.Now.Players != null) {
+                // Fill it with the completed player object.
+                chat.Now.Players = new List<Player>() {
+                    this.State.PlayerList.Find(x => x.Uid == chat.Now.Players.First().Uid)
+                };
 
-            this.ThrowGameEvent(GameEventType.Chat, chat);
+                this.OnGameEvent(GameEventType.GameChat, new GameEventData() { Chats = new List<Chat>() { chat } });
+            }
         }
 
         protected void PostProcessDisconnectionHandler(SourcePacket packet, SourceDisconnection disconnection) {
             // Find the full details of the player..
-            disconnection.Player = this.State.PlayerList.Where(x => x.GUID == disconnection.Player.GUID).FirstOrDefault();
+            disconnection.Player = this.State.PlayerList.FirstOrDefault(x => x.Uid == disconnection.Player.Uid);
 
             // Remove the player from the playerlist..
-            this.State.PlayerList.RemoveAll(x => x.GUID == disconnection.Player.GUID);
+            this.State.PlayerList.RemoveAll(x => x.Uid == disconnection.Player.Uid);
 
-            this.ThrowGameEvent(
-                GameEventType.PlayerLeave,
-                disconnection.Player
+            this.OnGameEvent(
+                GameEventType.GamePlayerLeave,
+                new GameEventData() { Players = new List<Player>() { disconnection.Player } }
             );
         }
 
@@ -148,7 +148,7 @@ namespace Procon.Net.Protocols.Source {
         protected void ServerAuthDispatchHandler(SourcePacket request, SourcePacket response) {
             if (response.RequestId >= 0) {
                 // Login Success
-                this.Client.ConnectionState = ConnectionState.LoggedIn;
+                this.Client.ConnectionState = ConnectionState.ConnectionLoggedIn;
 
                 this.SendRequest("log");
 
@@ -164,9 +164,9 @@ namespace Procon.Net.Protocols.Source {
         [DispatchPacket(MatchText = "say")]
         public void ConsoleSayHandler(SourcePacket request, SourcePacket response) {
 
-            SourceChat chat = new SourceChat().ParseConsoleSay(request.String1Words);
+            Chat chat = new SourceChat().ParseConsoleSay(request.String1Words);
 
-            this.ThrowGameEvent(GameEventType.Chat, chat);
+            this.OnGameEvent(GameEventType.GameChat, new GameEventData() { Chats = new List<Chat>() { chat } });
         }
 
         [DispatchPacket(MatchText = "log")]
@@ -183,26 +183,27 @@ namespace Procon.Net.Protocols.Source {
 
             SourceServerInfo info = new SourceServerInfo().ParseStatusHeader(response.String1);
 
-            this.State.Variables.ServerName     = info.hostname;
-            this.State.Variables.MapName        = info.host_map;
-            this.State.Variables.MaxPlayerCount = info.maxplayers;
-            this.State.Variables.PlayerCount    = info.currentplayers;
-            this.State.Variables.Version        = info.version;
+            this.State.Settings.ServerName     = info.hostname;
+            this.State.Settings.MapName        = info.host_map;
+            this.State.Settings.MaxPlayerCount = info.maxplayers;
+            this.State.Settings.PlayerCount    = info.currentplayers;
+            this.State.Settings.ServerVersion        = info.version;
 
-            this.ThrowGameEvent(GameEventType.ServerInfoUpdated);
+            this.OnGameEvent(GameEventType.GameSettingsUpdated);
 
             SourcePlayerList players = new SourcePlayerList().Parse(response.String1);
 
-            if (players.Subset.Context == PlayerSubsetContext.All) {
+            // If there are no limitations on the subset.
+            if (players.Subset.Count == 0) {
 
                 // 1. Remove all names in the state list that are not found in the new list (players that have left)
-                this.State.PlayerList.RemoveAll(x => players.Select(y => y.GUID).Contains(x.GUID) == false);
+                this.State.PlayerList.RemoveAll(x => players.Select(y => y.Uid).Contains(x.Uid) == false);
 
                 // 2. Add or update any new players
                 foreach (Player player in players) {
-                    Player statePlayer = null;
+                    Player statePlayer = this.State.PlayerList.Find(x => x.Uid == player.Uid);
 
-                    if ((statePlayer = this.State.PlayerList.Find(x => x.GUID == player.GUID) as Player) == null) {
+                    if (statePlayer == null) {
                         this.State.PlayerList.Add(player);
                     }
                     else {
@@ -212,9 +213,9 @@ namespace Procon.Net.Protocols.Source {
                     }
                 }
 
-                this.State.Variables.PlayerCount = players.Count;
+                this.State.Settings.PlayerCount = players.Count;
 
-                this.ThrowGameEvent(GameEventType.PlayerlistUpdated);
+                this.OnGameEvent(GameEventType.GamePlayerlistUpdated);
 
             }
 
@@ -243,7 +244,7 @@ namespace Procon.Net.Protocols.Source {
 
         #endregion
 
-        protected override SourcePacket Create(string format, params object[] args) {
+        protected override SourcePacket CreatePacket(string format, params object[] args) {
             return new SourcePacket(PacketOrigin.Client, false, null, SourceRequestType.SERVERDATA_EXECCOMMAND, String.Format(format, args), String.Empty);
         }
 
@@ -261,40 +262,20 @@ namespace Procon.Net.Protocols.Source {
         }
 
         protected override void Action(Chat chat) {
-            if (chat.Subset != null) {
-                string subset = String.Empty;
-
-                if (chat.Subset.Context == PlayerSubsetContext.All) {
-                    this.SendRequest("say {0}", chat.Text);
+            if (chat.Now.Content != null) {
+                foreach (String chatMessage in chat.Now.Content) {
+                    this.SendRequest("say {0}", chatMessage);
                 }
-                /*
-                else if (chat.Subset.Context == PlayerSubsetContext.Player && chat.Subset.Player != null) {
-                    subset = String.Format("player {0}", chat.Subset.Player.Name);
-                }
-                else if (chat.Subset.Context == PlayerSubsetContext.Team) {
-                    subset = String.Format("team {0}", FrostbiteConverter.TeamToTeamId(chat.Subset.Team));
-                }
-                else if (chat.Subset.Context == PlayerSubsetContext.Squad) {
-                    subset = String.Format("squad {0} {1}", FrostbiteConverter.TeamToTeamId(chat.Subset.Team), FrostbiteConverter.SquadToSquadId(chat.Subset.Squad));
-                }
-
-                if (chat.ChatActionType == ChatActionType.Say) {
-                    this.Send(this.Create("admin.say \"{0}\" {1}", chat.Text, subset));
-                }
-                else if (chat.ChatActionType == ChatActionType.Yell || chat.ChatActionType == ChatActionType.YellOnly) {
-                    this.Send(this.Create("admin.yell \"{0}\" 8000 {1}", chat.Text, subset));
-                }
-                */
             }
         }
 
         protected override void Action(Kick kick) {
             if (kick.Target != null) {
-                if (kick.Reason != null && kick.Reason.Length > 0) {
-                    this.SendRequest("kickid {0} {1}", kick.Target.GUID, kick.Reason);
+                if (string.IsNullOrEmpty(kick.Reason) == false) {
+                    this.SendRequest("kickid {0} {1}", kick.Target.Uid, kick.Reason);
                 }
                 else {
-                    this.SendRequest("kickid {0}", kick.Target.GUID);
+                    this.SendRequest("kickid {0}", kick.Target.Uid);
                 }
             }
         }
@@ -306,20 +287,16 @@ namespace Procon.Net.Protocols.Source {
 
                 /*
                 if (kick.Reason != null && kick.Reason.Length > 0) {
-                    this.Send(this.Create("kick {0} \"{1}\"", kick.Target.GUID, kick.Reason));
+                    this.Send(this.Create("kick {0} \"{1}\"", kick.Target.Uid, kick.Reason));
                 }
                 else {
-                    this.Send(this.Create("kick {0}", kick.Target.GUID));
+                    this.Send(this.Create("kick {0}", kick.Target.Uid));
                 }
                 */
             }
         }
 
         #endregion
-
-        public override void Shutdown() {
-            base.Shutdown();
-        }
 
     }
 }

@@ -1,26 +1,4 @@
-﻿// Copyright 2011 Geoffrey 'Phogue' Green
-// 
-// http://www.phogue.net
-//  
-// This file is part of Procon 2.
-// 
-// Procon 2 is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-// 
-// Procon 2 is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-// 
-// You should have received a copy of the GNU General Public License
-// along with Procon 2.  If not, see <http://www.gnu.org/licenses/>.
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System;
 using System.Text.RegularExpressions;
 
 namespace Procon.Net.Protocols.CallOfDuty.Objects {
@@ -31,9 +9,10 @@ namespace Procon.Net.Protocols.CallOfDuty.Objects {
 
         private static readonly Regex PlayerMatch = new Regex(@"^[ ]*(?<num>[\-0-9]+)[ ]*(?<score>[\-0-9]+)[ ]*(?<ping>[\-0-9]+)[ ]*(?<guid>[\-0-9]+)[ ]*(?<name>.+?)\^7?[ ]*(?<team>[\-0-9]+)[ ]*(?<lastmsg>[\-0-9]+)[ ]*(?<address>[0-9\\.]+?):[\-0-9]+?[ ]*(?<qport>[\-0-9]+)[ ]*(?<rate>[\-0-9]+)$", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.IgnorePatternWhitespace);
 
-        public CallOfDutyPlayerList Parse(string text) {
+        public CallOfDutyPlayerList Parse(String text) {
 
-            this.Subset = new PlayerSubset() { Context = PlayerSubsetContext.All };
+            // Empty subset, implying all players.
+            this.Subset = new GroupingList();
 
             //System.IO.File.WriteAllText("doutput/playerlist.txt", "");
 
@@ -42,13 +21,18 @@ namespace Procon.Net.Protocols.CallOfDuty.Objects {
 
                 if (player.Success == true) {
                     this.Add(
-                        new CallOfDutyPlayer() {
+                        new Player() {
                             SlotID = uint.Parse(player.Groups["num"].Value),
-                            GUID = player.Groups["guid"].Value,
+                            Uid = player.Groups["guid"].Value,
                             Name = player.Groups["name"].Value,
                             Ping = uint.Parse(player.Groups["ping"].Value) == 999 ? 0 : uint.Parse(player.Groups["ping"].Value),
                             Score = int.Parse(player.Groups["score"].Value),
-                            Team = CallOfDutyConverter.TeamIdToTeam(int.Parse(player.Groups["team"].Value)),
+                            Groups = new GroupingList() {
+                                new Grouping() {
+                                    Type = Grouping.Team,
+                                    Uid = int.Parse(player.Groups["team"].Value)
+                                }
+                            },
                             IP = player.Groups["address"].Value
                         }
                     );

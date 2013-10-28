@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Reflection;
 using System.ComponentModel;
 
 namespace Procon.Net.Protocols.Source.Objects {
-    using Procon.Net.Protocols.Objects;
 
     [Serializable]
     public class SourceServerInfo  {

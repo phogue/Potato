@@ -8,20 +8,16 @@
     <ProjectGuid>{4B55557F-C2AA-4047-9ED9-3E4BBF9CF670}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Procon.NLP</RootNamespace>
-    <AssemblyName>Procon.NLP</AssemblyName>
+    <RootNamespace>Procon.Nlp</RootNamespace>
+    <AssemblyName>Procon.Nlp</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
-    <SccProjectName>
-    </SccProjectName>
-    <SccLocalPath>
-    </SccLocalPath>
-    <SccAuxPath>
-    </SccAuxPath>
-    <SccProvider>
-    </SccProvider>
+    <SccProjectName>%24/Procon 2.X/src/Procon.NLP</SccProjectName>
+    <SccLocalPath>.</SccLocalPath>
+    <SccAuxPath>http://dev.myrcon.com:8080/tfs/procon</SccAuxPath>
+    <SccProvider>{4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}</SccProvider>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -31,6 +27,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -39,6 +36,13 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -49,20 +53,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IStateNLP.cs" />
+    <Compile Include="IStateNlp.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Sentence.cs" />
     <Compile Include="Tokens\Object\Sets\SetsThingObjectToken.cs" />
     <Compile Include="Tokens\Operator\Arithmetic\ArithmeticOperatorToken.cs" />
     <Compile Include="Tokens\Operator\Arithmetic\FirstOrder\FirstOrderArithmeticToken.cs" />
+    <Compile Include="Tokens\Operator\Arithmetic\SecondOrder\PowerSecondOrderArithmeticToken.cs" />
     <Compile Include="Tokens\Operator\Arithmetic\SecondOrder\DivisionSecondOrderArithmeticToken.cs" />
     <Compile Include="Tokens\Operator\Arithmetic\SecondOrder\MultiplicationSecondOrderArithmeticToken.cs" />
     <Compile Include="Tokens\Operator\Arithmetic\SecondOrder\SecondOrderArithmeticToken.cs" />
     <Compile Include="Tokens\Operator\Arithmetic\ThirdOrder\AdditionThirdOrderArithmeticOperatorToken.cs" />
     <Compile Include="Tokens\Operator\Arithmetic\ThirdOrder\SubtractionThirdOrderArithmeticOperatorToken.cs" />
     <Compile Include="Tokens\Operator\Arithmetic\ThirdOrder\ThirdOrderArithmeticOperatorToken.cs" />
-    <Compile Include="Tokens\Primitive\GarbagePrimitiveToken.cs" />
-    <Compile Include="Tokens\Primitive\Numeric\Cardinal\BaseCardinalNumericPrimitiveToken.cs" />
     <Compile Include="Tokens\Primitive\Numeric\Cardinal\CardinalNumericPrimitiveToken.cs" />
     <Compile Include="Tokens\Primitive\Numeric\Cardinal\MultiplicandCardinalNumericPrimitiveToken.cs" />
     <Compile Include="Tokens\Primitive\Numeric\OrdinalNumericPrimitiveToken.cs" />
@@ -118,6 +121,7 @@
     <Compile Include="Tokens\Reduction\AllInclusiveReductionToken.cs" />
     <Compile Include="Tokens\Object\SelfReflectionThingObjectToken.cs" />
     <Compile Include="Tokens\Primitive\StringPrimitiveToken.cs" />
+    <Compile Include="Tokens\Reduction\NamedAllInclusiveReductionToken.cs" />
     <Compile Include="Tokens\Reduction\ReductionToken.cs" />
     <Compile Include="Tokens\Reduction\PropertyReductionToken.cs" />
     <Compile Include="Tokens\Object\MethodObjectToken.cs" />
@@ -152,6 +156,8 @@
     <Compile Include="Tokens\Syntax\Prepositions\Adpositions\AtAdpositionsPrepositionsSyntaxToken.cs" />
     <Compile Include="Tokens\Syntax\Prepositions\Adpositions\ForAdpositionsPrepositionsSyntaxToken.cs" />
     <Compile Include="Tokens\Syntax\Prepositions\Adpositions\InAdpositionsPrepositionsSyntaxToken.cs" />
+    <Compile Include="Tokens\Syntax\Prepositions\UntilPrepositionsSyntaxToken.cs" />
+    <Compile Include="Tokens\Syntax\Prepositions\OnPrepositionsSyntaxToken.cs" />
     <Compile Include="Tokens\Syntax\Prepositions\PrepositionsSyntaxToken.cs" />
     <Compile Include="Tokens\Syntax\Punctuation\ColonPunctuationSyntaxToken.cs" />
     <Compile Include="Tokens\Syntax\Punctuation\CommaPunctuationSyntaxToken.cs" />
@@ -166,10 +172,12 @@
     <Compile Include="Tokens\Syntax\Punctuation\QuestionMarkPunctuationSyntaxToken.cs" />
     <Compile Include="Tokens\Syntax\SyntaxToken.cs" />
     <Compile Include="Tokens\Syntax\Typography\AsteriskTypographySyntaxToken.cs" />
+    <Compile Include="Tokens\Syntax\Typography\CaretTypographySyntaxToken.cs" />
     <Compile Include="Tokens\Syntax\Typography\PlusTypographySyntaxToken.cs" />
     <Compile Include="Tokens\Syntax\Typography\TypographySyntaxToken.cs" />
     <Compile Include="Tokens\TokenReflection.cs" />
     <Compile Include="Utils\ExpressionBuilder.cs" />
+    <Compile Include="Utils\LinqParameterMapping.cs" />
     <Compile Include="Utils\ListExtensions.cs" />
     <Compile Include="Utils\MatchDictionaryKey.cs" />
     <Compile Include="Utils\ObjectExtensions.cs" />
@@ -177,7 +185,6 @@
     <Compile Include="Phrase.cs" />
     <Compile Include="Token.cs" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

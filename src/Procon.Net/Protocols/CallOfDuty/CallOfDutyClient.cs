@@ -1,35 +1,16 @@
-﻿// Copyright 2011 Geoffrey 'Phogue' Green
-// 
-// http://www.phogue.net
-//  
-// This file is part of Procon 2.
-// 
-// Procon 2 is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-// 
-// Procon 2 is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-// 
-// You should have received a copy of the GNU General Public License
-// along with Procon 2.  If not, see <http://www.gnu.org/licenses/>.
-
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Timers;
 
 namespace Procon.Net.Protocols.CallOfDuty {
-    public class CallOfDutyClient : UDPClient<CallOfDutyPacket> {
+    public class CallOfDutyClient : UdpClient<CallOfDutyPacket> {
 
         private Timer packetRecheck = new Timer(15);
 
         private CallOfDutyPacket recvPacketBuffer;
         private Queue<CallOfDutyPacket> packetQueue;
+
+        protected readonly Object SendDequeuedLock = new Object();
 
         public CallOfDutyClient(string hostname, ushort port)
             : base(hostname, port) {
@@ -79,7 +60,7 @@ namespace Procon.Net.Protocols.CallOfDuty {
 
         private void SendDequeued() {
 
-            lock (new Object()) {
+            lock (this.SendDequeuedLock) {
                 if (this.packetQueue.Count > 0) {
                     CallOfDutyPacket pending = this.packetQueue.Peek();
 
@@ -105,10 +86,10 @@ namespace Procon.Net.Protocols.CallOfDuty {
             this.SendDequeued();
         }
 
-        public override void AttemptConnection() {
+        public override void Connect() {
             this.packetRecheck.Start();
 
-            base.AttemptConnection();
+            base.Connect();
         }
 
         public override void Send(CallOfDutyPacket packet) {

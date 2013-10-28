@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
-using System.Text;
 using System.Collections.Specialized;
 
 namespace Procon.Net.Utils.HTTP {
-    /// <summary>
+    /// <summary><![CDATA[
     /// Used to build complex query strings to be used in
     /// GET and POST HTTP operations.
     /// 
@@ -20,7 +20,8 @@ namespace Procon.Net.Utils.HTTP {
     /// If you are thinking of using this more than a few times a second you may
     /// want to use something more specialized or look into making this class better :)
     /// 
-    /// </summary>
+    /// ]]></summary>
+    [Serializable]
     public class QueryStringBuilder : NameObjectCollectionBase {
 
         public void Add(String name, String value) {
@@ -63,17 +64,18 @@ namespace Procon.Net.Utils.HTTP {
         /// </summary>
         /// <param name="keyStack">Array of keys</param>
         /// <returns>Indexed key of the query string</returns>
-        private String KeyStackToString(String[] keyStack) {
-            if (keyStack.Length > 1) {
-                return Uri.EscapeDataString(keyStack.FirstOrDefault()) + "[" + String.Join("][", keyStack.Skip(1).Select(x => Uri.EscapeDataString(x)).ToArray()) + "]";
+        private static String KeyStackToString(ICollection<String> keyStack) {
+            String key = keyStack.FirstOrDefault();
+
+            if (keyStack.Count > 1 && key != null) {
+                return Uri.EscapeDataString(key) + "[" + String.Join("][", keyStack.Skip(1).Select(Uri.EscapeDataString).ToArray()) + "]";
             }
-            else if (keyStack.Length == 1) {
-                return Uri.EscapeDataString(keyStack.FirstOrDefault());
+            if (keyStack.Count == 1 && key != null) {
+                return Uri.EscapeDataString(key);
             }
-            else {
-                // the hell is the keystack == 0 for?
-                return String.Empty;
-            }
+            
+            // the hell is the keystack == 0 for?
+            return String.Empty;
         }
 
         /// <summary>
@@ -91,16 +93,16 @@ namespace Procon.Net.Utils.HTTP {
         /// <param name="vars">Dictionary of values to append the key/value pairs to</param>
         /// <param name="keyStack">Where the indexed key is at</param>
         /// <param name="value">Object of string, List or Dictionary. Other values are ignored.</param>
-        private void AppendKeysValues(Dictionary<String, String> vars, Stack<String> keyStack, Object value) {
+        private void AppendKeysValues(IDictionary<String, String> vars, Stack<String> keyStack, Object value) {
 
             if (value is String) {
-                vars.Add(this.KeyStackToString(keyStack.Reverse().ToArray()), Uri.EscapeDataString((String)value));
+                vars.Add(KeyStackToString(keyStack.Reverse().ToArray()), Uri.EscapeDataString((String)value));
             }
             else if (value is List<Object>) {
                 List<Object> valueList = ((List<Object>)value);
 
                 for (int i = 0; i < valueList.Count; i++) {
-                    keyStack.Push(i.ToString());
+                    keyStack.Push(i.ToString(CultureInfo.InvariantCulture));
 
                     this.AppendKeysValues(vars, keyStack, valueList[i]);
 
@@ -134,6 +136,5 @@ namespace Procon.Net.Utils.HTTP {
 
             return String.Join("&", vars.Select(x => String.Format("{0}={1}", x.Key, x.Value)).ToArray());
         }
-
     }
 }

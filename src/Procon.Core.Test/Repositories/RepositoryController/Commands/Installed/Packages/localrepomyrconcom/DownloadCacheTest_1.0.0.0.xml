@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <uid>DownloadCacheTest</uid>
+  <name>DownloadCacheTest</name>
+  <package_versions>
+    <package_version>
+      <version>
+        <major>1</major>
+        <minor>0</minor>
+        <build>0</build>
+        <revision>0</revision>
+      </version>
+      <files>
+        <file>
+          <name>ThisIsInASubDirectory.txt</name>
+          <size>89</size>
+          <last_modified>2012-07-03T10:05:26</last_modified>
+          <relative_path>plugins\ThisIsInASubDirectory.txt</relative_path>
+          <md5>cbee0eff10c65e6bc4369fbea92df09e</md5>
+        </file>
+        <file>
+          <name>ThisFileIsIdentical.txt</name>
+          <size>43</size>
+          <last_modified>2012-07-03T10:04:07</last_modified>
+          <relative_path>ThisFileIsIdentical.txt</relative_path>
+          <md5>01952484abdda0158c827a8848528e90</md5>
+        </file>
+      </files>
+    </package_version>
+  </package_versions>
+  <PackagesUpdatesPath>C:\Users\P\Documents\Projects\clients\myrcon\procon\Procon 2.X\src\Procon.Core.Test\bin\Debug\Repositories\FlatPackedPackage\Save\Valid\Updates\Packages</PackagesUpdatesPath>
+</package>

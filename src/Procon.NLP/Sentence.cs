@@ -1,32 +1,11 @@
-﻿// Copyright 2011 Geoffrey 'Phogue' Green
-// 
-// http://www.phogue.net
-//  
-// This file is part of Procon 2.
-// 
-// Procon 2 is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-// 
-// Procon 2 is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-// 
-// You should have received a copy of the GNU General Public License
-// along with Procon 2.  If not, see <http://www.gnu.org/licenses/>.
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Reflection;
 
-namespace Procon.NLP {
-    using Procon.NLP.Utils;
-    using Procon.NLP.Tokens;
-    using Procon.NLP.Tokens.Primitive;
+namespace Procon.Nlp {
+    using Procon.Nlp.Utils;
+    using Procon.Nlp.Tokens;
 
     public class Sentence : List<Phrase>, ICloneable {
 
@@ -38,24 +17,7 @@ namespace Procon.NLP {
             this.AddRange(t);
         }
 
-        /*
-        protected Sentence Collect(IStateNLP state) {
-
-            for (int x = 0; x < this.Count;) {
-                if (this[x].Where(z => z is GarbagePrimitiveToken && z.Similarity == 100.0F).Count() > 0) {
-                    this.RemoveAt(x);
-                }
-                else {
-                    x++;
-                }
-            }
-
-            return this;
-        }
-        */
-
-        protected Sentence CollectClear(IStateNLP state) {
-
+        protected Sentence CollectClear(IStateNlp state) {
             for (int x = 0; x < this.Count; ) {
                 if (this[x].Count == 0) {
                     this.RemoveAt(x);
@@ -68,39 +30,41 @@ namespace Procon.NLP {
             return this;
         }
 
-        public Sentence Parse(IStateNLP state, string sentenceText) {
+        public Sentence Parse(IStateNlp state, string sentenceText) {
 
             this.AddRange(sentenceText.Wordify()
                 .Select(x => new Phrase() {
                     Text = x
-                }.Parse(state, "Procon.NLP.Tokens.Primitive")
+                }.Parse(state, "Procon.Nlp.Tokens.Primitive")
                 ).ToList());
-            this.Refactor(state, "Procon.NLP.Tokens.Primitive");
+            this.Refactor(state, "Procon.Nlp.Tokens.Primitive");
 
             //this.Collect(state);
 
-            this.ReplaceRange(0, this.Count, this.Select(x => x.Parse(state, "Procon.NLP.Tokens.Syntax")).ToList());
-            this.Refactor(state, "Procon.NLP.Tokens.Syntax");
+            this.ReplaceRange(0, this.Count, this.Select(x => x.Parse(state, "Procon.Nlp.Tokens.Syntax")).ToList());
+            this.Refactor(state, "Procon.Nlp.Tokens.Syntax");
 
-            this.ReplaceRange(0, this.Count, this.Select(x => x.Parse(state, "Procon.NLP.Tokens.Operator")).ToList());
-            this.Refactor(state, "Procon.NLP.Tokens.Operator");
+            this.ReplaceRange(0, this.Count, this.Select(x => x.Parse(state, "Procon.Nlp.Tokens.Operator")).ToList());
+            this.Refactor(state, "Procon.Nlp.Tokens.Operator");
 
-            this.ReplaceRange(0, this.Count, this.Select(x => x.Parse(state, "Procon.NLP.Tokens.Object")).ToList());
-            this.Refactor(state, "Procon.NLP.Tokens.Object");
+            this.ReplaceRange(0, this.Count, this.Select(x => x.Parse(state, "Procon.Nlp.Tokens.Object")).ToList());
+            this.Refactor(state, "Procon.Nlp.Tokens.Object");
 
-            this.ReplaceRange(0, this.Count, this.Select(x => x.Parse(state, "Procon.NLP.Tokens.Reduction")).ToList());
-            this.Refactor(state, "Procon.NLP.Tokens.Reduction");
+            this.ReplaceRange(0, this.Count, this.Select(x => x.Parse(state, "Procon.Nlp.Tokens.Reduction")).ToList());
+            this.Refactor(state, "Procon.Nlp.Tokens.Reduction");
             
             return this;
         }
 
-        public Sentence Refactor(IStateNLP state, string tokenNamespace) {
+        public Sentence Refactor(IStateNlp state, string tokenNamespace) {
 
             for (int count = 2; count <= this.Count; count++) {
 
                 for (int offset = 0; offset <= this.Count - count; offset++) {
 
                     Sentence original = new Sentence(this.GetRange(offset, count));
+                    // @todo does combine do any sorting?
+                    // Should it?
                     List<Token> originalTokens = original.Combine();
 
                     Phrase refactoredPhrase = new Phrase(original.Combine()) { 
@@ -108,7 +72,32 @@ namespace Procon.NLP {
                         Refactoring = true
                     }.Parse(state, tokenNamespace);
 
-                    if (refactoredPhrase.Count > originalTokens.Count && (originalTokens.Count == 0 || (refactoredPhrase.FirstOrDefault().Similarity >= originalTokens.FirstOrDefault().Similarity && refactoredPhrase.FirstOrDefault() != originalTokens.FirstOrDefault()))) {
+                    // Is our original list empty?
+                    // OR is the first token in the refactoredPhrase better?
+                    bool betterPhrase = refactoredPhrase.Count > originalTokens.Count;
+                    betterPhrase = betterPhrase && (
+                        // We didn't know any better before hand?
+                        originalTokens.Count == 0
+                        // OR if the refactored token has our first original token, but it's been moved up a rank..
+                        || refactoredPhrase.IndexOf(originalTokens.FirstOrDefault()) > 0
+                       // || originalTokens.Where(token => token.Similarity >= originalTokens.FirstOrDefault().Similarity).Contains(refactoredPhrase.FirstOrDefault()) == false
+                    );
+                    /*
+                    bool betterPhrase = refactoredPhrase.Count > originalTokens.Count;
+                    betterPhrase = betterPhrase && (
+                        // We didn't know any better before hand?
+                        originalTokens.Count == 0
+                        || (
+                                // The first item in the sorted list is at least as good or better than our original list.
+                                refactoredPhrase.FirstOrDefault().Similarity >= originalTokens.FirstOrDefault().Similarity
+                                // The first item in the original list does not appear in a filtered list of the best match
+                                // of the refactored phrase.
+                                // Meaning, we have found a much better match
+                             && originalTokens.Where(token => token.Similarity == originalTokens.FirstOrDefault().Similarity).Contains(refactoredPhrase.FirstOrDefault()) == false
+                        )
+                    );
+                    */
+                    if (betterPhrase == true) {
                         this.RemoveRange(offset, count);
                         this.Insert(offset, refactoredPhrase);
 
@@ -127,12 +116,13 @@ namespace Procon.NLP {
 
             for (int offset = rangeBegin; offset < typePool.Count; offset++) {
 
-                if (isStrictTypeMatch == false && needleType.IsAssignableFrom(typePool[offset].GetType()) == true) {
+                if (isStrictTypeMatch == false && needleType.IsInstanceOfType(typePool[offset]) == true) {
                     foundOffset = offset;
 
                     break;
                 }
-                else if (isStrictTypeMatch == true && needleType == typePool[offset].GetType()) {
+
+                if (isStrictTypeMatch == true && needleType == typePool[offset].GetType()) {
                     foundOffset = offset;
 
                     break;
@@ -143,8 +133,6 @@ namespace Procon.NLP {
         }
 
         public List<Object> MatchesCombinationSignature(List<Type> methodCallSignature, bool isStrictTypeMatch) {
-
-            int foundOffset = -1;
             List<Object> validCombination = null;
 
             if (this.Count == methodCallSignature.Count) {
@@ -155,12 +143,11 @@ namespace Procon.NLP {
                     .ToList()
                     .ForEach(x => validCombination.Add(x));
 
-                //validCombination = new List<Object>(this.Where(x => x.Count > 0).Select(x => x[0]).AsEnumerable() s IEnumerable<Object>);
-
                 for (int offset = 0; offset < methodCallSignature.Count; offset++) {
                     // Find methodCallSignature[offset] in validCombination from validCombination[offset .. end]
 
                     // methodCallSignature[offset] in validCombination at 5
+                    int foundOffset = -1;
                     if ((foundOffset = Sentence.FindType(methodCallSignature[offset], offset, validCombination, isStrictTypeMatch)) >= 0) {
                         Object swapType = validCombination[offset];
                         validCombination[offset] = validCombination[foundOffset];
@@ -190,11 +177,12 @@ namespace Procon.NLP {
 
                 for (int offset = 0; offset < methodCallSignature.Count; offset++) {
 
-                    if (isStrictTypeMatch == false && methodCallSignature[offset].IsAssignableFrom(validCombination[offset].GetType()) != true) {
+                    if (isStrictTypeMatch == false && methodCallSignature[offset].IsInstanceOfType(validCombination[offset]) != true) {
                         validCombination = null;
                         break;
                     }
-                    else if (isStrictTypeMatch == true && methodCallSignature[offset] != validCombination[offset].GetType()) {
+
+                    if (isStrictTypeMatch == true && methodCallSignature[offset] != validCombination[offset].GetType()) {
                         validCombination = null;
                         break;
                     }
@@ -203,29 +191,6 @@ namespace Procon.NLP {
 
             return validCombination;
         }
-
-        /*
-        private MethodInfo FindReductionCombination() {
-
-            MethodInfo reductionMethod = null;
-
-            foreach (MethodInfo method in TokenReflection.GetReduceMethods("Procon.NLP.Tokens.Reduction")) {
-
-                ParameterInfo[] parameters = method.GetParameters();
-
-                for (int offset = 0; offset < this.Count && offset + 1 < parameters.Length; offset++) {
-
-                    if (parameters[offset + 1].ParameterType.IsAssignableFrom(this[offset].GetType()) == true) {
-
-                    }
-
-                }
-
-            }
-
-            return reductionMethod;
-        }
-        */
 
         private bool AllCompatableTokens() {
 
@@ -246,21 +211,20 @@ namespace Procon.NLP {
             return isAllCompatable;
         }
 
-        private Sentence GetReduction(IStateNLP state, List<MethodInfo> methods) {
+        private Sentence GetReduction(IStateNlp state, IEnumerable<MethodInfo> methods) {
 
             Sentence reducedSentence = (Sentence)this.Clone();
 
             if (reducedSentence.AllCompatableTokens() == true) {
 
                 foreach (MethodInfo method in methods) {
-                    //foreach (MethodInfo method in TokenReflection.GetReduceMethods("Procon.NLP.Tokens.Reduction")) {
 
                     List<Object> matchedSignature = null;
                     StrictAttribute strict = (StrictAttribute)method.GetCustomAttributes(typeof(StrictAttribute), false).FirstOrDefault();
 
                     if (strict == null || strict.ExactMatchSignature == false) {
 
-                        if ((matchedSignature = reducedSentence.MatchesCombinationSignature(method.GetParameters().Where(x => x.ParameterType != typeof(IStateNLP)).Select(x => x.ParameterType).ToList(), (strict != null ? strict.ExactMatchType : false))) != null) {
+                        if ((matchedSignature = reducedSentence.MatchesCombinationSignature(method.GetParameters().Where(x => x.ParameterType != typeof(IStateNlp)).Select(x => x.ParameterType).ToList(), (strict != null && strict.ExactMatchType))) != null) {
 
                             matchedSignature.Insert(0, state);
                             //matchedSignature.Insert(1, returnSentence);
@@ -269,14 +233,12 @@ namespace Procon.NLP {
                                 (Phrase)method.Invoke(null, matchedSignature.ToArray())
                             };
 
-                            if (postReduction != null) {
-                                reducedSentence = postReduction;
-                            }
+                            reducedSentence = postReduction;
                         }
                     }
-                    else if (strict != null || strict.ExactMatchSignature == true) {
+                    else {
 
-                        if ((matchedSignature = reducedSentence.MatchesSignature(method.GetParameters().Where(x => x.ParameterType != typeof(IStateNLP)).Select(x => x.ParameterType).ToList(), (strict != null ? strict.ExactMatchType : false))) != null) {
+                        if ((matchedSignature = reducedSentence.MatchesSignature(method.GetParameters().Where(x => x.ParameterType != typeof(IStateNlp)).Select(x => x.ParameterType).ToList(), strict.ExactMatchType)) != null) {
                             matchedSignature.Insert(0, state);
                             //matchedSignature.Insert(1, returnSentence);
 
@@ -284,9 +246,7 @@ namespace Procon.NLP {
                                 (Phrase)method.Invoke(null, matchedSignature.ToArray())
                             };
 
-                            if (postReduction != null) {
-                                reducedSentence = postReduction;
-                            }
+                            reducedSentence = postReduction;
                         }
                     }
                 }
@@ -295,8 +255,7 @@ namespace Procon.NLP {
             return reducedSentence;
         }
 
-        private Sentence Reduce(IStateNLP state, List<List<MethodInfo>> namespaceMethods) {
-
+        private void Reduce(IStateNlp state, IEnumerable<List<MethodInfo>> namespaceMethods) {
             foreach (List<MethodInfo> reduceMethods in namespaceMethods) {
                 for (int count = 2; count <= this.Count; count++) {
                     for (int offset = 0; offset <= this.Count - count; offset++) {
@@ -310,56 +269,39 @@ namespace Procon.NLP {
                     }
                 }
             }
-
-            return this;
         }
 
-        public Sentence Reduce(IStateNLP state) {
+        public Sentence Reduce(IStateNlp state) {
 
             this.CollectClear(state);
 
             this.Reduce(state,
                 new List<List<MethodInfo>>() {
-                    TokenReflection.GetCombineMethods("Procon.NLP.Tokens")
+                    TokenReflection.GetCombineMethods("Procon.Nlp.Tokens")
                 }
             );
 
             this.Reduce(state,
                 new List<List<MethodInfo>>() {
-                    TokenReflection.GetReduceMethods("Procon.NLP.Tokens.Operator.Arithmetic.FirstOrder"),
-                    TokenReflection.GetReduceMethods("Procon.NLP.Tokens.Operator.Arithmetic.SecondOrder"),
-                    TokenReflection.GetReduceMethods("Procon.NLP.Tokens.Operator.Arithmetic.ThirdOrder"),
-                    TokenReflection.GetReduceMethods("Procon.NLP.Tokens")
+                    TokenReflection.GetReduceMethods("Procon.Nlp.Tokens.Operator.Arithmetic.FirstOrder"),
+                    TokenReflection.GetReduceMethods("Procon.Nlp.Tokens.Operator.Arithmetic.SecondOrder"),
+                    TokenReflection.GetReduceMethods("Procon.Nlp.Tokens.Operator.Arithmetic.ThirdOrder"),
+                    TokenReflection.GetReduceMethods("Procon.Nlp.Tokens")
                 }
             );
 
-            /*
-            foreach (string tokenNamespace in new string[] { "Procon.NLP.Tokens.Operator.Arithmetic.FirstOrder", "Procon.NLP.Tokens.Operator.Arithmetic.SecondOrder", "Procon.NLP.Tokens.Operator.Arithmetic.ThirdOrder", "Procon.NLP.Tokens" }) {
-                for (int count = 2; count <= this.Count; count++) {
-                    for (int offset = 0; offset <= this.Count - count; offset++) {
-                        Sentence reducedSentence = new Sentence(this.GetRange(offset, count)).GetReduction(state, TokenReflection.GetReduceMethods(tokenNamespace));
-
-                        if (reducedSentence.Count == 1) {
-                            this.ReplaceRange(offset, count, reducedSentence);
-                            count = 2;
-                            offset = -1; 
-                        }
-                    }
-                }
-            }
-            */
             return this;
         }
 
         public T Extract<T>() where T : Token {
-            return (T)this.Combine().Where(x => typeof(T).IsAssignableFrom(x.GetType()) == true)
+            return (T)this.Combine().Where(x => x is T == true)
                                     .OrderByDescending(x => x.Similarity)
                                     .ThenByDescending(x => x.Text.Length)
                                     .FirstOrDefault();
         }
 
         public List<T> ExtractList<T>() where T : Token {
-            return this.Combine().Where(x => typeof(T).IsAssignableFrom(x.GetType()) == true)
+            return this.Combine().Where(x => x is T == true)
                                  .OrderByDescending(x => x.Similarity)
                                  .ThenByDescending(x => x.Text.Length)
                                  .Select(x => x as T)
@@ -376,12 +318,7 @@ namespace Procon.NLP {
         */
 
         public List<Token> Combine() {
-            return (from phraseList in this
-                    from phrase in phraseList
-                    select phrase)
-                    .OrderByDescending(x => x.Similarity)
-                    .ThenByDescending(x => x.Text)
-                    .ToList();
+            return Phrase.OrderByWeightedSimilarity(this.SelectMany(phrase => phrase).ToList());
         }
 
         public override string ToString() {

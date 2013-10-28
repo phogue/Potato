@@ -14,14 +14,10 @@
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
-    <SccProjectName>
-    </SccProjectName>
-    <SccLocalPath>
-    </SccLocalPath>
-    <SccAuxPath>
-    </SccAuxPath>
-    <SccProvider>
-    </SccProvider>
+    <SccProjectName>%24/Procon 2.X/src/Procon.Core</SccProjectName>
+    <SccLocalPath>.</SccLocalPath>
+    <SccAuxPath>http://dev.myrcon.com:8080/tfs/procon</SccAuxPath>
+    <SccProvider>{4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}</SccProvider>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -40,119 +36,101 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Ionic.Zip.Reduced">
+    <Reference Include="Ionic.Zip.Reduced, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\ziplib\Ionic.Zip.Reduced.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json.Net35">
-      <HintPath>..\..\lib\JSON\Newtonsoft.Json.Net35.dll</HintPath>
+    <Reference Include="MySql.Data, Version=6.3.9.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <HintPath>..\..\lib\mysql\MySql.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\lib\JSON\Bin\Net35\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Xml" />
-    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CommandInitiator.cs" />
-    <Compile Include="CommandName.cs" />
-    <Compile Include="CommandOrigin.cs" />
-    <Compile Include="Config.cs" />
-    <Compile Include="ExecutableBase.cs" />
-    <Compile Include="EventName.cs" />
-    <Compile Include="Interfaces\Connections\Connection.cs" />
-    <Compile Include="Interfaces\Connections\TextCommands\RemoteTextCommandController.cs" />
-    <Compile Include="Interfaces\Connections\TextCommands\Match.cs" />
-    <Compile Include="Interfaces\Connections\TextCommands\ParserType.cs" />
-    <Compile Include="Interfaces\Connections\TextCommands\SecurityIntersectionType.cs" />
-    <Compile Include="Interfaces\Connections\TextCommands\TextCommand.cs" />
-    <Compile Include="Interfaces\Connections\TextCommands\TextCommandController.cs" />
-    <Compile Include="Interfaces\Connections\TextCommands\TextCommandEventArgs.cs" />
-    <Compile Include="Interfaces\Connections\TextCommands\TextCommandEventType.cs" />
-    <Compile Include="Interfaces\Connections\TextCommands\Parsers\NLP.cs" />
-    <Compile Include="Interfaces\Connections\TextCommands\Parsers\Parser.cs" />
-    <Compile Include="Interfaces\Connections\TextCommands\PriorityType.cs" />
-    <Compile Include="Interfaces\Connections\Plugins\IPluginAPI.cs" />
-    <Compile Include="Interfaces\Connections\Plugins\LocalPlugin.cs" />
-    <Compile Include="Interfaces\Connections\Plugins\LocalPluginController.cs" />
-    <Compile Include="Interfaces\Connections\Plugins\PluginEventArgs.cs" />
-    <Compile Include="Interfaces\Connections\Plugins\PluginEventType.cs" />
-    <Compile Include="Interfaces\Connections\Plugins\RemotePlugin.cs" />
-    <Compile Include="Interfaces\Connections\Plugins\RemotePluginController.cs" />
-    <Compile Include="Interfaces\Connections\Plugins\Variables\BooleanVariable.cs" />
-    <Compile Include="Interfaces\Connections\Plugins\Variables\DoubleVariable.cs" />
-    <Compile Include="Interfaces\Connections\Plugins\Variables\IntegerVariable.cs" />
-    <Compile Include="Interfaces\Connections\Plugins\Variables\ListVariable.cs" />
-    <Compile Include="Interfaces\Connections\Plugins\Variables\StringVariable.cs" />
-    <Compile Include="Interfaces\Connections\RemoteConnection.cs" />
-    <Compile Include="Interfaces\Layer\Objects\Encryption.cs" />
-    <Compile Include="Interfaces\Layer\Objects\LayerPacketSerializer.cs" />
-    <Compile Include="Interfaces\Layer\Objects\Login.cs" />
-    <Compile Include="Interfaces\Layer\ILayer.cs" />
-    <Compile Include="Interfaces\Repositories\LocalFlatPackedPackage.cs" />
-    <Compile Include="Interfaces\Repositories\LocalPackageController.cs" />
-    <Compile Include="Interfaces\Repositories\Objects\FlatPackedPackage.cs" />
-    <Compile Include="Interfaces\Repositories\Objects\Package.cs" />
-    <Compile Include="Interfaces\Repositories\Objects\PackageFile.cs" />
-    <Compile Include="Interfaces\Repositories\Objects\PackageVersion.cs" />
-    <Compile Include="Interfaces\Repositories\Objects\Repository.cs" />
-    <Compile Include="Interfaces\Repositories\Objects\RepositoryPackageReference.cs" />
-    <Compile Include="Interfaces\Repositories\PackageState.cs" />
-    <Compile Include="Interfaces\Repositories\PackageType.cs" />
-    <Compile Include="Interfaces\Repositories\PackageController.cs" />
-    <Compile Include="Interfaces\Repositories\RemoteFlatPackedPackage.cs" />
-    <Compile Include="Interfaces\Repositories\RemotePackageController.cs" />
-    <Compile Include="Interfaces\Security\Objects\Account.cs" />
-    <Compile Include="Interfaces\Security\Objects\LocalAccount.cs" />
-    <Compile Include="Interfaces\Security\Objects\LocalGroup.cs" />
+    <Compile Include="Command.cs" />
     <Compile Include="CommandAttribute.cs" />
+    <Compile Include="CommandAttributeType.cs" />
+    <Compile Include="CommandParameter.cs" />
+    <Compile Include="CommandData.cs" />
+    <Compile Include="CommandScope.cs" />
+    <Compile Include="CommandType.cs" />
+    <Compile Include="CommandOrigin.cs" />
+    <Compile Include="CommandResultArgs.cs" />
+    <Compile Include="CommandResultType.cs" />
+    <Compile Include="Config.cs" />
+    <Compile Include="Connections\Connection.cs" />
+    <Compile Include="Connections\TextCommands\TextCommandMatch.cs" />
+    <Compile Include="Connections\TextCommands\ParserType.cs" />
+    <Compile Include="Connections\TextCommands\TextCommand.cs" />
+    <Compile Include="Connections\TextCommands\TextCommandController.cs" />
+    <Compile Include="Connections\TextCommands\Parsers\NlpParser.cs" />
+    <Compile Include="Connections\TextCommands\Parsers\Parser.cs" />
+    <Compile Include="Connections\Plugins\IPluginBase.cs" />
+    <Compile Include="Database\DatabaseController.cs" />
+    <Compile Include="Database\Driver.cs" />
+    <Compile Include="Database\Drivers\MySqlDriver.cs" />
+    <Compile Include="Database\Query.cs" />
+    <Compile Include="Database\SqlDriver.cs" />
+    <Compile Include="Database\SqlQuery.cs" />
+    <Compile Include="Events\EventsConsoleController.cs" />
+    <Compile Include="Events\GenericEventArgs.cs" />
+    <Compile Include="Events\GenericEventData.cs" />
+    <Compile Include="Events\EventsController.cs" />
+    <Compile Include="Events\GenericEventType.cs" />
+    <Compile Include="Events\PushEventsRequest.cs" />
+    <Compile Include="ExecutableBase.cs" />
+    <Compile Include="IExecutableBase.cs" />
+    <Compile Include="Remote\DaemonController.cs" />
+    <Compile Include="Events\PushEventsController.cs" />
+    <Compile Include="Events\PushEventsEndPoint.cs" />
+    <Compile Include="Repositories\FlatPackedPackage.cs" />
+    <Compile Include="Repositories\Package.cs" />
+    <Compile Include="Repositories\PackageFile.cs" />
+    <Compile Include="Repositories\PackageVersion.cs" />
+    <Compile Include="Repositories\Repository.cs" />
+    <Compile Include="Repositories\RepositoryPackageReference.cs" />
+    <Compile Include="Repositories\PackageState.cs" />
+    <Compile Include="Repositories\PackageType.cs" />
+    <Compile Include="Repositories\RepositoryController.cs" />
+    <Compile Include="Scheduler\TickEventArgs.cs" />
+    <Compile Include="Security\Account.cs" />
     <Compile Include="Executable.cs" />
-    <Compile Include="Interfaces\Connections\LocalConnection.cs" />
-    <Compile Include="Interfaces\Logs\Loggable.cs" />
-    <Compile Include="Interfaces\Connections\Plugins\Plugin.cs" />
-    <Compile Include="Interfaces\Connections\Plugins\PluginAPI.cs" />
-    <Compile Include="Interfaces\Connections\Plugins\PluginController.cs" />
-    <Compile Include="Interfaces\Connections\Plugins\PluginDetails.cs" />
-    <Compile Include="Interfaces\Connections\Plugins\PluginLoaderFactory.cs" />
-    <Compile Include="Interfaces\Connections\Plugins\Variables\Variable.cs" />
+    <Compile Include="Connections\Plugins\Plugin.cs" />
+    <Compile Include="Connections\Plugins\PluginBase.cs" />
+    <Compile Include="Connections\Plugins\PluginController.cs" />
+    <Compile Include="Connections\Plugins\PluginLoaderProxy.cs" />
     <Compile Include="Instance.cs" />
-    <Compile Include="Interfaces\Interface.cs" />
-    <Compile Include="Interfaces\Security\Objects\RemoteAccount.cs" />
-    <Compile Include="Interfaces\Security\Objects\RemoteGroup.cs" />
-    <Compile Include="Interfaces\Security\LocalSecurityController.cs" />
-    <Compile Include="Interfaces\Security\RemoteSecurityController.cs" />
-    <Compile Include="Interfaces\Variables\CommonVariableNames.cs" />
-    <Compile Include="Interfaces\Variables\IVariableController.cs" />
-    <Compile Include="Interfaces\Variables\LocalVariableController.cs" />
-    <Compile Include="Interfaces\Variables\RemoteVariableController.cs" />
-    <Compile Include="Interfaces\Variables\Variable.cs" />
-    <Compile Include="Interfaces\Variables\VariableController.cs" />
-    <Compile Include="Interfaces\Layer\LayerGame.cs" />
-    <Compile Include="Interfaces\Layer\Objects\Context.cs" />
-    <Compile Include="Interfaces\Layer\Objects\ContextType.cs" />
-    <Compile Include="Interfaces\Layer\Objects\LayerClient.cs" />
-    <Compile Include="Interfaces\Layer\Objects\LayerPacket.cs" />
-    <Compile Include="Interfaces\Layer\Objects\LayerCommand.cs" />
-    <Compile Include="Interfaces\Layer\LayerListener.cs" />
+    <Compile Include="Repositories\Serialization\SerializableVersion.cs" />
+    <Compile Include="Utils\XElementValidator.cs" />
+    <Compile Include="Utils\DirectoryInfoExtensions.cs" />
+    <Compile Include="Variables\CommonVariableNames.cs" />
+    <Compile Include="Variables\Variable.cs" />
+    <Compile Include="Variables\VariableController.cs" />
     <Compile Include="Localization\LanguageController.cs" />
-    <Compile Include="Interfaces\Security\Objects\AccountAssignment.cs" />
-    <Compile Include="Interfaces\Security\Objects\Group.cs" />
-    <Compile Include="Interfaces\Security\Objects\Permission.cs" />
-    <Compile Include="Interfaces\Security\Objects\SecurityCheck.cs" />
-    <Compile Include="Interfaces\Security\SecurityController.cs" />
-    <Compile Include="Interfaces\LocalInterface.cs" />
-    <Compile Include="Interfaces\RemoteInterface.cs" />
-    <Compile Include="Interfaces\Connections\TextCommands\LocalTextCommandController.cs" />
+    <Compile Include="Security\AccountPlayer.cs" />
+    <Compile Include="Security\Group.cs" />
+    <Compile Include="Security\Permission.cs" />
+    <Compile Include="Security\SecurityController.cs" />
     <Compile Include="Localization\Language.cs" />
     <Compile Include="Scheduler\Task.cs" />
     <Compile Include="Scheduler\TaskController.cs" />
     <Compile Include="Scheduler\Temporal.cs" />
     <Compile Include="Utils\PathValidator.cs" />
     <Compile Include="Utils\Defines.cs" />
-    <Compile Include="Utils\DictionaryExtensions.cs" />
     <Compile Include="Utils\XElementExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -161,47 +139,44 @@
       <Project>{65C1DB17-18E0-4AC5-8709-3F7E04B88CA1}</Project>
       <Name>Procon.Net</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Procon.NLP\Procon.NLP.csproj">
+    <ProjectReference Include="..\Procon.NLP\Procon.Nlp.csproj">
       <Project>{4B55557F-C2AA-4047-9ED9-3E4BBF9CF670}</Project>
-      <Name>Procon.NLP</Name>
+      <Name>Procon.Nlp</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Procon.Service.Shared\Procon.Service.Shared.csproj">
+      <Project>{3F9E6801-A015-4F7E-9B67-7015F1F58B18}</Project>
+      <Name>Procon.Service.Shared</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
-    <Content Include="Localization\de\Procon.Net.xml">
+    <Content Include="Localization\de-DE\Procon.Net.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Localization\de\Procon.NLP.xml">
+    <Content Include="Localization\de-DE\Procon.Nlp.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Localization\de\Procon.UI.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Localization\de\Procon.xml">
+    <Content Include="Localization\de-DE\Procon.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Localization\de\BasicInGameInfo.xml">
+    <Content Include="Localization\de-DE\BasicInGameInfo.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Localization\en\BasicInGameInfo.xml">
+    <Content Include="Localization\en-UK\BasicInGameInfo.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Localization\en\Procon.Net.xml">
+    <Content Include="Localization\en-UK\Procon.Net.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Localization\en\Procon.NLP.xml">
+    <Content Include="Localization\en-UK\Procon.Nlp.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Localization\en\Procon.xml">
+    <Content Include="Localization\en-UK\Procon.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Localization\en\Procon.UI.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <SubType>Designer</SubType>
     </Content>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

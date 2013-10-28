@@ -1,77 +1,25 @@
-﻿// Copyright 2011 Geoffrey 'Phogue' Green
-// 
-// http://www.phogue.net
-//  
-// This file is part of Procon 2.
-// 
-// Procon 2 is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-// 
-// Procon 2 is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-// 
-// You should have received a copy of the GNU General Public License
-// along with Procon 2.  If not, see <http://www.gnu.org/licenses/>.
+﻿using System;
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Globalization;
-
-namespace Procon.NLP.Tokens.Primitive.Temporal.Variable {
-    using Procon.NLP.Tokens.Primitive.Temporal.Variable.Days;
-    using Procon.NLP.Tokens.Primitive.Temporal.Variable.Months;
-    using Procon.NLP.Tokens.Primitive.Temporal.Variable.Date;
-    using Procon.NLP.Tokens.Primitive.Temporal.Variable.Time;
-    using Procon.NLP.Tokens.Primitive.Temporal.Variable.Time.Hour;
-    using Procon.NLP.Tokens.Operator.Logical;
-    using Procon.NLP.Tokens.Operator.Arithmetic.ThirdOrder;
-    using Procon.NLP.Tokens.Syntax.Adjectives;
-    using Procon.NLP.Tokens.Syntax.Typography;
-    using Procon.NLP.Tokens.Syntax.Punctuation;
-    using Procon.NLP.Tokens.Syntax.Prepositions.Adpositions;
-    using Procon.NLP.Tokens.Primitive.Numeric;
-    using Procon.NLP.Utils;
+namespace Procon.Nlp.Tokens.Primitive.Temporal.Variable {
+    using Procon.Nlp.Tokens.Primitive.Temporal.Variable.Time.Hour;
+    using Procon.Nlp.Tokens.Operator.Logical;
+    using Procon.Nlp.Tokens.Operator.Arithmetic.ThirdOrder;
+    using Procon.Nlp.Tokens.Syntax.Adjectives;
+    using Procon.Nlp.Tokens.Syntax.Typography;
+    using Procon.Nlp.Tokens.Syntax.Punctuation;
+    using Procon.Nlp.Tokens.Syntax.Prepositions.Adpositions;
+    using Procon.Nlp.Tokens.Primitive.Numeric;
+    using Procon.Nlp.Utils;
 
     public class DateTimeTemporalPrimitiveToken : TemporalToken {
 
-        // We cannot control the context in this case.
-        //[BaseTokenMethod]
-        //public static Token ToBaseToken(ProconState state, Token token) {
+        public static Phrase Reduce(IStateNlp state, DateTimeTemporalPrimitiveToken dateTimeA, DateTimeTemporalPrimitiveToken dateTimeB) {
+            Phrase phrase = null;
 
-        //    Token returnToken = token;
-        //    DateTime dateTime = default(DateTime);
-
-        //    if (DateTime.TryParse(token.MatchedText, out dateTime) == true) {
-        //        returnToken = new DateTimeTemporalToken() { Value = dateTime, MatchedText = token.MatchedText, Similarity = 1.0F };
-        //    }
-
-        //    return returnToken;
-        //}
-
-        //[RefactoringTokenMethod]
-        //public static SentenceNLP DateTimeDateTime(ProconState state, SentenceNLP sentence, DateTimeTemporalToken dateTimeA, DateTimeTemporalToken dateTimeB) {
-
-        //    DateTime combined = dateTimeA.ToDateTime();
-        //    TimeSpan span = dateTimeA.ToDateTime() - dateTimeB.ToDateTime();
-        //    combined = combined.Add(span);
-
-        //    sentence.ReplaceRange(0, sentence.Count, new DateTimeTemporalToken() { Value = combined, MatchedText = sentence.ToString(), Similarity = (dateTimeA.Similarity + dateTimeB.Similarity) / 2.0F });
-
-        //    return sentence;
-        //}
-
-        public static Phrase Reduce(IStateNLP state, DateTimeTemporalPrimitiveToken dateTimeA, DateTimeTemporalPrimitiveToken dateTimeB) {
-
-            DateTimePatternNLP combined = dateTimeA.Pattern + dateTimeB.Pattern;
+            DateTimePatternNlp combined = dateTimeA.Pattern + dateTimeB.Pattern;
 
             if (combined != null) {
-                return new Phrase() {
+                phrase = new Phrase() {
                     new DateTimeTemporalPrimitiveToken() {
                         Pattern = combined,
                         Text = String.Format("{0} {1}", dateTimeA.Text, dateTimeB.Text),
@@ -79,17 +27,17 @@ namespace Procon.NLP.Tokens.Primitive.Temporal.Variable {
                     }
                 };
             }
-            else {
-                return null;
-            }
+
+            return phrase;
         }
 
-        public static Phrase Reduce(IStateNLP state, DateTimeTemporalPrimitiveToken dateTimeA, AndLogicalOperatorToken and, DateTimeTemporalPrimitiveToken dateTimeB) {
+        public static Phrase Reduce(IStateNlp state, DateTimeTemporalPrimitiveToken dateTimeA, AndLogicalOperatorToken and, DateTimeTemporalPrimitiveToken dateTimeB) {
+            Phrase phrase = null;
 
-            DateTimePatternNLP combined = dateTimeA.Pattern + dateTimeB.Pattern;
+            DateTimePatternNlp combined = dateTimeA.Pattern + dateTimeB.Pattern;
 
             if (combined != null) {
-                return new Phrase() {
+                phrase = new Phrase() {
                     new DateTimeTemporalPrimitiveToken() {
                         Pattern = combined,
                         Text = String.Format("{0} {1} {2}", dateTimeA.Text, and.Text, dateTimeB.Text),
@@ -97,12 +45,11 @@ namespace Procon.NLP.Tokens.Primitive.Temporal.Variable {
                     }
                 };
             }
-            else {
-                return null;
-            }
+
+            return phrase;
         }
 
-        public static Phrase Reduce(IStateNLP state, DateTimeTemporalPrimitiveToken dateTimeA, AdditionThirdOrderArithmeticOperatorToken addition, DateTimeTemporalPrimitiveToken dateTimeB) {
+        public static Phrase Reduce(IStateNlp state, DateTimeTemporalPrimitiveToken dateTimeA, AdditionThirdOrderArithmeticOperatorToken addition, DateTimeTemporalPrimitiveToken dateTimeB) {
             AndLogicalOperatorToken and = new AndLogicalOperatorToken() {
                 Text = addition.Text,
                 Similarity = addition.Similarity
@@ -111,7 +58,7 @@ namespace Procon.NLP.Tokens.Primitive.Temporal.Variable {
             return DateTimeTemporalPrimitiveToken.Reduce(state, dateTimeA, and, dateTimeB);
         }
 
-        public static Phrase Reduce(IStateNLP state, DateTimeTemporalPrimitiveToken dateTimeA, AtAdpositionsPrepositionsSyntaxToken at, DateTimeTemporalPrimitiveToken dateTimeB) {
+        public static Phrase Reduce(IStateNlp state, DateTimeTemporalPrimitiveToken dateTimeA, AtAdpositionsPrepositionsSyntaxToken at, DateTimeTemporalPrimitiveToken dateTimeB) {
             AndLogicalOperatorToken and = new AndLogicalOperatorToken() {
                 Text = at.Text,
                 Similarity = at.Similarity
@@ -120,7 +67,7 @@ namespace Procon.NLP.Tokens.Primitive.Temporal.Variable {
             return DateTimeTemporalPrimitiveToken.Reduce(state, dateTimeA, and, dateTimeB);
         }
 
-        public static Phrase Reduce(IStateNLP state, DateTimeTemporalPrimitiveToken dateTimeA, PlusTypographySyntaxToken plus, DateTimeTemporalPrimitiveToken dateTimeB) {
+        public static Phrase Reduce(IStateNlp state, DateTimeTemporalPrimitiveToken dateTimeA, PlusTypographySyntaxToken plus, DateTimeTemporalPrimitiveToken dateTimeB) {
             AndLogicalOperatorToken and = new AndLogicalOperatorToken() {
                 Text = plus.Text,
                 Similarity = plus.Similarity
@@ -135,7 +82,7 @@ namespace Procon.NLP.Tokens.Primitive.Temporal.Variable {
 
 
 
-        public static Phrase Reduce(IStateNLP state, DateTimeTemporalPrimitiveToken dateTimeA, SubtractionThirdOrderArithmeticOperatorToken subtraction, DateTimeTemporalPrimitiveToken dateTimeB) {
+        public static Phrase Reduce(IStateNlp state, DateTimeTemporalPrimitiveToken dateTimeA, SubtractionThirdOrderArithmeticOperatorToken subtraction, DateTimeTemporalPrimitiveToken dateTimeB) {
             return new Phrase() {
                 new DateTimeTemporalPrimitiveToken() {
                     Pattern = dateTimeA.Pattern - dateTimeB.Pattern,
@@ -145,7 +92,7 @@ namespace Procon.NLP.Tokens.Primitive.Temporal.Variable {
             };
         }
 
-        public static Phrase Reduce(IStateNLP state, DateTimeTemporalPrimitiveToken dateTimeA, HyphenPunctuationSyntaxToken hyphen, DateTimeTemporalPrimitiveToken dateTimeB) {
+        public static Phrase Reduce(IStateNlp state, DateTimeTemporalPrimitiveToken dateTimeA, HyphenPunctuationSyntaxToken hyphen, DateTimeTemporalPrimitiveToken dateTimeB) {
             SubtractionThirdOrderArithmeticOperatorToken subtraction = new SubtractionThirdOrderArithmeticOperatorToken() {
                 Text = hyphen.Text,
                 Similarity = hyphen.Similarity
@@ -154,7 +101,7 @@ namespace Procon.NLP.Tokens.Primitive.Temporal.Variable {
             return DateTimeTemporalPrimitiveToken.Reduce(state, dateTimeA, subtraction, dateTimeB);
         }
 
-        public static Phrase Reduce(IStateNLP state, DateTimeTemporalPrimitiveToken dateTimeA, AtAdpositionsPrepositionsSyntaxToken at, FloatNumericPrimitiveToken number) {
+        public static Phrase Reduce(IStateNlp state, DateTimeTemporalPrimitiveToken dateTimeA, AtAdpositionsPrepositionsSyntaxToken at, FloatNumericPrimitiveToken number) {
 
             int definitiveHour = (int)number.ToFloat().ConvertTo(typeof(int));
 
@@ -166,7 +113,7 @@ namespace Procon.NLP.Tokens.Primitive.Temporal.Variable {
             }
 
             HourVariableTemporalPrimitiveToken hour = new HourVariableTemporalPrimitiveToken() {
-                Pattern = new DateTimePatternNLP() {
+                Pattern = new DateTimePatternNlp() {
                     Rule = TimeType.Definitive,
                     Hour = definitiveHour,
                     Minute = 0,
@@ -185,7 +132,7 @@ namespace Procon.NLP.Tokens.Primitive.Temporal.Variable {
         }
 
         [Strict(ExactMatchSignature = true)]
-        public static Phrase Reduce(IStateNLP state, InAdpositionsPrepositionsSyntaxToken @in, DateTimeTemporalPrimitiveToken dateTimeA) {
+        public static Phrase Reduce(IStateNlp state, InAdpositionsPrepositionsSyntaxToken @in, DateTimeTemporalPrimitiveToken dateTimeA) {
             dateTimeA.Pattern.Modifier = TimeModifier.Delay;
 
             return new Phrase() {
@@ -198,7 +145,7 @@ namespace Procon.NLP.Tokens.Primitive.Temporal.Variable {
         }
 
         [Strict(ExactMatchSignature = true)]
-        public static Phrase Reduce(IStateNLP state, ForAdpositionsPrepositionsSyntaxToken @for, DateTimeTemporalPrimitiveToken dateTimeA) {
+        public static Phrase Reduce(IStateNlp state, ForAdpositionsPrepositionsSyntaxToken @for, DateTimeTemporalPrimitiveToken dateTimeA) {
             dateTimeA.Pattern.Modifier = TimeModifier.Period;
 
             return new Phrase() {
@@ -211,7 +158,7 @@ namespace Procon.NLP.Tokens.Primitive.Temporal.Variable {
         }
 
         [Strict(ExactMatchSignature = true)]
-        public static Phrase Reduce(IStateNLP state, EveryAdjectiveSyntaxToken every, DateTimeTemporalPrimitiveToken dateTimeA) {
+        public static Phrase Reduce(IStateNlp state, EveryAdjectiveSyntaxToken every, DateTimeTemporalPrimitiveToken dateTimeA) {
             dateTimeA.Pattern.Modifier = TimeModifier.Interval;
 
             return new Phrase() {

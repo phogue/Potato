@@ -1,209 +1,299 @@
-﻿// Copyright 2011 Geoffrey 'Phogue' Green
-// 
-// http://www.phogue.net
-//  
-// This file is part of Procon 2.
-// 
-// Procon 2 is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-// 
-// Procon 2 is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-// 
-// You should have received a copy of the GNU General Public License
-// along with Procon 2.  If not, see <http://www.gnu.org/licenses/>.
-
-using System;
+﻿using System;
+using System.Linq;
 using System.Collections.Generic;
-
-using System.Text;
 using System.Net;
 using System.Net.Sockets;
 
 namespace Procon.Net {
 
-    public abstract class Client<P>
-        where P : Packet {
+    public abstract class Client<P> where P : Packet {
 
+        /// <summary>
+        /// The hostname to connect to.
+        /// </summary>
         public String Hostname { get; protected set; }
+
+        /// <summary>
+        /// The port to connect on.
+        /// </summary>
         public UInt16 Port { get; protected set; }
 
+        /// <summary>
+        /// The local end point, which port we're using on the outbound connection.
+        /// </summary>
         public IPEndPoint LocalEndPoint { get; protected set; }
+
+        /// <summary>
+        /// The servers (who we're connected to) end point details.
+        /// </summary>
         public IPEndPoint RemoteEndPoint { get; protected set; }
 
+        /// <summary>
+        /// The packet serialization object used to parsed data read in
+        /// from the packet stream.
+        /// </summary>
         protected PacketSerializer<P> PacketSerializer { get; set; }
 
-        // Maximum amount of data to accept before scrapping the whole lot and trying again.
-        // Test maximizing this to see if plugin descriptions are causing some problems.
-        protected static readonly UInt32 MAX_GARBAGE_BYTES = 4194304;
-        protected static readonly UInt16 BUFFER_SIZE = 16384;
+        /// <summary>
+        /// The initial buffer size for the received buffer.
+        /// </summary>
+        protected int BufferSize = 16384;
 
-        protected byte[] a_bReceivedBuffer;
-        protected byte[] a_bPacketStream;
+        /// <summary>
+        /// The maximum bytes to collect for a single packet before it is completely scrapped.
+        /// </summary>
+        protected int MaxGarbageBytes = 262144;
 
-        #region Events
+        /// <summary>
+        /// Data collected so far for a packet.
+        /// </summary>
+        protected byte[] ReceivedBuffer;
 
-        public delegate void PrePacketDispatchedHandler(Client<P> sender, P packet, out bool isProcessed);
-        public event PrePacketDispatchedHandler BeforePacketDispatch;
-        public event PrePacketDispatchedHandler BeforePacketSend;
+        /// <summary>
+        /// Buffer for the data currently being read from the stream. This is appended to the received buffer.
+        /// </summary>
+        protected byte[] PacketStream;
 
-        public delegate void PacketDispatchHandler(Client<P> sender, P packet);
-        public event PacketDispatchHandler PacketSent;
-        public event PacketDispatchHandler PacketReceived;
+        /// <summary>
+        /// Lock for shutting down the connection.
+        /// </summary>
+        protected readonly Object ShutdownConnectionLock = new Object();
 
-        public delegate void SocketExceptionHandler(Client<P> sender, SocketException se);
-        public event SocketExceptionHandler SocketException;
+        /// <summary>
+        /// The last packet that was receieved by this connection.
+        /// </summary>
+        public P LastPacketReceived { get; protected set; }
 
-        public delegate void FailureHandler(Client<P> sender, Exception exception);
-        public event FailureHandler ConnectionFailure;
+        /// <summary>
+        /// The last packet that was sent by this connection.
+        /// </summary>
+        public P LastPacketSent { get; protected set; }
 
-        public delegate void ConnectionStateChangedHandler(Client<P> sender, ConnectionState newState);
-        public event ConnectionStateChangedHandler ConnectionStateChanged;
-
-        #endregion
-
-        private ConnectionState m_connectionState;
+        /// <summary>
+        /// The current connection state.
+        /// </summary>
         public ConnectionState ConnectionState {
             get {
-                return this.m_connectionState;
+                return this._connectionState;
             }
             set {
-                this.m_connectionState = value;
+                if (this.ConnectionState != value) {
+                    this._connectionState = value;
 
-                if (this.ConnectionStateChanged != null) {
-                    this.ConnectionStateChanged(this, this.m_connectionState);
+                    this.OnConnectionStateChange(this._connectionState);
                 }
             }
         }
+        private ConnectionState _connectionState;
 
-        public Client(string hostname, UInt16 port) {
+        /// <summary>
+        /// List of connection attempts used for a capped exponential backoff of reconnection attempts.
+        /// 
+        /// The maximum backoff is 10 minutes
+        /// </summary>
+        protected List<DateTime?> ConnectionAttempts { get; set; }
+
+        /// <summary>
+        /// Fired when a packet is successfully sent to the remote end point.
+        /// </summary>
+        public event PacketDispatchHandler PacketSent;
+
+        /// <summary>
+        /// Fired when a packet is successfully deserialized from the server.
+        /// </summary>
+        public event PacketDispatchHandler PacketReceived;
+        public delegate void PacketDispatchHandler(Client<P> sender, P packet);
+
+        /// <summary>
+        /// Fired when a socket exception (something goes wrong with the connection)
+        /// </summary>
+        public event SocketExceptionHandler SocketException;
+        public delegate void SocketExceptionHandler(Client<P> sender, SocketException se);
+
+        /// <summary>
+        /// Fired when an exception occurs somewhere in the client (which we should debug eh)
+        /// </summary>
+        public event FailureHandler ConnectionFailure;
+        public delegate void FailureHandler(Client<P> sender, Exception exception);
+
+        /// <summary>
+        /// Fired whenever this connection state has changed.
+        /// </summary>
+        public event ConnectionStateChangedHandler ConnectionStateChanged;
+        public delegate void ConnectionStateChangedHandler(Client<P> sender, ConnectionState newState);
+
+        protected Client(string hostname, UInt16 port) {
             this.Hostname = hostname;
             this.Port = port;
+
+            this.ConnectionAttempts = new List<DateTime?>();
         }
 
-        /*
-        #region Packet Management
+        /// <summary>
+        /// Pokes the connection, ensuring that the connection is still alive. If
+        /// this method determines that the connection is dead then it will call for
+        /// a shutdown.
+        /// </summary>
+        /// <remarks>
+        ///     <para>
+        /// This method is a final check to make sure communications are proceeding in both directions in
+        /// the last five minutes. If nothing has been sent and received in the last five minutes then the connection is assumed
+        /// dead and a shutdown is initiated.
+        /// </para>
+        /// </remarks>
+        public virtual void Poke() {
+            bool downstreamDead = this.LastPacketReceived == null || this.LastPacketReceived.Stamp < DateTime.Now.AddMinutes(-5);
+            bool upstreamDead = this.LastPacketSent == null || this.LastPacketSent.Stamp < DateTime.Now.AddMinutes(-5);
 
-        protected virtual P CreatePacket(byte[] packet) {
-            return null;
+            if (downstreamDead && upstreamDead) {
+                this.Shutdown();
+            }
         }
 
-        protected virtual UInt32 DecodePacketSize(byte[] packet) {
-            return 0;
-        }
-
-        protected virtual UInt32 GetPacketHeaderSize() {
-            return 0;
-        }
-
-        #endregion
-        */
-        public virtual void AttemptConnection() {
+        /// <summary>
+        /// Attempts a connection to the server using the specified host name and port.
+        /// </summary>
+        public virtual void Connect() {
 
         }
 
+        /// <summary>
+        /// Shuts down the connection, closing streams etc.
+        /// </summary>
         public virtual void Shutdown() {
 
         }
 
+        public virtual void Shutdown(Exception e) {
+
+        }
+
+        public virtual void Shutdown(SocketException se) {
+
+        }
+
+        protected virtual void ShutdownConnection() {
+
+        }
+
+        /// <summary>
+        /// Sends a packet to the server
+        /// </summary>
+        /// <param name="packet"></param>
         public virtual void Send(P packet) {
 
         }
-
-        protected virtual IAsyncResult BeginRead() {
+        
+        public virtual IAsyncResult BeginRead() {
             return null;
         }
 
-        #region Pre Dispatch
-
-        protected virtual void OnBeforePacketDispatch(P packet, out bool isProcessed) {
-            if (this.BeforePacketDispatch != null) {
-                this.BeforePacketDispatch(this, packet, out isProcessed);
-            }
-            else {
-                isProcessed = false;
-            }
-        }
-
-        protected virtual void OnBeforePacketSend(P packet, out bool isProcessed) {
-            if (this.BeforePacketSend != null) {
-                this.BeforePacketSend(this, packet, out isProcessed);
-            }
-            else {
-                isProcessed = false;
-            }
-        }
-
-        #endregion
-
-        #region Dispatch
-
-        protected virtual void OnPacketSent(P packet) {
-
-            if (this.PacketSent != null) {
-                this.PacketSent(this, packet);
-            }
-        }
-
-        protected virtual void OnPacketReceived(P packet) {
-
-            if (this.PacketReceived != null) {
-                this.PacketReceived(this, packet);
-            }
-        }
-
-        #endregion
-
-        #region Connection
-
+        /// <summary>
+        /// Resolves a hostname to an ip address
+        /// </summary>
+        /// <param name="hostName">The hostname or ip address</param>
+        /// <returns></returns>
         public static IPAddress ResolveHostName(string hostName) {
-            IPAddress ipReturn = IPAddress.None;
+            IPAddress address = IPAddress.None;
 
-            if (IPAddress.TryParse(hostName, out ipReturn) == false) {
-
-                ipReturn = IPAddress.None;
-
+            if (IPAddress.TryParse(hostName, out address) == false) {
                 try {
-                    IPHostEntry iphHost = Dns.GetHostEntry(hostName);
+                    IPHostEntry hostEntry = Dns.GetHostEntry(hostName);
 
-                    if (iphHost.AddressList.Length > 0) {
-                        ipReturn = iphHost.AddressList[0];
-                    }
-                    // ELSE return IPAddress.None..
+                    address = hostEntry.AddressList.Length > 0 ? hostEntry.AddressList[0] : IPAddress.None;
                 }
-                catch (Exception) { } // Returns IPAddress.None..
+                catch {
+                    address = IPAddress.None;
+                }
             }
 
-            return ipReturn;
+            return address;
+        }
+
+        /// <summary>
+        /// Method is executed prior to a packet being dispatched after receiving. This allows us
+        /// to cancel the packet by returning true.
+        /// </summary>
+        /// <param name="packet"></param>
+        /// <returns></returns>
+        protected virtual bool BeforePacketDispatch(P packet) {
+            return false;
+        }
+
+        /// <summary>
+        /// Method is executed prior to a packet being sent. This allows us
+        /// to cancel the packet by returning true.
+        /// </summary>
+        /// <param name="packet"></param>
+        /// <returns></returns>
+        protected virtual bool BeforePacketSend(P packet) {
+            return false;
+        }
+
+        protected virtual void OnConnectionStateChange(ConnectionState state) {
+            var handler = this.ConnectionStateChanged;
+            if (handler != null) {
+                handler(this, state);
+            }
         }
 
         protected virtual void OnConnectionFailure(Exception e) {
-            if (this.ConnectionFailure != null) {
-                this.ConnectionFailure(this, e);
+            var handler = this.ConnectionFailure;
+            if (handler != null) {
+                handler(this, e);
             }
         }
 
         protected virtual void OnSocketException(SocketException se) {
-            if (this.SocketException != null) {
-                this.SocketException(this, se);
+            var handler = this.SocketException;
+            if (handler != null) {
+                handler(this, se);
             }
         }
 
-        #endregion
+        protected virtual void OnPacketSent(P packet) {
+            this.LastPacketSent = packet;
 
-        #region Event Firing
-
-        protected void FirePacketRecieved(P packet) {
-            if (this.PacketReceived != null) {
-                this.PacketReceived(this, packet);
+            var handler = this.PacketSent;
+            if (handler != null) {
+                handler(this, packet);
             }
         }
 
-        #endregion
+        protected virtual void OnPacketReceived(P packet) {
+            this.LastPacketReceived = packet;
+
+            var handler = this.PacketReceived;
+            if (handler != null) {
+                handler(this, packet);
+            }
+        }
+
+        /// <summary>
+        /// Marks the connection time in our connections attemps log list. Removes any connection attempts older
+        /// than 10 minutes.
+        /// </summary>
+        protected bool BackoffConnectionAttempt() {
+            bool proceed = true;
+
+            // Remove anything older than 10 minutes.
+            this.ConnectionAttempts.RemoveAll(time => time < DateTime.Now.AddMinutes(-10));
+
+            // Fetch the most recent attempt time
+            DateTime? recentAttempt = this.ConnectionAttempts.OrderByDescending(time => time).FirstOrDefault();
+
+            if (recentAttempt.HasValue == true) {
+                // If the most recent attempt has expired
+                proceed = recentAttempt < DateTime.Now.AddSeconds(Math.Pow(2, this.ConnectionAttempts.Count) * -1);
+            }
+
+            // If we're going ahead with it, log the time of the current connection attempt.
+            if (proceed == true) {
+                this.ConnectionAttempts.Add(DateTime.Now);
+            }
+
+            return proceed;
+        }
 
     }
 }

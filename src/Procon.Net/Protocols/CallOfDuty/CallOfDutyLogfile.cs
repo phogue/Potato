@@ -1,27 +1,8 @@
-﻿// Copyright 2011 Geoffrey 'Phogue' Green
-// 
-// http://www.phogue.net
-//  
-// This file is part of Procon 2.
-// 
-// Procon 2 is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-// 
-// Procon 2 is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-// 
-// You should have received a copy of the GNU General Public License
-// along with Procon 2.  If not, see <http://www.gnu.org/licenses/>.
-
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using Procon.Net.Protocols.Objects;
 
 namespace Procon.Net.Protocols.CallOfDuty {
     using Procon.Net.Utils.HTTP;
@@ -42,10 +23,10 @@ namespace Procon.Net.Protocols.CallOfDuty {
         public event EmptyParameterHandler BeginParse;
         public event EmptyParameterHandler EndParse;
 
-        public delegate void ChatEntryHandler(CallOfDutyLogfile sender, DateTime eventTime, CallOfDutyChat chat);
+        public delegate void ChatEntryHandler(CallOfDutyLogfile sender, DateTime eventTime, Chat chat);
         public event ChatEntryHandler ChatEntry;
 
-        public delegate void KillEntryHandler(CallOfDutyLogfile sender, DateTime eventTime, CallOfDutyKill kill);
+        public delegate void KillEntryHandler(CallOfDutyLogfile sender, DateTime eventTime, Kill kill);
         public event KillEntryHandler KillEntry;
 
         #endregion
@@ -88,13 +69,13 @@ namespace Procon.Net.Protocols.CallOfDuty {
                 Match matchedCommand = command.Key.Match(text);
 
                 if (matchedCommand.Success == true) {
-                    ICallOfDutyObject newObject = ((ICallOfDutyObject)Activator.CreateInstance(command.Value)).Parse(matchedCommand);
+                    NetworkObject newObject = ((ICallOfDutyObject)Activator.CreateInstance(command.Value)).Parse(matchedCommand);
 
-                    if (newObject is CallOfDutyChat && this.ChatEntry != null) {
-                        this.ChatEntry(this, entryTime, (CallOfDutyChat)newObject);
+                    if (newObject is Chat && this.ChatEntry != null) {
+                        this.ChatEntry(this, entryTime, (Chat)newObject);
                     }
-                    else if (newObject is CallOfDutyKill && this.KillEntry != null) {
-                        this.KillEntry(this, entryTime, (CallOfDutyKill)newObject);
+                    else if (newObject is Kill && this.KillEntry != null) {
+                        this.KillEntry(this, entryTime, (Kill)newObject);
                     }
 
                     this.LatestEvent = entryTime;

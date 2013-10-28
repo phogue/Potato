@@ -1,119 +1,105 @@
-﻿// Copyright 2011 Geoffrey 'Phogue' Green
-// 
-// http://www.phogue.net
-//  
-// This file is part of Procon 2.
-// 
-// Procon 2 is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-// 
-// Procon 2 is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-// 
-// You should have received a copy of the GNU General Public License
-// along with Procon 2.  If not, see <http://www.gnu.org/licenses/>.
-
-using System;
+﻿using System;
+using System.Linq;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Procon.Net.Protocols.Frostbite {
-    public class FrostbiteClient : TCPClient<FrostbitePacket> {
+    public class FrostbiteClient : TcpClient<FrostbitePacket> {
 
-        protected Dictionary<UInt32?, FrostbitePacket> m_sentPackets;
-        protected Queue<FrostbitePacket> m_quePackets;
+        /// <summary>
+        /// A list of packets currently sent to the server and awaiting a response
+        /// </summary>
+        protected Dictionary<UInt32?, FrostbitePacket> OutgoingPackets;
 
-        public FrostbiteClient(string hostname, ushort port)
-            : base(hostname, port) {
-                this.PacketSerializer = new FrostbitePacketSerializer();
+        /// <summary>
+        /// A queue of packets to send to the server (waiting until the outgoing packets list is clear)
+        /// </summary>
+        protected Queue<FrostbitePacket> QueuedPackets;
+
+        /// <summary>
+        /// Lock for processing new queue items
+        /// </summary>
+        protected readonly Object QueueUnqueuePacketLock = new Object();
+
+        public FrostbiteClient(string hostname, ushort port) : base(hostname, port) {
+
+            this.OutgoingPackets = new Dictionary<UInt32?, FrostbitePacket>();
+            this.QueuedPackets = new Queue<FrostbitePacket>();
+
+            this.PacketSerializer = new FrostbitePacketSerializer();
         }
 
-        protected override void ClearConnection() {
-            base.ClearConnection();
+        /// <summary>
+        /// Handles the queueing of outgoing packets so our communication with the Frostbite server is always atomic.
+        /// 
+        /// While the protocol is asynchronous we force synchronicity so our program flow and plugin extensions
+        /// can have consistent and predictable execution of commands (they want to yell something to a player, then 
+        /// kick the player)
+        /// </summary>
+        /// <param name="isSending">True if we are looking to send a packet</param>
+        /// <param name="packet">The packet we are sending or have recieved</param>
+        /// <param name="nextPacket">The next packet to be sent</param>
+        /// <returns></returns>
+        private bool QueueUnqueuePacket(bool isSending, FrostbitePacket packet, out FrostbitePacket nextPacket) {
+            nextPacket = null;
+            bool response = false;
 
-            this.m_sentPackets = new Dictionary<UInt32?, FrostbitePacket>();
-            this.m_quePackets = new Queue<FrostbitePacket>();
-        }
+            lock (this.QueueUnqueuePacketLock) {
+                if (isSending == true) {
+                    // If we have something that has been sent and is awaiting a response
+                    if (this.OutgoingPackets.Count > 0) {
+                        // Add the packet to our queue to be sent at a later time.
+                        this.QueuedPackets.Enqueue(packet);
 
-        private bool QueueUnqueuePacket(bool blSendingPacket, FrostbitePacket cpPacket, out FrostbitePacket cpNextPacket) {
-            cpNextPacket = null;
-            bool blResponse = false;
-
-            lock (new object()) {
-
-                if (blSendingPacket == true) {
-                    if (this.m_sentPackets.Count > 0) {
-                        this.m_quePackets.Enqueue(cpPacket);
-                        //if (this.PacketQueued != null) {
-                        //    FrostbiteConnection.RaiseEvent(this.PacketQueued.GetInvocationList(), this, cpPacket, Thread.CurrentThread.ManagedThreadId);
-                        //    //this.PacketQueued(cpPacket, Thread.CurrentThread.ManagedThreadId);
-                        //}
-                        blResponse = true;
+                        response = true;
                     }
-                    else {
-                        if (this.m_sentPackets.Count == 0 && this.m_quePackets.Count > 0) {
-                            // TODO: I've seen it slip in here once, but that was when I had
-                            // combined the events and commands streams.  Have not seen it since, but need to make sure.
-
-                            //throw new Exception();
-                        }
-                        else {
-                            // No packets waiting for response, free to send the new packet.
-                            blResponse = false;
-                        }
-                    }
+                    // else - response = false
                 }
                 else {
                     // Else it's being called from recv and cpPacket holds the processed RequestPacket.
 
                     // Remove the packet 
-                    if (cpPacket != null) {
-                        if (this.m_sentPackets.ContainsKey(cpPacket.SequenceId) == true) {
-                            this.m_sentPackets.Remove(cpPacket.SequenceId);
+                    if (packet != null && packet.SequenceId != null) {
+                        if (this.OutgoingPackets.ContainsKey(packet.SequenceId) == true) {
+                            this.OutgoingPackets.Remove(packet.SequenceId);
                         }
                     }
 
-                    if (this.m_quePackets.Count > 0) {
-                        cpNextPacket = this.m_quePackets.Dequeue();
-                        //if (this.PacketDequeued != null) {
-                        //    FrostbiteConnection.RaiseEvent(this.PacketDequeued.GetInvocationList(), this, cpNextPacket, Thread.CurrentThread.ManagedThreadId);
-                        //    //this.PacketDequeued(cpNextPacket, Thread.CurrentThread.ManagedThreadId);
-                        //}
-                        blResponse = true;
+                    if (this.QueuedPackets.Count > 0) {
+                        nextPacket = this.QueuedPackets.Dequeue();
+
+                        response = true;
                     }
                     else {
-                        blResponse = false;
+                        response = false;
                     }
 
                 }
+            }
 
-                return blResponse;
+            return response;
+        }
+
+        /// <summary>
+        /// Validates that packets are not 'lost' after being sent. If this is the case then the connection is shutdown
+        /// to then be rebooted at a later time.
+        /// 
+        /// If a packet exists in our outgoing "SentPackets"
+        /// </summary>
+        protected void RestartConnectionOnQueueFailure() {
+            if (this.OutgoingPackets.Any(outgoingPacket => outgoingPacket.Value.Stamp < DateTime.Now.AddMinutes(-2)) == true) {
+                this.OutgoingPackets.Clear();
+                this.QueuedPackets.Clear();
+
+                this.Shutdown(new Exception("Failed to hear response to packet within two minutes, forced shutdown."));
             }
         }
 
-        /*
-        protected override FrostbitePacket CreatePacket(byte[] packet) {
-            return new FrostbitePacket(packet);
-        }
-
-        protected override UInt32 DecodePacketSize(byte[] packet) {
-            return FrostbitePacket.DecodePacketSize(packet);
-        }
-
-        protected override UInt32 GetPacketHeaderSize() {
-            return FrostbitePacket.INT_PACKET_HEADER_SIZE;
-        }
-        */
         public FrostbitePacket GetRequestPacket(FrostbitePacket recievedPacket) {
 
             FrostbitePacket requestPacket = null;
 
-            if (this.m_sentPackets.ContainsKey(recievedPacket.SequenceId) == true) {
-                requestPacket = this.m_sentPackets[recievedPacket.SequenceId];
+            if (recievedPacket.SequenceId != null && this.OutgoingPackets.ContainsKey(recievedPacket.SequenceId) == true) {
+                requestPacket = this.OutgoingPackets[recievedPacket.SequenceId];
             }
 
             return requestPacket;
@@ -124,7 +110,7 @@ namespace Procon.Net.Protocols.Frostbite {
 
             // Respond with "OK" to all server events.
             if (packet.Origin == PacketOrigin.Server && packet.IsResponse == false) {
-                base.Send(new FrostbitePacket(PacketOrigin.Server, true, packet.SequenceId, FrostbitePacket.STRING_RESPONSE_OKAY));
+                base.Send(new FrostbitePacket(PacketOrigin.Server, true, packet.SequenceId, FrostbitePacket.StringResponseOkay));
             }
 
             // Pop the next packet if a packet is waiting to be sent.
@@ -132,6 +118,9 @@ namespace Procon.Net.Protocols.Frostbite {
             if (this.QueueUnqueuePacket(false, packet, out nextPacket) == true) {
                 this.Send(nextPacket);
             }
+
+            // Shutdown if we're just waiting for a response to an old packet.
+            this.RestartConnectionOnQueueFailure();
         }
 
         public override void Send(FrostbitePacket packet) {
@@ -141,7 +130,6 @@ namespace Procon.Net.Protocols.Frostbite {
             }
 
             // QueueUnqueuePacket
-            FrostbitePacket nullPacket = null;
 
             if (packet.Origin == PacketOrigin.Server && packet.IsResponse == true) {
                 // I don't think this will ever be encountered since OnPacketReceived calls the base.Send.
@@ -149,21 +137,32 @@ namespace Procon.Net.Protocols.Frostbite {
             }
             else {
                 // Null return because we're not popping a packet, just checking to see if this one needs to be queued.
-                if (this.QueueUnqueuePacket(true, (FrostbitePacket)packet, out nullPacket) == false) {
+                FrostbitePacket nullPacket = null;
+
+                if (this.QueueUnqueuePacket(true, packet, out nullPacket) == false) {
                     // No need to queue, queue is empty.  Send away..
                     base.Send(packet);
                 }
+
+                // Shutdown if we're just waiting for a response to an old packet.
+                this.RestartConnectionOnQueueFailure();
             }
         }
 
-        protected override void OnBeforePacketSend(FrostbitePacket packet, out bool isProcessed) {
+        protected override bool BeforePacketSend(FrostbitePacket packet) {
 
-            if (packet.Origin == PacketOrigin.Client && packet.IsResponse == false && this.m_sentPackets.ContainsKey(packet.SequenceId) == false) {
-                this.m_sentPackets.Add(packet.SequenceId, packet);
+            if (packet.SequenceId != null && packet.Origin == PacketOrigin.Client && packet.IsResponse == false && this.OutgoingPackets.ContainsKey(packet.SequenceId) == false) {
+                this.OutgoingPackets.Add(packet.SequenceId, packet);
             }
 
-            base.OnBeforePacketSend(packet, out isProcessed);
+            return base.BeforePacketSend(packet);
         }
 
+        protected override void ShutdownConnection() {
+            base.ShutdownConnection();
+
+            this.OutgoingPackets.Clear();
+            this.QueuedPackets.Clear();
+        }
     }
 }

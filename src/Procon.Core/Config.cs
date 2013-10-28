@@ -1,57 +1,72 @@
-﻿// Copyright 2011 Geoffrey 'Phogue' Green
-// Modified by Cameron 'Imisnew2' Gunnin
-// 
-// http://www.phogue.net
-//  
-// This file is part of Procon 2.
-// 
-// Procon 2 is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-// 
-// Procon 2 is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-// 
-// You should have received a copy of the GNU General Public License
-// along with Procon 2.  If not, see <http://www.gnu.org/licenses/>.
-
-using System;
+﻿using System;
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
+using System.Xml.Serialization;
+using Newtonsoft.Json;
 
-namespace Procon.Core
-{
+namespace Procon.Core {
     [Serializable]
-    public class Config
-    {
-        // Public Properties
-        public XDocument Document { get; protected set; }
-        public XElement  Root     { get; protected set; }
+    public class Config : IDisposable {
 
-        
-        
+        [NonSerialized]
+        private XDocument _document;
+
+        [NonSerialized]
+        private XElement _root;
+
+        /// <summary>
+        /// The entire document in memory to be flushed to a file.
+        /// </summary>
+        [XmlIgnore, JsonIgnore]
+        public XDocument Document {
+            get {
+                return this._document;
+            }
+            protected set {
+                this._document = value;
+            }
+        }
+
+        /// <summary>
+        /// The root element of the document
+        /// </summary>
+        [XmlIgnore, JsonIgnore]
+        public XElement Root {
+            get {
+                return this._root;
+            }
+            protected set {
+                this._root = value;
+            }
+        }
+
+        public Config() {
+            this.Document = new XDocument();
+        }
+
         /// <summary>
         /// Combines this configuration file with another configuration file.
         /// Returns a reference back to this config.
         /// </summary>
         public virtual Config Add(Config config) {
-            if (Document != null && config.Document != null) {
-                XElement tThisRoot = Document.Root;
+            if (this.Document != null && config.Document != null) {
+                XElement tThisRoot = this.Document.Root;
                 XElement tThatRoot = config.Document.Root;
+
                 while (tThisRoot != null && tThatRoot != null) {
                     if (tThisRoot.Name != tThatRoot.Name) {
-                        if (tThisRoot.Parent != null)
+                        if (tThisRoot.Parent != null) {
                             tThisRoot.Parent.Add(tThatRoot);
+                        }
+                            
                         break;
                     }
                     tThisRoot = tThisRoot.Descendants().FirstOrDefault();
                     tThatRoot = tThatRoot.Descendants().FirstOrDefault();
                 }
             }
+
             return this;
         }
 
@@ -60,12 +75,16 @@ namespace Procon.Core
         /// Returns a reference back to this config.
         /// </summary>
         public virtual Config LoadDirectory(DirectoryInfo mDirectory) {
-            if (mDirectory.Exists)
-                foreach (FileInfo xmlFile in mDirectory.GetFiles("*.xml"))
-                    if (Root == null)
-                        LoadFile(xmlFile);
-                    else
-                        Add(new Config().LoadFile(xmlFile));
+            if (mDirectory != null && mDirectory.Exists == true) {
+                foreach (FileInfo xmlFile in mDirectory.GetFiles("*.xml")) {
+                    if (this.Root == null) {
+                        this.LoadFile(xmlFile);
+                    }
+                    else {
+                        this.Add(new Config().LoadFile(xmlFile));
+                    }
+                }
+            }
 
             return this;
         }
@@ -75,10 +94,11 @@ namespace Procon.Core
         /// Returns a reference back to this config.
         /// </summary>
         public virtual Config LoadFile(FileInfo mFile) {
-            if (mFile.Exists) {
+            if (mFile.Exists == true) {
                 using (StreamReader sr = new StreamReader(mFile.FullName)) {
-                    Document = XDocument.Load(sr);
-                    Root     = Document.Element("procon");
+                    this.Document = XDocument.Load(sr);
+
+                    this.Root = this.Document.Element("Procon");
                 }
             }
             return this;
@@ -89,22 +109,24 @@ namespace Procon.Core
         /// Returns a reference back to this config.
         /// </summary>
         public virtual Config Generate(Type mType) {
-            Document = new XDocument();
+            this.Document = new XDocument();
 
-            foreach (String mName in mType.FullName.ToLower().Split('`').First().Split('.')) {
-                if (Root == null) {
-                    Document.Add(
+            foreach (String mName in mType.FullName.Split('`').First().Split('.')) {
+                if (this.Root == null) {
+                    this.Document.Add(
                         new XComment("This file is overwritten by Procon."),
                         new XElement(mName)
                     );
-                    Root = Document.Element(mName);
+
+                    this.Root = this.Document.Element(mName);
                 }
                 else {
-                    Root.Add(new XElement(mName));
-                    Root = Root.Element(mName);
+                    this.Root.Add(new XElement(mName));
+
+                    this.Root = this.Root.Element(mName);
                 }
             }
-            
+
             return this;
         }
 
@@ -113,14 +135,20 @@ namespace Procon.Core
         /// Returns a reference back to this config.
         /// </summary>
         public virtual Config Save(FileInfo mFile) {
-            if (!File.Exists(mFile.FullName)) {
-                if (!Directory.Exists(mFile.Directory.FullName))
-                    Directory.CreateDirectory(mFile.Directory.FullName);
+            if (File.Exists(mFile.FullName) == false && mFile.Directory != null) {
+                Directory.CreateDirectory(mFile.Directory.FullName);
+
                 File.Create(mFile.FullName).Close();
             }
-            Document.Save(mFile.FullName);
+
+            this.Document.Save(mFile.FullName);
 
             return this;
+        }
+
+        public void Dispose() {
+            this.Document = null;
+            this.Root = null;
         }
     }
 }

@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 
 namespace Procon.Net.Protocols.Source.Logging.BroadcastService {
-    using Procon.Net.Utils;
     public class SourceBroadcastServicePacketSerializer : PacketSerializer<SourceBroadcastServicePacket> {
 
         public SourceBroadcastServicePacketSerializer()
@@ -48,7 +45,7 @@ namespace Procon.Net.Protocols.Source.Logging.BroadcastService {
             return packet;
         }
 
-        public override uint ReadPacketSize(byte[] packetData) {
+        public override long ReadPacketSize(byte[] packetData) {
             //throw new NotImplementedException();
 
             return 0;

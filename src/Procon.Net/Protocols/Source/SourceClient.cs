@@ -1,66 +1,62 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Procon.Net.Protocols.Source {
-    using Procon.Net.Utils;
     using Procon.Net.Protocols.Source.Logging.BroadcastListener;
     using Procon.Net.Protocols.Source.Logging.BroadcastService;
 
-    public class SourceClient : TCPClient<SourcePacket> {
-        protected Dictionary<int?, SourcePacket> m_sentPackets;
-        protected Queue<SourcePacket> m_quePackets;
+    public class SourceClient : TcpClient<SourcePacket> {
+        protected Dictionary<int?, SourcePacket> SentPackets;
+        protected Queue<SourcePacket> QueuePackets;
 
         protected SourceBroadcastListener BroadcastListener { get; set; }
 
         public ushort SourceLogServicePort { get; set; }
         public ushort SourceLogListenPort { get; set; }
 
-        public SourceClient(string hostname, ushort port)
-            : base(hostname, port) {
-                this.PacketSerializer = new SourcePacketSerializer();
+        protected readonly Object QueueUnqueuePacketLock = new Object();
 
-                this.ConnectionStateChanged += new ConnectionStateChangedHandler(SourceClient_ConnectionStateChanged);
+        public SourceClient(string hostname, ushort port) : base(hostname, port) {
+            this.SentPackets = new Dictionary<int?, SourcePacket>();
+            this.QueuePackets = new Queue<SourcePacket>();
+
+            this.PacketSerializer = new SourcePacketSerializer();
+
+            this.ConnectionStateChanged += new ConnectionStateChangedHandler(SourceClient_ConnectionStateChanged);
         }
 
         private void SourceClient_ConnectionStateChanged(Client<SourcePacket> sender, ConnectionState newState) {
-            if (newState == Net.ConnectionState.LoggedIn) {
+            if (newState == Net.ConnectionState.ConnectionLoggedIn) {
                 // Start the broadcast service. This will work or exit if the port is already bound to.
-                new SourceBroadcastService(this.SourceLogServicePort, this.SourceLogListenPort).AttemptConnection();
+                new SourceBroadcastService(this.SourceLogServicePort, this.SourceLogListenPort).Connect();
 
                 // Now setup a listener to catch relevent console log packets and dispatch them
                 this.BroadcastListener = new SourceBroadcastListener(this.SourceLogListenPort);
                 this.BroadcastListener.PacketReceived += new Client<SourceBroadcastListenerPacket>.PacketDispatchHandler(BroadcastListener_PacketReceived);
-                this.BroadcastListener.AttemptConnection();
+                this.BroadcastListener.Connect();
             }
         }
 
         private void BroadcastListener_PacketReceived(Client<SourceBroadcastListenerPacket> sender, SourceBroadcastListenerPacket packet) {
 
             // TODO: don't compare by string. it's slow.
-            if (this.ConnectionState == Net.ConnectionState.LoggedIn && this.RemoteEndPoint.ToString().CompareTo(packet.RemoteEndPoint.ToString()) == 0) {
+            if (this.ConnectionState == Net.ConnectionState.ConnectionLoggedIn && this.RemoteEndPoint.ToString().CompareTo(packet.RemoteEndPoint.ToString()) == 0) {
 
-                this.FirePacketRecieved(packet);
+                this.OnPacketReceived(packet);
             }
-        }
-
-        protected override void ClearConnection() {
-            base.ClearConnection();
-
-            this.m_sentPackets = new Dictionary<int?, SourcePacket>();
-            this.m_quePackets = new Queue<SourcePacket>();
         }
 
         private bool QueueUnqueuePacket(bool blSendingPacket, SourcePacket cpPacket, out SourcePacket cpNextPacket) {
             cpNextPacket = null;
             bool blResponse = false;
 
-            lock (new object()) {
+            lock (this.QueueUnqueuePacketLock) {
+
+                // @todo look at moving the queue from Frostbite to a util location so it may be used here.
 
                 if (blSendingPacket == true) {
-                    if (this.m_sentPackets.Count > 0) {
-                        this.m_quePackets.Enqueue(cpPacket);
+                    if (this.SentPackets.Count > 0) {
+                        this.QueuePackets.Enqueue(cpPacket);
                         //if (this.PacketQueued != null) {
                         //    FrostbiteConnection.RaiseEvent(this.PacketQueued.GetInvocationList(), this, cpPacket, Thread.CurrentThread.ManagedThreadId);
                         //    //this.PacketQueued(cpPacket, Thread.CurrentThread.ManagedThreadId);
@@ -68,7 +64,7 @@ namespace Procon.Net.Protocols.Source {
                         blResponse = true;
                     }
                     else {
-                        if (this.m_sentPackets.Count == 0 && this.m_quePackets.Count > 0) {
+                        if (this.SentPackets.Count == 0 && this.QueuePackets.Count > 0) {
                             // TODO: I've seen it slip in here once, but that was when I had
                             // combined the events and commands streams.  Have not seen it since, but need to make sure.
 
@@ -85,13 +81,13 @@ namespace Procon.Net.Protocols.Source {
 
                     // Remove the packet 
                     if (cpPacket != null) {
-                        if (this.m_sentPackets.ContainsKey(cpPacket.RequestId) == true) {
-                            this.m_sentPackets.Remove(cpPacket.RequestId);
+                        if (this.SentPackets.ContainsKey(cpPacket.RequestId) == true) {
+                            this.SentPackets.Remove(cpPacket.RequestId);
                         }
                     }
 
-                    if (this.m_quePackets.Count > 0) {
-                        cpNextPacket = this.m_quePackets.Dequeue();
+                    if (this.QueuePackets.Count > 0) {
+                        cpNextPacket = this.QueuePackets.Dequeue();
                         //if (this.PacketDequeued != null) {
                         //    FrostbiteConnection.RaiseEvent(this.PacketDequeued.GetInvocationList(), this, cpNextPacket, Thread.CurrentThread.ManagedThreadId);
                         //    //this.PacketDequeued(cpNextPacket, Thread.CurrentThread.ManagedThreadId);
@@ -112,8 +108,8 @@ namespace Procon.Net.Protocols.Source {
 
             SourcePacket requestPacket = null;
 
-            if (this.m_sentPackets.ContainsKey(recievedPacket.RequestId) == true) {
-                requestPacket = this.m_sentPackets[recievedPacket.RequestId];
+            if (this.SentPackets.ContainsKey(recievedPacket.RequestId) == true) {
+                requestPacket = this.SentPackets[recievedPacket.RequestId];
             }
 
             return requestPacket;
@@ -151,13 +147,13 @@ namespace Procon.Net.Protocols.Source {
             }
         }
 
-        protected override void OnBeforePacketSend(SourcePacket packet, out bool isProcessed) {
+        protected override bool BeforePacketSend(SourcePacket packet) {
 
-            if (packet.Origin == PacketOrigin.Client && packet.IsResponse == false && this.m_sentPackets.ContainsKey(packet.RequestId) == false) {
-                this.m_sentPackets.Add(packet.RequestId, packet);
+            if (packet.Origin == PacketOrigin.Client && packet.IsResponse == false && this.SentPackets.ContainsKey(packet.RequestId) == false) {
+                this.SentPackets.Add(packet.RequestId, packet);
             }
 
-            base.OnBeforePacketSend(packet, out isProcessed);
+            return base.BeforePacketSend(packet);
         }
 
 

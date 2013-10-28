@@ -1,69 +1,56 @@
-﻿// Copyright 2011 Geoffrey 'Phogue' Green
-// 
-// http://www.phogue.net
-//  
-// This file is part of Procon 2.
-// 
-// Procon 2 is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-// 
-// Procon 2 is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-// 
-// You should have received a copy of the GNU General Public License
-// along with Procon 2.  If not, see <http://www.gnu.org/licenses/>.
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System;
 using System.Net;
 using System.Net.Sockets;
 
 namespace Procon.Net {
 
-    public class UDPClient<P> : Client<P>
-        where P : Packet {
+    [Serializable]
+    public class UdpClient<P> : Client<P> where P : Packet {
 
-        protected UdpClient m_udpClient;
-        protected IPEndPoint m_remoteIpEndPoint;
+        /// <summary>
+        /// The 'open' client for the udp connection
+        /// </summary>
+        protected System.Net.Sockets.UdpClient Client;
 
-        private byte[] a_bReceivedBuffer = new byte[Client<P>.BUFFER_SIZE];
-        //private byte[] a_bPacketStream;
+        /// <summary>
+        /// The end point of the server we are communicating with
+        /// </summary>
+        protected IPEndPoint RemoteIpEndPoint;
 
-        public UDPClient(string hostname, UInt16 port)
-            : base(hostname, port) {
+        public UdpClient(string hostname, UInt16 port) : base(hostname, port) {
+
         }
 
-        public override void AttemptConnection() {
-            try {
-                this.ConnectionState = Net.ConnectionState.Connecting;
+        protected virtual void ClearConnection() {
+            this.ReceivedBuffer = new byte[this.BufferSize];
+            this.PacketStream = null;
+        }
 
-                this.m_udpClient = new UdpClient(this.Hostname, this.Port);
-                this.m_udpClient.DontFragment = true; // ?
-                this.m_remoteIpEndPoint = new IPEndPoint(IPAddress.Any, 0);
-                this.m_udpClient.BeginReceive(this.ReceiveCallback, null);
+        public override void Connect() {
+            if (this.BackoffConnectionAttempt() == true) {
+                try {
+                    this.ConnectionState = Net.ConnectionState.ConnectionConnecting;
 
-                this.ConnectionState = Net.ConnectionState.Ready;
-            }
-            catch (SocketException se) {
-                this.Shutdown(se);
-            }
-            catch (Exception e) {
-                this.Shutdown(e);
+                    this.Client = new System.Net.Sockets.UdpClient(this.Hostname, this.Port) {
+                        DontFragment = true
+                    };
+
+                    this.RemoteIpEndPoint = new IPEndPoint(IPAddress.Any, 0);
+                    this.Client.BeginReceive(this.ReceiveCallback, null);
+
+                    this.ConnectionState = Net.ConnectionState.ConnectionReady;
+                }
+                catch (SocketException se) {
+                    this.Shutdown(se);
+                }
+                catch (Exception e) {
+                    this.Shutdown(e);
+                }
             }
         }
 
-        protected override IAsyncResult BeginRead() {
-            if (this.m_udpClient != null) {
-                return this.m_udpClient.BeginReceive(this.ReceiveCallback, null);
-            }
-
-            return null;
+        public override IAsyncResult BeginRead() {
+            return this.Client != null ? this.Client.BeginReceive(this.ReceiveCallback, null) : null;
         }
 
         #region Send/Recieve Packets
@@ -73,8 +60,8 @@ namespace Procon.Net {
             P packet = (P)ar.AsyncState;
 
             try {
-                if (this.m_udpClient != null) {
-                    this.m_udpClient.EndSend(ar);
+                if (this.Client != null) {
+                    this.Client.EndSend(ar);
 
                     this.OnPacketSent(packet);
                 }
@@ -89,24 +76,13 @@ namespace Procon.Net {
 
         public override void Send(P packet) {
             if (packet != null) {
-                try {
+                if (this.BeforePacketSend(packet) == false && this.Client != null) {
 
-                    bool isProcessed = false;
+                    byte[] bytePacket = this.PacketSerializer.Serialize(packet);
 
-                    this.OnBeforePacketSend(packet, out isProcessed);
-
-                    if (isProcessed == false && this.m_udpClient != null) {
-
-                        byte[] a_bBytePacket = this.PacketSerializer.Serialize(packet);
-
-                        this.m_udpClient.BeginSend(a_bBytePacket, a_bBytePacket.Length, this.SendAsyncCallback, packet);
+                    if (bytePacket != null && bytePacket.Length > 0) {
+                        this.Client.BeginSend(bytePacket, bytePacket.Length, this.SendAsyncCallback, packet);
                     }
-                }
-                catch (SocketException se) {
-                    this.Shutdown(se);
-                }
-                catch (Exception e) {
-                    this.Shutdown(e);
                 }
             }
         }
@@ -114,26 +90,21 @@ namespace Procon.Net {
         protected virtual void ReceiveCallback(IAsyncResult ar) {
 
             try {
-                if (this.m_udpClient != null) {
+                if (this.Client != null) {
 
-                    this.a_bReceivedBuffer = this.m_udpClient.EndReceive(ar, ref this.m_remoteIpEndPoint);
+                    this.ReceivedBuffer = this.Client.EndReceive(ar, ref this.RemoteIpEndPoint);
 
-                    P completedPacket = this.PacketSerializer.Deserialize(this.a_bReceivedBuffer);
-                    this.RemoteEndPoint = completedPacket.RemoteEndPoint = this.m_remoteIpEndPoint;
+                    P completedPacket = this.PacketSerializer.Deserialize(this.ReceivedBuffer);
+                    this.RemoteEndPoint = completedPacket.RemoteEndPoint = this.RemoteIpEndPoint;
 
-                    bool isProcessed = false;
-                    this.OnBeforePacketDispatch(completedPacket, out isProcessed);
+                    this.BeforePacketDispatch(completedPacket);
 
                     this.OnPacketReceived(completedPacket);
 
                     this.BeginRead();
-
-                    //if (this.m_udpClient != null) {
-                    //    IAsyncResult result = this.m_udpClient.BeginReceive(this.ReceiveCallback, null);
-                    //}
                 }
                 else {
-                    this.Shutdown(new Exception("No stream exists during receieve"));
+                    this.Shutdown(new Exception("No stream exists during receive"));
                 }
             }
             catch (SocketException se) {
@@ -142,103 +113,22 @@ namespace Procon.Net {
             catch (Exception e) {
                 this.Shutdown(e);
             }
-
-            /*
-                int iBytesRead = this.a_bReceivedBuffer.Length;
-
-                if (iBytesRead > 0) {
-
-                    // Create or resize our packet stream to hold the new data.
-                    if (this.a_bPacketStream == null) {
-                        this.a_bPacketStream = new byte[iBytesRead];
-                    }
-                    else {
-                        Array.Resize(ref this.a_bPacketStream, this.a_bPacketStream.Length + iBytesRead);
-                    }
-
-                    Array.Copy(this.a_bReceivedBuffer, 0, this.a_bPacketStream, this.a_bPacketStream.Length - iBytesRead, iBytesRead);
-
-                    UInt32 ui32PacketSize = this.DecodePacketSize(this.a_bPacketStream);
-
-                    while (this.a_bPacketStream.Length >= ui32PacketSize && this.a_bPacketStream.Length > this.GetPacketHeaderSize()) {
-
-                        // Copy the complete packet from the beginning of the stream.
-                        byte[] a_bCompletePacket = new byte[ui32PacketSize];
-                        Array.Copy(this.a_bPacketStream, a_bCompletePacket, ui32PacketSize);
-
-                        Packet completedPacket = this.CreatePacket(a_bCompletePacket);
-                        //Packet completedPacket = new Packet(a_bCompletePacket);
-                        //cbfConnection.m_ui32SequenceNumber = Math.Max(cbfConnection.m_ui32SequenceNumber, cpCompletePacket.SequenceNumber) + 1;
-
-                        // Dispatch the completed packet.
-                        try {
-                            bool isProcessed = false;
-
-                            this.OnBeforePacketDispatch(completedPacket, out isProcessed);
-
-                            this.OnPacketReceived(completedPacket);
-
-                            // Now remove the completed packet from the beginning of the stream
-                            byte[] a_bUpdatedSteam = new byte[this.a_bPacketStream.Length - ui32PacketSize];
-                            Array.Copy(this.a_bPacketStream, ui32PacketSize, a_bUpdatedSteam, 0, this.a_bPacketStream.Length - ui32PacketSize);
-                            this.a_bPacketStream = a_bUpdatedSteam;
-
-                            ui32PacketSize = this.DecodePacketSize(this.a_bPacketStream);
-                        }
-                        catch (Exception e) {
-                            // TO DO: May be bad, who knows now.
-                            // this.ClearConnection();
-                        }
-                    }
-
-                    // If we've recieved the maxmimum garbage, scrap it all and shutdown the connection.
-                    // We went really wrong somewhere..
-                    if (this.a_bReceivedBuffer.Length >= Client.MAX_GARBAGE_BYTES) {
-                        this.a_bReceivedBuffer = null; // GC.collect()
-                        this.Shutdown(new Exception("Exceeded maximum garbage packet"));
-                    }
-                }
-
-                if (iBytesRead == 0) {
-                    this.Shutdown();
-                    return;
-                }
-
-
-                if (this.m_udpClient != null) {
-
-                    IAsyncResult result = this.m_udpClient.BeginReceive(this.ReceiveCallback, null);
-                    //IAsyncResult result = this.m_nwsStream.BeginRead(this.a_bReceivedBuffer, 0, this.a_bReceivedBuffer.Length, this.ReceiveCallback, this);
-
-                    //if (result.AsyncWaitHandle.WaitOne(180000, false) == false) {
-                    //    this.Shutdown(new Exception("Failed to recieve after two minutes"));
-                    //}
-                }
-
-            }
-            catch (SocketException se) {
-                this.Shutdown(se);
-            }
-            catch (Exception e) {
-                this.Shutdown(e);
-            }
-            */
         }
 
         #endregion
 
         #region Shutdown/Disconnection
 
-        public void Shutdown(Exception e) {
-            if (this.m_udpClient != null) {
+        public override void Shutdown(Exception e) {
+            if (this.Client != null) {
                 this.ShutdownConnection();
 
                 this.OnConnectionFailure(e);
             }
         }
 
-        public void Shutdown(SocketException se) {
-            if (this.m_udpClient != null) {
+        public override void Shutdown(SocketException se) {
+            if (this.Client != null) {
                 this.ShutdownConnection();
 
                 this.OnSocketException(se);
@@ -246,23 +136,23 @@ namespace Procon.Net {
         }
 
         public override void Shutdown() {
-            if (this.m_udpClient != null) {
+            if (this.Client != null) {
                 this.ShutdownConnection();
             }
         }
 
-        private void ShutdownConnection() {
+        protected override void ShutdownConnection() {
 
-            lock (new object()) {
+            lock (this.ShutdownConnectionLock) {
 
-                this.ConnectionState = Net.ConnectionState.Disconnecting;
+                this.ConnectionState = Net.ConnectionState.ConnectionDisconnecting;
 
-                if (this.m_udpClient != null) {
+                if (this.Client != null) {
 
                     try {
-                        if (this.m_udpClient != null) {
-                            this.m_udpClient.Close();
-                            this.m_udpClient = null;
+                        if (this.Client != null) {
+                            this.Client.Close();
+                            this.Client = null;
                         }
                     }
                     catch (SocketException se) {
@@ -272,8 +162,12 @@ namespace Procon.Net {
 
                     }
                     finally {
-                        this.ConnectionState = Net.ConnectionState.Disconnected;
+                        this.ConnectionState = Net.ConnectionState.ConnectionDisconnected;
                     }
+                }
+                else {
+                    // Nothing connected, set to disconnected.
+                    this.ConnectionState = Net.ConnectionState.ConnectionDisconnected;
                 }
             }
         }

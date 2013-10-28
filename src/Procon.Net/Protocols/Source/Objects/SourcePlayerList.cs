@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 
 namespace Procon.Net.Protocols.Source.Objects {
@@ -14,7 +11,8 @@ namespace Procon.Net.Protocols.Source.Objects {
 
         public SourcePlayerList Parse(string text) {
 
-            this.Subset = new PlayerSubset() { Context = PlayerSubsetContext.All };
+            // Empty player list implying all players.
+            this.Subset = new GroupingList();
 
             foreach (string line in text.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries)) {
                 Match player = SourcePlayerList.PlayerMatch.Match(line);
@@ -23,7 +21,7 @@ namespace Procon.Net.Protocols.Source.Objects {
                     this.Add(
                         new Player() {
                             SlotID = uint.Parse(player.Groups["userid"].Value),
-                            GUID = player.Groups["uniqueid"].Value,
+                            Uid = player.Groups["uniqueid"].Value,
                             Name = player.Groups["name"].Value,
                             Ping = uint.Parse(player.Groups["ping"].Value) == 999 ? 0 : uint.Parse(player.Groups["ping"].Value),
                             //Score = int.Parse(player.Groups["score"].Value),

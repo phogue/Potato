@@ -1,0 +1,150 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE ProtocolTestRun [
+  <!ATTLIST Replacement Regex CDATA #IMPLIED>
+  <!ATTLIST Replacement Text CDATA #IMPLIED>
+  <!ATTLIST Send Regex CDATA #IMPLIED>
+  <!ATTLIST Send Text CDATA #IMPLIED>
+  <!ATTLIST Response Regex CDATA #IMPLIED>
+  <!ATTLIST Response Text CDATA #IMPLIED>
+  <!ATTLIST Request Regex CDATA #IMPLIED>
+  <!ATTLIST Request Text CDATA #IMPLIED>
+]>
+<ProtocolTestRun>
+  <Replacements>
+    <Replacement>
+      <Text>{PlayerName}</Text>
+      <Regex></Regex>
+      <Replace>PhogueZero</Replace>
+    </Replacement>
+    <Replacement>
+      <Text>{EaGuid}</Text>
+      <Regex></Regex>
+      <Replace>EA_1234</Replace>
+    </Replacement>
+    <Replacement>
+      <Text>{RandomPlayerCount}</Text>
+      <Regex></Regex>
+      <Random>
+        <Type>Integer</Type>
+        <Minimum>8</Minimum>
+        <Maximum>32</Maximum>
+      </Random>
+    </Replacement>
+  </Replacements>
+  <Tests>
+    <Test>
+      <Timeout>2</Timeout>
+      <Name><![CDATA[Test version outputs correct game type & valid numeric version]]></Name>
+      <TestCommands>
+        <TestCommand>
+          <Send>
+            <Text>version</Text>
+            <Regex></Regex>
+          </Send>
+          <Responses>
+            <Response>
+              <Text></Text>
+              <Regex>OK BF3 [0-9]+</Regex>
+            </Response>
+          </Responses>
+          <Requests/>
+        </TestCommand>
+      </TestCommands>
+    </Test>
+    <Test>
+      <Timeout>2</Timeout>
+      <Name>Test admin kicking non existant player returns correct error</Name>
+      <TestCommands>
+        <TestCommand>
+          <Send>
+            <Text>admin.kickPlayer IMadeThisPlayerNameUp "Reason"</Text>
+          </Send>
+          <Responses>
+            <Response>
+              <Text>InvalidPlayerName</Text>
+              <Regex></Regex>
+            </Response>
+          </Responses>
+          <Requests/>
+        </TestCommand>
+      </TestCommands>
+    </Test>
+    <Test>
+      <Timeout>2</Timeout>
+      <Name>Test admin kick player</Name>
+      <TestCommands>
+        <TestCommand>
+          <Send>
+            <Text>admin.kickPlayer {PlayerName} "Reason"</Text>
+          </Send>
+          <Responses>
+            <Response>
+              <Text>OK</Text>
+              <Regex></Regex>
+            </Response>
+          </Responses>
+          <Requests>
+            <Request>
+              <Text>admin.onPlayerLeave {PlayerName}</Text>
+              <Regex></Regex>
+            </Request>
+          </Requests>
+        </TestCommand>
+      </TestCommands>
+    </Test>
+    <Test>
+      <Timeout>200</Timeout>
+      <Name>Test admin say</Name>
+      <TestCommands>
+        <TestCommand>
+          <Send>
+            <Text>admin.say "Hello" all</Text>
+            <Regex></Regex>
+          </Send>
+          <Responses>
+            <Response>
+              <Text>OK</Text>
+              <Regex></Regex>
+            </Response>
+          </Responses>
+          <Requests>
+            <Request>
+              <Text>player.onChat Server Hello all</Text>
+              <Regex></Regex>
+            </Request>
+          </Requests>
+        </TestCommand>
+      </TestCommands>
+    </Test>
+    <Test>
+      <Timeout>2</Timeout>
+      <Name>Test setting max players has correct effect</Name>
+      <TestCommands>
+        <TestCommand>
+          <Send>
+            <Text>vars.maxPlayers {RandomPlayerCount}</Text>
+            <Regex></Regex>
+          </Send>
+          <Responses>
+            <Response>
+              <Text>OK</Text>
+              <Regex></Regex>
+            </Response>
+          </Responses>
+        </TestCommand>
+        <TestCommand>
+          <Send>
+            <Text>vars.maxPlayers</Text>
+            <Regex></Regex>
+          </Send>
+          <Responses>
+            <Response>
+              <Text>OK {RandomPlayerCount}</Text>
+              <Regex></Regex>
+            </Response>
+          </Responses>
+        </TestCommand>
+      </TestCommands>
+    </Test>
+  </Tests>
+</ProtocolTestRun>

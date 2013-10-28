@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<?ietf-language-tag de-DE?>
+<!DOCTYPE Procon [
+  <!ATTLIST Match regex CDATA #IMPLIED>
+  <!ATTLIST Match text CDATA #IMPLIED>
+  <!ATTLIST loc name CDATA #IMPLIED>
+  <!ATTLIST loc value CDATA #IMPLIED>
+]>
+<Procon>
+
+</Procon>

@@ -1,61 +1,110 @@
-﻿// Copyright 2011 Geoffrey 'Phogue' Green
-// 
-// http://www.phogue.net
-//  
-// This file is part of Procon 2.
-// 
-// Procon 2 is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-// 
-// Procon 2 is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-// 
-// You should have received a copy of the GNU General Public License
-// along with Procon 2.  If not, see <http://www.gnu.org/licenses/>.
-
-using System;
-using System.Collections.Specialized;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Net.Sockets;
 using System.Reflection;
-using System.ComponentModel;
 using System.IO;
 using System.Xml.Linq;
+using Procon.Net.Protocols;
 
 namespace Procon.Net {
     using Procon.Net.Attributes;
-    using Procon.Net.Protocols;
     using Procon.Net.Protocols.Objects;
-    using Procon.Net.Utils;
-    using Procon.Net.Utils.PunkBuster;
-    using Procon.Net.Utils.PunkBuster.Objects;
 
-    public abstract class Game : IGame
-    {
-        [TypeConverter(typeof(ExpandableObjectConverter))]
+    public abstract class Game {
+
+        /// <summary>
+        /// Everything the connection currently knows about the game. This is updated
+        /// with all of the information we receive from the server.
+        /// </summary>
         public GameState State { get; protected set; }
 
+        /// <summary>
+        /// The end point hostname.
+        /// </summary>
         public abstract string Hostname { get; }
+
+        /// <summary>
+        /// The endpoint port.
+        /// </summary>
         public abstract ushort Port { get; }
+
+        /// <summary>
+        /// The password used to authenticate with the server.
+        /// </summary>
         public string Password { get; set; }
 
-        public string m_additional;
+        /// <summary>
+        /// Who is providing the protocol implementation being used
+        /// </summary>
+        public String ProtocolProvider {
+            get {
+                if (String.IsNullOrEmpty(this._mProtocolProvider) == true) {
+                    GameTypeAttribute[] attributes = this.GetType().GetCustomAttributes(typeof(GameTypeAttribute), false) as GameTypeAttribute[];
+
+                    if (attributes != null && attributes.Any() == true) {
+                        this._mProtocolProvider = attributes.First().Provider;
+                    }
+                }
+
+                return this._mProtocolProvider;
+            }
+        }
+        private String _mProtocolProvider = String.Empty;
+
+        /// <summary>
+        /// The game type of this implementation, used for serialization and such to identify the current game.
+        /// </summary>
+        public String GameType {
+            get {
+                if (this._mGameType == Protocols.CommonGameType.None) {
+                    GameTypeAttribute[] attributes = this.GetType().GetCustomAttributes(typeof(GameTypeAttribute), false) as GameTypeAttribute[];
+
+                    if (attributes != null && attributes.Any() == true) {
+                        this._mGameType = attributes.First().Type;
+                    }
+                }
+
+                return this._mGameType;
+            }
+        }
+        private String _mGameType = CommonGameType.None;
+
+        /// <summary>
+        /// The game name of this implementation, used for serialization and such to identify the current game.
+        /// </summary>
+        public String GameName {
+            get {
+                if (String.IsNullOrEmpty(this._mGameName) == true) {
+                    GameTypeAttribute[] attributes = this.GetType().GetCustomAttributes(typeof(GameTypeAttribute), false) as GameTypeAttribute[];
+
+                    if (attributes != null && attributes.Any() == true) {
+                        this._mGameName = attributes.First().Name;
+                    }
+                }
+
+                return this._mGameName;
+            }
+        }
+        private String _mGameName = String.Empty;
+
+        /// <summary>
+        /// Helper to fetch the connection state of the underlying client.
+        /// </summary>
+        public abstract ConnectionState ConnectionState { get; }
+
+        [Obsolete]
+        private string _mAdditional;
+        [Obsolete]
         public string Additional {
             get {
-                return this.m_additional;
+                return this._mAdditional;
             }
             set {
-                this.m_additional = value;
+                this._mAdditional = value;
 
                 // This way does not require System.Web reference.
-                foreach (string item in this.m_additional.Split('&')) {
+                foreach (string item in this._mAdditional.Split('&')) {
                     string[] kvp = item.Split('=');
 
                     if (kvp.Length == 2) {
@@ -67,82 +116,105 @@ namespace Procon.Net {
                         }
                     }
                 }
-
-                /*
-                NameValueCollection queryString = HttpUtility.ParseQueryString(this.m_additional);
-
-                foreach (string key in queryString.AllKeys) {
-                    PropertyInfo property = this.GetType().GetProperty(key);
-
-                    if (property != null) {
-                        property.SetValue(this, queryString[key], null);
-                    }
-                }
-                */
             }
         }
         
-        //public abstract ConnectionState ConnectionState { get; }
-
-        #region Events
-
-        public delegate void GameEventHandler(Game sender, GameEventArgs e);
+        /// <summary>
+        /// Fired when ever a dispatched game event occurs.
+        /// </summary>
         public virtual event GameEventHandler GameEvent;
+        public delegate void GameEventHandler(Game sender, GameEventArgs e);
 
-        public delegate void ClientEventHandler(Game sender, ClientEventArgs e);
+        /// <summary>
+        /// Fired when something occurs with the underlying client. This can
+        /// be connections, disconnections, logins or raw packets being recieved.
+        /// </summary>
         public virtual event ClientEventHandler ClientEvent;
+        public delegate void ClientEventHandler(Game sender, ClientEventArgs e);
 
-        public delegate void ConnectionStateChangedHandler(Game sender, ConnectionState newState);
-
-        #endregion
-
-        public Game() {
+        protected void OnClientEvent(ClientEventType eventType, Packet packet = null, Exception exception = null) {
+            var handler = this.ClientEvent;
+            if (handler != null) {
+                handler(this, new ClientEventArgs() {
+                    EventType = eventType,
+                    ConnectionState = this.ConnectionState,
+                    ConnectionError = exception,
+                    Packet = packet
+                });
+            }
         }
 
-        #region Helper Methods
+        protected void OnGameEvent(GameEventType eventType, GameEventData after = null, GameEventData before = null) {
+            var handler = this.GameEvent;
+            if (handler != null) {
+                handler(
+                    this,
+                    new GameEventArgs() {
+                        GameEventType = eventType,
+                        GameType = this.GameType,
+                        GameState = this.State,
+                        Then = before ?? new GameEventData(),
+                        Now = after ?? new GameEventData(),
+                    }
+                );
+            }
+        }
 
         // These may get transfered to a Interface used by Game and PacketFactory
         public abstract void Login(string password);
 
-        public abstract void Action(ProtocolObject action);
+        /// <summary>
+        /// Process a generic network action
+        /// </summary>
+        /// <param name="action"></param>
+        public abstract void Action(NetworkAction action);
 
-        #endregion
-
-        #region Core
-
+        /// <summary>
+        /// Sends a raw packet to the connected server.
+        /// </summary>
+        /// <param name="packet"></param>
         public abstract void Send(Packet packet);
+
+        /// <summary>
+        /// Attempts a connection to the server.
+        /// </summary>
         public abstract void AttemptConnection();
+
+        /// <summary>
+        /// Shutsdown this connection
+        /// </summary>
         public abstract void Shutdown();
 
+        /// <summary>
+        /// General timed event to synch everything on the server with what is known locally.
+        /// </summary>
         public abstract void Synchronize();
-
-        #endregion
-
+        
         #region Reflected Game Types
 
-        private static Dictionary<GameType, Type> SUPPORTED_GAMES = null;
-        private static List<Assembly> SUPPORTED_GAMES_ASSEMBLY = null;
+        private static Dictionary<GameTypeAttribute, Type> _supportedGames;
+        private static List<Assembly> _supportedGamesAssembly;
 
         /**
          * Late loads Procon.Net.Protocols.*.dll's 
          */
         private static void LateBindGames() {
 
-            Game.SUPPORTED_GAMES_ASSEMBLY = new List<Assembly>() {
+            Game._supportedGamesAssembly = new List<Assembly>() {
                 Assembly.GetAssembly(typeof(Game))
             };
 
             foreach (string protocol in Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, "Procon.Net.Protocols.*.dll")) {
                 try {
-                    Game.SUPPORTED_GAMES_ASSEMBLY.Add(Assembly.LoadFile(protocol));
+                    Game._supportedGamesAssembly.Add(Assembly.LoadFile(protocol));
                 }
                 catch (Exception) { }
             }
         }
 
-        public static Dictionary<GameType, Type> GetSupportedGames() {
+        public static Dictionary<GameTypeAttribute, Type> GetSupportedGames() {
 
-            Dictionary<GameType, Type> games = Game.SUPPORTED_GAMES;
+            Dictionary<GameTypeAttribute, Type> games = Game._supportedGames;
 
             if (games == null) {
                 
@@ -151,8 +223,8 @@ namespace Procon.Net {
 
                 Regex supportedGamesNamespame = new Regex(@"^Procon\.Net\.Protocols.*");
 
-                Game.SUPPORTED_GAMES = games = (from gameClassType in Game.SUPPORTED_GAMES_ASSEMBLY.SelectMany(x=> x.GetTypes()) //Assembly.GetAssembly(typeof(Game)).GetTypes()
-                                                let gameType = (gameClassType.GetCustomAttributes(typeof(GameAttribute), false) as IEnumerable<GameAttribute>).FirstOrDefault()
+                Game._supportedGames = games = (from gameClassType in Game._supportedGamesAssembly.SelectMany(x => x.GetTypes())
+                                                let gameType = (gameClassType.GetCustomAttributes(typeof(GameTypeAttribute), false) as IEnumerable<GameTypeAttribute>).FirstOrDefault()
                                                 where gameType != null &&
                                                       gameClassType != null &&
                                                       gameClassType.IsClass == true &&
@@ -161,7 +233,7 @@ namespace Procon.Net {
                                                       supportedGamesNamespame.IsMatch(gameClassType.Namespace) == true &&
                                                       typeof(Game).IsAssignableFrom(gameClassType)
                                                 select new {
-                                                    Name = gameType.GameType,
+                                                    Name = gameType,
                                                     Type = gameClassType
                                                 }).ToDictionary(w => w.Name, w => w.Type);
             }
@@ -173,21 +245,24 @@ namespace Procon.Net {
 
         #region Game Config Loading
 
+        // Everything in this region needs to be rewritten. I don't know why it's here, but it's wrong for it to be here and it's also
+        // not using xml serialization?
+
         /// <summary>
         /// Config holding all games loaded from /Configs/Games/
         /// </summary>
         protected static XDocument GameConfig { get; set; }
 
-        public string m_gameConfigPath;
+        private string _gameConfigPath;
         public string GameConfigPath {
             get {
-                return this.m_gameConfigPath;
+                return this._gameConfigPath;
             }
             set {
-                if (this.m_gameConfigPath != value) {
+                if (this._gameConfigPath != value) {
                     Game.GameConfig = null;
 
-                    this.m_gameConfigPath = value;
+                    this._gameConfigPath = value;
 
                     this.LoadGameConfigs();
                 }

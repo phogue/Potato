@@ -1,24 +1,4 @@
-﻿// Copyright 2011 Geoffrey 'Phogue' Green
-// 
-// http://www.phogue.net
-//  
-// This file is part of Procon 2.
-// 
-// Procon 2 is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-// 
-// Procon 2 is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-// 
-// You should have received a copy of the GNU General Public License
-// along with Procon 2.  If not, see <http://www.gnu.org/licenses/>.
-
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Text;
 using System.Net;
 using System.IO;
@@ -36,20 +16,21 @@ namespace Procon.Net.Utils.HTTP {
         public event RequestEventDelegate RequestDiscoveredFileSize;
         public event RequestEventDelegate RequestProgressUpdate;
 
-        private HttpWebRequest m_webRequest;
-        private WebResponse m_webResponse;
-        private Stream m_responseStream;
+        public HttpWebResponse WebResponse;
+
+        private HttpWebRequest _mWebRequest;
+        private Stream _mResponseStream;
 
         public string DownloadSource { get; private set; }
 
-        private const int INT_BUFFER_SIZE = UInt16.MaxValue;
-        private byte[] ma_bBufferStream;
+        private const int IntBufferSize = UInt16.MaxValue;
+        private byte[] _mBufferStream;
 
         //private int m_iReadBytes;
         //private int m_iCompleteFileSize;
         //private byte[] ma_bCompleteFile;
 
-        private System.Timers.Timer m_progressTimer;
+        private System.Timers.Timer _mProgressTimer;
         //private Thread m_thProgressTick;
 
         public bool FileDownloading { get; private set; }
@@ -85,6 +66,11 @@ namespace Procon.Net.Utils.HTTP {
         public string Referrer { get; set; }
 
         /// <summary>
+        /// What content type should be used. If this is left null, then no content type is specified.
+        /// </summary>
+        public String RequestContentType { get; set; }
+
+        /// <summary>
         /// The WebRequestMethods.Http string representing the type of
         /// method to use in the request.  Default is Get.
         /// </summary>
@@ -104,19 +90,19 @@ namespace Procon.Net.Utils.HTTP {
 
         public CredentialCache CredentialCache { get; protected set; }
 
-        private int m_timeout;
+        private int _mTimeout;
         /// <summary>
         /// ReadTimeout of the stream in milliseconds.  Default is 10 seconds.
         /// </summary>
         public int Timeout {
             get {
-                return this.m_timeout;
+                return this._mTimeout;
             }
             set {
-                this.m_timeout = value;
+                this._mTimeout = value;
 
-                if (this.m_responseStream != null) {
-                    this.m_responseStream.ReadTimeout = value;
+                if (this._mResponseStream != null) {
+                    this._mResponseStream.ReadTimeout = value;
                 }
             }
         }
@@ -126,7 +112,7 @@ namespace Procon.Net.Utils.HTTP {
                 string strReturnFileName = String.Empty;
 
                 if (this.DownloadSource.Length > 0) {
-                    strReturnFileName = this.DownloadSource.Substring(this.DownloadSource.LastIndexOf("/") + 1, (this.DownloadSource.Length - this.DownloadSource.LastIndexOf("/") - 1));
+                    strReturnFileName = this.DownloadSource.Substring(this.DownloadSource.LastIndexOf("/", System.StringComparison.Ordinal) + 1, (this.DownloadSource.Length - this.DownloadSource.LastIndexOf("/", System.StringComparison.Ordinal) - 1));
                 }
 
                 return strReturnFileName;
@@ -139,7 +125,7 @@ namespace Procon.Net.Utils.HTTP {
             this.PostContent = new PostContent();
             this.CredentialCache = new CredentialCache();
 
-            this.m_timeout = 10000;
+            this._mTimeout = 10000;
             this.Method = WebRequestMethods.Http.Get;
         }
 
@@ -155,7 +141,7 @@ namespace Procon.Net.Utils.HTTP {
             if (timedOut == true) {
                 Request cdfParent = (Request)state;
                 if (cdfParent != null) {
-                    cdfParent.m_webRequest.Abort();
+                    cdfParent._mWebRequest.Abort();
                 }
             }
         }
@@ -165,11 +151,12 @@ namespace Procon.Net.Utils.HTTP {
         }
 
         private void ProcessPostRequest() {
-            if (this.RequestContent != null && this.RequestContent.Length > 0) {
-                this.m_webRequest.ContentType = "application/x-www-form-urlencoded";
-                this.m_webRequest.ContentLength = this.RequestContent.Length;
+            if (string.IsNullOrEmpty(this.RequestContent) == false) {
+                this._mWebRequest.ContentType = this.RequestContentType ?? "application/x-www-form-urlencoded";
 
-                using (Stream postStream = this.m_webRequest.GetRequestStream()) {
+                this._mWebRequest.ContentLength = this.RequestContent.Length;
+
+                using (Stream postStream = this._mWebRequest.GetRequestStream()) {
                     postStream.Write(Encoding.UTF8.GetBytes(this.RequestContent), 0, this.RequestContent.Length);
                 }
                 //Stream newStream = this.m_webRequest.GetRequestStream();
@@ -185,13 +172,11 @@ namespace Procon.Net.Utils.HTTP {
                 byte[] payload = this.PostContent.BuildPostData();
 
                 // Ignores the specified method
-                this.m_webRequest.Method = "POST";
-                this.m_webRequest.ContentLength = payload.Length;
-                this.m_webRequest.ContentType = "multipart/form-data; boundary=" + this.PostContent.Boundry;
+                this._mWebRequest.Method = "POST";
+                this._mWebRequest.ContentLength = payload.Length;
+                this._mWebRequest.ContentType = "multipart/form-data; boundary=" + this.PostContent.Boundry;
 
-                String b = Encoding.UTF8.GetString(payload);
-
-                using (Stream postStream = this.m_webRequest.GetRequestStream()) {
+                using (Stream postStream = this._mWebRequest.GetRequestStream()) {
                     postStream.Write(payload);
                 }
             }
@@ -206,60 +191,69 @@ namespace Procon.Net.Utils.HTTP {
 
             this.FileDownloading = true;
 
-            this.ma_bBufferStream = new byte[Request.INT_BUFFER_SIZE];
+            this._mBufferStream = new byte[Request.IntBufferSize];
 
             try {
-                this.m_webRequest = (HttpWebRequest)HttpWebRequest.Create(this.DownloadSource);
+                this._mWebRequest = (HttpWebRequest) WebRequest.Create(this.DownloadSource);
                 // this.m_wrRequest.Referer = "http://www.phogue.net/procon/";
-                this.m_webRequest.Method = this.Method;
+                this._mWebRequest.Method = this.Method;
+                this._mWebRequest.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
 
                 //this.m_wrRequest.Headers.Add("Range", "bytes=-10000");
                 if (this.Range != null) {
-                    this.m_webRequest.AddRange((int)this.Range);
+                    this._mWebRequest.AddRange((int) this.Range);
                 }
                 //this.m_webRequest.AddRange(-888192);
                 if (this.Referrer != null) {
-                    this.m_webRequest.UserAgent = this.Referrer;
+                    this._mWebRequest.UserAgent = this.Referrer;
                 }
                 // Range: bytes=-10000
                 //this.m_webRequest.KeepAlive = false;
                 //this.m_webRequest.ProtocolVersion = HttpVersion.Version10;
                 //this.m_wrRequest.Headers.Add(System.Net.HttpRequestHeader.UserAgent, "Procon 2.0");
                 //this.m_wrRequest.Headers.Add(System.Net.HttpRequestHeader.Range, "bytes=-10000");
-                this.m_webRequest.Headers.Add(System.Net.HttpRequestHeader.AcceptEncoding, "gzip");
+                this._mWebRequest.Headers.Add(System.Net.HttpRequestHeader.AcceptEncoding, "gzip");
 
-                this.m_webRequest.Credentials = this.CredentialCache;
+                this._mWebRequest.Credentials = this.CredentialCache;
 
-                this.m_webRequest.Proxy = null;
+                this._mWebRequest.Proxy = null;
 
                 this.ProcessPostRequest();
 
                 this.ProcessMultipartPostRequest();
 
-                if (this.m_webRequest != null) {
-                    IAsyncResult arResult = this.m_webRequest.BeginGetResponse(new AsyncCallback(this.ResponseCallback), this);
-                    ThreadPool.RegisterWaitForSingleObject(arResult.AsyncWaitHandle, new WaitOrTimerCallback(this.RequestTimeoutCallback), this, this.m_timeout, true);
+                if (this._mWebRequest != null) {
+                    IAsyncResult arResult = this._mWebRequest.BeginGetResponse(new AsyncCallback(this.ResponseCallback), this);
+                    ThreadPool.RegisterWaitForSingleObject(arResult.AsyncWaitHandle, new WaitOrTimerCallback(this.RequestTimeoutCallback), this, this._mTimeout, true);
 
                     if (this.DownloadRate == true) {
-                        this.m_progressTimer = new System.Timers.Timer(100);
-                        this.m_progressTimer.Elapsed += new ElapsedEventHandler(m_progressTimer_Elapsed);
-                        this.m_progressTimer.Start();
+                        this._mProgressTimer = new System.Timers.Timer(100);
+                        this._mProgressTimer.Elapsed += new ElapsedEventHandler(m_progressTimer_Elapsed);
+                        this._mProgressTimer.Start();
                     }
                 }
             }
-            catch (Exception) { }
+            catch (Exception e) {
+                String m = e.Message;
+
+                this.FileDownloading = false;
+                if (this.RequestError != null) {
+                    this.Error = e.Message;
+
+                    this.RequestError(this);
+                }
+            }
         }
 
         private void ResponseCallback(IAsyncResult ar) {
             //Request cdfParent = (Request)ar.AsyncState;
 
             try {
-                this.m_webResponse = this.m_webRequest.EndGetResponse(ar);
+                this.WebResponse = (HttpWebResponse)this._mWebRequest.EndGetResponse(ar);
 
                 string strContentLength = null;
-                if ((strContentLength = this.m_webResponse.Headers["Content-Length"]) != null) {
+                if ((strContentLength = this.WebResponse.Headers["Content-Length"]) != null) {
                     this.FileSize = Convert.ToInt32(strContentLength);
-                    this.CompleteFileData = new byte[this.FileSize];
 
                     this.UnknownSize = false;
 
@@ -267,23 +261,21 @@ namespace Procon.Net.Utils.HTTP {
                         this.RequestDiscoveredFileSize(this);
                     }
                 }
-                else {
-                    this.CompleteFileData = new byte[0];
+
+                this.CompleteFileData = new byte[0];
+
+                this._mResponseStream = this.WebResponse.GetResponseStream();
+
+                if (this._mResponseStream != null) {
+                    IAsyncResult arResult = this._mResponseStream.BeginRead(this._mBufferStream, 0, Request.IntBufferSize, new AsyncCallback(this.ReadCallBack), this);
+
+                    ThreadPool.RegisterWaitForSingleObject(arResult.AsyncWaitHandle, new WaitOrTimerCallback(this.ReadTimeoutCallback), this, this._mTimeout, true);
                 }
-
-                this.m_responseStream = this.m_webResponse.GetResponseStream();
-
-                if (this.m_webResponse.Headers.Get("Content-Encoding") != null && this.m_webResponse.Headers.Get("Content-Encoding").ToLower() == "gzip") {
-                    this.m_responseStream = new GZipStream(this.m_responseStream, CompressionMode.Decompress);
-                }
-
-                IAsyncResult arResult = this.m_responseStream.BeginRead(this.ma_bBufferStream, 0, Request.INT_BUFFER_SIZE, new AsyncCallback(this.ReadCallBack), this);
-
-                ThreadPool.RegisterWaitForSingleObject(arResult.AsyncWaitHandle, new WaitOrTimerCallback(this.ReadTimeoutCallback), this, this.m_timeout, true);
             }
             catch (WebException e) {
                 this.FileDownloading = false;
                 if (this.RequestError != null) {
+                    this.WebResponse = (HttpWebResponse)e.Response;
                     this.Error = e.Message;
 
                     //FrostbiteConnection.RaiseEvent(cdfParent.DownloadError.GetInvocationList(), cdfParent);
@@ -304,8 +296,8 @@ namespace Procon.Net.Utils.HTTP {
         private void ReadTimeoutCallback(object state, bool timedOut) {
             if (timedOut == true) {
                 Request cdfParent = (Request)state;
-                if (cdfParent != null && cdfParent.m_responseStream != null) {
-                    cdfParent.m_responseStream.Close();
+                if (cdfParent != null && cdfParent._mResponseStream != null) {
+                    cdfParent._mResponseStream.Close();
 
                     if (cdfParent.RequestError != null) {
                         cdfParent.Error = "Read Timeout";
@@ -324,24 +316,22 @@ namespace Procon.Net.Utils.HTTP {
                 try {
 
                     int iBytesRead = -1;
-                    if ((iBytesRead = this.m_responseStream.EndRead(ar)) > 0) {
+                    if ((iBytesRead = this._mResponseStream.EndRead(ar)) > 0) {
 
-                        if (this.UnknownSize == true) {
+                        if (this.CompleteFileData.Length < this.BytesDownloaded + iBytesRead) {
                             byte[] resizedFileData = new byte[this.CompleteFileData.Length + iBytesRead];
 
                             this.CompleteFileData.CopyTo(resizedFileData, 0);
 
                             this.CompleteFileData = resizedFileData;
-
-                            // Array.Resize<byte>(ref cdfParent.CompleteFileData, cdfParent.CompleteFileData.Length + iBytesRead);
                         }
 
-                        Array.Copy(this.ma_bBufferStream, 0, this.CompleteFileData, this.BytesDownloaded, iBytesRead);
+                        Array.Copy(this._mBufferStream, 0, this.CompleteFileData, this.BytesDownloaded, iBytesRead);
                         this.BytesDownloaded += iBytesRead;
 
-                        IAsyncResult arResult = this.m_responseStream.BeginRead(this.ma_bBufferStream, 0, Request.INT_BUFFER_SIZE, new AsyncCallback(this.ReadCallBack), this);
+                        IAsyncResult arResult = this._mResponseStream.BeginRead(this._mBufferStream, 0, Request.IntBufferSize, new AsyncCallback(this.ReadCallBack), this);
 
-                        ThreadPool.RegisterWaitForSingleObject(arResult.AsyncWaitHandle, new WaitOrTimerCallback(this.ReadTimeoutCallback), this, this.m_timeout, true);
+                        ThreadPool.RegisterWaitForSingleObject(arResult.AsyncWaitHandle, new WaitOrTimerCallback(this.ReadTimeoutCallback), this, this._mTimeout, true);
                     }
                     else {
 
@@ -351,9 +341,9 @@ namespace Procon.Net.Utils.HTTP {
                             this.RequestComplete(this);
                         }
 
-                        this.m_responseStream.Close();
-                        this.m_responseStream.Dispose();
-                        this.m_responseStream = null;
+                        this._mResponseStream.Close();
+                        this._mResponseStream.Dispose();
+                        this._mResponseStream = null;
                     }
                 }
                 catch (Exception e) {
@@ -370,27 +360,25 @@ namespace Procon.Net.Utils.HTTP {
 
         private void m_progressTimer_Elapsed(object sender, ElapsedEventArgs e) {
 
-            //Request cdfParent = ((Request)obj);
-
-            int iTickCount = 0;
-            int[] a_iKiBytesPerTick = new int[50];
-            int iPreviousTickReadBytes = 0;
+            int tickCount = 0;
+            int[] bytesPerTick = new int[50];
+            int previousTickReadBytes = 0;
 
             while (this.FileDownloading == true) {
 
-                a_iKiBytesPerTick[iTickCount] = this.BytesDownloaded - iPreviousTickReadBytes;
-                iTickCount = (++iTickCount % 50);
+                bytesPerTick[tickCount] = this.BytesDownloaded - previousTickReadBytes;
+                tickCount = (++tickCount % 50);
 
                 this.KibPerSecond = 0.0;
-                foreach (int iKiBytesTick in a_iKiBytesPerTick) {
+                foreach (int iKiBytesTick in bytesPerTick) {
                     this.KibPerSecond += iKiBytesTick;
                 }
 
                 this.KibPerSecond = this.KibPerSecond / 5120; // / 1024 / 5;
 
-                iPreviousTickReadBytes = this.BytesDownloaded;
+                previousTickReadBytes = this.BytesDownloaded;
 
-                if (this.RequestProgressUpdate != null && iPreviousTickReadBytes > 0) {
+                if (this.RequestProgressUpdate != null && previousTickReadBytes > 0) {
                     this.RequestProgressUpdate(this);
 
                     //FrostbiteConnection.RaiseEvent(cdfParent.DownloadProgressUpdate.GetInvocationList(), cdfParent);
@@ -401,7 +389,7 @@ namespace Procon.Net.Utils.HTTP {
         }
 
         public String GetResponseContent() {
-            return Encoding.UTF8.GetString(this.CompleteFileData);
+            return this.CompleteFileData != null ? Encoding.UTF8.GetString(this.CompleteFileData) : String.Empty;
         }
 
     }

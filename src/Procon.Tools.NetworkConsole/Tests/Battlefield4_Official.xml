@@ -1,0 +1,1964 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE ProtocolTestRun [
+  <!ATTLIST Replacement Regex CDATA #IMPLIED>
+  <!ATTLIST Replacement Text CDATA #IMPLIED>
+  <!ATTLIST Send Regex CDATA #IMPLIED>
+  <!ATTLIST Send Text CDATA #IMPLIED>
+  <!ATTLIST Response Regex CDATA #IMPLIED>
+  <!ATTLIST Response Text CDATA #IMPLIED>
+  <!ATTLIST Request Regex CDATA #IMPLIED>
+  <!ATTLIST Request Text CDATA #IMPLIED>
+]>
+<!--
+    //  - Useful for changing multiple tests with specific or random data, depending on test requirements.
+
+    <Replacement>
+      <Text/>                 // (Required) String The exact text string to look for (leave as empty string for not used, or to use regex).
+      <Regex/>                // (Required) String The regex to be used when replacing (leave as empty string for not used, or to use text).
+      <Replace/>              // (Optional) String The text to replace against
+      <Random>                // (Optional) A random string/integer/float to be generated and used through out the document
+        <Type>Integer</Type>  // String Possible values: String|Integer|Float
+        <Minimum>8</Minimum>  // Integer The minimum value a float or integer should be.
+        <Maximum>32</Maximum> // Integer The maximum value a float or integer should be. Also number of characters a random String should be generated to.
+      </Random>
+    </Replacement>
+
+    // Tests. 
+    //  - What's the test called?
+    //  - How long should it go for?
+    //  - What should it send?
+    //  - What should it expect as a response(s)?
+    //  - What event(s) should occur during the test?
+
+    <Test>
+      <Timeout/>              // (Required) Integer The number of seconds all responses/requests should be waited for.
+      <Name/>                 // (Required) String A nice descriptive name for this test. You should keep these unique for easy searches.
+      <TestCommands>
+        <TestCommand>
+          <Send>              // The command to send to the server.
+            <Text/>           // (Required) String The text of the command to send to the server. Will be parsed + converted to a packet.
+            <Regex/>          // (Required) String Always blank.
+          </Send>
+          <Responses>
+            <Response>
+              <Text/>         // (Required) String exact (case-sensitive) return from the server for the issued command (leave as empty string for not used, or to use regex).
+              <Regex/>        // (Required) String Regex to match against responses from the server for the issued command (leave as empty string for not used, or to use text).
+            </Response>
+          </Responses>
+          <Requests>
+            <Request>
+              <Text/>         // (Required) String Exact (case-sensitive) originating from the server during the test duration (leave as empty string for not used, or to use regex).
+              <Regex/>        // (Required) String Regex to match against sent commands originating from the server during the test duration (leave as empty string for not used, or to use text).
+            </Request>
+          </Requests>
+        </TestCommand>
+      </TestCommands>
+    </Test>
+    
+    // Using replacements
+    
+    // Any text matching inside "Text" for Send, Response and Request objects will be replaced. No special syntax is required, it was just made up
+    // with the curly brackets so it's easier to see what will be replaced.
+    
+    ...
+    
+    <Replacement>
+      <Text>{replaceme}</Text> 
+      <Regex/>
+      <Replace>World</Replace>
+    </Replacement>
+    <Replacement>
+      <Text>%%exclamation$$</Text> 
+      <Regex/>
+      <Replace>!</Replace>
+    </Replacement>
+    
+    ...
+    
+    <Send>
+      <Text>Hello {replaceme}%%exclamation$$</Text> // Will become "Hello World!"
+      <Regex/>
+    </Send>
+          
+    ...
+-->
+<ProtocolTestRun>
+  <Replacements>
+    <Replacement>
+      <Text>{PlayerName}</Text>
+      <Regex></Regex>
+      <Replace>PhogueZero</Replace>
+    </Replacement>
+    <Replacement>
+      <Text>{EaGuid}</Text>
+      <Regex></Regex>
+      <Replace>EA_1234</Replace>
+    </Replacement>
+    <Replacement>
+      <Text>{RandomMaxPlayerCount}</Text>
+      <Regex></Regex>
+      <Random>
+        <Type>Integer</Type>
+        <Minimum>8</Minimum>
+        <Maximum>64</Maximum>
+      </Random>
+    </Replacement>
+  </Replacements>
+  <Tests>
+    <Test>
+      <Timeout>2</Timeout>
+      <Name><![CDATA[Test version outputs correct game type & valid numeric version]]></Name>
+      <TestCommands>
+        <TestCommand>
+          <Send>
+            <Text>version</Text>
+            <Regex></Regex>
+          </Send>
+          <Responses>
+            <Response>
+              <Text></Text>
+              <Regex>OK BF4 [0-9]+</Regex>
+            </Response>
+          </Responses>
+          <Requests/>
+        </TestCommand>
+      </TestCommands>
+    </Test>
+    <Test>
+      <Timeout>2</Timeout>
+      <Name>Test admin kick player</Name>
+      <TestCommands>
+        <TestCommand>
+          <Send>
+            <Text>admin.kickPlayer {PlayerName} "Reason"</Text>
+            <Regex></Regex>
+          </Send>
+          <Responses>
+            <Response>
+              <Text>CommandDisallowedOnOffical</Text>
+              <Regex></Regex>
+            </Response>
+          </Responses>
+          <Requests/>
+        </TestCommand>
+      </TestCommands>
+    </Test>
+    <Test>
+      <Timeout>2</Timeout>
+      <Name>Test admin say</Name>
+      <TestCommands>
+        <TestCommand>
+          <Send>
+            <Text>admin.say "Hello" all</Text>
+            <Regex></Regex>
+          </Send>
+          <Responses>
+            <Response>
+              <Text>OK</Text>
+            </Response>
+          </Responses>
+          <Requests>
+            <Request>
+              <Text>admin.onChat Server Hello all</Text>
+              <Regex></Regex>
+            </Request>
+          </Requests>
+        </TestCommand>
+      </TestCommands>
+    </Test>
+    <Test>
+      <Timeout>2</Timeout>
+      <Name>Test clear MapList</Name>
+      <TestCommands>
+        <TestCommand>
+          <Send>
+            <Text>mapList.clear</Text>
+            <Regex></Regex>
+          </Send>
+          <Responses>
+            <Response>
+              <Text>OK</Text>
+              <Regex></Regex>
+            </Response>
+          </Responses>
+        </TestCommand>
+        <TestCommand>
+          <Send>
+            <Text>mapList.list</Text>
+            <Regex></Regex>
+          </Send>
+          <Responses>
+            <Response>
+              <Text>OK 0 3</Text>
+              <Regex></Regex>
+            </Response>
+          </Responses>
+        </TestCommand>
+      </TestCommands>
+    </Test>
+    <Test>
+      <Timeout>2</Timeout>
+      <Name>Test load of MapList</Name>
+      <TestCommands>
+        <TestCommand>
+          <Send>
+            <Text>mapList.load</Text>
+            <Regex></Regex>
+          </Send>
+          <Responses>
+            <Response>
+              <Text>OK</Text>
+              <Regex></Regex>
+            </Response>
+          </Responses>
+        </TestCommand>
+      </TestCommands>
+    </Test>
+    <Test>
+      <Timeout>2</Timeout>
+      <Name>Test listing of current mapList without starting offset</Name>
+      <TestCommands>
+        <TestCommand>
+          <Send>
+            <Text>mapList.list</Text>
+            <Regex></Regex>
+          </Send>
+          <Responses>
+            <Response>
+              <Text></Text>
+              <Regex>OK [0-9]+ 3 [a-zA-z_]+ [a-zA-Z0-9]+ [0-9]+</Regex>
+            </Response>
+          </Responses>
+        </TestCommand>
+      </TestCommands>
+    </Test>
+    <Test>
+      <Timeout>2</Timeout>
+      <Name>Test listing of current mapList with starting offset</Name>
+      <TestCommands>
+        <TestCommand>
+          <Send>
+            <Text>mapList.list 100</Text>
+            <Regex></Regex>
+          </Send>
+          <Responses>
+            <Response>
+              <Text></Text>
+              <Regex>OK [0-9]+ 3</Regex>
+            </Response>
+          </Responses>
+        </TestCommand>
+        <TestCommand>
+          <Send>
+            <Text>mapList.list 0</Text>
+            <Regex></Regex>
+          </Send>
+          <Responses>
+            <Response>
+              <Text></Text>
+              <Regex>OK [0-9]+ 3 [a-zA-z_]+ [a-zA-Z0-9]+ [0-9]+</Regex>
+            </Response>
+          </Responses>
+        </TestCommand>
+      </TestCommands>
+    </Test>
+    <Test>
+      <Timeout>2</Timeout>
+      <Name>Test save MapList</Name>
+      <TestCommands>
+        <TestCommand>
+          <Send>
+            <Text>mapList.save</Text>
+            <Regex></Regex>
+          </Send>
+          <Responses>
+            <Response>
+              <Text>OK</Text>
+              <Regex></Regex>
+            </Response>
+          </Responses>
+        </TestCommand>
+      </TestCommands>
+    </Test>
+    <Test>
+      <Timeout>2</Timeout>
+      <Name>Test add MP_Siege/ConquestLarge0/2rounds to MapList</Name>
+      <TestCommands>
+        <TestCommand>
+          <Send>
+            <Text>mapList.add MP_Siege ConquestLarge0 2</Text>
+            <Regex></Regex>
+          </Send>
+          <Responses>
+            <Response>
+              <Text>OK</Text>
+              <Regex></Regex>
+            </Response>
+          </Responses>
+        </TestCommand>
+      </TestCommands>
+    </Test>
+    <Test>
+      <Timeout>2</Timeout>
+      <Name>Test remove map at index 1 from MapList</Name>
+      <TestCommands>
+        <TestCommand>
+          <Send>
+            <Text>mapList.remove 1</Text>
+            <Regex></Regex>
+          </Send>
+          <Responses>
+            <Response>
+              <Text>OK</Text>
+              <Regex></Regex>
+            </Response>
+          </Responses>
+        </TestCommand>
+      </TestCommands>
+    </Test>
+    <Test>
+      <Timeout>2</Timeout>
+      <Name>Test a set of commands Maplist.Clear, add, add, remove, list</Name>
+      <TestCommands>
+        <TestCommand>
+          <Send>
+            <Text>mapList.clear</Text>
+            <Regex></Regex>
+          </Send>
+          <Responses>
+            <Response>
+              <Text>OK</Text>
+              <Regex></Regex>
+            </Response>
+          </Responses>
+        </TestCommand>
+        <TestCommand>
+          <Send>
+            <Text>mapList.add MP_Siege ConquestLarge0 2</Text>
+            <Regex></Regex>
+          </Send>
+          <Responses>
+            <Response>
+              <Text>OK</Text>
+              <Regex></Regex>
+            </Response>
+          </Responses>
+        </TestCommand>
+        <TestCommand>
+          <Send>
+            <Text>mapList.add MP_Siege ConquestLarge0 1</Text>
+            <Regex></Regex>
+          </Send>
+          <Responses>
+            <Response>
+              <Text>OK</Text>
+              <Regex></Regex>
+            </Response>
+          </Responses>
+        </TestCommand>
+        <TestCommand>
+          <Send>
+            <Text>mapList.remove 1</Text>
+            <Regex></Regex>
+          </Send>
+          <Responses>
+            <Response>
+              <Text>OK</Text>
+              <Regex></Regex>
+            </Response>
+          </Responses>
+        </TestCommand>
+        <TestCommand>
+          <Send>
+            <Text>mapList.list</Text>
+            <Regex></Regex>
+          </Send>
+          <Responses>
+            <Response>
+              <Text></Text>
+              <Regex>OK 1 3 [a-zA-z_]+ [a-zA-Z0-9]+ [0-9]+</Regex>
+            </Response>
+          </Responses>
+        </TestCommand>
+      </TestCommands>
+    </Test>
+    <Test>
+      <Timeout>2</Timeout>
+      <Name>Test if vars.gamePassword get is denied</Name>
+      <TestCommands>
+        <TestCommand>
+          <Send>
+            <Text>vars.gamePassword</Text>
+            <Regex></Regex>
+          </Send>
+          <Responses>
+            <Response>
+              <Text>CommandDisallowedOnRanked</Text>
+              <Regex></Regex>
+            </Response>
+          </Responses>
+        </TestCommand>
+      </TestCommands>
+    </Test>
+    <Test>
+      <Timeout>2</Timeout>
+      <Name>Test if vars.gamePassword set is denied</Name>
+      <TestCommands>
+        <TestCommand>
+          <Send>
+            <Text>vars.gamePassword word</Text>
+            <Regex></Regex>
+          </Send>
+          <Responses>
+            <Response>
+              <Text>CommandDisallowedOnRanked</Text>
+              <Regex></Regex>
+            </Response>
+          </Responses>
+        </TestCommand>
+      </TestCommands>
+    </Test>
+    <Test>
+      <Timeout>2</Timeout>
+      <Name>Test vars.Official get is functional</Name>
+      <TestCommands>
+        <TestCommand>
+          <Send>
+            <Text>vars.Official</Text>
+            <Regex></Regex>
+          </Send>
+          <Responses>
+            <Response>
+              <Text></Text>
+              <Regex>OK (true|false)</Regex>
+            </Response>
+          </Responses>
+        </TestCommand>
+      </TestCommands>
+    </Test>
+    <Test>
+      <Timeout>2</Timeout>
+      <Name>Test if server is official</Name>
+      <TestCommands>
+        <TestCommand>
+          <Send>
+            <Text>vars.Official</Text>
+            <Regex></Regex>
+          </Send>
+          <Responses>
+            <Response>
+              <Text>OK true</Text>
+              <Regex></Regex>
+            </Response>
+          </Responses>
+        </TestCommand>
+      </TestCommands>
+    </Test>
+    <Test>
+      <Timeout>2</Timeout>
+      <Name>Test vars.Official set disabled because of read only</Name>
+      <TestCommands>
+        <TestCommand>
+          <Send>
+            <Text>vars.Official</Text>
+            <Regex></Regex>
+          </Send>
+          <Responses>
+            <Response>
+              <Text>CommandIsReadOnly</Text>
+              <Regex></Regex>
+            </Response>
+          </Responses>
+        </TestCommand>
+      </TestCommands>
+    </Test>
+    <Test>
+      <Timeout>2</Timeout>
+      <Name>Test vars.Ranked get is functional</Name>
+      <TestCommands>
+        <TestCommand>
+          <Send>
+            <Text>vars.Ranked</Text>
+            <Regex></Regex>
+          </Send>
+          <Responses>
+            <Response>
+              <Text></Text>
+              <Regex>OK (true|false)</Regex>
+            </Response>
+          </Responses>
+        </TestCommand>
+      </TestCommands>
+    </Test>
+    <Test>
+      <Timeout>2</Timeout>
+      <Name>Test if server is ranked</Name>
+      <TestCommands>
+        <TestCommand>
+          <Send>
+            <Text>vars.Ranked</Text>
+            <Regex></Regex>
+          </Send>
+          <Responses>
+            <Response>
+              <Text>OK true</Text>
+              <Regex></Regex>
+            </Response>
+          </Responses>
+        </TestCommand>
+      </TestCommands>
+    </Test>
+    <Test>
+      <Timeout>2</Timeout>
+      <Name>Test vars.Ranked set disabled because of read only</Name>
+      <TestCommands>
+        <TestCommand>
+          <Send>
+            <Text>vars.Ranked</Text>
+            <Regex></Regex>
+          </Send>
+          <Responses>
+            <Response>
+              <Text>CommandIsReadOnly</Text>
+              <Regex></Regex>
+            </Response>
+          </Responses>
+        </TestCommand>
+      </TestCommands>
+    </Test>
+    <Test>
+      <Timeout>2</Timeout>
+      <Name>Test vars.3dSpotting get is functional</Name>
+      <TestCommands>
+        <TestCommand>
+          <Send>
+            <Text>vars.3dSpotting</Text>
+            <Regex></Regex>
+          </Send>
+          <Responses>
+            <Response>
+              <Text></Text>
+              <Regex>OK (true|false)</Regex>
+            </Response>
+          </Responses>
+        </TestCommand>
+      </TestCommands>
+    </Test>
+    <Test>
+      <Timeout>2</Timeout>
+      <Name>Test vars.3dSpotting set disabled on official</Name>
+      <TestCommands>
+        <TestCommand>
+          <Send>
+            <Text>vars.3dSpotting true</Text>
+            <Regex></Regex>
+          </Send>
+          <Responses>
+            <Response>
+              <Text>CommandDisallowedOnOffical</Text>
+              <Regex></Regex>
+            </Response>
+          </Responses>
+        </TestCommand>
+      </TestCommands>
+    </Test>
+    <Test>
+      <Timeout>2</Timeout>
+      <Name>Test vars.3pCam get is functional</Name>
+      <TestCommands>
+        <TestCommand>
+          <Send>
+            <Text>vars.3pCam</Text>
+            <Regex></Regex>
+          </Send>
+          <Responses>
+            <Response>
+              <Text></Text>
+              <Regex>OK (true|false)</Regex>
+            </Response>
+          </Responses>
+        </TestCommand>
+      </TestCommands>
+    </Test>
+    <Test>
+      <Timeout>2</Timeout>
+      <Name>Test vars.3pCam set disabled on official</Name>
+      <TestCommands>
+        <TestCommand>
+          <Send>
+            <Text>vars.3pCam true</Text>
+            <Regex></Regex>
+          </Send>
+          <Responses>
+            <Response>
+              <Text>CommandDisallowedOnOffical</Text>
+              <Regex></Regex>
+            </Response>
+          </Responses>
+        </TestCommand>
+      </TestCommands>
+    </Test>
+    <Test>
+      <Timeout>2</Timeout>
+      <Name>Test vars.alwaysAllowSpectators get is functional</Name>
+      <TestCommands>
+        <TestCommand>
+          <Send>
+            <Text>vars.alwaysAllowSpectators</Text>
+            <Regex></Regex>
+          </Send>
+          <Responses>
+            <Response>
+              <Text></Text>
+              <Regex>OK (true|false)</Regex>
+            </Response>
+          </Responses>
+        </TestCommand>
+      </TestCommands>
+    </Test>
+    <Test>
+      <Timeout>2</Timeout>
+      <Name>Test vars.alwaysAllowSpectators set is functional</Name>
+      <TestCommands>
+        <TestCommand>
+          <Send>
+            <Text>vars.alwaysAllowSpectators true</Text>
+            <Regex></Regex>
+          </Send>
+          <Responses>
+            <Response>
+              <Text>OK</Text>
+              <Regex></Regex>
+            </Response>
+          </Responses>
+        </TestCommand>
+      </TestCommands>
+    </Test>
+    <Test>
+      <Timeout>2</Timeout>
+      <Name>Test vars.autoBalance get is functional</Name>
+      <TestCommands>
+        <TestCommand>
+          <Send>
+            <Text>vars.autoBalance</Text>
+            <Regex></Regex>
+          </Send>
+          <Responses>
+            <Response>
+              <Text></Text>
+              <Regex>OK (true|false)</Regex>
+            </Response>
+          </Responses>
+        </TestCommand>
+      </TestCommands>
+    </Test>
+    <Test>
+      <Timeout>2</Timeout>
+      <Name>Test vars.autoBalance set disabled on official</Name>
+      <TestCommands>
+        <TestCommand>
+          <Send>
+            <Text>vars.autoBalance true</Text>
+            <Regex></Regex>
+          </Send>
+          <Responses>
+            <Response>
+              <Text>CommandDisallowedOnOffical</Text>
+              <Regex></Regex>
+            </Response>
+          </Responses>
+        </TestCommand>
+      </TestCommands>
+    </Test>
+    <Test>
+      <Timeout>2</Timeout>
+      <Name>Test vars.bannerUrl get is functional</Name>
+      <TestCommands>
+        <TestCommand>
+          <Send>
+            <Text>vars.bannerUrl</Text>
+            <Regex></Regex>
+          </Send>
+          <Responses>
+            <Response>
+              <Text></Text>
+              <Regex>OK .*</Regex>
+            </Response>
+          </Responses>
+        </TestCommand>
+      </TestCommands>
+    </Test>
+    <Test>
+      <Timeout>2</Timeout>
+      <Name>Test vars.bannerUrl set is functional</Name>
+      <TestCommands>
+        <TestCommand>
+          <Send>
+            <Text>vars.bannerUrl "http://something.com"</Text>
+            <Regex></Regex>
+          </Send>
+          <Responses>
+            <Response>
+              <Text>OK</Text>
+              <Regex></Regex>
+            </Response>
+          </Responses>
+        </TestCommand>
+      </TestCommands>
+    </Test>
+    <Test>
+      <Timeout>2</Timeout>
+      <Name>Test vars.bulletDamage get is functional</Name>
+      <TestCommands>
+        <TestCommand>
+          <Send>
+            <Text>vars.bulletDamage</Text>
+            <Regex></Regex>
+          </Send>
+          <Responses>
+            <Response>
+              <Text></Text>
+              <Regex>OK [0-9]+</Regex>
+            </Response>
+          </Responses>
+        </TestCommand>
+      </TestCommands>
+    </Test>
+    <Test>
+      <Timeout>2</Timeout>
+      <Name>Test vars.bulletDamage set disabled on official</Name>
+      <TestCommands>
+        <TestCommand>
+          <Send>
+            <Text>vars.bulletDamage 100</Text>
+            <Regex></Regex>
+          </Send>
+          <Responses>
+            <Response>
+              <Text>CommandDisallowedOnOffical</Text>
+              <Regex></Regex>
+            </Response>
+          </Responses>
+        </TestCommand>
+      </TestCommands>
+    </Test>
+    <Test>
+      <Timeout>2</Timeout>
+      <Name>Test vars.commander get is functional</Name>
+      <TestCommands>
+        <TestCommand>
+          <Send>
+            <Text>vars.commander</Text>
+            <Regex></Regex>
+          </Send>
+          <Responses>
+            <Response>
+              <Text></Text>
+              <Regex>OK (true|false)</Regex>
+            </Response>
+          </Responses>
+        </TestCommand>
+      </TestCommands>
+    </Test>
+    <Test>
+      <Timeout>2</Timeout>
+      <Name>Test vars.commander set is functional</Name>
+      <TestCommands>
+        <TestCommand>
+          <Send>
+            <Text>vars.commander true</Text>
+            <Regex></Regex>
+          </Send>
+          <Responses>
+            <Response>
+              <Text>OK</Text>
+              <Regex></Regex>
+            </Response>
+          </Responses>
+        </TestCommand>
+      </TestCommands>
+    </Test>
+    <Test>
+      <Timeout>2</Timeout>
+      <Name>Test vars.disableHitIndicators get is functional</Name>
+      <TestCommands>
+        <TestCommand>
+          <Send>
+            <Text>vars.disableHitIndicators</Text>
+            <Regex></Regex>
+          </Send>
+          <Responses>
+            <Response>
+              <Text></Text>
+              <Regex>OK (true|false)</Regex>
+            </Response>
+          </Responses>
+        </TestCommand>
+      </TestCommands>
+    </Test>
+    <Test>
+      <Timeout>2</Timeout>
+      <Name>Test vars.disableHitIndicators set disabled on official</Name>
+      <TestCommands>
+        <TestCommand>
+          <Send>
+            <Text>vars.disableHitIndicators true</Text>
+            <Regex></Regex>
+          </Send>
+          <Responses>
+            <Response>
+              <Text>CommandDisallowedOnOffical</Text>
+              <Regex></Regex>
+            </Response>
+          </Responses>
+        </TestCommand>
+      </TestCommands>
+    </Test>
+    <Test>
+      <Timeout>2</Timeout>
+      <Name>Test vars.forceReloadWholeMags get is functional</Name>
+      <TestCommands>
+        <TestCommand>
+          <Send>
+            <Text>vars.forceReloadWholeMags</Text>
+            <Regex></Regex>
+          </Send>
+          <Responses>
+            <Response>
+              <Text></Text>
+              <Regex>OK (true|false)</Regex>
+            </Response>
+          </Responses>
+        </TestCommand>
+      </TestCommands>
+    </Test>
+    <Test>
+      <Timeout>2</Timeout>
+      <Name>Test vars.forceReloadWholeMags set disabled on official</Name>
+      <TestCommands>
+        <TestCommand>
+          <Send>
+            <Text>vars.forceReloadWholeMags true</Text>
+            <Regex></Regex>
+          </Send>
+          <Responses>
+            <Response>
+              <Text>CommandDisallowedOnOffical</Text>
+              <Regex></Regex>
+            </Response>
+          </Responses>
+        </TestCommand>
+      </TestCommands>
+    </Test>
+    <Test>
+      <Timeout>2</Timeout>
+      <Name>Test vars.friendlyFire get is functional</Name>
+      <TestCommands>
+        <TestCommand>
+          <Send>
+            <Text>vars.friendlyFire</Text>
+            <Regex></Regex>
+          </Send>
+          <Responses>
+            <Response>
+              <Text></Text>
+              <Regex>OK (true|false)</Regex>
+            </Response>
+          </Responses>
+        </TestCommand>
+      </TestCommands>
+    </Test>
+    <Test>
+      <Timeout>2</Timeout>
+      <Name>Test vars.friendlyFire set disabled on official</Name>
+      <TestCommands>
+        <TestCommand>
+          <Send>
+            <Text>vars.friendlyFire true</Text>
+            <Regex></Regex>
+          </Send>
+          <Responses>
+            <Response>
+              <Text>CommandDisallowedOnOffical</Text>
+              <Regex></Regex>
+            </Response>
+          </Responses>
+        </TestCommand>
+      </TestCommands>
+    </Test>
+    <Test>
+      <Timeout>2</Timeout>
+      <Name>Test vars.hud get is functional</Name>
+      <TestCommands>
+        <TestCommand>
+          <Send>
+            <Text>vars.hud</Text>
+            <Regex></Regex>
+          </Send>
+          <Responses>
+            <Response>
+              <Text></Text>
+              <Regex>OK (true|false)</Regex>
+            </Response>
+          </Responses>
+        </TestCommand>
+      </TestCommands>
+    </Test>
+    <Test>
+      <Timeout>2</Timeout>
+      <Name>Test vars.hud set disabled on official</Name>
+      <TestCommands>
+        <TestCommand>
+          <Send>
+            <Text>vars.hud true</Text>
+            <Regex></Regex>
+          </Send>
+          <Responses>
+            <Response>
+              <Text>CommandDisallowedOnOffical</Text>
+              <Regex></Regex>
+            </Response>
+          </Responses>
+        </TestCommand>
+      </TestCommands>
+    </Test>
+    <Test>
+      <Timeout>2</Timeout>
+      <Name>Test vars.killCam get is functional</Name>
+      <TestCommands>
+        <TestCommand>
+          <Send>
+            <Text>vars.killCam</Text>
+            <Regex></Regex>
+          </Send>
+          <Responses>
+            <Response>
+              <Text></Text>
+              <Regex>OK (true|false)</Regex>
+            </Response>
+          </Responses>
+        </TestCommand>
+      </TestCommands>
+    </Test>
+    <Test>
+      <Timeout>2</Timeout>
+      <Name>Test vars.killCam set disabled on official</Name>
+      <TestCommands>
+        <TestCommand>
+          <Send>
+            <Text>vars.killCam true</Text>
+            <Regex></Regex>
+          </Send>
+          <Responses>
+            <Response>
+              <Text>CommandDisallowedOnOffical</Text>
+              <Regex></Regex>
+            </Response>
+          </Responses>
+        </TestCommand>
+      </TestCommands>
+    </Test>
+    <Test>
+      <Timeout>2</Timeout>
+      <Name>Test vars.killRotation get is functional</Name>
+      <TestCommands>
+        <TestCommand>
+          <Send>
+            <Text>vars.killRotation</Text>
+            <Regex></Regex>
+          </Send>
+          <Responses>
+            <Response>
+              <Text></Text>
+              <Regex>OK (true|false)</Regex>
+            </Response>
+          </Responses>
+        </TestCommand>
+      </TestCommands>
+    </Test>
+    <Test>
+      <Timeout>2</Timeout>
+      <Name>Test vars.killRotation set disabled on official</Name>
+      <TestCommands>
+        <TestCommand>
+          <Send>
+            <Text>vars.killRotation true</Text>
+            <Regex></Regex>
+          </Send>
+          <Responses>
+            <Response>
+              <Text>CommandDisallowedOnOffical</Text>
+              <Regex></Regex>
+            </Response>
+          </Responses>
+        </TestCommand>
+      </TestCommands>
+    </Test>
+    <Test>
+      <Timeout>2</Timeout>
+      <Name>Test vars.minimap get is functional</Name>
+      <TestCommands>
+        <TestCommand>
+          <Send>
+            <Text>vars.minimap</Text>
+            <Regex></Regex>
+          </Send>
+          <Responses>
+            <Response>
+              <Text></Text>
+              <Regex>OK (true|false)</Regex>
+            </Response>
+          </Responses>
+        </TestCommand>
+      </TestCommands>
+    </Test>
+    <Test>
+      <Timeout>2</Timeout>
+      <Name>Test vars.minimap set disabled on official</Name>
+      <TestCommands>
+        <TestCommand>
+          <Send>
+            <Text>vars.minimap true</Text>
+            <Regex></Regex>
+          </Send>
+          <Responses>
+            <Response>
+              <Text>CommandDisallowedOnOffical</Text>
+              <Regex></Regex>
+            </Response>
+          </Responses>
+        </TestCommand>
+      </TestCommands>
+    </Test>
+    <Test>
+      <Timeout>2</Timeout>
+      <Name>Test vars.miniMapSpotting get is functional</Name>
+      <TestCommands>
+        <TestCommand>
+          <Send>
+            <Text>vars.miniMapSpotting</Text>
+            <Regex></Regex>
+          </Send>
+          <Responses>
+            <Response>
+              <Text></Text>
+              <Regex>OK (true|false)</Regex>
+            </Response>
+          </Responses>
+        </TestCommand>
+      </TestCommands>
+    </Test>
+    <Test>
+      <Timeout>2</Timeout>
+      <Name>Test vars.miniMapSpotting set disabled on official</Name>
+      <TestCommands>
+        <TestCommand>
+          <Send>
+            <Text>vars.miniMapSpotting true</Text>
+            <Regex></Regex>
+          </Send>
+          <Responses>
+            <Response>
+              <Text>CommandDisallowedOnOffical</Text>
+              <Regex></Regex>
+            </Response>
+          </Responses>
+        </TestCommand>
+      </TestCommands>
+    </Test>
+    <Test>
+      <Timeout>2</Timeout>
+      <Name>Test vars.nameTag get is functional</Name>
+      <TestCommands>
+        <TestCommand>
+          <Send>
+            <Text>vars.nameTag</Text>
+            <Regex></Regex>
+          </Send>
+          <Responses>
+            <Response>
+              <Text></Text>
+              <Regex>OK (true|false)</Regex>
+            </Response>
+          </Responses>
+        </TestCommand>
+      </TestCommands>
+    </Test>
+    <Test>
+      <Timeout>2</Timeout>
+      <Name>Test vars.nameTag set disabled on official</Name>
+      <TestCommands>
+        <TestCommand>
+          <Send>
+            <Text>vars.nameTag true</Text>
+            <Regex></Regex>
+          </Send>
+          <Responses>
+            <Response>
+              <Text>CommandDisallowedOnOffical</Text>
+              <Regex></Regex>
+            </Response>
+          </Responses>
+        </TestCommand>
+      </TestCommands>
+    </Test>
+    <Test>
+      <Timeout>2</Timeout>
+      <Name>Test vars.onlySquadLeaderSpawn get is functional</Name>
+      <TestCommands>
+        <TestCommand>
+          <Send>
+            <Text>vars.onlySquadLeaderSpawn</Text>
+            <Regex></Regex>
+          </Send>
+          <Responses>
+            <Response>
+              <Text></Text>
+              <Regex>OK (true|false)</Regex>
+            </Response>
+          </Responses>
+        </TestCommand>
+      </TestCommands>
+    </Test>
+    <Test>
+      <Timeout>2</Timeout>
+      <Name>Test vars.onlySquadLeaderSpawn set disabled on official</Name>
+      <TestCommands>
+        <TestCommand>
+          <Send>
+            <Text>vars.onlySquadLeaderSpawn true</Text>
+            <Regex></Regex>
+          </Send>
+          <Responses>
+            <Response>
+              <Text>CommandDisallowedOnOffical</Text>
+              <Regex></Regex>
+            </Response>
+          </Responses>
+        </TestCommand>
+      </TestCommands>
+    </Test>
+    <Test>
+      <Timeout>2</Timeout>
+      <Name>Test vars.regenerateHealth get is functional</Name>
+      <TestCommands>
+        <TestCommand>
+          <Send>
+            <Text>vars.regenerateHealth</Text>
+            <Regex></Regex>
+          </Send>
+          <Responses>
+            <Response>
+              <Text></Text>
+              <Regex>OK (true|false)</Regex>
+            </Response>
+          </Responses>
+        </TestCommand>
+      </TestCommands>
+    </Test>
+    <Test>
+      <Timeout>2</Timeout>
+      <Name>Test vars.vars.regenerateHealth set disabled on official</Name>
+      <TestCommands>
+        <TestCommand>
+          <Send>
+            <Text>vars.regenerateHealth true</Text>
+            <Regex></Regex>
+          </Send>
+          <Responses>
+            <Response>
+              <Text>CommandDisallowedOnOffical</Text>
+              <Regex></Regex>
+            </Response>
+          </Responses>
+        </TestCommand>
+      </TestCommands>
+    </Test>
+    <Test>
+      <Timeout>2</Timeout>
+      <Name>Test vars.vehicleSpawnAllowed get is functional</Name>
+      <TestCommands>
+        <TestCommand>
+          <Send>
+            <Text>vars.vehicleSpawnAllowed</Text>
+            <Regex></Regex>
+          </Send>
+          <Responses>
+            <Response>
+              <Text></Text>
+              <Regex>OK (true|false)</Regex>
+            </Response>
+          </Responses>
+        </TestCommand>
+      </TestCommands>
+    </Test>
+    <Test>
+      <Timeout>2</Timeout>
+      <Name>Test vars.vehicleSpawnAllowed set disabled on official</Name>
+      <TestCommands>
+        <TestCommand>
+          <Send>
+            <Text>vars.vehicleSpawnAllowed true</Text>
+            <Regex></Regex>
+          </Send>
+          <Responses>
+            <Response>
+              <Text>CommandDisallowedOnOffical</Text>
+              <Regex></Regex>
+            </Response>
+          </Responses>
+        </TestCommand>
+      </TestCommands>
+    </Test>
+    <Test>
+      <Timeout>2</Timeout>
+      <Name>Test vars.idleBanRounds get is functional</Name>
+      <TestCommands>
+        <TestCommand>
+          <Send>
+            <Text>vars.idleBanRounds</Text>
+            <Regex></Regex>
+          </Send>
+          <Responses>
+            <Response>
+              <Text></Text>
+              <Regex>OK [0-9]+</Regex>
+            </Response>
+          </Responses>
+        </TestCommand>
+      </TestCommands>
+    </Test>
+    <Test>
+      <Timeout>2</Timeout>
+      <Name>Test vars.idleBanRounds set disabled on official</Name>
+      <TestCommands>
+        <TestCommand>
+          <Send>
+            <Text>vars.idleBanRounds 5</Text>
+            <Regex></Regex>
+          </Send>
+          <Responses>
+            <Response>
+              <Text>CommandDisallowedOnOffical</Text>
+              <Regex></Regex>
+            </Response>
+          </Responses>
+        </TestCommand>
+      </TestCommands>
+    </Test>
+    <Test>
+      <Timeout>2</Timeout>
+      <Name>Test vars.gameModeCounter get is functional</Name>
+      <TestCommands>
+        <TestCommand>
+          <Send>
+            <Text>vars.gameModeCounter</Text>
+            <Regex></Regex>
+          </Send>
+          <Responses>
+            <Response>
+              <Text></Text>
+              <Regex>OK [0-9]+</Regex>
+            </Response>
+          </Responses>
+        </TestCommand>
+      </TestCommands>
+    </Test>
+    <Test>
+      <Timeout>2</Timeout>
+      <Name>Test vars.gameModeCounter set disabled on official</Name>
+      <TestCommands>
+        <TestCommand>
+          <Send>
+            <Text>vars.gameModeCounter 5</Text>
+            <Regex></Regex>
+          </Send>
+          <Responses>
+            <Response>
+              <Text>CommandDisallowedOnOffical</Text>
+              <Regex></Regex>
+            </Response>
+          </Responses>
+        </TestCommand>
+      </TestCommands>
+    </Test>
+    <Test>
+      <Timeout>2</Timeout>
+      <Name>Test vars.idleTimeout get is functional</Name>
+      <TestCommands>
+        <TestCommand>
+          <Send>
+            <Text>vars.idleTimeout</Text>
+            <Regex></Regex>
+          </Send>
+          <Responses>
+            <Response>
+              <Text></Text>
+              <Regex>OK [0-9]+</Regex>
+            </Response>
+          </Responses>
+        </TestCommand>
+      </TestCommands>
+    </Test>
+    <Test>
+      <Timeout>2</Timeout>
+      <Name>Test vars.idleTimeout set disabled on official</Name>
+      <TestCommands>
+        <TestCommand>
+          <Send>
+            <Text>vars.idleTimeout 600</Text>
+            <Regex></Regex>
+          </Send>
+          <Responses>
+            <Response>
+              <Text>CommandDisallowedOnOffical</Text>
+              <Regex></Regex>
+            </Response>
+          </Responses>
+        </TestCommand>
+      </TestCommands>
+    </Test>
+    <Test>
+      <Timeout>2</Timeout>
+      <Name>Test vars.maxPlayers get is functional</Name>
+      <TestCommands>
+        <TestCommand>
+          <Send>
+            <Text>vars.maxPlayers</Text>
+            <Regex></Regex>
+          </Send>
+          <Responses>
+            <Response>
+              <Text></Text>
+              <Regex>OK [0-9]+</Regex>
+            </Response>
+          </Responses>
+        </TestCommand>
+      </TestCommands>
+    </Test>
+    <Test>
+      <Timeout>2</Timeout>
+      <Name>Test vars.maxPlayers set is functional on official</Name>
+      <TestCommands>
+        <TestCommand>
+          <Send>
+            <Text>vars.maxPlayers 64</Text>
+            <Regex></Regex>
+          </Send>
+          <Responses>
+            <Response>
+              <Text>OK</Text>
+              <Regex></Regex>
+            </Response>
+          </Responses>
+        </TestCommand>
+      </TestCommands>
+    </Test>
+    <Test>
+      <Timeout>2</Timeout>
+      <Name>Test vars.maxPlayers set after a single call</Name>
+      <TestCommands>
+        <TestCommand>
+          <Send>
+            <Text>vars.maxPlayers {RandomMaxPlayerCount}</Text>
+            <Regex></Regex>
+          </Send>
+          <Responses>
+            <Response>
+              <Text>OK</Text>
+              <Regex></Regex>
+            </Response>
+          </Responses>
+        </TestCommand>
+        <TestCommand>
+          <Send>
+            <Text>vars.maxPlayers</Text>
+            <Regex></Regex>
+          </Send>
+          <Responses>
+            <Response>
+              <Text>OK {RandomMaxPlayerCount}</Text>
+              <Regex></Regex>
+            </Response>
+          </Responses>
+        </TestCommand>
+      </TestCommands>
+    </Test>
+    <Test>
+      <Timeout>2</Timeout>
+      <Name>Test vars.playerManDownTime get is functional</Name>
+      <TestCommands>
+        <TestCommand>
+          <Send>
+            <Text>vars.playerManDownTime</Text>
+            <Regex></Regex>
+          </Send>
+          <Responses>
+            <Response>
+              <Text></Text>
+              <Regex>OK [0-9]+</Regex>
+            </Response>
+          </Responses>
+        </TestCommand>
+      </TestCommands>
+    </Test>
+    <Test>
+      <Timeout>2</Timeout>
+      <Name>Test vars.playerManDownTime is read only</Name>
+      <TestCommands>
+        <TestCommand>
+          <Send>
+            <Text>vars.playerManDownTime 5</Text>
+            <Regex></Regex>
+          </Send>
+          <Responses>
+            <Response>
+              <Text>CommandIsReadOnly</Text>
+              <Regex></Regex>
+            </Response>
+          </Responses>
+        </TestCommand>
+      </TestCommands>
+    </Test>
+    <Test>
+      <Timeout>2</Timeout>
+      <Name>Test vars.playerRespawnTime get is functional</Name>
+      <TestCommands>
+        <TestCommand>
+          <Send>
+            <Text>vars.playerRespawnTime</Text>
+            <Regex></Regex>
+          </Send>
+          <Responses>
+            <Response>
+              <Text></Text>
+              <Regex>OK [0-9]+</Regex>
+            </Response>
+          </Responses>
+        </TestCommand>
+      </TestCommands>
+    </Test>
+    <Test>
+      <Timeout>2</Timeout>
+      <Name>Test vars.playerRespawnTime set disabled on official</Name>
+      <TestCommands>
+        <TestCommand>
+          <Send>
+            <Text>vars.playerRespawnTime 5</Text>
+            <Regex></Regex>
+          </Send>
+          <Responses>
+            <Response>
+              <Text>CommandDisallowedOnOffical</Text>
+              <Regex></Regex>
+            </Response>
+          </Responses>
+        </TestCommand>
+      </TestCommands>
+    </Test>
+    <Test>
+      <Timeout>2</Timeout>
+      <Name>Test vars.roundLockdownCountdown get is functional</Name>
+      <TestCommands>
+        <TestCommand>
+          <Send>
+            <Text>vars.roundLockdownCountdown</Text>
+            <Regex></Regex>
+          </Send>
+          <Responses>
+            <Response>
+              <Text></Text>
+              <Regex>OK [0-9]+</Regex>
+            </Response>
+          </Responses>
+        </TestCommand>
+      </TestCommands>
+    </Test>
+    <Test>
+      <Timeout>2</Timeout>
+      <Name>Test vars.roundLockdownCountdown set disabled on official</Name>
+      <TestCommands>
+        <TestCommand>
+          <Send>
+            <Text>vars.roundLockdownCountdown 5</Text>
+            <Regex></Regex>
+          </Send>
+          <Responses>
+            <Response>
+              <Text>CommandDisallowedOnOffical</Text>
+              <Regex></Regex>
+            </Response>
+          </Responses>
+        </TestCommand>
+      </TestCommands>
+    </Test>
+    <Test>
+      <Timeout>2</Timeout>
+      <Name>Test vars.roundRestartPlayerCount get is functional</Name>
+      <TestCommands>
+        <TestCommand>
+          <Send>
+            <Text>vars.roundRestartPlayerCount</Text>
+            <Regex></Regex>
+          </Send>
+          <Responses>
+            <Response>
+              <Text></Text>
+              <Regex>OK [0-9]+</Regex>
+            </Response>
+          </Responses>
+        </TestCommand>
+      </TestCommands>
+    </Test>
+    <Test>
+      <Timeout>2</Timeout>
+      <Name>Test vars.roundRestartPlayerCount set disabled on official</Name>
+      <TestCommands>
+        <TestCommand>
+          <Send>
+            <Text>vars.roundRestartPlayerCount 5</Text>
+            <Regex></Regex>
+          </Send>
+          <Responses>
+            <Response>
+              <Text>CommandDisallowedOnOffical</Text>
+              <Regex></Regex>
+            </Response>
+          </Responses>
+        </TestCommand>
+      </TestCommands>
+    </Test>
+    <Test>
+      <Timeout>2</Timeout>
+      <Name>Test vars.roundStartPlayerCount get is functional</Name>
+      <TestCommands>
+        <TestCommand>
+          <Send>
+            <Text>vars.roundStartPlayerCount</Text>
+            <Regex></Regex>
+          </Send>
+          <Responses>
+            <Response>
+              <Text></Text>
+              <Regex>OK [0-9]+</Regex>
+            </Response>
+          </Responses>
+        </TestCommand>
+      </TestCommands>
+    </Test>
+    <Test>
+      <Timeout>2</Timeout>
+      <Name>Test vars.roundStartPlayerCount set disabled on official</Name>
+      <TestCommands>
+        <TestCommand>
+          <Send>
+            <Text>vars.roundStartPlayerCount 5</Text>
+            <Regex></Regex>
+          </Send>
+          <Responses>
+            <Response>
+              <Text>CommandDisallowedOnOffical</Text>
+              <Regex></Regex>
+            </Response>
+          </Responses>
+        </TestCommand>
+      </TestCommands>
+    </Test>
+    <Test>
+      <Timeout>2</Timeout>
+      <Name>Test vars.roundWarmupTimeout get is functional</Name>
+      <TestCommands>
+        <TestCommand>
+          <Send>
+            <Text>vars.roundWarmupTimeout</Text>
+            <Regex></Regex>
+          </Send>
+          <Responses>
+            <Response>
+              <Text></Text>
+              <Regex>OK [0-9]+</Regex>
+            </Response>
+          </Responses>
+        </TestCommand>
+      </TestCommands>
+    </Test>
+    <Test>
+      <Timeout>2</Timeout>
+      <Name>Test vars.roundWarmupTimeout set disabled on official</Name>
+      <TestCommands>
+        <TestCommand>
+          <Send>
+            <Text>vars.roundWarmupTimeout 5</Text>
+            <Regex></Regex>
+          </Send>
+          <Responses>
+            <Response>
+              <Text>CommandDisallowedOnOffical</Text>
+              <Regex></Regex>
+            </Response>
+          </Responses>
+        </TestCommand>
+      </TestCommands>
+    </Test>
+    <Test>
+      <Timeout>2</Timeout>
+      <Name>Test vars.soldierHealth get is functional</Name>
+      <TestCommands>
+        <TestCommand>
+          <Send>
+            <Text>vars.soldierHealth</Text>
+            <Regex></Regex>
+          </Send>
+          <Responses>
+            <Response>
+              <Text></Text>
+              <Regex>OK [0-9]+</Regex>
+            </Response>
+          </Responses>
+        </TestCommand>
+      </TestCommands>
+    </Test>
+    <Test>
+      <Timeout>2</Timeout>
+      <Name>Test vars.soldierHealth set disabled on official</Name>
+      <TestCommands>
+        <TestCommand>
+          <Send>
+            <Text>vars.soldierHealth 100</Text>
+            <Regex></Regex>
+          </Send>
+          <Responses>
+            <Response>
+              <Text>CommandDisallowedOnOffical</Text>
+              <Regex></Regex>
+            </Response>
+          </Responses>
+        </TestCommand>
+      </TestCommands>
+    </Test>
+    <Test>
+      <Timeout>2</Timeout>
+      <Name>Test vars.vehicleSpawnDelay get is functional</Name>
+      <TestCommands>
+        <TestCommand>
+          <Send>
+            <Text>vars.vehicleSpawnDelay</Text>
+            <Regex></Regex>
+          </Send>
+          <Responses>
+            <Response>
+              <Text></Text>
+              <Regex>OK [0-9]+</Regex>
+            </Response>
+          </Responses>
+        </TestCommand>
+      </TestCommands>
+    </Test>
+    <Test>
+      <Timeout>2</Timeout>
+      <Name>Test vars.vehicleSpawnDelay set disabled on official</Name>
+      <TestCommands>
+        <TestCommand>
+          <Send>
+            <Text>vars.vehicleSpawnDelay 10</Text>
+            <Regex></Regex>
+          </Send>
+          <Responses>
+            <Response>
+              <Text>CommandDisallowedOnOffical</Text>
+              <Regex></Regex>
+            </Response>
+          </Responses>
+        </TestCommand>
+      </TestCommands>
+    </Test>
+    <Test>
+      <Timeout>2</Timeout>
+      <Name>Test vars.teamKillCountForKick get is functional</Name>
+      <TestCommands>
+        <TestCommand>
+          <Send>
+            <Text>vars.teamKillCountForKick</Text>
+            <Regex></Regex>
+          </Send>
+          <Responses>
+            <Response>
+              <Text></Text>
+              <Regex>OK [0-9]+</Regex>
+            </Response>
+          </Responses>
+        </TestCommand>
+      </TestCommands>
+    </Test>
+    <Test>
+      <Timeout>2</Timeout>
+      <Name>Test vars.teamKillCountForKick set disabled on official</Name>
+      <TestCommands>
+        <TestCommand>
+          <Send>
+            <Text>vars.teamKillCountForKick 10</Text>
+            <Regex></Regex>
+          </Send>
+          <Responses>
+            <Response>
+              <Text>CommandDisallowedOnOffical</Text>
+              <Regex></Regex>
+            </Response>
+          </Responses>
+        </TestCommand>
+      </TestCommands>
+    </Test>
+    <Test>
+      <Timeout>2</Timeout>
+      <Name>Test vars.teamKillKickForBan get is functional</Name>
+      <TestCommands>
+        <TestCommand>
+          <Send>
+            <Text>vars.teamKillKickForBan</Text>
+            <Regex></Regex>
+          </Send>
+          <Responses>
+            <Response>
+              <Text></Text>
+              <Regex>OK [0-9]+</Regex>
+            </Response>
+          </Responses>
+        </TestCommand>
+      </TestCommands>
+    </Test>
+    <Test>
+      <Timeout>2</Timeout>
+      <Name>Test vars.teamKillKickForBan set disabled on official</Name>
+      <TestCommands>
+        <TestCommand>
+          <Send>
+            <Text>vars.teamKillKickForBan 10</Text>
+            <Regex></Regex>
+          </Send>
+          <Responses>
+            <Response>
+              <Text>CommandDisallowedOnOffical</Text>
+              <Regex></Regex>
+            </Response>
+          </Responses>
+        </TestCommand>
+      </TestCommands>
+    </Test>
+    <Test>
+      <Timeout>2</Timeout>
+      <Name>Test vars.teamKillValueDecreasePerSecond get is functional</Name>
+      <TestCommands>
+        <TestCommand>
+          <Send>
+            <Text>vars.teamKillValueDecreasePerSecond</Text>
+            <Regex></Regex>
+          </Send>
+          <Responses>
+            <Response>
+              <Text></Text>
+              <Regex>OK [0-9]+</Regex>
+            </Response>
+          </Responses>
+        </TestCommand>
+      </TestCommands>
+    </Test>
+    <Test>
+      <Timeout>2</Timeout>
+      <Name>Test vars.teamKillValueDecreasePerSecond set disabled on official</Name>
+      <TestCommands>
+        <TestCommand>
+          <Send>
+            <Text>vars.teamKillValueDecreasePerSecond 10</Text>
+            <Regex></Regex>
+          </Send>
+          <Responses>
+            <Response>
+              <Text>CommandDisallowedOnOffical</Text>
+              <Regex></Regex>
+            </Response>
+          </Responses>
+        </TestCommand>
+      </TestCommands>
+    </Test>
+    <Test>
+      <Timeout>2</Timeout>
+      <Name>Test vars.teamKillValueForKick get is functional</Name>
+      <TestCommands>
+        <TestCommand>
+          <Send>
+            <Text>vars.teamKillValueForKick</Text>
+            <Regex></Regex>
+          </Send>
+          <Responses>
+            <Response>
+              <Text></Text>
+              <Regex>OK [0-9]+</Regex>
+            </Response>
+          </Responses>
+        </TestCommand>
+      </TestCommands>
+    </Test>
+    <Test>
+      <Timeout>2</Timeout>
+      <Name>Test vars.teamKillValueForKick set disabled on official</Name>
+      <TestCommands>
+        <TestCommand>
+          <Send>
+            <Text>vars.teamKillValueForKick 10</Text>
+            <Regex></Regex>
+          </Send>
+          <Responses>
+            <Response>
+              <Text>CommandDisallowedOnOffical</Text>
+              <Regex></Regex>
+            </Response>
+          </Responses>
+        </TestCommand>
+      </TestCommands>
+    </Test>
+    <Test>
+      <Timeout>2</Timeout>
+      <Name>Test vars.teamKillValueIncrease get is functional</Name>
+      <TestCommands>
+        <TestCommand>
+          <Send>
+            <Text>vars.teamKillValueIncrease</Text>
+            <Regex></Regex>
+          </Send>
+          <Responses>
+            <Response>
+              <Text></Text>
+              <Regex>OK [0-9]+</Regex>
+            </Response>
+          </Responses>
+        </TestCommand>
+      </TestCommands>
+    </Test>
+    <Test>
+      <Timeout>2</Timeout>
+      <Name>Test vars.teamKillValueIncrease set disabled on official</Name>
+      <TestCommands>
+        <TestCommand>
+          <Send>
+            <Text>vars.teamKillValueIncrease 10</Text>
+            <Regex></Regex>
+          </Send>
+          <Responses>
+            <Response>
+              <Text>CommandDisallowedOnOffical</Text>
+              <Regex></Regex>
+            </Response>
+          </Responses>
+        </TestCommand>
+      </TestCommands>
+    </Test>
+    <Test>
+      <Timeout>2</Timeout>
+      <Name>Test vars.serverDescription get is functional</Name>
+      <TestCommands>
+        <TestCommand>
+          <Send>
+            <Text>vars.serverDescription</Text>
+            <Regex></Regex>
+          </Send>
+          <Responses>
+            <Response>
+              <Text></Text>
+              <Regex>OK .*</Regex>
+            </Response>
+          </Responses>
+        </TestCommand>
+      </TestCommands>
+    </Test>
+    <Test>
+      <Timeout>2</Timeout>
+      <Name>Test vars.serverDescription set is functional</Name>
+      <TestCommands>
+        <TestCommand>
+          <Send>
+            <Text>vars.serverDescription "my cool server is cool"</Text>
+            <Regex></Regex>
+          </Send>
+          <Responses>
+            <Response>
+              <Text>OK</Text>
+              <Regex></Regex>
+            </Response>
+          </Responses>
+        </TestCommand>
+      </TestCommands>
+    </Test>
+    <Test>
+      <Timeout>2</Timeout>
+      <Name>Test vars.serverMessage get is functional</Name>
+      <TestCommands>
+        <TestCommand>
+          <Send>
+            <Text>vars.serverMessage</Text>
+            <Regex></Regex>
+          </Send>
+          <Responses>
+            <Response>
+              <Text></Text>
+              <Regex>OK .*</Regex>
+            </Response>
+          </Responses>
+        </TestCommand>
+      </TestCommands>
+    </Test>
+    <Test>
+      <Timeout>2</Timeout>
+      <Name>Test vars.serverDescription set is functional</Name>
+      <TestCommands>
+        <TestCommand>
+          <Send>
+            <Text>vars.serverDescription "no shooting admins or ban"</Text>
+            <Regex></Regex>
+          </Send>
+          <Responses>
+            <Response>
+              <Text>OK</Text>
+              <Regex></Regex>
+            </Response>
+          </Responses>
+        </TestCommand>
+      </TestCommands>
+    </Test>
+    <Test>
+      <Timeout>2</Timeout>
+      <Name>Test vars.serverName get is functional</Name>
+      <TestCommands>
+        <TestCommand>
+          <Send>
+            <Text>vars.serverName</Text>
+            <Regex></Regex>
+          </Send>
+          <Responses>
+            <Response>
+              <Text></Text>
+              <Regex>OK .*</Regex>
+            </Response>
+          </Responses>
+        </TestCommand>
+      </TestCommands>
+    </Test>
+    <Test>
+      <Timeout>2</Timeout>
+      <Name>Test vars.serverName set is functional</Name>
+      <TestCommands>
+        <TestCommand>
+          <Send>
+            <Text>vars.serverName "my cool server is super cool"</Text>
+            <Regex></Regex>
+          </Send>
+          <Responses>
+            <Response>
+              <Text>OK</Text>
+              <Regex></Regex>
+            </Response>
+          </Responses>
+        </TestCommand>
+      </TestCommands>
+    </Test>
+  </Tests>
+</ProtocolTestRun>

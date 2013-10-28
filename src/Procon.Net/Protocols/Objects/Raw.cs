@@ -1,13 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Procon.Net.Protocols.Objects {
-    public class Raw : Action {
+    public sealed class Raw : NetworkAction {
 
-        public RawActionType RawActionType { get; set; }
-
+        /// <summary>
+        /// The text part of a packet
+        /// </summary>
         public String PacketText { get; set; }
 
         public Raw() : base() {

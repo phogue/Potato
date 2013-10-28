@@ -1,55 +1,9 @@
-﻿// Copyright 2011 Geoffrey 'Phogue' Green
-// 
-// http://www.phogue.net
-//  
-// This file is part of Procon 2.
-// 
-// Procon 2 is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-// 
-// Procon 2 is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-// 
-// You should have received a copy of the GNU General Public License
-// along with Procon 2.  If not, see <http://www.gnu.org/licenses/>.
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Procon.NLP.Tokens.Primitive.Temporal {
-
+﻿namespace Procon.Nlp.Tokens.Primitive.Temporal {
     public class TemporalToken : PrimitiveToken {
 
-        public DateTimePatternNLP Pattern { get; set; }
-
-        //[TokenBaseMethod]
-        //public static Token ToBaseToken(ProconState state, Token token) {
-
-        //    Token returnToken = token;
-
-        //    returnToken = Token.GetBestMatch(returnToken, DayTemporalToken.ToBaseToken(state, input));
-        //    returnToken = Token.GetBestMatch(returnToken, MonthTemporalToken.ToBaseToken(state, input));
-
-        //    return returnToken;
-        //}
-
-
-        //public DateTimePatternNLP ToDateTimeNLP() {
-
-        //    DateTimePatternNLP returnDateTime = default(DateTimePatternNLP);
-
-        //    if (this.Value is DateTimePatternNLP) {
-        //        returnDateTime = (DateTimePatternNLP)this.Value;
-        //    }
-        //    // Convert?
-
-        //    return returnDateTime;
-        //}
+        /// <summary>
+        /// The underlying date/time pattern built up so far by matching tokens.
+        /// </summary>
+        public DateTimePatternNlp Pattern { get; set; }
     }
 }

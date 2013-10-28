@@ -1,34 +1,25 @@
-﻿// Copyright 2011 Geoffrey 'Phogue' Green
-// 
-// http://www.phogue.net
-//  
-// This file is part of Procon 2.
-// 
-// Procon 2 is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-// 
-// Procon 2 is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-// 
-// You should have received a copy of the GNU General Public License
-// along with Procon 2.  If not, see <http://www.gnu.org/licenses/>.
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Linq;
-using System.Security.Cryptography;
 using System.Globalization;
 
 namespace Procon.Net.Utils {
     public static class StringExtensions {
 
+        private static readonly Random Random = new Random((int)DateTime.Now.Ticks);
 
+        public static string RandomString(int length) {
+            const string characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~:/?#[]@!$&'()*+,;=";
+            var randomString = new StringBuilder();
+            
+            for (var offset = 0; offset < length; offset++) {
+                randomString.Append(characters[StringExtensions.Random.Next(0, characters.Length)]);
+            }
+
+            return randomString.ToString();
+        }
 
         public static List<string> Wordify(this string command) {
             List<string> returnList = new List<string>();
@@ -95,14 +86,14 @@ namespace Procon.Net.Utils {
             return returnList;
         }
 
-        /// <summary>
+        /// <summary><![CDATA[
         /// Takes a string and splits it on words based on characters 
         /// string testString = "this is a string with some words in it";
         /// testString.WordWrap(10) == List<string>() { "this is a", "string", "with some", "words in", "it" }
         ///        
         /// Useful if you want to output a long string to the game and want all of the data outputed without
         /// losing any data.
-        /// </summary>
+        /// ]]></summary>
         /// <param name="text"></param>
         /// <param name="column"></param>
         /// <returns></returns>
@@ -163,10 +154,8 @@ namespace Procon.Net.Utils {
             string normalizedString = s.Normalize(NormalizationForm.FormD);
             StringBuilder stringBuilder = new StringBuilder();
 
-            for (int i = 0; i < normalizedString.Length; i++) {
-                if (CharUnicodeInfo.GetUnicodeCategory(normalizedString[i]) != UnicodeCategory.NonSpacingMark) {
-                    stringBuilder.Append(normalizedString[i]);
-                }
+            foreach (char t in normalizedString.Where(t => CharUnicodeInfo.GetUnicodeCategory(t) != UnicodeCategory.NonSpacingMark)) {
+                stringBuilder.Append(t);
             }
 
             return stringBuilder.ToString();
@@ -180,13 +169,7 @@ namespace Procon.Net.Utils {
         /// <param name="s">String containing leet speak</param>
         /// <returns>Normalized s</returns>
         public static string RemoveLeetSpeek(this string s) {
-            string normalizedString = s;
-
-            foreach (KeyValuePair<string, string> x in StringExtensions.LeetRules) {
-                normalizedString = normalizedString.Replace(x.Key, x.Value);
-            }
-
-            return normalizedString;
+            return StringExtensions.LeetRules.Aggregate(s, (current, x) => current.Replace(x.Key, x.Value));
         }
 
         /// <summary>
@@ -200,7 +183,7 @@ namespace Procon.Net.Utils {
 
             if (s != null) {
                 stripped = stripped.RemoveLeetSpeek().RemoveDiacritics();
-                stripped = new string(stripped.Where(ch => char.IsLetterOrDigit(ch)).ToArray());
+                stripped = new string(stripped.Where(ch => char.IsLetterOrDigit(ch) || char.IsWhiteSpace(ch)).ToArray());
             }
 
             return stripped;
@@ -213,10 +196,15 @@ namespace Procon.Net.Utils {
             return s;
         }
 
-        public static String UrlStub(this String s) {
-            Uri uri = new Uri(s);
+        public static String UrlSlug(this String s) {
+            String combined = s;
+            Uri uri;
 
-            return (uri.Host + uri.PathAndQuery).SanitizeDirectory();
+            if (Uri.TryCreate(s, UriKind.Absolute, out uri) == true) {
+                combined = uri.Host + uri.PathAndQuery;
+            }
+
+            return combined.SanitizeDirectory();
         }
     }
 }

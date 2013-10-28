@@ -1,241 +1,103 @@
-﻿// Copyright 2011 Geoffrey 'Phogue' Green
-// 
-// http://www.phogue.net
-//  
-// This file is part of Procon 2.
-// 
-// Procon 2 is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-// 
-// Procon 2 is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-// 
-// You should have received a copy of the GNU General Public License
-// along with Procon 2.  If not, see <http://www.gnu.org/licenses/>.
-
-using System;
+﻿using System;
 using System.Linq;
 using System.Collections.Generic;
 using System.Reflection;
-using System.Text;
-using System.ComponentModel;
 using System.Xml.Linq;
-using System.IO;
 
 namespace Procon.Net {
     using Procon.Net.Attributes;
-    using Procon.Net.Protocols;
     using Procon.Net.Protocols.Objects;
     using Procon.Net.Utils;
-    using Procon.Net.Utils.PunkBuster;
-    using Procon.Net.Utils.PunkBuster.Objects;
 
-    public abstract class GameImplementation<C, P> : Game
-        where C : Procon.Net.Client<P>
-        where P : Packet {
+    public abstract class GameImplementation<P> : Game where P : Packet {
 
-
-
-
-        [TypeConverter(typeof(ExpandableObjectConverter))]
+        /// <summary>
+        /// The client to handle all communications with the game server
+        /// </summary>
         public Client<P> Client { get; protected set; }
 
-        protected Dictionary<DispatchPacketAttribute, MethodInfo> m_dispatchHandlers;
+        /// <summary>
+        /// Array of dispatch handlers used to locate an appropriate method to call
+        /// once we receieve a packet.
+        /// </summary>
+        protected Dictionary<DispatchPacketAttribute, MethodInfo> DispatchHandlers;
 
-        public override string Hostname { get { return this.Client != null ? this.Client.Hostname : String.Empty; } }
-        public override ushort Port { get { return this.Client != null ? this.Client.Port : (ushort)0; } }
+        /// <summary>
+        /// Fetches the hostname of the connection. Proxy for Client.Hostname.
+        /// </summary>
+        [Obsolete]
+        public override string Hostname {
+            get { return this.Client != null ? this.Client.Hostname : String.Empty; }
+        }
 
-        /*
+        [Obsolete]
+        public override ushort Port {
+            get { return this.Client != null ? this.Client.Port : (ushort)0; }
+        }
+
+        [Obsolete]
         public override ConnectionState ConnectionState {
-            get {
-                return this.Client != null ? this.Client.ConnectionState : Net.ConnectionState.Disconnected;
-            }
-        }
-        */
-        private GameType m_gameType = GameType.None;
-        public GameType GameType {
-            get {
-                if (this.m_gameType == Protocols.GameType.None) {
-                    GameAttribute attribute = (this.GetType().GetCustomAttributes(typeof(GameAttribute), false) as GameAttribute[]).FirstOrDefault();
-
-                    if (attribute != null) {
-                        this.m_gameType = attribute.GameType;
-                    }
-                }
-
-                return this.m_gameType;
-            }
+            get { return this.Client != null ? this.Client.ConnectionState : ConnectionState.ConnectionDisconnected; }
         }
 
-        #region Events
-
-        public override event GameEventHandler GameEvent;
-        public override event ClientEventHandler ClientEvent;
-
-        protected ClientEventArgs ThrowClientEvent(ClientEventType eventType, Packet packet = null, Exception exception = null) {
-            ClientEventArgs result = null;
-
-            if (this.ClientEvent != null) {
-                this.ClientEvent(this,
-                    result = new ClientEventArgs() {
-                        EventType = eventType,
-                        ConnectionState = this.Client.ConnectionState,
-                        ConnectionError = exception,
-                        Packet = packet
-                    }
-                );
-            }
-
-            return result;
-        }
-
-        protected void ThrowGameEvent(GameEventType eventType) {
-            if (this.GameEvent != null) {
-                this.GameEvent(
-                    this,
-                    new GameEventArgs() {
-                        EventType = eventType,
-                        GameType = this.GameType,
-                        GameState = this.State
-                    }
-                );
-            }
-        }
-
-        protected void ThrowGameEvent(GameEventType eventType, Chat chat = null) {
-            if (this.GameEvent != null) {
-                this.GameEvent(
-                    this,
-                    new GameEventArgs() {
-                        EventType = eventType,
-                        GameType = this.GameType,
-                        GameState = this.State,
-                        Chat = chat
-                    }
-                );
-            }
-        }
-
-        protected void ThrowGameEvent(GameEventType eventType, Player player = null) {
-            if (this.GameEvent != null) {
-                this.GameEvent(
-                    this,
-                    new GameEventArgs() {
-                        EventType = eventType,
-                        GameType = this.GameType,
-                        GameState = this.State,
-                        Player = player
-                    }
-                );
-            }
-        }
-
-        protected void ThrowGameEvent(GameEventType eventType, Kill kill = null) {
-            if (this.GameEvent != null) {
-                this.GameEvent(
-                    this,
-                    new GameEventArgs() {
-                        EventType = eventType,
-                        GameType = this.GameType,
-                        GameState = this.State,
-                        Kill = kill
-                    }
-                );
-            }
-        }
-
-        protected void ThrowGameEvent(GameEventType eventType, Kick kick = null) {
-            if (this.GameEvent != null) {
-                this.GameEvent(
-                    this,
-                    new GameEventArgs() {
-                        EventType = eventType,
-                        GameType = this.GameType,
-                        GameState = this.State,
-                        Kick = kick
-                    }
-                );
-            }
-        }
-
-        protected void ThrowGameEvent(GameEventType eventType, Spawn spawn = null) {
-            if (this.GameEvent != null) {
-                this.GameEvent(
-                    this,
-                    new GameEventArgs() {
-                        EventType = eventType,
-                        GameType = this.GameType,
-                        GameState = this.State,
-                        Spawn = spawn
-                    }
-                );
-            }
-        }
-
-        protected void ThrowGameEvent(GameEventType eventType, Ban ban = null) {
-            if (this.GameEvent != null) {
-                this.GameEvent(
-                    this,
-                    new GameEventArgs() {
-                        EventType = eventType,
-                        GameType = this.GameType,
-                        GameState = this.State,
-                        Ban = ban
-                    }
-                );
-            }
-        }
-
-        // public override event PacketDispatchHandler PacketSent;
-        // public override event PacketDispatchHandler PacketReceived;
-        // public override event SocketExceptionHandler SocketException;
-        // public override event FailureHandler ConnectionFailure;
-        // public override event ConnectionStateChangedHandler ConnectionStateChanged;
-
-        #endregion
-
-        public GameImplementation(Procon.Net.Client<P> client) : base() {
-            this.Execute(client);
-        }
-
-        public GameImplementation(string hostName, ushort port) : base() {
+        protected GameImplementation(string hostName, ushort port) : base() {
             this.Execute(this.CreateClient(hostName, port));
         }
   
-        private void Execute(Procon.Net.Client<P> client) {
+        private void Execute(Client<P> client) {
             this.State = new GameState();
             this.Client = client;
             this.AssignEvents();
 
-            this.m_dispatchHandlers = new Dictionary<DispatchPacketAttribute, MethodInfo>();
+            this.DispatchHandlers = new Dictionary<DispatchPacketAttribute, MethodInfo>();
 
             foreach (MethodInfo method in this.GetType().GetMethods()) {
 
-                ParameterInfo[] parameters = method.GetParameters(); ;
+                ParameterInfo[] parameters = method.GetParameters();
 
                 if (parameters.Length == 2 && typeof(P).IsAssignableFrom(parameters[0].ParameterType) && typeof(P).IsAssignableFrom(parameters[1].ParameterType)) {
 
                     object[] attributes = method.GetCustomAttributes(typeof(DispatchPacketAttribute), false);
 
                     foreach (DispatchPacketAttribute attribute in attributes) {
-                        if (this.m_dispatchHandlers.ContainsKey(attribute) == false) {
-                            this.m_dispatchHandlers.Add(attribute, method);
+                        if (this.DispatchHandlers.ContainsKey(attribute) == false) {
+                            this.DispatchHandlers.Add(attribute, method);
                         }
                     }
                 }
             }
         }
 
+        /// <summary>
+        /// Creates an appropriate client for the game type
+        /// </summary>
+        /// <param name="hostName">The hostname of the server to connect to</param>
+        /// <param name="port">The port on the server to connect to</param>
+        /// <returns>A client capable of communicating with this game server</returns>
         protected abstract Client<P> CreateClient(string hostName, ushort port);
+
+        /// <summary>
+        /// Dispatches a recieved packet. Each game implementation needs to supply its own dispatch
+        /// method as the protocol may be very different and have additional requirements beyond a 
+        /// simple text match.
+        /// </summary>
+        /// <param name="packet">The packet recieved from the game server.</param>
         protected abstract void Dispatch(P packet);
 
+        /// <summary>
+        /// Sends a packet to the server, provided a client exists and the connection is open and ready or logged in.
+        /// This allows for the login command to be sent to a ready connection, otherwise no login packets could be sent.
+        /// </summary>
+        /// <param name="packet"></param>
         public override void Send(Packet packet) {
-            if (this.Client != null && (this.Client.ConnectionState == ConnectionState.Ready || this.Client.ConnectionState == ConnectionState.LoggedIn)) {
+            if (this.Client != null && (this.Client.ConnectionState == ConnectionState.ConnectionReady || this.Client.ConnectionState == ConnectionState.ConnectionLoggedIn)) {
                 this.Client.Send((P)packet);
+            }
+        }
+
+        public override void Synchronize() {
+            if (this.Client != null && this.Client.ConnectionState != ConnectionState.ConnectionLoggedIn) {
+                this.Client.Poke();
             }
         }
 
@@ -248,43 +110,41 @@ namespace Procon.Net {
         }
         
         private void Client_ConnectionFailure(Client<P> sender, Exception exception) {
-            this.ThrowClientEvent(ClientEventType.ConnectionFailure, null, exception);
+            this.OnClientEvent(ClientEventType.ClientConnectionFailure, null, exception);
         }
 
         private void Client_ConnectionStateChanged(Client<P> sender, ConnectionState newState) {
-            this.ThrowClientEvent(ClientEventType.ConnectionStateChange);
+            this.OnClientEvent(ClientEventType.ClientConnectionStateChange);
 
-            this.State.Variables.ConnectionState = newState;
+            this.State.Settings.ConnectionState = newState;
 
-            if (newState == ConnectionState.Ready) {
+            if (newState == ConnectionState.ConnectionReady) {
                 this.Login(this.Password);
             }
         }
 
         private void Client_SocketException(Client<P> sender, System.Net.Sockets.SocketException se) {
-            this.ThrowClientEvent(ClientEventType.SocketException, null, se);
+            this.OnClientEvent(ClientEventType.ClientSocketException, null, se);
         }
 
         private void Client_PacketSent(Client<P> sender, P packet) {
-            this.ThrowClientEvent(ClientEventType.PacketSent, packet, null);
+            this.OnClientEvent(ClientEventType.ClientPacketSent, packet);
         }
 
         private void Client_PacketReceived(Client<P> sender, P packet) {
-            this.ThrowClientEvent(ClientEventType.PacketReceived, packet, null);
+            this.OnClientEvent(ClientEventType.ClientPacketReceived, packet);
 
             this.Dispatch(packet);
         }
 
-        protected void Dispatch(DispatchPacketAttribute identifer, P request, P response) {
+        protected virtual void Dispatch(DispatchPacketAttribute identifer, P request, P response) {
 
-            var dispatchMethods = (
-                from dispatcher in this.m_dispatchHandlers
-                where dispatcher.Key.MatchText == identifer.MatchText &&
-                    ( dispatcher.Key.PacketOrigin == PacketOrigin.None || dispatcher.Key.PacketOrigin == identifer.PacketOrigin)
-                select dispatcher.Value
-            );
+            var dispatchMethods = this.DispatchHandlers.Where(dispatcher => dispatcher.Key.MatchText == identifer.MatchText)
+                .Where(dispatcher => dispatcher.Key.PacketOrigin == PacketOrigin.None || dispatcher.Key.PacketOrigin == identifer.PacketOrigin)
+                .Select(dispatcher => dispatcher.Value)
+                .ToList();
 
-            if (dispatchMethods.Count() > 0) {
+            if (dispatchMethods.Any()) {
                 foreach (MethodInfo dispatchMethod in dispatchMethods) {
                     dispatchMethod.Invoke(this, new object[] { request, response });
                 }
@@ -299,20 +159,20 @@ namespace Procon.Net {
         }
 
         public override void AttemptConnection() {
-            if (this.Client != null && this.Client.ConnectionState == ConnectionState.Disconnected) {
-                this.Client.AttemptConnection();
+            if (this.Client != null && this.Client.ConnectionState == ConnectionState.ConnectionDisconnected) {
+                this.Client.Connect();
             }
         }
 
         #region Helper Methods
 
-        protected abstract P Create(string format, params object[] args);
+        protected abstract P CreatePacket(String format, params object[] args);
 
         public override void Login(string password) {
             
         }
 
-        public override void Action(ProtocolObject action) {
+        public override void Action(NetworkAction action) {
             if (action is Chat) {
                 this.Action(action as Chat);
             }
@@ -361,13 +221,17 @@ namespace Procon.Net {
         }
 
         protected virtual void Action(Raw raw) {
-            if (raw.RawActionType == RawActionType.Send) {
-                this.Send(this.Create(raw.PacketText));
+            if (raw.ActionType == NetworkActionType.NetworkSend) {
+                this.Send(this.CreatePacket(raw.PacketText));
             }
         }
 
         #endregion
 
+        /// <summary>
+        /// I hate this being here. This requires rethinking. Why isn't it using xml deserialization as well?
+        /// </summary>
+        /// <param name="gamemode"></param>
         #region Game Config Loading
 
         protected virtual void ExecuteGameConfigGamemode(XElement gamemode) {
@@ -377,7 +241,7 @@ namespace Procon.Net {
         protected virtual void ExecuteGameConfigMap(XElement map) {
             this.State.MapPool.Add(
                 new Map() {
-                    GameMode = this.State.GameModePool.Find(x => String.Compare(x.Name, map.ElementValue("gamemode")) == 0)
+                    GameMode = this.State.GameModePool.Find(x => String.CompareOrdinal(x.Name, map.ElementValue("gamemode")) == 0)
                 }.Deserialize(map)
             );
         }
@@ -393,7 +257,7 @@ namespace Procon.Net {
                     this.ExecuteGameConfigMap(element);
                 }
 
-                this.ThrowGameEvent(GameEventType.GameConfigExecuted);
+                this.OnGameEvent(GameEventType.GameConfigExecuted);
             }
         }
         

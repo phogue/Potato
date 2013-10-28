@@ -1,23 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 
 namespace Procon.Net.Protocols.Source.Objects {
     using Procon.Net.Protocols.Objects;
-    public class SourceKick : Kick, ISourceObject {
+    public class SourceKick : ISourceObject {
 
-        public ISourceObject Parse(Match match) {
-
-            this.Target = new Player() {
-                Name = match.Groups["name"].Value,
-                GUID = match.Groups["uniqueid"].Value
+        public NetworkObject Parse(Match match) {
+            Kick kick = new Kick {
+                Target = new Player() {
+                    Name = match.Groups["name"].Value,
+                    Uid = match.Groups["uniqueid"].Value
+                },
+                Reason = match.Groups["message"].Value
             };
 
-            this.Reason = match.Groups["message"].Value;
-
-            return this;
+            return kick;
         }
     }
 }

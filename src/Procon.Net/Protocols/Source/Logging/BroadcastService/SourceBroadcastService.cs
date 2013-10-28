@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Net;
 using System.Net.Sockets;
 
 namespace Procon.Net.Protocols.Source.Logging.BroadcastService {
 
-    public class SourceBroadcastService : UDPClient<SourceBroadcastServicePacket> {
+    public class SourceBroadcastService : UdpClient<SourceBroadcastServicePacket> {
 
         public UdpClient BroadcastClient { get; set; }
         public ushort BroadcastPort { get; set; }
@@ -22,7 +19,7 @@ namespace Procon.Net.Protocols.Source.Logging.BroadcastService {
         }
 
         // Override and do *not* call base AttemptConnection 
-        public override void AttemptConnection() {
+        public override void Connect() {
 
             // Setup broadcaster to pass the packets on as multicast
             try {
@@ -45,15 +42,15 @@ namespace Procon.Net.Protocols.Source.Logging.BroadcastService {
 
             // Setup listener to accept source logging packets
             try {
-                this.ConnectionState = Net.ConnectionState.Connecting;
-                this.m_remoteIpEndPoint = new IPEndPoint(IPAddress.Any, this.Port);
+                this.ConnectionState = Net.ConnectionState.ConnectionConnecting;
+                this.RemoteIpEndPoint = new IPEndPoint(IPAddress.Any, this.Port);
 
-                this.m_udpClient = new UdpClient(this.m_remoteIpEndPoint);
-                this.m_udpClient.DontFragment = true; // ?
+                this.Client = new UdpClient(this.RemoteIpEndPoint);
+                this.Client.DontFragment = true; // ?
 
-                this.m_udpClient.BeginReceive(this.ReceiveCallback, null);
+                this.Client.BeginReceive(this.ReceiveCallback, null);
 
-                this.ConnectionState = Net.ConnectionState.Ready;
+                this.ConnectionState = Net.ConnectionState.ConnectionReady;
             }
             catch (SocketException se) {
                 this.Shutdown(se);

@@ -1,26 +1,6 @@
-﻿// Copyright 2011 Geoffrey 'Phogue' Green
-// 
-// http://www.phogue.net
-//  
-// This file is part of Procon 2.
-// 
-// Procon 2 is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-// 
-// Procon 2 is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-// 
-// You should have received a copy of the GNU General Public License
-// along with Procon 2.  If not, see <http://www.gnu.org/licenses/>.
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Xml.Linq;
 using System.Text;
 
 namespace Procon.Net.Protocols.Frostbite {
@@ -31,88 +11,68 @@ namespace Procon.Net.Protocols.Frostbite {
     using Procon.Net.Protocols.Frostbite.Objects;
     using Procon.Net.Protocols.Objects;
 
-    public abstract class FrostbiteGame : GameImplementation<FrostbiteClient, FrostbitePacket>
-    {
-        #region Frostbite specific keys used to access game server information.
+    public abstract class FrostbiteGame : GameImplementation<FrostbitePacket> {
 
-        protected static readonly string C_MAP_PACK         = "frostbite.MapPack";
-        protected static readonly string C_MOD              = "frostbite.Mod";
-        protected static readonly string C_HARDCORE         = "frostbite.Hardcore";
-        protected static readonly string C_RANK_LIMIT       = "frostbite.RankLimit";
-        protected static readonly string C_KILL_CAM         = "frostbite.KillCam";
-        protected static readonly string C_MINI_MAP         = "frostbite.MiniMap";
-        protected static readonly string C_CROSS_HAIR       = "frostbite.CrossHair";
-        protected static readonly string C_IDLE_TIMEOUT     = "frostbite.IdleTimeout";
-        protected static readonly string C_PROFANITY_FILTER = "frostbite.ProfanityFilter";
+        protected const HumanHitLocation Headshot = HumanHitLocation.Head | HumanHitLocation.Neck;
 
-        #endregion
-
-        private static readonly HitLocation HEADSHOT = HitLocation.Head         | HitLocation.Neck;
-        private static readonly HitLocation BODYSHOT = HitLocation.LeftHand     | HitLocation.LeftFoot     | HitLocation.RightHand     | HitLocation.RightFoot     |
-                                                       HitLocation.LowerLeftArm | HitLocation.LowerLeftLeg | HitLocation.LowerRightArm | HitLocation.LowerRightLeg | 
-                                                       HitLocation.UpperLeftArm | HitLocation.UpperLeftLeg | HitLocation.UpperRightArm | HitLocation.UpperRightLeg |
-                                                       HitLocation.LowerTorso   | HitLocation.UpperTorso;
+        protected const HumanHitLocation Bodyshot = HumanHitLocation.LeftHand | HumanHitLocation.LeftFoot | HumanHitLocation.RightHand | HumanHitLocation.RightFoot | HumanHitLocation.LowerLeftArm | HumanHitLocation.LowerLeftLeg | HumanHitLocation.LowerRightArm | HumanHitLocation.LowerRightLeg | HumanHitLocation.UpperLeftArm | HumanHitLocation.UpperLeftLeg | HumanHitLocation.UpperRightArm | HumanHitLocation.UpperRightLeg | HumanHitLocation.LowerTorso | HumanHitLocation.UpperTorso;
 
         protected List<String> ServerInfoParameters = new List<String>();
 
-        public FrostbiteGame(string hostName, ushort port) : base(hostName, port) {
-            State.Variables[C_MAP_PACK]     = new DataVariable(C_MAP_PACK,     null, true,  "Variables.Frostbite.MAP_PACK",     "Variables.Frostbite.MAP_PACK_Description");
-            State.Variables[C_MOD]          = new DataVariable(C_MOD,          null, true,  "Variables.Frostbite.MOD",          "Variables.Frostbite.MAP_PACK_Description");
-            State.Variables[C_HARDCORE]     = new DataVariable(C_HARDCORE,     null, false, "Variables.Frostbite.HARDCORE",     "Variables.Frostbite.MAP_PACK_Description");
-            State.Variables[C_RANK_LIMIT]   = new DataVariable(C_RANK_LIMIT,   null, false, "Variables.Frostbite.RANK_LIMIT",   "Variables.Frostbite.MAP_PACK_Description");
-            State.Variables[C_KILL_CAM]     = new DataVariable(C_KILL_CAM,     null, false, "Variables.Frostbite.KILL_CAM",     "Variables.Frostbite.MAP_PACK_Description");
-            State.Variables[C_MINI_MAP]     = new DataVariable(C_MINI_MAP,     null, false, "Variables.Frostbite.MINI_MAP",     "Variables.Frostbite.MAP_PACK_Description");
-            State.Variables[C_CROSS_HAIR]   = new DataVariable(C_CROSS_HAIR,   null, false, "Variables.Frostbite.CROSS_HAIR",   "Variables.Frostbite.MAP_PACK_Description");
-            State.Variables[C_IDLE_TIMEOUT] = new DataVariable(C_IDLE_TIMEOUT, null, false, "Variables.Frostbite.IDLE_TIMEOUT", "Variables.Frostbite.MAP_PACK_Description");
+        /// <summary>
+        /// Date for the next sync of the banlist/maplist/pb list. Everything that
+        /// does not change often, but we sync to make sure changes applied
+        /// from other tools will be updated in a timely manner.
+        /// </summary>
+        protected DateTime NextAuxiliarySynchronization = DateTime.Now;
 
-
-            State.Variables.MaxConsoleLines = 100;
+        protected FrostbiteGame(string hostName, ushort port) : base(hostName, port) {
+            State.Settings.MaxConsoleLines = 100;
         }
         
         protected override Client<FrostbitePacket> CreateClient(string hostName, ushort port) {
             return new FrostbiteClient(hostName, port);
         }
 
-        private DateTime nextLargeSync = DateTime.Now;
+        protected virtual void AuxiliarySynchronize() {
+            this.Send(this.CreatePacket("punkBuster.pb_sv_command pb_sv_plist"));
+            // this.Send(this.Create("mapList.list rounds")); BF3 doesn't take the "rounds" on the end.
+            this.Send(this.CreatePacket("mapList.list"));
+            this.Send(this.CreatePacket("banList.list"));
+        }
+
         public override void Synchronize() {
-            this.Send(this.Create("admin.listPlayers all"));
-            this.Send(this.Create("serverInfo"));
+            base.Synchronize();
 
-            if (DateTime.Now >= nextLargeSync) {
-                this.Send(this.Create("punkBuster.pb_sv_command pb_sv_plist"));
-                // this.Send(this.Create("mapList.list rounds")); BF3 doesn't take the "rounds" on the end.
-                this.Send(this.Create("mapList.list"));
-                this.Send(this.Create("banList.list"));
+            if (this.ConnectionState == ConnectionState.ConnectionLoggedIn) {
+                this.Send(this.CreatePacket("admin.listPlayers all"));
+                this.Send(this.CreatePacket("serverInfo"));
 
-                nextLargeSync = DateTime.Now.AddSeconds(120);
+                if (DateTime.Now >= this.NextAuxiliarySynchronization) {
+                    this.AuxiliarySynchronize();
+
+                    this.NextAuxiliarySynchronization = DateTime.Now.AddSeconds(120);
+                }
             }
         }
 
-        public string GeneratePasswordHash(byte[] a_salt, string data) {
-            byte[] a_combined = new byte[a_salt.Length + data.Length];
-            a_salt.CopyTo(a_combined, 0);
-            Encoding.ASCII.GetBytes(data).CopyTo(a_combined, a_salt.Length);
+        public string GeneratePasswordHash(byte[] salt, string data) {
+            byte[] combined = new byte[salt.Length + data.Length];
+            salt.CopyTo(combined, 0);
+            Encoding.ASCII.GetBytes(data).CopyTo(combined, salt.Length);
 
-            return MD5.Data(a_combined).ToUpper();
+            return MD5.Data(combined).ToUpper();
         }
 
         public byte[] HashToByteArray(string hexString) {
-            byte[] a_returnHash = new byte[hexString.Length / 2];
+            byte[] returnHash = new byte[hexString.Length / 2];
 
-            for (int i = 0; i < a_returnHash.Length; i++) {
-                a_returnHash[i] = Convert.ToByte(hexString.Substring(i * 2, 2), 16);
+            for (int i = 0; i < returnHash.Length; i++) {
+                returnHash[i] = Convert.ToByte(hexString.Substring(i * 2, 2), 16);
             }
 
-            return a_returnHash;
+            return returnHash;
         }
-
-        #region Config
-
-        protected override void ExecuteGameConfigGamemode(XElement gamemode) {
-            this.State.GameModePool.Add(new FrostbiteGameMode().Deserialize(gamemode));
-        }
-
-        #endregion
 
         #region Dispatching
 
@@ -123,30 +83,34 @@ namespace Procon.Net.Protocols.Frostbite {
 
                 FrostbiteServerInfo info = new FrostbiteServerInfo().Parse(response.Words.GetRange(1, response.Words.Count - 1), this.ServerInfoParameters);
 
-                this.State.Variables.ServerName      = info.ServerName;
-                this.State.Variables.MapName         = info.Map;
-                this.State.Variables.GameModeName    = info.GameMode;
+                this.State.Settings.ServerName = info.ServerName;
+                this.State.Settings.MapName = info.Map;
+                this.State.Settings.GameModeName = info.GameMode;
                 // this.State.Variables.ConnectionState = ConnectionState.Connected; String b = info.ConnectionState;
-                this.State.Variables.PlayerCount     = info.PlayerCount;
-                this.State.Variables.MaxPlayerCount  = info.MaxPlayerCount;
-                this.State.Variables.RoundIndex      = info.CurrentRound;
-                this.State.Variables.MaxRoundIndex   = info.TotalRounds;
-                this.State.Variables.Ranked          = info.Ranked;
-                this.State.Variables.AntiCheat       = info.PunkBuster;
-                this.State.Variables.Passworded      = info.Passworded;
-                this.State.Variables.UpTime          = info.ServerUptime;
-                this.State.Variables.RoundTime       = info.RoundTime;
-                this.State.Variables.DataSet(C_MOD, info.GameMod.ToString());
-                this.State.Variables.DataSet(C_MAP_PACK, info.Mappack);
+                this.State.Settings.PlayerCount = info.PlayerCount;
+                this.State.Settings.MaxPlayerCount = info.MaxPlayerCount;
+                this.State.Settings.RoundIndex = info.CurrentRound;
+                this.State.Settings.MaxRoundIndex = info.TotalRounds;
+                this.State.Settings.RankedEnabled = info.Ranked;
+                this.State.Settings.AntiCheatEnabled = info.PunkBuster;
+                this.State.Settings.PasswordProtectionEnabled = info.Passworded;
+                this.State.Settings.UpTimeSeconds = info.ServerUptime;
+                this.State.Settings.RoundTimeSeconds = info.RoundTime;
+                this.State.Settings.ModName = info.GameMod.ToString();
 
                 if (info.GameMod == GameMods.None) {
-                    this.ExecuteGameConfig(this.GameType.ToString().ToLower());
+                    this.ExecuteGameConfig(this.GameType.ToLower());
                 }
                 else {
                     this.ExecuteGameConfig(String.Format("{0}_{1}", this.GameType, info.GameMod).ToLower());
                 }
-                
-                this.ThrowGameEvent(GameEventType.ServerInfoUpdated);
+
+
+                this.OnGameEvent(GameEventType.GameSettingsUpdated, new GameEventData() {
+                    Settings = new List<Settings>() {
+                        this.State.Settings
+                    }
+                });
             }
         }
 
@@ -155,12 +119,11 @@ namespace Procon.Net.Protocols.Frostbite {
 
             if (response != null) {
                 if (request.Words.Count >= 2 && response.Words.Count == 1 && response.Words[0] == "OK") {
-                    this.Client.ConnectionState = ConnectionState.LoggedIn;
-
+                    // We logged in successfully. Make sure we have events enabled before we announce we are ready though.
                     this.SendEventsEnabledPacket();
 
-                    this.nextLargeSync = DateTime.Now;
-                    this.Synchronize();
+                    this.NextAuxiliarySynchronization = DateTime.Now;
+                    //this.Synchronize();
                 }
             }
         }
@@ -173,27 +136,40 @@ namespace Procon.Net.Protocols.Frostbite {
                     this.SendRequest("login.hashed", this.GeneratePasswordHash(this.HashToByteArray(response.Words[1]), this.Password));
                 }
                 else if (request.Words.Count >= 2 && response.Words.Count == 1) {
-                    this.Client.ConnectionState = ConnectionState.LoggedIn;
+                    // We logged in successfully. Make sure we have events enabled before we announce we are ready though.
 
                     this.SendEventsEnabledPacket();
 
-                    this.nextLargeSync = DateTime.Now;
-                    this.Synchronize();
+                    this.NextAuxiliarySynchronization = DateTime.Now;
+                    //this.Synchronize();
                 }
             }
         }
 
-        protected void AdminListPlayersFinalize(FrostbitePlayerList players) {
-            if (players.Subset.Context == PlayerSubsetContext.All) {
+        [DispatchPacket(MatchText = "admin.eventsEnabled", PacketOrigin = PacketOrigin.Client)]
+        public void AdminEventsEnabledDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
+
+            if (response != null) {
+                if (request.Words.Count >= 2 && response.Words.Count == 1 && response.Words[0] == "OK") {
+                    // We logged in successfully and we have bilateral communication established. READY UP!
+
+                    this.Client.ConnectionState = ConnectionState.ConnectionLoggedIn;
+                }
+            }
+        }
+        
+        protected virtual void AdminListPlayersFinalize(FrostbitePlayerList players) {
+            // If no limits on the subset we just fetched.
+            if (players.Subset.Count == 0) {
 
                 // 1. Remove all names in the state list that are not found in the new list (players that have left)
                 this.State.PlayerList.RemoveAll(x => players.Select(y => y.Name).Contains(x.Name) == false);
 
                 // 2. Add or update any new players
-                foreach (FrostbitePlayer player in players) {
-                    FrostbitePlayer statePlayer = null;
+                foreach (Player player in players) {
+                    Player statePlayer = this.State.PlayerList.Find(x => x.Name == player.Name);
 
-                    if ((statePlayer = this.State.PlayerList.Find(x => x.Name == player.Name) as FrostbitePlayer) == null) {
+                    if (statePlayer == null) {
                         this.State.PlayerList.Add(player);
                     }
                     else {
@@ -203,20 +179,23 @@ namespace Procon.Net.Protocols.Frostbite {
                         statePlayer.Deaths = player.Deaths;
                         statePlayer.ClanTag = player.ClanTag;
                         statePlayer.Ping = player.Ping;
-                        statePlayer.Squad = player.Squad;
-                        statePlayer.Team = player.Team;
-                        statePlayer.GUID = player.GUID;
+                        statePlayer.Uid = player.Uid;
+
+                        statePlayer.ModifyGroup(player.Groups.FirstOrDefault(group => group.Type == Grouping.Team));
+                        statePlayer.ModifyGroup(player.Groups.FirstOrDefault(group => group.Type == Grouping.Squad));
                     }
                 }
 
-                this.ThrowGameEvent(GameEventType.PlayerlistUpdated);
+                this.OnGameEvent(GameEventType.GamePlayerlistUpdated, new GameEventData() {
+                    Players = new List<Player>(this.State.PlayerList)
+                });
             }
         }
 
         [DispatchPacket(MatchText = "admin.listPlayers", PacketOrigin = PacketOrigin.Client)]
         public virtual void AdminListPlayersResponseDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
             FrostbitePlayerList players = new FrostbitePlayerList() {
-                Subset = new FrostbitePlayerSubset().Parse(request.Words.GetRange(1, request.Words.Count - 1))
+                Subset = new FrostbiteGroupingList().Parse(request.Words.GetRange(1, request.Words.Count - 1))
             }.Parse(response.Words.GetRange(1, response.Words.Count - 1));
 
             this.AdminListPlayersFinalize(players);
@@ -226,7 +205,11 @@ namespace Procon.Net.Protocols.Frostbite {
         public void AdminSayDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
 
             if (request.Words.Count >= 3) {
-                this.ThrowGameEvent(GameEventType.Chat, new FrostbiteChat().ParseAdminSay(request.Words.GetRange(1, request.Words.Count - 1)));
+                this.OnGameEvent(GameEventType.GameChat, new GameEventData() {
+                    Chats = new List<Chat>() {
+                        FrostbiteChat.ParseAdminSay(request.Words.GetRange(1, request.Words.Count - 1))
+                    }
+                });
             }
 
         }
@@ -234,7 +217,7 @@ namespace Procon.Net.Protocols.Frostbite {
         [DispatchPacket(MatchText = "version", PacketOrigin = PacketOrigin.Client)]
         public void VersionDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
             if (request.Words.Count >= 3) {
-                this.State.Variables.Version = request.Words[2];
+                this.State.Settings.ServerVersion = request.Words[2];
             }
         }
 
@@ -244,17 +227,18 @@ namespace Procon.Net.Protocols.Frostbite {
 
                 FrostbiteMapList maps = new FrostbiteMapList().Parse(response.Words.GetRange(1, response.Words.Count - 1));
 
-                Map mapInfo = null;
                 foreach (Map map in maps) {
-                    if ((mapInfo = this.State.MapPool.Find(x => String.Compare(x.Name, map.Name, true) == 0)) != null) {
+                    Map mapInfo = this.State.MapPool.Find(x => String.Compare(x.Name, map.Name, System.StringComparison.OrdinalIgnoreCase) == 0);
+
+                    if (mapInfo != null) {
                         map.FriendlyName = mapInfo.FriendlyName;
                         map.GameMode     = mapInfo.GameMode;
                     }
                 }
                 this.State.MapList = maps;
 
-                this.ThrowGameEvent(
-                    GameEventType.MaplistUpdated
+                this.OnGameEvent(
+                    GameEventType.GameMaplistUpdated
                 );
             }
         }
@@ -283,12 +267,12 @@ namespace Procon.Net.Protocols.Frostbite {
                     foreach (Ban ban in banList)
                         this.State.BanList.Add(ban);
 
-                    this.Send(this.Create("banList.list {0}", startOffset + 100));
+                    this.Send(this.CreatePacket("banList.list {0}", startOffset + 100));
                 }
                 else {
                     // We have recieved the whole banlist in 100 ban increments.. throw event.
-                    this.ThrowGameEvent(
-                        GameEventType.BanlistUpdated
+                    this.OnGameEvent(
+                        GameEventType.GameBanlistUpdated
                     );
                 }
             }
@@ -297,32 +281,24 @@ namespace Procon.Net.Protocols.Frostbite {
         [DispatchPacket(MatchText = "banList.add", PacketOrigin = PacketOrigin.Client)]
         public void BanListAddDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
             if (request.Words.Count >= 1) {
-                FrostbiteBan ban = new FrostbiteBan().ParseBanAdd(request.Words.GetRange(1, request.Words.Count - 1));
+                Ban ban = FrostbiteBan.ParseBanAdd(request.Words.GetRange(1, request.Words.Count - 1));
 
                 this.State.BanList.Add(ban);
 
-                this.ThrowGameEvent(
-                    GameEventType.PlayerBanned,
-                    ban
-                );
+                this.OnGameEvent(GameEventType.GamePlayerBanned, new GameEventData() { Bans = new List<Ban>() { ban } });
             }
         }
 
         [DispatchPacket(MatchText = "banList.remove", PacketOrigin = PacketOrigin.Client)]
         public void BanListRemoveDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
             if (request.Words.Count >= 1) {
-                FrostbiteBan ban = new FrostbiteBan().ParseBanRemove(request.Words.GetRange(1, request.Words.Count - 1));
+                Ban ban = FrostbiteBan.ParseBanRemove(request.Words.GetRange(1, request.Words.Count - 1));
 
-                // -- Added by Imisnew2
-                // Quit being so fail phogue.  Null == Null is true.  Srsly.  Gotta check for null before you check the match!
-                Ban stateBan = this.State.BanList.Find(x => (x.Target.Name != null && x.Target.Name == ban.Target.Name)
-                                                         || (x.Target.GUID != null && x.Target.GUID == ban.Target.GUID));
+                Ban stateBan = this.State.BanList.Find(x => (x.Scope.Players.First().Name != null && x.Scope.Players.First().Name == ban.Scope.Players.First().Name)
+                                                         || (x.Scope.Players.First().Uid != null && x.Scope.Players.First().Uid == ban.Scope.Players.First().Uid));
                 this.State.BanList.Remove(stateBan);
 
-                this.ThrowGameEvent(
-                    GameEventType.PlayerUnbanned,
-                    stateBan
-                );
+                this.OnGameEvent(GameEventType.GamePlayerUnbanned, new GameEventData() { Bans = new List<Ban>() { ban } });
             }
         }
 
@@ -331,14 +307,14 @@ namespace Procon.Net.Protocols.Frostbite {
         [DispatchPacket(MatchText = "vars.serverName", PacketOrigin = PacketOrigin.Client)]
         public void VarsServerNameDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
             if (response.Words.Count >= 2) {
-                this.State.Variables.ServerName = response.Words[1];
+                this.State.Settings.ServerName = response.Words[1];
             }
         }
 
         [DispatchPacket(MatchText = "vars.gamePassword", PacketOrigin = PacketOrigin.Client)]
         public void VarsGamePasswordDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
             if (response.Words.Count >= 2) {
-                this.State.Variables.Password = response.Words[1];
+                this.State.Settings.Password = response.Words[1];
             }
         }
 
@@ -346,14 +322,15 @@ namespace Procon.Net.Protocols.Frostbite {
         public void VarsGamePunkbusterDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
             bool boolOut = false;
             if (response.Words.Count >= 2 && bool.TryParse(response.Words[1], out boolOut)) {
-                this.State.Variables.AntiCheat = boolOut;
+                this.State.Settings.AntiCheatEnabled = boolOut;
             }
         }
 
         [DispatchPacket(MatchText = "vars.hardCore", PacketOrigin = PacketOrigin.Client)]
         public void VarsHardcoreDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
-            if (response.Words.Count >= 2) {
-                this.State.Variables.DataSet(C_HARDCORE, response.Words[1]);
+            bool boolOut = false;
+            if (response.Words.Count >= 2 && bool.TryParse(response.Words[1], out boolOut)) {
+                this.State.Settings.HardcoreEnabled = boolOut;
             }
         }
 
@@ -361,14 +338,15 @@ namespace Procon.Net.Protocols.Frostbite {
         public void VarsRankedDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
             bool boolOut = false;
             if (response.Words.Count >= 2 && bool.TryParse(response.Words[1], out boolOut)) {
-                this.State.Variables.Ranked = boolOut;
+                this.State.Settings.RankedEnabled = boolOut;
             }
         }
 
         [DispatchPacket(MatchText = "vars.rankLimit", PacketOrigin = PacketOrigin.Client)]
         public void VarsRankLimitDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
-            if (response.Words.Count >= 2) {
-                this.State.Variables.DataSet(C_RANK_LIMIT, response.Words[1]);
+            int intOut = 0;
+            if (response.Words.Count >= 2 && int.TryParse(response.Words[1], out intOut)) {
+                this.State.Settings.RankLimit = intOut;
             }
         }
 
@@ -376,7 +354,7 @@ namespace Procon.Net.Protocols.Frostbite {
         public void VarsTeamBalanceDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
             bool boolOut = false;
             if (response.Words.Count >= 2 && bool.TryParse(response.Words[1], out boolOut)) {
-                this.State.Variables.AutoBalance = boolOut;
+                this.State.Settings.AutoBalanceEnabled = boolOut;
             }
         }
 
@@ -384,56 +362,63 @@ namespace Procon.Net.Protocols.Frostbite {
         public void VarsFriendlyFireDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
             bool boolOut = false;
             if (response.Words.Count >= 2 && bool.TryParse(response.Words[1], out boolOut)) {
-                this.State.Variables.FriendlyFire = boolOut;
+                this.State.Settings.FriendlyFireEnabled = boolOut;
             }
         }
 
         [DispatchPacket(MatchText = "vars.bannerUrl", PacketOrigin = PacketOrigin.Client)]
         public void VarsBannerUrlDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
             if (response.Words.Count >= 2) {
-                this.State.Variables.BannerUrl = response.Words[1];
+                this.State.Settings.BannerUrl = response.Words[1];
             }
         }
 
         [DispatchPacket(MatchText = "vars.serverDescription", PacketOrigin = PacketOrigin.Client)]
         public void VarsServerDescriptionDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
             if (response.Words.Count >= 2) {
-                this.State.Variables.ServerDescription = response.Words[1];
+                this.State.Settings.ServerDescription = response.Words[1];
             }
         }
 
         [DispatchPacket(MatchText = "vars.killCam", PacketOrigin = PacketOrigin.Client)]
         public void VarsKillCamDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
-            if (response.Words.Count >= 2) {
-                this.State.Variables.DataSet(C_KILL_CAM, response.Words[1]);
+            bool boolOut;
+            if (response.Words.Count >= 2 && bool.TryParse(response.Words[1], out boolOut)) {
+                this.State.Settings.KillCameraEnabled = boolOut;
             }
         }
 
         [DispatchPacket(MatchText = "vars.miniMap", PacketOrigin = PacketOrigin.Client)]
         public void VarsMiniMapDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
-            if (response.Words.Count >= 2) {
-                this.State.Variables.DataSet(C_MINI_MAP, response.Words[1]);
+            bool boolOut;
+            if (response.Words.Count >= 2 && bool.TryParse(response.Words[1], out boolOut)) {
+                this.State.Settings.MiniMapEnabled = boolOut;
             }
         }
 
         [DispatchPacket(MatchText = "vars.crossHair", PacketOrigin = PacketOrigin.Client)]
         public void VarsCrossHairDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
-            if (response.Words.Count >= 2) {
-                this.State.Variables.DataSet(C_CROSS_HAIR, response.Words[1]);
+            bool boolOut;
+            if (response.Words.Count >= 2 && bool.TryParse(response.Words[1], out boolOut)) {
+                this.State.Settings.CrossHairEnabled = boolOut;
             }
         }
 
         [DispatchPacket(MatchText = "vars.idleTimeout", PacketOrigin = PacketOrigin.Client)]
         public void VarsIdleTimeoutDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
-            if (response.Words.Count >= 2) {
-                this.State.Variables.DataSet(C_IDLE_TIMEOUT, response.Words[1]);
+            int intOut = 0;
+            if (response.Words.Count >= 2 && int.TryParse(response.Words[1], out intOut)) {
+                this.State.Settings.IdleTimeoutEnabled = intOut != -1;
+
+                this.State.Settings.IdleTimeoutLimitTimeSeconds = intOut;
             }
         }
 
         [DispatchPacket(MatchText = "vars.profanityFilter", PacketOrigin = PacketOrigin.Client)]
         public void VarsProfanityFilterDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
-            if (response.Words.Count >= 2) {
-                this.State.Variables.DataSet(C_PROFANITY_FILTER, response.Words[1]);
+            bool boolOut;
+            if (response.Words.Count >= 2 && bool.TryParse(response.Words[1], out boolOut)) {
+                this.State.Settings.ProfanityFilterEnabled = boolOut;
             }
         }
 
@@ -449,7 +434,7 @@ namespace Procon.Net.Protocols.Frostbite {
                 if (pbObject is PunkBusterPlayer) {
                     PunkBusterPlayer player = pbObject as PunkBusterPlayer;
 
-                    FrostbitePlayer statePlayer = this.State.PlayerList.Find(x => x.Name == player.Name) as FrostbitePlayer;
+                    Player statePlayer = this.State.PlayerList.Find(x => x.Name == player.Name);
 
                     if (statePlayer != null) {
                         statePlayer.SlotID = player.SlotID;
@@ -460,13 +445,13 @@ namespace Procon.Net.Protocols.Frostbite {
                     
                 }
                 else if (pbObject is PunkBusterEndPlayerList) {
-                    this.ThrowGameEvent(GameEventType.PlayerlistUpdated);
+                    this.OnGameEvent(GameEventType.GamePlayerlistUpdated);
                 }
             }
         }
 
-        [DispatchPacket(MatchText = "player.onKill", PacketOrigin = PacketOrigin.Client)]
-        public void PlayerOnKillDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
+        [DispatchPacket(MatchText = "player.onKill", PacketOrigin = PacketOrigin.Server)]
+        public virtual void PlayerOnKillDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
 
             if (request.Words.Count >= 11) {
 
@@ -474,19 +459,20 @@ namespace Procon.Net.Protocols.Frostbite {
 
                 if (bool.TryParse(request.Words[4], out headshot) == true) {
 
-                    this.ThrowGameEvent(
-                        GameEventType.PlayerKill,
-                        new Kill() {
-                            HitLocation = headshot == true ? FrostbiteGame.HEADSHOT : FrostbiteGame.BODYSHOT,
-                            Killer = this.State.PlayerList.Find(x => x.Name == request.Words[1]),
-                            Target = this.State.PlayerList.Find(x => x.Name == request.Words[2]),
-                            DamageType = new Item() {
-                                Name = request.Words[3]
-                            },
-                            KillerLocation = new Point3D(request.Words[5], request.Words[7], request.Words[6]),
-                            TargetLocation = new Point3D(request.Words[8], request.Words[10], request.Words[9])
+                    this.OnGameEvent(GameEventType.GamePlayerKill, new GameEventData() {
+                        Kills = new List<Kill>() {
+                            new Kill() {
+                                HumanHitLocation = headshot == true ? FrostbiteGame.Headshot : FrostbiteGame.Bodyshot,
+                                Killer = this.State.PlayerList.Find(x => x.Name == request.Words[1]),
+                                Target = this.State.PlayerList.Find(x => x.Name == request.Words[2]),
+                                DamageType = new Item() {
+                                    Name = request.Words[3]
+                                },
+                                KillerLocation = new Point3D(request.Words[5], request.Words[7], request.Words[6]),
+                                TargetLocation = new Point3D(request.Words[8], request.Words[10], request.Words[9])
+                            }
                         }
-                    );
+                    });
                 }
             }
         }
@@ -500,19 +486,19 @@ namespace Procon.Net.Protocols.Frostbite {
 
                 if (int.TryParse(request.Words[2], out currentRound) == true && int.TryParse(request.Words[3], out totalRounds) == true) {
 
-                    this.State.Variables.RoundIndex = currentRound;
-                    this.State.Variables.MaxRoundIndex = totalRounds;
+                    this.State.Settings.RoundIndex = currentRound;
+                    this.State.Settings.MaxRoundIndex = totalRounds;
 
                     // Maps are the same, only a round change
-                    if (String.Compare(this.State.Variables.MapName, request.Words[1], true) == 0)
-                        this.ThrowGameEvent(GameEventType.RoundChanged);
+                    if (String.Compare(this.State.Settings.MapName, request.Words[1], StringComparison.OrdinalIgnoreCase) == 0)
+                        this.OnGameEvent(GameEventType.GameRoundChanged);
                     else {
-                        Map selectedMap = this.State.MapPool.Find(x => String.Compare(x.Name, request.Words[1], true) == 0);
+                        Map selectedMap = this.State.MapPool.Find(x => String.Compare(x.Name, request.Words[1], StringComparison.OrdinalIgnoreCase) == 0);
 
                         if (selectedMap != null)
-                            this.State.Variables.GameModeName = selectedMap.GameMode.Name;
-                        this.State.Variables.MapName = request.Words[1];
-                        this.ThrowGameEvent(GameEventType.MapChanged);
+                            this.State.Settings.GameModeName = selectedMap.GameMode.Name;
+                        this.State.Settings.MapName = request.Words[1];
+                        this.OnGameEvent(GameEventType.GameMapChanged);
                     }
                 }
             }
@@ -524,11 +510,11 @@ namespace Procon.Net.Protocols.Frostbite {
         /// <param name="request"></param>
         /// <param name="response"></param>
         [DispatchPacket(MatchText = "player.onJoin", PacketOrigin = PacketOrigin.Server)]
-        public void PlayerOnJoinDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
+        public virtual void PlayerOnJoinDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
 
             if (request.Words.Count >= 2) {
 
-                FrostbitePlayer player = new FrostbitePlayer() {
+                Player player = new Player() {
                     Name = request.Words[1]
                 };
 
@@ -544,12 +530,12 @@ namespace Procon.Net.Protocols.Frostbite {
             if (request.Words.Count >= 2) {
                 //request.Words.RemoveAt(1);
 
-                FrostbitePlayer player = (FrostbitePlayer)(new FrostbitePlayerList().Parse(request.Words.GetRange(2, request.Words.Count - 2)).FirstOrDefault());
+                Player player = new FrostbitePlayerList().Parse(request.Words.GetRange(2, request.Words.Count - 2)).FirstOrDefault();
 
                 if (player != null) {
-                    FrostbitePlayer statePlayer = null;
+                    Player statePlayer = this.State.PlayerList.Find(x => x.Name == player.Name);
 
-                    if ((statePlayer = this.State.PlayerList.Find(x => x.Name == player.Name) as FrostbitePlayer) != null) {
+                    if (statePlayer != null) {
                         // Already exists, update with any new information we have.
                         // Note: We must keep the same Player object which is why we update and swap
                         // instead of just assigning.
@@ -557,19 +543,21 @@ namespace Procon.Net.Protocols.Frostbite {
                         statePlayer.Deaths = player.Deaths;
                         statePlayer.ClanTag = player.ClanTag;
                         statePlayer.Ping = player.Ping;
-                        statePlayer.Squad = player.Squad;
-                        statePlayer.Team = player.Team;
-                        statePlayer.GUID = player.GUID;
+                        statePlayer.Uid = player.Uid;
+
+                        statePlayer.ModifyGroup(player.Groups.FirstOrDefault(group => group.Type == Grouping.Team));
+                        statePlayer.ModifyGroup(player.Groups.FirstOrDefault(group => group.Type == Grouping.Squad));
 
                         player = statePlayer;
                     }
 
                     this.State.PlayerList.RemoveAll(x => x.Name == player.Name);
 
-                    this.ThrowGameEvent(
-                        GameEventType.PlayerLeave,
-                        player
-                    );
+                    this.OnGameEvent(GameEventType.GamePlayerLeave, new GameEventData() {
+                        Players = new List<Player>() {
+                            player
+                        }
+                    });
                 }
             }
         }
@@ -579,125 +567,128 @@ namespace Procon.Net.Protocols.Frostbite {
 
             // player.onChat <source soldier name: string> <text: string> <target group: player subset>
             if (request.Words.Count >= 2) {
-                FrostbiteChat chat = new FrostbiteChat().ParsePlayerChat(request.Words.GetRange(1, request.Words.Count - 1));
+                Chat chat = FrostbiteChat.ParsePlayerChat(request.Words.GetRange(1, request.Words.Count - 1));
 
-                if (chat.Subset.Context == PlayerSubsetContext.Player && chat.Subset.Player != null) {
-                    chat.Subset.Player = this.State.PlayerList.Find(x => x.Name == chat.Subset.Player.Name);
+                // If it was directed towards a specific player.
+                if (chat.Scope.Groups != null && chat.Scope.Groups.Any(group => group.Type == Grouping.Player) == true) {
+                    chat.Scope.Players = new List<Player>() {
+                        this.State.PlayerList.FirstOrDefault(player => player.Uid == (String)chat.Scope.Groups.First(group => @group.Type == Grouping.Player).Uid)
+                    };
                 }
 
-                if (this.State.PlayerList.Find(x => x.Name == chat.Author.Name) != null) {
-                    chat.Author = this.State.PlayerList.Find(x => x.Name == chat.Author.Name);
-
-                    this.ThrowGameEvent(
-                        GameEventType.Chat,
-                        chat
-                    );
+                if (chat.Now.Players != null && chat.Now.Players.Count > 0 && this.State.PlayerList.Find(x => x.Name == chat.Now.Players.First().Name) != null) {
+                    chat.Now.Players = new List<Player>() {
+                        this.State.PlayerList.Find(x => x.Name == chat.Now.Players.First().Name)
+                    };
                 }
                 else {
                     // Couldn't find the player, must be from the server.
                     chat.Origin = ChatOrigin.Server;
-
-                    this.ThrowGameEvent(
-                        GameEventType.Chat,
-                        chat
-                    );
                 }
+
+                this.OnGameEvent(GameEventType.GameChat, new GameEventData() { Chats = new List<Chat>() { chat } });
             }
         }
 
         [DispatchPacket(MatchText = "player.onAuthenticated", PacketOrigin = PacketOrigin.Server)]
-        public void PlayerOnAuthenticatedDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
+        public virtual void PlayerOnAuthenticatedDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
 
             if (request.Words.Count >= 3) {
-                FrostbitePlayer statePlayer = this.State.PlayerList.Find(x => x.Name == request.Words[1]) as FrostbitePlayer;
+                Player statePlayer = this.State.PlayerList.Find(x => x.Name == request.Words[1]);
 
                 if (statePlayer != null) {
-                    statePlayer.GUID = request.Words[2];
+                    statePlayer.Uid = request.Words[2];
                 }
                 else {
-                    statePlayer = new FrostbitePlayer() {
+                    statePlayer = new Player() {
                         Name = request.Words[1],
-                        GUID = request.Words[2]
+                        Uid = request.Words[2]
                     };
 
                     this.State.PlayerList.Add(statePlayer);
                 }
 
-                this.ThrowGameEvent(
-                    GameEventType.PlayerJoin,
-                    statePlayer
-                );
+                this.OnGameEvent(GameEventType.GamePlayerJoin, new GameEventData() { Players = new List<Player>() { statePlayer } });
             }
         }
 
         [DispatchPacket(MatchText = "player.onSpawn", PacketOrigin = PacketOrigin.Server)]
         public void PlayerOnSpawnDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
 
-            FrostbiteSpawn spawn = new FrostbiteSpawn().Parse(request.Words.GetRange(1, request.Words.Count - 1));
+            Spawn spawn = FrostbiteSpawn.Parse(request.Words.GetRange(1, request.Words.Count - 1));
 
-            FrostbitePlayer player = this.State.PlayerList.Find(x => x.Name == spawn.Player.Name) as FrostbitePlayer;
+            Player player = this.State.PlayerList.Find(x => x.Name == spawn.Player.Name);
 
             if (player != null) {
                 player.Role = spawn.Role;
                 player.Inventory = spawn.Inventory;
 
-                this.ThrowGameEvent(
-                    GameEventType.PlayerSpawn,
-                    spawn
-                );
+                this.OnGameEvent(GameEventType.GamePlayerSpawn, new GameEventData() { Spawns = new List<Spawn>() { spawn } });
             }
         }
 
         [DispatchPacket(MatchText = "player.onKicked", PacketOrigin = PacketOrigin.Server)]
         public void PlayerOnKickedDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
 
-            FrostbitePlayer player = this.State.PlayerList.Find(x => x.Name == request.Words[1]) as FrostbitePlayer;
+            Player player = this.State.PlayerList.Find(x => x.Name == request.Words[1]);
 
             if (player != null) {
                 // Note that this is removed when the player.OnLeave event is fired.
                 //this.State.PlayerList.RemoveAll(x => x.Name == request.Words[1]);
 
-                this.ThrowGameEvent(
-                    GameEventType.PlayerKicked,
-                    new Kick() {
-                        Target = player,
-                        Reason = request.Words[2]
+                this.OnGameEvent(GameEventType.GamePlayerKicked, new GameEventData() {
+                    Kicks = new List<Kick>() {
+                        new Kick() {
+                            Target = player,
+                            Reason = request.Words[2]
+                        }
                     }
-                );
+                });
             }
         }
 
         [DispatchPacket(MatchText = "player.onSquadChange", PacketOrigin = PacketOrigin.Server)]
         public void PlayerOnSquadChangeDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
 
-            FrostbitePlayer player = this.State.PlayerList.Find(x => x.Name == request.Words[1]) as FrostbitePlayer;
+            Player player = this.State.PlayerList.Find(x => x.Name == request.Words[1]);
             int teamId = 0, squadId = 0;
 
             if (player != null && int.TryParse(request.Words[2], out teamId) == true && int.TryParse(request.Words[3], out squadId) == true) {
 
-                player.Squad = FrostbiteConverter.SquadIdToSquad(squadId);
+                player.ModifyGroup(new Grouping() {
+                    Type = Grouping.Squad,
+                    Uid = squadId
+                });
 
-                this.ThrowGameEvent(
-                    GameEventType.PlayerMoved,
-                    player
-                );
+                this.OnGameEvent(GameEventType.GamePlayerMoved, new GameEventData() {
+                    Players = new List<Player>() {
+                        player
+                    }
+                });
             }
         }
 
         [DispatchPacket(MatchText = "player.onTeamChange", PacketOrigin = PacketOrigin.Server)]
         public void PlayerOnTeamChangeDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
-            FrostbitePlayer player = this.State.PlayerList.Find(x => x.Name == request.Words[1]) as FrostbitePlayer;
+            Player player = this.State.PlayerList.Find(x => x.Name == request.Words[1]);
             int teamId = 0, squadId = 0;
 
             if (player != null && int.TryParse(request.Words[2], out teamId) == true && int.TryParse(request.Words[3], out squadId) == true) {
+                player.ModifyGroup(new Grouping() {
+                    Type = Grouping.Team,
+                    Uid = teamId
+                });
 
-                player.Team = FrostbiteConverter.TeamIdToTeam(teamId);
-                player.Squad = FrostbiteConverter.SquadIdToSquad(squadId);
-                
-                this.ThrowGameEvent(
-                    GameEventType.PlayerMoved,
-                    player
-                );
+                player.ModifyGroup(new Grouping() {
+                    Type = Grouping.Squad,
+                    Uid = squadId
+                });
+
+                this.OnGameEvent(GameEventType.GamePlayerMoved, new GameEventData() {
+                    Players = new List<Player>() {
+                        player
+                    }
+                });
             }
         }
 
@@ -716,7 +707,7 @@ namespace Procon.Net.Protocols.Frostbite {
                 if (requestPacket != null && requestPacket.Words.Count >= 1) {
 
                     // If the sent command was successful
-                    if (packet.Words.Count >= 1 && String.Compare(packet.Words[0], FrostbitePacket.STRING_RESPONSE_OKAY) == 0) {
+                    if (packet.Words.Count >= 1 && String.CompareOrdinal(packet.Words[0], FrostbitePacket.StringResponseOkay) == 0) {
                         this.Dispatch(new DispatchPacketAttribute() {
                             MatchText = requestPacket.Words[0],
                             PacketOrigin = requestPacket.Origin
@@ -754,163 +745,155 @@ namespace Procon.Net.Protocols.Frostbite {
         }
 
         protected virtual void SendEventsEnabledPacket() {
-            this.Send(this.Create("eventsEnabled true"));
+            this.Send(this.CreatePacket("eventsEnabled true"));
         }
 
         #endregion
 
-        protected override FrostbitePacket Create(string format, params object[] args) {
-            return new FrostbitePacket(PacketOrigin.Client, false, null, String.Format(format, args).Wordify());
+        protected override FrostbitePacket CreatePacket(string format, params object[] args) {
+            String packetText = format;
+
+            try {
+                packetText = String.Format(format, args);
+            }
+            catch {
+                packetText = String.Empty;
+            }
+
+            return new FrostbitePacket(PacketOrigin.Client, false, null, packetText.Wordify());
         }
 
         protected override void Action(Chat chat) {
-            if (chat.Subset != null) {
-                string subset = String.Empty;
+            if (chat.Now.Content != null) {
+                foreach (String chatMessage in chat.Now.Content) {
+                    String subset = String.Empty;
 
-                if (chat.Subset.Context == PlayerSubsetContext.All) {
-                    subset = "all";
-                }
-                else if (chat.Subset.Context == PlayerSubsetContext.Player && chat.Subset.Player != null) {
-                    subset = String.Format("player {0}", chat.Subset.Player.Name);
-                }
-                else if (chat.Subset.Context == PlayerSubsetContext.Team) {
-                    subset = String.Format("team {0}", FrostbiteConverter.TeamToTeamId(chat.Subset.Team));
-                }
-                else if (chat.Subset.Context == PlayerSubsetContext.Squad) {
-                    subset = String.Format("squad {0} {1}", FrostbiteConverter.TeamToTeamId(chat.Subset.Team), FrostbiteConverter.SquadToSquadId(chat.Subset.Squad));
-                }
+                    if (chat.Scope.Groups == null && chat.Scope.Players == null) {
+                        subset = "all";
+                    }
+                    else if (chat.Scope.Players != null && chat.Scope.Players.Count > 0) {
+                        subset = String.Format(@"player ""{0}""", chat.Scope.Players.First().Name);
+                    }
+                    else if (chat.Scope.Groups != null && chat.Scope.Groups.Any(group => @group.Type == Grouping.Team) == true) {
+                        subset = String.Format("team {0}", chat.Scope.Groups.First(group => @group.Type == Grouping.Team).Uid);
+                    }
+                    else if (chat.Scope.Groups != null && chat.Scope.Groups.Any(group => @group.Type == Grouping.Team) == true && chat.Scope.Groups.Any(group => @group.Type == Grouping.Squad) == true) {
+                        subset = String.Format("squad {0} {1}", chat.Scope.Groups.First(group => @group.Type == Grouping.Team).Uid, chat.Scope.Groups.First(group => @group.Type == Grouping.Squad).Uid);
+                    }
 
-                if (chat.ChatActionType == ChatActionType.Say) {
-                    this.Send(this.Create("admin.say \"{0}\" {1}", chat.Text, subset));
-                }
-                else if (chat.ChatActionType == ChatActionType.Yell || chat.ChatActionType == ChatActionType.YellOnly) {
-                    this.Send(this.Create("admin.yell \"{0}\" 8000 {1}", chat.Text, subset));
-                }
-            }
-        }
-
-        // Added by Imisnew2 - You should check this phogue!
-        protected override void Action(Move move)
-        {
-            if (move.Target != null) {
-                if (move.MoveActionType == MoveActionType.ForceMove || move.MoveActionType == MoveActionType.ForceRotate) {
-                    this.Send(this.Create("admin.movePlayer \"{0}\" {1} {2} true",
-                        move.Target.Name,
-                        FrostbiteConverter.TeamToTeamId(move.Destination.Team), 
-                        FrostbiteConverter.SquadToSquadId(move.Destination.Squad)));
-                }
-                else if  (move.MoveActionType == MoveActionType.Move || move.MoveActionType == MoveActionType.Rotate) {
-                    this.Send(this.Create("admin.movePlayer \"{0}\" {1} {2} false",
-                        move.Target.Name,
-                        FrostbiteConverter.TeamToTeamId(move.Destination.Team),
-                        FrostbiteConverter.SquadToSquadId(move.Destination.Squad)));
+                    if (chat.ActionType == NetworkActionType.NetworkSay) {
+                        this.Send(this.CreatePacket("admin.say \"{0}\" {1}", chatMessage, subset));
+                    }
+                    else if (chat.ActionType == NetworkActionType.NetworkYell || chat.ActionType == NetworkActionType.NetworkYellOnly) {
+                        this.Send(this.CreatePacket("admin.yell \"{0}\" 8000 {1}", chatMessage, subset));
+                    }
                 }
             }
         }
 
         protected override void Action(Kill kill) {
             if (kill.Target != null) {
-                this.Send(this.Create("admin.killPlayer \"{0}\"", kill.Target.Name));
+                this.Send(this.CreatePacket("admin.killPlayer \"{0}\"", kill.Target.Name));
 
-                if (kill.Reason != null && kill.Reason.Length > 0) {
-                    this.Send(this.Create("admin.say \"{0}\" player {1}", kill.Reason, kill.Target.Name));
+                if (string.IsNullOrEmpty(kill.Reason) == false) {
+                    this.Send(this.CreatePacket("admin.say \"{0}\" player {1}", kill.Reason, kill.Target.Name));
                 }
             }
         }
 
         protected override void Action(Kick kick) {
             if (kick.Target != null) {
-                if (kick.Reason != null && kick.Reason.Length > 0) {
-                    this.Send(this.Create("admin.kickPlayer \"{0}\" \"{1}\"", kick.Target.Name, kick.Reason));
+                if (string.IsNullOrEmpty(kick.Reason) == false) {
+                    this.Send(this.CreatePacket("admin.kickPlayer \"{0}\" \"{1}\"", kick.Target.Name, kick.Reason));
                 }
                 else {
-                    this.Send(this.Create("admin.kickPlayer \"{0}\"", kick.Target.Name));
+                    this.Send(this.CreatePacket("admin.kickPlayer \"{0}\"", kick.Target.Name));
                 }
             }
         }
 
         protected override void Action(Ban ban) {
-            if (ban.BanActionType == BanActionType.Ban) {
+            if (ban.ActionType == NetworkActionType.NetworkBan) {
                 if (ban.Time.Context == TimeSubsetContext.Permanent) {
                     if (ban.Reason.Length == 0) {
-                        this.Send(this.Create("banList.add guid \"{0}\" perm", ban.Target.GUID));
+                        this.Send(this.CreatePacket("banList.add guid \"{0}\" perm", ban.Scope.Players.First().Uid));
                     }
                     else {
-                        this.Send(this.Create("banList.add guid \"{0}\" perm \"{1}\"", ban.Target.GUID, ban.Reason));
+                        this.Send(this.CreatePacket("banList.add guid \"{0}\" perm \"{1}\"", ban.Scope.Players.First().Uid, ban.Reason));
                     }
                 }
                 else if (ban.Time.Context == TimeSubsetContext.Time && ban.Time.Length.HasValue == true) {
                     if (ban.Reason.Length == 0) {
-                        this.Send(this.Create("banList.add guid \"{0}\" seconds {1}", ban.Target.GUID, ban.Time.Length.Value.TotalSeconds));
+                        this.Send(this.CreatePacket("banList.add guid \"{0}\" seconds {1}", ban.Scope.Players.First().Uid, ban.Time.Length.Value.TotalSeconds));
                     }
                     else {
-                        this.Send(this.Create("banList.add guid \"{0}\" seconds {1} \"{2}\"", ban.Target.GUID, ban.Time.Length.Value.TotalSeconds, ban.Reason));
+                        this.Send(this.CreatePacket("banList.add guid \"{0}\" seconds {1} \"{2}\"", ban.Scope.Players.First().Uid, ban.Time.Length.Value.TotalSeconds, ban.Reason));
                     }
                 }
             }
-            else if (ban.BanActionType == BanActionType.Unban) {
-                this.Send(this.Create("banList.remove guid \"{0}\"", ban.Target.GUID));
+            else if (ban.ActionType == NetworkActionType.NetworkUnban) {
+                this.Send(this.CreatePacket("banList.remove guid \"{0}\"", ban.Scope.Players.First().Uid));
             }
 
-            this.Send(this.Create("banList.save"));
+            this.Send(this.CreatePacket("banList.save"));
         }
 
         protected override void Action(Map map) {
 
-            if (map.MapActionType == MapActionType.Append) {
-                this.Send(this.Create("mapList.append \"{0}\" {1}", map.Name, map.Rounds));
+            if (map.ActionType == NetworkActionType.NetworkMapAppend) {
+                this.Send(this.CreatePacket("mapList.append \"{0}\" {1}", map.Name, map.Rounds));
 
-                this.Send(this.Create("mapList.save"));
+                this.Send(this.CreatePacket("mapList.save"));
 
-                this.Send(this.Create("mapList.list rounds"));
+                this.Send(this.CreatePacket("mapList.list rounds"));
             }
             // Added by Imisnew2 - You should check this phogue!
-            else if (map.MapActionType == MapActionType.ChangeMode) {
+            else if (map.ActionType == NetworkActionType.NetworkMapChangeMode) {
                 if (map.GameMode != null) {
-                    this.Send(this.Create("admin.setPlaylist \"{0}\"", map.GameMode.Name));
+                    this.Send(this.CreatePacket("admin.setPlaylist \"{0}\"", map.GameMode.Name));
                 }
             }
-            else if (map.MapActionType == MapActionType.Insert) {
-                this.Send(this.Create("mapList.insert {0} \"{1}\" {2}", map.Index, map.Name, map.Rounds));
+            else if (map.ActionType == NetworkActionType.NetworkMapInsert) {
+                this.Send(this.CreatePacket("mapList.insert {0} \"{1}\" {2}", map.Index, map.Name, map.Rounds));
 
-                this.Send(this.Create("mapList.save"));
+                this.Send(this.CreatePacket("mapList.save"));
 
-                this.Send(this.Create("mapList.list rounds"));
+                this.Send(this.CreatePacket("mapList.list rounds"));
             }
-            else if (map.MapActionType == MapActionType.Remove) {
+            else if (map.ActionType == NetworkActionType.NetworkMapRemove) {
                 var matchingMaps = this.State.MapList.Where(x => x.Name == map.Name).OrderByDescending(x => x.Index);
 
                 foreach (Map match in matchingMaps) {
-                    this.Send(this.Create("mapList.remove {0}", match.Index));
+                    this.Send(this.CreatePacket("mapList.remove {0}", match.Index));
                 }
 
-                this.Send(this.Create("mapList.save"));
+                this.Send(this.CreatePacket("mapList.save"));
 
-                this.Send(this.Create("mapList.list rounds"));
+                this.Send(this.CreatePacket("mapList.list rounds"));
             }
-            else if (map.MapActionType == MapActionType.RemoveIndex) {
-                this.Send(this.Create("mapList.remove {0}", map.Index));
+            else if (map.ActionType == NetworkActionType.NetworkMapRemoveIndex) {
+                this.Send(this.CreatePacket("mapList.remove {0}", map.Index));
 
-                this.Send(this.Create("mapList.list rounds"));
+                this.Send(this.CreatePacket("mapList.list rounds"));
             }
-            else if (map.MapActionType == MapActionType.NextMapIndex) {
-                this.Send(this.Create("mapList.nextLevelIndex {0}", map.Index));
+            else if (map.ActionType == NetworkActionType.NetworkMapNextIndex) {
+                this.Send(this.CreatePacket("mapList.nextLevelIndex {0}", map.Index));
             }
-            else if (map.MapActionType == MapActionType.RestartMap || map.MapActionType == MapActionType.RestartRound) {
-                this.Send(this.Create("admin.restartRound"));
+            else if (map.ActionType == NetworkActionType.NetworkMapRestart || map.ActionType == NetworkActionType.NetworkMapRoundRestart) {
+                this.Send(this.CreatePacket("admin.restartRound"));
             }
-            else if (map.MapActionType == MapActionType.NextMap || map.MapActionType == MapActionType.NextRound) {
-                this.Send(this.Create("admin.runNextRound"));
+            else if (map.ActionType == NetworkActionType.NetworkMapNext || map.ActionType == NetworkActionType.NetworkMapRoundNext) {
+                this.Send(this.CreatePacket("admin.runNextRound"));
             }
-            else if (map.MapActionType == MapActionType.Clear) {
-                this.Send(this.Create("mapList.clear"));
+            else if (map.ActionType == NetworkActionType.NetworkMapClear) {
+                this.Send(this.CreatePacket("mapList.clear"));
 
-                this.Send(this.Create("mapList.save"));
+                this.Send(this.CreatePacket("mapList.save"));
             }
         }
 
         public override void Login(string password) {
-            this.Send(this.Create("login.hashed"));
+            this.Send(this.CreatePacket("login.hashed"));
         }
         
         #endregion

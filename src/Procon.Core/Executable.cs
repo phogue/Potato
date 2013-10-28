@@ -1,241 +1,119 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Reflection;
-using System.Xml.Linq;
+﻿using System.IO;
+using System.Xml.Serialization;
+using Newtonsoft.Json;
 
-namespace Procon.Core
-{
+namespace Procon.Core {
+    using Procon.Core.Security;
+    using Procon.Core.Localization;
+    using Procon.Core.Events;
+    using Procon.Core.Variables;
+    using Procon.Core.Utils;
 
-    public abstract class Executable<T> : ExecutableBase, INotifyPropertyChanged, IDisposable where T : MarshalByRefObject
-    {
-        // Public Accessors/Mutators.
-        public List<String> Arguments {
-            get { return mArguments; }
-            set {
-                if (mArguments != value) {
-                    mArguments = value;
-                    OnPropertyChanged(this, "Arguments");
-        } } }
-        // Internal Variables.
-        private List<String> mArguments;
-        private Dictionary<CommandAttribute, MethodInfo> mCommands;
+    public abstract class Executable : ExecutableBase {
 
+        /// <summary>
+        /// Master list of variables.
+        /// </summary>
+        private readonly static VariableController MasterVariables;
 
-        // Constructor.
-        public Executable() {
-            mCommands = new Dictionary<CommandAttribute, MethodInfo>();
-            Arguments = new List<String>();
+        /// <summary>
+        /// Full list of all available languages.
+        /// </summary>
+        private readonly static LanguageController MasterLanguages;
+
+        /// <summary>
+        /// The main security controller
+        /// </summary>
+        private readonly static SecurityController MasterSecurity;
+
+        /// <summary>
+        /// The main events logging and handling
+        /// </summary>
+        private readonly static EventsController MasterEvents;
+
+        /// <summary>
+        /// Stores a reference to the static variables controller by default, but can
+        /// be overridden for unit testing.
+        /// </summary>
+        [XmlIgnore, JsonIgnore]
+        public VariableController Variables { get; set; }
+
+        /// <summary>
+        /// Stores a reference to the static language controller by default, but can
+        /// be overridden for unit testing.
+        /// </summary>
+        [XmlIgnore, JsonIgnore]
+        public LanguageController Languages { get; set; }
+
+        /// <summary>
+        /// Stores a reference to the static security controller by default, but can
+        /// be overridden for unit testing.
+        /// </summary>
+        [XmlIgnore, JsonIgnore]
+        public SecurityController Security { get; set; }
+
+        /// <summary>
+        /// Stores a reference to the static events controller by default, but can
+        /// be overridden for unit testing.
+        /// </summary>
+        [XmlIgnore, JsonIgnore]
+        public EventsController Events { get; set; }
+
+        protected Executable() : base() {
+            this.Variables = Executable.MasterVariables;
+            this.Languages = Executable.MasterLanguages;
+            this.Security = Executable.MasterSecurity;
+            this.Events = Executable.MasterEvents;
         }
 
+        /// <summary>
+        /// Sets up the static controllers in this class to all use one-another for their internal
+        /// references to the objects. This method is used so once all the static controllers have been setup
+        /// we can update all of their references in one hit, ensuring they all communicate with each other.
+        /// 
+        /// This makes the default controllers coupled with one another, but not a particular reference of the
+        /// object (useful for unit testing!). The alternative is to not have the static objects at all, but the
+        /// code does get very messy on some of the controllers that go a few levels deep (Procon.Core.Security or ..Plugins)
+        /// </summary>
+        static Executable() {
 
-        // Execute:
-        // -- Loads the configuration file.
-        public virtual T Execute()
-        {
-            Execute(CommandInitiator.Local, MasterConfig);
+            MasterVariables = new VariableController().Execute() as VariableController;
+            MasterLanguages = new LanguageController().Execute() as LanguageController;
+            MasterSecurity = new SecurityController().Execute() as SecurityController;
+            MasterEvents = new EventsController().Execute() as EventsController;
 
-            return this as T;
-        }
-        // Execute:
-        // -- Loads the specified configuration file.
-        public virtual T Execute(Config config)
-        {
-            Execute(CommandInitiator.Local, config);
+            if (Executable.MasterVariables != null && Executable.MasterLanguages != null && Executable.MasterSecurity != null && Executable.MasterEvents != null) {
+                Executable.MasterVariables.Variables = Executable.MasterLanguages.Variables = Executable.MasterSecurity.Variables = Executable.MasterEvents.Variables = Executable.MasterVariables;
+                Executable.MasterVariables.Languages = Executable.MasterLanguages.Languages = Executable.MasterSecurity.Languages = Executable.MasterEvents.Languages = Executable.MasterLanguages;
+                Executable.MasterVariables.Security = Executable.MasterLanguages.Security = Executable.MasterSecurity.Security = Executable.MasterEvents.Security = Executable.MasterSecurity;
+                Executable.MasterVariables.Events = Executable.MasterLanguages.Events = Executable.MasterSecurity.Events = Executable.MasterEvents.Events = Executable.MasterEvents;
 
-            return this as T;
-        }
-        // Dispose:
-        // -- Allows for an optional child implementation.
-        public virtual void Dispose() { }
-        // WriteConfig:
-        // -- Allows for an optional child implementation.
-        internal virtual void WriteConfig(Config config) { }
+                Executable.MasterSecurity.Groups.ForEach(group => {
+                    group.Variables = Executable.MasterVariables;
+                    group.Languages = Executable.MasterLanguages;
+                    group.Security = Executable.MasterSecurity;
+                    group.Events = Executable.MasterEvents;
 
-
-        // Finds the commands specified in the config file and invokes them with the specified attributes.
-        private void Execute(CommandInitiator initiator, Config config)
-        {
-            if (config != null && config.Root != null)
-            {
-                // Allocate space for this objects type and the config's nodes.
-                Type oType = GetType();
-                var oNodes = config.Root.Elements();
-
-                // Drill down in the config to this object's type.
-                foreach (String oName in oType.FullName.Split('`').First().Split('.').Skip(1))
-                    oNodes = oNodes.DescendantsAndSelf(oName.ToLower());
-
-                // For each of the commands for this object...
-                foreach (XElement xCommand in oNodes.Descendants("command"))
-                {
-                    // Get the name of the method / command.
-                    CommandAttribute command;
-                    if (Enum.IsDefined(typeof(CommandName), xCommand.Attribute("name").Value))
-                        command = new CommandAttribute() { Command = (CommandName)Enum.Parse(typeof(CommandName), xCommand.Attribute("name").Value) };
-                    else
-                        command = new CommandAttribute() { CustomName = xCommand.Attribute("name").Value };
-
-                    // Find the method and check it's parameters, then execute it.
-                    MethodInfo   method     = null;
-                    List<Object> parameters = null;
-                    if (TryGetCommandMethod(command, out method) && TryGetMethodParameters(xCommand, method, out parameters))
-                    {
-                        initiator.Command = command.Command;
-                        parameters.Insert(0, initiator);
-                        method.Invoke(this, parameters.ToArray());
-                    }
-                }
+                    group.Accounts.ForEach(account => {
+                        account.Variables = Executable.MasterVariables;
+                        account.Languages = Executable.MasterLanguages;
+                        account.Security = Executable.MasterSecurity;
+                        account.Events = Executable.MasterEvents;
+                    });
+                });
             }
         }
-        // Attempts to get a method by searching the type for the method who has the specified command attribute.
-        private Boolean TryGetCommandMethod(CommandAttribute command, out MethodInfo commandMethod)
-        {
-            commandMethod = null;
 
-            // Init commands if it has not been initialized yet.
-            if (mCommands.Count == 0)
-                foreach (MethodInfo method in GetType().GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.NonPublic))
-                {
-                    CommandAttribute attribute = method.GetCustomAttributes(typeof(CommandAttribute), false).FirstOrDefault() as CommandAttribute;
-                    if (attribute != null)
-                        mCommands.Add(attribute, method);
-                }
+        /// <summary>
+        /// Loads the configuration file.
+        /// </summary>
+        /// <returns></returns>
+        public override ExecutableBase Execute() {
+            this.Execute(new Command() {
+                Origin = CommandOrigin.Local
+            }, new Config().LoadDirectory(new DirectoryInfo(Defines.ConfigsDirectory)));
 
-            // Find the command.
-            if (mCommands.ContainsKey(command))
-                commandMethod = this.mCommands[command];
-
-            // Return whether we were successful.
-            return commandMethod != null;
+            return this;
         }
-        // Attempts to get a method's parameters by searching for the parameters whose name matches the name in the config.
-        private Boolean TryGetMethodParameters(XElement xCommand, MethodInfo method, out List<Object> parameters)
-        {
-            // Get all the parameters for this method, minus the 'this' parameter because it's an instance method.
-            List<ParameterInfo> parameterInfoList = method.GetParameters().Skip(1).ToList();
-            parameters = null;
-            if (parameterInfoList.Count > 0)
-                parameters = new List<Object>();
-
-            // If there are parameters, then loop through each parameter the method is expecting.
-            if (parameters != null)
-                foreach (ParameterInfo parameterInfo in parameterInfoList)
-                {
-                    // Check to see if the parameter matches something in the xml object.
-                    XElement xParameter = xCommand.Elements().FirstOrDefault(x => String.Compare(x.Name.LocalName, parameterInfo.Name, true) == 0);
-                    if (xParameter != null)
-                        try
-                        {
-                            // Parse the parameter from a string into the correct type.
-                            Object nParameter = ParseEnumValue(parameterInfo.ParameterType, xParameter.Value);
-                            if (nParameter == null)
-                                nParameter = System.Convert.ChangeType(xParameter.Value, parameterInfo.ParameterType);
-                            parameters.Add(nParameter);
-                        }
-                        catch (Exception) { break; }
-                    else { break; }
-                }
-
-            // Return whether we were successful.
-            return (parameters == null) || (parameters.Count == parameterInfoList.Count);
-        }
-        // Parses an enum either directly by assuming the value is a string or by assuming it's a primitive type.
-        private Object ParseEnumValue(Type type, Object value) {
-
-            Object enumValue = null;
-
-            if (type.IsEnum)
-                if (value is string) {
-                    if (Enum.IsDefined(type, value) == true)
-                        enumValue = Enum.Parse(type, (string)value);
-                }   
-                else {
-                    int val = (int)System.Convert.ChangeType(value.ToString(), typeof(int));
-                    if (Enum.IsDefined(type, val) == true)
-                        enumValue = Enum.Parse(type, Enum.GetName(type, value));
-                }
-
-            return enumValue;
-        }
-
-
-        // Events.
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected void OnPropertyChanged(Object sender, String property)
-        {
-            if (PropertyChanged != null)
-                PropertyChanged(sender, new PropertyChangedEventArgs(property));
-        }
-
-
-        #region [Obsolete] Eventually I would like to remove this..
-
-        [Obsolete]
-        protected Object Execute(CommandInitiator initiator, CommandAttribute command, params Object[] parameters)
-        {
-
-            Object result = null;
-            MethodInfo method = null;
-
-            List<Object> parameterList = new List<Object>(parameters);
-
-            if (this.TryGetCommandMethod(command, out method) == true && this.IsMethodParametersMatch(method, parameterList) == true)
-            {
-                initiator.Command = command.Command;
-                parameterList.Insert(0, initiator);
-
-                result = method.Invoke(this, parameterList.ToArray());
-            }
-            else
-            {
-                result = this.ExecutionFailed(initiator, command, parameters);
-            }
-
-            return result;
-        }
-        
-        [Obsolete]
-        private Boolean IsMethodParametersMatch(MethodInfo method, List<Object> parameters)
-        {
-
-            bool isMatch = true;
-
-            List<ParameterInfo> parameterInfo = method.GetParameters().Skip(1).ToList();
-
-            if (parameterInfo.Count == parameters.Count) {
-                for (int offset = 0; offset < parameterInfo.Count && offset < parameters.Count && isMatch == true; offset++) {
-                    if (parameters[offset] != null && parameterInfo[offset].ParameterType.IsAssignableFrom(parameters[offset].GetType()) == false) {
-                        //if (parameterInfo[offset].ParameterType != parameters[offset].GetType()) {
-
-                        try {
-                            if (parameterInfo[offset].ParameterType.IsEnum == true) {
-                                parameters[offset] = this.ParseEnumValue(parameterInfo[offset].ParameterType, parameters[offset]);
-                            }
-                            else {
-                                parameters[offset] = System.Convert.ChangeType(parameters[offset].ToString(), parameterInfo[offset].ParameterType);
-                            }
-                        }
-                        catch (Exception) {
-                            isMatch = false;
-                        }
-                    }
-                }
-            }
-            else {
-                isMatch = false;
-            }
-
-            return isMatch;
-        }
-
-        [Obsolete]
-        protected virtual Object ExecutionFailed(CommandInitiator initiator, CommandAttribute command, Object[] parameters)
-        {
-            return null;
-        }
-
-        #endregion
     }
 }

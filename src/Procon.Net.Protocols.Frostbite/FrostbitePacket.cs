@@ -1,34 +1,22 @@
-﻿// Copyright 2011 Geoffrey 'Phogue' Green
-// 
-// http://www.phogue.net
-//  
-// This file is part of Procon 2.
-// 
-// Procon 2 is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-// 
-// Procon 2 is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-// 
-// You should have received a copy of the GNU General Public License
-// along with Procon 2.  If not, see <http://www.gnu.org/licenses/>.
-
-using System;
+﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 
 namespace Procon.Net.Protocols.Frostbite {
-    using System.Linq;
 
     public class FrostbitePacket : Packet {
 
-        public static readonly string STRING_RESPONSE_OKAY = "OK";
+        public static readonly string StringResponseOkay = "OK";
 
+        /// <summary>
+        /// A list of words to send to the server or recieved from the server that make up
+        /// a frostbite command/event.
+        /// </summary>
         public List<string> Words { get; private set; }
 
+        /// <summary>
+        /// The sequence id for this command/event
+        /// </summary>
         public UInt32? SequenceId { get; set; }
 
         public FrostbitePacket()

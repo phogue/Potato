@@ -1,59 +1,30 @@
-﻿// Copyright 2011 Geoffrey 'Phogue' Green
-// Modified by Cameron 'Imisnew2' Gunnin
-// 
-// http://www.phogue.net
-//  
-// This file is part of Procon 2.
-// 
-// Procon 2 is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-// 
-// Procon 2 is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-// 
-// You should have received a copy of the GNU General Public License
-// along with Procon 2.  If not, see <http://www.gnu.org/licenses/>.
-
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
-using System.Xml.Linq;
+using Procon.Core.Variables;
 
 namespace Procon.Core.Localization {
     using Procon.Core.Utils;
 
-    public class LanguageController : Executable<LanguageController>
-    {
-        // Public Properties
-        public Language       Default   { get; private set; }
-        public List<Language> Languages { get; private set; }
+    public class LanguageController : Executable {
+        
+        /// <summary>
+        /// The default language to fall back on
+        /// </summary>
+        public Language Default { get; protected set; }
+
+        /// <summary>
+        /// A list of all the languages loaded.
+        /// </summary>
+        public List<Language> LoadedLanguageFiles { get; protected set; }
 
         // Default Initialization
         public LanguageController() {
-            Default = null;
-            Languages = new List<Language>();
+            this.Default = null;
+            this.LoadedLanguageFiles = new List<Language>();
         }
-
-
-
-        #region Events
-
-        // -- Default Language Changed --
-        public delegate void DefaultLanguageChangeHandler(LanguageController parent, Language item);
-        public event         DefaultLanguageChangeHandler DefaultLanguageChanged;
-        protected void OnDefaultLanguageChanged(LanguageController parent, Language item)
-        {
-            if (DefaultLanguageChanged != null)
-                DefaultLanguageChanged(parent, item);
-        }
-
-        #endregion
-        #region Executable
 
         /// <summary>
         /// Loads the languages found in the languages directory.
@@ -61,69 +32,149 @@ namespace Procon.Core.Localization {
         /// Executes the commands specified in the configuration file.
         /// Returns a reference back to this object.
         /// </summary>
-        new public LanguageController Execute()
-        {
-            DirectoryInfo langsDirectory = new DirectoryInfo(Defines.LOCALIZATION_DIRECTORY);
-            foreach (DirectoryInfo langDirectory in langsDirectory.GetDirectories())
-            {
-                Language lang = new Language().LoadDirectory(langDirectory) as Language;
-                if (lang.LanguageCode != null)
-                    Languages.Add(lang);
+        public override ExecutableBase Execute() {
+            DirectoryInfo localizationDirectory = new DirectoryInfo(Defines.LocalizationDirectory);
+
+            foreach (DirectoryInfo languageDirectory in localizationDirectory.GetDirectories()) {
+                Language language = new Language().LoadDirectory(languageDirectory) as Language;
+
+                if (language != null && language.LanguageCode != null) {
+                    this.LoadedLanguageFiles.Add(language);
+                }
             }
-            SetDefaultLanguage(CommandInitiator.Local, "en");
+
+            this.AssignEvents();
+
+            this.Variables.Variable(CommonVariableNames.LocalizationDefaultLanguageCode).Value = "en-UK";
+
+            this.LoadDefaultLanguage();
 
             return base.Execute();
         }
 
         /// <summary>
-        /// Saves the default language.
+        /// Assign all current event handlers for all grouped options.
         /// </summary>
-        internal override void WriteConfig(Config config)
-        {
-            config.Root.Add(new XElement("command",
-                new XAttribute("name", CommandName.LanguageSetDefaultLanguage),
-                new XElement("directory", Default.LanguageCode)
-            ));
+        protected void AssignEvents() {
+            this.UnassignEvents();
+
+            this.Variables.Variable(CommonVariableNames.LocalizationDefaultLanguageCode).PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(LanguageController_PropertyChanged);
+
+        }
+        /// <summary>
+        /// Removes all current event handlers.
+        /// </summary>
+        protected void UnassignEvents() {
+            this.Variables.Variable(CommonVariableNames.LocalizationDefaultLanguageCode).PropertyChanged -= new System.ComponentModel.PropertyChangedEventHandler(LanguageController_PropertyChanged);
         }
 
-        #endregion
+        /// <summary>
+        /// Fired whenever the default language variable is changed.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void LanguageController_PropertyChanged(object sender, PropertyChangedEventArgs e) {
+            this.LoadDefaultLanguage();
+        }
+        
+        protected void LoadDefaultLanguage() {
+            String languageCode = this.Variables.Variable(CommonVariableNames.LocalizationDefaultLanguageCode).ToType("en-UK");
 
+            Language language = this.LoadedLanguageFiles.FirstOrDefault(lang => lang.LanguageCode == languageCode);
 
+            if (language != null) {
+                this.Default = language;
+            }
+            // else - maintain the current default language.
+        }
 
         /// <summary>
-        /// Gets a localized string based on a key value specified, limited to a specific namespace,
+        /// Gets a localized string based on a name value specified, limited to a specific namespace,
         /// with additional arguments for formatting if necessary. Uses the default language if the
         /// language code is not specified. Returns an empty string if a localization could not be
         /// found.
         /// </summary>
-        /// <param name="languageCode">The two letter iso 639-1 code.</param>
-        /// <param name="namespace">The namespace to limit the search for the key to.</param>
-        /// <param name="key">The key representing the localized string.</param>
-        /// <param name="args">Arguments to use in String.Format() for the value obtained by key.</param>
-        public String Loc(String languageCode, String @namespace, String key, params Object[] args)
-        {
-            Language lang = Languages.Where(x => x.LanguageCode == languageCode).FirstOrDefault();
-            if (lang == null)
-                lang = Default;
-
-            return lang.Loc(@namespace, key, args);
+        /// <param name="command"></param>
+        /// <param name="languageCode">The ietf language tag.</param>
+        /// <param name="namespace">The namespace to limit the search for the name to.</param>
+        /// <param name="name">The name representing the localized string.</param>
+        /// <param name="args">Arguments to use in String.Format() for the value obtained by name.</param>
+        /// <returns></returns>
+        [CommandAttribute(CommandType = CommandType.LanguageLocalize)]
+        public CommandResultArgs Localize(Command command, String languageCode, String @namespace, String name, List<String> args) {
+            return this.Localize(command, languageCode, @namespace, name, args.Select(arg => (Object)arg).ToArray());
         }
 
+        /// <summary>
+        /// Gets a localized string based on a name value specified, limited to a specific namespace,
+        /// with additional arguments for formatting if necessary. Uses the default language if the
+        /// language code is not specified. Returns an empty string if a localization could not be
+        /// found.
+        /// </summary>
+        /// <param name="command"></param>
+        /// <param name="languageCode">The ietf language tag.</param>
+        /// <param name="namespace">The namespace to limit the search for the name to.</param>
+        /// <param name="name">The name representing the localized string.</param>
+        /// <param name="args">Arguments to use in String.Format() for the value obtained by name.</param>
+        /// <returns></returns>
+        [CommandAttribute(CommandType = CommandType.LanguageLocalize)]
+        public CommandResultArgs Localize(Command command, String languageCode, String @namespace, String name, Object[] args) {
+            CommandResultArgs result = null;
 
+            if (command.Origin == CommandOrigin.Local || this.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
+                Language language = this.LoadedLanguageFiles.FirstOrDefault(lang => lang.LanguageCode == languageCode);
+
+                if (language != null) {
+                    result = new CommandResultArgs() {
+                        Success = true,
+                        Status = CommandResultType.Success,
+                        Now = new CommandData() {
+                            Content = new List<String>() {
+                                language.Localize(@namespace, name, args)
+                            }
+                        }
+                    };
+                }
+                else {
+                    result = new CommandResultArgs() {
+                        Success = false,
+                        Status = CommandResultType.DoesNotExists,
+                        Message = String.Format(@"Language with the code ""{0}"" does not exist.", languageCode)
+                    };
+                }
+            }
+            else {
+                result = CommandResultArgs.InsufficientPermissions;
+            }
+
+            return result;
+        }
 
         /// <summary>
-        /// Sets the default language. The default language is used whenever a language is not
-        /// specified during a localization lookup.
+        /// Proxy for the localization command, but allows for no parameters to be passed.
         /// </summary>
-        [Command(Command = CommandName.LanguageSetDefaultLanguage)]
-        private void SetDefaultLanguage(CommandInitiator initiator, String languageCode)
-        {
-            Language language = Languages.Where(x => x.LanguageCode == languageCode).FirstOrDefault();
-            if (language != null)
-            {
-                Default = language;
-                OnDefaultLanguageChanged(this, Default);
+        /// <param name="command"></param>
+        /// <param name="languageCode">The ietf language tag.</param>
+        /// <param name="namespace">The namespace to limit the search for the name to.</param>
+        /// <param name="name">The name representing the localized string.</param>
+        /// <returns></returns>
+        [CommandAttribute(CommandType = CommandType.LanguageLocalize)]
+        public CommandResultArgs Localize(Command command, String languageCode, String @namespace, String name) {
+            return this.Localize(command, languageCode, @namespace, name, new object[] { });
+        }
+
+        public override void Dispose() {
+
+            this.UnassignEvents();
+
+            foreach (Language language in this.LoadedLanguageFiles) {
+                language.Dispose();
             }
+
+            this.LoadedLanguageFiles.Clear();
+            this.LoadedLanguageFiles = null;
+
+            base.Dispose();
         }
     }
 }

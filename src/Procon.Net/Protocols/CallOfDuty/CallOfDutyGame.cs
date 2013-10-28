@@ -1,39 +1,18 @@
-﻿// Copyright 2011 Geoffrey 'Phogue' Green
-// 
-// http://www.phogue.net
-//  
-// This file is part of Procon 2.
-// 
-// Procon 2 is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-// 
-// Procon 2 is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-// 
-// You should have received a copy of the GNU General Public License
-// along with Procon 2.  If not, see <http://www.gnu.org/licenses/>.
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 
 namespace Procon.Net.Protocols.CallOfDuty {
     using Procon.Net.Attributes;
-    using Procon.Net.Utils;
     using Procon.Net.Protocols.Objects;
     using Procon.Net.Protocols.CallOfDuty.Objects;
 
-    public abstract class CallOfDutyGame : GameImplementation<CallOfDutyClient, CallOfDutyPacket> {
+    public abstract class CallOfDutyGame : GameImplementation<CallOfDutyPacket> {
 
         private static readonly Dictionary<Regex, string> PacketTypes = new Dictionary<Regex, string>() {
             {
-                new Regex(@"^map: (?<map>.*?)num[ ]+score[ ]+ping[ ]+guid[ ]+name[ ]+team[ ]+lastmsg[ ]+address[ ]+qport[ ]+rate", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.Singleline), "teamstatus"
+                new Regex(@"^map: (?<map>.*?)num[ ]+score[ ]+ping[ ]+Uid[ ]+name[ ]+team[ ]+lastmsg[ ]+address[ ]+qport[ ]+rate", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.Singleline), "teamstatus"
             },
             {
                 new Regex(@"^Server info settings:", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.Singleline), "serverinfo"
@@ -89,9 +68,9 @@ namespace Procon.Net.Protocols.CallOfDuty {
 
         #endregion
 
-        public CallOfDutyGame(string hostName, ushort port) : base(hostName, port) {
+        protected CallOfDutyGame(string hostName, ushort port) : base(hostName, port) {
 
-            this.State.Variables.MaxConsoleLines = 100;
+            this.State.Settings.MaxConsoleLines = 100;
         }
 
         protected override Client<CallOfDutyPacket> CreateClient(string hostName, ushort port) {
@@ -99,8 +78,8 @@ namespace Procon.Net.Protocols.CallOfDuty {
         }
 
         public override void Synchronize() {
-            this.Send(this.Create("teamstatus"));
-            this.Send(this.Create("serverinfo"));
+            this.Send(this.CreatePacket("teamstatus"));
+            this.Send(this.CreatePacket("serverinfo"));
 
             if (this.LogFile != null) {
                 this.LogFile.Fetch();
@@ -117,22 +96,25 @@ namespace Procon.Net.Protocols.CallOfDuty {
             this.LogFile.KillEntry += new CallOfDutyLogfile.KillEntryHandler(LogFile_KillEntry);
         }
 
-        private void LogFile_KillEntry(CallOfDutyLogfile sender, DateTime eventTime, CallOfDutyKill kill) {
+        private void LogFile_KillEntry(CallOfDutyLogfile sender, DateTime eventTime, Kill kill) {
             if (kill.Killer != null && kill.Target != null) {
-                kill.Killer = this.State.PlayerList.Find(x => x.UID == kill.Killer.UID);
+                kill.Killer = this.State.PlayerList.Find(x => x.Uid == kill.Killer.Uid);
 
-                kill.Target = this.State.PlayerList.Find(x => x.UID == kill.Target.UID);
+                kill.Target = this.State.PlayerList.Find(x => x.Uid == kill.Target.Uid);
 
-                this.ThrowGameEvent(GameEventType.PlayerKill, kill);
+                this.OnGameEvent(GameEventType.GamePlayerKill, new GameEventData() { Kills = new List<Kill>() { kill } });
             }
         }
 
-        private void LogFile_ChatEntry(CallOfDutyLogfile sender, DateTime eventTime, CallOfDutyChat chat) {
+        private void LogFile_ChatEntry(CallOfDutyLogfile sender, DateTime eventTime, Chat chat) {
 
-            if (chat.Author != null) {
-                chat.Author = this.State.PlayerList.Find(x => x.UID == chat.Author.UID);
+            if (chat.Now.Players != null) {
+                // Fill it with the completed player object.
+                chat.Now.Players = new List<Player>() {
+                    this.State.PlayerList.Find(x => x.Uid == chat.Now.Players.First().Uid)
+                };
 
-                this.ThrowGameEvent(GameEventType.Chat, chat);
+                this.OnGameEvent(GameEventType.GameChat, new GameEventData() { Chats = new List<Chat>() { chat } });
             }
         }
 
@@ -155,14 +137,14 @@ namespace Procon.Net.Protocols.CallOfDuty {
 
             CallOfDutyServerInfo info = new CallOfDutyServerInfo().Parse(response.Message);
 
-            this.State.Variables.MapName        = info.mapname;
-            this.State.Variables.MaxPlayerCount = info.sv_maxclients;
-            this.State.Variables.Ranked         = info.sv_ranked > 0;
-            this.State.Variables.ServerName     = info.sv_hostname;
-            this.State.Variables.FriendlyFire   = info.scr_team_fftype > 0;
-            this.State.Variables.GameModeName   = info.g_gametype;
+            this.State.Settings.MapName        = info.mapname;
+            this.State.Settings.MaxPlayerCount = info.sv_maxclients;
+            this.State.Settings.RankedEnabled         = info.sv_ranked > 0;
+            this.State.Settings.ServerName     = info.sv_hostname;
+            this.State.Settings.FriendlyFireEnabled   = info.scr_team_fftype > 0;
+            this.State.Settings.GameModeName   = info.g_gametype;
 
-            this.ThrowGameEvent(GameEventType.ServerInfoUpdated);
+            this.OnGameEvent(GameEventType.GameSettingsUpdated);
         }
 
         [DispatchPacket(MatchText = "teamstatus")]
@@ -170,16 +152,17 @@ namespace Procon.Net.Protocols.CallOfDuty {
 
             CallOfDutyPlayerList players = new CallOfDutyPlayerList().Parse(response.Message);
 
-            if (players.Subset.Context == PlayerSubsetContext.All) {
+            // if there are not limits on the context to fetch a player list..
+            if (players.Subset.Count == 0) {
 
                 // 1. Remove all names in the state list that are not found in the new list (players that have left)
                 this.State.PlayerList.RemoveAll(x => players.Select(y => y.Name).Contains(x.Name) == false);
 
                 // 2. Add or update any new players
-                foreach (CallOfDutyPlayer player in players) {
-                    CallOfDutyPlayer statePlayer = null;
+                foreach (Player player in players) {
+                    Player statePlayer = this.State.PlayerList.Find(x => x.Name == player.Name);
 
-                    if ((statePlayer = this.State.PlayerList.Find(x => x.Name == player.Name) as CallOfDutyPlayer) == null) {
+                    if (statePlayer == null) {
                         this.State.PlayerList.Add(player);
                     }
                     else {
@@ -188,15 +171,16 @@ namespace Procon.Net.Protocols.CallOfDuty {
                         statePlayer.Deaths = player.Deaths;
                         statePlayer.ClanTag = player.ClanTag;
                         statePlayer.Ping = player.Ping;
-                        statePlayer.Squad = player.Squad;
-                        statePlayer.Team = player.Team;
-                        statePlayer.GUID = player.GUID;
+                        // statePlayer.Squad = player.Squad;
+                        statePlayer.Uid = player.Uid;
+
+                        statePlayer.ModifyGroup(player.Groups.FirstOrDefault(group => group.Type == Grouping.Team));
                     }
                 }
 
-                this.State.Variables.PlayerCount = players.Count;
+                this.State.Settings.PlayerCount = players.Count;
 
-                this.ThrowGameEvent(GameEventType.PlayerlistUpdated);
+                this.OnGameEvent(GameEventType.GamePlayerlistUpdated);
             }
         }
 
@@ -204,14 +188,14 @@ namespace Procon.Net.Protocols.CallOfDuty {
 
         #region Packet Helpers
 
-        protected override CallOfDutyPacket Create(string format, params object[] args) {
+        protected override CallOfDutyPacket CreatePacket(string format, params object[] args) {
             return new CallOfDutyPacket(PacketOrigin.Client, false, this.Password, String.Format(format, args));
         }
 
         public override void Login(string password) {
-            this.Client.ConnectionState = Net.ConnectionState.LoggedIn;
-            this.Send(this.Create("g_logsync 1"));
-            this.Send(this.Create("g_logTimeStampInSeconds 1"));
+            this.Client.ConnectionState = Net.ConnectionState.ConnectionLoggedIn;
+            this.Send(this.CreatePacket("g_logsync 1"));
+            this.Send(this.CreatePacket("g_logTimeStampInSeconds 1"));
 
             this.Synchronize();
         }
@@ -219,20 +203,27 @@ namespace Procon.Net.Protocols.CallOfDuty {
         protected override void Action(Kick kick) {
             if (kick.Target != null) {
                 if (kick.Reason != null && kick.Reason.Length > 0) {
-                    this.Send(this.Create("clientkick {0} \"{1}\"", kick.Target.SlotID, kick.Reason));
+                    this.Send(this.CreatePacket("clientkick {0} \"{1}\"", kick.Target.SlotID, kick.Reason));
                 }
                 else {
-                    this.Send(this.Create("clientkick {0}", kick.Target.SlotID));
+                    this.Send(this.CreatePacket("clientkick {0}", kick.Target.SlotID));
                 }
             }
         }
 
         protected override void Action(Chat chat) {
-            if (chat.Subset.Context == PlayerSubsetContext.All) {
-                this.Send(this.Create("say \"{0}\"", chat.Text));
-            }
-            else if (chat.Subset.Context == PlayerSubsetContext.Player && chat.Subset.Player != null) {
-                this.Send(this.Create("tell {0} \"{1}\"", chat.Subset.Player.SlotID, chat.Text));
+
+            if (chat.Now.Content != null) {
+                foreach (String chatMessage in chat.Now.Content) {
+                    if (chat.Scope.Players == null || chat.Scope.Players.Count == 0) {
+                        this.Send(this.CreatePacket("say \"{0}\"", chatMessage));
+                    }
+                    else if (chat.Scope.Players != null && chat.Scope.Players.Count > 0) {
+                        foreach (Player chatTarget in chat.Scope.Players) {
+                            this.Send(this.CreatePacket("tell {0} \"{1}\"", chatTarget.SlotID, chatMessage));
+                        }
+                    }
+                }
             }
         }
 

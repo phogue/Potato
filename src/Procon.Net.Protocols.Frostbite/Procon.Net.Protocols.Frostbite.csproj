@@ -12,14 +12,11 @@
     <AssemblyName>Procon.Net.Protocols.Frostbite</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <SccProjectName>
-    </SccProjectName>
-    <SccLocalPath>
-    </SccLocalPath>
-    <SccAuxPath>
-    </SccAuxPath>
-    <SccProvider>
-    </SccProvider>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -38,12 +35,17 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
@@ -51,6 +53,10 @@
     <Compile Include="BF\BF3\Objects\BF3FrostbiteMapList.cs" />
     <Compile Include="BF\BF3\Objects\BF3PlayerList.cs" />
     <Compile Include="BF\BF3\Objects\BF3BanList.cs" />
+    <Compile Include="BF\BF4\BF4Game.cs" />
+    <Compile Include="BF\BF4\Objects\BF4BanList.cs" />
+    <Compile Include="BF\BF4\Objects\BF4FrostbiteMapList.cs" />
+    <Compile Include="BF\BF4\Objects\BF4PlayerList.cs" />
     <Compile Include="BF\BFBC2\Bfbc2Game.cs" />
     <Compile Include="BF\BFGame.cs" />
     <Compile Include="FrostbiteClient.cs" />
@@ -62,15 +68,16 @@
     <Compile Include="Objects\FrostbiteBanList.cs" />
     <Compile Include="Objects\FrostbiteChat.cs" />
     <Compile Include="Objects\FrostbiteConverter.cs" />
-    <Compile Include="Objects\FrostbiteGameMode.cs" />
     <Compile Include="Objects\FrostbiteMapList.cs" />
     <Compile Include="Objects\FrostbitePlayer.cs" />
     <Compile Include="Objects\FrostbitePlayerList.cs" />
-    <Compile Include="Objects\FrostbitePlayerSubset.cs" />
+    <Compile Include="Objects\FrostbiteGroupingList.cs" />
     <Compile Include="Objects\FrostbiteServerInfo.cs" />
     <Compile Include="Objects\FrostbiteSpawn.cs" />
     <Compile Include="Objects\FrostbiteTimeSubset.cs" />
     <Compile Include="Objects\GameMods.cs" />
+    <Compile Include="Objects\FrostbitePlayerSubsetContext.cs" />
+    <Compile Include="Objects\IFrostbiteObject.cs" />
     <Compile Include="Objects\TeamScore.cs" />
     <Compile Include="Objects\TeamScoreList.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

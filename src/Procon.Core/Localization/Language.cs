@@ -1,46 +1,24 @@
-﻿// Copyright 2011 Geoffrey 'Phogue' Green
-// Modified by Cameron 'Imisnew2' Gunnin
-// 
-// http://www.phogue.net
-//  
-// This file is part of Procon 2.
-// 
-// Procon 2 is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-// 
-// Procon 2 is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-// 
-// You should have received a copy of the GNU General Public License
-// along with Procon 2.  If not, see <http://www.gnu.org/licenses/>.
-
-using System;
+﻿using System;
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
 
-namespace Procon.Core.Localization
-{
+namespace Procon.Core.Localization {
+
     [Serializable]
-    public class Language : Config
-    {
-        // Public Properties
-        // Uses ISO 639-1 Language codes for the LanguageCode string.
-        // http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
-        public String LanguageCode { get; private set; }
+    public class Language : Config {
+        /// <summary>
+        /// IETF language tag for the LanguageCode string.
+        /// http://en.wikipedia.org/wiki/IETF_language_tag
+        /// http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
+        /// http://en.wikipedia.org/wiki/ISO_3166-1
+        /// </summary>
+        public String LanguageCode { get; set; }
 
         // Default Initialization
         public Language() {
-            LanguageCode = String.Empty;
+            this.LanguageCode = String.Empty;
         }
-
-
-
-        #region Config
 
         /// <summary>
         /// Loads the specified file into this language file using the file's contents.
@@ -50,51 +28,54 @@ namespace Procon.Core.Localization
             base.LoadFile(mFile);
 
             // Parse out extra instruction information used in a language config file.
-            var instructions = Document.Nodes()
-                                .Where( x => x is XProcessingInstruction)
-                                .Select(x => x as XProcessingInstruction);
+            var instructions = this.Document.Nodes().OfType<XProcessingInstruction>();
 
             // These instructions could be expanded to include details about the author.
-            foreach (var instruction in instructions)
-                switch (instruction.Target.ToLower())
-                {
-                    case "iso-639-1":
+            foreach (var instruction in instructions) {
+                switch (instruction.Target) {
+                    case "ietf-language-tag":
                         LanguageCode = instruction.Data;
                         break;
                 }
+            }
 
             return this;
         }
 
-        #endregion
-
-
-
         /// <summary>
         /// Attempts to find a localized string within this language file. Returns an empty
-        /// string if the key could not be found.
+        /// string if the name could not be found.
         /// </summary>
-        /// <param name="namespace">The namespace to limit the search for the key to.</param>
-        /// <param name="key">The key representing the localized string.</param>
-        /// <param name="args">Arguments to use in String.Format() for the value obtained by key.</param>
-        public String Loc(String @namespace, String key, params Object[] args) {
+        /// <param name="namespace">The namespace to limit the search for the name to.</param>
+        /// <param name="name">The name representing the localized string.</param>
+        /// <param name="args">Arguments to use in String.Format() for the value obtained by name.</param>
+        public String Localize(String @namespace, String name, params Object[] args) {
             String result = String.Empty;
 
             // Drill down to namespace that was specified.
-            var children = Document.Elements();
-            foreach (String name in @namespace.ToLower().Split('.').Skip(1))
-                children = children.Elements(name);
+            var children = this.Document.Elements();
 
-            // Attempt to find key.
-            var loc = children.Elements("loc")
-                               .Where(x => x.Attribute("key") != null && x.Attribute("key").Value == key)
-                               .Select(x => x.Attribute("value"))
-                               .FirstOrDefault();
+            children = @namespace.Split('.').Skip(1).Aggregate(children, (current, n) => current.Elements(n));
 
-            // Attempt to format key.
-            if (loc != null)
-                try               { result = String.Format(loc.Value, args); }
-                catch (Exception) { /* Format Error */ }
+            // Attempt to find name.
+            var loc = children.Elements("Loc").Where(attribute => {
+                var xAttribute = attribute.Attribute("name");
+                return xAttribute != null && xAttribute.Value == name;
+            }).Select(attribute => attribute.Attribute("value"))
+            .FirstOrDefault();
+
+            // Attempt to format name.
+            if (loc != null) {
+                try {
+                    result = String.Format(loc.Value, args);
+                }
+                catch (Exception) {
+                    // We don't want to output general errors to a user, but we need to make a clear
+                    // "There isn't something here, but you should probably think there is".
+                    // It's a step up from our old Procon 1.X method that would have an error in place.
+                    result = String.Empty;
+                }
+            }
 
             // Return the result.
             return result;

@@ -1,48 +1,35 @@
-﻿// Copyright 2011 Geoffrey 'Phogue' Green
-// 
-// http://www.phogue.net
-//  
-// This file is part of Procon 2.
-// 
-// Procon 2 is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-// 
-// Procon 2 is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-// 
-// You should have received a copy of the GNU General Public License
-// along with Procon 2.  If not, see <http://www.gnu.org/licenses/>.
+﻿using System;
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Procon.NLP {
+namespace Procon.Nlp {
     public class Token : IComparable<Token> {
 
-        public static int MINIMUM_SIMILARITY = 80;
+        public static int MinimumSimilarity = 80;
 
+        /// <summary>
+        /// What text was used when comparing this token to other tokens
+        /// </summary>
         public String Text { get; set; }
 
+        /// <summary>
+        /// The value of the token, which can range in type depending on the actual token itself.
+        /// </summary>
         public Object Value { get; set; }
 
+        /// <summary>
+        /// The matching similarity this token has to the text supplied
+        /// </summary>
         public float Similarity { get; set; }
 
-        public static Phrase Parse(IStateNLP state, Phrase phrase) {
+        /// <summary>
+        /// The minimum weighted similarity this thing can drop before it is considered junk and
+        /// should be trashed. Defaults to the minimum similarity, but can otherwise be set.
+        /// </summary>
+        public int MinimumWeightedSimilarity { get; set; }
 
-            return phrase;
+        public Token() : base() {
+            this.MinimumWeightedSimilarity = Token.MinimumSimilarity;
         }
 
-        public Token Parse() {
-
-            return this;
-        }
-        
         public override string ToString() {
             //return this.Text + "," + this.Value;
             return String.Format("{0},{1}", this.Text, this.Value);

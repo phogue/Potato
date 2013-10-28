@@ -1,28 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
-using System.Linq;
-using System.Text;
+using System.Globalization;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.Windows.Threading;
 using System.Windows.Forms;
 using System.IO;
+using Procon.Core.Utils;
 
 namespace Procon.Tools.RepositoryManager {
     using Procon.Tools.RepositoryManager.Models;
-    using Procon.Core.Utils;
-    using Procon.Core.Interfaces.Repositories;
-    using Procon.Core.Interfaces.Repositories.Objects;
+    using Procon.Core.Repositories;
     using Procon.Net.Utils;
     using Ionic.Zip;
 
@@ -42,31 +33,20 @@ namespace Procon.Tools.RepositoryManager {
             this.RefreshBinding();
 
             this.Repository = new Repository();
-            this.Repository.RepositoryLoaded += new Core.Interfaces.Repositories.Objects.Repository.RepositoryEventHandler(Repository_RepositoryLoaded);
-            this.Repository.AuthenticationSuccess += new Core.Interfaces.Repositories.Objects.Repository.RepositoryEventHandler(Repository_AuthenticationSuccess);
-            this.Repository.AuthenticationFailed += new Core.Interfaces.Repositories.Objects.Repository.RepositoryEventHandler(Repository_AuthenticationFailed);
-            this.Repository.RebuildCacheSuccess += new Core.Interfaces.Repositories.Objects.Repository.RepositoryEventHandler(Repository_RebuildCacheSuccess);
-            this.Repository.RebuildCacheFailed += new Core.Interfaces.Repositories.Objects.Repository.RepositoryEventHandler(Repository_RebuildCacheFailed);
-            this.Repository.PublishSuccess += new Core.Interfaces.Repositories.Objects.Repository.RepositoryEventHandler(Repository_PublishSuccess);
-            this.Repository.PublishFailed += new Core.Interfaces.Repositories.Objects.Repository.RepositoryEventHandler(Repository_PublishFailed);
+            this.Repository.RepositoryLoaded += new Core.Repositories.Repository.RepositoryEventHandler(Repository_RepositoryLoaded);
+            this.Repository.AuthenticationSuccess += new Core.Repositories.Repository.RepositoryEventHandler(Repository_AuthenticationSuccess);
+            this.Repository.AuthenticationFailed += new Core.Repositories.Repository.RepositoryEventHandler(Repository_AuthenticationFailed);
+            this.Repository.RebuildCacheSuccess += new Core.Repositories.Repository.RepositoryEventHandler(Repository_RebuildCacheSuccess);
+            this.Repository.PublishSuccess += new Core.Repositories.Repository.RepositoryEventHandler(Repository_PublishSuccess);
 
             this.LogEntries = new ObservableCollection<LogEntry>();
             CollectionViewSource.GetDefaultView(this.LogEntries).CollectionChanged += new NotifyCollectionChangedEventHandler(LogEntries_CollectionChanged);
 
-            this.LoadDefaults();
+            //this.LoadDefaults();
 
-            this.QueryRepository();
+            //this.QueryRepository();
         }
-
-        private void Repository_PublishFailed(Repository repository) {
-            if (this.Dispatcher.CheckAccess() == false) {
-                this.Dispatcher.BeginInvoke(new Action<Repository>(Repository_PublishFailed), repository);
-                return;
-            }
-
-            this.LogEntries.Add(new LogEntry("Error while publishing package"));
-        }
-
+        
         private void Repository_PublishSuccess(Repository repository) {
             if (this.Dispatcher.CheckAccess() == false) {
                 this.Dispatcher.BeginInvoke(new Action<Repository>(Repository_PublishSuccess), repository);
@@ -76,15 +56,6 @@ namespace Procon.Tools.RepositoryManager {
             this.LogEntries.Add(new LogEntry("Package published!"));
 
             this.QueryRepository();
-        }
-
-        private void Repository_RebuildCacheFailed(Repository repository) {
-            if (this.Dispatcher.CheckAccess() == false) {
-                this.Dispatcher.BeginInvoke(new Action<Repository>(Repository_RebuildCacheFailed), repository);
-                return;
-            }
-
-            this.LogEntries.Add(new LogEntry("Cache Rebuild failed"));
         }
 
         private void Repository_RebuildCacheSuccess(Repository repository) {
@@ -103,7 +74,7 @@ namespace Procon.Tools.RepositoryManager {
         }
 
         private void LoadDefaults() {
-            this.txtRepositoryUrl.Text = Defines.MYRCON_COM_REPO_PROCON2;
+            //this.txtRepositoryUrl.Text = "Procon2";
         }
 
         private void RefreshBinding() {
@@ -123,7 +94,7 @@ namespace Procon.Tools.RepositoryManager {
 
         private void QueryRepository() {
             this.LogEntries.Add(new LogEntry("Starting repository query.."));
-            this.Repository.BeginLoading();
+            this.Repository.BeginQueryRequest();
         }
 
         private void Repository_AuthenticationFailed(Repository repository) {
@@ -165,10 +136,10 @@ namespace Procon.Tools.RepositoryManager {
         }
 
         private void SetVersion(Version v) {
-            this.txtPackageVersionMajor.Text = v.Major.ToString();
-            this.txtPackageVersionMinor.Text = v.Minor.ToString();
-            this.txtPackageVersionBuild.Text = v.Build.ToString();
-            this.txtPackageVersionRevision.Text = v.Revision.ToString();
+            this.txtPackageVersionMajor.Text = v.Major.ToString(CultureInfo.InvariantCulture);
+            this.txtPackageVersionMinor.Text = v.Minor.ToString(CultureInfo.InvariantCulture);
+            this.txtPackageVersionBuild.Text = v.Build.ToString(CultureInfo.InvariantCulture);
+            this.txtPackageVersionRevision.Text = v.Revision.ToString(CultureInfo.InvariantCulture);
         }
 
         private void ListViewEmployeeDetails_SelectionChanged(object sender, SelectionChangedEventArgs e) {
@@ -224,28 +195,7 @@ namespace Procon.Tools.RepositoryManager {
         private void btnRebuildCache_Click(object sender, RoutedEventArgs e) {
             this.RebuildCache();
         }
-
-        /// <summary>
-        /// Zips up a directory, returns a memorystream of the contained zip file
-        /// </summary>
-        /// <param name="path"></param>
-        /// <returns></returns>
-        private MemoryStream ZipDirectory(String path) {
-            MemoryStream stream = new MemoryStream();
-
-            using (ZipFile zip = new ZipFile()) {
-                zip.CompressionLevel = Ionic.Zlib.CompressionLevel.BestCompression;
-
-                zip.AddDirectory(path);
-
-                zip.Save(stream);
-
-                stream.Seek(0, SeekOrigin.Begin);
-            }
-
-            return stream;
-        }
-
+        
         private void btnPublish_Click(object sender, RoutedEventArgs e) {
 
             this.LogEntries.Add(new LogEntry("Building package.."));
@@ -253,13 +203,13 @@ namespace Procon.Tools.RepositoryManager {
             if (Directory.Exists(this.txtPackageDirectory.Text) == true) {
 
                 Package package = new Package() {
-                    Uid= this.txtPackageUid.Text,
+                    Uid = this.txtPackageUid.Text,
                     Name = this.txtPackageName.Text
                 };
 
                 Version version = new Version(String.Format("{0:0}.{1:0}.{2:0}.{3:0}", this.txtPackageVersionMajor.Text, this.txtPackageVersionMinor.Text, this.txtPackageVersionBuild.Text, this.txtPackageVersionRevision.Text));
 
-                MemoryStream stream = this.ZipDirectory(this.txtPackageDirectory.Text);
+                MemoryStream stream = new DirectoryInfo(this.txtPackageDirectory.Text).Zip();
 
                 if (stream != null) {
                     this.LogEntries.Add(new LogEntry("Starting publish.."));

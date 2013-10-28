@@ -1,31 +1,11 @@
-﻿// Copyright 2011 Geoffrey 'Phogue' Green
-// 
-// http://www.phogue.net
-//  
-// This file is part of Procon 2.
-// 
-// Procon 2 is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-// 
-// Procon 2 is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-// 
-// You should have received a copy of the GNU General Public License
-// along with Procon 2.  If not, see <http://www.gnu.org/licenses/>.
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Reflection;
 
-namespace Procon.NLP {
-    using Procon.NLP.Tokens;
-    using Procon.NLP.Utils;
+namespace Procon.Nlp {
+    using Procon.Nlp.Tokens;
+    using Procon.Nlp.Utils;
+
     // a phrase has many different interpretations
     public class Phrase : List<Token> {
 
@@ -40,19 +20,34 @@ namespace Procon.NLP {
             this.AddRange(t);
         }
 
-        public Phrase Parse(IStateNLP state, string tokenNamespace) {
+        public static List<Token> OrderByWeightedSimilarity(List<Token> phraseList) {
+            var largestToken = phraseList.OrderByDescending(token => token.Text.Length).FirstOrDefault();
 
-            foreach (MethodInfo method in TokenReflection.GetParseMethods(tokenNamespace)) {
-                method.Invoke(null, new object[] { state , this });
+            if (largestToken != null) {
+                float largestTokenErrorRatio = largestToken.Similarity / 100;
+
+                phraseList.ReplaceRange(0, phraseList.Count, phraseList.OrderByDescending(token => token.Similarity - (largestToken.Text.Length - token.Text.Length) * largestTokenErrorRatio).ToList());
             }
 
-            this.GroupBy(x => x.Text.Length);
+            return phraseList;
+        }
 
+        public Phrase Parse(IStateNlp state, string tokenNamespace) {
+
+            foreach (Delegate delegateParseMethod in TokenReflection.GetParseMethods(tokenNamespace)) {
+                delegateParseMethod.DynamicInvoke(state, this);
+                //method.Invoke(null, new object[] { state , this });
+            }
+
+            Phrase.OrderByWeightedSimilarity(this);
+
+            //this.GroupBy(x => x.Text.Length);
+            /*
             this.ReplaceRange(0, this.Count, this.OrderByDescending(x => x.Similarity)
                                                  .ThenByDescending(x => x.Text.Length)
                                                  .ToList());
             // Bubble the best matched to the top.
-
+            */
             return this;
         }
 
@@ -60,7 +55,7 @@ namespace Procon.NLP {
 
             var worseMatch = from token in this
                                 from newToken in collection
-                                where String.Compare(token.ToString(), newToken.ToString()) == 0
+                                where String.CompareOrdinal(token.ToString(), newToken.ToString()) == 0
                                 && newToken.Similarity < token.Similarity
                                 select newToken;
             /*
@@ -77,7 +72,7 @@ namespace Procon.NLP {
 
             collection.Where(x => worseMatch.Contains(x) == false)
                 .ToList()
-                .ForEach(x => this.Add(x));
+                .ForEach(this.Add);
             //this.AddRange<Token>(collection.Where(x => worseMatch.Contains(x) == false) as IEnumerable<Token>);
             //this.AddRange(collection.Where(x => worseMatch.Contains(x) == false));
 

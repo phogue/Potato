@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Net;
 using System.Net.Sockets;
 
 namespace Procon.Net.Protocols.Source.Logging.BroadcastListener {
 
-    public class SourceBroadcastListener : UDPClient<SourceBroadcastListenerPacket> {
+    public class SourceBroadcastListener : UdpClient<SourceBroadcastListenerPacket> {
 
         public ushort SourceLogServicePort { get; set; }
         public ushort SourceLogListenPort { get; set; }
@@ -18,23 +15,23 @@ namespace Procon.Net.Protocols.Source.Logging.BroadcastListener {
         }
 
         // Override and do *not* call base AttemptConnection 
-        public override void AttemptConnection() {
+        public override void Connect() {
             try {
-                this.ConnectionState = Net.ConnectionState.Connecting;
-                this.m_remoteIpEndPoint = new IPEndPoint(IPAddress.Any, this.Port);
+                this.ConnectionState = Net.ConnectionState.ConnectionConnecting;
+                this.RemoteIpEndPoint = new IPEndPoint(IPAddress.Any, this.Port);
 
-                this.m_udpClient = new UdpClient();
+                this.Client = new UdpClient();
                 //this.m_udpClient.DontFragment = true; // ?
-                this.m_udpClient.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
-                this.m_udpClient.ExclusiveAddressUse = false;
-                this.m_udpClient.Client.Bind(this.m_remoteIpEndPoint);
+                this.Client.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
+                this.Client.ExclusiveAddressUse = false;
+                this.Client.Client.Bind(this.RemoteIpEndPoint);
 
-                this.m_udpClient.Client.SetSocketOption(SocketOptionLevel.IP, SocketOptionName.MulticastTimeToLive, true);
-                this.m_udpClient.Client.SetSocketOption(SocketOptionLevel.IP, SocketOptionName.AddMembership, new MulticastOption(IPAddress.Parse("224.10.10.10")));
+                this.Client.Client.SetSocketOption(SocketOptionLevel.IP, SocketOptionName.MulticastTimeToLive, true);
+                this.Client.Client.SetSocketOption(SocketOptionLevel.IP, SocketOptionName.AddMembership, new MulticastOption(IPAddress.Parse("224.10.10.10")));
 
-                this.m_udpClient.BeginReceive(this.ReceiveCallback, null);
+                this.Client.BeginReceive(this.ReceiveCallback, null);
 
-                this.ConnectionState = Net.ConnectionState.Ready;
+                this.ConnectionState = Net.ConnectionState.ConnectionReady;
             }
             catch (SocketException se) {
                 this.Shutdown(se);
@@ -47,14 +44,13 @@ namespace Procon.Net.Protocols.Source.Logging.BroadcastListener {
         protected override void ReceiveCallback(IAsyncResult ar) {
 
             try {
-                this.a_bReceivedBuffer = this.m_udpClient.EndReceive(ar, ref this.m_remoteIpEndPoint);
+                this.ReceivedBuffer = this.Client.EndReceive(ar, ref this.RemoteIpEndPoint);
 
-                SourceBroadcastListenerPacket completedPacket = this.PacketSerializer.Deserialize(this.a_bReceivedBuffer);
+                SourceBroadcastListenerPacket completedPacket = this.PacketSerializer.Deserialize(this.ReceivedBuffer);
                 // completedPacket.RemoteEndPoint = this.m_remoteIpEndPoint;
 
-                bool isProcessed = false;
-                this.OnBeforePacketDispatch(completedPacket, out isProcessed);
-
+                this.BeforePacketDispatch(completedPacket);
+                
                 this.OnPacketReceived(completedPacket);
 
                 this.BeginRead();

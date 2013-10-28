@@ -1,37 +1,21 @@
-﻿// Copyright 2011 Geoffrey 'Phogue' Green
-// 
-// http://www.phogue.net
-//  
-// This file is part of Procon 2.
-// 
-// Procon 2 is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-// 
-// Procon 2 is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-// 
-// You should have received a copy of the GNU General Public License
-// along with Procon 2.  If not, see <http://www.gnu.org/licenses/>.
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System;
 using System.Text.RegularExpressions;
 
-namespace Procon.NLP.Tokens.Primitive.Temporal.Variable.Date {
-    using Procon.NLP.Tokens.Operator.Logical;
+namespace Procon.Nlp.Tokens.Primitive.Temporal.Variable.Date {
+    using Procon.Nlp.Tokens.Operator.Logical;
+    using Procon.Nlp.Tokens.Primitive.Numeric;
+    using Procon.Nlp.Tokens.Syntax.Prepositions;
+    using Procon.Nlp.Tokens.Syntax.Articles;
+
     public class DateVariableTemporalPrimitiveToken : DateTimeTemporalPrimitiveToken {
 
-        protected static readonly Regex m_regexMatch = new Regex(@"^([0-9]+)[ ]?[-/.][ ]?([0-9]+)[ ]?[- /.][ ]?([0-9]{2,4})$", RegexOptions.Compiled | RegexOptions.IgnorePatternWhitespace);
+        // @todo should this be moved into the Nlp language file instead?
+        // @todo even if the same logic is here and it fetches it from the loc file it would be better.
+        protected static readonly Regex RegexMatch = new Regex(@"^([0-9]+)[ ]?[-/.][ ]?([0-9]+)[ ]?[- /.][ ]?([0-9]{2,4})$", RegexOptions.Compiled | RegexOptions.IgnorePatternWhitespace);
 
-        public static Phrase Parse(IStateNLP state, Phrase phrase) {
+        public new static Phrase Parse(IStateNlp state, Phrase phrase) {
 
-            Match regexMatch = DateVariableTemporalPrimitiveToken.m_regexMatch.Match(phrase.Text);
+            Match regexMatch = DateVariableTemporalPrimitiveToken.RegexMatch.Match(phrase.Text);
 
             if (regexMatch.Success == true) {
                 DateTime dt;
@@ -39,7 +23,7 @@ namespace Procon.NLP.Tokens.Primitive.Temporal.Variable.Date {
 
                     phrase.Add(
                         new DateVariableTemporalPrimitiveToken() {
-                            Pattern = new DateTimePatternNLP() {
+                            Pattern = new DateTimePatternNlp() {
                                 Rule = TimeType.Definitive,
                                 Year = dt.Year,
                                 Month = dt.Month,
@@ -53,46 +37,9 @@ namespace Procon.NLP.Tokens.Primitive.Temporal.Variable.Date {
             }
 
             return phrase;
-/*
-                }
-
-                int? hours = regexMatch.Groups["hours"].Value.Length > 0 ? int.Parse(regexMatch.Groups["hours"].Value) : 0;
-                int? minutes = regexMatch.Groups["minutes"].Value.Length > 0 ? int.Parse(regexMatch.Groups["minutes"].Value) : 0;
-                int? seconds = regexMatch.Groups["seconds"].Value.Length > 0 ? int.Parse(regexMatch.Groups["seconds"].Value) : 0;
-
-                if (String.Compare(regexMatch.Groups["meridiem"].Value, "pm", true) == 0 && hours < 12) {
-                    hours += 12;
-                }
-                else if (String.Compare(regexMatch.Groups["meridiem"].Value, "am", true) == 0) {
-                    if (hours == 12) {
-                        hours = 0;
-                    }
-                }
-
-                hours %= 24;
-
-                DateTimePatternNLP newDateTime = new DateTimePatternNLP() {
-                    Rule = TimeType.Definitive,
-                    Hour = (regexMatch.Groups["hours"].Value.Length > 0 ? hours : null),
-                    Minute = (regexMatch.Groups["minutes"].Value.Length > 0 ? minutes : null),
-                    Second = (regexMatch.Groups["seconds"].Value.Length > 0 ? seconds : null)
-                };
-
-                phrase.Add(
-                    new TimeVariableTemporalPrimitiveToken() {
-                        Pattern = newDateTime,
-                        Text = phrase.Text,
-                        Similarity = 100.0F
-                    }
-                );
-                    
-            }
-*/
         }
 
-        // 
-
-        public static Phrase Reduce(IStateNLP state, DateVariableTemporalPrimitiveToken dateA, DateVariableTemporalPrimitiveToken dateB) {
+        public static Phrase Reduce(IStateNlp state, DateVariableTemporalPrimitiveToken dateA, DateVariableTemporalPrimitiveToken dateB) {
             return new Phrase() {
                 new DateVariableTemporalPrimitiveToken() {
                     Pattern = dateA.Pattern + dateB.Pattern,
@@ -102,7 +49,73 @@ namespace Procon.NLP.Tokens.Primitive.Temporal.Variable.Date {
             };
         }
 
-        public static Phrase Reduce(IStateNLP state, DateVariableTemporalPrimitiveToken dateA, AndLogicalOperatorToken and, DateVariableTemporalPrimitiveToken dateB) {
+        public static Phrase Reduce(IStateNlp state, OnPrepositionsSyntaxToken on, DefiniteArticlesSyntaxToken the, DateVariableTemporalPrimitiveToken date) {
+            DateTimePatternNlp pattern = date.Pattern;
+            pattern.Modifier = TimeModifier.Delay;
+
+            return new Phrase() {
+                new DateVariableTemporalPrimitiveToken() {
+                    Pattern = pattern,
+                    Text = String.Format("{0} {1} {2}", on.Text, the.Text, date.Text),
+                    Similarity = (on.Similarity + the.Similarity + date.Similarity) / 3.0F
+                }
+            };
+        }
+
+        public static Phrase Reduce(IStateNlp state, OnPrepositionsSyntaxToken on, DateVariableTemporalPrimitiveToken date) {
+            DateTimePatternNlp pattern = date.Pattern;
+            pattern.Modifier = TimeModifier.Delay;
+
+            return new Phrase() {
+                new DateVariableTemporalPrimitiveToken() {
+                    Pattern = pattern,
+                    Text = String.Format("{0} {1}", on.Text, date.Text),
+                    Similarity = (on.Similarity + date.Similarity) / 2.0F
+                }
+            };
+        }
+
+        public static Phrase Reduce(IStateNlp state, UntilPrepositionsSyntaxToken until, DefiniteArticlesSyntaxToken the, DateVariableTemporalPrimitiveToken date) {
+            DateTimePatternNlp pattern = date.Pattern;
+            pattern.Modifier = TimeModifier.Period;
+
+            return new Phrase() {
+                new DateVariableTemporalPrimitiveToken() {
+                    Pattern = pattern,
+                    Text = String.Format("{0} {1} {2}", until.Text, the.Text, date.Text),
+                    Similarity = (until.Similarity + the.Similarity + date.Similarity) / 3.0F
+                }
+            };
+        }
+
+        public static Phrase Reduce(IStateNlp state, UntilPrepositionsSyntaxToken until, DateVariableTemporalPrimitiveToken date) {
+            DateTimePatternNlp pattern = date.Pattern;
+            pattern.Modifier = TimeModifier.Period;
+
+            return new Phrase() {
+                new DateVariableTemporalPrimitiveToken() {
+                    Pattern = pattern,
+                    Text = String.Format("{0} {1}", until.Text, date.Text),
+                    Similarity = (until.Similarity + date.Similarity) / 2.0F
+                }
+            };
+        }
+        
+        [Strict(ExactMatchSignature = true)]
+        public static Phrase Reduce(IStateNlp state, DateVariableTemporalPrimitiveToken dateA, FloatNumericPrimitiveToken number) {
+            DateTimePatternNlp pattern = dateA.Pattern;
+            pattern.Year = number.ToInteger();
+
+            return new Phrase() {
+                new DateVariableTemporalPrimitiveToken() {
+                    Pattern = pattern,
+                    Text = String.Format("{0} {1}", dateA.Text, number.Text),
+                    Similarity = (dateA.Similarity + number.Similarity) / 2.0F
+                }
+            };
+        }
+
+        public static Phrase Reduce(IStateNlp state, DateVariableTemporalPrimitiveToken dateA, AndLogicalOperatorToken and, DateVariableTemporalPrimitiveToken dateB) {
             return new Phrase() {
                 new DateVariableTemporalPrimitiveToken() {
                     Pattern = dateA.Pattern + dateB.Pattern,
@@ -111,19 +124,5 @@ namespace Procon.NLP.Tokens.Primitive.Temporal.Variable.Date {
                 }
             };
         }
-        /*
-        [RefactoringTokenMethod]
-        public static SentenceNLP DateDate(ProconState state, SentenceNLP sentence, DateVariableTemporalToken dateA, DateVariableTemporalToken dateB) {
-            sentence.ReplaceRange(0, sentence.Count, );
-
-            return sentence;
-        }
-
-        [RefactoringTokenMethod]
-        public static SentenceNLP AndDateDate(ProconState state, SentenceNLP sentence, AndLogicalOperatorToken and, DateVariableTemporalToken dateA, DateVariableTemporalToken dateB) {
-
-            return DateVariableTemporalToken.DateDate(state, sentence, dateA, dateB);
-        }
-        */
     }
 }

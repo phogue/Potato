@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<?ietf-language-tag en-UK?>
+<!DOCTYPE Procon [
+  <!ATTLIST Match regex CDATA #IMPLIED>
+  <!ATTLIST Match text CDATA #IMPLIED>
+  <!ATTLIST Loc name CDATA #IMPLIED>
+  <!ATTLIST Loc value CDATA #IMPLIED>
+]>
+<Procon>
+  <Core>
+    <Interfaces>
+      <Connections>
+        <Plugins>
+          <BasicInGameInfo>
+            <Loc name="HelpCommand" value="Provides a list of commands available to the player" />
+            <Loc name="HelpCommandHeader" value="Type '{0}help [command]' for more information about a command:" />
+            <Loc name="TestCommand" value="Basic command to output the results of a NLP match" />
+          </BasicInGameInfo>
+        </Plugins>
+      </Connections>
+    </Interfaces>
+  </Core>
+</Procon>

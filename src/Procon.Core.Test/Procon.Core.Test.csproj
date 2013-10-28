@@ -1,0 +1,250 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{7B0F5088-336F-48E6-8D6A-A978EA28E426}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Procon.Core.Test</RootNamespace>
+    <AssemblyName>Procon.Core.Test</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Ionic.Zip.Reduced, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="MySql.Data, Version=6.3.9.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL" />
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\lib\JSON\Bin\Net35\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <CodeAnalysisDependentAssemblyPaths Condition=" '$(VS100COMNTOOLS)' != '' " Include="$(VS100COMNTOOLS)..\IDE\PrivateAssemblies">
+      <Visible>False</Visible>
+    </CodeAnalysisDependentAssemblyPaths>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ExecutableCommands\TestCommandParameter.cs" />
+    <Compile Include="Repositories\TestRepositoryController.cs" />
+    <Compile Include="Repositories\TestFlatPackedPackage.cs" />
+    <Compile Include="Repositories\TestPackage.cs" />
+    <Compile Include="Repositories\TestPackageFile.cs" />
+    <Compile Include="Repositories\TestPackageVersion.cs" />
+    <Compile Include="Repositories\TestRepositoryControllerExecute.cs" />
+    <Compile Include="Repositories\TestRepositoryControllerCommands.cs" />
+    <Compile Include="Repositories\TestRepositoryPackageReference.cs" />
+    <Compile Include="TestHelpers.cs" />
+    <Compile Include="TestInstanceRemoveConnection.cs" />
+    <Compile Include="Events\TestEvents.cs" />
+    <Compile Include="Events\TestEventsCommands.cs" />
+    <Compile Include="Events\TestEventsPushController.cs" />
+    <Compile Include="Events\TestGenericEventData.cs" />
+    <Compile Include="Events\TestPushEventsEndPoint.cs" />
+    <Compile Include="ExecutableCommands\Objects\ExecutableEnum.cs" />
+    <Compile Include="ExecutableCommands\Objects\ExecutableEnumTester.cs" />
+    <Compile Include="ExecutableCommands\Objects\ExecutableFlagsEnum.cs" />
+    <Compile Include="ExecutableCommands\TestCommandAttribute.cs" />
+    <Compile Include="ExecutableCommands\TestCommandData.cs" />
+    <Compile Include="ExecutableCommands\TestExecutableEnum.cs" />
+    <Compile Include="ExecutableCommands\TestExecutableExecuted.cs" />
+    <Compile Include="ExecutableCommands\Objects\ExecutableExecutedTester.cs" />
+    <Compile Include="ExecutableCommands\TestExecutablePreview.cs" />
+    <Compile Include="ExecutableCommands\Objects\ExecutablePreviewTester.cs" />
+    <Compile Include="ExecutableCommands\TestExecutableOverride.cs" />
+    <Compile Include="ExecutableCommands\Objects\ExecutableOverrideTester.cs" />
+    <Compile Include="ExecutableCommands\TestExecutableBasic.cs" />
+    <Compile Include="ExecutableCommands\Objects\ExecutableBasicTester.cs" />
+    <Compile Include="ExecutableCommands\TestExecutableProperties.cs" />
+    <Compile Include="Localization\TestLocalization.cs" />
+    <Compile Include="Remote\TestRemote.cs" />
+    <Compile Include="Serialization\Xml\TestXmlSerialization.cs" />
+    <Compile Include="Serialization\Xml\TestXmlSerializationCommand.cs" />
+    <Compile Include="TestInstance.cs" />
+    <Compile Include="TestInstanceAddConnection.cs" />
+    <Compile Include="TextCommands\Nlp\TestNlpBasicMonthTemporal.cs" />
+    <Compile Include="TextCommands\Nlp\TestNlpBasicTemporal.cs" />
+    <Compile Include="TextCommands\Nlp\TestNlpSetsObjectMatching.cs" />
+    <Compile Include="TextCommands\Nlp\TestNlpArithmetic.cs" />
+    <Compile Include="TextCommands\Nlp\TestNlpComplexObjectMatching.cs" />
+    <Compile Include="TextCommands\Nlp\TestNlpBasicObjectMatching.cs" />
+    <Compile Include="TextCommands\Nlp\TestNlpSentences.cs" />
+    <Compile Include="TextCommands\Nlp\TestNlpComplexTemporal.cs" />
+    <Compile Include="Plugins\TestPlugins.cs" />
+    <Compile Include="Plugins\TestPluginsIsolation.cs" />
+    <Compile Include="Plugins\TestPluginsSecurity.cs" />
+    <Compile Include="Plugins\TestPluginsSerialization.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TextCommands\Nlp\TestNlpBase.cs" />
+    <Compile Include="Repositories\TestRepository.cs" />
+    <Compile Include="Scheduler\TestScheduler.cs" />
+    <Compile Include="Security\TestSecurityPermission.cs" />
+    <Compile Include="Security\TestSecurity.cs" />
+    <Compile Include="Security\TestSecurityAccount.cs" />
+    <Compile Include="Security\TestSecurityGroup.cs" />
+    <Compile Include="Security\TestSecurityPlayer.cs" />
+    <Compile Include="Serialization\TestAppDomainSerialization.cs" />
+    <Compile Include="TextCommands\TestTextCommandParsing.cs" />
+    <Compile Include="TextCommands\TestTextCommandRegistration.cs" />
+    <Compile Include="TextCommands\TestTextCommands.cs" />
+    <Compile Include="Utils\Objects\XElementTester.cs" />
+    <Compile Include="Utils\TestDefines.cs" />
+    <Compile Include="Utils\TestDirectoryInfoExtensions.cs" />
+    <Compile Include="Utils\TestPathValidator.cs" />
+    <Compile Include="Utils\TestXElementExtensions.cs" />
+    <Compile Include="Utils\TestXElementValidator.cs" />
+    <Compile Include="Variables\TestVariables.cs" />
+    <Compile Include="Variables\TestVariablesArguments.cs" />
+    <Compile Include="Variables\TestVariablesGet.cs" />
+    <Compile Include="Variables\TestVariablesSet.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Procon.Core\Procon.Core.csproj">
+      <Project>{153B5418-C6B3-43A5-A432-BAFFA8EFAA16}</Project>
+      <Name>Procon.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Procon.Net.Protocols.Frostbite\Procon.Net.Protocols.Frostbite.csproj">
+      <Project>{299A4619-928D-4D7F-8857-644B5F57F6FC}</Project>
+      <Name>Procon.Net.Protocols.Frostbite</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Procon.Net\Procon.Net.csproj">
+      <Project>{65C1DB17-18E0-4AC5-8709-3F7E04B88CA1}</Project>
+      <Name>Procon.Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Procon.NLP\Procon.Nlp.csproj">
+      <Project>{4B55557F-C2AA-4047-9ED9-3E4BBF9CF670}</Project>
+      <Name>Procon.Nlp</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Procon.Service.Shared\Procon.Service.Shared.csproj">
+      <Project>{3F9E6801-A015-4F7E-9B67-7015F1F58B18}</Project>
+      <Name>Procon.Service.Shared</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TestPlugin\TestPlugin.csproj">
+      <Project>{8C6893B8-8273-487C-8A44-2C25917F40BA}</Project>
+      <Name>TestPlugin</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Localization\de-DE\Procon.Core.Test.xml">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Localization\en-UK\Procon.Core.Test.xml">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Repositories\FlatPackedPackage\CoveredPackage\Valid\Installed\Identical.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Repositories\FlatPackedPackage\CoveredPackage\Valid\Installed\File.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Repositories\FlatPackedPackage\CoveredPackage\Valid\Repo\New.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Repositories\FlatPackedPackage\CoveredPackage\Valid\Repo\File.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Repositories\FlatPackedPackage\CoveredPackage\Valid\Repo\Identical.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Repositories\FlatPackedPackage\CoveredPackage\Valid\Updates\File.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Repositories\FlatPackedPackage\CoveredPackage\Valid\Updates\Identical.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Repositories\FlatPackedPackage\MigrateTemporaryFiles\Temporary\File.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Repositories\FlatPackedPackage\MigrateTemporaryFiles\Temporary\SubDirectory\AnotherFile.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Repositories\ModifiedFilesAt\Valid\EmptyFile.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Repositories\Publish\Valid\RandomlyGeneratedContent.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Repositories\ReadDirectory\Invalid\PackageUid.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Repositories\ReadDirectory\Valid\PackageUid.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Repositories\RepositoryController\Commands\Installed\Packages\localrepomyrconcom\DownloadCacheTest_1.0.0.0.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Repositories\RepositoryController\Commands\Installed\Updates\Packages\localrepomyrconcom\DownloadCacheTest_1.1.0.0.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Repositories\FlatPackedPackage\InstallOrUpdate\Install\Installed\" />
+    <Folder Include="Repositories\FlatPackedPackage\InstallOrUpdate\Install\Updates\Packages\" />
+    <Folder Include="Repositories\FlatPackedPackage\InstallOrUpdate\Install\Updates\Temporary\" />
+    <Folder Include="Repositories\FlatPackedPackage\InstallOrUpdate\Update\Installed\" />
+    <Folder Include="Repositories\FlatPackedPackage\InstallOrUpdate\Update\Updates\Packages\" />
+    <Folder Include="Repositories\FlatPackedPackage\InstallOrUpdate\Update\Updates\Temporary\" />
+    <Folder Include="Repositories\FlatPackedPackage\MigrateTemporaryFiles\Updates\" />
+    <Folder Include="Repositories\RepositoryController\Execute\Installed\" />
+    <Folder Include="Utils\DirectoryInfoExtensions\Clean\" />
+    <Folder Include="Utils\DirectoryInfoExtensions\Zip\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>tasklist /FI "IMAGENAME eq QTAgent32.exe" 2&gt;NUL | find /I /N "QTAgent32.exe"&gt;NUL
+if "%25ERRORLEVEL%25"=="0" taskkill /f /im QTAgent32.exe
+exit 0</PreBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PostBuildEvent>move /Y "$(TargetDir)TestPlugin.dll" "$(TargetDir)plugins\TestPlugin.dll"</PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

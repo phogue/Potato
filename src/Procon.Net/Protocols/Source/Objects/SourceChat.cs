@@ -1,44 +1,60 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 
 namespace Procon.Net.Protocols.Source.Objects {
     using Procon.Net.Protocols.Objects;
-    public class SourceChat : Chat, ISourceObject {
+    public class SourceChat : ISourceObject {
 
-        public ISourceObject Parse(Match match) {
-            this.Author = new Player() {
-                Name = match.Groups["name"].Value,
-                GUID = match.Groups["uniqueid"].Value
+        public NetworkObject Parse(Match match) {
+
+            Chat chat = new Chat {
+                Now = {
+                    Players = new List<Player>() {
+                        new Player() {
+                            Name = match.Groups["name"].Value,
+                            Uid = match.Groups["uniqueid"].Value
+                        }
+                    },
+                    Content = new List<String>() {
+                        match.Groups["text"].Value.Replace("\r", "")
+                    }
+                },
+                Origin = ChatOrigin.Player
             };
 
-            if (String.Compare(match.Groups["context"].Value, "say", true) == 0) {
-                this.Subset = new PlayerSubset() {
-                    Context = PlayerSubsetContext.All
-                };
+            if (String.Compare(match.Groups["context"].Value, "say", StringComparison.OrdinalIgnoreCase) == 0) {
+                chat.Scope.Groups = new GroupingList();
             }
             else {
-                this.Subset = new PlayerSubset() {
-                    Context = PlayerSubsetContext.Team
+                // Can we get a team identifier here?
+                chat.Scope.Groups = new GroupingList() {
+                    new Grouping() {
+                        Type = Grouping.Team
+                    }
                 };
             }
 
-            this.Text = match.Groups["text"].Value.Replace("\r", "");
-
-            this.Origin = ChatOrigin.Player;
-
-            return this;
+            return chat;
         }
 
-        public SourceChat ParseConsoleSay(List<string> words) {
-            this.Origin = ChatOrigin.Reflected;
-            this.Author = new Player() { Name = "Procon" };
+        public Chat ParseConsoleSay(List<string> words) {
+            Chat chat = new Chat {
+                Origin = ChatOrigin.Reflected,
+                Now = {
+                    Players = new List<Player>() {
+                        new Player() {
+                            Name = "Procon"
+                        }
+                    },
+                    Content = new List<String>() {
+                        String.Join(" ", words.Skip(1).ToArray())
+                    }
+                }
+            };
 
-            this.Text = String.Join(" ", words.Skip(1).ToArray());
-
-            return this;
+            return chat;
         }
     }
 }

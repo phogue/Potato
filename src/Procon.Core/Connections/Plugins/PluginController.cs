@@ -44,26 +44,42 @@ namespace Procon.Core.Connections.Plugins {
         }
 
         /// <summary>
-        /// Executes the commands specified in the config file and returns a reference itself.
+        /// Copies the necessary files to execute a plugin to the specified directory.
         /// </summary>
-        public override ExecutableBase Execute() {
-            // Make sure the plugins directory exists and set it up.
-            Directory.CreateDirectory(Defines.PluginsDirectory);
+        protected void CreatePluginDirectory(FileSystemInfo pluginDirectory) {
+            try {
+                File.Copy(Defines.ProconDirectoryProconCoreDll, Path.Combine(pluginDirectory.FullName, Defines.ProconCoreDll), true);
+                File.Copy(Defines.ProconDirectoryProconNetDll, Path.Combine(pluginDirectory.FullName, Defines.ProconNetDll), true);
+                File.Copy(Defines.ProconDirectoryProconNlpDll, Path.Combine(pluginDirectory.FullName, Defines.ProconNlpDll), true);
+                // File.Copy(Defines.ProconDirectoryNewtonsoftJsonNet35Dll, Path.Combine(pluginDirectory.FullName, Defines.NewtonsoftJsonNet35Dll), true);
+            }
+            catch (Exception) { }
+        }
 
-            PluginController.PreparePluginDirectory(new DirectoryInfo(Defines.PluginsDirectory));
+        /// <summary>
+        /// Create the evidence required to create an appdomain.
+        /// </summary>
+        /// <returns></returns>
+        protected Evidence CreateEvidence() {
+            Evidence evidence = new Evidence();
+            evidence.AddHost(new Zone(SecurityZone.MyComputer));
 
-            // Use the same evidence as MyComputer.
-            Evidence hostEvidence = new Evidence();
-            hostEvidence.AddHost(new Zone(SecurityZone.MyComputer));
+            return evidence;
+        }
 
-            // [XpKiller] - Mono workaround.
-            AppDomainSetup appDomain = new AppDomainSetup {
+        /// <summary>
+        /// Create the app domain setup options required to create the app domain.
+        /// </summary>
+        /// <returns></returns>
+        protected AppDomainSetup CreateAppDomainSetup() {
+            AppDomainSetup setup = new AppDomainSetup {
                 LoaderOptimization = LoaderOptimization.MultiDomainHost,
                 ApplicationBase = AppDomain.CurrentDomain.BaseDirectory
             };
 
+            // [XpKiller] - Mono workaround.
             if (Type.GetType("Mono.Runtime") != null) {
-                appDomain.PrivateBinPath = AppDomain.CurrentDomain.BaseDirectory;
+                setup.PrivateBinPath = AppDomain.CurrentDomain.BaseDirectory;
             }
 
             // TODO: - The previous two lines used to use the constant: Defines.PLUGINS_DIRECTORY.
@@ -73,19 +89,46 @@ namespace Procon.Core.Connections.Plugins {
             // app domains directory to this app domains directory.  Must set permissions or get phogue to
             // remember stuff later.
 
-            PermissionSet pluginSandboxPermissions = new PermissionSet(PermissionState.None);
+            return setup;
+        }
 
-            pluginSandboxPermissions.AddPermission(new SecurityPermission(SecurityPermissionFlag.Execution));
-            pluginSandboxPermissions.AddPermission(new FileIOPermission(FileIOPermissionAccess.PathDiscovery, AppDomain.CurrentDomain.BaseDirectory));
-            pluginSandboxPermissions.AddPermission(new FileIOPermission(FileIOPermissionAccess.AllAccess, Defines.PluginsDirectory));
-            pluginSandboxPermissions.AddPermission(new FileIOPermission(FileIOPermissionAccess.AllAccess, Defines.LogsDirectory));
-            pluginSandboxPermissions.AddPermission(new FileIOPermission(FileIOPermissionAccess.Read | FileIOPermissionAccess.PathDiscovery, Defines.LocalizationDirectory));
-            pluginSandboxPermissions.AddPermission(new FileIOPermission(FileIOPermissionAccess.Read | FileIOPermissionAccess.PathDiscovery, Defines.ConfigsDirectory));
+        /// <summary>
+        /// Creates the permissions set to apply to the app domain.
+        /// </summary>
+        /// <returns></returns>
+        protected PermissionSet CreatePermissionSet() {
+            PermissionSet permissions = new PermissionSet(PermissionState.None);
 
-            pluginSandboxPermissions.AddPermission(new ReflectionPermission(ReflectionPermissionFlag.RestrictedMemberAccess));
+            permissions.AddPermission(new SecurityPermission(SecurityPermissionFlag.Execution));
+            permissions.AddPermission(new FileIOPermission(FileIOPermissionAccess.PathDiscovery, AppDomain.CurrentDomain.BaseDirectory));
+            permissions.AddPermission(new FileIOPermission(FileIOPermissionAccess.AllAccess, Defines.PluginsDirectory));
+            permissions.AddPermission(new FileIOPermission(FileIOPermissionAccess.AllAccess, Defines.LogsDirectory));
+            permissions.AddPermission(new FileIOPermission(FileIOPermissionAccess.Read | FileIOPermissionAccess.PathDiscovery, Defines.LocalizationDirectory));
+            permissions.AddPermission(new FileIOPermission(FileIOPermissionAccess.Read | FileIOPermissionAccess.PathDiscovery, Defines.ConfigsDirectory));
+
+            permissions.AddPermission(new ReflectionPermission(ReflectionPermissionFlag.RestrictedMemberAccess));
+
+            return permissions;
+        }
+
+        /// <summary>
+        /// Executes the commands specified in the config file and returns a reference itself.
+        /// </summary>
+        public override ExecutableBase Execute() {
+            // Make sure the plugins directory exists and set it up.
+            Directory.CreateDirectory(Defines.PluginsDirectory);
+
+            this.CreatePluginDirectory(new DirectoryInfo(Defines.PluginsDirectory));
+
+            // Use the same evidence as MyComputer.
+            Evidence evidence = this.CreateEvidence();
+
+            AppDomainSetup setup = this.CreateAppDomainSetup();
+
+            PermissionSet permissions = this.CreatePermissionSet();
 
             // Create the app domain and the plugin factory in the new domain.
-            this.AppDomainSandbox = AppDomain.CreateDomain(String.Format("Procon.{0}.Plugin", this.Connection != null ? this.Connection.ConnectionGuid.ToString() : String.Empty), hostEvidence, appDomain, pluginSandboxPermissions);
+            this.AppDomainSandbox = AppDomain.CreateDomain(String.Format("Procon.{0}.Plugin", this.Connection != null ? this.Connection.ConnectionGuid.ToString() : String.Empty), evidence, setup, permissions);
 
             this.PluginFactory = (PluginLoaderProxy)this.AppDomainSandbox.CreateInstanceAndUnwrap(Assembly.GetExecutingAssembly().FullName, typeof(PluginLoaderProxy).FullName);
 
@@ -121,44 +164,25 @@ namespace Procon.Core.Connections.Plugins {
         }
 
         /// <summary>
-        /// Copies the necessary files to execute a plugin to the specified directory.
-        /// </summary>
-        private static void PreparePluginDirectory(DirectoryInfo pluginDirectory) {
-            try {
-                File.Copy(Defines.ProconDirectoryProconCoreDll, Path.Combine(pluginDirectory.FullName, Defines.ProconCoreDll), true);
-                File.Copy(Defines.ProconDirectoryProconNetDll, Path.Combine(pluginDirectory.FullName, Defines.ProconNetDll), true);
-                File.Copy(Defines.ProconDirectoryProconNlpDll, Path.Combine(pluginDirectory.FullName, Defines.ProconNlpDll), true);
-                // File.Copy(Defines.ProconDirectoryNewtonsoftJsonNet35Dll, Path.Combine(pluginDirectory.FullName, Defines.NewtonsoftJsonNet35Dll), true);
-            }
-            catch (Exception) { }
-        }
-
-        /// <summary>
         /// Setup the plugins located in or in sub-folders of this directory.
         /// </summary>
-        private void LoadPlugins(DirectoryInfo pluginDirectory) {
+        protected void LoadPlugins(DirectoryInfo pluginDirectory) {
             // Find all the dll files recursively within the folder and folders within the specified directory.
-            FileInfo[] dllFiles = pluginDirectory.GetFiles("*.dll", SearchOption.AllDirectories).Where(x =>
-                                                                  x.Name != Defines.ProconCoreDll &&
-                                                                  x.Name != Defines.ProconNetDll &&
-                                                                  x.Name != Defines.ProconNlpDll &&
-                                                                  x.Name != Defines.NewtonsoftJsonNet35Dll).ToArray();
+            var files = pluginDirectory.GetFiles("*.dll", SearchOption.AllDirectories).Where(file =>
+                                                                  file.Name != Defines.ProconCoreDll &&
+                                                                  file.Name != Defines.ProconNetDll &&
+                                                                  file.Name != Defines.ProconNlpDll &&
+                                                                  file.Name != Defines.NewtonsoftJsonNet35Dll);
 
             // If there are dll files in this directory, setup the plugins.
-            if (dllFiles.Length > 0) {
-                // No longer required since the plugin appdomains working dir is set to the procon dir.
-                //PreparePluginDirectory(pluginDirectory);
-                foreach (String path in dllFiles.Select(x => x.FullName)) {
-                    this.Plugins.Add(
-                        new Plugin() {
-                            Path = path,
-                            PluginFactory = PluginFactory,
-                            Connection = Connection
-                        }.Execute() as Plugin
-                    );
-
-                    // this.OnPluginAdded(this, Plugins[Plugins.Count - 1]);
-                }
+            foreach (String path in files.Select(file => file.FullName)) {
+                this.Plugins.Add(
+                    new Plugin() {
+                        Path = path,
+                        PluginFactory = PluginFactory,
+                        Connection = Connection
+                    }.Execute() as Plugin
+                );
             }
         }
     }

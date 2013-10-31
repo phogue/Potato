@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Reflection;
 using System.IO;
 using System.Xml.Linq;
@@ -160,6 +158,11 @@ namespace Procon.Net {
             }
         }
 
+        static Game() {
+            // Load all supported game assemblies.
+            SupportedGameTypes.GetSupportedGames();
+        }
+
         // These may get transfered to a Interface used by Game and PacketFactory
         public abstract void Login(string password);
 
@@ -189,59 +192,6 @@ namespace Procon.Net {
         /// General timed event to synch everything on the server with what is known locally.
         /// </summary>
         public abstract void Synchronize();
-        
-        #region Reflected Game Types
-
-        private static Dictionary<GameTypeAttribute, Type> _supportedGames;
-        private static List<Assembly> _supportedGamesAssembly;
-
-        /**
-         * Late loads Procon.Net.Protocols.*.dll's 
-         */
-        private static void LateBindGames() {
-
-            Game._supportedGamesAssembly = new List<Assembly>() {
-                Assembly.GetAssembly(typeof(Game))
-            };
-
-            foreach (string protocol in Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, "Procon.Net.Protocols.*.dll")) {
-                try {
-                    Game._supportedGamesAssembly.Add(Assembly.LoadFile(protocol));
-                }
-                catch (Exception) { }
-            }
-        }
-
-        public static Dictionary<GameTypeAttribute, Type> GetSupportedGames() {
-
-            Dictionary<GameTypeAttribute, Type> games = Game._supportedGames;
-
-            if (games == null) {
-                
-                // Load the supported games
-                Game.LateBindGames();
-
-                Regex supportedGamesNamespame = new Regex(@"^Procon\.Net\.Protocols.*");
-
-                Game._supportedGames = games = (from gameClassType in Game._supportedGamesAssembly.SelectMany(x => x.GetTypes())
-                                                let gameType = (gameClassType.GetCustomAttributes(typeof(GameTypeAttribute), false) as IEnumerable<GameTypeAttribute>).FirstOrDefault()
-                                                where gameType != null &&
-                                                      gameClassType != null &&
-                                                      gameClassType.IsClass == true &&
-                                                      gameClassType.IsAbstract == false &&
-                                                      gameClassType.Namespace != null &&
-                                                      supportedGamesNamespame.IsMatch(gameClassType.Namespace) == true &&
-                                                      typeof(Game).IsAssignableFrom(gameClassType)
-                                                select new {
-                                                    Name = gameType,
-                                                    Type = gameClassType
-                                                }).ToDictionary(w => w.Name, w => w.Type);
-            }
-
-            return games;
-        }
-
-        #endregion
 
         #region Game Config Loading
 

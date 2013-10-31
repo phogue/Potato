@@ -25,6 +25,7 @@ using System.Windows.Forms;
 using System.Reflection;
 using System.Timers;
 using Procon.Net.Attributes;
+using Procon.Net.Protocols;
 
 namespace Procon.Tools.NetworkConsole {
     using Procon.Net;
@@ -63,7 +64,7 @@ namespace Procon.Tools.NetworkConsole {
 
             this.lblVersion.Text = "Version: " + Assembly.GetExecutingAssembly().GetName().Version.ToString();
 
-            this.Games = Game.GetSupportedGames();
+            this.Games = SupportedGameTypes.GetSupportedGames();
             /*
             Regex supportedGamesNamespame = new Regex(@"^Procon\.Net\.Protocols.*");
 

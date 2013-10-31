@@ -10,6 +10,7 @@ using Procon.Core.Scheduler;
 using Procon.Core.Security;
 using Procon.Core.Utils;
 using Procon.Net.Attributes;
+using Procon.Net.Protocols;
 
 namespace Procon.Core {
     using Procon.Core.Connections;
@@ -412,7 +413,7 @@ namespace Procon.Core {
                     if (this.Connections.FirstOrDefault(c => c.GameType.ToString(CultureInfo.InvariantCulture) == gameTypeType && c.Hostname == hostName && c.Port == port) == null) {
                         // As long as the game type is defined...
 
-                        Type gameType = Game.GetSupportedGames().Where(g => g.Key.Provider == gameTypeProvider && g.Key.Type == gameTypeType).Select(g => g.Value).FirstOrDefault();
+                        Type gameType = SupportedGameTypes.GetSupportedGames().Where(g => g.Key.Provider == gameTypeProvider && g.Key.Type == gameTypeType).Select(g => g.Value).FirstOrDefault();
 
                         // As long as the game type selected is supported...
                         if (gameType != null) {
@@ -563,7 +564,7 @@ namespace Procon.Core {
                     Status = CommandResultType.Success,
                     Now = new CommandData() {
                         Connections = new List<Connection>(this.Connections),
-                        GameTypes = new List<GameTypeAttribute>(Game.GetSupportedGames().Select(k => k.Key)),
+                        GameTypes = new List<GameTypeAttribute>(SupportedGameTypes.GetSupportedGames().Select(k => k.Key)),
                         Repositories = new List<Repository>(this.Packages.RemoteRepositories),
                         Packages = new List<FlatPackedPackage>(this.Packages.Packages),
                         Groups = new List<Group>(this.Security.Groups),

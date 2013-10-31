@@ -139,6 +139,7 @@
     <Compile Include="Protocols\Source\SourcePacket.cs" />
     <Compile Include="Protocols\Source\SourcePacketSerializer.cs" />
     <Compile Include="Protocols\Source\SourceRequestType.cs" />
+    <Compile Include="Protocols\SupportedGameTypes.cs" />
     <Compile Include="TcpClient.cs" />
     <Compile Include="UdpClient.cs" />
     <Compile Include="Utils\BCrypt.cs" />

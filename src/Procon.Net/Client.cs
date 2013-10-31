@@ -152,36 +152,35 @@ namespace Procon.Net {
         /// <summary>
         /// Attempts a connection to the server using the specified host name and port.
         /// </summary>
-        public virtual void Connect() {
-
-        }
+        public abstract void Connect();
 
         /// <summary>
         /// Shuts down the connection, closing streams etc.
         /// </summary>
-        public virtual void Shutdown() {
+        public abstract void Shutdown();
 
-        }
+        /// <summary>
+        /// Shuts down the connection, first firing an event for an exception.
+        /// </summary>
+        /// <param name="e"></param>
+        public abstract void Shutdown(Exception e);
 
-        public virtual void Shutdown(Exception e) {
+        /// <summary>
+        /// Shuts down the connection, first firing an event for a socket exception.
+        /// </summary>
+        /// <param name="se"></param>
+        public abstract void Shutdown(SocketException se);
 
-        }
-
-        public virtual void Shutdown(SocketException se) {
-
-        }
-
-        protected virtual void ShutdownConnection() {
-
-        }
+        /// <summary>
+        /// Shuts down the connection, closing the Client.
+        /// </summary>
+        protected abstract void ShutdownConnection();
 
         /// <summary>
         /// Sends a packet to the server
         /// </summary>
         /// <param name="packet"></param>
-        public virtual void Send(P packet) {
-
-        }
+        public abstract void Send(P packet);
         
         public virtual IAsyncResult BeginRead() {
             return null;

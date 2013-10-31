@@ -64,6 +64,7 @@
     <Compile Include="Client.cs" />
     <Compile Include="ClientEventArgs.cs" />
     <Compile Include="ClientEventType.cs" />
+    <Compile Include="ConnectionAttemptManager.cs" />
     <Compile Include="ConnectionState.cs" />
     <Compile Include="GameEventData.cs" />
     <Compile Include="Protocols\Daemon\DaemonClient.cs" />

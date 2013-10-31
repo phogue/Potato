@@ -87,11 +87,10 @@ namespace Procon.Net {
         private ConnectionState _connectionState;
 
         /// <summary>
-        /// List of connection attempts used for a capped exponential backoff of reconnection attempts.
-        /// 
-        /// The maximum backoff is 10 minutes
+        /// Manages the connection attempts on a server, ensuring the client does not flood
+        /// a temporarily downed server with connection attempts.
         /// </summary>
-        protected List<DateTime?> ConnectionAttempts { get; set; }
+        protected ConnectionAttemptManager ConnectionAttemptManager { get; set; }
 
         /// <summary>
         /// Fired when a packet is successfully sent to the remote end point.
@@ -126,7 +125,7 @@ namespace Procon.Net {
             this.Hostname = hostname;
             this.Port = port;
 
-            this.ConnectionAttempts = new List<DateTime?>();
+            this.ConnectionAttemptManager = new ConnectionAttemptManager();
         }
 
         /// <summary>
@@ -246,32 +245,5 @@ namespace Procon.Net {
                 handler(this, packet);
             }
         }
-
-        /// <summary>
-        /// Marks the connection time in our connections attemps log list. Removes any connection attempts older
-        /// than 10 minutes.
-        /// </summary>
-        protected bool BackoffConnectionAttempt() {
-            bool proceed = true;
-
-            // Remove anything older than 10 minutes.
-            this.ConnectionAttempts.RemoveAll(time => time < DateTime.Now.AddMinutes(-10));
-
-            // Fetch the most recent attempt time
-            DateTime? recentAttempt = this.ConnectionAttempts.OrderByDescending(time => time).FirstOrDefault();
-
-            if (recentAttempt.HasValue == true) {
-                // If the most recent attempt has expired
-                proceed = recentAttempt < DateTime.Now.AddSeconds(Math.Pow(2, this.ConnectionAttempts.Count) * -1);
-            }
-
-            // If we're going ahead with it, log the time of the current connection attempt.
-            if (proceed == true) {
-                this.ConnectionAttempts.Add(DateTime.Now);
-            }
-
-            return proceed;
-        }
-
     }
 }

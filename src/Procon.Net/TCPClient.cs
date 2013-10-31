@@ -195,7 +195,9 @@ namespace Procon.Net {
         }
 
         public override void Connect() {
-            if (this.BackoffConnectionAttempt() == true) {
+            if (this.ConnectionAttemptManager.RemoveExpiredAttempts().IsAttemptAllowed() == true) {
+                this.ConnectionAttemptManager.MarkAttempt();
+
                 if (this.Hostname != null && this.Port != 0) {
                     try {
                         this.ReceivedBuffer = new byte[this.BufferSize];

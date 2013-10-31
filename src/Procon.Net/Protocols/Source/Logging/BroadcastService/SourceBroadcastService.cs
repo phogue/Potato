@@ -48,7 +48,7 @@ namespace Procon.Net.Protocols.Source.Logging.BroadcastService {
                 this.Client = new UdpClient(this.RemoteIpEndPoint);
                 this.Client.DontFragment = true; // ?
 
-                this.Client.BeginReceive(this.ReceiveCallback, null);
+                this.Client.BeginReceive(this.ReadCallback, null);
 
                 this.ConnectionState = Net.ConnectionState.ConnectionReady;
             }
@@ -67,10 +67,10 @@ namespace Procon.Net.Protocols.Source.Logging.BroadcastService {
             
             byte[] serializedPacket = this.PacketSerializer.Serialize(packet);
 
-            this.BroadcastSocket.BeginSendTo(serializedPacket, 0, serializedPacket.Length, SocketFlags.None, this.BroadcastEndpoint, this.SendAsyncCallback, null);
+            this.BroadcastSocket.BeginSendTo(serializedPacket, 0, serializedPacket.Length, SocketFlags.None, this.BroadcastEndpoint, this.SendAsynchronousCallback, null);
         }
 
-        protected override void SendAsyncCallback(IAsyncResult ar) {
+        protected override void SendAsynchronousCallback(IAsyncResult ar) {
             SourceBroadcastServicePacket packet = (SourceBroadcastServicePacket)ar.AsyncState;
 
             try {

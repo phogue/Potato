@@ -24,8 +24,8 @@ namespace Procon.Net {
         /// <summary>
         /// Why is this here?
         /// </summary>
-        protected UInt32 SequenceNumber;
-        public UInt32 AcquireSequenceNumber {
+        protected uint SequenceNumber;
+        public uint AcquireSequenceNumber {
             get {
                 lock (this.AcquireSequenceNumberLock) {
                     return ++this.SequenceNumber;
@@ -40,9 +40,12 @@ namespace Procon.Net {
             this.SequenceNumber = 0;
         }
 
-        #region Send/Recieve Packets
-
-        protected void SendAsyncCallback(IAsyncResult ar) {
+        /// <summary>
+        /// Return for when the packet has been written (or an error occurs during write) to the
+        /// server.
+        /// </summary>
+        /// <param name="ar"></param>
+        protected void SendAsynchronousCallback(IAsyncResult ar) {
 
             P packet = (P)ar.AsyncState;
 
@@ -51,7 +54,6 @@ namespace Procon.Net {
                     this.NetworkStream.EndWrite(ar);
 
                     this.OnPacketSent(packet);
-
                 }
             }
             catch (SocketException se) {
@@ -62,7 +64,10 @@ namespace Procon.Net {
             }
         }
 
-        // Send straight away ignoring the queue
+        /// <summary>
+        /// Sends a packet to the server asynchronously
+        /// </summary>
+        /// <param name="packet"></param>
         public override void Send(P packet) {
 
             if (packet != null) {
@@ -71,13 +76,13 @@ namespace Procon.Net {
                     byte[] bytePacket = this.PacketSerializer.Serialize(packet);
 
                     if (bytePacket != null && bytePacket.Length > 0) {
-                        this.NetworkStream.BeginWrite(bytePacket, 0, bytePacket.Length, this.SendAsyncCallback, packet);
+                        this.NetworkStream.BeginWrite(bytePacket, 0, bytePacket.Length, this.SendAsynchronousCallback, packet);
                     }
                 }
             }
         }
-        
-        protected virtual void ReceiveCallback(IAsyncResult ar) {
+
+        protected virtual void ReadCallback(IAsyncResult ar) {
 
             try {
                 if (this.NetworkStream != null) {
@@ -117,37 +122,25 @@ namespace Procon.Net {
                                 Array.Copy(this.PacketStream, packetSize, updatedStream, 0, this.PacketStream.Length - packetSize);
                                 this.PacketStream = updatedStream;
 
-                                packetSize = this.PacketSerializer.ReadPacketSize(this.PacketStream); // this.DecodePacketSize(this.a_bPacketStream);
+                                packetSize = this.PacketSerializer.ReadPacketSize(this.PacketStream);
                             }
-                            catch (Exception) {
-                                // TO DO: May be bad, who knows now.
-                                this.ReceivedBuffer = new byte[this.BufferSize];
-                                this.PacketStream = null;
-
-                                this.SequenceNumber = 0;
+                            catch (Exception e) {
+                                this.Shutdown(e);
                             }
                         }
 
                         // If we've recieved the maxmimum garbage, scrap it all and shutdown the connection.
                         // We went really wrong somewhere..
-                        if (this.ReceivedBuffer.Length >= this.MaxGarbageBytes) {
+                        if (this.ReceivedBuffer != null && this.ReceivedBuffer.Length >= this.MaxGarbageBytes) {
                             this.ReceivedBuffer = null;
                             this.Shutdown(new Exception("Exceeded maximum garbage packet"));
                         }
+                        else if (this.NetworkStream != null) {
+                            this.BeginRead();
+                        }
                     }
-
-                    if (bytesRead == 0) {
+                    else {
                         this.Shutdown();
-                        return;
-                    }
-
-                    if (this.NetworkStream != null) {
-
-                        this.NetworkStream.BeginRead(this.ReceivedBuffer, 0, this.ReceivedBuffer.Length, this.ReceiveCallback, this);
-
-                        //if (result.AsyncWaitHandle.WaitOne(180000, false) == false) {
-                        //    this.Shutdown(new Exception("Failed to recieve after two minutes"));
-                        //}
                     }
                 }
                 else {
@@ -162,14 +155,18 @@ namespace Procon.Net {
             }
         }
 
-        #endregion
-
-        #region Connecting
-
+        /// <summary>
+        /// Starts reading on a network stream
+        /// </summary>
+        /// <returns></returns>
         public override IAsyncResult BeginRead() {
-            return this.NetworkStream != null ? this.NetworkStream.BeginRead(this.ReceivedBuffer, 0, this.ReceivedBuffer.Length, this.ReceiveCallback, this) : null;
+            return this.NetworkStream != null ? this.NetworkStream.BeginRead(this.ReceivedBuffer, 0, this.ReceivedBuffer.Length, this.ReadCallback, this) : null;
         }
 
+        /// <summary>
+        /// Callback when attempting to connect to the server.
+        /// </summary>
+        /// <param name="ar"></param>
         private void ConnectedCallback(IAsyncResult ar) {
 
             try {
@@ -182,7 +179,6 @@ namespace Procon.Net {
 
                 this.NetworkStream = this.Client.GetStream();
                 this.BeginRead();
-                //this.m_nwsStream.BeginRead(this.a_bReceivedBuffer, 0, this.a_bReceivedBuffer.Length, this.ReceiveCallback, this);
 
                 this.ConnectionState = Net.ConnectionState.ConnectionReady;
             }
@@ -194,6 +190,9 @@ namespace Procon.Net {
             }
         }
 
+        /// <summary>
+        /// Attempts a connection to a server, provided we are not currently backing off from an offline server.
+        /// </summary>
         public override void Connect() {
             if (this.ConnectionAttemptManager.RemoveExpiredAttempts().IsAttemptAllowed() == true) {
                 this.ConnectionAttemptManager.MarkAttempt();
@@ -223,10 +222,10 @@ namespace Procon.Net {
             }
         }
 
-        #endregion
-
-        #region Shutdown/Disconnection
-
+        /// <summary>
+        /// Shuts down the connection, first firing an event for an exception.
+        /// </summary>
+        /// <param name="e"></param>
         public override void Shutdown(Exception e) {
             if (this.Client != null) {
                 this.ShutdownConnection();
@@ -235,6 +234,10 @@ namespace Procon.Net {
             }
         }
 
+        /// <summary>
+        /// Shuts down the connection, first firing an event for a socket exception.
+        /// </summary>
+        /// <param name="se"></param>
         public override void Shutdown(SocketException se) {
             if (this.Client != null) {
                 this.ShutdownConnection();
@@ -243,12 +246,18 @@ namespace Procon.Net {
             }
         }
 
+        /// <summary>
+        /// Shuts down the connection, closing streams etc.
+        /// </summary>
         public override void Shutdown() {
             if (this.Client != null) {
                 this.ShutdownConnection();
             }
         }
 
+        /// <summary>
+        /// Shuts down the connection, closing the Client.
+        /// </summary>
         protected override void ShutdownConnection() {
 
             lock (this.ShutdownConnectionLock) {
@@ -285,8 +294,5 @@ namespace Procon.Net {
                 }
             }
         }
-
-        #endregion
-
     }
 }

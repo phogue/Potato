@@ -29,7 +29,7 @@ namespace Procon.Net.Protocols.Source.Logging.BroadcastListener {
                 this.Client.Client.SetSocketOption(SocketOptionLevel.IP, SocketOptionName.MulticastTimeToLive, true);
                 this.Client.Client.SetSocketOption(SocketOptionLevel.IP, SocketOptionName.AddMembership, new MulticastOption(IPAddress.Parse("224.10.10.10")));
 
-                this.Client.BeginReceive(this.ReceiveCallback, null);
+                this.Client.BeginReceive(this.ReadCallback, null);
 
                 this.ConnectionState = Net.ConnectionState.ConnectionReady;
             }
@@ -41,7 +41,7 @@ namespace Procon.Net.Protocols.Source.Logging.BroadcastListener {
             }
         }
 
-        protected override void ReceiveCallback(IAsyncResult ar) {
+        protected override void ReadCallback(IAsyncResult ar) {
 
             try {
                 this.ReceivedBuffer = this.Client.EndReceive(ar, ref this.RemoteIpEndPoint);

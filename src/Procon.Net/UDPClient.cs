@@ -38,7 +38,7 @@ namespace Procon.Net {
                     };
 
                     this.RemoteIpEndPoint = new IPEndPoint(IPAddress.Any, 0);
-                    this.Client.BeginReceive(this.ReceiveCallback, null);
+                    this.Client.BeginReceive(this.ReadCallback, null);
 
                     this.ConnectionState = Net.ConnectionState.ConnectionReady;
                 }
@@ -52,12 +52,10 @@ namespace Procon.Net {
         }
 
         public override IAsyncResult BeginRead() {
-            return this.Client != null ? this.Client.BeginReceive(this.ReceiveCallback, null) : null;
+            return this.Client != null ? this.Client.BeginReceive(this.ReadCallback, null) : null;
         }
 
-        #region Send/Recieve Packets
-
-        protected virtual void SendAsyncCallback(IAsyncResult ar) {
+        protected virtual void SendAsynchronousCallback(IAsyncResult ar) {
 
             P packet = (P)ar.AsyncState;
 
@@ -83,13 +81,13 @@ namespace Procon.Net {
                     byte[] bytePacket = this.PacketSerializer.Serialize(packet);
 
                     if (bytePacket != null && bytePacket.Length > 0) {
-                        this.Client.BeginSend(bytePacket, bytePacket.Length, this.SendAsyncCallback, packet);
+                        this.Client.BeginSend(bytePacket, bytePacket.Length, this.SendAsynchronousCallback, packet);
                     }
                 }
             }
         }
 
-        protected virtual void ReceiveCallback(IAsyncResult ar) {
+        protected virtual void ReadCallback(IAsyncResult ar) {
 
             try {
                 if (this.Client != null) {
@@ -116,10 +114,6 @@ namespace Procon.Net {
                 this.Shutdown(e);
             }
         }
-
-        #endregion
-
-        #region Shutdown/Disconnection
 
         public override void Shutdown(Exception e) {
             if (this.Client != null) {
@@ -173,8 +167,5 @@ namespace Procon.Net {
                 }
             }
         }
-
-        #endregion
-
     }
 }

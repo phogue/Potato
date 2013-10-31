@@ -31,7 +31,6 @@ namespace Procon.Net.Protocols.Frostbite.BF.BF4 {
                 "ServerUpTime",
                 "RoundTime"
             };
-
         }
 
         [DispatchPacket(MatchText = "admin.listPlayers", PacketOrigin = PacketOrigin.Client)]

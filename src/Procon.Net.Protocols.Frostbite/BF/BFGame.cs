@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Linq;
 
 namespace Procon.Net.Protocols.Frostbite.BF {
@@ -25,7 +26,9 @@ namespace Procon.Net.Protocols.Frostbite.BF {
                         // If they are just looking to rotate the player through the teams
                         if (move.ActionType == NetworkActionType.NetworkPlayerRotate || move.ActionType == NetworkActionType.NetworkPlayerForceRotate) {
 
-                            int currentTeamId = (int)movePlayer.Groups.First(group => @group.Type == Grouping.Team).Uid;
+                            int currentTeamId = -1;
+
+                            int.TryParse(movePlayer.Groups.First(group => @group.Type == Grouping.Team).Uid, out currentTeamId);
 
                             // Avoid divide by 0 error - shouldn't ever be encountered though.
                             if (selectedMap.GameMode != null && selectedMap.GameMode.TeamCount > 0) {
@@ -33,7 +36,7 @@ namespace Procon.Net.Protocols.Frostbite.BF {
 
                                 move.Now.Groups.Add(new Grouping() {
                                     Type = Grouping.Team,
-                                    Uid = newTeamId == 0 ? 1 : newTeamId
+                                    Uid = newTeamId == 0 ? "1" : newTeamId.ToString(CultureInfo.InvariantCulture)
                                 });
                             }
                         }

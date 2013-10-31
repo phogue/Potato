@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Procon.Net.Protocols.Objects {
 
@@ -34,7 +31,7 @@ namespace Procon.Net.Protocols.Objects {
         /// <summary>
         /// The unique identifier for the group
         /// </summary>
-        public Object Uid { get; set; }
+        public String Uid { get; set; }
 
         public Grouping() {
             this.Type = String.Empty;

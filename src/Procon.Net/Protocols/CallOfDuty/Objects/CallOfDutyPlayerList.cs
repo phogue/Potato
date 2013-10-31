@@ -16,7 +16,7 @@ namespace Procon.Net.Protocols.CallOfDuty.Objects {
 
             //System.IO.File.WriteAllText("doutput/playerlist.txt", "");
 
-            foreach (string line in text.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries)) {
+            foreach (string line in text.Split(new [] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries)) {
                 Match player = CallOfDutyPlayerList.PlayerMatch.Match(line);
 
                 if (player.Success == true) {
@@ -30,7 +30,7 @@ namespace Procon.Net.Protocols.CallOfDuty.Objects {
                             Groups = new GroupingList() {
                                 new Grouping() {
                                     Type = Grouping.Team,
-                                    Uid = int.Parse(player.Groups["team"].Value)
+                                    Uid = player.Groups["team"].Value
                                 }
                             },
                             IP = player.Groups["address"].Value

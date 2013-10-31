@@ -2,12 +2,10 @@
 using System.Linq;
 using System.Collections.Generic;
 using System.Reflection;
-using System.Xml.Linq;
 
 namespace Procon.Net {
     using Procon.Net.Attributes;
     using Procon.Net.Protocols.Objects;
-    using Procon.Net.Utils;
 
     public abstract class GameImplementation<P> : Game where P : Packet {
 
@@ -44,7 +42,7 @@ namespace Procon.Net {
             this.Execute(this.CreateClient(hostName, port));
         }
   
-        private void Execute(Client<P> client) {
+        protected void Execute(Client<P> client) {
             this.State = new GameState();
             this.Client = client;
             this.AssignEvents();
@@ -229,39 +227,32 @@ namespace Procon.Net {
         #endregion
 
         /// <summary>
-        /// I hate this being here. This requires rethinking. Why isn't it using xml deserialization as well?
+        /// Executes a game config against this game implementation.
         /// </summary>
-        /// <param name="gamemode"></param>
-        #region Game Config Loading
+        /// <typeparam name="T">The type of config to execute.</typeparam>
+        /// <param name="config"></param>
+        protected virtual void ExecuteGameConfig<T>(T config) where T : GameConfig {
+            if (config != null) {
+                this.State.MapPool = config.MapPool;
+                this.State.GameModePool = config.GameModePool;
 
-        protected virtual void ExecuteGameConfigGamemode(XElement gamemode) {
-            this.State.GameModePool.Add(new GameMode().Deserialize(gamemode));
-        }
-
-        protected virtual void ExecuteGameConfigMap(XElement map) {
-            this.State.MapPool.Add(
-                new Map() {
-                    GameMode = this.State.GameModePool.Find(x => String.CompareOrdinal(x.Name, map.ElementValue("gamemode")) == 0)
-                }.Deserialize(map)
-            );
-        }
-
-        protected void ExecuteGameConfig(string game) {
-
-            if (this.State.GameModePool.Count == 0 && this.State.MapPool.Count == 0 && Game.GameConfig != null) {
-                foreach (XElement element in Game.GameConfig.Descendants(game).Descendants("gamemodes").Descendants("gamemode")) {
-                    this.ExecuteGameConfigGamemode(element);
-                }
-
-                foreach (XElement element in Game.GameConfig.Descendants(game).Descendants("maps").Descendants("map")) {
-                    this.ExecuteGameConfigMap(element);
-                }
+                this.State.MapPool.ForEach(map => map.ActionType = NetworkActionType.NetworkMapPooled);
 
                 this.OnGameEvent(GameEventType.GameConfigExecuted);
             }
         }
-        
-        #endregion
+
+        /// <summary>
+        /// Loads a game config
+        /// </summary>
+        /// <typeparam name="T">The type of config to load.</typeparam>
+        /// <param name="protocolProvider"></param>
+        /// <param name="protocolName"></param>
+        protected virtual T LoadGameConfig<T>(String protocolProvider, String protocolName) where T : GameConfig {
+            String configPath = GameConfig.BuildConfigPath(this.GameConfigPath, protocolProvider, protocolName);
+
+            return GameConfig.LoadConfig<T>(configPath);
+        }
 
         public override void Shutdown() {
             if (this.Client != null) {

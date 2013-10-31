@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 
 namespace Procon.Net.Protocols.Frostbite.Objects {
     using Procon.Net.Protocols.Objects;
@@ -39,7 +40,7 @@ namespace Procon.Net.Protocols.Frostbite.Objects {
                     else if (context == FrostbitePlayerSubsetContext.Team && int.TryParse(words[1], out parsedTeamId) == true) {
                         this.Add(new Grouping() {
                             Type = Grouping.Team,
-                            Uid = parsedTeamId
+                            Uid = parsedTeamId.ToString(CultureInfo.InvariantCulture)
                         });
                     }
                     else if (words.Count >= 3) {
@@ -48,11 +49,11 @@ namespace Procon.Net.Protocols.Frostbite.Objects {
                         if (context == FrostbitePlayerSubsetContext.Squad && int.TryParse(words[1], out parsedTeamId) == true && int.TryParse(words[2], out parsedSquadId) == true) {
                             this.Add(new Grouping() {
                                 Type = Grouping.Team,
-                                Uid = parsedTeamId
+                                Uid = parsedTeamId.ToString(CultureInfo.InvariantCulture)
                             });
                             this.Add(new Grouping() {
                                 Type = Grouping.Squad,
-                                Uid = parsedSquadId
+                                Uid = parsedSquadId.ToString(CultureInfo.InvariantCulture)
                             });
                         }
                     }

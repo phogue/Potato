@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
-using System.IO;
-using System.Xml.Linq;
 using Procon.Net.Protocols;
 
 namespace Procon.Net {
@@ -85,6 +83,11 @@ namespace Procon.Net {
             }
         }
         private String _mGameName = String.Empty;
+
+        /// <summary>
+        /// The base path to look for game configs.
+        /// </summary>
+        public String GameConfigPath { get; set; }
 
         /// <summary>
         /// Helper to fetch the connection state of the underlying client.
@@ -192,67 +195,5 @@ namespace Procon.Net {
         /// General timed event to synch everything on the server with what is known locally.
         /// </summary>
         public abstract void Synchronize();
-
-        #region Game Config Loading
-
-        // Everything in this region needs to be rewritten. I don't know why it's here, but it's wrong for it to be here and it's also
-        // not using xml serialization?
-
-        /// <summary>
-        /// Config holding all games loaded from /Configs/Games/
-        /// </summary>
-        protected static XDocument GameConfig { get; set; }
-
-        private string _gameConfigPath;
-        public string GameConfigPath {
-            get {
-                return this._gameConfigPath;
-            }
-            set {
-                if (this._gameConfigPath != value) {
-                    Game.GameConfig = null;
-
-                    this._gameConfigPath = value;
-
-                    this.LoadGameConfigs();
-                }
-            }
-        }
-
-        protected void LoadGameConfigs() {
-
-            lock (this) {
-                if (Game.GameConfig == null) {
-
-                    try {
-                        if (Directory.Exists(this.GameConfigPath) == false) {
-                            Directory.CreateDirectory(this.GameConfigPath);
-                        }
-
-                        foreach (FileInfo file in new DirectoryInfo(this.GameConfigPath).GetFiles("*.xml")) {
-                            try {
-                                XDocument game = XDocument.Load(file.OpenText());
-
-                                if (Game.GameConfig == null) {
-                                    Game.GameConfig = game;
-                                }
-                                else {
-                                    if (Game.GameConfig.Descendants("games").FirstOrDefault() != null && game.Descendants("games").FirstOrDefault() != null) {
-                                        Game.GameConfig.Descendants("games").FirstOrDefault().Add(game.Descendants("games").FirstOrDefault());
-                                    }
-                                }
-                            }
-                            catch (Exception) {
-                                Console.WriteLine("Error loading {0}", file.FullName);
-                            }
-                        }
-                    }
-                    catch (Exception) { }
-                }
-            }
-        }
-
-        #endregion
-
     }
 }

@@ -286,11 +286,11 @@ namespace Procon.Core.Test.Serialization.Xml {
                 Groups = new GroupingList() {
                     new Procon.Net.Protocols.Objects.Grouping() {
                         Type = Procon.Net.Protocols.Objects.Grouping.Team,
-                        Uid = 1
+                        Uid = "1"
                     },
                     new Procon.Net.Protocols.Objects.Grouping() {
                         Type = Procon.Net.Protocols.Objects.Grouping.Squad,
-                        Uid = 2
+                        Uid = "2"
                     }
                 },
                 Uid = "ABCDEF"

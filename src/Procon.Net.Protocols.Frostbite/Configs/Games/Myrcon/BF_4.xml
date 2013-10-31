@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<GameConfig>
+  <MapPool>
+    <Map>
+      <Index>0</Index>
+      <Rounds>2</Rounds>
+      <Name>MP_Siege</Name>
+      <FriendlyName>Siege of Shanghai</FriendlyName>
+      <GameMode>
+        <Name>ConquestLarge0</Name>
+        <FriendlyName>Conquest Large</FriendlyName>
+        <TeamCount>2</TeamCount>
+        <DefaultGroups>
+          <Grouping>
+            <Type>Squad</Type>
+            <Uid>0</Uid>
+          </Grouping>
+        </DefaultGroups>
+      </GameMode>
+    </Map>
+  </MapPool>
+  <GameModePool>
+    <GameMode>
+      <Name>ConquestLarge0</Name>
+      <FriendlyName>Conquest Large</FriendlyName>
+      <TeamCount>2</TeamCount>
+      <DefaultGroups>
+        <Grouping>
+          <Type>Squad</Type>
+          <Uid>0</Uid>
+        </Grouping>
+      </DefaultGroups>
+    </GameMode>
+  </GameModePool>
+</GameConfig>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 
@@ -98,13 +99,14 @@ namespace Procon.Net.Protocols.Frostbite {
                 this.State.Settings.RoundTimeSeconds = info.RoundTime;
                 this.State.Settings.ModName = info.GameMod.ToString();
 
-                if (info.GameMod == GameMods.None) {
-                    this.ExecuteGameConfig(this.GameType.ToLower());
+                if (this.State.MapPool.Count == 0) {
+                    if (info.GameMod == GameMods.None) {
+                        this.ExecuteGameConfig(this.LoadGameConfig<GameConfig>(this.ProtocolProvider, this.GameType));
+                    }
+                    else {
+                        this.ExecuteGameConfig(this.LoadGameConfig<GameConfig>(this.ProtocolProvider, String.Format("{0}_{1}", this.GameType, info.GameMod)));
+                    }
                 }
-                else {
-                    this.ExecuteGameConfig(String.Format("{0}_{1}", this.GameType, info.GameMod).ToLower());
-                }
-
 
                 this.OnGameEvent(GameEventType.GameSettingsUpdated, new GameEventData() {
                     Settings = new List<Settings>() {
@@ -657,7 +659,7 @@ namespace Procon.Net.Protocols.Frostbite {
 
                 player.ModifyGroup(new Grouping() {
                     Type = Grouping.Squad,
-                    Uid = squadId
+                    Uid = squadId.ToString(CultureInfo.InvariantCulture)
                 });
 
                 this.OnGameEvent(GameEventType.GamePlayerMoved, new GameEventData() {
@@ -676,12 +678,12 @@ namespace Procon.Net.Protocols.Frostbite {
             if (player != null && int.TryParse(request.Words[2], out teamId) == true && int.TryParse(request.Words[3], out squadId) == true) {
                 player.ModifyGroup(new Grouping() {
                     Type = Grouping.Team,
-                    Uid = teamId
+                    Uid = teamId.ToString(CultureInfo.InvariantCulture)
                 });
 
                 player.ModifyGroup(new Grouping() {
                     Type = Grouping.Squad,
-                    Uid = squadId
+                    Uid = squadId.ToString(CultureInfo.InvariantCulture)
                 });
 
                 this.OnGameEvent(GameEventType.GamePlayerMoved, new GameEventData() {

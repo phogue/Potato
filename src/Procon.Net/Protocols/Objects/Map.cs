@@ -1,9 +1,6 @@
 ﻿using System;
-using System.ComponentModel;
-using System.Xml.Linq;
 
 namespace Procon.Net.Protocols.Objects {
-    using Procon.Net.Utils;
 
     [Serializable]
     public sealed class Map : NetworkAction {
@@ -32,14 +29,5 @@ namespace Procon.Net.Protocols.Objects {
         /// This map's game mode.
         /// </summary>
         public GameMode GameMode { get; set; }
-
-        /// <summary>Deserializes map information received via a network.</summary>
-        public Map Deserialize(XElement element) {
-            this.Name = element.ElementValue("name");
-            this.FriendlyName = element.ElementValue("friendlyname");
-            this.ActionType = NetworkActionType.NetworkMapPooled;
-
-            return this;
-        }
     }
 }

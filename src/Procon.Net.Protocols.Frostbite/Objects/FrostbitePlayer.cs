@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using Procon.Net.Protocols.Objects;
 
 namespace Procon.Net.Protocols.Frostbite.Objects {
@@ -28,7 +29,7 @@ namespace Procon.Net.Protocols.Frostbite.Objects {
                             if (int.TryParse(variables[i], out intValue)) {
                                 player.Groups.Add(new Grouping() {
                                     Type = Grouping.Team,
-                                    Uid = intValue
+                                    Uid = intValue.ToString(CultureInfo.InvariantCulture)
                                 });
                             }
                             break;
@@ -36,7 +37,7 @@ namespace Procon.Net.Protocols.Frostbite.Objects {
                             if (int.TryParse(variables[i], out intValue)) {
                                 player.Groups.Add(new Grouping() {
                                     Type = Grouping.Squad,
-                                    Uid = intValue
+                                    Uid = intValue.ToString(CultureInfo.InvariantCulture)
                                 });
                             }
                             break;

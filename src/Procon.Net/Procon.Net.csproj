@@ -92,6 +92,7 @@
     <Compile Include="Protocols\CallOfDuty\Objects\CallOfDutyServerInfo.cs" />
     <Compile Include="Protocols\CallOfDuty\Objects\ICallOfDutyObject.cs" />
     <Compile Include="Protocols\CommonGameType.cs" />
+    <Compile Include="Protocols\Objects\GameConfig.cs" />
     <Compile Include="Protocols\Objects\Grouping.cs" />
     <Compile Include="Protocols\Objects\NetworkAction.cs" />
     <Compile Include="Protocols\Objects\Ban.cs" />

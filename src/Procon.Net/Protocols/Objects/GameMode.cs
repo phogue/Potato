@@ -1,17 +1,9 @@
 ﻿using System;
-using System.Xml.Linq;
 
 namespace Procon.Net.Protocols.Objects {
-    using Procon.Net.Utils;
 
     [Serializable]
     public sealed class GameMode : NetworkObject {
-
-        public GameMode() {
-            this.Name = String.Empty;
-            this.FriendlyName = String.Empty;
-            this.TeamCount = 0;
-        }
 
         /// <summary>
         /// This game mode's name as it is used via Rcon.
@@ -33,12 +25,10 @@ namespace Procon.Net.Protocols.Objects {
         /// </summary>
         public GroupingList DefaultGroups { get; set; }
 
-        /// <summary>Deserializes game mode information received via a network.</summary>
-        public GameMode Deserialize(XElement element) {
-            Name = element.ElementValue("name");
-            FriendlyName = element.ElementValue("friendlyname");
-            TeamCount = int.Parse(element.ElementValue("teamcount"));
-            return this;
+        public GameMode() {
+            this.Name = String.Empty;
+            this.FriendlyName = String.Empty;
+            this.TeamCount = 0;
         }
     }
 }

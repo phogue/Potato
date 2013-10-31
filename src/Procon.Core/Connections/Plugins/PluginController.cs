@@ -85,7 +85,7 @@ namespace Procon.Core.Connections.Plugins {
             pluginSandboxPermissions.AddPermission(new ReflectionPermission(ReflectionPermissionFlag.RestrictedMemberAccess));
 
             // Create the app domain and the plugin factory in the new domain.
-            this.AppDomainSandbox = AppDomain.CreateDomain("ProconPlugin", hostEvidence, appDomain, pluginSandboxPermissions);
+            this.AppDomainSandbox = AppDomain.CreateDomain(String.Format("Procon.{0}.Plugin", this.Connection != null ? this.Connection.ConnectionGuid.ToString() : String.Empty), hostEvidence, appDomain, pluginSandboxPermissions);
 
             this.PluginFactory = (PluginLoaderProxy)this.AppDomainSandbox.CreateInstanceAndUnwrap(Assembly.GetExecutingAssembly().FullName, typeof(PluginLoaderProxy).FullName);
 

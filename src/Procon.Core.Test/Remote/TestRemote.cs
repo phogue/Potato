@@ -10,6 +10,7 @@ using Procon.Core.Connections.Plugins;
 using Procon.Core.Security;
 using Procon.Core.Utils;
 using Procon.Core.Variables;
+using Procon.Net.Utils;
 using Procon.Net.Utils.HTTP;
 
 namespace Procon.Core.Test.Remote {

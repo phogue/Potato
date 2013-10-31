@@ -5,6 +5,7 @@ using System.Text;
 using System.IO;
 using System.Xml;
 using System.Xml.Linq;
+using Procon.Net.Utils;
 
 namespace Procon.Core.Events {
     using Procon.Core.Variables;

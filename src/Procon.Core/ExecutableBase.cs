@@ -7,9 +7,9 @@ using System.Reflection;
 using System.Xml.Linq;
 using System.Xml.Serialization;
 using Newtonsoft.Json;
+using Procon.Net.Utils;
 
 namespace Procon.Core {
-    using Procon.Core.Utils;
 
     [Serializable]
     public abstract class ExecutableBase : MarshalByRefObject, INotifyPropertyChanged, IDisposable, ICloneable, IExecutableBase {

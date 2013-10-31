@@ -6,6 +6,7 @@ using System.Xml.Linq;
 using Newtonsoft.Json;
 using Procon.Core.Variables;
 using Procon.Net;
+using Procon.Net.Utils;
 using Procon.Net.Utils.HTTP;
 
 namespace Procon.Core.Remote {

@@ -6,6 +6,7 @@ using System.Xml.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Procon.Core.Test.Utils.Objects;
 using Procon.Core.Utils;
+using Procon.Net.Utils;
 
 namespace Procon.Core.Test.Utils {
 

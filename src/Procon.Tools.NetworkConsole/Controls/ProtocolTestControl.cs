@@ -10,6 +10,7 @@ using System.Threading;
 using System.Windows.Forms;
 using System.Xml.Linq;
 using Procon.Net;
+using Procon.Net.Utils;
 using ConnectionState = Procon.Net.ConnectionState;
 using Procon.Net.Utils.Tests;
 using Procon.Core.Utils;

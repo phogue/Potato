@@ -10,6 +10,7 @@ using Procon.Core.Utils;
 using Procon.Core.Variables;
 using Procon.Net.Protocols;
 using Procon.Net.Protocols.Objects;
+using Procon.Net.Utils;
 using Procon.Nlp.Tokens.Primitive.Temporal;
 
 namespace Procon.Core.Test.Serialization.Xml {

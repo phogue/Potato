@@ -1,13 +1,11 @@
 ﻿using System;
 using System.IO;
-using System.Text;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Procon.Core.Repositories;
 using Procon.Core.Repositories.Serialization;
-using Procon.Core.Utils;
 using Procon.Net.Utils;
 
 namespace Procon.Core.Test.Repositories {

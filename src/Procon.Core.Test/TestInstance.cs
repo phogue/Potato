@@ -14,6 +14,7 @@ using Procon.Core.Test.Security;
 using Procon.Core.Utils;
 using Procon.Core.Variables;
 using Procon.Net.Protocols;
+using Procon.Net.Utils;
 
 namespace Procon.Core.Test {
     [TestClass]

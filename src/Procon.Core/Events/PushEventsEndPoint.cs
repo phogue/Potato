@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using Procon.Core.Utils;
+using Procon.Net.Utils;
 using Procon.Net.Utils.HTTP;
 
 namespace Procon.Core.Events {

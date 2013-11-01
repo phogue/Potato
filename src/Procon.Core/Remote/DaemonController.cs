@@ -206,7 +206,11 @@ namespace Procon.Core.Remote {
                     }
                     else {
                         // They are not authorized to login or issue this command.
-                        response.StatusCode = HttpStatusCode.Unauthorized;
+                        response = this.SerializeResponse(response, command, new CommandResultArgs() {
+                            Success = false,
+                            Status = CommandResultType.InsufficientPermissions,
+                            Message = "Invalid username or password"
+                        });
                     }
                 }
             }

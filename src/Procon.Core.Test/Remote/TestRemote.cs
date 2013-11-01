@@ -4,11 +4,12 @@ using System.Text;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using System.Xml.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using Procon.Core.Connections.Plugins;
 using Procon.Core.Security;
-using Procon.Core.Utils;
+using Procon.Net.Utils;
 using Procon.Core.Variables;
 using Procon.Net.Utils;
 using Procon.Net.Utils.HTTP;
@@ -136,8 +137,11 @@ namespace Procon.Core.Test.Remote {
                 }.ToXElement().ToString()
             };
 
+            CommandResultArgs result = null;
+
             request.RequestComplete += sender => {
                 isSuccess = true;
+                result = XDocument.Parse(sender.GetResponseContent()).Root.FromXElement<CommandResultArgs>();
                 requestWait.Set();
             };
 
@@ -149,8 +153,11 @@ namespace Procon.Core.Test.Remote {
             request.BeginRequest();
 
             Assert.IsTrue(requestWait.WaitOne(60000));
-            Assert.AreEqual(HttpStatusCode.Unauthorized, request.WebResponse.StatusCode);
-            Assert.IsFalse(isSuccess);
+            Assert.IsNotNull(result);
+            Assert.AreEqual(HttpStatusCode.OK, request.WebResponse.StatusCode);
+            Assert.AreEqual(CommandResultType.InsufficientPermissions, result.Status);
+            Assert.IsFalse(result.Success);
+            Assert.IsTrue(isSuccess);
         }
 
         /// <summary>

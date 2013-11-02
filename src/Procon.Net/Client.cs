@@ -50,11 +50,6 @@ namespace Procon.Net {
         protected byte[] ReceivedBuffer;
 
         /// <summary>
-        /// Buffer for the data currently being read from the stream. This is appended to the received buffer.
-        /// </summary>
-        protected byte[] PacketStream;
-
-        /// <summary>
         /// Lock for shutting down the connection.
         /// </summary>
         protected readonly Object ShutdownConnectionLock = new Object();

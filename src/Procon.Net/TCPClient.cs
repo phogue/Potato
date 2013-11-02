@@ -22,6 +22,11 @@ namespace Procon.Net {
         protected readonly Object AcquireSequenceNumberLock = new Object();
 
         /// <summary>
+        /// Buffer for the data currently being read from the stream. This is appended to the received buffer.
+        /// </summary>
+        protected IPacketStream PacketStream;
+
+        /// <summary>
         /// Why is this here?
         /// </summary>
         protected uint SequenceNumber;
@@ -35,7 +40,7 @@ namespace Procon.Net {
 
         protected TcpClient(string hostname, UInt16 port) : base(hostname, port) {
             this.ReceivedBuffer = new byte[this.BufferSize];
-            this.PacketStream = null;
+            this.PacketStream = new PacketStream();
 
             this.SequenceNumber = 0;
         }
@@ -49,18 +54,18 @@ namespace Procon.Net {
 
             P packet = (P)ar.AsyncState;
 
-            try {
-                if (this.NetworkStream != null) {
+            if (this.NetworkStream != null) {
+                try {
                     this.NetworkStream.EndWrite(ar);
 
                     this.OnPacketSent(packet);
                 }
-            }
-            catch (SocketException se) {
-                this.Shutdown(se);
-            }
-            catch (Exception e) {
-                this.Shutdown(e);
+                catch (SocketException se) {
+                    this.Shutdown(se);
+                }
+                catch (Exception e) {
+                    this.Shutdown(e);
+                }
             }
         }
 
@@ -82,47 +87,45 @@ namespace Procon.Net {
             }
         }
 
-        protected virtual void ReadCallback(IAsyncResult ar) {
+        /// <summary>
+        /// Attempts to read a single packet from the PacketStream
+        /// </summary>
+        /// <returns>A completed packet, or null if no packet could be read.</returns>
+        protected virtual P ReadPacket() {
+            P packet = null;
 
-            try {
-                if (this.NetworkStream != null) {
+            byte[] header = this.PacketStream.PeekShift(this.PacketSerializer.PacketHeaderSize);
+
+            if (header != null) {
+                long packetSize = this.PacketSerializer.ReadPacketSize(header);
+
+                byte[] packetData = this.PacketStream.Shift((uint)packetSize);
+
+                if (packetData != null) {
+                    packet = this.PacketSerializer.Deserialize(packetData);
+                }
+            }
+
+            return packet;
+        }
+
+        protected virtual void ReadCallback(IAsyncResult ar) {
+            if (this.NetworkStream != null) {
+                try {
                     int bytesRead = this.NetworkStream.EndRead(ar);
 
                     if (bytesRead > 0) {
+                        this.PacketStream.Push(this.ReceivedBuffer, bytesRead);
 
-                        // Create or resize our packet stream to hold the new data.
-                        if (this.PacketStream == null) {
-                            this.PacketStream = new byte[bytesRead];
-                        }
-                        else {
-                            Array.Resize(ref this.PacketStream, this.PacketStream.Length + bytesRead);
-                        }
+                        P packet = null;
 
-                        Array.Copy(this.ReceivedBuffer, 0, this.PacketStream, this.PacketStream.Length - bytesRead, bytesRead);
-
-                        long packetSize = this.PacketSerializer.ReadPacketSize(this.PacketStream);
-
-                        while (this.PacketStream != null && this.PacketStream.Length >= packetSize && this.PacketStream.Length > this.PacketSerializer.PacketHeaderSize) {
-
-                            // Copy the complete packet from the beginning of the stream.
-                            byte[] completePacket = new byte[packetSize];
-                            Array.Copy(this.PacketStream, completePacket, packetSize);
-
-                            // Now finally grab the completed packet
-                            P completedPacket = this.PacketSerializer.Deserialize(completePacket);
-
+                        // Keep reading until we no longer have packets to deserialize.
+                        while ((packet = this.ReadPacket()) != null) {
                             // Dispatch the completed packet.
                             try {
-                                this.BeforePacketDispatch(completedPacket);
+                                this.BeforePacketDispatch(packet);
 
-                                this.OnPacketReceived(completedPacket);
-
-                                // Now remove the completed packet from the beginning of the stream
-                                byte[] updatedStream = new byte[this.PacketStream.Length - packetSize];
-                                Array.Copy(this.PacketStream, packetSize, updatedStream, 0, this.PacketStream.Length - packetSize);
-                                this.PacketStream = updatedStream;
-
-                                packetSize = this.PacketSerializer.ReadPacketSize(this.PacketStream);
+                                this.OnPacketReceived(packet);
                             }
                             catch (Exception e) {
                                 this.Shutdown(e);
@@ -143,15 +146,15 @@ namespace Procon.Net {
                         this.Shutdown();
                     }
                 }
-                else {
-                    this.Shutdown(new Exception("No stream exists during receive"));
+                catch (SocketException se) {
+                    this.Shutdown(se);
+                }
+                catch (Exception e) {
+                    this.Shutdown(e);
                 }
             }
-            catch (SocketException se) {
-                this.Shutdown(se);
-            }
-            catch (Exception e) {
-                this.Shutdown(e);
+            else {
+                this.Shutdown(new Exception("No stream exists during receive"));
             }
         }
 
@@ -200,7 +203,7 @@ namespace Procon.Net {
                 if (this.Hostname != null && this.Port != 0) {
                     try {
                         this.ReceivedBuffer = new byte[this.BufferSize];
-                        this.PacketStream = null;
+                        this.PacketStream = new PacketStream();
 
                         this.SequenceNumber = 0;
 

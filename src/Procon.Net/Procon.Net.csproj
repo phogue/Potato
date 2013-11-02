@@ -67,6 +67,8 @@
     <Compile Include="ConnectionAttemptManager.cs" />
     <Compile Include="ConnectionState.cs" />
     <Compile Include="GameEventData.cs" />
+    <Compile Include="IPacketStream.cs" />
+    <Compile Include="PacketStream.cs" />
     <Compile Include="Protocols\Daemon\DaemonClient.cs" />
     <Compile Include="Protocols\Daemon\DaemonPacket.cs" />
     <Compile Include="Protocols\Daemon\DaemonPacketSerializer.cs" />

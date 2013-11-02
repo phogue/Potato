@@ -23,7 +23,6 @@ namespace Procon.Net {
 
         protected virtual void ClearConnection() {
             this.ReceivedBuffer = new byte[this.BufferSize];
-            this.PacketStream = null;
         }
 
         public override void Connect() {

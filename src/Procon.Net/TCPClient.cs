@@ -27,11 +27,6 @@ namespace Procon.Net {
         protected IPacketStream PacketStream;
 
         /// <summary>
-        /// Lock when reading in new packets.
-        /// </summary>
-        protected readonly Object ReadPacketLock = new Object();
-
-        /// <summary>
         /// How much data should be read when peeking for the full packet size.
         /// </summary>
         protected virtual long ReadPacketPeekShiftSize {
@@ -106,19 +101,17 @@ namespace Procon.Net {
         protected virtual P ReadPacket() {
             P packet = null;
 
-            lock (this.ReadPacketLock) {
-                byte[] header = this.PacketStream.PeekShift((uint)this.ReadPacketPeekShiftSize);
+            byte[] header = this.PacketStream.PeekShift((uint)this.ReadPacketPeekShiftSize);
 
-                if (header != null) {
-                    long packetSize = this.PacketSerializer.ReadPacketSize(header);
+            if (header != null) {
+                long packetSize = this.PacketSerializer.ReadPacketSize(header);
 
-                    byte[] packetData = this.PacketStream.PeekShift((uint)packetSize);
+                byte[] packetData = this.PacketStream.PeekShift((uint)packetSize);
 
-                    if (packetData != null && packetData.Length > 0) {
-                        packet = this.PacketSerializer.Deserialize(packetData);
+                if (packetData != null && packetData.Length > 0) {
+                    packet = this.PacketSerializer.Deserialize(packetData);
 
-                        this.PacketStream.Shift((uint)packetSize);
-                    }
+                    this.PacketStream.Shift((uint)packetSize);
                 }
             }
 

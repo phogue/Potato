@@ -112,10 +112,12 @@ namespace Procon.Net {
                 if (header != null) {
                     long packetSize = this.PacketSerializer.ReadPacketSize(header);
 
-                    byte[] packetData = this.PacketStream.Shift((uint)packetSize);
+                    byte[] packetData = this.PacketStream.PeekShift((uint)packetSize);
 
-                    if (packetData != null) {
+                    if (packetData != null && packetData.Length > 0) {
                         packet = this.PacketSerializer.Deserialize(packetData);
+
+                        this.PacketStream.Shift((uint)packetSize);
                     }
                 }
             }

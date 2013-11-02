@@ -27,6 +27,18 @@ namespace Procon.Net {
         protected IPacketStream PacketStream;
 
         /// <summary>
+        /// Lock when reading in new packets.
+        /// </summary>
+        protected readonly Object ReadPacketLock = new Object();
+
+        /// <summary>
+        /// How much data should be read when peeking for the full packet size.
+        /// </summary>
+        protected virtual long ReadPacketPeekShiftSize {
+            get { return this.PacketSerializer != null ? this.PacketSerializer.PacketHeaderSize : 0; }
+        }
+
+        /// <summary>
         /// Why is this here?
         /// </summary>
         protected uint SequenceNumber;
@@ -94,15 +106,17 @@ namespace Procon.Net {
         protected virtual P ReadPacket() {
             P packet = null;
 
-            byte[] header = this.PacketStream.PeekShift(this.PacketSerializer.PacketHeaderSize);
+            lock (this.ReadPacketLock) {
+                byte[] header = this.PacketStream.PeekShift((uint)this.ReadPacketPeekShiftSize);
 
-            if (header != null) {
-                long packetSize = this.PacketSerializer.ReadPacketSize(header);
+                if (header != null) {
+                    long packetSize = this.PacketSerializer.ReadPacketSize(header);
 
-                byte[] packetData = this.PacketStream.Shift((uint)packetSize);
+                    byte[] packetData = this.PacketStream.Shift((uint)packetSize);
 
-                if (packetData != null) {
-                    packet = this.PacketSerializer.Deserialize(packetData);
+                    if (packetData != null) {
+                        packet = this.PacketSerializer.Deserialize(packetData);
+                    }
                 }
             }
 

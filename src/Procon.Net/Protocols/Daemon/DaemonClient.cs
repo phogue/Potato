@@ -13,5 +13,8 @@ namespace Procon.Net.Protocols.Daemon {
             this.PacketSerializer = new DaemonPacketSerializer();
         }
 
+        protected override long ReadPacketPeekShiftSize {
+            get { return this.PacketStream != null ? this.PacketStream.Size() : 0; }
+        }
     }
 }

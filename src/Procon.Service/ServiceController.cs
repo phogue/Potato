@@ -7,17 +7,17 @@ using Timer = System.Timers.Timer;
 namespace Procon.Service {
     using Procon.Service.Shared;
 
-    public class ServiceController {
+    public sealed class ServiceController : IDisposable {
 
         /// <summary>
         /// The domain to load Procon.Core into.
         /// </summary>
-        protected AppDomain ServiceDomain { get; set; }
+        private AppDomain ServiceDomain { get; set; }
 
         /// <summary>
         /// The loader proxy to then load the procon core instance.
         /// </summary>
-        protected ServiceLoaderProxy ServiceLoaderProxy { get; set; }
+        private ServiceLoaderProxy ServiceLoaderProxy { get; set; }
 
         /// <summary>
         /// The current status of the service.
@@ -49,7 +49,7 @@ namespace Procon.Service {
         /// Fired every ten seconds to ensure the appdomain is still responding and does not have
         /// any additional messages for us to process.
         /// </summary>
-        protected void OnPollingTimerElapsed(object sender, ElapsedEventArgs e) {
+        private void OnPollingTimerElapsed(object sender, ElapsedEventArgs e) {
             if (this.Status == ServiceStatusType.Started && this.ServiceLoaderProxy != null) {
                 AutoResetEvent pollingTimeoutEvent = new AutoResetEvent(false);
                 ServiceMessage message = null;
@@ -105,6 +105,8 @@ namespace Procon.Service {
                 else {
                     processed = false;
                 }
+
+                message.Dispose();
             }
             else {
                 processed = false;
@@ -116,7 +118,7 @@ namespace Procon.Service {
         /// <summary>
         /// Updates Procon if it is not currently running, then attempts to start up the appdomain
         /// </summary>
-        protected void Start() {
+        private void Start() {
             // Update the server if it is currently stopped
             this.Update();
 
@@ -144,7 +146,7 @@ namespace Procon.Service {
         /// <summary>
         /// Outputs some usage statistics on the appdomain
         /// </summary>
-        protected void Statistics() {
+        private void Statistics() {
             if (this.Status == ServiceStatusType.Started) {
                 Console.WriteLine("Service Controller");
                 Console.WriteLine("=============");
@@ -166,7 +168,7 @@ namespace Procon.Service {
         /// <summary>
         /// Stops the service, updates it then starts it again.
         /// </summary>
-        protected void Restart() {
+        private void Restart() {
             this.Stop();
             
             this.Update();
@@ -177,7 +179,7 @@ namespace Procon.Service {
         /// <summary>
         /// Updates the procon instance, provided it is currently stopped.
         /// </summary>
-        protected void Update() {
+        private void Update() {
             if (this.Status == ServiceStatusType.Stopped) {
                 new Updater().Execute().Shutdown();
             }
@@ -186,7 +188,7 @@ namespace Procon.Service {
         /// <summary>
         /// Saves the config, shuts down the instance and finally collapses the app domain.
         /// </summary>
-        protected void Stop() {
+        private void Stop() {
 
             if (this.ServiceLoaderProxy != null || this.ServiceDomain != null) {
                 this.Status = ServiceStatusType.Stopping;
@@ -227,5 +229,11 @@ namespace Procon.Service {
             }
         }
 
+        public void Dispose() {
+            this.Stop();
+
+            this.PollingTimer.Stop();
+            this.PollingTimer.Elapsed -= new ElapsedEventHandler(OnPollingTimerElapsed);
+        }
     }
 }

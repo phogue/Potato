@@ -45,6 +45,8 @@ namespace Procon {
                 Name = "stop"
             });
 
+            service.Dispose();
+
             System.Console.WriteLine("Closing..");
             Thread.Sleep(1000);
         }

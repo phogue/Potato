@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Procon.Service.Shared {
     [Serializable]
-    public class ServiceMessage : IDisposable {
+    public sealed class ServiceMessage : IDisposable {
         
         /// <summary>
         /// A simple name for this message.

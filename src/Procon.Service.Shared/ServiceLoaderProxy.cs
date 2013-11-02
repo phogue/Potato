@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 
 namespace Procon.Service.Shared {
-    public class ServiceLoaderProxy : MarshalByRefObject, IService {
+    public sealed class ServiceLoaderProxy : MarshalByRefObject, IService {
 
         /// <summary>
         /// The proxy to the Procon.Core.Instance object.

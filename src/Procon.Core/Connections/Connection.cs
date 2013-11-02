@@ -407,6 +407,12 @@ namespace Procon.Core.Connections {
 
         private void Game_ClientEvent(Game sender, ClientEventArgs e) {
             if (e.EventType == ClientEventType.ClientConnectionStateChange) {
+
+                // Once connected, sync the connection.
+                if (e.ConnectionState == ConnectionState.ConnectionLoggedIn) {
+                    this.Game.Synchronize();
+                }
+
                 this.Events.Log(new GenericEventArgs() {
                     Name = e.ConnectionState.ToString(),
                     Scope = new CommandData() {

@@ -24,6 +24,11 @@ namespace Procon.Net.Protocols.Daemon {
         public TcpListener Listener { get; set; }
 
         /// <summary>
+        /// Lock used when altering the Clients collection
+        /// </summary>
+        protected readonly Object ClientsLock = new Object();
+
+        /// <summary>
         /// Lock used during disposal
         /// </summary>
         protected readonly Object DisposeLock = new Object();
@@ -73,10 +78,13 @@ namespace Procon.Net.Protocols.Daemon {
                     DaemonClient client = new DaemonClient(daemonListener.Listener.EndAcceptTcpClient(ar));
 
                     // Make sure we have a reference to our client.
-                    daemonListener.Clients.Add(client);
+                    lock (daemonListener.ClientsLock) {
+                        daemonListener.Clients.Add(client);
+                    }
 
                     // Listen for events on our new client
                     client.PacketReceived += new Client<DaemonPacket>.PacketDispatchHandler(daemonListener.client_PacketReceived);
+                    client.ConnectionStateChanged += new Client<DaemonPacket>.ConnectionStateChangedHandler(daemonListener.client_ConnectionStateChanged);
 
                     // k, go. Now start reading.
                     client.BeginRead();
@@ -122,6 +130,19 @@ namespace Procon.Net.Protocols.Daemon {
             this.OnPacketReceived(sender, packet);
         }
 
+        /// <summary>
+        /// Remove all disconnected clients from our list of clients to shut down.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="newState"></param>
+        protected void client_ConnectionStateChanged(Client<DaemonPacket> sender, ConnectionState newState) {
+            if (newState == ConnectionState.ConnectionDisconnected) {
+                lock (this.ClientsLock) {
+                    this.Clients.Remove(sender as DaemonClient);
+                }
+            }
+        }
+
         protected virtual void OnPacketReceived(Client<DaemonPacket> client, DaemonPacket request) {
             PacketReceivedHandler handler = PacketReceived;
 
@@ -141,15 +162,17 @@ namespace Procon.Net.Protocols.Daemon {
         public void Dispose() {
             lock (this.DisposeLock) {
                 if (this.Listener != null) {
-                    foreach (DaemonClient client in this.Clients) {
-                        client.Shutdown();
-                    }
-
-                    this.Clients.Clear();
-                    this.Clients = null;
-
                     this.Listener.Stop();
                     this.Listener = null;
+
+                    lock (this.ClientsLock) {
+                        foreach (DaemonClient client in this.Clients) {
+                            client.Shutdown();
+                        }
+
+                        this.Clients.Clear();
+                        this.Clients = null;
+                    }
                 }
             }
         }

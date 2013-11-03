@@ -5,7 +5,6 @@ using System.Linq;
 using System.Text;
 
 namespace Procon.Net.Protocols.Frostbite {
-    using Procon.Net.Attributes;
     using Procon.Net.Utils;
     using Procon.Net.Utils.PunkBuster;
     using Procon.Net.Utils.PunkBuster.Objects;
@@ -29,6 +28,238 @@ namespace Procon.Net.Protocols.Frostbite {
 
         protected FrostbiteGame(string hostName, ushort port) : base(hostName, port) {
             State.Settings.MaxConsoleLines = 100;
+            
+            this.AppendDispatchHandlers(new Dictionary<PacketDispatch, PacketDispatchHandler>() {
+                {
+                    new PacketDispatch() {
+                        Name = "serverInfo", 
+                        Origin = PacketOrigin.Client
+                    },
+                    new PacketDispatchHandler(this.ServerInfoDispatchHandler)
+                }, {
+                    new PacketDispatch() {
+                        Name = "login.plainText",
+                        Origin = PacketOrigin.Client
+                    },
+                    new PacketDispatchHandler(this.LoginPlainTextDispatchHandler)
+                }, {
+                    new PacketDispatch() {
+                        Name = "login.hashed",
+                        Origin = PacketOrigin.Client
+                    },
+                    new PacketDispatchHandler(this.LoginHashedDispatchHandler)
+                }, {
+                    new PacketDispatch() {
+                        Name = "admin.eventsEnabled",
+                        Origin = PacketOrigin.Client
+                    },
+                    new PacketDispatchHandler(this.AdminEventsEnabledDispatchHandler)
+                }, {
+                    new PacketDispatch() {
+                        Name = "admin.listPlayers",
+                        Origin = PacketOrigin.Client
+                    },
+                    new PacketDispatchHandler(this.AdminListPlayersResponseDispatchHandler)
+                }, {
+                    new PacketDispatch() {
+                        Name = "mapList.list",
+                        Origin = PacketOrigin.Client
+                    },
+                    new PacketDispatchHandler(this.MapListListDispatchHandler)
+                }, {
+                    new PacketDispatch() {
+                        Name = "admin.say",
+                        Origin = PacketOrigin.Client
+                    },
+                    new PacketDispatchHandler(this.AdminSayDispatchHandler)
+                }, {
+                    new PacketDispatch() {
+                        Name = "version",
+                        Origin = PacketOrigin.Client
+                    },
+                    new PacketDispatchHandler(this.VersionDispatchHandler)
+                }, {
+                    new PacketDispatch() {
+                        Name = "banList.list",
+                        Origin = PacketOrigin.Client
+                    },
+                    new PacketDispatchHandler(this.BanListListDispatchHandler)
+                }, {
+                    new PacketDispatch() {
+                        Name = "banList.add",
+                        Origin = PacketOrigin.Client
+                    },
+                    new PacketDispatchHandler(this.BanListAddDispatchHandler)
+                }, {
+                    new PacketDispatch() {
+                        Name = "banList.remove",
+                        Origin = PacketOrigin.Client
+                    },
+                    new PacketDispatchHandler(this.BanListRemoveDispatchHandler)
+                }, {
+                    new PacketDispatch() {
+                        Name = "vars.serverName",
+                        Origin = PacketOrigin.Client
+                    },
+                    new PacketDispatchHandler(this.VarsServerNameDispatchHandler)
+                }, {
+                    new PacketDispatch() {
+                        Name = "vars.gamePassword",
+                        Origin = PacketOrigin.Client
+                    },
+                    new PacketDispatchHandler(this.VarsGamePasswordDispatchHandler)
+                }, {
+                    new PacketDispatch() {
+                        Name = "vars.punkBuster",
+                        Origin = PacketOrigin.Client
+                    },
+                    new PacketDispatchHandler(this.VarsGamePunkbusterDispatchHandler)
+                }, {
+                    new PacketDispatch() {
+                        Name = "vars.hardCore",
+                        Origin = PacketOrigin.Client
+                    },
+                    new PacketDispatchHandler(this.VarsHardcoreDispatchHandler)
+                }, {
+                    new PacketDispatch() {
+                        Name = "vars.ranked",
+                        Origin = PacketOrigin.Client
+                    },
+                    new PacketDispatchHandler(this.VarsRankedDispatchHandler)
+                }, {
+                    new PacketDispatch() {
+                        Name = "vars.rankLimit",
+                        Origin = PacketOrigin.Client
+                    },
+                    new PacketDispatchHandler(this.VarsRankLimitDispatchHandler)
+                }, {
+                    new PacketDispatch() {
+                        Name = "vars.teamBalance",
+                        Origin = PacketOrigin.Client
+                    },
+                    new PacketDispatchHandler(this.VarsTeamBalanceDispatchHandler)
+                }, {
+                    new PacketDispatch() {
+                        Name = "vars.friendlyFire",
+                        Origin = PacketOrigin.Client
+                    },
+                    new PacketDispatchHandler(this.VarsFriendlyFireDispatchHandler)
+                }, {
+                    new PacketDispatch() {
+                        Name = "vars.bannerUrl",
+                        Origin = PacketOrigin.Client
+                    },
+                    new PacketDispatchHandler(this.VarsBannerUrlDispatchHandler)
+                }, {
+                    new PacketDispatch() {
+                        Name = "vars.serverDescription",
+                        Origin = PacketOrigin.Client
+                    },
+                    new PacketDispatchHandler(this.VarsServerDescriptionDispatchHandler)
+                }, {
+                    new PacketDispatch() {
+                        Name = "vars.killCam",
+                        Origin = PacketOrigin.Client
+                    },
+                    new PacketDispatchHandler(this.VarsKillCamDispatchHandler)
+                }, {
+                    new PacketDispatch() {
+                        Name = "vars.miniMap",
+                        Origin = PacketOrigin.Client
+                    },
+                    new PacketDispatchHandler(this.VarsMiniMapDispatchHandler)
+                }, {
+                    new PacketDispatch() {
+                        Name = "vars.crossHair",
+                        Origin = PacketOrigin.Client
+                    },
+                    new PacketDispatchHandler(this.VarsCrossHairDispatchHandler)
+                }, {
+                    new PacketDispatch() {
+                        Name = "vars.idleTimeout",
+                        Origin = PacketOrigin.Client
+                    },
+                    new PacketDispatchHandler(this.VarsIdleTimeoutDispatchHandler)
+                }, {
+                    new PacketDispatch() {
+                        Name = "vars.profanityFilter",
+                        Origin = PacketOrigin.Client
+                    },
+                    new PacketDispatchHandler(this.VarsProfanityFilterDispatchHandler)
+                }, {
+                    new PacketDispatch() {
+                        Name = "punkBuster.onMessage",
+                        Origin = PacketOrigin.Client // Should be Server?
+                    },
+                    new PacketDispatchHandler(this.PunkBusterOnMessageDispatchHandler)
+                }, {
+                    new PacketDispatch() {
+                        Name = "player.onKill",
+                        Origin = PacketOrigin.Server
+                    },
+                    new PacketDispatchHandler(this.PlayerOnKillDispatchHandler)
+                }, {
+                    new PacketDispatch() {
+                        Name = "server.onLoadingLevel",
+                        Origin = PacketOrigin.Server
+                    },
+                    new PacketDispatchHandler(this.ServerOnLoadingLevelDispatchHandler)
+                }, {
+                    new PacketDispatch() {
+                        Name = "player.onJoin",
+                        Origin = PacketOrigin.Server
+                    },
+                    new PacketDispatchHandler(this.PlayerOnJoinDispatchHandler)
+                }, {
+                    new PacketDispatch() {
+                        Name = "player.onLeave",
+                        Origin = PacketOrigin.Server
+                    },
+                    new PacketDispatchHandler(this.PlayerOnLeaveDispatchHandler)
+                }, {
+                    new PacketDispatch() {
+                        Name = "player.onChat",
+                        Origin = PacketOrigin.Server
+                    },
+                    new PacketDispatchHandler(this.PlayerOnChatDispatchHandler)
+                }, {
+                    new PacketDispatch() {
+                        Name = "player.onAuthenticated",
+                        Origin = PacketOrigin.Server
+                    },
+                    new PacketDispatchHandler(this.PlayerOnAuthenticatedDispatchHandler)
+                }, {
+                    new PacketDispatch() {
+                        Name = "player.onSpawn",
+                        Origin = PacketOrigin.Server
+                    },
+                    new PacketDispatchHandler(this.PlayerOnSpawnDispatchHandler)
+                }, {
+                    new PacketDispatch() {
+                        Name = "player.onKicked",
+                        Origin = PacketOrigin.Server
+                    },
+                    new PacketDispatchHandler(this.PlayerOnKickedDispatchHandler)
+                }, {
+                    new PacketDispatch() {
+                        Name = "player.onSquadChange",
+                        Origin = PacketOrigin.Server
+                    },
+                    new PacketDispatchHandler(this.PlayerOnSquadChangeDispatchHandler)
+                }, {
+                    new PacketDispatch() {
+                        Name = "player.onTeamChange",
+                        Origin = PacketOrigin.Server
+                    },
+                    new PacketDispatchHandler(this.PlayerOnTeamChangeDispatchHandler)
+                }, {
+                    new PacketDispatch() {
+                        Name = "InvalidPasswordHash",
+                        Origin = PacketOrigin.Client
+                    },
+                    new PacketDispatchHandler(this.InvalidPasswordHashDispatchHandler)
+                }
+            });
         }
         
         protected override Client<FrostbitePacket> CreateClient(string hostName, ushort port) {
@@ -77,7 +308,6 @@ namespace Procon.Net.Protocols.Frostbite {
 
         #region Dispatching
 
-        [DispatchPacket(MatchText = "serverInfo", PacketOrigin = PacketOrigin.Client)]
         public void ServerInfoDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
 
             if (response != null) {
@@ -116,7 +346,6 @@ namespace Procon.Net.Protocols.Frostbite {
             }
         }
 
-        [DispatchPacket(MatchText = "login.plainText", PacketOrigin = PacketOrigin.Client)]
         public void LoginPlainTextDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
 
             if (response != null) {
@@ -130,7 +359,6 @@ namespace Procon.Net.Protocols.Frostbite {
             }
         }
 
-        [DispatchPacket(MatchText = "login.hashed", PacketOrigin = PacketOrigin.Client)]
         public void LoginHashedDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
 
             if (response != null) {
@@ -148,7 +376,6 @@ namespace Procon.Net.Protocols.Frostbite {
             }
         }
 
-        [DispatchPacket(MatchText = "admin.eventsEnabled", PacketOrigin = PacketOrigin.Client)]
         public void AdminEventsEnabledDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
 
             if (response != null) {
@@ -194,7 +421,6 @@ namespace Procon.Net.Protocols.Frostbite {
             }
         }
 
-        [DispatchPacket(MatchText = "admin.listPlayers", PacketOrigin = PacketOrigin.Client)]
         public virtual void AdminListPlayersResponseDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
             FrostbitePlayerList players = new FrostbitePlayerList() {
                 Subset = new FrostbiteGroupingList().Parse(request.Words.GetRange(1, request.Words.Count - 1))
@@ -203,7 +429,6 @@ namespace Procon.Net.Protocols.Frostbite {
             this.AdminListPlayersFinalize(players);
         }
 
-        [DispatchPacket(MatchText = "admin.say", PacketOrigin = PacketOrigin.Client)]
         public void AdminSayDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
 
             if (request.Words.Count >= 3) {
@@ -216,14 +441,12 @@ namespace Procon.Net.Protocols.Frostbite {
 
         }
 
-        [DispatchPacket(MatchText = "version", PacketOrigin = PacketOrigin.Client)]
         public void VersionDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
             if (request.Words.Count >= 3) {
                 this.State.Settings.ServerVersion = request.Words[2];
             }
         }
 
-        [DispatchPacket(MatchText = "mapList.list", PacketOrigin = PacketOrigin.Client)]
         public virtual void MapListListDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
             if (request.Words.Count >= 1) {
 
@@ -245,7 +468,6 @@ namespace Procon.Net.Protocols.Frostbite {
             }
         }
 
-        [DispatchPacket(MatchText = "banList.list", PacketOrigin = PacketOrigin.Client)]
         public virtual void BanListListDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
 
             if (request.Words.Count >= 1) {
@@ -280,7 +502,6 @@ namespace Procon.Net.Protocols.Frostbite {
             }
         }
 
-        [DispatchPacket(MatchText = "banList.add", PacketOrigin = PacketOrigin.Client)]
         public void BanListAddDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
             if (request.Words.Count >= 1) {
                 Ban ban = FrostbiteBan.ParseBanAdd(request.Words.GetRange(1, request.Words.Count - 1));
@@ -291,7 +512,6 @@ namespace Procon.Net.Protocols.Frostbite {
             }
         }
 
-        [DispatchPacket(MatchText = "banList.remove", PacketOrigin = PacketOrigin.Client)]
         public void BanListRemoveDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
             if (request.Words.Count >= 1) {
                 Ban ban = FrostbiteBan.ParseBanRemove(request.Words.GetRange(1, request.Words.Count - 1));
@@ -306,21 +526,18 @@ namespace Procon.Net.Protocols.Frostbite {
 
         #region Variables
 
-        [DispatchPacket(MatchText = "vars.serverName", PacketOrigin = PacketOrigin.Client)]
         public void VarsServerNameDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
             if (response.Words.Count >= 2) {
                 this.State.Settings.ServerName = response.Words[1];
             }
         }
 
-        [DispatchPacket(MatchText = "vars.gamePassword", PacketOrigin = PacketOrigin.Client)]
         public void VarsGamePasswordDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
             if (response.Words.Count >= 2) {
                 this.State.Settings.Password = response.Words[1];
             }
         }
 
-        [DispatchPacket(MatchText = "vars.punkBuster", PacketOrigin = PacketOrigin.Client)]
         public void VarsGamePunkbusterDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
             bool boolOut = false;
             if (response.Words.Count >= 2 && bool.TryParse(response.Words[1], out boolOut)) {
@@ -328,7 +545,6 @@ namespace Procon.Net.Protocols.Frostbite {
             }
         }
 
-        [DispatchPacket(MatchText = "vars.hardCore", PacketOrigin = PacketOrigin.Client)]
         public void VarsHardcoreDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
             bool boolOut = false;
             if (response.Words.Count >= 2 && bool.TryParse(response.Words[1], out boolOut)) {
@@ -336,7 +552,6 @@ namespace Procon.Net.Protocols.Frostbite {
             }
         }
 
-        [DispatchPacket(MatchText = "vars.ranked", PacketOrigin = PacketOrigin.Client)]
         public void VarsRankedDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
             bool boolOut = false;
             if (response.Words.Count >= 2 && bool.TryParse(response.Words[1], out boolOut)) {
@@ -344,7 +559,6 @@ namespace Procon.Net.Protocols.Frostbite {
             }
         }
 
-        [DispatchPacket(MatchText = "vars.rankLimit", PacketOrigin = PacketOrigin.Client)]
         public void VarsRankLimitDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
             int intOut = 0;
             if (response.Words.Count >= 2 && int.TryParse(response.Words[1], out intOut)) {
@@ -352,7 +566,6 @@ namespace Procon.Net.Protocols.Frostbite {
             }
         }
 
-        [DispatchPacket(MatchText = "vars.teamBalance", PacketOrigin = PacketOrigin.Client)]
         public void VarsTeamBalanceDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
             bool boolOut = false;
             if (response.Words.Count >= 2 && bool.TryParse(response.Words[1], out boolOut)) {
@@ -360,7 +573,6 @@ namespace Procon.Net.Protocols.Frostbite {
             }
         }
 
-        [DispatchPacket(MatchText = "vars.friendlyFire", PacketOrigin = PacketOrigin.Client)]
         public void VarsFriendlyFireDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
             bool boolOut = false;
             if (response.Words.Count >= 2 && bool.TryParse(response.Words[1], out boolOut)) {
@@ -368,21 +580,18 @@ namespace Procon.Net.Protocols.Frostbite {
             }
         }
 
-        [DispatchPacket(MatchText = "vars.bannerUrl", PacketOrigin = PacketOrigin.Client)]
         public void VarsBannerUrlDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
             if (response.Words.Count >= 2) {
                 this.State.Settings.BannerUrl = response.Words[1];
             }
         }
 
-        [DispatchPacket(MatchText = "vars.serverDescription", PacketOrigin = PacketOrigin.Client)]
         public void VarsServerDescriptionDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
             if (response.Words.Count >= 2) {
                 this.State.Settings.ServerDescription = response.Words[1];
             }
         }
 
-        [DispatchPacket(MatchText = "vars.killCam", PacketOrigin = PacketOrigin.Client)]
         public void VarsKillCamDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
             bool boolOut;
             if (response.Words.Count >= 2 && bool.TryParse(response.Words[1], out boolOut)) {
@@ -390,7 +599,6 @@ namespace Procon.Net.Protocols.Frostbite {
             }
         }
 
-        [DispatchPacket(MatchText = "vars.miniMap", PacketOrigin = PacketOrigin.Client)]
         public void VarsMiniMapDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
             bool boolOut;
             if (response.Words.Count >= 2 && bool.TryParse(response.Words[1], out boolOut)) {
@@ -398,7 +606,6 @@ namespace Procon.Net.Protocols.Frostbite {
             }
         }
 
-        [DispatchPacket(MatchText = "vars.crossHair", PacketOrigin = PacketOrigin.Client)]
         public void VarsCrossHairDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
             bool boolOut;
             if (response.Words.Count >= 2 && bool.TryParse(response.Words[1], out boolOut)) {
@@ -406,7 +613,6 @@ namespace Procon.Net.Protocols.Frostbite {
             }
         }
 
-        [DispatchPacket(MatchText = "vars.idleTimeout", PacketOrigin = PacketOrigin.Client)]
         public void VarsIdleTimeoutDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
             int intOut = 0;
             if (response.Words.Count >= 2 && int.TryParse(response.Words[1], out intOut)) {
@@ -416,7 +622,6 @@ namespace Procon.Net.Protocols.Frostbite {
             }
         }
 
-        [DispatchPacket(MatchText = "vars.profanityFilter", PacketOrigin = PacketOrigin.Client)]
         public void VarsProfanityFilterDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
             bool boolOut;
             if (response.Words.Count >= 2 && bool.TryParse(response.Words[1], out boolOut)) {
@@ -426,7 +631,6 @@ namespace Procon.Net.Protocols.Frostbite {
 
         #endregion
 
-        [DispatchPacket(MatchText = "punkBuster.onMessage", PacketOrigin = PacketOrigin.Client)]
         public void PunkBusterOnMessageDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
 
             if (request.Words.Count >= 1) {
@@ -452,7 +656,6 @@ namespace Procon.Net.Protocols.Frostbite {
             }
         }
 
-        [DispatchPacket(MatchText = "player.onKill", PacketOrigin = PacketOrigin.Server)]
         public virtual void PlayerOnKillDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
 
             if (request.Words.Count >= 11) {
@@ -479,7 +682,6 @@ namespace Procon.Net.Protocols.Frostbite {
             }
         }
 
-        [DispatchPacket(MatchText = "server.onLoadingLevel", PacketOrigin = PacketOrigin.Client)]
         public void ServerOnLoadingLevelDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
 
             if (request.Words.Count >= 4) {
@@ -511,7 +713,6 @@ namespace Procon.Net.Protocols.Frostbite {
         /// </summary>
         /// <param name="request"></param>
         /// <param name="response"></param>
-        [DispatchPacket(MatchText = "player.onJoin", PacketOrigin = PacketOrigin.Server)]
         public virtual void PlayerOnJoinDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
 
             if (request.Words.Count >= 2) {
@@ -526,7 +727,6 @@ namespace Procon.Net.Protocols.Frostbite {
             }
         }
 
-        [DispatchPacket(MatchText = "player.onLeave", PacketOrigin = PacketOrigin.Server)]
         public void PlayerOnLeaveDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
 
             if (request.Words.Count >= 2) {
@@ -564,7 +764,6 @@ namespace Procon.Net.Protocols.Frostbite {
             }
         }
 
-        [DispatchPacket(MatchText = "player.onChat", PacketOrigin = PacketOrigin.Server)]
         public void PlayerOnChatDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
 
             // player.onChat <source soldier name: string> <text: string> <target group: player subset>
@@ -574,7 +773,7 @@ namespace Procon.Net.Protocols.Frostbite {
                 // If it was directed towards a specific player.
                 if (chat.Scope.Groups != null && chat.Scope.Groups.Any(group => group.Type == Grouping.Player) == true) {
                     chat.Scope.Players = new List<Player>() {
-                        this.State.PlayerList.FirstOrDefault(player => player.Uid == (String)chat.Scope.Groups.First(group => @group.Type == Grouping.Player).Uid)
+                        this.State.PlayerList.FirstOrDefault(player => player.Uid == chat.Scope.Groups.First(group => @group.Type == Grouping.Player).Uid)
                     };
                 }
 
@@ -592,7 +791,6 @@ namespace Procon.Net.Protocols.Frostbite {
             }
         }
 
-        [DispatchPacket(MatchText = "player.onAuthenticated", PacketOrigin = PacketOrigin.Server)]
         public virtual void PlayerOnAuthenticatedDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
 
             if (request.Words.Count >= 3) {
@@ -614,7 +812,6 @@ namespace Procon.Net.Protocols.Frostbite {
             }
         }
 
-        [DispatchPacket(MatchText = "player.onSpawn", PacketOrigin = PacketOrigin.Server)]
         public void PlayerOnSpawnDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
 
             Spawn spawn = FrostbiteSpawn.Parse(request.Words.GetRange(1, request.Words.Count - 1));
@@ -629,7 +826,6 @@ namespace Procon.Net.Protocols.Frostbite {
             }
         }
 
-        [DispatchPacket(MatchText = "player.onKicked", PacketOrigin = PacketOrigin.Server)]
         public void PlayerOnKickedDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
 
             Player player = this.State.PlayerList.Find(x => x.Name == request.Words[1]);
@@ -649,7 +845,6 @@ namespace Procon.Net.Protocols.Frostbite {
             }
         }
 
-        [DispatchPacket(MatchText = "player.onSquadChange", PacketOrigin = PacketOrigin.Server)]
         public void PlayerOnSquadChangeDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
 
             Player player = this.State.PlayerList.Find(x => x.Name == request.Words[1]);
@@ -670,7 +865,6 @@ namespace Procon.Net.Protocols.Frostbite {
             }
         }
 
-        [DispatchPacket(MatchText = "player.onTeamChange", PacketOrigin = PacketOrigin.Server)]
         public void PlayerOnTeamChangeDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
             Player player = this.State.PlayerList.Find(x => x.Name == request.Words[1]);
             int teamId = 0, squadId = 0;
@@ -694,7 +888,6 @@ namespace Procon.Net.Protocols.Frostbite {
             }
         }
 
-        [DispatchPacket(MatchText = "InvalidPasswordHash")]
         public void InvalidPasswordHashDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
             this.Shutdown();
             //this.Client.ConnectionState = ConnectionState.Ready;
@@ -710,24 +903,24 @@ namespace Procon.Net.Protocols.Frostbite {
 
                     // If the sent command was successful
                     if (packet.Words.Count >= 1 && String.CompareOrdinal(packet.Words[0], FrostbitePacket.StringResponseOkay) == 0) {
-                        this.Dispatch(new DispatchPacketAttribute() {
-                            MatchText = requestPacket.Words[0],
-                            PacketOrigin = requestPacket.Origin
+                        this.Dispatch(new PacketDispatch() {
+                            Name = requestPacket.Words[0],
+                            Origin = requestPacket.Origin
                         }, requestPacket, packet);
                     }
                     else { // The command sent failed for some reason.
-                        this.Dispatch(new DispatchPacketAttribute() {
-                            MatchText = packet.Words[0],
-                            PacketOrigin = packet.Origin
+                        this.Dispatch(new PacketDispatch() {
+                            Name = packet.Words[0],
+                            Origin = packet.Origin
                         }, requestPacket, packet);
                     }
                 }
 
             }
             else if (packet.Words.Count >= 1 && packet.Origin == PacketOrigin.Server && packet.IsResponse == false) {
-                this.Dispatch(new DispatchPacketAttribute() {
-                    MatchText = packet.Words[0],
-                    PacketOrigin = packet.Origin
+                this.Dispatch(new PacketDispatch() {
+                    Name = packet.Words[0],
+                    Origin = packet.Origin
                 }, packet, null);
             }
         }

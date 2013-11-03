@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 
 namespace Procon.Net.Protocols.Frostbite.BF.BF3 {
@@ -33,6 +32,15 @@ namespace Procon.Net.Protocols.Frostbite.BF.BF3 {
                 "RoundTime"
             };
 
+            this.AppendDispatchHandlers(new Dictionary<PacketDispatch, PacketDispatchHandler>() {
+                {
+                    new PacketDispatch() {
+                        Name = "player.ping", 
+                        Origin = PacketOrigin.Client
+                    },
+                    new PacketDispatchHandler(this.PlayerPingResponseDispatchHandler)
+                }
+            });
         }
 
         protected override void AuxiliarySynchronize() {
@@ -76,7 +84,6 @@ namespace Procon.Net.Protocols.Frostbite.BF.BF3 {
             }
         }
 
-        [DispatchPacket(MatchText = "admin.listPlayers", PacketOrigin = PacketOrigin.Client)]
         public override void AdminListPlayersResponseDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
             BF3PlayerList players = new BF3PlayerList() {
                 Subset = new FrostbiteGroupingList().Parse(request.Words.GetRange(1, request.Words.Count - 1))
@@ -85,7 +92,6 @@ namespace Procon.Net.Protocols.Frostbite.BF.BF3 {
             this.AdminListPlayersFinalize(players);
         }
 
-        [DispatchPacket(MatchText = "mapList.list", PacketOrigin = PacketOrigin.Client)]
         public override void MapListListDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
             if (request.Words.Count >= 1) {
 
@@ -106,7 +112,6 @@ namespace Procon.Net.Protocols.Frostbite.BF.BF3 {
             }
         }
 
-        [DispatchPacket(MatchText = "banList.list", PacketOrigin = PacketOrigin.Client)]
         public override void BanListListDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
 
             if (request.Words.Count >= 1) {
@@ -141,7 +146,6 @@ namespace Procon.Net.Protocols.Frostbite.BF.BF3 {
             }
         }
 
-        [DispatchPacket(MatchText = "player.ping", PacketOrigin = PacketOrigin.Client)]
         public void PlayerPingResponseDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
             if (request.Words.Count >= 2 && response.Words.Count >= 2) {
                 Player player = this.State.PlayerList.FirstOrDefault(p => p.Name == request.Words[1]);
@@ -164,12 +168,10 @@ namespace Procon.Net.Protocols.Frostbite.BF.BF3 {
             this.Send(this.CreatePacket("admin.eventsEnabled true"));
         }
 
-        [DispatchPacket(MatchText = "player.onAuthenticated", PacketOrigin = PacketOrigin.Server)]
         public override void PlayerOnAuthenticatedDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
             // Ignore this in bf3? Seems onJoin handles both.
         }
 
-        [DispatchPacket(MatchText = "player.onJoin", PacketOrigin = PacketOrigin.Server)]
         public override void PlayerOnJoinDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
 
             if (request.Words.Count >= 2) {
@@ -187,7 +189,6 @@ namespace Procon.Net.Protocols.Frostbite.BF.BF3 {
             }
         }
 
-        [DispatchPacket(MatchText = "player.onKill", PacketOrigin = PacketOrigin.Server)]
         public override void PlayerOnKillDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
 
             if (request.Words.Count >= 5) {

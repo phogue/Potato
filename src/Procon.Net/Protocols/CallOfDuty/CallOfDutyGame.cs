@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace Procon.Net.Protocols.CallOfDuty {
-    using Procon.Net.Attributes;
     using Procon.Net.Protocols.Objects;
     using Procon.Net.Protocols.CallOfDuty.Objects;
 
@@ -71,6 +70,16 @@ namespace Procon.Net.Protocols.CallOfDuty {
         protected CallOfDutyGame(string hostName, ushort port) : base(hostName, port) {
 
             this.State.Settings.MaxConsoleLines = 100;
+
+            this.AppendDispatchHandlers(new Dictionary<PacketDispatch, PacketDispatchHandler>() {
+                {
+                    new PacketDispatch() { Name = "serverinfo"},
+                    new PacketDispatchHandler(this.ServerInfoDispatchHandler)
+                }, {
+                    new PacketDispatch() { Name = "teamstatus"},
+                    new PacketDispatchHandler(this.PlayerlistDispatchHandler)
+                }
+            });
         }
 
         protected override Client<CallOfDutyPacket> CreateClient(string hostName, ushort port) {
@@ -125,14 +134,13 @@ namespace Procon.Net.Protocols.CallOfDuty {
             Match match = null;
             foreach (KeyValuePair<Regex, string> packetType in CallOfDutyGame.PacketTypes) {
                 if ((match = packetType.Key.Match(packet.Message)).Success == true) {
-                    this.Dispatch(new DispatchPacketAttribute() {
-                        MatchText = packetType.Value
+                    this.Dispatch(new PacketDispatch() {
+                        Name = packetType.Value
                     }, null, packet);
                 }
             }
         }
 
-        [DispatchPacket(MatchText = "serverinfo")]
         public void ServerInfoDispatchHandler(CallOfDutyPacket request, CallOfDutyPacket response) {
 
             CallOfDutyServerInfo info = new CallOfDutyServerInfo().Parse(response.Message);
@@ -147,7 +155,6 @@ namespace Procon.Net.Protocols.CallOfDuty {
             this.OnGameEvent(GameEventType.GameSettingsUpdated);
         }
 
-        [DispatchPacket(MatchText = "teamstatus")]
         public void PlayerlistDispatchHandler(CallOfDutyPacket request, CallOfDutyPacket response) {
 
             CallOfDutyPlayerList players = new CallOfDutyPlayerList().Parse(response.Message);

@@ -59,7 +59,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Attributes\DispatchPacketAttribute.cs" />
+    <Compile Include="PacketDispatch.cs" />
     <Compile Include="Attributes\GameTypeAttribute.cs" />
     <Compile Include="Client.cs" />
     <Compile Include="ClientEventArgs.cs" />

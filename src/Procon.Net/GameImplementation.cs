@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
-using System.Reflection;
 
 namespace Procon.Net {
-    using Procon.Net.Attributes;
     using Procon.Net.Protocols.Objects;
 
     public abstract class GameImplementation<P> : Game where P : Packet {
@@ -18,7 +16,14 @@ namespace Procon.Net {
         /// Array of dispatch handlers used to locate an appropriate method to call
         /// once we receieve a packet.
         /// </summary>
-        protected Dictionary<DispatchPacketAttribute, MethodInfo> DispatchHandlers;
+        protected Dictionary<PacketDispatch, PacketDispatchHandler> PacketDispatchHandlers;
+
+        /// <summary>
+        /// What method should be called when matched against a packet dispatch object.
+        /// </summary>
+        /// <param name="request">What was sent to the server or what was just received from the server</param>
+        /// <param name="response">What was receieved from the server, or what we should send to the server.</param>
+        protected delegate void PacketDispatchHandler(P request, P response);
 
         /// <summary>
         /// Fetches the hostname of the connection. Proxy for Client.Hostname.
@@ -39,6 +44,8 @@ namespace Procon.Net {
         }
 
         protected GameImplementation(string hostName, ushort port) : base() {
+            this.PacketDispatchHandlers = new Dictionary<PacketDispatch, PacketDispatchHandler>();
+
             this.Execute(this.CreateClient(hostName, port));
         }
   
@@ -46,22 +53,20 @@ namespace Procon.Net {
             this.State = new GameState();
             this.Client = client;
             this.AssignEvents();
+        }
 
-            this.DispatchHandlers = new Dictionary<DispatchPacketAttribute, MethodInfo>();
-
-            foreach (MethodInfo method in this.GetType().GetMethods()) {
-
-                ParameterInfo[] parameters = method.GetParameters();
-
-                if (parameters.Length == 2 && typeof(P).IsAssignableFrom(parameters[0].ParameterType) && typeof(P).IsAssignableFrom(parameters[1].ParameterType)) {
-
-                    object[] attributes = method.GetCustomAttributes(typeof(DispatchPacketAttribute), false);
-
-                    foreach (DispatchPacketAttribute attribute in attributes) {
-                        if (this.DispatchHandlers.ContainsKey(attribute) == false) {
-                            this.DispatchHandlers.Add(attribute, method);
-                        }
-                    }
+        /// <summary>
+        /// Appends a dispatch handler, first checking if an existing dispatch exists for this exact
+        /// packet. If it exists then it will be overridden.
+        /// </summary>
+        /// <param name="handlers">A dictionary of handlers to append to the dispatch handlers.</param>
+        protected void AppendDispatchHandlers(Dictionary<PacketDispatch, PacketDispatchHandler> handlers) {
+            foreach (var handler in handlers) {
+                if (this.PacketDispatchHandlers.ContainsKey(handler.Key) == false) {
+                    this.PacketDispatchHandlers.Add(handler.Key, handler.Value);
+                }
+                else {
+                    this.PacketDispatchHandlers[handler.Key] = handler.Value;
                 }
             }
         }
@@ -135,16 +140,16 @@ namespace Procon.Net {
             this.Dispatch(packet);
         }
 
-        protected virtual void Dispatch(DispatchPacketAttribute identifer, P request, P response) {
+        protected virtual void Dispatch(PacketDispatch identifer, P request, P response) {
 
-            var dispatchMethods = this.DispatchHandlers.Where(dispatcher => dispatcher.Key.MatchText == identifer.MatchText)
-                .Where(dispatcher => dispatcher.Key.PacketOrigin == PacketOrigin.None || dispatcher.Key.PacketOrigin == identifer.PacketOrigin)
+            var dispatchMethods = this.PacketDispatchHandlers.Where(dispatcher => dispatcher.Key.Name == identifer.Name)
+                .Where(dispatcher => dispatcher.Key.Origin == PacketOrigin.None || dispatcher.Key.Origin == identifer.Origin)
                 .Select(dispatcher => dispatcher.Value)
                 .ToList();
 
             if (dispatchMethods.Any()) {
-                foreach (MethodInfo dispatchMethod in dispatchMethods) {
-                    dispatchMethod.Invoke(this, new object[] { request, response });
+                foreach (PacketDispatchHandler handler in dispatchMethods) {
+                    handler(request, response);
                 }
             }
             else {
@@ -152,7 +157,7 @@ namespace Procon.Net {
             }
         }
 
-        protected virtual void DispatchFailed(DispatchPacketAttribute identifer, P request, P response) {
+        protected virtual void DispatchFailed(PacketDispatch identifer, P request, P response) {
 
         }
 

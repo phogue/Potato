@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace Procon.Net.Protocols.Source {
-    using Procon.Net.Attributes;
     using Procon.Net.Protocols.Objects;
     using Procon.Net.Protocols.Source.Objects;
 
@@ -13,9 +12,21 @@ namespace Procon.Net.Protocols.Source {
         public ushort SourceLogServicePort { get; set; }
         public ushort? SourceLogListenPort { get; set; }
 
-        public SourceGame(string hostName, ushort port)
-            : base(hostName, port) {
-                this.SourceLogServicePort = 8787;
+        public SourceGame(string hostName, ushort port) : base(hostName, port) {
+            this.SourceLogServicePort = 8787;
+
+            this.AppendDispatchHandlers(new Dictionary<PacketDispatch, PacketDispatchHandler>() {
+                {
+                    new PacketDispatch() { Name = "say"},
+                    new PacketDispatchHandler(this.ConsoleSayHandler)
+                }, {
+                    new PacketDispatch() { Name = "log"},
+                    new PacketDispatchHandler(this.ConsoleLogHandler)
+                }, {
+                    new PacketDispatch() { Name = "status"},
+                    new PacketDispatchHandler(this.ConsoleDispatchHandler)
+                }
+            });
         }
 
         protected override Client<SourcePacket> CreateClient(string hostName, ushort port) {
@@ -40,10 +51,10 @@ namespace Procon.Net.Protocols.Source {
 
                     // If the sent command was successful
                     if (packet.String1Words.Count >= 1 && packet.RequestType != SourceRequestType.SERVERDATA_ALLBAD) {
-                        this.Dispatch(new DispatchPacketAttribute() { MatchText = requestPacket.String1Words[0] }, requestPacket, packet);
+                        this.Dispatch(new PacketDispatch() { Name = requestPacket.String1Words[0] }, requestPacket, packet);
                     }
                     else { // The command sent failed for some reason.
-                        this.Dispatch(new DispatchPacketAttribute() { MatchText = packet.String1Words[0] }, requestPacket, packet);
+                        this.Dispatch(new PacketDispatch() { Name = packet.String1Words[0] }, requestPacket, packet);
                     }
                 }
             }
@@ -161,7 +172,6 @@ namespace Procon.Net.Protocols.Source {
             }
         }
 
-        [DispatchPacket(MatchText = "say")]
         public void ConsoleSayHandler(SourcePacket request, SourcePacket response) {
 
             Chat chat = new SourceChat().ParseConsoleSay(request.String1Words);
@@ -169,7 +179,6 @@ namespace Procon.Net.Protocols.Source {
             this.OnGameEvent(GameEventType.GameChat, new GameEventData() { Chats = new List<Chat>() { chat } });
         }
 
-        [DispatchPacket(MatchText = "log")]
         public void ConsoleLogHandler(SourcePacket request, SourcePacket response) {
 
             if (response.String1.Contains("not currently logging") == true) {
@@ -178,7 +187,6 @@ namespace Procon.Net.Protocols.Source {
             }
         }
 
-        [DispatchPacket(MatchText = "status")]
         public void ConsoleDispatchHandler(SourcePacket request, SourcePacket response) {
 
             SourceServerInfo info = new SourceServerInfo().ParseStatusHeader(response.String1);

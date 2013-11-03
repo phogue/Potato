@@ -33,7 +33,7 @@ namespace Procon.Net.Protocols.Frostbite.BF.BF4 {
             };
         }
 
-        [DispatchPacket(MatchText = "admin.listPlayers", PacketOrigin = PacketOrigin.Client)]
+        //[DispatchPacket(MatchText = "admin.listPlayers", PacketOrigin = PacketOrigin.Client)]
         public override void AdminListPlayersResponseDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
             BF4PlayerList players = new BF4PlayerList() {
                 Subset = new FrostbiteGroupingList().Parse(request.Words.GetRange(1, request.Words.Count - 1))
@@ -42,7 +42,6 @@ namespace Procon.Net.Protocols.Frostbite.BF.BF4 {
             this.AdminListPlayersFinalize(players);
         }
 
-        [DispatchPacket(MatchText = "mapList.list", PacketOrigin = PacketOrigin.Client)]
         public override void MapListListDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
             if (request.Words.Count >= 1) {
 
@@ -63,7 +62,6 @@ namespace Procon.Net.Protocols.Frostbite.BF.BF4 {
             }
         }
 
-        [DispatchPacket(MatchText = "banList.list", PacketOrigin = PacketOrigin.Client)]
         public override void BanListListDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
 
             if (request.Words.Count >= 1) {
@@ -102,12 +100,10 @@ namespace Procon.Net.Protocols.Frostbite.BF.BF4 {
             this.Send(this.CreatePacket("admin.eventsEnabled true"));
         }
 
-        [DispatchPacket(MatchText = "player.onAuthenticated", PacketOrigin = PacketOrigin.Server)]
         public override void PlayerOnAuthenticatedDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
             // Ignore this in BF4? Seems onJoin handles both.
         }
 
-        [DispatchPacket(MatchText = "player.onJoin", PacketOrigin = PacketOrigin.Server)]
         public override void PlayerOnJoinDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
 
             if (request.Words.Count >= 2) {
@@ -125,7 +121,6 @@ namespace Procon.Net.Protocols.Frostbite.BF.BF4 {
             }
         }
 
-        [DispatchPacket(MatchText = "player.onKill", PacketOrigin = PacketOrigin.Server)]
         public override void PlayerOnKillDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
 
             if (request.Words.Count >= 5) {

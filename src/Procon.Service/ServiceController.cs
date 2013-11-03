@@ -95,9 +95,10 @@ namespace Procon.Service {
                     Console.WriteLine("Signal: Update completed in {0} seconds", (DateTime.Now - begin).TotalMilliseconds / 1000);
                 }
                 else if (String.Compare(message.Name, "statistics", StringComparison.OrdinalIgnoreCase) == 0 || String.Compare(message.Name, "stats", StringComparison.OrdinalIgnoreCase) == 0) {
-                    Console.WriteLine("Signal: Statistics");
                     this.Statistics();
-                    Console.WriteLine("Signal: Statistics completed in {0} seconds", (DateTime.Now - begin).TotalMilliseconds / 1000);
+                }
+                else if (String.Compare(message.Name, "help", StringComparison.OrdinalIgnoreCase) == 0) {
+                    this.Help();
                 }
                 else if (String.Compare(message.Name, "ok", StringComparison.OrdinalIgnoreCase) == 0) {
                     // Do nothing, all is good.
@@ -149,7 +150,7 @@ namespace Procon.Service {
         private void Statistics() {
             if (this.Status == ServiceStatusType.Started) {
                 Console.WriteLine("Service Controller");
-                Console.WriteLine("=============");
+                Console.WriteLine("+--------------------------------------------------------+");
                 Console.WriteLine("MonitoringSurvivedMemorySize: {0:N0} K", AppDomain.CurrentDomain.MonitoringSurvivedMemorySize / 1024);
                 Console.WriteLine("MonitoringTotalAllocatedMemorySize: {0:N0} K", AppDomain.CurrentDomain.MonitoringTotalAllocatedMemorySize / 1024);
                 Console.WriteLine("MonitoringTotalProcessorTime: {0}", AppDomain.CurrentDomain.MonitoringTotalProcessorTime);
@@ -157,12 +158,36 @@ namespace Procon.Service {
                 Console.WriteLine("");
 
                 Console.WriteLine("Service Domain");
-                Console.WriteLine("=============");
+                Console.WriteLine("+--------------------------------------------------------+");
                 Console.WriteLine("MonitoringSurvivedMemorySize: {0:N0} K", this.ServiceDomain.MonitoringSurvivedMemorySize / 1024);
                 Console.WriteLine("MonitoringTotalAllocatedMemorySize: {0:N0} K", this.ServiceDomain.MonitoringTotalAllocatedMemorySize / 1024);
                 Console.WriteLine("MonitoringTotalProcessorTime: {0}", this.ServiceDomain.MonitoringTotalProcessorTime);
-
             }
+        }
+
+        /// <summary>
+        /// Outputs some useful commands to enter.
+        /// </summary>
+        private void Help() {
+
+            Console.WriteLine("Instance Control");
+            Console.WriteLine("+---------+------+----------+--------+-------+-----------+");
+            Console.WriteLine("| Command | Save | Shutdown | Update | Start | Terminate |");
+            Console.WriteLine("+---------+------+----------+--------+-------+-----------+");
+            Console.WriteLine("| start   |  -   |    -     |   x    |   x   |     -     |");
+            Console.WriteLine("| update  |  x   |    x     |   x    |   -   |     -     |");
+            Console.WriteLine("| restart |  x   |    x     |   x    |   x   |     -     |");
+            Console.WriteLine("| stop    |  x   |    x     |   -    |   -   |     -     |");
+            Console.WriteLine("| exit    |  x   |    x     |   -    |   -   |     x     |");
+            Console.WriteLine("+---------+------+----------+--------+-------+-----------+");
+            Console.WriteLine("");
+            Console.WriteLine("Information");
+            Console.WriteLine("+---------+----------------------------------------------+");
+            Console.WriteLine("| Command | Description                                  |");
+            Console.WriteLine("+---------+----------------------------------------------+");
+            Console.WriteLine("| stats   | Statistics running on the current instance.  |");
+            Console.WriteLine("| help    | This display.                                |");
+            Console.WriteLine("+---------+----------------------------------------------+");
         }
 
         /// <summary>

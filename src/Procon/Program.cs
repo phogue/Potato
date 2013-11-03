@@ -14,8 +14,6 @@ namespace Procon {
 
             Console.WriteLine(Resources.ConsoleHeader);
             
-            System.Console.WriteLine("Type 'exit' to close this application");
-
             if (args.Length > 0) {
                 // Support for --help command?
 
@@ -25,6 +23,10 @@ namespace Procon {
             ServiceController service = new ServiceController {
                 Arguments = new List<String>(args)
             };
+
+            service.SignalMessage(new ServiceMessage() {
+                Name = "help"
+            });
 
             service.SignalMessage(new ServiceMessage() {
                 Name = "start"

@@ -24,6 +24,77 @@ namespace Procon.Core.Localization {
         public LanguageController() {
             this.Default = null;
             this.LoadedLanguageFiles = new List<Language>();
+
+            this.AppendDispatchHandlers(new Dictionary<CommandAttribute, CommandDispatchHandler>() {
+                {
+                    new CommandAttribute() {
+                        CommandType = CommandType.LanguageLocalize,
+                        ParameterTypes = new List<CommandParameterType>() {
+                            new CommandParameterType() {
+                                Name = "languageCode",
+                                Type = typeof(String)
+                            },
+                            new CommandParameterType() {
+                                Name = "namespace",
+                                Type = typeof(String)
+                            },
+                            new CommandParameterType() {
+                                Name = "name",
+                                Type = typeof(String)
+                            },
+                            new CommandParameterType() {
+                                Name = "args",
+                                Type = typeof(String),
+                                IsList = true,
+                                IsConvertable = true
+                            }
+                        }
+                    },
+                    new CommandDispatchHandler(this.Localize)
+                }, {
+                    new CommandAttribute() {
+                        CommandType = CommandType.LanguageLocalize,
+                        ParameterTypes = new List<CommandParameterType>() {
+                            new CommandParameterType() {
+                                Name = "languageCode",
+                                Type = typeof(String)
+                            },
+                            new CommandParameterType() {
+                                Name = "namespace",
+                                Type = typeof(String)
+                            },
+                            new CommandParameterType() {
+                                Name = "name",
+                                Type = typeof(String)
+                            },
+                            new CommandParameterType() {
+                                Name = "arg",
+                                Type = typeof(String)
+                            }
+                        }
+                    },
+                    new CommandDispatchHandler(this.SingleParameterLocalize)
+                }, {
+                    new CommandAttribute() {
+                        CommandType = CommandType.LanguageLocalize,
+                        ParameterTypes = new List<CommandParameterType>() {
+                            new CommandParameterType() {
+                                Name = "languageCode",
+                                Type = typeof(String)
+                            },
+                            new CommandParameterType() {
+                                Name = "namespace",
+                                Type = typeof(String)
+                            },
+                            new CommandParameterType() {
+                                Name = "name",
+                                Type = typeof(String)
+                            }
+                        }
+                    },
+                    new CommandDispatchHandler(this.ParameterlessLocalize)
+                }
+            });
         }
 
         /// <summary>
@@ -95,13 +166,19 @@ namespace Procon.Core.Localization {
         /// found.
         /// </summary>
         /// <param name="command"></param>
-        /// <param name="languageCode">The ietf language tag.</param>
-        /// <param name="namespace">The namespace to limit the search for the name to.</param>
-        /// <param name="name">The name representing the localized string.</param>
-        /// <param name="args">Arguments to use in String.Format() for the value obtained by name.</param>
+        /// <param name="parameters"></param>
         /// <returns></returns>
-        [CommandAttribute(CommandType = CommandType.LanguageLocalize)]
-        public CommandResultArgs Localize(Command command, String languageCode, String @namespace, String name, List<String> args) {
+        public CommandResultArgs Localize(Command command, Dictionary<String, CommandParameter> parameters) {
+
+            // <param name="languageCode">The ietf language tag.</param>
+            // <param name="namespace">The namespace to limit the search for the name to.</param>
+            // <param name="name">The name representing the localized string.</param>
+            // <param name="args">Arguments to use in String.Format() for the value obtained by name.</param>
+            String languageCode = parameters["languageCode"].First<String>();
+            String @namespace = parameters["namespace"].First<String>();
+            String name = parameters["name"].First<String>();
+            List<String> args = parameters["args"].All<String>();
+
             return this.Localize(command, languageCode, @namespace, name, args.Select(arg => (Object)arg).ToArray());
         }
 
@@ -117,7 +194,6 @@ namespace Procon.Core.Localization {
         /// <param name="name">The name representing the localized string.</param>
         /// <param name="args">Arguments to use in String.Format() for the value obtained by name.</param>
         /// <returns></returns>
-        [CommandAttribute(CommandType = CommandType.LanguageLocalize)]
         public CommandResultArgs Localize(Command command, String languageCode, String @namespace, String name, Object[] args) {
             CommandResultArgs result = null;
 
@@ -150,16 +226,31 @@ namespace Procon.Core.Localization {
             return result;
         }
 
+        public CommandResultArgs SingleParameterLocalize(Command command, Dictionary<String, CommandParameter> parameters) {
+            String languageCode = parameters["languageCode"].First<String>();
+            String @namespace = parameters["namespace"].First<String>();
+            String name = parameters["name"].First<String>();
+            String arg = parameters["arg"].First<String>();
+
+            return this.Localize(command, languageCode, @namespace, name, new object[] { arg });
+        }
+
         /// <summary>
         /// Proxy for the localization command, but allows for no parameters to be passed.
         /// </summary>
         /// <param name="command"></param>
-        /// <param name="languageCode">The ietf language tag.</param>
-        /// <param name="namespace">The namespace to limit the search for the name to.</param>
-        /// <param name="name">The name representing the localized string.</param>
+        /// <param name="parameters"></param>
         /// <returns></returns>
-        [CommandAttribute(CommandType = CommandType.LanguageLocalize)]
-        public CommandResultArgs Localize(Command command, String languageCode, String @namespace, String name) {
+        public CommandResultArgs ParameterlessLocalize(Command command, Dictionary<String, CommandParameter> parameters) {
+
+            // <param name="languageCode">The ietf language tag.</param>
+            // <param name="namespace">The namespace to limit the search for the name to.</param>
+            // <param name="name">The name representing the localized string.</param>
+            // <param name="args">Arguments to use in String.Format() for the value obtained by name.</param>
+            String languageCode = parameters["languageCode"].First<String>();
+            String @namespace = parameters["namespace"].First<String>();
+            String name = parameters["name"].First<String>();
+
             return this.Localize(command, languageCode, @namespace, name, new object[] { });
         }
 

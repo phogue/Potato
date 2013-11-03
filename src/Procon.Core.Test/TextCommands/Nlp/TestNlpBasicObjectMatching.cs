@@ -65,7 +65,18 @@ namespace Procon.Core.Test.TextCommands.Nlp {
             CommandResultArgs result = this.CreateTextCommandController().ExecuteTextCommand(new Command() {
                 Username = "Phogue",
                 Origin = CommandOrigin.Local
-            }, "kcik phogue");
+            }, new Dictionary<string, CommandParameter>() {
+                { 
+                    "text", 
+                    new CommandParameter() {
+                        Data = {
+                            Content = new List<string>() {
+                                "kcik phogue"
+                            }
+                        }
+                    }
+                }
+            });
 
             // No event should be fired. The command has a much lower tolerance for typos (good thing)
             Assert.IsNull(result, "Argument has passed, but should have failed due to severe typo in command");
@@ -76,7 +87,18 @@ namespace Procon.Core.Test.TextCommands.Nlp {
             CommandResultArgs result = this.CreateTextCommandController().ExecuteTextCommand(new Command() {
                 Username = "Phogue",
                 Origin = CommandOrigin.Local
-            }, "kik phogue");
+            }, new Dictionary<string, CommandParameter>() {
+                { 
+                    "text", 
+                    new CommandParameter() {
+                        Data = {
+                            Content = new List<string>() {
+                                "kik phogue"
+                            }
+                        }
+                    }
+                }
+            });
 
             // No event should be fired. The command has a much lower tolerance for typos (good thing)
             Assert.IsNull(result, "Argument has passed, but should have failed due to severe typo in command");
@@ -100,7 +122,18 @@ namespace Procon.Core.Test.TextCommands.Nlp {
             CommandResultArgs result = this.CreateTextCommandController().ExecuteTextCommand(new Command() {
                 Username = "Phogue",
                 Origin = CommandOrigin.Local
-            }, "getch rids of phogue");
+            }, new Dictionary<string, CommandParameter>() {
+                { 
+                    "text", 
+                    new CommandParameter() {
+                        Data = {
+                            Content = new List<string>() {
+                                "getch rids of phogue"
+                            }
+                        }
+                    }
+                }
+            });
 
             // No event should be fired. The command has a much lower tolerance for typos (good thing)
             Assert.IsNull(result, "Argument has passed, but should have failed due to severe typo in command");

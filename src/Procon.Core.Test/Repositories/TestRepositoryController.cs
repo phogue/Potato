@@ -27,13 +27,40 @@ namespace Procon.Core.Test.Repositories {
         public void TestRepositoryControllerWriteConfig() {
             RepositoryController repository = new RepositoryController();
 
-            repository.AddRemoteRepository(new Command() {
-                Origin = CommandOrigin.Local
-            }, "http://localhost/");
+            repository.Execute(new Command() {
+                CommandType = CommandType.PackagesAddRemoteRepository,
+                Origin = CommandOrigin.Local,
+                Parameters = new List<CommandParameter>() {
+                    new CommandParameter() {
+                        Data = {
+                            Content = new List<String>() {
+                                "http://localhost/"
+                            }
+                        }
+                    }
+                }
+            });
 
-            repository.IgnoreAutomaticUpdatePackage(new Command() {
-                Origin = CommandOrigin.Local
-            }, "localhost", "packageUid");
+            repository.Execute(new Command() {
+                CommandType = CommandType.PackagesIngoreAutomaticUpdateOnPackage,
+                Origin = CommandOrigin.Local,
+                Parameters = new List<CommandParameter>() {
+                    new CommandParameter() {
+                        Data = {
+                            Content = new List<String>() {
+                                "localhost"
+                            }
+                        }
+                    },
+                    new CommandParameter() {
+                        Data = {
+                            Content = new List<String>() {
+                                "packageUid"
+                            }
+                        }
+                    }
+                }
+            });
 
             // Save a config of the language controller
             Config saveConfig = new Config();

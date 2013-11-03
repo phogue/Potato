@@ -38,6 +38,7 @@ namespace Procon.Core.Test.ExecutableCommands {
             ExecutableOverrideTester tester = new ExecutableOverrideTester() {
                 TestNumber = 0
             };
+
             tester.Execute(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.VariablesSet,

@@ -37,6 +37,54 @@ namespace Procon.Core.Connections.TextCommands {
         public TextCommandController() {
             this.TextCommands = new List<TextCommand>();
             this.LinqParameterMappings = new Dictionary<Type, LinqParameterMapping>();
+
+            this.AppendDispatchHandlers(new Dictionary<CommandAttribute, CommandDispatchHandler>() {
+                {
+                    new CommandAttribute() {
+                        CommandType = CommandType.TextCommandsExecute,
+                        ParameterTypes = new List<CommandParameterType>() {
+                            new CommandParameterType() {
+                                Name = "text",
+                                Type = typeof(String)
+                            }
+                        }
+                    },
+                    new CommandDispatchHandler(this.ExecuteTextCommand)
+                }, {
+                    new CommandAttribute() {
+                        CommandType = CommandType.TextCommandsPreview,
+                        ParameterTypes = new List<CommandParameterType>() {
+                            new CommandParameterType() {
+                                Name = "text",
+                                Type = typeof(String)
+                            }
+                        }
+                    },
+                    new CommandDispatchHandler(this.PreviewTextCommand)
+                }, {
+                    new CommandAttribute() {
+                        CommandType = CommandType.TextCommandsRegister,
+                        ParameterTypes = new List<CommandParameterType>() {
+                            new CommandParameterType() {
+                                Name = "textCommand",
+                                Type = typeof(TextCommand)
+                            }
+                        }
+                    },
+                    new CommandDispatchHandler(this.RegisterTextCommand)
+                }, {
+                    new CommandAttribute() {
+                        CommandType = CommandType.TextCommandsUnregister,
+                        ParameterTypes = new List<CommandParameterType>() {
+                            new CommandParameterType() {
+                                Name = "textCommand",
+                                Type = typeof(TextCommand)
+                            }
+                        }
+                    },
+                    new CommandDispatchHandler(this.UnregisterTextCommand)
+                }
+            });
         }
 
         public override ExecutableBase Execute() {
@@ -170,11 +218,12 @@ namespace Procon.Core.Connections.TextCommands {
         /// Parses then fires an event to execute a text command
         /// </summary>
         /// <param name="command"></param>
-        /// <param name="text"></param>
+        /// <param name="parameters"></param>
         /// <returns>The generated event, if any.</returns>
-        [CommandAttribute(CommandType = CommandType.TextCommandsExecute)]
-        public CommandResultArgs ExecuteTextCommand(Command command, String text) {
+        public CommandResultArgs ExecuteTextCommand(Command command, Dictionary<String, CommandParameter> parameters) {
             CommandResultArgs result = null;
+
+            String text = parameters["text"].First<String>();
 
             if (this.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
                 Account speakerAccount = this.Security.GetAccount(command);
@@ -198,11 +247,12 @@ namespace Procon.Core.Connections.TextCommands {
         /// Essentially does everything that parsing does, but fires a different event.
         /// </summary>
         /// <param name="command"></param>
-        /// <param name="text"></param>
+        /// <param name="parameters"></param>
         /// <returns>The generated event, if any.</returns>
-        [CommandAttribute(CommandType = CommandType.TextCommandsPreview)]
-        public CommandResultArgs PreviewTextCommand(Command command, String text) {
+        public CommandResultArgs PreviewTextCommand(Command command, Dictionary<String, CommandParameter> parameters) {
             CommandResultArgs result = null;
+
+            String text = parameters["text"].First<String>();
 
             if (this.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
                 Account speakerAccount = this.Security.GetAccount(command);
@@ -224,11 +274,12 @@ namespace Procon.Core.Connections.TextCommands {
         /// Register a text command with this controller
         /// </summary>
         /// <param name="command"></param>
-        /// <param name="textCommand"></param>
+        /// <param name="parameters"></param>
         /// <returns></returns>
-        [CommandAttribute(CommandType = CommandType.TextCommandsRegister)]
-        public CommandResultArgs RegisterTextCommand(Command command, TextCommand textCommand) {
+        public CommandResultArgs RegisterTextCommand(Command command, Dictionary<String, CommandParameter> parameters) {
             CommandResultArgs result = null;
+
+            TextCommand textCommand = parameters["textCommand"].First<TextCommand>();
 
             if (this.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
                 TextCommand existingRegisteredCommand = this.TextCommands.Find(existingCommand => existingCommand.PluginUid == textCommand.PluginUid && existingCommand.PluginCommand == textCommand.PluginCommand);
@@ -273,11 +324,12 @@ namespace Procon.Core.Connections.TextCommands {
         /// 
         /// </summary>
         /// <param name="command"></param>
-        /// <param name="textCommand"></param>
+        /// <param name="parameters"></param>
         /// <returns></returns>
-        [CommandAttribute(CommandType = CommandType.TextCommandsUnregister)]
-        public CommandResultArgs UnregisterTextCommand(Command command, TextCommand textCommand) {
+        public CommandResultArgs UnregisterTextCommand(Command command, Dictionary<String, CommandParameter> parameters) {
             CommandResultArgs result = null;
+
+            TextCommand textCommand = parameters["textCommand"].First<TextCommand>();
 
             if (this.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
                 TextCommand existingRegisteredCommand = this.TextCommands.Find(existingCommand => existingCommand.PluginUid == textCommand.PluginUid && existingCommand.PluginCommand == textCommand.PluginCommand);

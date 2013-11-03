@@ -1,10 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Web;
-using Procon.Core.Events;
 using Procon.Net.Protocols.Objects;
 using Procon.Net.Utils.HTTP;
 
@@ -14,8 +9,31 @@ namespace TestPlugin.Tests {
 
     public class TestPluginsWebUi : ExecutableBase {
 
-        [CommandAttribute(Name = "TestPlugin/index")]
-        protected CommandResultArgs TestPluginWebUiIndex(Command command, String name, int score) {
+        public TestPluginsWebUi() : base() {
+            this.AppendDispatchHandlers(new Dictionary<CommandAttribute, CommandDispatchHandler>() {
+                {
+                    new CommandAttribute() {
+                        Name = "TestPlugin/index",
+                        ParameterTypes = new List<CommandParameterType>() {
+                            new CommandParameterType() {
+                                Name = "name",
+                                Type = typeof(String)
+                            },
+                            new CommandParameterType() {
+                                Name = "score",
+                                Type = typeof(int)
+                            }
+                        }
+                    },
+                    new CommandDispatchHandler(this.TestPluginWebUiIndex)
+                }
+            });
+        }
+
+        protected CommandResultArgs TestPluginWebUiIndex(Command command, Dictionary<String, CommandParameter> parameters) {
+            String name = parameters["name"].First<String>();
+            int score = parameters["score"].First<int>();
+
             Player player = new Player() {
                 Name = name,
                 Score = score

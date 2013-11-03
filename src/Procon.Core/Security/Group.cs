@@ -48,6 +48,59 @@ namespace Procon.Core.Security {
                     this.Permissions.Add(new Permission() { CommandType = name });
                 }
             }
+
+            this.AppendDispatchHandlers(new Dictionary<CommandAttribute, CommandDispatchHandler>() {
+                {
+                    new CommandAttribute() {
+                        CommandType = CommandType.SecurityGroupSetPermission,
+                        ParameterTypes = new List<CommandParameterType>() {
+                            new CommandParameterType() {
+                                Name = "groupName",
+                                Type = typeof(String)
+                            },
+                            new CommandParameterType() {
+                                Name = "permissionName",
+                                Type = typeof(String)
+                            },
+                            new CommandParameterType() {
+                                Name = "authority",
+                                Type = typeof(int)
+                            }
+                        }
+                    },
+                    new CommandDispatchHandler(this.SetPermission)
+                }, {
+                    new CommandAttribute() {
+                        CommandType = CommandType.SecurityGroupCopyPermissions,
+                        ParameterTypes = new List<CommandParameterType>() {
+                            new CommandParameterType() {
+                                Name = "sourceGroupName",
+                                Type = typeof(String)
+                            },
+                            new CommandParameterType() {
+                                Name = "destinationGroupName",
+                                Type = typeof(String)
+                            }
+                        }
+                    },
+                    new CommandDispatchHandler(this.CopyPermissions)
+                }, {
+                    new CommandAttribute() {
+                        CommandType = CommandType.SecurityGroupAddAccount,
+                        ParameterTypes = new List<CommandParameterType>() {
+                            new CommandParameterType() {
+                                Name = "groupName",
+                                Type = typeof(String)
+                            },
+                            new CommandParameterType() {
+                                Name = "username",
+                                Type = typeof(String)
+                            }
+                        }
+                    },
+                    new CommandDispatchHandler(this.AddAccount)
+                }
+            });
         }
 
         #region Executable
@@ -149,13 +202,14 @@ namespace Procon.Core.Security {
         /// Sets a permission on the current group, provided the groupName parameter matches this group.
         /// </summary>
         /// <param name="command"></param>
-        /// <param name="groupName"></param>
-        /// <param name="permissionName"></param>
-        /// <param name="authority"></param>
+        /// <param name="parameters"></param>
         /// <returns></returns>
-        [CommandAttribute(CommandType = CommandType.SecurityGroupSetPermission)]
-        public CommandResultArgs SetPermission(Command command, String groupName, String permissionName, int authority) {
+        public CommandResultArgs SetPermission(Command command, Dictionary<String, CommandParameter> parameters) {
             CommandResultArgs result = null;
+
+            String groupName = parameters["groupName"].First<String>();
+            String permissionName = parameters["permissionName"].First<String>();
+            int authority = parameters["authority"].First<int>();
 
             if (this.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
                 if (this.Name == groupName) {
@@ -213,12 +267,13 @@ namespace Procon.Core.Security {
         /// Copies the permissions from one group to this group.
         /// </summary>
         /// <param name="command"></param>
-        /// <param name="sourceGroupName"></param>
-        /// <param name="destinationGroupName"></param>
+        /// <param name="parameters"></param>
         /// <returns></returns>
-        [CommandAttribute(CommandType = CommandType.SecurityGroupCopyPermissions)]
-        public CommandResultArgs CopyPermissions(Command command, String sourceGroupName, String destinationGroupName) {
+        public CommandResultArgs CopyPermissions(Command command, Dictionary<String, CommandParameter> parameters) {
             CommandResultArgs result = null;
+
+            String sourceGroupName = parameters["sourceGroupName"].First<String>();
+            String destinationGroupName = parameters["destinationGroupName"].First<String>();
 
             if (this.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
                 if (this.Name == destinationGroupName) {
@@ -276,9 +331,11 @@ namespace Procon.Core.Security {
         /// <summary>
         /// Creates a new account if the specified name is unique.
         /// </summary>
-        [CommandAttribute(CommandType = CommandType.SecurityGroupAddAccount)]
-        public CommandResultArgs AddAccount(Command command, String groupName, String username) {
+        public CommandResultArgs AddAccount(Command command, Dictionary<String, CommandParameter> parameters) { // , String groupName, String username) {
             CommandResultArgs result = null;
+
+            String groupName = parameters["groupName"].First<String>();
+            String username = parameters["username"].First<String>();
 
             if (this.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
                 if (this.Name == groupName) {

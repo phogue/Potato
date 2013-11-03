@@ -100,6 +100,86 @@ namespace Procon.Core {
                     }
                 }
             ).Tick += new Task.TickHandler(Daemon_Tick);
+
+
+            this.AppendDispatchHandlers(new Dictionary<CommandAttribute, CommandDispatchHandler>() {
+                {
+                    new CommandAttribute() {
+                        CommandType = CommandType.InstanceServiceRestart
+                    },
+                    new CommandDispatchHandler(this.InstanceServiceRestart)
+                }, {
+                    new CommandAttribute() {
+                        CommandType = CommandType.InstanceAddConnection,
+                        ParameterTypes = new List<CommandParameterType>() {
+                            new CommandParameterType() {
+                                Name = "gameTypeProvider",
+                                Type = typeof(String)
+                            },
+                            new CommandParameterType() {
+                                Name = "gameTypeType",
+                                Type = typeof(String)
+                            },
+                            new CommandParameterType() {
+                                Name = "hostName",
+                                Type = typeof(String)
+                            },
+                            new CommandParameterType() {
+                                Name = "port",
+                                Type = typeof(UInt16)
+                            },
+                            new CommandParameterType() {
+                                Name = "password",
+                                Type = typeof(String)
+                            },
+                            new CommandParameterType() {
+                                Name = "additional",
+                                Type = typeof(String)
+                            }
+                        }
+                    },
+                    new CommandDispatchHandler(this.InstanceAddConnection)
+                }, {
+                    new CommandAttribute() {
+                        CommandType = CommandType.InstanceRemoveConnection,
+                        ParameterTypes = new List<CommandParameterType>() {
+                            new CommandParameterType() {
+                                Name = "connectionGuid",
+                                Type = typeof(String)
+                            }
+                        }
+                    },
+                    new CommandDispatchHandler(this.InstanceRemoveConnectionByGuid)
+                }, {
+                    new CommandAttribute() {
+                        CommandType = CommandType.InstanceRemoveConnection,
+                        ParameterTypes = new List<CommandParameterType>() {
+                            new CommandParameterType() {
+                                Name = "gameTypeProvider",
+                                Type = typeof(String)
+                            },
+                            new CommandParameterType() {
+                                Name = "gameTypeType",
+                                Type = typeof(String)
+                            },
+                            new CommandParameterType() {
+                                Name = "hostName",
+                                Type = typeof(String)
+                            },
+                            new CommandParameterType() {
+                                Name = "port",
+                                Type = typeof(UInt16)
+                            }
+                        }
+                    },
+                    new CommandDispatchHandler(this.InstanceRemoveConnectionByDetails)
+                }, {
+                    new CommandAttribute() {
+                        CommandType = CommandType.InstanceQuery
+                    },
+                    new CommandDispatchHandler(this.InstanceQuery)
+                }
+            });
         }
 
         /// <summary>
@@ -386,9 +466,9 @@ namespace Procon.Core {
         /// Posts a restart signal for the service controller to poll.
         /// </summary>
         /// <param name="command"></param>
+        /// <param name="parameters"></param>
         /// <returns></returns>
-        [CommandAttribute(CommandType = CommandType.InstanceServiceRestart)]
-        public CommandResultArgs InstanceAddConnection(Command command) {
+        public CommandResultArgs InstanceServiceRestart(Command command, Dictionary<String, CommandParameter> parameters) {
             CommandResultArgs result = null;
 
             // As long as the current account is allowed to execute this command...
@@ -416,15 +496,16 @@ namespace Procon.Core {
         /// Add a connection to this instance.
         /// </summary>
         /// <param name="command"></param>
-        /// <param name="gameTypeProvider"></param>
-        /// <param name="gameTypeType"></param>
-        /// <param name="hostName"></param>
-        /// <param name="port"></param>
-        /// <param name="password"></param>
-        /// <param name="additional"></param>
-        [CommandAttribute(CommandType = CommandType.InstanceAddConnection)]
-        public CommandResultArgs InstanceAddConnection(Command command, String gameTypeProvider, String gameTypeType, String hostName, UInt16 port, String password, String additional = "") {
+        /// <param name="parameters"></param>
+        public CommandResultArgs InstanceAddConnection(Command command, Dictionary<String, CommandParameter> parameters) {
             CommandResultArgs result = null;
+
+            String gameTypeProvider = parameters["gameTypeProvider"].First<String>();
+            String gameTypeType = parameters["gameTypeType"].First<String>();
+            String hostName = parameters["hostName"].First<String>();
+            UInt16 port = parameters["port"].First<UInt16>();
+            String password = parameters["password"].First<String>();
+            String additional = parameters["additional"].First<String>();
 
             // As long as the current account is allowed to execute this command...
             if (this.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
@@ -546,10 +627,11 @@ namespace Procon.Core {
         /// Proxy to the expanded remove connction method, but only accepts a connectionGuid.
         /// </summary>
         /// <param name="command"></param>
-        /// <param name="connectionGuid"></param>
+        /// <param name="parameters"></param>
         /// <returns></returns>
-        [CommandAttribute(CommandType = CommandType.InstanceRemoveConnection)]
-        public CommandResultArgs InstanceRemoveConnection(Command command, String connectionGuid) {
+        public CommandResultArgs InstanceRemoveConnectionByGuid(Command command, Dictionary<String, CommandParameter> parameters) {
+            String connectionGuid = parameters["connectionGuid"].First<String>();
+
             Connection connection = this.Connections.FirstOrDefault(x => String.Compare(x.ConnectionGuid.ToString(), connectionGuid, StringComparison.OrdinalIgnoreCase) == 0);
 
             return this.InstanceRemoveConnection(command, connection);
@@ -559,12 +641,13 @@ namespace Procon.Core {
         /// Removes a connection from this instance.
         /// </summary>
         /// <param name="command"></param>
-        /// <param name="gameTypeType"></param>
-        /// <param name="hostName"></param>
-        /// <param name="port"></param>
-        /// <param name="gameTypeProvider"></param>
-        [CommandAttribute(CommandType = CommandType.InstanceRemoveConnection)]
-        public CommandResultArgs InstanceRemoveConnection(Command command, String gameTypeProvider, String gameTypeType, String hostName, UInt16 port) {
+        /// <param name="parameters"></param>
+        public CommandResultArgs InstanceRemoveConnectionByDetails(Command command, Dictionary<String, CommandParameter> parameters) {
+            String gameTypeProvider = parameters["gameTypeProvider"].First<String>();
+            String gameTypeType = parameters["gameTypeType"].First<String>();
+            String hostName = parameters["hostName"].First<String>();
+            UInt16 port = parameters["port"].First<UInt16>();
+
             Connection connection = this.Connections.FirstOrDefault(c => 
                 c.ProtocolProvider == gameTypeProvider && 
                 c.GameType == gameTypeType && 
@@ -575,8 +658,7 @@ namespace Procon.Core {
             return this.InstanceRemoveConnection(command, connection);
         }
 
-        [CommandAttribute(CommandType = CommandType.InstanceQuery)]
-        public CommandResultArgs InstanceQuery(Command command) {
+        public CommandResultArgs InstanceQuery(Command command, Dictionary<String, CommandParameter> parameters) {
             CommandResultArgs result = null;
 
             if (this.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {

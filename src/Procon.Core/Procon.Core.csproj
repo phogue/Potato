@@ -70,6 +70,7 @@
     <Compile Include="CommandAttributeType.cs" />
     <Compile Include="CommandParameter.cs" />
     <Compile Include="CommandData.cs" />
+    <Compile Include="CommandParameterType.cs" />
     <Compile Include="CommandScope.cs" />
     <Compile Include="CommandType.cs" />
     <Compile Include="CommandOrigin.cs" />

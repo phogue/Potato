@@ -214,7 +214,18 @@ namespace Procon.Core.Test.TextCommands.Nlp {
             CommandResultArgs result = textCommandController.ExecuteTextCommand(new Command() {
                 Username = username,
                 Origin = CommandOrigin.Local
-            }, command);
+            }, new Dictionary<string, CommandParameter>() {
+                { 
+                    "text", 
+                    new CommandParameter() {
+                        Data = {
+                            Content = new List<string>() {
+                                command
+                            }
+                        }
+                    }
+                }
+            });
             
             return result;
         }

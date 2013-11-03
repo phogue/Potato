@@ -53,6 +53,89 @@ namespace Procon.Core.Security {
             this.PasswordHash = String.Empty;
             this.PreferredLanguageCode = String.Empty;
             this.Players = new List<AccountPlayer>();
+
+            this.AppendDispatchHandlers(new Dictionary<CommandAttribute, CommandDispatchHandler>() {
+                {
+                    new CommandAttribute() {
+                        CommandType = CommandType.SecurityAccountAddPlayer,
+                        ParameterTypes = new List<CommandParameterType>() {
+                            new CommandParameterType() {
+                                Name = "username",
+                                Type = typeof(String)
+                            },
+                            new CommandParameterType() {
+                                Name = "gameType",
+                                Type = typeof(String)
+                            },
+                            new CommandParameterType() {
+                                Name = "uid",
+                                Type = typeof(String)
+                            }
+                        }
+                    },
+                    new CommandDispatchHandler(this.AddPlayer)
+                }, {
+                    new CommandAttribute() {
+                        CommandType = CommandType.SecurityAccountSetPassword,
+                        ParameterTypes = new List<CommandParameterType>() {
+                            new CommandParameterType() {
+                                Name = "username",
+                                Type = typeof(String)
+                            },
+                            new CommandParameterType() {
+                                Name = "password",
+                                Type = typeof(String)
+                            }
+                        }
+                    },
+                    new CommandDispatchHandler(this.SetPassword)
+                }, {
+                    new CommandAttribute() {
+                        CommandType = CommandType.SecurityAccountSetPasswordHash,
+                        ParameterTypes = new List<CommandParameterType>() {
+                            new CommandParameterType() {
+                                Name = "username",
+                                Type = typeof(String)
+                            },
+                            new CommandParameterType() {
+                                Name = "passwordHash",
+                                Type = typeof(String)
+                            }
+                        }
+                    },
+                    new CommandDispatchHandler(this.SetPasswordHash)
+                }, {
+                    new CommandAttribute() {
+                        CommandType = CommandType.SecurityAccountAuthenticate,
+                        ParameterTypes = new List<CommandParameterType>() {
+                            new CommandParameterType() {
+                                Name = "username",
+                                Type = typeof(String)
+                            },
+                            new CommandParameterType() {
+                                Name = "passwordPlainText",
+                                Type = typeof(String)
+                            }
+                        }
+                    },
+                    new CommandDispatchHandler(this.Authenticate)
+                }, {
+                    new CommandAttribute() {
+                        CommandType = CommandType.SecurityAccountSetPreferredLanguageCode,
+                        ParameterTypes = new List<CommandParameterType>() {
+                            new CommandParameterType() {
+                                Name = "username",
+                                Type = typeof(String)
+                            },
+                            new CommandParameterType() {
+                                Name = "languageCode",
+                                Type = typeof(String)
+                            }
+                        }
+                    },
+                    new CommandDispatchHandler(this.SetPreferredLanguageCode)
+                }
+            });
         }
 
         #region Executable
@@ -152,18 +235,22 @@ namespace Procon.Core.Security {
         }
 
         #endregion
-                
+
         /// <summary>
         /// procon.private.account.assign "Phogue" "CallOfDuty" "101478382" -- guid
         /// procon.private.account.assign "Phogue" "BFBC2" "ABCDABCDABCD" -- cdkey
         /// </summary>
         /// <param name="command"></param>
-        /// <param name="username">The unique name of the account.  Account.Name</param>
-        /// <param name="gameType">The name of the game, found in Procon.Core.Connections.Support</param>
-        /// <param name="uid">The UID of the player by cd key, name - etc.</param>
-        [CommandAttribute(CommandType = CommandType.SecurityAccountAddPlayer)]
-        public CommandResultArgs AddPlayer(Command command, String username, String gameType, String uid) {
+        /// <param name="parameters"></param>
+        public CommandResultArgs AddPlayer(Command command, Dictionary<String, CommandParameter> parameters) {
             CommandResultArgs result = null;
+
+            // <param name="username">The unique name of the account.  Account.Name</param>
+            // <param name="gameType">The name of the game, found in Procon.Core.Connections.Support</param>
+            // <param name="uid">The UID of the player by cd key, name - etc.</param>
+            String username = parameters["username"].First<String>();
+            String gameType = parameters["gameType"].First<String>();
+            String uid = parameters["uid"].First<String>();
 
             if (this.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
                 if (this.Username == username) {
@@ -268,11 +355,14 @@ namespace Procon.Core.Security {
         /// procon.private.account.setPassword "Hassan" "password1"
         /// </summary>
         /// <param name="command"></param>
-        /// <param name="username">The unique name of the account.  Account.Name</param>
-        /// <param name="password">The person password to login to the layer.  Account.Password</param>
-        [CommandAttribute(CommandType = CommandType.SecurityAccountSetPassword)]
-        public CommandResultArgs SetPassword(Command command, String username, String password) {
+        /// <param name="parameters"></param>
+        public CommandResultArgs SetPassword(Command command, Dictionary<String, CommandParameter> parameters) {
             CommandResultArgs result = null;
+
+            // <param name="username">The unique name of the account.  Account.Name</param>
+            // <param name="password">The person password to login to the layer.  Account.Password</param>
+            String username = parameters["username"].First<String>();
+            String password = parameters["password"].First<String>();
 
             if (this.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
                 if (this.Username == username) {
@@ -310,12 +400,13 @@ namespace Procon.Core.Security {
         /// Sets the password hash without any other processing. Used when loading from a config.
         /// </summary>
         /// <param name="command"></param>
-        /// <param name="username"></param>
-        /// <param name="passwordHash"></param>
+        /// <param name="parameters"></param>
         /// <returns></returns>
-        [CommandAttribute(CommandType = CommandType.SecurityAccountSetPasswordHash)]
-        public CommandResultArgs SetPasswordHash(Command command, String username, String passwordHash) {
+        public CommandResultArgs SetPasswordHash(Command command, Dictionary<String, CommandParameter> parameters) {
             CommandResultArgs result = null;
+
+            String username = parameters["username"].First<String>();
+            String passwordHash = parameters["passwordHash"].First<String>();
 
             if (this.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
                 if (this.Username == username) {
@@ -353,12 +444,13 @@ namespace Procon.Core.Security {
         /// Authenticates an account
         /// </summary>
         /// <param name="command"></param>
-        /// <param name="username"></param>
-        /// <param name="passwordPlainText"></param>
+        /// <param name="parameters"></param>
         /// <returns></returns>
-        [CommandAttribute(CommandType = CommandType.SecurityAccountAuthenticate)]
-        public CommandResultArgs Authenticate(Command command, String username, String passwordPlainText) {
+        public CommandResultArgs Authenticate(Command command, Dictionary<String, CommandParameter> parameters) {
             CommandResultArgs result = null;
+
+            String username = parameters["username"].First<String>();
+            String passwordPlainText = parameters["passwordPlainText"].First<String>();
 
             if (this.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
                 if (this.Username == username) {
@@ -403,11 +495,14 @@ namespace Procon.Core.Security {
         /// procon.private.account.setPreferredLanguageCode "Phogue" "en"
         /// </summary>
         /// <param name="command"></param>
-        /// <param name="username">The unique name of the account.  Account.Name</param>
-        /// <param name="languageCode">ISO 639-1 preferred language code</param>
-        [CommandAttribute(CommandType = CommandType.SecurityAccountSetPreferredLanguageCode)]
-        public CommandResultArgs SetPreferredLanguageCode(Command command, String username, String languageCode) {
+        /// <param name="parameters"></param>
+        public CommandResultArgs SetPreferredLanguageCode(Command command, Dictionary<String, CommandParameter> parameters) {
             CommandResultArgs result = null;
+
+            // <param name="username">The unique name of the account.  Account.Name</param>
+            // <param name="languageCode">ISO 639-1 preferred language code</param>
+            String username = parameters["username"].First<String>();
+            String languageCode = parameters["languageCode"].First<String>();
 
             if (this.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
                 if (this.Username == username) {

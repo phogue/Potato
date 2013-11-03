@@ -121,6 +121,77 @@ namespace Procon.Core.Repositories {
             this.Packages = new List<FlatPackedPackage>();
 
             this.CachedAutoUpdateReferences = new List<RepositoryPackageReference>();
+
+            this.AppendDispatchHandlers(new Dictionary<CommandAttribute, CommandDispatchHandler>() {
+                {
+                    new CommandAttribute() {
+                        CommandType = CommandType.PackagesInstallPackage,
+                        ParameterTypes = new List<CommandParameterType>() {
+                            new CommandParameterType() {
+                                Name = "urlSlug",
+                                Type = typeof(String)
+                            },
+                            new CommandParameterType() {
+                                Name = "packageUid",
+                                Type = typeof(String)
+                            }
+                        }
+                    },
+                    new CommandDispatchHandler(this.InstallPackage)
+                }, {
+                    new CommandAttribute() {
+                        CommandType = CommandType.PackagesAddRemoteRepository,
+                        ParameterTypes = new List<CommandParameterType>() {
+                            new CommandParameterType() {
+                                Name = "url",
+                                Type = typeof(String)
+                            }
+                        }
+                    },
+                    new CommandDispatchHandler(this.AddRemoteRepository)
+                }, {
+                    new CommandAttribute() {
+                        CommandType = CommandType.PackagesRemoveRemoteRepository,
+                        ParameterTypes = new List<CommandParameterType>() {
+                            new CommandParameterType() {
+                                Name = "urlSlug",
+                                Type = typeof(String)
+                            }
+                        }
+                    },
+                    new CommandDispatchHandler(this.RemoveRemoteRepository)
+                }, {
+                    new CommandAttribute() {
+                        CommandType = CommandType.PackagesIngoreAutomaticUpdateOnPackage,
+                        ParameterTypes = new List<CommandParameterType>() {
+                            new CommandParameterType() {
+                                Name = "urlSlug",
+                                Type = typeof(String)
+                            },
+                            new CommandParameterType() {
+                                Name = "packageUid",
+                                Type = typeof(String)
+                            }
+                        }
+                    },
+                    new CommandDispatchHandler(this.IgnoreAutomaticUpdatePackage)
+                }, {
+                    new CommandAttribute() {
+                        CommandType = CommandType.PackagesAutomaticUpdateOnPackage,
+                        ParameterTypes = new List<CommandParameterType>() {
+                            new CommandParameterType() {
+                                Name = "urlSlug",
+                                Type = typeof(String)
+                            },
+                            new CommandParameterType() {
+                                Name = "packageUid",
+                                Type = typeof(String)
+                            }
+                        }
+                    },
+                    new CommandDispatchHandler(this.AllowAutomaticUpdatePackage)
+                }
+            });
         }
 
         protected void LoadLocalRepository(List<Repository> target, String directory) {
@@ -168,7 +239,15 @@ namespace Procon.Core.Repositories {
             // Add the default repository if its not there already
             this.AddRemoteRepository(new Command() {
                 Origin = CommandOrigin.Local
-            }, this.Variables.Get<String>(CommonVariableNames.PackagesProcon2RepositoryUrl));
+            }, new Dictionary<string, CommandParameter>() {
+                { "url", new CommandParameter() {
+                    Data = new CommandData() {
+                        Content = new List<String>() {
+                            this.Variables.Get<String>(CommonVariableNames.PackagesProcon2RepositoryUrl)
+                        }
+                    }
+                }}
+            });
 
             return base.Execute();
         }
@@ -203,9 +282,11 @@ namespace Procon.Core.Repositories {
         /// <summary>
         /// Attempts to install the package on the given interface that is running the local version.
         /// </summary>
-        [CommandAttribute(CommandType = CommandType.PackagesInstallPackage)]
-        public CommandResultArgs InstallPackage(Command command, String urlSlug, String packageUid) {
+        public CommandResultArgs InstallPackage(Command command, Dictionary<String, CommandParameter> parameters) {
             CommandResultArgs result = command.Result;
+
+            String urlSlug = parameters["urlSlug"].First<String>();
+            String packageUid = parameters["packageUid"].First<String>();
 
             if (this.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
 
@@ -246,10 +327,11 @@ namespace Procon.Core.Repositories {
         /// trigger the packages being rebuilt.
         /// </summary>
         /// <param name="command"></param>
-        /// <param name="url"></param>
-        [CommandAttribute(CommandType = CommandType.PackagesAddRemoteRepository)]
-        public CommandResultArgs AddRemoteRepository(Command command, String url) {
+        /// <param name="parameters"></param>
+        public CommandResultArgs AddRemoteRepository(Command command, Dictionary<String, CommandParameter> parameters) {
             CommandResultArgs result = command.Result;
+
+            String url = parameters["url"].First<String>();
 
             if (this.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
                 Repository repository = this.RemoteRepositories.FirstOrDefault(r => r.UrlSlug == url.UrlSlug());
@@ -299,10 +381,11 @@ namespace Procon.Core.Repositories {
         /// the packages will be rebuilt.
         /// </summary>
         /// <param name="command"></param>
-        /// <param name="urlSlug"></param>
-        [CommandAttribute(CommandType = CommandType.PackagesRemoveRemoteRepository)]
-        public CommandResultArgs RemoveRemoteRepository(Command command, String urlSlug) {
+        /// <param name="parameters"></param>
+        public CommandResultArgs RemoveRemoteRepository(Command command, Dictionary<String, CommandParameter> parameters) {
             CommandResultArgs result = command.Result;
+
+            String urlSlug = parameters["urlSlug"].First<String>();
 
             if (this.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
 
@@ -351,11 +434,12 @@ namespace Procon.Core.Repositories {
         /// is available.
         /// </summary>
         /// <param name="command"></param>
-        /// <param name="urlSlug"></param>
-        /// <param name="packageUid"></param>
-        [CommandAttribute(CommandType = CommandType.PackagesIngoreAutomaticUpdateOnPackage)]
-        public CommandResultArgs IgnoreAutomaticUpdatePackage(Command command, String urlSlug, String packageUid) {
+        /// <param name="parameters"></param>
+        public CommandResultArgs IgnoreAutomaticUpdatePackage(Command command, Dictionary<String, CommandParameter> parameters) {
             CommandResultArgs result = command.Result;
+
+            String urlSlug = parameters["urlSlug"].First<String>();
+            String packageUid = parameters["packageUid"].First<String>();
 
             if (this.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
 
@@ -393,11 +477,12 @@ namespace Procon.Core.Repositories {
         /// Removes a repository/packageuid from the automatic update
         /// </summary>
         /// <param name="command"></param>
-        /// <param name="urlSlug"></param>
-        /// <param name="packageUid"></param>
-        [CommandAttribute(CommandType = CommandType.PackagesAutomaticUpdateOnPackage)]
-        public CommandResultArgs AllowAutomaticUpdatePackage(Command command, String urlSlug, String packageUid) {
+        /// <param name="parameters"></param>
+        public CommandResultArgs AllowAutomaticUpdatePackage(Command command, Dictionary<String, CommandParameter> parameters) {
             CommandResultArgs result = command.Result;
+
+            String urlSlug = parameters["urlSlug"].First<String>();
+            String packageUid = parameters["packageUid"].First<String>();
 
             if (this.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
 

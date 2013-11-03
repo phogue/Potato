@@ -62,9 +62,19 @@ namespace Procon.Core.Test.Repositories {
                 }
             };
 
-            repository.AddRemoteRepository(new Command() {
-                Origin = CommandOrigin.Local
-            }, TestRepository.TestRepositoryUrl);
+            repository.Execute(new Command() {
+                CommandType = CommandType.PackagesAddRemoteRepository,
+                Origin = CommandOrigin.Local,
+                Parameters = new List<CommandParameter>() {
+                    new CommandParameter() {
+                        Data = {
+                            Content = new List<String>() {
+                                TestRepository.TestRepositoryUrl
+                            }
+                        }
+                    }
+                }
+            });
 
             Assert.IsTrue(requestWait.WaitOne(60000));
 
@@ -106,9 +116,19 @@ namespace Procon.Core.Test.Repositories {
                 }
             };
 
-            repository.AddRemoteRepository(new Command() {
-                Origin = CommandOrigin.Local
-            }, TestRepository.TestRepositoryUrl);
+            repository.Execute(new Command() {
+                CommandType = CommandType.PackagesAddRemoteRepository,
+                Origin = CommandOrigin.Local,
+                Parameters = new List<CommandParameter>() {
+                    new CommandParameter() {
+                        Data = {
+                            Content = new List<String>() {
+                                TestRepository.TestRepositoryUrl
+                            }
+                        }
+                    }
+                }
+            });
 
             Assert.IsTrue(requestWait.WaitOne(60000));
 
@@ -189,9 +209,19 @@ namespace Procon.Core.Test.Repositories {
         public void TestRepositoryControllerAddRemoteRepositoryAlreadyExists() {
             RepositoryController repository = this.SetupRepositoryController();
 
-            repository.AddRemoteRepository(new Command() {
-                Origin = CommandOrigin.Local
-            }, TestRepository.TestRepositoryUrl);
+            repository.Execute(new Command() {
+                CommandType = CommandType.PackagesAddRemoteRepository,
+                Origin = CommandOrigin.Local,
+                Parameters = new List<CommandParameter>() {
+                    new CommandParameter() {
+                        Data = {
+                            Content = new List<String>() {
+                                TestRepository.TestRepositoryUrl
+                            }
+                        }
+                    }
+                }
+            });
 
             CommandResultArgs result = repository.Execute(new Command() {
                 Origin = CommandOrigin.Local,
@@ -316,9 +346,19 @@ namespace Procon.Core.Test.Repositories {
                 }
             };
 
-            repository.AddRemoteRepository(new Command() {
-                Origin = CommandOrigin.Local
-            }, TestRepository.TestRepositoryUrl);
+            repository.Execute(new Command() {
+                CommandType = CommandType.PackagesAddRemoteRepository,
+                Origin = CommandOrigin.Local,
+                Parameters = new List<CommandParameter>() {
+                    new CommandParameter() {
+                        Data = {
+                            Content = new List<String>() {
+                                TestRepository.TestRepositoryUrl
+                            }
+                        }
+                    }
+                }
+            });
 
             Assert.IsTrue(requestWait.WaitOne(60000));
 
@@ -347,9 +387,19 @@ namespace Procon.Core.Test.Repositories {
                 }
             };
 
-            repository.AddRemoteRepository(new Command() {
-                Origin = CommandOrigin.Local
-            }, TestRepository.TestRepositoryUrl);
+            repository.Execute(new Command() {
+                CommandType = CommandType.PackagesAddRemoteRepository,
+                Origin = CommandOrigin.Local,
+                Parameters = new List<CommandParameter>() {
+                    new CommandParameter() {
+                        Data = {
+                            Content = new List<String>() {
+                                TestRepository.TestRepositoryUrl
+                            }
+                        }
+                    }
+                }
+            });
 
             Assert.IsTrue(requestWait.WaitOne(60000));
 
@@ -419,9 +469,19 @@ namespace Procon.Core.Test.Repositories {
                 }
             };
 
-            repository.AddRemoteRepository(new Command() {
-                Origin = CommandOrigin.Local
-            }, TestRepository.TestRepositoryUrl);
+            repository.Execute(new Command() {
+                CommandType = CommandType.PackagesAddRemoteRepository,
+                Origin = CommandOrigin.Local,
+                Parameters = new List<CommandParameter>() {
+                    new CommandParameter() {
+                        Data = {
+                            Content = new List<String>() {
+                                TestRepository.TestRepositoryUrl
+                            }
+                        }
+                    }
+                }
+            });
 
             Assert.IsTrue(requestWait.WaitOne(60000));
 

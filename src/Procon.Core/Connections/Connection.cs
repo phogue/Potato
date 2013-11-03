@@ -96,6 +96,76 @@ namespace Procon.Core.Connections {
             get { return this.Game != null ? this.Game.State : null; }
         }
 
+        public Connection() : base() {
+
+            this.AppendDispatchHandlers(new Dictionary<CommandAttribute, CommandDispatchHandler>() {
+                {
+                    new CommandAttribute() {
+                        CommandType = CommandType.ConnectionQuery
+                    },
+                    new CommandDispatchHandler(this.ConnectionQuery)
+                }, {
+                    new CommandAttribute() {
+                        CommandType = CommandType.NetworkProtocolQueryPlayers
+                    },
+                    new CommandDispatchHandler(this.NetworkProtocolQueryPlayers)
+                }, {
+                    new CommandAttribute() {
+                        CommandType = CommandType.NetworkProtocolQuerySettings
+                    },
+                    new CommandDispatchHandler(this.NetworkProtocolQuerySettings)
+                }, {
+                    new CommandAttribute() {
+                        CommandType = CommandType.NetworkProtocolQueryBans
+                    },
+                    new CommandDispatchHandler(this.NetworkProtocolQueryBans)
+                }, {
+                    new CommandAttribute() {
+                        CommandType = CommandType.NetworkProtocolQueryMaps
+                    },
+                    new CommandDispatchHandler(this.NetworkProtocolQueryMaps)
+                }, {
+                    new CommandAttribute() {
+                        CommandType = CommandType.NetworkProtocolQueryMapPool
+                    },
+                    new CommandDispatchHandler(this.NetworkProtocolQueryMapPool)
+                }, {
+                    new CommandAttribute() {
+                        CommandType = CommandType.NetworkProtocolActionChat,
+                        ParameterTypes = new List<CommandParameterType>() {
+                            new CommandParameterType() {
+                                Name = "chat",
+                                Type = typeof(Chat)
+                            }
+                        }
+                    },
+                    new CommandDispatchHandler(this.NetworkProtocolActionChat)
+                }, {
+                    new CommandAttribute() {
+                        CommandType = CommandType.NetworkProtocolActionKill,
+                        ParameterTypes = new List<CommandParameterType>() {
+                            new CommandParameterType() {
+                                Name = "kill",
+                                Type = typeof(Kill)
+                            }
+                        }
+                    },
+                    new CommandDispatchHandler(this.NetworkProtocolActionKill)
+                }, {
+                    new CommandAttribute() {
+                        CommandType = CommandType.NetworkProtocolActionMove,
+                        ParameterTypes = new List<CommandParameterType>() {
+                            new CommandParameterType() {
+                                Name = "move",
+                                Type = typeof(Move)
+                            }
+                        }
+                    },
+                    new CommandDispatchHandler(this.NetworkProtocolActionMove)
+                }
+            });
+        }
+        
         public override ExecutableBase Execute() {
             this.ConnectionGuid = MD5.Guid(String.Format("{0}:{1}:{2}", this.GameType, this.Hostname, this.Port));
 
@@ -160,8 +230,7 @@ namespace Procon.Core.Connections {
             }
         }
 
-        [CommandAttribute(CommandType = CommandType.ConnectionQuery)]
-        public CommandResultArgs ConnectionQuery(Command command) {
+        public CommandResultArgs ConnectionQuery(Command command, Dictionary<String, CommandParameter> parameters) {
             CommandResultArgs result = null;
 
             if (this.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
@@ -206,8 +275,7 @@ namespace Procon.Core.Connections {
             return result;
         }
 
-        [CommandAttribute(CommandType = CommandType.NetworkProtocolQueryPlayers)]
-        public CommandResultArgs NetworkProtocolQueryPlayers(Command command) {
+        public CommandResultArgs NetworkProtocolQueryPlayers(Command command, Dictionary<String, CommandParameter> parameters) {
             CommandResultArgs result = null;
 
             if (this.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
@@ -231,8 +299,7 @@ namespace Procon.Core.Connections {
             return result;
         }
 
-        [CommandAttribute(CommandType = CommandType.NetworkProtocolQuerySettings)]
-        public CommandResultArgs NetworkProtocolQuerySettings(Command command) {
+        public CommandResultArgs NetworkProtocolQuerySettings(Command command, Dictionary<String, CommandParameter> parameters) {
             CommandResultArgs result = null;
 
             if (this.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
@@ -258,8 +325,7 @@ namespace Procon.Core.Connections {
             return result;
         }
 
-        [CommandAttribute(CommandType = CommandType.NetworkProtocolQueryBans)]
-        public CommandResultArgs NetworkProtocolQueryBans(Command command) {
+        public CommandResultArgs NetworkProtocolQueryBans(Command command, Dictionary<String, CommandParameter> parameters) {
             CommandResultArgs result = null;
 
             if (this.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
@@ -283,8 +349,7 @@ namespace Procon.Core.Connections {
             return result;
         }
 
-        [CommandAttribute(CommandType = CommandType.NetworkProtocolQueryMaps)]
-        public CommandResultArgs NetworkProtocolQueryMaps(Command command) {
+        public CommandResultArgs NetworkProtocolQueryMaps(Command command, Dictionary<String, CommandParameter> parameters) {
             CommandResultArgs result = null;
 
             if (this.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
@@ -308,8 +373,7 @@ namespace Procon.Core.Connections {
             return result;
         }
 
-        [CommandAttribute(CommandType = CommandType.NetworkProtocolQueryMapPool)]
-        public CommandResultArgs NetworkProtocolQueryMapPool(Command command) {
+        public CommandResultArgs NetworkProtocolQueryMapPool(Command command, Dictionary<String, CommandParameter> parameters) {
             CommandResultArgs result = null;
 
             if (this.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
@@ -333,9 +397,10 @@ namespace Procon.Core.Connections {
             return result;
         }
 
-        [CommandAttribute(CommandType = CommandType.NetworkProtocolActionChat)]
-        public CommandResultArgs NetworkProtocolAction(Command command, Chat chat) {
+        public CommandResultArgs NetworkProtocolActionChat(Command command, Dictionary<String, CommandParameter> parameters) {
             CommandResultArgs result = null;
+
+            Chat chat = parameters["chat"].First<Chat>();
 
             if (this.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
                 this.Game.Action(chat);
@@ -357,9 +422,10 @@ namespace Procon.Core.Connections {
             return result;
         }
 
-        [CommandAttribute(CommandType = CommandType.NetworkProtocolActionKill)]
-        public CommandResultArgs NetworkProtocolAction(Command command, Kill kill) {
+        public CommandResultArgs NetworkProtocolActionKill(Command command, Dictionary<String, CommandParameter> parameters) {
             CommandResultArgs result = null;
+
+            Kill kill = parameters["kill"].First<Kill>();
             
             if (this.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
                 this.Game.Action(kill);
@@ -381,9 +447,10 @@ namespace Procon.Core.Connections {
             return result;
         }
 
-        [CommandAttribute(CommandType = CommandType.NetworkProtocolActionMove)]
-        public CommandResultArgs NetworkProtocolAction(Command command, Move move) {
+        public CommandResultArgs NetworkProtocolActionMove(Command command, Dictionary<String, CommandParameter> parameters) {
             CommandResultArgs result = null;
+
+            Move move = parameters["move"].First<Move>();
 
             if (this.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
                 this.Game.Action(move);

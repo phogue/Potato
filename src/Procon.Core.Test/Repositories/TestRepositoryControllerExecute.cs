@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -149,9 +150,19 @@ namespace Procon.Core.Test.Repositories {
 
             repositoryController.Events = eventsController;
 
-            repositoryController.AddRemoteRepository(new Command() {
-                Origin = CommandOrigin.Local
-            }, TestRepository.TestRepositoryUrl);
+            repositoryController.Execute(new Command() {
+                CommandType = CommandType.PackagesAddRemoteRepository,
+                Origin = CommandOrigin.Local,
+                Parameters = new List<CommandParameter>() {
+                    new CommandParameter() {
+                        Data = {
+                            Content = new List<String>() {
+                                TestRepository.TestRepositoryUrl
+                            }
+                        }
+                    }
+                }
+            });
 
             eventsController.EventLogged += (sender, args) => {
                 if (args.GenericEventType == GenericEventType.RepositoriesPackagesRebuilt) {

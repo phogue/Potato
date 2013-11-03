@@ -50,6 +50,22 @@ namespace Procon.Core.Connections.Plugins {
             this.Tasks = new TaskController().Start();
 
             this.PluginGuid = this.GetType().GUID;
+
+            this.AppendDispatchHandlers(new Dictionary<CommandAttribute, CommandDispatchHandler>() {
+                {
+                    new CommandAttribute() {
+                        CommandType = CommandType.TextCommandsExecute,
+                        CommandAttributeType = CommandAttributeType.Executed,
+                        ParameterTypes = new List<CommandParameterType>() {
+                            new CommandParameterType() {
+                                Name = "text",
+                                Type = typeof(String)
+                            }
+                        }
+                    },
+                    new CommandDispatchHandler(this.TextCommandExecuted)
+                }
+            });
         }
         
         public override void Dispose() {
@@ -152,10 +168,12 @@ namespace Procon.Core.Connections.Plugins {
         /// This method will be called when a text command has been successfully executed.
         /// </summary>
         /// <param name="command"></param>
-        /// <param name="text"></param>
+        /// <param name="parameters"></param>
         /// <returns></returns>
-        [CommandAttribute(CommandType = CommandType.TextCommandsExecute, CommandAttributeType = CommandAttributeType.Executed)]
-        public CommandResultArgs TextCommandExecuted(Command command, String text) {
+        public CommandResultArgs TextCommandExecuted(Command command, Dictionary<String, CommandParameter> parameters) {
+
+            // Not used.
+            // String text = parameters["text"].First<String>();
 
             if (command.Result.Status == CommandResultType.Success && command.Result.Now.TextCommands.First().PluginUid == this.PluginGuid.ToString()) {
                 this.Execute(new Command() {

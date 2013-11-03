@@ -21,6 +21,83 @@ namespace Procon.Core.Variables {
         public VariableController() : base() {
             this.VolatileVariables = new List<Variable>();
             this.ArchiveVariables = new List<Variable>();
+
+            this.AppendDispatchHandlers(new Dictionary<CommandAttribute, CommandDispatchHandler>() {
+                {
+                    new CommandAttribute() {
+                        CommandType = CommandType.VariablesSet,
+                        ParameterTypes = new List<CommandParameterType>() {
+                            new CommandParameterType() {
+                                Name = "name",
+                                Type = typeof(String)
+                            },
+                            new CommandParameterType() {
+                                Name = "value",
+                                Type = typeof(String),
+                                IsList = true
+                            }
+                        }
+                    },
+                    new CommandDispatchHandler(this.CommandSetCollection)
+                }, {
+                    new CommandAttribute() {
+                        CommandType = CommandType.VariablesSet,
+                        ParameterTypes = new List<CommandParameterType>() {
+                            new CommandParameterType() {
+                                Name = "name",
+                                Type = typeof(String)
+                            },
+                            new CommandParameterType() {
+                                Name = "value",
+                                Type = typeof(String)
+                            }
+                        }
+                    },
+                    new CommandDispatchHandler(this.CommandSetSingular)
+                }, {
+                    new CommandAttribute() {
+                        CommandType = CommandType.VariablesSetA,
+                        ParameterTypes = new List<CommandParameterType>() {
+                            new CommandParameterType() {
+                                Name = "name",
+                                Type = typeof(String)
+                            },
+                            new CommandParameterType() {
+                                Name = "value",
+                                Type = typeof(String),
+                                IsList = true
+                            }
+                        }
+                    },
+                    new CommandDispatchHandler(this.CommandSetACollection)
+                }, {
+                    new CommandAttribute() {
+                        CommandType = CommandType.VariablesSetA,
+                        ParameterTypes = new List<CommandParameterType>() {
+                            new CommandParameterType() {
+                                Name = "name",
+                                Type = typeof(String)
+                            },
+                            new CommandParameterType() {
+                                Name = "value",
+                                Type = typeof(String)
+                            }
+                        }
+                    },
+                    new CommandDispatchHandler(this.CommandSetASingular)
+                }, {
+                    new CommandAttribute() {
+                        CommandType = CommandType.VariablesGet,
+                        ParameterTypes = new List<CommandParameterType>() {
+                            new CommandParameterType() {
+                                Name = "name",
+                                Type = typeof(String)
+                            }
+                        }
+                    },
+                    new CommandDispatchHandler(this.CommandGet)
+                }
+            });
         }
 
         // @todo this should be moved to something like "InstanceVariableController" or something.
@@ -174,6 +251,40 @@ namespace Procon.Core.Variables {
             }
         }
 
+        protected CommandResultArgs CommandSetCollection(Command command, Dictionary<String, CommandParameter> parameters) {
+            String name = parameters["name"].First<String>();
+            List<String> value = parameters["value"].All<String>();
+
+            return this.Set(command, name, value);
+        }
+
+        protected CommandResultArgs CommandSetSingular(Command command, Dictionary<String, CommandParameter> parameters) {
+            String name = parameters["name"].First<String>();
+            String value = parameters["value"].First<String>();
+
+            return this.Set(command, name, value);
+        }
+
+        protected CommandResultArgs CommandSetACollection(Command command, Dictionary<String, CommandParameter> parameters) {
+            String name = parameters["name"].First<String>();
+            List<String> value = parameters["value"].All<String>();
+
+            return this.SetA(command, name, value);
+        }
+
+        protected CommandResultArgs CommandSetASingular(Command command, Dictionary<String, CommandParameter> parameters) {
+            String name = parameters["name"].First<String>();
+            String value = parameters["value"].First<String>();
+
+            return this.SetA(command, name, value);
+        }
+
+        protected CommandResultArgs CommandGet(Command command, Dictionary<String, CommandParameter> parameters) {
+            String name = parameters["name"].First<String>();
+
+            return this.Get(command, name);
+        }
+
         /// <summary>
         /// This will first set the value, then set the value in the archived list
         /// which will be saved to the config
@@ -182,7 +293,6 @@ namespace Procon.Core.Variables {
         /// <param name="name">The unique name of the variable to set</param>
         /// <param name="value">The value of the variable</param>
         /// <returns></returns>
-        [CommandAttribute(CommandType = CommandType.VariablesSet)]
         public CommandResultArgs Set(Command command, String name, Object value) {
             CommandResultArgs result = null;
 
@@ -240,7 +350,6 @@ namespace Procon.Core.Variables {
         /// <param name="name">The unique name of the variable to set</param>
         /// <param name="value">The value of the variable</param>
         /// <returns></returns>
-        [CommandAttribute(CommandType = CommandType.VariablesSet)]
         public CommandResultArgs Set(Command command, CommonVariableNames name, Object value) {
             return this.Set(command, name.ToString(), value);
         }
@@ -253,7 +362,6 @@ namespace Procon.Core.Variables {
         /// <param name="name">The unique name of the variable to set</param>
         /// <param name="value">The value of the variable</param>
         /// <returns></returns>
-        [CommandAttribute(CommandType = CommandType.VariablesSetA)]
         public CommandResultArgs SetA(Command command, String name, Object value) {
             CommandResultArgs result = null;
 
@@ -302,7 +410,6 @@ namespace Procon.Core.Variables {
         /// <param name="name">The unique key of the variable to set</param>
         /// <param name="value">The value of the variable</param>
         /// <returns></returns>
-        [CommandAttribute(CommandType = CommandType.VariablesSetA)]
         public CommandResultArgs SetA(Command command, CommonVariableNames name, Object value) {
             return this.SetA(command, name.ToString(), value);
         }
@@ -358,7 +465,6 @@ namespace Procon.Core.Variables {
         /// <param name="command"></param>
         /// <param name="name"></param>
         /// <returns></returns>
-        [CommandAttribute(CommandType = CommandType.VariablesGet)]
         public CommandResultArgs Get(Command command, String name) {
             return this.Get(command, name, null);
         }
@@ -370,7 +476,6 @@ namespace Procon.Core.Variables {
         /// <param name="name">The unique name of the variable to fetch</param>
         /// <param name="defaultValue"></param>
         /// <returns>The raw object with no conversion</returns>
-        [CommandAttribute(CommandType = CommandType.VariablesGet)]
         public CommandResultArgs Get(Command command, String name, Object defaultValue = null) {
             CommandResultArgs result = null;
 
@@ -411,7 +516,6 @@ namespace Procon.Core.Variables {
         /// <param name="name">The unique name of the variable to fetch</param>
         /// <param name="defaultValue"></param>
         /// <returns>The raw object with no conversion</returns>
-        [CommandAttribute(CommandType = CommandType.VariablesGet)]
         public CommandResultArgs Get(Command command, CommonVariableNames name, Object defaultValue = null) {
             return this.Get(command, name.ToString());
         }

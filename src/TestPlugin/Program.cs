@@ -34,6 +34,67 @@ namespace TestPlugin {
             //this.Description = "herro";
 
             this.Commands = new List<TextCommand>();
+
+            this.AppendDispatchHandlers(new Dictionary<CommandAttribute, CommandDispatchHandler>() {
+                {
+                    new CommandAttribute() {
+                        Name = "HelpCommand",
+                        ParameterTypes = new List<CommandParameterType>() {
+                            new CommandParameterType() {
+                                Name = "e",
+                                Type = typeof(CommandResultArgs)
+                            }
+                        }
+                    },
+                    new CommandDispatchHandler(this.HelpCommand)
+                }, {
+                    new CommandAttribute() {
+                        Name = "KillCommand",
+                        ParameterTypes = new List<CommandParameterType>() {
+                            new CommandParameterType() {
+                                Name = "e",
+                                Type = typeof(CommandResultArgs)
+                            }
+                        }
+                    },
+                    new CommandDispatchHandler(this.KillCommand)
+                }, {
+                    new CommandAttribute() {
+                        Name = "TestCommand",
+                        ParameterTypes = new List<CommandParameterType>() {
+                            new CommandParameterType() {
+                                Name = "e",
+                                Type = typeof(CommandResultArgs)
+                            }
+                        }
+                    },
+                    new CommandDispatchHandler(this.TestCommand)
+                }, {
+                    new CommandAttribute() {
+                        CommandType = CommandType.TextCommandsRegister,
+                        CommandAttributeType = CommandAttributeType.Preview,
+                        ParameterTypes = new List<CommandParameterType>() {
+                            new CommandParameterType() {
+                                Name = "textCommand",
+                                Type = typeof(TextCommand)
+                            }
+                        }
+                    },
+                    new CommandDispatchHandler(this.RegisterTextCommandPreview)
+                }, {
+                    new CommandAttribute() {
+                        CommandType = CommandType.TextCommandsRegister,
+                        CommandAttributeType = CommandAttributeType.Executed,
+                        ParameterTypes = new List<CommandParameterType>() {
+                            new CommandParameterType() {
+                                Name = "textCommand",
+                                Type = typeof(TextCommand)
+                            }
+                        }
+                    },
+                    new CommandDispatchHandler(this.RegisterTextCommandExecuted)
+                }
+            });
         }
 
         protected override IList<IExecutableBase> BubbleExecutableObjects(Command command) {
@@ -44,8 +105,9 @@ namespace TestPlugin {
             return this.Commands.Select(x => x.Commands.FirstOrDefault()).ToList();
         }
 
-        [CommandAttribute(Name = "HelpCommand")]
-        protected CommandResultArgs HelpCommand(Command command, CommandResultArgs e) {
+        protected CommandResultArgs HelpCommand(Command command, Dictionary<String, CommandParameter> parameters) {
+            CommandResultArgs e = parameters["e"].First<CommandResultArgs>();
+
             Chat output = new Chat() {
                 Now = new NetworkActionData() {
                     Content = new List<String>()
@@ -87,8 +149,8 @@ namespace TestPlugin {
             return command.Result;
         }
 
-        [CommandAttribute(Name = "KillCommand")]
-        protected CommandResultArgs KillCommand(Command command, CommandResultArgs e) {
+        protected CommandResultArgs KillCommand(Command command, Dictionary<String, CommandParameter> parameters) {
+            CommandResultArgs e = parameters["e"].First<CommandResultArgs>();
 
             TextCommandMatch match = e.Now.TextCommandMatches.First();
 
@@ -104,8 +166,9 @@ namespace TestPlugin {
             return command.Result;
         }
 
-        [CommandAttribute(Name = "TestCommand")]
-        protected CommandResultArgs TestCommand(Command command, CommandResultArgs e) {
+        protected CommandResultArgs TestCommand(Command command, Dictionary<String, CommandParameter> parameters) {
+            CommandResultArgs e = parameters["e"].First<CommandResultArgs>();
+
             Chat output = new Chat() {
                 Now = new NetworkActionData() {
                     Content = new List<String>()
@@ -153,14 +216,14 @@ namespace TestPlugin {
             return command.Result;
         }
 
-        [CommandAttribute(CommandType = CommandType.TextCommandsRegister, CommandAttributeType = CommandAttributeType.Preview)]
-        public CommandResultArgs RegisterTextCommandPreview(Command command, TextCommand textCommand) {
+        public CommandResultArgs RegisterTextCommandPreview(Command command, Dictionary<String, CommandParameter> parameters) {
+            //TextCommand textCommand = parameters["textCommand"].First<TextCommand>();
 
             return command.Result;
         }
 
-        [CommandAttribute(CommandType = CommandType.TextCommandsRegister, CommandAttributeType = CommandAttributeType.Executed)]
-        public CommandResultArgs RegisterTextCommand(Command command, TextCommand textCommand) {
+        public CommandResultArgs RegisterTextCommandExecuted(Command command, Dictionary<String, CommandParameter> parameters) {
+            //TextCommand textCommand = parameters["textCommand"].First<TextCommand>();
 
             return command.Result;
         }

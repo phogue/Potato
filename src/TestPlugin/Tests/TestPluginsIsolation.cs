@@ -1,25 +1,52 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Security;
-using System.Text;
 
 namespace TestPlugin.Tests {
     using Procon.Core;
 
     public class TestPluginsIsolation : ExecutableBase {
 
-        [CommandAttribute(Name = "TestPluginsIsolationCleanCurrentAppDomain")]
-        protected CommandResultArgs TestPluginsIsolationCleanCurrentAppDomain(Command command, String parameterMessage) {
+        public TestPluginsIsolation() : base() {
+            this.AppendDispatchHandlers(new Dictionary<CommandAttribute, CommandDispatchHandler>() {
+                {
+                    new CommandAttribute() {
+                        Name = "TestPluginsIsolationCleanCurrentAppDomain",
+                        ParameterTypes = new List<CommandParameterType>() {
+                            new CommandParameterType() {
+                                Name = "parameterMessage",
+                                Type = typeof(String)
+                            }
+                        }
+                    },
+                    new CommandDispatchHandler(this.TestPluginsIsolationCleanCurrentAppDomain)
+                }, {
+                    new CommandAttribute() {
+                        Name = "TestPluginsIsolationWriteToDirectory",
+                        ParameterTypes = new List<CommandParameterType>() {
+                            new CommandParameterType() {
+                                Name = "path",
+                                Type = typeof(String)
+                            }
+                        }
+                    },
+                    new CommandDispatchHandler(this.TestPluginsIsolationWriteToDirectory)
+                }
+            });
+        }
+
+        protected CommandResultArgs TestPluginsIsolationCleanCurrentAppDomain(Command command, Dictionary<String, CommandParameter> parameters) {
+            String parameterMessage = parameters["parameterMessage"].First<String>();
+
             command.Result.Message = parameterMessage;
             command.Result.Status = CommandResultType.Success;
 
             return command.Result;
         }
 
-        [CommandAttribute(Name = "TestPluginsIsolationWriteToDirectory")]
-        protected CommandResultArgs TestPluginsIsolationWriteToDirectory(Command command, String path) {
+        protected CommandResultArgs TestPluginsIsolationWriteToDirectory(Command command, Dictionary<String, CommandParameter> parameters) {
+            String path = parameters["path"].First<String>();
 
             try {
                 using (StreamWriter file = new StreamWriter(Path.Combine(path, "IsolationWriteTest.txt"))) {

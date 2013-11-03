@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Xml.Serialization;
 using Newtonsoft.Json;
 
@@ -8,7 +9,7 @@ namespace Procon.Core {
     /// </summary>
     /// <remarks><para>Called to execute a command.</para></remarks>
     [Serializable]
-    public class CommandAttribute : Attribute, IComparable<CommandAttribute>, IDisposable {
+    public class CommandAttribute : IComparable<CommandAttribute>, IDisposable, IEquatable<CommandAttribute> {
 
         /// <summary>
         /// The command being executed. This is the only value used to match up a command.
@@ -38,14 +39,10 @@ namespace Procon.Core {
         public CommandAttributeType CommandAttributeType { get; set; }
 
         /// <summary>
-        /// Overridden here simply so we can remove the attribute during serialization
+        /// A list of parameter names with the type of parameter expected.
         /// </summary>
         [XmlIgnore, JsonIgnore]
-        public override object TypeId {
-            get {
-                return base.TypeId;
-            }
-        }
+        public List<CommandParameterType> ParameterTypes { get; set; }
 
         public CommandAttribute() {
             this.CommandAttributeType = CommandAttributeType.Handler;
@@ -65,7 +62,7 @@ namespace Procon.Core {
 
             return this;
         }
-
+        
         /// <summary>
         /// Totally my first time overloading an operator. Never needed to before.
         /// </summary>
@@ -93,12 +90,16 @@ namespace Procon.Core {
 
         public override int GetHashCode() {
             unchecked {
-                return (base.GetHashCode() * 397) ^ (Name != null ? Name.GetHashCode() : 0);
+                return ((Name != null ? Name.GetHashCode() : 0) * 397) ^ (ParameterTypes != null ? ParameterTypes.GetHashCode() : 0);
             }
         }
 
-        protected bool Equals(CommandAttribute other) {
-            return base.Equals(other) && string.Equals(Name, other.Name);
+        public bool Equals(CommandAttribute other) {
+            if (ReferenceEquals(null, other))
+                return false;
+            if (ReferenceEquals(this, other))
+                return true;
+            return string.Equals(Name, other.Name) && Equals(ParameterTypes, other.ParameterTypes);
         }
 
         public override bool Equals(object obj) {
@@ -108,13 +109,13 @@ namespace Procon.Core {
                 return true;
             if (obj.GetType() != this.GetType())
                 return false;
-            return Equals((CommandAttribute)obj);
+            return Equals((CommandAttribute) obj);
         }
 
         public int CompareTo(CommandAttribute other) {
             return String.CompareOrdinal(other.Name, this.Name) == 0 ? 0 : 1;
         }
-
+        
         public void Dispose() {
             this.CommandType = CommandType.None;
             this.Name = null;

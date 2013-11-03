@@ -47,6 +47,21 @@ namespace Procon.Core.Events {
 
         public EventsController() : base() {
             this.LoggedEvents = new List<GenericEventArgs>();
+
+            this.AppendDispatchHandlers(new Dictionary<CommandAttribute, CommandDispatchHandler>() {
+                {
+                    new CommandAttribute() {
+                        CommandType = CommandType.EventsFetchAfterEventId,
+                        ParameterTypes = new List<CommandParameterType>() {
+                            new CommandParameterType() {
+                                Name = "eventId",
+                                Type = typeof(ulong)
+                            }
+                        }
+                    },
+                    new CommandDispatchHandler(this.FetchEventsSince)
+                }
+            });
         }
 
         protected virtual void OnEventLogged(GenericEventArgs e) {
@@ -174,11 +189,12 @@ namespace Procon.Core.Events {
         /// Fetches all events after a passed id, as well as after a certain date.
         /// </summary>
         /// <param name="command"></param>
-        /// <param name="eventId"></param>
+        /// <param name="parameters"></param>
         /// <returns></returns>
-        [CommandAttribute(CommandType = CommandType.EventsFetchAfterEventId)]
-        public CommandResultArgs FetchEventsSince(Command command, ulong eventId) {
+        public CommandResultArgs FetchEventsSince(Command command, Dictionary<String, CommandParameter> parameters) {
             CommandResultArgs result = null;
+
+            ulong eventId = parameters["eventId"].First<ulong>();
 
             if (this.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
                 List<GenericEventArgs> events = null;

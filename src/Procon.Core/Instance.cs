@@ -91,6 +91,15 @@ namespace Procon.Core {
                     }
                 }
             ).Tick += new Task.TickHandler(Events_Tick);
+
+            // Tick every minute.
+            this.Tasks.Add(
+                new Task() {
+                    Condition = new Temporal() {
+                        (date, task) => date.Minute % 1 == 0 && date.Second == 0
+                    }
+                }
+            ).Tick += new Task.TickHandler(Daemon_Tick);
         }
 
         /// <summary>
@@ -147,6 +156,18 @@ namespace Procon.Core {
                         }
                     }
                 }
+            }
+        }
+
+        /// <summary>
+        /// Pokes the daemon and all current active clients, ensuring we don't have any stale clients
+        /// still held in memory.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void Daemon_Tick(Object sender, TickEventArgs e) {
+            if (this.Daemon != null) {
+                this.Daemon.Poke();
             }
         }
 

@@ -125,6 +125,21 @@ namespace Procon.Net.Protocols.Daemon {
             sender.Send(response);
         }
 
+        /// <summary>
+        /// Copy the list of clients, then run through poking them to ensure they are still alive.
+        /// </summary>
+        public void Poke() {
+            List<DaemonClient> poked;
+
+            // Note we modify the Clients list in events fired from the client
+            // so we take a copy to poke in case this results in a dead lock.
+            lock (this.ClientsLock) {
+                poked = new List<DaemonClient>(this.Clients);
+            }
+
+            poked.ForEach(client => client.Poke());
+        }
+
         protected void client_PacketReceived(Client<DaemonPacket> sender, DaemonPacket packet) {
             // Bubble the packet for processing.
             this.OnPacketReceived(sender, packet);

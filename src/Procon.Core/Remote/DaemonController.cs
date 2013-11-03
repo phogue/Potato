@@ -10,7 +10,6 @@ using Procon.Net.Utils;
 using Procon.Net.Utils.HTTP;
 
 namespace Procon.Core.Remote {
-    using Procon.Core.Utils;
     using Procon.Net.Protocols.Daemon;
 
     public class DaemonController : Executable {
@@ -57,6 +56,17 @@ namespace Procon.Core.Remote {
 
         private void DaemonController_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e) {
             this.ConfigureDaemon();
+        }
+
+        /// <summary>
+        /// Pokes the underlying listener, ensuring that all clients held in memory are still
+        /// active and not disconnected.
+        /// </summary>
+        public void Poke() {
+            // Method implemented here instead of calling the public method so we can do
+            // additional work during a Poke in the future.
+
+            this.DaemonListener.Poke();
         }
 
         /// <summary>

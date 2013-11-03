@@ -180,7 +180,7 @@ namespace Procon.Net.Protocols.Frostbite {
                         statePlayer.Score = player.Score;
                         statePlayer.Deaths = player.Deaths;
                         statePlayer.ClanTag = player.ClanTag;
-                        statePlayer.Ping = player.Ping;
+                        statePlayer.Ping = Math.Min(player.Ping, 1000);
                         statePlayer.Uid = player.Uid;
 
                         statePlayer.ModifyGroup(player.Groups.FirstOrDefault(group => group.Type == Grouping.Team));

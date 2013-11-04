@@ -107,7 +107,7 @@ namespace Procon.Core.Connections.TextCommands {
                 }
             };
 
-            return this;
+            return base.Execute();
         }
 
         /// <summary>

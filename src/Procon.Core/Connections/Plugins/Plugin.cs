@@ -107,7 +107,7 @@ namespace Procon.Core.Connections.Plugins {
                 }
             }
 
-            return this;
+            return base.Execute();
         }
 
         private void Connection_ClientEvent(Game sender, ClientEventArgs e) {

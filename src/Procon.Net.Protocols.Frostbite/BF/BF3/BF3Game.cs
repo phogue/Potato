@@ -147,7 +147,8 @@ namespace Procon.Net.Protocols.Frostbite.BF.BF3 {
         }
 
         public void PlayerPingResponseDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
-            if (request.Words.Count >= 2 && response.Words.Count >= 2) {
+
+            if (request.Words.Count >= 2 && response != null && response.Words.Count >= 2) {
                 Player player = this.State.PlayerList.FirstOrDefault(p => p.Name == request.Words[1]);
                 uint ping = 0;
 

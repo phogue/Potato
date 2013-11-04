@@ -6,7 +6,7 @@ namespace Procon.Core.Test.TextCommands.Nlp {
     public class TestNlpSentences : TestNlpBase {
         [TestMethod]
         public void TestSentencesHelloWorldQuoted() {
-            this.AssertCommandSentencesList(
+            TestNlpBase.AssertCommandSentencesList(
                 this.CreateTextCommandController(), 
                 "test \"Hello World!\"",
                 TestNlpBase.TextCommandTest,

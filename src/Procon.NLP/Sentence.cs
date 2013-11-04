@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
+using Procon.Nlp.Utils;
+using Procon.Nlp.Tokens;
 
 namespace Procon.Nlp {
-    using Procon.Nlp.Utils;
-    using Procon.Nlp.Tokens;
 
     public class Sentence : List<Phrase>, ICloneable {
 
@@ -33,24 +32,24 @@ namespace Procon.Nlp {
         public Sentence Parse(IStateNlp state, string sentenceText) {
 
             this.AddRange(sentenceText.Wordify()
-                .Select(x => new Phrase() {
-                    Text = x
+                .Select(phrase => new Phrase() {
+                    Text = phrase
                 }.Parse(state, "Procon.Nlp.Tokens.Primitive")
                 ).ToList());
             this.Refactor(state, "Procon.Nlp.Tokens.Primitive");
 
             //this.Collect(state);
 
-            this.ReplaceRange(0, this.Count, this.Select(x => x.Parse(state, "Procon.Nlp.Tokens.Syntax")).ToList());
+            this.ReplaceRange(0, this.Count, this.Select(phrase => phrase.Parse(state, "Procon.Nlp.Tokens.Syntax")).ToList());
             this.Refactor(state, "Procon.Nlp.Tokens.Syntax");
 
-            this.ReplaceRange(0, this.Count, this.Select(x => x.Parse(state, "Procon.Nlp.Tokens.Operator")).ToList());
+            this.ReplaceRange(0, this.Count, this.Select(phrase => phrase.Parse(state, "Procon.Nlp.Tokens.Operator")).ToList());
             this.Refactor(state, "Procon.Nlp.Tokens.Operator");
 
-            this.ReplaceRange(0, this.Count, this.Select(x => x.Parse(state, "Procon.Nlp.Tokens.Object")).ToList());
+            this.ReplaceRange(0, this.Count, this.Select(phrase => phrase.Parse(state, "Procon.Nlp.Tokens.Object")).ToList());
             this.Refactor(state, "Procon.Nlp.Tokens.Object");
 
-            this.ReplaceRange(0, this.Count, this.Select(x => x.Parse(state, "Procon.Nlp.Tokens.Reduction")).ToList());
+            this.ReplaceRange(0, this.Count, this.Select(phrase => phrase.Parse(state, "Procon.Nlp.Tokens.Reduction")).ToList());
             this.Refactor(state, "Procon.Nlp.Tokens.Reduction");
             
             return this;
@@ -110,162 +109,178 @@ namespace Procon.Nlp {
             return this;
         }
 
-        public static int FindType(Type needleType, int rangeBegin, List<Object> typePool, bool isStrictTypeMatch) {
+        /// <summary>
+        /// Checks all tokens are compatible with one another
+        /// </summary>
+        /// <param name="sentence"></param>
+        /// <returns></returns>
+        protected static bool IsAllTokensCompatable(Sentence sentence) {
+            bool isAllTokensCompatable = true;
 
-            int foundOffset = -1;
-
-            for (int offset = rangeBegin; offset < typePool.Count; offset++) {
-
-                if (isStrictTypeMatch == false && needleType.IsInstanceOfType(typePool[offset]) == true) {
-                    foundOffset = offset;
-
-                    break;
-                }
-
-                if (isStrictTypeMatch == true && needleType == typePool[offset].GetType()) {
-                    foundOffset = offset;
-
-                    break;
-                }
-            }
-
-            return foundOffset;
-        }
-
-        public List<Object> MatchesCombinationSignature(List<Type> methodCallSignature, bool isStrictTypeMatch) {
-            List<Object> validCombination = null;
-
-            if (this.Count == methodCallSignature.Count) {
-
-                validCombination = new List<Object>();
-                this.Where(x => x.Count > 0)
-                    .Select(x => x[0])
-                    .ToList()
-                    .ForEach(x => validCombination.Add(x));
-
-                for (int offset = 0; offset < methodCallSignature.Count; offset++) {
-                    // Find methodCallSignature[offset] in validCombination from validCombination[offset .. end]
-
-                    // methodCallSignature[offset] in validCombination at 5
-                    int foundOffset = -1;
-                    if ((foundOffset = Sentence.FindType(methodCallSignature[offset], offset, validCombination, isStrictTypeMatch)) >= 0) {
-                        Object swapType = validCombination[offset];
-                        validCombination[offset] = validCombination[foundOffset];
-                        validCombination[foundOffset] = swapType;
-                    }
-                    else {
-                        validCombination = null;
-                        break;
-                    }
-                }
-            }
-
-            return validCombination;
-        }
-
-        public List<Object> MatchesSignature(List<Type> methodCallSignature, bool isStrictTypeMatch) {
-
-            List<Object> validCombination = null;
-
-            if (this.Count == methodCallSignature.Count) {
-
-                validCombination = new List<Object>();
-                this.Where(x => x.Count > 0)
-                    .Select(x => x[0])
-                    .ToList()
-                    .ForEach(x => validCombination.Add(x));
-
-                for (int offset = 0; offset < methodCallSignature.Count; offset++) {
-
-                    if (isStrictTypeMatch == false && methodCallSignature[offset].IsInstanceOfType(validCombination[offset]) != true) {
-                        validCombination = null;
-                        break;
-                    }
-
-                    if (isStrictTypeMatch == true && methodCallSignature[offset] != validCombination[offset].GetType()) {
-                        validCombination = null;
-                        break;
-                    }
-                }
-            }
-
-            return validCombination;
-        }
-
-        private bool AllCompatableTokens() {
-
-            bool isAllCompatable = true;
-
-            List<Token> tokenList = this.Where(x => x.Count > 0)
-                                        .Select(x => x[0])
+            List<Token> tokenList = sentence.Where(phrase => phrase.Count > 0)
+                                        .Select(phrase => phrase[0])
                                         .ToList();
 
-            for (int x = 0; x < tokenList.Count && isAllCompatable == true; x++) {
-                for (int y = 0; y < tokenList.Count && isAllCompatable == true; y++) {
-                    if (x != y) {
-                        isAllCompatable = (tokenList[x].CompareTo(tokenList[y]) == 0);
+            for (int outer = 0; outer < tokenList.Count && isAllTokensCompatable == true; outer++) {
+                for (int inner = 0; inner < tokenList.Count && isAllTokensCompatable == true; inner++) {
+                    if (outer != inner) {
+                        isAllTokensCompatable = tokenList[outer].CompatibleWith(tokenList[inner]);
                     }
                 }
             }
 
-            return isAllCompatable;
+            return isAllTokensCompatable;
         }
 
-        private Sentence GetReduction(IStateNlp state, IEnumerable<MethodInfo> methods) {
+        /// <summary>
+        /// Fetches a matching dictionary of values to the metaData, provided the order of the parameters matches exactly.
+        /// </summary>
+        /// <param name="sentence"></param>
+        /// <param name="metaData"></param>
+        /// <returns></returns>
+        protected static Dictionary<String, Token> GetParametersExactMatchSignature(Sentence sentence, TokenMethodMetadata metaData) {
+            Dictionary<String, Token> parameters = new Dictionary<String, Token>();
 
-            Sentence reducedSentence = (Sentence)this.Clone();
+            for (int offset = 0; offset < metaData.Parameters.Count && parameters != null; offset++) {
+                // This check should always pass, but we're sanity checking anyway.
+                if (sentence[offset].Count > 0) {
+                    // If we don't need an exact matching type, but something assignable.
+                    if (metaData.ExactMatchType == false && metaData.Parameters[offset].Type.IsInstanceOfType(sentence[offset][0])) {
+                        // We have a parameter that matches our exact type.
+                        parameters.Add(metaData.Parameters[offset].Name, sentence[offset][0]);
+                    }
+                    // If we need the exact same type of parameter.
+                    else if (metaData.ExactMatchType == true && metaData.Parameters[offset].Type == sentence[offset][0].GetType()) {
+                        // We have a parameter that matches our exact type.
+                        parameters.Add(metaData.Parameters[offset].Name, sentence[offset][0]);
+                    }
+                    else {
+                        // Return null.
+                        parameters = null;
+                    }
+                }
+                else {
+                    // Return null.
+                    parameters = null;
+                }
+            }
 
-            if (reducedSentence.AllCompatableTokens() == true) {
+            return parameters;
+        }
 
-                foreach (MethodInfo method in methods) {
+        /// <summary>
+        /// Fetches a matching dictionary of values to the metaData, provided any of our tokens combination matches
+        /// the signature required by the method.
+        /// </summary>
+        /// <param name="sentence"></param>
+        /// <param name="metaData"></param>
+        /// <returns></returns>
+        protected static Dictionary<String, Token> GetParametersCombinationSignature(Sentence sentence, TokenMethodMetadata metaData) {
+            Dictionary<String, Token> parameters = new Dictionary<String, Token>();
 
-                    List<Object> matchedSignature = null;
-                    StrictAttribute strict = (StrictAttribute)method.GetCustomAttributes(typeof(StrictAttribute), false).FirstOrDefault();
+            List<TokenParameter> seekList = new List<TokenParameter>(metaData.Parameters);
 
-                    if (strict == null || strict.ExactMatchSignature == false) {
+            List<Phrase> poolList = new List<Phrase>(sentence);
 
-                        if ((matchedSignature = reducedSentence.MatchesCombinationSignature(method.GetParameters().Where(x => x.ParameterType != typeof(IStateNlp)).Select(x => x.ParameterType).ToList(), (strict != null && strict.ExactMatchType))) != null) {
+            while (seekList.Count > 0 && poolList.Count > 0 && parameters != null) {
+                TokenParameter seek = seekList.First();
 
-                            matchedSignature.Insert(0, state);
-                            //matchedSignature.Insert(1, returnSentence);
+                for (int offset = 0; offset < poolList.Count && seek != null && parameters != null; offset++) {
+                    // This check should always pass, but we're sanity checking anyway.
+                    if (sentence[offset].Count > 0) {
+                        // If we don't need an exact matching type, but something assignable.
+                        if (metaData.ExactMatchType == false && seek.Type.IsInstanceOfType(poolList[offset][0])) {
+                            // We have a parameter that matches our exact type.
+                            parameters.Add(seek.Name, poolList[offset][0]);
 
-                            Sentence postReduction = new Sentence() {
-                                (Phrase)method.Invoke(null, matchedSignature.ToArray())
-                            };
+                            seekList.RemoveAt(0);
+                            poolList.RemoveAt(offset);
 
-                            reducedSentence = postReduction;
+                            seek = null;
+                        }
+                        // If we need the exact same type of parameter.
+                        else if (metaData.ExactMatchType == true && seek.Type == poolList[offset][0].GetType()) {
+                            // We have a parameter that matches our exact type.
+                            parameters.Add(seek.Name, poolList[offset][0]);
+
+                            seekList.RemoveAt(0);
+                            poolList.RemoveAt(offset);
+
+                            seek = null;
+                        }
+                        else {
+                            // Return null.
+                            parameters = null;
                         }
                     }
                     else {
+                        // Return null.
+                        parameters = null;
+                    }
+                }
 
-                        if ((matchedSignature = reducedSentence.MatchesSignature(method.GetParameters().Where(x => x.ParameterType != typeof(IStateNlp)).Select(x => x.ParameterType).ToList(), strict.ExactMatchType)) != null) {
-                            matchedSignature.Insert(0, state);
-                            //matchedSignature.Insert(1, returnSentence);
+                // If we've looped but have not found what we were seeking.
+                if (seek != null) {
+                    // Return null.
+                    parameters = null;
+                }
+            }
 
-                            Sentence postReduction = new Sentence() {
-                                (Phrase)method.Invoke(null, matchedSignature.ToArray())
-                            };
+            return parameters;
+        }
 
-                            reducedSentence = postReduction;
-                        }
+        /// <summary>
+        /// Fetches a list of parameters to pass into a method, provided the signature matches the meta data.
+        /// </summary>
+        /// <param name="sentence"></param>
+        /// <param name="metaData"></param>
+        /// <returns></returns>
+        protected static Dictionary<String, Token> GetParameters(Sentence sentence, TokenMethodMetadata metaData) {
+            Dictionary<String, Token> parameters = null;
+
+            if (sentence.Count == metaData.Parameters.Count) {
+                parameters = metaData.ExactMatchSignature == true ? Sentence.GetParametersExactMatchSignature(sentence, metaData) : Sentence.GetParametersCombinationSignature(sentence, metaData);
+            }
+
+            return parameters;
+        }
+
+        /// <summary>
+        /// Runs a series of reduction handlers overs a cloned version of this sentence.
+        /// </summary>
+        /// <param name="state"></param>
+        /// <param name="handlers"></param>
+        /// <returns></returns>
+        protected Sentence GetReduction(IStateNlp state, IEnumerable<KeyValuePair<TokenMethodMetadata, TokenReflection.ReduceDelegateHandler>> handlers) {
+
+            Sentence sentence = (Sentence)this.Clone();
+
+            foreach (var handler in handlers) {
+
+                // If we don't need compatible tokens or we do and they are all compatible
+                if (handler.Key.DemandTokenCompatability == false || (handler.Key.DemandTokenCompatability == true && Sentence.IsAllTokensCompatable(sentence) == true)) {
+                    Dictionary<String, Token> parameters = Sentence.GetParameters(sentence, handler.Key);
+
+                    if (parameters != null) {
+                        sentence = new Sentence() {
+                            handler.Value(state, parameters)
+                        };
                     }
                 }
             }
 
-            return reducedSentence;
+            return sentence;
         }
 
-        private void Reduce(IStateNlp state, IEnumerable<List<MethodInfo>> namespaceMethods) {
-            foreach (List<MethodInfo> reduceMethods in namespaceMethods) {
-                for (int count = 2; count <= this.Count; count++) {
-                    for (int offset = 0; offset <= this.Count - count; offset++) {
-                        Sentence reducedSentence = new Sentence(this.GetRange(offset, count)).GetReduction(state, reduceMethods);
+        protected void Reduce(IStateNlp state, IList<KeyValuePair<TokenMethodMetadata, TokenReflection.ReduceDelegateHandler>> handlers) {
+            for (int count = 2; count <= this.Count; count++) {
+                for (int offset = 0; offset <= this.Count - count; offset++) {
+                    Sentence reducedSentence = new Sentence(this.GetRange(offset, count)).GetReduction(state, handlers.Where(handler => handler.Key.Parameters.Count == count).ToList());
 
-                        if (reducedSentence.Count == 1 && reducedSentence[0] != null) {
-                            this.ReplaceRange(offset, count, reducedSentence);
-                            count = 2;
-                            offset = -1;
-                        }
+                    if (reducedSentence.Count == 1 && reducedSentence[0] != null) {
+                        this.ReplaceRange(offset, count, reducedSentence);
+                        count = 2;
+                        offset = -1;
                     }
                 }
             }
@@ -275,54 +290,38 @@ namespace Procon.Nlp {
 
             this.CollectClear(state);
 
-            this.Reduce(state,
-                new List<List<MethodInfo>>() {
-                    TokenReflection.GetCombineMethods("Procon.Nlp.Tokens")
-                }
-            );
+            // Combine methods.
+            this.Reduce(state, TokenReflection.TokenCombineHandlers.ToList());
 
-            this.Reduce(state,
-                new List<List<MethodInfo>>() {
-                    TokenReflection.GetReduceMethods("Procon.Nlp.Tokens.Operator.Arithmetic.FirstOrder"),
-                    TokenReflection.GetReduceMethods("Procon.Nlp.Tokens.Operator.Arithmetic.SecondOrder"),
-                    TokenReflection.GetReduceMethods("Procon.Nlp.Tokens.Operator.Arithmetic.ThirdOrder"),
-                    TokenReflection.GetReduceMethods("Procon.Nlp.Tokens")
-                }
-            );
+            this.Reduce(state, TokenReflection.TokenReduceHandlers.Where(handler => handler.Key.Namespace.Contains("Procon.Nlp.Tokens.Operator.Arithmetic.FirstOrder")).ToList());
+            this.Reduce(state, TokenReflection.TokenReduceHandlers.Where(handler => handler.Key.Namespace.Contains("Procon.Nlp.Tokens.Operator.Arithmetic.SecondOrder")).ToList());
+            this.Reduce(state, TokenReflection.TokenReduceHandlers.Where(handler => handler.Key.Namespace.Contains("Procon.Nlp.Tokens.Operator.Arithmetic.ThirdOrder")).ToList());
+            this.Reduce(state, TokenReflection.TokenReduceHandlers.Where(handler => handler.Key.Namespace.Contains("Procon.Nlp.Tokens")).ToList());
 
             return this;
         }
 
         public T Extract<T>() where T : Token {
-            return (T)this.Combine().Where(x => x is T == true)
-                                    .OrderByDescending(x => x.Similarity)
-                                    .ThenByDescending(x => x.Text.Length)
+            return (T)this.Combine().Where(token => token is T == true)
+                                    .OrderByDescending(token => token.Similarity)
+                                    .ThenByDescending(token => token.Text.Length)
                                     .FirstOrDefault();
         }
 
         public List<T> ExtractList<T>() where T : Token {
-            return this.Combine().Where(x => x is T == true)
-                                 .OrderByDescending(x => x.Similarity)
-                                 .ThenByDescending(x => x.Text.Length)
-                                 .Select(x => x as T)
+            return this.Combine().Where(token => token is T == true)
+                                 .OrderByDescending(token => token.Similarity)
+                                 .ThenByDescending(token => token.Text.Length)
+                                 .Select(token => token as T)
                                  .ToList();
         }
-
-        /*
-        public Token Extract(Type tokenType) {
-
-            return this.Combine().Where(x => tokenType.IsAssignableFrom(x.GetType()) == true).FirstOrDefault();
-
-            //return this.Where(x => x.Count > 0 && tokenType.IsAssignableFrom(x[0].GetType()) == true).Select(x => x.FirstOrDefault()).FirstOrDefault();
-        }
-        */
 
         public List<Token> Combine() {
             return Phrase.OrderByWeightedSimilarity(this.SelectMany(phrase => phrase).ToList());
         }
 
         public override string ToString() {
-            return String.Join(" ", this.Select(x => x.Text).ToArray());
+            return String.Join(" ", this.Select(phrase => phrase.Text).ToArray());
         }
 
         public object Clone() {

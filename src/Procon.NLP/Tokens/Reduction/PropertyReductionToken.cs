@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
 
@@ -10,7 +11,10 @@ namespace Procon.Nlp.Tokens.Reduction {
 
     public class PropertyReductionToken : ReductionToken {
 
-        public static Phrase Reduce(IStateNlp state, PropertyObjectToken property, EqualityLogicalOperatorToken equality, FloatNumericPrimitiveToken number) {
+        public static Phrase ReducePropertyEqualityNumber(IStateNlp state, Dictionary<String, Token> parameters) {
+            PropertyObjectToken property = (PropertyObjectToken)parameters["property"];
+            EqualityLogicalOperatorToken equality = (EqualityLogicalOperatorToken)parameters["equality"];
+            FloatNumericPrimitiveToken number = (FloatNumericPrimitiveToken)parameters["number"];
 
             ReductionToken reducedToken = new PropertyReductionToken() {
                 Text = String.Format("{0} {1} {2}", property.Text, equality.Text, number.Text),

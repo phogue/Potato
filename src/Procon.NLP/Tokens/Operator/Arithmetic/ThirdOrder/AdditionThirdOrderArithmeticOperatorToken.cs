@@ -1,24 +1,37 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Procon.Nlp.Tokens.Operator.Arithmetic.ThirdOrder {
     using Procon.Nlp.Tokens.Primitive.Numeric;
     using Procon.Nlp.Tokens.Syntax.Typography;
 
     public class AdditionThirdOrderArithmeticOperatorToken : ThirdOrderArithmeticOperatorToken {
-        public new static Phrase Parse(IStateNlp state, Phrase phrase) {
+        public static Phrase Parse(IStateNlp state, Phrase phrase) {
             return TokenReflection.CreateDescendants<AdditionThirdOrderArithmeticOperatorToken>(state, phrase);
         }
 
-        public static Phrase Reduce(IStateNlp state, FloatNumericPrimitiveToken addend1, AdditionThirdOrderArithmeticOperatorToken addition, FloatNumericPrimitiveToken addend2) {
+        public static Phrase ReduceNumberAdditionNumber(IStateNlp state, Dictionary<String, Token> parameters) {
+            FloatNumericPrimitiveToken addend1 = (FloatNumericPrimitiveToken)parameters["addend1"];
+            AdditionThirdOrderArithmeticOperatorToken addition = (AdditionThirdOrderArithmeticOperatorToken)parameters["addition"];
+            FloatNumericPrimitiveToken addend2 = (FloatNumericPrimitiveToken)parameters["addend2"];
+
             PlusTypographySyntaxToken plus = new PlusTypographySyntaxToken() {
                 Text = addition.Text,
                 Similarity = addition.Similarity
             };
 
-            return AdditionThirdOrderArithmeticOperatorToken.Reduce(state, addend1, plus, addend2);
+            return AdditionThirdOrderArithmeticOperatorToken.ReduceNumberPlusNumber(state, new Dictionary<String, Token>() {
+                { "addend1", addend1 },
+                { "plus", plus },
+                { "addend2", addend2 }
+            });
         }
 
-        public static Phrase Reduce(IStateNlp state, FloatNumericPrimitiveToken addend1, PlusTypographySyntaxToken plus, FloatNumericPrimitiveToken addend2) {
+        public static Phrase ReduceNumberPlusNumber(IStateNlp state, Dictionary<String, Token> parameters) {
+            FloatNumericPrimitiveToken addend1 = (FloatNumericPrimitiveToken)parameters["addend1"];
+            PlusTypographySyntaxToken plus = (PlusTypographySyntaxToken)parameters["plus"];
+            FloatNumericPrimitiveToken addend2 = (FloatNumericPrimitiveToken)parameters["addend2"];
+            
             return new Phrase() {
                 new FloatNumericPrimitiveToken() {
                     Value = addend1.ToFloat() + addend2.ToFloat(),

@@ -12,7 +12,7 @@ namespace Procon.Nlp.Tokens.Object {
         /// </summary>
         public string PropertyName { get; set; }
 
-        public new static Phrase Parse(IStateNlp state, Phrase phrase) {
+        public static Phrase Parse(IStateNlp state, Phrase phrase) {
             TokenReflection.SelectDescendants(state.Document, typeof(PropertyObjectToken)).Descendants("Properties").Descendants("Match").Select(element => {
                 var text = element.Attribute("text");
                 var propertyName = element.Parent != null ? element.Parent.Attribute("name") : null;

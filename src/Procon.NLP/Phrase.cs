@@ -34,9 +34,9 @@ namespace Procon.Nlp {
 
         public Phrase Parse(IStateNlp state, string tokenNamespace) {
 
-            foreach (Delegate delegateParseMethod in TokenReflection.GetParseMethods(tokenNamespace)) {
-                delegateParseMethod.DynamicInvoke(state, this);
-                //method.Invoke(null, new object[] { state , this });
+            // todo potential for optimization here by caching the Where results.
+            foreach (var delegateParseMethod in TokenReflection.TokenParseHandlers.Where(parse => parse.Key.Namespace.Contains(tokenNamespace))) {
+                delegateParseMethod.Value(state, this);
             }
 
             Phrase.OrderByWeightedSimilarity(this);

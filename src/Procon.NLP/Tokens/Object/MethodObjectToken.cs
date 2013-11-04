@@ -5,7 +5,7 @@ namespace Procon.Nlp.Tokens.Object {
     public class MethodObjectToken : ObjectToken {
         public string MethodName { get; set; }
 
-        public new static Phrase Parse(IStateNlp state, Phrase phrase) {
+        public static Phrase Parse(IStateNlp state, Phrase phrase) {
             return state.ParseMethod(state, phrase);
         }
 

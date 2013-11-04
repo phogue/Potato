@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Procon.Nlp.Tokens.Primitive.Temporal.Variable.Time.Second {
     using Procon.Nlp.Tokens.Primitive.Temporal.Units;
@@ -9,7 +10,10 @@ namespace Procon.Nlp.Tokens.Primitive.Temporal.Variable.Time.Second {
 
     public class SecondVariableTemporalPrimitiveToken : TimeVariableTemporalPrimitiveToken {
 
-        public static Phrase Reduce(IStateNlp state, FloatNumericPrimitiveToken number, SecondsUnitTemporalPrimitiveToken seconds) {
+        public static Phrase ReduceNumberSeconds(IStateNlp state, Dictionary<String, Token> parameters) {
+            FloatNumericPrimitiveToken number = (FloatNumericPrimitiveToken)parameters["number"];
+            SecondsUnitTemporalPrimitiveToken seconds = (SecondsUnitTemporalPrimitiveToken)parameters["seconds"];
+
             return new Phrase() {
                 new SecondVariableTemporalPrimitiveToken() {
                     Pattern = new DateTimePatternNlp() {
@@ -22,7 +26,10 @@ namespace Procon.Nlp.Tokens.Primitive.Temporal.Variable.Time.Second {
             };
         }
 
-        public static Phrase Reduce(IStateNlp state, IndefiniteArticlesSyntaxToken article, SecondsUnitTemporalPrimitiveToken seconds) {
+        public static Phrase ReduceArticleSeconds(IStateNlp state, Dictionary<String, Token> parameters) {
+            IndefiniteArticlesSyntaxToken article = (IndefiniteArticlesSyntaxToken)parameters["article"];
+            SecondsUnitTemporalPrimitiveToken seconds = (SecondsUnitTemporalPrimitiveToken)parameters["seconds"];
+
             return new Phrase() {
                 new SecondVariableTemporalPrimitiveToken() {
                     Pattern = new DateTimePatternNlp() {
@@ -35,7 +42,10 @@ namespace Procon.Nlp.Tokens.Primitive.Temporal.Variable.Time.Second {
             };
         }
 
-        public static Phrase Reduce(IStateNlp state, EveryAdjectiveSyntaxToken every, SecondsUnitTemporalPrimitiveToken seconds) {
+        public static Phrase ReduceEverySeconds(IStateNlp state, Dictionary<String, Token> parameters) {
+            EveryAdjectiveSyntaxToken every = (EveryAdjectiveSyntaxToken)parameters["every"];
+            SecondsUnitTemporalPrimitiveToken seconds = (SecondsUnitTemporalPrimitiveToken)parameters["seconds"];
+
             return new Phrase() {
                 new SecondsUnitTemporalPrimitiveToken() {
                     Pattern = new DateTimePatternNlp() {

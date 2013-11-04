@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Procon.Nlp.Tokens.Primitive.Temporal.Variable.Date.Day {
     using Procon.Nlp.Utils;
@@ -8,7 +9,10 @@ namespace Procon.Nlp.Tokens.Primitive.Temporal.Variable.Date.Day {
 
     public class DayVariableTemporalPrimitiveToken : DateVariableTemporalPrimitiveToken {
 
-        public static Phrase Reduce(IStateNlp state, FloatNumericPrimitiveToken number, DaysUnitTemporalPrimitiveToken days) {
+        public static Phrase ReduceNumberDays(IStateNlp state, Dictionary<String, Token> parameters) {
+            FloatNumericPrimitiveToken number = (FloatNumericPrimitiveToken)parameters["number"];
+            DaysUnitTemporalPrimitiveToken days = (DaysUnitTemporalPrimitiveToken)parameters["days"];
+
             return new Phrase() {
                 new DayVariableTemporalPrimitiveToken() {
                     Pattern = new DateTimePatternNlp() {
@@ -21,7 +25,10 @@ namespace Procon.Nlp.Tokens.Primitive.Temporal.Variable.Date.Day {
             };
         }
 
-        public static Phrase Reduce(IStateNlp state, FloatNumericPrimitiveToken number, WeeksUnitTemporalPrimitiveToken weeks) {
+        public static Phrase ReduceNumberWeeks(IStateNlp state, Dictionary<String, Token> parameters) {
+            FloatNumericPrimitiveToken number = (FloatNumericPrimitiveToken)parameters["number"];
+            WeeksUnitTemporalPrimitiveToken weeks = (WeeksUnitTemporalPrimitiveToken)parameters["weeks"];
+
             return new Phrase() {
                 new DayVariableTemporalPrimitiveToken() {
                     Pattern = new DateTimePatternNlp() {
@@ -34,7 +41,10 @@ namespace Procon.Nlp.Tokens.Primitive.Temporal.Variable.Date.Day {
             };
         }
 
-        public static Phrase Reduce(IStateNlp state, IndefiniteArticlesSyntaxToken article, DaysUnitTemporalPrimitiveToken days) {
+        public static Phrase ReduceArticleDays(IStateNlp state, Dictionary<String, Token> parameters) {
+            IndefiniteArticlesSyntaxToken article = (IndefiniteArticlesSyntaxToken)parameters["article"];
+            DaysUnitTemporalPrimitiveToken days = (DaysUnitTemporalPrimitiveToken)parameters["days"];
+
             return new Phrase() {
                 new DayVariableTemporalPrimitiveToken() {
                     Pattern = new DateTimePatternNlp() {
@@ -47,7 +57,10 @@ namespace Procon.Nlp.Tokens.Primitive.Temporal.Variable.Date.Day {
             };
         }
 
-        public static Phrase Reduce(IStateNlp state, IndefiniteArticlesSyntaxToken article, WeeksUnitTemporalPrimitiveToken weeks) {
+        public static Phrase ReduceArticleWeeks(IStateNlp state, Dictionary<String, Token> parameters) {
+            IndefiniteArticlesSyntaxToken article = (IndefiniteArticlesSyntaxToken)parameters["article"];
+            WeeksUnitTemporalPrimitiveToken weeks = (WeeksUnitTemporalPrimitiveToken)parameters["weeks"];
+
             return new Phrase() {
                 new DayVariableTemporalPrimitiveToken() {
                     Pattern = new DateTimePatternNlp() {

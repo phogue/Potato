@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Procon.Nlp.Tokens.Primitive.Temporal.Variable.Time.Hour {
     using Procon.Nlp.Tokens.Primitive.Temporal.Units;
@@ -10,7 +11,10 @@ namespace Procon.Nlp.Tokens.Primitive.Temporal.Variable.Time.Hour {
 
     public class HourVariableTemporalPrimitiveToken : TimeVariableTemporalPrimitiveToken {
 
-        public static Phrase Reduce(IStateNlp state, FloatNumericPrimitiveToken number, HoursUnitTemporalPrimitiveToken hours) {
+        public static Phrase ReduceNumberHours(IStateNlp state, Dictionary<String, Token> parameters) {
+            FloatNumericPrimitiveToken number = (FloatNumericPrimitiveToken)parameters["number"];
+            HoursUnitTemporalPrimitiveToken hours = (HoursUnitTemporalPrimitiveToken)parameters["hours"];
+
             return new Phrase() {
                 new HourVariableTemporalPrimitiveToken() {
                     Pattern = new DateTimePatternNlp() {
@@ -23,7 +27,9 @@ namespace Procon.Nlp.Tokens.Primitive.Temporal.Variable.Time.Hour {
             };
         }
 
-        public static Phrase Reduce(IStateNlp state, FloatNumericPrimitiveToken number, MeridiemUnitsTemporalPrimitiveToken meridiem) {
+        public static Phrase ReduceNumberMeridiem(IStateNlp state, Dictionary<String, Token> parameters) {
+            FloatNumericPrimitiveToken number = (FloatNumericPrimitiveToken)parameters["number"];
+            MeridiemUnitsTemporalPrimitiveToken meridiem = (MeridiemUnitsTemporalPrimitiveToken)parameters["meridiem"];
 
             int hours = (int)number.ToFloat().ConvertTo(typeof(int)) % 24;
             if (meridiem is PostMeridiemUnitsTemporalPrimitiveToken) {
@@ -44,7 +50,10 @@ namespace Procon.Nlp.Tokens.Primitive.Temporal.Variable.Time.Hour {
             };
         }
 
-        public static Phrase Reduce(IStateNlp state, IndefiniteArticlesSyntaxToken article, HoursUnitTemporalPrimitiveToken hours) {
+        public static Phrase ReduceArticleHours(IStateNlp state, Dictionary<String, Token> parameters) {
+            IndefiniteArticlesSyntaxToken article = (IndefiniteArticlesSyntaxToken)parameters["article"];
+            HoursUnitTemporalPrimitiveToken hours = (HoursUnitTemporalPrimitiveToken)parameters["hours"];
+
             return new Phrase() {
                 new HourVariableTemporalPrimitiveToken() {
                     Pattern = new DateTimePatternNlp() {
@@ -57,7 +66,10 @@ namespace Procon.Nlp.Tokens.Primitive.Temporal.Variable.Time.Hour {
             };
         }
 
-        public static Phrase Reduce(IStateNlp state, EveryAdjectiveSyntaxToken every, HoursUnitTemporalPrimitiveToken hours) {
+        public static Phrase ReduceEveryHours(IStateNlp state, Dictionary<String, Token> parameters) {
+            EveryAdjectiveSyntaxToken every = (EveryAdjectiveSyntaxToken)parameters["every"];
+            HoursUnitTemporalPrimitiveToken hours = (HoursUnitTemporalPrimitiveToken)parameters["hours"];
+
             return new Phrase() {
                 new HourVariableTemporalPrimitiveToken() {
                     Pattern = new DateTimePatternNlp() {

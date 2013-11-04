@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
 namespace Procon.Nlp.Tokens.Primitive.Temporal.Variable.Time {
@@ -9,7 +10,7 @@ namespace Procon.Nlp.Tokens.Primitive.Temporal.Variable.Time {
         // @todo should this be moved to the localization file, even if it is the same code here but referenced?
         protected static readonly Regex RegexMatch = new Regex(@"^(((?<hours>[0]?[1-9]|1[0-2])[ ]*(:|\.)[ ]*(?<minutes>[0-5][0-9])([ ]*(:|\.)[ ]*(?<seconds>[0-5][0-9]))?[ ]*(?<meridiem>AM|am|aM|Am|PM|pm|pM|Pm))|((?<hours>[0]?[0-9]|1[0-9]|2[0-3])[ ]*(:|\.)[ ]*(?<minutes>[0-5][0-9])([ ]*(:|\.)[ ]*(?<seconds>[0-5][0-9]))?))$", RegexOptions.Compiled | RegexOptions.IgnorePatternWhitespace);
 
-        public new static Phrase Parse(IStateNlp state, Phrase phrase) {
+        public static Phrase Parse(IStateNlp state, Phrase phrase) {
 
             Match regexMatch = TimeVariableTemporalPrimitiveToken.RegexMatch.Match(phrase.Text);
 
@@ -48,7 +49,10 @@ namespace Procon.Nlp.Tokens.Primitive.Temporal.Variable.Time {
             return phrase;
         }
 
-        public static Phrase Reduce(IStateNlp state, TimeVariableTemporalPrimitiveToken timeA, TimeVariableTemporalPrimitiveToken timeB) {
+        public static Phrase ReduceTimeTime(IStateNlp state, Dictionary<String, Token> parameters) {
+            TimeVariableTemporalPrimitiveToken timeA = (TimeVariableTemporalPrimitiveToken)parameters["timeA"];
+            TimeVariableTemporalPrimitiveToken timeB = (TimeVariableTemporalPrimitiveToken)parameters["timeB"];
+
             return new Phrase() {
                 new TimeVariableTemporalPrimitiveToken() {
                     Pattern = timeA.Pattern + timeB.Pattern,
@@ -57,7 +61,11 @@ namespace Procon.Nlp.Tokens.Primitive.Temporal.Variable.Time {
             };
         }
 
-        public static Phrase Reduce(IStateNlp state, TimeVariableTemporalPrimitiveToken timeA, AndLogicalOperatorToken and, TimeVariableTemporalPrimitiveToken timeB) {
+        public static Phrase ReduceTimeAndTime(IStateNlp state, Dictionary<String, Token> parameters) {
+            TimeVariableTemporalPrimitiveToken timeA = (TimeVariableTemporalPrimitiveToken)parameters["timeA"];
+            AndLogicalOperatorToken and = (AndLogicalOperatorToken)parameters["and"];
+            TimeVariableTemporalPrimitiveToken timeB = (TimeVariableTemporalPrimitiveToken)parameters["timeB"];
+
             return new Phrase() {
                 new TimeVariableTemporalPrimitiveToken() {
                     Pattern = timeA.Pattern + timeB.Pattern,

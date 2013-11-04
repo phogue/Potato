@@ -23,7 +23,11 @@ namespace Procon.Nlp.Tokens.Object.Sets {
         }
         */
 
-        public static Phrase Combine(IStateNlp state, SetsThingObjectToken set1, AndLogicalOperatorToken and, SetsThingObjectToken set2) {
+        public static Phrase CombineSetAndSet(IStateNlp state, Dictionary<String, Token> parameters) {
+            SetsThingObjectToken set1 = (SetsThingObjectToken)parameters["set1"];
+            AndLogicalOperatorToken and = (AndLogicalOperatorToken)parameters["and"];
+            SetsThingObjectToken set2 = (SetsThingObjectToken)parameters["set2"];
+
             return new Phrase() {
                 new SetsThingObjectToken() {
                     Things = set1.Things.Concat(set2.Things).ToList(),
@@ -48,8 +52,10 @@ namespace Procon.Nlp.Tokens.Object.Sets {
         }
         */
 
-        [Strict(ExactMatchType = true)]
-        public static Phrase Combine(IStateNlp state, SetsThingObjectToken set, ThingObjectToken thing) {
+        public static Phrase CombineSetThing(IStateNlp state, Dictionary<String, Token> parameters) {
+            SetsThingObjectToken set = (SetsThingObjectToken)parameters["set"];
+            ThingObjectToken thing = (ThingObjectToken)parameters["thing"];
+
             set.Things.Add(thing);
             set.Text = String.Format("{0} {1}", set.Text, thing.Text);
             set.Similarity = (set.Similarity + thing.Similarity) / 2.0F;
@@ -59,8 +65,11 @@ namespace Procon.Nlp.Tokens.Object.Sets {
             };
         }
 
-        [Strict(ExactMatchType = true)]
-        public static Phrase Combine(IStateNlp state, SetsThingObjectToken set, AndLogicalOperatorToken and, ThingObjectToken thing) {
+        public static Phrase CombineSetAndThing(IStateNlp state, Dictionary<String, Token> parameters) {
+            SetsThingObjectToken set = (SetsThingObjectToken)parameters["set"];
+            AndLogicalOperatorToken and = (AndLogicalOperatorToken)parameters["and"];
+            ThingObjectToken thing = (ThingObjectToken)parameters["thing"];
+
             set.Things.Add(thing);
             set.Text = String.Format("{0} {1} {2}", set.Text, and.Text, thing.Text);
             set.Similarity = (set.Similarity + and.Similarity + thing.Similarity) / 3.0F;
@@ -84,8 +93,10 @@ namespace Procon.Nlp.Tokens.Object.Sets {
         }
         */
 
-        [Strict(ExactMatchType = true)]
-        public static Phrase Combine(IStateNlp state, ThingObjectToken thing1, ThingObjectToken thing2) {
+        public static Phrase CombineThingThing(IStateNlp state, Dictionary<String, Token> parameters) {
+            ThingObjectToken thing1 = (ThingObjectToken)parameters["thing1"];
+            ThingObjectToken thing2 = (ThingObjectToken)parameters["thing2"];
+
             return new Phrase() {
                 new SetsThingObjectToken() {
                     Things = new List<ThingObjectToken>() {
@@ -99,8 +110,11 @@ namespace Procon.Nlp.Tokens.Object.Sets {
             };
         }
 
-        [Strict(ExactMatchType = true)]
-        public static Phrase Combine(IStateNlp state, ThingObjectToken thing1, AndLogicalOperatorToken and, ThingObjectToken thing2) {
+        public static Phrase CombineThingAndThing(IStateNlp state, Dictionary<String, Token> parameters) {
+            ThingObjectToken thing1 = (ThingObjectToken)parameters["thing1"];
+            AndLogicalOperatorToken and = (AndLogicalOperatorToken)parameters["and"];
+            ThingObjectToken thing2 = (ThingObjectToken)parameters["thing2"];
+
             return new Phrase() {
                 new SetsThingObjectToken() {
                     Things = new List<ThingObjectToken>() {
@@ -133,8 +147,9 @@ namespace Procon.Nlp.Tokens.Object.Sets {
         */
           
         // This should be done at the very end.
-        [Strict(ExactMatchSignature = true)]
-        public static Phrase Reduce(IStateNlp state, ExcludingLogicalOperatorToken excluding, SetsThingObjectToken thingSet) {
+        public static Phrase ReduceExcludingSet(IStateNlp state, Dictionary<String, Token> parameters) {
+            // ExcludingLogicalOperatorToken excluding = (ExcludingLogicalOperatorToken)parameters["excluding"];
+            SetsThingObjectToken thingSet = (SetsThingObjectToken)parameters["thingSet"];
 
             thingSet.ExpressionType = System.Linq.Expressions.ExpressionType.NotEqual;
 

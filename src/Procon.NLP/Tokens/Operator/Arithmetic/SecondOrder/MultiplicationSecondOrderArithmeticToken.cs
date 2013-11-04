@@ -1,24 +1,37 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Procon.Nlp.Tokens.Operator.Arithmetic.SecondOrder {
     using Procon.Nlp.Tokens.Primitive.Numeric;
     using Procon.Nlp.Tokens.Syntax.Typography;
 
     public class MultiplicationSecondOrderArithmeticToken : SecondOrderArithmeticToken {
-        public new static Phrase Parse(IStateNlp state, Phrase phrase) {
+        public static Phrase Parse(IStateNlp state, Phrase phrase) {
             return TokenReflection.CreateDescendants<MultiplicationSecondOrderArithmeticToken>(state, phrase);
         }
 
-        public static Phrase Reduce(IStateNlp state, FloatNumericPrimitiveToken multiplier, MultiplicationSecondOrderArithmeticToken multiply, FloatNumericPrimitiveToken multiplicand) {
-            AsteriskTypographySyntaxToken astrix = new AsteriskTypographySyntaxToken() {
+        public static Phrase ReduceMultiplierMultiplyMultiplicand(IStateNlp state, Dictionary<String, Token> parameters) {
+            FloatNumericPrimitiveToken multiplier = (FloatNumericPrimitiveToken)parameters["multiplier"];
+            MultiplicationSecondOrderArithmeticToken multiply = (MultiplicationSecondOrderArithmeticToken)parameters["multiply"];
+            FloatNumericPrimitiveToken multiplicand = (FloatNumericPrimitiveToken)parameters["multiplicand"];
+
+            AsteriskTypographySyntaxToken asterisk = new AsteriskTypographySyntaxToken() {
                 Text = multiply.Text,
                 Similarity = multiply.Similarity
             };
 
-            return MultiplicationSecondOrderArithmeticToken.Reduce(state, multiplier, astrix, multiplicand);
+            return MultiplicationSecondOrderArithmeticToken.ReduceMultiplierAsteriskMultiplicand(state, new Dictionary<String, Token>() {
+                { "multiplier", multiplier },
+                { "asterisk", asterisk },
+                { "multiplicand", multiplicand }
+            });
         }
 
-        public static Phrase Reduce(IStateNlp state, FloatNumericPrimitiveToken multiplier, AsteriskTypographySyntaxToken asterisk, FloatNumericPrimitiveToken multiplicand) {
+        public static Phrase ReduceMultiplierAsteriskMultiplicand(IStateNlp state, Dictionary<String, Token> parameters) {
+            FloatNumericPrimitiveToken multiplier = (FloatNumericPrimitiveToken)parameters["multiplier"];
+            AsteriskTypographySyntaxToken asterisk = (AsteriskTypographySyntaxToken)parameters["asterisk"];
+            FloatNumericPrimitiveToken multiplicand = (FloatNumericPrimitiveToken)parameters["multiplicand"];
+
             return new Phrase() {
                 new FloatNumericPrimitiveToken() {
                     Value = multiplier.ToFloat() * multiplicand.ToFloat(),

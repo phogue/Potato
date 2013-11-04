@@ -1,7 +1,7 @@
 ﻿namespace Procon.Nlp.Tokens.Operator.Logical.Equality {
     public class GreaterThanEqualToEqualityLogicalOperatorToken : EqualityLogicalOperatorToken {
 
-        public new static Phrase Parse(IStateNlp state, Phrase phrase) {
+        public static Phrase Parse(IStateNlp state, Phrase phrase) {
             return TokenReflection.CreateDescendants<GreaterThanEqualToEqualityLogicalOperatorToken>(state, phrase);
         }
 

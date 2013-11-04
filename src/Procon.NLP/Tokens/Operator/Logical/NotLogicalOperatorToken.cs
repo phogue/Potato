@@ -1,7 +1,7 @@
 ﻿namespace Procon.Nlp.Tokens.Operator.Logical {
     public class NotLogicalOperatorToken : LogicalOperatorToken {
 
-        public new static Phrase Parse(IStateNlp state, Phrase phrase) {
+        public static Phrase Parse(IStateNlp state, Phrase phrase) {
             return TokenReflection.CreateDescendants<NotLogicalOperatorToken>(state, phrase);
         }
 

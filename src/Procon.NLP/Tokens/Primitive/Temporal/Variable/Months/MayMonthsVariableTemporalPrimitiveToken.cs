@@ -3,7 +3,7 @@
 namespace Procon.Nlp.Tokens.Primitive.Temporal.Variable.Months {
     public class MayMonthsVariableTemporalPrimitiveToken : MonthMonthsVariableTemporalPrimitiveToken {
 
-        public new static Phrase Parse(IStateNlp state, Phrase phrase) {
+        public static Phrase Parse(IStateNlp state, Phrase phrase) {
             return TokenReflection.CreateDescendants<MayMonthsVariableTemporalPrimitiveToken>(state, phrase);
         }
 

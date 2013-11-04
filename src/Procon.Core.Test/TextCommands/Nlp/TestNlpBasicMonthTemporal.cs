@@ -7,7 +7,7 @@ namespace Procon.Core.Test.TextCommands.Nlp {
 
         [TestMethod]
         public void TestTemporalKickEveryoneUntilNextMonth() {
-            this.AssertTemporalCommand(
+            TestNlpBase.AssertTemporalCommand(
                 this.CreateTextCommandController(), 
                 "kick everyone until next month",
                 TestNlpBase.TextCommandKick,
@@ -17,7 +17,7 @@ namespace Procon.Core.Test.TextCommands.Nlp {
 
         [TestMethod]
         public void TestTemporalKickEveryoneLastMonth() {
-            this.AssertTemporalCommand(
+            TestNlpBase.AssertTemporalCommand(
                 this.CreateTextCommandController(), 
                 "kick everyone last month",
                 TestNlpBase.TextCommandKick,

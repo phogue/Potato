@@ -120,7 +120,7 @@ namespace Procon.Core.Test.Repositories {
             
             this.ValidateExecutePackage(locallyInstalledRepository.Packages.First());
         }
-
+        
         /// <summary>
         /// Tests that existing updates packages are loaded up in the controller.
         /// </summary>
@@ -136,7 +136,7 @@ namespace Procon.Core.Test.Repositories {
 
             this.ValidateExecutePackage(locallyInstalledRepository.Packages.First());
         }
-
+        
         /// <summary>
         /// Tests that existing updates packages are loaded up in the controller.
         /// </summary>

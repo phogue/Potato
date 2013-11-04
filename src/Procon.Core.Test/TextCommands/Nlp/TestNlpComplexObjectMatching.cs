@@ -10,7 +10,7 @@ namespace Procon.Core.Test.TextCommands.Nlp {
 
         [TestMethod]
         public void TestComplexKickPhogueOnPortValdez() {
-            this.AssertCommandPlayerListMapList(
+            TestNlpBase.AssertCommandPlayerListMapList(
                 this.CreateTextCommandController(), 
                 "kick phogue on port valdez",
                 TestNlpBase.TextCommandKick,
@@ -25,7 +25,7 @@ namespace Procon.Core.Test.TextCommands.Nlp {
 
         [TestMethod]
         public void TestComplexKickPlayersGreaterThanPingOnPortValdez() {
-            this.AssertCommandPlayerListMapList(
+            TestNlpBase.AssertCommandPlayerListMapList(
                 this.CreateTextCommandController(), 
                 "kick players with ping over 320 on port valdez",
                 TestNlpBase.TextCommandKick,
@@ -45,7 +45,7 @@ namespace Procon.Core.Test.TextCommands.Nlp {
         /// </summary>
         [TestMethod]
         public void TestComplexKickPlayersGreaterThanPing() {
-            this.AssertCommandPlayerListMapList(
+            TestNlpBase.AssertCommandPlayerListMapList(
                 this.CreateTextCommandController(), 
                 "kick players with ping greater than 300",
                 TestNlpBase.TextCommandKick,
@@ -63,7 +63,7 @@ namespace Procon.Core.Test.TextCommands.Nlp {
         /// </summary>
         [TestMethod]
         public void TestComplexKickPlayersGreaterThanorEqualToPing() {
-            this.AssertCommandPlayerListMapList(
+            TestNlpBase.AssertCommandPlayerListMapList(
                 this.CreateTextCommandController(), 
                 "kick players with ping gteq 300",
                 TestNlpBase.TextCommandKick,
@@ -82,7 +82,7 @@ namespace Procon.Core.Test.TextCommands.Nlp {
         /// </summary>
         [TestMethod]
         public void TestComplexKickPlayersLessThanPing() {
-            this.AssertCommandPlayerListMapList(
+            TestNlpBase.AssertCommandPlayerListMapList(
                 this.CreateTextCommandController(), 
                 "kick players with ping less than 100",
                 TestNlpBase.TextCommandKick,
@@ -100,7 +100,7 @@ namespace Procon.Core.Test.TextCommands.Nlp {
         /// </summary>
         [TestMethod]
         public void TestComplexKickPlayersLessThanOrEqualToPing() {
-            this.AssertCommandPlayerListMapList(
+            TestNlpBase.AssertCommandPlayerListMapList(
                 this.CreateTextCommandController(), 
                 "kick players with ping lteq 100",
                 TestNlpBase.TextCommandKick,
@@ -119,7 +119,7 @@ namespace Procon.Core.Test.TextCommands.Nlp {
         /// </summary>
         [TestMethod]
         public void TestComplexKickPlayersEqualToPing() {
-            this.AssertCommandPlayerListMapList(
+            TestNlpBase.AssertCommandPlayerListMapList(
                 this.CreateTextCommandController(), 
                 "kick players with ping equal to 50",
                 TestNlpBase.TextCommandKick,
@@ -135,7 +135,7 @@ namespace Procon.Core.Test.TextCommands.Nlp {
         /// </summary>
         [TestMethod]
         public void TestComplexKickPlayersWithinRangeOfPing() {
-            this.AssertCommandPlayerListMapList(
+            TestNlpBase.AssertCommandPlayerListMapList(
                 this.CreateTextCommandController(), 
                 "kick players with ping gteq 50 and ping lteq 100",
                 TestNlpBase.TextCommandKick,
@@ -152,7 +152,7 @@ namespace Procon.Core.Test.TextCommands.Nlp {
         /// </summary>
         [TestMethod]
         public void TestComplexKickPlayersFromAustralia() {
-            this.AssertCommandPlayerListMapList(
+            TestNlpBase.AssertCommandPlayerListMapList(
                 this.CreateTextCommandController(), 
                 "kick everyone from australia",
                 TestNlpBase.TextCommandKick,
@@ -172,7 +172,7 @@ namespace Procon.Core.Test.TextCommands.Nlp {
         public void TestComplexKickPlayersNotFromAustralia() {
             TextCommandController textCommandController = this.CreateTextCommandController();
 
-            this.AssertCommandPlayerListMapList(
+            TestNlpBase.AssertCommandPlayerListMapList(
                 textCommandController, 
                 "kick everyone not from australia",
                 TestNlpBase.TextCommandKick,
@@ -189,7 +189,7 @@ namespace Procon.Core.Test.TextCommands.Nlp {
         public void TestComplexKickAllPlayers() {
             TextCommandController textCommandController = this.CreateTextCommandController();
 
-            this.AssertCommandPlayerListMapList(
+            TestNlpBase.AssertCommandPlayerListMapList(
                 textCommandController, 
                 "kick all players",
                 TestNlpBase.TextCommandKick,
@@ -200,7 +200,7 @@ namespace Procon.Core.Test.TextCommands.Nlp {
 
         [TestMethod]
         public void TestComplexChangeMapToAllMaps() {
-            this.AssertCommandPlayerListMapList(this.CreateTextCommandController(), 
+            TestNlpBase.AssertCommandPlayerListMapList(this.CreateTextCommandController(), 
                 "change map to all maps",
                 TestNlpBase.TextCommandChangeMap,
                 new List<Player>(),
@@ -216,7 +216,7 @@ namespace Procon.Core.Test.TextCommands.Nlp {
         public void TestComplexKickEveryoneExceptPhogue() {
             TextCommandController textCommandController = this.CreateTextCommandController();
 
-            this.AssertCommandPlayerListMapList(
+            TestNlpBase.AssertCommandPlayerListMapList(
                 textCommandController, 
                 "kick everyone except phogue",
                 TestNlpBase.TextCommandKick,
@@ -229,7 +229,7 @@ namespace Procon.Core.Test.TextCommands.Nlp {
         public void TestComplexKickEveryoneExceptPhogueOnAllMapsButPortValdez() {
             TextCommandController textCommandController = this.CreateTextCommandController();
 
-            this.AssertCommandPlayerListMapList(
+            TestNlpBase.AssertCommandPlayerListMapList(
                 textCommandController, 
                 "kick everyone except phogue on all maps but port valdez",
                 TestNlpBase.TextCommandKick,

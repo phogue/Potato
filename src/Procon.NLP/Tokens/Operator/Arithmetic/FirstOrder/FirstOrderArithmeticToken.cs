@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Procon.Nlp.Tokens.Operator.Arithmetic.FirstOrder {
     using Procon.Nlp.Tokens.Primitive.Numeric;
@@ -7,8 +8,12 @@ namespace Procon.Nlp.Tokens.Operator.Arithmetic.FirstOrder {
     using Procon.Nlp.Tokens.Syntax.Punctuation.Parentheses;
 
     public class FirstOrderArithmeticToken : ArithmeticOperatorToken {
-        
-        public static Phrase Reduce(IStateNlp state, OpenParenthesesPunctuationSyntaxToken open, FloatNumericPrimitiveToken number, ClosedParenthesesPunctuationSyntaxToken closed) {
+
+        public static Phrase ReduceOpenParenthesesNumberClosedParentheses(IStateNlp state, Dictionary<String, Token> parameters) {
+            OpenParenthesesPunctuationSyntaxToken open = (OpenParenthesesPunctuationSyntaxToken)parameters["open"];
+            FloatNumericPrimitiveToken number = (FloatNumericPrimitiveToken)parameters["number"];
+            ClosedParenthesesPunctuationSyntaxToken closed = (ClosedParenthesesPunctuationSyntaxToken)parameters["closed"];
+
             return new Phrase() {
                 new FloatNumericPrimitiveToken() {
                     Value = number.ToFloat(),
@@ -17,8 +22,11 @@ namespace Procon.Nlp.Tokens.Operator.Arithmetic.FirstOrder {
                 }
             };
         }
-        
-        public static Phrase Reduce(IStateNlp state, FloatNumericPrimitiveToken multiplier, MultiplicandCardinalNumericPrimitiveToken multiplicand) {
+
+        public static Phrase ReduceMultiplierMultiplicand(IStateNlp state, Dictionary<String, Token> parameters) {
+            FloatNumericPrimitiveToken multiplier = (FloatNumericPrimitiveToken)parameters["multiplier"];
+            MultiplicandCardinalNumericPrimitiveToken multiplicand = (MultiplicandCardinalNumericPrimitiveToken)parameters["multiplicand"];
+
             return new Phrase() {
                 new FloatNumericPrimitiveToken() {
                     Value = multiplier.ToFloat() * multiplicand.ToFloat(),
@@ -28,7 +36,11 @@ namespace Procon.Nlp.Tokens.Operator.Arithmetic.FirstOrder {
             };
         }
 
-        public static Phrase Reduce(IStateNlp state, FloatNumericPrimitiveToken addend1, AndLogicalOperatorToken and, FloatNumericPrimitiveToken addend2) {
+        public static Phrase ReduceNumberAndNumber(IStateNlp state, Dictionary<String, Token> parameters) {
+            FloatNumericPrimitiveToken addend1 = (FloatNumericPrimitiveToken)parameters["addend1"];
+            AndLogicalOperatorToken and = (AndLogicalOperatorToken)parameters["and"];
+            FloatNumericPrimitiveToken addend2 = (FloatNumericPrimitiveToken)parameters["addend2"];
+
             return new Phrase() {
                 new FloatNumericPrimitiveToken() {
                     Value = addend1.ToFloat() + addend2.ToFloat(),
@@ -38,7 +50,10 @@ namespace Procon.Nlp.Tokens.Operator.Arithmetic.FirstOrder {
             };
         }
 
-        public static Phrase Reduce(IStateNlp state, FloatNumericPrimitiveToken addend1, FloatNumericPrimitiveToken addend2) {
+        public static Phrase ReduceNumberNumber(IStateNlp state, Dictionary<String, Token> parameters) {
+            FloatNumericPrimitiveToken addend1 = (FloatNumericPrimitiveToken)parameters["addend1"];
+            FloatNumericPrimitiveToken addend2 = (FloatNumericPrimitiveToken)parameters["addend2"];
+
             return new Phrase() {
                 new FloatNumericPrimitiveToken() {
                     Value = addend1.ToFloat() + addend2.ToFloat(),

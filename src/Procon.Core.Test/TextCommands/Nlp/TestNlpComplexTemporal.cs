@@ -9,9 +9,9 @@ namespace Procon.Core.Test.TextCommands.Nlp {
     public class TestNlpComplexTemporal : TestNlpBase {
         [TestMethod]
         public void TestTemporalKickPhogueOnPortValdezEveryMinute() {
-            CommandResultArgs args = this.ExecuteTextCommand(this.CreateTextCommandController(), "kick phogue on port valdez every minute");
+            CommandResultArgs args = TestNlpBase.ExecuteTextCommand(this.CreateTextCommandController(), "kick phogue on port valdez every minute");
 
-            this.AssertExecutedCommandAgainstPlayerListMapList(
+            TestNlpBase.AssertExecutedCommandAgainstPlayerListMapList(
                 args,
                 TestNlpBase.TextCommandKick,
                 new List<Player>() {
@@ -22,7 +22,7 @@ namespace Procon.Core.Test.TextCommands.Nlp {
                 }
             );
 
-            this.AssertExecutedCommandAgainstTemporalValue(
+            TestNlpBase.AssertExecutedCommandAgainstTemporalValue(
                 args,
                 TestNlpBase.TextCommandKick,
                 null,
@@ -36,9 +36,9 @@ namespace Procon.Core.Test.TextCommands.Nlp {
 
         [TestMethod]
         public void TestTemporalKickPhogueOnPortValdezForAMinute() {
-            CommandResultArgs args = this.ExecuteTextCommand(this.CreateTextCommandController(), "kick phogue on port valdez for a minute");
+            CommandResultArgs args = TestNlpBase.ExecuteTextCommand(this.CreateTextCommandController(), "kick phogue on port valdez for a minute");
 
-            this.AssertExecutedCommandAgainstPlayerListMapList(
+            TestNlpBase.AssertExecutedCommandAgainstPlayerListMapList(
                 args,
                 TestNlpBase.TextCommandKick,
                 new List<Player>() {
@@ -49,7 +49,7 @@ namespace Procon.Core.Test.TextCommands.Nlp {
                 }
             );
 
-            this.AssertExecutedCommandAgainstTemporalValue(
+            TestNlpBase.AssertExecutedCommandAgainstTemporalValue(
                 args,
                 TestNlpBase.TextCommandKick,
                 new TimeSpan(TimeSpan.TicksPerMinute * 1)
@@ -58,9 +58,9 @@ namespace Procon.Core.Test.TextCommands.Nlp {
 
         [TestMethod]
         public void TestTemporalKickPhogueInTwoMinutesOnPortValdezForAMinute() {
-            CommandResultArgs args = this.ExecuteTextCommand(this.CreateTextCommandController(), "kick phogue in two minutes on port valdez for a minute");
+            CommandResultArgs args = TestNlpBase.ExecuteTextCommand(this.CreateTextCommandController(), "kick phogue in two minutes on port valdez for a minute");
 
-            this.AssertExecutedCommandAgainstPlayerListMapList(
+            TestNlpBase.AssertExecutedCommandAgainstPlayerListMapList(
                 args,
                 TestNlpBase.TextCommandKick,
                 new List<Player>() {
@@ -71,7 +71,7 @@ namespace Procon.Core.Test.TextCommands.Nlp {
                 }
             );
 
-            this.AssertExecutedCommandAgainstTemporalValue(
+            TestNlpBase.AssertExecutedCommandAgainstTemporalValue(
                 args,
                 TestNlpBase.TextCommandKick,
                 new TimeSpan(TimeSpan.TicksPerMinute * 1),
@@ -81,9 +81,9 @@ namespace Procon.Core.Test.TextCommands.Nlp {
 
         [TestMethod]
         public void TestTemporalKickPhogueInTwoMinutesOnPortValdezForAMinuteEveryHour() {
-            CommandResultArgs args = this.ExecuteTextCommand(this.CreateTextCommandController(), "kick phogue in two minutes on port valdez for a minute every hour");
+            CommandResultArgs args = TestNlpBase.ExecuteTextCommand(this.CreateTextCommandController(), "kick phogue in two minutes on port valdez for a minute every hour");
 
-            this.AssertExecutedCommandAgainstPlayerListMapList(
+            TestNlpBase.AssertExecutedCommandAgainstPlayerListMapList(
                 args,
                 TestNlpBase.TextCommandKick,
                 new List<Player>() {
@@ -94,7 +94,7 @@ namespace Procon.Core.Test.TextCommands.Nlp {
                 }
             );
 
-            this.AssertExecutedCommandAgainstTemporalValue(
+            TestNlpBase.AssertExecutedCommandAgainstTemporalValue(
                 args,
                 TestNlpBase.TextCommandKick,
                 new TimeSpan(TimeSpan.TicksPerMinute * 1),

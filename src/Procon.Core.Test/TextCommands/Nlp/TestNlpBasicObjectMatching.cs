@@ -9,7 +9,7 @@ namespace Procon.Core.Test.TextCommands.Nlp {
 
         [TestMethod]
         public void TestBasicKickPhogue() {
-            this.AssertCommandPlayerListMapList(
+            TestNlpBase.AssertCommandPlayerListMapList(
                 this.CreateTextCommandController(), 
                 "kick phogue",
                 TestNlpBase.TextCommandKick,
@@ -23,7 +23,7 @@ namespace Procon.Core.Test.TextCommands.Nlp {
 
         [TestMethod]
         public void TestBasicKickDiacritic() {
-            this.AssertCommandPlayerListMapList(
+            TestNlpBase.AssertCommandPlayerListMapList(
                 this.CreateTextCommandController(), 
                 "kick MrDiacritic",
                 TestNlpBase.TextCommandKick,
@@ -36,7 +36,7 @@ namespace Procon.Core.Test.TextCommands.Nlp {
 
         [TestMethod]
         public void TestBasicKickSelf() {
-            this.AssertCommandPlayerListMapList(
+            TestNlpBase.AssertCommandPlayerListMapList(
                 this.CreateTextCommandController(), 
                 "kick me",
                 TestNlpBase.TextCommandKick,
@@ -49,7 +49,7 @@ namespace Procon.Core.Test.TextCommands.Nlp {
 
         [TestMethod]
         public void TestBasicKickPhogueNameTypo() {
-            this.AssertCommandPlayerListMapList(
+            TestNlpBase.AssertCommandPlayerListMapList(
                 this.CreateTextCommandController(), 
                 "kick phouge",
                 TestNlpBase.TextCommandKick,
@@ -106,7 +106,7 @@ namespace Procon.Core.Test.TextCommands.Nlp {
 
         [TestMethod]
         public void TestBasicAlternateKickPhogueCommandSmallTypo() {
-            this.AssertCommandPlayerListMapList(
+            TestNlpBase.AssertCommandPlayerListMapList(
                 this.CreateTextCommandController(), 
                 "get rdi of phogue",
                 TestNlpBase.TextCommandKick,
@@ -144,7 +144,7 @@ namespace Procon.Core.Test.TextCommands.Nlp {
         /// </summary>
         [TestMethod]
         public void TestKickPhogueCommaMorpheus() {
-            this.AssertCommandPlayerListMapList(
+            TestNlpBase.AssertCommandPlayerListMapList(
                 this.CreateTextCommandController(), 
                 "kick phogue, morpheus(aut)",
                 TestNlpBase.TextCommandKick,
@@ -158,7 +158,7 @@ namespace Procon.Core.Test.TextCommands.Nlp {
 
         [TestMethod]
         public void TestKickPhogueMorpheusTruncated() {
-            this.AssertCommandPlayerListMapList(
+            TestNlpBase.AssertCommandPlayerListMapList(
                 this.CreateTextCommandController(), 
                 "kick pho, morph",
                 TestNlpBase.TextCommandKick,
@@ -172,7 +172,7 @@ namespace Procon.Core.Test.TextCommands.Nlp {
 
         [TestMethod]
         public void TestKickPhogueMorpheusSevereTypo() {
-            this.AssertCommandPlayerListMapList(
+            TestNlpBase.AssertCommandPlayerListMapList(
                 this.CreateTextCommandController(), 
                 "kick phage, marphius aut",
                 TestNlpBase.TextCommandKick,
@@ -186,7 +186,7 @@ namespace Procon.Core.Test.TextCommands.Nlp {
 
         [TestMethod]
         public void TestKickPhogueIsAButterfly() {
-            this.AssertCommandPlayerListMapList(
+            TestNlpBase.AssertCommandPlayerListMapList(
                 this.CreateTextCommandController(), 
                 "kick phogue is a butterfly",
                 TestNlpBase.TextCommandKick,
@@ -199,7 +199,7 @@ namespace Procon.Core.Test.TextCommands.Nlp {
 
         [TestMethod]
         public void TestKickPhogueButNotPhogueIsAButterflyWithHighSimilarity() {
-            this.AssertCommandPlayerListMapList(
+            TestNlpBase.AssertCommandPlayerListMapList(
                 this.CreateTextCommandController(), 
                 "kick phogue is perhaps not a butterfly",
                 TestNlpBase.TextCommandKick,
@@ -212,7 +212,7 @@ namespace Procon.Core.Test.TextCommands.Nlp {
 
         [TestMethod]
         public void TestKickPhogueIsAButterflySmallTypo() {
-            this.AssertCommandPlayerListMapList(
+            TestNlpBase.AssertCommandPlayerListMapList(
                 this.CreateTextCommandController(), 
                 "kick phogue is a buttrfly",
                 TestNlpBase.TextCommandKick, 
@@ -225,7 +225,7 @@ namespace Procon.Core.Test.TextCommands.Nlp {
 
         [TestMethod]
         public void TestKickSplitNameDoubleSubsetMatch() {
-            this.AssertCommandPlayerListMapList(
+            TestNlpBase.AssertCommandPlayerListMapList(
                 this.CreateTextCommandController(), 
                 "kick say nish",
                 TestNlpBase.TextCommandKick,
@@ -244,7 +244,7 @@ namespace Procon.Core.Test.TextCommands.Nlp {
         public void TestKickAll() {
             TextCommandController textCommandController = this.CreateTextCommandController();
 
-            this.AssertCommandPlayerListMapList(
+            TestNlpBase.AssertCommandPlayerListMapList(
                 textCommandController,
                 "kick all",
                 TestNlpBase.TextCommandKick,

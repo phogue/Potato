@@ -147,7 +147,6 @@
     <Compile Include="Tokens\Primitive\Numeric\FloatNumericPrimitiveToken.cs" />
     <Compile Include="Tokens\Primitive\Numeric\NumericPrimitiveToken.cs" />
     <Compile Include="Tokens\Primitive\PrimitiveToken.cs" />
-    <Compile Include="Tokens\StrictAttribute.cs" />
     <Compile Include="Tokens\Syntax\Adjectives\AdjectiveSyntaxToken.cs" />
     <Compile Include="Tokens\Syntax\Adjectives\EveryAdjectiveSyntaxToken.cs" />
     <Compile Include="Tokens\Syntax\Adjectives\LastAdjectiveSyntaxToken.cs" />
@@ -179,6 +178,8 @@
     <Compile Include="Tokens\Syntax\Typography\CaretTypographySyntaxToken.cs" />
     <Compile Include="Tokens\Syntax\Typography\PlusTypographySyntaxToken.cs" />
     <Compile Include="Tokens\Syntax\Typography\TypographySyntaxToken.cs" />
+    <Compile Include="Tokens\TokenMethodMetadata.cs" />
+    <Compile Include="Tokens\TokenParameter.cs" />
     <Compile Include="Tokens\TokenReflection.cs" />
     <Compile Include="Utils\ExpressionBuilder.cs" />
     <Compile Include="Utils\LinqParameterMapping.cs" />

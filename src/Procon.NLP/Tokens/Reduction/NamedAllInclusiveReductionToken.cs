@@ -33,7 +33,10 @@ namespace Procon.Nlp.Tokens.Reduction {
             return returnPhrase;
         }
 
-        public static Phrase Combine(IStateNlp state, AllInclusiveReductionToken allInclusiveReduction, NamedAllInclusiveReductionToken namedReduction) {
+        public static Phrase CombineAllInclusiveNamedReduction(IStateNlp state, Dictionary<String, Token> parameters) {
+            AllInclusiveReductionToken allInclusiveReduction = (AllInclusiveReductionToken)parameters["allInclusiveReduction"];
+            NamedAllInclusiveReductionToken namedReduction = (NamedAllInclusiveReductionToken)parameters["namedReduction"];
+
             // Drop the all inclusive since it's right next to a named inclusive.
             // This could be something like "all players"
             return new Phrase() {

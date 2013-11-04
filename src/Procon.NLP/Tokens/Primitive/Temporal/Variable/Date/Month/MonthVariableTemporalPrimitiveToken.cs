@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Procon.Nlp.Tokens.Primitive.Temporal.Variable.Date.Month {
     using Procon.Nlp.Utils;
@@ -10,73 +11,90 @@ namespace Procon.Nlp.Tokens.Primitive.Temporal.Variable.Date.Month {
 
     public class MonthVariableTemporalPrimitiveToken : DateVariableTemporalPrimitiveToken {
 
-        public static Phrase Reduce(IStateNlp state, FloatNumericPrimitiveToken number, MonthsUnitTemporalPrimitiveToken month) {
+        public static Phrase ReduceNumberMonths(IStateNlp state, Dictionary<String, Token> parameters) {
+            FloatNumericPrimitiveToken number = (FloatNumericPrimitiveToken)parameters["number"];
+            MonthsUnitTemporalPrimitiveToken months = (MonthsUnitTemporalPrimitiveToken)parameters["months"];
+
             return new Phrase() {
                 new MonthVariableTemporalPrimitiveToken() {
                     Pattern = new DateTimePatternNlp() {
                         Rule = TimeType.Relative,// Rule = TimeType.Definitive,
                         Month = (int)number.ToFloat().ConvertTo(typeof(int))
                     },
-                    Text = String.Format("{0} {1}", number.Text, month.Text),
-                    Similarity = (month.Similarity + number.Similarity) / 2.0F
+                    Text = String.Format("{0} {1}", number.Text, months.Text),
+                    Similarity = (months.Similarity + number.Similarity) / 2.0F
                 }
             };
         }
 
-        public static Phrase Reduce(IStateNlp state, OrdinalNumericPrimitiveToken ordinal, MonthMonthsVariableTemporalPrimitiveToken month) {
+        public static Phrase ReduceOrdinalMonths(IStateNlp state, Dictionary<String, Token> parameters) {
+            OrdinalNumericPrimitiveToken ordinal = (OrdinalNumericPrimitiveToken)parameters["ordinal"];
+            MonthMonthsVariableTemporalPrimitiveToken months = (MonthMonthsVariableTemporalPrimitiveToken)parameters["months"];
 
-            DateTimePatternNlp pattern = month.Pattern;
+            DateTimePatternNlp pattern = months.Pattern;
             pattern.Day = (int)ordinal.ToFloat().ConvertTo(typeof(int));
 
             return new Phrase() {
                 new MonthVariableTemporalPrimitiveToken() {
                     Pattern = pattern,
-                    Text = String.Format("{0} {1}", ordinal.Text, month.Text),
-                    Similarity = (month.Similarity + ordinal.Similarity) / 2.0F
+                    Text = String.Format("{0} {1}", ordinal.Text, months.Text),
+                    Similarity = (months.Similarity + ordinal.Similarity) / 2.0F
                 }
             };
         }
 
-        public static Phrase Reduce(IStateNlp state, IndefiniteArticlesSyntaxToken article, MonthsUnitTemporalPrimitiveToken month) {
+        public static Phrase ReduceArticleMonths(IStateNlp state, Dictionary<String, Token> parameters) {
+            IndefiniteArticlesSyntaxToken article = (IndefiniteArticlesSyntaxToken)parameters["article"];
+            MonthsUnitTemporalPrimitiveToken months = (MonthsUnitTemporalPrimitiveToken)parameters["months"];
+
             return new Phrase() {
                 new MonthVariableTemporalPrimitiveToken() {
                     Pattern = new DateTimePatternNlp() {
                         Rule = TimeType.Relative,
                         Month = 1
                     },
-                    Text = String.Format("{0} {1}", article.Text, month.Text),
-                    Similarity = (month.Similarity + article.Similarity) / 2.0F
+                    Text = String.Format("{0} {1}", article.Text, months.Text),
+                    Similarity = (months.Similarity + article.Similarity) / 2.0F
                 }
             };
         }
 
-        public static Phrase Reduce(IStateNlp state, NextAdjectiveSyntaxToken next, MonthsUnitTemporalPrimitiveToken month) {
+        public static Phrase ReduceNextMonths(IStateNlp state, Dictionary<String, Token> parameters) {
+            NextAdjectiveSyntaxToken next = (NextAdjectiveSyntaxToken)parameters["next"];
+            MonthsUnitTemporalPrimitiveToken months = (MonthsUnitTemporalPrimitiveToken)parameters["months"];
+
             return new Phrase() {
                 new MonthVariableTemporalPrimitiveToken() {
                     Pattern = new DateTimePatternNlp() {
                         Rule = TimeType.Relative,
                         Month = 1
                     },
-                    Text = String.Format("{0} {1}", next.Text, month.Text),
-                    Similarity = (month.Similarity + next.Similarity) / 2.0F
+                    Text = String.Format("{0} {1}", next.Text, months.Text),
+                    Similarity = (months.Similarity + next.Similarity) / 2.0F
                 }
             };
         }
 
-        public static Phrase Reduce(IStateNlp state, LastAdjectiveSyntaxToken last, MonthsUnitTemporalPrimitiveToken month) {
+        public static Phrase ReduceLastMonths(IStateNlp state, Dictionary<String, Token> parameters) {
+            LastAdjectiveSyntaxToken last = (LastAdjectiveSyntaxToken)parameters["last"];
+            MonthsUnitTemporalPrimitiveToken months = (MonthsUnitTemporalPrimitiveToken)parameters["months"];
+
             return new Phrase() {
                 new MonthVariableTemporalPrimitiveToken() {
                     Pattern = new DateTimePatternNlp() {
                         Rule = TimeType.Relative,
                         Month = -1
                     },
-                    Text = String.Format("{0} {1}", last.Text, month.Text),
-                    Similarity = (month.Similarity + last.Similarity) / 2.0F
+                    Text = String.Format("{0} {1}", last.Text, months.Text),
+                    Similarity = (months.Similarity + last.Similarity) / 2.0F
                 }
             };
         }
 
-        public static Phrase Reduce(IStateNlp state, EveryAdjectiveSyntaxToken every, MonthsUnitTemporalPrimitiveToken month) {
+        public static Phrase ReduceEveryMonths(IStateNlp state, Dictionary<String, Token> parameters) {
+            EveryAdjectiveSyntaxToken every = (EveryAdjectiveSyntaxToken)parameters["every"];
+            MonthsUnitTemporalPrimitiveToken months = (MonthsUnitTemporalPrimitiveToken)parameters["months"];
+
             return new Phrase() {
                 new MinutesUnitTemporalPrimitiveToken() {
                     Pattern = new DateTimePatternNlp() {
@@ -84,8 +102,8 @@ namespace Procon.Nlp.Tokens.Primitive.Temporal.Variable.Date.Month {
                         Modifier = TimeModifier.Interval,
                         Month = 1
                     },
-                    Text = String.Format("{0} {1}", every.Text, month.Text),
-                    Similarity = (month.Similarity + every.Similarity) / 2.0F
+                    Text = String.Format("{0} {1}", every.Text, months.Text),
+                    Similarity = (months.Similarity + every.Similarity) / 2.0F
                 }
             };
         }

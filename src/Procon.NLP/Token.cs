@@ -1,7 +1,7 @@
 ﻿using System;
 
 namespace Procon.Nlp {
-    public class Token : IComparable<Token> {
+    public class Token {
 
         public static int MinimumSimilarity = 80;
 
@@ -35,8 +35,13 @@ namespace Procon.Nlp {
             return String.Format("{0},{1}", this.Text, this.Value);
         }
 
-        public virtual int CompareTo(Token other) {
-            return 0;
+        /// <summary>
+        /// Determines if a token is compatible with another token.
+        /// </summary>
+        /// <param name="other"></param>
+        /// <returns></returns>
+        public virtual bool CompatibleWith(Token other) {
+            return true;
         }
     }
 }

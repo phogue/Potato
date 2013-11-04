@@ -3,7 +3,7 @@
 namespace Procon.Nlp.Tokens.Primitive.Temporal.Variable.Days {
     public class MondayDaysVariableTemporalPrimitiveToken : DaysVariableTemporalPrimitiveToken {
 
-        public new static Phrase Parse(IStateNlp state, Phrase phrase) {
+        public static Phrase Parse(IStateNlp state, Phrase phrase) {
             return TokenReflection.CreateDescendants<MondayDaysVariableTemporalPrimitiveToken>(state, phrase);
         }
 

@@ -13,7 +13,7 @@ namespace Procon.Core.Test.TextCommands.Nlp {
         /// </summary>
         [TestMethod]
         public void TestKickPhoguePhilkImpliedJoin() {
-            this.AssertCommandPlayerListMapList(
+            TestNlpBase.AssertCommandPlayerListMapList(
                 this.CreateTextCommandController(), 
                 "kick phogue phil",
                 TestNlpBase.TextCommandKick,
@@ -27,7 +27,7 @@ namespace Procon.Core.Test.TextCommands.Nlp {
 
         [TestMethod]
         public void TestKickPhogueOrPhilk() {
-            this.AssertCommandPlayerListMapList(
+            TestNlpBase.AssertCommandPlayerListMapList(
                 this.CreateTextCommandController(),
                 "kick phogue or phil",
                 TestNlpBase.TextCommandKick,
@@ -44,7 +44,7 @@ namespace Procon.Core.Test.TextCommands.Nlp {
         /// </summary>
         [TestMethod]
         public void TestKickPhoguePhilkLogicalAndJoin() {
-            this.AssertCommandPlayerListMapList(
+            TestNlpBase.AssertCommandPlayerListMapList(
                 this.CreateTextCommandController(), 
                 "kick phogue and phil",
                 TestNlpBase.TextCommandKick,
@@ -62,7 +62,7 @@ namespace Procon.Core.Test.TextCommands.Nlp {
         /// </summary>
         [TestMethod]
         public void TestKickPhoguePhilkImpliedJoinGarbageIkeZaeedImpliedJoin() {
-            this.AssertCommandPlayerListMapList(
+            TestNlpBase.AssertCommandPlayerListMapList(
                 this.CreateTextCommandController(),
                 "kick phogue phil, zaeed ike",
                 TestNlpBase.TextCommandKick,
@@ -81,7 +81,7 @@ namespace Procon.Core.Test.TextCommands.Nlp {
         /// </summary>
         [TestMethod]
         public void TestKickPhoguePhilkImpliedJoinWithLogicalAndJoinIkeZaeedImpliedJoin() {
-            this.AssertCommandPlayerListMapList(
+            TestNlpBase.AssertCommandPlayerListMapList(
                 this.CreateTextCommandController(),
                 "kick phogue phil and zaeed ike",
                 TestNlpBase.TextCommandKick,
@@ -101,7 +101,7 @@ namespace Procon.Core.Test.TextCommands.Nlp {
         /// </summary>
         [TestMethod]
         public void TestKickPhoguePhilkImpliedJoinGarbageIke() {
-            this.AssertCommandPlayerListMapList(
+            TestNlpBase.AssertCommandPlayerListMapList(
                 this.CreateTextCommandController(), 
                 "kick phogue phil garbage ike",
                 TestNlpBase.TextCommandKick,
@@ -119,7 +119,7 @@ namespace Procon.Core.Test.TextCommands.Nlp {
         /// </summary>
         [TestMethod]
         public void TestKickPhoguePhilkImpliedJoinWithLogicalAndJoinIke() {
-            this.AssertCommandPlayerListMapList(
+            TestNlpBase.AssertCommandPlayerListMapList(
                 this.CreateTextCommandController(),
                 "kick phogue phil and ike",
                 TestNlpBase.TextCommandKick,
@@ -137,7 +137,7 @@ namespace Procon.Core.Test.TextCommands.Nlp {
         /// </summary>
         [TestMethod]
         public void TestKickPhoguePhilkImpliedJoinWithImpliedJoinPortValdez() {
-            this.AssertCommandPlayerListMapList(
+            TestNlpBase.AssertCommandPlayerListMapList(
                 this.CreateTextCommandController(), 
                 "kick phogue phil port valdez",
                 TestNlpBase.TextCommandKick,
@@ -158,7 +158,7 @@ namespace Procon.Core.Test.TextCommands.Nlp {
         public void TestKickEveryoneWithExclusionOnPhoguePhilImpliedJoin() {
             TextCommandController textCommandController = this.CreateTextCommandController();
 
-            this.AssertCommandPlayerListMapList(
+            TestNlpBase.AssertCommandPlayerListMapList(
                 textCommandController, 
                 "kick everyone but not phogue phil",
                 TestNlpBase.TextCommandKick,

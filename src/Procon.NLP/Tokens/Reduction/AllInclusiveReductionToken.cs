@@ -3,7 +3,7 @@
 namespace Procon.Nlp.Tokens.Reduction {
     public class AllInclusiveReductionToken : PropertyReductionToken {
 
-        public new static Phrase Parse(IStateNlp state, Phrase phrase) {
+        public static Phrase Parse(IStateNlp state, Phrase phrase) {
 
             Phrase returnPhrase = TokenReflection.CreateDescendants<AllInclusiveReductionToken>(state, phrase);
 

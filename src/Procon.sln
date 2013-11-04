@@ -17,7 +17,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{29FDEAFB-A9D6-4A22-AB6F-E989319331FF}"
 	ProjectSection(SolutionItems) = preProject
 		Local.testsettings = Local.testsettings
-		Performance1.psess = Performance1.psess
 		Procon.vsmdi = Procon.vsmdi
 	EndProjectSection
 EndProject

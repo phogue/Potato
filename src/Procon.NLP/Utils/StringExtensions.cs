@@ -25,7 +25,7 @@ namespace Procon.Nlp.Utils {
         /// <param name="s">The first string</param>
         /// <param name="t">THe second string to compare it against</param>
         /// <returns>True if the strings are vagely similar lengths, false if they are no where near.</returns>
-        public static bool HaltLevenshtein(string s, string t) {
+        public static bool HaltStringSimularity(string s, string t) {
             // Note, this might be changed to 0.3F. It's 
             // This function isn't supposed to do any filtering, but instead just prevent a check
             // that couldn't possibly yield over a 50% match.
@@ -62,7 +62,7 @@ namespace Procon.Nlp.Utils {
                 }
                 c++;
             }
-            return (s1.Length + s2.Length) / 2 - lcs;
+            return (s1.Length + s2.Length) / 2F - lcs;
         }
 
         /// <summary>
@@ -127,14 +127,14 @@ namespace Procon.Nlp.Utils {
             // Step 7
             return v0[n];
         }
-
+        
         // Mostly an english hack - will enhance
-        public static int DePluralLevenshtein(this string s, string t) {
-            if (StringExtensions.HaltLevenshtein(s, t) == true) {
+        public static int DePluralStringSimularity(this string s, string t) {
+            if (StringExtensions.HaltStringSimularity(s, t) == true) {
                 return 0;
             }
 
-            int returnRatio = s.LevenshteinSubsetBonusRatio(t);
+            int returnRatio = s.StringSimularitySubsetBonusRatio(t);
 
             if (t.Length > 0 && t[t.Length - 1] == 's') {
                 string newT = t.Remove(t.Length - 1);
@@ -143,7 +143,7 @@ namespace Procon.Nlp.Utils {
                     newT = newT.Remove(newT.Length - 1);
                 }
 
-                int newTRatio = s.LevenshteinSubsetBonusRatio(newT);
+                int newTRatio = s.StringSimularitySubsetBonusRatio(newT);
 
                 if (newTRatio > returnRatio) {
                     returnRatio = newTRatio;
@@ -153,24 +153,22 @@ namespace Procon.Nlp.Utils {
             return returnRatio;
         }
 
-        public static int LevenshteinRatio(this string s, string t) {
-            if (StringExtensions.HaltLevenshtein(s, t) == true) {
+        public static int StringSimularityRatio(this string s, string t) {
+            if (StringExtensions.HaltStringSimularity(s, t) == true) {
                 return 0;
             }
 
-            double levenshtein = s.ToLower().Levenshtein(t.ToLower());
-            //double levenshtein = s.ToLower().Sift3Distance(t.ToLower(), 5);
+            double levenshtein = s.ToLower().Sift3Distance(t.ToLower(), 5);
 
             return (int)Math.Round((1.0D - levenshtein / Math.Max(s.Length, t.Length)) * 100.0D);
         }
 
-        public static int LevenshteinSubsetBonusRatio(this string s, string t) {
-            if (StringExtensions.HaltLevenshtein(s, t) == true) {
+        public static int StringSimularitySubsetBonusRatio(this string s, string t) {
+            if (StringExtensions.HaltStringSimularity(s, t) == true) {
                 return 0;
             }
 
-            double levenshtein = s.ToLower().Levenshtein(t.ToLower());
-            //double levenshtein = s.ToLower().Sift3Distance(t.ToLower(), 5);
+            double levenshtein = s.ToLower().Sift3Distance(t.ToLower(), 5);
 
             // Direct subsets earn a bonus towards the final score.
             if (levenshtein > 0.0D && s.Length != t.Length && s.ToLower().IndexOf(t.ToLower(), StringComparison.Ordinal) >= 0) {
@@ -210,7 +208,7 @@ namespace Procon.Nlp.Utils {
                         continue;
 
                     foreach (MatchDictionaryKey match in matches) {
-                        int score = input.Substring(0, x).ToLower().Levenshtein(match.LowerCaseMatchedText);
+                        int score = (int)input.Substring(0, x).ToLower().Sift3Distance(match.LowerCaseMatchedText, match.LowerCaseMatchedText.Length);
 
                         if (score < match.MatchedScore || (score == match.MatchedScore && x > match.MatchedScoreCharacters)) {
                             match.MatchedScore = score;

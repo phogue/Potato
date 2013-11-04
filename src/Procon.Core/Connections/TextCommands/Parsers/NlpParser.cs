@@ -39,7 +39,7 @@ namespace Procon.Core.Connections.TextCommands.Parsers {
 
             var mapNames = this.Connection.GameState.MapPool.Select(map => new {
                 map,
-                similarity = Math.Max(map.FriendlyName.DePluralLevenshtein(phrase.Text), map.Name.DePluralLevenshtein(phrase.Text))
+                similarity = Math.Max(map.FriendlyName.DePluralStringSimularity(phrase.Text), map.Name.DePluralStringSimularity(phrase.Text))
             }).Where(@t => @t.similarity >= 60).Select(@t => new ThingObjectToken() {
                 Reference = @t.map.Name,
                 ReferenceProperty = aliasId,
@@ -63,13 +63,13 @@ namespace Procon.Core.Connections.TextCommands.Parsers {
 
             var playerNames = this.Connection.GameState.PlayerList.Select(player => new {
                 player,
-                similarity = Math.Max(player.NameStripped.DePluralLevenshtein(phrase.Text), player.Name.DePluralLevenshtein(phrase.Text))
-            }).Where(@t => @t.similarity >= this.MinimumSimilarity(60, 70, maximumNameLength, @t.player.Name.Length)).Select(@t => new ThingObjectToken() {
+                similarity = Math.Max(player.NameStripped.DePluralStringSimularity(phrase.Text), player.Name.DePluralStringSimularity(phrase.Text))
+            }).Where(@t => @t.similarity >= this.MinimumSimilarity(55, 70, maximumNameLength, @t.player.Name.Length)).Select(@t => new ThingObjectToken() {
                 Reference = @t.player.Uid,
                 ReferenceProperty = aliasId,
                 Text = phrase.Text,
                 Similarity = @t.similarity,
-                MinimumWeightedSimilarity = 60
+                MinimumWeightedSimilarity = 55
             });
 
             List<Token> names = new List<Token>();
@@ -83,7 +83,7 @@ namespace Procon.Core.Connections.TextCommands.Parsers {
 
             var playerCountries = this.Connection.GameState.PlayerList.Select(player => new {
                 player,
-                similarity = player.CountryName.LevenshteinSubsetBonusRatio(phrase.Text)
+                similarity = player.CountryName.StringSimularitySubsetBonusRatio(phrase.Text)
             }).Where(@t => @t.similarity >= 60).Select(@t => new ThingObjectToken() {
                 Reference = @t.player.CountryName,
                 ReferenceProperty = countryName,
@@ -115,7 +115,7 @@ namespace Procon.Core.Connections.TextCommands.Parsers {
 
             float max = 0.0F;
 
-            commands.ForEach(x => max = Math.Max(max, x.LevenshteinSubsetBonusRatio(argument)));
+            commands.ForEach(x => max = Math.Max(max, x.StringSimularitySubsetBonusRatio(argument)));
 
             return max;
         }

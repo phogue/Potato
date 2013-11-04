@@ -1449,9 +1449,9 @@ namespace Procon.Nlp.Tokens {
             if (text != null && replacedDiacritics != null && removedDiacritics != null) {
                 float similarity =  Math.Max(
                         Math.Max(
-                            text.Value.LevenshteinRatio(phrase.Text),
-                            replacedDiacritics.Value.LevenshteinRatio(phrase.Text)
-                        ), removedDiacritics.Value.LevenshteinRatio(phrase.Text)
+                            text.Value.StringSimularityRatio(phrase.Text),
+                            replacedDiacritics.Value.StringSimularityRatio(phrase.Text)
+                        ), removedDiacritics.Value.StringSimularityRatio(phrase.Text)
                     );
                 
                 if (similarity >= Token.MinimumSimilarity) {
@@ -1490,19 +1490,23 @@ namespace Procon.Nlp.Tokens {
 
             created = list;
 
-            list.ToList().ForEach(phrase.Add);
+            list.ForEach(phrase.Add);
 
             return phrase;
         }
 
         public static Phrase CreateDescendants<T>(IStateNlp state, Phrase phrase) where T : Token, new() {
+            phrase.AddRange(TokenReflection.SelectMatchDescendants(state.Document, typeof (T)).Select(element => TokenReflection.CreateToken<T>(element, phrase)).Where(token => token != null).Cast<Token>());
 
+            /*
             var list = from element in TokenReflection.SelectMatchDescendants(state.Document, typeof(T))
                        let token = TokenReflection.CreateToken<T>(element, phrase)
                        where token != null
                        select token;
 
-            list.ToList().ForEach(phrase.Add);
+            phrase.AddRange(list.Cast<Token>());
+            */
+            // list.ToList().ForEach(phrase.Add);
 
             return phrase;
         } 

@@ -21,7 +21,7 @@ namespace Procon.Nlp.Tokens.Object {
                     Text = phrase.Text,
                     Value = text != null ? text.Value : null,
                     PropertyName = propertyName != null ? propertyName.Value : null,
-                    Similarity = text != null ? text.Value.LevenshteinRatio(phrase.Text) : 0 
+                    Similarity = text != null ? text.Value.StringSimularityRatio(phrase.Text) : 0 
                 };
             }).Where(property => property.Similarity >= Token.MinimumSimilarity)
             .ToList()

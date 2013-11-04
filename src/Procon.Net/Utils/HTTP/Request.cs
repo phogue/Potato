@@ -4,7 +4,6 @@ using System.Net;
 using System.IO;
 using System.Threading;
 using System.Timers;
-using System.IO.Compression;
 
 namespace Procon.Net.Utils.HTTP {
     [Serializable]
@@ -194,35 +193,36 @@ namespace Procon.Net.Utils.HTTP {
             this._mBufferStream = new byte[Request.IntBufferSize];
 
             try {
-                this._mWebRequest = (HttpWebRequest) WebRequest.Create(this.DownloadSource);
-                // this.m_wrRequest.Referer = "http://www.phogue.net/procon/";
-                this._mWebRequest.Method = this.Method;
-                this._mWebRequest.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
-
-                //this.m_wrRequest.Headers.Add("Range", "bytes=-10000");
-                if (this.Range != null) {
-                    this._mWebRequest.AddRange((int) this.Range);
-                }
-                //this.m_webRequest.AddRange(-888192);
-                if (this.Referrer != null) {
-                    this._mWebRequest.UserAgent = this.Referrer;
-                }
-                // Range: bytes=-10000
-                //this.m_webRequest.KeepAlive = false;
-                //this.m_webRequest.ProtocolVersion = HttpVersion.Version10;
-                //this.m_wrRequest.Headers.Add(System.Net.HttpRequestHeader.UserAgent, "Procon 2.0");
-                //this.m_wrRequest.Headers.Add(System.Net.HttpRequestHeader.Range, "bytes=-10000");
-                this._mWebRequest.Headers.Add(System.Net.HttpRequestHeader.AcceptEncoding, "gzip");
-
-                this._mWebRequest.Credentials = this.CredentialCache;
-
-                this._mWebRequest.Proxy = null;
-
-                this.ProcessPostRequest();
-
-                this.ProcessMultipartPostRequest();
+                this._mWebRequest = WebRequest.Create(this.DownloadSource) as HttpWebRequest;
 
                 if (this._mWebRequest != null) {
+                    // this.m_wrRequest.Referer = "http://www.phogue.net/procon/";
+                    this._mWebRequest.Method = this.Method;
+                    this._mWebRequest.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
+
+                    //this.m_wrRequest.Headers.Add("Range", "bytes=-10000");
+                    if (this.Range != null) {
+                        this._mWebRequest.AddRange((int)this.Range);
+                    }
+                    //this.m_webRequest.AddRange(-888192);
+                    if (this.Referrer != null) {
+                        this._mWebRequest.UserAgent = this.Referrer;
+                    }
+                    // Range: bytes=-10000
+                    //this.m_webRequest.KeepAlive = false;
+                    //this.m_webRequest.ProtocolVersion = HttpVersion.Version10;
+                    //this.m_wrRequest.Headers.Add(System.Net.HttpRequestHeader.UserAgent, "Procon 2.0");
+                    //this.m_wrRequest.Headers.Add(System.Net.HttpRequestHeader.Range, "bytes=-10000");
+                    this._mWebRequest.Headers.Add(System.Net.HttpRequestHeader.AcceptEncoding, "gzip");
+
+                    this._mWebRequest.Credentials = this.CredentialCache;
+
+                    this._mWebRequest.Proxy = null;
+
+                    this.ProcessPostRequest();
+
+                    this.ProcessMultipartPostRequest();
+
                     IAsyncResult arResult = this._mWebRequest.BeginGetResponse(new AsyncCallback(this.ResponseCallback), this);
                     ThreadPool.RegisterWaitForSingleObject(arResult.AsyncWaitHandle, new WaitOrTimerCallback(this.RequestTimeoutCallback), this, this._mTimeout, true);
 
@@ -234,8 +234,6 @@ namespace Procon.Net.Utils.HTTP {
                 }
             }
             catch (Exception e) {
-                String m = e.Message;
-
                 this.FileDownloading = false;
                 if (this.RequestError != null) {
                     this.Error = e.Message;

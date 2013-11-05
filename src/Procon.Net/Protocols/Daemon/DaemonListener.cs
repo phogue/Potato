@@ -153,6 +153,9 @@ namespace Procon.Net.Protocols.Daemon {
         protected void client_ConnectionStateChanged(Client<DaemonPacket> sender, ConnectionState newState) {
             if (newState == ConnectionState.ConnectionDisconnected) {
                 lock (this.ClientsLock) {
+                    sender.PacketReceived -= new Client<DaemonPacket>.PacketDispatchHandler(this.client_PacketReceived);
+                    sender.ConnectionStateChanged -= new Client<DaemonPacket>.ConnectionStateChangedHandler(this.client_ConnectionStateChanged);
+
                     this.Clients.Remove(sender as DaemonClient);
                 }
             }
@@ -183,6 +186,8 @@ namespace Procon.Net.Protocols.Daemon {
                     lock (this.ClientsLock) {
                         foreach (DaemonClient client in this.Clients) {
                             client.Shutdown();
+                            client.PacketReceived -= new Client<DaemonPacket>.PacketDispatchHandler(this.client_PacketReceived);
+                            client.ConnectionStateChanged -= new Client<DaemonPacket>.ConnectionStateChangedHandler(this.client_ConnectionStateChanged);
                         }
 
                         this.Clients.Clear();

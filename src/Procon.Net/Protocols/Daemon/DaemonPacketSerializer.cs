@@ -59,14 +59,14 @@ namespace Procon.Net.Protocols.Daemon {
             packet.Content = packetStringData.LastOrDefault();
 
             if (packet.Header != null) {
-                string[] headers = packet.Header.Split(new string[] {"\r\n"}, StringSplitOptions.RemoveEmptyEntries);
+                string[] headers = packet.Header.Split(new [] {"\r\n"}, StringSplitOptions.RemoveEmptyEntries);
 
                 if (headers.Length > 0) {
                     List<String> status = headers.First().Wordify();
 
-                    var headerValues = packet.Header.Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries).Skip(1).ToDictionary(
-                        line => line.Split(new string[] { ": " }, 2, StringSplitOptions.RemoveEmptyEntries).FirstOrDefault(),
-                        line => line.Split(new string[] { ": " }, 2, StringSplitOptions.RemoveEmptyEntries).LastOrDefault()
+                    var headerValues = packet.Header.Split(new [] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries).Skip(1).ToDictionary(
+                        line => line.Split(new [] { ": " }, 2, StringSplitOptions.RemoveEmptyEntries).FirstOrDefault(),
+                        line => line.Split(new [] { ": " }, 2, StringSplitOptions.RemoveEmptyEntries).LastOrDefault()
                     );
 
                     if (status.Count == 3 && headerValues.ContainsKey("Host") == true) {

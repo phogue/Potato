@@ -98,26 +98,29 @@ namespace Procon.Net.Utils.HTTP {
             if (value is String) {
                 vars.Add(KeyStackToString(keyStack.Reverse().ToArray()), Uri.EscapeDataString((String)value));
             }
-            else if (value is List<Object>) {
-                List<Object> valueList = ((List<Object>)value);
+            else {
+                List<object> list = value as List<object>;
+                if (list != null) {
+                    List<Object> valueList = list;
 
-                for (int i = 0; i < valueList.Count; i++) {
-                    keyStack.Push(i.ToString(CultureInfo.InvariantCulture));
+                    for (int i = 0; i < valueList.Count; i++) {
+                        keyStack.Push(i.ToString(CultureInfo.InvariantCulture));
 
-                    this.AppendKeysValues(vars, keyStack, valueList[i]);
+                        this.AppendKeysValues(vars, keyStack, valueList[i]);
 
-                    keyStack.Pop();
+                        keyStack.Pop();
+                    }
                 }
-            }
-            else if (value is Dictionary<String, Object>) {
-                Dictionary<String, Object> valueDictionary = ((Dictionary<String, Object>)value);
+                else if (value is Dictionary<String, Object>) {
+                    Dictionary<String, Object> valueDictionary = ((Dictionary<String, Object>)value);
 
-                foreach (KeyValuePair<String, Object> kvp in valueDictionary) {
-                    keyStack.Push(kvp.Key);
+                    foreach (KeyValuePair<String, Object> kvp in valueDictionary) {
+                        keyStack.Push(kvp.Key);
 
-                    this.AppendKeysValues(vars, keyStack, kvp.Value);
+                        this.AppendKeysValues(vars, keyStack, kvp.Value);
 
-                    keyStack.Pop();
+                        keyStack.Pop();
+                    }
                 }
             }
         }

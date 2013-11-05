@@ -2,19 +2,19 @@
 using System.Text;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace Procon.Core.Test.TextCommands {
     using Procon.Core.Connections.TextCommands;
 
-    [TestClass]
+    [TestFixture]
     public class TestTextCommands {
 
         /// <summary>
         /// Tests that a text command will clean itself up correctly, at least to a point
         /// where the command would become inert.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestTextCommandDispose() {
 
             TextCommand testCommand = new TextCommand() {
@@ -35,7 +35,7 @@ namespace Procon.Core.Test.TextCommands {
         /// <summary>
         /// Tests that the text command controller will clean itself up.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestTextCommandControllerDispose() {
 
             TextCommandController textCommands = new TextCommandController();
@@ -61,28 +61,28 @@ namespace Procon.Core.Test.TextCommands {
             Assert.IsNull(textCommands.Connection);
         }
 
-        [TestMethod]
+        [Test]
         public void TestTextCommandControllerPrefixValidPublic() {
             TextCommandController textCommands = new TextCommandController();
 
             Assert.AreEqual("!", textCommands.GetValidTextCommandPrefix("!"));
         }
 
-        [TestMethod]
+        [Test]
         public void TestTextCommandControllerPrefixValidProtected() {
             TextCommandController textCommands = new TextCommandController();
 
             Assert.AreEqual("#", textCommands.GetValidTextCommandPrefix("#"));
         }
 
-        [TestMethod]
+        [Test]
         public void TestTextCommandControllerPrefixValidPrivate() {
             TextCommandController textCommands = new TextCommandController();
 
             Assert.AreEqual("@", textCommands.GetValidTextCommandPrefix("@"));
         }
 
-        [TestMethod]
+        [Test]
         public void TestTextCommandControllerPrefixInvalid() {
             TextCommandController textCommands = new TextCommandController();
 

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Procon.Core.Connections.TextCommands;
 using Procon.Core.Connections;
 using Procon.Core.Security;
@@ -231,8 +231,8 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
         }
 
         protected static void AssertExecutedCommandAgainstSentencesList(CommandResultArgs args, TextCommand primaryCommand, List<String> sentences) {
-            Assert.AreEqual<TextCommand>(primaryCommand, args.Now.TextCommands.First(), String.Format("Has not used the '{0}' command", primaryCommand.PluginCommand));
-            Assert.AreEqual<int>(sentences.Count, args.Now.TextCommandMatches.First().Quotes != null ? args.Now.TextCommandMatches.First().Quotes.Count : 0, "Incorrect numbers of sentences returned");
+            Assert.AreEqual(primaryCommand, args.Now.TextCommands.First(), String.Format("Has not used the '{0}' command", primaryCommand.PluginCommand));
+            Assert.AreEqual(sentences.Count, args.Now.TextCommandMatches.First().Quotes != null ? args.Now.TextCommandMatches.First().Quotes.Count : 0, "Incorrect numbers of sentences returned");
 
             foreach (String sentence in sentences) {
                 Assert.IsTrue(args.Now.TextCommandMatches.First().Quotes.Contains(sentence) == true, String.Format("Could not find sentence '{0}'", sentence));
@@ -253,9 +253,9 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
         /// <param name="players">The list of players that must be in the resulting matched players (nothing more, nothing less)</param>
         /// <param name="maps">The list of maps that must be in the resulting matched maps (nothing more, nothing less)</param>
         protected static void AssertExecutedCommandAgainstPlayerListMapList(CommandResultArgs args, TextCommand primaryCommand, List<Player> players, List<Map> maps) {
-            Assert.AreEqual<TextCommand>(primaryCommand, args.Now.TextCommands.First(), String.Format("Has not used the '{0}' command", primaryCommand.PluginCommand));
-            Assert.AreEqual<int>(players.Count, args.Now.TextCommandMatches.First().Players != null ? args.Now.TextCommandMatches.First().Players.Count : 0, "Incorrect numbers of players returned");
-            Assert.AreEqual<int>(maps.Count, args.Now.TextCommandMatches.First().Maps != null ? args.Now.TextCommandMatches.First().Maps.Count : 0, "Incorrect numbers of maps returned");
+            Assert.AreEqual(primaryCommand, args.Now.TextCommands.First(), String.Format("Has not used the '{0}' command", primaryCommand.PluginCommand));
+            Assert.AreEqual(players.Count, args.Now.TextCommandMatches.First().Players != null ? args.Now.TextCommandMatches.First().Players.Count : 0, "Incorrect numbers of players returned");
+            Assert.AreEqual(maps.Count, args.Now.TextCommandMatches.First().Maps != null ? args.Now.TextCommandMatches.First().Maps.Count : 0, "Incorrect numbers of maps returned");
 
             foreach (Player player in players) {
                 Assert.IsTrue(args.Now.TextCommandMatches.First().Players.Contains(player) == true, String.Format("Could not find player '{0}'", player.Name));
@@ -287,9 +287,9 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
         /// <param name="primaryCommand">The command to check against - the returning primary command must be this</param>
         /// <param name="value">The value of the arithmetic return. There must be only one value returned.</param>
         protected static void AssertExecutedCommandAgainstNumericValue(CommandResultArgs args, TextCommand primaryCommand, float value) {
-            Assert.AreEqual<TextCommand>(primaryCommand, args.Now.TextCommands.First(), String.Format("Has not used the '{0}' command", primaryCommand.PluginCommand));
-            Assert.AreEqual<int>(1, args.Now.TextCommandMatches.First().Numeric.Count, "Not exactly one numeric value returned");
-            Assert.AreEqual<float>(value, args.Now.TextCommandMatches.First().Numeric.FirstOrDefault());
+            Assert.AreEqual(primaryCommand, args.Now.TextCommands.First(), String.Format("Has not used the '{0}' command", primaryCommand.PluginCommand));
+            Assert.AreEqual(1, args.Now.TextCommandMatches.First().Numeric.Count, "Not exactly one numeric value returned");
+            Assert.AreEqual(value, args.Now.TextCommandMatches.First().Numeric.FirstOrDefault());
         }
 
         /// <summary>
@@ -306,7 +306,7 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
         }
 
         protected static void AssertExecutedCommandAgainstTemporalValue(CommandResultArgs args, TextCommand primaryCommand, TimeSpan? period = null, DateTime? delay = null, FuzzyDateTimePattern interval = null) {
-            Assert.AreEqual<TextCommand>(primaryCommand, args.Now.TextCommands.First(), String.Format("Has not used the '{0}' command", primaryCommand.PluginCommand));
+            Assert.AreEqual(primaryCommand, args.Now.TextCommands.First(), String.Format("Has not used the '{0}' command", primaryCommand.PluginCommand));
 
             TextCommandMatch match = args.Now.TextCommandMatches.First();
 
@@ -340,7 +340,7 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
             if (interval != null) {
                 Assert.IsNotNull(match.Interval);
 
-                Assert.AreEqual<String>(interval.ToString(), match.Interval.ToString());
+                Assert.AreEqual(interval.ToString(), match.Interval.ToString());
             }
             else {
                 Assert.IsNull(match.Interval);

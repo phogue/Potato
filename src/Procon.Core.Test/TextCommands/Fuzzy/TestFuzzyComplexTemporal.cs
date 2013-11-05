@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Procon.Net.Protocols.Objects;
 using Procon.Fuzzy.Tokens.Primitive.Temporal;
 
 namespace Procon.Core.Test.TextCommands.Fuzzy {
-    [TestClass]
+    [TestFixture]
     public class TestFuzzyComplexTemporal : TestFuzzyBase {
-        [TestMethod]
+        [Test]
         public void TestTemporalKickPhogueOnPortValdezEveryMinute() {
             CommandResultArgs args = TestFuzzyBase.ExecuteTextCommand(this.CreateTextCommandController(), "kick phogue on port valdez every minute");
 
@@ -34,7 +34,7 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
             );
         }
 
-        [TestMethod]
+        [Test]
         public void TestTemporalKickPhogueOnPortValdezForAMinute() {
             CommandResultArgs args = TestFuzzyBase.ExecuteTextCommand(this.CreateTextCommandController(), "kick phogue on port valdez for a minute");
 
@@ -56,7 +56,7 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
             );
         }
 
-        [TestMethod]
+        [Test]
         public void TestTemporalKickPhogueInTwoMinutesOnPortValdezForAMinute() {
             CommandResultArgs args = TestFuzzyBase.ExecuteTextCommand(this.CreateTextCommandController(), "kick phogue in two minutes on port valdez for a minute");
 
@@ -79,7 +79,7 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
             );
         }
 
-        [TestMethod]
+        [Test]
         public void TestTemporalKickPhogueInTwoMinutesOnPortValdezForAMinuteEveryHour() {
             CommandResultArgs args = TestFuzzyBase.ExecuteTextCommand(this.CreateTextCommandController(), "kick phogue in two minutes on port valdez for a minute every hour");
 

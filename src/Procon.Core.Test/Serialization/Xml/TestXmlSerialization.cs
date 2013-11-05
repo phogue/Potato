@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Procon.Core.Connections.TextCommands;
 using Procon.Core.Localization;
 using Procon.Core.Security;
@@ -14,13 +14,13 @@ using Procon.Net.Utils;
 using Procon.Fuzzy.Tokens.Primitive.Temporal;
 
 namespace Procon.Core.Test.Serialization.Xml {
-    [TestClass]
+    [TestFixture]
     public class TestXmlSerialization {
 
         /// <summary>
         /// Testing the xml serialization for the group object.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestXmlSerializationSecurityGroup() {
             SecurityController security = new SecurityController();
             security.Execute(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityAddGroup, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "GroupName" }) });
@@ -38,7 +38,7 @@ namespace Procon.Core.Test.Serialization.Xml {
         /// <summary>
         /// Testing the xml serialization for the account object.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestXmlSerializationSecurityAccount() {
             SecurityController security = new SecurityController();
             security.Execute(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityAddGroup, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "GroupName" }) });
@@ -59,7 +59,7 @@ namespace Procon.Core.Test.Serialization.Xml {
         /// <summary>
         /// Testing the xml serialization for the account player object.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestXmlSerializationSecurityAccountPlayer() {
             SecurityController security = new SecurityController();
             security.Execute(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityAddGroup, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "GroupName" }) });
@@ -78,7 +78,7 @@ namespace Procon.Core.Test.Serialization.Xml {
         /// <summary>
         /// Testing the xml serialization for the permission object.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestXmlSerializationSecurityPermission() {
             SecurityController security = new SecurityController();
             security.Execute(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityAddGroup, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "GroupName" }) });
@@ -96,7 +96,7 @@ namespace Procon.Core.Test.Serialization.Xml {
         /// <summary>
         /// Testing the xml serialization for the variable object.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestXmlSerializationVariable() {
             Variable variable = new Variable() {
                 Name = "Hello",
@@ -114,7 +114,7 @@ namespace Procon.Core.Test.Serialization.Xml {
         /// <summary>
         /// Testing the xml serialization for the language object.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestXmlSerializationLanguage() {
             LanguageController languages = new LanguageController().Execute() as LanguageController;
 
@@ -126,7 +126,7 @@ namespace Procon.Core.Test.Serialization.Xml {
         /// <summary>
         /// Testing the xml serialization for the TextCommand object.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestXmlSerializationTextCommand() {
             TextCommand textCommand = new TextCommand() {
                 Commands = new List<string>() {
@@ -154,7 +154,7 @@ namespace Procon.Core.Test.Serialization.Xml {
         /// <summary>
         /// Testing the xml serialization for the TextCommandMatch object.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestXmlSerializationTextCommandMatch() {
             DateTime now = new DateTime(DateTime.Now.Ticks);
 
@@ -222,7 +222,7 @@ namespace Procon.Core.Test.Serialization.Xml {
         /// <summary>
         /// Testing the xml serialization for the TextCommandMatch object.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestXmlDeserializationTextCommandMatch() {
             DateTime now = new DateTime(DateTime.Now.Ticks);
 
@@ -270,7 +270,7 @@ namespace Procon.Core.Test.Serialization.Xml {
         /// <summary>
         /// Testing the xml serialization for the Player object.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestXmlSerializationPlayer() {
             Player player = new Player() {
                 ClanTag = "PRO",
@@ -315,7 +315,7 @@ namespace Procon.Core.Test.Serialization.Xml {
         /// <summary>
         /// Testing the xml serialization for the Map object.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestXmlSerializationMap() {
             Map map = new Map() {
                 FriendlyName = "MapFriendlyName",

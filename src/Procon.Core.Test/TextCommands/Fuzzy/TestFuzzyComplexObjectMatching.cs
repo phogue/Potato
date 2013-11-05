@@ -1,14 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Procon.Core.Connections.TextCommands;
 using Procon.Net.Protocols.Objects;
 
 namespace Procon.Core.Test.TextCommands.Fuzzy {
-    [TestClass]
+    [TestFixture]
     public class TestFuzzyComplexObjectMatching : TestFuzzyBase {
 
-        [TestMethod]
+        [Test]
         public void TestComplexKickPhogueOnPortValdez() {
             TestFuzzyBase.AssertCommandPlayerListMapList(
                 this.CreateTextCommandController(), 
@@ -23,7 +23,7 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
             );
         }
 
-        [TestMethod]
+        [Test]
         public void TestComplexKickPlayersGreaterThanPingOnPortValdez() {
             TestFuzzyBase.AssertCommandPlayerListMapList(
                 this.CreateTextCommandController(), 
@@ -43,7 +43,7 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
         /// <summary>
         /// Kick everyone with a ping greater than a specific number.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestComplexKickPlayersGreaterThanPing() {
             TestFuzzyBase.AssertCommandPlayerListMapList(
                 this.CreateTextCommandController(), 
@@ -61,7 +61,7 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
         /// <summary>
         /// Kick everyone with a ping greater than a specific number.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestComplexKickPlayersGreaterThanorEqualToPing() {
             TestFuzzyBase.AssertCommandPlayerListMapList(
                 this.CreateTextCommandController(), 
@@ -80,7 +80,7 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
         /// <summary>
         /// Kick everything with a ping less than a specific number.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestComplexKickPlayersLessThanPing() {
             TestFuzzyBase.AssertCommandPlayerListMapList(
                 this.CreateTextCommandController(), 
@@ -98,7 +98,7 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
         /// <summary>
         /// Kick everything with a ping less than or equal to a specific number.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestComplexKickPlayersLessThanOrEqualToPing() {
             TestFuzzyBase.AssertCommandPlayerListMapList(
                 this.CreateTextCommandController(), 
@@ -117,7 +117,7 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
         /// <summary>
         /// Kick everyone with a ping equal to a specific number
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestComplexKickPlayersEqualToPing() {
             TestFuzzyBase.AssertCommandPlayerListMapList(
                 this.CreateTextCommandController(), 
@@ -133,7 +133,7 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
         /// <summary>
         /// Kick everyone within a range of pings
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestComplexKickPlayersWithinRangeOfPing() {
             TestFuzzyBase.AssertCommandPlayerListMapList(
                 this.CreateTextCommandController(), 
@@ -150,7 +150,7 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
         /// <summary>
         /// Test kicking everyone from australia only, excluding all others.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestComplexKickPlayersFromAustralia() {
             TestFuzzyBase.AssertCommandPlayerListMapList(
                 this.CreateTextCommandController(), 
@@ -168,7 +168,7 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
         /// <summary>
         /// Test kicking everyone that is not in australia.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestComplexKickPlayersNotFromAustralia() {
             TextCommandController textCommandController = this.CreateTextCommandController();
 
@@ -185,7 +185,7 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
             );
         }
 
-        [TestMethod]
+        [Test]
         public void TestComplexKickAllPlayers() {
             TextCommandController textCommandController = this.CreateTextCommandController();
 
@@ -198,7 +198,7 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
             );
         }
 
-        [TestMethod]
+        [Test]
         public void TestComplexChangeMapToAllMaps() {
             TestFuzzyBase.AssertCommandPlayerListMapList(this.CreateTextCommandController(), 
                 "change map to all maps",
@@ -212,7 +212,7 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
             );
         }
 
-        [TestMethod]
+        [Test]
         public void TestComplexKickEveryoneExceptPhogue() {
             TextCommandController textCommandController = this.CreateTextCommandController();
 
@@ -225,7 +225,7 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
             );
         }
 
-        [TestMethod]
+        [Test]
         public void TestComplexKickEveryoneExceptPhogueOnAllMapsButPortValdez() {
             TextCommandController textCommandController = this.CreateTextCommandController();
 

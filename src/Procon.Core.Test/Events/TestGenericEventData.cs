@@ -2,16 +2,16 @@
 using System.Text;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Procon.Core.Events;
 using Procon.Net;
 using Procon.Net.Protocols.Frostbite.BF.BF3.Objects;
 using Procon.Net.Protocols.Objects;
 
 namespace Procon.Core.Test.Events {
-    [TestClass]
+    [TestFixture]
     public class TestGenericEventData {
-        [TestMethod]
+        [Test]
         public void TestGameEventObjectConversion() {
 
             GameEventData gameEventData = new GameEventData() {
@@ -70,10 +70,10 @@ namespace Procon.Core.Test.Events {
             Assert.AreEqual(NetworkActionType.NetworkYell, genericEventData.Kills.First().ActionType);
 
             Assert.AreEqual("Phogue", genericEventData.Players.First().Name);
-            Assert.AreEqual<UInt32>(100, genericEventData.Players.First().Ping);
+            Assert.AreEqual(100, genericEventData.Players.First().Ping);
 
             Assert.AreEqual("Phogue", genericEventData.Spawns.First().Player.Name);
-            Assert.AreEqual<UInt32>(100, genericEventData.Spawns.First().Player.Ping);
+            Assert.AreEqual(100, genericEventData.Spawns.First().Player.Ping);
         }
     }
 }

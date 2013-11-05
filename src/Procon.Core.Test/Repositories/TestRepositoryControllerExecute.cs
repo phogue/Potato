@@ -4,14 +4,14 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Xml.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Procon.Core.Events;
 using Procon.Core.Repositories;
 using Procon.Core.Utils;
 using Procon.Net.Utils;
 
 namespace Procon.Core.Test.Repositories {
-    [TestClass]
+    [TestFixture]
     public class TestRepositoryControllerExecute {
 
         protected static String ExecuteInstalledPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Repositories\RepositoryController\Execute\Installed");
@@ -20,7 +20,7 @@ namespace Procon.Core.Test.Repositories {
         protected static String ExecutePackagesUpdatesPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Repositories\RepositoryController\Execute\Installed\Updates\Packages");
         protected static String ExecuteTemporaryUpdatesPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Repositories\RepositoryController\Execute\Installed\Updates\Temporary");
 
-        [TestInitialize]
+        [SetUp]
         public void Initialize() {
             Directory.CreateDirectory(ExecuteInstalledPath);
             Directory.CreateDirectory(ExecutePackagesInstalledPath);
@@ -108,7 +108,8 @@ namespace Procon.Core.Test.Repositories {
         /// <summary>
         /// Tests that existing installed packages are loaded up in the controller.
         /// </summary>
-        [TestMethod]
+        [Test]
+        [Ignore]
         public void TestRepositoryControllerInstalledRepository() {
             this.SetupAndSaveExecutePackage(ExecutePackagesInstalledPath, "repomyrconcom_procon2");
 
@@ -124,7 +125,8 @@ namespace Procon.Core.Test.Repositories {
         /// <summary>
         /// Tests that existing updates packages are loaded up in the controller.
         /// </summary>
-        [TestMethod]
+        [Test]
+        [Ignore]
         public void TestRepositoryControllerUpdatedRepository() {
             this.SetupAndSaveExecutePackage(ExecutePackagesUpdatesPath, "repomyrconcom_procon2");
 
@@ -140,7 +142,8 @@ namespace Procon.Core.Test.Repositories {
         /// <summary>
         /// Tests that existing updates packages are loaded up in the controller.
         /// </summary>
-        [TestMethod]
+        [Test]
+        [Ignore]
         public void TestRepositoryControllerRemoteRepository() {
             AutoResetEvent requestWait = new AutoResetEvent(false);
 

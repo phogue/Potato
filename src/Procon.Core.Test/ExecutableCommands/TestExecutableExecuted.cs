@@ -1,19 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Procon.Core.Test.ExecutableCommands.Objects;
 
 namespace Procon.Core.Test.ExecutableCommands {
     /// <summary>
     /// Summary description for ExecutableBase
     /// </summary>
-    [TestClass]
+    [TestFixture]
     public class TestExecutableExecuted {
 
         /// <summary>
         /// Tests we can match and set a variable in a executable class.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestExecutablePreviewSetPassThrough() {
             ExecutableExecutedTester tester = new ExecutableExecutedTester() {
                 TestNumber = 0
@@ -27,8 +27,8 @@ namespace Procon.Core.Test.ExecutableCommands {
                 })
             });
 
-            Assert.AreEqual<int>(tester.TestNumber, 50);
-            Assert.AreEqual<int>(tester.ExecutedTestValue, 100);
+            Assert.AreEqual(tester.TestNumber, 50);
+            Assert.AreEqual(tester.ExecutedTestValue, 100);
         }
     }
 }

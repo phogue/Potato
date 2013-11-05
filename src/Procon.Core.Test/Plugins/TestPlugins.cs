@@ -3,18 +3,18 @@ using System.Reflection;
 using System.Text;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Procon.Core.Connections.Plugins;
 
 namespace Procon.Core.Test.Plugins {
 
-    [TestClass]
+    [TestFixture]
     public class TestPlugins {
 
         /// <summary>
         /// Makes sure the plugin is not loaded into the current appdomain.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestPluginsSinglePluginDisposed() {
             PluginController plugins = new PluginController().Execute() as PluginController;
 
@@ -27,7 +27,7 @@ namespace Procon.Core.Test.Plugins {
             Assert.IsNull(plugin.PluginFactory);
         }
 
-        [TestMethod]
+        [Test]
         public void TestPluginsDisposed() {
             PluginController plugins = new PluginController().Execute() as PluginController;
 

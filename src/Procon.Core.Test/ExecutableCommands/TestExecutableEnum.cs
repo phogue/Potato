@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Procon.Core.Test.ExecutableCommands.Objects;
 
 namespace Procon.Core.Test.ExecutableCommands {
-    [TestClass]
+    [TestFixture]
     public class TestExecutableEnum {
 
         /// <summary>
         /// Tests that a flag enumerator will be passed through with the same type.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestExecutableEnumParserFlags() {
             ExecutableEnumTester tester = new ExecutableEnumTester();
 
@@ -22,13 +22,13 @@ namespace Procon.Core.Test.ExecutableCommands {
                 })
             });
 
-            Assert.AreEqual<ExecutableFlagsEnum>(ExecutableFlagsEnum.Three, tester.TestExecutableFlagsEnum);
+            Assert.AreEqual(ExecutableFlagsEnum.Three, tester.TestExecutableFlagsEnum);
         }
 
         /// <summary>
         /// Tests that a enumerator will be passed through with the same type.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestExecutableEnumParser() {
             ExecutableEnumTester tester = new ExecutableEnumTester();
 
@@ -40,13 +40,13 @@ namespace Procon.Core.Test.ExecutableCommands {
                 })
             });
 
-            Assert.AreEqual<ExecutableEnum>(ExecutableEnum.Seven, tester.TestExecutableEnum);
+            Assert.AreEqual(ExecutableEnum.Seven, tester.TestExecutableEnum);
         }
 
         /// <summary>
         /// Tests that a string value will be converted to a enumerator.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestExecutableEnumParserTypeConversion() {
             ExecutableEnumTester tester = new ExecutableEnumTester();
 
@@ -58,7 +58,7 @@ namespace Procon.Core.Test.ExecutableCommands {
                 })
             });
 
-            Assert.AreEqual<ExecutableEnum>(ExecutableEnum.Eight, tester.TestExecutableEnum);
+            Assert.AreEqual(ExecutableEnum.Eight, tester.TestExecutableEnum);
         }
     }
 }

@@ -4,19 +4,19 @@ using System.Text;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Procon.Core.Utils;
 
 namespace Procon.Core.Test.Variables {
     using Procon.Core.Variables;
     using Procon.Net.Utils;
 
-    [TestClass]
+    [TestFixture]
     public class TestVariables {
 
         protected static FileInfo ConfigFileInfo = new FileInfo("Procon.Core.Test.Variables.xml");
 
-        [TestInitialize]
+        [SetUp]
         public void Initialize() {
             if (File.Exists(ConfigFileInfo.FullName)) {
                 File.Delete(ConfigFileInfo.FullName);
@@ -26,7 +26,7 @@ namespace Procon.Core.Test.Variables {
         /// <summary>
         /// Tests that a config can be written in a specific format.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestVariablesWriteConfig() {
             VariableController variables = new VariableController().Execute() as VariableController;
             variables.Execute(new Command() {
@@ -77,23 +77,23 @@ namespace Procon.Core.Test.Variables {
 
             var commands = loadConfig.Root.Descendants("VariableController").Elements("Command").Select(xCommand => xCommand.FromXElement<Command>()).ToList();
 
-            Assert.AreEqual<String>("VariablesSetA", commands[0].Name);
-            Assert.AreEqual<String>("NameToWriteString", commands[0].Parameters[0].First<String>());
-            Assert.AreEqual<String>("this is a string", commands[0].Parameters[1].First<String>());
+            Assert.AreEqual("VariablesSetA", commands[0].Name);
+            Assert.AreEqual("NameToWriteString", commands[0].Parameters[0].First<String>());
+            Assert.AreEqual("this is a string", commands[0].Parameters[1].First<String>());
 
-            Assert.AreEqual<String>("VariablesSetA", commands[1].Name);
-            Assert.AreEqual<String>("NameToWriteInteger", commands[1].Parameters[0].First<String>());
-            Assert.AreEqual<String>("1", commands[1].Parameters[1].First<String>());
+            Assert.AreEqual("VariablesSetA", commands[1].Name);
+            Assert.AreEqual("NameToWriteInteger", commands[1].Parameters[0].First<String>());
+            Assert.AreEqual("1", commands[1].Parameters[1].First<String>());
 
-            Assert.AreEqual<String>("VariablesSetA", commands[2].Name);
-            Assert.AreEqual<String>("MaximumGameConnections", commands[2].Parameters[0].First<String>());
-            Assert.AreEqual<String>("10", commands[2].Parameters[1].First<String>());
+            Assert.AreEqual("VariablesSetA", commands[2].Name);
+            Assert.AreEqual("MaximumGameConnections", commands[2].Parameters[0].First<String>());
+            Assert.AreEqual("10", commands[2].Parameters[1].First<String>());
         }
 
         /// <summary>
         /// Tests that a config can be successfully loaded 
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestVariablesLoadConfig() {
             VariableController saveVariables = new VariableController().Execute() as VariableController;
             saveVariables.Execute(new Command() {
@@ -144,15 +144,15 @@ namespace Procon.Core.Test.Variables {
             loadConfig.LoadFile(TestVariables.ConfigFileInfo);
             loadVariables.Execute(loadConfig);
 
-            Assert.AreEqual<String>("this is a string", loadVariables.GetA<String>("KeyToWriteString"));
-            Assert.AreEqual<int>(1, loadVariables.GetA<int>("KeyToWriteInteger"));
-            Assert.AreEqual<int>(10, loadVariables.GetA<int>("MaximumGameConnections"));
+            Assert.AreEqual("this is a string", loadVariables.GetA<String>("KeyToWriteString"));
+            Assert.AreEqual(1, loadVariables.GetA<int>("KeyToWriteInteger"));
+            Assert.AreEqual(10, loadVariables.GetA<int>("MaximumGameConnections"));
         }
 
         /// <summary>
         /// Tests that when disposing of the variables object, all other items are cleaned up.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestVariablesDispose() {
             VariableController variables = new VariableController();
 
@@ -189,7 +189,7 @@ namespace Procon.Core.Test.Variables {
         /// Tests that a variable will be created and added if it does not exist
         /// to begin with.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestVariablesDynamicCreationStringKey() {
             String key = "TestVariablesDynamicCreation" + StringExtensions.RandomString(20);
 
@@ -209,7 +209,7 @@ namespace Procon.Core.Test.Variables {
         /// Tests that a variable will be created and added if it does not exist
         /// to begin with.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestVariablesDynamicCreationCommonVariableKey() {
             VariableController variables = new VariableController();
 
@@ -226,7 +226,7 @@ namespace Procon.Core.Test.Variables {
         /// <summary>
         /// Tests that an empty namespace will result in the common variable name being returned.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestVariablesBuildNamespaceVariableKeyEmptyNamespace() {
             Assert.AreEqual("DaemonEnabled", Variable.NamespaceVariableName("", CommonVariableNames.DaemonEnabled));
         }
@@ -235,7 +235,7 @@ namespace Procon.Core.Test.Variables {
         /// Tests that a key is generated correctly with a dot seperator when a
         /// namespace is passed in.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestVariablesBuildNamespaceVariableKeyWithNamespace() {
             Assert.AreEqual("my.namespace.DaemonEnabled", Variable.NamespaceVariableName("my.namespace", CommonVariableNames.DaemonEnabled));
         }

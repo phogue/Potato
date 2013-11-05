@@ -1,17 +1,17 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Procon.Core.Connections.TextCommands;
 using Procon.Net.Protocols.Objects;
 
 namespace Procon.Core.Test.TextCommands.Fuzzy {
-    [TestClass]
+    [TestFixture]
     public class TestFuzzySetsObjectMatching : TestFuzzyBase {
         
         /// <summary>
         /// Kicks Phogue and Philk with no joining character, implying a join into a single list.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestKickPhoguePhilkImpliedJoin() {
             TestFuzzyBase.AssertCommandPlayerListMapList(
                 this.CreateTextCommandController(), 
@@ -25,7 +25,7 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
             );
         }
 
-        [TestMethod]
+        [Test]
         public void TestKickPhogueOrPhilk() {
             TestFuzzyBase.AssertCommandPlayerListMapList(
                 this.CreateTextCommandController(),
@@ -42,7 +42,7 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
         /// <summary>
         /// Kicks Phogue and Philk using a logical join between the two things.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestKickPhoguePhilkLogicalAndJoin() {
             TestFuzzyBase.AssertCommandPlayerListMapList(
                 this.CreateTextCommandController(), 
@@ -60,7 +60,7 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
         /// Tests combining two sets of information by placing a garbage string between two sets
         /// which will be thrown out during reduction.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestKickPhoguePhilkImpliedJoinGarbageIkeZaeedImpliedJoin() {
             TestFuzzyBase.AssertCommandPlayerListMapList(
                 this.CreateTextCommandController(),
@@ -79,7 +79,7 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
         /// <summary>
         /// Tests combining two sets of information using a logical and join.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestKickPhoguePhilkImpliedJoinWithLogicalAndJoinIkeZaeedImpliedJoin() {
             TestFuzzyBase.AssertCommandPlayerListMapList(
                 this.CreateTextCommandController(),
@@ -99,7 +99,7 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
         /// Tests combining a set with a single thing of a matching type with a garbage separator
         /// that will be thrown out during reduction.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestKickPhoguePhilkImpliedJoinGarbageIke() {
             TestFuzzyBase.AssertCommandPlayerListMapList(
                 this.CreateTextCommandController(), 
@@ -117,7 +117,7 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
         /// <summary>
         /// Tests combining a set with a single thing of a matching type with a logical and join
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestKickPhoguePhilkImpliedJoinWithLogicalAndJoinIke() {
             TestFuzzyBase.AssertCommandPlayerListMapList(
                 this.CreateTextCommandController(),
@@ -135,7 +135,7 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
         /// <summary>
         /// Tests that sets won't be combined if not all of the types match.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestKickPhoguePhilkImpliedJoinWithImpliedJoinPortValdez() {
             TestFuzzyBase.AssertCommandPlayerListMapList(
                 this.CreateTextCommandController(), 
@@ -154,7 +154,7 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
         /// <summary>
         /// Tests that sets won't be combined if not all of the types match.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestKickEveryoneWithExclusionOnPhoguePhilImpliedJoin() {
             TextCommandController textCommandController = this.CreateTextCommandController();
 

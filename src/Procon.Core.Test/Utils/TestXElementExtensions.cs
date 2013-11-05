@@ -3,20 +3,20 @@ using System.Text;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Procon.Core.Test.Utils.Objects;
 using Procon.Core.Utils;
 using Procon.Net.Utils;
 
 namespace Procon.Core.Test.Utils {
 
-    [TestClass]
+    [TestFixture]
     public class TestXElementExtensions {
 
         /// <summary>
         /// Tests that a object can be serialized to a XElement object.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestToXElement() {
 
             XElement element = new XElementTester(){
@@ -28,7 +28,7 @@ namespace Procon.Core.Test.Utils {
             Assert.AreEqual("1", element.Element("Number").Value);
         }
 
-        [TestMethod]
+        [Test]
         public void TestFromXElement() {
             XElement element = XElement.Parse(@"<XElementTester>
   <Word>This</Word>

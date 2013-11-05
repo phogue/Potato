@@ -2,19 +2,19 @@
 using System.Text;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Procon.Core.Security;
 
 namespace Procon.Core.Test.Variables {
     using Procon.Core.Variables;
 
-    [TestClass]
+    [TestFixture]
     public class TestVariablesSet {
 
         /// <summary>
         /// Tests that we can set a value, getting the successful flag back from the command.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestVariablesSetValue() {
             VariableController variables = new VariableController();
 
@@ -28,14 +28,14 @@ namespace Procon.Core.Test.Variables {
             });
 
             Assert.IsTrue(result.Success);
-            Assert.AreEqual<CommandResultType>(CommandResultType.Success, result.Status);
-            Assert.AreEqual<String>("value", variables.Get("key", String.Empty));
+            Assert.AreEqual(CommandResultType.Success, result.Status);
+            Assert.AreEqual("value", variables.Get("key", String.Empty));
         }
 
         /// <summary>
         /// Tests that setting a variable will fetch/set as case insensitive
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestVariablesSetValueCaseInsensitive() {
             VariableController variables = new VariableController();
 
@@ -49,17 +49,17 @@ namespace Procon.Core.Test.Variables {
             });
 
             Assert.IsTrue(result.Success);
-            Assert.AreEqual<CommandResultType>(CommandResultType.Success, result.Status);
-            Assert.AreEqual<String>("TestVariablesSetValueCaseInsensitive", variables.Get("Key", String.Empty));
-            Assert.AreEqual<String>("TestVariablesSetValueCaseInsensitive", variables.Get("KEY", String.Empty));
-            Assert.AreEqual<String>("TestVariablesSetValueCaseInsensitive", variables.Get("keY", String.Empty));
-            Assert.AreEqual<String>("TestVariablesSetValueCaseInsensitive", variables.Get("Key", String.Empty));
+            Assert.AreEqual(CommandResultType.Success, result.Status);
+            Assert.AreEqual("TestVariablesSetValueCaseInsensitive", variables.Get("Key", String.Empty));
+            Assert.AreEqual("TestVariablesSetValueCaseInsensitive", variables.Get("KEY", String.Empty));
+            Assert.AreEqual("TestVariablesSetValueCaseInsensitive", variables.Get("keY", String.Empty));
+            Assert.AreEqual("TestVariablesSetValueCaseInsensitive", variables.Get("Key", String.Empty));
         }
 
         /// <summary>
         /// Tests that setting a variable will fail if the user does not have permission.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestVariablesSetValueInsufficientPermission() {
             VariableController variables = new VariableController() {
                 Security = new SecurityController().Execute() as SecurityController
@@ -76,13 +76,13 @@ namespace Procon.Core.Test.Variables {
             });
 
             Assert.IsFalse(result.Success);
-            Assert.AreEqual<CommandResultType>(CommandResultType.InsufficientPermissions, result.Status);
+            Assert.AreEqual(CommandResultType.InsufficientPermissions, result.Status);
         }
 
         /// <summary>
         /// Tests that an empty key will result in a invalid parameter.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestVariablesSetValueEmptyKey() {
             VariableController variables = new VariableController();
 
@@ -98,14 +98,14 @@ namespace Procon.Core.Test.Variables {
 
             // Validate that the command failed (can't have an empty key)
             Assert.IsFalse(result.Success);
-            Assert.AreEqual<CommandResultType>(CommandResultType.InvalidParameter, result.Status);
-            Assert.AreEqual<Int32>(0, variables.VolatileVariables.Count);
+            Assert.AreEqual(CommandResultType.InvalidParameter, result.Status);
+            Assert.AreEqual(0, variables.VolatileVariables.Count);
         }
 
         /// <summary>
         /// Tests setting a read only variable returns an error and the variable remains unchanged.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestVariablesSetValueReadOnly() {
             VariableController variables = new VariableController() {
                 VolatileVariables = new List<Variable>() {
@@ -129,14 +129,14 @@ namespace Procon.Core.Test.Variables {
 
             // Validate that the command failed (can't have an empty key)
             Assert.IsFalse(result.Success);
-            Assert.AreEqual<CommandResultType>(CommandResultType.Failed, result.Status);
-            Assert.AreEqual<String>("value", variables.Get("key", String.Empty));
+            Assert.AreEqual(CommandResultType.Failed, result.Status);
+            Assert.AreEqual("value", variables.Get("key", String.Empty));
         }
 
         /// <summary>
         /// Tests that setting an existing variable will succeed (different code branch because it does not need to be added first)
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestVariablesSetValueOverrideExisting() {
             VariableController variables = new VariableController() {
                 VolatileVariables = new List<Variable>() {
@@ -159,15 +159,15 @@ namespace Procon.Core.Test.Variables {
 
             // Validate that the command failed (can't have an empty key)
             Assert.IsTrue(result.Success);
-            Assert.AreEqual<CommandResultType>(CommandResultType.Success, result.Status);
-            Assert.AreEqual<String>("modified value", variables.Get("key", String.Empty));
+            Assert.AreEqual(CommandResultType.Success, result.Status);
+            Assert.AreEqual("modified value", variables.Get("key", String.Empty));
         }
 
         /// <summary>
         /// Sets a value for the archive, follows same code path as Set, but sets
         /// the same variable in VariablesArchive.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestVariablesSetValueA() {
             VariableController variables = new VariableController();
 
@@ -183,15 +183,15 @@ namespace Procon.Core.Test.Variables {
 
             // Validate that the command was successful and the key was set to the passed value.
             Assert.IsTrue(result.Success);
-            Assert.AreEqual<CommandResultType>(CommandResultType.Success, result.Status);
-            Assert.AreEqual<String>("value", variables.Get("key", String.Empty));
-            Assert.AreEqual<String>("value", variables.GetA("key", String.Empty));
+            Assert.AreEqual(CommandResultType.Success, result.Status);
+            Assert.AreEqual("value", variables.Get("key", String.Empty));
+            Assert.AreEqual("value", variables.GetA("key", String.Empty));
         }
 
         /// <summary>
         /// Checks that a user must have permission to set a archive variable.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestVariablesSetValueAInsufficientPermission() {
             VariableController variables = new VariableController();
 
@@ -207,13 +207,13 @@ namespace Procon.Core.Test.Variables {
 
             // Validate the command failed because we don't have permissions to execute it.
             Assert.IsFalse(result.Success);
-            Assert.AreEqual<CommandResultType>(CommandResultType.InsufficientPermissions, result.Status);
+            Assert.AreEqual(CommandResultType.InsufficientPermissions, result.Status);
         }
 
         /// <summary>
         /// Checks that we can override the value of an existing key in the variable archive.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestVariablesSetValueAOverrideExisting() {
             VariableController variables = new VariableController();
 
@@ -229,9 +229,9 @@ namespace Procon.Core.Test.Variables {
 
             // Validate that initially setting the variable is successful.
             Assert.IsTrue(result.Success);
-            Assert.AreEqual<CommandResultType>(CommandResultType.Success, result.Status);
-            Assert.AreEqual<String>("value", variables.Get("key", String.Empty));
-            Assert.AreEqual<String>("value", variables.GetA("key", String.Empty));
+            Assert.AreEqual(CommandResultType.Success, result.Status);
+            Assert.AreEqual("value", variables.Get("key", String.Empty));
+            Assert.AreEqual("value", variables.GetA("key", String.Empty));
 
             result = variables.Execute(new Command() {
                 Origin = CommandOrigin.Local,
@@ -244,12 +244,12 @@ namespace Procon.Core.Test.Variables {
 
             // Validate that we changed changed an existing variable value.
             Assert.IsTrue(result.Success);
-            Assert.AreEqual<CommandResultType>(CommandResultType.Success, result.Status);
-            Assert.AreEqual<String>("changed value", variables.Get("key", String.Empty));
-            Assert.AreEqual<String>("changed value", variables.GetA("key", String.Empty));
+            Assert.AreEqual(CommandResultType.Success, result.Status);
+            Assert.AreEqual("changed value", variables.Get("key", String.Empty));
+            Assert.AreEqual("changed value", variables.GetA("key", String.Empty));
         }
 
-        [TestMethod]
+        [Test]
         public void TestVariablesSetValueAEmptyKey() {
             VariableController variables = new VariableController();
 
@@ -265,13 +265,13 @@ namespace Procon.Core.Test.Variables {
 
             // Validate that the command failed
             Assert.IsFalse(result.Success);
-            Assert.AreEqual<CommandResultType>(CommandResultType.InvalidParameter, result.Status);
+            Assert.AreEqual(CommandResultType.InvalidParameter, result.Status);
         }
 
         /// <summary>
         /// Sets a value for the archive using the common name enum.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestVariablesSetValueACommonName() {
             VariableController variables = new VariableController();
 
@@ -281,14 +281,14 @@ namespace Procon.Core.Test.Variables {
             }, CommonVariableNames.MaximumGameConnections, "value");
 
             // Validate that the command was successful and the key was set to the passed value.
-            Assert.AreEqual<String>("value", variables.Get(CommonVariableNames.MaximumGameConnections, String.Empty));
-            Assert.AreEqual<String>("value", variables.GetA(CommonVariableNames.MaximumGameConnections, String.Empty));
+            Assert.AreEqual("value", variables.Get(CommonVariableNames.MaximumGameConnections, String.Empty));
+            Assert.AreEqual("value", variables.GetA(CommonVariableNames.MaximumGameConnections, String.Empty));
         }
 
         /// <summary>
         /// Tests that we can set a variable to a list of strings via a command.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestVariablesSetValueStringList() {
             VariableController variables = new VariableController();
 

@@ -1,12 +1,12 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Procon.Fuzzy.Tokens.Primitive.Temporal;
 
 namespace Procon.Core.Test.TextCommands.Fuzzy {
-    [TestClass]
+    [TestFixture]
     public class TestFuzzyBasicTemporal : TestFuzzyBase {
 
-        [TestMethod]
+        [Test]
         public void TestTemporalKickEveryoneFor2Weeks() {
             TestFuzzyBase.AssertTemporalCommand(
                 this.CreateTextCommandController(), 
@@ -16,7 +16,7 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
             );
         }
 
-        [TestMethod]
+        [Test]
         public void TestTemporalKickEveryoneFor2PlusTwoWeeks() {
             TestFuzzyBase.AssertTemporalCommand(
                 this.CreateTextCommandController(), 
@@ -26,7 +26,7 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
             );
         }
 
-        [TestMethod]
+        [Test]
         public void TestTemporalKickEveryoneFor1Second() {
             TestFuzzyBase.AssertTemporalCommand(
                 this.CreateTextCommandController(), 
@@ -36,7 +36,7 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
             );
         }
 
-        [TestMethod]
+        [Test]
         public void TestTemporalKickEveryoneForOneSecond() {
             TestFuzzyBase.AssertTemporalCommand(
                 this.CreateTextCommandController(), 
@@ -46,7 +46,7 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
             );
         }
 
-        [TestMethod]
+        [Test]
         public void TestTemporalKickEveryoneForASecond() {
             TestFuzzyBase.AssertTemporalCommand(
                 this.CreateTextCommandController(), 
@@ -56,7 +56,7 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
             );
         }
 
-        [TestMethod]
+        [Test]
         public void TestTemporalKickEveryoneEverySecond() {
             TestFuzzyBase.AssertTemporalCommand(
                 this.CreateTextCommandController(), 
@@ -72,7 +72,7 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
             );
         }
 
-        [TestMethod]
+        [Test]
         public void TestTemporalKickEveryoneFor1Year() {
             TestFuzzyBase.AssertTemporalCommand(
                 this.CreateTextCommandController(), 
@@ -82,7 +82,7 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
             );
         }
 
-        [TestMethod]
+        [Test]
         public void TestTemporalKickEveryoneForOneYear() {
             TestFuzzyBase.AssertTemporalCommand(
                 this.CreateTextCommandController(), 
@@ -92,7 +92,7 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
             );
         }
 
-        [TestMethod]
+        [Test]
         public void TestTemporalKickEveryoneForAYear() {
             TestFuzzyBase.AssertTemporalCommand(
                 this.CreateTextCommandController(), 
@@ -102,7 +102,7 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
             );
         }
 
-        [TestMethod]
+        [Test]
         public void TestTemporalKickEveryoneFor1Month() {
             TestFuzzyBase.AssertTemporalCommand(
                 this.CreateTextCommandController(), 
@@ -112,7 +112,7 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
             );
         }
 
-        [TestMethod]
+        [Test]
         public void TestTemporalKickEveryoneForOneMonth() {
             TestFuzzyBase.AssertTemporalCommand(
                 this.CreateTextCommandController(), 
@@ -122,7 +122,7 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
             );
         }
 
-        [TestMethod]
+        [Test]
         public void TestTemporalKickEveryoneForAMonth() {
             TestFuzzyBase.AssertTemporalCommand(
                 this.CreateTextCommandController(), 
@@ -132,7 +132,7 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
             );
         }
 
-        [TestMethod]
+        [Test]
         public void TestTemporalKickEveryoneFor1Hour() {
             TestFuzzyBase.AssertTemporalCommand(
                 this.CreateTextCommandController(), 
@@ -142,7 +142,7 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
             );
         }
 
-        [TestMethod]
+        [Test]
         public void TestTemporalKickEveryoneForOneHour() {
             TestFuzzyBase.AssertTemporalCommand(
                 this.CreateTextCommandController(), 
@@ -152,7 +152,7 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
             );
         }
 
-        [TestMethod]
+        [Test]
         public void TestTemporalKickEveryoneForAHour() {
             TestFuzzyBase.AssertTemporalCommand(
                 this.CreateTextCommandController(), 
@@ -162,7 +162,7 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
             );
         }
 
-        [TestMethod]
+        [Test]
         public void TestTemporalKickEveryoneUntil12Pm() {
             // Couldn't use the helper since the delay in executing the command can some times throw out the time for the delay. 
             CommandResultArgs args = TestFuzzyBase.ExecuteTextCommand(this.CreateTextCommandController(), "kick everyone until 12 pm");
@@ -177,7 +177,7 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
             );
         }
 
-        [TestMethod]
+        [Test]
         public void TestTemporalKickEveryoneNextDayOfWeek() {
             TestFuzzyBase.AssertTemporalCommand(
                 this.CreateTextCommandController(), 
@@ -187,7 +187,7 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
             );
         }
 
-        [TestMethod]
+        [Test]
         public void TestTemporalKickEveryoneLastDayOfWeek() {
             TestFuzzyBase.AssertTemporalCommand(
                 this.CreateTextCommandController(), 
@@ -197,7 +197,7 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
             );
         }
 
-        [TestMethod]
+        [Test]
         public void TestTemporalKickEveryoneThisDayOfWeek() {
             TestFuzzyBase.AssertTemporalCommand(
                 this.CreateTextCommandController(), 
@@ -207,7 +207,7 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
             );
         }
 
-        [TestMethod]
+        [Test]
         public void TestTemporalKickEveryoneThisDayOfWeekPlus1() {
             TestFuzzyBase.AssertTemporalCommand(
                 this.CreateTextCommandController(), 
@@ -217,7 +217,7 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
             );
         }
 
-        [TestMethod]
+        [Test]
         public void TestTemporalKickEveryoneThisDayOfWeekPlus2() {
             TestFuzzyBase.AssertTemporalCommand(
                 this.CreateTextCommandController(), 
@@ -227,7 +227,7 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
             );
         }
 
-        [TestMethod]
+        [Test]
         public void TestTemporalKickEveryoneThisDayOfWeekPlus3() {
             TestFuzzyBase.AssertTemporalCommand(
                 this.CreateTextCommandController(), 
@@ -237,7 +237,7 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
             );
         }
 
-        [TestMethod]
+        [Test]
         public void TestTemporalKickEveryoneThisDayOfWeekPlus4() {
             TestFuzzyBase.AssertTemporalCommand(
                 this.CreateTextCommandController(), 
@@ -247,7 +247,7 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
             );
         }
 
-        [TestMethod]
+        [Test]
         public void TestTemporalKickEveryoneThisDayOfWeekPlus5() {
             TestFuzzyBase.AssertTemporalCommand(
                 this.CreateTextCommandController(), 
@@ -257,7 +257,7 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
             );
         }
 
-        [TestMethod]
+        [Test]
         public void TestTemporalKickEveryoneThisDayOfWeekPlus6() {
             TestFuzzyBase.AssertTemporalCommand(
                 this.CreateTextCommandController(), 
@@ -267,7 +267,7 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
             );
         }
 
-        [TestMethod]
+        [Test]
         public void TestTemporalKickEveryoneSplitDefinitiveTimesOnThePrepositions() {
             TestFuzzyBase.AssertTemporalCommand(
                 this.CreateTextCommandController(), 
@@ -278,7 +278,7 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
             );
         }
         
-        [TestMethod]
+        [Test]
         public void TestTemporalKickEveryoneSplitDefinitiveTimesOnPrepositions() {
             TestFuzzyBase.AssertTemporalCommand(
                 this.CreateTextCommandController(), 
@@ -289,7 +289,7 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
             );
         }
         
-        [TestMethod]
+        [Test]
         public void TestTemporalKickEveryoneSplitDefinitiveTimesUntilPrepositions() {
             TestFuzzyBase.AssertTemporalCommand(
                 this.CreateTextCommandController(), 
@@ -299,7 +299,7 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
             );
         }
 
-        [TestMethod]
+        [Test]
         public void TestTemporalKickEveryoneSplitDefinitiveTimesUntilThePrepositions() {
             TestFuzzyBase.AssertTemporalCommand(
                 this.CreateTextCommandController(), 

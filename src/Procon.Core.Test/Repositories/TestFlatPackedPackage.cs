@@ -4,13 +4,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Xml.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Procon.Core.Repositories;
 using Procon.Core.Repositories.Serialization;
 using Procon.Net.Utils;
 
 namespace Procon.Core.Test.Repositories {
-    [TestClass]
+    [TestFixture]
     public class TestFlatPackedPackage {
 
         protected static String FlatPackedPackageCoveredPackageValidInstalledPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Repositories\FlatPackedPackage\CoveredPackage\Valid\Installed");
@@ -29,7 +29,7 @@ namespace Procon.Core.Test.Repositories {
         /// <summary>
         /// Tests that we can serialize an object to a xml copy of what we see from the repository.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestFlatPackedPackageSerialization() {
             FlatPackedPackage package = new FlatPackedPackage() {
                 Name = "DownloadCacheTest",
@@ -64,25 +64,25 @@ namespace Procon.Core.Test.Repositories {
 
             XElement element = package.ToXElement();
 
-            Assert.AreEqual<String>("DownloadCacheTest", element.Element("uid").Value);
-            Assert.AreEqual<String>("DownloadCacheTest", element.Element("name").Value);
+            Assert.AreEqual("DownloadCacheTest", element.Element("uid").Value);
+            Assert.AreEqual("DownloadCacheTest", element.Element("name").Value);
 
-            Assert.AreEqual<String>("1", element.Descendants("version").First().Element("major").Value);
-            Assert.AreEqual<String>("2", element.Descendants("version").First().Element("minor").Value);
-            Assert.AreEqual<String>("3", element.Descendants("version").First().Element("build").Value);
-            Assert.AreEqual<String>("4", element.Descendants("version").First().Element("revision").Value);
+            Assert.AreEqual("1", element.Descendants("version").First().Element("major").Value);
+            Assert.AreEqual("2", element.Descendants("version").First().Element("minor").Value);
+            Assert.AreEqual("3", element.Descendants("version").First().Element("build").Value);
+            Assert.AreEqual("4", element.Descendants("version").First().Element("revision").Value);
 
-            Assert.AreEqual<String>("ThisIsInASubDirectory.txt", element.Descendants("file").First().Element("name").Value);
-            Assert.AreEqual<String>("89", element.Descendants("file").First().Element("size").Value);
-            Assert.AreEqual<String>("2012-07-03T10:05:26", element.Descendants("file").First().Element("last_modified").Value);
-            Assert.AreEqual<String>(@"plugins\ThisIsInASubDirectory.txt", element.Descendants("file").First().Element("relative_path").Value);
-            Assert.AreEqual<String>("cbee0eff10c65e6bc4369fbea92df09e", element.Descendants("file").First().Element("md5").Value);
+            Assert.AreEqual("ThisIsInASubDirectory.txt", element.Descendants("file").First().Element("name").Value);
+            Assert.AreEqual("89", element.Descendants("file").First().Element("size").Value);
+            Assert.AreEqual("2012-07-03T10:05:26", element.Descendants("file").First().Element("last_modified").Value);
+            Assert.AreEqual(@"plugins\ThisIsInASubDirectory.txt", element.Descendants("file").First().Element("relative_path").Value);
+            Assert.AreEqual("cbee0eff10c65e6bc4369fbea92df09e", element.Descendants("file").First().Element("md5").Value);
 
-            Assert.AreEqual<String>("ThisFileIsIdentical.txt", element.Descendants("file").Last().Element("name").Value);
-            Assert.AreEqual<String>("43", element.Descendants("file").Last().Element("size").Value);
-            Assert.AreEqual<String>("2012-07-03T10:04:07", element.Descendants("file").Last().Element("last_modified").Value);
-            Assert.AreEqual<String>(@"ThisFileIsIdentical.txt", element.Descendants("file").Last().Element("relative_path").Value);
-            Assert.AreEqual<String>("01952484abdda0158c827a8848528e90", element.Descendants("file").Last().Element("md5").Value);
+            Assert.AreEqual("ThisFileIsIdentical.txt", element.Descendants("file").Last().Element("name").Value);
+            Assert.AreEqual("43", element.Descendants("file").Last().Element("size").Value);
+            Assert.AreEqual("2012-07-03T10:04:07", element.Descendants("file").Last().Element("last_modified").Value);
+            Assert.AreEqual(@"ThisFileIsIdentical.txt", element.Descendants("file").Last().Element("relative_path").Value);
+            Assert.AreEqual("01952484abdda0158c827a8848528e90", element.Descendants("file").Last().Element("md5").Value);
         }
 
         /// <summary>
@@ -189,7 +189,7 @@ namespace Procon.Core.Test.Repositories {
         /// <summary>
         /// Tests that the check for modified file listing is successful for modified or new files.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestCoveredPackageModifiedFiles() {
 
             FlatPackedPackage package = this.SetupGetModifiedFilesFlatPackage();
@@ -207,7 +207,7 @@ namespace Procon.Core.Test.Repositories {
         /// identical to the modified files output, but just return the relative paths of each
         /// file, not the file object itself.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestCoveredPackageModifiedRelativePaths() {
 
             FlatPackedPackage package = this.SetupGetModifiedFilesFlatPackage();
@@ -223,7 +223,7 @@ namespace Procon.Core.Test.Repositories {
         /// <summary>
         /// Tests that a install matches the packages files
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestCoveredPackageIsValidInstallSuccess() {
             FlatPackedPackage package = this.SetupGetModifiedFilesFlatPackage();
 
@@ -235,7 +235,7 @@ namespace Procon.Core.Test.Repositories {
         /// when compared against the repo version, which has a modified file
         /// and a new file that won't exit in the installed directory.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestCoveredPackageIsValidInstallFail() {
             FlatPackedPackage package = this.SetupGetModifiedFilesFlatPackage();
 
@@ -246,7 +246,7 @@ namespace Procon.Core.Test.Repositories {
         /// Tests a simple helper method to fetch all the files that are required to bring
         /// the latest installed version to date with the version in the repo.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestCoveredPackageRelevantPackageFilesWithUpdateAvailable() {
             FlatPackedPackage package = this.SetupGetModifiedFilesFlatPackage();
 
@@ -262,7 +262,7 @@ namespace Procon.Core.Test.Repositories {
         /// Tests that if no package is installed the helper will return all the files
         /// in the latest version (new install)
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestCoveredPackageRelevantPackageFilesNotInstalled() {
             FlatPackedPackage package = this.SetupGetModifiedFilesFlatPackage(false, false);
 
@@ -279,7 +279,7 @@ namespace Procon.Core.Test.Repositories {
         /// the repo when no file is available, therefore we already have all of the
         /// updated files.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestCoveredPackageRelevantPackageFilesWithoutUpdateAvailable() {
             FlatPackedPackage package = this.SetupGetModifiedFilesFlatPackage(true, true, false);
 
@@ -291,7 +291,7 @@ namespace Procon.Core.Test.Repositories {
             Assert.IsNull(files.Find(f => f.Name == "Identical.txt"));
         }
 
-        [TestMethod]
+        [Test]
         public void TestFlatPackedPackageSave() {
 
             FlatPackedPackage package = new FlatPackedPackage() {
@@ -355,7 +355,7 @@ namespace Procon.Core.Test.Repositories {
         /// <summary>
         /// Tests copying for the flat packed package (overrides the Copy method)
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestFlatPackedPackageCopying() {
             FlatPackedPackage original = new FlatPackedPackage();
 
@@ -417,7 +417,7 @@ namespace Procon.Core.Test.Repositories {
         /// <summary>
         /// Tests that the method simply moves the files we have specified from one location to another.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestFlatPackedPackageMigrateTemporaryFiles() {
 
             if (Directory.Exists(FlatPackedPackageMigrateTemporaryFilesValidUpdatesPath) == true) {
@@ -474,7 +474,8 @@ namespace Procon.Core.Test.Repositories {
         /// 
         /// @todo We shouldn't piggy back off an existing package and instead publish one ourselves so we know it is there for the test.
         /// </summary>
-        [TestMethod]
+        [Test]
+        [Ignore]
         public void TestFlatPackedPackageInstall() {
             AutoResetEvent requestWait = new AutoResetEvent(false);
 
@@ -555,7 +556,8 @@ namespace Procon.Core.Test.Repositories {
         /// 
         /// @todo We shouldn't piggy back off an existing package and instead publish one ourselves so we know it is there for the test.
         /// </summary>
-        [TestMethod]
+        [Test]
+        [Ignore]
         public void TestFlatPackedPackageUpdate() {
             AutoResetEvent requestWait = new AutoResetEvent(false);
 

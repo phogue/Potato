@@ -2,16 +2,16 @@
 using System.Text;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace Procon.Net.Test {
-    [TestClass]
+    [TestFixture]
     public class PacketStreamTest {
 
         /// <summary>
         /// Tests that data can be pushed onto the end of the packet stream, if the packet stream is uninitialized.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestEmptyPacketStreamPush() {
             PacketStream stream = new PacketStream();
 
@@ -24,7 +24,7 @@ namespace Procon.Net.Test {
         /// <summary>
         /// Test that pushing an empty array of data onto an empty set results in no exception, but remains an empty stream.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestEmptyPacketStreamPushEmptyData() {
             PacketStream stream = new PacketStream();
 
@@ -36,7 +36,7 @@ namespace Procon.Net.Test {
         /// <summary>
         /// Tests that pushing a null data array onto the packet stream results in no changes and no exceptions.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestEmptyPacketStreamPushNullData() {
             PacketStream stream = new PacketStream();
 
@@ -48,7 +48,7 @@ namespace Procon.Net.Test {
         /// <summary>
         /// Tests that single data can be appended to the end of an existing stream.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestSingleAppendPacketStreamPush() {
             PacketStream stream = new PacketStream() {
                 Data = new byte[] {0x01}
@@ -65,7 +65,7 @@ namespace Procon.Net.Test {
         /// Tests that an empty data array can be appended to the end of an existing stream, resulting in no change to the stream
         /// with no exceptions posted.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestSingleAppendPacketStreamPushEmptyData() {
             PacketStream stream = new PacketStream() {
                 Data = new byte[] { 0x01 }
@@ -80,7 +80,7 @@ namespace Procon.Net.Test {
         /// <summary>
         /// Tests that pushing a null data array onto an established stream results in no changes and no exceptions.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestSingleAppendPacketStreamPushNullData() {
             PacketStream stream = new PacketStream() {
                 Data = new byte[] { 0x01 }
@@ -95,7 +95,7 @@ namespace Procon.Net.Test {
         /// <summary>
         /// Tests that multiple pushes can be done in a row, with multiple bytes.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestMultipleAppendPacketStreamPush() {
             PacketStream stream = new PacketStream() {
                 Data = new byte[] { 0x01 }
@@ -115,7 +115,7 @@ namespace Procon.Net.Test {
         /// <summary>
         /// Tests a single byte can be pulled from the packet stream, without altering the stream.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestSinglePacketStreamPeekShift() {
             PacketStream stream = new PacketStream() {
                 Data = new byte[] {0x01, 0x02, 0x03, 0x04}
@@ -132,7 +132,7 @@ namespace Procon.Net.Test {
         /// <summary>
         /// Tests pulling multiple bytes off the stream for a peek will not alter the stream.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestMultiplePacketStreamPeekShift() {
             PacketStream stream = new PacketStream() {
                 Data = new byte[] {0x01, 0x02, 0x03, 0x04}
@@ -150,7 +150,7 @@ namespace Procon.Net.Test {
         /// <summary>
         /// Tests that peeking at no bytes returns an empty array with no changes to the packet stream.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestMultiplePacketStreamPeekShiftZeroBytes() {
             PacketStream stream = new PacketStream() {
                 Data = new byte[] { 0x01, 0x02, 0x03, 0x04 }
@@ -167,7 +167,7 @@ namespace Procon.Net.Test {
         /// <summary>
         /// Tests that a new packet stream with no data initialized will return null when asked for any data.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestUninitializedPacketStreamPeekShift() {
             PacketStream stream = new PacketStream();
 
@@ -177,7 +177,7 @@ namespace Procon.Net.Test {
         /// <summary>
         /// Tests that requesting a peek at more data than is available will return null
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestIndexBoundsPacketStreamPeekShift() {
             PacketStream stream = new PacketStream() {
                 Data = new byte[] { 0x01, 0x02, 0x03, 0x04 }
@@ -189,7 +189,7 @@ namespace Procon.Net.Test {
         /// <summary>
         /// Tests a single byte can be pulled from the packet stream, removing it from the start of the stream
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestSinglePacketStreamShift() {
             PacketStream stream = new PacketStream() {
                 Data = new byte[] { 0x01, 0x02, 0x03, 0x04 }
@@ -207,7 +207,7 @@ namespace Procon.Net.Test {
         /// <summary>
         /// Tests pulling multiple bytes off the stream will remove them from the stream
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestMultiplePacketStreamShift() {
             PacketStream stream = new PacketStream() {
                 Data = new byte[] { 0x01, 0x02, 0x03, 0x04 }
@@ -225,7 +225,7 @@ namespace Procon.Net.Test {
         /// <summary>
         /// Tests that all data can be moved off the start of the array, resulting in an empty Data array.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestAllDataPacketStreamShift() {
             PacketStream stream = new PacketStream() {
                 Data = new byte[] { 0x01, 0x02, 0x03, 0x04 }
@@ -243,7 +243,7 @@ namespace Procon.Net.Test {
         /// <summary>
         /// Tests that a new packet stream with no data initialized will return null when asked for any data.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestUninitializedPacketStreamShift() {
             PacketStream stream = new PacketStream();
 
@@ -253,7 +253,7 @@ namespace Procon.Net.Test {
         /// <summary>
         /// Tests that shifting no bytes returns an empty array with no changes to the packet stream.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestMultiplePacketStreamShiftZeroBytes() {
             PacketStream stream = new PacketStream() {
                 Data = new byte[] { 0x01, 0x02, 0x03, 0x04 }
@@ -270,7 +270,7 @@ namespace Procon.Net.Test {
         /// <summary>
         /// Tests that requesting a peek at more data than is available will return null
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestIndexBoundsPacketStreamShift() {
             PacketStream stream = new PacketStream() {
                 Data = new byte[] { 0x01, 0x02, 0x03, 0x04 }

@@ -2,13 +2,13 @@
 using System.Text;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Procon.Core.Security;
 
 namespace Procon.Core.Test.Variables {
     using Procon.Core.Variables;
 
-    [TestClass]
+    [TestFixture]
     public class TestVariablesGet {
 
         internal class VariableComplexValue {
@@ -19,7 +19,7 @@ namespace Procon.Core.Test.Variables {
         /// <summary>
         /// Fetches a simple variable from the variable controller.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestVariablesGetValue() {
             VariableController variables = new VariableController() {
                 VolatileVariables = new List<Variable>() {
@@ -39,14 +39,14 @@ namespace Procon.Core.Test.Variables {
             });
 
             Assert.IsTrue(result.Success);
-            Assert.AreEqual<CommandResultType>(CommandResultType.Success, result.Status);
-            Assert.AreEqual<String>("value", result.Now.Variables.First().ToType<String>(String.Empty));
+            Assert.AreEqual(CommandResultType.Success, result.Status);
+            Assert.AreEqual("value", result.Now.Variables.First().ToType<String>(String.Empty));
         }
 
         /// <summary>
         /// Tests that passing an empty key to the Get parameter will return an error.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestVariablesGetValueEmptyKey() {
             VariableController variables = new VariableController() {
                 VolatileVariables = new List<Variable>() {
@@ -66,13 +66,13 @@ namespace Procon.Core.Test.Variables {
             });
 
             Assert.IsFalse(result.Success);
-            Assert.AreEqual<CommandResultType>(CommandResultType.InvalidParameter, result.Status);
+            Assert.AreEqual(CommandResultType.InvalidParameter, result.Status);
         }
 
         /// <summary>
         /// Tests that a user without correct permissions to fetch a variable will get an error.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestVariablesGetValueInsufficientPermission() {
             VariableController variables = new VariableController() {
                 Security = new SecurityController().Execute() as SecurityController,
@@ -94,13 +94,13 @@ namespace Procon.Core.Test.Variables {
             });
 
             Assert.IsFalse(result.Success);
-            Assert.AreEqual<CommandResultType>(CommandResultType.InsufficientPermissions, result.Status);
+            Assert.AreEqual(CommandResultType.InsufficientPermissions, result.Status);
         }
 
         /// <summary>
         /// Tests fetching a variable by a common name
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestVariablesGetValueCommonName() {
             VariableController variables = new VariableController() {
                 VolatileVariables = new List<Variable>() {
@@ -111,7 +111,7 @@ namespace Procon.Core.Test.Variables {
                 }
             };
 
-            Assert.AreEqual<String>("value", variables.Get(new Command() {
+            Assert.AreEqual("value", variables.Get(new Command() {
                 Origin = CommandOrigin.Local
             }, CommonVariableNames.MaximumGameConnections).Now.Variables.First().ToType<String>());
         }
@@ -119,7 +119,7 @@ namespace Procon.Core.Test.Variables {
         /// <summary>
         /// Validates that if a valid cast exists then then the variable will be cast to that type.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestVariablesGetValueValidTypeCast() {
             VariableController variables = new VariableController() {
                 VolatileVariables = new List<Variable>() {
@@ -130,14 +130,14 @@ namespace Procon.Core.Test.Variables {
                 }
             };
 
-            Assert.AreEqual<int>(10, variables.Get<int>("key"));
+            Assert.AreEqual(10, variables.Get<int>("key"));
         }
 
         /// <summary>
         /// Validates that if no cast is possible and no default is supplied the value will
         /// not equal what we expect.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestVariablesGetValueInvalidTypeCastNoDefault() {
             VariableController variables = new VariableController() {
                 VolatileVariables = new List<Variable>() {
@@ -148,13 +148,13 @@ namespace Procon.Core.Test.Variables {
                 }
             };
 
-            Assert.AreNotEqual<int>(10, variables.Get<int>("key"));
+            Assert.AreNotEqual(10, variables.Get<int>("key"));
         }
 
         /// <summary>
         /// Validates that the default value will be used if no cast is possible.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestVariablesGetValueInvalidTypeCastWithDefault() {
             VariableController variables = new VariableController() {
                 VolatileVariables = new List<Variable>() {
@@ -165,13 +165,13 @@ namespace Procon.Core.Test.Variables {
                 }
             };
 
-            Assert.AreEqual<int>(10, variables.Get<int>("key", 10));
+            Assert.AreEqual(10, variables.Get<int>("key", 10));
         }
 
         /// <summary>
         /// Fetches the first type that matches in the variable list.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestVariablesGetValueFirstValueType() {
             VariableController variables = new VariableController() {
                 VolatileVariables = new List<Variable>() {
@@ -190,14 +190,14 @@ namespace Procon.Core.Test.Variables {
                 }
             };
 
-            Assert.AreEqual<int>(variables.Get<int>(), 30);
+            Assert.AreEqual(variables.Get<int>(), 30);
         }
 
         /// <summary>
         /// Validates that getting a variable value directly with an invalid cast
         /// will fallback to the default value.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestVariablesDirectVariableEmptyValueWithDefault() {
             VariableController variables = new VariableController() {
                 VolatileVariables = new List<Variable>() {
@@ -208,13 +208,13 @@ namespace Procon.Core.Test.Variables {
                 }
             };
 
-            Assert.AreEqual<int>(10, variables.VolatileVariables.First().ToType<int>(10));
+            Assert.AreEqual(10, variables.VolatileVariables.First().ToType<int>(10));
         }
 
         /// <summary>
         /// Fetches the complex value from
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestVariablesGetValueComplexValue() {
             VariableController variables = new VariableController() {
                 VolatileVariables = new List<Variable>() {
@@ -239,7 +239,7 @@ namespace Procon.Core.Test.Variables {
         /// <summary>
         /// Fetches the complex value from the archive.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestVariablesGetValueAComplexValue() {
             VariableController variables = new VariableController();
 

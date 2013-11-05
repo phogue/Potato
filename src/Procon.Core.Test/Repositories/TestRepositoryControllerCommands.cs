@@ -3,14 +3,14 @@ using System.IO;
 using System.Text;
 using System.Collections.Generic;
 using System.Threading;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Procon.Core.Events;
 using Procon.Core.Repositories;
 using Procon.Core.Security;
 using Procon.Net.Utils;
 
 namespace Procon.Core.Test.Repositories {
-    [TestClass]
+    [TestFixture]
     public class TestRepositoryControllerCommands {
 
         protected static String ExecuteInstalledPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Repositories\RepositoryController\Commands\Installed");
@@ -19,7 +19,7 @@ namespace Procon.Core.Test.Repositories {
         protected static String ExecutePackagesUpdatesPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Repositories\RepositoryController\Commands\Installed\Updates\Packages");
         protected static String ExecuteTemporaryUpdatesPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Repositories\RepositoryController\Commands\Installed\Updates\Temporary");
 
-        [TestInitialize]
+        [SetUp]
         public void Initialize() {
             Directory.CreateDirectory(ExecuteInstalledPath);
             Directory.CreateDirectory(ExecutePackagesInstalledPath);
@@ -50,7 +50,8 @@ namespace Procon.Core.Test.Repositories {
         /// <summary>
         /// Tests that a package can be downloaded and installed.
         /// </summary>
-        [TestMethod]
+        [Test]
+        [Ignore]
         public void TestRepositoryControllerInstallPackageSuccess() {
             AutoResetEvent requestWait = new AutoResetEvent(false);
 
@@ -104,7 +105,8 @@ namespace Procon.Core.Test.Repositories {
         /// <summary>
         /// Tests that a package can be downloaded and installed.
         /// </summary>
-        [TestMethod]
+        [Test]
+        [Ignore]
         public void TestRepositoryControllerInstallPackageDoesNotExist() {
             AutoResetEvent requestWait = new AutoResetEvent(false);
 
@@ -160,7 +162,7 @@ namespace Procon.Core.Test.Repositories {
         /// <summary>
         /// Tests that a non existant user will be denied from insufficient permission.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestRepositoryControllerInstallPackageInsufficientPermission() {
             RepositoryController repository = this.SetupRepositoryController();
 
@@ -175,7 +177,7 @@ namespace Procon.Core.Test.Repositories {
             });
 
             Assert.IsFalse(result.Success);
-            Assert.AreEqual<CommandResultType>(CommandResultType.InsufficientPermissions, result.Status);
+            Assert.AreEqual(CommandResultType.InsufficientPermissions, result.Status);
         }
 
         #endregion
@@ -185,7 +187,7 @@ namespace Procon.Core.Test.Repositories {
         /// <summary>
         /// Tests that a remote repository can be added to the repository controller
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestRepositoryControllerAddRemoteRepositorySuccess() {
             RepositoryController repository = this.SetupRepositoryController();
 
@@ -205,7 +207,7 @@ namespace Procon.Core.Test.Repositories {
         /// <summary>
         /// Tests that a package can be downloaded and installed.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestRepositoryControllerAddRemoteRepositoryAlreadyExists() {
             RepositoryController repository = this.SetupRepositoryController();
 
@@ -238,7 +240,7 @@ namespace Procon.Core.Test.Repositories {
         /// <summary>
         /// Tests that a non existant user will be denied from insufficient permission.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestRepositoryControllerAddRemoteRepositoryInsufficientPermission() {
             RepositoryController repository = this.SetupRepositoryController();
 
@@ -252,7 +254,7 @@ namespace Procon.Core.Test.Repositories {
             });
 
             Assert.IsFalse(result.Success);
-            Assert.AreEqual<CommandResultType>(CommandResultType.InsufficientPermissions, result.Status);
+            Assert.AreEqual(CommandResultType.InsufficientPermissions, result.Status);
         }
 
         #endregion
@@ -262,7 +264,7 @@ namespace Procon.Core.Test.Repositories {
         /// <summary>
         /// Tests that a remote repository can be added to the repository controller
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestRepositoryControllerRemoveRemoteRepositorySuccess() {
             RepositoryController repository = this.SetupRepositoryController();
 
@@ -290,7 +292,7 @@ namespace Procon.Core.Test.Repositories {
         /// <summary>
         /// Tests that a package can be downloaded and installed.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestRepositoryControllerRemoveRemoteRepositoryDoesNotExist() {
             RepositoryController repository = this.SetupRepositoryController();
 
@@ -310,7 +312,7 @@ namespace Procon.Core.Test.Repositories {
         /// <summary>
         /// Tests that a non existant user will be denied from insufficient permission.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestRepositoryControllerRemoveRemoteRepositoryInsufficientPermission() {
             RepositoryController repository = this.SetupRepositoryController();
 
@@ -324,7 +326,7 @@ namespace Procon.Core.Test.Repositories {
             });
 
             Assert.IsFalse(result.Success);
-            Assert.AreEqual<CommandResultType>(CommandResultType.InsufficientPermissions, result.Status);
+            Assert.AreEqual(CommandResultType.InsufficientPermissions, result.Status);
         }
 
         #endregion
@@ -334,7 +336,8 @@ namespace Procon.Core.Test.Repositories {
         /// <summary>
         /// Tests that a remote repository can be added to the repository controller
         /// </summary>
-        [TestMethod]
+        [Test]
+        [Ignore]
         public void TestRepositoryControllerIngoreAutomaticUpdatePackageSuccess() {
             AutoResetEvent requestWait = new AutoResetEvent(false);
 
@@ -375,7 +378,8 @@ namespace Procon.Core.Test.Repositories {
             Assert.AreEqual(CommandResultType.Success, result.Status);
         }
 
-        [TestMethod]
+        [Test]
+        [Ignore]
         public void TestRepositoryControllerIngoreAutomaticUpdatePackageNoDuplicationSuccess() {
             AutoResetEvent requestWait = new AutoResetEvent(false);
 
@@ -431,7 +435,7 @@ namespace Procon.Core.Test.Repositories {
         /// <summary>
         /// Tests that a non existant user will be denied from insufficient permission.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestRepositoryControllerIngoreAutomaticUpdatePackageInsufficientPermission() {
             RepositoryController repository = this.SetupRepositoryController();
 
@@ -446,7 +450,7 @@ namespace Procon.Core.Test.Repositories {
             });
 
             Assert.IsFalse(result.Success);
-            Assert.AreEqual<CommandResultType>(CommandResultType.InsufficientPermissions, result.Status);
+            Assert.AreEqual(CommandResultType.InsufficientPermissions, result.Status);
         }
 
         #endregion
@@ -457,7 +461,7 @@ namespace Procon.Core.Test.Repositories {
         /// <summary>
         /// Tests that a remote repository can be added to the repository controller
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestRepositoryControllerPackagesAutomaticUpdateOnPackageSuccess() {
             AutoResetEvent requestWait = new AutoResetEvent(false);
 
@@ -511,7 +515,7 @@ namespace Procon.Core.Test.Repositories {
         /// <summary>
         /// Tests that a non existant user will be denied from insufficient permission.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestRepositoryControllerPackagesAutomaticUpdateOnPackageInsufficientPermission() {
             RepositoryController repository = this.SetupRepositoryController();
 
@@ -526,7 +530,7 @@ namespace Procon.Core.Test.Repositories {
             });
 
             Assert.IsFalse(result.Success);
-            Assert.AreEqual<CommandResultType>(CommandResultType.InsufficientPermissions, result.Status);
+            Assert.AreEqual(CommandResultType.InsufficientPermissions, result.Status);
         }
 
         #endregion

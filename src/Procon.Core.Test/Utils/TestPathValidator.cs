@@ -2,17 +2,17 @@
 using System.Text;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Procon.Core.Utils;
 
 namespace Procon.Core.Test.Utils {
-    [TestClass]
+    [TestFixture]
     public class TestPathValidator {
 
         /// <summary>
         /// Tests that a valid file name will be returned as it was passed in.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestValidateAlreadyValid() {
             const string path = "valid";
 
@@ -22,7 +22,7 @@ namespace Procon.Core.Test.Utils {
         /// <summary>
         /// Tests that diacritics are substituted with english'ier alternatives.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestValidateSubstitutedDiacritics() {
             const string path = "üdiäcriticöß";
             const string substituted = "uediaecriticoess";
@@ -33,7 +33,7 @@ namespace Procon.Core.Test.Utils {
         /// <summary>
         /// Tests that invalid characters are replaced with underscores
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestValidateInvalidStripped() {
             const string path = "invalid%character";
             const string stripped = "invalid_character";
@@ -45,7 +45,7 @@ namespace Procon.Core.Test.Utils {
         /// Tests that invalid characters are replaced with underscores but 
         /// multiple underscores are trimmed to a single underscore.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestValidateInvalidStrippedAndTrimmed() {
             const string path = "invalid%*&character";
             const string stripped = "invalid_character";

@@ -1,14 +1,14 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace Procon.Core.Test.ExecutableCommands {
-    [TestClass]
+    [TestFixture]
     public class TestCommandAttribute {
 
         /// <summary>
         /// Tests equality with another object with the same value.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestCommandAttributeEquality() {
             CommandAttribute commandA = new CommandAttribute() {
                 Name = "equal"
@@ -24,7 +24,7 @@ namespace Procon.Core.Test.ExecutableCommands {
         /// <summary>
         /// Tests a comparison with null will not be true.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestCommandAttributeEqualityAgainstNull() {
             CommandAttribute command = new CommandAttribute() {
                 Name = "equal"
@@ -36,7 +36,7 @@ namespace Procon.Core.Test.ExecutableCommands {
         /// <summary>
         /// Tests that a command attribute will be equal against a reference to itself.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestCommandAttributeEqualityAgainstReferenceToSameObject() {
             CommandAttribute commandA = new CommandAttribute() {
                 Name = "equal"
@@ -50,7 +50,7 @@ namespace Procon.Core.Test.ExecutableCommands {
         /// <summary>
         /// Tests that a comparison with a different type will come back as false.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestCommandAttributeEqualityAgainstDifferenceType() {
             CommandAttribute commandA = new CommandAttribute() {
                 Name = "equal"
@@ -64,7 +64,7 @@ namespace Procon.Core.Test.ExecutableCommands {
         /// <summary>
         /// Tests the same value in two different objects with have the same hash codes.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestCommandAttributeEqualityHashCode() {
             CommandAttribute commandA = new CommandAttribute() {
                 Name = "equal"
@@ -80,7 +80,7 @@ namespace Procon.Core.Test.ExecutableCommands {
         /// <summary>
         /// Tests that different values will yield a different hash code.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestCommandAttributeNotEqualHashCode() {
             CommandAttribute commandA = new CommandAttribute() {
                 Name = "equalA"
@@ -96,7 +96,7 @@ namespace Procon.Core.Test.ExecutableCommands {
         /// <summary>
         /// Tests the equality operator
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestCommandAttributeEqualityOperator() {
             CommandAttribute commandA = new CommandAttribute() {
                 Name = "equal"
@@ -109,7 +109,7 @@ namespace Procon.Core.Test.ExecutableCommands {
             Assert.IsTrue(commandA == commandB);
         }
 
-        [TestMethod]
+        [Test]
         public void TestCommandAttributeInequalityOperator() {
             CommandAttribute commandA = new CommandAttribute() {
                 Name = "equalA"
@@ -125,7 +125,7 @@ namespace Procon.Core.Test.ExecutableCommands {
         /// <summary>
         /// Tests a reference comparison for equality.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestCommandAttributeReferenceEqualityOperator() {
             CommandAttribute commandA = new CommandAttribute() {
                 Name = "equal"
@@ -139,7 +139,7 @@ namespace Procon.Core.Test.ExecutableCommands {
         /// <summary>
         /// Tests a reference comparison for equality.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestCommandAttributeEqualityOperatorNull() {
             CommandAttribute commandA = new CommandAttribute() {
                 Name = "equal"
@@ -151,7 +151,7 @@ namespace Procon.Core.Test.ExecutableCommands {
         /// <summary>
         /// Tests that a command type will pass on the value as a string to the Name attribute.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestCommandAttributeNameAliasFromCommandType() {
             CommandAttribute command = new CommandAttribute() {
                 CommandType = CommandType.InstanceAddConnection
@@ -164,7 +164,7 @@ namespace Procon.Core.Test.ExecutableCommands {
         /// <summary>
         /// Tests the command type can be found from the string.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestCommandAttributeParseValidCommandType() {
             CommandAttribute command = new CommandAttribute().ParseCommandType("InstanceAddConnection");
 
@@ -175,7 +175,7 @@ namespace Procon.Core.Test.ExecutableCommands {
         /// <summary>
         /// Tests that if a command type is not valid during parsing the Name will at least be populated (good thing)
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestCommandAttributeParseInvalidCommandType() {
             CommandAttribute command = new CommandAttribute().ParseCommandType("CustomCommand");
 
@@ -186,7 +186,7 @@ namespace Procon.Core.Test.ExecutableCommands {
         /// <summary>
         /// Tests the command attribute can be disposed properly, making the attribute inert.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestCommandAttributeDisposal() {
             CommandAttribute command = new CommandAttribute() {
                 Name = "dispose"

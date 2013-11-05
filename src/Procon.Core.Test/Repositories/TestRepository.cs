@@ -4,7 +4,7 @@ using System.Text;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Procon.Core.Repositories.Serialization;
 using Procon.Core.Utils;
 using Procon.Net.Utils;
@@ -12,7 +12,7 @@ using Procon.Net.Utils;
 namespace Procon.Core.Test.Repositories {
     using Procon.Core.Repositories;
 
-    [TestClass]
+    [TestFixture]
     public class TestRepository {
 
         public static readonly string TestRepositoryUrl = "http://local.repo.myrcon.com/";
@@ -22,7 +22,8 @@ namespace Procon.Core.Test.Repositories {
         /// <summary>
         /// Tests that the repository can be queried.
         /// </summary>
-        [TestMethod]
+        [Test]
+        [Ignore]
         public void TestBeginQueryRequest() {
             AutoResetEvent requestWait = new AutoResetEvent(false);
 
@@ -44,7 +45,8 @@ namespace Procon.Core.Test.Repositories {
         /// <summary>
         /// Tests that the repository can be authenticated against.
         /// </summary>
-        [TestMethod]
+        [Test]
+        [Ignore]
         public void TestBeginAuthenticationTestSuccess() {
             AutoResetEvent requestWait = new AutoResetEvent(false);
 
@@ -76,7 +78,7 @@ namespace Procon.Core.Test.Repositories {
         /// <summary>
         /// Tests that providing an incorrect password will result in bad authentication.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestBeginAuthenticationTestFailed() {
             AutoResetEvent requestWait = new AutoResetEvent(false);
 
@@ -108,7 +110,8 @@ namespace Procon.Core.Test.Repositories {
         /// <summary>
         /// Tests that the repository can have its cache rebuilt
         /// </summary>
-        [TestMethod]
+        [Test]
+        [Ignore]
         public void TestBeginRebuildCacheSuccess() {
             AutoResetEvent requestWait = new AutoResetEvent(false);
 
@@ -135,7 +138,8 @@ namespace Procon.Core.Test.Repositories {
         /// <summary>
         /// Tests that a file will be published 
         /// </summary>
-        [TestMethod]
+        [Test]
+        [Ignore]
         public void TestBeginPublishSuccess() {
             String repositoryPublishValidPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Repositories\Publish\Valid");
             String randomlyGeneratedContentPath = Path.Combine(repositoryPublishValidPath, "RandomlyGeneratedContent.txt");
@@ -198,7 +202,7 @@ namespace Procon.Core.Test.Repositories {
         /// <summary>
         /// Tests that a package is simply added when it does not exist (same uid)
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestAddOrCopyPackageNonExistant() {
             Repository repository = new Repository();
 
@@ -234,7 +238,7 @@ namespace Procon.Core.Test.Repositories {
             Assert.AreEqual(1, repository.Packages.Count);
         }
 
-        [TestMethod]
+        [Test]
         public void TestAddOrCopyPackageUpdateExisting() {
             Package originalPackage = new Package() {
                 Name = "Existing Package Name",
@@ -270,7 +274,8 @@ namespace Procon.Core.Test.Repositories {
         /// <summary>
         /// Tests that loading a directory with a valid package will validate
         /// </summary>
-        [TestMethod]
+        [Test]
+        [Ignore]
         public void TestReadDirectoryValidRepository() {
             Repository repository = new Repository();
 
@@ -303,7 +308,7 @@ namespace Procon.Core.Test.Repositories {
         /// Tests that loading a directory with only a single invalid xml file
         /// will result in no packages being loaded.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestReadDirectoryInvalidRepository() {
             Repository repository = new Repository();
 

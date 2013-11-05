@@ -2,18 +2,18 @@
 using System.Text;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Procon.Core.Repositories;
 
 namespace Procon.Core.Test.Repositories {
-    [TestClass]
+    [TestFixture]
     public class TestRepositoryPackageReference {
 
         /// <summary>
         /// Tests that a url is slugged. We test that the process is done here
         /// but the sanitize methods are tested elsewhere.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestRepositoryUrlSlug() {
             RepositoryPackageReference reference = new RepositoryPackageReference() {
                 RepositoryUrlSlug = "http://repo.myrcon.com/procon2/"
@@ -26,7 +26,7 @@ namespace Procon.Core.Test.Repositories {
         /// Tests that a uid is sanatized. We test that the process is done here
         /// but the sanitize methods are tested elsewhere.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestPackageUid() {
             RepositoryPackageReference reference = new RepositoryPackageReference() {
                 PackageUid = "MyPackageUid!"

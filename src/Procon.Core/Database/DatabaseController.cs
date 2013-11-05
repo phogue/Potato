@@ -82,6 +82,7 @@ namespace Procon.Core.Database {
         /// <summary>
         /// Runs a query on a 
         /// </summary>
+        /// <param name="command"></param>
         /// <param name="query"></param>
         public void Query(Command command, Query query) {
             

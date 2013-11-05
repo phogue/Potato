@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Xml.Linq;
 using System.Reflection;
-using Procon.Fuzzy;
 
 namespace Procon.Core.Connections.TextCommands.Parsers {
     using Procon.Fuzzy;

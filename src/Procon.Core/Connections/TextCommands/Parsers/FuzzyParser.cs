@@ -198,16 +198,18 @@ namespace Procon.Core.Connections.TextCommands.Parsers {
                 Parameter = this.LinqParameterMappings[typeof(T)].Parameter
             };
 
-            if (thing is SetsThingObjectToken) {
+            SetsThingObjectToken token = thing as SetsThingObjectToken;
+
+            if (token != null) {
 
                 Sentence newSentence = new Sentence();
-                newSentence.AddRange(((SetsThingObjectToken) thing).Things.Select(innerThing => new Phrase() {
+                newSentence.AddRange(token.Things.Select(innerThing => new Phrase() {
                     innerThing
                 }));
 
                 ExpressionType joiner = ExpressionType.OrElse;
 
-                if (thing.ExpressionType == ExpressionType.NotEqual) {
+                if (token.ExpressionType == ExpressionType.NotEqual) {
                     joiner = ExpressionType.AndAlso;
                 }
 

@@ -9,7 +9,7 @@ namespace Procon.Core {
         public String Name { get; set; }
 
         /// <summary>
-        /// The singular type of parameter List<String> would just assign typeof(String)
+        /// The singular type of parameter List-String- would just assign typeof(String)
         /// </summary>
         public Type Type { get; set; }
 

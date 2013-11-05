@@ -3,13 +3,13 @@ using System.Text;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Procon.Core.Events;
 using Procon.Core.Variables;
 using Procon.Net.Utils;
 
 namespace Procon.Core.Test.Events {
-    [TestClass]
+    [TestFixture]
     public class TestEventsPushController {
 
         /// <summary>
@@ -19,7 +19,7 @@ namespace Procon.Core.Test.Events {
         /// groups variable. This would be the 'ideal' method of setting up a group
         /// as all of the information is available for a group when it is setup.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestEventsPushControllerNamespacedSingleEndPointForwardSetting() {
 
             String pushConfigGroupName = StringExtensions.RandomString(10);
@@ -62,7 +62,7 @@ namespace Procon.Core.Test.Events {
         /// 
         /// It's a little backwards, but it needs to be able to handle setting the variables in any order.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestEventsPushControllerNamespacedSingleEndPointBackwardSetting() {
 
             String pushConfigGroupName = StringExtensions.RandomString(10);
@@ -102,7 +102,7 @@ namespace Procon.Core.Test.Events {
         /// Tests the variable group setting for controller will setup a end point with no namespace
         /// or changes to the configs variable.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestEventsPushControllerSingleEndPointNoNamespace() {
 
             VariableController variables = new VariableController();
@@ -186,7 +186,7 @@ namespace Procon.Core.Test.Events {
         /// Tests that we can setup three end points, one without a namespace and
         /// two with namespaces with the settings of each set in a random order.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestEventsPushControllerMultipleEndPointsRandomVariableAssignmentA() {
             this.TestEventsPushControllerMultipleEndPointsRandomVariableAssignment(100);
         }
@@ -195,7 +195,7 @@ namespace Procon.Core.Test.Events {
         /// Tests that we can setup three end points, one without a namespace and
         /// two with namespaces with the settings of each set in a random order.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestEventsPushControllerMultipleEndPointsRandomVariableAssignmentB() {
             this.TestEventsPushControllerMultipleEndPointsRandomVariableAssignment(98279872);
         }
@@ -204,7 +204,7 @@ namespace Procon.Core.Test.Events {
         /// Tests that we can setup three end points, one without a namespace and
         /// two with namespaces with the settings of each set in a random order.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestEventsPushControllerMultipleEndPointsRandomVariableAssignmentC() {
             this.TestEventsPushControllerMultipleEndPointsRandomVariableAssignment(5674353);
         }
@@ -212,7 +212,7 @@ namespace Procon.Core.Test.Events {
         /// <summary>
         /// Tests that all variables are nulled during a dispose.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestEventsPushControllerDispose() {
             VariableController variables = new VariableController();
 
@@ -250,7 +250,7 @@ namespace Procon.Core.Test.Events {
             Assert.IsNull(pushEvents.Tasks);
         }
 
-        [TestMethod]
+        [Test]
         public void TestEventsPushControllerIntervalTickedEventsPushed() {
             AutoResetEvent requestWait = new AutoResetEvent(false);
             VariableController variables = new VariableController();

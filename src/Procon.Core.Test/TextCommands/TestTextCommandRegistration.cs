@@ -2,12 +2,12 @@
 using System.Text;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace Procon.Core.Test.TextCommands {
     using Procon.Core.Connections.TextCommands;
 
-    [TestClass]
+    [TestFixture]
     public class TestTextCommandRegistration {
 
         #region Register
@@ -15,7 +15,7 @@ namespace Procon.Core.Test.TextCommands {
         /// <summary>
         /// Tests that we can register a command via the command interface.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestTextCommandRegister() {
             TextCommandController textCommands = new TextCommandController();
 
@@ -49,7 +49,7 @@ namespace Procon.Core.Test.TextCommands {
         /// Tests that adding the same command twice (same plugin uid & plugin command) will 
         /// only succeed the first time around.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestTextCommandRegisterDuplication() {
             TextCommandController textCommands = new TextCommandController();
 
@@ -101,7 +101,7 @@ namespace Procon.Core.Test.TextCommands {
         /// <summary>
         /// Tests that commands can only be executed if the user has sufficient permissions.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestTextCommandRegisterInsufficientPermission() {
             TextCommandController textCommands = new TextCommandController();
 
@@ -127,7 +127,7 @@ namespace Procon.Core.Test.TextCommands {
             });
 
             Assert.IsFalse(result.Success);
-            Assert.AreEqual<CommandResultType>(CommandResultType.InsufficientPermissions, result.Status);
+            Assert.AreEqual(CommandResultType.InsufficientPermissions, result.Status);
         }
 
         #endregion
@@ -137,7 +137,7 @@ namespace Procon.Core.Test.TextCommands {
         /// <summary>
         /// Tests that a command can successfully remove a text command.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestTextCommandUnregister() {
             TextCommandController textCommands = new TextCommandController();
 
@@ -190,7 +190,7 @@ namespace Procon.Core.Test.TextCommands {
         /// <summary>
         /// Tests the unregister command fails with the correct status if the command does not exist.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestTextCommandUnregisterDoesNotExist() {
             TextCommandController textCommands = new TextCommandController();
 
@@ -218,7 +218,7 @@ namespace Procon.Core.Test.TextCommands {
         /// <summary>
         /// Tests that a command cannot be unregistered without the correct permissions to do so.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestTextCommandUnregisterInsufficientPermission() {
             TextCommandController textCommands = new TextCommandController();
 
@@ -268,7 +268,7 @@ namespace Procon.Core.Test.TextCommands {
             });
 
             Assert.IsFalse(result.Success);
-            Assert.AreEqual<CommandResultType>(CommandResultType.InsufficientPermissions, result.Status);
+            Assert.AreEqual(CommandResultType.InsufficientPermissions, result.Status);
         }
 
         #endregion

@@ -3,13 +3,13 @@ using System.IO;
 using System.Text;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace Procon.Core.Test.Security {
     using Procon.Core.Security;
     using Procon.Net.Protocols;
 
-    [TestClass]
+    [TestFixture]
     public class TestSecurityGroup {
 
         #region Adding Groups
@@ -17,7 +17,7 @@ namespace Procon.Core.Test.Security {
         /// <summary>
         /// Testing that we can add a simple group.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestSecurityAddGroup() {
             SecurityController security = new SecurityController();
 
@@ -26,13 +26,13 @@ namespace Procon.Core.Test.Security {
 
             // Make sure it was successful.
             Assert.IsTrue(result.Success);
-            Assert.AreEqual<String>(security.Groups.First().Name, "GroupName");
+            Assert.AreEqual(security.Groups.First().Name, "GroupName");
         }
 
         /// <summary>
         /// Testing that a group with an empty name can't be added to the security model.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestSecurityAddGroupEmptyGroupName() {
             SecurityController security = new SecurityController();
 
@@ -41,32 +41,32 @@ namespace Procon.Core.Test.Security {
 
             // Make sure adding an empty group fails.
             Assert.IsFalse(result.Success);
-            Assert.AreEqual<CommandResultType>(result.Status, CommandResultType.InvalidParameter);
+            Assert.AreEqual(result.Status, CommandResultType.InvalidParameter);
         }
 
         /// <summary>
         /// Testing that two groups with identical names can't be added to the security model.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestSecurityAddGroupDuplicateGroupName() {
             SecurityController security = new SecurityController();
             CommandResultArgs result = security.Execute(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityAddGroup, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "GroupName" }) });
 
             // Test that the group was initially added.
-            Assert.AreEqual<String>(security.Groups.First().Name, "GroupName");
+            Assert.AreEqual(security.Groups.First().Name, "GroupName");
 
             // Now readd the same group name.
             result = security.Execute(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityAddGroup, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "GroupName" }) });
 
             // Test the second result, make sure it failed.
             Assert.IsFalse(result.Success);
-            Assert.AreEqual<CommandResultType>(result.Status, CommandResultType.AlreadyExists);
+            Assert.AreEqual(result.Status, CommandResultType.AlreadyExists);
         }
 
         /// <summary>
         /// Tests that a group cannot be added unless the user has sufficient permissions to do so.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestSecurityAddGroupInsufficientPermission() {
             SecurityController security = new SecurityController();
 
@@ -81,7 +81,7 @@ namespace Procon.Core.Test.Security {
             });
 
             Assert.IsFalse(result.Success);
-            Assert.AreEqual<CommandResultType>(CommandResultType.InsufficientPermissions, result.Status);
+            Assert.AreEqual(CommandResultType.InsufficientPermissions, result.Status);
         }
 
         #endregion
@@ -91,25 +91,25 @@ namespace Procon.Core.Test.Security {
         /// <summary>
         /// Testing that a group can be removed by its name.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestSecurityRemoveGroup() {
             SecurityController security = new SecurityController();
             security.Execute(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityAddGroup, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "GroupName" }) });
 
             // Test that the group was initially added.
-            Assert.AreEqual<String>(security.Groups.First().Name, "GroupName");
+            Assert.AreEqual(security.Groups.First().Name, "GroupName");
 
             CommandResultArgs result = security.Execute(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityRemoveGroup, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "GroupName" }) });
 
             // Make sure it was successful.
             Assert.IsTrue(result.Success);
-            Assert.AreEqual<int>(security.Groups.Count, 0);
+            Assert.AreEqual(security.Groups.Count, 0);
         }
 
         /// <summary>
         /// Testing that you can't remove a group name that is empty.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestSecurityRemoveGroupEmptyGroupName() {
             SecurityController security = new SecurityController();
 
@@ -118,23 +118,23 @@ namespace Procon.Core.Test.Security {
 
             // Make sure adding an empty group fails.
             Assert.IsFalse(result.Success);
-            Assert.AreEqual<CommandResultType>(result.Status, CommandResultType.InvalidParameter);
+            Assert.AreEqual(result.Status, CommandResultType.InvalidParameter);
         }
 
         /// <summary>
         /// Testing that you can't remove a group that does not exist and provides correct errors.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestSecurityRemoveGroupNotExists() {
             SecurityController security = new SecurityController();
             CommandResultArgs result = security.Execute(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityRemoveGroup, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "GroupName" }) });
 
             // Make sure it was not successful.
             Assert.IsFalse(result.Success);
-            Assert.AreEqual<CommandResultType>(result.Status, CommandResultType.DoesNotExists);
+            Assert.AreEqual(result.Status, CommandResultType.DoesNotExists);
         }
 
-        [TestMethod]
+        [Test]
         public void TestSecurityRemoveGroupInsufficientPermission() {
             SecurityController security = new SecurityController();
             security.Execute(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityAddGroup, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "GroupName" }) });
@@ -149,54 +149,54 @@ namespace Procon.Core.Test.Security {
             });
 
             Assert.IsFalse(result.Success);
-            Assert.AreEqual<CommandResultType>(CommandResultType.InsufficientPermissions, result.Status);
+            Assert.AreEqual(CommandResultType.InsufficientPermissions, result.Status);
         }
 
         #endregion
 
         #region Group permissions
 
-        [TestMethod]
+        [Test]
         public void TestSecurityGroupsSetPermission() {
             SecurityController security = new SecurityController();
             security.Execute(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityAddGroup, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "GroupName" }) });
 
             // Test that the group was initially added.
-            Assert.AreEqual<String>(security.Groups.First().Name, "GroupName");
+            Assert.AreEqual(security.Groups.First().Name, "GroupName");
 
             // Now set the kick permission
             CommandResultArgs result = security.Execute(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityGroupSetPermission, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "GroupName", CommandType.NetworkProtocolActionKick, 50 }) });
 
             // Make sure setting the kick permission was successfull.
             Assert.IsTrue(result.Success);
-            Assert.AreEqual<CommandResultType>(result.Status, CommandResultType.Success);
-            Assert.AreEqual<int?>(security.Groups.First().Permissions.Where(permission => permission.Name == CommandType.NetworkProtocolActionKick.ToString()).First().Authority, 50);
+            Assert.AreEqual(result.Status, CommandResultType.Success);
+            Assert.AreEqual(security.Groups.First().Permissions.Where(permission => permission.Name == CommandType.NetworkProtocolActionKick.ToString()).First().Authority, 50);
         }
 
         /// <summary>
         /// Tests that a custom permission can be set against a group.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestSecurityGroupsSetCustomPermission() {
             SecurityController security = new SecurityController();
             security.Execute(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityAddGroup, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "GroupName" }) });
 
             // Test that the group was initially added.
-            Assert.AreEqual<String>(security.Groups.First().Name, "GroupName");
+            Assert.AreEqual(security.Groups.First().Name, "GroupName");
 
             // Now set the kick permission
             CommandResultArgs result = security.Execute(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityGroupSetPermission, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "GroupName", "CustomPermission", 50 }) });
 
             // Make sure setting the kick permission was successfull.
             Assert.IsTrue(result.Success);
-            Assert.AreEqual<CommandResultType>(result.Status, CommandResultType.Success);
-            Assert.AreEqual<int?>(security.Groups.First().Permissions.Where(permission => permission.Name == "CustomPermission").First().Authority, 50);
+            Assert.AreEqual(result.Status, CommandResultType.Success);
+            Assert.AreEqual(security.Groups.First().Permissions.Where(permission => permission.Name == "CustomPermission").First().Authority, 50);
         }
 
         /// <summary>
         /// Tests the command to add an account failes if the user has insufficient privileges.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestSecurityGroupsSetPermissionInsufficientPermission() {
             SecurityController security = new SecurityController();
             security.Execute(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityAddGroup, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "GroupName" }) });
@@ -213,20 +213,20 @@ namespace Procon.Core.Test.Security {
             });
 
             Assert.IsFalse(result.Success);
-            Assert.AreEqual<CommandResultType>(CommandResultType.InsufficientPermissions, result.Status);
+            Assert.AreEqual(CommandResultType.InsufficientPermissions, result.Status);
         }
 
         /// <summary>
         /// Checks that if a permission is not in the list (usually if we add to CommandName enum) that
         /// the permission will be created and set.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestSecurityGroupsSetPermissionDynamicallyCreate() {
             SecurityController security = new SecurityController();
             security.Execute(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityAddGroup, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "GroupName" }) });
 
             // Test that the group was initially added.
-            Assert.AreEqual<String>(security.Groups.First().Name, "GroupName");
+            Assert.AreEqual(security.Groups.First().Name, "GroupName");
 
             // Remove the kick permission.
             security.Groups.First().Permissions.RemoveAll(permission => permission.Name == CommandType.NetworkProtocolActionKick.ToString());
@@ -239,12 +239,12 @@ namespace Procon.Core.Test.Security {
 
             // Make sure setting the kick permission was successfull.
             Assert.IsTrue(result.Success);
-            Assert.AreEqual<CommandResultType>(result.Status, CommandResultType.Success);
-            Assert.AreEqual<int?>(security.Groups.First().Permissions.Where(permission => permission.Name == CommandType.NetworkProtocolActionKick.ToString()).First().Authority, 50);
+            Assert.AreEqual(result.Status, CommandResultType.Success);
+            Assert.AreEqual(security.Groups.First().Permissions.Where(permission => permission.Name == CommandType.NetworkProtocolActionKick.ToString()).First().Authority, 50);
         }
 
 
-        [TestMethod]
+        [Test]
         public void TestSecurityGroupsSetPermissionGroupDoesNotExist() {
             SecurityController security = new SecurityController();
             security.Execute(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityAddGroup, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "ThisIsValid" }) });
@@ -260,27 +260,27 @@ namespace Procon.Core.Test.Security {
         /// <summary>
         /// Testing if "Kick" will be converted since this value will be serialized.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestSecurityGroupsSetPermissionTypeConvert() {
             SecurityController security = new SecurityController();
             security.Execute(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityAddGroup, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "GroupName" }) });
 
             // Test that the group was initially added.
-            Assert.AreEqual<String>(security.Groups.First().Name, "GroupName");
+            Assert.AreEqual(security.Groups.First().Name, "GroupName");
 
             // Now set the kick permission
             CommandResultArgs result = security.Execute(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityGroupSetPermission, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "GroupName", "NetworkProtocolActionKick", 60 }) });
 
             // Make sure setting the kick permission was successfull.
             Assert.IsTrue(result.Success);
-            Assert.AreEqual<CommandResultType>(result.Status, CommandResultType.Success);
-            Assert.AreEqual<int?>(security.Groups.First().Permissions.First(permission => permission.Name == CommandType.NetworkProtocolActionKick.ToString()).Authority, 60);
+            Assert.AreEqual(result.Status, CommandResultType.Success);
+            Assert.AreEqual(security.Groups.First().Permissions.First(permission => permission.Name == CommandType.NetworkProtocolActionKick.ToString()).Authority, 60);
         }
 
         /// <summary>
         /// Tests that permissions will be copied from one group to another.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestSecurityGroupsCopyPermissions() {
             SecurityController security = new SecurityController();
             security.Execute(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityAddGroup, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "FirstGroupName" }) });
@@ -295,8 +295,8 @@ namespace Procon.Core.Test.Security {
             security.Execute(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityGroupSetPermission, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "FirstGroupName", CommandType.NetworkProtocolActionBan, 88 }) });
 
             // Validate original permissions were added.
-            Assert.AreEqual<int?>(security.Groups.Where(group => group.Name == "FirstGroupName").FirstOrDefault().Permissions.Where(permission => permission.Name == CommandType.NetworkProtocolActionKick.ToString()).First().Authority, 77);
-            Assert.AreEqual<int?>(security.Groups.Where(group => group.Name == "FirstGroupName").FirstOrDefault().Permissions.Where(permission => permission.Name == CommandType.NetworkProtocolActionBan.ToString()).First().Authority, 88);
+            Assert.AreEqual(security.Groups.Where(group => group.Name == "FirstGroupName").FirstOrDefault().Permissions.Where(permission => permission.Name == CommandType.NetworkProtocolActionKick.ToString()).First().Authority, 77);
+            Assert.AreEqual(security.Groups.Where(group => group.Name == "FirstGroupName").FirstOrDefault().Permissions.Where(permission => permission.Name == CommandType.NetworkProtocolActionBan.ToString()).First().Authority, 88);
             Assert.IsNull(security.Groups.Where(group => group.Name == "SecondGroupName").FirstOrDefault().Permissions.Where(permission => permission.Name == CommandType.NetworkProtocolActionKick.ToString()).First().Authority);
             Assert.IsNull(security.Groups.Where(group => group.Name == "SecondGroupName").FirstOrDefault().Permissions.Where(permission => permission.Name == CommandType.NetworkProtocolActionBan.ToString()).First().Authority);
 
@@ -305,15 +305,15 @@ namespace Procon.Core.Test.Security {
 
             // Now make sure the user was initially added.
             Assert.IsTrue(result.Success);
-            Assert.AreEqual<CommandResultType>(result.Status, CommandResultType.Success);
-            Assert.AreEqual<int?>(security.Groups.Where(group => group.Name == "SecondGroupName").FirstOrDefault().Permissions.Where(permission => permission.Name == CommandType.NetworkProtocolActionKick.ToString()).First().Authority, 77);
-            Assert.AreEqual<int?>(security.Groups.Where(group => group.Name == "SecondGroupName").FirstOrDefault().Permissions.Where(permission => permission.Name == CommandType.NetworkProtocolActionBan.ToString()).First().Authority, 88);
+            Assert.AreEqual(result.Status, CommandResultType.Success);
+            Assert.AreEqual(security.Groups.Where(group => group.Name == "SecondGroupName").FirstOrDefault().Permissions.Where(permission => permission.Name == CommandType.NetworkProtocolActionKick.ToString()).First().Authority, 77);
+            Assert.AreEqual(security.Groups.Where(group => group.Name == "SecondGroupName").FirstOrDefault().Permissions.Where(permission => permission.Name == CommandType.NetworkProtocolActionBan.ToString()).First().Authority, 88);
         }
 
         /// <summary>
         /// Tests the command to add an account failes if the user has insufficient privileges.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestSecurityGroupsCopyPermissionsInsufficientPermission() {
             SecurityController security = new SecurityController();
             security.Execute(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityAddGroup, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "FirstGroupName" }) });
@@ -330,13 +330,13 @@ namespace Procon.Core.Test.Security {
             });
 
             Assert.IsFalse(result.Success);
-            Assert.AreEqual<CommandResultType>(CommandResultType.InsufficientPermissions, result.Status);
+            Assert.AreEqual(CommandResultType.InsufficientPermissions, result.Status);
         }
 
         /// <summary>
         /// Tests that the correct error message is returned when permissions can't be copied from a source group because the source group does not exist.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestSecurityGroupsCopyPermissionsSourceDoesNotExist() {
             SecurityController security = new SecurityController();
             security.Execute(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityAddGroup, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "SecondGroupName" }) });
@@ -348,7 +348,7 @@ namespace Procon.Core.Test.Security {
             CommandResultArgs result = security.Execute(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityGroupCopyPermissions, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "FirstGroupName", "SecondGroupName" }) });
 
             Assert.IsFalse(result.Success);
-            Assert.AreEqual<CommandResultType>(result.Status, CommandResultType.DoesNotExists);
+            Assert.AreEqual(result.Status, CommandResultType.DoesNotExists);
         }
 
         #endregion

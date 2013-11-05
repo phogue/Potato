@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Threading;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace Procon.Core.Test.Scheduler {
     using Procon.Core.Scheduler;
 
-    [TestClass]
+    [TestFixture]
     public class TestScheduler {
 
         /// <summary>
         /// Test that any date time we pass will fire an event if no condition is added.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestTaskEvent() {
             int eventCount = 0;
             Random random = new Random();
@@ -40,7 +40,7 @@ namespace Procon.Core.Test.Scheduler {
         /// <summary>
         /// Tests that the event is fired at least once in 100 milliseconds with a 10 ms tick.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestTaskInternalEvent() {
             AutoResetEvent autoEvent = new AutoResetEvent(false);
 
@@ -61,7 +61,7 @@ namespace Procon.Core.Test.Scheduler {
         /// <summary>
         /// Tests that disposing the controller removes all tasks and disposes them as well.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestTaskDispose() {
             TaskController tasks = new TaskController(10) {
                 Enabled = true
@@ -92,7 +92,7 @@ namespace Procon.Core.Test.Scheduler {
         /// <summary>
         /// Test ticking several times to make sure our event is fired when the condition is met.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestTaskConditionalEvent() {
             int eventCount = 0;
 
@@ -123,7 +123,7 @@ namespace Procon.Core.Test.Scheduler {
         /// <summary>
         /// Checks that a task is terminated once the termination date/time has elapsed.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestTaskConditionalEventWithTermination() {
             int eventCount = 0;
 
@@ -157,7 +157,7 @@ namespace Procon.Core.Test.Scheduler {
         /// <summary>
         /// Test that delays events will not fire if the task is delayed.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestTaskDelayEvent() {
             int eventCount = 0;
 
@@ -188,7 +188,7 @@ namespace Procon.Core.Test.Scheduler {
         /// <summary>
         /// Test that any date time we pass will fire an event if no condition is added.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestTaskStoppedEvent() {
             int eventCount = 0;
             Random random = new Random();

@@ -3,20 +3,20 @@ using System.Text;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Procon.Core.Repositories;
 using Procon.Core.Repositories.Serialization;
 using Procon.Core.Utils;
 using Procon.Net.Utils;
 
 namespace Procon.Core.Test.Repositories {
-    [TestClass]
+    [TestFixture]
     public class TestPackage {
 
         /// <summary>
         /// Tests that we can deserialize from a static copy of the output of the repository.
         /// </summary>
-        [TestMethod]
+        [Test]
         [Ignore]
         public void TestPackageDeserialization() {
             XElement element = XElement.Parse(@"<package>
@@ -75,7 +75,7 @@ namespace Procon.Core.Test.Repositories {
         /// <summary>
         /// Tests that we can serialize an object to a xml copy of what we see from the repository.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestPackageSerialization() {
             Package package = new Package() {
                 Name = "DownloadCacheTest",
@@ -110,28 +110,28 @@ namespace Procon.Core.Test.Repositories {
 
             XElement element = package.ToXElement();
 
-            Assert.AreEqual<String>("DownloadCacheTest", element.Element("uid").Value);
-            Assert.AreEqual<String>("DownloadCacheTest", element.Element("name").Value);
+            Assert.AreEqual("DownloadCacheTest", element.Element("uid").Value);
+            Assert.AreEqual("DownloadCacheTest", element.Element("name").Value);
 
-            Assert.AreEqual<String>("1", element.Descendants("version").First().Element("major").Value);
-            Assert.AreEqual<String>("2", element.Descendants("version").First().Element("minor").Value);
-            Assert.AreEqual<String>("3", element.Descendants("version").First().Element("build").Value);
-            Assert.AreEqual<String>("4", element.Descendants("version").First().Element("revision").Value);
+            Assert.AreEqual("1", element.Descendants("version").First().Element("major").Value);
+            Assert.AreEqual("2", element.Descendants("version").First().Element("minor").Value);
+            Assert.AreEqual("3", element.Descendants("version").First().Element("build").Value);
+            Assert.AreEqual("4", element.Descendants("version").First().Element("revision").Value);
 
-            Assert.AreEqual<String>("ThisIsInASubDirectory.txt", element.Descendants("file").First().Element("name").Value);
-            Assert.AreEqual<String>("89", element.Descendants("file").First().Element("size").Value);
-            Assert.AreEqual<String>("2012-07-03T10:05:26", element.Descendants("file").First().Element("last_modified").Value);
-            Assert.AreEqual<String>(@"plugins\ThisIsInASubDirectory.txt", element.Descendants("file").First().Element("relative_path").Value);
-            Assert.AreEqual<String>("cbee0eff10c65e6bc4369fbea92df09e", element.Descendants("file").First().Element("md5").Value);
+            Assert.AreEqual("ThisIsInASubDirectory.txt", element.Descendants("file").First().Element("name").Value);
+            Assert.AreEqual("89", element.Descendants("file").First().Element("size").Value);
+            Assert.AreEqual("2012-07-03T10:05:26", element.Descendants("file").First().Element("last_modified").Value);
+            Assert.AreEqual(@"plugins\ThisIsInASubDirectory.txt", element.Descendants("file").First().Element("relative_path").Value);
+            Assert.AreEqual("cbee0eff10c65e6bc4369fbea92df09e", element.Descendants("file").First().Element("md5").Value);
 
-            Assert.AreEqual<String>("ThisFileIsIdentical.txt", element.Descendants("file").Last().Element("name").Value);
-            Assert.AreEqual<String>("43", element.Descendants("file").Last().Element("size").Value);
-            Assert.AreEqual<String>("2012-07-03T10:04:07", element.Descendants("file").Last().Element("last_modified").Value);
-            Assert.AreEqual<String>(@"ThisFileIsIdentical.txt", element.Descendants("file").Last().Element("relative_path").Value);
-            Assert.AreEqual<String>("01952484abdda0158c827a8848528e90", element.Descendants("file").Last().Element("md5").Value);
+            Assert.AreEqual("ThisFileIsIdentical.txt", element.Descendants("file").Last().Element("name").Value);
+            Assert.AreEqual("43", element.Descendants("file").Last().Element("size").Value);
+            Assert.AreEqual("2012-07-03T10:04:07", element.Descendants("file").Last().Element("last_modified").Value);
+            Assert.AreEqual(@"ThisFileIsIdentical.txt", element.Descendants("file").Last().Element("relative_path").Value);
+            Assert.AreEqual("01952484abdda0158c827a8848528e90", element.Descendants("file").Last().Element("md5").Value);
         }
 
-        [TestMethod]
+        [Test]
         public void TestPackageCopying() {
             Package original = new Package();
 
@@ -191,7 +191,7 @@ namespace Procon.Core.Test.Repositories {
         /// <summary>
         /// Tests that the latest version of a package is populated.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestPackageDeserializationWithLatestVersion() {
             XElement element = XElement.Parse(@"<package>
     <uid>DownloadCacheTest</uid>

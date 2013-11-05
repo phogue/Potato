@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace Procon.Core.Test.TextCommands.Fuzzy {
-    [TestClass]
+    [TestFixture]
     public class TestFuzzySentences : TestFuzzyBase {
-        [TestMethod]
+        [Test]
         public void TestSentencesHelloWorldQuoted() {
             TestFuzzyBase.AssertCommandSentencesList(
                 this.CreateTextCommandController(), 
@@ -17,7 +17,7 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
         }
 
         /*
-        [TestMethod]
+        [Test]
         public void TestSentencesHelloWorldUnquoted() {
             this.AssertCommandSentencesList(
                 "test Hello World!",
@@ -30,7 +30,7 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
         */
 
         /*
-        [TestMethod]
+        [Test]
         public void TestSentencesKickPhogueForTeamKilling() {
             CommandResult args = this.ExecuteTextCommand("kick phogue for team killing");
 

@@ -5,7 +5,7 @@ using System.Linq;
 using System.IO;
 using System.Threading;
 using System.Xml.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace Procon.Core.Test.Events {
     using Procon.Core.Events;
@@ -17,10 +17,10 @@ namespace Procon.Core.Test.Events {
     using Procon.Net.Protocols.Objects;
     using Procon.Fuzzy.Tokens.Primitive.Temporal;
     
-    [TestClass]
+    [TestFixture]
     public class TestEvents {
 
-        [TestInitialize]
+        [SetUp]
         public void Initialize() {
             if (Directory.Exists(Defines.LogsDirectory) == true) {
                 try {
@@ -35,7 +35,7 @@ namespace Procon.Core.Test.Events {
         /// <summary>
         /// Tests that events are logged correctly.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestEventsLogged() {
             EventsController events = new EventsController();
 
@@ -50,7 +50,7 @@ namespace Procon.Core.Test.Events {
         /// <summary>
         /// Tests that an event is fired whenever an event is logged.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestEventsLoggedEventFired() {
             AutoResetEvent requestWait = new AutoResetEvent(false);
             EventsController events = new EventsController();
@@ -69,7 +69,7 @@ namespace Procon.Core.Test.Events {
         /// <summary>
         /// Tests that the events are disposed of correctly.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestEventsLoggedDisposed() {
             EventsController events = new EventsController();
 
@@ -86,7 +86,7 @@ namespace Procon.Core.Test.Events {
         /// <summary>
         /// Tests that events written with the method with no parameters 
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestEventsNoParametersWrittenToFile() {
             // The current time, to the second.
             DateTime now = DateTime.Now;
@@ -118,17 +118,17 @@ namespace Procon.Core.Test.Events {
 
             XElement logEventElement = XElement.Load(logFileName).Element("Event");
 
-            Assert.AreEqual<String>("true", logEventElement.Element("Success").Value);
-            Assert.AreEqual<String>("SecurityGroupAdded", logEventElement.Element("Name").Value);
+            Assert.AreEqual("true", logEventElement.Element("Success").Value);
+            Assert.AreEqual("SecurityGroupAdded", logEventElement.Element("Name").Value);
             Assert.AreEqual(then.ToString("s", System.Globalization.CultureInfo.InvariantCulture), DateTime.Parse(logEventElement.Element("Stamp").Value).ToString("s", System.Globalization.CultureInfo.InvariantCulture));
 
-            Assert.AreEqual<String>("Phogue", logEventElement.Descendants("Account").First().Element("Username").Value);
+            Assert.AreEqual("Phogue", logEventElement.Descendants("Account").First().Element("Username").Value);
         }
         /// <summary>
         /// Tests that an event that is one hour old (older than the five minute expire time)
         /// will be written to a log file.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestEventsSingleWrittenToFile() {
             // The current time, to the second.
             DateTime now = DateTime.Now;
@@ -160,18 +160,18 @@ namespace Procon.Core.Test.Events {
 
             XElement logEventElement = XElement.Load(logFileName).Element("Event");
 
-            Assert.AreEqual<String>("true", logEventElement.Element("Success").Value);
-            Assert.AreEqual<String>("SecurityGroupAdded", logEventElement.Element("Name").Value);
+            Assert.AreEqual("true", logEventElement.Element("Success").Value);
+            Assert.AreEqual("SecurityGroupAdded", logEventElement.Element("Name").Value);
             Assert.AreEqual(then.ToString("s", System.Globalization.CultureInfo.InvariantCulture), DateTime.Parse(logEventElement.Element("Stamp").Value).ToString("s", System.Globalization.CultureInfo.InvariantCulture));
 
-            Assert.AreEqual<String>("Phogue", logEventElement.Descendants("Account").First().Element("Username").Value);
+            Assert.AreEqual("Phogue", logEventElement.Descendants("Account").First().Element("Username").Value);
         }
 
         /// <summary>
         /// Tests that an expired event will be written to a log file, but a non-expired
         /// event will remain in memory.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestEventsUnexpiredWrittenToFile() {
             // The current time, to the second.
             DateTime now = DateTime.Now;
@@ -219,11 +219,11 @@ namespace Procon.Core.Test.Events {
 
             XElement logEventElement = logEventsElement.Element("Event");
 
-            Assert.AreEqual<String>("true", logEventElement.Element("Success").Value);
-            Assert.AreEqual<String>("SecurityGroupAdded", logEventElement.Element("Name").Value);
+            Assert.AreEqual("true", logEventElement.Element("Success").Value);
+            Assert.AreEqual("SecurityGroupAdded", logEventElement.Element("Name").Value);
             Assert.AreEqual(then.ToString("s", System.Globalization.CultureInfo.InvariantCulture), DateTime.Parse(logEventElement.Element("Stamp").Value).ToString("s", System.Globalization.CultureInfo.InvariantCulture));
 
-            Assert.AreEqual<String>("Phogue", logEventElement.Descendants("Account").First().Element("Username").Value);
+            Assert.AreEqual("Phogue", logEventElement.Descendants("Account").First().Element("Username").Value);
         }
     }
 }

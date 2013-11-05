@@ -4,16 +4,16 @@ using System.Text;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Procon.Core.Repositories;
 
 namespace Procon.Core.Test.Repositories {
-    [TestClass]
+    [TestFixture]
     public class TestRepositoryController {
 
         protected static FileInfo ConfigFileInfo = new FileInfo("Procon.Core.Test.Repository.xml");
 
-        [TestInitialize]
+        [SetUp]
         public void Initialize() {
             if (File.Exists(ConfigFileInfo.FullName)) {
                 File.Delete(ConfigFileInfo.FullName);
@@ -23,7 +23,7 @@ namespace Procon.Core.Test.Repositories {
         /// <summary>
         /// Tests that a config can be written in a specific format.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestRepositoryControllerWriteConfig() {
             RepositoryController repository = new RepositoryController();
 
@@ -74,12 +74,12 @@ namespace Procon.Core.Test.Repositories {
 
             var commands = loadConfig.Root.Descendants("RepositoryController").Elements("Command").ToList();
 
-            Assert.AreEqual<String>("PackagesAddRemoteRepository", commands[0].Attribute("name").Value);
-            Assert.AreEqual<String>("http://localhost/", commands[0].Element("url").Value);
+            Assert.AreEqual("PackagesAddRemoteRepository", commands[0].Attribute("name").Value);
+            Assert.AreEqual("http://localhost/", commands[0].Element("url").Value);
             
-            Assert.AreEqual<String>("PackagesIngoreAutomaticUpdateOnPackage", commands[1].Attribute("name").Value);
-            Assert.AreEqual<String>("localhost", commands[1].Element("urlSlug").Value);
-            Assert.AreEqual<String>("packageUid", commands[1].Element("packageUid").Value);
+            Assert.AreEqual("PackagesIngoreAutomaticUpdateOnPackage", commands[1].Attribute("name").Value);
+            Assert.AreEqual("localhost", commands[1].Element("urlSlug").Value);
+            Assert.AreEqual("packageUid", commands[1].Element("packageUid").Value);
         }
     }
 }

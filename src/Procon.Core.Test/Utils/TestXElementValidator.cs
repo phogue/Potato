@@ -3,18 +3,18 @@ using System.Text;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Procon.Core.Utils;
 
 namespace Procon.Core.Test.Utils {
-    [TestClass]
+    [TestFixture]
     public class TestXElementValidator {
 
         /// <summary>
         /// Tests that valid xml will be passed and the value fetched from the reslting
         /// XElement.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestXElementValidatorTryParseSuccess() {
             XElement element = null;
 
@@ -25,7 +25,7 @@ namespace Procon.Core.Test.Utils {
         /// <summary>
         /// Tests that the parser will fail and null the out element.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestXElementValidatorTryParseFailed() {
             XElement element = null;
 

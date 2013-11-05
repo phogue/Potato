@@ -1,13 +1,13 @@
 ﻿using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Procon.Core.Connections.TextCommands;
 using Procon.Net.Protocols.Objects;
 
 namespace Procon.Core.Test.TextCommands.Fuzzy {
-    [TestClass]
+    [TestFixture]
     public class TestFuzzyBasicObjectMatching : TestFuzzyBase {
 
-        [TestMethod]
+        [Test]
         public void TestBasicKickPhogue() {
             TestFuzzyBase.AssertCommandPlayerListMapList(
                 this.CreateTextCommandController(), 
@@ -21,7 +21,7 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
         }
 
 
-        [TestMethod]
+        [Test]
         public void TestBasicKickDiacritic() {
             TestFuzzyBase.AssertCommandPlayerListMapList(
                 this.CreateTextCommandController(), 
@@ -34,7 +34,7 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
             ); 
         }
 
-        [TestMethod]
+        [Test]
         public void TestBasicKickSelf() {
             TestFuzzyBase.AssertCommandPlayerListMapList(
                 this.CreateTextCommandController(), 
@@ -47,7 +47,7 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
             );
         }
 
-        [TestMethod]
+        [Test]
         public void TestBasicKickPhogueNameTypo() {
             TestFuzzyBase.AssertCommandPlayerListMapList(
                 this.CreateTextCommandController(), 
@@ -60,7 +60,7 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
             );
         }
 
-        [TestMethod]
+        [Test]
         public void TestBasicKickPhogueCommandSmallTypo() {
             CommandResultArgs result = this.CreateTextCommandController().ExecuteTextCommand(new Command() {
                 Username = "Phogue",
@@ -82,7 +82,7 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
             Assert.IsNull(result, "Argument has passed, but should have failed due to severe typo in command");
         }
 
-        [TestMethod]
+        [Test]
         public void TestBasicKickPhogueCommandSevereTypo() {
             CommandResultArgs result = this.CreateTextCommandController().ExecuteTextCommand(new Command() {
                 Username = "Phogue",
@@ -104,7 +104,7 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
             Assert.IsNull(result, "Argument has passed, but should have failed due to severe typo in command");
         }
 
-        [TestMethod]
+        [Test]
         public void TestBasicAlternateKickPhogueCommandSmallTypo() {
             TestFuzzyBase.AssertCommandPlayerListMapList(
                 this.CreateTextCommandController(), 
@@ -117,7 +117,7 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
             );
         }
 
-        [TestMethod]
+        [Test]
         public void TestBasicAlternateKickPhogueCommandSevereTypo() {
             CommandResultArgs result = this.CreateTextCommandController().ExecuteTextCommand(new Command() {
                 Username = "Phogue",
@@ -142,7 +142,7 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
         /// <summary>
         /// Kicks Phogue and morpheus using a comma to seperate the two items.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestKickPhogueCommaMorpheus() {
             TestFuzzyBase.AssertCommandPlayerListMapList(
                 this.CreateTextCommandController(), 
@@ -156,7 +156,7 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
             );
         }
 
-        [TestMethod]
+        [Test]
         public void TestKickPhogueMorpheusTruncated() {
             TestFuzzyBase.AssertCommandPlayerListMapList(
                 this.CreateTextCommandController(), 
@@ -170,7 +170,7 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
             );
         }
 
-        [TestMethod]
+        [Test]
         public void TestKickPhogueMorpheusSevereTypo() {
             TestFuzzyBase.AssertCommandPlayerListMapList(
                 this.CreateTextCommandController(), 
@@ -184,7 +184,7 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
             );
         }
 
-        [TestMethod]
+        [Test]
         public void TestKickPhogueIsAButterfly() {
             TestFuzzyBase.AssertCommandPlayerListMapList(
                 this.CreateTextCommandController(), 
@@ -197,7 +197,7 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
             );
         }
 
-        [TestMethod]
+        [Test]
         public void TestKickPhogueButNotPhogueIsAButterflyWithHighSimilarity() {
             TestFuzzyBase.AssertCommandPlayerListMapList(
                 this.CreateTextCommandController(), 
@@ -210,7 +210,7 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
             );
         }
 
-        [TestMethod]
+        [Test]
         public void TestKickPhogueIsAButterflySmallTypo() {
             TestFuzzyBase.AssertCommandPlayerListMapList(
                 this.CreateTextCommandController(), 
@@ -223,7 +223,7 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
             );
         }
 
-        [TestMethod]
+        [Test]
         public void TestKickSplitNameDoubleSubsetMatch() {
             TestFuzzyBase.AssertCommandPlayerListMapList(
                 this.CreateTextCommandController(), 
@@ -240,7 +240,7 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
         /// Tests that everything (maps, players, all things) are included in the return
         /// when a named inclusive reduction token isn't included.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestKickAll() {
             TextCommandController textCommandController = this.CreateTextCommandController();
 

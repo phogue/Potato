@@ -3,7 +3,7 @@ using System.Reflection;
 using System.Text;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Procon.Core.Utils;
 
 namespace Procon.Core.Test.Plugins {
@@ -11,13 +11,13 @@ namespace Procon.Core.Test.Plugins {
     using Procon.Core.Connections.Plugins;
     using Procon.Net.Protocols.Frostbite.BF.BF3;
 
-    [TestClass]
+    [TestFixture]
     public class TestPluginsIsolation {
         
         /// <summary>
         /// Makes sure the plugin is not loaded into the current appdomain.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestPluginsIsolationCleanCurrentAppDomain() {
             PluginController plugins = new PluginController().Execute() as PluginController;
 
@@ -67,7 +67,7 @@ namespace Procon.Core.Test.Plugins {
         /// <summary>
         /// Tests that a plugin in the AppDomain cannot write to the root directory of Procon
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestPluginsIsolationProhibtedWriteAccessToRootDirectory() {
             this.TestPluginsIsolationWriteToDirectory(AppDomain.CurrentDomain.BaseDirectory, false, CommandResultType.Failed);
         }
@@ -75,7 +75,7 @@ namespace Procon.Core.Test.Plugins {
         /// <summary>
         /// Tests that a plugin can write to the plugins directory.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestPluginsIsolationAllowedWriteAccessToPluginsDirectory() {
             this.TestPluginsIsolationWriteToDirectory(Defines.PluginsDirectory, true, CommandResultType.Success);
         }
@@ -83,7 +83,7 @@ namespace Procon.Core.Test.Plugins {
         /// <summary>
         /// Tests that a plugin can write to the plugins directory.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestPluginsIsolationAllowedWriteAccessToLogsDirectory() {
             this.TestPluginsIsolationWriteToDirectory(Defines.LogsDirectory, true, CommandResultType.Success);
         }
@@ -91,7 +91,7 @@ namespace Procon.Core.Test.Plugins {
         /// <summary>
         /// Tests that a plugin can write to the plugins directory.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestPluginsIsolationProhibitedWriteAccessToLocalizationDirectory() {
             this.TestPluginsIsolationWriteToDirectory(Defines.LocalizationDirectory, false, CommandResultType.Failed);
         }

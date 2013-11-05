@@ -1,11 +1,11 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace Procon.Core.Test.TextCommands.Fuzzy {
-    [TestClass]
+    [TestFixture]
     public class TestFuzzyBasicMonthTemporal : TestFuzzyBase {
 
-        [TestMethod]
+        [Test]
         public void TestTemporalKickEveryoneUntilNextMonth() {
             TestFuzzyBase.AssertTemporalCommand(
                 this.CreateTextCommandController(), 
@@ -15,7 +15,7 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
             );
         }
 
-        [TestMethod]
+        [Test]
         public void TestTemporalKickEveryoneLastMonth() {
             TestFuzzyBase.AssertTemporalCommand(
                 this.CreateTextCommandController(), 

@@ -2,7 +2,7 @@
 using System.Text;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Procon.Core.Connections;
 using Procon.Core.Connections.TextCommands;
 using Procon.Core.Localization;
@@ -11,13 +11,13 @@ using Procon.Core.Variables;
 using Procon.Net.Protocols.Objects;
 
 namespace Procon.Core.Test.ExecutableCommands {
-    [TestClass]
+    [TestFixture]
     public class TestCommandData {
 
         /// <summary>
         /// Tests that all references are removed by emptying and nulling the lists.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestCommandDataDispose() {
             CommandData data = new CommandData() {
                 Content = new List<String>(),

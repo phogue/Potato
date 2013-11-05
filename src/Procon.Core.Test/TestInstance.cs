@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Xml.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Procon.Core.Events;
 using Procon.Core.Localization;
 using Procon.Core.Security;
@@ -17,12 +17,12 @@ using Procon.Net.Protocols;
 using Procon.Net.Utils;
 
 namespace Procon.Core.Test {
-    [TestClass]
+    [TestFixture]
     public class TestInstance {
 
         protected static FileInfo ConfigFileInfo = new FileInfo(Path.Combine(Defines.ConfigsDirectory, "Procon.Core.xml"));
 
-        [TestInitialize]
+        [SetUp]
         public void Initialize() {
             if (File.Exists(ConfigFileInfo.FullName)) {
                 File.Delete(ConfigFileInfo.FullName);
@@ -33,7 +33,7 @@ namespace Procon.Core.Test {
         /// Tests that providing no connection scope will bubble the command over all
         /// executable objects in the instance. The variable should be set.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestInstanceCommandScopeNoScope() {
             VariableController variables = new VariableController();
 
@@ -78,7 +78,7 @@ namespace Procon.Core.Test {
         /// Tests that variable will not set on the instance as it will
         /// bypass the instance executable objects and execute only on the connection.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestInstanceCommandScopeWithConnectionScope() {
             VariableController variables = new VariableController();
 
@@ -126,7 +126,7 @@ namespace Procon.Core.Test {
         /// Tests that everything is nulled after disposing.
         /// </summary>
         /// <remarks>The controllers have their own individual dispose methods that are tested.</remarks>
-        [TestMethod]
+        [Test]
         public void TestInstanceDispose() {
             AutoResetEvent requestWait = new AutoResetEvent(false);
 
@@ -173,7 +173,7 @@ namespace Procon.Core.Test {
         /// Tests the integrity of the config written by the instance.
         /// </summary>
         /// <remarks>We test individual controllers configs in other unit tests.</remarks>
-        [TestMethod]
+        [Test]
         public void TestInstanceConfigWritten() {
             Instance instance = new Instance() {
                 Variables = new VariableController().Execute() as VariableController,
@@ -203,13 +203,13 @@ namespace Procon.Core.Test {
 
             var commands = loadConfig.Root.Descendants("Instance").Elements("Command").Select(xCommand => xCommand.FromXElement<Command>()).ToList();
 
-            Assert.AreEqual<String>("InstanceAddConnection", commands[0].Name);
-            Assert.AreEqual<String>("Myrcon", commands[0].Parameters[0].First<String>());
-            Assert.AreEqual<String>("BF_3", commands[0].Parameters[1].First<String>());
-            Assert.AreEqual<String>("93.186.198.11", commands[0].Parameters[2].First<String>());
-            Assert.AreEqual<String>("27516", commands[0].Parameters[3].First<String>());
-            Assert.AreEqual<String>("phogueisabutterfly", commands[0].Parameters[4].First<String>());
-            Assert.AreEqual<String>("", commands[0].Parameters[5].First<String>());
+            Assert.AreEqual("InstanceAddConnection", commands[0].Name);
+            Assert.AreEqual("Myrcon", commands[0].Parameters[0].First<String>());
+            Assert.AreEqual("BF_3", commands[0].Parameters[1].First<String>());
+            Assert.AreEqual("93.186.198.11", commands[0].Parameters[2].First<String>());
+            Assert.AreEqual("27516", commands[0].Parameters[3].First<String>());
+            Assert.AreEqual("phogueisabutterfly", commands[0].Parameters[4].First<String>());
+            Assert.AreEqual("", commands[0].Parameters[5].First<String>());
         }
     }
 }

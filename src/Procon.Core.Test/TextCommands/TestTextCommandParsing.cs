@@ -2,19 +2,19 @@
 using System.Text;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Procon.Core.Connections;
 using Procon.Core.Connections.TextCommands;
 using Procon.Core.Security;
 using Procon.Net.Protocols.Frostbite.BF.BF3;
 
 namespace Procon.Core.Test.TextCommands {
-    [TestClass]
+    [TestFixture]
     public class TestTextCommandParsing {
         /// <summary>
         /// Tests that a text command can be executed
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestTextCommandParsingExecute() {
             TextCommandController textCommands = new TextCommandController() {
                 //Languages = languages,
@@ -60,13 +60,13 @@ namespace Procon.Core.Test.TextCommands {
             });
 
             Assert.IsTrue(result.Success);
-            Assert.AreEqual<CommandResultType>(CommandResultType.Success, result.Status);
+            Assert.AreEqual(CommandResultType.Success, result.Status);
         }
 
         /// <summary>
         /// Tests that the parser will use the persons preferred language when executing a command.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestTextCommandParsingExecuteUsePreferredLanguage() {
             SecurityController security = new SecurityController().Execute() as SecurityController;
 
@@ -122,13 +122,13 @@ namespace Procon.Core.Test.TextCommands {
             });
 
             Assert.IsTrue(result.Success);
-            Assert.AreEqual<CommandResultType>(CommandResultType.Success, result.Status);
+            Assert.AreEqual(CommandResultType.Success, result.Status);
         }
 
         /// <summary>
         /// Tests a text command cannot be executed without sufficient permissions
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestTextCommandParsingExecuteInsufficientPermissions() {
             TextCommandController textCommands = new TextCommandController() {
                 Security = new SecurityController().Execute() as SecurityController
@@ -144,13 +144,13 @@ namespace Procon.Core.Test.TextCommands {
             });
 
             Assert.IsFalse(result.Success);
-            Assert.AreEqual<CommandResultType>(CommandResultType.InsufficientPermissions, result.Status);
+            Assert.AreEqual(CommandResultType.InsufficientPermissions, result.Status);
         }
 
         /// <summary>
         /// Tests that a text command can be executed
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestTextCommandParsingPreview() {
             TextCommandController textCommands = new TextCommandController() {
                 //Languages = languages,
@@ -196,13 +196,13 @@ namespace Procon.Core.Test.TextCommands {
             });
 
             Assert.IsTrue(result.Success);
-            Assert.AreEqual<CommandResultType>(CommandResultType.Success, result.Status);
+            Assert.AreEqual(CommandResultType.Success, result.Status);
         }
 
         /// <summary>
         /// Tests a text command cannot be previewed without sufficient permissions
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestTextCommandParsingPreviewInsufficientPermissions() {
             TextCommandController textCommands = new TextCommandController() {
                 Security = new SecurityController().Execute() as SecurityController
@@ -218,7 +218,7 @@ namespace Procon.Core.Test.TextCommands {
             });
 
             Assert.IsFalse(result.Success);
-            Assert.AreEqual<CommandResultType>(CommandResultType.InsufficientPermissions, result.Status);
+            Assert.AreEqual(CommandResultType.InsufficientPermissions, result.Status);
         }
     }
 }

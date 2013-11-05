@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Procon.Core.Events;
 using Procon.Core.Utils;
 using Procon.Net.Protocols.Frostbite.Objects;
@@ -12,14 +12,14 @@ using Procon.Net.Protocols.Objects;
 using Procon.Net.Utils;
 
 namespace Procon.Core.Test.Serialization.Xml {
-    [TestClass]
+    [TestFixture]
     public class TestXmlSerializationCommand {
 
         /// <summary>
         /// Tests the command result with no event data (blank Scope, Then & Now)
         /// will succeed with xml serialization.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestXmlSerializationCommandResultNoData() {
             DateTime now = DateTime.Now;
 
@@ -44,7 +44,7 @@ namespace Procon.Core.Test.Serialization.Xml {
         /// <summary>
         /// Tests that a derived type will be serialized as the known base type.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestXmlSerializationCommandResultDerivedType() {
             DateTime now = DateTime.Now;
 

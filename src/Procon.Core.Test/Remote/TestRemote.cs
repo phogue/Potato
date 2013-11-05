@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Xml.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Newtonsoft.Json;
 using Procon.Core.Connections.Plugins;
 using Procon.Core.Security;
@@ -17,7 +17,7 @@ using Procon.Net.Utils.HTTP;
 namespace Procon.Core.Test.Remote {
     using Procon.Core.Remote;
 
-    [TestClass]
+    [TestFixture]
     public class TestRemote {
         
         // Daemon runs, can authenticate and call function in test plugin
@@ -77,7 +77,7 @@ namespace Procon.Core.Test.Remote {
         /// <summary>
         /// Tests that a correct authentication with no relvan command will still return a 200 OK status.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestRemoteSandboxAuthenticationSuccess() {
             const int listeningPort = 3221;
 
@@ -117,7 +117,7 @@ namespace Procon.Core.Test.Remote {
         /// <summary>
         /// Tests that an incorrect authentication will have a failed success message.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestRemoteSandboxAuthenticationFailed() {
             const int listeningPort = 3222;
 
@@ -163,7 +163,7 @@ namespace Procon.Core.Test.Remote {
         /// <summary>
         /// Tests that a html file can be fetched via the daemon.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestRemoteSandboxIndexHtml() {
             const int listeningPort = 3223;
 
@@ -209,7 +209,7 @@ namespace Procon.Core.Test.Remote {
         /// <summary>
         /// Tests variables are nulled during a dispose.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestRemoteDaemonDispose() {
             const int listeningPort = 3224;
 
@@ -225,7 +225,7 @@ namespace Procon.Core.Test.Remote {
         /// Tests that altering the daemon enabled/disabled variable
         /// on an active listener will disable and null the listener.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestRemoteDaemonVariableDisabled() {
             const int listeningPort = 3225;
 
@@ -247,7 +247,7 @@ namespace Procon.Core.Test.Remote {
         /// <summary>
         /// Tests that sending a malformed command will return a bad request response.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestRemoteDaemonMalformedCommandRequest() {
             const int listeningPort = 3226;
 
@@ -281,7 +281,7 @@ namespace Procon.Core.Test.Remote {
         /// <summary>
         /// Tests that a html file can be fetched via the daemon, even when a content type is specified and it is json
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestRemoteSandboxJsonRequestIndexHtml() {
             const int listeningPort = 3227;
 
@@ -328,7 +328,7 @@ namespace Procon.Core.Test.Remote {
         /// <summary>
         /// Tests that a command can be initiated with no parameters passed in.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestRemoteSandboxJsonRequestNoParameters() {
             const int listeningPort = 3228;
 
@@ -371,7 +371,7 @@ namespace Procon.Core.Test.Remote {
         }
 
         /*
-        [TestMethod]
+        [Test]
         public void TestRemoteSandbox() {
             Executable.MasterSecurity.Dispose();
             Executable.MasterSecurity.Execute();

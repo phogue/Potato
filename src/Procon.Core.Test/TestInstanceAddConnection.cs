@@ -3,18 +3,18 @@ using System.IO;
 using System.Text;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Procon.Core.Utils;
 using Procon.Core.Variables;
 using Procon.Net.Protocols;
 
 namespace Procon.Core.Test {
-    [TestClass]
+    [TestFixture]
     public class TestInstanceAddConnection {
 
         protected static FileInfo ConfigFileInfo = new FileInfo(Path.Combine(Defines.ConfigsDirectory, "Procon.Core.xml"));
 
-        [TestInitialize]
+        [SetUp]
         public void Initialize() {
             if (File.Exists(ConfigFileInfo.FullName)) {
                 File.Delete(ConfigFileInfo.FullName);
@@ -24,7 +24,7 @@ namespace Procon.Core.Test {
         /// <summary>
         /// Tests that a connection can be added.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestInstanceAddConnectionSuccess() {
             Instance instance = new Instance().Execute() as Instance;
 
@@ -50,7 +50,7 @@ namespace Procon.Core.Test {
         /// Tests a remote command to add a connection will fail if the username
         /// supplied does not have permissions to add the connection.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestInstanceAddConnectionInsufficientPermissions() {
             Instance instance = new Instance().Execute() as Instance;
 
@@ -76,7 +76,7 @@ namespace Procon.Core.Test {
         /// <summary>
         /// Tests we receive a DoesNotExist status when a game type is not supported (or exist..)
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestInstanceAddConnectionGameTypeDoesNotExist() {
             Instance instance = new Instance().Execute() as Instance;
 
@@ -100,7 +100,7 @@ namespace Procon.Core.Test {
         /// <summary>
         /// Tests that we cannot add the same connection twice.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestInstanceAddConnectionDuplicate() {
             Instance instance = new Instance().Execute() as Instance;
 
@@ -142,7 +142,7 @@ namespace Procon.Core.Test {
         /// Tests that a connection cannot be added if would go over the maximum connection limit
         /// imposed by a variable.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestInstanceAddConnectionExceedMaximumConnectionLimit() {
             VariableController variables = new VariableController();
             Instance instance = new Instance() {

@@ -3,18 +3,18 @@ using System.IO;
 using System.Text;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Procon.Core.Utils;
 using Procon.Core.Variables;
 using Procon.Net.Protocols;
 
 namespace Procon.Core.Test {
-    [TestClass]
+    [TestFixture]
     public class TestInstanceRemoveConnection {
 
         protected static FileInfo ConfigFileInfo = new FileInfo(Path.Combine(Defines.ConfigsDirectory, "Procon.Core.xml"));
 
-        [TestInitialize]
+        [SetUp]
         public void Initialize() {
             if (File.Exists(ConfigFileInfo.FullName)) {
                 File.Delete(ConfigFileInfo.FullName);
@@ -24,7 +24,7 @@ namespace Procon.Core.Test {
         /// <summary>
         /// Tests that a connection can be removed.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestInstanceRemoveConnectionSuccess() {
             Instance instance = new Instance().Execute() as Instance;
 
@@ -63,7 +63,7 @@ namespace Procon.Core.Test {
         /// <summary>
         /// Tests that a connection can be removed.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestInstanceRemoveConnectionByGuidSuccess() {
             Instance instance = new Instance().Execute() as Instance;
 
@@ -100,7 +100,7 @@ namespace Procon.Core.Test {
         /// Tests a remote command to remove a connection will fail if the username
         /// supplied does not have permissions to add the connection.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestInstanceRemoveConnectionInsufficientPermissions() {
             Instance instance = new Instance().Execute() as Instance;
 
@@ -125,7 +125,7 @@ namespace Procon.Core.Test {
         /// Tests that a DoesNotExist error is returned when trying to remove
         /// a connection on an empty instance object.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestInstanceRemoveConnectionDoesNotExist() {
             Instance instance = new Instance().Execute() as Instance;
 

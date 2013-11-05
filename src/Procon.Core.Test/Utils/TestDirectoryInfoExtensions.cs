@@ -4,17 +4,17 @@ using System.Text;
 using System.Collections.Generic;
 using System.Linq;
 using Ionic.Zip;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Procon.Core.Utils;
 
 namespace Procon.Core.Test.Utils {
-    [TestClass]
+    [TestFixture]
     public class TestDirectoryInfoExtensions {
 
         /// <summary>
         /// Tests that files and sub directories of a directory will be deleted.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestDirectoryInfoExtensionsClean() {
             String cleanPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Utils\DirectoryInfoExtensions\Clean");
             FileInfo fileA = new FileInfo(Path.Combine(cleanPath, @"a.txt"));
@@ -48,7 +48,7 @@ namespace Procon.Core.Test.Utils {
         /// <summary>
         /// Checks that a directory can be zipped up. Validates the files are in the resulting zip file in memory.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestDirectoryInfoExtensionsZip() {
             String cleanPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Utils\DirectoryInfoExtensions\Zip");
             FileInfo fileA = new FileInfo(Path.Combine(cleanPath, @"a.txt"));

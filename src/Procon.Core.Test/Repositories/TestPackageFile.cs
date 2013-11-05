@@ -3,19 +3,19 @@ using System.Text;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Procon.Core.Repositories;
 using Procon.Core.Utils;
 using Procon.Net.Utils;
 
 namespace Procon.Core.Test.Repositories {
-    [TestClass]
+    [TestFixture]
     public class TestPackageFile {
 
         /// <summary>
         /// Tests that a file can be deserialized from static xml collected from the repository
         /// </summary>
-        [TestMethod]
+        [Test]
         [Ignore]
         public void TestPackageFileDeserialization() {
             XElement element = XElement.Parse(@"<file>

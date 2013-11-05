@@ -3,19 +3,19 @@ using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Procon.Core.Repositories;
 using Procon.Core.Repositories.Serialization;
 using Procon.Net.Utils;
 
 namespace Procon.Core.Test.Repositories {
-    [TestClass]
+    [TestFixture]
     public class TestPackageVersion {
 
         /// <summary>
         /// Tests that a package version can be deserialized alone with no sub files.
         /// </summary>
-        [TestMethod]
+        [Test]
         [Ignore]
         public void TestPackageVersionDeserialization() {
             XElement element = XElement.Parse(@"<package_version>
@@ -65,7 +65,7 @@ namespace Procon.Core.Test.Repositories {
         /// <summary>
         /// Test that a stored md5 hash of a file will be picked up when scanning a directory for changes.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestPackageVersionModifiedFilesAtModified() {
             String repositoryModifiedFilesAtValidPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Repositories\ModifiedFilesAt\Valid");
 
@@ -95,7 +95,7 @@ namespace Procon.Core.Test.Repositories {
         /// <summary>
         /// Tests that no modifications are found if the hash matches the file hash.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestPackageVersionModifiedFilesAtNoModifications() {
             String repositoryModifiedFilesAtValidPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Repositories\ModifiedFilesAt\Valid");
 

@@ -2,18 +2,18 @@
 using System.Text;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace Procon.Core.Test.Plugins {
     using Procon.Core.Connections.Plugins;
-    [TestClass]
+    [TestFixture]
     public class TestPluginsSerialization {
 
         /// <summary>
         /// Makes sure executing a command across the appdomain will serialize
         /// the basic command result across the app domain.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestPluginsSerializationCommandResult() {
             PluginController plugins = new PluginController().Execute() as PluginController;
 

@@ -2,19 +2,19 @@
 using System.Text;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace Procon.Core.Test.Security {
     using Procon.Core.Security;
     using Procon.Net.Protocols;
     using Procon.Net.Utils;
 
-    [TestClass]
+    [TestFixture]
     public class TestSecurityPermission {
 
         #region Get Account
 
-        [TestMethod]
+        [Test]
         public void TestSecurityGetAccountByUsername() {
             SecurityController security = new SecurityController();
             security.Execute(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityAddGroup, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "GroupName" }) });
@@ -25,10 +25,10 @@ namespace Procon.Core.Test.Security {
 
             // Validate the account was fetched successfully
             Assert.IsNotNull(account);
-            Assert.AreEqual<String>("Phogue", account.Username);
+            Assert.AreEqual("Phogue", account.Username);
         }
 
-        [TestMethod]
+        [Test]
         public void TestSecurityGetAccountByPlayerDetails() {
             SecurityController security = new SecurityController();
             security.Execute(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityAddGroup, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "GroupName" }) });
@@ -39,10 +39,10 @@ namespace Procon.Core.Test.Security {
 
             // Validate the account was fetched successfully
             Assert.IsNotNull(account);
-            Assert.AreEqual<String>("Phogue", account.Username);
+            Assert.AreEqual("Phogue", account.Username);
         }
 
-        [TestMethod]
+        [Test]
         public void TestSecurityGetAccountByCommandInitiatorWithUsername() {
             SecurityController security = new SecurityController();
             security.Execute(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityAddGroup, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "GroupName" }) });
@@ -55,10 +55,10 @@ namespace Procon.Core.Test.Security {
 
             // Validate the account was fetched successfully
             Assert.IsNotNull(account);
-            Assert.AreEqual<String>("Phogue", account.Username);
+            Assert.AreEqual("Phogue", account.Username);
         }
 
-        [TestMethod]
+        [Test]
         public void TestSecurityGetAccountByCommandInitiatorWithPlayerDetails() {
             SecurityController security = new SecurityController();
             security.Execute(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityAddGroup, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "GroupName" }) });
@@ -72,14 +72,14 @@ namespace Procon.Core.Test.Security {
 
             // Validate the account was fetched successfully
             Assert.IsNotNull(account);
-            Assert.AreEqual<String>("Phogue", account.Username);
+            Assert.AreEqual("Phogue", account.Username);
         }
 
         #endregion
 
         #region More authority versus less authority
 
-        [TestMethod]
+        [Test]
         public void TestSecurityQueryDetailsMoreAuthorityByPlayerDetails() {
             SecurityController security = new SecurityController();
             security.Execute(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityAddGroup, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "FirstGroupName" }) });
@@ -104,10 +104,10 @@ namespace Procon.Core.Test.Security {
             });
 
             Assert.IsTrue(result.Success);
-            Assert.AreEqual<CommandResultType>(CommandResultType.Success, result.Status);
+            Assert.AreEqual(CommandResultType.Success, result.Status);
         }
 
-        [TestMethod]
+        [Test]
         public void TestSecurityQueryDetailsMoreAuthorityByAccountUsername() {
             SecurityController security = new SecurityController();
             security.Execute(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityAddGroup, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "FirstGroupName" }) });
@@ -131,14 +131,14 @@ namespace Procon.Core.Test.Security {
             });
 
             Assert.IsTrue(result.Success);
-            Assert.AreEqual<CommandResultType>(CommandResultType.Success, result.Status);
+            Assert.AreEqual(CommandResultType.Success, result.Status);
         }
 
         #endregion
 
         #region Less authority versus more authority
 
-        [TestMethod]
+        [Test]
         public void TestSecurityQueryDetailsLessAuthorityByPlayerDetails() {
             SecurityController security = new SecurityController();
             security.Execute(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityAddGroup, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "FirstGroupName" }) });
@@ -163,10 +163,10 @@ namespace Procon.Core.Test.Security {
             });
 
             Assert.IsFalse(result.Success);
-            Assert.AreEqual<CommandResultType>(CommandResultType.InsufficientAuthority, result.Status);
+            Assert.AreEqual(CommandResultType.InsufficientAuthority, result.Status);
         }
 
-        [TestMethod]
+        [Test]
         public void TestSecurityQueryDetailsLessAuthorityByAccountUsername() {
             SecurityController security = new SecurityController();
             security.Execute(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityAddGroup, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "FirstGroupName" }) });
@@ -190,14 +190,14 @@ namespace Procon.Core.Test.Security {
             });
 
             Assert.IsFalse(result.Success);
-            Assert.AreEqual<CommandResultType>(CommandResultType.InsufficientAuthority, result.Status);
+            Assert.AreEqual(CommandResultType.InsufficientAuthority, result.Status);
         }
 
         #endregion
 
         #region Any authority versus no authority
 
-        [TestMethod]
+        [Test]
         public void TestSecurityQueryDetailsNoAuthorityByPlayerDetails() {
             SecurityController security = new SecurityController();
             security.Execute(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityAddGroup, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "FirstGroupName" }) });
@@ -222,10 +222,10 @@ namespace Procon.Core.Test.Security {
             });
 
             Assert.IsTrue(result.Success);
-            Assert.AreEqual<CommandResultType>(CommandResultType.Success, result.Status);
+            Assert.AreEqual(CommandResultType.Success, result.Status);
         }
 
-        [TestMethod]
+        [Test]
         public void TestSecurityQueryDetailsNoAuthorityByAccountUsername() {
             SecurityController security = new SecurityController();
             security.Execute(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityAddGroup, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "FirstGroupName" }) });
@@ -249,7 +249,7 @@ namespace Procon.Core.Test.Security {
             });
 
             Assert.IsTrue(result.Success);
-            Assert.AreEqual<CommandResultType>(CommandResultType.Success, result.Status);
+            Assert.AreEqual(CommandResultType.Success, result.Status);
         }
 
         #endregion
@@ -260,7 +260,7 @@ namespace Procon.Core.Test.Security {
         /// Tests that a security check will succeed if the origin is a plugin and no further
         /// details about who executed the command are sent through.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestSecurityQueryDetailsPluginOrigin() {
             SecurityController security = new SecurityController();
             security.Execute(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityAddGroup, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "FirstGroupName" }) });
@@ -279,10 +279,10 @@ namespace Procon.Core.Test.Security {
             });
 
             Assert.IsTrue(result.Success);
-            Assert.AreEqual<CommandResultType>(CommandResultType.Success, result.Status);
+            Assert.AreEqual(CommandResultType.Success, result.Status);
         }
 
-        [TestMethod]
+        [Test]
         public void TestSecurityQueryDetailsUnknownOrigin() {
             SecurityController security = new SecurityController();
             security.Execute(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityAddGroup, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "FirstGroupName" }) });
@@ -307,7 +307,7 @@ namespace Procon.Core.Test.Security {
             });
 
             Assert.IsFalse(result.Success);
-            Assert.AreEqual<CommandResultType>(CommandResultType.InsufficientPermissions, result.Status);
+            Assert.AreEqual(CommandResultType.InsufficientPermissions, result.Status);
         }
 
         #endregion

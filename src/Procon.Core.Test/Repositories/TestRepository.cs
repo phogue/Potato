@@ -23,6 +23,7 @@ namespace Procon.Core.Test.Repositories {
         /// Tests that the repository can be queried.
         /// </summary>
         [TestMethod]
+        [Ignore]
         public void TestBeginQueryRequest() {
             AutoResetEvent requestWait = new AutoResetEvent(false);
 
@@ -45,6 +46,7 @@ namespace Procon.Core.Test.Repositories {
         /// Tests that the repository can be authenticated against.
         /// </summary>
         [TestMethod]
+        [Ignore]
         public void TestBeginAuthenticationTestSuccess() {
             AutoResetEvent requestWait = new AutoResetEvent(false);
 
@@ -109,6 +111,7 @@ namespace Procon.Core.Test.Repositories {
         /// Tests that the repository can have its cache rebuilt
         /// </summary>
         [TestMethod]
+        [Ignore]
         public void TestBeginRebuildCacheSuccess() {
             AutoResetEvent requestWait = new AutoResetEvent(false);
 
@@ -136,6 +139,7 @@ namespace Procon.Core.Test.Repositories {
         /// Tests that a file will be published 
         /// </summary>
         [TestMethod]
+        [Ignore]
         public void TestBeginPublishSuccess() {
             String repositoryPublishValidPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Repositories\Publish\Valid");
             String randomlyGeneratedContentPath = Path.Combine(repositoryPublishValidPath, "RandomlyGeneratedContent.txt");
@@ -271,6 +275,7 @@ namespace Procon.Core.Test.Repositories {
         /// Tests that loading a directory with a valid package will validate
         /// </summary>
         [TestMethod]
+        [Ignore]
         public void TestReadDirectoryValidRepository() {
             Repository repository = new Repository();
 

@@ -17,6 +17,7 @@ namespace Procon.Core.Test.Repositories {
         /// Tests that we can deserialize from a static copy of the output of the repository.
         /// </summary>
         [TestMethod]
+        [Ignore]
         public void TestPackageDeserialization() {
             XElement element = XElement.Parse(@"<package>
     <uid>DownloadCacheTest</uid>

@@ -16,6 +16,7 @@ namespace Procon.Core.Test.Repositories {
         /// Tests that a package version can be deserialized alone with no sub files.
         /// </summary>
         [TestMethod]
+        [Ignore]
         public void TestPackageVersionDeserialization() {
             XElement element = XElement.Parse(@"<package_version>
     <version>

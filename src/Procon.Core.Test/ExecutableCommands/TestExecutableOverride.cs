@@ -34,6 +34,7 @@ namespace Procon.Core.Test.ExecutableCommands {
         /// Tests that an overridden method can still be called with an object parameter in the signature.
         /// </summary>
         [TestMethod]
+        [Ignore]
         public void TestExecutableOverrideSetObject() {
             ExecutableOverrideTester tester = new ExecutableOverrideTester() {
                 TestNumber = 0

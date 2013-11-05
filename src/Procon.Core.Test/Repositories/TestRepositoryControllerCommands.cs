@@ -51,6 +51,7 @@ namespace Procon.Core.Test.Repositories {
         /// Tests that a package can be downloaded and installed.
         /// </summary>
         [TestMethod]
+        [Ignore]
         public void TestRepositoryControllerInstallPackageSuccess() {
             AutoResetEvent requestWait = new AutoResetEvent(false);
 
@@ -105,6 +106,7 @@ namespace Procon.Core.Test.Repositories {
         /// Tests that a package can be downloaded and installed.
         /// </summary>
         [TestMethod]
+        [Ignore]
         public void TestRepositoryControllerInstallPackageDoesNotExist() {
             AutoResetEvent requestWait = new AutoResetEvent(false);
 
@@ -335,6 +337,7 @@ namespace Procon.Core.Test.Repositories {
         /// Tests that a remote repository can be added to the repository controller
         /// </summary>
         [TestMethod]
+        [Ignore]
         public void TestRepositoryControllerIngoreAutomaticUpdatePackageSuccess() {
             AutoResetEvent requestWait = new AutoResetEvent(false);
 
@@ -376,6 +379,7 @@ namespace Procon.Core.Test.Repositories {
         }
 
         [TestMethod]
+        [Ignore]
         public void TestRepositoryControllerIngoreAutomaticUpdatePackageNoDuplicationSuccess() {
             AutoResetEvent requestWait = new AutoResetEvent(false);
 

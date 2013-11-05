@@ -16,6 +16,7 @@ namespace Procon.Core.Test.Repositories {
         /// Tests that a file can be deserialized from static xml collected from the repository
         /// </summary>
         [TestMethod]
+        [Ignore]
         public void TestPackageFileDeserialization() {
             XElement element = XElement.Parse(@"<file>
     <name>ThisIsInASubDirectory.txt</name>

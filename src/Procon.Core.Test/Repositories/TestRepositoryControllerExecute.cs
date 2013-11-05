@@ -109,6 +109,7 @@ namespace Procon.Core.Test.Repositories {
         /// Tests that existing installed packages are loaded up in the controller.
         /// </summary>
         [TestMethod]
+        [Ignore]
         public void TestRepositoryControllerInstalledRepository() {
             this.SetupAndSaveExecutePackage(ExecutePackagesInstalledPath, "repomyrconcom_procon2");
 
@@ -125,6 +126,7 @@ namespace Procon.Core.Test.Repositories {
         /// Tests that existing updates packages are loaded up in the controller.
         /// </summary>
         [TestMethod]
+        [Ignore]
         public void TestRepositoryControllerUpdatedRepository() {
             this.SetupAndSaveExecutePackage(ExecutePackagesUpdatesPath, "repomyrconcom_procon2");
 
@@ -141,6 +143,7 @@ namespace Procon.Core.Test.Repositories {
         /// Tests that existing updates packages are loaded up in the controller.
         /// </summary>
         [TestMethod]
+        [Ignore]
         public void TestRepositoryControllerRemoteRepository() {
             AutoResetEvent requestWait = new AutoResetEvent(false);
 

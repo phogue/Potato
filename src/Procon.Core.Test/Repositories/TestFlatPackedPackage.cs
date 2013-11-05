@@ -475,6 +475,7 @@ namespace Procon.Core.Test.Repositories {
         /// @todo We shouldn't piggy back off an existing package and instead publish one ourselves so we know it is there for the test.
         /// </summary>
         [TestMethod]
+        [Ignore]
         public void TestFlatPackedPackageInstall() {
             AutoResetEvent requestWait = new AutoResetEvent(false);
 
@@ -556,6 +557,7 @@ namespace Procon.Core.Test.Repositories {
         /// @todo We shouldn't piggy back off an existing package and instead publish one ourselves so we know it is there for the test.
         /// </summary>
         [TestMethod]
+        [Ignore]
         public void TestFlatPackedPackageUpdate() {
             AutoResetEvent requestWait = new AutoResetEvent(false);
 

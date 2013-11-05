@@ -82,7 +82,7 @@
     <Compile Include="Connections\TextCommands\ParserType.cs" />
     <Compile Include="Connections\TextCommands\TextCommand.cs" />
     <Compile Include="Connections\TextCommands\TextCommandController.cs" />
-    <Compile Include="Connections\TextCommands\Parsers\NlpParser.cs" />
+    <Compile Include="Connections\TextCommands\Parsers\FuzzyParser.cs" />
     <Compile Include="Connections\TextCommands\Parsers\Parser.cs" />
     <Compile Include="Connections\Plugins\IPluginBase.cs" />
     <Compile Include="Database\DatabaseController.cs" />
@@ -139,13 +139,13 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Procon.Fuzzy\Procon.Fuzzy.csproj">
+      <Project>{4B55557F-C2AA-4047-9ED9-3E4BBF9CF670}</Project>
+      <Name>Procon.Fuzzy</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Procon.Net\Procon.Net.csproj">
       <Project>{65C1DB17-18E0-4AC5-8709-3F7E04B88CA1}</Project>
       <Name>Procon.Net</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Procon.NLP\Procon.Nlp.csproj">
-      <Project>{4B55557F-C2AA-4047-9ED9-3E4BBF9CF670}</Project>
-      <Name>Procon.Nlp</Name>
     </ProjectReference>
     <ProjectReference Include="..\Procon.Service.Shared\Procon.Service.Shared.csproj">
       <Project>{3F9E6801-A015-4F7E-9B67-7015F1F58B18}</Project>
@@ -156,7 +156,7 @@
     <Content Include="Localization\de-DE\Procon.Net.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Localization\de-DE\Procon.Nlp.xml">
+    <Content Include="Localization\de-DE\Procon.Fuzzy.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Localization\de-DE\Procon.xml">
@@ -172,7 +172,7 @@
     <Content Include="Localization\en-UK\Procon.Net.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Localization\en-UK\Procon.Nlp.xml">
+    <Content Include="Localization\en-UK\Procon.Fuzzy.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Localization\en-UK\Procon.xml">

@@ -50,7 +50,7 @@ namespace Procon.Core.Connections.Plugins {
             try {
                 File.Copy(Defines.ProconDirectoryProconCoreDll, Path.Combine(pluginDirectory.FullName, Defines.ProconCoreDll), true);
                 File.Copy(Defines.ProconDirectoryProconNetDll, Path.Combine(pluginDirectory.FullName, Defines.ProconNetDll), true);
-                File.Copy(Defines.ProconDirectoryProconNlpDll, Path.Combine(pluginDirectory.FullName, Defines.ProconNlpDll), true);
+                File.Copy(Defines.ProconDirectoryProconFuzzyDll, Path.Combine(pluginDirectory.FullName, Defines.ProconFuzzyDll), true);
                 // File.Copy(Defines.ProconDirectoryNewtonsoftJsonNet35Dll, Path.Combine(pluginDirectory.FullName, Defines.NewtonsoftJsonNet35Dll), true);
             }
             catch (Exception) { }
@@ -171,7 +171,7 @@ namespace Procon.Core.Connections.Plugins {
             var files = pluginDirectory.GetFiles("*.dll", SearchOption.AllDirectories).Where(file =>
                                                                   file.Name != Defines.ProconCoreDll &&
                                                                   file.Name != Defines.ProconNetDll &&
-                                                                  file.Name != Defines.ProconNlpDll &&
+                                                                  file.Name != Defines.ProconFuzzyDll &&
                                                                   file.Name != Defines.NewtonsoftJsonNet35Dll);
 
             // If there are dll files in this directory, setup the plugins.

@@ -12,7 +12,7 @@ namespace Procon.Core.Connections.TextCommands {
     using Procon.Core.Variables;
     using Procon.Core.Connections.TextCommands.Parsers;
     using Procon.Net.Protocols.Objects;
-    using Procon.Nlp.Utils;
+    using Procon.Fuzzy.Utils;
 
     public class TextCommandController : Executable {
 
@@ -152,7 +152,7 @@ namespace Procon.Core.Connections.TextCommands {
             }
 
             if (selectedLanguage != null) {
-                NlpParser parser = new NlpParser() {
+                FuzzyParser parser = new FuzzyParser() {
                     Connection = this.Connection,
                     TextCommands = commands,
                     Document = selectedLanguage.Root,

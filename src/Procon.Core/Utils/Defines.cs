@@ -17,7 +17,7 @@ namespace Procon.Core.Utils {
         public static readonly string ProconXml = "Procon.xml";
         public static readonly string ProconCoreDll = "Procon.Core.dll";
         public static readonly string ProconNetDll = "Procon.Net.dll";
-        public static readonly string ProconNlpDll = "Procon.Nlp.dll";
+        public static readonly string ProconFuzzyDll = "Procon.Fuzzy.dll";
         public static readonly string NewtonsoftJsonNet35Dll = "Newtonsoft.Json.Net35.dll";
         public static readonly string UpdateLog = "update.log";
 
@@ -44,7 +44,7 @@ namespace Procon.Core.Utils {
         public static readonly string ProconDirectoryProconExe = Path.Combine(Defines.BaseDirectory, ProconExe);
         public static readonly string ProconDirectoryProconCoreDll = Path.Combine(Defines.BaseDirectory, ProconCoreDll);
         public static readonly string ProconDirectoryProconNetDll = Path.Combine(Defines.BaseDirectory, ProconNetDll);
-        public static readonly string ProconDirectoryProconNlpDll = Path.Combine(Defines.BaseDirectory, ProconNlpDll);
+        public static readonly string ProconDirectoryProconFuzzyDll = Path.Combine(Defines.BaseDirectory, ProconFuzzyDll);
         public static readonly string ProconDirectoryNewtonsoftJsonNet35Dll = Path.Combine(Defines.BaseDirectory, NewtonsoftJsonNet35Dll);
 
 

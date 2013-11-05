@@ -106,20 +106,20 @@
     <Compile Include="Serialization\Xml\TestXmlSerializationCommand.cs" />
     <Compile Include="TestInstance.cs" />
     <Compile Include="TestInstanceAddConnection.cs" />
-    <Compile Include="TextCommands\Nlp\TestNlpBasicMonthTemporal.cs" />
-    <Compile Include="TextCommands\Nlp\TestNlpBasicTemporal.cs" />
-    <Compile Include="TextCommands\Nlp\TestNlpSetsObjectMatching.cs" />
-    <Compile Include="TextCommands\Nlp\TestNlpArithmetic.cs" />
-    <Compile Include="TextCommands\Nlp\TestNlpComplexObjectMatching.cs" />
-    <Compile Include="TextCommands\Nlp\TestNlpBasicObjectMatching.cs" />
-    <Compile Include="TextCommands\Nlp\TestNlpSentences.cs" />
-    <Compile Include="TextCommands\Nlp\TestNlpComplexTemporal.cs" />
+    <Compile Include="TextCommands\Fuzzy\TestFuzzyBasicMonthTemporal.cs" />
+    <Compile Include="TextCommands\Fuzzy\TestFuzzyBasicTemporal.cs" />
+    <Compile Include="TextCommands\Fuzzy\TestFuzzySetsObjectMatching.cs" />
+    <Compile Include="TextCommands\Fuzzy\TestFuzzyArithmetic.cs" />
+    <Compile Include="TextCommands\Fuzzy\TestFuzzyComplexObjectMatching.cs" />
+    <Compile Include="TextCommands\Fuzzy\TestFuzzyBasicObjectMatching.cs" />
+    <Compile Include="TextCommands\Fuzzy\TestFuzzySentences.cs" />
+    <Compile Include="TextCommands\Fuzzy\TestFuzzyComplexTemporal.cs" />
     <Compile Include="Plugins\TestPlugins.cs" />
     <Compile Include="Plugins\TestPluginsIsolation.cs" />
     <Compile Include="Plugins\TestPluginsSecurity.cs" />
     <Compile Include="Plugins\TestPluginsSerialization.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TextCommands\Nlp\TestNlpBase.cs" />
+    <Compile Include="TextCommands\Fuzzy\TestFuzzyBase.cs" />
     <Compile Include="Repositories\TestRepository.cs" />
     <Compile Include="Scheduler\TestScheduler.cs" />
     <Compile Include="Security\TestSecurityPermission.cs" />
@@ -147,6 +147,10 @@
       <Project>{153B5418-C6B3-43A5-A432-BAFFA8EFAA16}</Project>
       <Name>Procon.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Procon.Fuzzy\Procon.Fuzzy.csproj">
+      <Project>{4B55557F-C2AA-4047-9ED9-3E4BBF9CF670}</Project>
+      <Name>Procon.Fuzzy</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Procon.Net.Protocols.Frostbite\Procon.Net.Protocols.Frostbite.csproj">
       <Project>{299A4619-928D-4D7F-8857-644B5F57F6FC}</Project>
       <Name>Procon.Net.Protocols.Frostbite</Name>
@@ -154,10 +158,6 @@
     <ProjectReference Include="..\Procon.Net\Procon.Net.csproj">
       <Project>{65C1DB17-18E0-4AC5-8709-3F7E04B88CA1}</Project>
       <Name>Procon.Net</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Procon.NLP\Procon.Nlp.csproj">
-      <Project>{4B55557F-C2AA-4047-9ED9-3E4BBF9CF670}</Project>
-      <Name>Procon.Nlp</Name>
     </ProjectReference>
     <ProjectReference Include="..\Procon.Service.Shared\Procon.Service.Shared.csproj">
       <Project>{3F9E6801-A015-4F7E-9B67-7015F1F58B18}</Project>

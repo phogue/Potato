@@ -10,7 +10,6 @@ namespace TestPlugin {
     using Procon.Core.Connections.TextCommands;
     using Procon.Net.Utils;
     using Procon.Net.Protocols.Objects;
-    using Procon.Net.Protocols;
 
     public class Program : PluginBase {
         //Ignore this: - Actually, depending on how you wanna save info for plugins, the actually plugin could save it here.

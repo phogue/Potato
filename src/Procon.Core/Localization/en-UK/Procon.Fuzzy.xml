@@ -1,0 +1,448 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<?ietf-language-tag en-UK?>
+<!DOCTYPE Procon [
+  <!ATTLIST Match regex CDATA #IMPLIED>
+  <!ATTLIST Match text CDATA #IMPLIED>
+]>
+<Procon>
+  <Fuzzy>
+    <Tokens>
+      <TokenReflection>
+        <Diacritic key="ü" value="ue"/>
+        <Diacritic key="ä" value="ae"/>
+        <Diacritic key="ö" value="oe"/>
+        <Diacritic key="ß" value="ss"/>
+        <Diacritic key="Ä" value="Ae"/>
+        <Diacritic key="Ü" value="Ue"/>
+        <Diacritic key="Ö" value="Oe"/>
+      </TokenReflection>
+      <Object>
+        <Properties>
+          <Property name="Name">
+            <Match text="name"/>
+            <Match text="player name"/>
+          </Property>
+          <Property name="Ping">
+            <Match text="ping"/>
+          </Property>
+          <Property name="Score">
+            <Match text="score"/>
+          </Property>
+          <Property name="CountryName">
+            <Match text="country"/>
+          </Property>
+          <Property name="Kills">
+            <Match text="kills"/>
+          </Property>
+          <Property name="Deaths">
+            <Match text="deaths"/>
+          </Property>
+          <Property name="Kdr">
+            <Match text="kdr"/>
+            <Match text="ratio"/>
+          </Property>
+        </Properties>
+
+        <SelfReflectionThingObjectToken>
+          <Match text="me"/>
+          <Match text="my"/>
+          <Match text="have I"/>
+          <Match text="will I"/>
+          <Match text="am I"/>
+          <Match text="I"/>
+        </SelfReflectionThingObjectToken>
+      </Object>
+
+      <Operator>
+        <Logical>
+          <Equality>
+            <EqualsEqualityLogicalOperatorToken>
+              <Match text="="/>
+              <Match text="=="/>
+              <Match text="equal"/>
+              <Match text="equals"/>
+              <Match text="equal to"/>
+              <Match text="eq"/>
+            </EqualsEqualityLogicalOperatorToken>
+            <GreaterThanEqualityLogicalOperatorToken>
+              <Match text="greater than"/>
+              <Match text=">"/>
+              <Match text="over"/>
+              <Match text="bigger than"/>
+              <Match text="more than"/>
+              <Match text="above"/>
+              <Match text="gt"/>
+            </GreaterThanEqualityLogicalOperatorToken>
+            <GreaterThanEqualToEqualityLogicalOperatorToken>
+              <Match text=">="/>
+              <Match text="gteq"/>
+            </GreaterThanEqualToEqualityLogicalOperatorToken>
+            <LessThanEqualityLogicalOperatorToken>
+              <Match text="less than"/>
+              <Match text="&lt;"/>
+              <Match text="lower than"/>
+              <Match text="smaller than"/>
+              <Match text="under"/>
+              <Match text="lt"/>
+            </LessThanEqualityLogicalOperatorToken>
+            <LessThanEqualToEqualityLogicalOperatorToken>
+              <Match text="&lt;="/>
+              <Match text="lteq"/>
+            </LessThanEqualToEqualityLogicalOperatorToken>
+          </Equality>
+          <AndLogicalOperatorToken>
+            <Match text="and"/>
+            <Match text="in"/>
+          </AndLogicalOperatorToken>
+          <ExcludingLogicalOperatorToken>
+            <Match text="exclude"/>
+            <Match text="excluding"/>
+            <Match text="but"/>
+            <Match text="but not"/>
+            <Match text="but not in"/>
+            <Match text="except"/>
+            <Match text="not in"/>
+            <Match text="not from"/>
+            <Match text="outside"/>
+          </ExcludingLogicalOperatorToken>
+          <NotLogicalOperatorToken>
+            <Match text="not"/>
+          </NotLogicalOperatorToken>
+          <OrLogicalOperatorToken>
+            <Match text="or"/>
+          </OrLogicalOperatorToken>
+        </Logical>
+        <Arithmetic>
+          <SecondOrder>
+            <DivisionSecondOrderArithmeticToken>
+              <Match text="divide"/>
+              <Match text="divide by"/>
+              <Match text="divided"/>
+              <Match text="divided by"/>
+            </DivisionSecondOrderArithmeticToken>
+            <MultiplicationSecondOrderArithmeticToken>
+              <Match text="times"/>
+              <Match text="x"/>
+              <Match text="multiply"/>
+              <Match text="multiply by"/>
+              <Match text="multiplied"/>
+              <Match text="multiplied by"/>
+            </MultiplicationSecondOrderArithmeticToken>
+            <PowerSecondOrderArithmeticToken>
+              <Match text="to the power of"/>
+              <Match text="to the power"/>
+              <Match text="power of"/>
+              <Match text="pow"/>
+            </PowerSecondOrderArithmeticToken>
+          </SecondOrder>
+          <ThirdOrder>
+            <AdditionThirdOrderArithmeticOperatorToken>
+              <Match text="add"/>
+              <Match text="plus"/>
+              <Match text="combine"/>
+              <Match text="sum"/>
+            </AdditionThirdOrderArithmeticOperatorToken>
+            <SubtractionThirdOrderArithmeticOperatorToken>
+              <Match text="take"/>
+              <Match text="minus"/>
+            </SubtractionThirdOrderArithmeticOperatorToken>
+          </ThirdOrder>
+        </Arithmetic>
+      </Operator>
+      <Primitive>
+        <Numeric>
+          <FloatNumericPrimitiveToken>
+            <Match regex="^(?&lt;value&gt;[-+]?[0-9]+[ ]?[\.,]?[ ]?[0-9]*)$"/>
+            <Match text="couple" value="2"/>
+            <Match text="a couple" value="2"/>
+            <Match text="dozen" value="12"/>
+            <Match text="a dozen" value="12"/>
+
+            <Match text="zero" value="0"/>
+            <Match text="one" value="1"/>
+            <Match text="two" value="2"/>
+            <Match text="three" value="3"/>
+            <Match text="four" value="4"/>
+            <Match text="five" value="5"/>
+            <Match text="six" value="6"/>
+            <Match text="seven" value="7"/>
+            <Match text="eight" value="8"/>
+            <Match text="nine" value="9"/>
+            <Match text="ten" value="10"/>
+            <Match text="eleven" value="11"/>
+            <Match text="twelve" value="12"/>
+            <Match text="thirteen" value="13"/>
+            <Match text="fourteen" value="14"/>
+            <Match text="fifteen" value="15"/>
+            <Match text="sixteen" value="16"/>
+            <Match text="seventeen" value="17"/>
+            <Match text="eighteen" value="18"/>
+            <Match text="nineteen" value="19"/>
+            <Match text="twenty" value="20"/>
+            <Match text="thirty" value="30"/>
+            <Match text="forty" value="40"/>
+            <Match text="fifty" value="50"/>
+            <Match text="sixty" value="60"/>
+            <Match text="seventy" value="70"/>
+            <Match text="eighty" value="80"/>
+            <Match text="ninety" value="90"/>
+          </FloatNumericPrimitiveToken>
+          <OrdinalNumericPrimitiveToken>
+            <Match regex="^(?&lt;value&gt;[0-9]*)\'?(st|nd|th)$"/>
+          </OrdinalNumericPrimitiveToken>
+          <Cardinal>
+            <MultiplicandCardinalNumericPrimitiveToken>
+              <Match text="hundred" value="100"/>
+              <Match text="thousand" value="1000"/>
+              <Match text="million" value="1000000"/>
+            </MultiplicandCardinalNumericPrimitiveToken>
+          </Cardinal>
+        </Numeric>
+        <Temporal>
+          <Units>
+            <Meridiem>
+              <PostMeridiemUnitsTemporalPrimitiveToken>
+                <Match text="p.m"/>
+                <Match text="pm"/>
+              </PostMeridiemUnitsTemporalPrimitiveToken>
+              <AnteMeridiemUnitsTemporalPrimitiveToken>
+                <Match text="a.m"/>
+                <Match text="am"/>
+              </AnteMeridiemUnitsTemporalPrimitiveToken>
+            </Meridiem>
+            <DaysUnitTemporalPrimitiveToken>
+              <Match text="day"/>
+              <Match text="days"/>
+            </DaysUnitTemporalPrimitiveToken>
+            <HoursUnitTemporalPrimitiveToken>
+              <Match text="hour"/>
+              <Match text="hours"/>
+              <Match text="hrs"/>
+            </HoursUnitTemporalPrimitiveToken>
+            <MinutesUnitTemporalPrimitiveToken>
+              <Match text="minute"/>
+              <Match text="minutes"/>
+              <Match text="mins"/>
+            </MinutesUnitTemporalPrimitiveToken>
+            <MonthsUnitTemporalPrimitiveToken>
+              <Match text="month"/>
+              <Match text="months"/>
+            </MonthsUnitTemporalPrimitiveToken>
+            <SecondsUnitTemporalPrimitiveToken>
+              <Match text="second"/>
+              <Match text="seconds"/>
+              <Match text="secs"/>
+            </SecondsUnitTemporalPrimitiveToken>
+            <WeeksUnitTemporalPrimitiveToken>
+              <Match text="week"/>
+              <Match text="weeks"/>
+            </WeeksUnitTemporalPrimitiveToken>
+            <YearsUnitTemporalPrimitiveToken>
+              <Match text="year"/>
+              <Match text="years"/>
+            </YearsUnitTemporalPrimitiveToken>
+          </Units>
+          <Variable>
+            <Days>
+              <SundayDaysVariableTemporalPrimitiveToken>
+                <Match text="sunday"/>
+                <Match text="sun"/>
+              </SundayDaysVariableTemporalPrimitiveToken>
+              <MondayDaysVariableTemporalPrimitiveToken>
+                <Match text="monday"/>
+                <Match text="mon"/>
+              </MondayDaysVariableTemporalPrimitiveToken>
+              <TuesdayDaysVariableTemporalPrimitiveToken>
+                <Match text="tuesday"/>
+                <Match text="tues"/>
+              </TuesdayDaysVariableTemporalPrimitiveToken>
+              <WednesdayDaysVariableTemporalPrimitiveToken>
+                <Match text="wednesday"/>
+                <Match text="wed"/>
+              </WednesdayDaysVariableTemporalPrimitiveToken>
+              <ThursdayDaysVariableTemporalPrimitiveToken>
+                <Match text="thursday"/>
+                <Match text="thurs"/>
+              </ThursdayDaysVariableTemporalPrimitiveToken>
+              <FridayDaysVariableTemporalPrimitiveToken>
+                <Match text="friday"/>
+                <Match text="fri"/>
+              </FridayDaysVariableTemporalPrimitiveToken>
+              <SaturdayDaysVariableTemporalPrimitiveToken>
+                <Match text="saturday"/>
+                <Match text="sat"/>
+              </SaturdayDaysVariableTemporalPrimitiveToken>
+            </Days>
+            <Months>
+              <JanuaryMonthsVariableTemporalPrimitiveToken>
+                <Match text="january"/>
+                <Match text="jan"/>
+              </JanuaryMonthsVariableTemporalPrimitiveToken>
+              <FebruaryMonthsVariableTemporalPrimitiveToken>
+                <Match text="february"/>
+                <Match text="feb"/>
+              </FebruaryMonthsVariableTemporalPrimitiveToken>
+              <MarchMonthsVariableTemporalPrimitiveToken>
+                <Match text="march"/>
+                <Match text="mar"/>
+              </MarchMonthsVariableTemporalPrimitiveToken>
+              <AprilMonthsVariableTemporalPrimitiveToken>
+                <Match text="april"/>
+                <Match text="apr"/>
+              </AprilMonthsVariableTemporalPrimitiveToken>
+              <MayMonthsVariableTemporalPrimitiveToken>
+                <Match text="may"/>
+              </MayMonthsVariableTemporalPrimitiveToken>
+              <JuneMonthsVariableTemporalPrimitiveToken>
+                <Match text="june"/>
+                <Match text="jun"/>
+              </JuneMonthsVariableTemporalPrimitiveToken>
+              <JulyMonthsVariableTemporalPrimitiveToken>
+                <Match text="july"/>
+                <Match text="jul"/>
+              </JulyMonthsVariableTemporalPrimitiveToken>
+              <AugustMonthsVariableTemporalPrimitiveToken>
+                <Match text="august"/>
+                <Match text="aug"/>
+              </AugustMonthsVariableTemporalPrimitiveToken>
+              <SeptemberMonthsVariableTemporalPrimitiveToken>
+                <Match text="september"/>
+                <Match text="sept"/>
+              </SeptemberMonthsVariableTemporalPrimitiveToken>
+              <OctoberMonthsVariableTemporalPrimitiveToken>
+                <Match text="october"/>
+                <Match text="oct"/>
+              </OctoberMonthsVariableTemporalPrimitiveToken>
+              <NovemberMonthsVariableTemporalPrimitiveToken>
+                <Match text="november"/>
+                <Match text="nov"/>
+              </NovemberMonthsVariableTemporalPrimitiveToken>
+              <DecemberMonthsVariableTemporalPrimitiveToken>
+                <Match text="december"/>
+                <Match text="dec"/>
+              </DecemberMonthsVariableTemporalPrimitiveToken>
+            </Months>
+            <Date>
+              <Day>
+                <TodayDayVariableTemporalPrimitiveToken>
+                  <Match text="today"/>
+                </TodayDayVariableTemporalPrimitiveToken>
+                <TomorrowDayVariableTemporalPrimitiveToken>
+                  <Match text="tomorrow"/>
+                </TomorrowDayVariableTemporalPrimitiveToken>
+                <YesterdayDayVariableTemporalPrimitiveToken>
+                  <Match text="yesterday"/>
+                </YesterdayDayVariableTemporalPrimitiveToken>
+              </Day>
+            </Date>
+          </Variable>
+        </Temporal>
+        <!--
+        <garbagePrimitiveToken>
+          <match text="the"/>
+          <match text="a"/>
+          <match text="at"/>
+        </garbagePrimitiveToken>
+        -->
+      </Primitive>
+      <Syntax>
+        <Prepositions>
+          <Adpositions>
+            <AtAdpositionsPrepositionsSyntaxToken>
+              <Match text="at"/>
+            </AtAdpositionsPrepositionsSyntaxToken>
+            <ForAdpositionsPrepositionsSyntaxToken>
+              <Match text="for"/>
+            </ForAdpositionsPrepositionsSyntaxToken>
+            <InAdpositionsPrepositionsSyntaxToken>
+              <Match text="in"/>
+            </InAdpositionsPrepositionsSyntaxToken>
+          </Adpositions>
+          <OnPrepositionsSyntaxToken>
+            <Match text="on"/>
+          </OnPrepositionsSyntaxToken>
+          <UntilPrepositionsSyntaxToken>
+            <Match text="until"/>
+          </UntilPrepositionsSyntaxToken>
+        </Prepositions>
+        <Articles>
+          <IndefiniteArticlesSyntaxToken>
+            <Match text="a"/>
+            <Match text="an"/>
+          </IndefiniteArticlesSyntaxToken>
+          <DefiniteArticlesSyntaxToken>
+            <Match text="the"/>
+          </DefiniteArticlesSyntaxToken>
+        </Articles>
+        <Adjectives>
+          <LastAdjectiveSyntaxToken>
+            <Match text="last"/>
+          </LastAdjectiveSyntaxToken>
+          <NextAdjectiveSyntaxToken>
+            <Match text="next"/>
+          </NextAdjectiveSyntaxToken>
+          <ThisAdjectiveSyntaxToken>
+            <Match text="this"/>
+          </ThisAdjectiveSyntaxToken>
+          <EveryAdjectiveSyntaxToken>
+            <Match text="every"/>
+          </EveryAdjectiveSyntaxToken>
+        </Adjectives>
+        <Punctuation>
+          <Parentheses>
+            <OpenParenthesesPunctuationSyntaxToken>
+              <Match text="("/>
+            </OpenParenthesesPunctuationSyntaxToken>
+            <ClosedParenthesesPunctuationSyntaxToken>
+              <Match text=")"/>
+            </ClosedParenthesesPunctuationSyntaxToken>
+          </Parentheses>
+          <QuestionmarkPunctuationSyntaxToken>
+            <Match text="?"/>
+          </QuestionmarkPunctuationSyntaxToken>
+          <PeriodPunctuationSyntaxToken>
+            <Match text="."/>
+          </PeriodPunctuationSyntaxToken>
+          <HyphenPunctuationSyntaxToken>
+            <Match text="-"/>
+          </HyphenPunctuationSyntaxToken>
+          <ForwardSlashPunctuationSyntaxToken>
+            <Match text="/"/>
+          </ForwardSlashPunctuationSyntaxToken>
+          <ExclamationPunctuationSyntaxToken>
+            <Match text="!"/>
+          </ExclamationPunctuationSyntaxToken>
+          <CommaPunctuationSyntaxToken>
+            <Match text=","/>
+          </CommaPunctuationSyntaxToken>
+          <colonPunctuationSyntaxToken>
+            <Match text=":"/>
+          </colonPunctuationSyntaxToken>
+        </Punctuation>
+        <Typography>
+          <PlusTypographySyntaxToken>
+            <Match text="+"/>
+          </PlusTypographySyntaxToken>
+          <AsteriskTypographySyntaxToken>
+            <Match text="*"/>
+          </AsteriskTypographySyntaxToken>
+          <CaretTypographySyntaxToken>
+            <Match text="^"/>
+          </CaretTypographySyntaxToken>
+        </Typography>
+      </Syntax>
+      <Reduction>
+        <AllInclusiveReductionToken>
+          <Match text="all"/>
+        </AllInclusiveReductionToken>
+        <NamedAllInclusiveReductionToken>
+          <Match text="everyone" value="Player"/>
+          <Match text="players" value="Player"/>
+          <Match text="every player" value="Player"/>
+          <Match text="maps" value="Map"/>
+          <Match text="every map" value="Map"/>
+        </NamedAllInclusiveReductionToken>
+      </Reduction>
+    </Tokens>
+  </Fuzzy>
+</Procon>

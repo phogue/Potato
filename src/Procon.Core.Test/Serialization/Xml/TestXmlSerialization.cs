@@ -11,7 +11,7 @@ using Procon.Core.Variables;
 using Procon.Net.Protocols;
 using Procon.Net.Protocols.Objects;
 using Procon.Net.Utils;
-using Procon.Nlp.Tokens.Primitive.Temporal;
+using Procon.Fuzzy.Tokens.Primitive.Temporal;
 
 namespace Procon.Core.Test.Serialization.Xml {
     [TestClass]
@@ -135,7 +135,7 @@ namespace Procon.Core.Test.Serialization.Xml {
                 },
                 DescriptionKey = "Description",
                 PluginCommand = "Method",
-                Parser = ParserType.Nlp,
+                Parser = ParserType.Fuzzy,
                 Priority = 50,
                 PluginUid = "Uid"
             };
@@ -146,7 +146,7 @@ namespace Procon.Core.Test.Serialization.Xml {
             Assert.AreEqual("Second", element.Element("Commands").Elements("string").Last().Value);
             Assert.AreEqual("Description", element.Element("DescriptionKey").Value);
             Assert.AreEqual("Method", element.Element("PluginCommand").Value);
-            Assert.AreEqual("Nlp", element.Element("Parser").Value);
+            Assert.AreEqual("Fuzzy", element.Element("Parser").Value);
             Assert.AreEqual("50", element.Element("Priority").Value);
             Assert.AreEqual("Uid", element.Element("PluginUid").Value);
         }
@@ -163,7 +163,7 @@ namespace Procon.Core.Test.Serialization.Xml {
             TextCommandMatch match = new TextCommandMatch() {
                 Delay = now,
                 // This isn't a valid date or time of course, but we're just looking to make sure it serializes correctly.
-                Interval = new DateTimePatternNlp() {
+                Interval = new FuzzyDateTimePattern() {
                     Rule = TimeType.Definitive,
                     Modifier = TimeModifier.Interval,
                     Year = 2013,
@@ -231,7 +231,7 @@ namespace Procon.Core.Test.Serialization.Xml {
             TextCommandMatch serializeMatch = new TextCommandMatch() {
                 Delay = now,
                 // This isn't a valid date or time of course, but we're just looking to make sure it serializes correctly.
-                Interval = new DateTimePatternNlp() {
+                Interval = new FuzzyDateTimePattern() {
                     Rule = TimeType.Definitive,
                     Modifier = TimeModifier.Interval,
                     Year = 2013,

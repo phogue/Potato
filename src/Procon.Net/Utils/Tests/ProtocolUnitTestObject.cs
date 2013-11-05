@@ -18,7 +18,7 @@ namespace Procon.Net.Utils.Tests {
         public Regex Regex { get; set; }
 
         /// <summary>
-        /// Xml serialization for the TimeSpan (without wrapper since Procon.Nlp should
+        /// Xml serialization for the TimeSpan (without wrapper since Procon.Fuzzy should
         /// not need to worry about such things.
         /// </summary>
         [Browsable(false), EditorBrowsable(EditorBrowsableState.Never)]

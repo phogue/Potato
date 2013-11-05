@@ -59,7 +59,7 @@ namespace Procon.Core.Connections.TextCommands {
             this.PluginCommand = String.Empty;
             this.DescriptionKey = String.Empty;
 
-            this.Parser = ParserType.Nlp;
+            this.Parser = ParserType.Fuzzy;
 
             this.Commands = new List<String>();
 
@@ -74,7 +74,7 @@ namespace Procon.Core.Connections.TextCommands {
             this.PluginCommand = null;
             this.DescriptionKey = null;
 
-            this.Parser = ParserType.Nlp;
+            this.Parser = ParserType.Fuzzy;
 
             this.Commands.Clear();
             this.Commands = null;

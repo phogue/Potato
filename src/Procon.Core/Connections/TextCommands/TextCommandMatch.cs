@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 
 namespace Procon.Core.Connections.TextCommands {
     using Procon.Net.Protocols.Objects;
-    using Procon.Nlp.Tokens.Primitive.Temporal;
+    using Procon.Fuzzy.Tokens.Primitive.Temporal;
 
     [Serializable]
     public sealed class TextCommandMatch {
@@ -32,7 +32,7 @@ namespace Procon.Core.Connections.TextCommands {
         public TimeSpan? Period { get; set; }
 
         /// <summary>
-        /// Xml serialization for the TimeSpan (without wrapper since Procon.Nlp should
+        /// Xml serialization for the TimeSpan (without wrapper since Procon.Fuzzy should
         /// not need to worry about such things.
         /// </summary>
         [Browsable(false), EditorBrowsable(EditorBrowsableState.Never), JsonIgnore]
@@ -56,7 +56,7 @@ namespace Procon.Core.Connections.TextCommands {
         /// How often they want the command to be executed, if applicable.
         /// "every 20 minutes"
         /// </summary>
-        public DateTimePatternNlp Interval { get; set; }
+        public FuzzyDateTimePattern Interval { get; set; }
         
         /// <summary>
         /// Any loose numbers found in the text after execution

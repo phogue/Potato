@@ -15,7 +15,7 @@ namespace Procon.Core.Test.Events {
     using Procon.Core.Localization;
     using Procon.Core.Connections.TextCommands;
     using Procon.Net.Protocols.Objects;
-    using Procon.Nlp.Tokens.Primitive.Temporal;
+    using Procon.Fuzzy.Tokens.Primitive.Temporal;
     
     [TestClass]
     public class TestEvents {

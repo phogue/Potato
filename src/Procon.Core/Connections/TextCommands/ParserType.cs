@@ -4,6 +4,6 @@ namespace Procon.Core.Connections.TextCommands {
 
     [Serializable]
     public enum ParserType {
-        Nlp
+        Fuzzy
     }
 }

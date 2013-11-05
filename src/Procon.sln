@@ -4,7 +4,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procon.Core", "Procon.Core\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procon.Net", "Procon.Net\Procon.Net.csproj", "{65C1DB17-18E0-4AC5-8709-3F7E04B88CA1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procon.Nlp", "Procon.NLP\Procon.Nlp.csproj", "{4B55557F-C2AA-4047-9ED9-3E4BBF9CF670}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procon.Fuzzy", "Procon.Fuzzy\Procon.Fuzzy.csproj", "{4B55557F-C2AA-4047-9ED9-3E4BBF9CF670}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procon.Net.Protocols.Frostbite", "Procon.Net.Protocols.Frostbite\Procon.Net.Protocols.Frostbite.csproj", "{299A4619-928D-4D7F-8857-644B5F57F6FC}"
 EndProject

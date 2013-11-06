@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Data.Common;
 
-namespace Procon.Core.Database {
+namespace Procon.Database {
     public abstract class Driver : IDisposable, ICloneable, IEquatable<Driver> {
 
         /// <summary>

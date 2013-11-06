@@ -1,7 +1,7 @@
 ﻿using System;
 using MySql.Data.MySqlClient;
 
-namespace Procon.Core.Database.Drivers {
+namespace Procon.Database.Drivers {
     public class MySqlDriver : SqlDriver {
 
         public override String Name {

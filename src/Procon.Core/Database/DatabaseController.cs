@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using Procon.Core.Variables;
+using Procon.Database;
+using Procon.Database.Drivers;
 
 namespace Procon.Core.Database {
-    using Procon.Core.Database.Drivers;
 
     public class DatabaseController : Executable {
 
@@ -84,7 +85,7 @@ namespace Procon.Core.Database {
         /// </summary>
         /// <param name="command"></param>
         /// <param name="query"></param>
-        public void Query(Command command, Query query) {
+        public void Query(Command command, String query) {
             
         }
 

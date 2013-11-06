@@ -52,9 +52,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\ziplib\Ionic.Zip.Reduced.dll</HintPath>
     </Reference>
-    <Reference Include="MySql.Data, Version=6.3.9.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
-      <HintPath>..\..\lib\mysql\MySql.Data.dll</HintPath>
-    </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\..\lib\JSON\Bin\Net35\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -86,11 +83,6 @@
     <Compile Include="Connections\TextCommands\Parsers\Parser.cs" />
     <Compile Include="Connections\Plugins\IPluginBase.cs" />
     <Compile Include="Database\DatabaseController.cs" />
-    <Compile Include="Database\Driver.cs" />
-    <Compile Include="Database\Drivers\MySqlDriver.cs" />
-    <Compile Include="Database\Query.cs" />
-    <Compile Include="Database\SqlDriver.cs" />
-    <Compile Include="Database\SqlQuery.cs" />
     <Compile Include="Events\EventsConsoleController.cs" />
     <Compile Include="Events\GenericEventArgs.cs" />
     <Compile Include="Events\GenericEventData.cs" />
@@ -139,6 +131,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Procon.Database\Procon.Database.csproj">
+      <Project>{7703A41E-41E1-4D58-B686-07FD497D15F7}</Project>
+      <Name>Procon.Database</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Procon.Fuzzy\Procon.Fuzzy.csproj">
       <Project>{4B55557F-C2AA-4047-9ED9-3E4BBF9CF670}</Project>
       <Name>Procon.Fuzzy</Name>

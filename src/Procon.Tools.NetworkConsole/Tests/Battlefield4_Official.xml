@@ -159,7 +159,7 @@
           </Responses>
           <Requests>
             <Request>
-              <Text>admin.onChat Server Hello all</Text>
+              <Text>player.onChat Server Hello all</Text>
               <Regex></Regex>
             </Request>
           </Requests>
@@ -420,34 +420,16 @@
     </Test>
     <Test>
       <Timeout>2</Timeout>
-      <Name>Test vars.Official get is functional</Name>
-      <TestCommands>
-        <TestCommand>
-          <Send>
-            <Text>vars.Official</Text>
-            <Regex></Regex>
-          </Send>
-          <Responses>
-            <Response>
-              <Text></Text>
-              <Regex>OK (true|false)</Regex>
-            </Response>
-          </Responses>
-        </TestCommand>
-      </TestCommands>
-    </Test>
-    <Test>
-      <Timeout>2</Timeout>
       <Name>Test if server is official</Name>
       <TestCommands>
         <TestCommand>
           <Send>
-            <Text>vars.Official</Text>
+            <Text>vars.serverType</Text>
             <Regex></Regex>
           </Send>
           <Responses>
             <Response>
-              <Text>OK true</Text>
+              <Text>OK OFFICIAL</Text>
               <Regex></Regex>
             </Response>
           </Responses>
@@ -456,61 +438,7 @@
     </Test>
     <Test>
       <Timeout>2</Timeout>
-      <Name>Test vars.Official set disabled because of read only</Name>
-      <TestCommands>
-        <TestCommand>
-          <Send>
-            <Text>vars.Official</Text>
-            <Regex></Regex>
-          </Send>
-          <Responses>
-            <Response>
-              <Text>CommandIsReadOnly</Text>
-              <Regex></Regex>
-            </Response>
-          </Responses>
-        </TestCommand>
-      </TestCommands>
-    </Test>
-    <Test>
-      <Timeout>2</Timeout>
-      <Name>Test vars.Ranked get is functional</Name>
-      <TestCommands>
-        <TestCommand>
-          <Send>
-            <Text>vars.Ranked</Text>
-            <Regex></Regex>
-          </Send>
-          <Responses>
-            <Response>
-              <Text></Text>
-              <Regex>OK (true|false)</Regex>
-            </Response>
-          </Responses>
-        </TestCommand>
-      </TestCommands>
-    </Test>
-    <Test>
-      <Timeout>2</Timeout>
-      <Name>Test if server is ranked</Name>
-      <TestCommands>
-        <TestCommand>
-          <Send>
-            <Text>vars.Ranked</Text>
-            <Regex></Regex>
-          </Send>
-          <Responses>
-            <Response>
-              <Text>OK true</Text>
-              <Regex></Regex>
-            </Response>
-          </Responses>
-        </TestCommand>
-      </TestCommands>
-    </Test>
-    <Test>
-      <Timeout>2</Timeout>
-      <Name>Test vars.Ranked set disabled because of read only</Name>
+      <Name>Test vars.serverType set disabled because of read only</Name>
       <TestCommands>
         <TestCommand>
           <Send>

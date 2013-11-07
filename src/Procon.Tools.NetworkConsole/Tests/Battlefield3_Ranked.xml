@@ -146,5 +146,23 @@
         </TestCommand>
       </TestCommands>
     </Test>
+    <Test>
+      <Timeout>2</Timeout>
+      <Name>Test if server is ranked</Name>
+      <TestCommands>
+        <TestCommand>
+          <Send>
+            <Text>vars.serverType</Text>
+            <Regex></Regex>
+          </Send>
+          <Responses>
+            <Response>
+              <Text>OK RANKED</Text>
+              <Regex></Regex>
+            </Response>
+          </Responses>
+        </TestCommand>
+      </TestCommands>
+    </Test>
   </Tests>
 </ProtocolTestRun>

@@ -20,6 +20,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Windows.Forms;
 using System.Reflection;
@@ -78,11 +79,11 @@ namespace Procon.Tools.NetworkConsole {
                           String.Compare(gameType.Name, typeof(Game).Name) != 0
                           select gameType).ToDictionary(x => x.Name);
             */
-            this.cboGames.Items.AddRange(this.Games.Select(x=>x.Key.ToString()).ToArray());
+            this.cboGames.Items.AddRange(this.Games.Select(game => game.Key.Type).ToArray());
 
             ConnectionDetails cd = new ConnectionDetails().Read();
             this.txtHostname.Text = cd.Hostname;
-            this.txtPort.Text = cd.Port > 0 ? cd.Port.ToString() : String.Empty;
+            this.txtPort.Text = cd.Port > 0 ? cd.Port.ToString(CultureInfo.InvariantCulture) : String.Empty;
             this.txtPassword.Text = cd.Password;
             this.txtAdditional.Text = cd.Additional;
 
@@ -191,7 +192,7 @@ namespace Procon.Tools.NetworkConsole {
             if (this.chkAnchorScrollbar.Checked == true) {
                 this.rtbConsole.ScrollToCaret();
             }
-
+            
             if (consoleBoxLines > 100 && this.rtbConsole.Focused == false) {
                 for (int i = 0; i < consoleBoxLines - 100; i++) {
                     this.rtbConsole.Select(0, this.rtbConsole.Lines[0].Length + 1);

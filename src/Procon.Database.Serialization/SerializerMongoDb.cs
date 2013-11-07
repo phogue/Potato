@@ -238,12 +238,16 @@ namespace Procon.Database.Serialization {
             };
         }
 
-        protected virtual String Compile(Method method) {
-
-            return "";
+        public override ICompiledQuery Compile() {
+            return new CompiledQuery {
+                Method = this.Methods.FirstOrDefault(),
+                Collections = this.Collections.FirstOrDefault(),
+                Conditions = this.Conditions.FirstOrDefault(),
+                Fields = this.Fields
+            };
         }
 
-        public override String Parse(Method method) {
+        public override ISerializer Parse(Method method) {
 
             this.Methods = this.ParseMethod(method);
 
@@ -253,7 +257,7 @@ namespace Procon.Database.Serialization {
 
             this.Fields = this.ParseFields(method);
 
-            return this.Compile(method);
+            return this;
         }
     }
 }

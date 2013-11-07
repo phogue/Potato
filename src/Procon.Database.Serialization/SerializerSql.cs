@@ -15,27 +15,7 @@ namespace Procon.Database.Serialization {
     /// I would also wager that a lot of this can be duplicated for other SQL, but some of the
     /// code split up with more virtual methods and properties to define nuances.
     /// </summary>
-    public abstract class SerializerSql : ISerializer {
-
-        /// <summary>
-        /// The method used in the SQL (SELECT, INSERT, UPDATE, DELETE)
-        /// </summary>
-        public List<string> Methods { get; set; }
-
-        /// <summary>
-        /// The fields to select from the collections
-        /// </summary>
-        public List<string> Fields { get; set; }
-
-        /// <summary>
-        /// The conditions placed on a select, update or delete method
-        /// </summary>
-        public List<string> Conditions { get; set; }
-
-        /// <summary>
-        /// The collections placed on a select, update, delete or insert method
-        /// </summary>
-        public List<string> Collections { get; set; }
+    public abstract class SerializerSql : Serializer {
 
         protected SerializerSql() {
             this.Methods = new List<string>();
@@ -251,7 +231,38 @@ namespace Procon.Database.Serialization {
             return String.Join(" ", compiled.ToArray());
         }
 
-        public virtual String Parse(Method method) {
+        public override ICompiledQuery Compile() {
+            CompiledQuery serializedQuery = new CompiledQuery();
+
+            List<String> compiled = new List<String>() {
+                this.Methods.FirstOrDefault()
+            };
+
+            if (this.Root is Find) {
+                serializedQuery.Fields = new List<String>(this.Fields);
+                compiled.Add(this.Fields.Any() == true ? String.Join(", ", this.Fields.ToArray()) : "*");
+
+                if (this.Collections.Any() == true) {
+                    serializedQuery.Collections = String.Join(", ", this.Collections.ToArray());
+                    compiled.Add("FROM");
+                    compiled.Add(serializedQuery.Collections);
+                }
+
+                if (this.Conditions.Any() == true) {
+                    serializedQuery.Conditions = String.Join(" AND ", this.Conditions.ToArray());
+                    compiled.Add("WHERE");
+                    compiled.Add(serializedQuery.Conditions);
+                }
+            }
+
+            serializedQuery.Completed = String.Join(" ", compiled.ToArray());
+
+            return serializedQuery;
+        }
+
+        public override ISerializer Parse(Method method) {
+            this.Root = method;
+
             this.Methods = this.ParseMethod(method);
 
             this.Fields = this.ParseFields(method);
@@ -260,13 +271,7 @@ namespace Procon.Database.Serialization {
 
             this.Collections = this.ParseCollections(method);
 
-            return this.Compile(method);
-        }
-
-        public String Parse(IQuery query) {
-            Method method = query as Method;
-
-            return method != null ? this.Parse(method) : String.Empty;
+            return this;
         }
     }
 }

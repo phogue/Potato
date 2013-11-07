@@ -40,9 +40,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Builders\And.cs" />
+    <Compile Include="Builders\Ascending.cs" />
     <Compile Include="Builders\Attribute.cs" />
     <Compile Include="Builders\Collection.cs" />
     <Compile Include="Builders\Create.cs" />
+    <Compile Include="Builders\Descending.cs" />
     <Compile Include="Builders\Distinct.cs" />
     <Compile Include="Builders\Equality.cs" />
     <Compile Include="Builders\Equals.cs" />

@@ -10,21 +10,25 @@ using Procon.Database.Serialization.Exceptions;
 namespace Procon.Database.Serialization {
     public class SerializerMongoDb : SerializerNoSql {
 
-        protected virtual String ParseField(Field field) {
+        protected virtual String PaseFieldName(String name, Collection collection) {
             String parsed = "";
 
-            if (field.Collection == null || this.Collections.Contains(field.Collection.Name) == true) {
-                parsed = String.Format("{0}", field.Name);
+            if (collection == null || this.Collections.Contains(collection.Name) == true) {
+                parsed = String.Format("{0}", name);
             }
             // The logic below is for shorthand methods that already split by "." and favour sql format where
             // a table must be specified when joins occur e.g Player.Name (Table "Player", Field "Name") but
             // since everything occurs on a single collection in mongo we join them back here, as it would instead
             // mean a field belonging to a collection.
             else {
-                parsed = String.Format("{0}.{1}", field.Collection.Name, field.Name);
+                parsed = String.Format("{0}.{1}", collection.Name, name);
             }
 
             return parsed;
+        }
+
+        protected virtual String ParseField(Field field) {
+            return this.PaseFieldName(field.Name, field.Collection);
         }
 
         protected virtual String ParseEquality(Equality equality) {
@@ -81,6 +85,12 @@ namespace Procon.Database.Serialization {
             }
 
             return parsed;
+        }
+
+        protected virtual JObject ParseSort(Sort sort, JObject outer) {
+            outer[this.PaseFieldName(sort.Name, sort.Collection)] = sort.Any(attribute => attribute is Descending) ? -1 : 1;
+
+            return outer;
         }
 
         protected virtual List<String> ParseFields(IQuery query) {
@@ -233,17 +243,30 @@ namespace Procon.Database.Serialization {
         protected virtual List<String> ParseConditions(IQuery query) {
             JObject conditions = this.ParseLogicals(query, new JObject());
 
-            return new List<string>() {
+            return new List<String>() {
                 conditions.ToString(Formatting.None)
             };
         }
+
+        protected virtual List<String> ParseSortings(IQuery query) {
+            JObject sortings = new JObject();
+
+            foreach (Sort sort in query.Where(sort => sort is Sort)) {
+                this.ParseSort(sort, sortings);
+            }
+
+            return new List<String>() {
+                sortings.ToString(Formatting.None)
+            };
+        } 
 
         public override ICompiledQuery Compile() {
             return new CompiledQuery {
                 Method = this.Methods.FirstOrDefault(),
                 Collections = this.Collections.FirstOrDefault(),
                 Conditions = this.Conditions.FirstOrDefault(),
-                Fields = this.Fields
+                Fields = this.Fields,
+                Sortings = this.Sortings.FirstOrDefault()
             };
         }
 
@@ -256,6 +279,8 @@ namespace Procon.Database.Serialization {
             this.Conditions = this.ParseConditions(method);
 
             this.Fields = this.ParseFields(method);
+
+            this.Sortings = this.ParseSortings(method);
 
             return this;
         }

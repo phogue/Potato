@@ -51,6 +51,18 @@ namespace Procon.Database.Serialization {
             return String.Format("`{0}`", collection.Name);
         }
 
+        protected virtual String ParseSort(Sort sort) {
+            List<String> parsed = new List<String>();
+
+            parsed.Add(sort.Collection == null ? String.Format("`{0}`", sort.Name) : String.Format("`{0}`.`{1}`", sort.Collection.Name, sort.Name));
+
+            if (sort.Any(attribute => attribute is Descending)) {
+                parsed.Add("DESC");
+            }
+
+            return String.Join(" ", parsed.ToArray());
+        }
+
         protected virtual String ParseField(Field field) {
             List<String> parsed = new List<String>();
 
@@ -58,12 +70,7 @@ namespace Procon.Database.Serialization {
                 parsed.Add("DISTINCT");
             }
 
-            if (field.Collection == null) {
-                parsed.Add(String.Format("`{0}`", field.Name));
-            }
-            else {
-                parsed.Add(String.Format("`{0}`.`{1}`", field.Collection.Name, field.Name));
-            }
+            parsed.Add(field.Collection == null ? String.Format("`{0}`", field.Name) : String.Format("`{0}`.`{1}`", field.Collection.Name, field.Name));
 
             return String.Join(" ", parsed.ToArray());
         }
@@ -209,6 +216,10 @@ namespace Procon.Database.Serialization {
             return conditions;
         }
 
+        protected virtual List<String> ParseSortings(IQuery query) {
+            return query.Where(sort => sort is Sort).Select(sort => this.ParseSort(sort as Sort)).ToList();
+        } 
+
         protected virtual String Compile(Method method) {
             List<String> compiled = new List<String>() {
                 this.Methods.FirstOrDefault()
@@ -253,6 +264,12 @@ namespace Procon.Database.Serialization {
                     compiled.Add("WHERE");
                     compiled.Add(serializedQuery.Conditions);
                 }
+
+                if (this.Sortings.Any() == true) {
+                    serializedQuery.Sortings = String.Join(", ", this.Sortings.ToArray());
+                    compiled.Add("ORDER BY");
+                    compiled.Add(serializedQuery.Sortings);
+                }
             }
 
             serializedQuery.Completed = String.Join(" ", compiled.ToArray());
@@ -270,6 +287,8 @@ namespace Procon.Database.Serialization {
             this.Conditions = this.ParseConditions(method);
 
             this.Collections = this.ParseCollections(method);
+
+            this.Sortings = this.ParseSortings(method);
 
             return this;
         }

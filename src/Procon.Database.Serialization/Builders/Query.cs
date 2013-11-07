@@ -167,5 +167,15 @@ namespace Procon.Database.Serialization.Builders {
 
             return this;
         }
+
+        public Query Sort(String name) {
+            Field field = this.BuildField(name);
+
+            return this.Sort(new Sort() {
+                Name = field.Name,
+                Collection = field.Collection
+            });
+        }
+
     }
 }

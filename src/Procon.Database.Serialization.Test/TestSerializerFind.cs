@@ -314,5 +314,45 @@ namespace Procon.Database.Serialization.Test {
         public abstract void TestSelectAllFromPlayerWhereNameEqualsPhogueAndScoreAbove50OrNameEqualsZaeedAndScoreBelow50();
 
         #endregion
+
+        #region TestSelectAllFromPlayerSortByScore
+
+        protected IQuery TestSelectAllFromPlayerSortByScoreExplicit = new Find()
+            .Collection(new Collection() {
+                Name = "Player"
+            })
+            .Sort(new Sort() {
+                Name = "Score"
+            });
+
+        protected IQuery TestSelectAllFromPlayerSortByScoreImplicit = new Find()
+            .Collection("Player")
+            .Sort("Score");
+
+        public abstract void TestSelectAllFromPlayerSortByScore();
+
+        #endregion
+
+        #region TestSelectAllFromPlayerSortByNameThenScoreDescending
+
+        protected IQuery TestSelectAllFromPlayerSortByNameThenScoreDescendingExplicit = new Find()
+            .Collection(new Collection() {
+                Name = "Player"
+            })
+            .Sort(new Sort() {
+                Name = "Name"
+            })
+            .Sort(new Sort() {
+                Name = "Score"
+            }.Attribute(new Descending()));
+
+        protected IQuery TestSelectAllFromPlayerSortByNameThenScoreDescendingImplicit = new Find()
+            .Collection("Player")
+            .Sort("Name")
+            .Sort(new Sort() { Name = "Score" }.Attribute(new Descending()));
+
+        public abstract void TestSelectAllFromPlayerSortByNameThenScoreDescending();
+
+        #endregion
     }
 }

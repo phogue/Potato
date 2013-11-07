@@ -53,5 +53,15 @@ namespace Procon.Database.Serialization.Test.MySql {
         public override void TestSelectAllFromPlayerWhereNameEqualsPhogueAndScoreAbove50OrNameEqualsZaeedAndScoreBelow50() {
             Assert.AreEqual(@"SELECT * FROM `Player` WHERE ((`Name` = ""Phogue"" AND `Score` > 50) OR (`Name` = ""Zaeed"" AND `Score` < 50))", new SerializerMySql().Parse(this.TestSelectAllFromPlayerWhereNameEqualsPhogueAndScoreAbove50OrNameEqualsZaeedAndScoreBelow50Implicit).Compile().Completed);
         }
+
+        [Test]
+        public override void TestSelectAllFromPlayerSortByScore() {
+            Assert.AreEqual(@"SELECT * FROM `Player` ORDER BY `Score`", new SerializerMySql().Parse(this.TestSelectAllFromPlayerSortByScoreImplicit).Compile().Completed);
+        }
+
+        [Test]
+        public override void TestSelectAllFromPlayerSortByNameThenScoreDescending() {
+            Assert.AreEqual(@"SELECT * FROM `Player` ORDER BY `Name`, `Score` DESC", new SerializerMySql().Parse(this.TestSelectAllFromPlayerSortByNameThenScoreDescendingImplicit).Compile().Completed);
+        }
     }
 }

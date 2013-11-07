@@ -105,5 +105,25 @@ namespace Procon.Database.Serialization.Test.MongoDb {
             Assert.AreEqual(@"Player", serialized.Collections);
             Assert.AreEqual(@"{""$or"":[{""Name"":""Phogue"",""Score"":{""$gt"":""50""}},{""Name"":""Zaeed"",""Score"":{""$lt"":""50""}}]}", serialized.Conditions);
         }
+
+        [Test]
+        public override void TestSelectAllFromPlayerSortByScore() {
+            ISerializer serializer = new SerializerMongoDb();
+            ICompiledQuery serialized = serializer.Parse(this.TestSelectAllFromPlayerSortByScoreExplicit).Compile();
+
+            Assert.AreEqual(@"find", serialized.Method);
+            Assert.AreEqual(@"Player", serialized.Collections);
+            Assert.AreEqual(@"{""Score"":1}", serialized.Sortings);
+        }
+
+        [Test]
+        public override void TestSelectAllFromPlayerSortByNameThenScoreDescending() {
+            ISerializer serializer = new SerializerMongoDb();
+            ICompiledQuery serialized = serializer.Parse(this.TestSelectAllFromPlayerSortByNameThenScoreDescendingExplicit).Compile();
+
+            Assert.AreEqual(@"find", serialized.Method);
+            Assert.AreEqual(@"Player", serialized.Collections);
+            Assert.AreEqual(@"{""Name"":1,""Score"":-1}", serialized.Sortings);
+        }
     }
 }

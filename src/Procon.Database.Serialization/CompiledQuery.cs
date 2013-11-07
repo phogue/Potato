@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Procon.Database.Serialization {
     public class CompiledQuery : ICompiledQuery {
@@ -30,5 +28,10 @@ namespace Procon.Database.Serialization {
         /// The collections placed on a select, update, delete or insert method
         /// </summary>
         public String Collections { get; set; }
+
+        /// <summary>
+        /// How to order the results
+        /// </summary>
+        public String Sortings { get; set; }
     }
 }

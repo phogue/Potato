@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Procon.Database.Serialization {
     public interface ICompiledQuery {
@@ -31,5 +29,9 @@ namespace Procon.Database.Serialization {
         /// </summary>
         String Collections { get; }
 
+        /// <summary>
+        /// How to order the results
+        /// </summary>
+        String Sortings { get; }
     }
 }

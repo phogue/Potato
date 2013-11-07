@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Procon.Database.Serialization.Builders;
 
 namespace Procon.Database.Serialization {
@@ -27,11 +25,17 @@ namespace Procon.Database.Serialization {
         /// </summary>
         protected List<String> Collections { get; set; }
 
+        /// <summary>
+        /// What fields and direction to sort by.
+        /// </summary>
+        protected List<String> Sortings { get; set; } 
+
         protected Serializer() {
             this.Methods = new List<String>();
             this.Fields = new List<String>();
             this.Conditions = new List<String>();
             this.Collections = new List<String>();
+            this.Sortings = new List<String>();
         }
 
         /// <summary>

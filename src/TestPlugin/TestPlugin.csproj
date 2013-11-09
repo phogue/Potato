@@ -55,6 +55,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Pages\SettingsPageModel.cs" />
+    <Compile Include="Pages\SettingsPageView.cs">
+      <DependentUpon>SettingsPageView.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Pages\TestParameterPageModel.cs" />
+    <Compile Include="Pages\TestParameterPageView.cs">
+      <DependentUpon>TestParameterPageView.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Pages\IndexPageModel.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -92,6 +104,14 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Pages\SettingsPageView.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>SettingsPageView.cs</LastGenOutput>
+    </None>
+    <None Include="Pages\TestParameterPageView.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>TestParameterPageView.cs</LastGenOutput>
+    </None>
     <None Include="Pages\IndexPageView.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>IndexPageView.cs</LastGenOutput>

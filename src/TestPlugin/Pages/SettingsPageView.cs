@@ -12,13 +12,13 @@ namespace TestPlugin.Pages
     using System;
     
     
-    #line 1 "C:\Users\P\Documents\Projects\clients\myrcon\procon\Procon-2\src\TestPlugin\Pages\IndexPageView.tt"
+    #line 1 "C:\Users\P\Documents\Projects\clients\myrcon\procon\Procon-2\src\TestPlugin\Pages\SettingsPageView.tt"
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "10.0.0.0")]
-    public partial class IndexPageView : IndexPageViewBase
+    public partial class SettingsPageView : SettingsPageViewBase
     {
         public virtual string TransformText()
         {
-            this.Write("Welcome to the index of this plugin.");
+            this.Write("This is the settings page for this plugin.");
             return this.GenerationEnvironment.ToString();
         }
     }
@@ -30,7 +30,7 @@ namespace TestPlugin.Pages
     /// Base class for this transformation
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "10.0.0.0")]
-    public class IndexPageViewBase
+    public class SettingsPageViewBase
     {
         #region Fields
         private global::System.Text.StringBuilder generationEnvironmentField;

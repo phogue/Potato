@@ -13,7 +13,25 @@ namespace TestPlugin.Tests {
             this.AppendDispatchHandlers(new Dictionary<CommandAttribute, CommandDispatchHandler>() {
                 {
                     new CommandAttribute() {
-                        Name = "TestPlugin/index",
+                        Name = "/"
+                    },
+                    new CommandDispatchHandler(this.TestPluginIndex)
+                }
+            });
+
+            this.AppendDispatchHandlers(new Dictionary<CommandAttribute, CommandDispatchHandler>() {
+                {
+                    new CommandAttribute() {
+                        Name = "/settings"
+                    },
+                    new CommandDispatchHandler(this.TestPluginSettings)
+                }
+            }); 
+            
+            this.AppendDispatchHandlers(new Dictionary<CommandAttribute, CommandDispatchHandler>() {
+                {
+                    new CommandAttribute() {
+                        Name = "/test/parameters",
                         ParameterTypes = new List<CommandParameterType>() {
                             new CommandParameterType() {
                                 Name = "name",
@@ -25,12 +43,46 @@ namespace TestPlugin.Tests {
                             }
                         }
                     },
-                    new CommandDispatchHandler(this.TestPluginWebUiIndex)
+                    new CommandDispatchHandler(this.TestPluginParameters)
                 }
             });
         }
 
-        protected CommandResultArgs TestPluginWebUiIndex(Command command, Dictionary<String, CommandParameter> parameters) {
+        protected CommandResultArgs TestPluginIndex(Command command, Dictionary<String, CommandParameter> parameters) {
+            IndexPageView index = new IndexPageView();
+
+            command.Result = new CommandResultArgs() {
+                Now = new CommandData() {
+                    Content = new List<string>() {
+                        index.TransformText()
+                    }
+                },
+                ContentType = Mime.TextHtml,
+                Status = CommandResultType.Success,
+                Success = true
+            };
+
+            return command.Result;
+        }
+
+        protected CommandResultArgs TestPluginSettings(Command command, Dictionary<String, CommandParameter> parameters) {
+            SettingsPageView index = new SettingsPageView();
+
+            command.Result = new CommandResultArgs() {
+                Now = new CommandData() {
+                    Content = new List<string>() {
+                        index.TransformText()
+                    }
+                },
+                ContentType = Mime.TextHtml,
+                Status = CommandResultType.Success,
+                Success = true
+            };
+
+            return command.Result;
+        }
+
+        protected CommandResultArgs TestPluginParameters(Command command, Dictionary<String, CommandParameter> parameters) {
             String name = parameters["name"].First<String>();
             int score = parameters["score"].First<int>();
 
@@ -38,8 +90,8 @@ namespace TestPlugin.Tests {
                 Name = name,
                 Score = score
             };
-            
-            IndexPageView index = new IndexPageView() {
+
+            TestParameterPageView index = new TestParameterPageView() {
                 Player = player
             };
 

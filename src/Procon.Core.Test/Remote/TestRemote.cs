@@ -175,7 +175,7 @@ namespace Procon.Core.Test.Remote {
             Request request = new Request(String.Format("http://127.0.0.1:{0}/", listeningPort)) {
                 Method = "POST",
                 RequestContent = new Command() {
-                    Name = "TestPlugin/index",
+                    Name = "/test/parameters",
                     Scope = new CommandScope(),
                     Origin = CommandOrigin.Remote,
                     Username = "Phogue",
@@ -203,7 +203,7 @@ namespace Procon.Core.Test.Remote {
             Assert.AreEqual(HttpStatusCode.OK, request.WebResponse.StatusCode);
             Assert.IsTrue(isSuccess);
 
-            Assert.AreEqual("Welcome <b>Phogue</b> to the index of this plugin. Your score is: 50", request.GetResponseContent());
+            Assert.AreEqual("Welcome <b>Phogue</b> to the parameter test of this plugin. Your score is: 50", request.GetResponseContent());
         }
 
         /// <summary>
@@ -294,7 +294,7 @@ namespace Procon.Core.Test.Remote {
                 Method = "POST",
                 RequestContentType = Mime.ApplicationJson,
                 RequestContent = JsonConvert.SerializeObject(new Command() {
-                    Name = "TestPlugin/index",
+                    Name = "/test/parameters",
                     Scope = new CommandScope(),
                     Origin = CommandOrigin.Remote,
                     Username = "Phogue",
@@ -322,7 +322,7 @@ namespace Procon.Core.Test.Remote {
             Assert.AreEqual(HttpStatusCode.OK, request.WebResponse.StatusCode);
             Assert.IsTrue(isSuccess);
 
-            Assert.AreEqual("Welcome <b>Phogue</b> to the index of this plugin. Your score is: 50", request.GetResponseContent());
+            Assert.AreEqual("Welcome <b>Phogue</b> to the parameter test of this plugin. Your score is: 50", request.GetResponseContent());
         }
 
         /// <summary>

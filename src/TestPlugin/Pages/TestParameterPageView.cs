@@ -12,13 +12,52 @@ namespace TestPlugin.Pages
     using System;
     
     
-    #line 1 "C:\Users\P\Documents\Projects\clients\myrcon\procon\Procon-2\src\TestPlugin\Pages\IndexPageView.tt"
+    #line 1 "C:\Users\P\Documents\Projects\clients\myrcon\procon\Procon-2\src\TestPlugin\Pages\TestParameterPageView.tt"
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "10.0.0.0")]
-    public partial class IndexPageView : IndexPageViewBase
+    public partial class TestParameterPageView : TestParameterPageViewBase
     {
         public virtual string TransformText()
         {
-            this.Write("Welcome to the index of this plugin.");
+            this.Write("Welcome <b>");
+            
+            #line 2 "C:\Users\P\Documents\Projects\clients\myrcon\procon\Procon-2\src\TestPlugin\Pages\TestParameterPageView.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(this.Player.Name));
+            
+            #line default
+            #line hidden
+            this.Write("</b> to the parameter test of this plugin. Your score is: ");
+            
+            #line 2 "C:\Users\P\Documents\Projects\clients\myrcon\procon\Procon-2\src\TestPlugin\Pages\TestParameterPageView.tt"
+ if (this.Player.Score >= 100) { 
+            
+            #line default
+            #line hidden
+            this.Write("<b>");
+            
+            #line 2 "C:\Users\P\Documents\Projects\clients\myrcon\procon\Procon-2\src\TestPlugin\Pages\TestParameterPageView.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(this.Player.Score));
+            
+            #line default
+            #line hidden
+            this.Write("</b>");
+            
+            #line 2 "C:\Users\P\Documents\Projects\clients\myrcon\procon\Procon-2\src\TestPlugin\Pages\TestParameterPageView.tt"
+ } else { 
+            
+            #line default
+            #line hidden
+            
+            #line 2 "C:\Users\P\Documents\Projects\clients\myrcon\procon\Procon-2\src\TestPlugin\Pages\TestParameterPageView.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(this.Player.Score));
+            
+            #line default
+            #line hidden
+            
+            #line 2 "C:\Users\P\Documents\Projects\clients\myrcon\procon\Procon-2\src\TestPlugin\Pages\TestParameterPageView.tt"
+ } 
+            
+            #line default
+            #line hidden
             return this.GenerationEnvironment.ToString();
         }
     }
@@ -30,7 +69,7 @@ namespace TestPlugin.Pages
     /// Base class for this transformation
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "10.0.0.0")]
-    public class IndexPageViewBase
+    public class TestParameterPageViewBase
     {
         #region Fields
         private global::System.Text.StringBuilder generationEnvironmentField;

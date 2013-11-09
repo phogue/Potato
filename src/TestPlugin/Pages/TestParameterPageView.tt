@@ -1,0 +1,2 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+Welcome <b><#= this.Player.Name #></b> to the parameter test of this plugin. Your score is: <# if (this.Player.Score >= 100) { #><b><#= this.Player.Score #></b><# } else { #><#= this.Player.Score #><# } #>

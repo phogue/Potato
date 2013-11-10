@@ -18,7 +18,9 @@ namespace TestPlugin.Pages
     {
         public virtual string TransformText()
         {
-            this.Write("Welcome to the index of this plugin.");
+            this.Write("<html>\r\n\t<head>\r\n\t\t<title>This is my title</title>\r\n\t</head>\r\n\t<body>\r\n\t\t<div id=" +
+                    "\"content\">\r\n\t\t\t<h1>Index</h1>\r\n\t\t\tWelcome to the index of this plugin. Check out" +
+                    " the <a href=\"/settings\">Settings</a>.\r\n\t\t</div>\r\n\t</body>\r\n</html>");
             return this.GenerationEnvironment.ToString();
         }
     }

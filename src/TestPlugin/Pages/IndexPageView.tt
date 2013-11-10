@@ -1,2 +1,12 @@
 ﻿<#@ template debug="false" hostspecific="false" language="C#" #>
-Welcome to the index of this plugin.
+<html>
+	<head>
+		<title>This is my title</title>
+	</head>
+	<body>
+		<div id="content">
+			<h1>Index</h1>
+			Welcome to the index of this plugin. Check out the <a href="/settings">Settings</a>.
+		</div>
+	</body>
+</html>

@@ -18,7 +18,34 @@ namespace TestPlugin.Pages
     {
         public virtual string TransformText()
         {
-            this.Write("This is the settings page for this plugin.");
+            this.Write("\r\n\r\n<html>\r\n\t<head>\r\n\t\t<title>This is my title</title>\r\n\t</head>\r\n\t<body>\r\n\t\t<div" +
+                    " id=\"content\">\r\n\t\t\t<h1>Settings</h1>\r\n\t\t\tThis is the settings page for this plug" +
+                    "in. Check out the <a href=\"/\">Index</a>.\r\n\r\n\t\t\t<button id=\"javascript-navigation" +
+                    "-test\">Javascript Navigation to Index</button>\r\n\r\n\t\t\t<button id=\"javascript-data" +
+                    "-test\">Javascript Command with JSON response</button>\r\n\t\t</div>\r\n\r\n\t\t<script typ" +
+                    "e=\"application/javascript\">\r\n\r\n\t\t\tdefine(\'settings_view\', [\r\n\t\t\t\t\'jquery\',\r\n\t\t\t\t" +
+                    "\'lodash\',\r\n\t\t\t\t\'backbone\',\r\n\t\t\t\t\'proxy\'\r\n\t\t\t], function($, _, Backbone, proxy) {" +
+                    "\r\n\t\t\t\treturn Backbone.View.extend({\r\n\t\t\t\t\tel: null,\r\n\t\t\t\t\tmodel: proxy.model,\r\n\t" +
+                    "\t\t\t\tevents: {\r\n\t\t\t\t\t\t\'click #javascript-navigation-test\': \'_on_javascript_naviga" +
+                    "tion_test_click\',\r\n\t\t\t\t\t\t\'click #javascript-data-test\': \'_on_javascript_data_tes" +
+                    "t_click\'\r\n\t\t\t\t\t},\r\n\t\t\t\t\tinitialize: function() {\r\n\t\t\t\t\t\tconsole.log(\"Settings ->" +
+                    " view -> initialize\");\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tthis.listenTo(this.model, \'response\', this" +
+                    "._on_response);\r\n\t\t\t\t\t\tthis.listenTo(this.model, \'destructing\', this._on_destruc" +
+                    "ting);\r\n\t\t\t\t\t},\r\n\t\t\t\t\t_on_javascript_navigation_test_click: function() {\r\n\t\t\t\t\t\t" +
+                    "console.log(\"Settings -> view -> _on_javascript_navigation_test_click\");\r\n\r\n\t\t\t\t" +
+                    "\t\tthis.model.request({\r\n\t\t\t\t\t\t\tcommand: \'/\'\r\n\t\t\t\t\t\t});\r\n\t\t\t\t\t},\r\n\t\t\t\t\t_on_javasc" +
+                    "ript_data_test_click: function() {\r\n\t\t\t\t\t\tconsole.log(\"Settings -> view -> _on_j" +
+                    "avascript_data_test_click\");\r\n\r\n\t\t\t\t\t\tthis.model.request({\r\n\t\t\t\t\t\t\tcommand: \'Tes" +
+                    "tPluginsCommandsZeroParameters\'\r\n\t\t\t\t\t\t});\r\n\t\t\t\t\t},\r\n\t\t\t\t\t_on_response: function" +
+                    "(request, response) {\r\n\t\t\t\t\t\tconsole.log(\"Settings -> view -> _on_response\");\r\n\t" +
+                    "\t\t\t\t\t\r\n\t\t\t\t\t\tconsole.log(request);\r\n\t\t\t\t\t\tconsole.log(response);\r\n\t\t\t\t\t},\r\n\t\t\t\t\t" +
+                    "_on_destructing: function() {\r\n\t\t\t\t\t\tconsole.log(\"Settings -> destructing\");\r\n\r\n" +
+                    "\t\t\t\t\t\tthis.remove();\r\n\t\t\t\t\t}\r\n\t\t\t\t});\r\n\t\t\t});\r\n\r\n\t\t\trequire([\r\n\t\t\t\t\'jquery\',\r\n\t\t" +
+                    "\t\t\'lodash\',\r\n\t\t\t\t\'backbone\',\r\n\t\t\t\t\'proxy\',\r\n\t\t\t\t\'settings_view\'\r\n\t\t\t], function(" +
+                    "$, _, Backbone, proxy, Settings_view) {\r\n\t\t\t\tconsole.log(\"Settings -> Loaded\");\r" +
+                    "\n\r\n\t\t\t\tvar view = new Settings_view({\r\n\t\t\t\t\t// Rebind as the original element ma" +
+                    "y not exist when this view is instantiated twice.\r\n\t\t\t\t\tel: $(\'#content\')\r\n\t\t\t\t}" +
+                    ");\r\n\t\t\t});\r\n\t\t</script>\r\n\t</body>\r\n</html>");
             return this.GenerationEnvironment.ToString();
         }
     }

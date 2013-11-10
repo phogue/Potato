@@ -12,7 +12,7 @@ namespace Procon.Core.Connections.Plugins {
     /// This is the Procon side class to handle the proxy to the app domain, as well as the plugins
     /// cleanup.
     /// </summary>
-    public sealed class Plugin : Executable {
+    public sealed class HostPlugin : Executable, IHostPlugin {
 
         /// <summary>
         /// The name of the plugin, also used as it's namespace
@@ -24,7 +24,7 @@ namespace Procon.Core.Connections.Plugins {
         /// </summary>
         public Guid PluginGuid {
             get {
-                return this.AppDomainPlugin != null ? this.AppDomainPlugin.PluginGuid : Guid.Empty;
+                return this.Proxy != null ? this.Proxy.PluginGuid : Guid.Empty;
             }
             // ReSharper disable ValueParameterNotUsed
             set { }
@@ -38,7 +38,7 @@ namespace Procon.Core.Connections.Plugins {
         /// Reference to the plugin loader proxy
         /// </summary>
         [XmlIgnore, JsonIgnore]
-        public PluginLoaderProxy PluginFactory { get; set; }
+        public IPluginLoaderProxy PluginFactory { get; set; }
 
         /// <summary>
         /// Ultimately the owner of this plugin.
@@ -49,38 +49,41 @@ namespace Procon.Core.Connections.Plugins {
         /// <summary>
         /// Reference to the plugin loaded in the AppDomain for remoting calls.
         /// </summary>
-        private IPluginBase AppDomainPlugin { get; set; }
-
-        public override object InitializeLifetimeService() {
-            return null;
+        [XmlIgnore, JsonIgnore]
+        public IRemotePlugin Proxy {
+            get { return _proxy; }
+            set { _proxy = value; }
         }
+
+        [NonSerialized]
+        private IRemotePlugin _proxy;
 
         public override ExecutableBase Execute() {
             if (File.Exists(this.Path) == true) {
                 this.Name = new FileInfo(this.Path).Name.Replace(".dll", "");
 
-                this.AppDomainPlugin = this.PluginFactory.Create(this.Path, this.Name + ".Program");
+                this.Proxy = this.PluginFactory.Create(this.Path, this.Name + ".Program");
 
-                if (this.AppDomainPlugin != null) {
+                if (this.Proxy != null) {
 
                     // Tell the plugin we are about the setup the callbacks
-                    this.AppDomainPlugin.GenericEvent(new GenericEventArgs() {
+                    this.Proxy.GenericEvent(new GenericEventArgs() {
                         GenericEventType = GenericEventType.PluginsRegisteringCallbacks
                     });
 
-                    this.AppDomainPlugin.ProxyExecuteCallback = new PluginBase.CommandHandler(this.ProxyExecute);
+                    this.Proxy.PluginCallback = this;
 
                     // register game specific call backs. Connection can be null during unit testing.
                     if (this.Connection != null && this.Connection.Game != null) {
 
-                        this.AppDomainPlugin.ConnectionGuid = this.Connection.ConnectionGuid;
+                        this.Proxy.ConnectionGuid = this.Connection.ConnectionGuid;
 
                         this.Connection.Game.ClientEvent += new Game.ClientEventHandler(Connection_ClientEvent);
                         this.Connection.Game.GameEvent += new Game.GameEventHandler(Connection_GameEvent);
                     }
 
                     // Tell the plugin that callback have been registered and it may start sending out commands.
-                    this.AppDomainPlugin.GenericEvent(new GenericEventArgs() {
+                    this.Proxy.GenericEvent(new GenericEventArgs() {
                         GenericEventType = GenericEventType.PluginsCallbacksRegistered
                     });
 
@@ -88,20 +91,20 @@ namespace Procon.Core.Connections.Plugins {
                     if (this.Connection != null && this.Connection.Game != null) {
 
                         // check the plugin's config directory
-                        this.AppDomainPlugin.ConfigDirectoryInfo = new DirectoryInfo(System.IO.Path.Combine(Defines.ConfigsDirectory, System.IO.Path.Combine(PathValidator.Valdiate(String.Format("{0}_{1}", this.Connection.Hostname, this.Connection.Port)), PathValidator.Valdiate(this.Name))));
-                        this.AppDomainPlugin.ConfigDirectoryInfo.Create();
+                        this.Proxy.ConfigDirectoryInfo = new DirectoryInfo(System.IO.Path.Combine(Defines.ConfigsDirectory, System.IO.Path.Combine(PathValidator.Valdiate(String.Format("{0}_{1}", this.Connection.Hostname, this.Connection.Port)), PathValidator.Valdiate(this.Name))));
+                        this.Proxy.ConfigDirectoryInfo.Create();
 
                         // check the plugin's log directory
-                        this.AppDomainPlugin.LogDirectoryInfo = new DirectoryInfo(System.IO.Path.Combine(Defines.LogsDirectory, System.IO.Path.Combine(PathValidator.Valdiate(String.Format("{0}_{1}", this.Connection.Hostname, this.Connection.Port)), PathValidator.Valdiate(this.Name))));
+                        this.Proxy.LogDirectoryInfo = new DirectoryInfo(System.IO.Path.Combine(Defines.LogsDirectory, System.IO.Path.Combine(PathValidator.Valdiate(String.Format("{0}_{1}", this.Connection.Hostname, this.Connection.Port)), PathValidator.Valdiate(this.Name))));
 
-                        if (!this.AppDomainPlugin.LogDirectoryInfo.Exists) {
-                            this.AppDomainPlugin.LogDirectoryInfo.Create();
+                        if (!this.Proxy.LogDirectoryInfo.Exists) {
+                            this.Proxy.LogDirectoryInfo.Create();
                         }
                     }
 
                     // Tell the plugin that everything is setup and ready for it to start loading
                     // its config.
-                    this.AppDomainPlugin.GenericEvent(new GenericEventArgs() {
+                    this.Proxy.GenericEvent(new GenericEventArgs() {
                         GenericEventType = GenericEventType.ConfigSetup
                     });
                 }
@@ -111,14 +114,14 @@ namespace Procon.Core.Connections.Plugins {
         }
 
         private void Connection_ClientEvent(Game sender, ClientEventArgs e) {
-            if (this.AppDomainPlugin != null && e.EventType != ClientEventType.ClientPacketReceived && e.EventType != ClientEventType.ClientPacketSent) {
-                this.AppDomainPlugin.ClientEvent(e);
+            if (this.Proxy != null && e.EventType != ClientEventType.ClientPacketReceived && e.EventType != ClientEventType.ClientPacketSent) {
+                this.Proxy.ClientEvent(e);
             }
         }
 
         private void Connection_GameEvent(Game sender, GameEventArgs e) {
-            if (this.AppDomainPlugin != null) {
-                this.AppDomainPlugin.GameEvent(e);
+            if (this.Proxy != null) {
+                this.Proxy.GameEvent(e);
             }
         }
 
@@ -151,10 +154,8 @@ namespace Procon.Core.Connections.Plugins {
 
         public override void Dispose() {
 
-            if (this.AppDomainPlugin != null) {
-                this.AppDomainPlugin.ProxyExecuteCallback = null;
-
-                this.AppDomainPlugin.Dispose();
+            if (this.Proxy != null) {
+                this.Proxy.Dispose();
             }
 
             // Disposed of in the plugin controller.

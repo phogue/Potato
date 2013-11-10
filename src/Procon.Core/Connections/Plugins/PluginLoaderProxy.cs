@@ -4,24 +4,17 @@ using System.Linq;
 using System.Reflection;
 
 namespace Procon.Core.Connections.Plugins {
-    public class PluginLoaderProxy : ExecutableBase {
+    public class PluginLoaderProxy : ExecutableBase, IPluginLoaderProxy {
 
-        protected List<IPluginBase> LoadedPlugins = new List<IPluginBase>();
+        protected List<IRemotePlugin> LoadedPlugins = new List<IRemotePlugin>();
 
-        public override object InitializeLifetimeService() {
-            return null;
-        }
+        public IRemotePlugin Create(String assemblyFile, String typeName) {
 
-        public IPluginBase Create(String assemblyFile, String typeName) {
-
-            //FileVersionInfo info = FileVersionInfo.GetVersionInfo(assemblyFile);
-
-            IPluginBase loadedPlugin = (IPluginBase)Activator.CreateInstanceFrom(
+            IRemotePlugin loadedPlugin = (IRemotePlugin)Activator.CreateInstanceFrom(
                 assemblyFile,
                 typeName,
                 false,
                 BindingFlags.Instance | BindingFlags.Public | BindingFlags.CreateInstance,
-                null,
                 null,
                 null,
                 null,
@@ -45,6 +38,6 @@ namespace Procon.Core.Connections.Plugins {
             }
 
             return list;
-        } 
+        }
     }
 }

@@ -89,7 +89,7 @@ namespace Procon.Core {
         /// <summary>
         /// The plugins attached to this event
         /// </summary>
-        public List<Plugin> Plugins { get; set; }
+        public List<HostPlugin> Plugins { get; set; }
 
         /// <summary>
         /// The chats attached to this event, if any.

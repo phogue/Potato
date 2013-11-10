@@ -18,7 +18,7 @@ namespace Procon.Core.Test.Plugins {
         public void TestPluginsSinglePluginDisposed() {
             PluginController plugins = new PluginController().Execute() as PluginController;
 
-            Plugin plugin = plugins.Plugins.First();
+            HostPlugin plugin = plugins.Plugins.First();
 
             // Dispose of the plugin
             plugin.Dispose();

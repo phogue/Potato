@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.Remoting.Lifetime;
 using System.Security;
 using System.Security.Permissions;
 using System.Security.Policy;
@@ -15,7 +16,7 @@ namespace Procon.Core.Connections.Plugins {
     public class PluginController : Executable {
 
         /// <summary>
-        /// The actual app domain all of the plugins are loaded into.
+        /// The appdomain all of the plugins are loaded into.
         /// </summary>
         [XmlIgnore, JsonIgnore]
         public AppDomain AppDomainSandbox { get; protected set; }
@@ -24,13 +25,13 @@ namespace Procon.Core.Connections.Plugins {
         /// Simple plugin factory reference to load classes into the app domain.
         /// </summary>
         [XmlIgnore, JsonIgnore]
-        public PluginLoaderProxy PluginFactory { get; protected set; }
+        public IPluginLoaderProxy PluginFactory { get; protected set; }
 
         /// <summary>
         /// List of plugins loaded in the app domain.
         /// </summary>
         [XmlIgnore, JsonIgnore]
-        public List<Plugin> Plugins { get; protected set; }
+        public List<HostPlugin> Plugins { get; protected set; }
 
         /// <summary>
         /// The connection which owns this plugin app domain and the connection which the plugins control.
@@ -40,7 +41,7 @@ namespace Procon.Core.Connections.Plugins {
 
         // Default Initialization
         public PluginController() : base() {
-            this.Plugins = new List<Plugin>();
+            this.Plugins = new List<HostPlugin>();
         }
 
         /// <summary>
@@ -62,7 +63,7 @@ namespace Procon.Core.Connections.Plugins {
         /// <returns></returns>
         protected Evidence CreateEvidence() {
             Evidence evidence = new Evidence();
-            evidence.AddHost(new Zone(SecurityZone.MyComputer));
+            evidence.AddHostEvidence(new Zone(SecurityZone.Internet));
 
             return evidence;
         }
@@ -88,7 +89,7 @@ namespace Procon.Core.Connections.Plugins {
             // directory being a compilation of CurrentDomain + BaseDirectory.  To counter this, we set the
             // app domains directory to this app domains directory.  Must set permissions or get phogue to
             // remember stuff later.
-
+            
             return setup;
         }
 
@@ -98,15 +99,16 @@ namespace Procon.Core.Connections.Plugins {
         /// <returns></returns>
         protected PermissionSet CreatePermissionSet() {
             PermissionSet permissions = new PermissionSet(PermissionState.None);
-
+            
             permissions.AddPermission(new SecurityPermission(SecurityPermissionFlag.Execution));
+
             permissions.AddPermission(new FileIOPermission(FileIOPermissionAccess.PathDiscovery, AppDomain.CurrentDomain.BaseDirectory));
             permissions.AddPermission(new FileIOPermission(FileIOPermissionAccess.AllAccess, Defines.PluginsDirectory));
             permissions.AddPermission(new FileIOPermission(FileIOPermissionAccess.AllAccess, Defines.LogsDirectory));
             permissions.AddPermission(new FileIOPermission(FileIOPermissionAccess.Read | FileIOPermissionAccess.PathDiscovery, Defines.LocalizationDirectory));
             permissions.AddPermission(new FileIOPermission(FileIOPermissionAccess.Read | FileIOPermissionAccess.PathDiscovery, Defines.ConfigsDirectory));
 
-            permissions.AddPermission(new ReflectionPermission(ReflectionPermissionFlag.RestrictedMemberAccess));
+            permissions.AddPermission(new ReflectionPermission(ReflectionPermissionFlag.MemberAccess));
 
             return permissions;
         }
@@ -130,7 +132,7 @@ namespace Procon.Core.Connections.Plugins {
             // Create the app domain and the plugin factory in the new domain.
             this.AppDomainSandbox = AppDomain.CreateDomain(String.Format("Procon.{0}.Plugin", this.Connection != null ? this.Connection.ConnectionGuid.ToString() : String.Empty), evidence, setup, permissions);
 
-            this.PluginFactory = (PluginLoaderProxy)this.AppDomainSandbox.CreateInstanceAndUnwrap(Assembly.GetExecutingAssembly().FullName, typeof(PluginLoaderProxy).FullName);
+            this.PluginFactory = (IPluginLoaderProxy)this.AppDomainSandbox.CreateInstanceAndUnwrap(Assembly.GetExecutingAssembly().FullName, typeof(PluginLoaderProxy).FullName);
 
             // Load all the plugins.
             this.LoadPlugins(new DirectoryInfo(Defines.PluginsDirectory));
@@ -143,7 +145,7 @@ namespace Procon.Core.Connections.Plugins {
         /// Disposes of all the plugins before calling the base dispose.
         /// </summary>
         public override void Dispose() {
-            foreach (Plugin plugin in this.Plugins) {
+            foreach (HostPlugin plugin in this.Plugins) {
                 plugin.Dispose();
             }
 
@@ -176,14 +178,27 @@ namespace Procon.Core.Connections.Plugins {
 
             // If there are dll files in this directory, setup the plugins.
             foreach (String path in files.Select(file => file.FullName)) {
-                this.Plugins.Add(
-                    new Plugin() {
-                        Path = path,
-                        PluginFactory = PluginFactory,
-                        Connection = Connection
-                    }.Execute() as Plugin
-                );
+                this.Plugins.Add(new HostPlugin() {
+                    Path = path,
+                    PluginFactory = PluginFactory,
+                    Connection = Connection
+                }.Execute() as HostPlugin);
             }
+        }
+
+        /// <summary>
+        /// Renews the lease on the plugin factory as well as each loaded plugin proxy
+        /// </summary>
+        public void RenewLeases() {
+            List<ILease> renewableLeases = new List<ILease>();
+
+            if (this.PluginFactory != null) {
+                renewableLeases.Add(((MarshalByRefObject)this.PluginFactory).GetLifetimeService() as ILease);
+            }
+
+            renewableLeases.AddRange(this.Plugins.Select(plugin => ((MarshalByRefObject) plugin.Proxy).GetLifetimeService() as ILease));
+
+            renewableLeases.ForEach(lease => lease.Renew(lease.InitialLeaseTime));
         }
     }
 }

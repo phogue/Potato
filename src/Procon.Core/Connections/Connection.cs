@@ -260,7 +260,7 @@ namespace Procon.Core.Connections {
                     },
                     Now = new CommandData() {
                         // I didn't want plugins to be able to hide themselves.
-                        Plugins = new List<Plugin>(this.Plugins.Plugins),
+                        Plugins = new List<HostPlugin>(this.Plugins.Plugins),
                         Players = players.Now.Players,
                         Settings = settings.Now.Settings,
                         Bans = bans.Now.Bans,

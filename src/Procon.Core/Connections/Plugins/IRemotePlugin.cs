@@ -5,7 +5,7 @@ namespace Procon.Core.Connections.Plugins {
     using Procon.Core.Events;
     using Procon.Net;
 
-    public interface IPluginBase : IExecutableBase, IDisposable {
+    public interface IRemotePlugin : IExecutableBase, IDisposable {
 
         Guid PluginGuid { get; }
 
@@ -14,7 +14,7 @@ namespace Procon.Core.Connections.Plugins {
         DirectoryInfo ConfigDirectoryInfo { get; set; }
         DirectoryInfo LogDirectoryInfo { get; set; }
 
-        PluginBase.CommandHandler ProxyExecuteCallback { get; set; }
+        IHostPlugin PluginCallback { set; }
 
         void GameEvent(GameEventArgs e);
 

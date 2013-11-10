@@ -2,14 +2,18 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Procon.Core.Events;
+using Procon.Core.Scheduler;
+using Procon.Net;
+using Procon.Net.Protocols.Objects;
 
 namespace Procon.Core.Connections.Plugins {
-    using Procon.Core.Events;
-    using Procon.Core.Scheduler;
-    using Procon.Net;
-    using Procon.Net.Protocols.Objects;
 
-    public abstract class PluginBase : ExecutableBase, IPluginBase {
+    /// <summary>
+    /// The class in which all plugins should inherit from. This class handles all remoting
+    /// to Procon and other standard tasks 
+    /// </summary>
+    public abstract class RemotePlugin : ExecutableBase, IRemotePlugin {
         /// <summary>
         /// The Guid of the executing assembly. Used to uniquely identify this plugin. 
         /// </summary>
@@ -42,11 +46,12 @@ namespace Procon.Core.Connections.Plugins {
         /// </summary>
         public GameState GameState { get; set; }
 
-        public override object InitializeLifetimeService() {
-            return null;
-        }
-        
-        protected PluginBase() : base() {
+        /// <summary>
+        /// The interface to callback from the plugin side to Procon.
+        /// </summary>
+        public IHostPlugin PluginCallback { private get; set; }
+
+        protected RemotePlugin() : base() {
             this.Tasks = new TaskController().Start();
 
             this.PluginGuid = this.GetType().GUID;
@@ -75,16 +80,13 @@ namespace Procon.Core.Connections.Plugins {
             this.Tasks = null;
         }
 
-        public delegate CommandResultArgs CommandHandler(Command command);
-        public CommandHandler ProxyExecuteCallback { get; set; }
-
         /// <summary>
         /// Executes a command across the appdomain
         /// </summary>
         /// <param name="command"></param>
         /// <returns></returns>
         public CommandResultArgs ProxyExecute(Command command) {
-            return (command.Scope != null && command.Scope.PluginGuid != Guid.Empty) ? this.Execute(command) : this.ProxyExecuteCallback(command);
+            return (command.Scope != null && command.Scope.PluginGuid != Guid.Empty) ? this.Execute(command) : this.PluginCallback.ProxyExecute(command);
         }
 
         /// <summary>
@@ -95,7 +97,7 @@ namespace Procon.Core.Connections.Plugins {
         /// </remarks>
         /// <param name="action">The action to send to the server.</param>
         /// <returns>The result of the command, check the status for a success message.</returns>
-        public CommandResultArgs ProxyNetworkAction(NetworkAction action) {
+        public virtual CommandResultArgs ProxyNetworkAction(NetworkAction action) {
             // Splitting the commands up is very deliberate, used to divide the permissions a user
             // requires to initiate a particular command. We do this here instead of later for.. well..
             // I don't know. A plugin might have a use to ignore this action at some point?
@@ -144,7 +146,7 @@ namespace Procon.Core.Connections.Plugins {
             //  ));
         }
 
-        public void LoadConfig() {
+        public virtual void LoadConfig() {
             this.GenericEvent(new GenericEventArgs() {
                 GenericEventType = GenericEventType.ConfigLoading
             });
@@ -170,7 +172,7 @@ namespace Procon.Core.Connections.Plugins {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public CommandResultArgs TextCommandExecuted(Command command, Dictionary<String, CommandParameter> parameters) {
+        public virtual CommandResultArgs TextCommandExecuted(Command command, Dictionary<String, CommandParameter> parameters) {
 
             // Not used.
             // String text = parameters["text"].First<String>();

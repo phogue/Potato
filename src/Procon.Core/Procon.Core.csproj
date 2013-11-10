@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Procon.Core</RootNamespace>
     <AssemblyName>Procon.Core</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
@@ -75,13 +75,15 @@
     <Compile Include="CommandResultType.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="Connections\Connection.cs" />
+    <Compile Include="Connections\Plugins\IHostPlugin.cs" />
+    <Compile Include="Connections\Plugins\IPluginLoaderProxy.cs" />
     <Compile Include="Connections\TextCommands\TextCommandMatch.cs" />
     <Compile Include="Connections\TextCommands\ParserType.cs" />
     <Compile Include="Connections\TextCommands\TextCommand.cs" />
     <Compile Include="Connections\TextCommands\TextCommandController.cs" />
     <Compile Include="Connections\TextCommands\Parsers\FuzzyParser.cs" />
     <Compile Include="Connections\TextCommands\Parsers\Parser.cs" />
-    <Compile Include="Connections\Plugins\IPluginBase.cs" />
+    <Compile Include="Connections\Plugins\IRemotePlugin.cs" />
     <Compile Include="Database\DatabaseController.cs" />
     <Compile Include="Events\EventsConsoleController.cs" />
     <Compile Include="Events\GenericEventArgs.cs" />
@@ -106,8 +108,8 @@
     <Compile Include="Scheduler\TickEventArgs.cs" />
     <Compile Include="Security\Account.cs" />
     <Compile Include="Executable.cs" />
-    <Compile Include="Connections\Plugins\Plugin.cs" />
-    <Compile Include="Connections\Plugins\PluginBase.cs" />
+    <Compile Include="Connections\Plugins\HostPlugin.cs" />
+    <Compile Include="Connections\Plugins\RemotePlugin.cs" />
     <Compile Include="Connections\Plugins\PluginController.cs" />
     <Compile Include="Connections\Plugins\PluginLoaderProxy.cs" />
     <Compile Include="Instance.cs" />

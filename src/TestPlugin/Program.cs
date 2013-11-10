@@ -11,7 +11,7 @@ namespace TestPlugin {
     using Procon.Net.Utils;
     using Procon.Net.Protocols.Objects;
 
-    public class Program : PluginBase {
+    public class Program : RemotePlugin {
         //Ignore this: - Actually, depending on how you wanna save info for plugins, the actually plugin could save it here.
         // For now, it's in PluginAPI
         // 

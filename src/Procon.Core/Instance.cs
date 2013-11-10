@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using Procon.Core.Connections.Plugins;
 using Procon.Core.Events;
 using Procon.Core.Localization;
 using Procon.Core.Remote;
@@ -101,6 +102,13 @@ namespace Procon.Core {
                 }
             ).Tick += new Task.TickHandler(Daemon_Tick);
 
+            this.Tasks.Add(
+                new Task() {
+                    Condition = new Temporal() {
+                        (date, task) => date.Minute % 1 == 0 && date.Second == 0
+                    }
+                }
+            ).Tick += new Task.TickHandler(Plugin_Tick);
 
             this.AppendDispatchHandlers(new Dictionary<CommandAttribute, CommandDispatchHandler>() {
                 {
@@ -248,6 +256,19 @@ namespace Procon.Core {
         protected void Daemon_Tick(Object sender, TickEventArgs e) {
             if (this.Daemon != null) {
                 this.Daemon.Poke();
+            }
+        }
+
+        /// <summary>
+        /// Renews all of the remoting leases on active plugins for each connection.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void Plugin_Tick(Object sender, TickEventArgs e) {
+            if (this.Connections != null) {
+                foreach (PluginController plugins in this.Connections.Select(connection => connection.Plugins)) {
+                    plugins.RenewLeases();
+                }
             }
         }
 

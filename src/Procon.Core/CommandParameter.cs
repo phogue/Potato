@@ -1,33 +1,148 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
+using Procon.Core.Connections;
+using Procon.Core.Connections.Plugins;
+using Procon.Core.Connections.TextCommands;
+using Procon.Core.Events;
+using Procon.Core.Localization;
+using Procon.Core.Repositories;
+using Procon.Core.Security;
+using Procon.Core.Variables;
+using Procon.Net.Attributes;
+using Procon.Net.Protocols.Objects;
 
 namespace Procon.Core {
 
     [Serializable]
     public sealed class CommandParameter {
 
-        private static readonly Dictionary<Type, PropertyInfo> TypeReferences = new Dictionary<Type, PropertyInfo>();
+        /// <summary>
+        /// Quick list to check if a type is known to us or not
+        /// </summary>
+        private static readonly List<Type> KnownTypes = new List<Type>() {
+            typeof (String),
+            typeof (Connection),
+            typeof (GameTypeAttribute),
+            typeof (Security.Group),
+            typeof (Account),
+            typeof (Permission),
+            typeof (AccountPlayer),
+            typeof (Variable),
+            typeof (Language),
+            typeof (TextCommand),
+            typeof (TextCommandMatch),
+            typeof (GenericEventArgs),
+            typeof (Repository),
+            typeof (FlatPackedPackage),
+            typeof (HostPlugin),
+            typeof (Chat),
+            typeof (Player),
+            typeof (Kill),
+            typeof (Move),
+            typeof (Spawn),
+            typeof (Kick),
+            typeof (Ban),
+            typeof (Settings),
+            typeof (Map),
+            typeof (CommandResultArgs)
+        };
 
         /// <summary>
         /// The data stored in this parameter.
         /// </summary>
         public CommandData Data { get; set; }
 
-        static CommandParameter() {
-            foreach (PropertyInfo property in typeof(CommandData).GetProperties()) {
-                Type[] genericArgumentTypes = property.PropertyType.GetGenericArguments();
-
-                if (genericArgumentTypes.Length == 1) {
-                    CommandParameter.TypeReferences.Add(genericArgumentTypes[0], property);
-                }
-            }
-        }
-
         public CommandParameter() {
             this.Data = new CommandData();
         }
+
+        /// <summary>
+        /// Fetches all of a type of list, cast to an Object.
+        /// </summary>
+        /// <param name="t"></param>
+        /// <returns></returns>
+        private List<Object> FetchAllByType(Type t) {
+            List<Object> all = null;
+
+            if (t == typeof(String) && this.Data.Content != null) {
+                all = this.Data.Content.Cast<Object>().ToList();
+            }
+            else if (t == typeof(Connection) && this.Data.Connections != null) {
+                all = this.Data.Connections.Cast<Object>().ToList();
+            }
+            else if (t == typeof(GameTypeAttribute) && this.Data.GameTypes != null) {
+                all = this.Data.GameTypes.Cast<Object>().ToList();
+            }
+            else if (t == typeof(Security.Group) && this.Data.Groups != null) {
+                all = this.Data.Groups.Cast<Object>().ToList();
+            }
+            else if (t == typeof(Account) && this.Data.Accounts != null) {
+                all = this.Data.Accounts.Cast<Object>().ToList();
+            }
+            else if (t == typeof(Permission) && this.Data.Permissions != null) {
+                all = this.Data.Permissions.Cast<Object>().ToList();
+            }
+            else if (t == typeof(AccountPlayer) && this.Data.AccountPlayers != null) {
+                all = this.Data.AccountPlayers.Cast<Object>().ToList();
+            }
+            else if (t == typeof(Variable) && this.Data.Variables != null) {
+                all = this.Data.Variables.Cast<Object>().ToList();
+            }
+            else if (t == typeof(Language) && this.Data.Languages != null) {
+                all = this.Data.Languages.Cast<Object>().ToList();
+            }
+            else if (t == typeof(TextCommand) && this.Data.TextCommands != null) {
+                all = this.Data.TextCommands.Cast<Object>().ToList();
+            }
+            else if (t == typeof(TextCommandMatch) && this.Data.TextCommandMatches != null) {
+                all = this.Data.TextCommandMatches.Cast<Object>().ToList();
+            }
+            else if (t == typeof(GenericEventArgs) && this.Data.Events != null) {
+                all = this.Data.Events.Cast<Object>().ToList();
+            }
+            else if (t == typeof(Repository) && this.Data.Repositories != null) {
+                all = this.Data.Repositories.Cast<Object>().ToList();
+            }
+            else if (t == typeof(FlatPackedPackage) && this.Data.Packages != null) {
+                all = this.Data.Packages.Cast<Object>().ToList();
+            }
+            else if (t == typeof(HostPlugin) && this.Data.Plugins != null) {
+                all = this.Data.Plugins.Cast<Object>().ToList();
+            }
+            else if (t == typeof(Chat) && this.Data.Chats != null) {
+                all = this.Data.Chats.Cast<Object>().ToList();
+            }
+            else if (t == typeof(Player) && this.Data.Players != null) {
+                all = this.Data.Players.Cast<Object>().ToList();
+            }
+            else if (t == typeof(Kill) && this.Data.Kills != null) {
+                all = this.Data.Kills.Cast<Object>().ToList();
+            }
+            else if (t == typeof(Move) && this.Data.Moves != null) {
+                all = this.Data.Moves.Cast<Object>().ToList();
+            }
+            else if (t == typeof(Spawn) && this.Data.Spawns != null) {
+                all = this.Data.Spawns.Cast<Object>().ToList();
+            }
+            else if (t == typeof(Kick) && this.Data.Kicks != null) {
+                all = this.Data.Kicks.Cast<Object>().ToList();
+            }
+            else if (t == typeof(Ban) && this.Data.Bans != null) {
+                all = this.Data.Bans.Cast<Object>().ToList();
+            }
+            else if (t == typeof(Settings) && this.Data.Settings != null) {
+                all = this.Data.Settings.Cast<Object>().ToList();
+            }
+            else if (t == typeof(Map) && this.Data.Maps != null) {
+                all = this.Data.Maps.Cast<Object>().ToList();
+            }
+            else if (t == typeof(CommandResultArgs) && this.Data.CommandResults != null) {
+                all = this.Data.CommandResults.Cast<Object>().ToList();
+            }
+
+            return all;
+        } 
 
         /// <summary>
         /// Checks if this parameter has a specific data type.
@@ -44,7 +159,7 @@ namespace Procon.Core {
         public bool HasOne(Type t, bool convert = true) {
             bool hasOne = false;
 
-            if (CommandParameter.TypeReferences.ContainsKey(t) == true && CommandParameter.TypeReferences[t].GetValue(this.Data, null) != null) {
+            if (CommandParameter.KnownTypes.Contains(t) == true && this.FetchAllByType(t) != null) {
                 hasOne = true;
             }
             else if (convert == true) {
@@ -81,12 +196,10 @@ namespace Procon.Core {
         public bool HasMany(Type t, bool convert = true) {
             bool hasMany = false;
 
-            if (CommandParameter.TypeReferences.ContainsKey(t) == true) {
-                Object collection = CommandParameter.TypeReferences[t].GetValue(this.Data, null);
+            if (CommandParameter.KnownTypes.Contains(t) == true) {
+                List<Object> collection = this.FetchAllByType(t);
 
-                if (collection.GetType().GetProperty("Count") != null) {
-                    hasMany = (int) collection.GetType().GetProperty("Count").GetValue(collection, null) > 1;
-                }
+                hasMany = collection != null && collection.Count > 1;
             }
             else if (convert == true) {
                 // If we're looking for an enum
@@ -130,17 +243,11 @@ namespace Procon.Core {
         public Object First(Type t, bool convert = true) {
             Object result = null;
 
-            if (CommandParameter.TypeReferences.ContainsKey(t) == true) {
-                object collection = CommandParameter.TypeReferences[t].GetValue(this.Data, null);
+            if (CommandParameter.KnownTypes.Contains(t) == true) {
+                List<Object> collection = this.FetchAllByType(t);
 
-                if (collection.GetType().GetProperty("Count") != null) {
-                    if ((int)collection.GetType().GetProperty("Count").GetValue(collection, null) > 0) {
-                        String indexerName = ((DefaultMemberAttribute)collection.GetType()
-                                        .GetCustomAttributes(typeof(DefaultMemberAttribute),
-                                         true)[0]).MemberName;
-
-                        result = collection.GetType().GetProperty(indexerName).GetValue(collection, new Object[] { 0 });
-                    }
+                if (collection.Count > 0) {
+                    result = collection.FirstOrDefault();
                 }
             }
             else if (convert == true) {
@@ -170,8 +277,8 @@ namespace Procon.Core {
         public Object All(Type t, bool convert = true) {
             Object result = null;
 
-            if (CommandParameter.TypeReferences.ContainsKey(t) == true) {
-                result = CommandParameter.TypeReferences[t].GetValue(this.Data, null);
+            if (CommandParameter.KnownTypes.Contains(t) == true) {
+                result = this.FetchAllByType(t);
             }
             else if (convert == true) {
                 // if we're looking for an enum
@@ -204,8 +311,12 @@ namespace Procon.Core {
         public List<T> All<T>() {
             List<T> result = new List<T>();
 
-            if (CommandParameter.TypeReferences.ContainsKey(typeof(T)) == true) {
-                result = CommandParameter.TypeReferences[typeof(T)].GetValue(this.Data, null) as List<T>;
+            if (CommandParameter.KnownTypes.Contains(typeof(T)) == true) {
+                List<Object> collection = this.FetchAllByType(typeof(T));
+
+                if (collection != null) {
+                    result = collection.Cast<T>().ToList();
+                }
             }
 
             return result;

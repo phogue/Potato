@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using NUnit.Framework;
 using Procon.Core.Test.ExecutableCommands.Objects;
 
@@ -420,7 +421,7 @@ namespace Procon.Core.Test.ExecutableCommands {
                 }
             };
 
-            List<String> items = parameter.All(typeof(String), false) as List<String>;
+            List<String> items = ((List<Object>)parameter.All(typeof(String), false)).Cast<String>().ToList();
 
             Assert.AreEqual("1", items[0]);
             Assert.AreEqual("Anything", items[1]);

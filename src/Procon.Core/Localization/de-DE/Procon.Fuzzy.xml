@@ -1,5 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <?ietf-language-tag de-DE?>
+<?iso-3166-1-alpha-2 DE?>
+<?country-name-english German?>
+<?country-name-native Deutsch?>
 <!DOCTYPE procon [
   <!ATTLIST match regex CDATA #IMPLIED>
   <!ATTLIST match text CDATA #IMPLIED>

@@ -13,7 +13,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using MahApps.Metro.Controls;
 
-namespace Procon.Tools.Setup {
+namespace Procon.Setup {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>

@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Procon.Tools.Setup.Properties {
+namespace Procon.Setup.Properties {
 
 
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]

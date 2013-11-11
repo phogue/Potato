@@ -8,8 +8,8 @@
     <ProjectGuid>{9E75FB2B-2806-4CB3-870D-4554960B07D5}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Procon.Tools.Setup</RootNamespace>
-    <AssemblyName>Procon.Tools.Setup</AssemblyName>
+    <RootNamespace>Procon.Setup</RootNamespace>
+    <AssemblyName>Procon.Setup</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>

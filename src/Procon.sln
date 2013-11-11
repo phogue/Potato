@@ -84,7 +84,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procon.Net.Shared", "Procon
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procon.Core.Shared.Test", "Procon.Core.Shared.Test\Procon.Core.Shared.Test.csproj", "{67C20A7E-D4C2-4483-B9D8-51B619361FB6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procon.Tools.Setup", "Procon.Tools.Setup\Procon.Tools.Setup.csproj", "{9E75FB2B-2806-4CB3-870D-4554960B07D5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procon.Setup", "Procon.Setup\Procon.Setup.csproj", "{9E75FB2B-2806-4CB3-870D-4554960B07D5}"
 EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution

@@ -66,7 +66,9 @@ namespace Procon.Core.Remote {
             // Method implemented here instead of calling the public method so we can do
             // additional work during a Poke in the future.
 
-            this.DaemonListener.Poke();
+            if (this.DaemonListener != null) {
+                this.DaemonListener.Poke();
+            }
         }
 
         /// <summary>

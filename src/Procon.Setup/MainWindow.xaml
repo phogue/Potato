@@ -11,10 +11,38 @@
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/Blue.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseLight.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/Procon.Resources;component/Flags.xaml" />
+                <ResourceDictionary Source="/Resources/Icons.xaml" />
             </ResourceDictionary.MergedDictionaries>
+            <Style x:Key="DescriptionHeaderStyle" TargetType="Label">
+                <Setter Property="FontSize" Value="22" />
+                <Setter Property="HorizontalAlignment" Value="Center" />
+            </Style>
         </ResourceDictionary>
     </Window.Resources>
     <Grid>
-        
+        <TabControl Name="tabControl1">
+            <TabItem Header="Language" Name="tabLanguage">
+                <Grid>
+                    <WrapPanel Orientation="Horizontal">
+                        <Controls:Tile Title="English" Margin="10, 10, 0, 0">
+                            <Image Width="48" Height="48" Source="{StaticResource ProconResourceFlagsGb}" />
+                        </Controls:Tile>
+                        <Controls:Tile Title="Deutsche" Margin="10, 10, 0, 0">
+                            <Image Width="48" Height="48" Source="{StaticResource ProconResourceFlagsDe}" />
+                        </Controls:Tile>
+                    </WrapPanel>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Users" Name="tabUsers">
+                <Grid />
+            </TabItem>
+            <TabItem Header="Certificate" Name="tabCertificate">
+                <Grid />
+            </TabItem>
+            <TabItem Header="Daemon" Name="tabDaemon">
+                <Grid />
+            </TabItem>
+        </TabControl>
     </Grid>
 </Controls:MetroWindow>

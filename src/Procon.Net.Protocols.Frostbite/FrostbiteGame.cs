@@ -189,7 +189,7 @@ namespace Procon.Net.Protocols.Frostbite {
                 }, {
                     new PacketDispatch() {
                         Name = "punkBuster.onMessage",
-                        Origin = PacketOrigin.Client // Should be Server?
+                        Origin = PacketOrigin.Server
                     },
                     new PacketDispatchHandler(this.PunkBusterOnMessageDispatchHandler)
                 }, {

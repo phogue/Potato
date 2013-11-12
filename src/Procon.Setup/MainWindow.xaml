@@ -6,9 +6,7 @@
                       xmlns:Models="clr-namespace:Procon.Setup.Models"
                       xmlns:converters="clr-namespace:Procon.Setup.Converters"
                       Title="Procon Setup" Height="436" Width="718" ResizeMode="CanResize" Icon="/Procon.Setup;component/Images/logo.ico">
-    <Window.DataContext>
-        <local:MainWindowViewModel/>
-    </Window.DataContext>
+
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>

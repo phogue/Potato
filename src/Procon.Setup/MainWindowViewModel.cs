@@ -29,6 +29,9 @@ namespace Procon.Setup {
         /// </summary>
         public ObservableCollection<PanoramaGroup> LanguageGroups { get; set; }
 
+        /// <summary>
+        /// General bool to describe the application is currently doing something or not.
+        /// </summary>
         public bool Busy {
             get { return _busy; }
             set {
@@ -41,11 +44,28 @@ namespace Procon.Setup {
         }
         private bool _busy;
 
+        #region INotifyPropertyChanged
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void OnPropertyChanged(string propertyName) {
+            PropertyChangedEventHandler handler = PropertyChanged;
+            if (handler != null) {
+                handler(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
+
+        #endregion
+
+        /// <summary>
+        /// Select a language with a language-code parameter. 
+        /// </summary>
         public ICommand SelectLanguageCommand { get; set; }
 
         public ICommand ButtonCommand { get; set; }
 
         public MainWindowViewModel() {
+            
             SelectLanguageCommand = new RelayCommand(new Action<Object>(SelectLanguage));
             ButtonCommand = new RelayCommand(new Action<Object>(ShowMessage));
 
@@ -54,16 +74,12 @@ namespace Procon.Setup {
             this.LanguageGroups = new ObservableCollection<PanoramaGroup>() {
                 new PanoramaGroup("languages", this.LanguageModels)
             };
-
-            if (this.CreateInstance() == true) {
-                this.RefreshLanguages();
-            }
         }
 
         /// <summary>
         /// Loads and assigns events from a Procon instance.
         /// </summary>
-        protected bool CreateInstance() {
+        public bool CreateInstance() {
             bool created = false;
 
             this.Instance = new Instance().Execute() as Instance;
@@ -89,7 +105,7 @@ namespace Procon.Setup {
         /// <summary>
         /// Refreshes from the data in the instance of Procon (non observable lists)
         /// </summary>
-        protected void RefreshInstance() {
+        public void RefreshInstance() {
             this.RefreshLanguages();
         }
 
@@ -123,28 +139,16 @@ namespace Procon.Setup {
             }
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected virtual void OnPropertyChanged(string propertyName) {
-            PropertyChangedEventHandler handler = PropertyChanged;
-            if (handler != null) {
-                handler(this, new PropertyChangedEventArgs(propertyName));
-            }
-        }
-
+        /// <summary>
+        /// Fired when a user selects another language
+        /// </summary>
+        /// <param name="value">THe value is the language code of the selected language</param>
         public void SelectLanguage(Object value) {
-
             if (this.Instance != null) {
                 this.Instance.Variables.SetA(new Command() {
                     Origin = CommandOrigin.Local
                 }, CommonVariableNames.LocalizationDefaultLanguageCode, value);
             }
-
-            
-
-            //foreach (LanguageModel language in this.LanguageModels) {
-            //    language.IsSelected = language.LanguageCode == (String)value;
-            //}
         }
 
         public void ShowMessage(Object value) {

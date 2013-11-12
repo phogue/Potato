@@ -10,5 +10,16 @@ namespace Procon.Setup {
     /// Interaction logic for App.xaml
     /// </summary>
     public partial class App : Application {
+        protected override void OnStartup(StartupEventArgs e) {
+            var mainWindow = new MainWindow();
+            MainWindowViewModel context = new MainWindowViewModel();
+
+            if (context.CreateInstance() == true) {
+                context.RefreshInstance();
+            }
+
+            mainWindow.DataContext = context;
+            mainWindow.Show();
+        }
     }
 }

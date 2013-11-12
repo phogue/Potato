@@ -1,8 +1,5 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Linq;
-using System.Windows;
-using Procon.Setup.Properties;
 
 namespace Procon.Setup.Models {
     public class LanguageModel : INotifyPropertyChanged {

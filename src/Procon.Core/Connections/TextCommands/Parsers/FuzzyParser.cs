@@ -83,9 +83,9 @@ namespace Procon.Core.Connections.TextCommands.Parsers {
 
             var playerCountries = this.Connection.GameState.PlayerList.Select(player => new {
                 player,
-                similarity = player.CountryName.StringSimularitySubsetBonusRatio(phrase.Text)
+                similarity = player.Location.CountryName.StringSimularitySubsetBonusRatio(phrase.Text)
             }).Where(@t => @t.similarity >= 60).Select(@t => new ThingObjectToken() {
-                Reference = @t.player.CountryName,
+                Reference = @t.player.Location.CountryName,
                 ReferenceProperty = countryName,
                 Text = phrase.Text,
                 Similarity = @t.similarity,

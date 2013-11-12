@@ -5,6 +5,7 @@ using NUnit.Framework;
 using Procon.Core.Connections.TextCommands;
 using Procon.Core.Connections;
 using Procon.Core.Security;
+using Procon.Net.Geolocation;
 using Procon.Net.Protocols;
 using Procon.Net.Protocols.Objects;
 using Procon.Net.Protocols.Frostbite.BF.BF3;
@@ -53,77 +54,99 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
             Name = "Phogue",
             Uid = "EA_63A9F96745B22DFB509C558FC8B5C50F",
             Ping = (uint)50,
-            CountryName = "Australia"
+            Location = {
+                CountryName = "Australia"
+            }
         };
 
         protected static Player PlayerImisnew2 =  new Player() {
             Name = "Imisnew2",
             Uid = "2",
             Ping = (uint)100,
-            CountryName = "United States"
+            Location = {
+                CountryName = "United States"
+            }
         };
 
         protected static Player PlayerPhilK = new Player() {
             Name = "Phil_K",
             Uid = "3",
             Ping = (uint)150,
-            CountryName = "Germany"
+            Location = {
+                CountryName = "Germany"
+            }
         };
 
         protected static Player PlayerMorpheus = new Player() {
             Name = "Morpheus(AUT)",
             Uid = "4",
             Ping = (uint)200,
-            CountryName = "Austria"
+            Location = {
+                CountryName = "Austria"
+            }
         };
 
         protected static Player PlayerIke = new Player() {
             Name = "Ike",
             Uid = "5",
             Ping = (uint)250,
-            CountryName = "Great Britian"
+            Location = {
+                CountryName = "Great Britian"
+            }
         };
 
         protected static Player PlayerPapaCharlie9 = new Player() {
             Name = "PapaCharlie9",
             Uid = "6",
             Ping = (uint)300,
-            CountryName = "United States"
+            Location = {
+                CountryName = "United States"
+            }
         };
 
         protected static Player PlayerEBassie = new Player() {
             Name = "EBassie",
             Uid = "7",
             Ping = (uint)350,
-            CountryName = "Netherlands"
+            Location = {
+                CountryName = "Netherlands"
+            }
         };
 
         protected static Player PlayerZaeed = new Player() {
             Name = "Zaeed",
             Uid = "8",
             Ping = (uint)400,
-            CountryName = "Australia"
+            Location = {
+                CountryName = "Australia"
+            }
         };
 
         protected static Player PlayerPhogueIsAButterfly = new Player() {
             Name = "Phogue is a butterfly",
             Uid = "9",
             Ping = (uint)450,
-            CountryName = "Australia"
+            Location = {
+                CountryName = "Australia"
+            }
         };
 
         protected static Player PlayerSayaNishino = new Player() {
             Name = "Saya-Nishino",
             Uid = "10",
             Ping = (uint)0,
-            CountryName = "Japan"
+            Location = {
+                CountryName = "Japan"
+            }
         };
 
         protected static Player PlayerMrDiacritic = new Player() {
             Name = "MrDiäcritic",
             Uid = "11",
             Ping = (uint)0,
-            CountryName = "United States"
+            Location = {
+                CountryName = "United States"
+            }
         };
 
         protected static Map MapPortValdez = new Map() {

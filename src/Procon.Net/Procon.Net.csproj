@@ -59,6 +59,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Geolocation\GeolocateIp.cs" />
+    <Compile Include="Geolocation\IGeolocate.cs" />
+    <Compile Include="Geolocation\Location.cs" />
     <Compile Include="PacketDispatch.cs" />
     <Compile Include="Attributes\GameTypeAttribute.cs" />
     <Compile Include="Client.cs" />

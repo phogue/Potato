@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Procon.Net.Geolocation;
 
 namespace Procon.Net.Protocols.Objects {
     using Procon.Net.Utils;
@@ -8,13 +9,14 @@ namespace Procon.Net.Protocols.Objects {
     public sealed class Player : NetworkObject {
 
         // Used when determining a player's Country Name and Code.
-        //public static read only CountryLookup mCountryLookup = new CountryLookup("GeoIP.dat");
+        public static readonly IGeolocate Geolocation = new GeolocateIp();
 
         public Player() {
             this.Uid = String.Empty;
             this.ClanTag = String.Empty;
             this.Name = String.Empty;
             this.Groups = new GroupingList();
+            this.Location = new Location();
         }
 
         /// <summary>
@@ -75,7 +77,7 @@ namespace Procon.Net.Protocols.Objects {
         /// This player's Kill to Death ratio.
         /// </summary>
         public float Kdr {
-            get { return (this.Deaths <= 0) ? this.Kills : this.Kills / (float) this.Deaths; }
+            get { return (this.Deaths <= 0) ? this.Kills : this.Kills / (float)this.Deaths; }
         }
 
         /// <summary>
@@ -94,14 +96,15 @@ namespace Procon.Net.Protocols.Objects {
         public uint Ping { get; set; }
 
         /// <summary>
-        /// This player's Full Country Name he/she is playing from.
+        /// The players location, found from their ip address if available.
         /// </summary>
-        public String CountryName { get; set; }
+        public Location Location { get; set; }
 
-        /// <summary>
-        /// This player's Abbreviated Country Name he/she is playing from.
-        /// </summary>
-        public String CountryCode { get; set; }
+        [Obsolete]
+        public String CountryName { get { return this.Location.CountryName; } }
+
+        [Obsolete]
+        public String CountryCode { get { return this.Location.CountryCode; } }
 
         /// <summary>
         /// This player's IP Address.
@@ -109,34 +112,18 @@ namespace Procon.Net.Protocols.Objects {
         public String IP {
             get { return this._ip; }
             set {
-                String mIP = null;
-                String mPort = null;
+                this._ip = value;
 
                 // Validate Ip has colon before trying to split.
                 if (value != null && value.Contains(":")) {
-                    mIP = value.Split(':').FirstOrDefault();
-                    mPort = value.Split(':').LastOrDefault();
+                    this._ip = value.Split(':').FirstOrDefault();
+                    this.Port = value.Split(':').LastOrDefault();
                 }
 
-                // Validate Ip String was valid before continuing.
-                if (mIP != null && mIP != IP && mIP.Length > 0 && mIP.Contains('.')) {
-                    this._ip = value;
+                Location location = Player.Geolocation.Locate(this._ip);
 
-                    // Try: In-case GeoIP.dat is not loaded properly
-                    try {
-                        // this.CountryName = mCountryLookup.lookupCountryName(mIP);
-                        // this.CountryCode = mCountryLookup.lookupCountryCode(mIP);
-                    }
-                    catch {
-                        // Blank the name and code on error.
-                        this.CountryName = String.Empty;
-                        this.CountryCode = String.Empty;
-                    }
-                }
-
-                // Validate Port String was valid before continuing.
-                if (mPort != null && mPort != Port && mPort.Length > 0 && !mPort.Contains('.')) {
-                    this.Port = mPort;
+                if (location != null) {
+                    this.Location = location;
                 }
             }
         }

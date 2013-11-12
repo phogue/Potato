@@ -25,7 +25,7 @@ namespace Procon.Net.Protocols.Objects {
         /// <summary>
         /// A Player Number assigned by the server to this player.
         /// </summary>
-        public uint SlotID { get; set; }
+        public uint SlotId { get; set; }
 
         /// <summary>
         /// A String of characters that prefixes this player's name.

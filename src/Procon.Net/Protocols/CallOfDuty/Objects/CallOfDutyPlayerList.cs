@@ -22,7 +22,7 @@ namespace Procon.Net.Protocols.CallOfDuty.Objects {
                 if (player.Success == true) {
                     this.Add(
                         new Player() {
-                            SlotID = uint.Parse(player.Groups["num"].Value),
+                            SlotId = uint.Parse(player.Groups["num"].Value),
                             Uid = player.Groups["guid"].Value,
                             Name = player.Groups["name"].Value,
                             Ping = uint.Parse(player.Groups["ping"].Value) == 999 ? 0 : uint.Parse(player.Groups["ping"].Value),

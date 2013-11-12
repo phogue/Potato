@@ -10,12 +10,12 @@ namespace Procon.Net.Protocols.CallOfDuty.Objects {
         public NetworkObject Parse(Match match) {
             Kill kill = new Kill {
                 Killer = new Player() {
-                    SlotID = uint.Parse(match.Groups["K_ID"].Value),
+                    SlotId = uint.Parse(match.Groups["K_ID"].Value),
                     Name = match.Groups["K_Name"].Value,
                     Uid = match.Groups["K_GUID"].Value
                 },
                 Target = new Player() {
-                    SlotID = uint.Parse(match.Groups["V_ID"].Value),
+                    SlotId = uint.Parse(match.Groups["V_ID"].Value),
                     Name = match.Groups["V_Name"].Value,
                     Uid = match.Groups["V_GUID"].Value
                 },

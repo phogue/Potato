@@ -643,7 +643,7 @@ namespace Procon.Net.Protocols.Frostbite {
                     Player statePlayer = this.State.PlayerList.Find(x => x.Name == player.Name);
 
                     if (statePlayer != null) {
-                        statePlayer.SlotID = player.SlotID;
+                        statePlayer.SlotId = player.SlotID;
                         statePlayer.IP = player.IP;
                     }
                 }

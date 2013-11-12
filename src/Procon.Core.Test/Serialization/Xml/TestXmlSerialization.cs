@@ -282,7 +282,7 @@ namespace Procon.Core.Test.Serialization.Xml {
                     Name = "PlayerRole"
                 },
                 Score = 1000,
-                SlotID = 22,
+                SlotId = 22,
                 Groups = new GroupingList() {
                     new Procon.Net.Protocols.Objects.Grouping() {
                         Type = Procon.Net.Protocols.Objects.Grouping.Team,
@@ -305,7 +305,7 @@ namespace Procon.Core.Test.Serialization.Xml {
             Assert.AreEqual("400", element.Element("Ping").Value);
             Assert.AreEqual("PlayerRole", element.Element("Role").Element("Name").Value);
             Assert.AreEqual("1000", element.Element("Score").Value);
-            Assert.AreEqual("22", element.Element("SlotID").Value);
+            Assert.AreEqual("22", element.Element("SlotId").Value);
             Assert.AreEqual("1", element.Element("Groups").Elements("Grouping").First(group => group.Element("Type").Value == Grouping.Team).Element("Uid").Value);
             Assert.AreEqual("2", element.Element("Groups").Elements("Grouping").First(group => group.Element("Type").Value == Grouping.Squad).Element("Uid").Value);
             Assert.AreEqual("ABCDEF", element.Element("Uid").Value);

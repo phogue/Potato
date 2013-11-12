@@ -20,7 +20,7 @@ namespace Procon.Net.Protocols.Source.Objects {
                 if (player.Success == true) {
                     this.Add(
                         new Player() {
-                            SlotID = uint.Parse(player.Groups["userid"].Value),
+                            SlotId = uint.Parse(player.Groups["userid"].Value),
                             Uid = player.Groups["uniqueid"].Value,
                             Name = player.Groups["name"].Value,
                             Ping = uint.Parse(player.Groups["ping"].Value) == 999 ? 0 : uint.Parse(player.Groups["ping"].Value),

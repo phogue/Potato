@@ -210,10 +210,10 @@ namespace Procon.Net.Protocols.CallOfDuty {
         protected override void Action(Kick kick) {
             if (kick.Target != null) {
                 if (kick.Reason != null && kick.Reason.Length > 0) {
-                    this.Send(this.CreatePacket("clientkick {0} \"{1}\"", kick.Target.SlotID, kick.Reason));
+                    this.Send(this.CreatePacket("clientkick {0} \"{1}\"", kick.Target.SlotId, kick.Reason));
                 }
                 else {
-                    this.Send(this.CreatePacket("clientkick {0}", kick.Target.SlotID));
+                    this.Send(this.CreatePacket("clientkick {0}", kick.Target.SlotId));
                 }
             }
         }
@@ -227,7 +227,7 @@ namespace Procon.Net.Protocols.CallOfDuty {
                     }
                     else if (chat.Scope.Players != null && chat.Scope.Players.Count > 0) {
                         foreach (Player chatTarget in chat.Scope.Players) {
-                            this.Send(this.CreatePacket("tell {0} \"{1}\"", chatTarget.SlotID, chatMessage));
+                            this.Send(this.CreatePacket("tell {0} \"{1}\"", chatTarget.SlotId, chatMessage));
                         }
                     }
                 }

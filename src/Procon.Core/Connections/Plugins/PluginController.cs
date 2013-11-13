@@ -402,6 +402,12 @@ namespace Procon.Core.Connections.Plugins {
                 lease.Renew(lease.InitialLeaseTime);
             }
 
+            lease = this.GetLifetimeService() as ILease;
+
+            if (lease != null) {
+                lease.Renew(lease.InitialLeaseTime);
+            }
+
             foreach (HostPlugin plugin in this.Plugins) {
                 plugin.RenewLease();
             }

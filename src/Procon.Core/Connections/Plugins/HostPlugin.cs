@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Runtime.Remoting.Lifetime;
 using System.Xml.Serialization;
 using Newtonsoft.Json;
 
@@ -49,14 +50,7 @@ namespace Procon.Core.Connections.Plugins {
         /// <summary>
         /// Reference to the plugin loaded in the AppDomain for remoting calls.
         /// </summary>
-        [XmlIgnore, JsonIgnore]
-        public IRemotePlugin Proxy {
-            get { return _proxy; }
-            set { _proxy = value; }
-        }
-
-        [NonSerialized]
-        private IRemotePlugin _proxy;
+        private IRemotePlugin Proxy { get; set; }
 
         public override ExecutableBase Execute() {
             if (File.Exists(this.Path) == true) {
@@ -150,6 +144,17 @@ namespace Procon.Core.Connections.Plugins {
             }
 
             return result;
+        }
+
+        /// <summary>
+        /// Renews the lease on the proxy to the appdomain hosted pluin.
+        /// </summary>
+        public void RenewLease() {
+            ILease lease = ((MarshalByRefObject) this.Proxy).GetLifetimeService() as ILease;
+
+            if (lease != null) {
+                lease.Renew(lease.InitialLeaseTime);
+            }
         }
 
         public override void Dispose() {

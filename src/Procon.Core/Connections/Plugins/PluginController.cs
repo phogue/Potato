@@ -190,15 +190,15 @@ namespace Procon.Core.Connections.Plugins {
         /// Renews the lease on the plugin factory as well as each loaded plugin proxy
         /// </summary>
         public void RenewLeases() {
-            List<ILease> renewableLeases = new List<ILease>();
+            ILease lease = ((MarshalByRefObject)this.PluginFactory).GetLifetimeService() as ILease;
 
-            if (this.PluginFactory != null) {
-                renewableLeases.Add(((MarshalByRefObject)this.PluginFactory).GetLifetimeService() as ILease);
+            if (lease != null) {
+                lease.Renew(lease.InitialLeaseTime);
             }
 
-            renewableLeases.AddRange(this.Plugins.Select(plugin => ((MarshalByRefObject) plugin.Proxy).GetLifetimeService() as ILease));
-
-            renewableLeases.ForEach(lease => lease.Renew(lease.InitialLeaseTime));
+            foreach (HostPlugin plugin in this.Plugins) {
+                plugin.RenewLease();
+            }
         }
     }
 }

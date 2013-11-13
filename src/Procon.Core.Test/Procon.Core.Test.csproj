@@ -72,6 +72,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ExecutableCommands\TestCommandParameter.cs" />
+    <Compile Include="Plugins\TestPluginsEnabled.cs" />
     <Compile Include="Repositories\TestRepositoryController.cs" />
     <Compile Include="Repositories\TestFlatPackedPackage.cs" />
     <Compile Include="Repositories\TestPackage.cs" />

@@ -22,6 +22,7 @@ namespace TestPlugin {
 
         public List<IExecutableBase> Tests = new List<IExecutableBase>() {
             new TestPluginsSerialization(),
+            new TestPluginsEnabled(),
             new TestPluginsIsolation(),
             new TestPluginsWebUi(),
             new TestPluginsCommands()

@@ -46,14 +46,8 @@ namespace Procon.Core.Test.Remote {
             plugins.Execute(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.PluginsEnable,
-                Parameters = new List<CommandParameter>() {
-                    new CommandParameter() {
-                        Data = {
-                            Content = new List<String>() {
-                                plugins.Plugins.First().PluginGuid.ToString()
-                            }
-                        }
-                    }
+                Scope = {
+                    PluginGuid = plugins.Plugins.First().PluginGuid
                 }
             });
 

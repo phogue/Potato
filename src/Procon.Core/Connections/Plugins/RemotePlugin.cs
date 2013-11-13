@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
+using System.Runtime.InteropServices;
 using Procon.Core.Events;
 using Procon.Core.Scheduler;
 using Procon.Net;
@@ -54,7 +56,7 @@ namespace Procon.Core.Connections.Plugins {
         protected RemotePlugin() : base() {
             this.Tasks = new TaskController().Start();
 
-            this.PluginGuid = this.GetType().GUID;
+            this.PluginGuid = this.GetAssemblyGuid();
 
             this.AppendDispatchHandlers(new Dictionary<CommandAttribute, CommandDispatchHandler>() {
                 {
@@ -73,6 +75,22 @@ namespace Procon.Core.Connections.Plugins {
             });
         }
         
+        /// <summary>
+        /// Finds the executing assemblies guid 
+        /// </summary>
+        /// <returns></returns>
+        protected Guid GetAssemblyGuid() {
+            Guid guid = Guid.Empty;
+
+            GuidAttribute attribute = Assembly.GetAssembly(this.GetType()).GetCustomAttributes(typeof(GuidAttribute), true).Cast<GuidAttribute>().FirstOrDefault();
+
+            if (attribute == null || Guid.TryParse(attribute.Value, out guid) == false) {
+                throw new Exception("Missing assembly GuidAttribute or incorrect guid format");
+            }
+
+            return guid;
+        }
+
         public override void Dispose() {
             base.Dispose();
 

@@ -92,7 +92,16 @@ namespace Procon.Core.Connections.Plugins {
                         if (this.PluginFactory.TryEnablePlugin(parsedPluginGuid) == true) {
                             result = new CommandResultArgs() {
                                 Status = CommandResultType.Success,
-                                Success = true
+                                Success = true,
+                                Message = String.Format("Plugin {0} has been enabled", parsedPluginGuid),
+                                Scope = {
+                                    Connections = new List<Connection>() {
+                                        this.Connection
+                                    },
+                                    Plugins = new List<HostPlugin>() {
+                                        this.Plugins.First(plugin => plugin.PluginGuid == parsedPluginGuid)
+                                    }
+                                }
                             };
 
                             if (this.Events != null) {
@@ -147,7 +156,16 @@ namespace Procon.Core.Connections.Plugins {
                         if (this.PluginFactory.TryDisablePlugin(parsedPluginGuid) == true) {
                             result = new CommandResultArgs() {
                                 Status = CommandResultType.Success,
-                                Success = true
+                                Success = true,
+                                Message = String.Format("Plugin {0} has been disabled", parsedPluginGuid),
+                                Scope = {
+                                    Connections = new List<Connection>() {
+                                        this.Connection
+                                    },
+                                    Plugins = new List<HostPlugin>() {
+                                        this.Plugins.First(plugin => plugin.PluginGuid == parsedPluginGuid)
+                                    }
+                                }
                             };
 
                             if (this.Events != null) {

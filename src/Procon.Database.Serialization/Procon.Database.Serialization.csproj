@@ -42,13 +42,20 @@
     <Compile Include="Builders\And.cs" />
     <Compile Include="Builders\Ascending.cs" />
     <Compile Include="Builders\Attribute.cs" />
+    <Compile Include="Builders\Attributes\AutoIncrement.cs" />
+    <Compile Include="Builders\Attributes\Length.cs" />
+    <Compile Include="Builders\Attributes\Nullable.cs" />
+    <Compile Include="Builders\Attributes\Unsigned.cs" />
     <Compile Include="Builders\Collection.cs" />
     <Compile Include="Builders\Create.cs" />
+    <Compile Include="Builders\Database.cs" />
     <Compile Include="Builders\Descending.cs" />
     <Compile Include="Builders\Distinct.cs" />
     <Compile Include="Builders\Equality.cs" />
     <Compile Include="Builders\Equals.cs" />
     <Compile Include="Builders\Field.cs" />
+    <Compile Include="Builders\Save.cs" />
+    <Compile Include="Builders\Type.cs" />
     <Compile Include="Builders\Find.cs" />
     <Compile Include="Builders\GreaterThan.cs" />
     <Compile Include="Builders\GreaterThanEquals.cs" />
@@ -67,6 +74,11 @@
     <Compile Include="Builders\Sort.cs" />
     <Compile Include="Builders\Statement.cs" />
     <Compile Include="Builders\StringValue.cs" />
+    <Compile Include="Builders\Types\BooleanType.cs" />
+    <Compile Include="Builders\Types\FloatType.cs" />
+    <Compile Include="Builders\Types\IntegerType.cs" />
+    <Compile Include="Builders\Types\StringType.cs" />
+    <Compile Include="Builders\Types\TextType.cs" />
     <Compile Include="Builders\Value.cs" />
     <Compile Include="Exceptions\SerializationException.cs" />
     <Compile Include="ICompiledQuery.cs" />
@@ -79,6 +91,7 @@
     <Compile Include="SerializerNoSql.cs" />
     <Compile Include="SerializerSql.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

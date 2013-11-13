@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using Procon.Database.Serialization.Builders;
+using Procon.Database.Serialization.Builders.Attributes;
+using Procon.Database.Serialization.Builders.Types;
 
 namespace Procon.Database.Serialization {
 
@@ -25,6 +27,24 @@ namespace Procon.Database.Serialization {
         }
 
         /// <summary>
+        /// Formats the database name.
+        /// </summary>
+        /// <param name="database"></param>
+        /// <returns></returns>
+        protected virtual String ParseDatabase(Builders.Database database) {
+            return String.Format("`{0}`", database.Name);
+        }
+
+        /// <summary>
+        /// Parses the list of databases.
+        /// </summary>
+        /// <param name="query"></param>
+        /// <returns></returns>
+        protected virtual List<String> ParseDatabases(IQuery query) {
+            return query.Where(statement => statement is Builders.Database).Select(database => this.ParseDatabase(database as Builders.Database)).ToList();
+        }
+
+        /// <summary>
         /// Fetches the method from the type of query 
         /// </summary>
         /// <param name="method"></param>
@@ -34,8 +54,11 @@ namespace Procon.Database.Serialization {
             if (method is Find) {
                 parsed.Add("SELECT");
             }
-            else if (method is Create) {
+            else if (method is Save) {
                 parsed.Add("INSERT");
+            }
+            else if (method is Create) {
+                parsed.Add("CREATE");
             }
             else if (method is Modify) {
                 parsed.Add("UPDATE");
@@ -63,6 +86,32 @@ namespace Procon.Database.Serialization {
             return String.Join(" ", parsed.ToArray());
         }
 
+        protected virtual String ParseType(Builders.Type type) {
+            List<String> parsed = new List<String>();
+
+            Length length = type.FirstOrDefault(attribute => attribute is Length) as Length;
+            Unsigned unsigned = type.FirstOrDefault(attribute => attribute is Unsigned) as Unsigned;
+
+            if (type is StringType) {
+                parsed.Add(String.Format("VARCHAR({0})", length == null ? 255 : length.Value));
+            }
+            else if (type is IntegerType) {
+                parsed.Add("INT");
+
+                if (unsigned != null) {
+                    parsed.Add("UNSIGNED");
+                }
+            }
+
+            parsed.Add(type.Any(attribute => attribute is Builders.Attributes.Nullable) == true ? "NULL" : "NOT NULL");
+
+            if (type.Any(attribute => attribute is AutoIncrement) == true) {
+                parsed.Add("AUTO INCREMENT");
+            }
+
+            return String.Join(" ", parsed.ToArray());
+        }
+
         protected virtual String ParseField(Field field) {
             List<String> parsed = new List<String>();
 
@@ -71,6 +120,10 @@ namespace Procon.Database.Serialization {
             }
 
             parsed.Add(field.Collection == null ? String.Format("`{0}`", field.Name) : String.Format("`{0}`.`{1}`", field.Collection.Name, field.Name));
+
+            if (field.Any(attribute => attribute is Builders.Type)) {
+                parsed.Add(this.ParseType(field.First(attribute => attribute is Builders.Type) as Builders.Type));
+            }
 
             return String.Join(" ", parsed.ToArray());
         }
@@ -165,7 +218,6 @@ namespace Procon.Database.Serialization {
         protected virtual List<String> ParseCollections(IQuery query) {
             return query.Where(logical => logical is Collection).Select(collection => this.ParseCollection(collection as Collection)).ToList();
         }
-
 
         protected virtual List<String> ParseEqualities(IQuery query) {
             List<String> equalities = new List<String>();
@@ -271,6 +323,17 @@ namespace Procon.Database.Serialization {
                     compiled.Add(serializedQuery.Sortings);
                 }
             }
+            else if (this.Root is Create) {
+                if (this.Databases.Any() == true) {
+                    compiled.Add("DATABASE");
+                    compiled.Add(this.Databases.FirstOrDefault());
+                }
+                else if (this.Collections.Any() == true) {
+                    compiled.Add("TABLE");
+                    compiled.Add(this.Collections.FirstOrDefault());
+                    compiled.Add(String.Format("({0})", String.Join(", ", this.Fields.ToArray())));
+                }
+            }
 
             serializedQuery.Completed = String.Join(" ", compiled.ToArray());
 
@@ -281,6 +344,8 @@ namespace Procon.Database.Serialization {
             this.Root = method;
 
             this.Methods = this.ParseMethod(method);
+
+            this.Databases = this.ParseDatabases(method);
 
             this.Fields = this.ParseFields(method);
 

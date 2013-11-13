@@ -11,6 +11,11 @@ namespace Procon.Database.Serialization {
         protected List<String> Methods { get; set; }
 
         /// <summary>
+        /// The databases to query against
+        /// </summary>
+        protected List<String> Databases { get; set; }
+
+        /// <summary>
         /// The fields to select from the collections
         /// </summary>
         protected List<String> Fields { get; set; }
@@ -32,6 +37,7 @@ namespace Procon.Database.Serialization {
 
         protected Serializer() {
             this.Methods = new List<String>();
+            this.Databases = new List<String>();
             this.Fields = new List<String>();
             this.Conditions = new List<String>();
             this.Collections = new List<String>();

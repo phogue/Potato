@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Procon.Database.Serialization.Builders.Attributes;
+using Procon.Database.Serialization.Builders.Types;
 
 namespace Procon.Database.Serialization.Builders {
     public abstract class Query : List<IQuery>, IQuery {
@@ -12,6 +14,20 @@ namespace Procon.Database.Serialization.Builders {
             else {
                 this.Add(data);
             }
+
+            return this;
+        }
+
+        public Query Database(IQuery data) {
+            this.Add(data);
+
+            return this;
+        }
+
+        public Query Database(String name) {
+            this.Add(new Builders.Database() {
+                Name = name
+            });
 
             return this;
         }
@@ -30,6 +46,24 @@ namespace Procon.Database.Serialization.Builders {
 
         public Query Field(String name) {
             return this.Field(this.BuildField(name));
+        }
+
+        public Query Field(String name, Type type, bool nullable = true) {
+            if (nullable == true) type.Add(new Builders.Attributes.Nullable());
+
+            return this.Field(this.BuildField(name).Attribute(type));
+        }
+
+        public Query Field(String name, int length, bool nullable = true) {
+            Type type = new StringType();
+
+            type.Attribute(new Length() {
+                Value = length
+            });
+
+            if (nullable == true) type.Add(new Builders.Attributes.Nullable());
+
+            return this.Field(this.BuildField(name).Attribute(type));
         }
 
         public Query Fields(IQuery data) {

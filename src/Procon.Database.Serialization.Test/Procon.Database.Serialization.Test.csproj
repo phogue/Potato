@@ -50,9 +50,12 @@
   <ItemGroup>
     <Compile Include="MongoDb\TestSerializerMongoDbFindImplicit.cs" />
     <Compile Include="MongoDb\TestSerializerMongoDbFindExplicit.cs" />
+    <Compile Include="MySql\TestSerializerMySqlCreateImplicit.cs" />
+    <Compile Include="MySql\TestSerializerMySqlCreateExplicit.cs" />
     <Compile Include="MySql\TestSerializerMySqlFindExplicit.cs" />
     <Compile Include="MySql\TestSerializerMySqlFindImplicit.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestSerializerCreate.cs" />
     <Compile Include="TestSerializerFind.cs" />
   </ItemGroup>
   <ItemGroup>

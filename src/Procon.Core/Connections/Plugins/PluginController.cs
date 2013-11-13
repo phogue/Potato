@@ -9,11 +9,13 @@ using System.Security.Permissions;
 using System.Security.Policy;
 using System.Xml.Serialization;
 using Newtonsoft.Json;
+using Procon.Core.Events;
+using Procon.Net;
 
 namespace Procon.Core.Connections.Plugins {
     using Procon.Core.Utils;
 
-    public class PluginController : Executable, IRenewableLease {
+    public class PluginController : Executable, IRenewableLease, IPluginCallback {
 
         /// <summary>
         /// The appdomain all of the plugins are loaded into.
@@ -25,7 +27,7 @@ namespace Procon.Core.Connections.Plugins {
         /// Simple plugin factory reference to load classes into the app domain.
         /// </summary>
         [XmlIgnore, JsonIgnore]
-        public IPluginLoaderProxy PluginFactory { get; protected set; }
+        public IRemotePluginController PluginFactory { get; protected set; }
 
         /// <summary>
         /// List of plugins loaded in the app domain.
@@ -42,6 +44,126 @@ namespace Procon.Core.Connections.Plugins {
         // Default Initialization
         public PluginController() : base() {
             this.Plugins = new List<HostPlugin>();
+
+            this.AppendDispatchHandlers(new Dictionary<CommandAttribute, CommandDispatchHandler>() {
+                {
+                    new CommandAttribute() {
+                        CommandType = CommandType.PluginsEnable,
+                        ParameterTypes = new List<CommandParameterType>() {
+                            new CommandParameterType() {
+                                Name = "pluginGuid",
+                                Type = typeof(String)
+                            }
+                        }
+                    },
+                    new CommandDispatchHandler(this.EnablePlugin)
+                }, {
+                    new CommandAttribute() {
+                        CommandType = CommandType.PluginsDisable,
+                        ParameterTypes = new List<CommandParameterType>() {
+                            new CommandParameterType() {
+                                Name = "pluginGuid",
+                                Type = typeof(String)
+                            }
+                        }
+                    },
+                    new CommandDispatchHandler(this.DisablePlugin)
+                }
+            });
+        }
+
+        /// <summary>
+        /// Attempts to enable a plugin, returning false if the plugin does not exist or is already enabled.
+        /// </summary>
+        /// <param name="command"></param>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
+        public CommandResultArgs EnablePlugin(Command command, Dictionary<String, CommandParameter> parameters) {
+            CommandResultArgs result = null;
+
+            String pluginGuid = parameters["pluginGuid"].First<String>();
+
+            if (this.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
+                Guid parsedPluginGuid = Guid.Empty;
+
+                if (Guid.TryParse(pluginGuid, out parsedPluginGuid) == true) {
+
+                    if (this.PluginFactory.TryEnablePlugin(parsedPluginGuid) == true) {
+                        result = new CommandResultArgs() {
+                            Status = CommandResultType.Success,
+                            Success = true
+                        };
+
+                        if (this.Events != null) {
+                            this.Events.Log(GenericEventArgs.ConvertToGenericEvent(result, GenericEventType.PluginsPluginEnabled));
+                        }
+                    }
+                    else {
+                        result = new CommandResultArgs() {
+                            Status = CommandResultType.Failed,
+                            Success = false
+                        };
+                    }
+                }
+                else {
+                    result = new CommandResultArgs() {
+                        Status = CommandResultType.InvalidParameter,
+                        Success = false
+                    };
+                }
+            }
+            else {
+                result = CommandResultArgs.InsufficientPermissions;
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Attempts to disable a plugin, returning false if the plugin does not exist or is already disabled.
+        /// </summary>
+        /// <param name="command"></param>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
+        public CommandResultArgs DisablePlugin(Command command, Dictionary<String, CommandParameter> parameters) {
+            CommandResultArgs result = null;
+
+            String pluginGuid = parameters["pluginGuid"].First<String>();
+
+            if (this.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
+                Guid parsedPluginGuid = Guid.Empty;
+
+                if (Guid.TryParse(pluginGuid, out parsedPluginGuid) == true) {
+
+                    if (this.PluginFactory.TryDisablePlugin(parsedPluginGuid) == true) {
+                        result = new CommandResultArgs() {
+                            Status = CommandResultType.Success,
+                            Success = true
+                        };
+
+                        if (this.Events != null) {
+                            this.Events.Log(GenericEventArgs.ConvertToGenericEvent(result, GenericEventType.PluginsPluginDisabled));
+                        }
+                    }
+                    else {
+                        result = new CommandResultArgs() {
+                            Status = CommandResultType.Failed,
+                            Success = false
+                        };
+                    }
+                }
+                else {
+                    result = new CommandResultArgs() {
+                        Status = CommandResultType.InvalidParameter,
+                        Success = false
+                    };
+                }
+            }
+            else {
+                result = CommandResultArgs.InsufficientPermissions;
+            }
+
+            return result;
         }
 
         /// <summary>
@@ -113,6 +235,28 @@ namespace Procon.Core.Connections.Plugins {
             return permissions;
         }
 
+        public override void WriteConfig(Config config) {
+            foreach (HostPlugin plugin in this.Plugins) {
+                if (plugin.IsEnabled == true) {
+                    config.Root.Add(new Command() {
+                        CommandType = CommandType.PluginsEnable,
+                        Scope = {
+                            ConnectionGuid = this.Connection.ConnectionGuid
+                        },
+                        Parameters = new List<CommandParameter>() {
+                            new CommandParameter() {
+                                Data = {
+                                    Content = new List<String>() {
+                                        plugin.PluginGuid.ToString()
+                                    }
+                                }
+                            }
+                        }
+                    }.ToConfigCommand());
+                }
+            }
+        }
+
         /// <summary>
         /// Executes the commands specified in the config file and returns a reference itself.
         /// </summary>
@@ -132,37 +276,65 @@ namespace Procon.Core.Connections.Plugins {
             // Create the app domain and the plugin factory in the new domain.
             this.AppDomainSandbox = AppDomain.CreateDomain(String.Format("Procon.{0}.Plugin", this.Connection != null ? this.Connection.ConnectionGuid.ToString() : String.Empty), evidence, setup, permissions);
 
-            this.PluginFactory = (IPluginLoaderProxy)this.AppDomainSandbox.CreateInstanceAndUnwrap(Assembly.GetExecutingAssembly().FullName, typeof(PluginLoaderProxy).FullName);
+            this.PluginFactory = (IRemotePluginController)this.AppDomainSandbox.CreateInstanceAndUnwrap(Assembly.GetExecutingAssembly().FullName, typeof(RemotePluginController).FullName);
+
+            this.PluginFactory.PluginCallback = this;
 
             // Load all the plugins.
             this.LoadPlugins(new DirectoryInfo(Defines.PluginsDirectory));
+
+            if (this.Connection != null && this.Connection.Game != null) {
+                this.Connection.Game.ClientEvent += new Game.ClientEventHandler(Connection_ClientEvent);
+                this.Connection.Game.GameEvent += new Game.GameEventHandler(Connection_GameEvent);
+            }
 
             // Return the base execution.
             return base.Execute();
         }
 
-        /// <summary>
-        /// Disposes of all the plugins before calling the base dispose.
-        /// </summary>
-        public override void Dispose() {
-            foreach (HostPlugin plugin in this.Plugins) {
-                plugin.Dispose();
+        private void Connection_ClientEvent(Game sender, ClientEventArgs e) {
+            if (this.PluginFactory != null && e.Packet == null) {
+                this.PluginFactory.ClientEvent(e);
             }
+        }
 
-            this.Plugins.Clear();
-            this.Plugins = null;
-
-            AppDomain.Unload(this.AppDomainSandbox);
-            this.AppDomainSandbox = null;
-            this.PluginFactory = null;
-
-            base.Dispose();
+        private void Connection_GameEvent(Game sender, GameEventArgs e) {
+            if (this.PluginFactory != null) {
+                this.PluginFactory.GameEvent(e);
+            }
         }
 
         protected override IList<IExecutableBase> BubbleExecutableObjects(Command command) {
             return new List<IExecutableBase>() {
                 this.PluginFactory
             };
+        }
+
+        /// <summary>
+        /// Executes a command in the scope of connection or the entire instance of procon.
+        /// </summary>
+        /// <remarks><para>This is a proxy called from the plugins appdomain.</para></remarks>
+        /// <param name="command"></param>
+        /// <returns></returns>
+        public CommandResultArgs ProxyExecute(Command command) {
+            CommandResultArgs result = null;
+
+            command.Origin = CommandOrigin.Plugin;
+
+            // We check for null's on these in case of unit testing.
+            if (this.Connection != null && this.Connection.Instance != null) {
+                if (command.Scope != null && command.Scope.ConnectionGuid != Guid.Empty) {
+                    command.Scope.ConnectionGuid = this.Connection.ConnectionGuid;
+
+                    // Optimization to bypass Instance (and other connections), but passing this to Instance would have the same effect.
+                    result = this.Connection.Execute(command);
+                }
+                else {
+                    result = this.Connection.Instance.Execute(command);
+                }
+            }
+
+            return result;
         }
 
         /// <summary>
@@ -199,6 +371,24 @@ namespace Procon.Core.Connections.Plugins {
             foreach (HostPlugin plugin in this.Plugins) {
                 plugin.RenewLease();
             }
+        }
+
+        /// <summary>
+        /// Disposes of all the plugins before calling the base dispose.
+        /// </summary>
+        public override void Dispose() {
+            foreach (HostPlugin plugin in this.Plugins) {
+                plugin.Dispose();
+            }
+
+            this.Plugins.Clear();
+            this.Plugins = null;
+
+            AppDomain.Unload(this.AppDomainSandbox);
+            this.AppDomainSandbox = null;
+            this.PluginFactory = null;
+
+            base.Dispose();
         }
     }
 }

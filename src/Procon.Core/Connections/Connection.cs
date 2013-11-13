@@ -165,7 +165,13 @@ namespace Procon.Core.Connections {
                 }
             });
         }
-        
+
+        public override void WriteConfig(Config config) {
+            Config pluginConfig = new Config().Generate(typeof(PluginController));
+            this.Plugins.WriteConfig(pluginConfig);
+            config.Add(pluginConfig);
+        }
+
         public override ExecutableBase Execute() {
             this.ConnectionGuid = MD5.Guid(String.Format("{0}:{1}:{2}", this.GameType, this.Hostname, this.Port));
 

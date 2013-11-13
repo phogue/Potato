@@ -51,7 +51,7 @@ namespace Procon.Core.Connections.Plugins {
         /// <summary>
         /// The interface to callback from the plugin side to Procon.
         /// </summary>
-        public IHostPlugin PluginCallback { private get; set; }
+        public IPluginCallback PluginCallback { private get; set; }
 
         protected RemotePlugin() : base() {
             this.Tasks = new TaskController().Start();
@@ -104,7 +104,14 @@ namespace Procon.Core.Connections.Plugins {
         /// <param name="command"></param>
         /// <returns></returns>
         public CommandResultArgs ProxyExecute(Command command) {
-            return (command.Scope != null && command.Scope.PluginGuid != Guid.Empty) ? this.Execute(command) : this.PluginCallback.ProxyExecute(command);
+            if (command.Scope != null && command.Scope.PluginGuid != Guid.Empty) {
+                command.Result = this.Execute(command);
+            }
+            else if (this.PluginCallback != null) {
+                command.Result = this.PluginCallback.ProxyExecute(command);
+            }
+
+            return command.Result;
         }
 
         /// <summary>
@@ -241,7 +248,7 @@ namespace Procon.Core.Connections.Plugins {
         /// </summary>
         /// <param name="e"></param>
         public virtual void GenericEvent(GenericEventArgs e) {
-            if (e.GenericEventType == GenericEventType.ConfigSetup) {
+            if (e.GenericEventType == GenericEventType.PluginsPluginLoaded) {
                 this.GenericEventTypeConfigSetup(e);
             }
             else if (e.GenericEventType == GenericEventType.TextCommandExecuted) {

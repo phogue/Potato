@@ -6,14 +6,13 @@ using Newtonsoft.Json;
 
 namespace Procon.Core.Connections.Plugins {
     using Procon.Core.Events;
-    using Procon.Net;
     using Procon.Core.Utils;
 
     /// <summary>
     /// This is the Procon side class to handle the proxy to the app domain, as well as the plugins
     /// cleanup.
     /// </summary>
-    public sealed class HostPlugin : Executable, IHostPlugin, IRenewableLease {
+    public sealed class HostPlugin : Executable, IRenewableLease {
 
         /// <summary>
         /// The name of the plugin, also used as it's namespace
@@ -22,11 +21,27 @@ namespace Procon.Core.Connections.Plugins {
 
         /// <summary>
         /// The loaded plugin GUID
+        /// todo This remotes once, which isn't very expensive if used in moderation, but perhaps we should cache this result if this ever becomes a hot spot?
         /// </summary>
         public Guid PluginGuid {
             get {
                 return this.Proxy != null ? this.Proxy.PluginGuid : Guid.Empty;
             }
+            // Commented so this object can be serialized.
+            // ReSharper disable ValueParameterNotUsed
+            set { }
+            // ReSharper restore ValueParameterNotUsed
+        }
+
+        /// <summary>
+        /// If this plugin is enabled or not.
+        /// todo This remotes twice, which isn't very expensive if used in moderation, but perhaps we should cache this result if this ever becomes a hot spot?
+        /// </summary>
+        public bool IsEnabled {
+            get {
+                return this.PluginFactory != null && this.PluginFactory.IsPluginEnabled(this.PluginGuid);
+            }
+            // Commented so this object can be serialized.
             // ReSharper disable ValueParameterNotUsed
             set { }
             // ReSharper restore ValueParameterNotUsed
@@ -39,7 +54,7 @@ namespace Procon.Core.Connections.Plugins {
         /// Reference to the plugin loader proxy
         /// </summary>
         [XmlIgnore, JsonIgnore]
-        public IPluginLoaderProxy PluginFactory { get; set; }
+        public IRemotePluginController PluginFactory { get; set; }
 
         /// <summary>
         /// Ultimately the owner of this plugin.
@@ -60,26 +75,10 @@ namespace Procon.Core.Connections.Plugins {
 
                 if (this.Proxy != null) {
 
-                    // Tell the plugin we are about the setup the callbacks
-                    this.Proxy.GenericEvent(new GenericEventArgs() {
-                        GenericEventType = GenericEventType.PluginsRegisteringCallbacks
-                    });
-
-                    this.Proxy.PluginCallback = this;
-
                     // register game specific call backs. Connection can be null during unit testing.
-                    if (this.Connection != null && this.Connection.Game != null) {
-
+                    if (this.Connection != null) {
                         this.Proxy.ConnectionGuid = this.Connection.ConnectionGuid;
-
-                        this.Connection.Game.ClientEvent += new Game.ClientEventHandler(Connection_ClientEvent);
-                        this.Connection.Game.GameEvent += new Game.GameEventHandler(Connection_GameEvent);
                     }
-
-                    // Tell the plugin that callback have been registered and it may start sending out commands.
-                    this.Proxy.GenericEvent(new GenericEventArgs() {
-                        GenericEventType = GenericEventType.PluginsCallbacksRegistered
-                    });
 
                     // Connection and Game could be null if we're unit testing.
                     if (this.Connection != null && this.Connection.Game != null) {
@@ -96,54 +95,15 @@ namespace Procon.Core.Connections.Plugins {
                         }
                     }
 
-                    // Tell the plugin that everything is setup and ready for it to start loading
-                    // its config.
+                    // Tell the plugin it's ready to begin, everything is setup and ready 
+                    // for it to start loading its config.
                     this.Proxy.GenericEvent(new GenericEventArgs() {
-                        GenericEventType = GenericEventType.ConfigSetup
+                        GenericEventType = GenericEventType.PluginsPluginLoaded
                     });
                 }
             }
 
             return base.Execute();
-        }
-
-        private void Connection_ClientEvent(Game sender, ClientEventArgs e) {
-            if (this.Proxy != null && e.EventType != ClientEventType.ClientPacketReceived && e.EventType != ClientEventType.ClientPacketSent) {
-                this.Proxy.ClientEvent(e);
-            }
-        }
-
-        private void Connection_GameEvent(Game sender, GameEventArgs e) {
-            if (this.Proxy != null) {
-                this.Proxy.GameEvent(e);
-            }
-        }
-
-        /// <summary>
-        /// Executes a command in the scope of connection or the entire instance of procon.
-        /// </summary>
-        /// <remarks><para>This is a proxy called from the plugins appdomain.</para></remarks>
-        /// <param name="command"></param>
-        /// <returns></returns>
-        public CommandResultArgs ProxyExecute(Command command) {
-            CommandResultArgs result = null;
-
-            command.Origin = CommandOrigin.Plugin;
-
-            // We check for null's on these in case of unit testing.
-            if (this.Connection != null && this.Connection.Instance != null) {
-                if (command.Scope != null && command.Scope.ConnectionGuid != Guid.Empty) {
-                    command.Scope.ConnectionGuid = this.Connection.ConnectionGuid;
-
-                    // Optimization to bypass Instance (and other connections), but passing this to Instance would have the same effect.
-                    result = this.Connection.Execute(command);
-                }
-                else {
-                    result = this.Connection.Instance.Execute(command);
-                }
-            }
-
-            return result;
         }
 
         /// <summary>

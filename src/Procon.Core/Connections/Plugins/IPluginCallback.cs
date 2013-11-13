@@ -1,5 +1,9 @@
 ﻿namespace Procon.Core.Connections.Plugins {
-    public interface IHostPlugin {
+
+    /// <summary>
+    /// Interface to go from remote -> host.
+    /// </summary>
+    public interface IPluginCallback {
 
         /// <summary>
         /// Execute a command on Procon's side of the appdomain (host)

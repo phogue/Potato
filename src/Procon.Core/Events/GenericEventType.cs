@@ -106,21 +106,19 @@ namespace Procon.Core.Events {
         /// A plugin has been unloaded.
         /// </summary>
         PluginsPluginRemoved,
-
         /// <summary>
-        /// All methods are currently being registered so the plugin can communicate back with procon
+        /// A plugin has been enabled
         /// </summary>
-        PluginsRegisteringCallbacks,
+        PluginsPluginEnabled,
         /// <summary>
-        /// Methods have been registered, the plugin can now function as normal
+        /// A plugin has been disabled.
         /// </summary>
-        PluginsCallbacksRegistered,
-
-
+        PluginsPluginDisabled,
         /// <summary>
-        /// The path and config name have been set, the config may now be loaded.
+        /// A plugin has completed it's load.
         /// </summary>
-        ConfigSetup,
+        PluginsPluginLoaded,
+        
         /// <summary>
         /// The config for is being loaded
         /// </summary>

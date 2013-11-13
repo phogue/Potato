@@ -75,8 +75,8 @@
     <Compile Include="CommandResultType.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="Connections\Connection.cs" />
-    <Compile Include="Connections\Plugins\IHostPlugin.cs" />
-    <Compile Include="Connections\Plugins\IPluginLoaderProxy.cs" />
+    <Compile Include="Connections\Plugins\IPluginCallback.cs" />
+    <Compile Include="Connections\Plugins\IRemotePluginController.cs" />
     <Compile Include="Connections\Plugins\IRenewableLease.cs" />
     <Compile Include="Connections\TextCommands\TextCommandMatch.cs" />
     <Compile Include="Connections\TextCommands\ParserType.cs" />
@@ -112,7 +112,7 @@
     <Compile Include="Connections\Plugins\HostPlugin.cs" />
     <Compile Include="Connections\Plugins\RemotePlugin.cs" />
     <Compile Include="Connections\Plugins\PluginController.cs" />
-    <Compile Include="Connections\Plugins\PluginLoaderProxy.cs" />
+    <Compile Include="Connections\Plugins\RemotePluginController.cs" />
     <Compile Include="Instance.cs" />
     <Compile Include="Repositories\Serialization\SerializableVersion.cs" />
     <Compile Include="Utils\XElementValidator.cs" />

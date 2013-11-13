@@ -31,6 +31,15 @@ namespace Procon.Core {
         InstanceAddConnection,
         InstanceRemoveConnection,
 
+        /// <summary>
+        /// Enables a plugin, allowing events/commands to be passed through to the plugin
+        /// </summary>
+        PluginsEnable,
+        /// <summary>
+        /// Disables  plugin, preventing events/commands being bubbled
+        /// </summary>
+        PluginsDisable,
+
         #region Security
 
         SecurityQueryPermission,

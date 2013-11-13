@@ -228,7 +228,7 @@ namespace TestPlugin {
         }
 
         public override void GenericEvent(GenericEventArgs e) {
-            Console.WriteLine("Test Plugin ({0}) Event: {1}", typeof(Program).GUID, e.Name);
+            Console.WriteLine("Test Plugin ({0}) Event: {1}", this.PluginGuid, e.Name);
 
             if (e.GenericEventType == GenericEventType.TextCommandRegistered) {
                 this.Commands.Add(e.Now.TextCommands.First());
@@ -236,7 +236,7 @@ namespace TestPlugin {
             else if (e.GenericEventType == GenericEventType.TextCommandUnregistered) {
                 this.Commands.Remove(e.Now.TextCommands.First());
             }
-            else if (e.GenericEventType == GenericEventType.PluginsCallbacksRegistered) {
+            else if (e.GenericEventType == GenericEventType.PluginsPluginEnabled) {
 
                 this.ProxyExecute(new Command() {
                     CommandType = CommandType.TextCommandsRegister,

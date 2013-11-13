@@ -43,6 +43,20 @@ namespace Procon.Core.Test.Remote {
             // We use the TestPlugin to validate various commands can be executed
             PluginController plugins = new PluginController().Execute() as PluginController;
 
+            plugins.Execute(new Command() {
+                Origin = CommandOrigin.Local,
+                CommandType = CommandType.PluginsEnable,
+                Parameters = new List<CommandParameter>() {
+                    new CommandParameter() {
+                        Data = {
+                            Content = new List<String>() {
+                                plugins.Plugins.First().PluginGuid.ToString()
+                            }
+                        }
+                    }
+                }
+            });
+
             DaemonController daemon = new DaemonController() {
                 ExecutableObjects = new List<IExecutableBase>() {
                     plugins

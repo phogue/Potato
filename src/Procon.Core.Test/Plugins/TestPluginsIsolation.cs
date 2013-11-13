@@ -4,6 +4,7 @@ using System.Text;
 using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
+using Procon.Core.Security;
 using Procon.Core.Utils;
 
 namespace Procon.Core.Test.Plugins {
@@ -20,6 +21,20 @@ namespace Procon.Core.Test.Plugins {
         [Test]
         public void TestPluginsIsolationCleanCurrentAppDomain() {
             PluginController plugins = new PluginController().Execute() as PluginController;
+
+            plugins.Execute(new Command() {
+                Origin = CommandOrigin.Local,
+                CommandType = CommandType.PluginsEnable,
+                Parameters = new List<CommandParameter>() {
+                    new CommandParameter() {
+                        Data = {
+                            Content = new List<String>() {
+                                plugins.Plugins.First().PluginGuid.ToString()
+                            }
+                        }
+                    }
+                }
+            });
 
             // Send a command to ensure the appdomain actually has a functional copy of the TestPlugin
             // assembly loaded.
@@ -51,6 +66,20 @@ namespace Procon.Core.Test.Plugins {
         /// <param name="resultType"></param>
         protected void TestPluginsIsolationWriteToDirectory(String path, bool expectedSuccessFlag, CommandResultType resultType) {
             PluginController plugins = new PluginController().Execute() as PluginController;
+
+            plugins.Execute(new Command() {
+                Origin = CommandOrigin.Local,
+                CommandType = CommandType.PluginsEnable,
+                Parameters = new List<CommandParameter>() {
+                    new CommandParameter() {
+                        Data = {
+                            Content = new List<String>() {
+                                plugins.Plugins.First().PluginGuid.ToString()
+                            }
+                        }
+                    }
+                }
+            });
 
             CommandResultArgs result = plugins.Execute(new Command() {
                 Name = "TestPluginsIsolationWriteToDirectory",

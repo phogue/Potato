@@ -14,7 +14,7 @@ namespace Procon.Core.Connections.Plugins {
         DirectoryInfo ConfigDirectoryInfo { get; set; }
         DirectoryInfo LogDirectoryInfo { get; set; }
 
-        IHostPlugin PluginCallback { set; }
+        IPluginCallback PluginCallback { set; }
 
         void GameEvent(GameEventArgs e);
 

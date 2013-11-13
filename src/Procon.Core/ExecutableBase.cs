@@ -88,19 +88,17 @@ namespace Procon.Core {
         protected void Execute(Command command, Config config) {
             if (config != null && config.Root != null) {
 
-                // Allocate space for this objects type and the config's nodes.
-                Type oType = GetType();
-
                 // Drill down in the config to this object's type.
-                var oNodes = oType.FullName.Split('`').First().Split('.').Skip(1).Aggregate(config.Root.Elements(), (current, oName) => current.DescendantsAndSelf(oName));
+                var nodes = this.GetType().FullName.Split('`').First().Split('.').Skip(1).Aggregate(config.Root.Elements(), (current, name) => current.DescendantsAndSelf(name));
 
                 // For each of the commands for this object...
-                foreach (XElement xCommand in oNodes.Descendants("Command")) {
+                foreach (XElement xCommand in nodes.Descendants("Command")) {
                     Command loadedCommand = xCommand.FromXElement<Command>();
 
                     if (loadedCommand != null && loadedCommand.Name != null) {
                         command.ParseCommandType(loadedCommand.Name);
                         command.Parameters = loadedCommand.Parameters;
+                        command.Scope = loadedCommand.Scope;
 
                         this.Execute(command);
                     }

@@ -23,14 +23,8 @@ namespace Procon.Core.Test.Plugins {
             CommandResultArgs result = plugins.Execute(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.PluginsEnable,
-                Parameters = new List<CommandParameter>() {
-                    new CommandParameter() {
-                        Data = {
-                            Content = new List<String>() {
-                                plugins.Plugins.First().PluginGuid.ToString()
-                            }
-                        }
-                    }
+                Scope = {
+                    PluginGuid = plugins.Plugins.First().PluginGuid
                 }
             });
 
@@ -51,28 +45,16 @@ namespace Procon.Core.Test.Plugins {
             plugins.Execute(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.PluginsEnable,
-                Parameters = new List<CommandParameter>() {
-                    new CommandParameter() {
-                        Data = {
-                            Content = new List<String>() {
-                                plugins.Plugins.First().PluginGuid.ToString()
-                            }
-                        }
-                    }
+                Scope = {
+                    PluginGuid = plugins.Plugins.First().PluginGuid
                 }
             });
 
             CommandResultArgs result = plugins.Execute(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.PluginsEnable,
-                Parameters = new List<CommandParameter>() {
-                    new CommandParameter() {
-                        Data = {
-                            Content = new List<String>() {
-                                plugins.Plugins.First().PluginGuid.ToString()
-                            }
-                        }
-                    }
+                Scope = {
+                    PluginGuid = plugins.Plugins.First().PluginGuid
                 }
             });
 
@@ -94,46 +76,13 @@ namespace Procon.Core.Test.Plugins {
             CommandResultArgs result = plugins.Execute(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.PluginsEnable,
-                Parameters = new List<CommandParameter>() {
-                    new CommandParameter() {
-                        Data = {
-                            Content = new List<String>() {
-                                Guid.NewGuid().ToString()
-                            }
-                        }
-                    }
+                Scope = {
+                    PluginGuid = Guid.NewGuid()
                 }
             });
 
             Assert.IsFalse(result.Success);
             Assert.AreEqual(CommandResultType.DoesNotExists, result.Status);
-        }
-        /// <summary>
-        /// Tests that a parameter is validated for a conversion to a GUID
-        /// </summary>
-        [Test]
-        public void TestPluginEnableInvalidParameter() {
-            SecurityController security = new SecurityController();
-            PluginController plugins = new PluginController() {
-                Security = security
-            }.Execute() as PluginController;
-
-            CommandResultArgs result = plugins.Execute(new Command() {
-                Origin = CommandOrigin.Local,
-                CommandType = CommandType.PluginsEnable,
-                Parameters = new List<CommandParameter>() {
-                    new CommandParameter() {
-                        Data = {
-                            Content = new List<String>() {
-                                "This is an invalid GUID"
-                            }
-                        }
-                    }
-                }
-            });
-
-            Assert.IsFalse(result.Success);
-            Assert.AreEqual(CommandResultType.InvalidParameter, result.Status);
         }
 
         /// <summary>
@@ -150,14 +99,8 @@ namespace Procon.Core.Test.Plugins {
                 Origin = CommandOrigin.Remote,
                 Username = "Phogue",
                 CommandType = CommandType.PluginsEnable,
-                Parameters = new List<CommandParameter>() {
-                    new CommandParameter() {
-                        Data = {
-                            Content = new List<String>() {
-                                plugins.Plugins.First().PluginGuid.ToString()
-                            }
-                        }
-                    }
+                Scope = {
+                    PluginGuid = plugins.Plugins.First().PluginGuid
                 }
             });
 
@@ -178,14 +121,8 @@ namespace Procon.Core.Test.Plugins {
             CommandResultArgs result = plugins.Execute(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.PluginsEnable,
-                Parameters = new List<CommandParameter>() {
-                    new CommandParameter() {
-                        Data = {
-                            Content = new List<String>() {
-                                plugins.Plugins.First().PluginGuid.ToString()
-                            }
-                        }
-                    }
+                Scope = {
+                    PluginGuid = plugins.Plugins.First().PluginGuid
                 }
             });
 

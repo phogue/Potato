@@ -48,24 +48,12 @@ namespace Procon.Core.Connections.Plugins {
             this.AppendDispatchHandlers(new Dictionary<CommandAttribute, CommandDispatchHandler>() {
                 {
                     new CommandAttribute() {
-                        CommandType = CommandType.PluginsEnable,
-                        ParameterTypes = new List<CommandParameterType>() {
-                            new CommandParameterType() {
-                                Name = "pluginGuid",
-                                Type = typeof(String)
-                            }
-                        }
+                        CommandType = CommandType.PluginsEnable
                     },
                     new CommandDispatchHandler(this.EnablePlugin)
                 }, {
                     new CommandAttribute() {
-                        CommandType = CommandType.PluginsDisable,
-                        ParameterTypes = new List<CommandParameterType>() {
-                            new CommandParameterType() {
-                                Name = "pluginGuid",
-                                Type = typeof(String)
-                            }
-                        }
+                        CommandType = CommandType.PluginsDisable
                     },
                     new CommandDispatchHandler(this.DisablePlugin)
                 }
@@ -81,50 +69,39 @@ namespace Procon.Core.Connections.Plugins {
         public CommandResultArgs EnablePlugin(Command command, Dictionary<String, CommandParameter> parameters) {
             CommandResultArgs result = null;
 
-            String pluginGuid = parameters["pluginGuid"].First<String>();
-
             if (this.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
-                Guid parsedPluginGuid = Guid.Empty;
+                Guid pluginGuid = command.Scope.PluginGuid;
 
-                if (Guid.TryParse(pluginGuid, out parsedPluginGuid) == true) {
-
-                    if (this.Plugins.Count(plugin => plugin.PluginGuid == parsedPluginGuid) > 0) {
-                        if (this.PluginFactory.TryEnablePlugin(parsedPluginGuid) == true) {
-                            result = new CommandResultArgs() {
-                                Status = CommandResultType.Success,
-                                Success = true,
-                                Message = String.Format("Plugin {0} has been enabled", parsedPluginGuid),
-                                Scope = {
-                                    Connections = new List<Connection>() {
-                                        this.Connection
-                                    },
-                                    Plugins = new List<HostPlugin>() {
-                                        this.Plugins.First(plugin => plugin.PluginGuid == parsedPluginGuid)
-                                    }
+                if (this.Plugins.Count(plugin => plugin.PluginGuid == pluginGuid) > 0) {
+                    if (this.PluginFactory.TryEnablePlugin(pluginGuid) == true) {
+                        result = new CommandResultArgs() {
+                            Status = CommandResultType.Success,
+                            Success = true,
+                            Message = String.Format("Plugin {0} has been enabled", pluginGuid),
+                            Scope = {
+                                Connections = new List<Connection>() {
+                                    this.Connection
+                                },
+                                Plugins = new List<HostPlugin>() {
+                                    this.Plugins.First(plugin => plugin.PluginGuid == pluginGuid)
                                 }
-                            };
-
-                            if (this.Events != null) {
-                                this.Events.Log(GenericEventArgs.ConvertToGenericEvent(result, GenericEventType.PluginsPluginEnabled));
                             }
-                        }
-                        else {
-                            result = new CommandResultArgs() {
-                                Status = CommandResultType.Failed,
-                                Success = false
-                            };
+                        };
+
+                        if (this.Events != null) {
+                            this.Events.Log(GenericEventArgs.ConvertToGenericEvent(result, GenericEventType.PluginsPluginEnabled));
                         }
                     }
                     else {
                         result = new CommandResultArgs() {
-                            Status = CommandResultType.DoesNotExists,
+                            Status = CommandResultType.Failed,
                             Success = false
                         };
                     }
                 }
                 else {
                     result = new CommandResultArgs() {
-                        Status = CommandResultType.InvalidParameter,
+                        Status = CommandResultType.DoesNotExists,
                         Success = false
                     };
                 }
@@ -145,50 +122,39 @@ namespace Procon.Core.Connections.Plugins {
         public CommandResultArgs DisablePlugin(Command command, Dictionary<String, CommandParameter> parameters) {
             CommandResultArgs result = null;
 
-            String pluginGuid = parameters["pluginGuid"].First<String>();
-
             if (this.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
-                Guid parsedPluginGuid = Guid.Empty;
+                Guid pluginGuid = command.Scope.PluginGuid;
 
-                if (Guid.TryParse(pluginGuid, out parsedPluginGuid) == true) {
-
-                    if (this.Plugins.Count(plugin => plugin.PluginGuid == parsedPluginGuid) > 0) {
-                        if (this.PluginFactory.TryDisablePlugin(parsedPluginGuid) == true) {
-                            result = new CommandResultArgs() {
-                                Status = CommandResultType.Success,
-                                Success = true,
-                                Message = String.Format("Plugin {0} has been disabled", parsedPluginGuid),
-                                Scope = {
-                                    Connections = new List<Connection>() {
-                                        this.Connection
-                                    },
-                                    Plugins = new List<HostPlugin>() {
-                                        this.Plugins.First(plugin => plugin.PluginGuid == parsedPluginGuid)
-                                    }
+                if (this.Plugins.Count(plugin => plugin.PluginGuid == pluginGuid) > 0) {
+                    if (this.PluginFactory.TryDisablePlugin(pluginGuid) == true) {
+                        result = new CommandResultArgs() {
+                            Status = CommandResultType.Success,
+                            Success = true,
+                            Message = String.Format("Plugin {0} has been disabled", pluginGuid),
+                            Scope = {
+                                Connections = new List<Connection>() {
+                                    this.Connection
+                                },
+                                Plugins = new List<HostPlugin>() {
+                                    this.Plugins.First(plugin => plugin.PluginGuid == pluginGuid)
                                 }
-                            };
-
-                            if (this.Events != null) {
-                                this.Events.Log(GenericEventArgs.ConvertToGenericEvent(result, GenericEventType.PluginsPluginDisabled));
                             }
-                        }
-                        else {
-                            result = new CommandResultArgs() {
-                                Status = CommandResultType.Failed,
-                                Success = false
-                            };
+                        };
+
+                        if (this.Events != null) {
+                            this.Events.Log(GenericEventArgs.ConvertToGenericEvent(result, GenericEventType.PluginsPluginDisabled));
                         }
                     }
                     else {
                         result = new CommandResultArgs() {
-                            Status = CommandResultType.DoesNotExists,
+                            Status = CommandResultType.Failed,
                             Success = false
                         };
                     }
                 }
                 else {
                     result = new CommandResultArgs() {
-                        Status = CommandResultType.InvalidParameter,
+                        Status = CommandResultType.DoesNotExists,
                         Success = false
                     };
                 }
@@ -275,16 +241,8 @@ namespace Procon.Core.Connections.Plugins {
                     config.Root.Add(new Command() {
                         CommandType = CommandType.PluginsEnable,
                         Scope = {
-                            ConnectionGuid = this.Connection.ConnectionGuid
-                        },
-                        Parameters = new List<CommandParameter>() {
-                            new CommandParameter() {
-                                Data = {
-                                    Content = new List<String>() {
-                                        plugin.PluginGuid.ToString()
-                                    }
-                                }
-                            }
+                            ConnectionGuid = this.Connection.ConnectionGuid,
+                            PluginGuid = plugin.PluginGuid
                         }
                     }.ToConfigCommand());
                 }

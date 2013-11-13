@@ -88,19 +88,27 @@ namespace Procon.Core.Connections.Plugins {
 
                 if (Guid.TryParse(pluginGuid, out parsedPluginGuid) == true) {
 
-                    if (this.PluginFactory.TryEnablePlugin(parsedPluginGuid) == true) {
-                        result = new CommandResultArgs() {
-                            Status = CommandResultType.Success,
-                            Success = true
-                        };
+                    if (this.Plugins.Count(plugin => plugin.PluginGuid == parsedPluginGuid) > 0) {
+                        if (this.PluginFactory.TryEnablePlugin(parsedPluginGuid) == true) {
+                            result = new CommandResultArgs() {
+                                Status = CommandResultType.Success,
+                                Success = true
+                            };
 
-                        if (this.Events != null) {
-                            this.Events.Log(GenericEventArgs.ConvertToGenericEvent(result, GenericEventType.PluginsPluginEnabled));
+                            if (this.Events != null) {
+                                this.Events.Log(GenericEventArgs.ConvertToGenericEvent(result, GenericEventType.PluginsPluginEnabled));
+                            }
+                        }
+                        else {
+                            result = new CommandResultArgs() {
+                                Status = CommandResultType.Failed,
+                                Success = false
+                            };
                         }
                     }
                     else {
                         result = new CommandResultArgs() {
-                            Status = CommandResultType.Failed,
+                            Status = CommandResultType.DoesNotExists,
                             Success = false
                         };
                     }
@@ -135,19 +143,27 @@ namespace Procon.Core.Connections.Plugins {
 
                 if (Guid.TryParse(pluginGuid, out parsedPluginGuid) == true) {
 
-                    if (this.PluginFactory.TryDisablePlugin(parsedPluginGuid) == true) {
-                        result = new CommandResultArgs() {
-                            Status = CommandResultType.Success,
-                            Success = true
-                        };
+                    if (this.Plugins.Count(plugin => plugin.PluginGuid == parsedPluginGuid) > 0) {
+                        if (this.PluginFactory.TryDisablePlugin(parsedPluginGuid) == true) {
+                            result = new CommandResultArgs() {
+                                Status = CommandResultType.Success,
+                                Success = true
+                            };
 
-                        if (this.Events != null) {
-                            this.Events.Log(GenericEventArgs.ConvertToGenericEvent(result, GenericEventType.PluginsPluginDisabled));
+                            if (this.Events != null) {
+                                this.Events.Log(GenericEventArgs.ConvertToGenericEvent(result, GenericEventType.PluginsPluginDisabled));
+                            }
+                        }
+                        else {
+                            result = new CommandResultArgs() {
+                                Status = CommandResultType.Failed,
+                                Success = false
+                            };
                         }
                     }
                     else {
                         result = new CommandResultArgs() {
-                            Status = CommandResultType.Failed,
+                            Status = CommandResultType.DoesNotExists,
                             Success = false
                         };
                     }

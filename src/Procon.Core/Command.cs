@@ -102,7 +102,8 @@ namespace Procon.Core {
                 XElement origin = result.Element("Origin");
                 XElement gameType = result.Element("GameType");
 
-                if (scope != null) scope.Remove();
+                // Remove the scope attribute if it has no effect
+                if (scope != null && this.Scope.ConnectionGuid == Guid.Empty && this.Scope.PluginGuid == Guid.Empty) scope.Remove();
                 if (origin != null) origin.Remove();
                 if (gameType != null) gameType.Remove();
             }

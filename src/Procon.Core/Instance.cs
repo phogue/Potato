@@ -267,7 +267,7 @@ namespace Procon.Core {
         protected void Plugin_Tick(Object sender, TickEventArgs e) {
             if (this.Connections != null) {
                 foreach (PluginController plugins in this.Connections.Select(connection => connection.Plugins)) {
-                    plugins.RenewLeases();
+                    plugins.RenewLease();
                 }
             }
         }

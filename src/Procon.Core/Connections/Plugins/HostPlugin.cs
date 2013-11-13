@@ -13,7 +13,7 @@ namespace Procon.Core.Connections.Plugins {
     /// This is the Procon side class to handle the proxy to the app domain, as well as the plugins
     /// cleanup.
     /// </summary>
-    public sealed class HostPlugin : Executable, IHostPlugin {
+    public sealed class HostPlugin : Executable, IHostPlugin, IRenewableLease {
 
         /// <summary>
         /// The name of the plugin, also used as it's namespace

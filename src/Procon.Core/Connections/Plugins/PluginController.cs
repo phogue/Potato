@@ -13,7 +13,7 @@ using Newtonsoft.Json;
 namespace Procon.Core.Connections.Plugins {
     using Procon.Core.Utils;
 
-    public class PluginController : Executable {
+    public class PluginController : Executable, IRenewableLease {
 
         /// <summary>
         /// The appdomain all of the plugins are loaded into.
@@ -189,7 +189,7 @@ namespace Procon.Core.Connections.Plugins {
         /// <summary>
         /// Renews the lease on the plugin factory as well as each loaded plugin proxy
         /// </summary>
-        public void RenewLeases() {
+        public void RenewLease() {
             ILease lease = ((MarshalByRefObject)this.PluginFactory).GetLifetimeService() as ILease;
 
             if (lease != null) {

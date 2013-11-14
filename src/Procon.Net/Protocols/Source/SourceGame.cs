@@ -40,7 +40,7 @@ namespace Procon.Net.Protocols.Source {
         #region Dispatching
 
         protected override void Dispatch(SourcePacket packet) {
-            if (packet.Origin == PacketOrigin.Client && packet.IsResponse == true) {
+            if (packet.Origin == PacketOrigin.Client && packet.Type == PacketType.Response) {
                 SourcePacket requestPacket = ((SourceClient)this.Client).GetRequestPacket(packet);
 
                 if (packet.ResponseType == SourceResponseType.ServerDataAuthResponse) {
@@ -58,7 +58,7 @@ namespace Procon.Net.Protocols.Source {
                     }
                 }
             }
-            else if (packet.Origin == PacketOrigin.Server && packet.IsResponse == false) {
+            else if (packet.Origin == PacketOrigin.Server && packet.Type == PacketType.Request) {
                 this.ParseLogEvent(packet);
                 //this.Dispatch(packet.String1Words[0], packet, null);
             }
@@ -243,17 +243,17 @@ namespace Procon.Net.Protocols.Source {
         #region Source specific
 
         protected void SendResponse(SourcePacket request, string format, params object[] args) {
-            this.Send(new SourcePacket(request.Origin, true, request.RequestId, SourceRequestType.SERVERDATA_EXECCOMMAND, String.Format(format, args), String.Empty));
+            this.Send(new SourcePacket(request.Origin, PacketType.Response, request.RequestId, SourceRequestType.SERVERDATA_EXECCOMMAND, String.Format(format, args), String.Empty));
         }
 
         protected void SendRequest(string format, params object[] args) {
-            this.Send(new SourcePacket(PacketOrigin.Client, false, (int)((SourceClient)this.Client).AcquireSequenceNumber, SourceRequestType.SERVERDATA_EXECCOMMAND, String.Format(format, args), String.Empty));
+            this.Send(new SourcePacket(PacketOrigin.Client, PacketType.Request, (int)((SourceClient)this.Client).AcquireSequenceNumber, SourceRequestType.SERVERDATA_EXECCOMMAND, String.Format(format, args), String.Empty));
         }
 
         #endregion
 
         protected override SourcePacket CreatePacket(string format, params object[] args) {
-            return new SourcePacket(PacketOrigin.Client, false, null, SourceRequestType.SERVERDATA_EXECCOMMAND, String.Format(format, args), String.Empty);
+            return new SourcePacket(PacketOrigin.Client, PacketType.Request, null, SourceRequestType.SERVERDATA_EXECCOMMAND, String.Format(format, args), String.Empty);
         }
 
         public override void Login(string password) {
@@ -266,7 +266,7 @@ namespace Procon.Net.Protocols.Source {
                 ((SourceClient)this.Client).SourceLogListenPort = (ushort)this.SourceLogListenPort;
             }
 
-            this.Send(new SourcePacket(PacketOrigin.Client, false, (int)((SourceClient)this.Client).AcquireSequenceNumber, SourceRequestType.SERVERDATA_AUTH, this.Password, String.Empty));
+            this.Send(new SourcePacket(PacketOrigin.Client, PacketType.Request, (int)((SourceClient)this.Client).AcquireSequenceNumber, SourceRequestType.SERVERDATA_AUTH, this.Password, String.Empty));
         }
 
         protected override void Action(Chat chat) {

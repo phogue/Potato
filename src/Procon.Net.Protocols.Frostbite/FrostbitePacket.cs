@@ -24,14 +24,14 @@ namespace Procon.Net.Protocols.Frostbite {
             this.Words = new List<string>();
         }
 
-        public FrostbitePacket(PacketOrigin origin, bool isResponse, UInt32? sequenceId, params string[] words)
-            : base(origin, isResponse) {
+        public FrostbitePacket(PacketOrigin origin, PacketType type, UInt32? sequenceId, params string[] words)
+            : base(origin, type) {
                 this.SequenceId = sequenceId;
                 this.Words = new List<string>(words);
         }
 
-        public FrostbitePacket(PacketOrigin origin, bool isResponse, UInt32? sequenceId, List<string> words)
-            : base(origin, isResponse) {
+        public FrostbitePacket(PacketOrigin origin, PacketType type, UInt32? sequenceId, List<string> words)
+            : base(origin, type) {
             this.SequenceId = sequenceId;
             this.Words = words;
         }

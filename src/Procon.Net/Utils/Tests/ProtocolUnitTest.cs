@@ -161,7 +161,7 @@ namespace Procon.Net.Utils.Tests {
 
                     Game.ClientEventHandler handler = (sender, args) => {
                         if (args.EventType == ClientEventType.ClientPacketReceived) {
-                            ProtocolUnitTestPacket matchedPacket = args.Packet.IsResponse == true ? localCommand.Responses.FirstOrDefault(response => response.Matches(args.Packet.ToString())) : localCommand.Requests.FirstOrDefault(request => request.Matches(args.Packet.ToString()));
+                            ProtocolUnitTestPacket matchedPacket = args.Packet.Type == PacketType.Response ? localCommand.Responses.FirstOrDefault(response => response.Matches(args.Packet.ToString())) : localCommand.Requests.FirstOrDefault(request => request.Matches(args.Packet.ToString()));
 
                             if (matchedPacket != null) {
                                 matchedPacket.Found = true;

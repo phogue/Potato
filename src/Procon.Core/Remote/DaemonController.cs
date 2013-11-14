@@ -197,7 +197,7 @@ namespace Procon.Core.Remote {
             DaemonPacket response = new DaemonPacket() {
                 ProtocolVersion = request.ProtocolVersion,
                 Method = request.Method,
-                IsResponse = true,
+                Type = PacketType.Response,
                 Origin = PacketOrigin.Client,
                 StatusCode = HttpStatusCode.NotFound,
                 Headers = new WebHeaderCollection() {

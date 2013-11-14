@@ -18,7 +18,7 @@ namespace Procon.Net.Protocols.Frostbite {
                 header |= 0x80000000;
             }
 
-            if (packet.IsResponse == true) {
+            if (packet.Type == PacketType.Response) {
                 header |= 0x40000000;
             }
 
@@ -71,7 +71,7 @@ namespace Procon.Net.Protocols.Frostbite {
 
             packet.Origin = Convert.ToBoolean(header & 0x80000000) == true ? PacketOrigin.Server : PacketOrigin.Client;
 
-            packet.IsResponse = Convert.ToBoolean(header & 0x40000000);
+            packet.Type = Convert.ToBoolean(header & 0x40000000) == false ? PacketType.Request : PacketType.Response;
             packet.SequenceId = header & 0x3fffffff;
 
             int iWordOffset = 0;

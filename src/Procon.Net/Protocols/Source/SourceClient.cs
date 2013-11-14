@@ -134,7 +134,7 @@ namespace Procon.Net.Protocols.Source {
             // QueueUnqueuePacket
             SourcePacket nullPacket = null;
 
-            if (packet.Origin == PacketOrigin.Server && packet.IsResponse == true) {
+            if (packet.Origin == PacketOrigin.Server && packet.Type == PacketType.Response) {
                 // I don't think this will ever be encountered since OnPacketReceived calls the base.Send.
                 base.Send(packet);
             }
@@ -149,7 +149,7 @@ namespace Procon.Net.Protocols.Source {
 
         protected override bool BeforePacketSend(SourcePacket packet) {
 
-            if (packet.Origin == PacketOrigin.Client && packet.IsResponse == false && this.SentPackets.ContainsKey(packet.RequestId) == false) {
+            if (packet.Origin == PacketOrigin.Client && packet.Type == PacketType.Request && this.SentPackets.ContainsKey(packet.RequestId) == false) {
                 this.SentPackets.Add(packet.RequestId, packet);
             }
 

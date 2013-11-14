@@ -196,7 +196,7 @@ namespace Procon.Net.Protocols.CallOfDuty {
         #region Packet Helpers
 
         protected override CallOfDutyPacket CreatePacket(string format, params object[] args) {
-            return new CallOfDutyPacket(PacketOrigin.Client, false, this.Password, String.Format(format, args));
+            return new CallOfDutyPacket(PacketOrigin.Client, PacketType.Request, this.Password, String.Format(format, args));
         }
 
         public override void Login(string password) {

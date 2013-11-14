@@ -32,7 +32,7 @@ namespace Procon.Net.Protocols.Source {
         public override SourcePacket Deserialize(byte[] packetData) {
             SourcePacket packet = new SourcePacket();
 
-            packet.IsResponse = true;
+            packet.Type = PacketType.Response;
             packet.Origin = PacketOrigin.Client;
             packet.RequestId = BitConverter.ToInt32(packetData, 4);
             packet.ResponseType = (SourceResponseType)BitConverter.ToInt32(packetData, 8);

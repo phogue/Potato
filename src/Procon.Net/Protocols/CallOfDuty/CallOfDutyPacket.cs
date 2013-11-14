@@ -18,8 +18,8 @@ namespace Procon.Net.Protocols.CallOfDuty {
 
         }
 
-        public CallOfDutyPacket(PacketOrigin origin, bool isResponse, string password, string message)
-            : base(origin, isResponse) {
+        public CallOfDutyPacket(PacketOrigin origin, PacketType type, string password, string message)
+            : base(origin, type) {
 
                 this.Password = password;
                 this.Message = message;

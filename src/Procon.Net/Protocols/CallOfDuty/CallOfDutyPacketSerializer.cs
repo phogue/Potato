@@ -24,7 +24,7 @@ namespace Procon.Net.Protocols.CallOfDuty {
 
         public override CallOfDutyPacket Deserialize(byte[] packetData) {
             CallOfDutyPacket packet = new CallOfDutyPacket() {
-                IsResponse = true,
+                Type = PacketType.Request,
                 Origin = PacketOrigin.Client
             };
 

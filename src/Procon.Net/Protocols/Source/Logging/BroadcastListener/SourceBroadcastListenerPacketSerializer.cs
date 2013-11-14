@@ -14,7 +14,7 @@ namespace Procon.Net.Protocols.Source.Logging.BroadcastListener {
         public override SourceBroadcastListenerPacket Deserialize(byte[] packetData) {
             //throw new NotImplementedException();
             SourceBroadcastListenerPacket packet = new SourceBroadcastListenerPacket() {
-                IsResponse = false,
+                Type = PacketType.Request,
                 Origin = PacketOrigin.Server
             };
 

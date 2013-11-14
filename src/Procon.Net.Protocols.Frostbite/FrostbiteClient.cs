@@ -109,8 +109,8 @@ namespace Procon.Net.Protocols.Frostbite {
             base.OnPacketReceived(packet);
 
             // Respond with "OK" to all server events.
-            if (packet.Origin == PacketOrigin.Server && packet.IsResponse == false) {
-                base.Send(new FrostbitePacket(PacketOrigin.Server, true, packet.SequenceId, FrostbitePacket.StringResponseOkay));
+            if (packet.Origin == PacketOrigin.Server && packet.Type == PacketType.Request) {
+                base.Send(new FrostbitePacket(PacketOrigin.Server, PacketType.Response, packet.SequenceId, FrostbitePacket.StringResponseOkay));
             }
 
             // Pop the next packet if a packet is waiting to be sent.
@@ -131,7 +131,7 @@ namespace Procon.Net.Protocols.Frostbite {
 
             // QueueUnqueuePacket
 
-            if (packet.Origin == PacketOrigin.Server && packet.IsResponse == true) {
+            if (packet.Origin == PacketOrigin.Server && packet.Type == PacketType.Response) {
                 // I don't think this will ever be encountered since OnPacketReceived calls the base.Send.
                 base.Send(packet);
             }
@@ -151,7 +151,7 @@ namespace Procon.Net.Protocols.Frostbite {
 
         protected override bool BeforePacketSend(FrostbitePacket packet) {
 
-            if (packet.SequenceId != null && packet.Origin == PacketOrigin.Client && packet.IsResponse == false && this.OutgoingPackets.ContainsKey(packet.SequenceId) == false) {
+            if (packet.SequenceId != null && packet.Origin == PacketOrigin.Client && packet.Type == PacketType.Request && this.OutgoingPackets.ContainsKey(packet.SequenceId) == false) {
                 this.OutgoingPackets.Add(packet.SequenceId, packet);
             }
 

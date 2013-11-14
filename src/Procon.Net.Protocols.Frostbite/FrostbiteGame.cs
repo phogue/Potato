@@ -895,7 +895,7 @@ namespace Procon.Net.Protocols.Frostbite {
 
         protected override void Dispatch(FrostbitePacket packet) {
 
-            if (packet.Origin == PacketOrigin.Client && packet.IsResponse == true) {
+            if (packet.Origin == PacketOrigin.Client && packet.Type == PacketType.Response) {
                 FrostbitePacket requestPacket = ((FrostbiteClient)this.Client).GetRequestPacket(packet);
 
                 // If the request packet is valid and has at least one word.
@@ -917,7 +917,7 @@ namespace Procon.Net.Protocols.Frostbite {
                 }
 
             }
-            else if (packet.Words.Count >= 1 && packet.Origin == PacketOrigin.Server && packet.IsResponse == false) {
+            else if (packet.Words.Count >= 1 && packet.Origin == PacketOrigin.Server && packet.Type == PacketType.Request) {
                 this.Dispatch(new PacketDispatch() {
                     Name = packet.Words[0],
                     Origin = packet.Origin
@@ -932,11 +932,11 @@ namespace Procon.Net.Protocols.Frostbite {
         #region Frostbite specific
 
         protected void SendResponse(FrostbitePacket request, params string[] words) {
-            this.Send(new FrostbitePacket(request.Origin, true, request.SequenceId, words));
+            this.Send(new FrostbitePacket(request.Origin, PacketType.Response, request.SequenceId, words));
         }
 
         protected void SendRequest(params string[] words) {
-            this.Send(new FrostbitePacket(PacketOrigin.Client, false, ((FrostbiteClient)this.Client).AcquireSequenceNumber, words));
+            this.Send(new FrostbitePacket(PacketOrigin.Client, PacketType.Request, ((FrostbiteClient)this.Client).AcquireSequenceNumber, words));
         }
 
         protected virtual void SendEventsEnabledPacket() {
@@ -955,7 +955,7 @@ namespace Procon.Net.Protocols.Frostbite {
                 packetText = String.Empty;
             }
 
-            return new FrostbitePacket(PacketOrigin.Client, false, null, packetText.Wordify());
+            return new FrostbitePacket(PacketOrigin.Client, PacketType.Request, null, packetText.Wordify());
         }
 
         protected override void Action(Chat chat) {

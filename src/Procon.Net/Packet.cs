@@ -22,7 +22,7 @@ namespace Procon.Net {
         /// <summary>
         /// If this is a response or not to a previous packet.
         /// </summary>
-        public bool IsResponse { get; set; }
+        public PacketType Type { get; set; }
 
         [XmlIgnore, JsonIgnore]
         public IPEndPoint RemoteEndPoint { get; set; }
@@ -32,16 +32,16 @@ namespace Procon.Net {
         }
 
         // Used if we'll be using EncodePacket to send to the server.
-        protected Packet(PacketOrigin origin, bool isResponse) {
+        protected Packet(PacketOrigin origin, PacketType type) {
             this.Origin = origin;
-            this.IsResponse = isResponse;
+            this.Type = type;
 //            this.SequenceId = sequenceId;
             this.Stamp = DateTime.Now;
         }
 
         protected virtual void NullPacket() {
             this.Origin = PacketOrigin.Client;
-            this.IsResponse = false;
+            this.Type = PacketType.Request;
 //            this.SequenceId = 0;
         }
 

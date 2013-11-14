@@ -24,7 +24,7 @@ namespace Procon.Net.Protocols.Source.Logging.BroadcastService {
         public override SourceBroadcastServicePacket Deserialize(byte[] packetData) {
             //throw new NotImplementedException();
             SourceBroadcastServicePacket packet = new SourceBroadcastServicePacket() {
-                IsResponse = false,
+                Type = PacketType.Request,
                 Origin = PacketOrigin.Server
             };
 

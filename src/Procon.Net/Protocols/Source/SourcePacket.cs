@@ -26,8 +26,8 @@ namespace Procon.Net.Protocols.Source {
                 this.ResponseType = SourceResponseType.None;
         }
 
-        public SourcePacket(PacketOrigin origin, bool isResponse, int? sequenceId, SourceRequestType requestType, string string1, string string2)
-            : base(origin, isResponse) {
+        public SourcePacket(PacketOrigin origin, PacketType type, int? sequenceId, SourceRequestType requestType, string string1, string string2)
+            : base(origin, type) {
                 this.RequestId = sequenceId;
                 this.RequestType = requestType;
                 this.ResponseType = SourceResponseType.None;

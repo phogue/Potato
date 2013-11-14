@@ -206,5 +206,74 @@ namespace Procon.Database.Serialization.Test {
 
         #endregion
 
+        #region TestCreatePlayerWithFieldStringNameWithIndexOnName
+
+        protected IQuery TestCreatePlayerWithFieldStringNameWithIndexOnNameExplicit = new Create()
+            .Collection(new Collection() {
+                Name = "Player"
+            })
+            .Field(
+                new Field() {
+                    Name = "Name"
+                }
+                .Attribute(
+                    new StringType()
+                    .Attribute(new Nullable())
+                )
+            )
+            .Index(
+                new Index() {
+                    Name = "Name_INDEX"
+                }
+                .Sort(
+                    new Sort() {
+                        Name = "Name"
+                    }
+                )
+            );
+
+        protected IQuery TestCreatePlayerWithFieldStringNameWithIndexOnNameImplicit = new Create()
+            .Collection("Player")
+            .Field("Name", new StringType())
+            .Index("Name");
+
+        public abstract void TestCreatePlayerWithFieldStringNameWithIndexOnName();
+
+        #endregion
+
+        #region TestCreatePlayerWithFieldStringNameWithIndexOnNameDescending
+
+        protected IQuery TestCreatePlayerWithFieldStringNameWithIndexOnNameDescendingExplicit = new Create()
+            .Collection(new Collection() {
+                Name = "Player"
+            })
+            .Field(
+                new Field() {
+                    Name = "Name"
+                }
+                .Attribute(
+                    new StringType()
+                    .Attribute(new Nullable())
+                )
+            )
+            .Index(
+                new Index() {
+                    Name = "Name_INDEX"
+                }
+                .Sort(
+                    new Sort() {
+                        Name = "Name"
+                    }.Attribute(new Descending())
+                )
+            );
+
+        protected IQuery TestCreatePlayerWithFieldStringNameWithIndexOnNameDescendingImplicit = new Create()
+            .Collection("Player")
+            .Field("Name", new StringType())
+            .Index("Name", new Descending());
+
+        public abstract void TestCreatePlayerWithFieldStringNameWithIndexOnNameDescending();
+
+        #endregion
     }
 }

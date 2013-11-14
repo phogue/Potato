@@ -5,6 +5,7 @@ using System.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Procon.Database.Serialization.Builders;
+using Procon.Database.Serialization.Builders.Attributes;
 using Procon.Database.Serialization.Exceptions;
 
 namespace Procon.Database.Serialization {

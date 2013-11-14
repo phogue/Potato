@@ -19,12 +19,43 @@ namespace Procon.Database.Serialization {
     /// </summary>
     public abstract class SerializerSql : Serializer {
 
-        protected SerializerSql() {
-            this.Methods = new List<string>();
-            this.Fields = new List<string>();
-            this.Conditions = new List<string>();
-            this.Collections = new List<string>();
+        /// <summary>
+        /// Parses an index
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns></returns>
+        protected virtual String ParseIndex(Index index) {
+            String parsed = String.Empty;
+
+            Primary primary = index.FirstOrDefault(attribute => attribute is Primary) as Primary;
+            Unique unique = index.FirstOrDefault(attribute => attribute is Unique) as Unique;
+
+            List<String> fields = this.ParseSortings(index);
+
+            // PRIMARY KEY (`Name`)
+            if (primary != null) {
+                parsed = String.Format("PRIMARY KEY ({0})", String.Join(", ", fields.ToArray()));
+            }
+            // UNIQUE INDEX `Score_UNIQUE` (`Score` ASC)
+            else if (unique != null) {
+                parsed = String.Format("UNIQUE INDEX `{0}` ({1})", index.Name, String.Join(", ", fields.ToArray()));
+            }
+            // INDEX `Name_INDEX` (`Name` ASC)
+            else {
+                parsed = String.Format("INDEX `{0}` ({1})", index.Name, String.Join(", ", fields.ToArray()));
+            }
+
+            return parsed;
         }
+
+        /// <summary>
+        /// Parses the list of indexes 
+        /// </summary>
+        /// <param name="query"></param>
+        /// <returns></returns>
+        protected virtual List<String> ParseIndices(IQuery query) {
+            return query.Where(statement => statement is Index).Select(index => this.ParseIndex(index as Index)).ToList();
+        } 
 
         /// <summary>
         /// Formats the database name.
@@ -331,7 +362,16 @@ namespace Procon.Database.Serialization {
                 else if (this.Collections.Any() == true) {
                     compiled.Add("TABLE");
                     compiled.Add(this.Collections.FirstOrDefault());
-                    compiled.Add(String.Format("({0})", String.Join(", ", this.Fields.ToArray())));
+
+                    if (this.Indices.Any() == true) {
+                        List<String> fieldsIndicesCombination = new List<String>(this.Fields);
+                        fieldsIndicesCombination.AddRange(this.Indices);
+
+                        compiled.Add(String.Format("({0})", String.Join(", ", fieldsIndicesCombination.ToArray())));
+                    }
+                    else {
+                        compiled.Add(String.Format("({0})", String.Join(", ", this.Fields.ToArray())));
+                    }
                 }
             }
 
@@ -346,6 +386,8 @@ namespace Procon.Database.Serialization {
             this.Methods = this.ParseMethod(method);
 
             this.Databases = this.ParseDatabases(method);
+
+            this.Indices = this.ParseIndices(method);
 
             this.Fields = this.ParseFields(method);
 

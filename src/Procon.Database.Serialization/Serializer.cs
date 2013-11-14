@@ -21,6 +21,11 @@ namespace Procon.Database.Serialization {
         protected List<String> Fields { get; set; }
 
         /// <summary>
+        /// The indices to apply when the alter/create
+        /// </summary>
+        protected List<String> Indices { get; set; }
+
+        /// <summary>
         /// The conditions placed on a select, update or delete method
         /// </summary>
         protected List<String> Conditions { get; set; }

@@ -37,5 +37,15 @@ namespace Procon.Database.Serialization.Test.MySql {
         public override void TestCreatePlayerWithFieldIntegerScoreUnsignedAutoIncrement() {
             Assert.AreEqual(@"CREATE TABLE `Player` (`Score` INT UNSIGNED NULL AUTO INCREMENT)", new SerializerMySql().Parse(this.TestCreatePlayerWithFieldIntegerScoreUnsignedAutoIncrementExplicit).Compile().Completed);
         }
+
+        [Test]
+        public override void TestCreatePlayerWithFieldStringNameWithIndexOnName() {
+            Assert.AreEqual(@"CREATE TABLE `Player` (`Name` VARCHAR(255) NULL, INDEX `Name_INDEX` (`Name`))", new SerializerMySql().Parse(this.TestCreatePlayerWithFieldStringNameWithIndexOnNameExplicit).Compile().Completed);
+        }
+
+        [Test]
+        public override void TestCreatePlayerWithFieldStringNameWithIndexOnNameDescending() {
+            Assert.AreEqual(@"CREATE TABLE `Player` (`Name` VARCHAR(255) NULL, INDEX `Name_INDEX` (`Name` DESC))", new SerializerMySql().Parse(this.TestCreatePlayerWithFieldStringNameWithIndexOnNameDescendingExplicit).Compile().Completed);
+        }
     }
 }

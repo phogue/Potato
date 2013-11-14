@@ -32,6 +32,45 @@ namespace Procon.Database.Serialization.Builders {
             return this;
         }
 
+        public Query Index(IQuery data) {
+            this.Add(data);
+
+            return this;
+        }
+
+        public Query Index(String name) {
+            Field field = this.BuildField(name);
+
+            return this.Index(
+                new Index() {
+                    Name = String.Format("{0}_INDEX", name)
+                }
+                .Sort(
+                    new Sort() {
+                        Name = field.Name,
+                        Collection = field.Collection
+                    }
+                )
+            );
+        }
+
+        public Query Index(String name, Attribute attribute) {
+            Field field = this.BuildField(name);
+
+            return this.Index(
+                new Index() {
+                    Name = String.Format("{0}_INDEX", name)
+                }
+                .Sort(
+                    new Sort() {
+                        Name = field.Name,
+                        Collection = field.Collection
+                    }
+                    .Attribute(attribute)
+                )
+            );
+        }
+
         public Query Attribute(IQuery data) {
             this.Add(data);
 

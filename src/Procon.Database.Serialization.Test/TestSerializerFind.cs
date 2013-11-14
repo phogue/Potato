@@ -1,4 +1,5 @@
 using Procon.Database.Serialization.Builders;
+using Procon.Database.Serialization.Builders.Attributes;
 
 namespace Procon.Database.Serialization.Test {
     public abstract class TestSerializerFind {

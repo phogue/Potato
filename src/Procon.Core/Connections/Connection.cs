@@ -162,6 +162,17 @@ namespace Procon.Core.Connections {
                         }
                     },
                     new CommandDispatchHandler(this.NetworkProtocolActionMove)
+                }, {
+                    new CommandAttribute() {
+                        CommandType = CommandType.NetworkProtocolActionKick,
+                        ParameterTypes = new List<CommandParameterType>() {
+                            new CommandParameterType() {
+                                Name = "kick",
+                                Type = typeof(Kick)
+                            }
+                        }
+                    },
+                    new CommandDispatchHandler(this.NetworkProtocolActionKick)
                 }
             });
         }
@@ -467,6 +478,31 @@ namespace Procon.Core.Connections {
                     Now = new CommandData() {
                         Moves = new List<Move>() {
                             move
+                        }
+                    }
+                };
+            }
+            else {
+                result = CommandResultArgs.InsufficientPermissions;
+            }
+
+            return result;
+        }
+
+        public CommandResultArgs NetworkProtocolActionKick(Command command, Dictionary<String, CommandParameter> parameters) {
+            CommandResultArgs result = null;
+
+            Kick kick = parameters["kick"].First<Kick>();
+
+            if (this.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
+                this.Game.Action(kick);
+
+                result = new CommandResultArgs() {
+                    Success = true,
+                    Status = CommandResultType.Success,
+                    Now = new CommandData() {
+                        Kicks = new List<Kick>() {
+                            kick
                         }
                     }
                 };

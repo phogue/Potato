@@ -451,6 +451,16 @@ namespace Procon.Core {
             this.Events.Dispose();
             this.Events = null;
 
+            // 3. Stop/disconnect all game server connections, unload any plugins etc.
+            lock (this.Connections) {
+                foreach (Connection connection in this.Connections) {
+                    connection.Dispose();
+                }
+            }
+
+            this.Connections.Clear();
+            this.Connections = null;
+
             // @todo Does the order matter here? If so, document why.
 
             this.Security.Dispose();
@@ -470,15 +480,6 @@ namespace Procon.Core {
 
             this.Variables.Dispose();
             this.Variables = null;
-
-            lock (this.Connections) {
-                foreach (Connection connection in this.Connections) {
-                    connection.Dispose();
-                }
-            }
-
-            this.Connections.Clear();
-            this.Connections = null;
 
             base.Dispose();
         }

@@ -36,9 +36,6 @@ namespace Procon.Service {
 
         public ServiceController() {
             this.Status = ServiceStatusType.Stopped;
-            
-            // todo - does this suck up the cpu/memory?
-            AppDomain.MonitoringIsEnabled = true;
 
             this.PollingTimer = new Timer(10000);
             this.PollingTimer.Elapsed += new ElapsedEventHandler(OnPollingTimerElapsed);
@@ -149,6 +146,10 @@ namespace Procon.Service {
         /// </summary>
         private void Statistics() {
             if (this.Status == ServiceStatusType.Started) {
+
+                // todo - does this suck up the cpu/memory?
+                AppDomain.MonitoringIsEnabled = true;
+
                 Console.WriteLine("Service Controller");
                 Console.WriteLine("+--------------------------------------------------------+");
                 Console.WriteLine("MonitoringSurvivedMemorySize: {0:N0} K", AppDomain.CurrentDomain.MonitoringSurvivedMemorySize / 1024);

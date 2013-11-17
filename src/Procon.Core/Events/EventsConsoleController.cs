@@ -42,7 +42,7 @@ namespace Procon.Core.Events {
         }
 
         protected String FormatEvent(GenericEventArgs item) {
-            String text = "";
+            String text = null;
 
             switch (item.Name) {
                 case "TextCommandRegistered":
@@ -67,18 +67,21 @@ namespace Procon.Core.Events {
                     if (String.IsNullOrEmpty(item.Message.Trim()) == false) {
                         text = item.Message;
                     }
-                    else {
-                        text = "***********************";
-                    }
                     
                     break;
             }
 
-            return String.Format("[{0}] {1}: {2}", DateTime.Now.ToString("HH:mm:ss"), item.Name, text);
+            if (String.IsNullOrEmpty(text) == false) {
+                text = String.Format("[{0}] {1}: {2}", DateTime.Now.ToString("HH:mm:ss"), item.Name, text);
+            }
+
+            return text;
         }
 
         protected void Events_EventLogged(object sender, GenericEventArgs e) {
-            Console.WriteLine(this.FormatEvent(e));
+            String text = this.FormatEvent(e);
+
+            if (String.IsNullOrEmpty(text) == false) Console.WriteLine(text);
         }
 
         public override void Dispose() {

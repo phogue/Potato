@@ -236,16 +236,14 @@ namespace Procon.Core.Connections.Plugins {
         }
 
         public override void WriteConfig(Config config) {
-            foreach (HostPlugin plugin in this.Plugins) {
-                if (plugin.IsEnabled == true) {
-                    config.Root.Add(new Command() {
-                        CommandType = CommandType.PluginsEnable,
-                        Scope = {
-                            ConnectionGuid = this.Connection.ConnectionGuid,
-                            PluginGuid = plugin.PluginGuid
-                        }
-                    }.ToConfigCommand());
-                }
+            foreach (HostPlugin plugin in this.Plugins.Where(plugin => plugin.IsEnabled == true)) {
+                config.Root.Add(new Command() {
+                    CommandType = CommandType.PluginsEnable,
+                    Scope = {
+                        ConnectionGuid = this.Connection.ConnectionGuid,
+                        PluginGuid = plugin.PluginGuid
+                    }
+                }.ToConfigCommand());
             }
         }
 
@@ -253,24 +251,7 @@ namespace Procon.Core.Connections.Plugins {
         /// Executes the commands specified in the config file and returns a reference itself.
         /// </summary>
         public override ExecutableBase Execute() {
-            // Make sure the plugins directory exists and set it up.
-            Directory.CreateDirectory(Defines.PluginsDirectory);
-
-            this.CreatePluginDirectory(new DirectoryInfo(Defines.PluginsDirectory));
-
-            // Use the same evidence as MyComputer.
-            Evidence evidence = this.CreateEvidence();
-
-            AppDomainSetup setup = this.CreateAppDomainSetup();
-
-            PermissionSet permissions = this.CreatePermissionSet();
-
-            // Create the app domain and the plugin factory in the new domain.
-            this.AppDomainSandbox = AppDomain.CreateDomain(String.Format("Procon.{0}.Plugin", this.Connection != null ? this.Connection.ConnectionGuid.ToString() : String.Empty), evidence, setup, permissions);
-
-            this.PluginFactory = (IRemotePluginController)this.AppDomainSandbox.CreateInstanceAndUnwrap(Assembly.GetExecutingAssembly().FullName, typeof(RemotePluginController).FullName);
-
-            this.PluginFactory.PluginCallback = this;
+            this.SetupPluginFactory();
 
             // Load all the plugins.
             this.LoadPlugins(new DirectoryInfo(Defines.PluginsDirectory));
@@ -327,6 +308,30 @@ namespace Procon.Core.Connections.Plugins {
             }
 
             return result;
+        }
+
+        /// <summary>
+        /// Sets everything up to load the plugins, creating the seperate appdomin and permission requirements
+        /// </summary>
+        protected void SetupPluginFactory() {
+            // Make sure the plugins directory exists and set it up.
+            Directory.CreateDirectory(Defines.PluginsDirectory);
+
+            this.CreatePluginDirectory(new DirectoryInfo(Defines.PluginsDirectory));
+
+            // Use the same evidence as MyComputer.
+            Evidence evidence = this.CreateEvidence();
+
+            AppDomainSetup setup = this.CreateAppDomainSetup();
+
+            PermissionSet permissions = this.CreatePermissionSet();
+
+            // Create the app domain and the plugin factory in the new domain.
+            this.AppDomainSandbox = AppDomain.CreateDomain(String.Format("Procon.{0}.Plugin", this.Connection != null ? this.Connection.ConnectionGuid.ToString() : String.Empty), evidence, setup, permissions);
+
+            this.PluginFactory = (IRemotePluginController)this.AppDomainSandbox.CreateInstanceAndUnwrap(Assembly.GetExecutingAssembly().FullName, typeof(RemotePluginController).FullName);
+
+            this.PluginFactory.PluginCallback = this;
         }
 
         /// <summary>

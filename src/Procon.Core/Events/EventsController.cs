@@ -165,9 +165,11 @@ namespace Procon.Core.Events {
                 List<GenericEventArgs> flushEvents = null;
 
                 lock (this.LoggedEvents) {
+                    DateTime before = now - TimeSpan.FromSeconds(this.Variables.Get(CommonVariableNames.MaximumEventsTimeSeconds, 300));
+
                     // All events are appended to the Events list, so we
                     // remove all events until we find one that isn't old enough.
-                    flushEvents = this.LoggedEvents.Where(e => e.Stamp < now - TimeSpan.FromSeconds(this.Variables.Get(CommonVariableNames.MaximumEventsTimeSeconds, 300))).ToList();
+                    flushEvents = this.LoggedEvents.Where(e => e.Stamp < before).ToList();
                 }
 
                 // Don't hold up other threads attempting to log an event.

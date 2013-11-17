@@ -211,6 +211,7 @@ namespace Procon.Core.Connections {
 
             return base.Execute();
         }
+
         /// <summary>
         /// Assign all current event handlers.
         /// </summary>

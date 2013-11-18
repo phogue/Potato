@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Net;
 using Newtonsoft.Json;
-using Procon.Core.Utils;
 using Procon.Net.Utils;
 using Procon.Net.Utils.HTTP;
 
@@ -90,30 +91,28 @@ namespace Procon.Core.Events {
         }
 
         /// <summary>
-        /// Serializes the events list in whatever format specified for this end point.
+        /// Serializes the events list in whatever format specified for this end point, writing it to a text writer.
         /// </summary>
+        /// <param name="writer">The writer to output the serialized data to</param>
         /// <param name="contentType">The type to serialize to</param>
         /// <param name="request">A request payload to send to the push end point</param>
-        /// <returns>A string of the formatted list of events</returns>
-        public static String SerializeEventsRequest(String contentType, PushEventsRequest request) {
-            String requestContent = String.Empty;
-
+        public static void WriteSerializedEventsRequest(TextWriter writer, String contentType, PushEventsRequest request) {
             switch (contentType) {
                 case Mime.ApplicationXml:
-                    requestContent = request.ToXElement().ToString();
+                    request.WriteXElement(writer);
                     break;
                 case Mime.ApplicationJson:
-                    requestContent = JsonConvert.SerializeObject(request, new JsonSerializerSettings() {
+                    JsonSerializer serializer = new JsonSerializer {
                         NullValueHandling = NullValueHandling.Ignore,
-                        ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
-                        
-                    });
+                        ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                    };
+
+                    serializer.Serialize(writer, request);
+
                     break;
             }
-
-            return requestContent;
         }
-
+        
         /// <summary>
         /// Pushes the current data to the Uri.
         /// </summary>
@@ -131,21 +130,40 @@ namespace Procon.Core.Events {
 
                 // Only transfer if we have something new to report.
                 if (data.Count > 0) {
-                    Request push = new Request(this.Uri.ToString()) {
-                        Method = "POST",
-                        RequestContent = PushEventsEndPoint.SerializeEventsRequest(this.ContentType, new PushEventsRequest() {
-                            Id = this.Id,
-                            StreamKey = this.StreamKey,
-                            Events = data
-                        }),
-                        RequestContentType = this.ContentType,
-                        AdditionalData = data
-                    };
+                    WebRequest request = WebRequest.Create(this.Uri.ToString());
+                    request.Method = WebRequestMethods.Http.Post;
+                    request.ContentType = this.ContentType;
+                    request.Proxy = null;
 
-                    push.RequestComplete += new Request.RequestEventDelegate(RequestCompleted);
-                    push.RequestError += new Request.RequestEventDelegate(RequestCompleted);
+                    request.BeginGetRequestStream(streamAsyncResult => {
+                        try {
+                            using (TextWriter writer = new StreamWriter(request.EndGetRequestStream(streamAsyncResult))) {
+                                PushEventsEndPoint.WriteSerializedEventsRequest(writer, this.ContentType, new PushEventsRequest() {
+                                    Id = this.Id,
+                                    StreamKey = this.StreamKey,
+                                    Events = data
+                                });
+                            }
 
-                    push.BeginRequest();
+                            request.BeginGetResponse(responseAsyncResult => {
+                                try {
+                                    WebResponse response = request.EndGetResponse(responseAsyncResult);
+
+                                    this.RequestCompleted(data);
+
+                                    response.Close();
+                                }
+                                catch {
+                                    // General error, remove our sent data dropping the events. Couldn't communicate with end point.
+                                    this.RequestCompleted(data);
+                                }
+                            }, null);
+                        }
+                        catch {
+                            // General error, remove our sent data dropping the events. Couldn't communicate with end point.
+                            this.RequestCompleted(data);
+                        }
+                    }, null);
                 }
                 else {
                     this.Pushing = false;
@@ -158,16 +176,12 @@ namespace Procon.Core.Events {
         /// of it being an error, treating it like a udp stream. The server gets the data or it gets
         /// left behind. We're just pushing updated data.
         /// </summary>
-        /// <param name="sender"></param>
-        private void RequestCompleted(Request sender) {
-            sender.RequestComplete -= new Request.RequestEventDelegate(RequestCompleted);
-            sender.RequestError -= new Request.RequestEventDelegate(RequestCompleted);
-
-            List<GenericEventArgs> pushedDataList = sender.AdditionalData as List<GenericEventArgs>;
-
+        private void RequestCompleted(IEnumerable<GenericEventArgs> pushedDataList) {
             if (this.EventsStream != null && pushedDataList != null) {
                 lock (this.EventsStream) {
                     foreach (GenericEventArgs pushedData in pushedDataList) {
+                        pushedData.Disposed -= new EventHandler(GenericEventArgs_Disposed);
+
                         this.EventsStream.Remove(pushedData);
                     }
                 }

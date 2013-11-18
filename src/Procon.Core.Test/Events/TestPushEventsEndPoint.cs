@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Text;
 using System.Collections.Generic;
 using System.Linq;
@@ -74,7 +75,10 @@ namespace Procon.Core.Test.Events {
         /// </summary>
         [Test]
         public void TestPushEventsRequestXmlSerialization() {
-            String serialized = PushEventsEndPoint.SerializeEventsRequest(Mime.ApplicationXml, new PushEventsRequest() {
+            StringBuilder builder = new StringBuilder();
+            TextWriter writer = new StringWriter(builder);
+
+            PushEventsEndPoint.WriteSerializedEventsRequest(writer, Mime.ApplicationXml, new PushEventsRequest() {
                 Events = new List<GenericEventArgs>() {
                     new GenericEventArgs() {
                         Message = "What up?"
@@ -83,7 +87,7 @@ namespace Procon.Core.Test.Events {
             });
 
             // Can this in turn be parsed by xml?
-            XElement element = XElement.Parse(serialized);
+            XElement element = XElement.Parse(builder.ToString());
 
             Assert.AreEqual("What up?", element.Descendants("Message").First().Value);
         }
@@ -93,7 +97,10 @@ namespace Procon.Core.Test.Events {
         /// </summary>
         [Test]
         public void TestPushEventsRequestJsonSerialization() {
-            String serialized = PushEventsEndPoint.SerializeEventsRequest(Mime.ApplicationJson, new PushEventsRequest() {
+            StringBuilder builder = new StringBuilder();
+            TextWriter writer = new StringWriter(builder);
+
+            PushEventsEndPoint.WriteSerializedEventsRequest(writer, Mime.ApplicationJson, new PushEventsRequest() {
                 Events = new List<GenericEventArgs>() {
                     new GenericEventArgs() {
                         Message = "What up?"
@@ -101,7 +108,7 @@ namespace Procon.Core.Test.Events {
                 }
             });
 
-            PushEventsRequest deserialized = JsonConvert.DeserializeObject<PushEventsRequest>(serialized);
+            PushEventsRequest deserialized = JsonConvert.DeserializeObject<PushEventsRequest>(builder.ToString());
 
             Assert.AreEqual("What up?", deserialized.Events.First().Message);
         }

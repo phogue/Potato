@@ -7,6 +7,7 @@ using System.Timers;
 
 namespace Procon.Net.Utils.HTTP {
     [Serializable]
+    [Obsolete]
     public class Request {
 
         public delegate void RequestEventDelegate(Request sender);

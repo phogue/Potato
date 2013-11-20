@@ -3,6 +3,7 @@ using System.IO;
 using System.Runtime.Remoting.Lifetime;
 using System.Xml.Serialization;
 using Newtonsoft.Json;
+using Procon.Service.Shared;
 
 namespace Procon.Core.Connections.Plugins {
     using Procon.Core.Events;

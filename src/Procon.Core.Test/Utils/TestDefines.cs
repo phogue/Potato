@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Text;
-using System.Collections.Generic;
-using System.Linq;
 using NUnit.Framework;
-using Procon.Core.Utils;
+using Procon.Service.Shared;
 
 namespace Procon.Core.Test.Utils {
     [TestFixture]

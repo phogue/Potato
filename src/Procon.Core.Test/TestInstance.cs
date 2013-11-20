@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Text;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -9,12 +8,10 @@ using NUnit.Framework;
 using Procon.Core.Events;
 using Procon.Core.Localization;
 using Procon.Core.Security;
-using Procon.Core.Test.ExecutableCommands.Objects;
-using Procon.Core.Test.Security;
-using Procon.Core.Utils;
 using Procon.Core.Variables;
 using Procon.Net.Protocols;
 using Procon.Net.Utils;
+using Procon.Service.Shared;
 
 namespace Procon.Core.Test {
     [TestFixture]

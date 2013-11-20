@@ -5,9 +5,9 @@ using System.Xml.Linq;
 using System.IO;
 using Procon.Core.Events;
 using Procon.Core.Variables;
+using Procon.Service.Shared;
 
 namespace Procon.Core.Repositories {
-    using Procon.Core.Utils;
     using Procon.Net.Utils;
 
     public class RepositoryController : Executable {

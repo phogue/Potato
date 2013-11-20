@@ -131,7 +131,6 @@
     <Compile Include="Scheduler\TaskController.cs" />
     <Compile Include="Scheduler\Temporal.cs" />
     <Compile Include="Utils\PathValidator.cs" />
-    <Compile Include="Utils\Defines.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

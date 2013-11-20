@@ -4,9 +4,9 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using Procon.Core.Variables;
+using Procon.Service.Shared;
 
 namespace Procon.Core.Localization {
-    using Procon.Core.Utils;
 
     public class LanguageController : Executable {
         

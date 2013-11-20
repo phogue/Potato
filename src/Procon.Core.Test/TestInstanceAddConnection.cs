@@ -1,12 +1,10 @@
 ﻿using System;
 using System.IO;
-using System.Text;
 using System.Collections.Generic;
-using System.Linq;
 using NUnit.Framework;
-using Procon.Core.Utils;
 using Procon.Core.Variables;
 using Procon.Net.Protocols;
+using Procon.Service.Shared;
 
 namespace Procon.Core.Test {
     [TestFixture]

@@ -1,22 +1,16 @@
 ﻿using System;
-using System.Text;
 using System.Collections.Generic;
 using System.Linq;
 using System.IO;
 using System.Threading;
 using System.Xml.Linq;
 using NUnit.Framework;
+using Procon.Service.Shared;
 
 namespace Procon.Core.Test.Events {
     using Procon.Core.Events;
     using Procon.Core.Security;
-    using Procon.Core.Utils;
-    using Procon.Core.Variables;
-    using Procon.Core.Localization;
-    using Procon.Core.Connections.TextCommands;
-    using Procon.Net.Protocols.Objects;
-    using Procon.Fuzzy.Tokens.Primitive.Temporal;
-    
+
     [TestFixture]
     public class TestEvents {
 

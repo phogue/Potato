@@ -16,7 +16,7 @@ namespace Procon.Service.Shared {
 
         public void Create() {
             this.Service = (IService)Activator.CreateInstanceFrom(
-                "Procon.Core.dll", 
+                Defines.ProconCoreDll, 
                 "Procon.Core.Instance",
                 false,
                 BindingFlags.Instance | BindingFlags.Public | BindingFlags.CreateInstance,

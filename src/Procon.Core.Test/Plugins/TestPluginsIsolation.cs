@@ -1,16 +1,12 @@
 ﻿using System;
 using System.Reflection;
-using System.Text;
 using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
-using Procon.Core.Security;
-using Procon.Core.Utils;
+using Procon.Service.Shared;
 
 namespace Procon.Core.Test.Plugins {
-    using Procon.Core.Connections;
     using Procon.Core.Connections.Plugins;
-    using Procon.Net.Protocols.Frostbite.BF.BF3;
 
     [TestFixture]
     public class TestPluginsIsolation {

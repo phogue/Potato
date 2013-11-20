@@ -6,6 +6,7 @@ using System.IO;
 using System.Xml;
 using System.Xml.Linq;
 using Procon.Net.Utils;
+using Procon.Service.Shared;
 
 namespace Procon.Core.Events {
     using Procon.Core.Variables;

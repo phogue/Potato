@@ -11,6 +11,7 @@ using System.Xml.Serialization;
 using Newtonsoft.Json;
 using Procon.Core.Events;
 using Procon.Net;
+using Procon.Service.Shared;
 
 namespace Procon.Core.Connections.Plugins {
     using Procon.Core.Utils;
@@ -343,7 +344,7 @@ namespace Procon.Core.Connections.Plugins {
                                                                   file.Name != Defines.ProconCoreDll &&
                                                                   file.Name != Defines.ProconNetDll &&
                                                                   file.Name != Defines.ProconFuzzyDll &&
-                                                                  file.Name != Defines.NewtonsoftJsonNet35Dll);
+                                                                  file.Name != Defines.NewtonsoftJsonDll);
 
             // If there are dll files in this directory, setup the plugins.
             foreach (String path in files.Select(file => file.FullName)) {

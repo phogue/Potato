@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using System.Xml.Serialization;
 using Newtonsoft.Json;
+using Procon.Service.Shared;
 
 namespace Procon.Core {
     using Procon.Core.Security;

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Xml.Serialization;
+using Newtonsoft.Json;
 
 namespace Procon.Net.Protocols.Objects {
 
@@ -8,6 +10,7 @@ namespace Procon.Net.Protocols.Objects {
         /// <summary>
         /// When this object was created.
         /// </summary>
+        [XmlIgnore, JsonIgnore]
         public DateTime Created { get; set; }
 
         protected NetworkObject() {

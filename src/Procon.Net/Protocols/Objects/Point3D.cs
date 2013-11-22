@@ -1,25 +1,38 @@
 ﻿using System;
 
 namespace Procon.Net.Protocols.Objects {
+
+    /// <summary>
+    /// A three dimensional location of a player/object.
+    /// </summary>
     [Serializable]
     public sealed class Point3D : NetworkObject {
 
-        public int X { get; set; }
+        /// <summary>
+        /// X coordinate of the player or object
+        /// </summary>
+        public float X { get; set; }
 
-        public int Y { get; set; }
+        /// <summary>
+        /// Y coordinate of the player or object
+        /// </summary>
+        public float Y { get; set; }
 
-        public int Z { get; set; }
+        /// <summary>
+        /// Z coordinate of the player or object
+        /// </summary>
+        public float Z { get; set; }
 
         public Point3D() : base() {
 
         }
 
-        public Point3D(string x, string y, string z) : base() {
-            int iX = 0, iY = 0, iZ = 0;
+        public Point3D(String x, String y, String z) : base() {
+            float iX = 0, iY = 0, iZ = 0;
 
-            int.TryParse(x, out iX);
-            int.TryParse(y, out iY);
-            int.TryParse(z, out iZ);
+            float.TryParse(x, out iX);
+            float.TryParse(y, out iY);
+            float.TryParse(z, out iZ);
 
             this.X = iX;
             this.Y = iY;

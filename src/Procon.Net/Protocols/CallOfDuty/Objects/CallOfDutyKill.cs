@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
 namespace Procon.Net.Protocols.CallOfDuty.Objects {
@@ -9,18 +10,28 @@ namespace Procon.Net.Protocols.CallOfDuty.Objects {
 
         public NetworkObject Parse(Match match) {
             Kill kill = new Kill {
-                Killer = new Player() {
-                    SlotId = uint.Parse(match.Groups["K_ID"].Value),
-                    Name = match.Groups["K_Name"].Value,
-                    Uid = match.Groups["K_GUID"].Value
+                Scope = {
+                    Players = new List<Player>() {
+                        new Player() {
+                            SlotId = uint.Parse(match.Groups["V_ID"].Value),
+                            Name = match.Groups["V_Name"].Value,
+                            Uid = match.Groups["V_GUID"].Value
+                        }
+                    },
+                    Items = new List<Item>() {
+                        new Item() {
+                            Name = match.Groups["Weapon"].Value
+                        }
+                    }
                 },
-                Target = new Player() {
-                    SlotId = uint.Parse(match.Groups["V_ID"].Value),
-                    Name = match.Groups["V_Name"].Value,
-                    Uid = match.Groups["V_GUID"].Value
-                },
-                DamageType = new Item() {
-                    Name = match.Groups["Weapon"].Value
+                Now = {
+                    Players = new List<Player>() {
+                        new Player() {
+                            SlotId = uint.Parse(match.Groups["V_ID"].Value),
+                            Name = match.Groups["V_Name"].Value,
+                            Uid = match.Groups["V_GUID"].Value
+                        }
+                    }
                 }
             };
 

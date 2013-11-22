@@ -106,6 +106,7 @@ namespace Procon.Net.Protocols.CallOfDuty {
         }
 
         private void LogFile_KillEntry(CallOfDutyLogfile sender, DateTime eventTime, Kill kill) {
+            /*
             if (kill.Killer != null && kill.Target != null) {
                 kill.Killer = this.State.PlayerList.Find(x => x.Uid == kill.Killer.Uid);
 
@@ -113,6 +114,7 @@ namespace Procon.Net.Protocols.CallOfDuty {
 
                 this.OnGameEvent(GameEventType.GamePlayerKill, new GameEventData() { Kills = new List<Kill>() { kill } });
             }
+            */
         }
 
         private void LogFile_ChatEntry(CallOfDutyLogfile sender, DateTime eventTime, Chat chat) {
@@ -211,7 +213,7 @@ namespace Procon.Net.Protocols.CallOfDuty {
             String reason = kick.Now.Content != null ? kick.Now.Content.FirstOrDefault() : String.Empty;
 
             foreach (Player player in kick.Now.Players) {
-                this.Send(String.IsNullOrEmpty(reason) == false ? this.CreatePacket("clientkick {0} \"{1}\"", player.SlotId, kick.Reason) : this.CreatePacket("clientkick {0}", player.SlotId));
+                this.Send(String.IsNullOrEmpty(reason) == false ? this.CreatePacket("clientkick {0} \"{1}\"", player.SlotId, reason) : this.CreatePacket("clientkick {0}", player.SlotId));
             }
         }
 

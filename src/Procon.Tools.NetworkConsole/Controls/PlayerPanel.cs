@@ -208,8 +208,14 @@ namespace Procon.Tools.NetworkConsole.Controls {
                 if (this.cboActions.SelectedItem is Kill) {
                     Kill kill = this.cboActions.SelectedItem as Kill;
 
-                    kill.Target = this.lsvPlayerlist.SelectedItems[0].Tag as Player;
-                    kill.Reason = this.txtReason.Text;
+                    kill.Scope = new NetworkActionData() {
+                        Players = new List<Player>() {
+                            this.lsvPlayerlist.SelectedItems[0].Tag as Player
+                        },
+                        Content = new List<String>() {
+                            this.txtReason.Text
+                        }
+                    };
                 }
                 else if (this.cboActions.SelectedItem is Kick) {
                     Kick kick = this.cboActions.SelectedItem as Kick;

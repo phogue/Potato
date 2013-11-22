@@ -668,13 +668,27 @@ namespace Procon.Net.Protocols.Frostbite {
                         Kills = new List<Kill>() {
                             new Kill() {
                                 HumanHitLocation = headshot == true ? FrostbiteGame.Headshot : FrostbiteGame.Bodyshot,
-                                Killer = this.State.PlayerList.Find(x => x.Name == request.Words[1]),
-                                Target = this.State.PlayerList.Find(x => x.Name == request.Words[2]),
-                                DamageType = new Item() {
-                                    Name = request.Words[3]
+                                Scope = {
+                                    Players = new List<Player>() {
+                                        this.State.PlayerList.Find(x => x.Name == request.Words[2])
+                                    },
+                                    Items = new List<Item>() {
+                                        new Item() {
+                                            Name = request.Words[3]
+                                        }
+                                    },
+                                    Points = new List<Point3D>() {
+                                        new Point3D(request.Words[8], request.Words[10], request.Words[9])
+                                    }
                                 },
-                                KillerLocation = new Point3D(request.Words[5], request.Words[7], request.Words[6]),
-                                TargetLocation = new Point3D(request.Words[8], request.Words[10], request.Words[9])
+                                Now = {
+                                    Players = new List<Player>() {
+                                        this.State.PlayerList.Find(x => x.Name == request.Words[1])
+                                    },
+                                    Points = new List<Point3D>() {
+                                        new Point3D(request.Words[5], request.Words[7], request.Words[6])
+                                    }
+                                }
                             }
                         }
                     });
@@ -993,11 +1007,15 @@ namespace Procon.Net.Protocols.Frostbite {
         }
 
         protected override void Action(Kill kill) {
-            if (kill.Target != null) {
-                this.Send(this.CreatePacket("admin.killPlayer \"{0}\"", kill.Target.Name));
+            String reason = kill.Now.Content != null ? kill.Now.Content.FirstOrDefault() : String.Empty;
 
-                if (string.IsNullOrEmpty(kill.Reason) == false) {
-                    this.Send(this.CreatePacket("admin.say \"{0}\" player {1}", kill.Reason, kill.Target.Name));
+            if (kill.Scope.Players != null) {
+                foreach (Player target in kill.Scope.Players) {
+                    this.Send(this.CreatePacket("admin.killPlayer \"{0}\"", target.Name));
+
+                    if (string.IsNullOrEmpty(reason) == false) {
+                        this.Send(this.CreatePacket("admin.say \"{0}\" player {1}", reason, target.Name));
+                    }
                 }
             }
         }
@@ -1006,7 +1024,7 @@ namespace Procon.Net.Protocols.Frostbite {
             String reason = kick.Now.Content != null ? kick.Now.Content.FirstOrDefault() : String.Empty;
 
             foreach (Player player in kick.Now.Players) {
-                this.Send(string.IsNullOrEmpty(reason) == false ? this.CreatePacket("admin.kickPlayer \"{0}\" \"{1}\"", player.Name, kick.Reason) : this.CreatePacket("admin.kickPlayer \"{0}\"", player.Name));
+                this.Send(string.IsNullOrEmpty(reason) == false ? this.CreatePacket("admin.kickPlayer \"{0}\" \"{1}\"", player.Name, reason) : this.CreatePacket("admin.kickPlayer \"{0}\"", player.Name));
             }
         }
 

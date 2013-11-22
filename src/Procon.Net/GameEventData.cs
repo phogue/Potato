@@ -45,5 +45,15 @@ namespace Procon.Net {
         /// The settings attached to this event, if any.
         /// </summary>
         public List<Settings> Settings { get; set; }
+
+        /// <summary>
+        /// The list of points (3d) attached to this event, if any.
+        /// </summary>
+        public List<Point3D> Points { get; set; }
+
+        /// <summary>
+        /// List of items attached to this event, if any.
+        /// </summary>
+        public List<Item> Items { get; set; }
     }
 }

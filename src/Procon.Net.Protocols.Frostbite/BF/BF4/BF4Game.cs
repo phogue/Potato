@@ -133,11 +133,21 @@ namespace Procon.Net.Protocols.Frostbite.BF.BF4 {
                         Kills = new List<Kill>() {
                             new Kill() {
                                 HumanHitLocation = headshot == true ? FrostbiteGame.Headshot : FrostbiteGame.Bodyshot,
-                                Killer = this.State.PlayerList.Find(x => x.Name == request.Words[1]),
-                                Target = this.State.PlayerList.Find(x => x.Name == request.Words[2]),
-                                DamageType = new Item() {
-                                    // Servers sends garbage at the end of the round?
-                                    Name = Regex.Replace(request.Words[3], @"[^\\w\\/_-]+", "")
+                                Scope = {
+                                    Players = new List<Player>() {
+                                        this.State.PlayerList.Find(x => x.Name == request.Words[2])
+                                    },
+                                    Items = new List<Item>() {
+                                        new Item() {
+                                            // Servers sends garbage at the end of the round?
+                                            Name = Regex.Replace(request.Words[3], @"[^\\w\\/_-]+", "")
+                                        }
+                                    }
+                                },
+                                Now = {
+                                    Players = new List<Player>() {
+                                        this.State.PlayerList.Find(x => x.Name == request.Words[1])
+                                    }
                                 }
                             }
                         }

@@ -19,6 +19,16 @@ namespace Procon.Net.Protocols.Objects {
         /// <summary>
         /// The groups attached to this action.
         /// </summary>
-        public List<Grouping> Groups { get; set; } 
+        public List<Grouping> Groups { get; set; }
+
+        /// <summary>
+        /// The list of points (3d) attached to this action, if any.
+        /// </summary>
+        public List<Point3D> Points { get; set; }
+
+        /// <summary>
+        /// List of items attached to this action, if any.
+        /// </summary>
+        public List<Item> Items { get; set; }
     }
 }

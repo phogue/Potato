@@ -281,14 +281,14 @@ namespace Procon.Net.Protocols.Source {
             String reason = kick.Now.Content != null ? kick.Now.Content.FirstOrDefault() : String.Empty;
 
             foreach (Player player in kick.Now.Players) {
-                this.Send(String.IsNullOrEmpty(reason) == false ? this.CreatePacket("kickid {0} {1}", player.SlotId, kick.Reason) : this.CreatePacket("kickid {0}", player.SlotId));
+                this.Send(String.IsNullOrEmpty(reason) == false ? this.CreatePacket("kickid {0} {1}", player.SlotId, reason) : this.CreatePacket("kickid {0}", player.SlotId));
             }
         }
 
         protected override void Action(Kill kill) {
-            if (kill.Target != null) {
+            if (kill.Scope.Players != null && kill.Scope.Players.Count > 0) {
 
-                this.SendRequest("kill {0}", kill.Target.Name);
+                this.SendRequest("kill {0}", kill.Scope.Players.First().Name);
 
                 /*
                 if (kick.Reason != null && kick.Reason.Length > 0) {

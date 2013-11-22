@@ -155,12 +155,14 @@ namespace TestPlugin {
             TextCommandMatch match = e.Now.TextCommandMatches.First();
 
             if (match.Players != null && match.Players.Count > 0) {
-                foreach (Player kickPlayer in match.Players) {
-                    this.ProxyNetworkAction(new Kill() {
-                        Target = kickPlayer,
-                        Reason = "Testing"
-                    });
-                }
+                this.ProxyNetworkAction(new Kill() {
+                    Scope = {
+                        Players = new List<Player>(match.Players),
+                        Content = new List<String>() {
+                            "Testing"
+                        }
+                    }
+                });
             }
 
             return command.Result;

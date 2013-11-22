@@ -214,11 +214,21 @@ namespace Procon.Net.Protocols.Frostbite.BF.BF3 {
                         Kills = new List<Kill>() {
                             new Kill() {
                                 HumanHitLocation = headshot == true ? FrostbiteGame.Headshot : FrostbiteGame.Bodyshot,
-                                Killer = killer,
-                                Target = target,
-                                DamageType = new Item() {
-                                    // Servers sends garbage at the end of the round?
-                                    Name = Regex.Replace(request.Words[3], @"[^\\w\\/_-]+", "")
+                                Scope = {
+                                    Players = new List<Player>() {
+                                        target
+                                    },
+                                    Items = new List<Item>() {
+                                        new Item() {
+                                            // Servers sends garbage at the end of the round?
+                                            Name = Regex.Replace(request.Words[3], @"[^\\w\\/_-]+", "")
+                                        }
+                                    }
+                                },
+                                Now = {
+                                    Players = new List<Player>() {
+                                        killer
+                                    }
                                 }
                             }
                         }

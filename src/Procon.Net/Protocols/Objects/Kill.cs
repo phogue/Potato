@@ -3,7 +3,7 @@
 namespace Procon.Net.Protocols.Objects {
     [Serializable]
     public sealed class Kill : NetworkAction {
-
+        /*
         /// <summary>
         /// The killer of the target
         /// </summary>
@@ -23,11 +23,11 @@ namespace Procon.Net.Protocols.Objects {
         /// The targets location at the time of death
         /// </summary>
         public Point3D TargetLocation { get; set; }
-
+        */
         /// <summary>
         /// The weapon used to kill the player
         /// </summary>
-        public Item DamageType { get; set; }
+        //public Item DamageType { get; set; }
 
         /// <summary>
         /// The location of the target 
@@ -35,9 +35,9 @@ namespace Procon.Net.Protocols.Objects {
         public HumanHitLocation HumanHitLocation { get; set; }
 
         public Kill() : base() {
-            this.Killer = new Player();
-            this.Target = new Player();
-            this.DamageType = new Item();
+            //this.Killer = new Player();
+            //this.Target = new Player();
+            //this.DamageType = new Item();
         }
     }
 }

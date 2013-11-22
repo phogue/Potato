@@ -12,7 +12,8 @@ namespace Procon.Net.Protocols.Objects {
         public List<Player> Players { get; set; } 
 
         /// <summary>
-        /// A list of strings attached to this network action.
+        /// A list of strings attached to this network action. A reason associated with the action.
+        /// Why the action is being taken or why it was taken, or text used in the action.
         /// </summary>
         public List<String> Content { get; set; }
 

@@ -95,14 +95,14 @@ namespace Procon.Tools.NetworkConsole.Controls {
                                     Text = banObject.Time != null ? banObject.Time.Context.ToString() : String.Empty
                                 },
                                 new ListViewItem.ListViewSubItem() {
-                                    Text = banObject.Reason
+                                    Text = banObject.Scope.Content != null ? banObject.Scope.Content.FirstOrDefault() : String.Empty
                                 }
                             }
                         );
                     }
                     else {
                         banListItem.SubItems[1].Text = banObject.Time != null ? banObject.Time.Context.ToString() : String.Empty;
-                        banListItem.SubItems[2].Text = banObject.Reason;
+                        banListItem.SubItems[2].Text = banObject.Scope.Content != null ? banObject.Scope.Content.FirstOrDefault() : String.Empty;
                     }
                 }
             }

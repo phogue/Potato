@@ -31,7 +31,9 @@ namespace Procon.Net.Protocols.Frostbite.Objects {
 
                 ban.ActionType = Protocols.Objects.NetworkActionType.NetworkMapListed;
 
-                ban.Reason = words[4];
+                ban.Scope.Content = new List<String>() {
+                    words[4]
+                };
             }
 
             return ban;
@@ -76,13 +78,17 @@ namespace Procon.Net.Protocols.Frostbite.Objects {
 
                 // Time has a seconds parameter
                 if (ban.Time.Context != TimeSubsetContext.Time) {
-                    ban.Reason = words[3];
+                    ban.Scope.Content = new List<String>() {
+                        words[3]
+                    };
                 }
             }
             else if (words.Count == 5) {
                 ban.Time = FrostbiteTimeSubset.Parse(words.GetRange(2, 2));
 
-                ban.Reason = words[4];
+                ban.Scope.Content = new List<String>() {
+                    words[4]
+                };
             }
 
             return ban;

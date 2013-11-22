@@ -1029,21 +1029,23 @@ namespace Procon.Net.Protocols.Frostbite {
         }
 
         protected override void Action(Ban ban) {
+            String reason = ban.Scope.Content != null ? ban.Scope.Content.FirstOrDefault() : String.Empty;
+
             if (ban.ActionType == NetworkActionType.NetworkBan) {
                 if (ban.Time.Context == TimeSubsetContext.Permanent) {
-                    if (ban.Reason.Length == 0) {
+                    if (String.IsNullOrEmpty(reason) == true) {
                         this.Send(this.CreatePacket("banList.add guid \"{0}\" perm", ban.Scope.Players.First().Uid));
                     }
                     else {
-                        this.Send(this.CreatePacket("banList.add guid \"{0}\" perm \"{1}\"", ban.Scope.Players.First().Uid, ban.Reason));
+                        this.Send(this.CreatePacket("banList.add guid \"{0}\" perm \"{1}\"", ban.Scope.Players.First().Uid, reason));
                     }
                 }
                 else if (ban.Time.Context == TimeSubsetContext.Time && ban.Time.Length.HasValue == true) {
-                    if (ban.Reason.Length == 0) {
+                    if (String.IsNullOrEmpty(reason) == true) {
                         this.Send(this.CreatePacket("banList.add guid \"{0}\" seconds {1}", ban.Scope.Players.First().Uid, ban.Time.Length.Value.TotalSeconds));
                     }
                     else {
-                        this.Send(this.CreatePacket("banList.add guid \"{0}\" seconds {1} \"{2}\"", ban.Scope.Players.First().Uid, ban.Time.Length.Value.TotalSeconds, ban.Reason));
+                        this.Send(this.CreatePacket("banList.add guid \"{0}\" seconds {1} \"{2}\"", ban.Scope.Players.First().Uid, ban.Time.Length.Value.TotalSeconds, reason));
                     }
                 }
             }

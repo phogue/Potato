@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Procon.Net.Protocols.Objects {
 
@@ -11,9 +12,7 @@ namespace Procon.Net.Protocols.Objects {
         public ChatOrigin Origin { get; set; }
 
         public Chat() : base() {
-            //this.Author = new Player();
-            //this.Subset = new PlayerSubset();
-            //this.Text = String.Empty;
+            this.Now.Content = new List<String>();
             this.ActionType = NetworkActionType.NetworkSay;
         }
     }

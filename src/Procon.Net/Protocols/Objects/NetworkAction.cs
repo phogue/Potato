@@ -11,11 +11,6 @@ namespace Procon.Net.Protocols.Objects {
         public NetworkActionType ActionType { get; set; }
 
         /// <summary>
-        /// A reason associated with the action.  Why the action is being taken or why it was taken.
-        /// </summary>
-        public String Reason { get; set; }
-
-        /// <summary>
         /// The limiting factor(s) of the action
         /// </summary>
         public NetworkActionData Scope { get; set; }
@@ -31,8 +26,6 @@ namespace Procon.Net.Protocols.Objects {
         public NetworkActionData Now { get; set; }
 
         public NetworkAction(): base() {
-            this.Reason = String.Empty;
-
             this.Scope = new NetworkActionData();
             this.Then = new NetworkActionData();
             this.Now = new NetworkActionData();

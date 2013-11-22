@@ -18,25 +18,41 @@ namespace Procon.Core.Test.Events {
                 Bans = new List<Ban>() {
                     new Ban() {
                         ActionType = NetworkActionType.NetworkYell,
-                        Reason = "I should remove this property"
+                        Scope = {
+                            Content = {
+                                "I should remove this property"
+                            }
+                        }
                     }
                 },
                 Chats = new List<Chat>() {
                     new Chat() {
                         ActionType = NetworkActionType.NetworkYell,
-                        Reason = "I should remove this property"
+                        Now = {
+                            Content = {
+                                "I should remove this property"
+                            }
+                        }
                     }
                 },
                 Kicks = new List<Kick>() {
                     new Kick() {
                         ActionType = NetworkActionType.NetworkYell,
-                        Reason = "I should remove this property"
+                        Scope = {
+                            Content = {
+                                "I should remove this property"
+                            }
+                        }
                     }
                 },
                 Kills = new List<Kill>() {
                     new Kill() {
                         ActionType = NetworkActionType.NetworkYell,
-                        Reason = "I should remove this property"
+                        Scope = {
+                            Content = {
+                                "I should remove this property"
+                            }
+                        }
                     }
                 },
                 Players = new List<Player>() {
@@ -57,16 +73,16 @@ namespace Procon.Core.Test.Events {
 
             CommandData genericEventData = GenericEventData.Parse(gameEventData);
 
-            Assert.AreEqual("I should remove this property", genericEventData.Bans.First().Reason);
+            Assert.AreEqual("I should remove this property", genericEventData.Bans.First().Scope.Content.First());
             Assert.AreEqual(NetworkActionType.NetworkYell, genericEventData.Bans.First().ActionType);
 
-            Assert.AreEqual("I should remove this property", genericEventData.Chats.First().Reason);
+            Assert.AreEqual("I should remove this property", genericEventData.Chats.First().Now.Content.First());
             Assert.AreEqual(NetworkActionType.NetworkYell, genericEventData.Chats.First().ActionType);
 
-            Assert.AreEqual("I should remove this property", genericEventData.Kicks.First().Reason);
+            Assert.AreEqual("I should remove this property", genericEventData.Kicks.First().Scope.Content.First());
             Assert.AreEqual(NetworkActionType.NetworkYell, genericEventData.Kicks.First().ActionType);
 
-            Assert.AreEqual("I should remove this property", genericEventData.Kills.First().Reason);
+            Assert.AreEqual("I should remove this property", genericEventData.Kills.First().Scope.Content.First());
             Assert.AreEqual(NetworkActionType.NetworkYell, genericEventData.Kills.First().ActionType);
 
             Assert.AreEqual("Phogue", genericEventData.Players.First().Name);

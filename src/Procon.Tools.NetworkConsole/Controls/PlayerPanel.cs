@@ -233,15 +233,23 @@ namespace Procon.Tools.NetworkConsole.Controls {
                     Move move = this.cboActions.SelectedItem as Move;
                     move.Scope.Players.Add(this.lsvPlayerlist.SelectedItems[0].Tag as Player);
 
-                    move.Reason = this.txtReason.Text;
+                    move.Scope = new NetworkActionData() {
+                        Content = new List<String>() {
+                            this.txtReason.Text
+                        }
+                    };
                 }
                 else if (this.cboActions.SelectedItem is Ban) {
                     Ban ban = this.cboActions.SelectedItem as Ban;
 
-                    ban.Scope.Players = new List<Player>() {
-                        this.lsvPlayerlist.SelectedItems[0].Tag as Player
+                    ban.Scope = new NetworkActionData() {
+                        Content = new List<String>() {
+                            this.txtReason.Text
+                        },
+                        Players = new List<Player>() {
+                            this.lsvPlayerlist.SelectedItems[0].Tag as Player
+                        }
                     };
-                    ban.Reason = this.txtReason.Text;
                 }
 
                 this.quickActionsPropertyGrid.Refresh();

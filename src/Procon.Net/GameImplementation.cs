@@ -135,9 +135,9 @@ namespace Procon.Net {
         }
 
         private void Client_PacketReceived(Client<P> sender, P packet) {
-            this.OnClientEvent(ClientEventType.ClientPacketReceived, packet);
-
             this.Dispatch(packet);
+
+            this.OnClientEvent(ClientEventType.ClientPacketReceived, packet);
         }
 
         protected virtual void Dispatch(PacketDispatch identifer, P request, P response) {

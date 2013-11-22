@@ -278,13 +278,10 @@ namespace Procon.Net.Protocols.Source {
         }
 
         protected override void Action(Kick kick) {
-            if (kick.Target != null) {
-                if (string.IsNullOrEmpty(kick.Reason) == false) {
-                    this.SendRequest("kickid {0} {1}", kick.Target.Uid, kick.Reason);
-                }
-                else {
-                    this.SendRequest("kickid {0}", kick.Target.Uid);
-                }
+            String reason = kick.Now.Content != null ? kick.Now.Content.FirstOrDefault() : String.Empty;
+
+            foreach (Player player in kick.Now.Players) {
+                this.Send(String.IsNullOrEmpty(reason) == false ? this.CreatePacket("kickid {0} {1}", player.SlotId, kick.Reason) : this.CreatePacket("kickid {0}", player.SlotId));
             }
         }
 

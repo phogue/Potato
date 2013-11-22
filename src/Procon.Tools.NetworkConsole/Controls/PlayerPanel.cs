@@ -214,8 +214,14 @@ namespace Procon.Tools.NetworkConsole.Controls {
                 else if (this.cboActions.SelectedItem is Kick) {
                     Kick kick = this.cboActions.SelectedItem as Kick;
 
-                    kick.Target = this.lsvPlayerlist.SelectedItems[0].Tag as Player;
-                    kick.Reason = this.txtReason.Text;
+                    kick.Now = new NetworkActionData() {
+                        Players = new List<Player>() {
+                            this.lsvPlayerlist.SelectedItems[0].Tag as Player
+                        },
+                        Content = new List<String>() {
+                            this.txtReason.Text
+                        }
+                    };
                 }
                 else if (this.cboActions.SelectedItem is Move) {
                     Move move = this.cboActions.SelectedItem as Move;

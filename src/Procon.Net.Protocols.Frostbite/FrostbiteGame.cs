@@ -837,8 +837,14 @@ namespace Procon.Net.Protocols.Frostbite {
                 this.OnGameEvent(GameEventType.GamePlayerKicked, new GameEventData() {
                     Kicks = new List<Kick>() {
                         new Kick() {
-                            Target = player,
-                            Reason = request.Words[2]
+                            Now = {
+                                Players = new List<Player>() {
+                                    player
+                                },
+                                Content = new List<String>() {
+                                    request.Words[2]
+                                }
+                            }
                         }
                     }
                 });
@@ -997,13 +1003,10 @@ namespace Procon.Net.Protocols.Frostbite {
         }
 
         protected override void Action(Kick kick) {
-            if (kick.Target != null) {
-                if (string.IsNullOrEmpty(kick.Reason) == false) {
-                    this.Send(this.CreatePacket("admin.kickPlayer \"{0}\" \"{1}\"", kick.Target.Name, kick.Reason));
-                }
-                else {
-                    this.Send(this.CreatePacket("admin.kickPlayer \"{0}\"", kick.Target.Name));
-                }
+            String reason = kick.Now.Content != null ? kick.Now.Content.FirstOrDefault() : String.Empty;
+
+            foreach (Player player in kick.Now.Players) {
+                this.Send(string.IsNullOrEmpty(reason) == false ? this.CreatePacket("admin.kickPlayer \"{0}\" \"{1}\"", player.Name, kick.Reason) : this.CreatePacket("admin.kickPlayer \"{0}\"", player.Name));
             }
         }
 

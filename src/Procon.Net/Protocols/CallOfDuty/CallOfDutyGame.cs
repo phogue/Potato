@@ -208,13 +208,10 @@ namespace Procon.Net.Protocols.CallOfDuty {
         }
 
         protected override void Action(Kick kick) {
-            if (kick.Target != null) {
-                if (kick.Reason != null && kick.Reason.Length > 0) {
-                    this.Send(this.CreatePacket("clientkick {0} \"{1}\"", kick.Target.SlotId, kick.Reason));
-                }
-                else {
-                    this.Send(this.CreatePacket("clientkick {0}", kick.Target.SlotId));
-                }
+            String reason = kick.Now.Content != null ? kick.Now.Content.FirstOrDefault() : String.Empty;
+
+            foreach (Player player in kick.Now.Players) {
+                this.Send(String.IsNullOrEmpty(reason) == false ? this.CreatePacket("clientkick {0} \"{1}\"", player.SlotId, kick.Reason) : this.CreatePacket("clientkick {0}", player.SlotId));
             }
         }
 

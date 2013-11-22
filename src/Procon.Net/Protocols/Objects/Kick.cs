@@ -7,10 +7,10 @@ namespace Procon.Net.Protocols.Objects {
         /// <summary>
         /// The target player to kick
         /// </summary>
-        public Player Target { get; set; }
+        //public Player Target { get; set; }
 
         public Kick() : base() {
-            this.Target = new Player();
+            //this.Target = new Player();
         }
     }
 }

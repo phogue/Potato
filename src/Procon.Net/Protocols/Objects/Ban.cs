@@ -11,6 +11,7 @@ namespace Procon.Net.Protocols.Objects {
         public TimeSubset Time { get; set; }
 
         public Ban() : base() {
+            this.Scope.Content = new List<String>();
             this.Scope.Players = new List<Player>();
 
             this.Time = new TimeSubset();

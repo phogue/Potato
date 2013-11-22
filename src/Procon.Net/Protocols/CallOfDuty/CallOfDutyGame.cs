@@ -210,9 +210,9 @@ namespace Procon.Net.Protocols.CallOfDuty {
         }
 
         protected override void Action(Kick kick) {
-            String reason = kick.Now.Content != null ? kick.Now.Content.FirstOrDefault() : String.Empty;
+            String reason = kick.Scope.Content != null ? kick.Scope.Content.FirstOrDefault() : String.Empty;
 
-            foreach (Player player in kick.Now.Players) {
+            foreach (Player player in kick.Scope.Players) {
                 this.Send(String.IsNullOrEmpty(reason) == false ? this.CreatePacket("clientkick {0} \"{1}\"", player.SlotId, reason) : this.CreatePacket("clientkick {0}", player.SlotId));
             }
         }

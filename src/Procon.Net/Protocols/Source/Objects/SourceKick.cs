@@ -8,7 +8,7 @@ namespace Procon.Net.Protocols.Source.Objects {
 
         public NetworkObject Parse(Match match) {
             return new Kick {
-                Now = {
+                Scope = {
                     Players = new List<Player>() {
                         new Player() {
                             Name = match.Groups["name"].Value,

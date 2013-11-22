@@ -220,7 +220,7 @@ namespace Procon.Tools.NetworkConsole.Controls {
                 else if (this.cboActions.SelectedItem is Kick) {
                     Kick kick = this.cboActions.SelectedItem as Kick;
 
-                    kick.Now = new NetworkActionData() {
+                    kick.Scope = new NetworkActionData() {
                         Players = new List<Player>() {
                             this.lsvPlayerlist.SelectedItems[0].Tag as Player
                         },

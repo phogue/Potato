@@ -1007,7 +1007,7 @@ namespace Procon.Net.Protocols.Frostbite {
         }
 
         protected override void Action(Kill kill) {
-            String reason = kill.Now.Content != null ? kill.Now.Content.FirstOrDefault() : String.Empty;
+            String reason = kill.Scope.Content != null ? kill.Scope.Content.FirstOrDefault() : String.Empty;
 
             if (kill.Scope.Players != null) {
                 foreach (Player target in kill.Scope.Players) {
@@ -1021,9 +1021,9 @@ namespace Procon.Net.Protocols.Frostbite {
         }
 
         protected override void Action(Kick kick) {
-            String reason = kick.Now.Content != null ? kick.Now.Content.FirstOrDefault() : String.Empty;
+            String reason = kick.Scope.Content != null ? kick.Scope.Content.FirstOrDefault() : String.Empty;
 
-            foreach (Player player in kick.Now.Players) {
+            foreach (Player player in kick.Scope.Players) {
                 this.Send(string.IsNullOrEmpty(reason) == false ? this.CreatePacket("admin.kickPlayer \"{0}\" \"{1}\"", player.Name, reason) : this.CreatePacket("admin.kickPlayer \"{0}\"", player.Name));
             }
         }

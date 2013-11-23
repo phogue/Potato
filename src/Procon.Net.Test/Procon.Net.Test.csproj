@@ -56,6 +56,7 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MarkManagerTest.cs" />
     <Compile Include="Mocks\MockPacket.cs" />
     <Compile Include="PacketQueueTest.cs" />
     <Compile Include="PacketStreamTest.cs" />

@@ -8,7 +8,7 @@ namespace Procon.Net {
         /// <summary>
         /// List of connection attempts used for a capped exponential backoff of reconnection attempts.
         /// </summary>
-        protected List<DateTime> Marks { get; set; }
+        public List<DateTime> Marks { get; set; }
 
         /// <summary>
         /// The maxmimum number of seconds to hold connection attempts. The default is set to 600, 10 minutes.
@@ -29,9 +29,11 @@ namespace Procon.Net {
         /// <summary>
         /// Marks the current connection attempt.
         /// </summary>
-        public virtual MarkManager Mark() {
+        public virtual MarkManager Mark(DateTime? time = null) {
+            time = time ?? DateTime.Now;
+
             lock (this.MarkListLock) {
-                this.Marks.Add(DateTime.Now);
+                this.Marks.Add(time.Value);
             }
 
             return this;

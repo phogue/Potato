@@ -916,7 +916,7 @@ namespace Procon.Net.Protocols.Frostbite {
         protected override void Dispatch(FrostbitePacket packet) {
 
             if (packet.Origin == PacketOrigin.Client && packet.Type == PacketType.Response) {
-                FrostbitePacket requestPacket = ((FrostbiteClient)this.Client).GetRequestPacket(packet);
+                FrostbitePacket requestPacket = ((FrostbiteClient)this.Client).PacketQueue.GetRequestPacket(packet) as FrostbitePacket;
 
                 // If the request packet is valid and has at least one word.
                 if (requestPacket != null && requestPacket.Words.Count >= 1) {

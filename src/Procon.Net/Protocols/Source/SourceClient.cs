@@ -5,6 +5,8 @@ namespace Procon.Net.Protocols.Source {
     using Procon.Net.Protocols.Source.Logging.BroadcastListener;
     using Procon.Net.Protocols.Source.Logging.BroadcastService;
 
+    // todo Use Procon.Net.PacketQueue
+
     public class SourceClient : Procon.Net.TcpClient {
         protected Dictionary<int?, Packet> SentPackets;
         protected Queue<Packet> QueuePackets;

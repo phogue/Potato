@@ -1,4 +1,7 @@
-﻿namespace Procon.Net {
+﻿using System;
+
+namespace Procon.Net {
+    [Flags]
     public enum PacketType {
         /// <summary>
         /// Unknown direction

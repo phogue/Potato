@@ -30,7 +30,7 @@ namespace Procon.Net {
         /// The packet serialization object used to parsed data read in
         /// from the packet stream.
         /// </summary>
-        protected PacketSerializer<P> PacketSerializer { get; set; }
+        protected IPacketSerializer PacketSerializer { get; set; }
 
         /// <summary>
         /// The initial buffer size for the received buffer.

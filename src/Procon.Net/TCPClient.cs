@@ -109,7 +109,7 @@ namespace Procon.Net {
                 byte[] packetData = this.PacketStream.PeekShift((uint)packetSize);
 
                 if (packetData != null && packetData.Length > 0) {
-                    packet = this.PacketSerializer.Deserialize(packetData);
+                    packet = this.PacketSerializer.Deserialize(packetData) as P;
 
                     this.PacketStream.Shift((uint)packetSize);
                 }

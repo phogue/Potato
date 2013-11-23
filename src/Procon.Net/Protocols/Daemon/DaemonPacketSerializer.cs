@@ -18,7 +18,9 @@ namespace Procon.Net.Protocols.Daemon {
     /// to be used to issue command requests and get responses.
     /// </summary>
     /// <remarks><para>If we ever need additional functionality or handle larger request/response sizes I'll probably look into a third party implementation.</para></remarks>
-    public class DaemonPacketSerializer : PacketSerializer<DaemonPacket> {
+    public class DaemonPacketSerializer : IPacketSerializer {
+
+        public uint PacketHeaderSize { get; set; }
 
         public DaemonPacketSerializer() : base() {
             this.PacketHeaderSize = 14;
@@ -153,18 +155,23 @@ namespace Procon.Net.Protocols.Daemon {
             return Encoding.UTF8.GetBytes(builder.ToString());
         }
 
-        public override byte[] Serialize(DaemonPacket packet) {
-            byte[] content = this.SerializeContent(packet);
-            byte[] header = this.SerializeHeader(packet, content);
-            byte[] serialized = new byte[header.Length + content.Length];
+        public byte[] Serialize(Packet packet) {
+            DaemonPacket daemonPacket = packet as DaemonPacket;
+            byte[] serialized = null;
 
-            Array.Copy(header, serialized, header.Length);
-            Array.Copy(content, 0, serialized, header.Length, content.Length);
+            if (daemonPacket != null) {
+                byte[] content = this.SerializeContent(daemonPacket);
+                byte[] header = this.SerializeHeader(daemonPacket, content);
+                serialized = new byte[header.Length + content.Length];
+
+                Array.Copy(header, serialized, header.Length);
+                Array.Copy(content, 0, serialized, header.Length, content.Length);
+            }
 
             return serialized;
         }
 
-        public override DaemonPacket Deserialize(byte[] packetData) {
+        public Packet Deserialize(byte[] packetData) {
             DaemonPacket packet = new DaemonPacket();
 
             DaemonPacketSerializer.Parse(packet, packetData);
@@ -173,7 +180,7 @@ namespace Procon.Net.Protocols.Daemon {
             return packet;
         }
 
-        public override long ReadPacketSize(byte[] packetData) {
+        public long ReadPacketSize(byte[] packetData) {
             // Attempt an initial parse to get the headers.
             DaemonPacket packet = new DaemonPacket();
             DaemonPacketSerializer.Parse(packet, packetData);

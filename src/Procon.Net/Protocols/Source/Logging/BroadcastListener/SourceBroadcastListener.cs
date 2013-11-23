@@ -46,7 +46,7 @@ namespace Procon.Net.Protocols.Source.Logging.BroadcastListener {
             try {
                 this.ReceivedBuffer = this.Client.EndReceive(ar, ref this.RemoteIpEndPoint);
 
-                SourceBroadcastListenerPacket completedPacket = this.PacketSerializer.Deserialize(this.ReceivedBuffer);
+                SourceBroadcastListenerPacket completedPacket = this.PacketSerializer.Deserialize(this.ReceivedBuffer) as SourceBroadcastListenerPacket;
                 // completedPacket.RemoteEndPoint = this.m_remoteIpEndPoint;
 
                 this.BeforePacketDispatch(completedPacket);

@@ -93,12 +93,15 @@ namespace Procon.Net {
 
                     this.ReceivedBuffer = this.Client.EndReceive(ar, ref this.RemoteIpEndPoint);
 
-                    P completedPacket = this.PacketSerializer.Deserialize(this.ReceivedBuffer);
-                    this.RemoteEndPoint = completedPacket.RemoteEndPoint = this.RemoteIpEndPoint;
+                    P completedPacket = this.PacketSerializer.Deserialize(this.ReceivedBuffer) as P;
 
-                    this.BeforePacketDispatch(completedPacket);
+                    if (completedPacket != null) {
+                        this.RemoteEndPoint = completedPacket.RemoteEndPoint = this.RemoteIpEndPoint;
 
-                    this.OnPacketReceived(completedPacket);
+                        this.BeforePacketDispatch(completedPacket);
+
+                        this.OnPacketReceived(completedPacket);
+                    }
 
                     this.BeginRead();
                 }

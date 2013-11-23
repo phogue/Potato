@@ -86,7 +86,7 @@
     <Compile Include="GameImplementation.cs" />
     <Compile Include="Packet.cs" />
     <Compile Include="PacketOrigin.cs" />
-    <Compile Include="PacketSerializer.cs" />
+    <Compile Include="IPacketSerializer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Protocols\CallOfDuty\BlackOps\CallOfDutyBlackOpsGame.cs" />
     <Compile Include="Protocols\CallOfDuty\CallOfDutyClient.cs" />

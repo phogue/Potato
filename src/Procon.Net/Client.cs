@@ -4,7 +4,7 @@ using System.Net.Sockets;
 
 namespace Procon.Net {
 
-    public abstract class Client<P> : ClientBase, IClient where P : Packet {
+    public abstract class Client : ClientBase, IClient {
 
         /// <summary>
         /// The hostname to connect to.
@@ -55,12 +55,12 @@ namespace Procon.Net {
         /// <summary>
         /// The last packet that was receieved by this connection.
         /// </summary>
-        public P LastPacketReceived { get; protected set; }
+        public Packet LastPacketReceived { get; protected set; }
 
         /// <summary>
         /// The last packet that was sent by this connection.
         /// </summary>
-        public P LastPacketSent { get; protected set; }
+        public Packet LastPacketSent { get; protected set; }
 
         /// <summary>
         /// The current connection state.
@@ -181,7 +181,7 @@ namespace Procon.Net {
         /// </summary>
         /// <param name="packet"></param>
         /// <returns></returns>
-        protected virtual bool BeforePacketDispatch(P packet) {
+        protected virtual bool BeforePacketDispatch(Packet packet) {
             return false;
         }
 
@@ -216,7 +216,7 @@ namespace Procon.Net {
             }
         }
 
-        protected virtual void OnPacketSent(P packet) {
+        protected virtual void OnPacketSent(Packet packet) {
             this.LastPacketSent = packet;
 
             var handler = this.PacketSent;
@@ -225,7 +225,7 @@ namespace Procon.Net {
             }
         }
 
-        protected virtual void OnPacketReceived(P packet) {
+        protected virtual void OnPacketReceived(Packet packet) {
             this.LastPacketReceived = packet;
 
             var handler = this.PacketReceived;

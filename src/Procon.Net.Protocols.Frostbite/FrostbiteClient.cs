@@ -3,7 +3,7 @@ using System.Linq;
 using System.Collections.Generic;
 
 namespace Procon.Net.Protocols.Frostbite {
-    public class FrostbiteClient : TcpClient<FrostbitePacket> {
+    public class FrostbiteClient : Procon.Net.TcpClient {
 
         /// <summary>
         /// A list of packets currently sent to the server and awaiting a response
@@ -105,7 +105,7 @@ namespace Procon.Net.Protocols.Frostbite {
             return requestPacket as FrostbitePacket;
         }
 
-        protected override void OnPacketReceived(FrostbitePacket packet) {
+        protected override void OnPacketReceived(Packet packet) {
             base.OnPacketReceived(packet);
 
             // Respond with "OK" to all server events.

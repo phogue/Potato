@@ -5,7 +5,7 @@ using System.Net.Sockets;
 namespace Procon.Net {
 
     [Serializable]
-    public class UdpClient<P> : Client<P> where P : Packet {
+    public class UdpClient : Client {
 
         /// <summary>
         /// The 'open' client for the udp connection
@@ -56,7 +56,7 @@ namespace Procon.Net {
 
         protected virtual void SendAsynchronousCallback(IAsyncResult ar) {
 
-            P packet = (P)ar.AsyncState;
+            Packet packet = (Packet)ar.AsyncState;
 
             try {
                 if (this.Client != null) {
@@ -77,7 +77,7 @@ namespace Procon.Net {
             if (packet != null) {
                 if (this.BeforePacketSend(packet) == false && this.Client != null) {
 
-                    byte[] bytePacket = this.PacketSerializer.Serialize(packet as P);
+                    byte[] bytePacket = this.PacketSerializer.Serialize(packet);
 
                     if (bytePacket != null && bytePacket.Length > 0) {
                         this.Client.BeginSend(bytePacket, bytePacket.Length, this.SendAsynchronousCallback, packet);
@@ -93,7 +93,7 @@ namespace Procon.Net {
 
                     this.ReceivedBuffer = this.Client.EndReceive(ar, ref this.RemoteIpEndPoint);
 
-                    P completedPacket = this.PacketSerializer.Deserialize(this.ReceivedBuffer) as P;
+                    Packet completedPacket = this.PacketSerializer.Deserialize(this.ReceivedBuffer);
 
                     if (completedPacket != null) {
                         this.RemoteEndPoint = completedPacket.RemoteEndPoint = this.RemoteIpEndPoint;

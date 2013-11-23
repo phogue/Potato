@@ -4,7 +4,7 @@ using System.Net.Sockets;
 
 namespace Procon.Net.Protocols.Source.Logging.BroadcastService {
 
-    public class SourceBroadcastService : UdpClient<SourceBroadcastServicePacket> {
+    public class SourceBroadcastService : Procon.Net.UdpClient {
 
         public UdpClient BroadcastClient { get; set; }
         public ushort BroadcastPort { get; set; }
@@ -45,8 +45,9 @@ namespace Procon.Net.Protocols.Source.Logging.BroadcastService {
                 this.ConnectionState = Net.ConnectionState.ConnectionConnecting;
                 this.RemoteIpEndPoint = new IPEndPoint(IPAddress.Any, this.Port);
 
-                this.Client = new UdpClient(this.RemoteIpEndPoint);
-                this.Client.DontFragment = true; // ?
+                this.Client = new System.Net.Sockets.UdpClient(this.RemoteIpEndPoint) {
+                    DontFragment = true
+                };
 
                 this.Client.BeginReceive(this.ReadCallback, null);
 
@@ -60,7 +61,7 @@ namespace Procon.Net.Protocols.Source.Logging.BroadcastService {
             }
         }
 
-        protected override void OnPacketReceived(SourceBroadcastServicePacket packet) {
+        protected override void OnPacketReceived(Packet packet) {
             base.OnPacketReceived(packet);
 
             // We've got a packet, now broadcast it..

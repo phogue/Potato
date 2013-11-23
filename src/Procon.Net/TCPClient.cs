@@ -4,7 +4,7 @@ using System.Net.Sockets;
 
 namespace Procon.Net {
 
-    public class TcpClient<P> : Client<P> where P : Packet {
+    public class TcpClient : Client {
 
         /// <summary>
         /// The open client connection.
@@ -59,7 +59,7 @@ namespace Procon.Net {
         /// <param name="ar"></param>
         protected void SendAsynchronousCallback(IAsyncResult ar) {
 
-            P packet = (P)ar.AsyncState;
+            Packet packet = (Packet)ar.AsyncState;
 
             if (this.NetworkStream != null) {
                 try {
@@ -85,7 +85,7 @@ namespace Procon.Net {
             if (packet != null) {
                 if (this.BeforePacketSend(packet) == false && this.NetworkStream != null) {
 
-                    byte[] bytePacket = this.PacketSerializer.Serialize(packet as P);
+                    byte[] bytePacket = this.PacketSerializer.Serialize(packet);
 
                     if (bytePacket != null && bytePacket.Length > 0) {
                         this.NetworkStream.BeginWrite(bytePacket, 0, bytePacket.Length, this.SendAsynchronousCallback, packet);
@@ -98,8 +98,8 @@ namespace Procon.Net {
         /// Attempts to read a single packet from the PacketStream
         /// </summary>
         /// <returns>A completed packet, or null if no packet could be read.</returns>
-        protected virtual P ReadPacket() {
-            P packet = null;
+        protected virtual Packet ReadPacket() {
+            Packet packet = null;
 
             byte[] header = this.PacketStream.PeekShift((uint)this.ReadPacketPeekShiftSize);
 
@@ -109,7 +109,7 @@ namespace Procon.Net {
                 byte[] packetData = this.PacketStream.PeekShift((uint)packetSize);
 
                 if (packetData != null && packetData.Length > 0) {
-                    packet = this.PacketSerializer.Deserialize(packetData) as P;
+                    packet = this.PacketSerializer.Deserialize(packetData);
 
                     this.PacketStream.Shift((uint)packetSize);
                 }
@@ -126,7 +126,7 @@ namespace Procon.Net {
                     if (bytesRead > 0) {
                         this.PacketStream.Push(this.ReceivedBuffer, bytesRead);
 
-                        P packet = null;
+                        Packet packet = null;
 
                         // Keep reading until we no longer have packets to deserialize.
                         while ((packet = this.ReadPacket()) != null) {
@@ -218,7 +218,7 @@ namespace Procon.Net {
 
                         this.ConnectionState = Net.ConnectionState.ConnectionConnecting;
 
-                        this.Client = new TcpClient {
+                        this.Client = new System.Net.Sockets.TcpClient {
                             NoDelay = true
                         };
 

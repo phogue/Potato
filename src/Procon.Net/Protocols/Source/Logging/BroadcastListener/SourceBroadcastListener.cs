@@ -4,7 +4,7 @@ using System.Net.Sockets;
 
 namespace Procon.Net.Protocols.Source.Logging.BroadcastListener {
 
-    public class SourceBroadcastListener : UdpClient<SourceBroadcastListenerPacket> {
+    public class SourceBroadcastListener : Procon.Net.UdpClient {
 
         public ushort SourceLogServicePort { get; set; }
         public ushort SourceLogListenPort { get; set; }
@@ -20,7 +20,7 @@ namespace Procon.Net.Protocols.Source.Logging.BroadcastListener {
                 this.ConnectionState = Net.ConnectionState.ConnectionConnecting;
                 this.RemoteIpEndPoint = new IPEndPoint(IPAddress.Any, this.Port);
 
-                this.Client = new UdpClient();
+                this.Client = new System.Net.Sockets.UdpClient();
                 //this.m_udpClient.DontFragment = true; // ?
                 this.Client.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
                 this.Client.ExclusiveAddressUse = false;

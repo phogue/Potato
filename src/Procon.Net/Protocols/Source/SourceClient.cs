@@ -5,9 +5,9 @@ namespace Procon.Net.Protocols.Source {
     using Procon.Net.Protocols.Source.Logging.BroadcastListener;
     using Procon.Net.Protocols.Source.Logging.BroadcastService;
 
-    public class SourceClient : TcpClient<SourcePacket> {
-        protected Dictionary<int?, SourcePacket> SentPackets;
-        protected Queue<SourcePacket> QueuePackets;
+    public class SourceClient : Procon.Net.TcpClient {
+        protected Dictionary<int?, Packet> SentPackets;
+        protected Queue<Packet> QueuePackets;
 
         protected SourceBroadcastListener BroadcastListener { get; set; }
 
@@ -17,8 +17,8 @@ namespace Procon.Net.Protocols.Source {
         protected readonly Object QueueUnqueuePacketLock = new Object();
 
         public SourceClient(string hostname, ushort port) : base(hostname, port) {
-            this.SentPackets = new Dictionary<int?, SourcePacket>();
-            this.QueuePackets = new Queue<SourcePacket>();
+            this.SentPackets = new Dictionary<int?, Packet>();
+            this.QueuePackets = new Queue<Packet>();
 
             this.PacketSerializer = new SourcePacketSerializer();
 
@@ -46,7 +46,7 @@ namespace Procon.Net.Protocols.Source {
             }
         }
 
-        private bool QueueUnqueuePacket(bool blSendingPacket, SourcePacket cpPacket, out SourcePacket cpNextPacket) {
+        private bool QueueUnqueuePacket(bool blSendingPacket, Packet cpPacket, out Packet cpNextPacket) {
             cpNextPacket = null;
             bool blResponse = false;
 
@@ -109,17 +109,17 @@ namespace Procon.Net.Protocols.Source {
             SourcePacket requestPacket = null;
 
             if (recievedPacket.RequestId != null && this.SentPackets.ContainsKey(recievedPacket.RequestId) == true) {
-                requestPacket = this.SentPackets[recievedPacket.RequestId];
+                requestPacket = this.SentPackets[recievedPacket.RequestId] as SourcePacket;
             }
 
             return requestPacket;
         }
 
-        protected override void OnPacketReceived(SourcePacket packet) {
+        protected override void OnPacketReceived(Packet packet) {
             base.OnPacketReceived(packet);
 
             // Pop the next packet if a packet is waiting to be sent.
-            SourcePacket nextPacket = null;
+            Packet nextPacket = null;
             if (this.QueueUnqueuePacket(false, packet, out nextPacket) == true) {
                 this.Send(nextPacket);
             }
@@ -139,8 +139,8 @@ namespace Procon.Net.Protocols.Source {
             }
             else {
                 // Null return because we're not popping a packet, just checking to see if this one needs to be queued.
-                SourcePacket nullPacket = null;
-                if (this.QueueUnqueuePacket(true, (SourcePacket)packet, out nullPacket) == false) {
+                Packet nullPacket = null;
+                if (this.QueueUnqueuePacket(true, packet, out nullPacket) == false) {
                     // No need to queue, queue is empty.  Send away..
                     base.Send(packet);
                 }

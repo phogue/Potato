@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Timers;
 
 namespace Procon.Net.Protocols.CallOfDuty {
-    public class CallOfDutyClient : UdpClient<CallOfDutyPacket> {
+    public class CallOfDutyClient : Procon.Net.UdpClient {
 
         private Timer packetRecheck = new Timer(15);
 
@@ -32,30 +32,32 @@ namespace Procon.Net.Protocols.CallOfDuty {
         /// any sequence ids or timestamps.
         /// </summary>
         /// <param name="packet"></param>
-        protected override void OnPacketReceived(CallOfDutyPacket packet) {
+        protected override void OnPacketReceived(Packet packet) {
 
-            //CallOfDutyPacket codPacket = (CallOfDutyPacket)packet;
+            CallOfDutyPacket callOfDutyPacket = packet as CallOfDutyPacket;
 
-            if (packet.IsEOP == true && this.recvPacketBuffer == null) {
-                this.packetQueue.Dequeue();
-
-                base.OnPacketReceived(packet);
-            }
-            else if (packet.IsEOP == true && this.recvPacketBuffer != null) {
-                if (this.packetQueue.Count > 0) {
+            if (callOfDutyPacket != null) {
+                if (callOfDutyPacket.IsEOP == true && this.recvPacketBuffer == null) {
                     this.packetQueue.Dequeue();
-                }
 
-                base.OnPacketReceived(recvPacketBuffer.Combine(packet));
-                this.recvPacketBuffer = null;
+                    base.OnPacketReceived(packet);
+                }
+                else if (callOfDutyPacket.IsEOP == true && this.recvPacketBuffer != null) {
+                    if (this.packetQueue.Count > 0) {
+                        this.packetQueue.Dequeue();
+                    }
+
+                    base.OnPacketReceived(recvPacketBuffer.Combine(callOfDutyPacket));
+                    this.recvPacketBuffer = null;
+                }
+                else if (callOfDutyPacket.IsEOP == false && this.recvPacketBuffer == null) {
+                    this.recvPacketBuffer = callOfDutyPacket;
+                }
+                else if (callOfDutyPacket.IsEOP == false && this.recvPacketBuffer != null) {
+                    this.recvPacketBuffer = this.recvPacketBuffer.Combine(callOfDutyPacket);
+                }
+                // else - the hell happened?
             }
-            else if (packet.IsEOP == false && this.recvPacketBuffer == null) {
-                this.recvPacketBuffer = packet;
-            }
-            else if (packet.IsEOP == false && this.recvPacketBuffer != null) {
-                this.recvPacketBuffer = this.recvPacketBuffer.Combine(packet);
-            }
-            // else - the hell happened?
         }
 
         private void SendDequeued() {

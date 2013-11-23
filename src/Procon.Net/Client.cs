@@ -83,7 +83,7 @@ namespace Procon.Net {
         /// Manages the connection attempts on a server, ensuring the client does not flood
         /// a temporarily downed server with connection attempts.
         /// </summary>
-        protected ConnectionAttemptManager ConnectionAttemptManager { get; set; }
+        protected MarkManager MarkManager { get; set; }
 
         /// <summary>
         /// Fired when a packet is successfully sent to the remote end point.
@@ -114,7 +114,7 @@ namespace Procon.Net {
             this.Hostname = hostname;
             this.Port = port;
 
-            this.ConnectionAttemptManager = new ConnectionAttemptManager();
+            this.MarkManager = new MarkManager();
         }
 
         /// <summary>

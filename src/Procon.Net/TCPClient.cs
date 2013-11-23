@@ -206,8 +206,8 @@ namespace Procon.Net {
         /// Attempts a connection to a server, provided we are not currently backing off from an offline server.
         /// </summary>
         public override void Connect() {
-            if (this.ConnectionAttemptManager.RemoveExpiredAttempts().IsAttemptAllowed() == true) {
-                this.ConnectionAttemptManager.MarkAttempt();
+            if (this.MarkManager.RemoveExpiredMarks().IsValidMarkWindow() == true) {
+                this.MarkManager.Mark();
 
                 if (this.Hostname != null && this.Port != 0) {
                     try {

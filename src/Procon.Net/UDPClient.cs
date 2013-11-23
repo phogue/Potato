@@ -26,8 +26,8 @@ namespace Procon.Net {
         }
 
         public override void Connect() {
-            if (this.ConnectionAttemptManager.RemoveExpiredAttempts().IsAttemptAllowed() == true) {
-                this.ConnectionAttemptManager.MarkAttempt();
+            if (this.MarkManager.RemoveExpiredMarks().IsValidMarkWindow() == true) {
+                this.MarkManager.Mark();
 
                 try {
                     this.ConnectionState = Net.ConnectionState.ConnectionConnecting;

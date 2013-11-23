@@ -60,6 +60,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ClientBase.cs" />
+    <Compile Include="IClient.cs" />
     <Compile Include="PacketType.cs" />
     <Compile Include="Geolocation\GeolocateIp.cs" />
     <Compile Include="Geolocation\IGeolocate.cs" />

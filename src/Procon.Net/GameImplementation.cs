@@ -8,11 +8,6 @@ namespace Procon.Net {
     public abstract class GameImplementation<P> : Game where P : Packet {
 
         /// <summary>
-        /// The client to handle all communications with the game server
-        /// </summary>
-        public Client<P> Client { get; protected set; }
-
-        /// <summary>
         /// Array of dispatch handlers used to locate an appropriate method to call
         /// once we receieve a packet.
         /// </summary>
@@ -25,33 +20,15 @@ namespace Procon.Net {
         /// <param name="response">What was receieved from the server, or what we should send to the server.</param>
         protected delegate void PacketDispatchHandler(P request, P response);
 
-        /// <summary>
-        /// Fetches the hostname of the connection. Proxy for Client.Hostname.
-        /// </summary>
-        [Obsolete]
-        public override string Hostname {
-            get { return this.Client != null ? this.Client.Hostname : String.Empty; }
-        }
-
-        [Obsolete]
-        public override ushort Port {
-            get { return this.Client != null ? this.Client.Port : (ushort)0; }
-        }
-
-        [Obsolete]
-        public override ConnectionState ConnectionState {
-            get { return this.Client != null ? this.Client.ConnectionState : ConnectionState.ConnectionDisconnected; }
-        }
-
         protected GameImplementation(string hostName, ushort port) : base() {
             this.PacketDispatchHandlers = new Dictionary<PacketDispatch, PacketDispatchHandler>();
 
-            this.Execute(this.CreateClient(hostName, port));
+            this.Execute(hostName, port);
         }
-  
-        protected void Execute(Client<P> client) {
+
+        protected void Execute(string hostName, ushort port) {
             this.State = new GameState();
-            this.Client = client;
+            this.Client = this.CreateClient(hostName, port);
             this.AssignEvents();
         }
 
@@ -77,7 +54,7 @@ namespace Procon.Net {
         /// <param name="hostName">The hostname of the server to connect to</param>
         /// <param name="port">The port on the server to connect to</param>
         /// <returns>A client capable of communicating with this game server</returns>
-        protected abstract Client<P> CreateClient(string hostName, ushort port);
+        protected abstract IClient CreateClient(string hostName, ushort port);
 
         /// <summary>
         /// Dispatches a recieved packet. Each game implementation needs to supply its own dispatch
@@ -94,7 +71,7 @@ namespace Procon.Net {
         /// <param name="packet"></param>
         public override void Send(Packet packet) {
             if (this.Client != null && (this.Client.ConnectionState == ConnectionState.ConnectionReady || this.Client.ConnectionState == ConnectionState.ConnectionLoggedIn)) {
-                this.Client.Send((P)packet);
+                this.Client.Send(packet);
             }
         }
 
@@ -105,18 +82,18 @@ namespace Procon.Net {
         }
 
         protected virtual void AssignEvents() {
-            this.Client.PacketReceived += new Net.Client<P>.PacketDispatchHandler(Client_PacketReceived);
-            this.Client.PacketSent += new Client<P>.PacketDispatchHandler(Client_PacketSent);
-            this.Client.SocketException += new Client<P>.SocketExceptionHandler(Client_SocketException);
-            this.Client.ConnectionStateChanged += new Client<P>.ConnectionStateChangedHandler(Client_ConnectionStateChanged);
-            this.Client.ConnectionFailure += new Client<P>.FailureHandler(Client_ConnectionFailure);
+            this.Client.PacketReceived += new ClientBase.PacketDispatchHandler(Client_PacketReceived);
+            this.Client.PacketSent += new ClientBase.PacketDispatchHandler(Client_PacketSent);
+            this.Client.SocketException += new ClientBase.SocketExceptionHandler(Client_SocketException);
+            this.Client.ConnectionStateChanged += new ClientBase.ConnectionStateChangedHandler(Client_ConnectionStateChanged);
+            this.Client.ConnectionFailure += new ClientBase.FailureHandler(Client_ConnectionFailure);
         }
         
-        private void Client_ConnectionFailure(Client<P> sender, Exception exception) {
+        private void Client_ConnectionFailure(IClient sender, Exception exception) {
             this.OnClientEvent(ClientEventType.ClientConnectionFailure, null, exception);
         }
 
-        private void Client_ConnectionStateChanged(Client<P> sender, ConnectionState newState) {
+        private void Client_ConnectionStateChanged(IClient sender, ConnectionState newState) {
             this.OnClientEvent(ClientEventType.ClientConnectionStateChange);
 
             this.State.Settings.ConnectionState = newState;
@@ -126,16 +103,16 @@ namespace Procon.Net {
             }
         }
 
-        private void Client_SocketException(Client<P> sender, System.Net.Sockets.SocketException se) {
+        private void Client_SocketException(IClient sender, System.Net.Sockets.SocketException se) {
             this.OnClientEvent(ClientEventType.ClientSocketException, null, se);
         }
 
-        private void Client_PacketSent(Client<P> sender, P packet) {
+        private void Client_PacketSent(IClient sender, Packet packet) {
             this.OnClientEvent(ClientEventType.ClientPacketSent, packet);
         }
 
-        private void Client_PacketReceived(Client<P> sender, P packet) {
-            this.Dispatch(packet);
+        private void Client_PacketReceived(IClient sender, Packet packet) {
+            this.Dispatch(packet as P);
 
             this.OnClientEvent(ClientEventType.ClientPacketReceived, packet);
         }

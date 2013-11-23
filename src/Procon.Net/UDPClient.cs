@@ -73,11 +73,11 @@ namespace Procon.Net {
             }
         }
 
-        public override void Send(P packet) {
+        public override void Send(Packet packet) {
             if (packet != null) {
                 if (this.BeforePacketSend(packet) == false && this.Client != null) {
 
-                    byte[] bytePacket = this.PacketSerializer.Serialize(packet);
+                    byte[] bytePacket = this.PacketSerializer.Serialize(packet as P);
 
                     if (bytePacket != null && bytePacket.Length > 0) {
                         this.Client.BeginSend(bytePacket, bytePacket.Length, this.SendAsynchronousCallback, packet);

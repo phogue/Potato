@@ -24,6 +24,11 @@ namespace Procon.Net {
         /// </summary>
         public PacketType Type { get; set; }
 
+        /// <summary>
+        /// The sequence id for this command/event
+        /// </summary>
+        public int? RequestId { get; set; }
+
         [XmlIgnore, JsonIgnore]
         public IPEndPoint RemoteEndPoint { get; set; }
 
@@ -35,14 +40,14 @@ namespace Procon.Net {
         protected Packet(PacketOrigin origin, PacketType type) {
             this.Origin = origin;
             this.Type = type;
-//            this.SequenceId = sequenceId;
+            this.RequestId = null;
             this.Stamp = DateTime.Now;
         }
 
         protected virtual void NullPacket() {
             this.Origin = PacketOrigin.Client;
             this.Type = PacketType.Request;
-//            this.SequenceId = 0;
+            this.RequestId = null;
         }
 
         public virtual string ToDebugString() {

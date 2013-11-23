@@ -14,25 +14,20 @@ namespace Procon.Net.Protocols.Frostbite {
         /// </summary>
         public List<string> Words { get; private set; }
 
-        /// <summary>
-        /// The sequence id for this command/event
-        /// </summary>
-        public UInt32? SequenceId { get; set; }
-
         public FrostbitePacket()
             : base() {
             this.Words = new List<string>();
         }
 
-        public FrostbitePacket(PacketOrigin origin, PacketType type, UInt32? sequenceId, params string[] words)
+        public FrostbitePacket(PacketOrigin origin, PacketType type, int? sequenceId, params string[] words)
             : base(origin, type) {
-                this.SequenceId = sequenceId;
+                this.RequestId = sequenceId;
                 this.Words = new List<string>(words);
         }
 
-        public FrostbitePacket(PacketOrigin origin, PacketType type, UInt32? sequenceId, List<string> words)
+        public FrostbitePacket(PacketOrigin origin, PacketType type, int? sequenceId, List<string> words)
             : base(origin, type) {
-            this.SequenceId = sequenceId;
+            this.RequestId = sequenceId;
             this.Words = words;
         }
 
@@ -81,12 +76,12 @@ namespace Procon.Net.Protocols.Frostbite {
             if (ReferenceEquals(this, other)) {
                 return true;
             }
-            return other.Words.SequenceEqual(this.Words) && other.SequenceId.Equals(this.SequenceId);
+            return other.Words.SequenceEqual(this.Words) && other.RequestId.Equals(this.RequestId);
         }
 
         public override int GetHashCode() {
             unchecked {
-                return ((this.Words != null ? this.Words.GetHashCode() : 0)*397) ^ (this.SequenceId.HasValue ? this.SequenceId.Value.GetHashCode() : 0);
+                return ((this.Words != null ? this.Words.GetHashCode() : 0)*397) ^ (this.RequestId.HasValue ? this.RequestId.Value.GetHashCode() : 0);
             }
         }
     }

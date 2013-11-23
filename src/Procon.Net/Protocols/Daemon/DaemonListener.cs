@@ -37,7 +37,7 @@ namespace Procon.Net.Protocols.Daemon {
         /// Fired whenever an incoming request occurs.
         /// </summary>
         public event PacketReceivedHandler PacketReceived;
-        public delegate void PacketReceivedHandler(Client<DaemonPacket> client, DaemonPacket request);
+        public delegate void PacketReceivedHandler(IClient client, DaemonPacket request);
 
         /// <summary>
         /// An exception occured.
@@ -83,8 +83,8 @@ namespace Procon.Net.Protocols.Daemon {
                     }
 
                     // Listen for events on our new client
-                    client.PacketReceived += new Client<DaemonPacket>.PacketDispatchHandler(daemonListener.client_PacketReceived);
-                    client.ConnectionStateChanged += new Client<DaemonPacket>.ConnectionStateChangedHandler(daemonListener.client_ConnectionStateChanged);
+                    client.PacketReceived += new ClientBase.PacketDispatchHandler(daemonListener.client_PacketReceived);
+                    client.ConnectionStateChanged += new ClientBase.ConnectionStateChangedHandler(daemonListener.client_ConnectionStateChanged);
 
                     // k, go. Now start reading.
                     client.BeginRead();
@@ -107,7 +107,7 @@ namespace Procon.Net.Protocols.Daemon {
         /// <param name="sender">The client that received the response.</param>
         /// <param name="request">The original packet received by the listener.</param>
         /// <param name="response">The response to send to the server.</param>
-        public void Respond(Client<DaemonPacket> sender, DaemonPacket request, DaemonPacket response) {
+        public void Respond(IClient sender, DaemonPacket request, DaemonPacket response) {
             response.Method = request.Method;
             response.ProtocolVersion = request.ProtocolVersion;
 
@@ -129,20 +129,22 @@ namespace Procon.Net.Protocols.Daemon {
         /// Copy the list of clients, then run through poking them to ensure they are still alive.
         /// </summary>
         public void Poke() {
-            List<DaemonClient> poked;
+            if (this.Clients != null) {
+                List<DaemonClient> poked;
 
-            // Note we modify the Clients list in events fired from the client
-            // so we take a copy to poke in case this results in a dead lock.
-            lock (this.ClientsLock) {
-                poked = new List<DaemonClient>(this.Clients);
+                // Note we modify the Clients list in events fired from the client
+                // so we take a copy to poke in case this results in a dead lock.
+                lock (this.ClientsLock) {
+                    poked = new List<DaemonClient>(this.Clients);
+                }
+
+                poked.ForEach(client => client.Poke());
             }
-
-            poked.ForEach(client => client.Poke());
         }
 
-        protected void client_PacketReceived(Client<DaemonPacket> sender, DaemonPacket packet) {
+        protected void client_PacketReceived(IClient sender, Packet packet) {
             // Bubble the packet for processing.
-            this.OnPacketReceived(sender, packet);
+            this.OnPacketReceived(sender, packet as DaemonPacket);
         }
 
         /// <summary>
@@ -150,18 +152,18 @@ namespace Procon.Net.Protocols.Daemon {
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="newState"></param>
-        protected void client_ConnectionStateChanged(Client<DaemonPacket> sender, ConnectionState newState) {
+        protected void client_ConnectionStateChanged(IClient sender, ConnectionState newState) {
             if (newState == ConnectionState.ConnectionDisconnected) {
                 lock (this.ClientsLock) {
-                    sender.PacketReceived -= new Client<DaemonPacket>.PacketDispatchHandler(this.client_PacketReceived);
-                    sender.ConnectionStateChanged -= new Client<DaemonPacket>.ConnectionStateChangedHandler(this.client_ConnectionStateChanged);
+                    sender.PacketReceived -= new ClientBase.PacketDispatchHandler(this.client_PacketReceived);
+                    sender.ConnectionStateChanged -= new ClientBase.ConnectionStateChangedHandler(this.client_ConnectionStateChanged);
 
                     this.Clients.Remove(sender as DaemonClient);
                 }
             }
         }
 
-        protected virtual void OnPacketReceived(Client<DaemonPacket> client, DaemonPacket request) {
+        protected virtual void OnPacketReceived(IClient client, DaemonPacket request) {
             PacketReceivedHandler handler = PacketReceived;
 
             if (handler != null) {
@@ -186,8 +188,8 @@ namespace Procon.Net.Protocols.Daemon {
                     lock (this.ClientsLock) {
                         foreach (DaemonClient client in this.Clients) {
                             client.Shutdown();
-                            client.PacketReceived -= new Client<DaemonPacket>.PacketDispatchHandler(this.client_PacketReceived);
-                            client.ConnectionStateChanged -= new Client<DaemonPacket>.ConnectionStateChangedHandler(this.client_ConnectionStateChanged);
+                            client.PacketReceived -= new ClientBase.PacketDispatchHandler(this.client_PacketReceived);
+                            client.ConnectionStateChanged -= new ClientBase.ConnectionStateChangedHandler(this.client_ConnectionStateChanged);
                         }
 
                         this.Clients.Clear();

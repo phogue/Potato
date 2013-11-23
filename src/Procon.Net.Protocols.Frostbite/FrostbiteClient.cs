@@ -8,12 +8,12 @@ namespace Procon.Net.Protocols.Frostbite {
         /// <summary>
         /// A list of packets currently sent to the server and awaiting a response
         /// </summary>
-        protected Dictionary<UInt32?, FrostbitePacket> OutgoingPackets;
+        protected Dictionary<int?, Packet> OutgoingPackets;
 
         /// <summary>
         /// A queue of packets to send to the server (waiting until the outgoing packets list is clear)
         /// </summary>
-        protected Queue<FrostbitePacket> QueuedPackets;
+        protected Queue<Packet> QueuedPackets;
 
         /// <summary>
         /// Lock for processing new queue items
@@ -22,8 +22,8 @@ namespace Procon.Net.Protocols.Frostbite {
 
         public FrostbiteClient(string hostname, ushort port) : base(hostname, port) {
 
-            this.OutgoingPackets = new Dictionary<UInt32?, FrostbitePacket>();
-            this.QueuedPackets = new Queue<FrostbitePacket>();
+            this.OutgoingPackets = new Dictionary<int?, Packet>();
+            this.QueuedPackets = new Queue<Packet>();
 
             this.PacketSerializer = new FrostbitePacketSerializer();
         }
@@ -39,7 +39,7 @@ namespace Procon.Net.Protocols.Frostbite {
         /// <param name="packet">The packet we are sending or have recieved</param>
         /// <param name="nextPacket">The next packet to be sent</param>
         /// <returns></returns>
-        private bool QueueUnqueuePacket(bool isSending, FrostbitePacket packet, out FrostbitePacket nextPacket) {
+        private bool QueueUnqueuePacket(bool isSending, Packet packet, out Packet nextPacket) {
             nextPacket = null;
             bool response = false;
 
@@ -58,9 +58,9 @@ namespace Procon.Net.Protocols.Frostbite {
                     // Else it's being called from recv and cpPacket holds the processed RequestPacket.
 
                     // Remove the packet 
-                    if (packet != null && packet.SequenceId != null) {
-                        if (this.OutgoingPackets.ContainsKey(packet.SequenceId) == true) {
-                            this.OutgoingPackets.Remove(packet.SequenceId);
+                    if (packet != null && packet.RequestId != null) {
+                        if (this.OutgoingPackets.ContainsKey(packet.RequestId) == true) {
+                            this.OutgoingPackets.Remove(packet.RequestId);
                         }
                     }
 
@@ -96,13 +96,13 @@ namespace Procon.Net.Protocols.Frostbite {
 
         public FrostbitePacket GetRequestPacket(FrostbitePacket recievedPacket) {
 
-            FrostbitePacket requestPacket = null;
+            Packet requestPacket = null;
 
-            if (recievedPacket.SequenceId != null && this.OutgoingPackets.ContainsKey(recievedPacket.SequenceId) == true) {
-                requestPacket = this.OutgoingPackets[recievedPacket.SequenceId];
+            if (recievedPacket.RequestId != null && this.OutgoingPackets.ContainsKey(recievedPacket.RequestId) == true) {
+                requestPacket = this.OutgoingPackets[recievedPacket.RequestId];
             }
 
-            return requestPacket;
+            return requestPacket as FrostbitePacket;
         }
 
         protected override void OnPacketReceived(FrostbitePacket packet) {
@@ -110,11 +110,11 @@ namespace Procon.Net.Protocols.Frostbite {
 
             // Respond with "OK" to all server events.
             if (packet.Origin == PacketOrigin.Server && packet.Type == PacketType.Request) {
-                base.Send(new FrostbitePacket(PacketOrigin.Server, PacketType.Response, packet.SequenceId, FrostbitePacket.StringResponseOkay));
+                base.Send(new FrostbitePacket(PacketOrigin.Server, PacketType.Response, packet.RequestId, FrostbitePacket.StringResponseOkay));
             }
 
             // Pop the next packet if a packet is waiting to be sent.
-            FrostbitePacket nextPacket = null;
+            Packet nextPacket = null;
             if (this.QueueUnqueuePacket(false, packet, out nextPacket) == true) {
                 this.Send(nextPacket);
             }
@@ -123,10 +123,10 @@ namespace Procon.Net.Protocols.Frostbite {
             this.RestartConnectionOnQueueFailure();
         }
 
-        public override void Send(FrostbitePacket packet) {
+        public override void Send(Packet packet) {
 
-            if (packet.SequenceId == null) {
-                packet.SequenceId = this.AcquireSequenceNumber;
+            if (packet.RequestId == null) {
+                packet.RequestId = this.AcquireSequenceNumber;
             }
 
             // QueueUnqueuePacket
@@ -137,7 +137,7 @@ namespace Procon.Net.Protocols.Frostbite {
             }
             else {
                 // Null return because we're not popping a packet, just checking to see if this one needs to be queued.
-                FrostbitePacket nullPacket = null;
+                Packet nullPacket = null;
 
                 if (this.QueueUnqueuePacket(true, packet, out nullPacket) == false) {
                     // No need to queue, queue is empty.  Send away..
@@ -149,10 +149,10 @@ namespace Procon.Net.Protocols.Frostbite {
             }
         }
 
-        protected override bool BeforePacketSend(FrostbitePacket packet) {
+        protected override bool BeforePacketSend(Packet packet) {
 
-            if (packet.SequenceId != null && packet.Origin == PacketOrigin.Client && packet.Type == PacketType.Request && this.OutgoingPackets.ContainsKey(packet.SequenceId) == false) {
-                this.OutgoingPackets.Add(packet.SequenceId, packet);
+            if (packet.RequestId != null && packet.Origin == PacketOrigin.Client && packet.Type == PacketType.Request && this.OutgoingPackets.ContainsKey(packet.RequestId) == false) {
+                this.OutgoingPackets.Add(packet.RequestId, packet);
             }
 
             return base.BeforePacketSend(packet);

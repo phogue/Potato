@@ -82,7 +82,7 @@ namespace Procon.Net.Protocols.CallOfDuty {
             });
         }
 
-        protected override Client<CallOfDutyPacket> CreateClient(string hostName, ushort port) {
+        protected override IClient CreateClient(string hostName, ushort port) {
             return new CallOfDutyClient(hostName, port);
         }
 

@@ -92,10 +92,10 @@ namespace Procon.Net.Protocols.CallOfDuty {
             base.Connect();
         }
 
-        public override void Send(CallOfDutyPacket packet) {
+        public override void Send(Packet packet) {
 
             if (packet != null) {
-                this.packetQueue.Enqueue(packet);
+                this.packetQueue.Enqueue(packet as CallOfDutyPacket);
 
                 if (this.packetRecheck.Enabled == false) {
                     this.packetRecheck.Start();

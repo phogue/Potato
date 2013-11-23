@@ -73,7 +73,7 @@ namespace Procon.Net.Utils.Tests {
         protected bool Disconnect(Game game) {
             bool disconnected = true;
 
-            if (game.ConnectionState != ConnectionState.ConnectionDisconnected) {
+            if (game.Client.ConnectionState != ConnectionState.ConnectionDisconnected) {
                 AutoResetEvent disconnectEvent = new AutoResetEvent(false);
 
                 Game.ClientEventHandler handler = (sender, args) => {
@@ -106,7 +106,7 @@ namespace Procon.Net.Utils.Tests {
         protected bool LoggedIn(Game game) {
             bool loggedIn = true;
 
-            if (game.ConnectionState != ConnectionState.ConnectionLoggedIn) {
+            if (game.Client.ConnectionState != ConnectionState.ConnectionLoggedIn) {
                 AutoResetEvent loginEvent = new AutoResetEvent(false);
 
                 Game.ClientEventHandler handler = (sender, args) => {

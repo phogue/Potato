@@ -25,24 +25,24 @@ namespace Procon.Net.Protocols.Source {
             this.ConnectionStateChanged += new ConnectionStateChangedHandler(SourceClient_ConnectionStateChanged);
         }
 
-        private void SourceClient_ConnectionStateChanged(Client<SourcePacket> sender, ConnectionState newState) {
+        private void SourceClient_ConnectionStateChanged(IClient sender, ConnectionState newState) {
             if (newState == Net.ConnectionState.ConnectionLoggedIn) {
                 // Start the broadcast service. This will work or exit if the port is already bound to.
                 new SourceBroadcastService(this.SourceLogServicePort, this.SourceLogListenPort).Connect();
 
                 // Now setup a listener to catch relevent console log packets and dispatch them
                 this.BroadcastListener = new SourceBroadcastListener(this.SourceLogListenPort);
-                this.BroadcastListener.PacketReceived += new Client<SourceBroadcastListenerPacket>.PacketDispatchHandler(BroadcastListener_PacketReceived);
+                this.BroadcastListener.PacketReceived += new ClientBase.PacketDispatchHandler(BroadcastListener_PacketReceived);
                 this.BroadcastListener.Connect();
             }
         }
 
-        private void BroadcastListener_PacketReceived(Client<SourceBroadcastListenerPacket> sender, SourceBroadcastListenerPacket packet) {
+        private void BroadcastListener_PacketReceived(IClient sender, Packet packet) {
 
             // TODO: don't compare by string. it's slow.
-            if (this.ConnectionState == Net.ConnectionState.ConnectionLoggedIn && this.RemoteEndPoint.ToString().CompareTo(packet.RemoteEndPoint.ToString()) == 0) {
+            if (this.ConnectionState == Net.ConnectionState.ConnectionLoggedIn && System.String.Compare(this.RemoteEndPoint.ToString(), packet.RemoteEndPoint.ToString(), System.StringComparison.Ordinal) == 0) {
 
-                this.OnPacketReceived(packet);
+                this.OnPacketReceived(packet as SourcePacket);
             }
         }
 
@@ -80,7 +80,7 @@ namespace Procon.Net.Protocols.Source {
                     // Else it's being called from recv and cpPacket holds the processed RequestPacket.
 
                     // Remove the packet 
-                    if (cpPacket != null) {
+                    if (cpPacket != null && cpPacket.RequestId != null) {
                         if (this.SentPackets.ContainsKey(cpPacket.RequestId) == true) {
                             this.SentPackets.Remove(cpPacket.RequestId);
                         }
@@ -108,7 +108,7 @@ namespace Procon.Net.Protocols.Source {
 
             SourcePacket requestPacket = null;
 
-            if (this.SentPackets.ContainsKey(recievedPacket.RequestId) == true) {
+            if (recievedPacket.RequestId != null && this.SentPackets.ContainsKey(recievedPacket.RequestId) == true) {
                 requestPacket = this.SentPackets[recievedPacket.RequestId];
             }
 
@@ -125,14 +125,13 @@ namespace Procon.Net.Protocols.Source {
             }
         }
 
-        public override void Send(SourcePacket packet) {
+        public override void Send(Packet packet) {
 
             if (packet.RequestId == null) {
-                packet.RequestId = (int)this.AcquireSequenceNumber;
+                packet.RequestId = this.AcquireSequenceNumber;
             }
 
             // QueueUnqueuePacket
-            SourcePacket nullPacket = null;
 
             if (packet.Origin == PacketOrigin.Server && packet.Type == PacketType.Response) {
                 // I don't think this will ever be encountered since OnPacketReceived calls the base.Send.
@@ -140,6 +139,7 @@ namespace Procon.Net.Protocols.Source {
             }
             else {
                 // Null return because we're not popping a packet, just checking to see if this one needs to be queued.
+                SourcePacket nullPacket = null;
                 if (this.QueueUnqueuePacket(true, (SourcePacket)packet, out nullPacket) == false) {
                     // No need to queue, queue is empty.  Send away..
                     base.Send(packet);
@@ -147,11 +147,16 @@ namespace Procon.Net.Protocols.Source {
             }
         }
 
-        protected override bool BeforePacketSend(SourcePacket packet) {
+        protected override bool BeforePacketSend(Packet packet) {
+            SourcePacket sourcePacket = packet as SourcePacket;
 
-            if (packet.Origin == PacketOrigin.Client && packet.Type == PacketType.Request && this.SentPackets.ContainsKey(packet.RequestId) == false) {
-                this.SentPackets.Add(packet.RequestId, packet);
+            if (sourcePacket != null && sourcePacket.RequestId != null) {
+                if (packet.Origin == PacketOrigin.Client && packet.Type == PacketType.Request && this.SentPackets.ContainsKey(sourcePacket.RequestId) == false) {
+                    this.SentPackets.Add(sourcePacket.RequestId, sourcePacket);
+                }
             }
+
+
 
             return base.BeforePacketSend(packet);
         }

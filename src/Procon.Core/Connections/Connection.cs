@@ -44,14 +44,14 @@ namespace Procon.Core.Connections {
         }
 
         public String Hostname {
-            get { return this.Game != null ? this.Game.Hostname : String.Empty; }
+            get { return this.Game != null ? this.Game.Client.Hostname : String.Empty; }
             // ReSharper disable ValueParameterNotUsed
             set { }
             // ReSharper restore ValueParameterNotUsed
         }
 
         public ushort Port {
-            get { return this.Game != null ? this.Game.Port : (ushort)0; }
+            get { return this.Game != null ? this.Game.Client.Port : (ushort)0; }
             // ReSharper disable ValueParameterNotUsed
             set { }
             // ReSharper restore ValueParameterNotUsed

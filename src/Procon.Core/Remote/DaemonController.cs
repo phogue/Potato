@@ -193,7 +193,7 @@ namespace Procon.Core.Remote {
             return response;
         }
 
-        protected void DaemonListener_PacketReceived(Net.Client<DaemonPacket> client, DaemonPacket request) {
+        protected void DaemonListener_PacketReceived(IClient client, DaemonPacket request) {
             DaemonPacket response = new DaemonPacket() {
                 ProtocolVersion = request.ProtocolVersion,
                 Method = request.Method,

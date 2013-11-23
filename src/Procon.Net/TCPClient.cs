@@ -36,8 +36,8 @@ namespace Procon.Net {
         /// <summary>
         /// Why is this here?
         /// </summary>
-        protected uint SequenceNumber;
-        public uint AcquireSequenceNumber {
+        protected int? SequenceNumber;
+        public int? AcquireSequenceNumber {
             get {
                 lock (this.AcquireSequenceNumberLock) {
                     return ++this.SequenceNumber;
@@ -80,12 +80,12 @@ namespace Procon.Net {
         /// Sends a packet to the server asynchronously
         /// </summary>
         /// <param name="packet"></param>
-        public override void Send(P packet) {
+        public override void Send(Packet packet) {
 
             if (packet != null) {
                 if (this.BeforePacketSend(packet) == false && this.NetworkStream != null) {
 
-                    byte[] bytePacket = this.PacketSerializer.Serialize(packet);
+                    byte[] bytePacket = this.PacketSerializer.Serialize(packet as P);
 
                     if (bytePacket != null && bytePacket.Length > 0) {
                         this.NetworkStream.BeginWrite(bytePacket, 0, bytePacket.Length, this.SendAsynchronousCallback, packet);

@@ -261,8 +261,8 @@ namespace Procon.Net.Protocols.Frostbite {
                 }
             });
         }
-        
-        protected override Client<FrostbitePacket> CreateClient(string hostName, ushort port) {
+
+        protected override IClient CreateClient(string hostName, ushort port) {
             return new FrostbiteClient(hostName, port);
         }
 
@@ -276,7 +276,7 @@ namespace Procon.Net.Protocols.Frostbite {
         public override void Synchronize() {
             base.Synchronize();
 
-            if (this.ConnectionState == ConnectionState.ConnectionLoggedIn) {
+            if (this.Client.ConnectionState == ConnectionState.ConnectionLoggedIn) {
                 this.Send(this.CreatePacket("admin.listPlayers all"));
                 this.Send(this.CreatePacket("serverInfo"));
 
@@ -952,7 +952,7 @@ namespace Procon.Net.Protocols.Frostbite {
         #region Frostbite specific
 
         protected void SendResponse(FrostbitePacket request, params string[] words) {
-            this.Send(new FrostbitePacket(request.Origin, PacketType.Response, request.SequenceId, words));
+            this.Send(new FrostbitePacket(request.Origin, PacketType.Response, request.RequestId, words));
         }
 
         protected void SendRequest(params string[] words) {

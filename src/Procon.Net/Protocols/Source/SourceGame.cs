@@ -29,7 +29,7 @@ namespace Procon.Net.Protocols.Source {
             });
         }
 
-        protected override Client<SourcePacket> CreateClient(string hostName, ushort port) {
+        protected override IClient CreateClient(string hostName, ushort port) {
             return new SourceClient(hostName, port);
         }
 
@@ -247,7 +247,7 @@ namespace Procon.Net.Protocols.Source {
         }
 
         protected void SendRequest(string format, params object[] args) {
-            this.Send(new SourcePacket(PacketOrigin.Client, PacketType.Request, (int)((SourceClient)this.Client).AcquireSequenceNumber, SourceRequestType.SERVERDATA_EXECCOMMAND, String.Format(format, args), String.Empty));
+            this.Send(new SourcePacket(PacketOrigin.Client, PacketType.Request, ((SourceClient)this.Client).AcquireSequenceNumber, SourceRequestType.SERVERDATA_EXECCOMMAND, String.Format(format, args), String.Empty));
         }
 
         #endregion
@@ -266,7 +266,7 @@ namespace Procon.Net.Protocols.Source {
                 ((SourceClient)this.Client).SourceLogListenPort = (ushort)this.SourceLogListenPort;
             }
 
-            this.Send(new SourcePacket(PacketOrigin.Client, PacketType.Request, (int)((SourceClient)this.Client).AcquireSequenceNumber, SourceRequestType.SERVERDATA_AUTH, this.Password, String.Empty));
+            this.Send(new SourcePacket(PacketOrigin.Client, PacketType.Request, ((SourceClient)this.Client).AcquireSequenceNumber, SourceRequestType.SERVERDATA_AUTH, this.Password, String.Empty));
         }
 
         protected override void Action(Chat chat) {

@@ -5,8 +5,6 @@ namespace Procon.Net.Protocols.Source {
     using Procon.Net.Utils;
     public class SourcePacket : Packet {
 
-        public int? RequestId { get; set; }
-
         public SourceRequestType RequestType { get; set; }
         public SourceResponseType ResponseType { get; set; }
 

@@ -10,26 +10,21 @@ namespace Procon.Net {
     public abstract class Game {
 
         /// <summary>
+        /// The client to handle all communications with the game server
+        /// </summary>
+        public IClient Client { get; protected set; }
+
+        /// <summary>
         /// Everything the connection currently knows about the game. This is updated
         /// with all of the information we receive from the server.
         /// </summary>
         public GameState State { get; protected set; }
 
         /// <summary>
-        /// The end point hostname.
-        /// </summary>
-        public abstract string Hostname { get; }
-
-        /// <summary>
-        /// The endpoint port.
-        /// </summary>
-        public abstract ushort Port { get; }
-
-        /// <summary>
         /// The password used to authenticate with the server.
         /// </summary>
         public string Password { get; set; }
-
+        
         /// <summary>
         /// Who is providing the protocol implementation being used
         /// </summary>
@@ -89,11 +84,6 @@ namespace Procon.Net {
         /// </summary>
         public String GameConfigPath { get; set; }
 
-        /// <summary>
-        /// Helper to fetch the connection state of the underlying client.
-        /// </summary>
-        public abstract ConnectionState ConnectionState { get; }
-
         [Obsolete]
         private string _mAdditional;
         [Obsolete]
@@ -138,7 +128,7 @@ namespace Procon.Net {
             if (handler != null) {
                 handler(this, new ClientEventArgs() {
                     EventType = eventType,
-                    ConnectionState = this.ConnectionState,
+                    ConnectionState = this.Client.ConnectionState,
                     ConnectionError = exception,
                     Packet = packet
                 });

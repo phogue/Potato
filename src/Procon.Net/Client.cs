@@ -4,7 +4,7 @@ using System.Net.Sockets;
 
 namespace Procon.Net {
 
-    public abstract class Client<P> where P : Packet {
+    public abstract class Client<P> : ClientBase, IClient where P : Packet {
 
         /// <summary>
         /// The hostname to connect to.
@@ -94,25 +94,21 @@ namespace Procon.Net {
         /// Fired when a packet is successfully deserialized from the server.
         /// </summary>
         public event PacketDispatchHandler PacketReceived;
-        public delegate void PacketDispatchHandler(Client<P> sender, P packet);
 
         /// <summary>
         /// Fired when a socket exception (something goes wrong with the connection)
         /// </summary>
         public event SocketExceptionHandler SocketException;
-        public delegate void SocketExceptionHandler(Client<P> sender, SocketException se);
 
         /// <summary>
         /// Fired when an exception occurs somewhere in the client (which we should debug eh)
         /// </summary>
         public event FailureHandler ConnectionFailure;
-        public delegate void FailureHandler(Client<P> sender, Exception exception);
 
         /// <summary>
         /// Fired whenever this connection state has changed.
         /// </summary>
         public event ConnectionStateChangedHandler ConnectionStateChanged;
-        public delegate void ConnectionStateChangedHandler(Client<P> sender, ConnectionState newState);
 
         protected Client(string hostname, UInt16 port) {
             this.Hostname = hostname;
@@ -173,8 +169,8 @@ namespace Procon.Net {
         /// Sends a packet to the server
         /// </summary>
         /// <param name="packet"></param>
-        public abstract void Send(P packet);
-        
+        public abstract void Send(Packet packet);
+
         public virtual IAsyncResult BeginRead() {
             return null;
         }
@@ -195,7 +191,7 @@ namespace Procon.Net {
         /// </summary>
         /// <param name="packet"></param>
         /// <returns></returns>
-        protected virtual bool BeforePacketSend(P packet) {
+        protected virtual bool BeforePacketSend(Packet packet) {
             return false;
         }
 

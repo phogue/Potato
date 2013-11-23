@@ -12,7 +12,7 @@ namespace Procon.Net.Protocols.Frostbite {
         public override byte[] Serialize(FrostbitePacket packet) {
 
             // Construct the header uint32
-            UInt32 header = packet.SequenceId != null ? (UInt32)packet.SequenceId & 0x3fffffff : 0x3fffffff;
+            UInt32 header = packet.RequestId != null ? (UInt32)packet.RequestId & 0x3fffffff : 0x3fffffff;
 
             if (packet.Origin == PacketOrigin.Server) {
                 header |= 0x80000000;
@@ -65,14 +65,14 @@ namespace Procon.Net.Protocols.Frostbite {
 
             FrostbitePacket packet = new FrostbitePacket();
 
-            UInt32 header = BitConverter.ToUInt32(packetData, 0);
-            //this.PacketSize = BitConverter.ToUInt32(packet, 4);
-            UInt32 wordsTotal = BitConverter.ToUInt32(packetData, 8);
+            int header = BitConverter.ToInt32(packetData, 0);
+            //this.PacketSize = BitConverter.ToInt32(packet, 4);
+            int wordsTotal = BitConverter.ToInt32(packetData, 8);
 
             packet.Origin = Convert.ToBoolean(header & 0x80000000) == true ? PacketOrigin.Server : PacketOrigin.Client;
 
             packet.Type = Convert.ToBoolean(header & 0x40000000) == false ? PacketType.Request : PacketType.Response;
-            packet.SequenceId = header & 0x3fffffff;
+            packet.RequestId = header & 0x3fffffff;
 
             int iWordOffset = 0;
 

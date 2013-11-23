@@ -207,8 +207,8 @@ namespace Procon.Tools.NetworkConsole {
             if (this.ActiveGame != null) {
                 new ConnectionDetails() {
                     GameName = this.cboGames.SelectedItem.ToString(),
-                    Hostname = this.ActiveGame.Hostname,
-                    Port = this.ActiveGame.Port,
+                    Hostname = this.ActiveGame.Client.Hostname,
+                    Port = this.ActiveGame.Client.Port,
                     Password = this.ActiveGame.Password,
                     Additional = this.ActiveGame.Additional
                 }.Write();

@@ -17,11 +17,6 @@ namespace Procon.Net {
         protected NetworkStream NetworkStream;
 
         /// <summary>
-        /// Why is this here?
-        /// </summary>
-        protected readonly Object AcquireSequenceNumberLock = new Object();
-
-        /// <summary>
         /// Buffer for the data currently being read from the stream. This is appended to the received buffer.
         /// </summary>
         protected IPacketStream PacketStream;
@@ -33,23 +28,9 @@ namespace Procon.Net {
             get { return this.PacketSerializer != null ? this.PacketSerializer.PacketHeaderSize : 0; }
         }
 
-        /// <summary>
-        /// Why is this here?
-        /// </summary>
-        protected int? SequenceNumber;
-        public int? AcquireSequenceNumber {
-            get {
-                lock (this.AcquireSequenceNumberLock) {
-                    return ++this.SequenceNumber;
-                }
-            }
-        }
-
         protected TcpClient(string hostname, UInt16 port) : base(hostname, port) {
             this.ReceivedBuffer = new byte[this.BufferSize];
             this.PacketStream = new PacketStream();
-
-            this.SequenceNumber = 0;
         }
 
         /// <summary>

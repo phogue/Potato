@@ -80,6 +80,23 @@ namespace Procon.Net {
         private ConnectionState _connectionState;
 
         /// <summary>
+        /// Lock when incrementing the sequence number
+        /// </summary>
+        protected readonly Object AcquireSequenceNumberLock = new Object();
+
+        /// <summary>
+        /// Aquires a new sequence number, safely incrementing.
+        /// </summary>
+        public int? AcquireSequenceNumber {
+            get {
+                lock (this.AcquireSequenceNumberLock) {
+                    return ++this.SequenceNumber;
+                }
+            }
+        }
+        protected int? SequenceNumber;
+
+        /// <summary>
         /// Manages the connection attempts on a server, ensuring the client does not flood
         /// a temporarily downed server with connection attempts.
         /// </summary>
@@ -113,6 +130,7 @@ namespace Procon.Net {
         protected Client(string hostname, UInt16 port) {
             this.Hostname = hostname;
             this.Port = port;
+            this.SequenceNumber = 0;
 
             this.MarkManager = new MarkManager();
         }

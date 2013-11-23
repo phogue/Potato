@@ -59,6 +59,7 @@
     <Compile Include="Mocks\MockPacket.cs" />
     <Compile Include="PacketQueueTest.cs" />
     <Compile Include="PacketStreamTest.cs" />
+    <Compile Include="PacketTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UnitTest1.cs" />
   </ItemGroup>

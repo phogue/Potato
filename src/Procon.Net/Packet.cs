@@ -51,7 +51,7 @@ namespace Procon.Net {
         }
 
         public virtual string ToDebugString() {
-            return base.ToString();
+            return this.ToString();
         }
     }
 }

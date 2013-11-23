@@ -55,12 +55,12 @@ namespace Procon.Net {
         /// <summary>
         /// The last packet that was receieved by this connection.
         /// </summary>
-        public Packet LastPacketReceived { get; protected set; }
+        public Packet LastPacketReceived { get; set; }
 
         /// <summary>
         /// The last packet that was sent by this connection.
         /// </summary>
-        public Packet LastPacketSent { get; protected set; }
+        public Packet LastPacketSent { get; set; }
 
         /// <summary>
         /// The current connection state.

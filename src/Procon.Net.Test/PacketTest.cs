@@ -45,7 +45,7 @@ namespace Procon.Net.Test {
             MockPacket packet = new MockPacket(PacketOrigin.Server, PacketType.Response);
             packet.RequestId = 222;
 
-            Assert.AreEqual("Server Response 222", packet.ToDebugString());
+            Assert.AreEqual("Server Response 222 ", packet.ToDebugString());
         }
     }
 }

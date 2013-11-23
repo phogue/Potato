@@ -3,6 +3,11 @@
 namespace Procon.Net.Test.Mocks {
     public class MockPacket : Packet {
 
+        /// <summary>
+        /// Basic text to pass bac kand forth
+        /// </summary>
+        public String Text { get; set; }
+
         public MockPacket() : base() {
             this.Stamp = DateTime.Now;
         }
@@ -19,7 +24,7 @@ namespace Procon.Net.Test.Mocks {
         }
 
         public override string ToString() {
-            return String.Format("{0} {1} {2}", this.Origin, this.Type, this.RequestId);
+            return String.Format("{0} {1} {2} {3}", this.Origin, this.Type, this.RequestId, this.Text);
         }
     }
 }

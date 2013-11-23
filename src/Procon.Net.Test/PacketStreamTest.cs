@@ -22,6 +22,28 @@ namespace Procon.Net.Test {
         }
 
         /// <summary>
+        /// Tests that a size is returned of 0, even on an uninitialized stream.
+        /// </summary>
+        [Test]
+        public void TestEmptyPacketStreamSizeZero() {
+            PacketStream stream = new PacketStream();
+
+            Assert.AreEqual(0, stream.Size());
+        }
+
+        /// <summary>
+        /// Tests that a size can be obtained from an initialized stream.
+        /// </summary>
+        [Test]
+        public void TestEmptyPacketStreamSizeOne() {
+            PacketStream stream = new PacketStream();
+
+            stream.Push(new byte[] { 0x01 }, 1);
+
+            Assert.AreEqual(1, stream.Size());
+        }
+
+        /// <summary>
         /// Test that pushing an empty array of data onto an empty set results in no exception, but remains an empty stream.
         /// </summary>
         [Test]

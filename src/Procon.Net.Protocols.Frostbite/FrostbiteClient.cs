@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Linq;
-using System.Collections.Generic;
 
 namespace Procon.Net.Protocols.Frostbite {
     public class FrostbiteClient : Procon.Net.TcpClient {
@@ -8,7 +6,7 @@ namespace Procon.Net.Protocols.Frostbite {
         /// <summary>
         /// Queue of packets
         /// </summary>
-        public PacketQueue PacketQueue { get; set; }
+        public IPacketQueue PacketQueue { get; set; }
 
         public FrostbiteClient(string hostname, ushort port) : base(hostname, port) {
 

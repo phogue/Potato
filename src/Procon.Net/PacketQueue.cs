@@ -6,17 +6,17 @@ namespace Procon.Net {
     /// <summary>
     /// Handles sending packets synchronously
     /// </summary>
-    public class PacketQueue {
+    public class PacketQueue : IPacketQueue {
 
         /// <summary>
         /// A list of packets currently sent to the server and awaiting a response
         /// </summary>
-        protected Dictionary<int?, Packet> OutgoingPackets;
+        public Dictionary<int?, Packet> OutgoingPackets;
 
         /// <summary>
         /// A queue of packets to send to the server (waiting until the outgoing packets list is clear)
         /// </summary>
-        protected Queue<Packet> QueuedPackets;
+        public Queue<Packet> QueuedPackets;
 
         /// <summary>
         /// Lock for processing new queue items

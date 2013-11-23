@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections.Concurrent;
 using System.Linq;
 
 namespace Procon.Net {
@@ -11,29 +11,23 @@ namespace Procon.Net {
         /// <summary>
         /// A list of packets currently sent to the server and awaiting a response
         /// </summary>
-        public Dictionary<int?, Packet> OutgoingPackets;
+        public ConcurrentDictionary<int?, Packet> OutgoingPackets;
 
         /// <summary>
         /// A queue of packets to send to the server (waiting until the outgoing packets list is clear)
         /// </summary>
-        public Queue<Packet> QueuedPackets;
-
-        /// <summary>
-        /// Lock for processing new queue items
-        /// </summary>
-        protected readonly Object QueueUnqueuePacketLock = new Object();
+        public ConcurrentQueue<Packet> QueuedPackets;
 
         public PacketQueue() {
-            this.OutgoingPackets = new Dictionary<int?, Packet>();
-            this.QueuedPackets = new Queue<Packet>();
+            this.Clear();
         }
 
         /// <summary>
         /// Clears the current queue
         /// </summary>
         public void Clear() {
-            this.OutgoingPackets.Clear();
-            this.QueuedPackets.Clear();
+            this.OutgoingPackets = new ConcurrentDictionary<int?, Packet>();
+            this.QueuedPackets = new ConcurrentQueue<Packet>();
         }
 
         /// <summary>
@@ -46,8 +40,7 @@ namespace Procon.Net {
             bool failed = false;
 
             if (this.OutgoingPackets.Any(outgoingPacket => outgoingPacket.Value.Stamp < DateTime.Now.AddMinutes(-2)) == true) {
-                this.OutgoingPackets.Clear();
-                this.QueuedPackets.Clear();
+                this.Clear();
 
                 failed = true;
             }
@@ -61,7 +54,6 @@ namespace Procon.Net {
         /// <param name="recievedPacket">The response packet</param>
         /// <returns>The request packet</returns>
         public Packet GetRequestPacket(Packet recievedPacket) {
-
             Packet requestPacket = null;
 
             if (recievedPacket.RequestId != null && this.OutgoingPackets.ContainsKey(recievedPacket.RequestId) == true) {
@@ -79,17 +71,16 @@ namespace Procon.Net {
         public Packet PacketReceived(Packet packet) {
             Packet poppedPacket = null;
 
-            lock (this.QueueUnqueuePacketLock) {
-                // Pop the next packet if a packet is waiting to be sent.
-                if (packet != null && packet.RequestId != null) {
-                    if (this.OutgoingPackets.ContainsKey(packet.RequestId) == true) {
-                        this.OutgoingPackets.Remove(packet.RequestId);
-                    }
+            // Pop the next packet if a packet is waiting to be sent.
+            if (packet != null && packet.RequestId != null) {
+                if (this.OutgoingPackets.ContainsKey(packet.RequestId) == true) {
+                    Packet ignored = null;
+                    this.OutgoingPackets.TryRemove(packet.RequestId, out ignored);
                 }
+            }
 
-                if (this.QueuedPackets.Count > 0) {
-                    poppedPacket = this.QueuedPackets.Dequeue();
-                }
+            if (this.QueuedPackets.Count > 0) {
+                this.QueuedPackets.TryDequeue(out poppedPacket);
             }
 
             return poppedPacket;
@@ -103,32 +94,23 @@ namespace Procon.Net {
         public Packet PacketSend(Packet packet) {
             Packet poppedPacket = null;
 
-            lock (this.QueueUnqueuePacketLock) {
-                // Pop the next packet if a packet is waiting to be sent.
-                if (this.OutgoingPackets.Count > 0) {
-                    // Add the packet to our queue to be sent at a later time.
-                    this.QueuedPackets.Enqueue(packet);
+            // If there is already a packet going out..
+            if (this.OutgoingPackets.Count > 0) {
+                // Add the packet to our queue to be sent at a later time.
+                this.QueuedPackets.Enqueue(packet);
+            }
+            else {
+                // Add the packet to the list of packets that have been sent.
+                // We're making a request to the game server, keep track of this request.
+                if (packet.RequestId != null && packet.Origin == PacketOrigin.Client && packet.Type == PacketType.Request && this.OutgoingPackets.ContainsKey(packet.RequestId) == false) {
+                    this.OutgoingPackets.TryAdd(packet.RequestId, packet);
                 }
-                else {
-                    poppedPacket = packet;
-                }
+
+                // Send this packet now 
+                poppedPacket = packet;
             }
 
             return poppedPacket;
-        }
-
-        /// <summary>
-        /// Adds requested originating from the client that do not exist in our outgoing packets
-        /// </summary>
-        /// <param name="packet"></param>
-        /// <returns></returns>
-        public bool BeforePacketSend(Packet packet) {
-
-            if (packet.RequestId != null && packet.Origin == PacketOrigin.Client && packet.Type == PacketType.Request && this.OutgoingPackets.ContainsKey(packet.RequestId) == false) {
-                this.OutgoingPackets.Add(packet.RequestId, packet);
-            }
-
-            return true;
         }
     }
 }

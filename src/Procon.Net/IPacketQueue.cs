@@ -34,13 +34,5 @@
         /// <param name="packet"></param>
         /// <returns></returns>
         Packet PacketSend(Packet packet);
-
-        /// <summary>
-        /// Adds requested originating from the client that do not exist in our outgoing packets
-        /// </summary>
-        /// <param name="packet"></param>
-        /// <returns></returns>
-        bool BeforePacketSend(Packet packet);
-
     }
 }

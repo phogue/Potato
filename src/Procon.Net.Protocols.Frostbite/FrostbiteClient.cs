@@ -61,12 +61,6 @@ namespace Procon.Net.Protocols.Frostbite {
             }
         }
 
-        protected override bool BeforePacketSend(Packet packet) {
-            this.PacketQueue.BeforePacketSend(packet);
-
-            return base.BeforePacketSend(packet);
-        }
-
         protected override void ShutdownConnection() {
             base.ShutdownConnection();
 

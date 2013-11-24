@@ -7,7 +7,7 @@ namespace Procon.Net.Protocols.Source {
     using Procon.Net.Protocols.Objects;
     using Procon.Net.Protocols.Source.Objects;
 
-    public class SourceGame : GameImplementation<SourcePacket> {
+    public class SourceGame : GameImplementation {
 
         public ushort SourceLogServicePort { get; set; }
         public ushort? SourceLogListenPort { get; set; }
@@ -37,30 +37,33 @@ namespace Procon.Net.Protocols.Source {
             this.SendRequest("status");
         }
 
-        #region Dispatching
+        protected override void Dispatch(Packet packet) {
 
-        protected override void Dispatch(SourcePacket packet) {
-            if (packet.Origin == PacketOrigin.Client && packet.Type == PacketType.Response) {
-                SourcePacket requestPacket = ((SourceClient)this.Client).GetRequestPacket(packet);
+            SourcePacket sourcePacket = packet as SourcePacket;
 
-                if (packet.ResponseType == SourceResponseType.ServerDataAuthResponse) {
-                    this.ServerAuthDispatchHandler(requestPacket, packet);
-                }
-                // If the request packet is valid and has at least one word.
-                else if (requestPacket != null && requestPacket.String1Words.Count >= 1) {
+            if (sourcePacket != null) {
+                if (sourcePacket.Origin == PacketOrigin.Client && sourcePacket.Type == PacketType.Response) {
+                    SourcePacket requestPacket = ((SourceClient)this.Client).GetRequestPacket(sourcePacket);
 
-                    // If the sent command was successful
-                    if (packet.String1Words.Count >= 1 && packet.RequestType != SourceRequestType.SERVERDATA_ALLBAD) {
-                        this.Dispatch(new PacketDispatch() { Name = requestPacket.String1Words[0] }, requestPacket, packet);
+                    if (sourcePacket.ResponseType == SourceResponseType.ServerDataAuthResponse) {
+                        this.ServerAuthDispatchHandler(requestPacket, sourcePacket);
                     }
-                    else { // The command sent failed for some reason.
-                        this.Dispatch(new PacketDispatch() { Name = packet.String1Words[0] }, requestPacket, packet);
+                    // If the request packet is valid and has at least one word.
+                    else if (requestPacket != null && requestPacket.Words.Count >= 1) {
+
+                        // If the sent command was successful
+                        if (sourcePacket.Words.Count >= 1 && sourcePacket.RequestType != SourceRequestType.SERVERDATA_ALLBAD) {
+                            this.Dispatch(new PacketDispatch() { Name = requestPacket.Words[0] }, requestPacket, sourcePacket);
+                        }
+                        else { // The command sent failed for some reason.
+                            this.Dispatch(new PacketDispatch() { Name = sourcePacket.Words[0] }, requestPacket, sourcePacket);
+                        }
                     }
                 }
-            }
-            else if (packet.Origin == PacketOrigin.Server && packet.Type == PacketType.Request) {
-                this.ParseLogEvent(packet);
-                //this.Dispatch(packet.String1Words[0], packet, null);
+                else if (sourcePacket.Origin == PacketOrigin.Server && sourcePacket.Type == PacketType.Request) {
+                    this.ParseLogEvent(sourcePacket);
+                    //this.Dispatch(packet.String1Words[0], packet, null);
+                }
             }
         }
         
@@ -172,59 +175,67 @@ namespace Procon.Net.Protocols.Source {
             }
         }
 
-        public void ConsoleSayHandler(SourcePacket request, SourcePacket response) {
+        public void ConsoleSayHandler(Packet request, Packet response) {
+            SourcePacket sourceRequest = request as SourcePacket;
 
-            Chat chat = new SourceChat().ParseConsoleSay(request.String1Words);
+            if (sourceRequest != null) {
+                Chat chat = new SourceChat().ParseConsoleSay(sourceRequest.Words);
 
-            this.OnGameEvent(GameEventType.GameChat, new GameEventData() { Chats = new List<Chat>() { chat } });
-        }
-
-        public void ConsoleLogHandler(SourcePacket request, SourcePacket response) {
-
-            if (response.String1.Contains("not currently logging") == true) {
-                // Enable logging if it is off.
-                this.SendRequest("log on");
+                this.OnGameEvent(GameEventType.GameChat, new GameEventData() { Chats = new List<Chat>() { chat } });
             }
         }
 
-        public void ConsoleDispatchHandler(SourcePacket request, SourcePacket response) {
+        public void ConsoleLogHandler(Packet request, Packet response) {
+            SourcePacket sourceResponse = request as SourcePacket;
 
-            SourceServerInfo info = new SourceServerInfo().ParseStatusHeader(response.String1);
-
-            this.State.Settings.ServerName     = info.hostname;
-            this.State.Settings.MapName        = info.host_map;
-            this.State.Settings.MaxPlayerCount = info.maxplayers;
-            this.State.Settings.PlayerCount    = info.currentplayers;
-            this.State.Settings.ServerVersion        = info.version;
-
-            this.OnGameEvent(GameEventType.GameSettingsUpdated);
-
-            SourcePlayerList players = new SourcePlayerList().Parse(response.String1);
-
-            // If there are no limitations on the subset.
-            if (players.Subset.Count == 0) {
-
-                // 1. Remove all names in the state list that are not found in the new list (players that have left)
-                this.State.PlayerList.RemoveAll(x => players.Select(y => y.Uid).Contains(x.Uid) == false);
-
-                // 2. Add or update any new players
-                foreach (Player player in players) {
-                    Player statePlayer = this.State.PlayerList.Find(x => x.Uid == player.Uid);
-
-                    if (statePlayer == null) {
-                        this.State.PlayerList.Add(player);
-                    }
-                    else {
-                        // Already exists, update with any new information we have.
-                        statePlayer.Ping = player.Ping;
-                        statePlayer.Name = player.Name;
-                    }
+            if (sourceResponse != null) {
+                if (sourceResponse.String1.Contains("not currently logging") == true) {
+                    // Enable logging if it is off.
+                    this.SendRequest("log on");
                 }
+            }
+        }
 
-                this.State.Settings.PlayerCount = players.Count;
+        public void ConsoleDispatchHandler(Packet request, Packet response) {
+            SourcePacket sourceResponse = request as SourcePacket;
 
-                this.OnGameEvent(GameEventType.GamePlayerlistUpdated);
+            if (sourceResponse != null) {
+                SourceServerInfo info = new SourceServerInfo().ParseStatusHeader(sourceResponse.String1);
 
+                this.State.Settings.ServerName = info.hostname;
+                this.State.Settings.MapName = info.host_map;
+                this.State.Settings.MaxPlayerCount = info.maxplayers;
+                this.State.Settings.PlayerCount = info.currentplayers;
+                this.State.Settings.ServerVersion = info.version;
+
+                this.OnGameEvent(GameEventType.GameSettingsUpdated);
+
+                SourcePlayerList players = new SourcePlayerList().Parse(sourceResponse.String1);
+
+                // If there are no limitations on the subset.
+                if (players.Subset.Count == 0) {
+
+                    // 1. Remove all names in the state list that are not found in the new list (players that have left)
+                    this.State.PlayerList.RemoveAll(x => players.Select(y => y.Uid).Contains(x.Uid) == false);
+
+                    // 2. Add or update any new players
+                    foreach (Player player in players) {
+                        Player statePlayer = this.State.PlayerList.Find(x => x.Uid == player.Uid);
+
+                        if (statePlayer == null) {
+                            this.State.PlayerList.Add(player);
+                        }
+                        else {
+                            // Already exists, update with any new information we have.
+                            statePlayer.Ping = player.Ping;
+                            statePlayer.Name = player.Name;
+                        }
+                    }
+
+                    this.State.Settings.PlayerCount = players.Count;
+
+                    this.OnGameEvent(GameEventType.GamePlayerlistUpdated);
+                }
             }
 
             // Regex.
@@ -236,12 +247,6 @@ namespace Procon.Net.Protocols.Source {
             //}
         }
 
-        #endregion
-
-        #region Packet Helpers
-
-        #region Source specific
-
         protected void SendResponse(SourcePacket request, string format, params object[] args) {
             this.Send(new SourcePacket(request.Origin, PacketType.Response, request.RequestId, SourceRequestType.SERVERDATA_EXECCOMMAND, String.Format(format, args), String.Empty));
         }
@@ -250,9 +255,7 @@ namespace Procon.Net.Protocols.Source {
             this.Send(new SourcePacket(PacketOrigin.Client, PacketType.Request, ((SourceClient)this.Client).AcquireSequenceNumber, SourceRequestType.SERVERDATA_EXECCOMMAND, String.Format(format, args), String.Empty));
         }
 
-        #endregion
-
-        protected override SourcePacket CreatePacket(string format, params object[] args) {
+        protected override Packet CreatePacket(string format, params object[] args) {
             return new SourcePacket(PacketOrigin.Client, PacketType.Request, null, SourceRequestType.SERVERDATA_EXECCOMMAND, String.Format(format, args), String.Empty);
         }
 
@@ -300,8 +303,5 @@ namespace Procon.Net.Protocols.Source {
                 */
             }
         }
-
-        #endregion
-
     }
 }

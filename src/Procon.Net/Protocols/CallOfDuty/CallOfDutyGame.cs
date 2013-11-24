@@ -7,7 +7,7 @@ namespace Procon.Net.Protocols.CallOfDuty {
     using Procon.Net.Protocols.Objects;
     using Procon.Net.Protocols.CallOfDuty.Objects;
 
-    public abstract class CallOfDutyGame : GameImplementation<CallOfDutyPacket> {
+    public abstract class CallOfDutyGame : GameImplementation {
 
         private static readonly Dictionary<Regex, string> PacketTypes = new Dictionary<Regex, string>() {
             {
@@ -129,75 +129,80 @@ namespace Procon.Net.Protocols.CallOfDuty {
             }
         }
 
-        #region Dispatching
+        protected override void Dispatch(Packet packet) {
 
-        protected override void Dispatch(CallOfDutyPacket packet) {
+            CallOfDutyPacket callOfDutyPacket = packet as CallOfDutyPacket;
 
-            Match match = null;
-            foreach (KeyValuePair<Regex, string> packetType in CallOfDutyGame.PacketTypes) {
-                if ((match = packetType.Key.Match(packet.Message)).Success == true) {
-                    this.Dispatch(new PacketDispatch() {
-                        Name = packetType.Value
-                    }, null, packet);
+            if (callOfDutyPacket != null) {
+                Match match = null;
+                foreach (KeyValuePair<Regex, string> packetType in CallOfDutyGame.PacketTypes) {
+                    if ((match = packetType.Key.Match(callOfDutyPacket.Message)).Success == true) {
+                        this.Dispatch(new PacketDispatch() {
+                            Name = packetType.Value
+                        }, null, callOfDutyPacket);
+                    }
                 }
             }
         }
 
-        public void ServerInfoDispatchHandler(CallOfDutyPacket request, CallOfDutyPacket response) {
+        public void ServerInfoDispatchHandler(Packet request, Packet response) {
+            CallOfDutyPacket callOfDutyResponse = response as CallOfDutyPacket;
 
-            CallOfDutyServerInfo info = new CallOfDutyServerInfo().Parse(response.Message);
+            if (callOfDutyResponse != null) {
+                CallOfDutyServerInfo info = new CallOfDutyServerInfo().Parse(callOfDutyResponse.Message);
 
-            this.State.Settings.MapName        = info.mapname;
-            this.State.Settings.MaxPlayerCount = info.sv_maxclients;
-            this.State.Settings.RankedEnabled         = info.sv_ranked > 0;
-            this.State.Settings.ServerName     = info.sv_hostname;
-            this.State.Settings.FriendlyFireEnabled   = info.scr_team_fftype > 0;
-            this.State.Settings.GameModeName   = info.g_gametype;
+                this.State.Settings.MapName = info.mapname;
+                this.State.Settings.MaxPlayerCount = info.sv_maxclients;
+                this.State.Settings.RankedEnabled = info.sv_ranked > 0;
+                this.State.Settings.ServerName = info.sv_hostname;
+                this.State.Settings.FriendlyFireEnabled = info.scr_team_fftype > 0;
+                this.State.Settings.GameModeName = info.g_gametype;
 
-            this.OnGameEvent(GameEventType.GameSettingsUpdated);
-        }
-
-        public void PlayerlistDispatchHandler(CallOfDutyPacket request, CallOfDutyPacket response) {
-
-            CallOfDutyPlayerList players = new CallOfDutyPlayerList().Parse(response.Message);
-
-            // if there are not limits on the context to fetch a player list..
-            if (players.Subset.Count == 0) {
-
-                // 1. Remove all names in the state list that are not found in the new list (players that have left)
-                this.State.PlayerList.RemoveAll(x => players.Select(y => y.Name).Contains(x.Name) == false);
-
-                // 2. Add or update any new players
-                foreach (Player player in players) {
-                    Player statePlayer = this.State.PlayerList.Find(x => x.Name == player.Name);
-
-                    if (statePlayer == null) {
-                        this.State.PlayerList.Add(player);
-                    }
-                    else {
-                        // Already exists, update with any new information we have.
-                        statePlayer.Kills = player.Kills;
-                        statePlayer.Deaths = player.Deaths;
-                        statePlayer.ClanTag = player.ClanTag;
-                        statePlayer.Ping = player.Ping;
-                        // statePlayer.Squad = player.Squad;
-                        statePlayer.Uid = player.Uid;
-
-                        statePlayer.ModifyGroup(player.Groups.FirstOrDefault(group => group.Type == Grouping.Team));
-                    }
-                }
-
-                this.State.Settings.PlayerCount = players.Count;
-
-                this.OnGameEvent(GameEventType.GamePlayerlistUpdated);
+                this.OnGameEvent(GameEventType.GameSettingsUpdated);
             }
         }
 
-        #endregion
+        public void PlayerlistDispatchHandler(Packet request, Packet response) {
+            CallOfDutyPacket callOfDutyResponse = response as CallOfDutyPacket;
 
-        #region Packet Helpers
+            if (callOfDutyResponse != null) {
+                CallOfDutyPlayerList players = new CallOfDutyPlayerList().Parse(callOfDutyResponse.Message);
 
-        protected override CallOfDutyPacket CreatePacket(string format, params object[] args) {
+                // if there are not limits on the context to fetch a player list..
+                if (players.Subset.Count == 0) {
+
+                    // 1. Remove all names in the state list that are not found in the new list (players that have left)
+                    this.State.PlayerList.RemoveAll(x => players.Select(y => y.Name).Contains(x.Name) == false);
+
+                    // 2. Add or update any new players
+                    foreach (Player player in players) {
+                        Player statePlayer = this.State.PlayerList.Find(x => x.Name == player.Name);
+
+                        if (statePlayer == null) {
+                            this.State.PlayerList.Add(player);
+                        }
+                        else {
+                            // Already exists, update with any new information we have.
+                            statePlayer.Kills = player.Kills;
+                            statePlayer.Deaths = player.Deaths;
+                            statePlayer.ClanTag = player.ClanTag;
+                            statePlayer.Ping = player.Ping;
+                            // statePlayer.Squad = player.Squad;
+                            statePlayer.Uid = player.Uid;
+
+                            statePlayer.ModifyGroup(player.Groups.FirstOrDefault(group => group.Type == Grouping.Team));
+                        }
+                    }
+
+                    this.State.Settings.PlayerCount = players.Count;
+
+                    this.OnGameEvent(GameEventType.GamePlayerlistUpdated);
+                }
+            }
+
+        }
+
+        protected override Packet CreatePacket(string format, params object[] args) {
             return new CallOfDutyPacket(PacketOrigin.Client, PacketType.Request, this.Password, String.Format(format, args));
         }
 
@@ -251,6 +256,5 @@ namespace Procon.Net.Protocols.CallOfDuty {
             this.Send(this.Create("teamstatus"));
         }
         */
-        #endregion
     }
 }

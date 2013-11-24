@@ -62,7 +62,7 @@ namespace Procon.Net.Protocols.Source {
                 offset++;
             }
 
-            packet.String1Words = packet.String1.Wordify();
+            packet.Words = packet.String1.Wordify();
 
             return packet;
         }

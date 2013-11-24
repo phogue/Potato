@@ -41,7 +41,7 @@ namespace Procon.Net.Protocols.Source.Logging.BroadcastListener {
                     if (packetData[offset] == 0) {
 
                         packet.String1 = Encoding.Default.GetString(packetData, 10, offset - 10).TrimEnd('\r', '\n');
-                        packet.String1Words = packet.String1.Wordify();
+                        packet.Words = packet.String1.Wordify();
                         break;
                     }
                 }

@@ -34,7 +34,7 @@ namespace Procon.Net.Protocols.Frostbite.BF.BF4 {
         }
 
         //[DispatchPacket(MatchText = "admin.listPlayers", PacketOrigin = PacketOrigin.Client)]
-        public override void AdminListPlayersResponseDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
+        public override void AdminListPlayersResponseDispatchHandler(Packet request, Packet response) {
             BF4PlayerList players = new BF4PlayerList() {
                 Subset = new FrostbiteGroupingList().Parse(request.Words.GetRange(1, request.Words.Count - 1))
             }.Parse(response.Words.GetRange(1, response.Words.Count - 1));
@@ -42,7 +42,7 @@ namespace Procon.Net.Protocols.Frostbite.BF.BF4 {
             this.AdminListPlayersFinalize(players);
         }
 
-        public override void MapListListDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
+        public override void MapListListDispatchHandler(Packet request, Packet response) {
             if (request.Words.Count >= 1) {
 
                 FrostbiteMapList maps = new BF4FrostbiteMapList().Parse(response.Words.GetRange(1, response.Words.Count - 1));
@@ -62,7 +62,7 @@ namespace Procon.Net.Protocols.Frostbite.BF.BF4 {
             }
         }
 
-        public override void BanListListDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
+        public override void BanListListDispatchHandler(Packet request, Packet response) {
 
             if (request.Words.Count >= 1) {
 
@@ -100,11 +100,11 @@ namespace Procon.Net.Protocols.Frostbite.BF.BF4 {
             this.Send(this.CreatePacket("admin.eventsEnabled true"));
         }
 
-        public override void PlayerOnAuthenticatedDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
+        public override void PlayerOnAuthenticatedDispatchHandler(Packet request, Packet response) {
             // Ignore this in BF4? Seems onJoin handles both.
         }
 
-        public override void PlayerOnJoinDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
+        public override void PlayerOnJoinDispatchHandler(Packet request, Packet response) {
 
             if (request.Words.Count >= 2) {
 
@@ -121,7 +121,7 @@ namespace Procon.Net.Protocols.Frostbite.BF.BF4 {
             }
         }
 
-        public override void PlayerOnKillDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
+        public override void PlayerOnKillDispatchHandler(Packet request, Packet response) {
 
             if (request.Words.Count >= 5) {
 

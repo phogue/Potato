@@ -11,7 +11,7 @@ namespace Procon.Net.Protocols.Frostbite {
     using Procon.Net.Protocols.Frostbite.Objects;
     using Procon.Net.Protocols.Objects;
 
-    public abstract class FrostbiteGame : GameImplementation<FrostbitePacket> {
+    public abstract class FrostbiteGame : GameImplementation {
 
         protected const HumanHitLocation Headshot = HumanHitLocation.Head | HumanHitLocation.Neck;
 
@@ -308,7 +308,7 @@ namespace Procon.Net.Protocols.Frostbite {
 
         #region Dispatching
 
-        public void ServerInfoDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
+        public void ServerInfoDispatchHandler(Packet request, Packet response) {
 
             if (response != null) {
 
@@ -346,7 +346,7 @@ namespace Procon.Net.Protocols.Frostbite {
             }
         }
 
-        public void LoginPlainTextDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
+        public void LoginPlainTextDispatchHandler(Packet request, Packet response) {
 
             if (response != null) {
                 if (request.Words.Count >= 2 && response.Words.Count == 1 && response.Words[0] == "OK") {
@@ -359,7 +359,7 @@ namespace Procon.Net.Protocols.Frostbite {
             }
         }
 
-        public void LoginHashedDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
+        public void LoginHashedDispatchHandler(Packet request, Packet response) {
 
             if (response != null) {
                 if (request.Words.Count == 1 && response.Words.Count >= 2) {
@@ -376,7 +376,7 @@ namespace Procon.Net.Protocols.Frostbite {
             }
         }
 
-        public void AdminEventsEnabledDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
+        public void AdminEventsEnabledDispatchHandler(Packet request, Packet response) {
 
             if (response != null) {
                 if (request.Words.Count >= 2 && response.Words.Count == 1 && response.Words[0] == "OK") {
@@ -421,7 +421,7 @@ namespace Procon.Net.Protocols.Frostbite {
             }
         }
 
-        public virtual void AdminListPlayersResponseDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
+        public virtual void AdminListPlayersResponseDispatchHandler(Packet request, Packet response) {
             FrostbitePlayerList players = new FrostbitePlayerList() {
                 Subset = new FrostbiteGroupingList().Parse(request.Words.GetRange(1, request.Words.Count - 1))
             }.Parse(response.Words.GetRange(1, response.Words.Count - 1));
@@ -429,7 +429,7 @@ namespace Procon.Net.Protocols.Frostbite {
             this.AdminListPlayersFinalize(players);
         }
 
-        public void AdminSayDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
+        public void AdminSayDispatchHandler(Packet request, Packet response) {
 
             if (request.Words.Count >= 3) {
                 this.OnGameEvent(GameEventType.GameChat, new GameEventData() {
@@ -441,13 +441,13 @@ namespace Procon.Net.Protocols.Frostbite {
 
         }
 
-        public void VersionDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
+        public void VersionDispatchHandler(Packet request, Packet response) {
             if (request.Words.Count >= 3) {
                 this.State.Settings.ServerVersion = request.Words[2];
             }
         }
 
-        public virtual void MapListListDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
+        public virtual void MapListListDispatchHandler(Packet request, Packet response) {
             if (request.Words.Count >= 1) {
 
                 FrostbiteMapList maps = new FrostbiteMapList().Parse(response.Words.GetRange(1, response.Words.Count - 1));
@@ -468,7 +468,7 @@ namespace Procon.Net.Protocols.Frostbite {
             }
         }
 
-        public virtual void BanListListDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
+        public virtual void BanListListDispatchHandler(Packet request, Packet response) {
 
             if (request.Words.Count >= 1) {
 
@@ -502,7 +502,7 @@ namespace Procon.Net.Protocols.Frostbite {
             }
         }
 
-        public void BanListAddDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
+        public void BanListAddDispatchHandler(Packet request, Packet response) {
             if (request.Words.Count >= 1) {
                 Ban ban = FrostbiteBan.ParseBanAdd(request.Words.GetRange(1, request.Words.Count - 1));
 
@@ -512,7 +512,7 @@ namespace Procon.Net.Protocols.Frostbite {
             }
         }
 
-        public void BanListRemoveDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
+        public void BanListRemoveDispatchHandler(Packet request, Packet response) {
             if (request.Words.Count >= 1) {
                 Ban ban = FrostbiteBan.ParseBanRemove(request.Words.GetRange(1, request.Words.Count - 1));
 
@@ -526,94 +526,94 @@ namespace Procon.Net.Protocols.Frostbite {
 
         #region Variables
 
-        public void VarsServerNameDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
+        public void VarsServerNameDispatchHandler(Packet request, Packet response) {
             if (response.Words.Count >= 2) {
                 this.State.Settings.ServerName = response.Words[1];
             }
         }
 
-        public void VarsGamePasswordDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
+        public void VarsGamePasswordDispatchHandler(Packet request, Packet response) {
             if (response.Words.Count >= 2) {
                 this.State.Settings.Password = response.Words[1];
             }
         }
 
-        public void VarsGamePunkbusterDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
+        public void VarsGamePunkbusterDispatchHandler(Packet request, Packet response) {
             bool boolOut = false;
             if (response.Words.Count >= 2 && bool.TryParse(response.Words[1], out boolOut)) {
                 this.State.Settings.AntiCheatEnabled = boolOut;
             }
         }
 
-        public void VarsHardcoreDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
+        public void VarsHardcoreDispatchHandler(Packet request, Packet response) {
             bool boolOut = false;
             if (response.Words.Count >= 2 && bool.TryParse(response.Words[1], out boolOut)) {
                 this.State.Settings.HardcoreEnabled = boolOut;
             }
         }
 
-        public void VarsRankedDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
+        public void VarsRankedDispatchHandler(Packet request, Packet response) {
             bool boolOut = false;
             if (response.Words.Count >= 2 && bool.TryParse(response.Words[1], out boolOut)) {
                 this.State.Settings.RankedEnabled = boolOut;
             }
         }
 
-        public void VarsRankLimitDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
+        public void VarsRankLimitDispatchHandler(Packet request, Packet response) {
             int intOut = 0;
             if (response.Words.Count >= 2 && int.TryParse(response.Words[1], out intOut)) {
                 this.State.Settings.RankLimit = intOut;
             }
         }
 
-        public void VarsTeamBalanceDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
+        public void VarsTeamBalanceDispatchHandler(Packet request, Packet response) {
             bool boolOut = false;
             if (response.Words.Count >= 2 && bool.TryParse(response.Words[1], out boolOut)) {
                 this.State.Settings.AutoBalanceEnabled = boolOut;
             }
         }
 
-        public void VarsFriendlyFireDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
+        public void VarsFriendlyFireDispatchHandler(Packet request, Packet response) {
             bool boolOut = false;
             if (response.Words.Count >= 2 && bool.TryParse(response.Words[1], out boolOut)) {
                 this.State.Settings.FriendlyFireEnabled = boolOut;
             }
         }
 
-        public void VarsBannerUrlDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
+        public void VarsBannerUrlDispatchHandler(Packet request, Packet response) {
             if (response.Words.Count >= 2) {
                 this.State.Settings.BannerUrl = response.Words[1];
             }
         }
 
-        public void VarsServerDescriptionDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
+        public void VarsServerDescriptionDispatchHandler(Packet request, Packet response) {
             if (response.Words.Count >= 2) {
                 this.State.Settings.ServerDescription = response.Words[1];
             }
         }
 
-        public void VarsKillCamDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
+        public void VarsKillCamDispatchHandler(Packet request, Packet response) {
             bool boolOut;
             if (response.Words.Count >= 2 && bool.TryParse(response.Words[1], out boolOut)) {
                 this.State.Settings.KillCameraEnabled = boolOut;
             }
         }
 
-        public void VarsMiniMapDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
+        public void VarsMiniMapDispatchHandler(Packet request, Packet response) {
             bool boolOut;
             if (response.Words.Count >= 2 && bool.TryParse(response.Words[1], out boolOut)) {
                 this.State.Settings.MiniMapEnabled = boolOut;
             }
         }
 
-        public void VarsCrossHairDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
+        public void VarsCrossHairDispatchHandler(Packet request, Packet response) {
             bool boolOut;
             if (response.Words.Count >= 2 && bool.TryParse(response.Words[1], out boolOut)) {
                 this.State.Settings.CrossHairEnabled = boolOut;
             }
         }
 
-        public void VarsIdleTimeoutDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
+        public void VarsIdleTimeoutDispatchHandler(Packet request, Packet response) {
             int intOut = 0;
             if (response.Words.Count >= 2 && int.TryParse(response.Words[1], out intOut)) {
                 this.State.Settings.IdleTimeoutEnabled = intOut != -1;
@@ -622,7 +622,7 @@ namespace Procon.Net.Protocols.Frostbite {
             }
         }
 
-        public void VarsProfanityFilterDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
+        public void VarsProfanityFilterDispatchHandler(Packet request, Packet response) {
             bool boolOut;
             if (response.Words.Count >= 2 && bool.TryParse(response.Words[1], out boolOut)) {
                 this.State.Settings.ProfanityFilterEnabled = boolOut;
@@ -631,7 +631,7 @@ namespace Procon.Net.Protocols.Frostbite {
 
         #endregion
 
-        public void PunkBusterOnMessageDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
+        public void PunkBusterOnMessageDispatchHandler(Packet request, Packet response) {
 
             if (request.Words.Count >= 1) {
 
@@ -656,7 +656,7 @@ namespace Procon.Net.Protocols.Frostbite {
             }
         }
 
-        public virtual void PlayerOnKillDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
+        public virtual void PlayerOnKillDispatchHandler(Packet request, Packet response) {
 
             if (request.Words.Count >= 11) {
 
@@ -696,7 +696,7 @@ namespace Procon.Net.Protocols.Frostbite {
             }
         }
 
-        public void ServerOnLoadingLevelDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
+        public void ServerOnLoadingLevelDispatchHandler(Packet request, Packet response) {
 
             if (request.Words.Count >= 4) {
 
@@ -727,7 +727,7 @@ namespace Procon.Net.Protocols.Frostbite {
         /// </summary>
         /// <param name="request"></param>
         /// <param name="response"></param>
-        public virtual void PlayerOnJoinDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
+        public virtual void PlayerOnJoinDispatchHandler(Packet request, Packet response) {
 
             if (request.Words.Count >= 2) {
 
@@ -741,7 +741,7 @@ namespace Procon.Net.Protocols.Frostbite {
             }
         }
 
-        public void PlayerOnLeaveDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
+        public void PlayerOnLeaveDispatchHandler(Packet request, Packet response) {
 
             if (request.Words.Count >= 2) {
                 //request.Words.RemoveAt(1);
@@ -778,7 +778,7 @@ namespace Procon.Net.Protocols.Frostbite {
             }
         }
 
-        public void PlayerOnChatDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
+        public void PlayerOnChatDispatchHandler(Packet request, Packet response) {
 
             // player.onChat <source soldier name: string> <text: string> <target group: player subset>
             if (request.Words.Count >= 2) {
@@ -805,7 +805,7 @@ namespace Procon.Net.Protocols.Frostbite {
             }
         }
 
-        public virtual void PlayerOnAuthenticatedDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
+        public virtual void PlayerOnAuthenticatedDispatchHandler(Packet request, Packet response) {
 
             if (request.Words.Count >= 3) {
                 Player statePlayer = this.State.PlayerList.Find(x => x.Name == request.Words[1]);
@@ -826,7 +826,7 @@ namespace Procon.Net.Protocols.Frostbite {
             }
         }
 
-        public void PlayerOnSpawnDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
+        public void PlayerOnSpawnDispatchHandler(Packet request, Packet response) {
 
             Spawn spawn = FrostbiteSpawn.Parse(request.Words.GetRange(1, request.Words.Count - 1));
 
@@ -840,7 +840,7 @@ namespace Procon.Net.Protocols.Frostbite {
             }
         }
 
-        public void PlayerOnKickedDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
+        public void PlayerOnKickedDispatchHandler(Packet request, Packet response) {
 
             Player player = this.State.PlayerList.Find(x => x.Name == request.Words[1]);
 
@@ -865,7 +865,7 @@ namespace Procon.Net.Protocols.Frostbite {
             }
         }
 
-        public void PlayerOnSquadChangeDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
+        public void PlayerOnSquadChangeDispatchHandler(Packet request, Packet response) {
 
             Player player = this.State.PlayerList.Find(x => x.Name == request.Words[1]);
             int teamId = 0, squadId = 0;
@@ -885,7 +885,7 @@ namespace Procon.Net.Protocols.Frostbite {
             }
         }
 
-        public void PlayerOnTeamChangeDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
+        public void PlayerOnTeamChangeDispatchHandler(Packet request, Packet response) {
             Player player = this.State.PlayerList.Find(x => x.Name == request.Words[1]);
             int teamId = 0, squadId = 0;
 
@@ -908,12 +908,12 @@ namespace Procon.Net.Protocols.Frostbite {
             }
         }
 
-        public void InvalidPasswordHashDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
+        public void InvalidPasswordHashDispatchHandler(Packet request, Packet response) {
             this.Shutdown();
             //this.Client.ConnectionState = ConnectionState.Ready;
         }
 
-        protected override void Dispatch(FrostbitePacket packet) {
+        protected override void Dispatch(Packet packet) {
 
             if (packet.Origin == PacketOrigin.Client && packet.Type == PacketType.Response) {
                 FrostbitePacket requestPacket = ((FrostbiteClient)this.Client).PacketQueue.GetRequestPacket(packet) as FrostbitePacket;
@@ -965,7 +965,7 @@ namespace Procon.Net.Protocols.Frostbite {
 
         #endregion
 
-        protected override FrostbitePacket CreatePacket(string format, params object[] args) {
+        protected override Packet CreatePacket(string format, params object[] args) {
             String packetText = format;
 
             try {

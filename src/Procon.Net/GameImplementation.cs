@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace Procon.Net {
     using Procon.Net.Protocols.Objects;
 
-    public abstract class GameImplementation<P> : Game where P : Packet {
+    public abstract class GameImplementation : Game {
 
         /// <summary>
         /// Array of dispatch handlers used to locate an appropriate method to call
@@ -18,7 +18,7 @@ namespace Procon.Net {
         /// </summary>
         /// <param name="request">What was sent to the server or what was just received from the server</param>
         /// <param name="response">What was receieved from the server, or what we should send to the server.</param>
-        protected delegate void PacketDispatchHandler(P request, P response);
+        protected delegate void PacketDispatchHandler(Packet request, Packet response);
 
         protected GameImplementation(string hostName, ushort port) : base() {
             this.PacketDispatchHandlers = new Dictionary<PacketDispatch, PacketDispatchHandler>();
@@ -62,7 +62,7 @@ namespace Procon.Net {
         /// simple text match.
         /// </summary>
         /// <param name="packet">The packet recieved from the game server.</param>
-        protected abstract void Dispatch(P packet);
+        protected abstract void Dispatch(Packet packet);
 
         /// <summary>
         /// Sends a packet to the server, provided a client exists and the connection is open and ready or logged in.
@@ -112,12 +112,12 @@ namespace Procon.Net {
         }
 
         private void Client_PacketReceived(IClient sender, Packet packet) {
-            this.Dispatch(packet as P);
+            this.Dispatch(packet);
 
             this.OnClientEvent(ClientEventType.ClientPacketReceived, packet);
         }
 
-        protected virtual void Dispatch(PacketDispatch identifer, P request, P response) {
+        protected virtual void Dispatch(PacketDispatch identifer, Packet request, Packet response) {
 
             var dispatchMethods = this.PacketDispatchHandlers.Where(dispatcher => dispatcher.Key.Name == identifer.Name)
                 .Where(dispatcher => dispatcher.Key.Origin == PacketOrigin.None || dispatcher.Key.Origin == identifer.Origin)
@@ -134,7 +134,7 @@ namespace Procon.Net {
             }
         }
 
-        protected virtual void DispatchFailed(PacketDispatch identifer, P request, P response) {
+        protected virtual void DispatchFailed(PacketDispatch identifer, Packet request, Packet response) {
 
         }
 
@@ -144,9 +144,7 @@ namespace Procon.Net {
             }
         }
 
-        #region Helper Methods
-
-        protected abstract P CreatePacket(String format, params object[] args);
+        protected abstract Packet CreatePacket(String format, params object[] args);
 
         public override void Login(string password) {
             
@@ -205,8 +203,6 @@ namespace Procon.Net {
                 this.Send(this.CreatePacket(raw.PacketText));
             }
         }
-
-        #endregion
 
         /// <summary>
         /// Executes a game config against this game implementation.

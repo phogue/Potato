@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Xml.Serialization;
 using Newtonsoft.Json;
@@ -29,11 +30,16 @@ namespace Procon.Net {
         /// </summary>
         public int? RequestId { get; set; }
 
+        /// <summary>
+        /// The wordified version of the text string version of the packet.
+        /// </summary>
+        public List<String> Words { get; set; }
+
         [XmlIgnore, JsonIgnore]
         public IPEndPoint RemoteEndPoint { get; set; }
 
         protected Packet() {
-
+            this.Words = new List<String>();
         }
 
         // Used if we'll be using EncodePacket to send to the server.
@@ -42,12 +48,14 @@ namespace Procon.Net {
             this.Type = type;
             this.RequestId = null;
             this.Stamp = DateTime.Now;
+            this.Words = new List<String>();
         }
 
         protected virtual void NullPacket() {
             this.Origin = PacketOrigin.Client;
             this.Type = PacketType.Request;
             this.RequestId = null;
+            this.Words = new List<String>();
         }
 
         public virtual string ToDebugString() {

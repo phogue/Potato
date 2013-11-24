@@ -8,32 +8,17 @@ namespace Procon.Net.Protocols.Frostbite {
 
         public static readonly string StringResponseOkay = "OK";
 
-        /// <summary>
-        /// A list of words to send to the server or recieved from the server that make up
-        /// a frostbite command/event.
-        /// </summary>
-        public List<string> Words { get; private set; }
-
-        public FrostbitePacket()
-            : base() {
-            this.Words = new List<string>();
+        public FrostbitePacket() : base() {
         }
 
-        public FrostbitePacket(PacketOrigin origin, PacketType type, int? sequenceId, params string[] words)
-            : base(origin, type) {
-                this.RequestId = sequenceId;
-                this.Words = new List<string>(words);
+        public FrostbitePacket(PacketOrigin origin, PacketType type, int? sequenceId, params string[] words) : base(origin, type) {
+            this.RequestId = sequenceId;
+            this.Words = new List<String>(words);
         }
 
-        public FrostbitePacket(PacketOrigin origin, PacketType type, int? sequenceId, List<string> words)
-            : base(origin, type) {
+        public FrostbitePacket(PacketOrigin origin, PacketType type, int? sequenceId, List<String> words) : base(origin, type) {
             this.RequestId = sequenceId;
             this.Words = words;
-        }
-
-        protected override void NullPacket() {
-            base.NullPacket();
-            this.Words = new List<string>();
         }
 
         public override string ToDebugString() {

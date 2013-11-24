@@ -11,8 +11,6 @@ namespace Procon.Net.Protocols.Source {
         public string String1 { get; set; }
         public string String2 { get; set; }
 
-        public List<string> String1Words { get; set; }
-
         public SourcePacket()
             : base() {
                 this.RequestId = 0;
@@ -31,7 +29,7 @@ namespace Procon.Net.Protocols.Source {
                 this.ResponseType = SourceResponseType.None;
                 this.String1 = string1;
                 this.String2 = string2;
-                this.String1Words = string1.Wordify();
+                this.Words = string1.Wordify();
         }
 
         public override string ToDebugString() {

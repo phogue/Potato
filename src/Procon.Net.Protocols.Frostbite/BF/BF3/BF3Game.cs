@@ -84,7 +84,7 @@ namespace Procon.Net.Protocols.Frostbite.BF.BF3 {
             }
         }
 
-        public override void AdminListPlayersResponseDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
+        public override void AdminListPlayersResponseDispatchHandler(Packet request, Packet response) {
             BF3PlayerList players = new BF3PlayerList() {
                 Subset = new FrostbiteGroupingList().Parse(request.Words.GetRange(1, request.Words.Count - 1))
             }.Parse(response.Words.GetRange(1, response.Words.Count - 1));
@@ -92,7 +92,7 @@ namespace Procon.Net.Protocols.Frostbite.BF.BF3 {
             this.AdminListPlayersFinalize(players);
         }
 
-        public override void MapListListDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
+        public override void MapListListDispatchHandler(Packet request, Packet response) {
             if (request.Words.Count >= 1) {
 
                 FrostbiteMapList maps = new BF3FrostbiteMapList().Parse(response.Words.GetRange(1, response.Words.Count - 1));
@@ -112,7 +112,7 @@ namespace Procon.Net.Protocols.Frostbite.BF.BF3 {
             }
         }
 
-        public override void BanListListDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
+        public override void BanListListDispatchHandler(Packet request, Packet response) {
 
             if (request.Words.Count >= 1) {
 
@@ -146,7 +146,7 @@ namespace Procon.Net.Protocols.Frostbite.BF.BF3 {
             }
         }
 
-        public void PlayerPingResponseDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
+        public void PlayerPingResponseDispatchHandler(Packet request, Packet response) {
 
             if (request.Words.Count >= 2 && response != null && response.Words.Count >= 2) {
                 Player player = this.State.PlayerList.FirstOrDefault(p => p.Name == request.Words[1]);
@@ -169,11 +169,11 @@ namespace Procon.Net.Protocols.Frostbite.BF.BF3 {
             this.Send(this.CreatePacket("admin.eventsEnabled true"));
         }
 
-        public override void PlayerOnAuthenticatedDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
+        public override void PlayerOnAuthenticatedDispatchHandler(Packet request, Packet response) {
             // Ignore this in bf3? Seems onJoin handles both.
         }
 
-        public override void PlayerOnJoinDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
+        public override void PlayerOnJoinDispatchHandler(Packet request, Packet response) {
 
             if (request.Words.Count >= 2) {
 
@@ -190,7 +190,7 @@ namespace Procon.Net.Protocols.Frostbite.BF.BF3 {
             }
         }
 
-        public override void PlayerOnKillDispatchHandler(FrostbitePacket request, FrostbitePacket response) {
+        public override void PlayerOnKillDispatchHandler(Packet request, Packet response) {
 
             if (request.Words.Count >= 5) {
 

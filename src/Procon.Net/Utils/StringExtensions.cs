@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Linq;
@@ -8,17 +9,15 @@ using System.Globalization;
 namespace Procon.Net.Utils {
     public static class StringExtensions {
 
-        private static readonly Random Random = new Random((int)DateTime.Now.Ticks);
-
+        /// <summary>
+        /// Generates a random string 
+        /// </summary>
+        /// <param name="length"></param>
+        /// <returns></returns>
         public static string RandomString(int length) {
-            const string characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~:/?#[]@!$&'()*+,;=";
-            var randomString = new StringBuilder();
-            
-            for (var offset = 0; offset < length; offset++) {
-                randomString.Append(characters[StringExtensions.Random.Next(0, characters.Length)]);
-            }
-
-            return randomString.ToString();
+            byte[] randBuffer = new byte[length];
+            RandomNumberGenerator.Create().GetBytes(randBuffer);
+            return System.Convert.ToBase64String(randBuffer).Remove(length);
         }
 
         public static List<String> Wordify(this string data) {
@@ -95,8 +94,8 @@ namespace Procon.Net.Utils {
         /// <param name="text"></param>
         /// <param name="column"></param>
         /// <returns></returns>
-        public static List<string> WordWrap(this string text, int column) {
-            List<string> result = new List<string>(text.Split(' '));
+        public static List<String> WordWrap(this string text, int column) {
+            List<String> result = new List<String>(text.Split(' '));
 
             for (int i = 0; i < result.Count - 1; i++) {
                 if (result[i].Length + result[i + 1].Length + 1 <= column) {
@@ -108,38 +107,6 @@ namespace Procon.Net.Utils {
 
             return result;
         }
-
-        private static readonly Dictionary<string, string> LeetRules = new Dictionary<string, string>() {
-                    { "4", "A" },
-                    { @"/\", "A" },
-                    { "@", "A" },
-                    { "^", "A" },
-                    { "13", "B" },
-                    { "/3", "B" },
-                    { "|3", "B" },
-                    { "8", "B" },
-                    { "><", "X" },
-                    { "<", "C" },
-                    { "(", "C" },
-                    { "|)", "D" },
-                    { "|>", "D" },
-                    { "3", "E" },
-                    { "6", "G" },
-                    { "/-/", "H" },
-                    { "[-]", "H" },
-                    { "]-[", "H" },
-                    { "!", "I" },
-                    { "|_", "L" },
-                    { "_/", "J" },
-                    { "_|", "J" },
-                    { "1", "L" },
-                    { "0", "O" },
-                    { "5", "S" },
-                    { "7", "T" },
-                    { @"\/\/", "W" },
-                    { @"\/", "V" },
-                    { "2", "Z" }
-                };
 
         /// <summary>
         /// Removes diacritics, such as the umlaut (ë => e).  Though not linguistically
@@ -158,6 +125,38 @@ namespace Procon.Net.Utils {
 
             return stringBuilder.ToString();
         }
+
+        private static readonly Dictionary<string, string> LeetRules = new Dictionary<string, string>() {
+            { "4", "A" },
+            { @"/\", "A" },
+            { "@", "A" },
+            { "^", "A" },
+            { "13", "B" },
+            { "/3", "B" },
+            { "|3", "B" },
+            { "8", "B" },
+            { "><", "X" },
+            { "<", "C" },
+            { "(", "C" },
+            { "|)", "D" },
+            { "|>", "D" },
+            { "3", "E" },
+            { "6", "G" },
+            { "/-/", "H" },
+            { "[-]", "H" },
+            { "]-[", "H" },
+            { "!", "I" },
+            { "|_", "L" },
+            { "_/", "J" },
+            { "_|", "J" },
+            { "1", "L" },
+            { "0", "O" },
+            { "5", "S" },
+            { "7", "T" },
+            { @"\/\/", "W" },
+            { @"\/", "V" },
+            { "2", "Z" }
+        };
 
         /// <summary>
         /// Removes leet speak from a name
@@ -188,7 +187,7 @@ namespace Procon.Net.Utils {
         }
 
         public static String SanitizeDirectory(this String s) {
-            s = Regex.Replace(s, "[/]+", "_").Trim('_');
+            s = Regex.Replace(s, "[/\\\\]+", "_").Trim('_');
             s = Regex.Replace(s, "[^\\w]+", "");
 
             return s;

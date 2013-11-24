@@ -4,7 +4,7 @@ using Procon.Net.Test.Mocks;
 
 namespace Procon.Net.Test {
     [TestFixture]
-    public class TcpClientTest {
+    public class UdpClientTest {
 
         /// <summary>
         /// Creates a listener, connects a client and ensures the connection is established. Just allows for easier
@@ -13,14 +13,14 @@ namespace Procon.Net.Test {
         /// <param name="port"></param>
         /// <param name="listener"></param>
         /// <param name="client"></param>
-        protected void CreateAndConnect(ushort port, out MockTcpListener listener, out MockTcpClient client) {
-            listener = new MockTcpListener() {
+        protected void CreateAndConnect(ushort port, out MockUdpListener listener, out MockUdpClient client) {
+            listener = new MockUdpListener() {
                 Port = port
             };
 
             listener.BeginListener();
 
-            client = new MockTcpClient("localhost", port);
+            client = new MockUdpClient("localhost", port);
 
             client.Connect();
 
@@ -51,14 +51,16 @@ namespace Procon.Net.Test {
         /// </summary>
         [Test]
         public void TestBasicPacketRecievedByListener() {
-            MockTcpListener listener;
-            MockTcpClient client;
+            MockUdpListener listener;
+            MockUdpClient client;
 
             AutoResetEvent packetWait = new AutoResetEvent(false);
 
-            this.CreateAndConnect(35000, out listener, out client);
+            this.CreateAndConnect(36000, out listener, out client);
 
-            listener.PacketReceived += (sender, request) => { packetWait.Set(); };
+            listener.PacketReceived += (sender, request) => {
+                packetWait.Set();
+            };
 
             client.Send(new MockPacket(PacketOrigin.Client, PacketType.Request) {
                 RequestId = 1,
@@ -73,13 +75,13 @@ namespace Procon.Net.Test {
         /// </summary>
         [Test]
         public void TestBasicPacketDeserializedByListener() {
-            MockTcpListener listener;
-            MockTcpClient client;
+            MockUdpListener listener;
+            MockUdpClient client;
             MockPacket packet = null;
 
             AutoResetEvent packetWait = new AutoResetEvent(false);
 
-            this.CreateAndConnect(35001, out listener, out client);
+            this.CreateAndConnect(36001, out listener, out client);
 
             listener.PacketReceived += (sender, request) => {
                 packet = request;
@@ -96,18 +98,18 @@ namespace Procon.Net.Test {
         }
 
         /// <summary>
-        /// Tests a packet can be manipulated by the mock tcp listener and returned & deserialized
+        /// Tests a packet can be manipulated by the mock Udp listener and returned & deserialized
         /// by the client.
         /// </summary>
         [Test]
         public void TestBasicPacketListenerReply() {
-            MockTcpListener listener;
-            MockTcpClient client;
+            MockUdpListener listener;
+            MockUdpClient client;
             MockPacket packet = null;
 
             AutoResetEvent packetWait = new AutoResetEvent(false);
 
-            this.CreateAndConnect(35002, out listener, out client);
+            this.CreateAndConnect(36002, out listener, out client);
 
             listener.PacketReceived += (sender, request) => {
                 request.Type = PacketType.Response;
@@ -127,36 +129,8 @@ namespace Procon.Net.Test {
                 Text = "TestBasicPacketSend"
             });
 
-            Assert.IsTrue(packetWait.WaitOne(1000));
+            Assert.IsTrue(packetWait.WaitOne(100000));
             Assert.AreEqual("Client Response 1 OK", packet.ToDebugString());
-        }
-
-        [Test]
-        public void TestGracefulCloseOnServerDisconnect() {
-            MockTcpListener listener;
-            MockTcpClient client;
-
-            AutoResetEvent stateChangeWait = new AutoResetEvent(false);
-
-            this.CreateAndConnect(35003, out listener, out client);
-
-            listener.PacketReceived += (sender, request) => {
-                request.Type = PacketType.Response;
-                request.Text = "OK";
-
-                sender.Send(request);
-            };
-
-            client.ConnectionStateChanged += (sender, state) => {
-                if (state == ConnectionState.ConnectionDisconnected) {
-                    stateChangeWait.Set();
-                }
-            };
-
-            listener.Shutdown();
-
-            Assert.IsTrue(stateChangeWait.WaitOne(1000));
-            Assert.AreEqual(ConnectionState.ConnectionDisconnected, client.ConnectionState);
         }
     }
 }

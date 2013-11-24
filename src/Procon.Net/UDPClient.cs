@@ -10,12 +10,12 @@ namespace Procon.Net {
         /// <summary>
         /// The 'open' client for the udp connection
         /// </summary>
-        protected System.Net.Sockets.UdpClient Client;
+        public System.Net.Sockets.UdpClient Client;
 
         /// <summary>
         /// The end point of the server we are communicating with
         /// </summary>
-        protected IPEndPoint RemoteIpEndPoint;
+        public IPEndPoint RemoteIpEndPoint;
 
         public UdpClient(string hostname, UInt16 port) : base(hostname, port) {
 
@@ -80,7 +80,7 @@ namespace Procon.Net {
                     byte[] bytePacket = this.PacketSerializer.Serialize(packet);
 
                     if (bytePacket != null && bytePacket.Length > 0) {
-                        this.Client.BeginSend(bytePacket, bytePacket.Length, this.SendAsynchronousCallback, packet);
+                        this.Client.BeginSend(bytePacket, bytePacket.Length, this.RemoteEndPoint, this.SendAsynchronousCallback, packet);
                     }
                 }
             }

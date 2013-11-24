@@ -57,11 +57,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ClientTest.cs" />
+    <Compile Include="UdpClientTest.cs" />
     <Compile Include="MarkManagerTest.cs" />
     <Compile Include="Mocks\MockPacketSerializer.cs" />
     <Compile Include="Mocks\MockTcpClient.cs" />
     <Compile Include="Mocks\MockPacket.cs" />
     <Compile Include="Mocks\MockTcpListener.cs" />
+    <Compile Include="Mocks\MockUdpClient.cs" />
+    <Compile Include="Mocks\MockUdpListener.cs" />
     <Compile Include="PacketQueueTest.cs" />
     <Compile Include="PacketStreamTest.cs" />
     <Compile Include="PacketTest.cs" />

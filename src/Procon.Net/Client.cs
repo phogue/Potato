@@ -14,17 +14,17 @@ namespace Procon.Net {
         /// <summary>
         /// The port to connect on.
         /// </summary>
-        public UInt16 Port { get; protected set; }
+        public ushort Port { get; protected set; }
 
         /// <summary>
         /// The local end point, which port we're using on the outbound connection.
         /// </summary>
-        public IPEndPoint LocalEndPoint { get; protected set; }
+        public IPEndPoint LocalEndPoint { get; set; }
 
         /// <summary>
         /// The servers (who we're connected to) end point details.
         /// </summary>
-        public IPEndPoint RemoteEndPoint { get; protected set; }
+        public IPEndPoint RemoteEndPoint { get; set; }
 
         /// <summary>
         /// The packet serialization object used to parsed data read in
@@ -41,7 +41,7 @@ namespace Procon.Net {
         /// The maximum bytes to collect for a single packet before it is completely scrapped.
         /// </summary>
         protected int MaxGarbageBytes = 262144;
-
+        
         /// <summary>
         /// Data collected so far for a packet.
         /// </summary>

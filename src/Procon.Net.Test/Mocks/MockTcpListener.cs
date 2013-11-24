@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 
@@ -8,12 +9,17 @@ namespace Procon.Net.Test.Mocks {
         /// <summary>
         /// The port to listen on.
         /// </summary>
-        public int Port { get; set; }
+        public ushort Port { get; set; }
 
         /// <summary>
         /// The listener 
         /// </summary>
         public TcpListener Listener { get; set; }
+
+        /// <summary>
+        /// List of active clients
+        /// </summary>
+        public List<MockTcpClient> Clients { get; set; }
 
         /// <summary>
         /// Fired whenever an incoming request occurs.
@@ -26,6 +32,10 @@ namespace Procon.Net.Test.Mocks {
         /// </summary>
         public event ExceptionHandler Exception;
         public delegate void ExceptionHandler(Exception exception);
+
+        public MockTcpListener() {
+            this.Clients = new List<MockTcpClient>();
+        }
 
         /// <summary>
         /// Creates and starts listening for tcp clients on the specified port.
@@ -47,25 +57,27 @@ namespace Procon.Net.Test.Mocks {
         protected static void AcceptTcpClientCallback(IAsyncResult ar) {
 
             // Get the listener that handles the client request.
-            MockTcpListener daemonListener = (MockTcpListener)ar.AsyncState;
+            MockTcpListener listener = (MockTcpListener)ar.AsyncState;
 
-            if (daemonListener.Listener != null) {
+            if (listener.Listener != null) {
                 try {
                     // End the operation and display the received data on the console.
-                    MockTcpClient client = new MockTcpClient(daemonListener.Listener.EndAcceptTcpClient(ar));
+                    MockTcpClient client = new MockTcpClient(listener.Listener.EndAcceptTcpClient(ar));
 
                     // Listen for events on our new client
-                    client.PacketReceived += new ClientBase.PacketDispatchHandler(daemonListener.client_PacketReceived);
-                    client.ConnectionStateChanged += new ClientBase.ConnectionStateChangedHandler(daemonListener.client_ConnectionStateChanged);
+                    client.PacketReceived += new ClientBase.PacketDispatchHandler(listener.client_PacketReceived);
+                    client.ConnectionStateChanged += new ClientBase.ConnectionStateChangedHandler(listener.client_ConnectionStateChanged);
+
+                    listener.Clients.Add(client);
 
                     // k, go. Now start reading.
                     client.BeginRead();
 
                     // Signal the calling thread to continue.
-                    daemonListener.Listener.BeginAcceptTcpClient(new AsyncCallback(AcceptTcpClientCallback), daemonListener);
+                    listener.Listener.BeginAcceptTcpClient(new AsyncCallback(AcceptTcpClientCallback), listener);
                 }
                 catch (Exception e) {
-                    daemonListener.OnException(e);
+                    listener.OnException(e);
                 }
             }
         }
@@ -95,6 +107,22 @@ namespace Procon.Net.Test.Mocks {
 
             if (handler != null) {
                 handler(exception);
+            }
+        }
+
+        public void Shutdown() {
+            if (this.Listener != null) {
+                this.Listener.Stop();
+                this.Listener = null;
+
+                foreach (MockTcpClient client in this.Clients) {
+                    client.Shutdown();
+                    client.PacketReceived -= new ClientBase.PacketDispatchHandler(this.client_PacketReceived);
+                    client.ConnectionStateChanged -= new ClientBase.ConnectionStateChangedHandler(this.client_ConnectionStateChanged);
+                }
+
+                this.Clients.Clear();
+                this.Clients = null;
             }
         }
     }

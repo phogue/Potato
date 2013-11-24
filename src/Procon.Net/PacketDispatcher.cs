@@ -17,6 +17,19 @@ namespace Procon.Net {
         /// <param name="response">What was receieved from the server, or what we should send to the server.</param>
         public delegate void PacketDispatchHandler(Packet request, Packet response);
 
+        /// <summary>
+        /// What method to call when dispatching, but unable to find specific dispatch method.
+        /// </summary>
+        /// <param name="identifer">What was used to look for a dispatch method</param>
+        /// <param name="request">What was sent to the server or what was just received from the server</param>
+        /// <param name="response">What was receieved from the server, or what we should send to the server.</param>
+        public delegate void MissingPacketDispatchHandler(PacketDispatch identifer, Packet request, Packet response);
+
+        /// <summary>
+        /// Handler to dispatch to if a request fails.
+        /// </summary>
+        public MissingPacketDispatchHandler MissingDispatchHandler { get; set; }
+
         public PacketDispatcher() {
             this.Handlers = new Dictionary<PacketDispatch, PacketDispatchHandler>();
         }
@@ -62,12 +75,20 @@ namespace Procon.Net {
                 }
             }
             else {
-                this.DispatchFailed(identifer, request, response);
+                this.MissingDispatch(identifer, request, response);
             }
         }
 
-        public virtual void DispatchFailed(PacketDispatch identifer, Packet request, Packet response) {
-
+        /// <summary>
+        /// Called when dispatching, but no method matches the exact identifier used.
+        /// </summary>
+        /// <param name="identifer"></param>
+        /// <param name="request"></param>
+        /// <param name="response"></param>
+        public virtual void MissingDispatch(PacketDispatch identifer, Packet request, Packet response) {
+            if (this.MissingDispatchHandler != null) {
+                this.MissingDispatchHandler(identifer, request, response);
+            }
         }
     }
 }

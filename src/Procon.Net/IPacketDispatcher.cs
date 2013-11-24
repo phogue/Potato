@@ -17,9 +17,5 @@ namespace Procon.Net {
         /// </summary>
         /// <param name="packet">The packet recieved from the game server.</param>
         void Dispatch(Packet packet);
-
-        void Dispatch(PacketDispatch identifer, Packet request, Packet response);
-
-        void DispatchFailed(PacketDispatch identifer, Packet request, Packet response);
     }
 }

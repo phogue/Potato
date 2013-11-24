@@ -1,12 +1,20 @@
 ﻿using System;
+using Procon.Net.Utils;
 
 namespace Procon.Net.Test.Mocks {
     public class MockPacket : Packet {
+        private string _text;
 
         /// <summary>
         /// Basic text to pass bac kand forth
         /// </summary>
-        public String Text { get; set; }
+        public String Text {
+            get { return _text; }
+            set {
+                _text = value;
+                this.Words = _text.Wordify();
+            }
+        }
 
         public MockPacket() : base() {
             this.Stamp = DateTime.Now;

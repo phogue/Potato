@@ -62,7 +62,9 @@
   <ItemGroup>
     <Compile Include="ClientBase.cs" />
     <Compile Include="IClient.cs" />
+    <Compile Include="IPacketDispatcher.cs" />
     <Compile Include="IPacketQueue.cs" />
+    <Compile Include="PacketDispatcher.cs" />
     <Compile Include="PacketQueue.cs" />
     <Compile Include="PacketType.cs" />
     <Compile Include="Geolocation\GeolocateIp.cs" />
@@ -78,6 +80,7 @@
     <Compile Include="GameEventData.cs" />
     <Compile Include="IPacketStream.cs" />
     <Compile Include="PacketStream.cs" />
+    <Compile Include="Protocols\CallOfDuty\CallOfDutyPacketDispatcher.cs" />
     <Compile Include="Protocols\Daemon\DaemonClient.cs" />
     <Compile Include="Protocols\Daemon\DaemonPacket.cs" />
     <Compile Include="Protocols\Daemon\DaemonPacketSerializer.cs" />
@@ -146,6 +149,7 @@
     <Compile Include="Protocols\Source\Objects\SourcePlayerList.cs" />
     <Compile Include="Protocols\Source\Objects\SourceServerInfo.cs" />
     <Compile Include="Protocols\Source\SourceClient.cs" />
+    <Compile Include="Protocols\Source\SourcePacketDispatcher.cs" />
     <Compile Include="Protocols\Source\SourceResponseType.cs" />
     <Compile Include="Protocols\Source\SourceGame.cs" />
     <Compile Include="Protocols\Source\SourcePacket.cs" />

@@ -66,6 +66,7 @@
     <Compile Include="FrostbiteClient.cs" />
     <Compile Include="FrostbiteGame.cs" />
     <Compile Include="FrostbitePacket.cs" />
+    <Compile Include="FrostbitePacketDispatcher.cs" />
     <Compile Include="FrostbitePacketSerializer.cs" />
     <Compile Include="MOH\MohGame.cs" />
     <Compile Include="Objects\FrostbiteBan.cs" />

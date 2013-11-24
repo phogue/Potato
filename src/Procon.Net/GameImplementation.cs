@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Linq;
-using System.Collections.Generic;
 
 namespace Procon.Net {
     using Procon.Net.Protocols.Objects;
@@ -8,44 +6,19 @@ namespace Procon.Net {
     public abstract class GameImplementation : Game {
 
         /// <summary>
-        /// Array of dispatch handlers used to locate an appropriate method to call
-        /// once we receieve a packet.
+        /// Handles all packet dispatching.
         /// </summary>
-        protected Dictionary<PacketDispatch, PacketDispatchHandler> PacketDispatchHandlers;
-
-        /// <summary>
-        /// What method should be called when matched against a packet dispatch object.
-        /// </summary>
-        /// <param name="request">What was sent to the server or what was just received from the server</param>
-        /// <param name="response">What was receieved from the server, or what we should send to the server.</param>
-        protected delegate void PacketDispatchHandler(Packet request, Packet response);
+        public IPacketDispatcher PacketDispatcher { get; set; }
 
         protected GameImplementation(string hostName, ushort port) : base() {
-            this.PacketDispatchHandlers = new Dictionary<PacketDispatch, PacketDispatchHandler>();
-
             this.Execute(hostName, port);
         }
 
         protected void Execute(string hostName, ushort port) {
             this.State = new GameState();
             this.Client = this.CreateClient(hostName, port);
+            this.PacketDispatcher = this.CreatePacketDispatcher();
             this.AssignEvents();
-        }
-
-        /// <summary>
-        /// Appends a dispatch handler, first checking if an existing dispatch exists for this exact
-        /// packet. If it exists then it will be overridden.
-        /// </summary>
-        /// <param name="handlers">A dictionary of handlers to append to the dispatch handlers.</param>
-        protected void AppendDispatchHandlers(Dictionary<PacketDispatch, PacketDispatchHandler> handlers) {
-            foreach (var handler in handlers) {
-                if (this.PacketDispatchHandlers.ContainsKey(handler.Key) == false) {
-                    this.PacketDispatchHandlers.Add(handler.Key, handler.Value);
-                }
-                else {
-                    this.PacketDispatchHandlers[handler.Key] = handler.Value;
-                }
-            }
         }
 
         /// <summary>
@@ -57,12 +30,12 @@ namespace Procon.Net {
         protected abstract IClient CreateClient(string hostName, ushort port);
 
         /// <summary>
-        /// Dispatches a recieved packet. Each game implementation needs to supply its own dispatch
-        /// method as the protocol may be very different and have additional requirements beyond a 
-        /// simple text match.
+        /// Create the dispatcher to use.
         /// </summary>
-        /// <param name="packet">The packet recieved from the game server.</param>
-        protected abstract void Dispatch(Packet packet);
+        /// <returns></returns>
+        protected virtual IPacketDispatcher CreatePacketDispatcher() {
+            return new PacketDispatcher();
+        }
 
         /// <summary>
         /// Sends a packet to the server, provided a client exists and the connection is open and ready or logged in.
@@ -112,30 +85,9 @@ namespace Procon.Net {
         }
 
         private void Client_PacketReceived(IClient sender, Packet packet) {
-            this.Dispatch(packet);
+            this.PacketDispatcher.Dispatch(packet);
 
             this.OnClientEvent(ClientEventType.ClientPacketReceived, packet);
-        }
-
-        protected virtual void Dispatch(PacketDispatch identifer, Packet request, Packet response) {
-
-            var dispatchMethods = this.PacketDispatchHandlers.Where(dispatcher => dispatcher.Key.Name == identifer.Name)
-                .Where(dispatcher => dispatcher.Key.Origin == PacketOrigin.None || dispatcher.Key.Origin == identifer.Origin)
-                .Select(dispatcher => dispatcher.Value)
-                .ToList();
-
-            if (dispatchMethods.Any()) {
-                foreach (PacketDispatchHandler handler in dispatchMethods) {
-                    handler(request, response);
-                }
-            }
-            else {
-                this.DispatchFailed(identifer, request, response);
-            }
-        }
-
-        protected virtual void DispatchFailed(PacketDispatch identifer, Packet request, Packet response) {
-
         }
 
         public override void AttemptConnection() {

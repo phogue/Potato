@@ -32,13 +32,13 @@ namespace Procon.Net.Protocols.Frostbite.BF.BF3 {
                 "RoundTime"
             };
 
-            this.AppendDispatchHandlers(new Dictionary<PacketDispatch, PacketDispatchHandler>() {
+            this.PacketDispatcher.Append(new Dictionary<PacketDispatch, PacketDispatcher.PacketDispatchHandler>() {
                 {
                     new PacketDispatch() {
                         Name = "player.ping", 
                         Origin = PacketOrigin.Client
                     },
-                    new PacketDispatchHandler(this.PlayerPingResponseDispatchHandler)
+                    new PacketDispatcher.PacketDispatchHandler(this.PlayerPingResponseDispatchHandler)
                 }
             });
         }

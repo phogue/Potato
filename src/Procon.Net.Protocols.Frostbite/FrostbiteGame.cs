@@ -29,237 +29,243 @@ namespace Procon.Net.Protocols.Frostbite {
         protected FrostbiteGame(string hostName, ushort port) : base(hostName, port) {
             State.Settings.MaxConsoleLines = 100;
             
-            this.AppendDispatchHandlers(new Dictionary<PacketDispatch, PacketDispatchHandler>() {
+            this.PacketDispatcher.Append(new Dictionary<PacketDispatch, PacketDispatcher.PacketDispatchHandler>() {
                 {
                     new PacketDispatch() {
                         Name = "serverInfo", 
                         Origin = PacketOrigin.Client
                     },
-                    new PacketDispatchHandler(this.ServerInfoDispatchHandler)
+                    new PacketDispatcher.PacketDispatchHandler(this.ServerInfoDispatchHandler)
                 }, {
                     new PacketDispatch() {
                         Name = "login.plainText",
                         Origin = PacketOrigin.Client
                     },
-                    new PacketDispatchHandler(this.LoginPlainTextDispatchHandler)
+                    new PacketDispatcher.PacketDispatchHandler(this.LoginPlainTextDispatchHandler)
                 }, {
                     new PacketDispatch() {
                         Name = "login.hashed",
                         Origin = PacketOrigin.Client
                     },
-                    new PacketDispatchHandler(this.LoginHashedDispatchHandler)
+                    new PacketDispatcher.PacketDispatchHandler(this.LoginHashedDispatchHandler)
                 }, {
                     new PacketDispatch() {
                         Name = "admin.eventsEnabled",
                         Origin = PacketOrigin.Client
                     },
-                    new PacketDispatchHandler(this.AdminEventsEnabledDispatchHandler)
+                    new PacketDispatcher.PacketDispatchHandler(this.AdminEventsEnabledDispatchHandler)
                 }, {
                     new PacketDispatch() {
                         Name = "admin.listPlayers",
                         Origin = PacketOrigin.Client
                     },
-                    new PacketDispatchHandler(this.AdminListPlayersResponseDispatchHandler)
+                    new PacketDispatcher.PacketDispatchHandler(this.AdminListPlayersResponseDispatchHandler)
                 }, {
                     new PacketDispatch() {
                         Name = "mapList.list",
                         Origin = PacketOrigin.Client
                     },
-                    new PacketDispatchHandler(this.MapListListDispatchHandler)
+                    new PacketDispatcher.PacketDispatchHandler(this.MapListListDispatchHandler)
                 }, {
                     new PacketDispatch() {
                         Name = "admin.say",
                         Origin = PacketOrigin.Client
                     },
-                    new PacketDispatchHandler(this.AdminSayDispatchHandler)
+                    new PacketDispatcher.PacketDispatchHandler(this.AdminSayDispatchHandler)
                 }, {
                     new PacketDispatch() {
                         Name = "version",
                         Origin = PacketOrigin.Client
                     },
-                    new PacketDispatchHandler(this.VersionDispatchHandler)
+                    new PacketDispatcher.PacketDispatchHandler(this.VersionDispatchHandler)
                 }, {
                     new PacketDispatch() {
                         Name = "banList.list",
                         Origin = PacketOrigin.Client
                     },
-                    new PacketDispatchHandler(this.BanListListDispatchHandler)
+                    new PacketDispatcher.PacketDispatchHandler(this.BanListListDispatchHandler)
                 }, {
                     new PacketDispatch() {
                         Name = "banList.add",
                         Origin = PacketOrigin.Client
                     },
-                    new PacketDispatchHandler(this.BanListAddDispatchHandler)
+                    new PacketDispatcher.PacketDispatchHandler(this.BanListAddDispatchHandler)
                 }, {
                     new PacketDispatch() {
                         Name = "banList.remove",
                         Origin = PacketOrigin.Client
                     },
-                    new PacketDispatchHandler(this.BanListRemoveDispatchHandler)
+                    new PacketDispatcher.PacketDispatchHandler(this.BanListRemoveDispatchHandler)
                 }, {
                     new PacketDispatch() {
                         Name = "vars.serverName",
                         Origin = PacketOrigin.Client
                     },
-                    new PacketDispatchHandler(this.VarsServerNameDispatchHandler)
+                    new PacketDispatcher.PacketDispatchHandler(this.VarsServerNameDispatchHandler)
                 }, {
                     new PacketDispatch() {
                         Name = "vars.gamePassword",
                         Origin = PacketOrigin.Client
                     },
-                    new PacketDispatchHandler(this.VarsGamePasswordDispatchHandler)
+                    new PacketDispatcher.PacketDispatchHandler(this.VarsGamePasswordDispatchHandler)
                 }, {
                     new PacketDispatch() {
                         Name = "vars.punkBuster",
                         Origin = PacketOrigin.Client
                     },
-                    new PacketDispatchHandler(this.VarsGamePunkbusterDispatchHandler)
+                    new PacketDispatcher.PacketDispatchHandler(this.VarsGamePunkbusterDispatchHandler)
                 }, {
                     new PacketDispatch() {
                         Name = "vars.hardCore",
                         Origin = PacketOrigin.Client
                     },
-                    new PacketDispatchHandler(this.VarsHardcoreDispatchHandler)
+                    new PacketDispatcher.PacketDispatchHandler(this.VarsHardcoreDispatchHandler)
                 }, {
                     new PacketDispatch() {
                         Name = "vars.ranked",
                         Origin = PacketOrigin.Client
                     },
-                    new PacketDispatchHandler(this.VarsRankedDispatchHandler)
+                    new PacketDispatcher.PacketDispatchHandler(this.VarsRankedDispatchHandler)
                 }, {
                     new PacketDispatch() {
                         Name = "vars.rankLimit",
                         Origin = PacketOrigin.Client
                     },
-                    new PacketDispatchHandler(this.VarsRankLimitDispatchHandler)
+                    new PacketDispatcher.PacketDispatchHandler(this.VarsRankLimitDispatchHandler)
                 }, {
                     new PacketDispatch() {
                         Name = "vars.teamBalance",
                         Origin = PacketOrigin.Client
                     },
-                    new PacketDispatchHandler(this.VarsTeamBalanceDispatchHandler)
+                    new PacketDispatcher.PacketDispatchHandler(this.VarsTeamBalanceDispatchHandler)
                 }, {
                     new PacketDispatch() {
                         Name = "vars.friendlyFire",
                         Origin = PacketOrigin.Client
                     },
-                    new PacketDispatchHandler(this.VarsFriendlyFireDispatchHandler)
+                    new PacketDispatcher.PacketDispatchHandler(this.VarsFriendlyFireDispatchHandler)
                 }, {
                     new PacketDispatch() {
                         Name = "vars.bannerUrl",
                         Origin = PacketOrigin.Client
                     },
-                    new PacketDispatchHandler(this.VarsBannerUrlDispatchHandler)
+                    new PacketDispatcher.PacketDispatchHandler(this.VarsBannerUrlDispatchHandler)
                 }, {
                     new PacketDispatch() {
                         Name = "vars.serverDescription",
                         Origin = PacketOrigin.Client
                     },
-                    new PacketDispatchHandler(this.VarsServerDescriptionDispatchHandler)
+                    new PacketDispatcher.PacketDispatchHandler(this.VarsServerDescriptionDispatchHandler)
                 }, {
                     new PacketDispatch() {
                         Name = "vars.killCam",
                         Origin = PacketOrigin.Client
                     },
-                    new PacketDispatchHandler(this.VarsKillCamDispatchHandler)
+                    new PacketDispatcher.PacketDispatchHandler(this.VarsKillCamDispatchHandler)
                 }, {
                     new PacketDispatch() {
                         Name = "vars.miniMap",
                         Origin = PacketOrigin.Client
                     },
-                    new PacketDispatchHandler(this.VarsMiniMapDispatchHandler)
+                    new PacketDispatcher.PacketDispatchHandler(this.VarsMiniMapDispatchHandler)
                 }, {
                     new PacketDispatch() {
                         Name = "vars.crossHair",
                         Origin = PacketOrigin.Client
                     },
-                    new PacketDispatchHandler(this.VarsCrossHairDispatchHandler)
+                    new PacketDispatcher.PacketDispatchHandler(this.VarsCrossHairDispatchHandler)
                 }, {
                     new PacketDispatch() {
                         Name = "vars.idleTimeout",
                         Origin = PacketOrigin.Client
                     },
-                    new PacketDispatchHandler(this.VarsIdleTimeoutDispatchHandler)
+                    new PacketDispatcher.PacketDispatchHandler(this.VarsIdleTimeoutDispatchHandler)
                 }, {
                     new PacketDispatch() {
                         Name = "vars.profanityFilter",
                         Origin = PacketOrigin.Client
                     },
-                    new PacketDispatchHandler(this.VarsProfanityFilterDispatchHandler)
+                    new PacketDispatcher.PacketDispatchHandler(this.VarsProfanityFilterDispatchHandler)
                 }, {
                     new PacketDispatch() {
                         Name = "punkBuster.onMessage",
                         Origin = PacketOrigin.Server
                     },
-                    new PacketDispatchHandler(this.PunkBusterOnMessageDispatchHandler)
+                    new PacketDispatcher.PacketDispatchHandler(this.PunkBusterOnMessageDispatchHandler)
                 }, {
                     new PacketDispatch() {
                         Name = "player.onKill",
                         Origin = PacketOrigin.Server
                     },
-                    new PacketDispatchHandler(this.PlayerOnKillDispatchHandler)
+                    new PacketDispatcher.PacketDispatchHandler(this.PlayerOnKillDispatchHandler)
                 }, {
                     new PacketDispatch() {
                         Name = "server.onLoadingLevel",
                         Origin = PacketOrigin.Server
                     },
-                    new PacketDispatchHandler(this.ServerOnLoadingLevelDispatchHandler)
+                    new PacketDispatcher.PacketDispatchHandler(this.ServerOnLoadingLevelDispatchHandler)
                 }, {
                     new PacketDispatch() {
                         Name = "player.onJoin",
                         Origin = PacketOrigin.Server
                     },
-                    new PacketDispatchHandler(this.PlayerOnJoinDispatchHandler)
+                    new PacketDispatcher.PacketDispatchHandler(this.PlayerOnJoinDispatchHandler)
                 }, {
                     new PacketDispatch() {
                         Name = "player.onLeave",
                         Origin = PacketOrigin.Server
                     },
-                    new PacketDispatchHandler(this.PlayerOnLeaveDispatchHandler)
+                    new PacketDispatcher.PacketDispatchHandler(this.PlayerOnLeaveDispatchHandler)
                 }, {
                     new PacketDispatch() {
                         Name = "player.onChat",
                         Origin = PacketOrigin.Server
                     },
-                    new PacketDispatchHandler(this.PlayerOnChatDispatchHandler)
+                    new PacketDispatcher.PacketDispatchHandler(this.PlayerOnChatDispatchHandler)
                 }, {
                     new PacketDispatch() {
                         Name = "player.onAuthenticated",
                         Origin = PacketOrigin.Server
                     },
-                    new PacketDispatchHandler(this.PlayerOnAuthenticatedDispatchHandler)
+                    new PacketDispatcher.PacketDispatchHandler(this.PlayerOnAuthenticatedDispatchHandler)
                 }, {
                     new PacketDispatch() {
                         Name = "player.onSpawn",
                         Origin = PacketOrigin.Server
                     },
-                    new PacketDispatchHandler(this.PlayerOnSpawnDispatchHandler)
+                    new PacketDispatcher.PacketDispatchHandler(this.PlayerOnSpawnDispatchHandler)
                 }, {
                     new PacketDispatch() {
                         Name = "player.onKicked",
                         Origin = PacketOrigin.Server
                     },
-                    new PacketDispatchHandler(this.PlayerOnKickedDispatchHandler)
+                    new PacketDispatcher.PacketDispatchHandler(this.PlayerOnKickedDispatchHandler)
                 }, {
                     new PacketDispatch() {
                         Name = "player.onSquadChange",
                         Origin = PacketOrigin.Server
                     },
-                    new PacketDispatchHandler(this.PlayerOnSquadChangeDispatchHandler)
+                    new PacketDispatcher.PacketDispatchHandler(this.PlayerOnSquadChangeDispatchHandler)
                 }, {
                     new PacketDispatch() {
                         Name = "player.onTeamChange",
                         Origin = PacketOrigin.Server
                     },
-                    new PacketDispatchHandler(this.PlayerOnTeamChangeDispatchHandler)
+                    new PacketDispatcher.PacketDispatchHandler(this.PlayerOnTeamChangeDispatchHandler)
                 }, {
                     new PacketDispatch() {
                         Name = "InvalidPasswordHash",
                         Origin = PacketOrigin.Client
                     },
-                    new PacketDispatchHandler(this.InvalidPasswordHashDispatchHandler)
+                    new PacketDispatcher.PacketDispatchHandler(this.InvalidPasswordHashDispatchHandler)
                 }
             });
+        }
+
+        protected override IPacketDispatcher CreatePacketDispatcher() {
+            return new FrostbitePacketDispatcher() {
+                PacketQueue = ((FrostbiteClient)this.Client).PacketQueue
+            };
         }
 
         protected override IClient CreateClient(string hostName, ushort port) {
@@ -911,38 +917,6 @@ namespace Procon.Net.Protocols.Frostbite {
         public void InvalidPasswordHashDispatchHandler(Packet request, Packet response) {
             this.Shutdown();
             //this.Client.ConnectionState = ConnectionState.Ready;
-        }
-
-        protected override void Dispatch(Packet packet) {
-
-            if (packet.Origin == PacketOrigin.Client && packet.Type == PacketType.Response) {
-                FrostbitePacket requestPacket = ((FrostbiteClient)this.Client).PacketQueue.GetRequestPacket(packet) as FrostbitePacket;
-
-                // If the request packet is valid and has at least one word.
-                if (requestPacket != null && requestPacket.Words.Count >= 1) {
-
-                    // If the sent command was successful
-                    if (packet.Words.Count >= 1 && String.CompareOrdinal(packet.Words[0], FrostbitePacket.StringResponseOkay) == 0) {
-                        this.Dispatch(new PacketDispatch() {
-                            Name = requestPacket.Words[0],
-                            Origin = requestPacket.Origin
-                        }, requestPacket, packet);
-                    }
-                    else { // The command sent failed for some reason.
-                        this.Dispatch(new PacketDispatch() {
-                            Name = packet.Words[0],
-                            Origin = packet.Origin
-                        }, requestPacket, packet);
-                    }
-                }
-
-            }
-            else if (packet.Words.Count >= 1 && packet.Origin == PacketOrigin.Server && packet.Type == PacketType.Request) {
-                this.Dispatch(new PacketDispatch() {
-                    Name = packet.Words[0],
-                    Origin = packet.Origin
-                }, packet, null);
-            }
         }
 
         #endregion

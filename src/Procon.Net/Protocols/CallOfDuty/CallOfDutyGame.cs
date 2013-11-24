@@ -71,15 +71,19 @@ namespace Procon.Net.Protocols.CallOfDuty {
 
             this.State.Settings.MaxConsoleLines = 100;
 
-            this.AppendDispatchHandlers(new Dictionary<PacketDispatch, PacketDispatchHandler>() {
+            this.PacketDispatcher.Append(new Dictionary<PacketDispatch, PacketDispatcher.PacketDispatchHandler>() {
                 {
                     new PacketDispatch() { Name = "serverinfo"},
-                    new PacketDispatchHandler(this.ServerInfoDispatchHandler)
+                    new PacketDispatcher.PacketDispatchHandler(this.ServerInfoDispatchHandler)
                 }, {
                     new PacketDispatch() { Name = "teamstatus"},
-                    new PacketDispatchHandler(this.PlayerlistDispatchHandler)
+                    new PacketDispatcher.PacketDispatchHandler(this.PlayerlistDispatchHandler)
                 }
             });
+        }
+
+        protected override IPacketDispatcher CreatePacketDispatcher() {
+            return new CallOfDutyPacketDispatcher();
         }
 
         protected override IClient CreateClient(string hostName, ushort port) {
@@ -126,22 +130,6 @@ namespace Procon.Net.Protocols.CallOfDuty {
                 };
 
                 this.OnGameEvent(GameEventType.GameChat, new GameEventData() { Chats = new List<Chat>() { chat } });
-            }
-        }
-
-        protected override void Dispatch(Packet packet) {
-
-            CallOfDutyPacket callOfDutyPacket = packet as CallOfDutyPacket;
-
-            if (callOfDutyPacket != null) {
-                Match match = null;
-                foreach (KeyValuePair<Regex, string> packetType in CallOfDutyGame.PacketTypes) {
-                    if ((match = packetType.Key.Match(callOfDutyPacket.Message)).Success == true) {
-                        this.Dispatch(new PacketDispatch() {
-                            Name = packetType.Value
-                        }, null, callOfDutyPacket);
-                    }
-                }
             }
         }
 

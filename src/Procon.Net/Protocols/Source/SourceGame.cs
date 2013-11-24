@@ -15,18 +15,30 @@ namespace Procon.Net.Protocols.Source {
         public SourceGame(string hostName, ushort port) : base(hostName, port) {
             this.SourceLogServicePort = 8787;
 
-            this.AppendDispatchHandlers(new Dictionary<PacketDispatch, PacketDispatchHandler>() {
+            this.PacketDispatcher.Append(new Dictionary<PacketDispatch, PacketDispatcher.PacketDispatchHandler>() {
                 {
-                    new PacketDispatch() { Name = "say"},
-                    new PacketDispatchHandler(this.ConsoleSayHandler)
+                    new PacketDispatch() { Name = "say" },
+                    new PacketDispatcher.PacketDispatchHandler(this.ConsoleSayHandler)
                 }, {
-                    new PacketDispatch() { Name = "log"},
-                    new PacketDispatchHandler(this.ConsoleLogHandler)
+                    new PacketDispatch() { Name = "log" },
+                    new PacketDispatcher.PacketDispatchHandler(this.ConsoleLogHandler)
                 }, {
-                    new PacketDispatch() { Name = "status"},
-                    new PacketDispatchHandler(this.ConsoleDispatchHandler)
+                    new PacketDispatch() { Name = "status" },
+                    new PacketDispatcher.PacketDispatchHandler(this.ConsoleDispatchHandler)
+                }, {
+                    new PacketDispatch() { Name = "login" },
+                    new PacketDispatcher.PacketDispatchHandler(this.ServerAuthDispatchHandler)
+                }, {
+                    new PacketDispatch() { Name = "log" },
+                    new PacketDispatcher.PacketDispatchHandler(this.LogRequestDispatchHandler)
                 }
             });
+        }
+
+        protected override IPacketDispatcher CreatePacketDispatcher() {
+            return new SourcePacketDispatcher() {
+                // Note. PacketQueue should be set here once Client is converted over.
+            };
         }
 
         protected override IClient CreateClient(string hostName, ushort port) {
@@ -37,36 +49,6 @@ namespace Procon.Net.Protocols.Source {
             this.SendRequest("status");
         }
 
-        protected override void Dispatch(Packet packet) {
-
-            SourcePacket sourcePacket = packet as SourcePacket;
-
-            if (sourcePacket != null) {
-                if (sourcePacket.Origin == PacketOrigin.Client && sourcePacket.Type == PacketType.Response) {
-                    SourcePacket requestPacket = ((SourceClient)this.Client).GetRequestPacket(sourcePacket);
-
-                    if (sourcePacket.ResponseType == SourceResponseType.ServerDataAuthResponse) {
-                        this.ServerAuthDispatchHandler(requestPacket, sourcePacket);
-                    }
-                    // If the request packet is valid and has at least one word.
-                    else if (requestPacket != null && requestPacket.Words.Count >= 1) {
-
-                        // If the sent command was successful
-                        if (sourcePacket.Words.Count >= 1 && sourcePacket.RequestType != SourceRequestType.SERVERDATA_ALLBAD) {
-                            this.Dispatch(new PacketDispatch() { Name = requestPacket.Words[0] }, requestPacket, sourcePacket);
-                        }
-                        else { // The command sent failed for some reason.
-                            this.Dispatch(new PacketDispatch() { Name = sourcePacket.Words[0] }, requestPacket, sourcePacket);
-                        }
-                    }
-                }
-                else if (sourcePacket.Origin == PacketOrigin.Server && sourcePacket.Type == PacketType.Request) {
-                    this.ParseLogEvent(sourcePacket);
-                    //this.Dispatch(packet.String1Words[0], packet, null);
-                }
-            }
-        }
-        
         private static readonly Dictionary<Regex, Type> EntryTypes = new Dictionary<Regex, Type>() {
             // 050. Connection
             // "Name<uid><wonid><>" connected, address "ip:port"
@@ -109,22 +91,26 @@ namespace Procon.Net.Protocols.Source {
             // { new Regex(@"^.*?(?<Command>K);(?<V_Uid>[0-9]*?);(?<V_ID>[0-9]*?);(?<V_TeamName>[a-zA-Z]*);(?<V_Name>.*);(?<K_Uid>[0-9]*?);(?<K_ID>[0-9]*?);(?<K_TeamName>[a-zA-Z]*);(?<K_Name>.*);(?<Weapon>[a-zA-Z0-9_]*);(?<Damage>[0-9]*?);(?<DamageType>[a-zA-Z_]*);(?<HitLocation>[a-zA-Z_]*)[\r]?$", RegexOptions.IgnoreCase | RegexOptions.Compiled), typeof(CallOfDutyKill) }
         };
         
-        protected void ParseLogEvent(SourcePacket packet) {
+        protected void LogRequestDispatchHandler(Packet request, Packet response) {
 
-            foreach (KeyValuePair<Regex, Type> command in SourceGame.EntryTypes) {
+            SourcePacket sourceRequest = request as SourcePacket;
 
-                Match matchedCommand = command.Key.Match(packet.String1);
+            if (sourceRequest != null) {
+                foreach (KeyValuePair<Regex, Type> command in SourceGame.EntryTypes) {
 
-                if (matchedCommand.Success == true) {
+                    Match matchedCommand = command.Key.Match(sourceRequest.String1);
 
-                    NetworkObject newObject = ((ISourceObject)Activator.CreateInstance(command.Value)).Parse(matchedCommand);
+                    if (matchedCommand.Success == true) {
 
-                    if (newObject is Chat) {
-                        this.PostProcessChatHandler(packet, (Chat)newObject);
+                        NetworkObject newObject = ((ISourceObject)Activator.CreateInstance(command.Value)).Parse(matchedCommand);
+
+                        if (newObject is Chat) {
+                            this.PostProcessChatHandler(sourceRequest, (Chat)newObject);
+                        }
+                        //else if (newObject is SourceDisconnection) {
+                        //    this.PostProcessDisconnectionHandler(packet, (SourceDisconnection)newObject);
+                        //}
                     }
-                    //else if (newObject is SourceDisconnection) {
-                    //    this.PostProcessDisconnectionHandler(packet, (SourceDisconnection)newObject);
-                    //}
                 }
             }
         }
@@ -159,7 +145,7 @@ namespace Procon.Net.Protocols.Source {
         // Source login is a little odd that it sends a meaningless packet before the actual response
         // to the authentication. This makes requestPacket and the queue in SourceClient
         // null as it's got the response it was looking for already..
-        protected void ServerAuthDispatchHandler(SourcePacket request, SourcePacket response) {
+        protected void ServerAuthDispatchHandler(Packet request, Packet response) {
             if (response.RequestId >= 0) {
                 // Login Success
                 this.Client.ConnectionState = ConnectionState.ConnectionLoggedIn;

@@ -1,7 +1,7 @@
 ﻿using System;
 
 namespace Procon.Net {
-    public sealed class PacketDispatch {
+    public sealed class PacketDispatch : IEquatable<PacketDispatch> {
 
         /// <summary>
         /// The name of the packet we should check against
@@ -17,5 +17,27 @@ namespace Procon.Net {
         // Also include: "Fallback" so if no function matching the specified version
         // exist procon will fallback on the method with this flag (set to true by default
         // need to specify false on newer methods)
+
+        public bool Equals(PacketDispatch other) {
+            if (ReferenceEquals(null, other))
+                return false;
+            if (ReferenceEquals(this, other))
+                return true;
+            return string.Equals(Name, other.Name) && Origin == other.Origin;
+        }
+
+        public override bool Equals(object obj) {
+            if (ReferenceEquals(null, obj))
+                return false;
+            if (ReferenceEquals(this, obj))
+                return true;
+            return obj is PacketDispatch && Equals((PacketDispatch)obj);
+        }
+
+        public override int GetHashCode() {
+            unchecked {
+                return ((Name != null ? Name.GetHashCode() : 0) * 397) ^ (int)Origin;
+            }
+        }
     }
 }

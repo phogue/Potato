@@ -78,6 +78,7 @@
     <Compile Include="PacketTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TcpClientTest.cs" />
+    <Compile Include="Utils\StringExtensions\WordifyTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Procon.Net\Procon.Net.csproj">

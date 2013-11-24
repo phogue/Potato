@@ -21,16 +21,14 @@ namespace Procon.Net.Utils {
             return randomString.ToString();
         }
 
-        public static List<string> Wordify(this string command) {
-            List<string> returnList = new List<string>();
-            //lstReturn.RemoveAll(String.IsNullOrEmpty);
+        public static List<String> Wordify(this string data) {
+            List<String> returnList = new List<String>();
 
-            string fullWord = String.Empty;
+            String fullWord = String.Empty;
             int quoteStack = 0;
             bool isEscaped = false;
 
-            //for (int i = 0; i < strCommand.Length; i++) {
-            foreach (char input in command) {
+            foreach (char input in data) {
 
                 if (input == ' ') {
                     if (quoteStack == 0) {

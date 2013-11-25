@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using Procon.Net.Utils.Maxmind;
+using Procon.Net.Geolocation.Maxmind;
 
 namespace Procon.Net.Geolocation {
     public class GeolocateIp : IGeolocate {

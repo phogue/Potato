@@ -136,7 +136,7 @@
     <Compile Include="Utils\HTTP\PostParameterType.cs" />
     <Compile Include="Utils\HTTP\QueryStringBuilder.cs" />
     <Compile Include="Utils\HTTP\Request.cs" />
-    <Compile Include="Utils\Maxmind\CountryLookup.cs" />
+    <Compile Include="Geolocation\Maxmind\CountryLookup.cs" />
     <Compile Include="Utils\MD5.cs" />
     <Compile Include="Utils\StreamExtensions.cs" />
     <Compile Include="Utils\PunkBuster\PB.cs" />

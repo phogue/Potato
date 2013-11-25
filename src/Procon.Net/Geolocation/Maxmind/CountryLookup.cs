@@ -21,8 +21,7 @@ using System;
 using System.IO;
 using System.Net;
 
-
-namespace Procon.Net.Utils.Maxmind {
+namespace Procon.Net.Geolocation.Maxmind {
 
     /// <summary>
     /// Summary description for CountryLookup.

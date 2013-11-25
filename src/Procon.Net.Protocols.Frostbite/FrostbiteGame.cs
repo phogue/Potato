@@ -337,11 +337,13 @@ namespace Procon.Net.Protocols.Frostbite {
 
                 if (this.State.MapPool.Count == 0) {
                     if (info.GameMod == GameMods.None) {
-                        this.ExecuteGameConfig(this.LoadGameConfig<GameConfig>(this.ProtocolProvider, this.GameType));
+                        GameConfig.Load<GameConfig>(this.GameConfigPath, this.ProtocolProvider, this.GameType).Parse(this);
                     }
                     else {
-                        this.ExecuteGameConfig(this.LoadGameConfig<GameConfig>(this.ProtocolProvider, String.Format("{0}_{1}", this.GameType, info.GameMod)));
+                        GameConfig.Load<GameConfig>(this.GameConfigPath, this.ProtocolProvider, String.Format("{0}_{1}", this.GameType, info.GameMod)).Parse(this); ;
                     }
+
+                    this.OnGameEvent(GameEventType.GameConfigExecuted);
                 }
 
                 this.OnGameEvent(GameEventType.GameSettingsUpdated, new GameEventData() {

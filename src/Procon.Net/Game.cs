@@ -7,7 +7,7 @@ namespace Procon.Net {
     using Procon.Net.Attributes;
     using Procon.Net.Protocols.Objects;
 
-    public abstract class Game {
+    public abstract class Game : IGame {
 
         /// <summary>
         /// The client to handle all communications with the game server

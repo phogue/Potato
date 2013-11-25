@@ -156,34 +156,6 @@ namespace Procon.Net {
             }
         }
 
-        /// <summary>
-        /// Executes a game config against this game implementation.
-        /// </summary>
-        /// <typeparam name="T">The type of config to execute.</typeparam>
-        /// <param name="config"></param>
-        protected virtual void ExecuteGameConfig<T>(T config) where T : GameConfig {
-            if (config != null) {
-                this.State.MapPool = config.MapPool;
-                this.State.GameModePool = config.GameModePool;
-
-                this.State.MapPool.ForEach(map => map.ActionType = NetworkActionType.NetworkMapPooled);
-
-                this.OnGameEvent(GameEventType.GameConfigExecuted);
-            }
-        }
-
-        /// <summary>
-        /// Loads a game config
-        /// </summary>
-        /// <typeparam name="T">The type of config to load.</typeparam>
-        /// <param name="protocolProvider"></param>
-        /// <param name="protocolName"></param>
-        protected virtual T LoadGameConfig<T>(String protocolProvider, String protocolName) where T : GameConfig {
-            String configPath = GameConfig.BuildConfigPath(this.GameConfigPath, protocolProvider, protocolName);
-
-            return GameConfig.LoadConfig<T>(configPath);
-        }
-
         public override void Shutdown() {
             if (this.Client != null) {
                 this.Client.Shutdown();

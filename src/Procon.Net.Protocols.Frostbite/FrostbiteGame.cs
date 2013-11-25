@@ -928,11 +928,21 @@ namespace Procon.Net.Protocols.Frostbite {
         #region Frostbite specific
 
         protected void SendResponse(FrostbitePacket request, params string[] words) {
-            this.Send(new FrostbitePacket(request.Origin, PacketType.Response, request.RequestId, words));
+            this.Send(new FrostbitePacket() {
+                Origin = request.Origin,
+                Type = PacketType.Response,
+                RequestId = request.RequestId,
+                Words = new List<String>(words)
+            });
         }
 
         protected void SendRequest(params string[] words) {
-            this.Send(new FrostbitePacket(PacketOrigin.Client, PacketType.Request, ((FrostbiteClient)this.Client).AcquireSequenceNumber, words));
+            this.Send(new FrostbitePacket() {
+                Origin = PacketOrigin.Client,
+                Type = PacketType.Request,
+                RequestId = ((FrostbiteClient)this.Client).AcquireSequenceNumber,
+                Words = new List<String>(words)
+            });
         }
 
         protected virtual void SendEventsEnabledPacket() {
@@ -951,7 +961,12 @@ namespace Procon.Net.Protocols.Frostbite {
                 packetText = String.Empty;
             }
 
-            return new FrostbitePacket(PacketOrigin.Client, PacketType.Request, null, packetText.Wordify());
+            return new FrostbitePacket() {
+                Origin = PacketOrigin.Client,
+                Type = PacketType.Request,
+                RequestId = null,
+                Words = packetText.Wordify()
+            };
         }
 
         protected override void Action(Chat chat) {

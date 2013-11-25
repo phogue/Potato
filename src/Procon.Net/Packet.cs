@@ -40,6 +40,7 @@ namespace Procon.Net {
 
         protected Packet() {
             this.Words = new List<String>();
+            this.Stamp = DateTime.Now;
         }
 
         // Used if we'll be using EncodePacket to send to the server.

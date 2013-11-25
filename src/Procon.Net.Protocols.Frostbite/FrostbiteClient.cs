@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Procon.Net.Protocols.Frostbite {
     public class FrostbiteClient : Procon.Net.TcpClient {
@@ -20,7 +21,14 @@ namespace Procon.Net.Protocols.Frostbite {
 
             // Respond with "OK" to all server events.
             if (packet.Origin == PacketOrigin.Server && packet.Type == PacketType.Request) {
-                base.Send(new FrostbitePacket(PacketOrigin.Server, PacketType.Response, packet.RequestId, FrostbitePacket.StringResponseOkay));
+                base.Send(new FrostbitePacket() {
+                    Origin = PacketOrigin.Server,
+                    Type = PacketType.Response,
+                    RequestId = packet.RequestId,
+                    Words = new List<String>() {
+                        FrostbitePacket.StringResponseOkay
+                    }
+                });
             }
 
             // Pop the next packet if a packet is waiting to be sent.

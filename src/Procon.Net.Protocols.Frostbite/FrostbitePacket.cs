@@ -8,19 +8,6 @@ namespace Procon.Net.Protocols.Frostbite {
 
         public static readonly string StringResponseOkay = "OK";
 
-        public FrostbitePacket() : base() {
-        }
-
-        public FrostbitePacket(PacketOrigin origin, PacketType type, int? sequenceId, params string[] words) : base(origin, type) {
-            this.RequestId = sequenceId;
-            this.Words = new List<String>(words);
-        }
-
-        public FrostbitePacket(PacketOrigin origin, PacketType type, int? sequenceId, List<String> words) : base(origin, type) {
-            this.RequestId = sequenceId;
-            this.Words = words;
-        }
-
         public override string ToDebugString() {
 
             string returnString = String.Empty;

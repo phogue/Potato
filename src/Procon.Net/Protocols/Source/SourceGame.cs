@@ -245,7 +245,7 @@ namespace Procon.Net.Protocols.Source {
             return new SourcePacket(PacketOrigin.Client, PacketType.Request, null, SourceRequestType.SERVERDATA_EXECCOMMAND, String.Format(format, args), String.Empty);
         }
 
-        public override void Login(string password) {
+        protected override void Login(string password) {
             ((SourceClient)this.Client).SourceLogServicePort = this.SourceLogServicePort;
 
             if (this.SourceLogListenPort == null) {

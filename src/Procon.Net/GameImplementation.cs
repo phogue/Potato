@@ -98,7 +98,7 @@ namespace Procon.Net {
 
         protected abstract Packet CreatePacket(String format, params object[] args);
 
-        public override void Login(string password) {
+        protected override void Login(string password) {
             
         }
 

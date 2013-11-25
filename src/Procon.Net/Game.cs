@@ -157,7 +157,7 @@ namespace Procon.Net {
         }
 
         // These may get transfered to a Interface used by Game and PacketFactory
-        public abstract void Login(string password);
+        protected abstract void Login(string password);
 
         /// <summary>
         /// Process a generic network action

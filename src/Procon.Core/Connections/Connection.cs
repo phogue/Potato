@@ -83,7 +83,7 @@ namespace Procon.Core.Connections {
         ///  The actual game object
         /// </summary>
         [XmlIgnore, JsonIgnore]
-        public Game Game { get; set; }
+        public IGame Game { get; set; }
 
         /// <summary>
         /// The instance of procon that owns this connection.

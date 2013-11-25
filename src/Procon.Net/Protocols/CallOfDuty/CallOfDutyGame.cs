@@ -194,7 +194,7 @@ namespace Procon.Net.Protocols.CallOfDuty {
             return new CallOfDutyPacket(PacketOrigin.Client, PacketType.Request, this.Password, String.Format(format, args));
         }
 
-        public override void Login(string password) {
+        protected override void Login(string password) {
             this.Client.ConnectionState = Net.ConnectionState.ConnectionLoggedIn;
             this.Send(this.CreatePacket("g_logsync 1"));
             this.Send(this.CreatePacket("g_logTimeStampInSeconds 1"));

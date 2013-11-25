@@ -1086,7 +1086,7 @@ namespace Procon.Net.Protocols.Frostbite {
             }
         }
 
-        public override void Login(string password) {
+        protected override void Login(string password) {
             this.Send(this.CreatePacket("login.hashed"));
         }
         

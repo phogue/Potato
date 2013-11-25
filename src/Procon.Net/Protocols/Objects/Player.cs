@@ -109,7 +109,7 @@ namespace Procon.Net.Protocols.Objects {
         /// <summary>
         /// This player's IP Address.
         /// </summary>
-        public String IP {
+        public String Ip {
             get { return this._ip; }
             set {
                 this._ip = value;

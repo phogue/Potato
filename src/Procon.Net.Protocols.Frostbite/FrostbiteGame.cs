@@ -652,7 +652,7 @@ namespace Procon.Net.Protocols.Frostbite {
 
                     if (statePlayer != null) {
                         statePlayer.SlotId = player.SlotId;
-                        statePlayer.IP = player.Ip;
+                        statePlayer.Ip = player.Ip;
                     }
                 }
                 else if (pbObject is PunkBusterBeginPlayerList) {

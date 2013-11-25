@@ -68,7 +68,7 @@ namespace Procon.Tools.NetworkConsole.Controls {
         private string BanId(Ban ban) {
             List<string> text = new List<string>() {
                 ban.Scope.Players.First().Name,
-                ban.Scope.Players.First().IP,
+                ban.Scope.Players.First().Ip,
                 ban.Scope.Players.First().Uid
             };
 

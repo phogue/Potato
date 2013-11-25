@@ -131,7 +131,6 @@
     <Compile Include="Utils\BCrypt.cs" />
     <Compile Include="Utils\HTTP\Mime.cs" />
     <Compile Include="Utils\Network.cs" />
-    <Compile Include="Utils\SHA512.cs" />
     <Compile Include="Utils\HTTP\PostContent.cs" />
     <Compile Include="Utils\HTTP\PostParameter.cs" />
     <Compile Include="Utils\HTTP\PostParameterType.cs" />
@@ -145,7 +144,6 @@
     <Compile Include="Utils\PunkBuster\Objects\PunkBusterEndPlayerList.cs" />
     <Compile Include="Utils\PunkBuster\PunkBusterObject.cs" />
     <Compile Include="Utils\PunkBuster\Objects\PunkBusterPlayer.cs" />
-    <Compile Include="Utils\SHA1.cs" />
     <Compile Include="Utils\StringExtensions.cs" />
     <Compile Include="Utils\Tests\ProtocolUnitRandomObject.cs" />
     <Compile Include="Utils\Tests\ProtocolUnitRandomType.cs" />

@@ -7,7 +7,7 @@ namespace Procon.Net.Protocols.Source {
     using Procon.Net.Protocols.Objects;
     using Procon.Net.Protocols.Source.Objects;
 
-    public class SourceGame : GameImplementation {
+    public class SourceGame : Game {
 
         public ushort SourceLogServicePort { get; set; }
         public ushort? SourceLogListenPort { get; set; }

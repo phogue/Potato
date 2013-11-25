@@ -89,7 +89,6 @@
     <Compile Include="Game.cs" />
     <Compile Include="GameEventArgs.cs" />
     <Compile Include="GameEventType.cs" />
-    <Compile Include="GameImplementation.cs" />
     <Compile Include="Packet.cs" />
     <Compile Include="PacketOrigin.cs" />
     <Compile Include="IPacketSerializer.cs" />

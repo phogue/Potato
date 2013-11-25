@@ -63,7 +63,8 @@ namespace Procon.Net {
         void Action(NetworkAction action);
 
         /// <summary>
-        /// Sends a raw packet to the connected server.
+        /// Sends a packet to the server, provided a client exists and the connection is open and ready or logged in.
+        /// This allows for the login command to be sent to a ready connection, otherwise no login packets could be sent.
         /// </summary>
         /// <param name="packet"></param>
         void Send(Packet packet);

@@ -7,7 +7,7 @@ namespace Procon.Net.Protocols.CallOfDuty {
     using Procon.Net.Protocols.Objects;
     using Procon.Net.Protocols.CallOfDuty.Objects;
 
-    public abstract class CallOfDutyGame : GameImplementation {
+    public abstract class CallOfDutyGame : Game {
 
         private static readonly Dictionary<Regex, string> PacketTypes = new Dictionary<Regex, string>() {
             {
@@ -99,8 +99,8 @@ namespace Procon.Net.Protocols.CallOfDuty {
             }
         }
 
-        protected override void AssignEvents() {
-            base.AssignEvents();
+        protected override void Execute(string hostName, ushort port) {
+            base.Execute(hostName, port);
 
             this.LogFile = new CallOfDutyLogfile() {
                 Interval = 3

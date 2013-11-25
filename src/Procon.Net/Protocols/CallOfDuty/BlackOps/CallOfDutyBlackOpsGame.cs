@@ -11,8 +11,8 @@ namespace Procon.Net.Protocols.CallOfDuty.BlackOps {
             
         }
 
-        protected override void AssignEvents() {
-            base.AssignEvents();
+        protected override void Execute(string hostName, ushort port) {
+            base.Execute(hostName, port);
 
             Request timeout = new Request("http://logs.gameservers.com/timeout");
             timeout.RequestComplete += new Request.RequestEventDelegate(timeout_RequestComplete);

@@ -11,7 +11,7 @@ namespace Procon.Net.Protocols.Frostbite {
     using Procon.Net.Protocols.Frostbite.Objects;
     using Procon.Net.Protocols.Objects;
 
-    public abstract class FrostbiteGame : GameImplementation {
+    public abstract class FrostbiteGame : Game {
 
         protected const HumanHitLocation Headshot = HumanHitLocation.Head | HumanHitLocation.Neck;
 

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Reflection;
 using Procon.Net.Protocols;
 
 namespace Procon.Net {
@@ -85,30 +84,7 @@ namespace Procon.Net {
         public String GameConfigPath { get; set; }
 
         [Obsolete]
-        private string _mAdditional;
-        [Obsolete]
-        public string Additional {
-            get {
-                return this._mAdditional;
-            }
-            set {
-                this._mAdditional = value;
-
-                // This way does not require System.Web reference.
-                foreach (string item in this._mAdditional.Split('&')) {
-                    string[] kvp = item.Split('=');
-
-                    if (kvp.Length == 2) {
-                        PropertyInfo property = this.GetType().GetProperty(kvp[0], BindingFlags.Public | BindingFlags.Instance | BindingFlags.NonPublic);
-
-                        if (property != null) {
-
-                            property.SetValue(this, System.Convert.ChangeType(Uri.UnescapeDataString(kvp[1]), property.PropertyType), null);
-                        }
-                    }
-                }
-            }
-        }
+        public string Additional { get; set; }
         
         /// <summary>
         /// Handles all packet dispatching.
@@ -316,8 +292,12 @@ namespace Procon.Net {
         /// <returns>A client capable of communicating with this game server</returns>
         protected abstract IClient CreateClient(string hostName, ushort port);
 
+        /// <summary>
+        /// Create a packet from a string
+        /// </summary>
+        /// <param name="format"></param>
+        /// <param name="args"></param>
+        /// <returns></returns>
         protected abstract Packet CreatePacket(String format, params object[] args);
-
-
     }
 }

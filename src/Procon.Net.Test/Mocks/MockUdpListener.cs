@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using System.Text;
 
 namespace Procon.Net.Test.Mocks {
 
@@ -65,7 +62,7 @@ namespace Procon.Net.Test.Mocks {
             }
         }
 
-        protected void Listener_PacketReceived(IClient sender, Packet packet) {
+        protected void Listener_PacketReceived(IClient sender, IPacketWrapper packet) {
             // Bubble the packet for processing.
             this.OnPacketReceived(sender, packet as MockPacket);
         }

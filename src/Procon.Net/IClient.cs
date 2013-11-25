@@ -61,7 +61,7 @@ namespace Procon.Net {
         /// Sends a packet to the server
         /// </summary>
         /// <param name="packet"></param>
-        void Send(Packet packet);
+        void Send(IPacketWrapper wrapper);
 
         /// <summary>
         /// Attempts a connection to the server using the specified host name and port.

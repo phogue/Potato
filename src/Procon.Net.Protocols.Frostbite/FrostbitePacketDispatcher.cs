@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Procon.Net.Protocols.Frostbite {
     public class FrostbitePacketDispatcher : PacketDispatcher {
@@ -11,35 +8,35 @@ namespace Procon.Net.Protocols.Frostbite {
         /// </summary>
         public IPacketQueue PacketQueue { get; set; }
 
-        public override void Dispatch(Packet packet) {
+        public override void Dispatch(IPacketWrapper wrapper) {
 
-            if (packet.Origin == PacketOrigin.Client && packet.Type == PacketType.Response) {
-                FrostbitePacket requestPacket = this.PacketQueue.GetRequestPacket(packet) as FrostbitePacket;
+            if (wrapper.Packet.Origin == PacketOrigin.Client && wrapper.Packet.Type == PacketType.Response) {
+                FrostbitePacket requestPacket = this.PacketQueue.GetRequestPacket(wrapper) as FrostbitePacket;
 
                 // If the request packet is valid and has at least one word.
-                if (requestPacket != null && requestPacket.Words.Count >= 1) {
+                if (requestPacket != null && requestPacket.Packet.Words.Count >= 1) {
 
                     // If the sent command was successful
-                    if (packet.Words.Count >= 1 && String.CompareOrdinal(packet.Words[0], FrostbitePacket.StringResponseOkay) == 0) {
+                    if (wrapper.Packet.Words.Count >= 1 && String.CompareOrdinal(wrapper.Packet.Words[0], FrostbitePacket.StringResponseOkay) == 0) {
                         this.Dispatch(new PacketDispatch() {
-                            Name = requestPacket.Words[0],
-                            Origin = requestPacket.Origin
-                        }, requestPacket, packet);
+                            Name = requestPacket.Packet.Words[0],
+                            Origin = requestPacket.Packet.Origin
+                        }, requestPacket, wrapper);
                     }
                     else { // The command sent failed for some reason.
                         this.Dispatch(new PacketDispatch() {
-                            Name = packet.Words[0],
-                            Origin = packet.Origin
-                        }, requestPacket, packet);
+                            Name = wrapper.Packet.Words[0],
+                            Origin = wrapper.Packet.Origin
+                        }, requestPacket, wrapper);
                     }
                 }
 
             }
-            else if (packet.Words.Count >= 1 && packet.Origin == PacketOrigin.Server && packet.Type == PacketType.Request) {
+            else if (wrapper.Packet.Words.Count >= 1 && wrapper.Packet.Origin == PacketOrigin.Server && wrapper.Packet.Type == PacketType.Request) {
                 this.Dispatch(new PacketDispatch() {
-                    Name = packet.Words[0],
-                    Origin = packet.Origin
-                }, packet, null);
+                    Name = wrapper.Packet.Words[0],
+                    Origin = wrapper.Packet.Origin
+                }, wrapper, null);
             }
         }
     }

@@ -13,14 +13,14 @@
         /// </summary>
         /// <param name="packetData">The array to deserialize to a packet. Must be exact length of bytes.</param>
         /// <returns>A new packet with data extracted from packetDate</returns>
-        Packet Deserialize(byte[] packetData);
+        IPacketWrapper Deserialize(byte[] packetData);
 
         /// <summary>
         /// Serializes a packet into an array of bytes to send to the server.
         /// </summary>
         /// <param name="packet">The packe to serialize</param>
         /// <returns>An array of bytes to send to the server.</returns>
-        byte[] Serialize(Packet packet);
+        byte[] Serialize(IPacketWrapper packet);
 
         /// <summary>
         /// Fetches the full packet size by reading the header of a packet.

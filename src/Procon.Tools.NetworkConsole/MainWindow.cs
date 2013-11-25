@@ -173,10 +173,10 @@ namespace Procon.Tools.NetworkConsole {
                     this.ConsoleAppendLine("^1Error: {0}", e.ConnectionError.Message);
                 }
                 else if (e.EventType == ClientEventType.ClientPacketSent) {
-                    this.ConsoleAppendLine("^2SEND: {0}", e.Packet.ToDebugString());
+                    this.ConsoleAppendLine("^2SEND: {0}", e.Packet.DebugText);
                 }
                 else if (e.EventType == ClientEventType.ClientPacketReceived) {
-                    this.ConsoleAppendLine("^5RECV: {0}", e.Packet.ToDebugString());
+                    this.ConsoleAppendLine("^5RECV: {0}", e.Packet.DebugText);
                 }
             }
 

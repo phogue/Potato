@@ -27,10 +27,12 @@ namespace Procon.Net.Test {
             });
 
             dispatcher.Dispatch(new MockPacket() {
-                Origin = PacketOrigin.Client,
-                RequestId = 2,
+                Packet = {
+                    Origin = PacketOrigin.Client,
+                    RequestId = 2,
+                    Type = PacketType.Request,
+                },
                 Text = "TestMockPacketDispatcherSuccess",
-                Type = PacketType.Request
             });
 
             Assert.IsTrue(dispatched);
@@ -59,10 +61,12 @@ namespace Procon.Net.Test {
             });
 
             dispatcher.Dispatch(new MockPacket() {
-                Origin = PacketOrigin.Server,
-                RequestId = 2,
+                Packet = {
+                    Origin = PacketOrigin.Server,
+                    RequestId = 2,
+                    Type = PacketType.Request,
+                },
                 Text = "TestMockPacketDispatcherDifferentOriginFailed",
-                Type = PacketType.Request
             });
 
             Assert.IsFalse(dispatched);
@@ -92,10 +96,12 @@ namespace Procon.Net.Test {
             });
 
             dispatcher.Dispatch(new MockPacket() {
-                Origin = PacketOrigin.Server,
-                RequestId = 2,
+                Packet = {
+                    Origin = PacketOrigin.Server,
+                    RequestId = 2,
+                    Type = PacketType.Request,
+                },
                 Text = "ThisDoesNotExist",
-                Type = PacketType.Request
             });
 
             Assert.IsFalse(dispatched);
@@ -133,10 +139,12 @@ namespace Procon.Net.Test {
             });
 
             dispatcher.Dispatch(new MockPacket() {
-                Origin = PacketOrigin.Client,
-                RequestId = 2,
-                Text = "TestMockPacketDispatcherReplacedDispatcherSuccess",
-                Type = PacketType.Request
+                Packet = {
+                    Origin = PacketOrigin.Client,
+                    RequestId = 2,
+                    Type = PacketType.Request,
+                },
+                Text = "TestMockPacketDispatcherReplacedDispatcherSuccess"
             });
 
             Assert.AreEqual(2, handler);

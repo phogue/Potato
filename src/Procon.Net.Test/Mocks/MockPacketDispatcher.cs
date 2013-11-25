@@ -1,13 +1,13 @@
 ﻿namespace Procon.Net.Test.Mocks {
     public class MockPacketDispatcher : PacketDispatcher {
 
-        public override void Dispatch(Packet packet) {
-            base.Dispatch(packet);
+        public override void Dispatch(IPacketWrapper wrapper) {
+            base.Dispatch(wrapper);
 
             this.Dispatch(new PacketDispatch() {
-                Name = packet.Words[0],
-                Origin = packet.Origin
-            }, packet, packet);
+                Name = wrapper.Packet.Words[0],
+                Origin = wrapper.Packet.Origin
+            }, wrapper, wrapper);
         }
     }
 }

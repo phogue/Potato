@@ -142,7 +142,7 @@ namespace Procon.Net.Protocols.Daemon {
             }
         }
 
-        protected void client_PacketReceived(IClient sender, Packet packet) {
+        protected void client_PacketReceived(IClient sender, IPacketWrapper packet) {
             // Bubble the packet for processing.
             this.OnPacketReceived(sender, packet as DaemonPacket);
         }

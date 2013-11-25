@@ -195,10 +195,12 @@ namespace Procon.Core.Remote {
 
         protected void DaemonListener_PacketReceived(IClient client, DaemonPacket request) {
             DaemonPacket response = new DaemonPacket() {
+                Packet = {
+                    Type = PacketType.Response,
+                    Origin = PacketOrigin.Client,
+                },
                 ProtocolVersion = request.ProtocolVersion,
                 Method = request.Method,
-                Type = PacketType.Response,
-                Origin = PacketOrigin.Client,
                 StatusCode = HttpStatusCode.NotFound,
                 Headers = new WebHeaderCollection() {
                     { HttpRequestHeader.Connection, "close" }

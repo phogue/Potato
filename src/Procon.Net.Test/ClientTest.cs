@@ -67,10 +67,14 @@ namespace Procon.Net.Test {
 
             MockTcpClient client = new MockTcpClient("localhost", 36001) {
                 LastPacketReceived = new MockPacket() {
-                    Stamp = DateTime.Now
+                    Packet = {
+                        Stamp = DateTime.Now
+                    }
                 },
                 LastPacketSent = new MockPacket() {
-                    Stamp = DateTime.Now
+                    Packet = {
+                        Stamp = DateTime.Now
+                    }
                 }
             };
 
@@ -105,10 +109,14 @@ namespace Procon.Net.Test {
 
             MockTcpClient client = new MockTcpClient("localhost", 36002) {
                 LastPacketReceived = new MockPacket() {
-                    Stamp = DateTime.Now.AddHours(-1)
+                    Packet = {
+                        Stamp = DateTime.Now.AddHours(-1)
+                    }
                 },
                 LastPacketSent = new MockPacket() {
-                    Stamp = DateTime.Now.AddHours(-1)
+                    Packet = {
+                        Stamp = DateTime.Now.AddHours(-1)
+                    }
                 }
             };
 

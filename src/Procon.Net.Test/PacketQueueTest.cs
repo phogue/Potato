@@ -14,13 +14,15 @@ namespace Procon.Net.Test {
         public void TestPacketSendImmediate() {
 
             PacketQueue queue = new PacketQueue();
-            Packet packet = new MockPacket() {
-                Origin = PacketOrigin.Client,
-                Type = PacketType.Request,
-                RequestId = 1
+            IPacketWrapper packet = new MockPacket() {
+                Packet = {
+                    Origin = PacketOrigin.Client,
+                    Type = PacketType.Request,
+                    RequestId = 1
+                }
             };
 
-            Packet poppedPacket = queue.PacketSend(packet);
+            IPacketWrapper poppedPacket = queue.PacketSend(packet);
 
             // Client would send to the server.
 
@@ -37,23 +39,27 @@ namespace Procon.Net.Test {
         public void TestPacketSendQueued() {
 
             PacketQueue queue = new PacketQueue();
-            Packet firstPacket = new MockPacket() {
-                Origin = PacketOrigin.Client,
-                Type = PacketType.Request,
-                RequestId = 1
+            IPacketWrapper firstPacket = new MockPacket() {
+                Packet = {
+                    Origin = PacketOrigin.Client,
+                    Type = PacketType.Request,
+                    RequestId = 1
+                }
             };
 
-            Packet poppedPacket = queue.PacketSend(firstPacket);
+            IPacketWrapper poppedPacket = queue.PacketSend(firstPacket);
 
             // Client would send to the server.
 
             Assert.AreEqual(firstPacket, poppedPacket);
             Assert.AreEqual(1, queue.OutgoingPackets.Count);
 
-            Packet secondPacket = new MockPacket() {
-                Origin = PacketOrigin.Client,
-                Type = PacketType.Request,
-                RequestId = 1
+            IPacketWrapper secondPacket = new MockPacket() {
+                Packet = {
+                    Origin = PacketOrigin.Client,
+                    Type = PacketType.Request,
+                    RequestId = 1
+                }
             };
 
             poppedPacket = queue.PacketSend(secondPacket);
@@ -73,19 +79,23 @@ namespace Procon.Net.Test {
 
             PacketQueue queue = new PacketQueue();
 
-            Packet sentPacket = new MockPacket() {
-                Origin = PacketOrigin.Client,
-                Type = PacketType.Request,
-                RequestId = 1
+            IPacketWrapper sentPacket = new MockPacket() {
+                Packet = {
+                    Origin = PacketOrigin.Client,
+                    Type = PacketType.Request,
+                    RequestId = 1
+                }
             };
 
-            Packet recievedPacket = new MockPacket() {
-                Origin = PacketOrigin.Client,
-                Type = PacketType.Response,
-                RequestId = 1
+            IPacketWrapper recievedPacket = new MockPacket() {
+                Packet = {
+                    Origin = PacketOrigin.Client,
+                    Type = PacketType.Response,
+                    RequestId = 1
+                }
             };
 
-            Packet poppedPacket = queue.PacketSend(sentPacket);
+            IPacketWrapper poppedPacket = queue.PacketSend(sentPacket);
 
             // Client would send to the server.
 
@@ -107,22 +117,28 @@ namespace Procon.Net.Test {
         public void TestPacketReceivedRemovedAndPopped() {
             PacketQueue queue = new PacketQueue();
 
-            Packet firstPacketRequest = new MockPacket() {
-                Origin = PacketOrigin.Client,
-                Type = PacketType.Request,
-                RequestId = 1
+            IPacketWrapper firstPacketRequest = new MockPacket() {
+                Packet = {
+                    Origin = PacketOrigin.Client,
+                    Type = PacketType.Request,
+                    RequestId = 1
+                }
             };
 
-            Packet secondPacketRequest = new MockPacket() {
-                Origin = PacketOrigin.Client,
-                Type = PacketType.Request,
-                RequestId = 2
+            IPacketWrapper secondPacketRequest = new MockPacket() {
+                Packet = {
+                    Origin = PacketOrigin.Client,
+                    Type = PacketType.Request,
+                    RequestId = 2
+                }
             };
 
-            Packet firstPacketResponse = new MockPacket() {
-                Origin = PacketOrigin.Client,
-                Type = PacketType.Response,
-                RequestId = 1
+            IPacketWrapper firstPacketResponse = new MockPacket() {
+                Packet = {
+                    Origin = PacketOrigin.Client,
+                    Type = PacketType.Response,
+                    RequestId = 1
+                }
             };
 
             queue.PacketSend(firstPacketRequest);
@@ -130,7 +146,7 @@ namespace Procon.Net.Test {
             Assert.AreEqual(1, queue.OutgoingPackets.Count);
             Assert.AreEqual(1, queue.QueuedPackets.Count);
 
-            Packet poppedPacket = queue.PacketReceived(firstPacketResponse);
+            IPacketWrapper poppedPacket = queue.PacketReceived(firstPacketResponse);
             Assert.AreEqual(secondPacketRequest, poppedPacket);
 
             queue.PacketSend(poppedPacket);
@@ -145,14 +161,16 @@ namespace Procon.Net.Test {
         [Test]
         public void TestRestartConnectionOnQueueFailureTruey() {
             PacketQueue queue = new PacketQueue();
-            Packet packet = new MockPacket() {
-                Origin = PacketOrigin.Client,
-                Type = PacketType.Request,
-                RequestId = 1,
-                Stamp = DateTime.Now.AddMinutes(-5)
+            IPacketWrapper packet = new MockPacket() {
+                Packet = {
+                    Origin = PacketOrigin.Client,
+                    Type = PacketType.Request,
+                    RequestId = 1,
+                    Stamp = DateTime.Now.AddMinutes(-5)
+                }
             };
 
-            Packet poppedPacket = queue.PacketSend(packet);
+            IPacketWrapper poppedPacket = queue.PacketSend(packet);
 
             Assert.AreEqual(packet, poppedPacket);
             Assert.AreEqual(1, queue.OutgoingPackets.Count);
@@ -167,13 +185,15 @@ namespace Procon.Net.Test {
         [Test]
         public void TestRestartConnectionOnQueueFailureFalsey() {
             PacketQueue queue = new PacketQueue();
-            Packet packet = new MockPacket() {
-                Origin = PacketOrigin.Client,
-                Type = PacketType.Request,
-                RequestId = 1
+            IPacketWrapper packet = new MockPacket() {
+                Packet = {
+                    Origin = PacketOrigin.Client,
+                    Type = PacketType.Request,
+                    RequestId = 1
+                }
             };
 
-            Packet poppedPacket = queue.PacketSend(packet);
+            IPacketWrapper poppedPacket = queue.PacketSend(packet);
 
             Assert.AreEqual(packet, poppedPacket);
             Assert.AreEqual(1, queue.OutgoingPackets.Count);
@@ -187,22 +207,26 @@ namespace Procon.Net.Test {
         [Test]
         public void TestGetRequestPacketExists() {
             PacketQueue queue = new PacketQueue();
-            Packet packetRequest = new MockPacket() {
-                Origin = PacketOrigin.Client,
-                Type = PacketType.Request,
-                RequestId = 1
+            IPacketWrapper packetRequest = new MockPacket() {
+                Packet = {
+                    Origin = PacketOrigin.Client,
+                    Type = PacketType.Request,
+                    RequestId = 1
+                }
             };
 
-            Packet packetResponse = new MockPacket() {
-                Origin = PacketOrigin.Client,
-                Type = PacketType.Response,
-                RequestId = 1
+            IPacketWrapper packetResponse = new MockPacket() {
+                Packet = {
+                    Origin = PacketOrigin.Client,
+                    Type = PacketType.Response,
+                    RequestId = 1
+                }
             };
 
             queue.PacketSend(packetRequest);
             Assert.AreEqual(1, queue.OutgoingPackets.Count);
 
-            Packet fetchedRequestPacket = queue.GetRequestPacket(packetResponse);
+            IPacketWrapper fetchedRequestPacket = queue.GetRequestPacket(packetResponse);
 
             Assert.AreEqual(packetRequest, fetchedRequestPacket);
         }
@@ -214,22 +238,26 @@ namespace Procon.Net.Test {
         [Test]
         public void TestGetRequestPacketDoesNotExists() {
             PacketQueue queue = new PacketQueue();
-            Packet packetRequest = new MockPacket() {
-                Origin = PacketOrigin.Client,
-                Type = PacketType.Request,
-                RequestId = 1
+            IPacketWrapper packetRequest = new MockPacket() {
+                Packet = {
+                    Origin = PacketOrigin.Client,
+                    Type = PacketType.Request,
+                    RequestId = 1
+                }
             };
 
-            Packet packetResponse = new MockPacket() {
-                Origin = PacketOrigin.Client,
-                Type = PacketType.Response,
-                RequestId = 2
+            IPacketWrapper packetResponse = new MockPacket() {
+                Packet = {
+                    Origin = PacketOrigin.Client,
+                    Type = PacketType.Response,
+                    RequestId = 2
+                }
             };
 
             queue.PacketSend(packetRequest);
             Assert.AreEqual(1, queue.OutgoingPackets.Count);
 
-            Packet fetchedRequestPacket = queue.GetRequestPacket(packetResponse);
+            IPacketWrapper fetchedRequestPacket = queue.GetRequestPacket(packetResponse);
 
             Assert.IsNull(fetchedRequestPacket);
         }

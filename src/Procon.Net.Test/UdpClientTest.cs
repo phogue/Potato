@@ -63,7 +63,9 @@ namespace Procon.Net.Test {
             };
 
             client.Send(new MockPacket(PacketOrigin.Client, PacketType.Request) {
-                RequestId = 1,
+                Packet = {
+                    RequestId = 1
+                },
                 Text = "TestBasicPacketSend"
             });
 
@@ -89,12 +91,14 @@ namespace Procon.Net.Test {
             };
 
             client.Send(new MockPacket(PacketOrigin.Client, PacketType.Request) {
-                RequestId = 1,
+                Packet = {
+                    RequestId = 1
+                },
                 Text = "TestBasicPacketSend"
             });
 
             Assert.IsTrue(packetWait.WaitOne(1000));
-            Assert.AreEqual("Client Request 1 TestBasicPacketSend", packet.ToDebugString());
+            Assert.AreEqual("Client Request 1 TestBasicPacketSend", packet.Packet.DebugText);
         }
 
         /// <summary>
@@ -112,7 +116,7 @@ namespace Procon.Net.Test {
             this.CreateAndConnect(36002, out listener, out client);
 
             listener.PacketReceived += (sender, request) => {
-                request.Type = PacketType.Response;
+                request.Packet.Type = PacketType.Response;
                 request.Text = "OK";
 
                 sender.Send(request);
@@ -125,12 +129,14 @@ namespace Procon.Net.Test {
             };
 
             client.Send(new MockPacket(PacketOrigin.Client, PacketType.Request) {
-                RequestId = 1,
+                Packet = {
+                    RequestId = 1
+                },
                 Text = "TestBasicPacketSend"
             });
 
-            Assert.IsTrue(packetWait.WaitOne(100000));
-            Assert.AreEqual("Client Response 1 OK", packet.ToDebugString());
+            Assert.IsTrue(packetWait.WaitOne(1000));
+            Assert.AreEqual("Client Response 1 OK", packet.Packet.DebugText);
         }
     }
 }

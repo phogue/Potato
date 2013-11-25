@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Text;
 
 namespace Procon.Net.Protocols.Frostbite {
@@ -18,31 +19,31 @@ namespace Procon.Net.Protocols.Frostbite {
         /// <summary>
         /// Serializes a packet into an array of bytes to send to the server.
         /// </summary>
-        /// <param name="packet">The packe to serialize</param>
+        /// <param name="wrapper">The packe to serialize</param>
         /// <returns>An array of bytes to send to the server.</returns>
-        public byte[] Serialize(Packet packet) {
-            FrostbitePacket frostbitePacket = packet as FrostbitePacket;
+        public byte[] Serialize(IPacketWrapper wrapper) {
+            FrostbitePacket frostbiteWrapper = wrapper as FrostbitePacket;
             byte[] serialized = null;
 
-            if (frostbitePacket != null) {
+            if (frostbiteWrapper != null) {
                 // Construct the header uint32
-                UInt32 header = frostbitePacket.RequestId != null ? (UInt32)frostbitePacket.RequestId & 0x3fffffff : 0x3fffffff;
+                UInt32 header = frostbiteWrapper.Packet.RequestId != null ? (UInt32)frostbiteWrapper.Packet.RequestId & 0x3fffffff : 0x3fffffff;
 
-                if (frostbitePacket.Origin == PacketOrigin.Server) {
+                if (frostbiteWrapper.Packet.Origin == PacketOrigin.Server) {
                     header |= 0x80000000;
                 }
 
-                if (frostbitePacket.Type == PacketType.Response) {
+                if (frostbiteWrapper.Packet.Type == PacketType.Response) {
                     header |= 0x40000000;
                 }
 
                 // Construct the remaining packet headers
                 UInt32 packetSize = this.PacketHeaderSize;
-                UInt32 wordCount = Convert.ToUInt32(frostbitePacket.Words.Count);
+                UInt32 wordCount = Convert.ToUInt32(frostbiteWrapper.Packet.Words.Count);
 
                 // Encode each word (WordLength, Word Bytes, Null Byte)
                 byte[] encodedWords = new byte[] { };
-                foreach (string word in frostbitePacket.Words) {
+                foreach (string word in frostbiteWrapper.Packet.Words) {
 
                     string convertedWord = word;
 
@@ -71,6 +72,10 @@ namespace Procon.Net.Protocols.Frostbite {
                 BitConverter.GetBytes(packetSize).CopyTo(serialized, 4);
                 BitConverter.GetBytes(wordCount).CopyTo(serialized, 8);
                 encodedWords.CopyTo(serialized, this.PacketHeaderSize);
+
+                wrapper.Packet.Data = serialized;
+                wrapper.Packet.Text = String.Join(" ", wrapper.Packet.Words);
+                wrapper.Packet.DebugText = String.Join(" ", wrapper.Packet.Words.Select((word, index) => String.Format("[{0}-{1}]", index, word)));
             }
 
             return serialized;
@@ -81,30 +86,34 @@ namespace Procon.Net.Protocols.Frostbite {
         /// </summary>
         /// <param name="packetData">The array to deserialize to a packet. Must be exact length of bytes.</param>
         /// <returns>A new packet with data extracted from packetDate</returns>
-        public Packet Deserialize(byte[] packetData) {
+        public IPacketWrapper Deserialize(byte[] packetData) {
 
-            FrostbitePacket packet = new FrostbitePacket();
+            FrostbitePacket wrapper = new FrostbitePacket();
 
             int header = BitConverter.ToInt32(packetData, 0);
             //this.PacketSize = BitConverter.ToInt32(packet, 4);
             int wordsTotal = BitConverter.ToInt32(packetData, 8);
 
-            packet.Origin = Convert.ToBoolean(header & 0x80000000) == true ? PacketOrigin.Server : PacketOrigin.Client;
+            wrapper.Packet.Origin = Convert.ToBoolean(header & 0x80000000) == true ? PacketOrigin.Server : PacketOrigin.Client;
 
-            packet.Type = Convert.ToBoolean(header & 0x40000000) == false ? PacketType.Request : PacketType.Response;
-            packet.RequestId = header & 0x3fffffff;
+            wrapper.Packet.Type = Convert.ToBoolean(header & 0x40000000) == false ? PacketType.Request : PacketType.Response;
+            wrapper.Packet.RequestId = header & 0x3fffffff;
 
-            int iWordOffset = 0;
+            int wordOffset = 0;
 
             for (UInt32 wordCount = 0; wordCount < wordsTotal; wordCount++) {
-                UInt32 wordLength = BitConverter.ToUInt32(packetData, (int)this.PacketHeaderSize + iWordOffset);
+                UInt32 wordLength = BitConverter.ToUInt32(packetData, (int)this.PacketHeaderSize + wordOffset);
 
-                packet.Words.Add(Encoding.GetEncoding(1252).GetString(packetData, (int)this.PacketHeaderSize + iWordOffset + 4, (int)wordLength));
+                wrapper.Packet.Words.Add(Encoding.GetEncoding(1252).GetString(packetData, (int)this.PacketHeaderSize + wordOffset + 4, (int)wordLength));
 
-                iWordOffset += Convert.ToInt32(wordLength) + 5; // WordLength + WordSize + NullByte
+                wordOffset += Convert.ToInt32(wordLength) + 5; // WordLength + WordSize + NullByte
             }
 
-            return packet;
+            wrapper.Packet.Data = packetData;
+            wrapper.Packet.Text = String.Join(" ", wrapper.Packet.Words);
+            wrapper.Packet.DebugText = String.Join(" ", wrapper.Packet.Words.Select((word, index) => String.Format("[{0}-{1}]", index, word)));
+
+            return wrapper;
         }
 
         /// <summary>

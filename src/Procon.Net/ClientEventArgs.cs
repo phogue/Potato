@@ -34,7 +34,7 @@ namespace Procon.Net {
         /// <summary>
         /// The packet that was sent/recv - EventType == PacketSent || PacketReceived
         /// </summary>
-        public Packet Packet { get; set; }
+        public IPacket Packet { get; set; }
 
         public ClientEventArgs() {
             this.Stamp = DateTime.Now;

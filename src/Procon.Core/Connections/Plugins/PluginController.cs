@@ -267,7 +267,7 @@ namespace Procon.Core.Connections.Plugins {
         }
 
         private void Connection_ClientEvent(Game sender, ClientEventArgs e) {
-            if (this.PluginFactory != null && e.Packet == null) {
+            if (this.PluginFactory != null) {
                 this.PluginFactory.ClientEvent(e);
             }
         }

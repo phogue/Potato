@@ -11,12 +11,12 @@ namespace Procon.Net {
         /// <summary>
         /// A list of packets currently sent to the server and awaiting a response
         /// </summary>
-        public ConcurrentDictionary<int?, Packet> OutgoingPackets;
+        public ConcurrentDictionary<int?, IPacketWrapper> OutgoingPackets;
 
         /// <summary>
         /// A queue of packets to send to the server (waiting until the outgoing packets list is clear)
         /// </summary>
-        public ConcurrentQueue<Packet> QueuedPackets;
+        public ConcurrentQueue<IPacketWrapper> QueuedPackets;
 
         public PacketQueue() {
             this.Clear();
@@ -26,8 +26,8 @@ namespace Procon.Net {
         /// Clears the current queue
         /// </summary>
         public void Clear() {
-            this.OutgoingPackets = new ConcurrentDictionary<int?, Packet>();
-            this.QueuedPackets = new ConcurrentQueue<Packet>();
+            this.OutgoingPackets = new ConcurrentDictionary<int?, IPacketWrapper>();
+            this.QueuedPackets = new ConcurrentQueue<IPacketWrapper>();
         }
 
         /// <summary>
@@ -39,7 +39,7 @@ namespace Procon.Net {
         public bool RestartConnectionOnQueueFailure() {
             bool failed = false;
 
-            if (this.OutgoingPackets.Any(outgoingPacket => outgoingPacket.Value.Stamp < DateTime.Now.AddMinutes(-2)) == true) {
+            if (this.OutgoingPackets.Any(outgoingPacket => outgoingPacket.Value.Packet.Stamp < DateTime.Now.AddMinutes(-2)) == true) {
                 this.Clear();
 
                 failed = true;
@@ -51,13 +51,13 @@ namespace Procon.Net {
         /// <summary>
         /// Fetches the packet that initiated the request.
         /// </summary>
-        /// <param name="recievedPacket">The response packet</param>
+        /// <param name="recievedWrapper">The response packet</param>
         /// <returns>The request packet</returns>
-        public Packet GetRequestPacket(Packet recievedPacket) {
-            Packet requestPacket = null;
+        public IPacketWrapper GetRequestPacket(IPacketWrapper recievedWrapper) {
+            IPacketWrapper requestPacket = null;
 
-            if (recievedPacket.RequestId != null && this.OutgoingPackets.ContainsKey(recievedPacket.RequestId) == true) {
-                requestPacket = this.OutgoingPackets[recievedPacket.RequestId];
+            if (recievedWrapper.Packet.RequestId != null && this.OutgoingPackets.ContainsKey(recievedWrapper.Packet.RequestId) == true) {
+                requestPacket = this.OutgoingPackets[recievedWrapper.Packet.RequestId];
             }
 
             return requestPacket;
@@ -66,51 +66,51 @@ namespace Procon.Net {
         /// <summary>
         /// Dequeues the current packet. If a packet is returned then it should be sent
         /// </summary>
-        /// <param name="packet"></param>
+        /// <param name="wrapper"></param>
         /// <returns></returns>
-        public Packet PacketReceived(Packet packet) {
-            Packet poppedPacket = null;
+        public IPacketWrapper PacketReceived(IPacketWrapper wrapper) {
+            IPacketWrapper poppedWrapper = null;
 
             // Pop the next packet if a packet is waiting to be sent.
-            if (packet != null && packet.RequestId != null) {
-                if (this.OutgoingPackets.ContainsKey(packet.RequestId) == true) {
-                    Packet ignored = null;
-                    this.OutgoingPackets.TryRemove(packet.RequestId, out ignored);
+            if (wrapper != null && wrapper.Packet.RequestId != null) {
+                if (this.OutgoingPackets.ContainsKey(wrapper.Packet.RequestId) == true) {
+                    IPacketWrapper ignored = null;
+                    this.OutgoingPackets.TryRemove(wrapper.Packet.RequestId, out ignored);
                 }
             }
 
             if (this.QueuedPackets.Count > 0) {
-                this.QueuedPackets.TryDequeue(out poppedPacket);
+                this.QueuedPackets.TryDequeue(out poppedWrapper);
             }
 
-            return poppedPacket;
+            return poppedWrapper;
         }
 
         /// <summary>
         /// Enqueues a packet, also pops a packet for sending if a packet is waiting.
         /// </summary>
-        /// <param name="packet"></param>
+        /// <param name="wrapper"></param>
         /// <returns></returns>
-        public Packet PacketSend(Packet packet) {
-            Packet poppedPacket = null;
+        public IPacketWrapper PacketSend(IPacketWrapper wrapper) {
+            IPacketWrapper poppedWrapper = null;
 
             // If there is already a packet going out..
             if (this.OutgoingPackets.Count > 0) {
                 // Add the packet to our queue to be sent at a later time.
-                this.QueuedPackets.Enqueue(packet);
+                this.QueuedPackets.Enqueue(wrapper);
             }
             else {
                 // Add the packet to the list of packets that have been sent.
                 // We're making a request to the game server, keep track of this request.
-                if (packet.RequestId != null && packet.Origin == PacketOrigin.Client && packet.Type == PacketType.Request && this.OutgoingPackets.ContainsKey(packet.RequestId) == false) {
-                    this.OutgoingPackets.TryAdd(packet.RequestId, packet);
+                if (wrapper.Packet.RequestId != null && wrapper.Packet.Origin == PacketOrigin.Client && wrapper.Packet.Type == PacketType.Request && this.OutgoingPackets.ContainsKey(wrapper.Packet.RequestId) == false) {
+                    this.OutgoingPackets.TryAdd(wrapper.Packet.RequestId, wrapper);
                 }
 
                 // Send this packet now 
-                poppedPacket = packet;
+                poppedWrapper = wrapper;
             }
 
-            return poppedPacket;
+            return poppedWrapper;
         }
     }
 }

@@ -16,6 +16,6 @@ namespace Procon.Net {
         /// simple text match.
         /// </summary>
         /// <param name="packet">The packet recieved from the game server.</param>
-        void Dispatch(Packet packet);
+        void Dispatch(IPacketWrapper packet);
     }
 }

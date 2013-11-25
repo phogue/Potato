@@ -160,14 +160,14 @@ namespace Procon.Net {
         public virtual event ClientEventHandler ClientEvent;
         public delegate void ClientEventHandler(Game sender, ClientEventArgs e);
 
-        protected void OnClientEvent(ClientEventType eventType, Packet packet = null, Exception exception = null) {
+        protected void OnClientEvent(ClientEventType eventType, IPacketWrapper wrapper = null, Exception exception = null) {
             var handler = this.ClientEvent;
             if (handler != null) {
                 handler(this, new ClientEventArgs() {
                     EventType = eventType,
                     ConnectionState = this.Client.ConnectionState,
                     ConnectionError = exception,
-                    Packet = packet
+                    Packet = wrapper != null ? wrapper.Packet as Packet : null
                 });
             }
         }
@@ -242,10 +242,12 @@ namespace Procon.Net {
         /// Sends a packet to the server, provided a client exists and the connection is open and ready or logged in.
         /// This allows for the login command to be sent to a ready connection, otherwise no login packets could be sent.
         /// </summary>
-        /// <param name="packet"></param>
-        public virtual void Send(Packet packet) {
-            if (this.Client != null && (this.Client.ConnectionState == ConnectionState.ConnectionReady || this.Client.ConnectionState == ConnectionState.ConnectionLoggedIn)) {
-                this.Client.Send(packet);
+        /// <param name="wrapper"></param>
+        public virtual void Send(IPacketWrapper wrapper) {
+            if (wrapper != null) {
+                if (this.Client != null && (this.Client.ConnectionState == ConnectionState.ConnectionReady || this.Client.ConnectionState == ConnectionState.ConnectionLoggedIn)) {
+                    this.Client.Send(wrapper);
+                }
             }
         }
 
@@ -298,6 +300,6 @@ namespace Procon.Net {
         /// <param name="format"></param>
         /// <param name="args"></param>
         /// <returns></returns>
-        protected abstract Packet CreatePacket(String format, params object[] args);
+        protected abstract IPacketWrapper CreatePacket(String format, params object[] args);
     }
 }

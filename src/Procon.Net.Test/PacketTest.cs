@@ -13,39 +13,20 @@ namespace Procon.Net.Test {
         public void TestPacketEmptyConstructor() {
             MockPacket packet = new MockPacket();
 
-            Assert.AreEqual(PacketOrigin.None, packet.Origin);
-            Assert.AreEqual(PacketType.None, packet.Type);
-            Assert.IsNull(packet.RequestId);
-            Assert.GreaterOrEqual(DateTime.Now, packet.Stamp);
+            Assert.AreEqual(PacketOrigin.None, packet.Packet.Origin);
+            Assert.AreEqual(PacketType.None, packet.Packet.Type);
+            Assert.IsNull(packet.Packet.RequestId);
+            Assert.GreaterOrEqual(DateTime.Now, packet.Packet.Stamp);
         }
 
         [Test]
         public void TestPacketParameterConstructor() {
             MockPacket packet = new MockPacket(PacketOrigin.Server, PacketType.Response);
 
-            Assert.AreEqual(PacketOrigin.Server, packet.Origin);
-            Assert.AreEqual(PacketType.Response, packet.Type);
-            Assert.IsNull(packet.RequestId);
-            Assert.GreaterOrEqual(DateTime.Now, packet.Stamp);
-        }
-
-        [Test]
-        public void TestPacketNullPacket() {
-            MockPacket packet = new MockPacket(PacketOrigin.Server, PacketType.Response);
-
-            packet.NullPacket();
-
-            Assert.AreEqual(PacketOrigin.Client, packet.Origin);
-            Assert.AreEqual(PacketType.Request, packet.Type);
-            Assert.IsNull(packet.RequestId);
-        }
-
-        [Test]
-        public void TestPacketToDebugString() {
-            MockPacket packet = new MockPacket(PacketOrigin.Server, PacketType.Response);
-            packet.RequestId = 222;
-
-            Assert.AreEqual("Server Response 222 ", packet.ToDebugString());
+            Assert.AreEqual(PacketOrigin.Server, packet.Packet.Origin);
+            Assert.AreEqual(PacketType.Response, packet.Packet.Type);
+            Assert.IsNull(packet.Packet.RequestId);
+            Assert.GreaterOrEqual(DateTime.Now, packet.Packet.Stamp);
         }
     }
 }

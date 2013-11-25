@@ -56,13 +56,13 @@ namespace Procon.Net {
 
         protected virtual void SendAsynchronousCallback(IAsyncResult ar) {
 
-            Packet packet = (Packet)ar.AsyncState;
+            IPacketWrapper wrapper = (IPacketWrapper)ar.AsyncState;
 
             try {
                 if (this.Client != null) {
                     this.Client.EndSend(ar);
 
-                    this.OnPacketSent(packet);
+                    this.OnPacketSent(wrapper);
                 }
             }
             catch (SocketException se) {
@@ -73,14 +73,14 @@ namespace Procon.Net {
             }
         }
 
-        public override void Send(Packet packet) {
-            if (packet != null) {
-                if (this.BeforePacketSend(packet) == false && this.Client != null) {
+        public override void Send(IPacketWrapper wrapper) {
+            if (wrapper != null) {
+                if (this.BeforePacketSend(wrapper) == false && this.Client != null) {
 
-                    byte[] bytePacket = this.PacketSerializer.Serialize(packet);
+                    byte[] bytePacket = this.PacketSerializer.Serialize(wrapper);
 
                     if (bytePacket != null && bytePacket.Length > 0) {
-                        this.Client.BeginSend(bytePacket, bytePacket.Length, this.RemoteEndPoint, this.SendAsynchronousCallback, packet);
+                        this.Client.BeginSend(bytePacket, bytePacket.Length, this.RemoteEndPoint, this.SendAsynchronousCallback, wrapper);
                     }
                 }
             }
@@ -93,10 +93,10 @@ namespace Procon.Net {
 
                     this.ReceivedBuffer = this.Client.EndReceive(ar, ref this.RemoteIpEndPoint);
 
-                    Packet completedPacket = this.PacketSerializer.Deserialize(this.ReceivedBuffer);
+                    IPacketWrapper completedPacket = this.PacketSerializer.Deserialize(this.ReceivedBuffer);
 
                     if (completedPacket != null) {
-                        this.RemoteEndPoint = completedPacket.RemoteEndPoint = this.RemoteIpEndPoint;
+                        this.RemoteEndPoint = completedPacket.Packet.RemoteEndPoint = this.RemoteIpEndPoint;
 
                         this.BeforePacketDispatch(completedPacket);
 

@@ -55,12 +55,12 @@ namespace Procon.Net {
         /// <summary>
         /// The last packet that was receieved by this connection.
         /// </summary>
-        public Packet LastPacketReceived { get; set; }
+        public IPacketWrapper LastPacketReceived { get; set; }
 
         /// <summary>
         /// The last packet that was sent by this connection.
         /// </summary>
-        public Packet LastPacketSent { get; set; }
+        public IPacketWrapper LastPacketSent { get; set; }
 
         /// <summary>
         /// The current connection state.
@@ -148,8 +148,8 @@ namespace Procon.Net {
         /// </para>
         /// </remarks>
         public virtual void Poke() {
-            bool downstreamDead = this.LastPacketReceived == null || this.LastPacketReceived.Stamp < DateTime.Now.AddMinutes(-5);
-            bool upstreamDead = this.LastPacketSent == null || this.LastPacketSent.Stamp < DateTime.Now.AddMinutes(-5);
+            bool downstreamDead = this.LastPacketReceived == null || this.LastPacketReceived.Packet.Stamp < DateTime.Now.AddMinutes(-5);
+            bool upstreamDead = this.LastPacketSent == null || this.LastPacketSent.Packet.Stamp < DateTime.Now.AddMinutes(-5);
 
             if (downstreamDead && upstreamDead) {
                 this.Shutdown();
@@ -186,8 +186,8 @@ namespace Procon.Net {
         /// <summary>
         /// Sends a packet to the server
         /// </summary>
-        /// <param name="packet"></param>
-        public abstract void Send(Packet packet);
+        /// <param name="wrapper"></param>
+        public abstract void Send(IPacketWrapper wrapper);
 
         public virtual IAsyncResult BeginRead() {
             return null;
@@ -199,7 +199,7 @@ namespace Procon.Net {
         /// </summary>
         /// <param name="packet"></param>
         /// <returns></returns>
-        protected virtual bool BeforePacketDispatch(Packet packet) {
+        protected virtual bool BeforePacketDispatch(IPacketWrapper packet) {
             return false;
         }
 
@@ -209,7 +209,7 @@ namespace Procon.Net {
         /// </summary>
         /// <param name="packet"></param>
         /// <returns></returns>
-        protected virtual bool BeforePacketSend(Packet packet) {
+        protected virtual bool BeforePacketSend(IPacketWrapper packet) {
             return false;
         }
 
@@ -234,21 +234,21 @@ namespace Procon.Net {
             }
         }
 
-        protected virtual void OnPacketSent(Packet packet) {
-            this.LastPacketSent = packet;
+        protected virtual void OnPacketSent(IPacketWrapper wrapper) {
+            this.LastPacketSent = wrapper;
 
             var handler = this.PacketSent;
             if (handler != null) {
-                handler(this, packet);
+                handler(this, wrapper);
             }
         }
 
-        protected virtual void OnPacketReceived(Packet packet) {
-            this.LastPacketReceived = packet;
+        protected virtual void OnPacketReceived(IPacketWrapper wrapper) {
+            this.LastPacketReceived = wrapper;
 
             var handler = this.PacketReceived;
             if (handler != null) {
-                handler(this, packet);
+                handler(this, wrapper);
             }
         }
     }

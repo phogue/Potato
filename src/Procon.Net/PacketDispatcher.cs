@@ -15,7 +15,7 @@ namespace Procon.Net {
         /// </summary>
         /// <param name="request">What was sent to the server or what was just received from the server</param>
         /// <param name="response">What was receieved from the server, or what we should send to the server.</param>
-        public delegate void PacketDispatchHandler(Packet request, Packet response);
+        public delegate void PacketDispatchHandler(IPacketWrapper request, IPacketWrapper response);
 
         /// <summary>
         /// What method to call when dispatching, but unable to find specific dispatch method.
@@ -23,7 +23,7 @@ namespace Procon.Net {
         /// <param name="identifer">What was used to look for a dispatch method</param>
         /// <param name="request">What was sent to the server or what was just received from the server</param>
         /// <param name="response">What was receieved from the server, or what we should send to the server.</param>
-        public delegate void MissingPacketDispatchHandler(PacketDispatch identifer, Packet request, Packet response);
+        public delegate void MissingPacketDispatchHandler(PacketDispatch identifer, IPacketWrapper request, IPacketWrapper response);
 
         /// <summary>
         /// Handler to dispatch to if a request fails.
@@ -50,7 +50,7 @@ namespace Procon.Net {
             }
         }
 
-        public virtual void Dispatch(Packet packet) {
+        public virtual void Dispatch(IPacketWrapper packet) {
             
         }
 
@@ -62,7 +62,7 @@ namespace Procon.Net {
         /// <param name="identifer"></param>
         /// <param name="request"></param>
         /// <param name="response"></param>
-        public virtual void Dispatch(PacketDispatch identifer, Packet request, Packet response) {
+        public virtual void Dispatch(PacketDispatch identifer, IPacketWrapper request, IPacketWrapper response) {
 
             var dispatchMethods = this.Handlers.Where(dispatcher => dispatcher.Key.Name == identifer.Name)
                 .Where(dispatcher => dispatcher.Key.Origin == PacketOrigin.None || dispatcher.Key.Origin == identifer.Origin)
@@ -85,7 +85,7 @@ namespace Procon.Net {
         /// <param name="identifer"></param>
         /// <param name="request"></param>
         /// <param name="response"></param>
-        public virtual void MissingDispatch(PacketDispatch identifer, Packet request, Packet response) {
+        public virtual void MissingDispatch(PacketDispatch identifer, IPacketWrapper request, IPacketWrapper response) {
             if (this.MissingDispatchHandler != null) {
                 this.MissingDispatchHandler(identifer, request, response);
             }

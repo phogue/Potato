@@ -67,7 +67,7 @@ namespace Procon.Net {
         /// This allows for the login command to be sent to a ready connection, otherwise no login packets could be sent.
         /// </summary>
         /// <param name="packet"></param>
-        void Send(Packet packet);
+        void Send(IPacketWrapper packet);
 
         /// <summary>
         /// Attempts a connection to the server.

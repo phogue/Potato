@@ -19,20 +19,20 @@
         /// </summary>
         /// <param name="recievedPacket">The response packet</param>
         /// <returns>The request packet</returns>
-        Packet GetRequestPacket(Packet recievedPacket);
+        IPacketWrapper GetRequestPacket(IPacketWrapper recievedPacket);
 
         /// <summary>
         /// Dequeues the current packet. If a packet is returned then it should be sent
         /// </summary>
         /// <param name="packet"></param>
         /// <returns></returns>
-        Packet PacketReceived(Packet packet);
+        IPacketWrapper PacketReceived(IPacketWrapper packet);
 
         /// <summary>
         /// Enqueues a packet, also pops a packet for sending if a packet is waiting.
         /// </summary>
         /// <param name="packet"></param>
         /// <returns></returns>
-        Packet PacketSend(Packet packet);
+        IPacketWrapper PacketSend(IPacketWrapper packet);
     }
 }

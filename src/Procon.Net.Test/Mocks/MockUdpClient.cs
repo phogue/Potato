@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Text;
 
 namespace Procon.Net.Test.Mocks {
     public class MockUdpClient : Procon.Net.UdpClient {

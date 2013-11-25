@@ -2,37 +2,33 @@
 using Procon.Net.Utils;
 
 namespace Procon.Net.Test.Mocks {
-    public class MockPacket : Packet {
-        private string _text;
+    public class MockPacket : IPacketWrapper {
+        /// <summary>
+        /// The underlying simple packet class 
+        /// </summary>
+        public IPacket Packet { get; set; }
 
         /// <summary>
         /// Basic text to pass bac kand forth
         /// </summary>
         public String Text {
-            get { return _text; }
+            get { return this.Packet.Text; }
             set {
-                _text = value;
-                this.Words = _text.Wordify();
+                this.Packet.Text = value;
+                this.Packet.Words = value.Wordify();
             }
         }
 
         public MockPacket() : base() {
-            this.Stamp = DateTime.Now;
+            this.Packet = new Packet();
         }
 
-        public MockPacket(PacketOrigin origin, PacketType type) : base(origin, type) {
-            
-        }
-
-        /// <summary>
-        /// Exposes the null packet method
-        /// </summary>
-        public new void NullPacket() {
-            base.NullPacket();
+        public MockPacket(PacketOrigin origin, PacketType type) {
+            this.Packet = new Packet(origin, type);
         }
 
         public override string ToString() {
-            return String.Format("{0} {1} {2} {3}", this.Origin, this.Type, this.RequestId, this.Text);
+            return String.Format("{0} {1} {2} {3}", this.Packet.Origin, this.Packet.Type, this.Packet.RequestId, this.Packet.Text);
         }
     }
 }

@@ -33,18 +33,18 @@ namespace Procon.Net.Protocols.Frostbite.Battlefield.BF4 {
         }
 
         //[DispatchPacket(MatchText = "admin.listPlayers", PacketOrigin = PacketOrigin.Client)]
-        public override void AdminListPlayersResponseDispatchHandler(Packet request, Packet response) {
+        public override void AdminListPlayersResponseDispatchHandler(IPacketWrapper request, IPacketWrapper response) {
             Battlefield4PlayerList players = new Battlefield4PlayerList() {
-                Subset = new FrostbiteGroupingList().Parse(request.Words.GetRange(1, request.Words.Count - 1))
-            }.Parse(response.Words.GetRange(1, response.Words.Count - 1));
+                Subset = new FrostbiteGroupingList().Parse(request.Packet.Words.GetRange(1, request.Packet.Words.Count - 1))
+            }.Parse(response.Packet.Words.GetRange(1, response.Packet.Words.Count - 1));
 
             this.AdminListPlayersFinalize(players);
         }
 
-        public override void MapListListDispatchHandler(Packet request, Packet response) {
-            if (request.Words.Count >= 1) {
+        public override void MapListListDispatchHandler(IPacketWrapper request, IPacketWrapper response) {
+            if (request.Packet.Words.Count >= 1) {
 
-                FrostbiteMapList maps = new Battlefield4FrostbiteMapList().Parse(response.Words.GetRange(1, response.Words.Count - 1));
+                FrostbiteMapList maps = new Battlefield4FrostbiteMapList().Parse(response.Packet.Words.GetRange(1, response.Packet.Words.Count - 1));
 
                 foreach (Map map in maps) {
                     Map mapInfo = this.State.MapPool.Find(x => String.Compare(x.Name, map.Name, StringComparison.OrdinalIgnoreCase) == 0);
@@ -61,14 +61,14 @@ namespace Procon.Net.Protocols.Frostbite.Battlefield.BF4 {
             }
         }
 
-        public override void BanListListDispatchHandler(Packet request, Packet response) {
+        public override void BanListListDispatchHandler(IPacketWrapper request, IPacketWrapper response) {
 
-            if (request.Words.Count >= 1) {
+            if (request.Packet.Words.Count >= 1) {
 
                 int startOffset = 0;
 
-                if (request.Words.Count >= 2) {
-                    if (int.TryParse(request.Words[1], out startOffset) == false) {
+                if (request.Packet.Words.Count >= 2) {
+                    if (int.TryParse(request.Packet.Words[1], out startOffset) == false) {
                         startOffset = 0;
                     }
                 }
@@ -78,7 +78,7 @@ namespace Procon.Net.Protocols.Frostbite.Battlefield.BF4 {
                     this.State.BanList.Clear();
                 }
 
-                FrostbiteBanList banList = new Battlefield4BanList().Parse(response.Words.GetRange(1, response.Words.Count - 1));
+                FrostbiteBanList banList = new Battlefield4BanList().Parse(response.Packet.Words.GetRange(1, response.Packet.Words.Count - 1));
 
                 if (banList.Count > 0) {
                     foreach (Ban ban in banList)
@@ -99,17 +99,17 @@ namespace Procon.Net.Protocols.Frostbite.Battlefield.BF4 {
             this.Send(this.CreatePacket("admin.eventsEnabled true"));
         }
 
-        public override void PlayerOnAuthenticatedDispatchHandler(Packet request, Packet response) {
+        public override void PlayerOnAuthenticatedDispatchHandler(IPacketWrapper request, IPacketWrapper response) {
             // Ignore this in BF4? Seems onJoin handles both.
         }
 
-        public override void PlayerOnJoinDispatchHandler(Packet request, Packet response) {
+        public override void PlayerOnJoinDispatchHandler(IPacketWrapper request, IPacketWrapper response) {
 
-            if (request.Words.Count >= 2) {
+            if (request.Packet.Words.Count >= 2) {
 
                 Player player = new Player() {
-                    Name = request.Words[1],
-                    Uid = request.Words[2]
+                    Name = request.Packet.Words[1],
+                    Uid = request.Packet.Words[2]
                 };
 
                 if (this.State.PlayerList.Find(x => x.Name == player.Name) == null) {
@@ -120,13 +120,13 @@ namespace Procon.Net.Protocols.Frostbite.Battlefield.BF4 {
             }
         }
 
-        public override void PlayerOnKillDispatchHandler(Packet request, Packet response) {
+        public override void PlayerOnKillDispatchHandler(IPacketWrapper request, IPacketWrapper response) {
 
-            if (request.Words.Count >= 5) {
+            if (request.Packet.Words.Count >= 5) {
 
                 bool headshot = false;
 
-                if (bool.TryParse(request.Words[4], out headshot) == true) {
+                if (bool.TryParse(request.Packet.Words[4], out headshot) == true) {
 
                     this.OnGameEvent(GameEventType.GamePlayerKill, new GameEventData() {
                         Kills = new List<Kill>() {
@@ -134,18 +134,18 @@ namespace Procon.Net.Protocols.Frostbite.Battlefield.BF4 {
                                 HumanHitLocation = headshot == true ? FrostbiteGame.Headshot : FrostbiteGame.Bodyshot,
                                 Scope = {
                                     Players = new List<Player>() {
-                                        this.State.PlayerList.Find(x => x.Name == request.Words[2])
+                                        this.State.PlayerList.Find(x => x.Name == request.Packet.Words[2])
                                     },
                                     Items = new List<Item>() {
                                         new Item() {
                                             // Servers sends garbage at the end of the round?
-                                            Name = Regex.Replace(request.Words[3], @"[^\\w\\/_-]+", "")
+                                            Name = Regex.Replace(request.Packet.Words[3], @"[^\\w\\/_-]+", "")
                                         }
                                     }
                                 },
                                 Now = {
                                     Players = new List<Player>() {
-                                        this.State.PlayerList.Find(x => x.Name == request.Words[1])
+                                        this.State.PlayerList.Find(x => x.Name == request.Packet.Words[1])
                                     }
                                 }
                             }

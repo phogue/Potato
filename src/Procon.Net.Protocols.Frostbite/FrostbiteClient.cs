@@ -16,25 +16,27 @@ namespace Procon.Net.Protocols.Frostbite {
             this.PacketSerializer = new FrostbitePacketSerializer();
         }
 
-        protected override void OnPacketReceived(Packet packet) {
-            base.OnPacketReceived(packet);
+        protected override void OnPacketReceived(IPacketWrapper wrapper) {
+            base.OnPacketReceived(wrapper);
 
             // Respond with "OK" to all server events.
-            if (packet.Origin == PacketOrigin.Server && packet.Type == PacketType.Request) {
+            if (wrapper.Packet.Origin == PacketOrigin.Server && wrapper.Packet.Type == PacketType.Request) {
                 base.Send(new FrostbitePacket() {
-                    Origin = PacketOrigin.Server,
-                    Type = PacketType.Response,
-                    RequestId = packet.RequestId,
-                    Words = new List<String>() {
-                        FrostbitePacket.StringResponseOkay
+                    Packet = {
+                        Origin = PacketOrigin.Server,
+                        Type = PacketType.Response,
+                        RequestId = wrapper.Packet.RequestId,
+                        Words = new List<String>() {
+                            FrostbitePacket.StringResponseOkay
+                        }
                     }
                 });
             }
 
             // Pop the next packet if a packet is waiting to be sent.
-            Packet poppedPacket = null;
-            if ((poppedPacket = this.PacketQueue.PacketReceived(packet)) != null) {
-                this.Send(poppedPacket);
+            IPacketWrapper poppedWrapper = null;
+            if ((poppedWrapper = this.PacketQueue.PacketReceived(wrapper)) != null) {
+                this.Send(poppedWrapper);
             }
             
             // Shutdown if we're just waiting for a response to an old packet.
@@ -43,23 +45,23 @@ namespace Procon.Net.Protocols.Frostbite {
             }
         }
 
-        public override void Send(Packet packet) {
+        public override void Send(IPacketWrapper wrapper) {
 
-            if (packet.RequestId == null) {
-                packet.RequestId = this.AcquireSequenceNumber;
+            if (wrapper.Packet.RequestId == null) {
+                wrapper.Packet.RequestId = this.AcquireSequenceNumber;
             }
 
             // QueueUnqueuePacket
 
-            if (packet.Origin == PacketOrigin.Server && packet.Type == PacketType.Response) {
+            if (wrapper.Packet.Origin == PacketOrigin.Server && wrapper.Packet.Type == PacketType.Response) {
                 // I don't think this will ever be encountered since OnPacketReceived calls the base.Send.
-                base.Send(packet);
+                base.Send(wrapper);
             }
             else {
                 // Null return because we're not popping a packet, just checking to see if this one needs to be queued.
-                Packet poppedPacket = null;
-                if ((poppedPacket = this.PacketQueue.PacketSend(packet)) != null) {
-                    base.Send(poppedPacket);
+                IPacketWrapper poppedWrapper = null;
+                if ((poppedWrapper = this.PacketQueue.PacketSend(wrapper)) != null) {
+                    base.Send(poppedWrapper);
                 }
 
                 // Shutdown if we're just waiting for a response to an old packet.

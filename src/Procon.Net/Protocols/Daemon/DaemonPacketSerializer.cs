@@ -155,8 +155,8 @@ namespace Procon.Net.Protocols.Daemon {
             return Encoding.UTF8.GetBytes(builder.ToString());
         }
 
-        public byte[] Serialize(Packet packet) {
-            DaemonPacket daemonPacket = packet as DaemonPacket;
+        public byte[] Serialize(IPacketWrapper wrapper) {
+            DaemonPacket daemonPacket = wrapper as DaemonPacket;
             byte[] serialized = null;
 
             if (daemonPacket != null) {
@@ -171,7 +171,7 @@ namespace Procon.Net.Protocols.Daemon {
             return serialized;
         }
 
-        public Packet Deserialize(byte[] packetData) {
+        public IPacketWrapper Deserialize(byte[] packetData) {
             DaemonPacket packet = new DaemonPacket();
 
             DaemonPacketSerializer.Parse(packet, packetData);

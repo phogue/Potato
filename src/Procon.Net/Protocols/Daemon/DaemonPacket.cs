@@ -4,7 +4,7 @@ using System.Net;
 
 namespace Procon.Net.Protocols.Daemon {
     [Serializable]
-    public class DaemonPacket : Packet {
+    public class DaemonPacket : IPacketWrapper {
 
         /// <summary>
         /// The requested Uri
@@ -46,10 +46,14 @@ namespace Procon.Net.Protocols.Daemon {
         /// </summary>
         public String Content { get; set; }
 
+        public IPacket Packet { get; set; }
+
         public DaemonPacket() {
             this.Headers = new WebHeaderCollection();
             this.Query = new NameValueCollection();
             this.Content = String.Empty;
+
+            this.Packet = new Packet();
         }
     }
 }

@@ -40,7 +40,7 @@ namespace Procon.Net {
         /// <param name="ar"></param>
         protected void SendAsynchronousCallback(IAsyncResult ar) {
 
-            Packet packet = (Packet)ar.AsyncState;
+            IPacketWrapper packet = (IPacketWrapper)ar.AsyncState;
 
             if (this.NetworkStream != null) {
                 try {
@@ -60,16 +60,16 @@ namespace Procon.Net {
         /// <summary>
         /// Sends a packet to the server asynchronously
         /// </summary>
-        /// <param name="packet"></param>
-        public override void Send(Packet packet) {
+        /// <param name="wrapper"></param>
+        public override void Send(IPacketWrapper wrapper) {
 
-            if (packet != null) {
-                if (this.BeforePacketSend(packet) == false && this.NetworkStream != null) {
+            if (wrapper != null) {
+                if (this.BeforePacketSend(wrapper) == false && this.NetworkStream != null) {
 
-                    byte[] bytePacket = this.PacketSerializer.Serialize(packet);
+                    byte[] bytePacket = this.PacketSerializer.Serialize(wrapper);
 
                     if (bytePacket != null && bytePacket.Length > 0) {
-                        this.NetworkStream.BeginWrite(bytePacket, 0, bytePacket.Length, this.SendAsynchronousCallback, packet);
+                        this.NetworkStream.BeginWrite(bytePacket, 0, bytePacket.Length, this.SendAsynchronousCallback, wrapper);
                     }
                 }
             }
@@ -79,8 +79,8 @@ namespace Procon.Net {
         /// Attempts to read a single packet from the PacketStream
         /// </summary>
         /// <returns>A completed packet, or null if no packet could be read.</returns>
-        protected virtual Packet ReadPacket() {
-            Packet packet = null;
+        protected virtual IPacketWrapper ReadPacket() {
+            IPacketWrapper wrapper = null;
 
             byte[] header = this.PacketStream.PeekShift((uint)this.ReadPacketPeekShiftSize);
 
@@ -90,13 +90,13 @@ namespace Procon.Net {
                 byte[] packetData = this.PacketStream.PeekShift((uint)packetSize);
 
                 if (packetData != null && packetData.Length > 0) {
-                    packet = this.PacketSerializer.Deserialize(packetData);
+                    wrapper = this.PacketSerializer.Deserialize(packetData);
 
                     this.PacketStream.Shift((uint)packetSize);
                 }
             }
 
-            return packet;
+            return wrapper;
         }
 
         protected virtual void ReadCallback(IAsyncResult ar) {
@@ -107,15 +107,15 @@ namespace Procon.Net {
                     if (bytesRead > 0) {
                         this.PacketStream.Push(this.ReceivedBuffer, bytesRead);
 
-                        Packet packet = null;
+                        IPacketWrapper wrapper = null;
 
                         // Keep reading until we no longer have packets to deserialize.
-                        while ((packet = this.ReadPacket()) != null) {
+                        while ((wrapper = this.ReadPacket()) != null) {
                             // Dispatch the completed packet.
                             try {
-                                this.BeforePacketDispatch(packet);
+                                this.BeforePacketDispatch(wrapper);
 
-                                this.OnPacketReceived(packet);
+                                this.OnPacketReceived(wrapper);
                             }
                             catch (Exception e) {
                                 this.Shutdown(e);

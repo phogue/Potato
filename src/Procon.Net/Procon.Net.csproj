@@ -139,11 +139,11 @@
     <Compile Include="Geolocation\Maxmind\CountryLookup.cs" />
     <Compile Include="Utils\MD5.cs" />
     <Compile Include="Utils\StreamExtensions.cs" />
-    <Compile Include="Utils\PunkBuster\PB.cs" />
-    <Compile Include="Utils\PunkBuster\Objects\PunkBusterBeginPlayerList.cs" />
-    <Compile Include="Utils\PunkBuster\Objects\PunkBusterEndPlayerList.cs" />
-    <Compile Include="Utils\PunkBuster\PunkBusterObject.cs" />
-    <Compile Include="Utils\PunkBuster\Objects\PunkBusterPlayer.cs" />
+    <Compile Include="Protocols\PunkBuster\PunkBusterSerializer.cs" />
+    <Compile Include="Protocols\PunkBuster\Objects\PunkBusterBeginPlayerList.cs" />
+    <Compile Include="Protocols\PunkBuster\Objects\PunkBusterEndPlayerList.cs" />
+    <Compile Include="Protocols\PunkBuster\IPunkBuster.cs" />
+    <Compile Include="Protocols\PunkBuster\Objects\PunkBusterPlayer.cs" />
     <Compile Include="Utils\StringExtensions.cs" />
     <Compile Include="Utils\Tests\ProtocolUnitRandomObject.cs" />
     <Compile Include="Utils\Tests\ProtocolUnitRandomType.cs" />

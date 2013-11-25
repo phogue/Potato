@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using Procon.Net.Protocols.PunkBuster;
+using Procon.Net.Protocols.PunkBuster.Objects;
 
 namespace Procon.Net.Protocols.Frostbite {
     using Procon.Net.Utils;
-    using Procon.Net.Utils.PunkBuster;
-    using Procon.Net.Utils.PunkBuster.Objects;
     using Procon.Net.Protocols.Frostbite.Objects;
     using Procon.Net.Protocols.Objects;
 
@@ -643,7 +643,7 @@ namespace Procon.Net.Protocols.Frostbite {
 
             if (request.Packet.Words.Count >= 1) {
 
-                PunkBusterObject pbObject = PB.Parse(request.Packet.Words[1]);
+                IPunkBuster pbObject = PunkBusterSerializer.Deserialize(request.Packet.Words[1]);
 
                 if (pbObject is PunkBusterPlayer) {
                     PunkBusterPlayer player = pbObject as PunkBusterPlayer;
@@ -651,8 +651,8 @@ namespace Procon.Net.Protocols.Frostbite {
                     Player statePlayer = this.State.PlayerList.Find(x => x.Name == player.Name);
 
                     if (statePlayer != null) {
-                        statePlayer.SlotId = player.SlotID;
-                        statePlayer.IP = player.IP;
+                        statePlayer.SlotId = player.SlotId;
+                        statePlayer.IP = player.Ip;
                     }
                 }
                 else if (pbObject is PunkBusterBeginPlayerList) {

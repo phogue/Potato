@@ -2,17 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Procon.Net.Attributes;
+using Procon.Net.Protocols.Frostbite.Battlefield.BF4.Objects;
+using Procon.Net.Protocols.Objects;
+using Procon.Net.Protocols.Frostbite.Objects;
 
-namespace Procon.Net.Protocols.Frostbite.BF.BF4 {
-    using Procon.Net.Protocols.Frostbite.BF.BF4.Objects;
-    using Procon.Net.Attributes;
-    using Procon.Net.Protocols.Objects;
-    using Procon.Net.Protocols.Frostbite.Objects;
-
+namespace Procon.Net.Protocols.Frostbite.Battlefield.BF4 {
     [GameType(Type = CommonGameType.BF_4, Name = "Battlefield 4", Provider = "Myrcon")]
-    public class BF4Game : BFGame {
+    public class Battlefield4Game : BattlefieldGame {
 
-        public BF4Game(string hostName, ushort port)
+        public Battlefield4Game(string hostName, ushort port)
             : base(hostName, port) {
 
             this.ServerInfoParameters = new List<string>() {
@@ -35,7 +34,7 @@ namespace Procon.Net.Protocols.Frostbite.BF.BF4 {
 
         //[DispatchPacket(MatchText = "admin.listPlayers", PacketOrigin = PacketOrigin.Client)]
         public override void AdminListPlayersResponseDispatchHandler(Packet request, Packet response) {
-            BF4PlayerList players = new BF4PlayerList() {
+            Battlefield4PlayerList players = new Battlefield4PlayerList() {
                 Subset = new FrostbiteGroupingList().Parse(request.Words.GetRange(1, request.Words.Count - 1))
             }.Parse(response.Words.GetRange(1, response.Words.Count - 1));
 
@@ -45,7 +44,7 @@ namespace Procon.Net.Protocols.Frostbite.BF.BF4 {
         public override void MapListListDispatchHandler(Packet request, Packet response) {
             if (request.Words.Count >= 1) {
 
-                FrostbiteMapList maps = new BF4FrostbiteMapList().Parse(response.Words.GetRange(1, response.Words.Count - 1));
+                FrostbiteMapList maps = new Battlefield4FrostbiteMapList().Parse(response.Words.GetRange(1, response.Words.Count - 1));
 
                 foreach (Map map in maps) {
                     Map mapInfo = this.State.MapPool.Find(x => String.Compare(x.Name, map.Name, StringComparison.OrdinalIgnoreCase) == 0);
@@ -79,7 +78,7 @@ namespace Procon.Net.Protocols.Frostbite.BF.BF4 {
                     this.State.BanList.Clear();
                 }
 
-                FrostbiteBanList banList = new BF4BanList().Parse(response.Words.GetRange(1, response.Words.Count - 1));
+                FrostbiteBanList banList = new Battlefield4BanList().Parse(response.Words.GetRange(1, response.Words.Count - 1));
 
                 if (banList.Count > 0) {
                     foreach (Ban ban in banList)

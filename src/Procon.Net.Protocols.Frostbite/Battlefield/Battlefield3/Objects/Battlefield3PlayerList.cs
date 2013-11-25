@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using Procon.Net.Protocols.Frostbite.Objects;
 
-namespace Procon.Net.Protocols.Frostbite.BF.BF4.Objects {
-    using Procon.Net.Protocols.Frostbite.Objects;
-
+namespace Procon.Net.Protocols.Frostbite.Battlefield.BF3.Objects {
     [Serializable]
-    public class BF4PlayerList : FrostbitePlayerList {
+    public class Battlefield3PlayerList : FrostbitePlayerList {
 
-        public new BF4PlayerList Parse(List<string> words) {
+        public new Battlefield3PlayerList Parse(List<string> words) {
 
             int currentOffset = 0;
             int parameterCount = 0;

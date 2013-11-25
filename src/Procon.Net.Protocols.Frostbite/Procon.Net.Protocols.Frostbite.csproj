@@ -53,22 +53,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BF\BF3\BF3Game.cs" />
-    <Compile Include="BF\BF3\Objects\BF3FrostbiteMapList.cs" />
-    <Compile Include="BF\BF3\Objects\BF3PlayerList.cs" />
-    <Compile Include="BF\BF3\Objects\BF3BanList.cs" />
-    <Compile Include="BF\BF4\BF4Game.cs" />
-    <Compile Include="BF\BF4\Objects\BF4BanList.cs" />
-    <Compile Include="BF\BF4\Objects\BF4FrostbiteMapList.cs" />
-    <Compile Include="BF\BF4\Objects\BF4PlayerList.cs" />
-    <Compile Include="BF\BFBC2\Bfbc2Game.cs" />
-    <Compile Include="BF\BFGame.cs" />
+    <Compile Include="Battlefield\Battlefield3\Battlefield3Game.cs" />
+    <Compile Include="Battlefield\Battlefield3\Objects\Battlefield3FrostbiteMapList.cs" />
+    <Compile Include="Battlefield\Battlefield3\Objects\Battlefield3PlayerList.cs" />
+    <Compile Include="Battlefield\Battlefield3\Objects\Battlefield3BanList.cs" />
+    <Compile Include="Battlefield\Battlefield4\Battlefield4Game.cs" />
+    <Compile Include="Battlefield\Battlefield4\Objects\Battlefield4BanList.cs" />
+    <Compile Include="Battlefield\Battlefield4\Objects\Battlefield4FrostbiteMapList.cs" />
+    <Compile Include="Battlefield\Battlefield4\Objects\Battlefield4PlayerList.cs" />
+    <Compile Include="Battlefield\BattlefieldBadCompany2\BattlefieldBadCompany2Game.cs" />
+    <Compile Include="Battlefield\BattlefieldGame.cs" />
     <Compile Include="FrostbiteClient.cs" />
     <Compile Include="FrostbiteGame.cs" />
     <Compile Include="FrostbitePacket.cs" />
     <Compile Include="FrostbitePacketDispatcher.cs" />
     <Compile Include="FrostbitePacketSerializer.cs" />
-    <Compile Include="MOH\MohGame.cs" />
+    <Compile Include="MedalOfHonor\MedalOfHonorGame.cs" />
     <Compile Include="Objects\FrostbiteBan.cs" />
     <Compile Include="Objects\FrostbiteBanList.cs" />
     <Compile Include="Objects\FrostbiteChat.cs" />

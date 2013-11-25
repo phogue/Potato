@@ -6,7 +6,7 @@ using NUnit.Framework;
 using Procon.Core.Connections;
 using Procon.Core.Connections.TextCommands;
 using Procon.Core.Security;
-using Procon.Net.Protocols.Frostbite.BF.BF3;
+using Procon.Net.Protocols.Frostbite.Battlefield.BF3;
 
 namespace Procon.Core.Test.TextCommands {
     [TestFixture]
@@ -19,7 +19,7 @@ namespace Procon.Core.Test.TextCommands {
             TextCommandController textCommands = new TextCommandController() {
                 //Languages = languages,
                 Connection = new Connection() {
-                    Game = new BF3Game(String.Empty, 25200) {
+                    Game = new Battlefield3Game(String.Empty, 25200) {
                         Additional = "",
                         Password = ""
                     }
@@ -80,7 +80,7 @@ namespace Procon.Core.Test.TextCommands {
                 Security = security,
                 //Languages = languages,
                 Connection = new Connection() {
-                    Game = new BF3Game(String.Empty, 25200) {
+                    Game = new Battlefield3Game(String.Empty, 25200) {
                         Additional = "",
                         Password = ""
                     }
@@ -155,7 +155,7 @@ namespace Procon.Core.Test.TextCommands {
             TextCommandController textCommands = new TextCommandController() {
                 //Languages = languages,
                 Connection = new Connection() {
-                    Game = new BF3Game(String.Empty, 25200) {
+                    Game = new Battlefield3Game(String.Empty, 25200) {
                         Additional = "",
                         Password = ""
                     }

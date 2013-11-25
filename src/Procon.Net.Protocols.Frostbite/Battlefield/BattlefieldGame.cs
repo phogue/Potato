@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Globalization;
 using System.Linq;
+using Procon.Net.Protocols.Objects;
+using Procon.Net.Protocols.Frostbite.Objects;
 
-namespace Procon.Net.Protocols.Frostbite.BF {
-    using Procon.Net.Protocols.Objects;
-    using Procon.Net.Protocols.Frostbite.Objects;
+namespace Procon.Net.Protocols.Frostbite.Battlefield {
+    public abstract class BattlefieldGame : FrostbiteGame {
 
-    public abstract class BFGame : FrostbiteGame {
-
-        protected BFGame(string hostName, ushort port) : base(hostName, port) {
+        protected BattlefieldGame(string hostName, ushort port) : base(hostName, port) {
 
         }
 

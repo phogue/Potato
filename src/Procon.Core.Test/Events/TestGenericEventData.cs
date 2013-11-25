@@ -5,7 +5,6 @@ using System.Linq;
 using NUnit.Framework;
 using Procon.Core.Events;
 using Procon.Net;
-using Procon.Net.Protocols.Frostbite.BF.BF3.Objects;
 using Procon.Net.Protocols.Objects;
 
 namespace Procon.Core.Test.Events {

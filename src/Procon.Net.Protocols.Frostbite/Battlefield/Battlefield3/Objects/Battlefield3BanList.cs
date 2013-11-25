@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using Procon.Net.Protocols.Frostbite.Objects;
 
-namespace Procon.Net.Protocols.Frostbite.BF.BF4.Objects {
-    using Procon.Net.Protocols.Frostbite.Objects;
-
+namespace Procon.Net.Protocols.Frostbite.Battlefield.BF3.Objects {
     [Serializable]
-    public class BF4BanList : FrostbiteBanList {
+    public class Battlefield3BanList : FrostbiteBanList {
 
         public override FrostbiteBanList Parse(List<string> words) {
 

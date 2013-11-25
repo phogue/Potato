@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using Procon.Net.Protocols.Objects;
+using Procon.Net.Protocols.Frostbite.Objects;
 
-namespace Procon.Net.Protocols.Frostbite.BF.BF4.Objects {
-    using Procon.Net.Protocols.Objects;
-    using Procon.Net.Protocols.Frostbite.Objects;
-
+namespace Procon.Net.Protocols.Frostbite.Battlefield.BF4.Objects {
     [Serializable]
-    public class BF4FrostbiteMapList : FrostbiteMapList {
+    public class Battlefield4FrostbiteMapList : FrostbiteMapList {
 
         public override FrostbiteMapList Parse(List<string> words) {
 

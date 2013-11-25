@@ -7,8 +7,8 @@ using Procon.Core.Connections;
 using Procon.Core.Security;
 using Procon.Net.Geolocation;
 using Procon.Net.Protocols;
+using Procon.Net.Protocols.Frostbite.Battlefield.BF3;
 using Procon.Net.Protocols.Objects;
-using Procon.Net.Protocols.Frostbite.BF.BF3;
 using Procon.Fuzzy.Tokens.Primitive.Temporal;
 
 namespace Procon.Core.Test.TextCommands.Fuzzy {
@@ -187,7 +187,7 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
                 Security = security,
                 //Languages = languages,
                 Connection = new Connection() {
-                    Game = new BF3Game(String.Empty, 25200) {
+                    Game = new Battlefield3Game(String.Empty, 25200) {
                         Additional = "",
                         Password = ""
                     }

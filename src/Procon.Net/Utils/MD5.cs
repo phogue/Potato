@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Text;
 
 namespace Procon.Net.Utils {
@@ -7,21 +8,11 @@ namespace Procon.Net.Utils {
         static readonly System.Security.Cryptography.MD5 Hasher = System.Security.Cryptography.MD5.Create();
 
         public static String File(String path) {
-            if (System.IO.File.Exists(path)) {
-                return Data(System.IO.File.ReadAllBytes(path));
-            } 
-            return string.Empty;
+            return System.IO.File.Exists(path) ? Data(System.IO.File.ReadAllBytes(path)) : string.Empty;
         }
 
         public static String Data(byte[] data) {
-            StringBuilder stringifyHash = new StringBuilder();
-
-            byte[] hash = Hasher.ComputeHash(data);
-            for (int x = 0; x < hash.Length; x++) {
-                stringifyHash.Append(hash[x].ToString("x2"));
-            }
-
-            return stringifyHash.ToString();
+            return MD5.Hasher.ComputeHash(data).Select(x => x.ToString("x2")).Aggregate((a, b) => a + b);
         }
 
         public static String String(String data) {

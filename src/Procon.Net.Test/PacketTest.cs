@@ -21,7 +21,12 @@ namespace Procon.Net.Test {
 
         [Test]
         public void TestPacketParameterConstructor() {
-            MockPacket packet = new MockPacket(PacketOrigin.Server, PacketType.Response);
+            MockPacket packet = new MockPacket() {
+                Packet = {
+                    Origin = PacketOrigin.Server,
+                    Type = PacketType.Response
+                }
+            };
 
             Assert.AreEqual(PacketOrigin.Server, packet.Packet.Origin);
             Assert.AreEqual(PacketType.Response, packet.Packet.Type);

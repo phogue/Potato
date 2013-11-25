@@ -54,14 +54,6 @@ namespace Procon.Net {
         public IPEndPoint RemoteEndPoint { get; set; }
 
         public Packet() {
-            this.Words = new List<String>();
-            this.Stamp = DateTime.Now;
-        }
-
-        // Used if we'll be using EncodePacket to send to the server.
-        public Packet(PacketOrigin origin, PacketType type) {
-            this.Origin = origin;
-            this.Type = type;
             this.RequestId = null;
             this.Stamp = DateTime.Now;
             this.Words = new List<String>();

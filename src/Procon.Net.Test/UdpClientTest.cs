@@ -62,9 +62,11 @@ namespace Procon.Net.Test {
                 packetWait.Set();
             };
 
-            client.Send(new MockPacket(PacketOrigin.Client, PacketType.Request) {
+            client.Send(new MockPacket() {
                 Packet = {
-                    RequestId = 1
+                    RequestId = 1,
+                    Origin = PacketOrigin.Client,
+                    Type = PacketType.Request
                 },
                 Text = "TestBasicPacketSend"
             });
@@ -90,9 +92,11 @@ namespace Procon.Net.Test {
                 packetWait.Set();
             };
 
-            client.Send(new MockPacket(PacketOrigin.Client, PacketType.Request) {
+            client.Send(new MockPacket() {
                 Packet = {
-                    RequestId = 1
+                    RequestId = 1,
+                    Origin = PacketOrigin.Client,
+                    Type = PacketType.Request
                 },
                 Text = "TestBasicPacketSend"
             });
@@ -128,9 +132,11 @@ namespace Procon.Net.Test {
                 packetWait.Set();
             };
 
-            client.Send(new MockPacket(PacketOrigin.Client, PacketType.Request) {
+            client.Send(new MockPacket() {
                 Packet = {
-                    RequestId = 1
+                    RequestId = 1,
+                    Origin = PacketOrigin.Client,
+                    Type = PacketType.Request
                 },
                 Text = "TestBasicPacketSend"
             });

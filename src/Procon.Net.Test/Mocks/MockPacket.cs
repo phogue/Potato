@@ -22,13 +22,5 @@ namespace Procon.Net.Test.Mocks {
         public MockPacket() : base() {
             this.Packet = new Packet();
         }
-
-        public MockPacket(PacketOrigin origin, PacketType type) {
-            this.Packet = new Packet(origin, type);
-        }
-
-        public override string ToString() {
-            return String.Format("{0} {1} {2} {3}", this.Packet.Origin, this.Packet.Type, this.Packet.RequestId, this.Packet.Text);
-        }
     }
 }

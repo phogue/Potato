@@ -210,6 +210,10 @@ namespace Procon.Net {
                 packets = this.Action(action as Raw);
             }
 
+            if (packets != null) {
+                packets = packets.Where(packet => packet != null).ToList();
+            }
+
             return packets;
         }
 
@@ -261,11 +265,11 @@ namespace Procon.Net {
 
             if (wrapper != null) {
                 if (this.Client != null && (this.Client.ConnectionState == ConnectionState.ConnectionReady || this.Client.ConnectionState == ConnectionState.ConnectionLoggedIn)) {
-                    this.Client.Send(wrapper);
+                    sent = this.Client.Send(wrapper);
                 }
             }
 
-            return null;
+            return sent;
         }
 
         /// <summary>

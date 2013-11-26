@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using Procon.Net.Attributes;
 
 namespace Procon.Net.Protocols.Frostbite.Battlefield.BattlefieldBadCompany2 {
-    [GameType(Type = CommonGameType.BF_BC2, Name = "Battlefield: Bad Company 2", Provider = "Myrcon")]
+    [GameDeclaration(Type = CommonGameType.BF_BC2, Name = "Battlefield: Bad Company 2", Provider = "Myrcon")]
     public class BFBC2Game : BattlefieldGame {
 
         public BFBC2Game(string hostName, ushort port) : base(hostName, port) {
@@ -14,7 +13,5 @@ namespace Procon.Net.Protocols.Frostbite.Battlefield.BattlefieldBadCompany2 {
                 "ServerUptime",     "RoundTime",     "GameMod",          "Mappack"
             };
         }
-
-
     }
 }

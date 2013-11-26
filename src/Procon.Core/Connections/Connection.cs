@@ -22,22 +22,8 @@ namespace Procon.Core.Connections {
         /// </summary>
         public Guid ConnectionGuid { get; set; }
 
-        public String ProtocolProvider {
-            get { return this.Game != null ? this.Game.ProtocolProvider : String.Empty; }
-            // ReSharper disable ValueParameterNotUsed
-            set { }
-            // ReSharper restore ValueParameterNotUsed
-        }
-
-        public String GameType {
-            get { return this.Game != null ? this.Game.GameType : String.Empty; }
-            // ReSharper disable ValueParameterNotUsed
-            set { }
-            // ReSharper restore ValueParameterNotUsed
-        }
-
-        public String GameName {
-            get { return this.Game != null ? this.Game.GameName : String.Empty; }
+        public GameType GameType {
+            get { return this.Game != null ? this.Game.GameType as GameType : null; }
             // ReSharper disable ValueParameterNotUsed
             set { }
             // ReSharper restore ValueParameterNotUsed
@@ -609,7 +595,7 @@ namespace Procon.Core.Connections {
 
                     if ((prefix = this.TextCommands.GetValidTextCommandPrefix(prefix)) != null) {
                         this.Execute(new Command() {
-                            GameType = this.GameType,
+                            GameType = this.GameType.Type,
                             Origin = CommandOrigin.Plugin,
                             Uid = chat.Now.Players.First().Uid,
                             CommandType = CommandType.TextCommandsExecute,

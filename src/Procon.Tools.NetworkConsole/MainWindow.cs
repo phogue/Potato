@@ -25,7 +25,6 @@ using System.Linq;
 using System.Windows.Forms;
 using System.Reflection;
 using System.Timers;
-using Procon.Net.Attributes;
 using Procon.Net.Protocols;
 
 namespace Procon.Tools.NetworkConsole {
@@ -35,7 +34,7 @@ namespace Procon.Tools.NetworkConsole {
 
     public partial class MainWindow : Form {
 
-        private Dictionary<GameTypeAttribute, Type> Games { get; set; }
+        private Dictionary<IGameType, Type> Games { get; set; }
 
         // Console
         private LinkedList<string> CommandHistory { get; set; }

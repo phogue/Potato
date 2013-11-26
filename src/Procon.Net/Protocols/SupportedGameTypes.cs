@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
-using Procon.Net.Attributes;
 
 namespace Procon.Net.Protocols {
     public static class SupportedGameTypes {
@@ -12,7 +11,7 @@ namespace Procon.Net.Protocols {
         /// <summary>
         /// List of cached supported game type attributes attached to their actual type.
         /// </summary>
-        private static Dictionary<GameTypeAttribute, Type> _supportedGames;
+        private static Dictionary<IGameType, Type> _supportedGames;
 
         /// <summary>
         /// Late loads Procon.Net.Protocols.*.dll's 
@@ -32,9 +31,9 @@ namespace Procon.Net.Protocols {
             return assemblies;
         }
 
-        public static Dictionary<GameTypeAttribute, Type> GetSupportedGames() {
+        public static Dictionary<IGameType, Type> GetSupportedGames() {
 
-            Dictionary<GameTypeAttribute, Type> games = SupportedGameTypes._supportedGames;
+            Dictionary<IGameType, Type> games = SupportedGameTypes._supportedGames;
 
             if (games == null) {
 
@@ -45,18 +44,18 @@ namespace Procon.Net.Protocols {
 
                 // Cache the results 
                 SupportedGameTypes._supportedGames = games = (from gameClassType in assemblies.SelectMany(assembly => assembly.GetTypes())
-                                                let gameType = (gameClassType.GetCustomAttributes(typeof(GameTypeAttribute), false) as IEnumerable<GameTypeAttribute>).FirstOrDefault()
+                                                              let gameType = (gameClassType.GetCustomAttributes(typeof(IGameType), false) as IEnumerable<IGameType>).FirstOrDefault()
                                                 where gameType != null &&
                                                       gameClassType != null &&
                                                       gameClassType.IsClass == true &&
                                                       gameClassType.IsAbstract == false &&
                                                       gameClassType.Namespace != null &&
                                                       supportedGamesNamespame.IsMatch(gameClassType.Namespace) == true &&
-                                                      typeof(Game).IsAssignableFrom(gameClassType)
+                                                      typeof(IGame).IsAssignableFrom(gameClassType)
                                                 select new {
                                                     Name = gameType,
                                                     Type = gameClassType
-                                                }).ToDictionary(w => w.Name, w => w.Type);
+                                                }).ToDictionary(w => new GameType(w.Name) as IGameType, w => w.Type);
             }
 
             return games;

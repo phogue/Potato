@@ -61,8 +61,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ClientBase.cs" />
+    <Compile Include="GameDeclarationAttribute.cs" />
     <Compile Include="IClient.cs" />
     <Compile Include="IGame.cs" />
+    <Compile Include="IGameType.cs" />
     <Compile Include="IPacket.cs" />
     <Compile Include="IPacketDispatcher.cs" />
     <Compile Include="IPacketQueue.cs" />
@@ -74,7 +76,7 @@
     <Compile Include="Geolocation\IGeolocate.cs" />
     <Compile Include="Geolocation\Location.cs" />
     <Compile Include="PacketDispatch.cs" />
-    <Compile Include="Attributes\GameTypeAttribute.cs" />
+    <Compile Include="GameType.cs" />
     <Compile Include="Client.cs" />
     <Compile Include="ClientEventArgs.cs" />
     <Compile Include="ClientEventType.cs" />

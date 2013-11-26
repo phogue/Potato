@@ -35,11 +35,10 @@ namespace Procon.Net {
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="gameConfigPath"></param>
-        /// <param name="protocolProvider"></param>
-        /// <param name="protocolName"></param>
+        /// <param name="type"></param>
         /// <returns></returns>
-        public static T Load<T>(String gameConfigPath, String protocolProvider, String protocolName) where T : GameConfig {
-            return GameConfig.Load<T>(GameConfig.Path(gameConfigPath, protocolProvider, protocolName));
+        public static T Load<T>(String gameConfigPath, IGameType type) where T : GameConfig {
+            return GameConfig.Load<T>(GameConfig.Path(gameConfigPath, type.Provider, type.Type));
         }
 
         /// <summary>

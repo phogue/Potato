@@ -2,13 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using Procon.Net.Attributes;
 using Procon.Net.Protocols.Frostbite.Battlefield.Battlefield4.Objects;
 using Procon.Net.Protocols.Objects;
 using Procon.Net.Protocols.Frostbite.Objects;
 
 namespace Procon.Net.Protocols.Frostbite.Battlefield.Battlefield4 {
-    [GameType(Type = CommonGameType.BF_4, Name = "Battlefield 4", Provider = "Myrcon")]
+    [GameDeclaration(Type = CommonGameType.BF_4, Name = "Battlefield 4", Provider = "Myrcon")]
     public class Battlefield4Game : BattlefieldGame {
 
         public Battlefield4Game(string hostName, ushort port)

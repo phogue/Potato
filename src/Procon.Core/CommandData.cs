@@ -6,7 +6,6 @@ using Procon.Core.Connections.Plugins;
 using Procon.Core.Events;
 using Procon.Core.Repositories;
 using Procon.Net;
-using Procon.Net.Attributes;
 
 namespace Procon.Core {
     using Procon.Core.Security;
@@ -32,7 +31,7 @@ namespace Procon.Core {
         /// <summary>
         /// Game types attached to this event.
         /// </summary>
-        public List<GameTypeAttribute> GameTypes { get; set; }
+        public List<GameType> GameTypes { get; set; }
 
         /// <summary>
         /// Groups effected by this event.

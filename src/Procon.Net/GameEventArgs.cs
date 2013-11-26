@@ -24,7 +24,7 @@ namespace Procon.Net {
         /// <summary>
         /// The game type itself (BlackOps, BFBC2)
         /// </summary>
-        public String GameType { get; set; }
+        public GameType GameType { get; set; }
 
         /// <summary>
         /// Data describing the effected data before the event occured.

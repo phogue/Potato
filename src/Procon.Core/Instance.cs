@@ -9,7 +9,6 @@ using Procon.Core.Localization;
 using Procon.Core.Remote;
 using Procon.Core.Scheduler;
 using Procon.Core.Security;
-using Procon.Net.Attributes;
 using Procon.Net.Protocols;
 
 namespace Procon.Core {
@@ -357,14 +356,14 @@ namespace Procon.Core {
                             new CommandParameter() {
                                 Data = {
                                     Content = new List<String>() {
-                                        connection.ProtocolProvider
+                                        connection.GameType.Provider
                                     }
                                 }
                             },
                             new CommandParameter() {
                                 Data = {
                                     Content = new List<String>() {
-                                        connection.GameType
+                                        connection.GameType.Type
                                     }
                                 }
                             },
@@ -533,7 +532,7 @@ namespace Procon.Core {
                 // As long as we have less than the maximum amount of connections...
                 if (this.Connections.Count < this.Variables.Get(CommonVariableNames.MaximumGameConnections, 9000)) {
                     // As long as the connection for that specific game, hostname, and port does not exist...
-                    if (this.Connections.FirstOrDefault(c => c.GameType.ToString(CultureInfo.InvariantCulture) == gameTypeType && c.Hostname == hostName && c.Port == port) == null) {
+                    if (this.Connections.FirstOrDefault(c => c.GameType.Type == gameTypeType && c.Hostname == hostName && c.Port == port) == null) {
                         // As long as the game type is defined...
 
                         Type gameType = SupportedGameTypes.GetSupportedGames().Where(g => g.Key.Provider == gameTypeProvider && g.Key.Type == gameTypeType).Select(g => g.Value).FirstOrDefault();
@@ -670,8 +669,8 @@ namespace Procon.Core {
             UInt16 port = parameters["port"].First<UInt16>();
 
             Connection connection = this.Connections.FirstOrDefault(c => 
-                c.ProtocolProvider == gameTypeProvider && 
-                c.GameType == gameTypeType && 
+                c.GameType.Provider == gameTypeProvider && 
+                c.GameType.Type == gameTypeType && 
                 c.Hostname == hostName && 
                 c.Port == port
             );
@@ -688,7 +687,7 @@ namespace Procon.Core {
                     Status = CommandResultType.Success,
                     Now = new CommandData() {
                         Connections = new List<Connection>(this.Connections),
-                        GameTypes = new List<GameTypeAttribute>(SupportedGameTypes.GetSupportedGames().Select(k => k.Key)),
+                        GameTypes = new List<GameType>(SupportedGameTypes.GetSupportedGames().Select(k => k.Key as GameType)),
                         Repositories = new List<Repository>(this.Packages.RemoteRepositories),
                         Packages = new List<FlatPackedPackage>(this.Packages.Packages),
                         Groups = new List<Group>(this.Security.Groups),

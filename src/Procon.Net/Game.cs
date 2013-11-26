@@ -4,7 +4,6 @@ using System.Linq;
 using Procon.Net.Protocols;
 
 namespace Procon.Net {
-    using Procon.Net.Attributes;
     using Procon.Net.Protocols.Objects;
 
     public abstract class Game : IGame {
@@ -24,60 +23,24 @@ namespace Procon.Net {
         /// The password used to authenticate with the server.
         /// </summary>
         public string Password { get; set; }
-        
-        /// <summary>
-        /// Who is providing the protocol implementation being used
-        /// </summary>
-        public String ProtocolProvider {
-            get {
-                if (String.IsNullOrEmpty(this._mProtocolProvider) == true) {
-                    GameTypeAttribute[] attributes = this.GetType().GetCustomAttributes(typeof(GameTypeAttribute), false) as GameTypeAttribute[];
 
-                    if (attributes != null && attributes.Any() == true) {
-                        this._mProtocolProvider = attributes.First().Provider;
+        /// <summary>
+        /// Describing attribute of this game.
+        /// </summary>
+        public virtual IGameType GameType {
+            get {
+                if (this._gameType == null) {
+                    IGameType attribute = this.GetType().GetCustomAttributes(typeof(IGameType), false).Cast<IGameType>().FirstOrDefault();
+
+                    if (attribute != null) {
+                        this._gameType = new GameType(attribute);
                     }
                 }
 
-                return this._mProtocolProvider;
+                return _gameType; 
             }
         }
-        private String _mProtocolProvider = String.Empty;
-
-        /// <summary>
-        /// The game type of this implementation, used for serialization and such to identify the current game.
-        /// </summary>
-        public String GameType {
-            get {
-                if (this._mGameType == Protocols.CommonGameType.None) {
-                    GameTypeAttribute[] attributes = this.GetType().GetCustomAttributes(typeof(GameTypeAttribute), false) as GameTypeAttribute[];
-
-                    if (attributes != null && attributes.Any() == true) {
-                        this._mGameType = attributes.First().Type;
-                    }
-                }
-
-                return this._mGameType;
-            }
-        }
-        private String _mGameType = CommonGameType.None;
-
-        /// <summary>
-        /// The game name of this implementation, used for serialization and such to identify the current game.
-        /// </summary>
-        public String GameName {
-            get {
-                if (String.IsNullOrEmpty(this._mGameName) == true) {
-                    GameTypeAttribute[] attributes = this.GetType().GetCustomAttributes(typeof(GameTypeAttribute), false) as GameTypeAttribute[];
-
-                    if (attributes != null && attributes.Any() == true) {
-                        this._mGameName = attributes.First().Name;
-                    }
-                }
-
-                return this._mGameName;
-            }
-        }
-        private String _mGameName = String.Empty;
+        private IGameType _gameType;
 
         /// <summary>
         /// The base path to look for game configs.
@@ -145,7 +108,7 @@ namespace Procon.Net {
                     this,
                     new GameEventArgs() {
                         GameEventType = eventType,
-                        GameType = this.GameType,
+                        GameType = this.GameType as GameType, // Required for serialization. How to get around?
                         GameState = this.State,
                         Then = before ?? new GameEventData(),
                         Now = after ?? new GameEventData(),

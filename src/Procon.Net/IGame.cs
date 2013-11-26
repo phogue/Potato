@@ -27,19 +27,9 @@ namespace Procon.Net {
         String Additional { get; set; }
 
         /// <summary>
-        /// Who is providing the protocol implementation being used
+        /// Describing attribute of this game.
         /// </summary>
-        String ProtocolProvider { get; }
-
-        /// <summary>
-        /// The game type of this implementation, used for serialization and such to identify the current game.
-        /// </summary>
-        String GameType { get; }
-
-        /// <summary>
-        /// The game name of this implementation, used for serialization and such to identify the current game.
-        /// </summary>
-        String GameName { get; }
+        IGameType GameType { get; }
 
         /// <summary>
         /// The base path to look for game configs.

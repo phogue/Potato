@@ -2,12 +2,11 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using Procon.Net.Attributes;
 using Procon.Net.Protocols.Objects;
 using Procon.Net.Protocols.Frostbite.Objects;
 
 namespace Procon.Net.Protocols.Frostbite.MedalOfHonor {
-    [GameType(Type = CommonGameType.MOH_2010, Name = "Medal of Honor 2010", Provider = "Myrcon")]
+    [GameDeclaration(Type = CommonGameType.MOH_2010, Name = "Medal of Honor 2010", Provider = "Myrcon")]
     public class MohGame : FrostbiteGame {
 
         public MohGame(string hostName, ushort port) : base(hostName, port) {

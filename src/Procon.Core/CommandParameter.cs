@@ -9,7 +9,7 @@ using Procon.Core.Localization;
 using Procon.Core.Repositories;
 using Procon.Core.Security;
 using Procon.Core.Variables;
-using Procon.Net.Attributes;
+using Procon.Net;
 using Procon.Net.Protocols.Objects;
 
 namespace Procon.Core {
@@ -23,7 +23,7 @@ namespace Procon.Core {
         private static readonly List<Type> KnownTypes = new List<Type>() {
             typeof (String),
             typeof (Connection),
-            typeof (GameTypeAttribute),
+            typeof (GameType),
             typeof (Security.Group),
             typeof (Account),
             typeof (Permission),
@@ -72,7 +72,7 @@ namespace Procon.Core {
             else if (t == typeof(Connection) && this.Data.Connections != null) {
                 all = this.Data.Connections.Cast<Object>().ToList();
             }
-            else if (t == typeof(GameTypeAttribute) && this.Data.GameTypes != null) {
+            else if (t == typeof(GameType) && this.Data.GameTypes != null) {
                 all = this.Data.GameTypes.Cast<Object>().ToList();
             }
             else if (t == typeof(Security.Group) && this.Data.Groups != null) {

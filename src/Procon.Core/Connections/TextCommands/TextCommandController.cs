@@ -204,7 +204,7 @@ namespace Procon.Core.Connections.TextCommands {
             Player player = this.Connection.GameState.PlayerList.FirstOrDefault(x => x.Uid == command.Uid);
 
             if (speaker != null) {
-                AccountPlayer accountPlayer = speaker.Players.FirstOrDefault(p => p.GameType == this.Connection.GameType);
+                AccountPlayer accountPlayer = speaker.Players.FirstOrDefault(p => p.GameType == this.Connection.GameType.Type);
 
                 if (accountPlayer != null) {
                     player = this.Connection.GameState.PlayerList.FirstOrDefault(x => x.Uid == accountPlayer.Uid);

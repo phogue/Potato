@@ -421,15 +421,14 @@ namespace Procon.Core.Connections {
             Chat chat = parameters["chat"].First<Chat>();
 
             if (this.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
-                this.Game.Action(chat);
-
                 result = new CommandResultArgs() {
                     Success = true,
                     Status = CommandResultType.Success,
                     Now = new CommandData() {
                         Chats = new List<Chat>() {
                             chat
-                        }
+                        },
+                        Packets = this.Game.Action(chat)
                     }
                 };
             }
@@ -446,15 +445,14 @@ namespace Procon.Core.Connections {
             Kill kill = parameters["kill"].First<Kill>();
             
             if (this.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
-                this.Game.Action(kill);
-
                 result = new CommandResultArgs() {
                     Success = true,
                     Status = CommandResultType.Success,
                     Now = new CommandData() {
                         Kills = new List<Kill>() {
                             kill
-                        }
+                        },
+                        Packets = this.Game.Action(kill)
                     }
                 };
             }
@@ -471,15 +469,14 @@ namespace Procon.Core.Connections {
             Move move = parameters["move"].First<Move>();
 
             if (this.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
-                this.Game.Action(move);
-
                 result = new CommandResultArgs() {
                     Success = true,
                     Status = CommandResultType.Success,
                     Now = new CommandData() {
                         Moves = new List<Move>() {
                             move
-                        }
+                        },
+                        Packets = this.Game.Action(move)
                     }
                 };
             }
@@ -496,15 +493,14 @@ namespace Procon.Core.Connections {
             Kick kick = parameters["kick"].First<Kick>();
 
             if (this.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
-                this.Game.Action(kick);
-
                 result = new CommandResultArgs() {
                     Success = true,
                     Status = CommandResultType.Success,
                     Now = new CommandData() {
                         Kicks = new List<Kick>() {
                             kick
-                        }
+                        },
+                        Packets = this.Game.Action(kick)
                     }
                 };
             }

@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Xml.Serialization;
+using Newtonsoft.Json;
 using Procon.Core.Connections.Plugins;
 using Procon.Core.Events;
 using Procon.Core.Repositories;
+using Procon.Net;
 using Procon.Net.Attributes;
 
 namespace Procon.Core {
@@ -142,6 +145,13 @@ namespace Procon.Core {
         public List<CommandResultArgs> CommandResults { get; set; }
 
         /// <summary>
+        /// The raw packets attached to this command or event, if any.
+        /// </summary>
+        /// <remarks>Requires concrete class for serialization. We cast to this type to ensure appdomain serialization can occur.</remarks>
+        [XmlIgnore, JsonIgnore]
+        public List<IPacket> Packets { get; set; }
+
+        /// <summary>
         /// Empties and clears the list, but does not remove the actual elements as they
         /// may reference data that still exists.
         /// </summary>
@@ -211,6 +221,9 @@ namespace Procon.Core {
 
             if (this.CommandResults != null) this.CommandResults.Clear();
             this.CommandResults = null;
+
+            if (this.Packets != null) this.Packets.Clear();
+            this.Packets = null;
         }
     }
 }

@@ -140,9 +140,7 @@ namespace Procon.Net {
         /// Initiates the login to the game server.
         /// </summary>
         /// <param name="password"></param>
-        protected virtual void Login(string password) {
-
-        }
+        protected abstract void Login(string password);
 
         /// <summary>
         /// Process a generic network action
@@ -180,30 +178,23 @@ namespace Procon.Net {
             return packets;
         }
 
-        protected virtual List<IPacket> Action(Chat chat) {
-            return null;
-        }
+        protected abstract List<IPacket> Action(Chat chat);
 
-        protected virtual List<IPacket> Action(Kick kick) {
-            return null;
-        }
+        protected abstract List<IPacket> Action(Kick kick);
 
-        protected virtual List<IPacket> Action(Ban ban) {
-            return null;
-        }
+        protected abstract List<IPacket> Action(Ban ban);
 
-        protected virtual List<IPacket> Action(Map map) {
-            return null;
-        }
+        protected abstract List<IPacket> Action(Map map);
 
-        protected virtual List<IPacket> Action(Kill kill) {
-            return null;
-        }
+        protected abstract List<IPacket> Action(Kill kill);
 
-        protected virtual List<IPacket> Action(Move move) {
-            return null;
-        }
+        protected abstract List<IPacket> Action(Move move);
 
+        /// <summary>
+        /// Send a raw packet to the sever, creating or wrapping it first.
+        /// </summary>
+        /// <param name="raw"></param>
+        /// <returns></returns>
         protected virtual List<IPacket> Action(Raw raw) {
             List<IPacket> packets = new List<IPacket>();
 

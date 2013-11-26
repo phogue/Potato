@@ -220,7 +220,14 @@ namespace Procon.Tools.NetworkConsole {
         private void Execute(string commandText) {
 
             if (this.ActiveGame != null) {
-                this.ActiveGame.Action(new Raw(commandText) { ActionType = NetworkActionType.NetworkSend });
+                this.ActiveGame.Action(new Raw() {
+                    ActionType = NetworkActionType.NetworkSend,
+                    Now = {
+                        Content = {
+                            commandText
+                        }
+                    }
+                });
             }
         }
 

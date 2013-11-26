@@ -955,6 +955,12 @@ namespace Procon.Net.Protocols.Frostbite {
 
         #endregion
 
+        /// <summary>
+        /// Create a packet from a string
+        /// </summary>
+        /// <param name="format"></param>
+        /// <param name="args"></param>
+        /// <returns></returns>
         protected override IPacketWrapper CreatePacket(string format, params object[] args) {
             String packetText = format;
 
@@ -972,6 +978,17 @@ namespace Procon.Net.Protocols.Frostbite {
                     RequestId = null,
                     Words = packetText.Wordify()
                 }
+            };
+        }
+
+        /// <summary>
+        /// Wraps a completed packet in a packet wrapper, allowing it to be sent to the server.
+        /// </summary>
+        /// <param name="packet"></param>
+        /// <returns></returns>
+        protected override IPacketWrapper WrapPacket(IPacket packet) {
+            return new FrostbitePacket() {
+                Packet = packet
             };
         }
 

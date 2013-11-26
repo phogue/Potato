@@ -181,7 +181,14 @@ namespace Procon.Net.Utils.Tests {
                     game.ClientEvent += handler;
 
                     // 3 b. Send our packet to initiate this command test
-                    game.Action(new Raw() { PacketText = command.Send.Text, ActionType = NetworkActionType.NetworkSend });
+                    game.Action(new Raw() {
+                        ActionType = NetworkActionType.NetworkSend,
+                        Now = {
+                            Content = {
+                                command.Send.Text
+                            }
+                        }
+                    });
 
                     if ((success = success && expectedResults.WaitOne(this.Timeout * 1000)) == false) {
                         String[] expecting = command.Responses.Where(response => response.Found == false).Select(response => response.ToString()).Union(command.Requests.Where(request => request.Found == false).Select(request => request.ToString())).ToArray();

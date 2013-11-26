@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Xml.Serialization;
+using Newtonsoft.Json;
 
 namespace Procon.Net.Protocols.Objects {
 
@@ -31,5 +33,11 @@ namespace Procon.Net.Protocols.Objects {
         /// List of items attached to this action, if any.
         /// </summary>
         public List<Item> Items { get; set; }
+
+        /// <summary>
+        /// List of packets attached to this action, if any.
+        /// </summary>
+        [XmlIgnore,JsonIgnore]
+        public List<IPacket> Packets { get; set; }
     }
 }

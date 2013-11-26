@@ -1,19 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Procon.Net.Protocols.Objects {
+    /// <summary>
+    /// Send a list of packets to the server. 
+    /// </summary>
     public sealed class Raw : NetworkAction {
 
-        /// <summary>
-        /// The text part of a packet
-        /// </summary>
-        public String PacketText { get; set; }
-
         public Raw() : base() {
-            this.PacketText = String.Empty;
-        }
-
-        public Raw(String format, params object[] args) : base() {
-            this.PacketText = String.Format(format, args);
+            this.Now.Content = new List<String>();
+            this.Now.Packets = new List<IPacket>();
         }
     }
 }

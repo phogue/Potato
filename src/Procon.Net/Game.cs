@@ -245,11 +245,9 @@ namespace Procon.Net {
             List<IPacket> packets = new List<IPacket>();
 
             if (raw.ActionType == NetworkActionType.NetworkSend) {
-                IPacketWrapper wrapper = this.CreatePacket(raw.PacketText);
+                packets.AddRange(raw.Now.Content.Select(text => this.Send(this.CreatePacket(text))));
 
-                this.Send(wrapper);
-
-                packets.Add(wrapper.Packet);
+                packets.AddRange(raw.Now.Packets.Select(packet => this.Send(this.WrapPacket(packet))));
             }
 
             return packets;
@@ -322,5 +320,12 @@ namespace Procon.Net {
         /// <param name="args"></param>
         /// <returns></returns>
         protected abstract IPacketWrapper CreatePacket(String format, params object[] args);
+
+        /// <summary>
+        /// Wraps a completed packet in a packet wrapper, allowing it to be sent to the server.
+        /// </summary>
+        /// <param name="packet"></param>
+        /// <returns></returns>
+        protected abstract IPacketWrapper WrapPacket(IPacket packet);
     }
 }

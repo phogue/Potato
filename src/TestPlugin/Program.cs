@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Procon.Net;
 
 namespace TestPlugin {
     using Tests;
@@ -27,6 +28,12 @@ namespace TestPlugin {
             new TestPluginsWebUi(),
             new TestPluginsCommands()
         };
+
+        /// <summary>
+        /// A list of request id's we're waiting for responses on. This is not correct as the operation is asynchronous, so
+        /// there is a good chance the response will be missed.
+        /// </summary>
+        protected List<int?> KillCommandWaitingRequestIds { get; set; } 
 
         public Program() : base() {
             //this.Author = "Phogue";
@@ -149,13 +156,23 @@ namespace TestPlugin {
             return command.Result;
         }
 
+        public override void ClientEvent(ClientEventArgs e) {
+            base.ClientEvent(e);
+
+            if (e.EventType == ClientEventType.ClientPacketReceived) {
+                if (this.KillCommandWaitingRequestIds != null && this.KillCommandWaitingRequestIds.Contains(e.Packet.RequestId) == true) {
+                    Console.WriteLine("RECV: {0} {1} {2} {3}", e.Packet.Origin, e.Packet.Type, e.Packet.RequestId, e.Packet.DebugText);
+                }
+            }
+        }
+
         protected CommandResultArgs KillCommand(Command command, Dictionary<String, CommandParameter> parameters) {
             CommandResultArgs e = parameters["e"].First<CommandResultArgs>();
 
             TextCommandMatch match = e.Now.TextCommandMatches.First();
 
             if (match.Players != null && match.Players.Count > 0) {
-                this.ProxyNetworkAction(new Kill() {
+                CommandResultArgs result = this.ProxyNetworkAction(new Kill() {
                     Scope = {
                         Players = new List<Player>(match.Players),
                         Content = new List<String>() {
@@ -163,6 +180,13 @@ namespace TestPlugin {
                         }
                     }
                 });
+
+                this.KillCommandWaitingRequestIds = new List<int?>();
+
+                foreach (IPacket packet in result.Now.Packets) {
+                    this.KillCommandWaitingRequestIds.Add(packet.RequestId);
+                    Console.WriteLine("SEND: {0} {1} {2} {3}", packet.Origin, packet.Type, packet.RequestId, packet.DebugText);
+                }
             }
 
             return command.Result;

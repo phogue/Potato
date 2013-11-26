@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net;
-using System.Xml.Serialization;
-using Newtonsoft.Json;
 
 namespace Procon.Net {
 
@@ -50,7 +48,9 @@ namespace Procon.Net {
         /// </summary>
         public List<String> Words { get; set; }
 
-        [XmlIgnore, JsonIgnore]
+        /// <summary>
+        /// The remote end point for the packet.
+        /// </summary>
         public IPEndPoint RemoteEndPoint { get; set; }
 
         public Packet() {

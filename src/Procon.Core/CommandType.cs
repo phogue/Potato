@@ -122,6 +122,10 @@ namespace Procon.Core {
 
         // Game actions
 
+        /// <summary>
+        /// Raw packet to send to the server.
+        /// </summary>
+        NetworkProtocolActionRaw,
         NetworkProtocolActionChat,
         NetworkProtocolActionKill,
         NetworkProtocolActionMove,

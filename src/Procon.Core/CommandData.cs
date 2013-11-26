@@ -145,9 +145,14 @@ namespace Procon.Core {
         public List<CommandResultArgs> CommandResults { get; set; }
 
         /// <summary>
+        /// Raw packets (in plain or completed format) 
+        /// </summary>
+        [XmlIgnore, JsonIgnore]
+        public List<IPacket> Raws { get; set; }
+
+        /// <summary>
         /// The raw packets attached to this command or event, if any.
         /// </summary>
-        /// <remarks>Requires concrete class for serialization. We cast to this type to ensure appdomain serialization can occur.</remarks>
         [XmlIgnore, JsonIgnore]
         public List<IPacket> Packets { get; set; }
 
@@ -221,6 +226,9 @@ namespace Procon.Core {
 
             if (this.CommandResults != null) this.CommandResults.Clear();
             this.CommandResults = null;
+
+            if (this.Raws != null) this.Raws.Clear();
+            this.Raws = null;
 
             if (this.Packets != null) this.Packets.Clear();
             this.Packets = null;

@@ -131,6 +131,17 @@ namespace Procon.Core.Connections {
                     new CommandDispatchHandler(this.NetworkProtocolQueryMapPool)
                 }, {
                     new CommandAttribute() {
+                        CommandType = CommandType.NetworkProtocolActionRaw,
+                        ParameterTypes = new List<CommandParameterType>() {
+                            new CommandParameterType() {
+                                Name = "raw",
+                                Type = typeof(Raw)
+                            }
+                        }
+                    },
+                    new CommandDispatchHandler(this.NetworkProtocolActionRaw)
+                }, {
+                    new CommandAttribute() {
                         CommandType = CommandType.NetworkProtocolActionChat,
                         ParameterTypes = new List<CommandParameterType>() {
                             new CommandParameterType() {
@@ -405,6 +416,27 @@ namespace Procon.Core.Connections {
                     },
                     Now = new CommandData() {
                         Maps = new List<Map>(this.Game.State.MapPool)
+                    }
+                };
+            }
+            else {
+                result = CommandResultArgs.InsufficientPermissions;
+            }
+
+            return result;
+        }
+
+        public CommandResultArgs NetworkProtocolActionRaw(Command command, Dictionary<String, CommandParameter> parameters) {
+            CommandResultArgs result = null;
+
+            Raw raw = parameters["raw"].First<Raw>();
+
+            if (this.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
+                result = new CommandResultArgs() {
+                    Success = true,
+                    Status = CommandResultType.Success,
+                    Now = new CommandData() {
+                        Packets = this.Game.Action(raw)
                     }
                 };
             }

@@ -36,6 +36,7 @@ namespace Procon.Core {
             typeof (Repository),
             typeof (FlatPackedPackage),
             typeof (HostPlugin),
+            typeof (Raw),
             typeof (Chat),
             typeof (Player),
             typeof (Kill),
@@ -109,6 +110,9 @@ namespace Procon.Core {
             }
             else if (t == typeof(HostPlugin) && this.Data.Plugins != null) {
                 all = this.Data.Plugins.Cast<Object>().ToList();
+            }
+            else if (t == typeof(Raw) && this.Data.Raws != null) {
+                all = this.Data.Raws.Cast<Object>().ToList();
             }
             else if (t == typeof(Chat) && this.Data.Chats != null) {
                 all = this.Data.Chats.Cast<Object>().ToList();

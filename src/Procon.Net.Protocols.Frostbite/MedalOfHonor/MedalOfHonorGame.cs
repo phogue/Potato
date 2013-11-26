@@ -20,7 +20,8 @@ namespace Procon.Net.Protocols.Frostbite.MOH {
             };
         }
 
-        protected override void Action(Move move) {
+        protected override List<IPacket> Action(Move move) {
+            List<IPacket> packets = new List<IPacket>();
 
             // admin.movePlayer <name: player name> <teamId: Team ID> <squadId: Squad ID> <forceKill: boolean>
             bool forceMove = (move.ActionType == NetworkActionType.NetworkPlayerForceMove || move.ActionType == NetworkActionType.NetworkPlayerForceRotate);
@@ -49,14 +50,18 @@ namespace Procon.Net.Protocols.Frostbite.MOH {
                 }
             }
 
-            this.Send(
-                this.CreatePacket(
-                    "admin.movePlayer \"{0}\" {1} {2}",
-                    movePlayer.Name,
-                    move.Now.Groups.First(group => group.Type == Grouping.Team).Uid,
-                    FrostbiteConverter.BoolToString(forceMove)
+            packets.Add(
+                this.Send(
+                    this.CreatePacket(
+                        "admin.movePlayer \"{0}\" {1} {2}",
+                        movePlayer.Name,
+                        move.Now.Groups.First(group => group.Type == Grouping.Team).Uid,
+                        FrostbiteConverter.BoolToString(forceMove)
+                    )
                 )
             );
+
+            return packets;
         }
     }
 }

@@ -975,7 +975,9 @@ namespace Procon.Net.Protocols.Frostbite {
             };
         }
 
-        protected override void Action(Chat chat) {
+        protected override List<IPacket> Action(Chat chat) {
+            List<IPacket> packets = new List<IPacket>();
+
             if (chat.Now.Content != null) {
                 foreach (String chatMessage in chat.Now.Content) {
                     String subset = String.Empty;
@@ -994,117 +996,132 @@ namespace Procon.Net.Protocols.Frostbite {
                     }
 
                     if (chat.ActionType == NetworkActionType.NetworkSay) {
-                        this.Send(this.CreatePacket("admin.say \"{0}\" {1}", chatMessage, subset));
+                        packets.Add(this.Send(this.CreatePacket("admin.say \"{0}\" {1}", chatMessage, subset)));
                     }
                     else if (chat.ActionType == NetworkActionType.NetworkYell || chat.ActionType == NetworkActionType.NetworkYellOnly) {
-                        this.Send(this.CreatePacket("admin.yell \"{0}\" 8000 {1}", chatMessage, subset));
+                        packets.Add(this.Send(this.CreatePacket("admin.yell \"{0}\" 8000 {1}", chatMessage, subset)));
                     }
                 }
             }
+
+            return packets;
         }
 
-        protected override void Action(Kill kill) {
+        protected override List<IPacket> Action(Kill kill) {
+            List<IPacket> packets = new List<IPacket>();
+
             String reason = kill.Scope.Content != null ? kill.Scope.Content.FirstOrDefault() : String.Empty;
 
             if (kill.Scope.Players != null) {
                 foreach (Player target in kill.Scope.Players) {
-                    this.Send(this.CreatePacket("admin.killPlayer \"{0}\"", target.Name));
+                    packets.Add(this.Send(this.CreatePacket("admin.killPlayer \"{0}\"", target.Name)));
 
                     if (string.IsNullOrEmpty(reason) == false) {
-                        this.Send(this.CreatePacket("admin.say \"{0}\" player {1}", reason, target.Name));
+                        packets.Add(this.Send(this.CreatePacket("admin.say \"{0}\" player {1}", reason, target.Name)));
                     }
                 }
             }
+
+            return packets;
         }
 
-        protected override void Action(Kick kick) {
+        protected override List<IPacket> Action(Kick kick) {
+            List<IPacket> packets = new List<IPacket>();
+
             String reason = kick.Scope.Content != null ? kick.Scope.Content.FirstOrDefault() : String.Empty;
 
             foreach (Player player in kick.Scope.Players) {
-                this.Send(string.IsNullOrEmpty(reason) == false ? this.CreatePacket("admin.kickPlayer \"{0}\" \"{1}\"", player.Name, reason) : this.CreatePacket("admin.kickPlayer \"{0}\"", player.Name));
+                packets.Add(this.Send(string.IsNullOrEmpty(reason) == false ? this.CreatePacket("admin.kickPlayer \"{0}\" \"{1}\"", player.Name, reason) : this.CreatePacket("admin.kickPlayer \"{0}\"", player.Name)));
             }
+
+            return packets;
         }
 
-        protected override void Action(Ban ban) {
+        protected override List<IPacket> Action(Ban ban) {
+            List<IPacket> packets = new List<IPacket>();
+
             String reason = ban.Scope.Content != null ? ban.Scope.Content.FirstOrDefault() : String.Empty;
 
             if (ban.ActionType == NetworkActionType.NetworkBan) {
                 if (ban.Time.Context == TimeSubsetContext.Permanent) {
                     if (String.IsNullOrEmpty(reason) == true) {
-                        this.Send(this.CreatePacket("banList.add guid \"{0}\" perm", ban.Scope.Players.First().Uid));
+                        packets.Add(this.Send(this.CreatePacket("banList.add guid \"{0}\" perm", ban.Scope.Players.First().Uid)));
                     }
                     else {
-                        this.Send(this.CreatePacket("banList.add guid \"{0}\" perm \"{1}\"", ban.Scope.Players.First().Uid, reason));
+                        packets.Add(this.Send(this.CreatePacket("banList.add guid \"{0}\" perm \"{1}\"", ban.Scope.Players.First().Uid, reason)));
                     }
                 }
                 else if (ban.Time.Context == TimeSubsetContext.Time && ban.Time.Length.HasValue == true) {
                     if (String.IsNullOrEmpty(reason) == true) {
-                        this.Send(this.CreatePacket("banList.add guid \"{0}\" seconds {1}", ban.Scope.Players.First().Uid, ban.Time.Length.Value.TotalSeconds));
+                        packets.Add(this.Send(this.CreatePacket("banList.add guid \"{0}\" seconds {1}", ban.Scope.Players.First().Uid, ban.Time.Length.Value.TotalSeconds)));
                     }
                     else {
-                        this.Send(this.CreatePacket("banList.add guid \"{0}\" seconds {1} \"{2}\"", ban.Scope.Players.First().Uid, ban.Time.Length.Value.TotalSeconds, reason));
+                        packets.Add(this.Send(this.CreatePacket("banList.add guid \"{0}\" seconds {1} \"{2}\"", ban.Scope.Players.First().Uid, ban.Time.Length.Value.TotalSeconds, reason)));
                     }
                 }
             }
             else if (ban.ActionType == NetworkActionType.NetworkUnban) {
-                this.Send(this.CreatePacket("banList.remove guid \"{0}\"", ban.Scope.Players.First().Uid));
+                packets.Add(this.Send(this.CreatePacket("banList.remove guid \"{0}\"", ban.Scope.Players.First().Uid)));
             }
 
-            this.Send(this.CreatePacket("banList.save"));
+            packets.Add(this.Send(this.CreatePacket("banList.save")));
+
+            return packets;
         }
 
-        protected override void Action(Map map) {
+        protected override List<IPacket> Action(Map map) {
+            List<IPacket> packets = new List<IPacket>();
 
             if (map.ActionType == NetworkActionType.NetworkMapAppend) {
-                this.Send(this.CreatePacket("mapList.append \"{0}\" {1}", map.Name, map.Rounds));
+                packets.Add(this.Send(this.CreatePacket("mapList.append \"{0}\" {1}", map.Name, map.Rounds)));
 
-                this.Send(this.CreatePacket("mapList.save"));
+                packets.Add(this.Send(this.CreatePacket("mapList.save")));
 
-                this.Send(this.CreatePacket("mapList.list rounds"));
+                packets.Add(this.Send(this.CreatePacket("mapList.list rounds")));
             }
             // Added by Imisnew2 - You should check this phogue!
             else if (map.ActionType == NetworkActionType.NetworkMapChangeMode) {
                 if (map.GameMode != null) {
-                    this.Send(this.CreatePacket("admin.setPlaylist \"{0}\"", map.GameMode.Name));
+                    packets.Add(this.Send(this.CreatePacket("admin.setPlaylist \"{0}\"", map.GameMode.Name)));
                 }
             }
             else if (map.ActionType == NetworkActionType.NetworkMapInsert) {
-                this.Send(this.CreatePacket("mapList.insert {0} \"{1}\" {2}", map.Index, map.Name, map.Rounds));
+                packets.Add(this.Send(this.CreatePacket("mapList.insert {0} \"{1}\" {2}", map.Index, map.Name, map.Rounds)));
 
-                this.Send(this.CreatePacket("mapList.save"));
+                packets.Add(this.Send(this.CreatePacket("mapList.save")));
 
-                this.Send(this.CreatePacket("mapList.list rounds"));
+                packets.Add(this.Send(this.CreatePacket("mapList.list rounds")));
             }
             else if (map.ActionType == NetworkActionType.NetworkMapRemove) {
                 var matchingMaps = this.State.MapList.Where(x => x.Name == map.Name).OrderByDescending(x => x.Index);
 
-                foreach (Map match in matchingMaps) {
-                    this.Send(this.CreatePacket("mapList.remove {0}", match.Index));
-                }
+                packets.AddRange(matchingMaps.Select(match => this.Send(this.CreatePacket("mapList.remove {0}", match.Index))));
 
-                this.Send(this.CreatePacket("mapList.save"));
+                packets.Add(this.Send(this.CreatePacket("mapList.save")));
 
-                this.Send(this.CreatePacket("mapList.list rounds"));
+                packets.Add(this.Send(this.CreatePacket("mapList.list rounds")));
             }
             else if (map.ActionType == NetworkActionType.NetworkMapRemoveIndex) {
-                this.Send(this.CreatePacket("mapList.remove {0}", map.Index));
+                packets.Add(this.Send(this.CreatePacket("mapList.remove {0}", map.Index)));
 
-                this.Send(this.CreatePacket("mapList.list rounds"));
+                packets.Add(this.Send(this.CreatePacket("mapList.list rounds")));
             }
             else if (map.ActionType == NetworkActionType.NetworkMapNextIndex) {
-                this.Send(this.CreatePacket("mapList.nextLevelIndex {0}", map.Index));
+                packets.Add(this.Send(this.CreatePacket("mapList.nextLevelIndex {0}", map.Index)));
             }
             else if (map.ActionType == NetworkActionType.NetworkMapRestart || map.ActionType == NetworkActionType.NetworkMapRoundRestart) {
-                this.Send(this.CreatePacket("admin.restartRound"));
+                packets.Add(this.Send(this.CreatePacket("admin.restartRound")));
             }
             else if (map.ActionType == NetworkActionType.NetworkMapNext || map.ActionType == NetworkActionType.NetworkMapRoundNext) {
-                this.Send(this.CreatePacket("admin.runNextRound"));
+                packets.Add(this.Send(this.CreatePacket("admin.runNextRound")));
             }
             else if (map.ActionType == NetworkActionType.NetworkMapClear) {
-                this.Send(this.CreatePacket("mapList.clear"));
+                packets.Add(this.Send(this.CreatePacket("mapList.clear")));
 
-                this.Send(this.CreatePacket("mapList.save"));
+                packets.Add(this.Send(this.CreatePacket("mapList.save")));
             }
+
+            return packets;
         }
 
         protected override void Login(string password) {

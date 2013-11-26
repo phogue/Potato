@@ -61,7 +61,8 @@ namespace Procon.Net {
         /// Sends a packet to the server asynchronously
         /// </summary>
         /// <param name="wrapper"></param>
-        public override void Send(IPacketWrapper wrapper) {
+        public override IPacket Send(IPacketWrapper wrapper) {
+            IPacket sent = null;
 
             if (wrapper != null) {
                 if (this.BeforePacketSend(wrapper) == false && this.NetworkStream != null) {
@@ -70,9 +71,13 @@ namespace Procon.Net {
 
                     if (bytePacket != null && bytePacket.Length > 0) {
                         this.NetworkStream.BeginWrite(bytePacket, 0, bytePacket.Length, this.SendAsynchronousCallback, wrapper);
+
+                        sent = wrapper.Packet;
                     }
                 }
             }
+
+            return sent;
         }
 
         /// <summary>

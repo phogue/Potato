@@ -73,7 +73,9 @@ namespace Procon.Net {
             }
         }
 
-        public override void Send(IPacketWrapper wrapper) {
+        public override IPacket Send(IPacketWrapper wrapper) {
+            IPacket sent = null;
+
             if (wrapper != null) {
                 if (this.BeforePacketSend(wrapper) == false && this.Client != null) {
 
@@ -81,9 +83,13 @@ namespace Procon.Net {
 
                     if (bytePacket != null && bytePacket.Length > 0) {
                         this.Client.BeginSend(bytePacket, bytePacket.Length, this.RemoteEndPoint, this.SendAsynchronousCallback, wrapper);
+
+                        sent = wrapper.Packet;
                     }
                 }
             }
+
+            return sent;
         }
 
         protected virtual void ReadCallback(IAsyncResult ar) {

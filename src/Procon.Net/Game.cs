@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Procon.Net.Protocols;
 
@@ -184,58 +185,70 @@ namespace Procon.Net {
         /// Process a generic network action
         /// </summary>
         /// <param name="action"></param>
-        public virtual void Action(NetworkAction action) {
+        public virtual List<IPacket> Action(NetworkAction action) {
+            List<IPacket> packets = null;
+
             if (action is Chat) {
-                this.Action(action as Chat);
+                packets = this.Action(action as Chat);
             }
             else if (action is Kick) {
-                this.Action(action as Kick);
+                packets = this.Action(action as Kick);
             }
             else if (action is Ban) {
-                this.Action(action as Ban);
+                packets = this.Action(action as Ban);
             }
             else if (action is Map) {
-                this.Action(action as Map);
+                packets = this.Action(action as Map);
             }
             else if (action is Kill) {
-                this.Action(action as Kill);
+                packets = this.Action(action as Kill);
             }
             else if (action is Move) {
-                this.Action(action as Move);
+                packets = this.Action(action as Move);
             }
             else if (action is Raw) {
-                this.Action(action as Raw);
+                packets = this.Action(action as Raw);
             }
+
+            return packets;
         }
 
-        protected virtual void Action(Chat chat) {
-
+        protected virtual List<IPacket> Action(Chat chat) {
+            return null;
         }
 
-        protected virtual void Action(Kick kick) {
-
+        protected virtual List<IPacket> Action(Kick kick) {
+            return null;
         }
 
-        protected virtual void Action(Ban ban) {
-
+        protected virtual List<IPacket> Action(Ban ban) {
+            return null;
         }
 
-        protected virtual void Action(Map map) {
-
+        protected virtual List<IPacket> Action(Map map) {
+            return null;
         }
 
-        protected virtual void Action(Kill kill) {
-
+        protected virtual List<IPacket> Action(Kill kill) {
+            return null;
         }
 
-        protected virtual void Action(Move move) {
-
+        protected virtual List<IPacket> Action(Move move) {
+            return null;
         }
 
-        protected virtual void Action(Raw raw) {
+        protected virtual List<IPacket> Action(Raw raw) {
+            List<IPacket> packets = new List<IPacket>();
+
             if (raw.ActionType == NetworkActionType.NetworkSend) {
-                this.Send(this.CreatePacket(raw.PacketText));
+                IPacketWrapper wrapper = this.CreatePacket(raw.PacketText);
+
+                this.Send(wrapper);
+
+                packets.Add(wrapper.Packet);
             }
+
+            return packets;
         }
 
         /// <summary>
@@ -243,12 +256,16 @@ namespace Procon.Net {
         /// This allows for the login command to be sent to a ready connection, otherwise no login packets could be sent.
         /// </summary>
         /// <param name="wrapper"></param>
-        public virtual void Send(IPacketWrapper wrapper) {
+        public virtual IPacket Send(IPacketWrapper wrapper) {
+            IPacket sent = null;
+
             if (wrapper != null) {
                 if (this.Client != null && (this.Client.ConnectionState == ConnectionState.ConnectionReady || this.Client.ConnectionState == ConnectionState.ConnectionLoggedIn)) {
                     this.Client.Send(wrapper);
                 }
             }
+
+            return null;
         }
 
         /// <summary>

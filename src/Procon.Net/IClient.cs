@@ -60,8 +60,9 @@ namespace Procon.Net {
         /// <summary>
         /// Sends a packet to the server
         /// </summary>
-        /// <param name="packet"></param>
-        void Send(IPacketWrapper wrapper);
+        /// <param name="wrapper"></param>
+        /// <returns>The packet sent to the server.</returns>
+        IPacket Send(IPacketWrapper wrapper);
 
         /// <summary>
         /// Attempts a connection to the server using the specified host name and port.

@@ -45,7 +45,8 @@ namespace Procon.Net.Protocols.Frostbite {
             }
         }
 
-        public override void Send(IPacketWrapper wrapper) {
+        public override IPacket Send(IPacketWrapper wrapper) {
+            IPacket sent = null;
 
             if (wrapper.Packet.RequestId == null) {
                 wrapper.Packet.RequestId = this.AcquireSequenceNumber;
@@ -55,13 +56,13 @@ namespace Procon.Net.Protocols.Frostbite {
 
             if (wrapper.Packet.Origin == PacketOrigin.Server && wrapper.Packet.Type == PacketType.Response) {
                 // I don't think this will ever be encountered since OnPacketReceived calls the base.Send.
-                base.Send(wrapper);
+                sent = base.Send(wrapper);
             }
             else {
                 // Null return because we're not popping a packet, just checking to see if this one needs to be queued.
                 IPacketWrapper poppedWrapper = null;
                 if ((poppedWrapper = this.PacketQueue.PacketSend(wrapper)) != null) {
-                    base.Send(poppedWrapper);
+                    sent = base.Send(poppedWrapper);
                 }
 
                 // Shutdown if we're just waiting for a response to an old packet.
@@ -69,6 +70,8 @@ namespace Procon.Net.Protocols.Frostbite {
                     this.Shutdown(new Exception("Failed to hear response to packet within two minutes, forced shutdown."));
                 }
             }
+
+            return sent;
         }
 
         protected override void ShutdownConnection() {

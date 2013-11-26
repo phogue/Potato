@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Procon.Net.Protocols.Objects;
 
 namespace Procon.Net {
@@ -57,17 +58,18 @@ namespace Procon.Net {
         event Game.ClientEventHandler ClientEvent;
 
         /// <summary>
-        /// Process a generic network action
+        /// Process a generic network action. All packets generated and sent to the server should be returned here.
         /// </summary>
-        /// <param name="action"></param>
-        void Action(NetworkAction action);
+        /// <param name="action">The action to take, which will be conerted to packets to send to the game server</param>
+        /// <returns>A list of packets generated</returns>
+        List<IPacket> Action(NetworkAction action);
 
         /// <summary>
         /// Sends a packet to the server, provided a client exists and the connection is open and ready or logged in.
         /// This allows for the login command to be sent to a ready connection, otherwise no login packets could be sent.
         /// </summary>
         /// <param name="packet"></param>
-        void Send(IPacketWrapper packet);
+        IPacket Send(IPacketWrapper packet);
 
         /// <summary>
         /// Attempts a connection to the server.

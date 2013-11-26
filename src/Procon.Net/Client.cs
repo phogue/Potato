@@ -187,7 +187,7 @@ namespace Procon.Net {
         /// Sends a packet to the server
         /// </summary>
         /// <param name="wrapper"></param>
-        public abstract void Send(IPacketWrapper wrapper);
+        public abstract IPacket Send(IPacketWrapper wrapper);
 
         public virtual IAsyncResult BeginRead() {
             return null;

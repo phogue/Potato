@@ -67,6 +67,7 @@
     <Compile Include="PacketDispatcherTest.cs" />
     <Compile Include="Mocks\MockPacketDispatcher.cs" />
     <Compile Include="PacketDispatchTest.cs" />
+    <Compile Include="Protocols\PunkBuster\PunkBusterTest.cs" />
     <Compile Include="UdpClientTest.cs" />
     <Compile Include="MarkManagerTest.cs" />
     <Compile Include="Mocks\MockPacketSerializer.cs" />
@@ -89,6 +90,7 @@
       <Name>Procon.Net</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

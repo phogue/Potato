@@ -19,7 +19,7 @@ namespace Procon.Net.Protocols.PunkBuster {
         /// <returns></returns>
         public static IPunkBuster Deserialize(String text) {
             IPunkBuster deserialized = null;
-
+            
             foreach (KeyValuePair<Regex, Type> command in PunkBusterSerializer.Commands) {
                 Match matchedCommand = command.Key.Match(text);
 
@@ -27,6 +27,8 @@ namespace Procon.Net.Protocols.PunkBuster {
                     deserialized = (IPunkBuster)Activator.CreateInstance(command.Value);
 
                     deserialized.Deserialize(matchedCommand);
+
+                    break;
                 }
             }
 

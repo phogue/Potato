@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Procon.Net.Attributes;
-using Procon.Net.Protocols.Frostbite.Battlefield.BF3.Objects;
+using Procon.Net.Protocols.Frostbite.Battlefield.Battlefield3.Objects;
 using Procon.Net.Protocols.Objects;
 using Procon.Net.Protocols.Frostbite.Objects;
 
-namespace Procon.Net.Protocols.Frostbite.Battlefield.BF3 {
+namespace Procon.Net.Protocols.Frostbite.Battlefield.Battlefield3 {
     [GameType(Type = CommonGameType.BF_3, Name = "Battlefield 3", Provider = "Myrcon")]
     public class Battlefield3Game : BattlefieldGame {
 

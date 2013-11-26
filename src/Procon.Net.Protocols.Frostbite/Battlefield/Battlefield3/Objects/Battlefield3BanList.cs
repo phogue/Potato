@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Procon.Net.Protocols.Frostbite.Objects;
 
-namespace Procon.Net.Protocols.Frostbite.Battlefield.BF3.Objects {
+namespace Procon.Net.Protocols.Frostbite.Battlefield.Battlefield3.Objects {
     [Serializable]
     public class Battlefield3BanList : FrostbiteBanList {
 

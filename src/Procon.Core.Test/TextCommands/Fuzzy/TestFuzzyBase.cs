@@ -7,7 +7,7 @@ using Procon.Core.Connections;
 using Procon.Core.Security;
 using Procon.Net.Geolocation;
 using Procon.Net.Protocols;
-using Procon.Net.Protocols.Frostbite.Battlefield.BF3;
+using Procon.Net.Protocols.Frostbite.Battlefield.Battlefield3;
 using Procon.Net.Protocols.Objects;
 using Procon.Fuzzy.Tokens.Primitive.Temporal;
 

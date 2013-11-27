@@ -124,6 +124,7 @@
     <Compile Include="Protocols\Objects\NetworkObject.cs" />
     <Compile Include="Protocols\Objects\Role.cs" />
     <Compile Include="Protocols\Objects\GameState.cs" />
+    <Compile Include="Protocols\Objects\SettingsData.cs" />
     <Compile Include="Protocols\Objects\Spawn.cs" />
     <Compile Include="Protocols\Objects\TimeSubset.cs" />
     <Compile Include="Protocols\Objects\TimeSubsetContext.cs" />

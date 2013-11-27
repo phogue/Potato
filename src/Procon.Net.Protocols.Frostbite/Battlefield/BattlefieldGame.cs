@@ -20,7 +20,7 @@ namespace Procon.Net.Protocols.Frostbite.Battlefield {
                 // admin.movePlayer <name: player name> <teamId: Team ID> <squadId: Squad ID> <forceKill: boolean>
                 bool forceMove = (move.ActionType == NetworkActionType.NetworkPlayerForceMove || move.ActionType == NetworkActionType.NetworkPlayerForceRotate);
 
-                Map selectedMap = this.State.MapPool.Find(x => String.Compare(x.Name, this.State.Settings.MapName, StringComparison.OrdinalIgnoreCase) == 0);
+                Map selectedMap = this.State.MapPool.Find(x => String.Compare(x.Name, this.State.Settings.Current.MapNameText, StringComparison.OrdinalIgnoreCase) == 0);
 
                 foreach (Player movePlayer in move.Scope.Players.Select(scopePlayer => this.State.PlayerList.First(player => player.Uid == scopePlayer.Uid)).Where(movePlayer => movePlayer != null)) {
                     if (selectedMap != null) {

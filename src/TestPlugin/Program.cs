@@ -132,8 +132,8 @@ namespace TestPlugin {
                 });
                 */
 
-                if (this.GameState.Settings.MaxConsoleLines.HasValue == true) {
-                    foreach (string line in String.Join(", ", this.ShortCommandList(e).ToArray()).WordWrap(this.GameState.Settings.MaxConsoleLines.Value)) {
+                if (this.GameState.Settings.Maximum.ChatLinesCount.HasValue == true) {
+                    foreach (string line in String.Join(", ", this.ShortCommandList(e).ToArray()).WordWrap(this.GameState.Settings.Maximum.ChatLinesCount.Value)) {
                         output.Now.Content.Add(line);
                     }
                 }
@@ -143,8 +143,8 @@ namespace TestPlugin {
                     //string description = String.Format("> {0}: {1}", alternate.Commands.FirstOrDefault(), this.NamespacePlayerLoc(e.Now.Players.First(), this.GetType().Namespace + "." + alternate.PluginUid, alternate.PluginCommand));
                     string description = String.Format("> {0}", alternate.Commands.FirstOrDefault());
 
-                    if (this.GameState.Settings.MaxConsoleLines.HasValue == true) {
-                        foreach (string line in description.WordWrap(this.GameState.Settings.MaxConsoleLines.Value)) {
+                    if (this.GameState.Settings.Maximum.ChatLinesCount.HasValue == true) {
+                        foreach (string line in description.WordWrap(this.GameState.Settings.Maximum.ChatLinesCount.Value)) {
                             output.Now.Content.Add(line);
                         }
                     }

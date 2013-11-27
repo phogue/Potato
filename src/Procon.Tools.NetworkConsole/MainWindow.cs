@@ -100,7 +100,7 @@ namespace Procon.Tools.NetworkConsole {
 
         private void btnConnect_Click(object sender, EventArgs e) {
 
-            if (this.ActiveGame == null || (this.ActiveGame != null && this.ActiveGame.State != null && this.ActiveGame.State.Settings.ConnectionState == ConnectionState.ConnectionDisconnected))
+            if (this.ActiveGame == null || (this.ActiveGame != null && this.ActiveGame.State != null && this.ActiveGame.State.Settings.Current.ConnectionState == ConnectionState.ConnectionDisconnected))
             {
 
                 ushort port = 10156;

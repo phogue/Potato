@@ -100,7 +100,7 @@ namespace Procon.Tools.NetworkConsole.Controls {
                                     Text = e.GameEventType.ToString()
                                 },
                                 new ListViewItem.ListViewSubItem() {
-                                    Text = e.GameState.Settings.ConnectionState.ToString()
+                                    Text = e.GameState.Settings.Current.ConnectionState.ToString()
                                 },
                                 new ListViewItem.ListViewSubItem() {
                                     Text = String.Empty

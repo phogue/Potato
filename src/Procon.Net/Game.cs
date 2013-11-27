@@ -83,7 +83,7 @@ namespace Procon.Net {
             this.Client.ConnectionStateChanged += (sender, state) => {
                 this.OnClientEvent(ClientEventType.ClientConnectionStateChange);
 
-                this.State.Settings.ConnectionState = state;
+                this.State.Settings.Current.ConnectionState = state;
 
                 if (state == ConnectionState.ConnectionReady) {
                     this.Login(this.Password);

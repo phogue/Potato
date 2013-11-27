@@ -24,7 +24,7 @@ namespace Procon.Net.Protocols.Frostbite.MedalOfHonor {
             // admin.movePlayer <name: player name> <teamId: Team ID> <squadId: Squad ID> <forceKill: boolean>
             bool forceMove = (move.ActionType == NetworkActionType.NetworkPlayerForceMove || move.ActionType == NetworkActionType.NetworkPlayerForceRotate);
 
-            Map selectedMap = this.State.MapPool.Find(x => String.Compare(x.Name, this.State.Settings.MapName, StringComparison.OrdinalIgnoreCase) == 0);
+            Map selectedMap = this.State.MapPool.Find(x => String.Compare(x.Name, this.State.Settings.Current.MapNameText, StringComparison.OrdinalIgnoreCase) == 0);
 
             Player movePlayer = this.State.PlayerList.First(player => player.Uid == move.Scope.Players.First().Uid);
 

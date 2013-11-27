@@ -27,7 +27,7 @@ namespace Procon.Net.Protocols.Frostbite {
         protected DateTime NextAuxiliarySynchronization = DateTime.Now;
 
         protected FrostbiteGame(string hostName, ushort port) : base(hostName, port) {
-            State.Settings.MaxConsoleLines = 100;
+            State.Settings.Maximum.ChatLinesCount = 100;
             
             this.PacketDispatcher.Append(new Dictionary<PacketDispatch, PacketDispatcher.PacketDispatchHandler>() {
                 {
@@ -320,20 +320,20 @@ namespace Procon.Net.Protocols.Frostbite {
 
                 FrostbiteServerInfo info = new FrostbiteServerInfo().Parse(response.Packet.Words.GetRange(1, response.Packet.Words.Count - 1), this.ServerInfoParameters);
 
-                this.State.Settings.ServerName = info.ServerName;
-                this.State.Settings.MapName = info.Map;
-                this.State.Settings.GameModeName = info.GameMode;
+                this.State.Settings.Current.ServerNameText = info.ServerName;
+                this.State.Settings.Current.MapNameText = info.Map;
+                this.State.Settings.Current.GameModeNameText = info.GameMode;
                 // this.State.Variables.ConnectionState = ConnectionState.Connected; String b = info.ConnectionState;
-                this.State.Settings.PlayerCount = info.PlayerCount;
-                this.State.Settings.MaxPlayerCount = info.MaxPlayerCount;
-                this.State.Settings.RoundIndex = info.CurrentRound;
-                this.State.Settings.MaxRoundIndex = info.TotalRounds;
-                this.State.Settings.RankedEnabled = info.Ranked;
-                this.State.Settings.AntiCheatEnabled = info.PunkBuster;
-                this.State.Settings.PasswordProtectionEnabled = info.Passworded;
-                this.State.Settings.UpTimeSeconds = info.ServerUptime;
-                this.State.Settings.RoundTimeSeconds = info.RoundTime;
-                this.State.Settings.ModName = info.GameMod.ToString();
+                this.State.Settings.Current.PlayerCount = info.PlayerCount;
+                this.State.Settings.Maximum.PlayerCount = info.MaxPlayerCount;
+                this.State.Settings.Current.RoundIndex = info.CurrentRound;
+                this.State.Settings.Maximum.RoundIndex = info.TotalRounds;
+                //this.State.Settings.RankedEnabled = info.Ranked;
+                this.State.Settings.Current.AntiCheatEnabled = info.PunkBuster;
+                this.State.Settings.Current.PasswordProtectionEnabled = info.Passworded;
+                this.State.Settings.Current.UpTimeMilliseconds = info.ServerUptime * 1000;
+                this.State.Settings.Current.RoundTimeMilliseconds = info.RoundTime * 1000;
+                this.State.Settings.Current.ModNameText = info.GameMod.ToString();
 
                 if (this.State.MapPool.Count == 0) {
                     if (info.GameMod == GameMods.None) {
@@ -453,7 +453,7 @@ namespace Procon.Net.Protocols.Frostbite {
 
         public void VersionDispatchHandler(IPacketWrapper request, IPacketWrapper response) {
             if (request.Packet.Words.Count >= 3) {
-                this.State.Settings.ServerVersion = request.Packet.Words[2];
+                this.State.Settings.Current.ServerVersionText = request.Packet.Words[2];
             }
         }
 
@@ -538,104 +538,104 @@ namespace Procon.Net.Protocols.Frostbite {
 
         public void VarsServerNameDispatchHandler(IPacketWrapper request, IPacketWrapper response) {
             if (response.Packet.Words.Count >= 2) {
-                this.State.Settings.ServerName = response.Packet.Words[1];
+                this.State.Settings.Current.ServerNameText = response.Packet.Words[1];
             }
         }
 
         public void VarsGamePasswordDispatchHandler(IPacketWrapper request, IPacketWrapper response) {
             if (response.Packet.Words.Count >= 2) {
-                this.State.Settings.Password = response.Packet.Words[1];
+                this.State.Settings.Current.PasswordText = response.Packet.Words[1];
             }
         }
 
         public void VarsGamePunkbusterDispatchHandler(IPacketWrapper request, IPacketWrapper response) {
             bool boolOut = false;
             if (response.Packet.Words.Count >= 2 && bool.TryParse(response.Packet.Words[1], out boolOut)) {
-                this.State.Settings.AntiCheatEnabled = boolOut;
+                this.State.Settings.Current.AntiCheatEnabled = boolOut;
             }
         }
 
         public void VarsHardcoreDispatchHandler(IPacketWrapper request, IPacketWrapper response) {
             bool boolOut = false;
             if (response.Packet.Words.Count >= 2 && bool.TryParse(response.Packet.Words[1], out boolOut)) {
-                this.State.Settings.HardcoreEnabled = boolOut;
+                this.State.Settings.Current.HardcoreEnabled = boolOut;
             }
         }
 
         public void VarsRankedDispatchHandler(IPacketWrapper request, IPacketWrapper response) {
             bool boolOut = false;
             if (response.Packet.Words.Count >= 2 && bool.TryParse(response.Packet.Words[1], out boolOut)) {
-                this.State.Settings.RankedEnabled = boolOut;
+                //this.State.Settings.RankedEnabled = boolOut;
             }
         }
 
         public void VarsRankLimitDispatchHandler(IPacketWrapper request, IPacketWrapper response) {
             int intOut = 0;
             if (response.Packet.Words.Count >= 2 && int.TryParse(response.Packet.Words[1], out intOut)) {
-                this.State.Settings.RankLimit = intOut;
+                this.State.Settings.Maximum.PlayerRank = intOut;
             }
         }
 
         public void VarsTeamBalanceDispatchHandler(IPacketWrapper request, IPacketWrapper response) {
             bool boolOut = false;
             if (response.Packet.Words.Count >= 2 && bool.TryParse(response.Packet.Words[1], out boolOut)) {
-                this.State.Settings.AutoBalanceEnabled = boolOut;
+                this.State.Settings.Current.AutoBalanceEnabled = boolOut;
             }
         }
 
         public void VarsFriendlyFireDispatchHandler(IPacketWrapper request, IPacketWrapper response) {
             bool boolOut = false;
             if (response.Packet.Words.Count >= 2 && bool.TryParse(response.Packet.Words[1], out boolOut)) {
-                this.State.Settings.FriendlyFireEnabled = boolOut;
+                this.State.Settings.Current.FriendlyFireEnabled = boolOut;
             }
         }
 
         public void VarsBannerUrlDispatchHandler(IPacketWrapper request, IPacketWrapper response) {
             if (response.Packet.Words.Count >= 2) {
-                this.State.Settings.BannerUrl = response.Packet.Words[1];
+                this.State.Settings.Current.ServerBannerUrlText = response.Packet.Words[1];
             }
         }
 
         public void VarsServerDescriptionDispatchHandler(IPacketWrapper request, IPacketWrapper response) {
             if (response.Packet.Words.Count >= 2) {
-                this.State.Settings.ServerDescription = response.Packet.Words[1];
+                this.State.Settings.Current.ServerDescriptionText = response.Packet.Words[1];
             }
         }
 
         public void VarsKillCamDispatchHandler(IPacketWrapper request, IPacketWrapper response) {
             bool boolOut;
             if (response.Packet.Words.Count >= 2 && bool.TryParse(response.Packet.Words[1], out boolOut)) {
-                this.State.Settings.KillCameraEnabled = boolOut;
+                this.State.Settings.Current.KillCameraEnabled = boolOut;
             }
         }
 
         public void VarsMiniMapDispatchHandler(IPacketWrapper request, IPacketWrapper response) {
             bool boolOut;
             if (response.Packet.Words.Count >= 2 && bool.TryParse(response.Packet.Words[1], out boolOut)) {
-                this.State.Settings.MiniMapEnabled = boolOut;
+                this.State.Settings.Current.MiniMapEnabled = boolOut;
             }
         }
 
         public void VarsCrossHairDispatchHandler(IPacketWrapper request, IPacketWrapper response) {
             bool boolOut;
             if (response.Packet.Words.Count >= 2 && bool.TryParse(response.Packet.Words[1], out boolOut)) {
-                this.State.Settings.CrossHairEnabled = boolOut;
+                this.State.Settings.Current.CrossHairEnabled = boolOut;
             }
         }
 
         public void VarsIdleTimeoutDispatchHandler(IPacketWrapper request, IPacketWrapper response) {
             int intOut = 0;
             if (response.Packet.Words.Count >= 2 && int.TryParse(response.Packet.Words[1], out intOut)) {
-                this.State.Settings.IdleTimeoutEnabled = intOut != -1;
+                this.State.Settings.Current.IdleTimeoutEnabled = intOut != -1;
 
-                this.State.Settings.IdleTimeoutLimitTimeSeconds = intOut;
+                this.State.Settings.Maximum.IdleTimeoutMilliseconds = intOut * 1000;
             }
         }
 
         public void VarsProfanityFilterDispatchHandler(IPacketWrapper request, IPacketWrapper response) {
             bool boolOut;
             if (response.Packet.Words.Count >= 2 && bool.TryParse(response.Packet.Words[1], out boolOut)) {
-                this.State.Settings.ProfanityFilterEnabled = boolOut;
+                this.State.Settings.Current.ProfanityFilterEnabled = boolOut;
             }
         }
 
@@ -714,18 +714,18 @@ namespace Procon.Net.Protocols.Frostbite {
 
                 if (int.TryParse(request.Packet.Words[2], out currentRound) == true && int.TryParse(request.Packet.Words[3], out totalRounds) == true) {
 
-                    this.State.Settings.RoundIndex = currentRound;
-                    this.State.Settings.MaxRoundIndex = totalRounds;
+                    this.State.Settings.Current.RoundIndex = currentRound;
+                    this.State.Settings.Maximum.RoundIndex = totalRounds;
 
                     // Maps are the same, only a round change
-                    if (String.Compare(this.State.Settings.MapName, request.Packet.Words[1], StringComparison.OrdinalIgnoreCase) == 0)
+                    if (String.Compare(this.State.Settings.Current.MapNameText, request.Packet.Words[1], StringComparison.OrdinalIgnoreCase) == 0)
                         this.OnGameEvent(GameEventType.GameRoundChanged);
                     else {
                         Map selectedMap = this.State.MapPool.Find(x => String.Compare(x.Name, request.Packet.Words[1], StringComparison.OrdinalIgnoreCase) == 0);
 
                         if (selectedMap != null)
-                            this.State.Settings.GameModeName = selectedMap.GameMode.Name;
-                        this.State.Settings.MapName = request.Packet.Words[1];
+                            this.State.Settings.Current.GameModeNameText = selectedMap.GameMode.Name;
+                        this.State.Settings.Current.MapNameText = request.Packet.Words[1];
                         this.OnGameEvent(GameEventType.GameMapChanged);
                     }
                 }

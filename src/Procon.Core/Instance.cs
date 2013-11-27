@@ -234,7 +234,7 @@ namespace Procon.Core {
             if (this.Connections != null) {
                 lock (this.Connections) {
                     foreach (Connection connection in this.Connections.Where(connection => connection.Game != null)) {
-                        if (connection.Game.State != null && connection.Game.State.Settings.ConnectionState == ConnectionState.ConnectionDisconnected) {
+                        if (connection.Game.State != null && connection.Game.State.Settings.Current.ConnectionState == ConnectionState.ConnectionDisconnected) {
                             connection.AttemptConnection();
                         }
                         else {

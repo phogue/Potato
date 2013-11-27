@@ -1,6 +1,7 @@
 ﻿using System;
+using Procon.Net.Data;
 
-namespace Procon.Net {
+namespace Procon.Net.Actions {
 
     [Serializable]
     public abstract class NetworkAction : NetworkObject {

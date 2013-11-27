@@ -4,7 +4,7 @@ using System.Xml.Serialization;
 using Newtonsoft.Json;
 using Procon.Net.Data;
 
-namespace Procon.Net {
+namespace Procon.Net.Actions {
 
     [Serializable]
     public class NetworkActionData {

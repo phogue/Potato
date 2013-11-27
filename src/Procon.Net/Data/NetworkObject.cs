@@ -2,7 +2,7 @@
 using System.Xml.Serialization;
 using Newtonsoft.Json;
 
-namespace Procon.Net {
+namespace Procon.Net.Data {
 
     [Serializable]
     public abstract class NetworkObject : ICloneable {

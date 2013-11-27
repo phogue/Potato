@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Procon.Net {
+namespace Procon.Net.Actions {
 
     [Serializable]
     public enum NetworkActionType {

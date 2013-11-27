@@ -27,6 +27,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.Timers;
 using Procon.Net.Actions;
+using Procon.Net.Data;
 
 namespace Procon.Tools.NetworkConsole.Controls {
     using Procon.Net;

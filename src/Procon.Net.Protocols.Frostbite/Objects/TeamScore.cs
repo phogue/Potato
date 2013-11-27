@@ -1,4 +1,5 @@
 ﻿using System;
+using Procon.Net.Data;
 
 namespace Procon.Net.Protocols.Frostbite.Objects {
     [Serializable]

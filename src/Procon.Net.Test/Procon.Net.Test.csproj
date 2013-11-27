@@ -69,8 +69,8 @@
     <Compile Include="PacketDispatcherTest.cs" />
     <Compile Include="Mocks\MockPacketDispatcher.cs" />
     <Compile Include="PacketDispatchTest.cs" />
-    <Compile Include="Protocols\Objects\Point3DTest.cs" />
-    <Compile Include="Protocols\Objects\PlayerTest.cs" />
+    <Compile Include="Data\Point3DTest.cs" />
+    <Compile Include="Data\PlayerTest.cs" />
     <Compile Include="Protocols\PunkBuster\PunkBusterTest.cs" />
     <Compile Include="UdpClientTest.cs" />
     <Compile Include="MarkManagerTest.cs" />

@@ -1,8 +1,7 @@
-﻿using System.Linq;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using Procon.Net.Data;
 
-namespace Procon.Net.Test.Protocols.Objects {
+namespace Procon.Net.Test.Data {
     [TestFixture]
     public class Point3DTest {
 

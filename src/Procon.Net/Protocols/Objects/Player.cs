@@ -76,6 +76,7 @@ namespace Procon.Net.Protocols.Objects {
         /// <summary>
         /// This player's Kill to Death ratio.
         /// </summary>
+        /// <remarks>This is wrong if the player has no deaths as it should be in infinite k/d r.</remarks>
         public float Kdr {
             get { return (this.Deaths <= 0) ? this.Kills : this.Kills / (float)this.Deaths; }
         }

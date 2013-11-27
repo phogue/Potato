@@ -7,7 +7,8 @@ using System.Runtime.InteropServices;
 using Procon.Core.Events;
 using Procon.Core.Scheduler;
 using Procon.Net;
-using Procon.Net.Protocols.Objects;
+using Procon.Net.Actions;
+using Procon.Net.Data;
 
 namespace Procon.Core.Connections.Plugins {
 

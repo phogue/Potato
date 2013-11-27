@@ -26,10 +26,10 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.Timers;
+using Procon.Net.Actions;
 
 namespace Procon.Tools.NetworkConsole.Controls {
     using Procon.Net;
-    using Procon.Net.Protocols.Objects;
 
     public partial class ChatPanel : UserControl {
 

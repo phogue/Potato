@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Xml.Linq;
 using System.Reflection;
+using Procon.Net.Data;
 
 namespace Procon.Core.Connections.TextCommands.Parsers {
     using Procon.Fuzzy;
     using Procon.Fuzzy.Utils;
     using Procon.Fuzzy.Tokens.Object;
-    using Procon.Net.Protocols.Objects;
     using Procon.Core.Connections;
     using Procon.Core.Security;
     using Procon.Core.Events;

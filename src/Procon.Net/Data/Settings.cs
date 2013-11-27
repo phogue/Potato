@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Procon.Net.Protocols.Objects {
+namespace Procon.Net.Data {
 
     /// <summary>
     /// The current, maximum and minimum settings 

@@ -25,10 +25,11 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using Procon.Net.Actions;
+using Procon.Net.Data;
 
 namespace Procon.Tools.NetworkConsole.Controls {
     using Procon.Net;
-    using Procon.Net.Protocols.Objects;
 
     public partial class PlayerPanel : UserControl {
 
@@ -156,7 +157,7 @@ namespace Procon.Tools.NetworkConsole.Controls {
 
             if (e.GameEventType == GameEventType.GamePlayerlistUpdated) {
 
-                foreach (Player player in e.GameState.PlayerList) {
+                foreach (Player player in e.GameState.Players) {
 
                     ListViewItem currentPlayer = this.lsvPlayerlist
                                                      .Items

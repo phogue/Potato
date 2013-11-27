@@ -1,8 +1,7 @@
 ﻿using System;
+using Procon.Net.Data;
 
 namespace Procon.Net {
-    using Procon.Net.Protocols.Objects;
-
     /// <summary>
     /// Even though a majority of the data inherits from ProtocolObject, we still have
     /// these as seperate fields for serialization.

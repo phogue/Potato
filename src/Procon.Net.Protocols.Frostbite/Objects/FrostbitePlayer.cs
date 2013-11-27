@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using Procon.Net.Protocols.Objects;
+using Procon.Net.Data;
 
 namespace Procon.Net.Protocols.Frostbite.Objects {
 

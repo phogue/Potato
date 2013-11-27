@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Procon.Net.Protocols.Objects {
+namespace Procon.Net.Data {
     /// <summary>
     /// Note that the property names will more than likely lengthen to very specific for their task.
     /// 

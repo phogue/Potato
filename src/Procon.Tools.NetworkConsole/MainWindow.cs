@@ -25,11 +25,11 @@ using System.Linq;
 using System.Windows.Forms;
 using System.Reflection;
 using System.Timers;
+using Procon.Net.Actions;
 using Procon.Net.Protocols;
 
 namespace Procon.Tools.NetworkConsole {
     using Procon.Net;
-    using Procon.Net.Protocols.Objects;
     using Procon.Tools.NetworkConsole.Utils;
 
     public partial class MainWindow : Form {

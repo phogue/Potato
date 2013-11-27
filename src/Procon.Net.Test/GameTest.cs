@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Threading;
 using NUnit.Framework;
-using Procon.Net.Protocols.Objects;
+using Procon.Net.Actions;
 using Procon.Net.Test.Mocks;
 using Procon.Net.Test.Mocks.Game;
 

@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using Procon.Net;
+using Procon.Net.Actions;
+using Procon.Net.Data;
 
 namespace TestPlugin {
     using Tests;
@@ -10,7 +12,6 @@ namespace TestPlugin {
     using Procon.Core.Connections.Plugins;
     using Procon.Core.Connections.TextCommands;
     using Procon.Net.Utils;
-    using Procon.Net.Protocols.Objects;
 
     public class Program : RemotePlugin {
         //Ignore this: - Actually, depending on how you wanna save info for plugins, the actually plugin could save it here.

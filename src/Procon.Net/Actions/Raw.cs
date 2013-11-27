@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Procon.Net.Protocols.Objects {
+namespace Procon.Net.Actions {
     /// <summary>
     /// Send a list of packets to the server. 
     /// </summary>

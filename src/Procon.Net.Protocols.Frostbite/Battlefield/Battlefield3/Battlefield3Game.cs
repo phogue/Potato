@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Procon.Net.Actions;
+using Procon.Net.Data;
 using Procon.Net.Protocols.Frostbite.Battlefield.Battlefield3.Objects;
-using Procon.Net.Protocols.Objects;
 using Procon.Net.Protocols.Frostbite.Objects;
 
 namespace Procon.Net.Protocols.Frostbite.Battlefield.Battlefield3 {
@@ -44,24 +45,24 @@ namespace Procon.Net.Protocols.Frostbite.Battlefield.Battlefield3 {
         protected override void AuxiliarySynchronize() {
             base.AuxiliarySynchronize();
 
-            foreach (Player player in this.State.PlayerList) {
+            foreach (Player player in this.State.Players) {
                 this.SendPlayerPingPacket(player.Name);
             }
         }
 
-        protected override void AdminListPlayersFinalize(FrostbitePlayerList players) {
+        protected override void AdminListPlayersFinalize(FrostbitePlayers players) {
             // If no limits on the subset we just fetched.
             if (players.Subset.Count == 0) {
 
                 // 1. Remove all names in the state list that are not found in the new list (players that have left)
-                this.State.PlayerList.RemoveAll(x => players.Select(y => y.Name).Contains(x.Name) == false);
+                this.State.Players.RemoveAll(x => players.Select(y => y.Name).Contains(x.Name) == false);
 
                 // 2. Add or update any new players
                 foreach (Player player in players) {
-                    Player statePlayer = this.State.PlayerList.Find(x => x.Name == player.Name);
+                    Player statePlayer = this.State.Players.Find(x => x.Name == player.Name);
 
                     if (statePlayer == null) {
-                        this.State.PlayerList.Add(player);
+                        this.State.Players.Add(player);
                     }
                     else {
                         // Already exists, update with any new information we have.
@@ -77,13 +78,13 @@ namespace Procon.Net.Protocols.Frostbite.Battlefield.Battlefield3 {
                 }
 
                 this.OnGameEvent(GameEventType.GamePlayerlistUpdated, new GameEventData() {
-                    Players = new List<Player>(this.State.PlayerList)
+                    Players = new List<Player>(this.State.Players)
                 });
             }
         }
 
         public override void AdminListPlayersResponseDispatchHandler(IPacketWrapper request, IPacketWrapper response) {
-            Battlefield3PlayerList players = new Battlefield3PlayerList() {
+            Battlefield3Players players = new Battlefield3Players() {
                 Subset = new FrostbiteGroupingList().Parse(request.Packet.Words.GetRange(1, request.Packet.Words.Count - 1))
             }.Parse(response.Packet.Words.GetRange(1, response.Packet.Words.Count - 1));
 
@@ -102,7 +103,7 @@ namespace Procon.Net.Protocols.Frostbite.Battlefield.Battlefield3 {
                         map.GameMode = mapInfo.GameMode;
                     }
                 }
-                this.State.MapList = maps;
+                this.State.Maps = maps;
 
                 this.OnGameEvent(
                     GameEventType.GameMaplistUpdated
@@ -124,14 +125,14 @@ namespace Procon.Net.Protocols.Frostbite.Battlefield.Battlefield3 {
 
                 // We've just started requesting the banlist, clear it.
                 if (startOffset == 0) {
-                    this.State.BanList.Clear();
+                    this.State.Bans.Clear();
                 }
 
                 FrostbiteBanList banList = new Battlefield3BanList().Parse(response.Packet.Words.GetRange(1, response.Packet.Words.Count - 1));
 
                 if (banList.Count > 0) {
                     foreach (Ban ban in banList)
-                        this.State.BanList.Add(ban);
+                        this.State.Bans.Add(ban);
 
                     this.Send(this.CreatePacket("banList.list {0}", startOffset + 100));
                 }
@@ -147,7 +148,7 @@ namespace Procon.Net.Protocols.Frostbite.Battlefield.Battlefield3 {
         public void PlayerPingResponseDispatchHandler(IPacketWrapper request, IPacketWrapper response) {
 
             if (request.Packet.Words.Count >= 2 && response != null && response.Packet.Words.Count >= 2) {
-                Player player = this.State.PlayerList.FirstOrDefault(p => p.Name == request.Packet.Words[1]);
+                Player player = this.State.Players.FirstOrDefault(p => p.Name == request.Packet.Words[1]);
                 uint ping = 0;
 
                 if (player != null && uint.TryParse(response.Packet.Words[1], out ping) == true) {
@@ -180,8 +181,8 @@ namespace Procon.Net.Protocols.Frostbite.Battlefield.Battlefield3 {
                     Uid = request.Packet.Words[2]
                 };
 
-                if (this.State.PlayerList.Find(x => x.Name == player.Name) == null) {
-                    this.State.PlayerList.Add(player);
+                if (this.State.Players.Find(x => x.Name == player.Name) == null) {
+                    this.State.Players.Add(player);
                 }
 
                 this.OnGameEvent(GameEventType.GamePlayerJoin, new GameEventData() { Players = new List<Player>() { player } });
@@ -196,8 +197,8 @@ namespace Procon.Net.Protocols.Frostbite.Battlefield.Battlefield3 {
 
                 if (bool.TryParse(request.Packet.Words[4], out headshot) == true) {
 
-                    Player killer = this.State.PlayerList.FirstOrDefault(p => p.Name == request.Packet.Words[1]);
-                    Player target = this.State.PlayerList.FirstOrDefault(p => p.Name == request.Packet.Words[1]);
+                    Player killer = this.State.Players.FirstOrDefault(p => p.Name == request.Packet.Words[1]);
+                    Player target = this.State.Players.FirstOrDefault(p => p.Name == request.Packet.Words[1]);
 
                     if (killer != null && target != null) {
                         // If not a suicide.
@@ -261,7 +262,7 @@ namespace Procon.Net.Protocols.Frostbite.Battlefield.Battlefield3 {
                 packets.Add(this.Send(this.CreatePacket("mapList.list")));
             }
             else if (map.ActionType == NetworkActionType.NetworkMapRemove) {
-                var matchingMaps = this.State.MapList.Where(x => x.Name == map.Name).OrderByDescending(x => x.Index);
+                var matchingMaps = this.State.Maps.Where(x => x.Name == map.Name).OrderByDescending(x => x.Index);
 
                 packets.AddRange(matchingMaps.Select(match => this.Send(this.CreatePacket("mapList.remove {0}", match.Index))));
 

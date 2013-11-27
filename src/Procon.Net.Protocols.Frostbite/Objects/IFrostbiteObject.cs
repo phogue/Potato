@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Procon.Net.Protocols.Objects;
 
 namespace Procon.Net.Protocols.Frostbite.Objects {
 

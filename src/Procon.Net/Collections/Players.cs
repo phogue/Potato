@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using Procon.Net.Data;
 
-namespace Procon.Net.Protocols.Objects {
+namespace Procon.Net.Collections {
     [Serializable]
-    public class PlayerList : List<Player> {
+    public class Players : List<Player> {
         /// <summary>
         /// What range this playerlist object is holding
         /// </summary>
-        public GroupingList Subset { get; set; }
+        public Groupings Subset { get; set; }
     }
 }

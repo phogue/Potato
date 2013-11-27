@@ -6,13 +6,14 @@ using System.Xml.Serialization;
 using Newtonsoft.Json;
 using Procon.Core.Events;
 using Procon.Core.Variables;
+using Procon.Net.Actions;
+using Procon.Net.Data;
 
 namespace Procon.Core.Connections {
     using Procon.Core.Connections.TextCommands;
     using Procon.Core.Connections.Plugins;
     using Procon.Net;
     using Procon.Net.Utils;
-    using Procon.Net.Protocols.Objects;
 
     [Serializable]
     public class Connection : Executable {
@@ -303,7 +304,7 @@ namespace Procon.Core.Connections {
                         }
                     },
                     Now = new CommandData() {
-                        Players = new List<Player>(this.Game.State.PlayerList)
+                        Players = new List<Player>(this.Game.State.Players)
                     }
                 };
             }
@@ -353,7 +354,7 @@ namespace Procon.Core.Connections {
                         }
                     },
                     Now = new CommandData() {
-                        Bans = new List<Ban>(this.Game.State.BanList)
+                        Bans = new List<Ban>(this.Game.State.Bans)
                     }
                 };
             }
@@ -377,7 +378,7 @@ namespace Procon.Core.Connections {
                         }
                     },
                     Now = new CommandData() {
-                        Maps = new List<Map>(this.Game.State.MapList)
+                        Maps = new List<Map>(this.Game.State.Maps)
                     }
                 };
             }

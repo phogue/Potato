@@ -2,7 +2,8 @@
 using System.Linq;
 using NUnit.Framework;
 using Procon.Core.Connections.TextCommands;
-using Procon.Net.Protocols.Objects;
+using Procon.Net.Actions;
+using Procon.Net.Data;
 
 namespace Procon.Core.Test.TextCommands.Fuzzy {
     [TestFixture]
@@ -162,7 +163,7 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
                 textCommandController, 
                 "kick everyone but not phogue phil",
                 TestFuzzyBase.TextCommandKick,
-                textCommandController.Connection.GameState.PlayerList.Except(new List<Player>() {
+                textCommandController.Connection.GameState.Players.Except(new List<Player>() {
                     TestFuzzyBase.PlayerPhogue,
                     TestFuzzyBase.PlayerPhilK
                 }).ToList(),

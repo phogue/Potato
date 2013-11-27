@@ -1,6 +1,7 @@
 ﻿using System;
+using Procon.Net.Collections;
 
-namespace Procon.Net.Protocols.Objects {
+namespace Procon.Net.Data {
 
     [Serializable]
     public sealed class GameMode : NetworkObject {
@@ -23,7 +24,7 @@ namespace Procon.Net.Protocols.Objects {
         /// <summary>
         /// List of groups to default a player to when moving them and such.
         /// </summary>
-        public GroupingList DefaultGroups { get; set; }
+        public Groupings DefaultGroups { get; set; }
 
         public GameMode() {
             this.Name = String.Empty;

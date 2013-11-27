@@ -4,9 +4,9 @@ using Procon.Net.Protocols.Frostbite.Objects;
 
 namespace Procon.Net.Protocols.Frostbite.Battlefield.Battlefield3.Objects {
     [Serializable]
-    public class Battlefield3PlayerList : FrostbitePlayerList {
+    public class Battlefield3Players : FrostbitePlayers {
 
-        public new Battlefield3PlayerList Parse(List<string> words) {
+        public new Battlefield3Players Parse(List<string> words) {
 
             int currentOffset = 0;
             int parameterCount = 0;

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Xml.Serialization;
-using Procon.Net.Protocols.Objects;
+using Procon.Net.Actions;
 
 namespace Procon.Net.Utils.Tests {
 

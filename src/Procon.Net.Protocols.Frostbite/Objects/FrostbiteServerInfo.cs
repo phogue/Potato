@@ -4,8 +4,6 @@ using System.Reflection;
 using System.ComponentModel;
 
 namespace Procon.Net.Protocols.Frostbite.Objects {
-    using Procon.Net.Protocols.Objects;
-
     [Serializable]
     public class FrostbiteServerInfo : NetworkObject {
 

@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Linq;
+using Procon.Net.Collections;
 using Procon.Net.Geolocation;
+using Procon.Net.Utils;
 
-namespace Procon.Net.Protocols.Objects {
-    using Procon.Net.Utils;
-
+namespace Procon.Net.Data {
     [Serializable]
     public sealed class Player : NetworkObject {
 
@@ -15,7 +15,7 @@ namespace Procon.Net.Protocols.Objects {
             this.Uid = String.Empty;
             this.ClanTag = String.Empty;
             this.Name = String.Empty;
-            this.Groups = new GroupingList();
+            this.Groups = new Groupings();
             this.Location = new Location();
         }
 
@@ -56,7 +56,7 @@ namespace Procon.Net.Protocols.Objects {
         /// <summary>
         /// This players grouping on this server
         /// </summary>
-        public GroupingList Groups { get; set; }
+        public Groupings Groups { get; set; }
 
         /// <summary>
         /// This player's Score.

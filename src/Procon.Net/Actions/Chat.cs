@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Procon.Net.Protocols.Objects {
+namespace Procon.Net.Actions {
 
     [Serializable]
     public sealed class Chat : NetworkAction {

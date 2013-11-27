@@ -5,7 +5,8 @@ using System.Linq;
 using NUnit.Framework;
 using Procon.Core.Events;
 using Procon.Net;
-using Procon.Net.Protocols.Objects;
+using Procon.Net.Actions;
+using Procon.Net.Data;
 
 namespace Procon.Core.Test.Events {
     [TestFixture]

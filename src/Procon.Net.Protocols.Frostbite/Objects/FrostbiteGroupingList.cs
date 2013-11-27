@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using Procon.Net.Collections;
+using Procon.Net.Data;
 
 namespace Procon.Net.Protocols.Frostbite.Objects {
-    using Procon.Net.Protocols.Objects;
-
     [Serializable]
-    public class FrostbiteGroupingList : GroupingList {
+    public class FrostbiteGroupingList : Groupings {
 
         private static FrostbitePlayerSubsetContext GetSubsetContext(String context) {
             FrostbitePlayerSubsetContext result = FrostbitePlayerSubsetContext.All;

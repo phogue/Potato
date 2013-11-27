@@ -4,9 +4,10 @@ using System.ComponentModel;
 using System.Xml;
 using System.Xml.Serialization;
 using Newtonsoft.Json;
+using Procon.Net.Actions;
+using Procon.Net.Data;
 
 namespace Procon.Core.Connections.TextCommands {
-    using Procon.Net.Protocols.Objects;
     using Procon.Fuzzy.Tokens.Primitive.Temporal;
 
     [Serializable]

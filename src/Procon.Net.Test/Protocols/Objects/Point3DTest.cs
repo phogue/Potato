@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 using NUnit.Framework;
-using Procon.Net.Protocols.Objects;
+using Procon.Net.Data;
 
 namespace Procon.Net.Test.Protocols.Objects {
     [TestFixture]

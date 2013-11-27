@@ -8,7 +8,8 @@ using Procon.Core.Connections.TextCommands;
 using Procon.Core.Localization;
 using Procon.Core.Security;
 using Procon.Core.Variables;
-using Procon.Net.Protocols.Objects;
+using Procon.Net.Actions;
+using Procon.Net.Data;
 
 namespace Procon.Core.Test.ExecutableCommands {
     [TestFixture]

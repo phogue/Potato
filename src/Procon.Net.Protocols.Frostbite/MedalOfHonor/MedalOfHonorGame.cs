@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using Procon.Net.Protocols.Objects;
+using Procon.Net.Actions;
+using Procon.Net.Data;
 using Procon.Net.Protocols.Frostbite.Objects;
 
 namespace Procon.Net.Protocols.Frostbite.MedalOfHonor {
@@ -26,7 +27,7 @@ namespace Procon.Net.Protocols.Frostbite.MedalOfHonor {
 
             Map selectedMap = this.State.MapPool.Find(x => String.Compare(x.Name, this.State.Settings.Current.MapNameText, StringComparison.OrdinalIgnoreCase) == 0);
 
-            Player movePlayer = this.State.PlayerList.First(player => player.Uid == move.Scope.Players.First().Uid);
+            Player movePlayer = this.State.Players.First(player => player.Uid == move.Scope.Players.First().Uid);
 
             if (selectedMap != null) {
                 // If they are just looking to rotate the player through the teams

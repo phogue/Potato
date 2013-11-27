@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using Procon.Net.Actions;
+using Procon.Net.Data;
 
 namespace Procon.Net {
-    using Procon.Net.Protocols.Objects;
-
     [Serializable]
     public class GameEventData {
         /// <summary>

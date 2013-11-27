@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Reflection;
 using System.ComponentModel;
+using Procon.Net.Actions;
+using Procon.Net.Data;
 
 namespace Procon.Net.Protocols.Frostbite.Objects {
-    using Procon.Net.Protocols.Objects;
-
     public static class FrostbiteChat {
 
         internal static List<string> PlayerChatParameters = new List<String>() {

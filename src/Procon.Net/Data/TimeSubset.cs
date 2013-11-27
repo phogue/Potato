@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Procon.Net.Protocols.Objects {
+namespace Procon.Net.Data {
     [Serializable]
     public sealed class TimeSubset : NetworkObject {
 

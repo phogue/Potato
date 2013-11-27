@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using Procon.Net.Collections;
 
 namespace Procon.Net.Protocols.Frostbite.Objects {
-    using Procon.Net.Protocols.Objects;
-
     [Serializable]
-    public class FrostbiteBanList : BanList {
+    public class FrostbiteBanList : Bans {
 
         public virtual FrostbiteBanList Parse(List<string> words) {
 

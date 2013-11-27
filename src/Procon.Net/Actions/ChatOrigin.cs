@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Procon.Net.Protocols.Objects {
+namespace Procon.Net.Actions {
     [Serializable]
     public enum ChatOrigin {
         None,

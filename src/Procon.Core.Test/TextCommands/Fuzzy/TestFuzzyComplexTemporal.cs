@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using NUnit.Framework;
-using Procon.Net.Protocols.Objects;
+using Procon.Net.Actions;
+using Procon.Net.Data;
 using Procon.Fuzzy.Tokens.Primitive.Temporal;
 
 namespace Procon.Core.Test.TextCommands.Fuzzy {

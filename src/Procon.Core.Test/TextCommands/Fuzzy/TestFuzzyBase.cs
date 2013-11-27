@@ -5,10 +5,12 @@ using NUnit.Framework;
 using Procon.Core.Connections.TextCommands;
 using Procon.Core.Connections;
 using Procon.Core.Security;
+using Procon.Net.Actions;
+using Procon.Net.Collections;
+using Procon.Net.Data;
 using Procon.Net.Geolocation;
 using Procon.Net.Protocols;
 using Procon.Net.Protocols.Frostbite.Battlefield.Battlefield3;
-using Procon.Net.Protocols.Objects;
 using Procon.Fuzzy.Tokens.Primitive.Temporal;
 
 namespace Procon.Core.Test.TextCommands.Fuzzy {
@@ -203,7 +205,7 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
                 TestFuzzyBase.TextCommandTest
             });
 
-            textCommandController.Connection.GameState.PlayerList.AddRange(new PlayerList() {
+            textCommandController.Connection.GameState.Players.AddRange(new Players() {
                 TestFuzzyBase.PlayerPhogue,
                 TestFuzzyBase.PlayerImisnew2,
                 TestFuzzyBase.PlayerPhilK,

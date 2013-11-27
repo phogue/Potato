@@ -4,6 +4,8 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Xml.Serialization;
 using Newtonsoft.Json;
+using Procon.Net.Actions;
+using Procon.Net.Data;
 
 namespace Procon.Core.Connections.TextCommands {
     using Procon.Core.Security;
@@ -11,7 +13,6 @@ namespace Procon.Core.Connections.TextCommands {
     using Procon.Core.Events;
     using Procon.Core.Variables;
     using Procon.Core.Connections.TextCommands.Parsers;
-    using Procon.Net.Protocols.Objects;
     using Procon.Fuzzy.Utils;
 
     public class TextCommandController : Executable {
@@ -94,7 +95,7 @@ namespace Procon.Core.Connections.TextCommands {
                     new LinqParameterMapping() { 
                         Type = typeof(Player),
                         Parameter = Expression.Parameter(typeof(Player), "p"),
-                        Collection = this.Connection.GameState.PlayerList
+                        Collection = this.Connection.GameState.Players
                     }
                 },
                 {
@@ -201,13 +202,13 @@ namespace Procon.Core.Connections.TextCommands {
         /// <param name="speaker"></param>
         /// <returns></returns>
         protected Player GetAccountNetworkPlayer(Command command, Account speaker) {
-            Player player = this.Connection.GameState.PlayerList.FirstOrDefault(x => x.Uid == command.Uid);
+            Player player = this.Connection.GameState.Players.FirstOrDefault(x => x.Uid == command.Uid);
 
             if (speaker != null) {
                 AccountPlayer accountPlayer = speaker.Players.FirstOrDefault(p => p.GameType == this.Connection.GameType.Type);
 
                 if (accountPlayer != null) {
-                    player = this.Connection.GameState.PlayerList.FirstOrDefault(x => x.Uid == accountPlayer.Uid);
+                    player = this.Connection.GameState.Players.FirstOrDefault(x => x.Uid == accountPlayer.Uid);
                 }
             }
 

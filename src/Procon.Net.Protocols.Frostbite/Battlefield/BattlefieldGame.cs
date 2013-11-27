@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using Procon.Net.Protocols.Objects;
+using Procon.Net.Actions;
+using Procon.Net.Data;
 using Procon.Net.Protocols.Frostbite.Objects;
 
 namespace Procon.Net.Protocols.Frostbite.Battlefield {
@@ -22,7 +23,7 @@ namespace Procon.Net.Protocols.Frostbite.Battlefield {
 
                 Map selectedMap = this.State.MapPool.Find(x => String.Compare(x.Name, this.State.Settings.Current.MapNameText, StringComparison.OrdinalIgnoreCase) == 0);
 
-                foreach (Player movePlayer in move.Scope.Players.Select(scopePlayer => this.State.PlayerList.First(player => player.Uid == scopePlayer.Uid)).Where(movePlayer => movePlayer != null)) {
+                foreach (Player movePlayer in move.Scope.Players.Select(scopePlayer => this.State.Players.First(player => player.Uid == scopePlayer.Uid)).Where(movePlayer => movePlayer != null)) {
                     if (selectedMap != null) {
                         // If they are just looking to rotate the player through the teams
                         if (move.ActionType == NetworkActionType.NetworkPlayerRotate || move.ActionType == NetworkActionType.NetworkPlayerForceRotate) {

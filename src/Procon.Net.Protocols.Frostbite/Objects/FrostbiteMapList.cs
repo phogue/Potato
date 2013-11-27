@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using Procon.Net.Actions;
+using Procon.Net.Collections;
 
 namespace Procon.Net.Protocols.Frostbite.Objects {
-    using Procon.Net.Protocols.Objects;
-
     [Serializable]
-    public class FrostbiteMapList : MapList {
+    public class FrostbiteMapList : Maps {
 
         public virtual FrostbiteMapList Parse(List<string> words) {
 

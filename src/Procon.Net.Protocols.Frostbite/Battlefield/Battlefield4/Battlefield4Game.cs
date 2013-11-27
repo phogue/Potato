@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Procon.Net.Actions;
+using Procon.Net.Data;
 using Procon.Net.Protocols.Frostbite.Battlefield.Battlefield4.Objects;
-using Procon.Net.Protocols.Objects;
 using Procon.Net.Protocols.Frostbite.Objects;
 
 namespace Procon.Net.Protocols.Frostbite.Battlefield.Battlefield4 {
@@ -33,7 +34,7 @@ namespace Procon.Net.Protocols.Frostbite.Battlefield.Battlefield4 {
 
         //[DispatchPacket(MatchText = "admin.listPlayers", PacketOrigin = PacketOrigin.Client)]
         public override void AdminListPlayersResponseDispatchHandler(IPacketWrapper request, IPacketWrapper response) {
-            Battlefield4PlayerList players = new Battlefield4PlayerList() {
+            Battlefield4Players players = new Battlefield4Players() {
                 Subset = new FrostbiteGroupingList().Parse(request.Packet.Words.GetRange(1, request.Packet.Words.Count - 1))
             }.Parse(response.Packet.Words.GetRange(1, response.Packet.Words.Count - 1));
 
@@ -52,7 +53,7 @@ namespace Procon.Net.Protocols.Frostbite.Battlefield.Battlefield4 {
                         map.GameMode = mapInfo.GameMode;
                     }
                 }
-                this.State.MapList = maps;
+                this.State.Maps = maps;
 
                 this.OnGameEvent(
                     GameEventType.GameMaplistUpdated
@@ -74,14 +75,14 @@ namespace Procon.Net.Protocols.Frostbite.Battlefield.Battlefield4 {
 
                 // We've just started requesting the banlist, clear it.
                 if (startOffset == 0) {
-                    this.State.BanList.Clear();
+                    this.State.Bans.Clear();
                 }
 
                 FrostbiteBanList banList = new Battlefield4BanList().Parse(response.Packet.Words.GetRange(1, response.Packet.Words.Count - 1));
 
                 if (banList.Count > 0) {
                     foreach (Ban ban in banList)
-                        this.State.BanList.Add(ban);
+                        this.State.Bans.Add(ban);
 
                     this.Send(this.CreatePacket("banList.list {0}", startOffset + 100));
                 }
@@ -111,8 +112,8 @@ namespace Procon.Net.Protocols.Frostbite.Battlefield.Battlefield4 {
                     Uid = request.Packet.Words[2]
                 };
 
-                if (this.State.PlayerList.Find(x => x.Name == player.Name) == null) {
-                    this.State.PlayerList.Add(player);
+                if (this.State.Players.Find(x => x.Name == player.Name) == null) {
+                    this.State.Players.Add(player);
                 }
 
                 this.OnGameEvent(GameEventType.GamePlayerJoin, new GameEventData() { Players = new List<Player>() { player } });
@@ -133,7 +134,7 @@ namespace Procon.Net.Protocols.Frostbite.Battlefield.Battlefield4 {
                                 HumanHitLocation = headshot == true ? FrostbiteGame.Headshot : FrostbiteGame.Bodyshot,
                                 Scope = {
                                     Players = new List<Player>() {
-                                        this.State.PlayerList.Find(x => x.Name == request.Packet.Words[2])
+                                        this.State.Players.Find(x => x.Name == request.Packet.Words[2])
                                     },
                                     Items = new List<Item>() {
                                         new Item() {
@@ -144,7 +145,7 @@ namespace Procon.Net.Protocols.Frostbite.Battlefield.Battlefield4 {
                                 },
                                 Now = {
                                     Players = new List<Player>() {
-                                        this.State.PlayerList.Find(x => x.Name == request.Packet.Words[1])
+                                        this.State.Players.Find(x => x.Name == request.Packet.Words[1])
                                     }
                                 }
                             }
@@ -180,7 +181,7 @@ namespace Procon.Net.Protocols.Frostbite.Battlefield.Battlefield4 {
                 packets.Add(this.Send(this.CreatePacket("mapList.list")));
             }
             else if (map.ActionType == NetworkActionType.NetworkMapRemove) {
-                var matchingMaps = this.State.MapList.Where(x => x.Name == map.Name).OrderByDescending(x => x.Index);
+                var matchingMaps = this.State.Maps.Where(x => x.Name == map.Name).OrderByDescending(x => x.Index);
 
                 packets.AddRange(matchingMaps.Select(match => this.Send(this.CreatePacket("mapList.remove {0}", match.Index))));
 

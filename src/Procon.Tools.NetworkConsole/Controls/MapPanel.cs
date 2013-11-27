@@ -25,10 +25,10 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using Procon.Net.Actions;
 
 namespace Procon.Tools.NetworkConsole.Controls {
     using Procon.Net;
-    using Procon.Net.Protocols.Objects;
 
     public partial class MapPanel : UserControl {
 
@@ -133,7 +133,7 @@ namespace Procon.Tools.NetworkConsole.Controls {
             if (e.GameEventType == GameEventType.GameMaplistUpdated) {
                 this.lsvMapList.Items.Clear();
 
-                foreach (Map map in this.ActiveGame.State.MapList) {
+                foreach (Map map in this.ActiveGame.State.Maps) {
                     this.lsvMapList.Items.Add(
                         new ListViewItem() {
                             Tag = map

@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using Procon.Net.Actions;
+using Procon.Net.Collections;
 
-namespace Procon.Net.Protocols.Objects {
+namespace Procon.Net.Data {
     [Serializable]
     public class GameState {
         public GameState() {
-            this.PlayerList = new PlayerList();
-            this.MapList = new MapList();
-            this.BanList = new BanList();
+            this.Players = new Players();
+            this.Maps = new Maps();
+            this.Bans = new Bans();
 
             this.MapPool = new List<Map>();
             this.GameModePool = new List<GameMode>();
@@ -18,17 +20,17 @@ namespace Procon.Net.Protocols.Objects {
         /// <summary>
         /// All current information about each player in the server
         /// </summary>
-        public PlayerList PlayerList { get; set; }
+        public Players Players { get; set; }
 
         /// <summary>
         /// The current maplist
         /// </summary>
-        public MapList MapList { get; set; }
+        public Maps Maps { get; set; }
 
         /// <summary>
         /// The current banlist
         /// </summary>
-        public BanList BanList { get; set; }
+        public Bans Bans { get; set; }
 
         /// <summary>
         /// List of available maps for this game

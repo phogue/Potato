@@ -4,6 +4,8 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using Procon.Net;
+using Procon.Net.Actions;
+using Procon.Net.Data;
 
 namespace Procon.Core.Connections.TextCommands.Parsers {
     using Procon.Core.Events;
@@ -15,7 +17,6 @@ namespace Procon.Core.Connections.TextCommands.Parsers {
     using Procon.Fuzzy.Tokens.Primitive.Numeric;
     using Procon.Fuzzy.Tokens.Primitive.Temporal;
     using Procon.Fuzzy.Tokens.Reduction;
-    using Procon.Net.Protocols.Objects;
 
     public class FuzzyParser : Parser {
 
@@ -60,9 +61,9 @@ namespace Procon.Core.Connections.TextCommands.Parsers {
             PropertyInfo aliasId = this.GetPropertyInfo<Player>("Uid");
 
             // We should cache this some where.
-            int maximumNameLength = this.Connection.GameState.PlayerList.Count > 0 ? this.Connection.GameState.PlayerList.Max(player => player.Name.Length) : 0;
+            int maximumNameLength = this.Connection.GameState.Players.Count > 0 ? this.Connection.GameState.Players.Max(player => player.Name.Length) : 0;
 
-            var playerNames = this.Connection.GameState.PlayerList.Select(player => new {
+            var playerNames = this.Connection.GameState.Players.Select(player => new {
                 player,
                 similarity = Math.Max(player.NameStripped.DePluralStringSimularity(phrase.Text), player.Name.DePluralStringSimularity(phrase.Text))
             }).Where(@t => @t.similarity >= this.MinimumSimilarity(55, 70, maximumNameLength, @t.player.Name.Length)).Select(@t => new ThingObjectToken() {
@@ -82,7 +83,7 @@ namespace Procon.Core.Connections.TextCommands.Parsers {
         protected void ParseCountryNames(Phrase phrase) {
             PropertyInfo countryName = this.GetPropertyInfo<Player>("CountryName");
 
-            var playerCountries = this.Connection.GameState.PlayerList.Select(player => new {
+            var playerCountries = this.Connection.GameState.Players.Select(player => new {
                 player,
                 similarity = player.Location.CountryName.StringSimularitySubsetBonusRatio(phrase.Text)
             }).Where(@t => @t.similarity >= 60).Select(@t => new ThingObjectToken() {

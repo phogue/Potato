@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using Procon.Net.Data;
 
 namespace Procon.Net.Protocols.Frostbite.Objects {
-    using Procon.Net.Protocols.Objects;
-
     [Serializable]
     public static class FrostbiteTimeSubset {
 

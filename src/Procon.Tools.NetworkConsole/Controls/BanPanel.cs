@@ -25,10 +25,11 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using Procon.Net.Actions;
+using Procon.Net.Data;
 
 namespace Procon.Tools.NetworkConsole.Controls {
     using Procon.Net;
-    using Procon.Net.Protocols.Objects;
 
     public partial class BanPanel : UserControl {
 
@@ -134,7 +135,7 @@ namespace Procon.Tools.NetworkConsole.Controls {
 
             if (e.GameEventType == GameEventType.GameBanlistUpdated) {
 
-                foreach (Ban ban in e.GameState.BanList) {
+                foreach (Ban ban in e.GameState.Bans) {
 
                     ListViewItem listBan = this.lsvBanList
                                                .Items

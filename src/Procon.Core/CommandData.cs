@@ -6,12 +6,13 @@ using Procon.Core.Connections.Plugins;
 using Procon.Core.Events;
 using Procon.Core.Repositories;
 using Procon.Net;
+using Procon.Net.Actions;
+using Procon.Net.Data;
 
 namespace Procon.Core {
     using Procon.Core.Security;
     using Procon.Core.Variables;
     using Procon.Core.Localization;
-    using Procon.Net.Protocols.Objects;
     using Procon.Core.Connections;
     using Procon.Core.Connections.TextCommands;
 

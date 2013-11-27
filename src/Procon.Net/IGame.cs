@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Procon.Net.Protocols.Objects;
+using Procon.Net.Data;
 
 namespace Procon.Net {
     public interface IGame {

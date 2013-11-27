@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using Procon.Net.Collections;
 
 namespace Procon.Net.Protocols.Frostbite.Objects {
-    using Procon.Net.Protocols.Objects;
-
     [Serializable]
-    public class FrostbitePlayerList : PlayerList {
+    public class FrostbitePlayers : Players {
 
-        public FrostbitePlayerList Parse(List<string> words) {
+        public FrostbitePlayers Parse(List<string> words) {
 
             int currentOffset = 0;
             int parameterCount = 0;

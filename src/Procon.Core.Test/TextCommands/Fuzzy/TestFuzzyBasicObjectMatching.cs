@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using NUnit.Framework;
 using Procon.Core.Connections.TextCommands;
-using Procon.Net.Protocols.Objects;
+using Procon.Net.Actions;
+using Procon.Net.Data;
 
 namespace Procon.Core.Test.TextCommands.Fuzzy {
     [TestFixture]
@@ -248,7 +249,7 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
                 textCommandController,
                 "kick all",
                 TestFuzzyBase.TextCommandKick,
-                textCommandController.Connection.GameState.PlayerList,
+                textCommandController.Connection.GameState.Players,
                 textCommandController.Connection.GameState.MapPool
             );
         }

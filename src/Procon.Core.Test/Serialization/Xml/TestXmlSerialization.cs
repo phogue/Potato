@@ -9,8 +9,10 @@ using Procon.Core.Security;
 using Procon.Core.Utils;
 using Procon.Core.Variables;
 using Procon.Net;
+using Procon.Net.Actions;
+using Procon.Net.Collections;
+using Procon.Net.Data;
 using Procon.Net.Protocols;
-using Procon.Net.Protocols.Objects;
 using Procon.Net.Utils;
 using Procon.Fuzzy.Tokens.Primitive.Temporal;
 
@@ -284,13 +286,13 @@ namespace Procon.Core.Test.Serialization.Xml {
                 },
                 Score = 1000,
                 SlotId = 22,
-                Groups = new GroupingList() {
-                    new Procon.Net.Protocols.Objects.Grouping() {
-                        Type = Procon.Net.Protocols.Objects.Grouping.Team,
+                Groups = new Groupings() {
+                    new Grouping() {
+                        Type = Grouping.Team,
                         Uid = "1"
                     },
-                    new Procon.Net.Protocols.Objects.Grouping() {
-                        Type = Procon.Net.Protocols.Objects.Grouping.Squad,
+                    new Grouping() {
+                        Type = Grouping.Squad,
                         Uid = "2"
                     }
                 },

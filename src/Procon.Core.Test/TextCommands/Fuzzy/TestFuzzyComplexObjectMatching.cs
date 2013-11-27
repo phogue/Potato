@@ -2,7 +2,8 @@
 using System.Linq;
 using NUnit.Framework;
 using Procon.Core.Connections.TextCommands;
-using Procon.Net.Protocols.Objects;
+using Procon.Net.Actions;
+using Procon.Net.Data;
 
 namespace Procon.Core.Test.TextCommands.Fuzzy {
     [TestFixture]
@@ -176,7 +177,7 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
                 textCommandController, 
                 "kick everyone not from australia",
                 TestFuzzyBase.TextCommandKick,
-                textCommandController.Connection.GameState.PlayerList.Except(new List<Player>() {
+                textCommandController.Connection.GameState.Players.Except(new List<Player>() {
                     TestFuzzyBase.PlayerPhogue,
                     TestFuzzyBase.PlayerZaeed,
                     TestFuzzyBase.PlayerPhogueIsAButterfly
@@ -193,7 +194,7 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
                 textCommandController, 
                 "kick all players",
                 TestFuzzyBase.TextCommandKick,
-                textCommandController.Connection.GameState.PlayerList,
+                textCommandController.Connection.GameState.Players,
                 new List<Map>()
             );
         }
@@ -220,7 +221,7 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
                 textCommandController, 
                 "kick everyone except phogue",
                 TestFuzzyBase.TextCommandKick,
-                textCommandController.Connection.GameState.PlayerList.Where(player => player != TestFuzzyBase.PlayerPhogue).ToList(),
+                textCommandController.Connection.GameState.Players.Where(player => player != TestFuzzyBase.PlayerPhogue).ToList(),
                 new List<Map>()
             );
         }
@@ -233,7 +234,7 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
                 textCommandController, 
                 "kick everyone except phogue on all maps but port valdez",
                 TestFuzzyBase.TextCommandKick,
-                textCommandController.Connection.GameState.PlayerList.Where(player => player != TestFuzzyBase.PlayerPhogue).ToList(),
+                textCommandController.Connection.GameState.Players.Where(player => player != TestFuzzyBase.PlayerPhogue).ToList(),
                 new List<Map>() {
                     TestFuzzyBase.MapValparaiso,
                     TestFuzzyBase.MapPanamaCanal

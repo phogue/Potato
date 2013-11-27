@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using Procon.Net.Data;
 
-namespace Procon.Net.Protocols.Objects {
+namespace Procon.Net.Actions {
     [Serializable]
     public sealed class Kill : NetworkAction {
 

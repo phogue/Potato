@@ -36,7 +36,7 @@ namespace Procon.Net.Actions {
             this.Then = new NetworkActionData();
             this.Now = new NetworkActionData();
 
-            this.Uid = new Guid();
+            this.Uid = Guid.NewGuid();
         }
     }
 }

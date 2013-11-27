@@ -3,18 +3,11 @@ using System.Text;
 using System.Net;
 using System.IO;
 using System.Threading;
-using System.Timers;
 
 namespace Procon.Net.Utils.HTTP {
     [Serializable]
     [Obsolete]
     public class Request {
-
-        public delegate void RequestEventDelegate(Request sender);
-        public event RequestEventDelegate RequestComplete;
-        public event RequestEventDelegate RequestError;
-        public event RequestEventDelegate RequestDiscoveredFileSize;
-        public event RequestEventDelegate RequestProgressUpdate;
 
         public HttpWebResponse WebResponse;
 
@@ -23,37 +16,29 @@ namespace Procon.Net.Utils.HTTP {
 
         public string DownloadSource { get; private set; }
 
-        private const int IntBufferSize = UInt16.MaxValue;
-        private byte[] _mBufferStream;
-
-        //private int m_iReadBytes;
-        //private int m_iCompleteFileSize;
-        //private byte[] ma_bCompleteFile;
-
-        private System.Timers.Timer _mProgressTimer;
-        //private Thread m_thProgressTick;
+        protected byte[] BufferStream;
 
         public bool FileDownloading { get; private set; }
 
-        public bool DownloadRate { get; set; }
+        /// <summary>
+        /// Total numbers of bytes downloaded so far.
+        /// </summary>
+        protected int BytesDownloaded { get; private set; }
 
-        public int BytesDownloaded { get; private set; }
+        /// <summary>
+        /// The completed file size
+        /// </summary>
+        protected int FileSize { get; private set; }
 
-        public int FileSize { get; private set; }
+        /// <summary>
+        /// All of the data downloaded.
+        /// </summary>
+        public byte[] Data { get; private set; }
 
-        //private double m_dblKibPerSecond = 0.0;
-        public double KibPerSecond { get; private set; }
-
-        public byte[] CompleteFileData { get; private set; }
-
-        // private bool m_blUnknownSize;
-        public bool UnknownSize { get; private set; }
-
-        //private object m_objData;
-        public object AdditionalData { get; set; }
-
-        //private string m_strLastError;
-        public string Error { get; private set; }
+        /// <summary>
+        /// The stringified error
+        /// </summary>
+        public string RequestError { get; private set; }
 
         /// <summary>
         /// Optional range to include in the request header
@@ -90,7 +75,6 @@ namespace Procon.Net.Utils.HTTP {
 
         public CredentialCache CredentialCache { get; protected set; }
 
-        private int _mTimeout;
         /// <summary>
         /// ReadTimeout of the stream in milliseconds.  Default is 10 seconds.
         /// </summary>
@@ -106,18 +90,45 @@ namespace Procon.Net.Utils.HTTP {
                 }
             }
         }
+        private int _mTimeout;
 
         public string FileName {
             get {
-                string strReturnFileName = String.Empty;
+                string fileName = String.Empty;
 
                 if (this.DownloadSource.Length > 0) {
-                    strReturnFileName = this.DownloadSource.Substring(this.DownloadSource.LastIndexOf("/", System.StringComparison.Ordinal) + 1, (this.DownloadSource.Length - this.DownloadSource.LastIndexOf("/", System.StringComparison.Ordinal) - 1));
+                    fileName = this.DownloadSource.Substring(this.DownloadSource.LastIndexOf("/", System.StringComparison.Ordinal) + 1, (this.DownloadSource.Length - this.DownloadSource.LastIndexOf("/", System.StringComparison.Ordinal) - 1));
                 }
 
-                return strReturnFileName;
+                return fileName;
             }
         }
+
+        /// <summary>
+        /// Fired when the request has completted successfully.
+        /// </summary>
+        public event RequestEventDelegate Complete;
+
+        protected void OnComplete() {
+            var handler = this.Complete;
+            if (handler != null) {
+                handler(this);
+            }
+        }
+
+        /// <summary>
+        /// Fired when an error occures during the request/response.
+        /// </summary>
+        public event RequestEventDelegate Error;
+
+        protected void OnError() {
+            var handler = this.Error;
+            if (handler != null) {
+                handler(this);
+            }
+        }
+
+        public delegate void RequestEventDelegate(Request sender);
 
         public Request(string downloadSource) {
             this.DownloadSource = downloadSource;
@@ -133,15 +144,11 @@ namespace Procon.Net.Utils.HTTP {
             this.FileDownloading = false;
         }
 
-        public string GetLabelProgress() {
-            return String.Format("{0:0.0} KiB of {1:0.0} KiB @ {2:0.0} KiB/s", this.BytesDownloaded / 1024, this.FileSize / 1024, this.KibPerSecond);
-        }
-
-        private void RequestTimeoutCallback(object state, bool timedOut) {
+        private static void RequestTimeoutCallback(object state, bool timedOut) {
             if (timedOut == true) {
-                Request cdfParent = (Request)state;
-                if (cdfParent != null) {
-                    cdfParent._mWebRequest.Abort();
+                Request parent = (Request)state;
+                if (parent != null) {
+                    parent._mWebRequest.Abort();
                 }
             }
         }
@@ -159,10 +166,6 @@ namespace Procon.Net.Utils.HTTP {
                 using (Stream postStream = this._mWebRequest.GetRequestStream()) {
                     postStream.Write(Encoding.UTF8.GetBytes(this.RequestContent), 0, this.RequestContent.Length);
                 }
-                //Stream newStream = this.m_webRequest.GetRequestStream();
-                // Send the data.
-                //newStream.Write(Encoding.UTF8.GetBytes(this.RequestContent), 0, this.RequestContent.Length);
-                //newStream.Close();
             }
         }
 
@@ -184,14 +187,12 @@ namespace Procon.Net.Utils.HTTP {
 
         private void BeginRequestCallback() {
 
-            this.UnknownSize = true;
-
             this.BytesDownloaded = 0;
             this.FileSize = 1;
 
             this.FileDownloading = true;
 
-            this._mBufferStream = new byte[Request.IntBufferSize];
+            this.BufferStream = new byte[UInt16.MaxValue];
 
             try {
                 this._mWebRequest = WebRequest.Create(this.DownloadSource) as HttpWebRequest;
@@ -225,120 +226,86 @@ namespace Procon.Net.Utils.HTTP {
                     this.ProcessMultipartPostRequest();
 
                     IAsyncResult arResult = this._mWebRequest.BeginGetResponse(new AsyncCallback(this.ResponseCallback), this);
-                    ThreadPool.RegisterWaitForSingleObject(arResult.AsyncWaitHandle, new WaitOrTimerCallback(this.RequestTimeoutCallback), this, this._mTimeout, true);
-
-                    if (this.DownloadRate == true) {
-                        this._mProgressTimer = new System.Timers.Timer(100);
-                        this._mProgressTimer.Elapsed += new ElapsedEventHandler(m_progressTimer_Elapsed);
-                        this._mProgressTimer.Start();
-                    }
+                    ThreadPool.RegisterWaitForSingleObject(arResult.AsyncWaitHandle, new WaitOrTimerCallback(RequestTimeoutCallback), this, this._mTimeout, true);
                 }
             }
             catch (Exception e) {
                 this.FileDownloading = false;
-                if (this.RequestError != null) {
-                    this.Error = e.Message;
-
-                    this.RequestError(this);
-                }
+                this.RequestError = e.Message;
+                this.OnError();
             }
         }
 
         private void ResponseCallback(IAsyncResult ar) {
-            //Request cdfParent = (Request)ar.AsyncState;
-
             try {
                 this.WebResponse = (HttpWebResponse)this._mWebRequest.EndGetResponse(ar);
 
-                string strContentLength = null;
-                if ((strContentLength = this.WebResponse.Headers["Content-Length"]) != null) {
-                    this.FileSize = Convert.ToInt32(strContentLength);
-
-                    this.UnknownSize = false;
-
-                    if (this.RequestDiscoveredFileSize != null) {
-                        this.RequestDiscoveredFileSize(this);
-                    }
+                string contentLength = null;
+                if ((contentLength = this.WebResponse.Headers["Content-Length"]) != null) {
+                    this.FileSize = Convert.ToInt32(contentLength);
                 }
 
-                this.CompleteFileData = new byte[0];
+                this.Data = new byte[0];
 
                 this._mResponseStream = this.WebResponse.GetResponseStream();
 
                 if (this._mResponseStream != null) {
-                    IAsyncResult arResult = this._mResponseStream.BeginRead(this._mBufferStream, 0, Request.IntBufferSize, new AsyncCallback(this.ReadCallBack), this);
+                    IAsyncResult arResult = this._mResponseStream.BeginRead(this.BufferStream, 0, UInt16.MaxValue, new AsyncCallback(this.ReadCallBack), this);
 
-                    ThreadPool.RegisterWaitForSingleObject(arResult.AsyncWaitHandle, new WaitOrTimerCallback(this.ReadTimeoutCallback), this, this._mTimeout, true);
+                    ThreadPool.RegisterWaitForSingleObject(arResult.AsyncWaitHandle, new WaitOrTimerCallback(ReadTimeoutCallback), this, this._mTimeout, true);
                 }
             }
             catch (WebException e) {
                 this.FileDownloading = false;
-                if (this.RequestError != null) {
-                    this.WebResponse = (HttpWebResponse)e.Response;
-                    this.Error = e.Message;
-
-                    //FrostbiteConnection.RaiseEvent(cdfParent.DownloadError.GetInvocationList(), cdfParent);
-                    this.RequestError(this);
-                }
+                this.WebResponse = (HttpWebResponse)e.Response;
+                this.RequestError = e.Message;
+                this.OnError();
             }
             catch (Exception e) {
                 this.FileDownloading = false;
-                if (this.RequestError != null) {
-                    this.Error = e.Message;
+                this.RequestError = e.Message;
 
-                    //FrostbiteConnection.RaiseEvent(cdfParent.DownloadError.GetInvocationList(), cdfParent);
-                    this.RequestError(this);
-                }
+                this.OnError();
             }
         }
 
-        private void ReadTimeoutCallback(object state, bool timedOut) {
+        private static void ReadTimeoutCallback(object state, bool timedOut) {
             if (timedOut == true) {
-                Request cdfParent = (Request)state;
-                if (cdfParent != null && cdfParent._mResponseStream != null) {
-                    cdfParent._mResponseStream.Close();
-
-                    if (cdfParent.RequestError != null) {
-                        cdfParent.Error = "Read Timeout";
-
-                        //FrostbiteConnection.RaiseEvent(cdfParent.DownloadError.GetInvocationList(), cdfParent);
-                        cdfParent.RequestError(cdfParent);
-                    }
+                Request parent = (Request)state;
+                if (parent != null && parent._mResponseStream != null) {
+                    parent._mResponseStream.Close();
+                    parent.RequestError = "Read Timeout";
+                    parent.OnError();
                 }
             }
         }
 
         private void ReadCallBack(IAsyncResult ar) {
-            //Request cdfParent = (Request)ar.AsyncState;
-
             if (this.FileDownloading == true) {
                 try {
 
-                    int iBytesRead = -1;
-                    if ((iBytesRead = this._mResponseStream.EndRead(ar)) > 0) {
+                    int bytesRead = -1;
+                    if ((bytesRead = this._mResponseStream.EndRead(ar)) > 0) {
 
-                        if (this.CompleteFileData.Length < this.BytesDownloaded + iBytesRead) {
-                            byte[] resizedFileData = new byte[this.CompleteFileData.Length + iBytesRead];
+                        if (this.Data.Length < this.BytesDownloaded + bytesRead) {
+                            byte[] resizedFileData = new byte[this.Data.Length + bytesRead];
 
-                            this.CompleteFileData.CopyTo(resizedFileData, 0);
+                            this.Data.CopyTo(resizedFileData, 0);
 
-                            this.CompleteFileData = resizedFileData;
+                            this.Data = resizedFileData;
                         }
 
-                        Array.Copy(this._mBufferStream, 0, this.CompleteFileData, this.BytesDownloaded, iBytesRead);
-                        this.BytesDownloaded += iBytesRead;
+                        Array.Copy(this.BufferStream, 0, this.Data, this.BytesDownloaded, bytesRead);
+                        this.BytesDownloaded += bytesRead;
 
-                        IAsyncResult arResult = this._mResponseStream.BeginRead(this._mBufferStream, 0, Request.IntBufferSize, new AsyncCallback(this.ReadCallBack), this);
+                        IAsyncResult result = this._mResponseStream.BeginRead(this.BufferStream, 0, UInt16.MaxValue, new AsyncCallback(this.ReadCallBack), this);
 
-                        ThreadPool.RegisterWaitForSingleObject(arResult.AsyncWaitHandle, new WaitOrTimerCallback(this.ReadTimeoutCallback), this, this._mTimeout, true);
+                        ThreadPool.RegisterWaitForSingleObject(result.AsyncWaitHandle, new WaitOrTimerCallback(ReadTimeoutCallback), this, this._mTimeout, true);
                     }
                     else {
 
                         this.FileDownloading = false;
-                        if (this.RequestComplete != null) {
-                            //FrostbiteConnection.RaiseEvent(cdfParent.DownloadComplete.GetInvocationList(), cdfParent);
-                            this.RequestComplete(this);
-                        }
+                        this.OnComplete();
 
                         this._mResponseStream.Close();
                         this._mResponseStream.Dispose();
@@ -347,49 +314,15 @@ namespace Procon.Net.Utils.HTTP {
                 }
                 catch (Exception e) {
                     this.FileDownloading = false;
-                    if (this.RequestError != null) {
-                        this.Error = e.Message;
+                    this.RequestError = e.Message;
 
-                        //FrostbiteConnection.RaiseEvent(cdfParent.DownloadError.GetInvocationList(), cdfParent);
-                        this.RequestError(this);
-                    }
+                    this.OnError();
                 }
-            }
-        }
-
-        private void m_progressTimer_Elapsed(object sender, ElapsedEventArgs e) {
-
-            int tickCount = 0;
-            int[] bytesPerTick = new int[50];
-            int previousTickReadBytes = 0;
-
-            while (this.FileDownloading == true) {
-
-                bytesPerTick[tickCount] = this.BytesDownloaded - previousTickReadBytes;
-                tickCount = (++tickCount % 50);
-
-                this.KibPerSecond = 0.0;
-                foreach (int iKiBytesTick in bytesPerTick) {
-                    this.KibPerSecond += iKiBytesTick;
-                }
-
-                this.KibPerSecond = this.KibPerSecond / 5120; // / 1024 / 5;
-
-                previousTickReadBytes = this.BytesDownloaded;
-
-                if (this.RequestProgressUpdate != null && previousTickReadBytes > 0) {
-                    this.RequestProgressUpdate(this);
-
-                    //FrostbiteConnection.RaiseEvent(cdfParent.DownloadProgressUpdate.GetInvocationList(), cdfParent);
-                }
-
-                //Thread.Sleep(100);
             }
         }
 
         public String GetResponseContent() {
-            return this.CompleteFileData != null ? Encoding.UTF8.GetString(this.CompleteFileData) : String.Empty;
+            return this.Data != null ? Encoding.UTF8.GetString(this.Data) : String.Empty;
         }
-
     }
 }

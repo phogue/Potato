@@ -168,7 +168,7 @@ namespace Procon.Core.Repositories {
 
         protected void CloseInstallRequest() {
             if (this.InstallRequest != null) {
-                this.InstallRequest.RequestComplete -= new Request.RequestEventDelegate(DownloadRequest_RequestComplete);
+                this.InstallRequest.Complete -= new Request.RequestEventDelegate(DownloadRequest_RequestComplete);
 
                 this.InstallRequest.EndRequest();
                 this.InstallRequest = null;
@@ -200,7 +200,7 @@ namespace Procon.Core.Repositories {
 
                     this.InstallRequest.RequestContent = builder.ToString();
 
-                    this.InstallRequest.RequestComplete += new Request.RequestEventDelegate(DownloadRequest_RequestComplete);
+                    this.InstallRequest.Complete += new Request.RequestEventDelegate(DownloadRequest_RequestComplete);
 
                     this.State = PackageState.Downloading;
 
@@ -300,7 +300,7 @@ namespace Procon.Core.Repositories {
             try {
                 Directory.CreateDirectory(this.UpdatesPath);
 
-                using (ZipFile zip = ZipFile.Read(new MemoryStream(sender.CompleteFileData))) {
+                using (ZipFile zip = ZipFile.Read(new MemoryStream(sender.Data))) {
                     if (this.ValidateExtractionToTemporary(zip) == true) {
                         this.PostInstallCleanup();
 

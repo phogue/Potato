@@ -182,7 +182,7 @@ namespace Procon.Core.Repositories {
         /// </summary>
         protected void CloseQueryRequest() {
             if (this.QueryRequest != null) {
-                this.QueryRequest.RequestComplete -= new Request.RequestEventDelegate(QueryRequest_RequestComplete);
+                this.QueryRequest.Complete -= new Request.RequestEventDelegate(QueryRequest_RequestComplete);
 
                 this.QueryRequest.EndRequest();
                 this.QueryRequest = null;
@@ -198,7 +198,7 @@ namespace Procon.Core.Repositories {
 
                 this.QueryRequest = new Request(this.Url + "1/query/repository/format/xml");
 
-                this.QueryRequest.RequestComplete += new Request.RequestEventDelegate(QueryRequest_RequestComplete);
+                this.QueryRequest.Complete += new Request.RequestEventDelegate(QueryRequest_RequestComplete);
 
                 this.QueryRequest.BeginRequest();
             }
@@ -235,8 +235,8 @@ namespace Procon.Core.Repositories {
 
         protected void CloseAuthenticationTest() {
             if (this.AuthenticationTestRequest != null) {
-                this.AuthenticationTestRequest.RequestError -= new Request.RequestEventDelegate(AuthenticationTestRequest_RequestError);
-                this.AuthenticationTestRequest.RequestComplete -= new Request.RequestEventDelegate(AuthenticationTestRequest_RequestComplete);
+                this.AuthenticationTestRequest.Error -= new Request.RequestEventDelegate(AuthenticationTestRequest_RequestError);
+                this.AuthenticationTestRequest.Complete -= new Request.RequestEventDelegate(AuthenticationTestRequest_RequestComplete);
 
                 this.AuthenticationTestRequest.EndRequest();
                 this.AuthenticationTestRequest = null;
@@ -266,8 +266,8 @@ namespace Procon.Core.Repositories {
                     )
                 );
 
-                this.AuthenticationTestRequest.RequestError += new Request.RequestEventDelegate(AuthenticationTestRequest_RequestError);
-                this.AuthenticationTestRequest.RequestComplete += new Request.RequestEventDelegate(AuthenticationTestRequest_RequestComplete);
+                this.AuthenticationTestRequest.Error += new Request.RequestEventDelegate(AuthenticationTestRequest_RequestError);
+                this.AuthenticationTestRequest.Complete += new Request.RequestEventDelegate(AuthenticationTestRequest_RequestComplete);
 
                 this.AuthenticationTestRequest.BeginRequest();
             }
@@ -287,7 +287,7 @@ namespace Procon.Core.Repositories {
 
         protected void CloseRebuildCache() {
             if (this.RebuildCacheRequest != null) {
-                this.RebuildCacheRequest.RequestComplete -= new Request.RequestEventDelegate(RebuildCacheRequest_RequestComplete);
+                this.RebuildCacheRequest.Complete -= new Request.RequestEventDelegate(RebuildCacheRequest_RequestComplete);
 
                 this.RebuildCacheRequest.EndRequest();
                 this.RebuildCacheRequest = null;
@@ -317,7 +317,7 @@ namespace Procon.Core.Repositories {
                     )
                 );
 
-                this.RebuildCacheRequest.RequestComplete += new Request.RequestEventDelegate(RebuildCacheRequest_RequestComplete);
+                this.RebuildCacheRequest.Complete += new Request.RequestEventDelegate(RebuildCacheRequest_RequestComplete);
 
                 this.RebuildCacheRequest.BeginRequest();
             }
@@ -331,7 +331,7 @@ namespace Procon.Core.Repositories {
 
         protected void ClosePublishRequest() {
             if (this.PublishRequest != null) {
-                this.PublishRequest.RequestComplete -= new Request.RequestEventDelegate(PublishRequest_RequestComplete);
+                this.PublishRequest.Complete -= new Request.RequestEventDelegate(PublishRequest_RequestComplete);
 
                 this.PublishRequest.EndRequest();
                 this.PublishRequest = null;
@@ -361,7 +361,7 @@ namespace Procon.Core.Repositories {
                     )
                 );
 
-                this.PublishRequest.RequestComplete += new Request.RequestEventDelegate(PublishRequest_RequestComplete);
+                this.PublishRequest.Complete += new Request.RequestEventDelegate(PublishRequest_RequestComplete);
 
                 this.PublishRequest.BeginRequest();
             }

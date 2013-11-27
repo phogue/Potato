@@ -105,12 +105,12 @@ namespace Procon.Core.Test.Remote {
                 }.ToXElement().ToString()
             };
 
-            request.RequestComplete += sender => {
+            request.Complete += sender => {
                 isSuccess = true;
                 requestWait.Set();
             };
 
-            request.RequestError += sender => {
+            request.Error += sender => {
                 isSuccess = false;
                 requestWait.Set();
             };
@@ -147,13 +147,13 @@ namespace Procon.Core.Test.Remote {
 
             CommandResultArgs result = null;
 
-            request.RequestComplete += sender => {
+            request.Complete += sender => {
                 isSuccess = true;
                 result = XDocument.Parse(sender.GetResponseContent()).Root.FromXElement<CommandResultArgs>();
                 requestWait.Set();
             };
 
-            request.RequestError += sender => {
+            request.Error += sender => {
                 isSuccess = false;
                 requestWait.Set();
             };
@@ -195,12 +195,12 @@ namespace Procon.Core.Test.Remote {
                 }.ToXElement().ToString()
             };
 
-            request.RequestComplete += sender => {
+            request.Complete += sender => {
                 isSuccess = true;
                 requestWait.Set();
             };
              
-            request.RequestError += sender => {
+            request.Error += sender => {
                 isSuccess = false;
                 requestWait.Set();
             };
@@ -269,12 +269,12 @@ namespace Procon.Core.Test.Remote {
                 RequestContent = "Lulz, whats up?"
             };
 
-            request.RequestComplete += sender => {
+            request.Complete += sender => {
                 isSuccess = true;
                 requestWait.Set();
             };
 
-            request.RequestError += sender => {
+            request.Error += sender => {
                 isSuccess = false;
                 requestWait.Set();
             };
@@ -314,12 +314,12 @@ namespace Procon.Core.Test.Remote {
                 })
             };
 
-            request.RequestComplete += sender => {
+            request.Complete += sender => {
                 isSuccess = true;
                 requestWait.Set();
             };
 
-            request.RequestError += sender => {
+            request.Error += sender => {
                 isSuccess = false;
                 requestWait.Set();
             };
@@ -357,12 +357,12 @@ namespace Procon.Core.Test.Remote {
                 })
             };
 
-            request.RequestComplete += sender => {
+            request.Complete += sender => {
                 isSuccess = true;
                 requestWait.Set();
             };
 
-            request.RequestError += sender => {
+            request.Error += sender => {
                 isSuccess = false;
                 requestWait.Set();
             };

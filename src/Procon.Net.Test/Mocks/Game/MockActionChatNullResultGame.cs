@@ -8,8 +8,8 @@ namespace Procon.Net.Test.Mocks.Game {
             : base(hostName, port) {
         }
 
-        protected override List<IPacket> Action(Chat chat) {
-            return new List<IPacket>() {
+        protected override List<IPacketWrapper> Action(Chat chat) {
+            return new List<IPacketWrapper>() {
                 null
             };
         }

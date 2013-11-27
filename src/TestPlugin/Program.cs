@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Procon.Net;
 using Procon.Net.Actions;
+using Procon.Net.Actions.Deferred;
 using Procon.Net.Data;
 
 namespace TestPlugin {
@@ -146,7 +147,7 @@ namespace TestPlugin {
                 }
             }
 
-            this.ProxyNetworkAction(output);
+            this.Action(output);
 
             return command.Result;
         }
@@ -157,18 +158,35 @@ namespace TestPlugin {
             TextCommandMatch match = e.Now.TextCommandMatches.First();
 
             if (match.Players != null && match.Players.Count > 0) {
-                CommandResultArgs result = this.ProxyNetworkAction(new Kill() {
-                    Scope = {
-                        Players = new List<Player>(match.Players),
-                        Content = new List<String>() {
-                            "Testing"
+                this.Action(new DeferredAction<Kill>() {
+                    Action = new Kill() {
+                        Scope = {
+                            Players = new List<Player>(match.Players),
+                                Content = new List<String>() {
+                                "Testing"
+                            }
                         }
+                    },
+                    Sent = (action, requests) => {
+                        Console.WriteLine("KillCommand: {0}", action.Uid);
+
+                        foreach (IPacket packet in requests) {
+                            Console.WriteLine("KillCommand.Sent.packet: {0} {1} {2} {3}", packet.Origin, packet.Type, packet.RequestId, packet.DebugText);
+                        }
+                    },
+                    Each = (action, request, response) => {
+                        Console.WriteLine("KillCommand.Each {0} {1} ({2}) ({3})", action.Uid, request.RequestId, request.DebugText, response.DebugText);
+                    },
+                    Done = (action, requests, responses) => {
+                        Console.WriteLine("KillCommand.Done {0}", action.Uid);
+                    },
+                    Expired = (action, requests, responses) => {
+                        Console.WriteLine("KillCommand.Expired {0}", action.Uid);
+                    },
+                    Always = action => {
+                        Console.WriteLine("KillCommand.Always {0}", action.Uid);
                     }
                 });
-
-                foreach (IPacket packet in result.Now.Packets) {
-                    Console.WriteLine("SENT: {0} {1} {2} {3}", packet.Origin, packet.Type, packet.RequestId, packet.DebugText);
-                }
             }
 
             return command.Result;
@@ -219,7 +237,7 @@ namespace TestPlugin {
                 output.Now.Content.Add("Quotes: " + String.Join(", ", match.Quotes.Select(x => String.Format("--{0}--", x)).ToArray()));
             }
 
-            this.ProxyNetworkAction(output);
+            this.Action(output);
 
             return command.Result;
         }

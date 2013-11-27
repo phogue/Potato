@@ -60,6 +60,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Actions\Deferred\IDeferredAction.cs" />
+    <Compile Include="Actions\Deferred\DeferredAction.cs" />
+    <Compile Include="Actions\Deferred\WaitingAction.cs" />
+    <Compile Include="Actions\Deferred\DeferredActions.cs" />
+    <Compile Include="Actions\Deferred\IWaitingAction.cs" />
+    <Compile Include="Actions\Deferred\IDeferredActions.cs" />
     <Compile Include="ClientBase.cs" />
     <Compile Include="ClientEventData.cs" />
     <Compile Include="GameDeclarationAttribute.cs" />

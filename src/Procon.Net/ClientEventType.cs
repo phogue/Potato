@@ -28,6 +28,14 @@ namespace Procon.Net {
         /// Client packet has been recieved. It's already been dispatched and processed by
         /// Procon's networking layer, so this is just for external usage.
         /// </summary>
-        ClientPacketReceived
+        ClientPacketReceived,
+        /// <summary>
+        /// An action has been completed (all responses accounted for)
+        /// </summary>
+        ClientActionDone,
+        /// <summary>
+        /// An action has expired before being completed.
+        /// </summary>
+        ClientActionExpired
     }
 }

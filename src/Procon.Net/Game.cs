@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Procon.Net.Actions;
+using Procon.Net.Actions.Deferred;
 using Procon.Net.Data;
 using Procon.Net.Protocols;
 
@@ -12,6 +13,11 @@ namespace Procon.Net {
         /// The client to handle all communications with the game server
         /// </summary>
         public IClient Client { get; protected set; }
+
+        /// <summary>
+        /// Manages actions and potential events to fire once an action has completed or expired.
+        /// </summary>
+        public IDeferredActions DeferredActions { get; set; }
 
         /// <summary>
         /// Everything the connection currently knows about the game. This is updated
@@ -77,6 +83,9 @@ namespace Procon.Net {
             this.Client.PacketReceived += (sender, wrapper) => {
                 this.PacketDispatcher.Dispatch(wrapper);
 
+                // Alert the deferrer that we have a new packet that's been dispatched
+                this.DeferredActions.Mark(wrapper.Packet);
+
                 this.OnClientEvent(ClientEventType.ClientPacketReceived, new ClientEventData() {
                     Packets = new List<IPacket>() {
                         wrapper.Packet
@@ -111,6 +120,33 @@ namespace Procon.Net {
                     exception
                 }
             });
+
+            this.DeferredActions = new DeferredActions() {
+                Done = (action, requests, responses) => this.OnClientEvent(
+                    ClientEventType.ClientActionDone,
+                    new ClientEventData() {
+                        Packets = responses
+                    },
+                    new ClientEventData() {
+                        Actions = new List<NetworkAction>() {
+                            action
+                        },
+                        Packets = requests
+                    }
+                ),
+                Expired = (action, requests, responses) => this.OnClientEvent(
+                    ClientEventType.ClientActionExpired,
+                    new ClientEventData() {
+                        Packets = responses
+                    },
+                    new ClientEventData() {
+                        Actions = new List<NetworkAction>() {
+                            action
+                        },
+                        Packets = requests
+                    }
+                ),
+            };
         }
 
         /// <summary>
@@ -166,63 +202,73 @@ namespace Procon.Net {
         /// <param name="action"></param>
         public virtual List<IPacket> Action(NetworkAction action) {
             List<IPacket> packets = null;
+            List<IPacketWrapper> wrappers = null;
 
             if (action is Chat) {
-                packets = this.Action(action as Chat);
+                wrappers = this.Action(action as Chat);
             }
             else if (action is Kick) {
-                packets = this.Action(action as Kick);
+                wrappers = this.Action(action as Kick);
             }
             else if (action is Ban) {
-                packets = this.Action(action as Ban);
+                wrappers = this.Action(action as Ban);
             }
             else if (action is Map) {
-                packets = this.Action(action as Map);
+                wrappers = this.Action(action as Map);
             }
             else if (action is Kill) {
-                packets = this.Action(action as Kill);
+                wrappers = this.Action(action as Kill);
             }
             else if (action is Move) {
-                packets = this.Action(action as Move);
+                wrappers = this.Action(action as Move);
             }
             else if (action is Raw) {
-                packets = this.Action(action as Raw);
+                wrappers = this.Action(action as Raw);
             }
 
-            if (packets != null) {
-                packets = packets.Where(packet => packet != null).ToList();
+            if (wrappers != null) {
+                // Fetch all of the packets that are not null
+                packets = wrappers.Where(wrapper => wrapper != null).Select(wrapper => wrapper.Packet).ToList();
+
+                // Defer this completed action for now.
+                this.DeferredActions.Wait(action, packets);
+
+                // Now send the packets
+                foreach (IPacketWrapper wrapper in wrappers) {
+                    this.Send(wrapper);
+                }
             }
 
             return packets;
         }
 
-        protected abstract List<IPacket> Action(Chat chat);
+        protected abstract List<IPacketWrapper> Action(Chat chat);
 
-        protected abstract List<IPacket> Action(Kick kick);
+        protected abstract List<IPacketWrapper> Action(Kick kick);
 
-        protected abstract List<IPacket> Action(Ban ban);
+        protected abstract List<IPacketWrapper> Action(Ban ban);
 
-        protected abstract List<IPacket> Action(Map map);
+        protected abstract List<IPacketWrapper> Action(Map map);
 
-        protected abstract List<IPacket> Action(Kill kill);
+        protected abstract List<IPacketWrapper> Action(Kill kill);
 
-        protected abstract List<IPacket> Action(Move move);
+        protected abstract List<IPacketWrapper> Action(Move move);
 
         /// <summary>
         /// Send a raw packet to the sever, creating or wrapping it first.
         /// </summary>
         /// <param name="raw"></param>
         /// <returns></returns>
-        protected virtual List<IPacket> Action(Raw raw) {
-            List<IPacket> packets = new List<IPacket>();
+        protected virtual List<IPacketWrapper> Action(Raw raw) {
+            List<IPacketWrapper> wrappers = new List<IPacketWrapper>();
 
             if (raw.ActionType == NetworkActionType.NetworkSend) {
-                packets.AddRange(raw.Now.Content.Select(text => this.Send(this.CreatePacket(text))));
+                wrappers.AddRange(raw.Now.Content.Select(text => this.CreatePacket(text)));
 
-                packets.AddRange(raw.Now.Packets.Select(packet => this.Send(this.WrapPacket(packet))));
+                wrappers.AddRange(raw.Now.Packets.Select(this.WrapPacket));
             }
 
-            return packets;
+            return wrappers;
         }
 
         /// <summary>

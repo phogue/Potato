@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -8,6 +9,7 @@ using Procon.Core.Events;
 using Procon.Core.Scheduler;
 using Procon.Net;
 using Procon.Net.Actions;
+using Procon.Net.Actions.Deferred;
 using Procon.Net.Data;
 
 namespace Procon.Core.Connections.Plugins {
@@ -54,10 +56,17 @@ namespace Procon.Core.Connections.Plugins {
         /// </summary>
         public IPluginCallback PluginCallback { private get; set; }
 
+        /// <summary>
+        /// All actions awaiting responses from the game networking layer
+        /// </summary>
+        protected ConcurrentDictionary<Guid, IDeferredAction> DeferredActions { get; set; } 
+
         protected RemotePlugin() : base() {
             this.Tasks = new TaskController().Start();
 
             this.PluginGuid = this.GetAssemblyGuid();
+
+            this.DeferredActions = new ConcurrentDictionary<Guid, IDeferredAction>();
 
             this.AppendDispatchHandlers(new Dictionary<CommandAttribute, CommandDispatchHandler>() {
                 {
@@ -123,7 +132,7 @@ namespace Procon.Core.Connections.Plugins {
         /// </remarks>
         /// <param name="action">The action to send to the server.</param>
         /// <returns>The result of the command, check the status for a success message.</returns>
-        public virtual CommandResultArgs ProxyNetworkAction(NetworkAction action) {
+        public virtual CommandResultArgs Action(NetworkAction action) {
             // Splitting the commands up is very deliberate, used to divide the permissions a user
             // requires to initiate a particular command. We do this here instead of later for.. well..
             // I don't know. A plugin might have a use to ignore this action at some point?
@@ -154,6 +163,25 @@ namespace Procon.Core.Connections.Plugins {
                 });
             }
 
+            return result;
+        }
+
+        /// <summary>
+        /// Sets up and sends a deferred action to the server.
+        /// </summary>
+        /// <param name="action"></param>
+        /// <returns></returns>
+        public virtual CommandResultArgs Action(IDeferredAction action) {
+            // Wait for responses from this action
+            this.DeferredActions.TryAdd(action.GetAction().Uid, action);
+
+            // Send the action for processing
+            CommandResultArgs result = this.Action(action.GetAction());
+
+            // Alert the deferred action of packets that have been sent
+            action.TryInsertSent(action.GetAction(), result.Now.Packets);
+
+            // Now return the result 
             return result;
         }
 
@@ -190,6 +218,32 @@ namespace Procon.Core.Connections.Plugins {
         }
 
         public virtual void ClientEvent(ClientEventArgs e) {
+            if (e.EventType == ClientEventType.ClientActionDone) {
+                NetworkAction doneAction = e.Then.Actions.FirstOrDefault();
+
+                if (doneAction != null) {
+                    IDeferredAction deferredAction;
+
+                    if (this.DeferredActions.TryRemove(doneAction.Uid, out deferredAction) == true && deferredAction.TryInsertDone(doneAction, e.Then.Packets, e.Now.Packets) == true) {
+                        deferredAction.TryInsertAlways(doneAction);
+
+                        deferredAction.Release();
+                    }
+                }
+            }
+            else if (e.EventType == ClientEventType.ClientActionExpired) {
+                NetworkAction doneAction = e.Then.Actions.FirstOrDefault();
+
+                if (doneAction != null) {
+                    IDeferredAction deferredAction;
+
+                    if (this.DeferredActions.TryRemove(doneAction.Uid, out deferredAction) == true && deferredAction.TryInsertExpired(doneAction, e.Then.Packets, e.Now.Packets) == true) {
+                        deferredAction.TryInsertAlways(doneAction);
+
+                        deferredAction.Release();
+                    }
+                }
+            }
         }
 
         /// <summary>

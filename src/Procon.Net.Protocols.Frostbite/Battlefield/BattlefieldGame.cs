@@ -14,8 +14,8 @@ namespace Procon.Net.Protocols.Frostbite.Battlefield {
         }
 
         // todo this command has about four error paths if the exact correct data is now passed in or a map is missing
-        protected override List<IPacket> Action(Move move) {
-            List<IPacket> packets = new List<IPacket>();
+        protected override List<IPacketWrapper> Action(Move move) {
+            List<IPacketWrapper> wrappers = new List<IPacketWrapper>();
 
             if (move.Scope.Players != null) {
                 // admin.movePlayer <name: player name> <teamId: Team ID> <squadId: Squad ID> <forceKill: boolean>
@@ -51,17 +51,17 @@ namespace Procon.Net.Protocols.Frostbite.Battlefield {
                         }
                     }
 
-                    packets.Add(this.Send(this.CreatePacket(
+                    wrappers.Add(this.CreatePacket(
                         "admin.movePlayer \"{0}\" {1} {2} {3}",
                         movePlayer.Name,
                         move.Now.Groups.First(group => @group.Type == Grouping.Team).Uid,
                         move.Now.Groups.First(group => @group.Type == Grouping.Squad).Uid,
                         FrostbiteConverter.BoolToString(forceMove)
-                    )));
+                    ));
                 }
             }
 
-            return packets;
+            return wrappers;
         }
     }
 }

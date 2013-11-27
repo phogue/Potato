@@ -236,61 +236,61 @@ namespace Procon.Net.Protocols.Frostbite.Battlefield.Battlefield3 {
             }
         }
 
-        protected override List<IPacket> Action(Map map) {
-            List<IPacket> packets = new List<IPacket>();
+        protected override List<IPacketWrapper> Action(Map map) {
+            List<IPacketWrapper> wrappers = new List<IPacketWrapper>();
 
             if (map.ActionType == NetworkActionType.NetworkMapAppend) {
                 // mapList.add <map: string> <gamemode: string> <rounds: integer> [index: integer]
-                packets.Add(this.Send(this.CreatePacket("mapList.add \"{0}\" \"{1}\" {2}", map.Name, map.GameMode.Name, map.Rounds)));
+                wrappers.Add(this.CreatePacket("mapList.add \"{0}\" \"{1}\" {2}", map.Name, map.GameMode.Name, map.Rounds));
 
-                packets.Add(this.Send(this.CreatePacket("mapList.save")));
+                wrappers.Add(this.CreatePacket("mapList.save"));
 
-                packets.Add(this.Send(this.CreatePacket("mapList.list")));
+                wrappers.Add(this.CreatePacket("mapList.list"));
             }
             // Added by Imisnew2 - You should check this phogue!
             else if (map.ActionType == NetworkActionType.NetworkMapChangeMode) {
                 if (map.GameMode != null) {
-                    packets.Add(this.Send(this.CreatePacket("admin.setPlaylist \"{0}\"", map.GameMode.Name)));
+                    wrappers.Add(this.CreatePacket("admin.setPlaylist \"{0}\"", map.GameMode.Name));
                 }
             }
             else if (map.ActionType == NetworkActionType.NetworkMapInsert) {
                 // mapList.add <map: string> <gamemode: string> <rounds: integer> [index: integer]
-                packets.Add(this.Send(this.CreatePacket("mapList.add \"{0}\" \"{1}\" {2} {3}", map.Name, map.GameMode.Name, map.Rounds, map.Index)));
+                wrappers.Add(this.CreatePacket("mapList.add \"{0}\" \"{1}\" {2} {3}", map.Name, map.GameMode.Name, map.Rounds, map.Index));
 
-                packets.Add(this.Send(this.CreatePacket("mapList.save")));
+                wrappers.Add(this.CreatePacket("mapList.save"));
 
-                packets.Add(this.Send(this.CreatePacket("mapList.list")));
+                wrappers.Add(this.CreatePacket("mapList.list"));
             }
             else if (map.ActionType == NetworkActionType.NetworkMapRemove) {
                 var matchingMaps = this.State.Maps.Where(x => x.Name == map.Name).OrderByDescending(x => x.Index);
 
-                packets.AddRange(matchingMaps.Select(match => this.Send(this.CreatePacket("mapList.remove {0}", match.Index))));
+                wrappers.AddRange(matchingMaps.Select(match => this.CreatePacket("mapList.remove {0}", match.Index)));
 
-                packets.Add(this.Send(this.CreatePacket("mapList.save")));
+                wrappers.Add(this.CreatePacket("mapList.save"));
 
-                packets.Add(this.Send(this.CreatePacket("mapList.list")));
+                wrappers.Add(this.CreatePacket("mapList.list"));
             }
             else if (map.ActionType == NetworkActionType.NetworkMapRemoveIndex) {
-                packets.Add(this.Send(this.CreatePacket("mapList.remove {0}", map.Index)));
+                wrappers.Add(this.CreatePacket("mapList.remove {0}", map.Index));
 
-                packets.Add(this.Send(this.CreatePacket("mapList.list")));
+                wrappers.Add(this.CreatePacket("mapList.list"));
             }
             else if (map.ActionType == NetworkActionType.NetworkMapNextIndex) {
-                packets.Add(this.Send(this.CreatePacket("mapList.setNextMapIndex {0}", map.Index)));
+                wrappers.Add(this.CreatePacket("mapList.setNextMapIndex {0}", map.Index));
             }
             else if (map.ActionType == NetworkActionType.NetworkMapRestart || map.ActionType == NetworkActionType.NetworkMapRoundRestart) {
-                packets.Add(this.Send(this.CreatePacket("mapList.restartRound")));
+                wrappers.Add(this.CreatePacket("mapList.restartRound"));
             }
             else if (map.ActionType == NetworkActionType.NetworkMapNext || map.ActionType == NetworkActionType.NetworkMapRoundNext) {
-                packets.Add(this.Send(this.CreatePacket("mapList.runNextRound")));
+                wrappers.Add(this.CreatePacket("mapList.runNextRound"));
             }
             else if (map.ActionType == NetworkActionType.NetworkMapClear) {
-                packets.Add(this.Send(this.CreatePacket("mapList.clear")));
+                wrappers.Add(this.CreatePacket("mapList.clear"));
 
-                packets.Add(this.Send(this.CreatePacket("mapList.save")));
+                wrappers.Add(this.CreatePacket("mapList.save"));
             }
 
-            return packets;
+            return wrappers;
         }
     }
 }

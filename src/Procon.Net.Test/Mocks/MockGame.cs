@@ -12,27 +12,27 @@ namespace Procon.Net.Test.Mocks {
             // Do nothing.
         }
 
-        protected override List<IPacket> Action(Chat chat) {
+        protected override List<IPacketWrapper> Action(Chat chat) {
             throw new System.NotImplementedException();
         }
 
-        protected override List<IPacket> Action(Kick kick) {
+        protected override List<IPacketWrapper> Action(Kick kick) {
             throw new System.NotImplementedException();
         }
 
-        protected override List<IPacket> Action(Ban ban) {
+        protected override List<IPacketWrapper> Action(Ban ban) {
             throw new System.NotImplementedException();
         }
 
-        protected override List<IPacket> Action(Map map) {
+        protected override List<IPacketWrapper> Action(Map map) {
             throw new System.NotImplementedException();
         }
 
-        protected override List<IPacket> Action(Kill kill) {
+        protected override List<IPacketWrapper> Action(Kill kill) {
             throw new System.NotImplementedException();
         }
 
-        protected override List<IPacket> Action(Move move) {
+        protected override List<IPacketWrapper> Action(Move move) {
             throw new System.NotImplementedException();
         }
 

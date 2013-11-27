@@ -25,7 +25,7 @@ namespace Procon.Net {
         /// </summary>
         public NetworkActionData Now { get; set; }
 
-        public NetworkAction(): base() {
+        protected NetworkAction(): base() {
             this.Scope = new NetworkActionData();
             this.Then = new NetworkActionData();
             this.Now = new NetworkActionData();

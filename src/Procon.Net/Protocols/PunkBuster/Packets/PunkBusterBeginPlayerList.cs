@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace Procon.Net.Protocols.PunkBuster.Objects {
+namespace Procon.Net.Protocols.PunkBuster.Packets {
     public class PunkBusterBeginPlayerList : IPunkBuster {
         /// <summary>
         /// Deserialize a regular expression match object into the the object.

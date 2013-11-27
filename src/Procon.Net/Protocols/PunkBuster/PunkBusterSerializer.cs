@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using Procon.Net.Protocols.PunkBuster.Objects;
+using Procon.Net.Protocols.PunkBuster.Packets;
 
 namespace Procon.Net.Protocols.PunkBuster {
     public class PunkBusterSerializer {

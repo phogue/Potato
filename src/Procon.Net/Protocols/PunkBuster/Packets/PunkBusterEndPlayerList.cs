@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace Procon.Net.Protocols.PunkBuster.Objects {
+namespace Procon.Net.Protocols.PunkBuster.Packets {
     public class PunkBusterEndPlayerList : IPunkBuster {
 
         /// <summary>

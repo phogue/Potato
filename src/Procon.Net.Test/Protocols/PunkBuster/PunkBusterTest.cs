@@ -1,6 +1,6 @@
 ﻿using NUnit.Framework;
 using Procon.Net.Protocols.PunkBuster;
-using Procon.Net.Protocols.PunkBuster.Objects;
+using Procon.Net.Protocols.PunkBuster.Packets;
 
 namespace Procon.Net.Test.Protocols.PunkBuster {
     [TestFixture]

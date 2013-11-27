@@ -55,7 +55,7 @@ namespace Procon.Net.Actions.Deferred {
         public bool TryInsertSent(NetworkAction action, List<IPacket> requests) {
             bool inserted = false;
 
-            if (this.Action.Uid == action.Uid) {
+            if (this.Action != null && this.Action.Uid == action.Uid) {
                 var sent = this.Sent;
 
                 if (sent != null) {
@@ -78,7 +78,7 @@ namespace Procon.Net.Actions.Deferred {
         public bool TryInsertDone(NetworkAction action, List<IPacket> requests, List<IPacket> responses) {
             bool inserted = false;
 
-            if (this.Action.Uid == action.Uid) {
+            if (this.Action != null && this.Action.Uid == action.Uid) {
                 var each = this.Each;
 
                 if (each != null) {
@@ -109,7 +109,7 @@ namespace Procon.Net.Actions.Deferred {
         public bool TryInsertExpired(NetworkAction action, List<IPacket> requests, List<IPacket> responses) {
             bool inserted = false;
 
-            if (this.Action.Uid == action.Uid) {
+            if (this.Action != null && this.Action.Uid == action.Uid) {
                 var expired = this.Expired;
 
                 if (expired != null) {
@@ -130,7 +130,7 @@ namespace Procon.Net.Actions.Deferred {
         public bool TryInsertAlways(NetworkAction action) {
             bool inserted = false;
 
-            if (this.Action.Uid == action.Uid) {
+            if (this.Action != null && this.Action.Uid == action.Uid) {
                 var always = this.Always;
 
                 if (always != null) {

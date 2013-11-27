@@ -4,7 +4,7 @@ using Procon.Net.Protocols.Objects;
 namespace Procon.Net.Test.Mocks {
 
     [GameDeclaration(Type = "MOCK_3", Name = "MockGame 3", Provider = "Myrcon")]
-    public class MockGame : Game {
+    public class MockGame : Procon.Net.Game {
         public MockGame(string hostName, ushort port) : base(hostName, port) {
         }
 

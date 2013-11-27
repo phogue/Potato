@@ -63,6 +63,8 @@
   <ItemGroup>
     <Compile Include="ClientTest.cs" />
     <Compile Include="GameTest.cs" />
+    <Compile Include="Mocks\Game\MockActionChatNullResultGame.cs" />
+    <Compile Include="Mocks\Game\MockActionDispatchGame.cs" />
     <Compile Include="Mocks\MockGame.cs" />
     <Compile Include="PacketDispatcherTest.cs" />
     <Compile Include="Mocks\MockPacketDispatcher.cs" />

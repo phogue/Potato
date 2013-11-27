@@ -7,6 +7,7 @@ using System.Xml.Linq;
 using NUnit.Framework;
 using Procon.Core.Events;
 using Procon.Core.Utils;
+using Procon.Net;
 using Procon.Net.Protocols.Frostbite.Objects;
 using Procon.Net.Protocols.Objects;
 using Procon.Net.Utils;

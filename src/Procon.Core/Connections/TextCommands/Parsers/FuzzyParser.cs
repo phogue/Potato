@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using Procon.Net;
 
 namespace Procon.Core.Connections.TextCommands.Parsers {
     using Procon.Core.Events;

@@ -29,7 +29,7 @@ namespace Procon.Net.Protocols.Frostbite.Objects {
                     });
                 }
 
-                ban.ActionType = Protocols.Objects.NetworkActionType.NetworkMapListed;
+                ban.ActionType = NetworkActionType.NetworkMapListed;
 
                 ban.Scope.Content = new List<String>() {
                     words[4]

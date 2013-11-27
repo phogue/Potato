@@ -8,6 +8,7 @@ using Procon.Core.Localization;
 using Procon.Core.Security;
 using Procon.Core.Utils;
 using Procon.Core.Variables;
+using Procon.Net;
 using Procon.Net.Protocols;
 using Procon.Net.Protocols.Objects;
 using Procon.Net.Utils;

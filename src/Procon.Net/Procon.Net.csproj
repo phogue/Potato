@@ -99,13 +99,13 @@
     <Compile Include="Protocols\CommonGameType.cs" />
     <Compile Include="GameConfig.cs" />
     <Compile Include="Protocols\Objects\Grouping.cs" />
-    <Compile Include="Protocols\Objects\NetworkAction.cs" />
+    <Compile Include="NetworkAction.cs" />
     <Compile Include="Protocols\Objects\Ban.cs" />
     <Compile Include="Protocols\Objects\BanList.cs" />
     <Compile Include="Protocols\Objects\ChatOrigin.cs" />
     <Compile Include="Protocols\Objects\Chat.cs" />
-    <Compile Include="Protocols\Objects\NetworkActionData.cs" />
-    <Compile Include="Protocols\Objects\NetworkActionType.cs" />
+    <Compile Include="NetworkActionData.cs" />
+    <Compile Include="NetworkActionType.cs" />
     <Compile Include="Protocols\Objects\Raw.cs" />
     <Compile Include="Protocols\Objects\Settings.cs" />
     <Compile Include="Protocols\Objects\GameMode.cs" />
@@ -121,7 +121,7 @@
     <Compile Include="Protocols\Objects\Point3D.cs" />
     <Compile Include="Protocols\Objects\Player.cs" />
     <Compile Include="Protocols\Objects\GroupingList.cs" />
-    <Compile Include="Protocols\Objects\NetworkObject.cs" />
+    <Compile Include="NetworkObject.cs" />
     <Compile Include="Protocols\Objects\Role.cs" />
     <Compile Include="Protocols\Objects\GameState.cs" />
     <Compile Include="Protocols\Objects\SettingsData.cs" />

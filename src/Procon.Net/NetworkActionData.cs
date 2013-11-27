@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Xml.Serialization;
 using Newtonsoft.Json;
+using Procon.Net.Protocols.Objects;
 
-namespace Procon.Net.Protocols.Objects {
+namespace Procon.Net {
 
     [Serializable]
     public class NetworkActionData {

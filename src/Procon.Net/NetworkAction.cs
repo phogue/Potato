@@ -1,9 +1,9 @@
 ﻿using System;
 
-namespace Procon.Net.Protocols.Objects {
+namespace Procon.Net {
 
     [Serializable]
-    public class NetworkAction : NetworkObject {
+    public abstract class NetworkAction : NetworkObject {
 
         /// <summary>
         /// The specific type of action taken with this object.

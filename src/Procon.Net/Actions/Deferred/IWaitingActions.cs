@@ -19,7 +19,8 @@ namespace Procon.Net.Actions.Deferred {
         /// </summary>
         /// <param name="action">The action being taken</param>
         /// <param name="requests">A list of packets sent to the game server to complete this action</param>
-        void Wait(NetworkAction action, List<IPacket> requests);
+        /// <param name="expiration">An optional datetime when this action should expire</param>
+        void Wait(NetworkAction action, List<IPacket> requests, DateTime? expiration = null);
 
         /// <summary>
         /// Register a response to check against actions being taken

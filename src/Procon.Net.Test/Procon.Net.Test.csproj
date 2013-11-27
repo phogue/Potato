@@ -61,6 +61,8 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Actions\Deferred\DeferredActionTest.cs" />
+    <Compile Include="Actions\Deferred\WaitingActionsTest.cs" />
     <Compile Include="ClientTest.cs" />
     <Compile Include="GameTest.cs" />
     <Compile Include="Mocks\Game\MockActionChatNullResultGame.cs" />

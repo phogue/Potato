@@ -9,7 +9,7 @@ namespace Procon.Net.Actions.Deferred {
         /// <summary>
         /// List of deferred actions we are waiting for responses on.
         /// </summary>
-        protected ConcurrentDictionary<Guid, IWaitingAction> Waiting { get; set; }
+        public ConcurrentDictionary<Guid, IWaitingAction> Waiting { get; set; }
 
         /// <summary>
         /// Called once all of the packets sent have had packets marked against them.
@@ -30,10 +30,12 @@ namespace Procon.Net.Actions.Deferred {
         /// </summary>
         /// <param name="action">The action being taken</param>
         /// <param name="requests">A list of packets sent to the game server to complete this action</param>
-        public void Wait(NetworkAction action, List<IPacket> requests) {
+        /// <param name="expiration">An optional datetime when this action should expire</param>
+        public void Wait(NetworkAction action, List<IPacket> requests, DateTime? expiration = null) {
             this.Waiting.TryAdd(action.Uid, new WaitingAction() {
                 Action = action,
-                Requests = new List<IPacket>(requests)
+                Requests = new List<IPacket>(requests),
+                Expiration = expiration ?? DateTime.Now.AddSeconds(10)
             });
         }
 
@@ -63,7 +65,7 @@ namespace Procon.Net.Actions.Deferred {
         /// Find and removes all expired actions.
         /// </summary>
         public void Flush() {
-            foreach (var expired in this.Waiting.Where(on => on.Value.Expiration > DateTime.Now)) {
+            foreach (var expired in this.Waiting.Where(on => on.Value.Expiration < DateTime.Now)) {
                 IWaitingAction deferredAction;
                 
                 if (this.Waiting.TryRemove(expired.Key, out deferredAction) == true) {

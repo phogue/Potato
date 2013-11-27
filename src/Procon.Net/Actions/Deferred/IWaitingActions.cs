@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 
 namespace Procon.Net.Actions.Deferred {
-    public interface IDeferredActions {
+    public interface IWaitingActions {
 
         /// <summary>
         /// Called once all of the packets sent have had packets marked against them.

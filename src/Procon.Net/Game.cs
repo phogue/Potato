@@ -17,7 +17,7 @@ namespace Procon.Net {
         /// <summary>
         /// Manages actions and potential events to fire once an action has completed or expired.
         /// </summary>
-        public IDeferredActions DeferredActions { get; set; }
+        public IWaitingActions WaitingActions { get; set; }
 
         /// <summary>
         /// Everything the connection currently knows about the game. This is updated
@@ -84,7 +84,7 @@ namespace Procon.Net {
                 this.PacketDispatcher.Dispatch(wrapper);
 
                 // Alert the deferrer that we have a new packet that's been dispatched
-                this.DeferredActions.Mark(wrapper.Packet);
+                this.WaitingActions.Mark(wrapper.Packet);
 
                 this.OnClientEvent(ClientEventType.ClientPacketReceived, new ClientEventData() {
                     Packets = new List<IPacket>() {
@@ -121,7 +121,7 @@ namespace Procon.Net {
                 }
             });
 
-            this.DeferredActions = new DeferredActions() {
+            this.WaitingActions = new WaitingActions() {
                 Done = (action, requests, responses) => this.OnClientEvent(
                     ClientEventType.ClientActionDone,
                     new ClientEventData() {
@@ -231,7 +231,7 @@ namespace Procon.Net {
                 packets = wrappers.Where(wrapper => wrapper != null).Select(wrapper => wrapper.Packet).ToList();
 
                 // Defer this completed action for now.
-                this.DeferredActions.Wait(action, packets);
+                this.WaitingActions.Wait(action, packets);
 
                 // Now send the packets
                 foreach (IPacketWrapper wrapper in wrappers) {

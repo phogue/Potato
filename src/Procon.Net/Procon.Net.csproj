@@ -63,9 +63,9 @@
     <Compile Include="Actions\Deferred\IDeferredAction.cs" />
     <Compile Include="Actions\Deferred\DeferredAction.cs" />
     <Compile Include="Actions\Deferred\WaitingAction.cs" />
-    <Compile Include="Actions\Deferred\DeferredActions.cs" />
+    <Compile Include="Actions\Deferred\WaitingActions.cs" />
     <Compile Include="Actions\Deferred\IWaitingAction.cs" />
-    <Compile Include="Actions\Deferred\IDeferredActions.cs" />
+    <Compile Include="Actions\Deferred\IWaitingActions.cs" />
     <Compile Include="ClientBase.cs" />
     <Compile Include="ClientEventData.cs" />
     <Compile Include="GameDeclarationAttribute.cs" />

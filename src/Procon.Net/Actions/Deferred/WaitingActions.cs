@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 namespace Procon.Net.Actions.Deferred {
-    public class DeferredActions : IDeferredActions {
+    public class WaitingActions : IWaitingActions {
 
         /// <summary>
         /// List of deferred actions we are waiting for responses on.
@@ -21,7 +21,7 @@ namespace Procon.Net.Actions.Deferred {
         /// </summary>
         public Action<NetworkAction, List<IPacket>, List<IPacket>> Expired { get; set; }
 
-        public DeferredActions() {
+        public WaitingActions() {
             this.Waiting = new ConcurrentDictionary<Guid, IWaitingAction>();
         }
 

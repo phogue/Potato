@@ -549,9 +549,11 @@ namespace Procon.Core.Connections {
                 });
             }
             else if (e.EventType == ClientEventType.ClientConnectionFailure || e.EventType == ClientEventType.ClientSocketException) {
+                Exception exception = e.Now.Exceptions.FirstOrDefault();
+
                 this.Events.Log(new GenericEventArgs() {
                     Name = e.EventType.ToString(),
-                    Message = e.ConnectionError != null ? e.ConnectionError.Message : String.Empty,
+                    Message = exception != null ? exception.Message : String.Empty,
                     Scope = new CommandData() {
                         Connections = new List<Connection>() {
                             this

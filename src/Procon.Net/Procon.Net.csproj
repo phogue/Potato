@@ -61,6 +61,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ClientBase.cs" />
+    <Compile Include="ClientEventData.cs" />
     <Compile Include="GameDeclarationAttribute.cs" />
     <Compile Include="IClient.cs" />
     <Compile Include="IGame.cs" />

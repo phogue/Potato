@@ -74,10 +74,14 @@ namespace Procon.Net {
             this.PacketDispatcher = this.CreatePacketDispatcher();
 
             // Handle client events, most of which are proxies to events we fire.
-            this.Client.PacketReceived += (sender, packet) => {
-                this.PacketDispatcher.Dispatch(packet);
+            this.Client.PacketReceived += (sender, wrapper) => {
+                this.PacketDispatcher.Dispatch(wrapper);
 
-                this.OnClientEvent(ClientEventType.ClientPacketReceived, packet);
+                this.OnClientEvent(ClientEventType.ClientPacketReceived, new ClientEventData() {
+                    Packets = new List<IPacket>() {
+                        wrapper.Packet
+                    }
+                });
             };
 
             this.Client.ConnectionStateChanged += (sender, state) => {
@@ -90,9 +94,23 @@ namespace Procon.Net {
                 }
             };
 
-            this.Client.PacketSent += (sender, packet) => this.OnClientEvent(ClientEventType.ClientPacketSent, packet);
-            this.Client.SocketException += (sender, se) => this.OnClientEvent(ClientEventType.ClientSocketException, null, se);
-            this.Client.ConnectionFailure += (sender, exception) => this.OnClientEvent(ClientEventType.ClientConnectionFailure, null, exception);
+            this.Client.PacketSent += (sender, wrapper) => this.OnClientEvent(ClientEventType.ClientPacketSent, new ClientEventData() {
+                Packets = new List<IPacket>() {
+                    wrapper.Packet
+                }
+            });
+
+            this.Client.SocketException += (sender, se) => this.OnClientEvent(ClientEventType.ClientSocketException, new ClientEventData() {
+                Exceptions = new List<Exception>() {
+                    se
+                }
+            });
+
+            this.Client.ConnectionFailure += (sender, exception) => this.OnClientEvent(ClientEventType.ClientConnectionFailure, new ClientEventData() {
+                Exceptions = new List<Exception>() {
+                    exception
+                }
+            });
         }
 
         /// <summary>
@@ -101,7 +119,7 @@ namespace Procon.Net {
         public virtual event GameEventHandler GameEvent;
         public delegate void GameEventHandler(Game sender, GameEventArgs e);
 
-        protected void OnGameEvent(GameEventType eventType, GameEventData after = null, GameEventData before = null) {
+        protected void OnGameEvent(GameEventType eventType, GameEventData now = null, GameEventData then = null) {
             var handler = this.GameEvent;
             if (handler != null) {
                 handler(
@@ -110,8 +128,8 @@ namespace Procon.Net {
                         GameEventType = eventType,
                         GameType = this.GameType as GameType, // Required for serialization. How to get around?
                         GameState = this.State,
-                        Then = before ?? new GameEventData(),
-                        Now = after ?? new GameEventData(),
+                        Now = now ?? new GameEventData(),
+                        Then = then ?? new GameEventData()
                     }
                 );
             }
@@ -124,14 +142,14 @@ namespace Procon.Net {
         public virtual event ClientEventHandler ClientEvent;
         public delegate void ClientEventHandler(Game sender, ClientEventArgs e);
 
-        protected void OnClientEvent(ClientEventType eventType, IPacketWrapper wrapper = null, Exception exception = null) {
+        protected void OnClientEvent(ClientEventType eventType, ClientEventData now = null, ClientEventData then = null) {
             var handler = this.ClientEvent;
             if (handler != null) {
                 handler(this, new ClientEventArgs() {
                     EventType = eventType,
                     ConnectionState = this.Client.ConnectionState,
-                    ConnectionError = exception,
-                    Packet = wrapper != null ? wrapper.Packet as Packet : null
+                    Now = now ?? new ClientEventData(),
+                    Then = then ?? new ClientEventData()
                 });
             }
         }

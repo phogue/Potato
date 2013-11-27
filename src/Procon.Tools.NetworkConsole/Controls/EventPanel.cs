@@ -126,7 +126,7 @@ namespace Procon.Tools.NetworkConsole.Controls {
                                     Text = e.ConnectionState.ToString()
                                 },
                                 new ListViewItem.ListViewSubItem() {
-                                    Text = e.ConnectionError != null ? e.ConnectionError.Message : String.Empty
+                                    Text = e.Now.Exceptions != null && e.Now.Exceptions.Any() == true ? e.Now.Exceptions.FirstOrDefault().Message : String.Empty
                                 }
                             }
                         );

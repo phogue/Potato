@@ -161,14 +161,14 @@ namespace Procon.Net.Utils.Tests {
 
                     Game.ClientEventHandler handler = (sender, args) => {
                         if (args.EventType == ClientEventType.ClientPacketReceived) {
-                            ProtocolUnitTestPacket matchedPacket = args.Packet.Type == PacketType.Response ? localCommand.Responses.FirstOrDefault(response => response.Matches(args.Packet.ToString())) : localCommand.Requests.FirstOrDefault(request => request.Matches(args.Packet.ToString()));
+                            ProtocolUnitTestPacket matchedPacket = args.Now.Packets.First().Type == PacketType.Response ? localCommand.Responses.FirstOrDefault(response => response.Matches(args.Now.Packets.First().ToString())) : localCommand.Requests.FirstOrDefault(request => request.Matches(args.Now.Packets.First().ToString()));
 
                             if (matchedPacket != null) {
                                 matchedPacket.Found = true;
                             }
                             else {
                                 // Add it to the alternative packets received for debug output.
-                                unmatchedReceived.Add(args.Packet.ToString());
+                                unmatchedReceived.Add(args.Now.Packets.First().ToString());
                             }
 
                             // If we don't have any packets remaining that have not been found yet.

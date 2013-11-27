@@ -30,12 +30,6 @@ namespace TestPlugin {
             new TestPluginsCommands()
         };
 
-        /// <summary>
-        /// A list of request id's we're waiting for responses on. This is not correct as the operation is asynchronous, so
-        /// there is a good chance the response will be missed.
-        /// </summary>
-        protected List<int?> KillCommandWaitingRequestIds { get; set; } 
-
         public Program() : base() {
             //this.Author = "Phogue";
             //this.Website = "http://phogue.net";
@@ -157,16 +151,6 @@ namespace TestPlugin {
             return command.Result;
         }
 
-        public override void ClientEvent(ClientEventArgs e) {
-            base.ClientEvent(e);
-
-            if (e.EventType == ClientEventType.ClientPacketReceived) {
-                if (this.KillCommandWaitingRequestIds != null && this.KillCommandWaitingRequestIds.Contains(e.Packet.RequestId) == true) {
-                    Console.WriteLine("RECV: {0} {1} {2} {3}", e.Packet.Origin, e.Packet.Type, e.Packet.RequestId, e.Packet.DebugText);
-                }
-            }
-        }
-
         protected CommandResultArgs KillCommand(Command command, Dictionary<String, CommandParameter> parameters) {
             CommandResultArgs e = parameters["e"].First<CommandResultArgs>();
 
@@ -182,11 +166,8 @@ namespace TestPlugin {
                     }
                 });
 
-                this.KillCommandWaitingRequestIds = new List<int?>();
-
                 foreach (IPacket packet in result.Now.Packets) {
-                    this.KillCommandWaitingRequestIds.Add(packet.RequestId);
-                    Console.WriteLine("SEND: {0} {1} {2} {3}", packet.Origin, packet.Type, packet.RequestId, packet.DebugText);
+                    Console.WriteLine("SENT: {0} {1} {2} {3}", packet.Origin, packet.Type, packet.RequestId, packet.DebugText);
                 }
             }
 

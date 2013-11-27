@@ -169,13 +169,13 @@ namespace Procon.Tools.NetworkConsole {
                     }
                 }
                 else if (e.EventType == ClientEventType.ClientConnectionFailure || e.EventType == ClientEventType.ClientSocketException) {
-                    this.ConsoleAppendLine("^1Error: {0}", e.ConnectionError.Message);
+                    this.ConsoleAppendLine("^1Error: {0}", e.Now.Exceptions.FirstOrDefault().Message);
                 }
                 else if (e.EventType == ClientEventType.ClientPacketSent) {
-                    this.ConsoleAppendLine("^2SEND: {0}", e.Packet.DebugText);
+                    this.ConsoleAppendLine("^2SEND: {0}", e.Now.Packets.FirstOrDefault().DebugText);
                 }
                 else if (e.EventType == ClientEventType.ClientPacketReceived) {
-                    this.ConsoleAppendLine("^5RECV: {0}", e.Packet.DebugText);
+                    this.ConsoleAppendLine("^5RECV: {0}", e.Now.Packets.FirstOrDefault().DebugText);
                 }
             }
 

@@ -26,10 +26,17 @@ namespace Procon.Net.Actions {
         /// </summary>
         public NetworkActionData Now { get; set; }
 
+        /// <summary>
+        /// A unique id generated for this particular action
+        /// </summary>
+        public Guid Uid { get; set; }
+
         protected NetworkAction(): base() {
             this.Scope = new NetworkActionData();
             this.Then = new NetworkActionData();
             this.Now = new NetworkActionData();
+
+            this.Uid = new Guid();
         }
     }
 }

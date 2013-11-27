@@ -172,14 +172,18 @@ namespace Procon.Core.Connections.Plugins {
         /// <param name="action"></param>
         /// <returns></returns>
         public virtual CommandResultArgs Action(IDeferredAction action) {
-            // Wait for responses from this action
-            this.DeferredActions.TryAdd(action.GetAction().Uid, action);
+            CommandResultArgs result = null;
 
-            // Send the action for processing
-            CommandResultArgs result = this.Action(action.GetAction());
+            if (action.GetAction() != null) {
+                // Wait for responses from this action
+                this.DeferredActions.TryAdd(action.GetAction().Uid, action);
 
-            // Alert the deferred action of packets that have been sent
-            action.TryInsertSent(action.GetAction(), result.Now.Packets);
+                // Send the action for processing
+                result = this.Action(action.GetAction());
+
+                // Alert the deferred action of packets that have been sent
+                action.TryInsertSent(action.GetAction(), result.Now.Packets);
+            }
 
             // Now return the result 
             return result;

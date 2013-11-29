@@ -9,7 +9,7 @@ namespace Procon.Examples.EmptyPlugin {
     /// </remarks>
     public class Program : RemotePlugin {
 
-        // Critical: You need to create a new project, not reusing this project.
+        // Critical: You need to create a new project, not reuse this project.
         //           The critical part is the assembly GUID, which must be unique per plugin
         //           but then remain constant over your releases.
         //           Procon uses the GUID to pipe through events/commands.

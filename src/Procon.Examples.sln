@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procon.Examples.EmptyPlugin", "Procon.Examples.EmptyPlugin\Procon.Examples.EmptyPlugin.csproj", "{120BE52C-3523-4370-9617-C1383E9A3427}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procon.Core", "Procon.Core\Procon.Core.csproj", "{153B5418-C6B3-43A5-A432-BAFFA8EFAA16}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procon.Net", "Procon.Net\Procon.Net.csproj", "{65C1DB17-18E0-4AC5-8709-3F7E04B88CA1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{120BE52C-3523-4370-9617-C1383E9A3427}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{120BE52C-3523-4370-9617-C1383E9A3427}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{120BE52C-3523-4370-9617-C1383E9A3427}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{120BE52C-3523-4370-9617-C1383E9A3427}.Release|Any CPU.Build.0 = Release|Any CPU
+		{153B5418-C6B3-43A5-A432-BAFFA8EFAA16}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{153B5418-C6B3-43A5-A432-BAFFA8EFAA16}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{153B5418-C6B3-43A5-A432-BAFFA8EFAA16}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{153B5418-C6B3-43A5-A432-BAFFA8EFAA16}.Release|Any CPU.Build.0 = Release|Any CPU
+		{65C1DB17-18E0-4AC5-8709-3F7E04B88CA1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{65C1DB17-18E0-4AC5-8709-3F7E04B88CA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{65C1DB17-18E0-4AC5-8709-3F7E04B88CA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{65C1DB17-18E0-4AC5-8709-3F7E04B88CA1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

@@ -21,11 +21,17 @@ namespace Procon.Examples.CommandRouting {
         /// <summary>
         /// Store instances of child objects that inherit from ExecutableBase
         /// </summary>
-        public List<IExecutableBase> ChildObjects = new List<IExecutableBase>() {
-            new TunneledCommands()
-        };
+        public List<IExecutableBase> ChildObjects;
 
         public Program() : base() {
+            this.ChildObjects = new List<IExecutableBase>() {
+                new TunneledCommands() {
+                    ParentObjects = new List<IExecutableBase>() {
+                        this
+                    }
+                }
+            };
+
             this.AppendDispatchHandlers(new Dictionary<CommandAttribute, CommandDispatchHandler>() {
                 {
                     new CommandAttribute() {

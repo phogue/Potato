@@ -8,7 +8,7 @@ using Procon.Core.Connections.Plugins;
 
 namespace Procon.Examples.CommandRouting.Test {
     [TestFixture]
-    public class TestRouting {
+    public class TestTunneling {
         /// <summary>
         /// Test for you to debug.
         /// Set a breakpoint within Procon.Examples.CommandRouting.Program.SingleParameterCommand

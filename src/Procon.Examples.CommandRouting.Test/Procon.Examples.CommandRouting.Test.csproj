@@ -48,8 +48,9 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="TestBubbling.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TestRouting.cs" />
+    <Compile Include="TestTunneling.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Procon.Core\Procon.Core.csproj">

@@ -3,7 +3,7 @@ using NUnit.Framework;
 using Procon.Core;
 using Procon.Core.Connections.Plugins;
 
-namespace Procon.Examples.PluginUserInterface.Test {
+namespace Procon.Examples.UserInterface.Test {
     [TestFixture]
     public class TestPageRendering {
         /// <summary>

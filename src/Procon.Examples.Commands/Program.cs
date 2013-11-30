@@ -4,7 +4,7 @@ using System.Globalization;
 using Procon.Core;
 using Procon.Core.Connections.Plugins;
 
-namespace Procon.Examples.CommandRouting {
+namespace Procon.Examples.Commands {
     /// <summary>
     /// A basic empty plugin that does absolutely nothing at all.
     /// </summary>

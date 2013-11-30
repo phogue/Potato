@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using Procon.Core;
 using Procon.Core.Connections.Plugins;
-using Procon.Examples.PluginUserInterface.Pages;
+using Procon.Examples.UserInterface.Pages;
 using Procon.Net.Data;
 using Procon.Net.Utils.HTTP;
 
-namespace Procon.Examples.PluginUserInterface {
+namespace Procon.Examples.UserInterface {
     /// <summary>
     /// A basic empty plugin that does absolutely nothing at all.
     /// </summary>

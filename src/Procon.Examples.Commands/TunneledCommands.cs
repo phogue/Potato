@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Procon.Core;
 
-namespace Procon.Examples.CommandRouting {
+namespace Procon.Examples.Commands {
     /// <summary>
     /// Note we need to inherit from ExecutableBase which has all the methods
     /// required to dispatch commands

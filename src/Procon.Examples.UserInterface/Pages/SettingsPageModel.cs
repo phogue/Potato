@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Procon.Net.Data;
 
-namespace Procon.Examples.PluginUserInterface.Pages {
+namespace Procon.Examples.UserInterface.Pages {
     public partial class SettingsPageView {
 
         /// <summary>

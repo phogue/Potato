@@ -7,12 +7,10 @@
 //     the code is regenerated.
 // </auto-generated>
 // ------------------------------------------------------------------------------
-namespace Procon.Examples.PluginUserInterface.Pages
+
+namespace Procon.Examples.UserInterface.Pages
 {
-    using System;
-    
-    
-    #line 1 "C:\Users\P\Documents\Projects\clients\myrcon\procon\Procon-2\src\Procon.Examples.PluginUserInterface\Pages\IndexPageView.tt"
+#line 1 "C:\Users\P\Documents\Projects\clients\myrcon\procon\Procon-2\src\Procon.Examples.PluginUserInterface\Pages\IndexPageView.tt"
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "10.0.0.0")]
     public partial class IndexPageView : IndexPageViewBase
     {

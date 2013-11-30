@@ -3,17 +3,15 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>
-    </ProductVersion>
+    <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{5AC644F4-035A-49F7-A80A-3C842E05A8FD}</ProjectGuid>
+    <ProjectGuid>{BEE3496C-93E4-4ABD-A29E-3D5705804754}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Procon.Examples.CommandRouting.Test</RootNamespace>
-    <AssemblyName>Procon.Examples.CommandRouting.Test</AssemblyName>
+    <RootNamespace>Procon.Examples.UserInterface</RootNamespace>
+    <AssemblyName>Procon.Examples.UserInterface</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -33,39 +31,55 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="nunit.framework">
-      <HintPath>..\..\lib\NUnit\2.6.3\nunit.framework.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Core">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <CodeAnalysisDependentAssemblyPaths Condition=" '$(VS100COMNTOOLS)' != '' " Include="$(VS100COMNTOOLS)..\IDE\PrivateAssemblies">
-      <Visible>False</Visible>
-    </CodeAnalysisDependentAssemblyPaths>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="TestBubbling.cs" />
+    <Compile Include="Pages\SettingsPageModel.cs" />
+    <Compile Include="Pages\SettingsPageView.cs">
+      <DependentUpon>SettingsPageView.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Pages\IndexPageModel.cs" />
+    <Compile Include="Pages\IndexPageView.cs">
+      <DependentUpon>IndexPageView.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TestTunneling.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Procon.Core\Procon.Core.csproj">
       <Project>{153B5418-C6B3-43A5-A432-BAFFA8EFAA16}</Project>
       <Name>Procon.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Procon.Examples.CommandRouting\Procon.Examples.CommandRouting.csproj">
-      <Project>{71644198-7311-4407-AF61-57119EB61240}</Project>
-      <Name>Procon.Examples.CommandRouting</Name>
+    <ProjectReference Include="..\Procon.Net\Procon.Net.csproj">
+      <Project>{65C1DB17-18E0-4AC5-8709-3F7E04B88CA1}</Project>
+      <Name>Procon.Net</Name>
     </ProjectReference>
   </ItemGroup>
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PostBuildEvent>mkdir "$(TargetDir)plugins\"
-move /Y "$(TargetDir)Procon.Examples.CommandRouting.dll" "$(TargetDir)plugins\Procon.Examples.CommandRouting.dll"</PostBuildEvent>
-  </PropertyGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <None Include="Pages\SettingsPageView.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>SettingsPageView.cs</LastGenOutput>
+    </None>
+    <None Include="Pages\IndexPageView.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>IndexPageView.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

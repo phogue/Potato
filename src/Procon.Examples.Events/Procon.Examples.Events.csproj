@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{BEE3496C-93E4-4ABD-A29E-3D5705804754}</ProjectGuid>
+    <ProjectGuid>{AEB5AE42-32B2-4964-9918-1E86CC209869}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Procon.Examples.PluginUserInterface</RootNamespace>
-    <AssemblyName>Procon.Examples.PluginUserInterface</AssemblyName>
+    <RootNamespace>Procon.Examples.Events</RootNamespace>
+    <AssemblyName>Procon.Examples.Events</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -40,44 +40,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Pages\SettingsPageModel.cs" />
-    <Compile Include="Pages\SettingsPageView.cs">
-      <DependentUpon>SettingsPageView.tt</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Pages\IndexPageModel.cs" />
-    <Compile Include="Pages\IndexPageView.cs">
-      <DependentUpon>IndexPageView.tt</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Program.cs" />
+    <Compile Include="Class1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Procon.Core\Procon.Core.csproj">
-      <Project>{153B5418-C6B3-43A5-A432-BAFFA8EFAA16}</Project>
-      <Name>Procon.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Procon.Net\Procon.Net.csproj">
-      <Project>{65C1DB17-18E0-4AC5-8709-3F7E04B88CA1}</Project>
-      <Name>Procon.Net</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup />
-  <ItemGroup>
-    <None Include="Pages\SettingsPageView.tt">
-      <Generator>TextTemplatingFilePreprocessor</Generator>
-      <LastGenOutput>SettingsPageView.cs</LastGenOutput>
-    </None>
-    <None Include="Pages\IndexPageView.tt">
-      <Generator>TextTemplatingFilePreprocessor</Generator>
-      <LastGenOutput>IndexPageView.cs</LastGenOutput>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

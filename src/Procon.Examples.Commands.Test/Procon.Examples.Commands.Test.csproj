@@ -6,11 +6,11 @@
     <ProductVersion>
     </ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{AE8F622A-FE84-48DE-86DC-E8BD9589787E}</ProjectGuid>
+    <ProjectGuid>{5AC644F4-035A-49F7-A80A-3C842E05A8FD}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Procon.Examples.PluginUserInterface.Test</RootNamespace>
-    <AssemblyName>Procon.Examples.PluginUserInterface.Test</AssemblyName>
+    <RootNamespace>Procon.Examples.CommandRouting.Test</RootNamespace>
+    <AssemblyName>Procon.Examples.CommandRouting.Test</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -33,7 +33,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="nunit.framework">
       <HintPath>..\..\lib\NUnit\2.6.3\nunit.framework.dll</HintPath>
     </Reference>
@@ -48,27 +47,24 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="TestBubbling.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TestPageRendering.cs" />
+    <Compile Include="TestTunneling.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Procon.Core\Procon.Core.csproj">
       <Project>{153B5418-C6B3-43A5-A432-BAFFA8EFAA16}</Project>
       <Name>Procon.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Procon.Examples.PluginUserInterface\Procon.Examples.PluginUserInterface.csproj">
-      <Project>{BEE3496C-93E4-4ABD-A29E-3D5705804754}</Project>
-      <Name>Procon.Examples.PluginUserInterface</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Procon.Net\Procon.Net.csproj">
-      <Project>{65C1DB17-18E0-4AC5-8709-3F7E04B88CA1}</Project>
-      <Name>Procon.Net</Name>
+    <ProjectReference Include="..\Procon.Examples.Commands\Procon.Examples.Commands.csproj">
+      <Project>{71644198-7311-4407-AF61-57119EB61240}</Project>
+      <Name>Procon.Examples.Commands</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>mkdir "$(TargetDir)plugins\"
-move /Y "$(TargetDir)Procon.Examples.PluginUserInterface.dll" "$(TargetDir)plugins\Procon.Examples.PluginUserInterface.dll"</PostBuildEvent>
+move /Y "$(TargetDir)Procon.Examples.Commands.dll" "$(TargetDir)plugins\Procon.Examples.Commands.dll"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

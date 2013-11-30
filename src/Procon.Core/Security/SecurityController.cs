@@ -125,7 +125,7 @@ namespace Procon.Core.Security {
             return base.Execute();
         }
 
-        protected override IList<IExecutableBase> BubbleExecutableObjects(Command command) {
+        protected override IList<IExecutableBase> TunnelExecutableObjects(Command command) {
             List<IExecutableBase> list = new List<IExecutableBase>();
 
             this.Groups.ForEach(list.Add);

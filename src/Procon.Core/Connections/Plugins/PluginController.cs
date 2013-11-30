@@ -282,7 +282,7 @@ namespace Procon.Core.Connections.Plugins {
             }
         }
 
-        protected override IList<IExecutableBase> BubbleExecutableObjects(Command command) {
+        protected override IList<IExecutableBase> TunnelExecutableObjects(Command command) {
             return new List<IExecutableBase>() {
                 this.PluginFactory
             };

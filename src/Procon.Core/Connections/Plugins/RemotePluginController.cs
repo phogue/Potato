@@ -126,7 +126,7 @@ namespace Procon.Core.Connections.Plugins {
             return this.EnabledPlugins.ContainsKey(pluginGuid);
         }
 
-        protected override IList<IExecutableBase> BubbleExecutableObjects(Command command) {
+        protected override IList<IExecutableBase> TunnelExecutableObjects(Command command) {
             List<IExecutableBase> list = new List<IExecutableBase>();
 
             if (command.Scope != null && command.Scope.PluginGuid != Guid.Empty) {

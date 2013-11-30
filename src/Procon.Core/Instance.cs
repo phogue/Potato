@@ -405,7 +405,7 @@ namespace Procon.Core {
             }
         }
 
-        protected override IList<IExecutableBase> BubbleExecutableObjects(Command command) {
+        protected override IList<IExecutableBase> TunnelExecutableObjects(Command command) {
             List<IExecutableBase> list = new List<IExecutableBase>();
 
             if (command.Scope != null && command.Scope.ConnectionGuid != Guid.Empty) {

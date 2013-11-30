@@ -21,8 +21,8 @@ namespace Procon.Examples.CommandRouting {
         /// <summary>
         /// Store instances of child objects that inherit from ExecutableBase
         /// </summary>
-        public List<IExecutableBase> BubbledChildObjects = new List<IExecutableBase>() {
-            new BubbledCommands()
+        public List<IExecutableBase> ChildObjects = new List<IExecutableBase>() {
+            new TunneledCommands()
         };
 
         public Program() : base() {
@@ -74,8 +74,8 @@ namespace Procon.Examples.CommandRouting {
         /// </summary>
         /// <param name="command"></param>
         /// <returns></returns>
-        protected override IList<IExecutableBase> BubbleExecutableObjects(Command command) {
-            return this.BubbledChildObjects;
+        protected override IList<IExecutableBase> TunnelExecutableObjects(Command command) {
+            return this.ChildObjects;
         }
 
         /// <summary>

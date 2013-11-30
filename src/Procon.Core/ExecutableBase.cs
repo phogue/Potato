@@ -184,10 +184,10 @@ namespace Procon.Core {
             command.Result = this.Run(CommandAttributeType.Preview, command, CommandResultType.Continue);
 
             if (command.Result.Status == CommandResultType.Continue) {
-                IList<IExecutableBase> bubbleList = this.BubbleExecutableObjects(command);
+                IList<IExecutableBase> tunnelList = this.TunnelExecutableObjects(command);
 
-                for (int offset = 0; offset < bubbleList.Count && command.Result.Status == CommandResultType.Continue; offset++) {
-                    command.Result = bubbleList[offset].RunPreview(command);
+                for (int offset = 0; offset < tunnelList.Count && command.Result.Status == CommandResultType.Continue; offset++) {
+                    command.Result = tunnelList[offset].RunPreview(command);
                 }
             }
 
@@ -198,10 +198,10 @@ namespace Procon.Core {
             command.Result = this.Run(CommandAttributeType.Handler, command, CommandResultType.Continue);
 
             if (command.Result.Status == CommandResultType.Continue) {
-                IList<IExecutableBase> bubbleList = this.BubbleExecutableObjects(command);
+                IList<IExecutableBase> tunnelList = this.TunnelExecutableObjects(command);
 
-                for (int offset = 0; offset < bubbleList.Count && command.Result.Status == CommandResultType.Continue; offset++) {
-                    command.Result = bubbleList[offset].RunHandler(command);
+                for (int offset = 0; offset < tunnelList.Count && command.Result.Status == CommandResultType.Continue; offset++) {
+                    command.Result = tunnelList[offset].RunHandler(command);
                 }
             }
 
@@ -211,9 +211,9 @@ namespace Procon.Core {
         public virtual CommandResultArgs RunExecuted(Command command) {
             command.Result = this.Run(CommandAttributeType.Executed, command, command.Result.Status);
 
-            IList<IExecutableBase> bubbleList = this.BubbleExecutableObjects(command);
+            IList<IExecutableBase> tunnelList = this.TunnelExecutableObjects(command);
 
-            foreach (ExecutableBase executable in bubbleList) {
+            foreach (ExecutableBase executable in tunnelList) {
                 command.Result = executable.RunExecuted(command);
             }
 
@@ -243,7 +243,7 @@ namespace Procon.Core {
             return command.Result;
         }
 
-        protected virtual IList<IExecutableBase> BubbleExecutableObjects(Command command) {
+        protected virtual IList<IExecutableBase> TunnelExecutableObjects(Command command) {
             return new List<IExecutableBase>();
         } 
 

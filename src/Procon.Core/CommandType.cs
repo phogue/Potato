@@ -36,7 +36,7 @@ namespace Procon.Core {
         /// </summary>
         PluginsEnable,
         /// <summary>
-        /// Disables  plugin, preventing events/commands being bubbled
+        /// Disables  plugin, preventing events/commands being tunneled
         /// </summary>
         PluginsDisable,
 

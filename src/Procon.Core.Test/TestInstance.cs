@@ -27,7 +27,7 @@ namespace Procon.Core.Test {
         }
 
         /// <summary>
-        /// Tests that providing no connection scope will bubble the command over all
+        /// Tests that providing no connection scope will tunnel the command over all
         /// executable objects in the instance. The variable should be set.
         /// </summary>
         [Test]

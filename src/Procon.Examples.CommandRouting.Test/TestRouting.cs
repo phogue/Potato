@@ -18,7 +18,7 @@ namespace Procon.Examples.CommandRouting.Test {
             // Create a new plugin controller to load up the test plugin
             PluginController plugins = new PluginController().Execute() as PluginController;
 
-            // Enable the single plugin that was loaded, otherwise it won't recieve any bubbled
+            // Enable the single plugin that was loaded, otherwise it won't recieve any tunneled
             // commands.
             plugins.Execute(new Command() {
                 Origin = CommandOrigin.Local,
@@ -56,7 +56,7 @@ namespace Procon.Examples.CommandRouting.Test {
             // Create a new plugin controller to load up the test plugin
             PluginController plugins = new PluginController().Execute() as PluginController;
 
-            // Enable the single plugin that was loaded, otherwise it won't recieve any bubbled
+            // Enable the single plugin that was loaded, otherwise it won't recieve any tunneled
             // commands.
             plugins.Execute(new Command() {
                 Origin = CommandOrigin.Local,
@@ -94,7 +94,7 @@ namespace Procon.Examples.CommandRouting.Test {
             // Create a new plugin controller to load up the test plugin
             PluginController plugins = new PluginController().Execute() as PluginController;
 
-            // Enable the single plugin that was loaded, otherwise it won't recieve any bubbled
+            // Enable the single plugin that was loaded, otherwise it won't recieve any tunneled
             // commands.
             plugins.Execute(new Command() {
                 Origin = CommandOrigin.Local,
@@ -116,14 +116,14 @@ namespace Procon.Examples.CommandRouting.Test {
 
         /// <summary>
         /// Test for you to debug.
-        /// Set a breakpoint within Procon.Examples.CommandRouting.BubbledCommands.ThisCommandIsInAChildObject
+        /// Set a breakpoint within Procon.Examples.CommandRouting.TunneledCommands.ThisCommandIsInAChildObject
         /// </summary>
         [Test]
-        public void TestBubbledCommandPassing() {
+        public void TestTunneledCommandPassing() {
             // Create a new plugin controller to load up the test plugin
             PluginController plugins = new PluginController().Execute() as PluginController;
 
-            // Enable the single plugin that was loaded, otherwise it won't recieve any bubbled
+            // Enable the single plugin that was loaded, otherwise it won't recieve any tunneled
             // commands.
             plugins.Execute(new Command() {
                 Origin = CommandOrigin.Local,

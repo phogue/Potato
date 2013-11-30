@@ -9,9 +9,9 @@ namespace Procon.Examples.CommandRouting {
     /// Note we need to inherit from ExecutableBase which has all the methods
     /// required to dispatch commands
     /// </summary>
-    public class BubbledCommands : ExecutableBase {
+    public class TunneledCommands : ExecutableBase {
 
-        public BubbledCommands() : base() {
+        public TunneledCommands() : base() {
             this.AppendDispatchHandlers(new Dictionary<CommandAttribute, CommandDispatchHandler>() {
                 {
                     new CommandAttribute() {

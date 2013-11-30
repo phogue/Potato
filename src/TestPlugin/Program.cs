@@ -100,7 +100,7 @@ namespace TestPlugin {
             });
         }
 
-        protected override IList<IExecutableBase> BubbleExecutableObjects(Command command) {
+        protected override IList<IExecutableBase> TunnelExecutableObjects(Command command) {
             return this.Tests;
         }
 

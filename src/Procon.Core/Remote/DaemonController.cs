@@ -50,7 +50,7 @@ namespace Procon.Core.Remote {
             this.DaemonListener = null;
         }
 
-        protected override IList<IExecutableBase> BubbleExecutableObjects(Command command) {
+        protected override IList<IExecutableBase> TunnelExecutableObjects(Command command) {
             return this.ExecutableObjects;
         }
 

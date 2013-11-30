@@ -105,7 +105,7 @@ namespace Procon.Core.Security {
 
         #region Executable
 
-        protected override IList<IExecutableBase> BubbleExecutableObjects(Command command) {
+        protected override IList<IExecutableBase> TunnelExecutableObjects(Command command) {
             List<IExecutableBase> list = new List<IExecutableBase>();
 
             this.Accounts.ForEach(list.Add);

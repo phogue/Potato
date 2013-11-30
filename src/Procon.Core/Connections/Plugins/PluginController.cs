@@ -14,8 +14,10 @@ using Procon.Net;
 using Procon.Service.Shared;
 
 namespace Procon.Core.Connections.Plugins {
-    using Procon.Core.Utils;
-
+    /// <summary>
+    /// Manages loading and propogating plugin events, as well as callbacks from
+    /// a plugin back to Procon.
+    /// </summary>
     public class PluginController : Executable, IRenewableLease, IPluginCallback {
 
         /// <summary>
@@ -42,7 +44,9 @@ namespace Procon.Core.Connections.Plugins {
         [XmlIgnore, JsonIgnore]
         public Connection Connection { get; set; }
 
-        // Default Initialization
+        /// <summary>
+        /// Default Initialization
+        /// </summary>
         public PluginController() : base() {
             this.Plugins = new List<HostPlugin>();
 

@@ -1,0 +1,2 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+Hey, this is the index of my plugin. The first page people will see! Check out the <a href="/settings">Settings</a>.

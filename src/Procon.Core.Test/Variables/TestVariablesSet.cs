@@ -18,7 +18,7 @@ namespace Procon.Core.Test.Variables {
         public void TestVariablesSetValue() {
             VariableController variables = new VariableController();
 
-            CommandResultArgs result = variables.Execute(new Command() {
+            CommandResultArgs result = variables.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.VariablesSet,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -39,7 +39,7 @@ namespace Procon.Core.Test.Variables {
         public void TestVariablesSetValueCaseInsensitive() {
             VariableController variables = new VariableController();
 
-            CommandResultArgs result = variables.Execute(new Command() {
+            CommandResultArgs result = variables.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.VariablesSet,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -65,7 +65,7 @@ namespace Procon.Core.Test.Variables {
                 Security = new SecurityController().Execute() as SecurityController
             };
 
-            CommandResultArgs result = variables.Execute(new Command() {
+            CommandResultArgs result = variables.Tunnel(new Command() {
                 Username = "Phogue",
                 Origin = CommandOrigin.Remote,
                 CommandType = CommandType.VariablesSet,
@@ -87,7 +87,7 @@ namespace Procon.Core.Test.Variables {
             VariableController variables = new VariableController();
 
             // Set the value of a empty key
-            CommandResultArgs result = variables.Execute(new Command() {
+            CommandResultArgs result = variables.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.VariablesSet,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -118,7 +118,7 @@ namespace Procon.Core.Test.Variables {
             };
 
             // Set the value of a empty key
-            CommandResultArgs result = variables.Execute(new Command() {
+            CommandResultArgs result = variables.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.VariablesSet,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -148,7 +148,7 @@ namespace Procon.Core.Test.Variables {
             };
 
             // Set the value of a empty key
-            CommandResultArgs result = variables.Execute(new Command() {
+            CommandResultArgs result = variables.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.VariablesSet,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -172,7 +172,7 @@ namespace Procon.Core.Test.Variables {
             VariableController variables = new VariableController();
 
             // Set an archive variable
-            CommandResultArgs result = variables.Execute(new Command() {
+            CommandResultArgs result = variables.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.VariablesSetA,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -195,7 +195,7 @@ namespace Procon.Core.Test.Variables {
         public void TestVariablesSetValueAInsufficientPermission() {
             VariableController variables = new VariableController();
 
-            CommandResultArgs result = variables.Execute(new Command() {
+            CommandResultArgs result = variables.Tunnel(new Command() {
                 Username = "Phogue",
                 Origin = CommandOrigin.Remote,
                 CommandType = CommandType.VariablesSetA,
@@ -218,7 +218,7 @@ namespace Procon.Core.Test.Variables {
             VariableController variables = new VariableController();
 
             // Set an archive variable
-            CommandResultArgs result = variables.Execute(new Command() {
+            CommandResultArgs result = variables.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.VariablesSetA,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -233,7 +233,7 @@ namespace Procon.Core.Test.Variables {
             Assert.AreEqual("value", variables.Get("key", String.Empty));
             Assert.AreEqual("value", variables.GetA("key", String.Empty));
 
-            result = variables.Execute(new Command() {
+            result = variables.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.VariablesSetA,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -254,7 +254,7 @@ namespace Procon.Core.Test.Variables {
             VariableController variables = new VariableController();
 
             // Set an archive variable
-            CommandResultArgs result = variables.Execute(new Command() {
+            CommandResultArgs result = variables.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.VariablesSetA,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -293,7 +293,7 @@ namespace Procon.Core.Test.Variables {
             VariableController variables = new VariableController();
 
             // Set the value of a empty key
-            CommandResultArgs result = variables.Execute(new Command() {
+            CommandResultArgs result = variables.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.VariablesSet,
                 Parameters = new List<CommandParameter>() {

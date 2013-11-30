@@ -14,7 +14,7 @@ namespace Procon.Core.Test.ExecutableCommands {
         public void TestExecutableEnumParserFlags() {
             ExecutableEnumTester tester = new ExecutableEnumTester();
 
-            tester.Execute(new Command() {
+            tester.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.VariablesSet,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -32,7 +32,7 @@ namespace Procon.Core.Test.ExecutableCommands {
         public void TestExecutableEnumParser() {
             ExecutableEnumTester tester = new ExecutableEnumTester();
 
-            tester.Execute(new Command() {
+            tester.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.VariablesSet,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -50,7 +50,7 @@ namespace Procon.Core.Test.ExecutableCommands {
         public void TestExecutableEnumParserTypeConversion() {
             ExecutableEnumTester tester = new ExecutableEnumTester();
 
-            tester.Execute(new Command() {
+            tester.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.VariablesSet,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {

@@ -250,19 +250,19 @@ namespace Procon.Core.Connections {
             CommandResultArgs result = null;
 
             if (this.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
-                CommandResultArgs players = this.Execute(new Command(command) {
+                CommandResultArgs players = this.Tunnel(new Command(command) {
                     CommandType = CommandType.NetworkProtocolQueryPlayers
                 });
 
-                CommandResultArgs settings = this.Execute(new Command(command) {
+                CommandResultArgs settings = this.Tunnel(new Command(command) {
                     CommandType = CommandType.NetworkProtocolQuerySettings
                 });
 
-                CommandResultArgs bans = this.Execute(new Command(command) {
+                CommandResultArgs bans = this.Tunnel(new Command(command) {
                     CommandType = CommandType.NetworkProtocolQueryBans
                 });
 
-                CommandResultArgs maps = this.Execute(new Command(command) {
+                CommandResultArgs maps = this.Tunnel(new Command(command) {
                     CommandType = CommandType.NetworkProtocolQueryMaps
                 });
 
@@ -597,7 +597,7 @@ namespace Procon.Core.Connections {
                     String text = chat.Now.Content.First().Remove(0, 1);
 
                     if ((prefix = this.TextCommands.GetValidTextCommandPrefix(prefix)) != null) {
-                        this.Execute(new Command() {
+                        this.Tunnel(new Command() {
                             GameType = this.GameType.Type,
                             Origin = CommandOrigin.Plugin,
                             Uid = chat.Now.Players.First().Uid,

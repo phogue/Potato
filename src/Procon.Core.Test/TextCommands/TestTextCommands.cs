@@ -46,7 +46,7 @@ namespace Procon.Core.Test.TextCommands {
                 }
             };
 
-            textCommands.Execute(new Command() {
+            textCommands.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.TextCommandsRegister,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {

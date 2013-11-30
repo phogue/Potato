@@ -115,7 +115,7 @@ namespace Procon.Core.Connections.Plugins {
         /// <returns></returns>
         public CommandResultArgs ProxyExecute(Command command) {
             if (command.Scope != null && command.Scope.PluginGuid != Guid.Empty) {
-                command.Result = this.Execute(command);
+                command.Result = this.Tunnel(command);
             }
             else if (this.PluginCallback != null) {
                 command.Result = this.PluginCallback.ProxyExecute(command);
@@ -262,7 +262,7 @@ namespace Procon.Core.Connections.Plugins {
             // String text = parameters["text"].First<String>();
 
             if (command.Result.Status == CommandResultType.Success && command.Result.Now.TextCommands.First().PluginUid == this.PluginGuid.ToString()) {
-                this.Execute(new Command() {
+                this.Tunnel(new Command() {
                     Origin = CommandOrigin.Local,
                     Name = command.Result.Now.TextCommands.First().PluginCommand,
                     Parameters = new List<CommandParameter>() {
@@ -285,7 +285,7 @@ namespace Procon.Core.Connections.Plugins {
         }
 
         protected virtual void GenericEventTypeTextCommandExecuted(GenericEventArgs e) {
-            this.Execute(new Command() {
+            this.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 Name = e.Now.TextCommands.First().PluginCommand,
                 Parameters = new List<CommandParameter>() {

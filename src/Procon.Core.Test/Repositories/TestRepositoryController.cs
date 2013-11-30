@@ -27,7 +27,7 @@ namespace Procon.Core.Test.Repositories {
         public void TestRepositoryControllerWriteConfig() {
             RepositoryController repository = new RepositoryController();
 
-            repository.Execute(new Command() {
+            repository.Tunnel(new Command() {
                 CommandType = CommandType.PackagesAddRemoteRepository,
                 Origin = CommandOrigin.Local,
                 Parameters = new List<CommandParameter>() {
@@ -41,7 +41,7 @@ namespace Procon.Core.Test.Repositories {
                 }
             });
 
-            repository.Execute(new Command() {
+            repository.Tunnel(new Command() {
                 CommandType = CommandType.PackagesIngoreAutomaticUpdateOnPackage,
                 Origin = CommandOrigin.Local,
                 Parameters = new List<CommandParameter>() {

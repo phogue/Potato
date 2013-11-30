@@ -18,7 +18,7 @@ namespace Procon.Core.Test.Plugins {
         public void TestPluginsIsolationCleanCurrentAppDomain() {
             PluginController plugins = new PluginController().Execute() as PluginController;
 
-            plugins.Execute(new Command() {
+            plugins.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.PluginsEnable,
                 Scope = {
@@ -28,7 +28,7 @@ namespace Procon.Core.Test.Plugins {
 
             // Send a command to ensure the appdomain actually has a functional copy of the TestPlugin
             // assembly loaded.
-            CommandResultArgs result = plugins.Execute(new Command() {
+            CommandResultArgs result = plugins.Tunnel(new Command() {
                 Name = "TestPluginsIsolationCleanCurrentAppDomain",
                 Username = "Phogue",
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -57,7 +57,7 @@ namespace Procon.Core.Test.Plugins {
         protected void TestPluginsIsolationWriteToDirectory(String path, bool expectedSuccessFlag, CommandResultType resultType) {
             PluginController plugins = new PluginController().Execute() as PluginController;
 
-            plugins.Execute(new Command() {
+            plugins.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.PluginsEnable,
                 Scope = {
@@ -65,7 +65,7 @@ namespace Procon.Core.Test.Plugins {
                 }
             });
 
-            CommandResultArgs result = plugins.Execute(new Command() {
+            CommandResultArgs result = plugins.Tunnel(new Command() {
                 Name = "TestPluginsIsolationWriteToDirectory",
                 Username = "Phogue",
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {

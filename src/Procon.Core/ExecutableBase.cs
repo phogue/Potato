@@ -100,7 +100,7 @@ namespace Procon.Core {
                         command.Parameters = loadedCommand.Parameters;
                         command.Scope = loadedCommand.Scope;
 
-                        this.Execute(command);
+                        this.Tunnel(command);
                     }
                 }
             }
@@ -180,41 +180,59 @@ namespace Procon.Core {
             return command.Result;
         }
 
-        public virtual CommandResultArgs RunPreview(Command command) {
+        /// <summary>
+        /// Run a preview of a command on the current object, then tunnel or bubble the command.
+        /// </summary>
+        /// <param name="command"></param>
+        /// <param name="tunnel">If the command should then be tunneled or bubbled</param>
+        /// <returns>The result of the preview. A handler may have canceled the command.</returns>
+        public virtual CommandResultArgs PropogatePreview(Command command, bool tunnel = true) {
             command.Result = this.Run(CommandAttributeType.Preview, command, CommandResultType.Continue);
 
             if (command.Result.Status == CommandResultType.Continue) {
-                IList<IExecutableBase> tunnelList = this.TunnelExecutableObjects(command);
+                IList<IExecutableBase> propogationList = tunnel == true ? this.TunnelExecutableObjects(command) : this.BubbleExecutableObjects(command);
 
-                for (int offset = 0; offset < tunnelList.Count && command.Result.Status == CommandResultType.Continue; offset++) {
-                    command.Result = tunnelList[offset].RunPreview(command);
+                for (int offset = 0; offset < propogationList.Count && command.Result.Status == CommandResultType.Continue; offset++) {
+                    command.Result = propogationList[offset].PropogatePreview(command, tunnel);
                 }
             }
 
             return command.Result;
         }
 
-        public virtual CommandResultArgs RunHandler(Command command) {
+        /// <summary>
+        /// Run a command on the current object, then tunnel or bubble the command.
+        /// </summary>
+        /// <param name="command"></param>
+        /// <param name="tunnel">If the command should then be tunneled or bubbled</param>
+        /// <returns>The result of the execution.</returns>
+        public virtual CommandResultArgs PropogateHandler(Command command, bool tunnel = true) {
             command.Result = this.Run(CommandAttributeType.Handler, command, CommandResultType.Continue);
 
             if (command.Result.Status == CommandResultType.Continue) {
-                IList<IExecutableBase> tunnelList = this.TunnelExecutableObjects(command);
+                IList<IExecutableBase> propogationList = tunnel == true ? this.TunnelExecutableObjects(command) : this.BubbleExecutableObjects(command);
 
-                for (int offset = 0; offset < tunnelList.Count && command.Result.Status == CommandResultType.Continue; offset++) {
-                    command.Result = tunnelList[offset].RunHandler(command);
+                for (int offset = 0; offset < propogationList.Count && command.Result.Status == CommandResultType.Continue; offset++) {
+                    command.Result = propogationList[offset].PropogateHandler(command, tunnel);
                 }
             }
 
             return command.Result;
         }
 
-        public virtual CommandResultArgs RunExecuted(Command command) {
+        /// <summary>
+        /// Alert the object that a command has been executed with the following results
+        /// </summary>
+        /// <param name="command"></param>
+        /// <param name="tunnel">If the command should then be tunneled or bubbled</param>
+        /// <returns>The result of the executed.</returns>
+        public virtual CommandResultArgs PropogateExecuted(Command command, bool tunnel = true) {
             command.Result = this.Run(CommandAttributeType.Executed, command, command.Result.Status);
 
-            IList<IExecutableBase> tunnelList = this.TunnelExecutableObjects(command);
+            IList<IExecutableBase> propogationList = tunnel == true ? this.TunnelExecutableObjects(command) : this.BubbleExecutableObjects(command);
 
-            foreach (ExecutableBase executable in tunnelList) {
-                command.Result = executable.RunExecuted(command);
+            foreach (ExecutableBase executable in propogationList) {
+                command.Result = executable.PropogateExecuted(command, tunnel);
             }
 
             return command.Result;
@@ -225,25 +243,52 @@ namespace Procon.Core {
         /// </summary>
         /// <param name="command"></param>
         /// <returns></returns>
-        public virtual CommandResultArgs Execute(Command command) {
+        public virtual CommandResultArgs Tunnel(Command command) {
             // Setup the initial command result.
             command.Result = new CommandResultArgs() {
                 Success = true,
                 Status = CommandResultType.Continue
             };
 
-            command.Result = this.RunPreview(command);
+            command.Result = this.PropogatePreview(command);
 
             if (command.Result.Status == CommandResultType.Continue) {
-                command.Result = this.RunHandler(command);
+                command.Result = this.PropogateHandler(command);
 
-                command.Result = this.RunExecuted(command);
+                command.Result = this.PropogateExecuted(command);
+            }
+
+            return command.Result;
+        }
+
+        /// <summary>
+        /// Execute a command, then bubble it if the dispatch fails or remains as continuing
+        /// </summary>
+        /// <param name="command"></param>
+        /// <returns></returns>
+        public virtual CommandResultArgs Bubble(Command command) {
+            // Setup the initial command result.
+            command.Result = new CommandResultArgs() {
+                Success = true,
+                Status = CommandResultType.Continue
+            };
+
+            command.Result = this.PropogatePreview(command, false);
+
+            if (command.Result.Status == CommandResultType.Continue) {
+                command.Result = this.PropogateHandler(command, false);
+
+                command.Result = this.PropogateExecuted(command, false);
             }
 
             return command.Result;
         }
 
         protected virtual IList<IExecutableBase> TunnelExecutableObjects(Command command) {
+            return new List<IExecutableBase>();
+        }
+
+        protected virtual IList<IExecutableBase> BubbleExecutableObjects(Command command) {
             return new List<IExecutableBase>();
         } 
 

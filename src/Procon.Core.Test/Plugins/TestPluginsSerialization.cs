@@ -17,7 +17,7 @@ namespace Procon.Core.Test.Plugins {
         public void TestPluginsSerializationCommandResult() {
             PluginController plugins = new PluginController().Execute() as PluginController;
 
-            plugins.Execute(new Command() {
+            plugins.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.PluginsEnable,
                 Scope = {
@@ -25,7 +25,7 @@ namespace Procon.Core.Test.Plugins {
                 }
             });
 
-            CommandResultArgs result = plugins.Execute(new Command() {
+            CommandResultArgs result = plugins.Tunnel(new Command() {
                 Name = "TestPluginsSerializationCommandResult",
                 Username = "Phogue",
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {

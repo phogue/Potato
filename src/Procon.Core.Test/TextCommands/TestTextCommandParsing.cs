@@ -28,7 +28,7 @@ namespace Procon.Core.Test.TextCommands {
 
             textCommands.Execute();
 
-            textCommands.Execute(new Command() {
+            textCommands.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.TextCommandsRegister,
                 Parameters = new List<CommandParameter>() {
@@ -51,7 +51,7 @@ namespace Procon.Core.Test.TextCommands {
             Assert.AreEqual(1, textCommands.TextCommands.Count);
             Assert.AreEqual("ExecuteTest", textCommands.TextCommands.First().Commands.First());
 
-            CommandResultArgs result = textCommands.Execute(new Command() {
+            CommandResultArgs result = textCommands.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.TextCommandsExecute,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -70,11 +70,11 @@ namespace Procon.Core.Test.TextCommands {
         public void TestTextCommandParsingExecuteUsePreferredLanguage() {
             SecurityController security = new SecurityController().Execute() as SecurityController;
 
-            security.Execute(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityAddGroup, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "TestGroup" }) });
-            security.Execute(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityGroupAddAccount, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "TestGroup", "Phogue" }) });
-            security.Execute(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityAccountAddPlayer, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "Phogue", Net.Protocols.CommonGameType.BF_3, "EA_63A9F96745B22DFB509C558FC8B5C50F" }) });
-            security.Execute(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityAccountSetPreferredLanguageCode, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "Phogue", "de-DE" }) });
-            security.Execute(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityGroupSetPermission, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "TestGroup", CommandType.TextCommandsExecute, 100 }) });
+            security.Tunnel(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityAddGroup, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "TestGroup" }) });
+            security.Tunnel(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityGroupAddAccount, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "TestGroup", "Phogue" }) });
+            security.Tunnel(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityAccountAddPlayer, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "Phogue", Net.Protocols.CommonGameType.BF_3, "EA_63A9F96745B22DFB509C558FC8B5C50F" }) });
+            security.Tunnel(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityAccountSetPreferredLanguageCode, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "Phogue", "de-DE" }) });
+            security.Tunnel(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityGroupSetPermission, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "TestGroup", CommandType.TextCommandsExecute, 100 }) });
 
             TextCommandController textCommands = new TextCommandController() {
                 Security = security,
@@ -89,7 +89,7 @@ namespace Procon.Core.Test.TextCommands {
 
             textCommands.Execute();
 
-            textCommands.Execute(new Command() {
+            textCommands.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.TextCommandsRegister,
                 Parameters = new List<CommandParameter>() {
@@ -112,7 +112,7 @@ namespace Procon.Core.Test.TextCommands {
             Assert.AreEqual(1, textCommands.TextCommands.Count);
             Assert.AreEqual("ExecuteTest", textCommands.TextCommands.First().Commands.First());
 
-            CommandResultArgs result = textCommands.Execute(new Command() {
+            CommandResultArgs result = textCommands.Tunnel(new Command() {
                 Origin = CommandOrigin.Plugin,
                 Username = "Phogue",
                 CommandType = CommandType.TextCommandsExecute,
@@ -134,7 +134,7 @@ namespace Procon.Core.Test.TextCommands {
                 Security = new SecurityController().Execute() as SecurityController
             };
 
-            CommandResultArgs result = textCommands.Execute(new Command() {
+            CommandResultArgs result = textCommands.Tunnel(new Command() {
                 Origin = CommandOrigin.Remote,
                 Username = "Phogue",
                 CommandType = CommandType.TextCommandsExecute,
@@ -164,7 +164,7 @@ namespace Procon.Core.Test.TextCommands {
 
             textCommands.Execute();
 
-            textCommands.Execute(new Command() {
+            textCommands.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.TextCommandsRegister,
                 Parameters = new List<CommandParameter>() {
@@ -187,7 +187,7 @@ namespace Procon.Core.Test.TextCommands {
             Assert.AreEqual(1, textCommands.TextCommands.Count);
             Assert.AreEqual("ExecuteTest", textCommands.TextCommands.First().Commands.First());
 
-            CommandResultArgs result = textCommands.Execute(new Command() {
+            CommandResultArgs result = textCommands.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.TextCommandsPreview,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -208,7 +208,7 @@ namespace Procon.Core.Test.TextCommands {
                 Security = new SecurityController().Execute() as SecurityController
             };
 
-            CommandResultArgs result = textCommands.Execute(new Command() {
+            CommandResultArgs result = textCommands.Tunnel(new Command() {
                 CommandType = CommandType.TextCommandsPreview,
                 Username = "Phogue",
                 Origin = CommandOrigin.Remote,

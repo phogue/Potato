@@ -41,7 +41,7 @@ namespace Procon.Core.Test {
                 Languages = new LanguageController()
             }.Execute() as Instance;
 
-            instance.Execute(new Command() {
+            instance.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.InstanceAddConnection,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -57,7 +57,7 @@ namespace Procon.Core.Test {
             // Tests that there is at least one connection.
             Assert.AreEqual(1, instance.Connections.Count);
 
-            CommandResultArgs result = instance.Execute(new Command() {
+            CommandResultArgs result = instance.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.VariablesSet,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -86,7 +86,7 @@ namespace Procon.Core.Test {
                 Languages = new LanguageController()
             }.Execute() as Instance;
 
-            instance.Execute(new Command() {
+            instance.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.InstanceAddConnection,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -102,7 +102,7 @@ namespace Procon.Core.Test {
             // Tests that there is at least one connection.
             Assert.AreEqual(1, instance.Connections.Count);
 
-            CommandResultArgs result = instance.Execute(new Command() {
+            CommandResultArgs result = instance.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.VariablesSet,
                 Scope = {
@@ -135,7 +135,7 @@ namespace Procon.Core.Test {
             }.Execute() as Instance;
 
             // Add a single connection, just so we can validate that it has been removed.
-            instance.Execute(new Command() {
+            instance.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.InstanceAddConnection,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -180,7 +180,7 @@ namespace Procon.Core.Test {
             }.Execute() as Instance;
 
             // Add a single connection, just so we can validate that it has been removed.
-            instance.Execute(new Command() {
+            instance.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.InstanceAddConnection,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {

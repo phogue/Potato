@@ -305,10 +305,10 @@ namespace Procon.Core.Connections.Plugins {
                     command.Scope.ConnectionGuid = this.Connection.ConnectionGuid;
 
                     // Optimization to bypass Instance (and other connections), but passing this to Instance would have the same effect.
-                    result = this.Connection.Execute(command);
+                    result = this.Connection.Tunnel(command);
                 }
                 else {
-                    result = this.Connection.Instance.Execute(command);
+                    result = this.Connection.Instance.Tunnel(command);
                 }
             }
 

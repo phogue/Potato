@@ -19,19 +19,19 @@ namespace Procon.Core.Test.Security {
         [Test]
         public void TestSecurityAccountAddPlayer() {
             SecurityController security = new SecurityController();
-            security.Execute(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityAddGroup, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "GroupName" }) });
+            security.Tunnel(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityAddGroup, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "GroupName" }) });
 
             // Test that the group was initially added.
             Assert.AreEqual(security.Groups.First().Name, "GroupName");
 
             // Now add the user.
-            security.Execute(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityGroupAddAccount, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "GroupName", "Phogue" }) });
+            security.Tunnel(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityGroupAddAccount, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "GroupName", "Phogue" }) });
 
             // Test that the account was added to the group.
             Assert.AreEqual(security.Groups.SelectMany(group => group.Accounts).First().Username, "Phogue");
 
             // Now add a player to the "Phogue" account.
-            CommandResultArgs result = security.Execute(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityAccountAddPlayer, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "Phogue", CommonGameType.BF_3, "ABCDEF" }) });
+            CommandResultArgs result = security.Tunnel(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityAccountAddPlayer, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "Phogue", CommonGameType.BF_3, "ABCDEF" }) });
 
             // Validate the player was added successfully.
             Assert.IsTrue(result.Success);
@@ -46,10 +46,10 @@ namespace Procon.Core.Test.Security {
         [Test]
         public void TestSecurityAccountAddPlayerInsufficientPermission() {
             SecurityController security = new SecurityController();
-            security.Execute(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityAddGroup, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "GroupName" }) });
-            security.Execute(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityGroupAddAccount, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "GroupName", "Phogue" }) });
+            security.Tunnel(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityAddGroup, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "GroupName" }) });
+            security.Tunnel(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityGroupAddAccount, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "GroupName", "Phogue" }) });
 
-            CommandResultArgs result = security.Execute(new Command() {
+            CommandResultArgs result = security.Tunnel(new Command() {
                 CommandType = CommandType.SecurityAccountAddPlayer,
                 Username = "Phogue",
                 Origin = CommandOrigin.Remote,
@@ -70,21 +70,21 @@ namespace Procon.Core.Test.Security {
         [Test]
         public void TestSecurityAccountAddPlayerExistingPlayer() {
             SecurityController security = new SecurityController();
-            security.Execute(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityAddGroup, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "GroupName" }) });
+            security.Tunnel(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityAddGroup, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "GroupName" }) });
 
             // Test that the group was initially added.
             Assert.AreEqual(security.Groups.First().Name, "GroupName");
 
             // Now add the user.
-            security.Execute(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityGroupAddAccount, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "GroupName", "Phogue" }) });
-            security.Execute(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityGroupAddAccount, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "GroupName", "PapaCharlie9" }) });
+            security.Tunnel(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityGroupAddAccount, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "GroupName", "Phogue" }) });
+            security.Tunnel(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityGroupAddAccount, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "GroupName", "PapaCharlie9" }) });
 
             // Test that the account was added to the group.
             Assert.IsNotNull(security.Groups.SelectMany(group => group.Accounts).Where(account => account.Username == "Phogue").FirstOrDefault());
             Assert.IsNotNull(security.Groups.SelectMany(group => group.Accounts).Where(account => account.Username == "PapaCharlie9").FirstOrDefault());
 
             // Now add a player to the "Phogue" account.
-            security.Execute(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityAccountAddPlayer, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "Phogue", CommonGameType.BF_3, "ABCDEF" }) });
+            security.Tunnel(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityAccountAddPlayer, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "Phogue", CommonGameType.BF_3, "ABCDEF" }) });
 
 
             // Validate the player was added successfully to the Phogue account.
@@ -94,7 +94,7 @@ namespace Procon.Core.Test.Security {
             Assert.IsNull(security.Groups.SelectMany(group => group.Accounts).Where(account => account.Username == "PapaCharlie9").SelectMany(account => account.Players).FirstOrDefault());
 
             // Now add a player to the "PapaCharlie9" account.
-            CommandResultArgs result = security.Execute(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityAccountAddPlayer, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "PapaCharlie9", CommonGameType.BF_3, "ABCDEF" }) });
+            CommandResultArgs result = security.Tunnel(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityAccountAddPlayer, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "PapaCharlie9", CommonGameType.BF_3, "ABCDEF" }) });
 
             // Validate the command was a success and the player is attached to the "PapaCharlie9" account
             // and no longer attached to the "Phogue" account.
@@ -111,19 +111,19 @@ namespace Procon.Core.Test.Security {
         [Test]
         public void TestSecurityAccountAddPlayerEmptyUID() {
             SecurityController security = new SecurityController();
-            security.Execute(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityAddGroup, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "GroupName" }) });
+            security.Tunnel(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityAddGroup, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "GroupName" }) });
 
             // Test that the group was initially added.
             Assert.AreEqual(security.Groups.First().Name, "GroupName");
 
             // Now add the user.
-            security.Execute(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityGroupAddAccount, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "GroupName", "Phogue" }) });
+            security.Tunnel(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityGroupAddAccount, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "GroupName", "Phogue" }) });
 
             // Test that the account was added to the group.
             Assert.AreEqual(security.Groups.SelectMany(group => group.Accounts).First().Username, "Phogue");
 
             // Now add a player to the "Phogue" account.
-            CommandResultArgs result = security.Execute(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityAccountAddPlayer, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "Phogue", CommonGameType.BF_3, String.Empty }) });
+            CommandResultArgs result = security.Tunnel(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityAccountAddPlayer, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "Phogue", CommonGameType.BF_3, String.Empty }) });
 
             // Validate the player was added successfully.
             Assert.IsFalse(result.Success);
@@ -140,19 +140,19 @@ namespace Procon.Core.Test.Security {
         [Test]
         public void TestSecurityRemovePlayer() {
             SecurityController security = new SecurityController();
-            security.Execute(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityAddGroup, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "GroupName" }) });
+            security.Tunnel(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityAddGroup, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "GroupName" }) });
 
             // Test that the group was initially added.
             Assert.AreEqual(security.Groups.First().Name, "GroupName");
 
             // Now add the user.
-            security.Execute(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityGroupAddAccount, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "GroupName", "Phogue" }) });
+            security.Tunnel(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityGroupAddAccount, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "GroupName", "Phogue" }) });
 
             // Test that the account was added to the group.
             Assert.IsNotNull(security.Groups.SelectMany(group => group.Accounts).Where(account => account.Username == "Phogue").FirstOrDefault());
 
             // Now add a player to the "Phogue" account.
-            security.Execute(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityAccountAddPlayer, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "Phogue", CommonGameType.BF_3, "ABCDEF" }) });
+            security.Tunnel(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityAccountAddPlayer, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "Phogue", CommonGameType.BF_3, "ABCDEF" }) });
 
             // Validate the player was added successfully to the Phogue account.
             // and the PapaCharlie9 account still has no players.
@@ -160,7 +160,7 @@ namespace Procon.Core.Test.Security {
             Assert.AreEqual(security.Groups.SelectMany(group => group.Accounts).Where(account => account.Username == "Phogue").SelectMany(account => account.Players).First().Uid, "ABCDEF");
 
             // Now remove the player.
-            CommandResultArgs result = security.Execute(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityRemovePlayer, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { CommonGameType.BF_3, "ABCDEF" }) });
+            CommandResultArgs result = security.Tunnel(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityRemovePlayer, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { CommonGameType.BF_3, "ABCDEF" }) });
 
             // Validate the command was a success and the player is not attached to any accounts.
             // and no longer attached to the "Phogue" account.
@@ -177,7 +177,7 @@ namespace Procon.Core.Test.Security {
             SecurityController security = new SecurityController();
 
             // Remove a player, though no accounts/players/groups exist.
-            CommandResultArgs result = security.Execute(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityRemovePlayer, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { CommonGameType.BF_3, "ABCDEF" }) });
+            CommandResultArgs result = security.Tunnel(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityRemovePlayer, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { CommonGameType.BF_3, "ABCDEF" }) });
 
             // Validate the command failed and returned the correct error status.
             Assert.IsFalse(result.Success);
@@ -193,7 +193,7 @@ namespace Procon.Core.Test.Security {
             SecurityController security = new SecurityController();
 
             // Remove a player, though no accounts/players/groups exist.
-            CommandResultArgs result = security.Execute(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityRemovePlayer, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { CommonGameType.BF_3, String.Empty }) });
+            CommandResultArgs result = security.Tunnel(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityRemovePlayer, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { CommonGameType.BF_3, String.Empty }) });
  
             // Validate the command failed and returned the correct error status.
             Assert.IsFalse(result.Success);
@@ -207,12 +207,12 @@ namespace Procon.Core.Test.Security {
         [Test]
         public void TestSecurityRemovePlayerInsufficientPermission() {
             SecurityController security = new SecurityController();
-            security.Execute(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityAddGroup, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "GroupName" }) });
-            security.Execute(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityGroupAddAccount, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "GroupName", "Phogue" }) });
-            security.Execute(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityAccountAddPlayer, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "Phogue", CommonGameType.BF_3, "ABCDEF" }) });
+            security.Tunnel(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityAddGroup, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "GroupName" }) });
+            security.Tunnel(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityGroupAddAccount, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "GroupName", "Phogue" }) });
+            security.Tunnel(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityAccountAddPlayer, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "Phogue", CommonGameType.BF_3, "ABCDEF" }) });
 
             // Now remove the player.
-            CommandResultArgs result = security.Execute(new Command() {
+            CommandResultArgs result = security.Tunnel(new Command() {
                 CommandType = CommandType.SecurityRemovePlayer,
                 Username = "Phogue",
                 Origin = CommandOrigin.Remote,

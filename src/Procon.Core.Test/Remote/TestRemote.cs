@@ -35,15 +35,15 @@ namespace Procon.Core.Test.Remote {
             VariableController variables = new VariableController();
             SecurityController security = new SecurityController();
 
-            security.Execute(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityAddGroup, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "GroupName" }) });
-            security.Execute(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityGroupAddAccount, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "GroupName", "Phogue" }) });
-            security.Execute(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityAccountSetPassword, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "Phogue", "password" }) });
-            security.Execute(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityGroupSetPermission, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "GroupName", CommandType.SecurityAccountAuthenticate, 1 }) });
+            security.Tunnel(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityAddGroup, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "GroupName" }) });
+            security.Tunnel(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityGroupAddAccount, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "GroupName", "Phogue" }) });
+            security.Tunnel(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityAccountSetPassword, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "Phogue", "password" }) });
+            security.Tunnel(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityGroupSetPermission, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "GroupName", CommandType.SecurityAccountAuthenticate, 1 }) });
 
             // We use the TestPlugin to validate various commands can be executed
             PluginController plugins = new PluginController().Execute() as PluginController;
 
-            plugins.Execute(new Command() {
+            plugins.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.PluginsEnable,
                 Scope = {
@@ -59,7 +59,7 @@ namespace Procon.Core.Test.Remote {
                 Variables = variables
             };
 
-            variables.Execute(new Command() {
+            variables.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.VariablesSet,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -70,7 +70,7 @@ namespace Procon.Core.Test.Remote {
 
             daemon.Execute();
 
-            variables.Execute(new Command() {
+            variables.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.VariablesSet,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -239,7 +239,7 @@ namespace Procon.Core.Test.Remote {
 
             DaemonController daemon = this.SetupDaemon(listeningPort);
 
-            daemon.Variables.Execute(new Command() {
+            daemon.Variables.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.VariablesSet,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {

@@ -63,7 +63,7 @@ namespace Procon.Core.Test.Repositories {
                 }
             };
 
-            repository.Execute(new Command() {
+            repository.Tunnel(new Command() {
                 CommandType = CommandType.PackagesAddRemoteRepository,
                 Origin = CommandOrigin.Local,
                 Parameters = new List<CommandParameter>() {
@@ -89,7 +89,7 @@ namespace Procon.Core.Test.Repositories {
                 }
             };
 
-            CommandResultArgs result = repository.Execute(new Command() {
+            CommandResultArgs result = repository.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.PackagesInstallPackage,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -118,7 +118,7 @@ namespace Procon.Core.Test.Repositories {
                 }
             };
 
-            repository.Execute(new Command() {
+            repository.Tunnel(new Command() {
                 CommandType = CommandType.PackagesAddRemoteRepository,
                 Origin = CommandOrigin.Local,
                 Parameters = new List<CommandParameter>() {
@@ -144,7 +144,7 @@ namespace Procon.Core.Test.Repositories {
                 }
             };
 
-            CommandResultArgs result = repository.Execute(new Command() {
+            CommandResultArgs result = repository.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.PackagesInstallPackage,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -166,7 +166,7 @@ namespace Procon.Core.Test.Repositories {
         public void TestRepositoryControllerInstallPackageInsufficientPermission() {
             RepositoryController repository = this.SetupRepositoryController();
 
-            CommandResultArgs result = repository.Execute(new Command() {
+            CommandResultArgs result = repository.Tunnel(new Command() {
                 CommandType = CommandType.PackagesInstallPackage,
                 Username = "Phogue",
                 Origin = CommandOrigin.Remote,
@@ -191,7 +191,7 @@ namespace Procon.Core.Test.Repositories {
         public void TestRepositoryControllerAddRemoteRepositorySuccess() {
             RepositoryController repository = this.SetupRepositoryController();
 
-            CommandResultArgs result = repository.Execute(new Command() {
+            CommandResultArgs result = repository.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.PackagesAddRemoteRepository,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -211,7 +211,7 @@ namespace Procon.Core.Test.Repositories {
         public void TestRepositoryControllerAddRemoteRepositoryAlreadyExists() {
             RepositoryController repository = this.SetupRepositoryController();
 
-            repository.Execute(new Command() {
+            repository.Tunnel(new Command() {
                 CommandType = CommandType.PackagesAddRemoteRepository,
                 Origin = CommandOrigin.Local,
                 Parameters = new List<CommandParameter>() {
@@ -225,7 +225,7 @@ namespace Procon.Core.Test.Repositories {
                 }
             });
 
-            CommandResultArgs result = repository.Execute(new Command() {
+            CommandResultArgs result = repository.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.PackagesAddRemoteRepository,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -244,7 +244,7 @@ namespace Procon.Core.Test.Repositories {
         public void TestRepositoryControllerAddRemoteRepositoryInsufficientPermission() {
             RepositoryController repository = this.SetupRepositoryController();
 
-            CommandResultArgs result = repository.Execute(new Command() {
+            CommandResultArgs result = repository.Tunnel(new Command() {
                 CommandType = CommandType.PackagesAddRemoteRepository,
                 Username = "Phogue",
                 Origin = CommandOrigin.Remote,
@@ -268,7 +268,7 @@ namespace Procon.Core.Test.Repositories {
         public void TestRepositoryControllerRemoveRemoteRepositorySuccess() {
             RepositoryController repository = this.SetupRepositoryController();
 
-            repository.Execute(new Command() {
+            repository.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.PackagesAddRemoteRepository,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -276,7 +276,7 @@ namespace Procon.Core.Test.Repositories {
                 })
             });
 
-            CommandResultArgs result = repository.Execute(new Command() {
+            CommandResultArgs result = repository.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.PackagesRemoveRemoteRepository,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -297,7 +297,7 @@ namespace Procon.Core.Test.Repositories {
             RepositoryController repository = this.SetupRepositoryController();
 
             // This won't exist, nothing has been added yet.
-            CommandResultArgs result = repository.Execute(new Command() {
+            CommandResultArgs result = repository.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.PackagesRemoveRemoteRepository,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -316,7 +316,7 @@ namespace Procon.Core.Test.Repositories {
         public void TestRepositoryControllerRemoveRemoteRepositoryInsufficientPermission() {
             RepositoryController repository = this.SetupRepositoryController();
 
-            CommandResultArgs result = repository.Execute(new Command() {
+            CommandResultArgs result = repository.Tunnel(new Command() {
                 CommandType = CommandType.PackagesRemoveRemoteRepository,
                 Username = "Phogue",
                 Origin = CommandOrigin.Remote,
@@ -349,7 +349,7 @@ namespace Procon.Core.Test.Repositories {
                 }
             };
 
-            repository.Execute(new Command() {
+            repository.Tunnel(new Command() {
                 CommandType = CommandType.PackagesAddRemoteRepository,
                 Origin = CommandOrigin.Local,
                 Parameters = new List<CommandParameter>() {
@@ -365,7 +365,7 @@ namespace Procon.Core.Test.Repositories {
 
             Assert.IsTrue(requestWait.WaitOne(60000));
 
-            CommandResultArgs result = repository.Execute(new Command() {
+            CommandResultArgs result = repository.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.PackagesIngoreAutomaticUpdateOnPackage,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -391,7 +391,7 @@ namespace Procon.Core.Test.Repositories {
                 }
             };
 
-            repository.Execute(new Command() {
+            repository.Tunnel(new Command() {
                 CommandType = CommandType.PackagesAddRemoteRepository,
                 Origin = CommandOrigin.Local,
                 Parameters = new List<CommandParameter>() {
@@ -408,7 +408,7 @@ namespace Procon.Core.Test.Repositories {
             Assert.IsTrue(requestWait.WaitOne(60000));
 
             // Add it first
-            repository.Execute(new Command() {
+            repository.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.PackagesIngoreAutomaticUpdateOnPackage,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -418,7 +418,7 @@ namespace Procon.Core.Test.Repositories {
             });
 
             // Now re add it. It's a success, but we only want a single reference kept (no duplications)
-            CommandResultArgs result = repository.Execute(new Command() {
+            CommandResultArgs result = repository.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.PackagesIngoreAutomaticUpdateOnPackage,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -439,7 +439,7 @@ namespace Procon.Core.Test.Repositories {
         public void TestRepositoryControllerIngoreAutomaticUpdatePackageInsufficientPermission() {
             RepositoryController repository = this.SetupRepositoryController();
 
-            CommandResultArgs result = repository.Execute(new Command() {
+            CommandResultArgs result = repository.Tunnel(new Command() {
                 CommandType = CommandType.PackagesIngoreAutomaticUpdateOnPackage,
                 Username = "Phogue",
                 Origin = CommandOrigin.Remote,
@@ -473,7 +473,7 @@ namespace Procon.Core.Test.Repositories {
                 }
             };
 
-            repository.Execute(new Command() {
+            repository.Tunnel(new Command() {
                 CommandType = CommandType.PackagesAddRemoteRepository,
                 Origin = CommandOrigin.Local,
                 Parameters = new List<CommandParameter>() {
@@ -489,7 +489,7 @@ namespace Procon.Core.Test.Repositories {
 
             Assert.IsTrue(requestWait.WaitOne(60000));
 
-            repository.Execute(new Command() {
+            repository.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.PackagesIngoreAutomaticUpdateOnPackage,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -498,7 +498,7 @@ namespace Procon.Core.Test.Repositories {
                 })
             });
 
-            CommandResultArgs result = repository.Execute(new Command() {
+            CommandResultArgs result = repository.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.PackagesAutomaticUpdateOnPackage,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -519,7 +519,7 @@ namespace Procon.Core.Test.Repositories {
         public void TestRepositoryControllerPackagesAutomaticUpdateOnPackageInsufficientPermission() {
             RepositoryController repository = this.SetupRepositoryController();
 
-            CommandResultArgs result = repository.Execute(new Command() {
+            CommandResultArgs result = repository.Tunnel(new Command() {
                 CommandType = CommandType.PackagesAutomaticUpdateOnPackage,
                 Username = "Phogue",
                 Origin = CommandOrigin.Remote,

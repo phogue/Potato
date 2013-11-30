@@ -214,7 +214,7 @@ namespace Procon.Core.Remote {
                 if (response.StatusCode == HttpStatusCode.NotFound) {
                     if (this.Authenticate(command.Username, command.PasswordPlainText) == true) {
                         // Now dispatch the command
-                        CommandResultArgs result = this.Execute(command);
+                        CommandResultArgs result = this.Tunnel(command);
 
                         response = this.SerializeResponse(response, command, result);
                     }
@@ -238,7 +238,7 @@ namespace Procon.Core.Remote {
 
         protected bool Authenticate(String username, String passwordPlainText) {
             // @todo while this is passing plain text passwords we restrict it to the security controller
-            CommandResultArgs result = this.Security.Execute(new Command() {
+            CommandResultArgs result = this.Security.Tunnel(new Command() {
                 Origin = CommandOrigin.Remote,
                 Username =  username,
                 CommandType = CommandType.SecurityAccountAuthenticate,

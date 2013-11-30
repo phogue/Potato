@@ -19,7 +19,7 @@ namespace Procon.Core.Test.ExecutableCommands {
                 TestNumber = 0
             };
 
-            tester.Execute(new Command() {
+            tester.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.VariablesSet,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -39,7 +39,7 @@ namespace Procon.Core.Test.ExecutableCommands {
                 TestNumber = 0
             };
 
-            tester.Execute(new Command() {
+            tester.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.VariablesSet,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {

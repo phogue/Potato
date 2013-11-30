@@ -33,7 +33,7 @@ namespace Procon.Core.Test.Localization {
         public void TestEnglishLocalizationControllerGet() {
             LanguageController language = new LanguageController().Execute() as LanguageController;
 
-            CommandResultArgs result = language.Execute(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.LanguageLocalize, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "en-UK", "Procon.Core.Test.Localization", "TestName" }) });
+            CommandResultArgs result = language.Tunnel(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.LanguageLocalize, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "en-UK", "Procon.Core.Test.Localization", "TestName" }) });
 
             Assert.IsTrue(result.Success);
             Assert.AreEqual(CommandResultType.Success, result.Status);
@@ -49,7 +49,7 @@ namespace Procon.Core.Test.Localization {
                 Security = new SecurityController().Execute() as SecurityController
             }.Execute() as LanguageController;
 
-            CommandResultArgs result = language.Execute(new Command() {
+            CommandResultArgs result = language.Tunnel(new Command() {
                 CommandType = CommandType.LanguageLocalize,
                 Username = "Phogue",
                 Origin = CommandOrigin.Remote,
@@ -71,7 +71,7 @@ namespace Procon.Core.Test.Localization {
         public void TestEnglishLocalizationControllerGetDoesNotExist() {
             LanguageController language = new LanguageController().Execute() as LanguageController;
 
-            CommandResultArgs result = language.Execute(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.LanguageLocalize, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "zu-ZU", "Procon.Core.Test.Localization", "TestKey" }) });
+            CommandResultArgs result = language.Tunnel(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.LanguageLocalize, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "zu-ZU", "Procon.Core.Test.Localization", "TestKey" }) });
 
             Assert.IsFalse(result.Success);
             Assert.AreEqual(CommandResultType.DoesNotExists, result.Status);
@@ -84,7 +84,7 @@ namespace Procon.Core.Test.Localization {
         public void TestEnglishLocalizationControllerGetFirstDepthSearch() {
             LanguageController language = new LanguageController().Execute() as LanguageController;
 
-            CommandResultArgs result = language.Execute(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.LanguageLocalize, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "en-UK", "Procon.Core.Test", "TestName" }) });
+            CommandResultArgs result = language.Tunnel(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.LanguageLocalize, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "en-UK", "Procon.Core.Test", "TestName" }) });
 
             Assert.IsTrue(result.Success);
             Assert.AreEqual(CommandResultType.Success, result.Status);
@@ -108,7 +108,7 @@ namespace Procon.Core.Test.Localization {
         public void TestDeutschLocalizationControllerGetFirstDepthSearch() {
             LanguageController language = new LanguageController().Execute() as LanguageController;
 
-            CommandResultArgs result = language.Execute(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.LanguageLocalize, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "de-DE", "Procon.Core.Test", "TestName" }) });
+            CommandResultArgs result = language.Tunnel(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.LanguageLocalize, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "de-DE", "Procon.Core.Test", "TestName" }) });
 
             Assert.IsTrue(result.Success);
             Assert.AreEqual(CommandResultType.Success, result.Status);
@@ -122,7 +122,7 @@ namespace Procon.Core.Test.Localization {
         public void TestEnglishLocalizationControllerGetCorrectFormat() {
             LanguageController language = new LanguageController().Execute() as LanguageController;
 
-            CommandResultArgs result = language.Execute(new Command() {
+            CommandResultArgs result = language.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.LanguageLocalize,
                 Parameters = new List<CommandParameter>() {
@@ -171,7 +171,7 @@ namespace Procon.Core.Test.Localization {
         public void TestEnglishLocalizationControllerGetIncorrectFormat() {
             LanguageController language = new LanguageController().Execute() as LanguageController;
 
-            CommandResultArgs result = language.Execute(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.LanguageLocalize, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "en-UK", "Procon.Core.Test.Localization", "TestFormat" }) });
+            CommandResultArgs result = language.Tunnel(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.LanguageLocalize, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "en-UK", "Procon.Core.Test.Localization", "TestFormat" }) });
 
             Assert.IsTrue(result.Success);
             Assert.AreEqual(CommandResultType.Success, result.Status);

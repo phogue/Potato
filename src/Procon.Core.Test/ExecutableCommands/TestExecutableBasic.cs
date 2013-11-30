@@ -38,7 +38,7 @@ namespace Procon.Core.Test.ExecutableCommands {
                 TestNumber = 0
             };
 
-            tester.Execute(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.VariablesSet, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { 50 }) });
+            tester.Tunnel(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.VariablesSet, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { 50 }) });
 
             Assert.AreEqual(tester.TestNumber, 50);
         }
@@ -52,7 +52,7 @@ namespace Procon.Core.Test.ExecutableCommands {
                 TestNumber = 0
             };
 
-            tester.Execute(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.VariablesSet, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "50" }) });
+            tester.Tunnel(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.VariablesSet, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "50" }) });
 
             Assert.AreEqual(tester.TestNumber, 50);
         }
@@ -66,7 +66,7 @@ namespace Procon.Core.Test.ExecutableCommands {
                 TestNumber = 0
             };
 
-            tester.Execute(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.VariablesSet, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "cheese" }) });
+            tester.Tunnel(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.VariablesSet, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "cheese" }) });
 
             Assert.AreEqual(tester.TestNumber, 0);
         }
@@ -84,7 +84,7 @@ namespace Procon.Core.Test.ExecutableCommands {
                 TestNumber = 33
             };
 
-            CommandResultArgs result = tester.Execute(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.VariablesGet });
+            CommandResultArgs result = tester.Tunnel(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.VariablesGet });
             // CommandResult result = tester.Execute(Command.Local, new CommandExecutableAttribute() { CommandType = CommandType.VariablesGet });
 
             Assert.AreEqual(tester.TestNumber, result.Now.Variables.First().ToType<int>());
@@ -103,7 +103,7 @@ namespace Procon.Core.Test.ExecutableCommands {
                 TestNumber = 0
             };
 
-            tester.Execute(new Command() { Origin = CommandOrigin.Local, Name = "CustomSet", Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { 50 }) });
+            tester.Tunnel(new Command() { Origin = CommandOrigin.Local, Name = "CustomSet", Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { 50 }) });
 
             Assert.AreEqual(tester.TestNumber, 50);
         }
@@ -117,7 +117,7 @@ namespace Procon.Core.Test.ExecutableCommands {
                 TestNumber = 0
             };
 
-            tester.Execute(new Command() { Origin = CommandOrigin.Local, Name = "CustomSet", Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "50" }) });
+            tester.Tunnel(new Command() { Origin = CommandOrigin.Local, Name = "CustomSet", Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "50" }) });
 
             Assert.AreEqual(tester.TestNumber, 50);
         }
@@ -131,7 +131,7 @@ namespace Procon.Core.Test.ExecutableCommands {
                 TestNumber = 0
             };
 
-            tester.Execute(new Command() { Origin = CommandOrigin.Local, Name = "CustomSet", Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "cheese" }) });
+            tester.Tunnel(new Command() { Origin = CommandOrigin.Local, Name = "CustomSet", Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "cheese" }) });
 
             Assert.AreEqual(tester.TestNumber, 0);
         }

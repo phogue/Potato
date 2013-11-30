@@ -20,7 +20,7 @@ namespace Procon.Core.Test.Plugins {
                 Security = security
             }.Execute() as PluginController;
 
-            plugins.Execute(new Command() {
+            plugins.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.PluginsEnable,
                 Scope = {
@@ -28,7 +28,7 @@ namespace Procon.Core.Test.Plugins {
                 }
             });
 
-            CommandResultArgs result = plugins.Execute(new Command() {
+            CommandResultArgs result = plugins.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.PluginsDisable,
                 Scope = {
@@ -50,7 +50,7 @@ namespace Procon.Core.Test.Plugins {
                 Security = security
             }.Execute() as PluginController;
 
-            CommandResultArgs result = plugins.Execute(new Command() {
+            CommandResultArgs result = plugins.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.PluginsDisable,
                 Scope = {
@@ -73,7 +73,7 @@ namespace Procon.Core.Test.Plugins {
                 Security = security
             }.Execute() as PluginController;
 
-            CommandResultArgs result = plugins.Execute(new Command() {
+            CommandResultArgs result = plugins.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.PluginsDisable,
                 Scope = {
@@ -95,7 +95,7 @@ namespace Procon.Core.Test.Plugins {
                 Security = security
             }.Execute() as PluginController;
 
-            CommandResultArgs result = plugins.Execute(new Command() {
+            CommandResultArgs result = plugins.Tunnel(new Command() {
                 Origin = CommandOrigin.Remote,
                 Username = "Phogue",
                 CommandType = CommandType.PluginsDisable,
@@ -119,7 +119,7 @@ namespace Procon.Core.Test.Plugins {
             }.Execute() as PluginController;
 
             // The plugin will be disabled right now.
-            CommandResultArgs result = plugins.Execute(new Command() {
+            CommandResultArgs result = plugins.Tunnel(new Command() {
                 Name = "TestPluginsDisabledCommandResult",
                 Username = "Phogue",
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {

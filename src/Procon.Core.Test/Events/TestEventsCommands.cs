@@ -28,7 +28,7 @@ namespace Procon.Core.Test.Events {
                 }
             });
 
-            CommandResultArgs result = events.Execute(new Command() {
+            CommandResultArgs result = events.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.EventsFetchAfterEventId,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -75,7 +75,7 @@ namespace Procon.Core.Test.Events {
                 Stamp = DateTime.Now.AddHours(-1)
             });
 
-            CommandResultArgs result = events.Execute(new Command() {
+            CommandResultArgs result = events.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.EventsFetchAfterEventId,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -109,7 +109,7 @@ namespace Procon.Core.Test.Events {
                 }
             });
 
-            CommandResultArgs result = events.Execute(new Command() {
+            CommandResultArgs result = events.Tunnel(new Command() {
                 Username = "Phogue",
                 Origin = CommandOrigin.Remote,
                 CommandType = CommandType.EventsFetchAfterEventId,

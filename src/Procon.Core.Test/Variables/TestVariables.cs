@@ -29,7 +29,7 @@ namespace Procon.Core.Test.Variables {
         [Test]
         public void TestVariablesWriteConfig() {
             VariableController variables = new VariableController().Execute() as VariableController;
-            variables.Execute(new Command() {
+            variables.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.VariablesSetA,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -38,7 +38,7 @@ namespace Procon.Core.Test.Variables {
                 })
             });
 
-            variables.Execute(new Command() {
+            variables.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.VariablesSetA,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -47,7 +47,7 @@ namespace Procon.Core.Test.Variables {
                 })
             });
 
-            variables.Execute(new Command() {
+            variables.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.VariablesSet,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -56,7 +56,7 @@ namespace Procon.Core.Test.Variables {
                 })
             });
 
-            variables.Execute(new Command() {
+            variables.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.VariablesSetA,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -96,7 +96,7 @@ namespace Procon.Core.Test.Variables {
         [Test]
         public void TestVariablesLoadConfig() {
             VariableController saveVariables = new VariableController().Execute() as VariableController;
-            saveVariables.Execute(new Command() {
+            saveVariables.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.VariablesSetA,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -105,7 +105,7 @@ namespace Procon.Core.Test.Variables {
                 })
             });
 
-            saveVariables.Execute(new Command() {
+            saveVariables.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.VariablesSetA,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -114,7 +114,7 @@ namespace Procon.Core.Test.Variables {
                 })
             });
 
-            saveVariables.Execute(new Command() {
+            saveVariables.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.VariablesSet,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -123,7 +123,7 @@ namespace Procon.Core.Test.Variables {
                 })
             });
 
-            saveVariables.Execute(new Command() {
+            saveVariables.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.VariablesSetA,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -156,7 +156,7 @@ namespace Procon.Core.Test.Variables {
         public void TestVariablesDispose() {
             VariableController variables = new VariableController();
 
-            variables.Execute(new Command() {
+            variables.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.VariablesSet,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -165,7 +165,7 @@ namespace Procon.Core.Test.Variables {
                 })
             });
 
-            variables.Execute(new Command() {
+            variables.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.VariablesSetA,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {

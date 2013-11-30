@@ -26,7 +26,7 @@ namespace Procon.Core.Test {
         public void TestInstanceRemoveConnectionSuccess() {
             Instance instance = new Instance().Execute() as Instance;
 
-            instance.Execute(new Command() {
+            instance.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.InstanceAddConnection,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -42,7 +42,7 @@ namespace Procon.Core.Test {
             // Make sure we have at least one connection added.
             Assert.AreEqual(1, instance.Connections.Count);
 
-            CommandResultArgs result = instance.Execute(new Command() {
+            CommandResultArgs result = instance.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.InstanceRemoveConnection,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -65,7 +65,7 @@ namespace Procon.Core.Test {
         public void TestInstanceRemoveConnectionByGuidSuccess() {
             Instance instance = new Instance().Execute() as Instance;
 
-            instance.Execute(new Command() {
+            instance.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.InstanceAddConnection,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -81,7 +81,7 @@ namespace Procon.Core.Test {
             // Make sure we have at least one connection added.
             Assert.AreEqual(1, instance.Connections.Count);
 
-            CommandResultArgs result = instance.Execute(new Command() {
+            CommandResultArgs result = instance.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.InstanceRemoveConnection,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -102,7 +102,7 @@ namespace Procon.Core.Test {
         public void TestInstanceRemoveConnectionInsufficientPermissions() {
             Instance instance = new Instance().Execute() as Instance;
 
-            CommandResultArgs result = instance.Execute(new Command() {
+            CommandResultArgs result = instance.Tunnel(new Command() {
                 Origin = CommandOrigin.Remote,
                 Username = "Phogue",
                 CommandType = CommandType.InstanceRemoveConnection,
@@ -128,7 +128,7 @@ namespace Procon.Core.Test {
             Instance instance = new Instance().Execute() as Instance;
 
             // Now readd the same connection we just added.
-            CommandResultArgs result = instance.Execute(new Command() {
+            CommandResultArgs result = instance.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.InstanceRemoveConnection,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {

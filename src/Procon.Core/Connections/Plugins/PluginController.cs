@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -18,7 +19,7 @@ namespace Procon.Core.Connections.Plugins {
     /// Manages loading and propogating plugin events, as well as callbacks from
     /// a plugin back to Procon.
     /// </summary>
-    public class PluginController : Executable, IRenewableLease, IPluginCallback {
+    public class PluginController : Executable, IRenewableLease {
 
         /// <summary>
         /// The appdomain all of the plugins are loaded into.
@@ -282,37 +283,16 @@ namespace Procon.Core.Connections.Plugins {
             }
         }
 
+        protected override IList<IExecutableBase> BubbleExecutableObjects(Command command) {
+            return this.Connection != null ? new List<IExecutableBase>() {
+                this.Connection
+            } : new List<IExecutableBase>();
+        }
+
         protected override IList<IExecutableBase> TunnelExecutableObjects(Command command) {
             return new List<IExecutableBase>() {
                 this.PluginFactory
             };
-        }
-
-        /// <summary>
-        /// Executes a command in the scope of connection or the entire instance of procon.
-        /// </summary>
-        /// <remarks><para>This is a proxy called from the plugins appdomain.</para></remarks>
-        /// <param name="command"></param>
-        /// <returns></returns>
-        public CommandResultArgs ProxyExecute(Command command) {
-            CommandResultArgs result = null;
-
-            command.Origin = CommandOrigin.Plugin;
-
-            // We check for null's on these in case of unit testing.
-            if (this.Connection != null && this.Connection.Instance != null) {
-                if (command.Scope != null && command.Scope.ConnectionGuid != Guid.Empty) {
-                    command.Scope.ConnectionGuid = this.Connection.ConnectionGuid;
-
-                    // Optimization to bypass Instance (and other connections), but passing this to Instance would have the same effect.
-                    result = this.Connection.Tunnel(command);
-                }
-                else {
-                    result = this.Connection.Instance.Tunnel(command);
-                }
-            }
-
-            return result;
         }
 
         /// <summary>
@@ -336,7 +316,9 @@ namespace Procon.Core.Connections.Plugins {
 
             this.PluginFactory = (IRemotePluginController)this.AppDomainSandbox.CreateInstanceAndUnwrap(Assembly.GetExecutingAssembly().FullName, typeof(RemotePluginController).FullName);
 
-            this.PluginFactory.PluginCallback = this;
+            this.PluginFactory.PluginCallback = new List<IExecutableBase>() {
+                this
+            };
         }
 
         /// <summary>

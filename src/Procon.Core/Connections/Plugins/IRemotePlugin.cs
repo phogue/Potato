@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using Procon.Core.Events;
 using Procon.Net;
@@ -31,7 +32,7 @@ namespace Procon.Core.Connections.Plugins {
         /// <summary>
         /// The interface to callback from the plugin side to Procon.
         /// </summary>
-        IPluginCallback PluginCallback { set; }
+        IList<IExecutableBase> PluginCallback { set; }
 
         /// <summary>
         /// Fired whenever an event is passed from the client, to the game layer

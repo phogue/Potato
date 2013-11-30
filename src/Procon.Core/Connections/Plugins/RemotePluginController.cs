@@ -6,7 +6,7 @@ using Procon.Core.Events;
 using Procon.Net;
 
 namespace Procon.Core.Connections.Plugins {
-    public class RemotePluginController : ExecutableBase, IRemotePluginController, IPluginCallback {
+    public class RemotePluginController : ExecutableBase, IRemotePluginController {
 
         /// <summary>
         /// A list of loaded plugins. This can be considered a pool of plugins that
@@ -22,7 +22,7 @@ namespace Procon.Core.Connections.Plugins {
         /// <summary>
         /// Callbacks to execute commands on the host appdomain.
         /// </summary>
-        public IPluginCallback PluginCallback { private get; set; }
+        public IList<IExecutableBase> PluginCallback { private get; set; }
 
         /// <summary>
         /// Creates an instance of a type in an assembly.
@@ -62,7 +62,9 @@ namespace Procon.Core.Connections.Plugins {
 
                 this.EnabledPlugins.TryAdd(plugin.PluginGuid, plugin);
 
-                plugin.PluginCallback = this;
+                plugin.PluginCallback = new List<IExecutableBase>() {
+                    this
+                };
 
                 plugin.GenericEvent(new GenericEventArgs() {
                     GenericEventType = GenericEventType.PluginsPluginEnabled
@@ -126,6 +128,17 @@ namespace Procon.Core.Connections.Plugins {
             return this.EnabledPlugins.ContainsKey(pluginGuid);
         }
 
+        /// <summary>
+        /// Enforce an origin of plugin before we bubble any commands.
+        /// </summary>
+        /// <param name="command"></param>
+        /// <returns></returns>
+        protected override IList<IExecutableBase> BubbleExecutableObjects(Command command) {
+            command.Origin = CommandOrigin.Plugin;
+
+            return this.PluginCallback ?? new List<IExecutableBase>();
+        }
+
         protected override IList<IExecutableBase> TunnelExecutableObjects(Command command) {
             List<IExecutableBase> list = new List<IExecutableBase>();
 
@@ -145,15 +158,6 @@ namespace Procon.Core.Connections.Plugins {
             }
 
             return list;
-        }
-
-        /// <summary>
-        /// Execute a command on Procon's side of the appdomain (host)
-        /// </summary>
-        /// <param name="command"></param>
-        /// <returns></returns>
-        public CommandResultArgs ProxyExecute(Command command) {
-            return this.PluginCallback != null ? this.PluginCallback.ProxyExecute(command) : null;
         }
     }
 }

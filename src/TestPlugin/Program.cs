@@ -265,7 +265,7 @@ namespace TestPlugin {
             }
             else if (e.GenericEventType == GenericEventType.PluginsPluginEnabled) {
 
-                this.ProxyExecute(new Command() {
+                this.Bubble(new Command() {
                     CommandType = CommandType.TextCommandsRegister,
                     Scope = new CommandScope() {
                         ConnectionGuid = this.ConnectionGuid
@@ -288,7 +288,7 @@ namespace TestPlugin {
                     }
                 });
 
-                this.ProxyExecute(new Command() {
+                this.Bubble(new Command() {
                     CommandType = CommandType.TextCommandsRegister,
                     Scope = new CommandScope() {
                         ConnectionGuid = this.ConnectionGuid
@@ -311,7 +311,7 @@ namespace TestPlugin {
                     }
                 });
 
-                this.ProxyExecute(new Command() {
+                this.Bubble(new Command() {
                     CommandType = CommandType.TextCommandsRegister,
                     Scope = new CommandScope() {
                         ConnectionGuid = this.ConnectionGuid

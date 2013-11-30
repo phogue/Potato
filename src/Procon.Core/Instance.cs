@@ -405,6 +405,17 @@ namespace Procon.Core {
             }
         }
 
+        /// <summary>
+        /// Reverse the direction of the bubble. If we have not found it by now we need to tunnel down to
+        /// everything to find where this command needs to be executed. If tunneling finds nothing then
+        /// the command is completed.
+        /// </summary>
+        /// <param name="command"></param>
+        /// <returns></returns>
+        public override CommandResultArgs Bubble(Command command) {
+            return this.Tunnel(command);
+        }
+
         protected override IList<IExecutableBase> TunnelExecutableObjects(Command command) {
             List<IExecutableBase> list = new List<IExecutableBase>();
 

@@ -232,6 +232,39 @@ namespace Procon.Core.Connections {
             }
         }
 
+        public override CommandResultArgs PropogatePreview(Command command, bool tunnel = true) {
+            if (tunnel == false && command.Scope != null && command.Scope.ConnectionGuid == this.ConnectionGuid) {
+                // We've bubbled up far enough, time to tunnel down this connection to find our result.
+                return this.Tunnel(command);
+            }
+
+            return base.PropogatePreview(command, tunnel);
+        }
+
+        public override CommandResultArgs PropogateHandler(Command command, bool tunnel = true) {
+            if (tunnel == false && command.Scope != null && command.Scope.ConnectionGuid == this.ConnectionGuid) {
+                // We've bubbled up far enough, time to tunnel down this connection to find our result.
+                return this.Tunnel(command);
+            }
+
+            return base.PropogateHandler(command, tunnel);
+        }
+
+        public override CommandResultArgs PropogateExecuted(Command command, bool tunnel = true) {
+            if (tunnel == false && command.Scope != null && command.Scope.ConnectionGuid == this.ConnectionGuid) {
+                // We've bubbled up far enough, time to tunnel down this connection to find our result.
+                return this.Tunnel(command);
+            }
+
+            return base.PropogateExecuted(command, tunnel);
+        }
+
+        protected override IList<IExecutableBase> BubbleExecutableObjects(Command command) {
+            return this.Instance != null ? new List<IExecutableBase>() {
+                this.Instance
+            } : new List<IExecutableBase>();
+        }
+
         protected override IList<IExecutableBase> TunnelExecutableObjects(Command command) {
             return new List<IExecutableBase> {
                 this.TextCommands,

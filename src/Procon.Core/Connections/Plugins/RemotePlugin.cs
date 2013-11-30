@@ -54,7 +54,7 @@ namespace Procon.Core.Connections.Plugins {
         /// <summary>
         /// The interface to callback from the plugin side to Procon.
         /// </summary>
-        public IPluginCallback PluginCallback { private get; set; }
+        public IList<IExecutableBase> PluginCallback { private get; set; }
 
         /// <summary>
         /// All actions awaiting responses from the game networking layer
@@ -107,21 +107,37 @@ namespace Procon.Core.Connections.Plugins {
             this.Tasks.Dispose();
             this.Tasks = null;
         }
-
+        /*
         /// <summary>
         /// Executes a command across the appdomain
         /// </summary>
         /// <param name="command"></param>
         /// <returns></returns>
         public CommandResultArgs ProxyExecute(Command command) {
-            if (command.Scope != null && command.Scope.PluginGuid != Guid.Empty) {
+            if (command.Scope != null && command.Scope.PluginGuid == this.PluginGuid) {
                 command.Result = this.Tunnel(command);
             }
             else if (this.PluginCallback != null) {
-                command.Result = this.PluginCallback.ProxyExecute(command);
+                command.Result = this.Bubble(command); // this.PluginCallback.ProxyExecute(command);
             }
 
             return command.Result;
+        }
+        */
+        public override CommandResultArgs Bubble(Command command) {
+            // There isn't much point in bubbling up if we just need to come back down here.
+            if (command.Scope != null && command.Scope.PluginGuid == this.PluginGuid) {
+                command.Result = this.Tunnel(command);
+            }
+            else if (this.PluginCallback != null) {
+                command.Result = base.Bubble(command);
+            }
+
+            return command.Result;
+        }
+
+        protected override IList<IExecutableBase> BubbleExecutableObjects(Command command) {
+            return this.PluginCallback ?? new List<IExecutableBase>();
         }
 
         /// <summary>
@@ -152,7 +168,7 @@ namespace Procon.Core.Connections.Plugins {
 
             // Provided we have worked out what they wanted to send..
             if (command != CommandType.None) {
-                result = this.ProxyExecute(new Command() {
+                result = this.Bubble(new Command() {
                     CommandType = command,
                     Scope = new CommandScope() {
                         ConnectionGuid = this.ConnectionGuid

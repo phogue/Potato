@@ -77,7 +77,6 @@
     <Compile Include="CommandResultType.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="Connections\Connection.cs" />
-    <Compile Include="Connections\Plugins\IPluginCallback.cs" />
     <Compile Include="Connections\Plugins\IRemotePluginController.cs" />
     <Compile Include="Connections\Plugins\IRenewableLease.cs" />
     <Compile Include="Connections\TextCommands\TextCommandMatch.cs" />

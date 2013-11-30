@@ -48,6 +48,9 @@ namespace Procon.Core.Connections.Plugins {
             // ReSharper restore ValueParameterNotUsed
         }
 
+        /// <summary>
+        /// The path to the dll file
+        /// </summary>
         [XmlIgnore, JsonIgnore]
         public String Path { get; set; }
 

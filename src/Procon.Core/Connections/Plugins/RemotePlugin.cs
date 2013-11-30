@@ -29,8 +29,6 @@ namespace Procon.Core.Connections.Plugins {
         /// </summary>
         public Guid ConnectionGuid { get; set; }
 
-        protected Config PluginConfig { get; set; }
-
         /// <summary>
         /// Tasks running on a seperate thread for this instance of the plugin.
         /// </summary>
@@ -220,13 +218,16 @@ namespace Procon.Core.Connections.Plugins {
             //  ));
         }
 
+        /// <summary>
+        /// Loads the config from this plugins config directory.
+        /// </summary>
+        /// <remarks>Configs are simply saved commands</remarks>
         public virtual void LoadConfig() {
             this.GenericEvent(new GenericEventArgs() {
                 GenericEventType = GenericEventType.ConfigLoading
             });
 
-            this.PluginConfig = new Config().LoadDirectory(ConfigDirectoryInfo);
-            this.Execute(PluginConfig);
+            this.Execute(new Config().LoadDirectory(ConfigDirectoryInfo));
 
             this.GenericEvent(new GenericEventArgs() {
                 GenericEventType = GenericEventType.ConfigLoaded

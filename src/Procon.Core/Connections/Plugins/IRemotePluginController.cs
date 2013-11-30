@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using Procon.Net;
 
 namespace Procon.Core.Connections.Plugins {
+    /// <summary>
+    /// Remoting interface for Procon.Core to communicate with remote Plugin.
+    /// </summary>
     public interface IRemotePluginController : IExecutableBase {
 
         /// <summary>
@@ -43,12 +46,6 @@ namespace Procon.Core.Connections.Plugins {
         /// </summary>
         /// <param name="e"></param>
         void ClientEvent(ClientEventArgs e);
-
-        /// <summary>
-        /// Remote proxy to propogate the generic event across all enabled plugins and avoid multiple remoting calls.
-        /// </summary>
-        /// <param name="e"></param>
-        //void GenericEvent(GenericEventArgs e);
 
         /// <summary>
         /// Check if a plugin is marked as enabled or not

@@ -6,6 +6,9 @@ using Procon.Core.Events;
 using Procon.Net;
 
 namespace Procon.Core.Connections.Plugins {
+    /// <summary>
+    /// Controller to run on the plugin side of the AppDomain
+    /// </summary>
     public class RemotePluginController : ExecutableBase, IRemotePluginController {
 
         /// <summary>

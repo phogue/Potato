@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using Procon.Core;
 using Procon.Core.Connections.Plugins;
 
@@ -17,6 +18,13 @@ namespace Procon.Examples.CommandRouting {
         //           but then remain constant over your releases.
         //           Procon uses the GUID to pipe through events/commands.
 
+        /// <summary>
+        /// Store instances of child objects that inherit from ExecutableBase
+        /// </summary>
+        public List<IExecutableBase> BubbledChildObjects = new List<IExecutableBase>() {
+            new BubbledCommands()
+        };
+
         public Program() : base() {
             this.AppendDispatchHandlers(new Dictionary<CommandAttribute, CommandDispatchHandler>() {
                 {
@@ -26,11 +34,27 @@ namespace Procon.Examples.CommandRouting {
                         ParameterTypes = new List<CommandParameterType>() {
                             new CommandParameterType() {
                                 Name = "text",
+                                // Commands must have a type that appears within Procon.Core.CommandParameterData
+                                // but "Content" works as a generic, so you can accept integers here for instance
+                                // and if it can be converted it will be.
                                 Type = typeof(String)
                             }
                         }
                     },
                     new CommandDispatchHandler(this.SingleParameterCommand)
+                },
+                {
+                    new CommandAttribute() {
+                        Name = "SingleConvertedParameterCommand",
+                        CommandAttributeType = CommandAttributeType.Executed,
+                        ParameterTypes = new List<CommandParameterType>() {
+                            new CommandParameterType() {
+                                Name = "number",
+                                Type = typeof(int)
+                            }
+                        }
+                    },
+                    new CommandDispatchHandler(this.SingleConvertedParameterCommand)
                 },
                 {
                     new CommandAttribute() {
@@ -42,6 +66,25 @@ namespace Procon.Examples.CommandRouting {
             });
         }
 
+        /// <summary>
+        /// Now override this method, called within ExecutableBase, to specify what objects
+        /// we should pass the command to. We're just passing it to all of the commands
+        /// here, but you could check the command and only dispatch to certain objects if
+        /// you want.
+        /// </summary>
+        /// <param name="command"></param>
+        /// <returns></returns>
+        protected override IList<IExecutableBase> BubbleExecutableObjects(Command command) {
+            return this.BubbledChildObjects;
+        }
+
+        /// <summary>
+        /// Accept parameters in your command.
+        /// </summary>
+        /// <remarks>You'll have to name the parameter and specify the type of object you are expecting when appending your dispatch handler.</remarks>
+        /// <param name="command"></param>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
         protected CommandResultArgs SingleParameterCommand(Command command, Dictionary<String, CommandParameter> parameters) {
             String text = parameters["text"].First<String>();
 
@@ -50,8 +93,28 @@ namespace Procon.Examples.CommandRouting {
             return command.Result;
         }
 
+        /// <summary>
+        /// Accept a parameter that has been converted from a string to a integer
+        /// </summary>
+        /// <param name="command"></param>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
+        protected CommandResultArgs SingleConvertedParameterCommand(Command command, Dictionary<String, CommandParameter> parameters) {
+            int number = parameters["number"].First<int>();
+
+            command.Result.Message = (number * 2).ToString(CultureInfo.InvariantCulture);
+
+            return command.Result;
+        }
+
+        /// <summary>
+        /// Easy enough to accept commands with zero parameters..
+        /// </summary>
+        /// <param name="command"></param>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
         protected CommandResultArgs NoParameterCommand(Command command, Dictionary<String, CommandParameter> parameters) {
-            command.Result.Message = "NoParameterCommand";
+            command.Result.Message = "NoParameterCommandSetResult";
 
             return command.Result;
         }

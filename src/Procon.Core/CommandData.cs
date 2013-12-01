@@ -148,7 +148,7 @@ namespace Procon.Core {
         /// Raw packets (in plain or completed format) 
         /// </summary>
         [XmlIgnore, JsonIgnore]
-        public List<IPacket> Raws { get; set; }
+        public List<Raw> Raws { get; set; }
 
         /// <summary>
         /// The raw packets attached to this command or event, if any.

@@ -128,6 +128,7 @@ namespace Procon.Core {
         NetworkProtocolActionRaw,
         NetworkProtocolActionChat,
         NetworkProtocolActionKill,
+        NetworkProtocolActionMap,
         NetworkProtocolActionMove,
         NetworkProtocolActionKick,
         NetworkProtocolActionBan

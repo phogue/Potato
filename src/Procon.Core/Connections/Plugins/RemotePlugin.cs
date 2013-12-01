@@ -140,6 +140,26 @@ namespace Procon.Core.Connections.Plugins {
                 command = CommandType.NetworkProtocolActionKill;
                 parameter.Data.Kills = new List<Kill>() { action as Kill };
             }
+            else if (action is Kick) {
+                command = CommandType.NetworkProtocolActionKick;
+                parameter.Data.Kicks = new List<Kick>() { action as Kick };
+            }
+            else if (action is Ban) {
+                command = CommandType.NetworkProtocolActionBan;
+                parameter.Data.Bans = new List<Ban>() { action as Ban };
+            }
+            else if (action is Move) {
+                command = CommandType.NetworkProtocolActionMove;
+                parameter.Data.Moves = new List<Move>() { action as Move };
+            }
+            else if (action is Map) {
+                command = CommandType.NetworkProtocolActionMap;
+                parameter.Data.Maps = new List<Map>() { action as Map };
+            }
+            else if (action is Raw) {
+                command = CommandType.NetworkProtocolActionRaw;
+                parameter.Data.Raws = new List<Raw>() { action as Raw };
+            }
 
             // Provided we have worked out what they wanted to send..
             if (command != CommandType.None) {

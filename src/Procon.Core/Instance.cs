@@ -307,7 +307,7 @@ namespace Procon.Core {
         /// </summary>
         public void WriteConfig() {
             Config config = new Config();
-            config.Generate(this.GetType());
+            config.Create(this.GetType());
             this.WriteConfig(config);
 
             config.Save(new FileInfo(Path.Combine(Defines.ConfigsDirectory, this.GetType().Namespace + ".xml")));
@@ -318,33 +318,33 @@ namespace Procon.Core {
         /// </summary>
         /// <param name="config"></param>
         public override void WriteConfig(Config config) {
-            Config variablesConfig = new Config().Generate(this.Variables.GetType());
+            Config variablesConfig = new Config().Create(this.Variables.GetType());
             this.Variables.WriteConfig(variablesConfig);
-            config.Add(variablesConfig);
+            config.Combine(variablesConfig);
 
-            Config eventsConfig = new Config().Generate(this.Events.GetType());
+            Config eventsConfig = new Config().Create(this.Events.GetType());
             this.Events.WriteConfig(eventsConfig);
-            config.Add(eventsConfig);
+            config.Combine(eventsConfig);
 
-            Config packagesConfig = new Config().Generate(this.Packages.GetType());
+            Config packagesConfig = new Config().Create(this.Packages.GetType());
             this.Packages.WriteConfig(packagesConfig);
-            config.Add(packagesConfig);
+            config.Combine(packagesConfig);
 
-            Config languagesConfig = new Config().Generate(this.Languages.GetType());
+            Config languagesConfig = new Config().Create(this.Languages.GetType());
             this.Languages.WriteConfig(languagesConfig);
-            config.Add(languagesConfig);
+            config.Combine(languagesConfig);
 
-            Config securityConfig = new Config().Generate(this.Security.GetType());
+            Config securityConfig = new Config().Create(this.Security.GetType());
             this.Security.WriteConfig(securityConfig);
-            config.Add(securityConfig);
+            config.Combine(securityConfig);
 
-            Config daemonConfig = new Config().Generate(this.Daemon.GetType());
+            Config daemonConfig = new Config().Create(this.Daemon.GetType());
             this.Daemon.WriteConfig(daemonConfig);
-            config.Add(daemonConfig);
+            config.Combine(daemonConfig);
 
-            Config pushEventsConfig = new Config().Generate(this.PushEvents.GetType());
+            Config pushEventsConfig = new Config().Create(this.PushEvents.GetType());
             this.PushEvents.WriteConfig(pushEventsConfig);
-            config.Add(pushEventsConfig);
+            config.Combine(pushEventsConfig);
 
             lock (this.Connections) {
                 foreach (Connection connection in this.Connections) {
@@ -398,9 +398,9 @@ namespace Procon.Core {
                         }
                     }.ToConfigCommand());
 
-                    Config connectionConfig = new Config().Generate(connection.GetType());
+                    Config connectionConfig = new Config().Create(connection.GetType());
                     connection.WriteConfig(connectionConfig);
-                    config.Add(connectionConfig);
+                    config.Combine(connectionConfig);
                 }
             }
         }

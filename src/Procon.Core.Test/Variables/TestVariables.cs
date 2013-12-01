@@ -67,13 +67,13 @@ namespace Procon.Core.Test.Variables {
 
             // Save a config of the variables controller
             Config saveConfig = new Config();
-            saveConfig.Generate(typeof(Procon.Core.Variables.VariableController));
+            saveConfig.Create(typeof(Procon.Core.Variables.VariableController));
             variables.WriteConfig(saveConfig);
             saveConfig.Save(TestVariables.ConfigFileInfo);
 
             // Load the config in a new config.
             Config loadConfig = new Config();
-            loadConfig.LoadFile(TestVariables.ConfigFileInfo);
+            loadConfig.Load(TestVariables.ConfigFileInfo);
 
             var commands = loadConfig.Root.Descendants("VariableController").Elements("Command").Select(xCommand => xCommand.FromXElement<Command>()).ToList();
 
@@ -134,14 +134,14 @@ namespace Procon.Core.Test.Variables {
 
             // Save a config of the variables controller
             Config saveConfig = new Config();
-            saveConfig.Generate(typeof(Procon.Core.Variables.VariableController));
+            saveConfig.Create(typeof(Procon.Core.Variables.VariableController));
             saveVariables.WriteConfig(saveConfig);
             saveConfig.Save(TestVariables.ConfigFileInfo);
 
             // Load the config in a new config.
             VariableController loadVariables = new VariableController().Execute() as VariableController;
             Config loadConfig = new Config();
-            loadConfig.LoadFile(TestVariables.ConfigFileInfo);
+            loadConfig.Load(TestVariables.ConfigFileInfo);
             loadVariables.Execute(loadConfig);
 
             Assert.AreEqual("this is a string", loadVariables.GetA<String>("KeyToWriteString"));

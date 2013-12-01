@@ -107,7 +107,7 @@ namespace Procon.Core.Localization {
             DirectoryInfo localizationDirectory = new DirectoryInfo(Defines.LocalizationDirectory);
 
             foreach (DirectoryInfo languageDirectory in localizationDirectory.GetDirectories()) {
-                Language language = new Language().LoadDirectory(languageDirectory) as Language;
+                Language language = new Language().Load(languageDirectory) as Language;
 
                 if (language != null && language.LanguageCode != null) {
                     this.LoadedLanguageFiles.Add(language);

@@ -189,7 +189,7 @@ namespace Procon.Core.Connections.Plugins {
         public virtual void WriteConfig() {
             if (this.ConfigDirectoryInfo != null) {
                 Config config = new Config();
-                config.Generate(this.GetType());
+                config.Create(this.GetType());
                 this.WriteConfig(config);
 
                 String t = this.ConfigDirectoryInfo.FullName;
@@ -211,7 +211,7 @@ namespace Procon.Core.Connections.Plugins {
                 GenericEventType = GenericEventType.ConfigLoading
             });
 
-            this.Execute(new Config().LoadDirectory(ConfigDirectoryInfo));
+            this.Execute(new Config().Load(ConfigDirectoryInfo));
 
             this.GenericEvent(new GenericEventArgs() {
                 GenericEventType = GenericEventType.ConfigLoaded

@@ -64,13 +64,13 @@ namespace Procon.Core.Test.Repositories {
 
             // Save a config of the language controller
             Config saveConfig = new Config();
-            saveConfig.Generate(typeof(RepositoryController));
+            saveConfig.Create(typeof(RepositoryController));
             repository.WriteConfig(saveConfig);
             saveConfig.Save(TestRepositoryController.ConfigFileInfo);
 
             // Load the config in a new config.
             Config loadConfig = new Config();
-            loadConfig.LoadFile(TestRepositoryController.ConfigFileInfo);
+            loadConfig.Load(TestRepositoryController.ConfigFileInfo);
 
             var commands = loadConfig.Root.Descendants("RepositoryController").Elements("Command").ToList();
 

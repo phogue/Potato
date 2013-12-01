@@ -24,8 +24,8 @@ namespace Procon.Core.Localization {
         /// Loads the specified file into this language file using the file's contents.
         /// Returns a reference back to this config.
         /// </summary>
-        public override Config LoadFile(FileInfo mFile) {
-            base.LoadFile(mFile);
+        public override Config Load(FileInfo mFile) {
+            base.Load(mFile);
 
             // Parse out extra instruction information used in a language config file.
             var instructions = this.Document.Nodes().OfType<XProcessingInstruction>();

@@ -6,11 +6,14 @@ using System.Xml.Serialization;
 using Newtonsoft.Json;
 
 namespace Procon.Core {
+    /// <summary>
+    /// A namespace xml config for saving serialized commands 
+    /// </summary>
     [Serializable]
     public class Config : IDisposable {
 
         [NonSerialized]
-        private XDocument _document;
+        private XDocument _document = new XDocument();
 
         [NonSerialized]
         private XElement _root;
@@ -41,29 +44,26 @@ namespace Procon.Core {
             }
         }
 
-        public Config() {
-            this.Document = new XDocument();
-        }
-
         /// <summary>
         /// Combines this configuration file with another configuration file.
         /// Returns a reference back to this config.
         /// </summary>
-        public virtual Config Add(Config config) {
+        public virtual Config Combine(Config config) {
             if (this.Document != null && config.Document != null) {
-                XElement tThisRoot = this.Document.Root;
-                XElement tThatRoot = config.Document.Root;
+                XElement thisRoot = this.Document.Root;
+                XElement thatRoot = config.Document.Root;
 
-                while (tThisRoot != null && tThatRoot != null) {
-                    if (tThisRoot.Name != tThatRoot.Name) {
-                        if (tThisRoot.Parent != null) {
-                            tThisRoot.Parent.Add(tThatRoot);
+                while (thisRoot != null && thatRoot != null) {
+                    if (thisRoot.Name != thatRoot.Name) {
+                        if (thisRoot.Parent != null) {
+                            thisRoot.Parent.Add(thatRoot);
                         }
                             
                         break;
                     }
-                    tThisRoot = tThisRoot.Descendants().FirstOrDefault();
-                    tThatRoot = tThatRoot.Descendants().FirstOrDefault();
+
+                    thisRoot = thisRoot.Descendants().FirstOrDefault();
+                    thatRoot = thatRoot.Descendants().FirstOrDefault();
                 }
             }
 
@@ -74,14 +74,14 @@ namespace Procon.Core {
         /// Loads all the files in the specified directory into this configuration file.
         /// Returns a reference back to this config.
         /// </summary>
-        public virtual Config LoadDirectory(DirectoryInfo mDirectory) {
-            if (mDirectory != null && mDirectory.Exists == true) {
-                foreach (FileInfo xmlFile in mDirectory.GetFiles("*.xml")) {
+        public virtual Config Load(DirectoryInfo directory) {
+            if (directory != null && directory.Exists == true) {
+                foreach (FileInfo file in directory.GetFiles("*.xml")) {
                     if (this.Root == null) {
-                        this.LoadFile(xmlFile);
+                        this.Load(file);
                     }
                     else {
-                        this.Add(new Config().LoadFile(xmlFile));
+                        this.Combine(new Config().Load(file));
                     }
                 }
             }
@@ -93,10 +93,10 @@ namespace Procon.Core {
         /// Loads the specified file into this configuration file using the file's contents.
         /// Returns a reference back to this config.
         /// </summary>
-        public virtual Config LoadFile(FileInfo mFile) {
-            if (mFile.Exists == true) {
-                using (StreamReader sr = new StreamReader(mFile.FullName)) {
-                    this.Document = XDocument.Load(sr);
+        public virtual Config Load(FileInfo file) {
+            if (file.Exists == true) {
+                using (StreamReader reader = new StreamReader(file.FullName)) {
+                    this.Document = XDocument.Load(reader);
 
                     this.Root = this.Document.Element("Procon");
                 }
@@ -108,22 +108,22 @@ namespace Procon.Core {
         /// Initializes this configuration file for the specified object type.
         /// Returns a reference back to this config.
         /// </summary>
-        public virtual Config Generate(Type mType) {
+        public virtual Config Create(Type type) {
             this.Document = new XDocument();
 
-            foreach (String mName in mType.FullName.Split('`').First().Split('.')) {
+            foreach (String name in type.FullName.Split('`').First().Split('.')) {
                 if (this.Root == null) {
                     this.Document.Add(
                         new XComment("This file is overwritten by Procon."),
-                        new XElement(mName)
+                        new XElement(name)
                     );
 
-                    this.Root = this.Document.Element(mName);
+                    this.Root = this.Document.Element(name);
                 }
                 else {
-                    this.Root.Add(new XElement(mName));
+                    this.Root.Add(new XElement(name));
 
-                    this.Root = this.Root.Element(mName);
+                    this.Root = this.Root.Element(name);
                 }
             }
 
@@ -134,14 +134,14 @@ namespace Procon.Core {
         /// Write this configuration file out to disk using the specified path and name.
         /// Returns a reference back to this config.
         /// </summary>
-        public virtual Config Save(FileInfo mFile) {
-            if (File.Exists(mFile.FullName) == false && mFile.Directory != null) {
-                Directory.CreateDirectory(mFile.Directory.FullName);
+        public virtual Config Save(FileInfo file) {
+            if (File.Exists(file.FullName) == false && file.Directory != null) {
+                Directory.CreateDirectory(file.Directory.FullName);
 
-                File.Create(mFile.FullName).Close();
+                File.Create(file.FullName).Close();
             }
 
-            this.Document.Save(mFile.FullName);
+            this.Document.Save(file.FullName);
 
             return this;
         }

@@ -112,7 +112,7 @@ namespace Procon.Core {
         public override ExecutableBase Execute() {
             this.Execute(new Command() {
                 Origin = CommandOrigin.Local
-            }, new Config().LoadDirectory(new DirectoryInfo(Defines.ConfigsDirectory)));
+            }, new Config().Load(new DirectoryInfo(Defines.ConfigsDirectory)));
 
             return this;
         }

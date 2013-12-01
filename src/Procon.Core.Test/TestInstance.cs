@@ -196,7 +196,7 @@ namespace Procon.Core.Test {
             instance.WriteConfig();
 
             Config loadConfig = new Config();
-            loadConfig.LoadFile(TestInstance.ConfigFileInfo);
+            loadConfig.Load(TestInstance.ConfigFileInfo);
 
             var commands = loadConfig.Root.Descendants("Instance").Elements("Command").Select(xCommand => xCommand.FromXElement<Command>()).ToList();
 

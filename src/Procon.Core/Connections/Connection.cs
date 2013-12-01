@@ -176,9 +176,9 @@ namespace Procon.Core.Connections {
         }
 
         public override void WriteConfig(Config config) {
-            Config pluginConfig = new Config().Generate(typeof(PluginController));
+            Config pluginConfig = new Config().Create(typeof(PluginController));
             this.Plugins.WriteConfig(pluginConfig);
-            config.Add(pluginConfig);
+            config.Combine(pluginConfig);
         }
 
         public override ExecutableBase Execute() {

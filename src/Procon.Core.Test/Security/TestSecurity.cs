@@ -41,13 +41,13 @@ namespace Procon.Core.Test.Security {
 
             // Save a config of the language controller
             Config saveConfig = new Config();
-            saveConfig.Generate(typeof(Procon.Core.Security.SecurityController));
+            saveConfig.Create(typeof(Procon.Core.Security.SecurityController));
             security.WriteConfig(saveConfig);
             saveConfig.Save(TestSecurity.ConfigFileInfo);
 
             // Load the config in a new config.
             Config loadConfig = new Config();
-            loadConfig.LoadFile(TestSecurity.ConfigFileInfo);
+            loadConfig.Load(TestSecurity.ConfigFileInfo);
 
             var commands = loadConfig.Root.Descendants("SecurityController").Elements("Command").Select(xCommand => xCommand.FromXElement<Command>()).ToList();
 
@@ -105,14 +105,14 @@ namespace Procon.Core.Test.Security {
 
             // Save a config of the security controller
             Config saveConfig = new Config();
-            saveConfig.Generate(typeof(Procon.Core.Security.SecurityController));
+            saveConfig.Create(typeof(Procon.Core.Security.SecurityController));
             saveSecurity.WriteConfig(saveConfig);
             saveConfig.Save(TestSecurity.ConfigFileInfo);
 
             // Load the config in a new config.
             SecurityController loadSecurity = new SecurityController().Execute() as SecurityController;
             Config loadConfig = new Config();
-            loadConfig.LoadFile(TestSecurity.ConfigFileInfo);
+            loadConfig.Load(TestSecurity.ConfigFileInfo);
             loadSecurity.Execute(loadConfig);
 
             Assert.AreEqual("GroupName", loadSecurity.Groups.First().Name);

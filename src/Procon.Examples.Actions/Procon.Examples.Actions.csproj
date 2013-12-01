@@ -40,8 +40,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Procon.Core\Procon.Core.csproj">
+      <Project>{153B5418-C6B3-43A5-A432-BAFFA8EFAA16}</Project>
+      <Name>Procon.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Procon.Net\Procon.Net.csproj">
+      <Project>{65C1DB17-18E0-4AC5-8709-3F7E04B88CA1}</Project>
+      <Name>Procon.Net</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

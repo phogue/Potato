@@ -4,12 +4,15 @@ using System.ComponentModel;
 using System.Xml;
 using System.Xml.Serialization;
 using Newtonsoft.Json;
+using Procon.Fuzzy.Tokens.Primitive.Temporal;
 using Procon.Net.Actions;
 using Procon.Net.Data;
 
 namespace Procon.Core.Connections.TextCommands {
-    using Procon.Fuzzy.Tokens.Primitive.Temporal;
 
+    /// <summary>
+    /// A post-parsing match against a string
+    /// </summary>
     [Serializable]
     public sealed class TextCommandMatch {
         /// <summary>
@@ -24,11 +27,8 @@ namespace Procon.Core.Connections.TextCommands {
 
         /// <summary>
         /// How long they want the command to be in effect, if applicable.
-        /// 
-        /// Default if no preposition is given.
-        /// 
-        /// "for 20 minutes", "20 minutes"
         /// </summary>
+        /// <remarks>Default if no preposition is given. "for 20 minutes", "20 minutes"</remarks>
         [XmlIgnore]
         public TimeSpan? Period { get; set; }
 
@@ -66,8 +66,8 @@ namespace Procon.Core.Connections.TextCommands {
 
         /// <summary>
         /// Any strings found in quotations (single or double)
-        /// 
-        /// Must be closed strings and does accept escape (\").
+        /// </summary>
+        /// <remarks>Must be closed strings and does accept escape (\").
         /// 
         /// Matches "Hello" from:
         /// text @= "Hello"World!"
@@ -76,8 +76,7 @@ namespace Procon.Core.Connections.TextCommands {
         /// encountered string so escape characters will not be
         /// needed.
         /// text @= "Hello"World!"
-        /// match = "Hello\"World!"
-        /// </summary>
+        /// match = "Hello\"World!"</remarks>
         public List<String> Quotes { get; set; }
 
         /// <summary>

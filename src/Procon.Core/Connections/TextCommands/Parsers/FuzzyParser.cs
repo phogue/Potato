@@ -3,31 +3,29 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using Procon.Net;
+using Procon.Core.Events;
+using Procon.Fuzzy;
+using Procon.Fuzzy.Tokens.Object;
+using Procon.Fuzzy.Tokens.Object.Sets;
+using Procon.Fuzzy.Tokens.Primitive;
+using Procon.Fuzzy.Tokens.Primitive.Numeric;
+using Procon.Fuzzy.Tokens.Primitive.Temporal;
+using Procon.Fuzzy.Tokens.Reduction;
+using Procon.Fuzzy.Utils;
 using Procon.Net.Actions;
 using Procon.Net.Data;
 
 namespace Procon.Core.Connections.TextCommands.Parsers {
-    using Procon.Core.Events;
-    using Procon.Fuzzy;
-    using Procon.Fuzzy.Utils;
-    using Procon.Fuzzy.Tokens.Object;
-    using Procon.Fuzzy.Tokens.Object.Sets;
-    using Procon.Fuzzy.Tokens.Primitive;
-    using Procon.Fuzzy.Tokens.Primitive.Numeric;
-    using Procon.Fuzzy.Tokens.Primitive.Temporal;
-    using Procon.Fuzzy.Tokens.Reduction;
 
+    /// <summary>
+    /// Finds matches agaisnt text with no structure. Extracts various information from the text
+    /// </summary>
     public class FuzzyParser : Parser {
 
         /// <summary>
         /// Dictionary of cached property info fetches. Minor optimization.
         /// </summary>
-        protected Dictionary<String, PropertyInfo> PropertyInfoCache { get; set; }
-
-        public FuzzyParser() {
-            this.PropertyInfoCache = new Dictionary<string, PropertyInfo>();
-        }
+        protected Dictionary<String, PropertyInfo> PropertyInfoCache = new Dictionary<string, PropertyInfo>();
 
         #region Parsing
 
@@ -101,6 +99,12 @@ namespace Procon.Core.Connections.TextCommands.Parsers {
 
         }
 
+        /// <summary>
+        /// Converts a phrase into a token if the token matches an object
+        /// </summary>
+        /// <param name="state"></param>
+        /// <param name="phrase"></param>
+        /// <returns></returns>
         public override Phrase ParseThing(IFuzzyState state, Phrase phrase) {
 
             this.ParsePlayerNames(phrase);
@@ -147,6 +151,12 @@ namespace Procon.Core.Connections.TextCommands.Parsers {
             return phrase;
         }
 
+        /// <summary>
+        /// Finds the player object of the speaker to reference "me"
+        /// </summary>
+        /// <param name="state"></param>
+        /// <param name="selfThing"></param>
+        /// <returns></returns>
         public override SelfReflectionThingObjectToken ParseSelfReflectionThing(IFuzzyState state, SelfReflectionThingObjectToken selfThing) {
 
             if (this.Speaker != null) {
@@ -343,6 +353,13 @@ namespace Procon.Core.Connections.TextCommands.Parsers {
 
         #endregion
 
+        /// <summary>
+        /// Builds a generic event for matching a text command, provided a single text command is found.
+        /// </summary>
+        /// <param name="prefix"></param>
+        /// <param name="text"></param>
+        /// <param name="eventType"></param>
+        /// <returns></returns>
         public override CommandResultArgs BuildEvent(string prefix, string text, GenericEventType eventType) {
             Sentence sentence = new Sentence().Parse(this, text).Reduce(this);
 

@@ -99,29 +99,6 @@ namespace Procon.Core.Connections.Plugins {
             return guid;
         }
 
-        public override void Dispose() {
-            base.Dispose();
-
-            this.Tasks.Dispose();
-            this.Tasks = null;
-        }
-        /*
-        /// <summary>
-        /// Executes a command across the appdomain
-        /// </summary>
-        /// <param name="command"></param>
-        /// <returns></returns>
-        public CommandResultArgs ProxyExecute(Command command) {
-            if (command.Scope != null && command.Scope.PluginGuid == this.PluginGuid) {
-                command.Result = this.Tunnel(command);
-            }
-            else if (this.PluginCallback != null) {
-                command.Result = this.Bubble(command); // this.PluginCallback.ProxyExecute(command);
-            }
-
-            return command.Result;
-        }
-        */
         public override CommandResultArgs Bubble(Command command) {
             // There isn't much point in bubbling up if we just need to come back down here.
             if (command.Scope != null && command.Scope.PluginGuid == this.PluginGuid) {
@@ -203,19 +180,26 @@ namespace Procon.Core.Connections.Plugins {
             return result;
         }
 
+        /// <summary>
+        /// Preps the config, then passes it to the executable object's WriteConfig(Config)
+        /// </summary>
+        /// <remarks>You can see a similar implementation of this in Instance, which is treated
+        /// as the base class (therefore it's not passing a config to a child class) but instead
+        /// needs to make the initial config object before writing to it.</remarks>
+        public virtual void WriteConfig() {
+            if (this.ConfigDirectoryInfo != null) {
+                Config config = new Config();
+                config.Generate(this.GetType());
+                this.WriteConfig(config);
+
+                String t = this.ConfigDirectoryInfo.FullName;
+
+                config.Save(new FileInfo(Path.Combine(this.ConfigDirectoryInfo.FullName, this.GetType().Namespace + ".xml")));
+            }
+        }
+
         public override void WriteConfig(Config config) {
-            // TODO: Do Config Writing here.
-            // Should look something like this (stolen from LocalInterface):
-            //
-            // foreach (Connection connection in this.Connections)
-            //  xNamespace.Add(new XElement("command",
-            //      new XAttribute("name", CommandName.ConnectionsAddConnection), // gametype, hostname, port, password, additional
-            //      new XElement("gametype",   connection.GameType),
-            //      new XElement("hostname",   connection.Hostname),
-            //      new XElement("port",       connection.Port),
-            //      new XElement("password",   connection.Password),
-            //      new XElement("additional", connection.Additional)
-            //  ));
+            // Overwrite this method to write out your config
         }
 
         /// <summary>
@@ -297,10 +281,29 @@ namespace Procon.Core.Connections.Plugins {
             return command.Result;
         }
 
-        protected virtual void GenericEventTypeConfigSetup(GenericEventArgs e) {
+        /// <summary>
+        /// Consider this your constructor.
+        /// </summary>
+        /// <param name="e"></param>
+        protected virtual void GenericEventTypePluginLoaded(GenericEventArgs e) {
             this.LoadConfig();
         }
 
+        /// <summary>
+        /// Consider this the plugin destructor
+        /// </summary>
+        /// <param name="e"></param>
+        protected virtual void GenericEventTypePluginUnloading(GenericEventArgs e) {
+            this.WriteConfig();
+        }
+
+        /// <summary>
+        /// A text command has been executed and it's callback directs to this plugin.
+        /// </summary>
+        /// <remarks>We convert to a new command and push it through to this plugin,
+        /// which just cleans up the plugin implementation a little bit but converting
+        /// a plugin executed command to a local command. Snazzified.</remarks>
+        /// <param name="e"></param>
         protected virtual void GenericEventTypeTextCommandExecuted(GenericEventArgs e) {
             this.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
@@ -325,11 +328,21 @@ namespace Procon.Core.Connections.Plugins {
         /// <param name="e"></param>
         public virtual void GenericEvent(GenericEventArgs e) {
             if (e.GenericEventType == GenericEventType.PluginsPluginLoaded) {
-                this.GenericEventTypeConfigSetup(e);
+                this.GenericEventTypePluginLoaded(e);
+            }
+            else if (e.GenericEventType == GenericEventType.PluginsPluginUnloading) {
+                this.GenericEventTypePluginUnloading(e);
             }
             else if (e.GenericEventType == GenericEventType.TextCommandExecuted) {
                 this.GenericEventTypeTextCommandExecuted(e);
             }
+        }
+
+        public override void Dispose() {
+            base.Dispose();
+
+            if (this.Tasks != null) this.Tasks.Dispose();
+            this.Tasks = null;
         }
     }
 }

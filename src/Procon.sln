@@ -60,6 +60,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procon.Examples.Events", "P
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procon.Examples.Configs", "Procon.Examples.Configs\Procon.Examples.Configs.csproj", "{9BD2735E-A370-4730-B892-FA2EE2C228FB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procon.Examples.Configs.Test", "Procon.Examples.Configs.Test\Procon.Examples.Configs.Test.csproj", "{8B996192-68B9-4EA3-B797-FABF871AC815}"
+EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Procon.vsmdi
@@ -317,6 +319,16 @@ Global
 		{9BD2735E-A370-4730-B892-FA2EE2C228FB}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{9BD2735E-A370-4730-B892-FA2EE2C228FB}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{9BD2735E-A370-4730-B892-FA2EE2C228FB}.Release|x86.ActiveCfg = Release|Any CPU
+		{8B996192-68B9-4EA3-B797-FABF871AC815}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B996192-68B9-4EA3-B797-FABF871AC815}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8B996192-68B9-4EA3-B797-FABF871AC815}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{8B996192-68B9-4EA3-B797-FABF871AC815}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{8B996192-68B9-4EA3-B797-FABF871AC815}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{8B996192-68B9-4EA3-B797-FABF871AC815}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8B996192-68B9-4EA3-B797-FABF871AC815}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8B996192-68B9-4EA3-B797-FABF871AC815}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{8B996192-68B9-4EA3-B797-FABF871AC815}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{8B996192-68B9-4EA3-B797-FABF871AC815}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -335,5 +347,6 @@ Global
 		{9BD2735E-A370-4730-B892-FA2EE2C228FB} = {0274CCAA-A949-4071-AEC6-387CA6FC9FC2}
 		{5AC644F4-035A-49F7-A80A-3C842E05A8FD} = {935D7761-29F0-4E94-B668-E2EFE06405FA}
 		{AE8F622A-FE84-48DE-86DC-E8BD9589787E} = {935D7761-29F0-4E94-B668-E2EFE06405FA}
+		{8B996192-68B9-4EA3-B797-FABF871AC815} = {935D7761-29F0-4E94-B668-E2EFE06405FA}
 	EndGlobalSection
 EndGlobal

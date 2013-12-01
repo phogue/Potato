@@ -99,14 +99,6 @@ namespace Procon.Core.Events {
         TextCommandPreviewed,
 
         /// <summary>
-        /// A plugin has been loaded
-        /// </summary>
-        PluginsPluginAdded,
-        /// <summary>
-        /// A plugin has been unloaded.
-        /// </summary>
-        PluginsPluginRemoved,
-        /// <summary>
         /// A plugin has been enabled
         /// </summary>
         PluginsPluginEnabled,
@@ -118,6 +110,10 @@ namespace Procon.Core.Events {
         /// A plugin has completed it's load.
         /// </summary>
         PluginsPluginLoaded,
+        /// <summary>
+        /// A plugin is being unloaded. Think of this as a destructor for the plugin.
+        /// </summary>
+        PluginsPluginUnloading,
         
         /// <summary>
         /// The config for is being loaded

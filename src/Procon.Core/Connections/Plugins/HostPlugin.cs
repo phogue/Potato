@@ -61,10 +61,10 @@ namespace Procon.Core.Connections.Plugins {
         public IRemotePluginController PluginFactory { get; set; }
 
         /// <summary>
-        /// Ultimately the owner of this plugin.
+        /// The owner of this plugin.
         /// </summary>
         [XmlIgnore, JsonIgnore]
-        public Connection Connection { get; set; }
+        public Guid ConnectionGuid { get; set; }
 
         /// <summary>
         /// Reference to the plugin loaded in the AppDomain for remoting calls.
@@ -79,25 +79,16 @@ namespace Procon.Core.Connections.Plugins {
 
                 if (this.Proxy != null) {
 
-                    // register game specific call backs. Connection can be null during unit testing.
-                    if (this.Connection != null) {
-                        this.Proxy.ConnectionGuid = this.Connection.ConnectionGuid;
-                    }
+                    // register game specific call backs.
+                    this.Proxy.ConnectionGuid = this.ConnectionGuid;
 
-                    // Connection and Game could be null if we're unit testing.
-                    if (this.Connection != null && this.Connection.Game != null) {
-
-                        // check the plugin's config directory
-                        this.Proxy.ConfigDirectoryInfo = new DirectoryInfo(System.IO.Path.Combine(Defines.ConfigsDirectory, System.IO.Path.Combine(PathValidator.Valdiate(String.Format("{0}_{1}", this.Connection.Hostname, this.Connection.Port)), PathValidator.Valdiate(this.Name))));
-                        this.Proxy.ConfigDirectoryInfo.Create();
-
-                        // check the plugin's log directory
-                        this.Proxy.LogDirectoryInfo = new DirectoryInfo(System.IO.Path.Combine(Defines.LogsDirectory, System.IO.Path.Combine(PathValidator.Valdiate(String.Format("{0}_{1}", this.Connection.Hostname, this.Connection.Port)), PathValidator.Valdiate(this.Name))));
-
-                        if (!this.Proxy.LogDirectoryInfo.Exists) {
-                            this.Proxy.LogDirectoryInfo.Create();
-                        }
-                    }
+                    // check the plugin's config directory
+                    this.Proxy.ConfigDirectoryInfo = new DirectoryInfo(System.IO.Path.Combine(Defines.ConfigsDirectory,this.ConnectionGuid.ToString(), this.PluginGuid.ToString()));
+                    this.Proxy.ConfigDirectoryInfo.Create();
+                        
+                    // check the plugin's log directory
+                    this.Proxy.LogDirectoryInfo = new DirectoryInfo(System.IO.Path.Combine(Defines.LogsDirectory, this.ConnectionGuid.ToString(), this.PluginGuid.ToString()));
+                    this.Proxy.LogDirectoryInfo.Create();
 
                     // Tell the plugin it's ready to begin, everything is setup and ready 
                     // for it to start loading its config.
@@ -123,14 +114,11 @@ namespace Procon.Core.Connections.Plugins {
 
         public override void Dispose() {
 
-            if (this.Proxy != null) {
-                this.Proxy.Dispose();
-            }
+            if (this.Proxy != null) this.Proxy.Dispose();
+            this.Proxy = null;
 
             // Disposed of in the plugin controller.
             this.PluginFactory = null;
-
-            this.Connection = null;
 
             base.Dispose();
         }

@@ -234,7 +234,8 @@ namespace Procon.Core.Connections.Plugins {
             permissions.AddPermission(new FileIOPermission(FileIOPermissionAccess.AllAccess, Defines.LogsDirectory));
             permissions.AddPermission(new FileIOPermission(FileIOPermissionAccess.Read | FileIOPermissionAccess.PathDiscovery, Defines.LocalizationDirectory));
             permissions.AddPermission(new FileIOPermission(FileIOPermissionAccess.Read | FileIOPermissionAccess.PathDiscovery, Defines.ConfigsDirectory));
-
+            permissions.AddPermission(new FileIOPermission(FileIOPermissionAccess.AllAccess, Path.Combine(Defines.ConfigsDirectory, this.Connection != null ? this.Connection.ConnectionGuid.ToString() : Guid.Empty.ToString())));
+            
             permissions.AddPermission(new ReflectionPermission(ReflectionPermissionFlag.MemberAccess));
 
             return permissions;
@@ -336,7 +337,7 @@ namespace Procon.Core.Connections.Plugins {
                 this.Plugins.Add(new HostPlugin() {
                     Path = path,
                     PluginFactory = PluginFactory,
-                    Connection = Connection
+                    ConnectionGuid = this.Connection != null ? this.Connection.ConnectionGuid : Guid.Empty
                 }.Execute() as HostPlugin);
             }
         }
@@ -366,6 +367,8 @@ namespace Procon.Core.Connections.Plugins {
         /// Disposes of all the plugins before calling the base dispose.
         /// </summary>
         public override void Dispose() {
+            this.PluginFactory.Shutdown();
+
             foreach (HostPlugin plugin in this.Plugins) {
                 plugin.Dispose();
             }

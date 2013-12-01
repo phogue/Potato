@@ -132,6 +132,19 @@ namespace Procon.Core.Connections.Plugins {
         }
 
         /// <summary>
+        /// Shutdown all of the plugins, firing a 
+        /// </summary>
+        public void Shutdown() {
+            foreach (var plugin in this.LoadedPlugins) {
+                plugin.Value.GenericEvent(new GenericEventArgs() {
+                    GenericEventType = GenericEventType.PluginsPluginUnloading
+                });
+
+                plugin.Value.Dispose();
+            }
+        }
+
+        /// <summary>
         /// Enforce an origin of plugin before we bubble any commands.
         /// </summary>
         /// <param name="command"></param>

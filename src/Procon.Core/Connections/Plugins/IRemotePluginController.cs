@@ -53,5 +53,10 @@ namespace Procon.Core.Connections.Plugins {
         /// <param name="pluginGuid"></param>
         /// <returns>True if a plugin is enabled, false otherwise.</returns>
         bool IsPluginEnabled(Guid pluginGuid);
+
+        /// <summary>
+        /// Shutdown all of the plugins, firing a 
+        /// </summary>
+        void Shutdown();
     }
 }

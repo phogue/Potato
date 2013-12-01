@@ -23,7 +23,6 @@ namespace Procon.Core.Test.Plugins {
             // Dispose of the plugin
             plugin.Dispose();
 
-            Assert.IsNull(plugin.Connection);
             Assert.IsNull(plugin.PluginFactory);
         }
 

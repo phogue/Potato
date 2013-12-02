@@ -18,6 +18,12 @@ namespace Procon.Database.Serialization.Builders {
             return this;
         }
 
+        public Query Method(IQuery data) {
+            this.Add(data);
+
+            return this;
+        }
+
         public Query Database(IQuery data) {
             this.Add(data);
 

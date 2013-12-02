@@ -85,7 +85,7 @@ namespace Procon.Database.Serialization {
             if (method is Find) {
                 parsed.Add("SELECT");
             }
-            else if (method is Save) {
+            else if (method is Save || method is Merge) {
                 parsed.Add("INSERT");
             }
             else if (method is Create) {
@@ -326,108 +326,124 @@ namespace Procon.Database.Serialization {
             return query.Where(sort => sort is Sort).Select(sort => this.ParseSort(sort as Sort)).ToList();
         } 
 
-        public override ICompiledQuery Compile() {
-            CompiledQuery serializedQuery = new CompiledQuery();
-
-            List<String> compiled = new List<String>() {
-                this.Methods.FirstOrDefault()
+        public override ICompiledQuery Compile(IParsedQuery parsed) {
+            CompiledQuery serializedQuery = new CompiledQuery() {
+                Children = parsed.Children.Select(this.Compile).ToList(),
+                Root = parsed.Root
             };
 
-            if (this.Root is Find) {
-                serializedQuery.Fields = new List<String>(this.Fields);
-                compiled.Add(this.Fields.Any() == true ? String.Join(", ", this.Fields.ToArray()) : "*");
+            List<String> compiled = new List<String>() {
+                parsed.Methods.FirstOrDefault()
+            };
 
-                if (this.Collections.Any() == true) {
-                    serializedQuery.Collections = String.Join(", ", this.Collections.ToArray());
+            if (parsed.Root is Merge) {
+                ICompiledQuery save = serializedQuery.Children.FirstOrDefault(child => child.Root is Save);
+                ICompiledQuery modify = serializedQuery.Children.FirstOrDefault(child => child.Root is Modify);
+
+                if (save != null && modify != null) {
+                    compiled.Add("INTO");
+                    compiled.Add(save.Collections);
+                    compiled.Add("SET");
+                    compiled.Add(save.Assignments);
+                    compiled.Add("ON DUPLICATE KEY UPDATE");
+                    compiled.Add(modify.Assignments);
+                }
+            }
+            else if (parsed.Root is Find) {
+                serializedQuery.Fields = new List<String>(parsed.Fields);
+                compiled.Add(parsed.Fields.Any() == true ? String.Join(", ", parsed.Fields.ToArray()) : "*");
+
+                if (parsed.Collections.Any() == true) {
+                    serializedQuery.Collections = String.Join(", ", parsed.Collections.ToArray());
                     compiled.Add("FROM");
                     compiled.Add(serializedQuery.Collections);
                 }
 
-                if (this.Conditions.Any() == true) {
-                    serializedQuery.Conditions = String.Join(" AND ", this.Conditions.ToArray());
+                if (parsed.Conditions.Any() == true) {
+                    serializedQuery.Conditions = String.Join(" AND ", parsed.Conditions.ToArray());
                     compiled.Add("WHERE");
                     compiled.Add(serializedQuery.Conditions);
                 }
 
-                if (this.Sortings.Any() == true) {
-                    serializedQuery.Sortings = String.Join(", ", this.Sortings.ToArray());
+                if (parsed.Sortings.Any() == true) {
+                    serializedQuery.Sortings = String.Join(", ", parsed.Sortings.ToArray());
                     compiled.Add("ORDER BY");
                     compiled.Add(serializedQuery.Sortings);
                 }
             }
-            else if (this.Root is Create) {
-                if (this.Databases.Any() == true) {
+            else if (parsed.Root is Create) {
+                if (parsed.Databases.Any() == true) {
                     compiled.Add("DATABASE");
-                    compiled.Add(this.Databases.FirstOrDefault());
+                    compiled.Add(parsed.Databases.FirstOrDefault());
                 }
-                else if (this.Collections.Any() == true) {
+                else if (parsed.Collections.Any() == true) {
                     compiled.Add("TABLE");
-                    compiled.Add(this.Collections.FirstOrDefault());
+                    compiled.Add(parsed.Collections.FirstOrDefault());
 
-                    if (this.Indices.Any() == true) {
-                        List<String> fieldsIndicesCombination = new List<String>(this.Fields);
-                        fieldsIndicesCombination.AddRange(this.Indices);
+                    if (parsed.Indices.Any() == true) {
+                        List<String> fieldsIndicesCombination = new List<String>(parsed.Fields);
+                        fieldsIndicesCombination.AddRange(parsed.Indices);
 
                         compiled.Add(String.Format("({0})", String.Join(", ", fieldsIndicesCombination.ToArray())));
                     }
                     else {
-                        compiled.Add(String.Format("({0})", String.Join(", ", this.Fields.ToArray())));
+                        compiled.Add(String.Format("({0})", String.Join(", ", parsed.Fields.ToArray())));
                     }
                 }
             }
-            else if (this.Root is Save) {
-                if (this.Collections.Any() == true) {
+            else if (parsed.Root is Save) {
+                if (parsed.Collections.Any() == true) {
                     compiled.Add("INTO");
-                    serializedQuery.Collections = this.Collections.FirstOrDefault();
+                    serializedQuery.Collections = parsed.Collections.FirstOrDefault();
                     compiled.Add(serializedQuery.Collections);
                 }
 
-                if (this.Assignments.Any() == true) {
-                    serializedQuery.Assignments = String.Join(", ", this.Assignments.ToArray());
+                if (parsed.Assignments.Any() == true) {
+                    serializedQuery.Assignments = String.Join(", ", parsed.Assignments.ToArray());
                     compiled.Add("SET");
                     compiled.Add(serializedQuery.Assignments);
                 }
             }
-            else if (this.Root is Modify) {
-                if (this.Collections.Any() == true) {
-                    serializedQuery.Collections = String.Join(", ", this.Collections.ToArray());
+            else if (parsed.Root is Modify) {
+                if (parsed.Collections.Any() == true) {
+                    serializedQuery.Collections = String.Join(", ", parsed.Collections.ToArray());
                     compiled.Add(serializedQuery.Collections);
                 }
 
-                if (this.Assignments.Any() == true) {
-                    serializedQuery.Assignments = String.Join(", ", this.Assignments.ToArray());
+                if (parsed.Assignments.Any() == true) {
+                    serializedQuery.Assignments = String.Join(", ", parsed.Assignments.ToArray());
                     compiled.Add("SET");
                     compiled.Add(serializedQuery.Assignments);
                 }
 
-                if (this.Conditions.Any() == true) {
-                    serializedQuery.Conditions = String.Join(" AND ", this.Conditions.ToArray());
+                if (parsed.Conditions.Any() == true) {
+                    serializedQuery.Conditions = String.Join(" AND ", parsed.Conditions.ToArray());
                     compiled.Add("WHERE");
                     compiled.Add(serializedQuery.Conditions);
                 }
 
             }
-            else if (this.Root is Remove) {
-                if (this.Collections.Any() == true) {
-                    serializedQuery.Collections = String.Join(", ", this.Collections.ToArray());
+            else if (parsed.Root is Remove) {
+                if (parsed.Collections.Any() == true) {
+                    serializedQuery.Collections = String.Join(", ", parsed.Collections.ToArray());
                     compiled.Add("FROM");
                     compiled.Add(serializedQuery.Collections);
                 }
 
-                if (this.Conditions.Any() == true) {
-                    serializedQuery.Conditions = String.Join(" AND ", this.Conditions.ToArray());
+                if (parsed.Conditions.Any() == true) {
+                    serializedQuery.Conditions = String.Join(" AND ", parsed.Conditions.ToArray());
                     compiled.Add("WHERE");
                     compiled.Add(serializedQuery.Conditions);
                 }
             }
-            else if (this.Root is Drop) {
-                if (this.Databases.Any() == true) {
+            else if (parsed.Root is Drop) {
+                if (parsed.Databases.Any() == true) {
                     compiled.Add("DATABASE");
-                    compiled.Add(this.Databases.FirstOrDefault());
+                    compiled.Add(parsed.Databases.FirstOrDefault());
                 }
-                else if (this.Collections.Any() == true) {
+                else if (parsed.Collections.Any() == true) {
                     compiled.Add("TABLE");
-                    serializedQuery.Collections = this.Collections.FirstOrDefault();
+                    serializedQuery.Collections = parsed.Collections.FirstOrDefault();
                     compiled.Add(serializedQuery.Collections);
                 }
             }
@@ -437,24 +453,45 @@ namespace Procon.Database.Serialization {
             return serializedQuery;
         }
 
-        public override ISerializer Parse(Method method) {
-            this.Root = method;
+        /// <summary>
+        /// Parses all children of the method
+        /// </summary>
+        /// <param name="method"></param>
+        /// <returns></returns>
+        protected List<IParsedQuery> ParseChildren(Method method) {
+            List<IParsedQuery> children = new List<IParsedQuery>();
 
-            this.Methods = this.ParseMethod(method);
+            foreach (Method child in method.Where(child => child is Method)) {
+                IParsedQuery parsedChild = new ParsedQuery();
 
-            this.Databases = this.ParseDatabases(method);
+                this.Parse(child, parsedChild);
 
-            this.Indices = this.ParseIndices(method);
+                children.Add(parsedChild);
+            }
 
-            this.Fields = this.ParseFields(method);
+            return children;
+        } 
 
-            this.Assignments = this.ParseAssignments(method);
+        public override ISerializer Parse(Method method, IParsedQuery parsed) {
+            parsed.Root = method;
 
-            this.Conditions = this.ParseConditions(method);
+            parsed.Children = this.ParseChildren(method);
 
-            this.Collections = this.ParseCollections(method);
+            parsed.Methods = this.ParseMethod(method);
 
-            this.Sortings = this.ParseSortings(method);
+            parsed.Databases = this.ParseDatabases(method);
+
+            parsed.Indices = this.ParseIndices(method);
+
+            parsed.Fields = this.ParseFields(method);
+
+            parsed.Assignments = this.ParseAssignments(method);
+
+            parsed.Conditions = this.ParseConditions(method);
+
+            parsed.Collections = this.ParseCollections(method);
+
+            parsed.Sortings = this.ParseSortings(method);
 
             return this;
         }

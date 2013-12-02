@@ -6,68 +6,41 @@ namespace Procon.Database.Serialization {
     public abstract class Serializer : ISerializer {
 
         /// <summary>
-        /// The method used in the SQL (SELECT, INSERT, UPDATE, DELETE)
+        /// Stores the currently working parsed object
         /// </summary>
-        protected List<String> Methods { get; set; }
-
-        /// <summary>
-        /// The databases to query against
-        /// </summary>
-        protected List<String> Databases { get; set; }
-
-        /// <summary>
-        /// The fields to select from the collections
-        /// </summary>
-        protected List<String> Fields { get; set; }
-
-        /// <summary>
-        /// The fields used to when assigning a value to a field (update, insert)
-        /// </summary>
-        protected List<String> Assignments { get; set; }
-
-        /// <summary>
-        /// The indices to apply when the alter/create
-        /// </summary>
-        protected List<String> Indices { get; set; }
-
-        /// <summary>
-        /// The conditions placed on a select, update or delete method
-        /// </summary>
-        protected List<String> Conditions { get; set; }
-
-        /// <summary>
-        /// The collections placed on a select, update, delete or insert method
-        /// </summary>
-        protected List<String> Collections { get; set; }
-
-        /// <summary>
-        /// What fields and direction to sort by.
-        /// </summary>
-        protected List<String> Sortings { get; set; } 
+        /// <remarks></remarks>
+        protected IParsedQuery Parsed { get; set; }
 
         protected Serializer() {
-            this.Methods = new List<String>();
-            this.Databases = new List<String>();
-            this.Fields = new List<String>();
-            this.Assignments = new List<String>();
-            this.Conditions = new List<String>();
-            this.Collections = new List<String>();
-            this.Sortings = new List<String>();
+            this.Parsed = new ParsedQuery();
+        }
+
+        public abstract ICompiledQuery Compile(IParsedQuery parsed);
+
+        /// <summary>
+        /// Compiles a query down to a single managable list of properties
+        /// </summary>
+        /// <returns></returns>
+        public ICompiledQuery Compile() {
+            return this.Compile(this.Parsed);
         }
 
         /// <summary>
-        /// The base element in the query being serialized.
+        /// Parse a single method, creating all the tokens to then compile the data
         /// </summary>
-        protected IQuery Root { get; set; }
+        /// <param name="method"></param>
+        /// <param name="parsed"></param>
+        /// <returns></returns>
+        public abstract ISerializer Parse(Method method, IParsedQuery parsed);
 
-        public abstract ICompiledQuery Compile();
+        public ISerializer Parse(Method method) {
+            this.Parse(method, this.Parsed);
 
-        public abstract ISerializer Parse(Method method);
+            return this;
+        }
 
         public ISerializer Parse(IQuery query) {
-            Method method = query as Method;
-
-            this.Parse(method);
+            this.Parse(query as Method);
 
             return this;
         }

@@ -1,8 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using Procon.Database.Serialization.Builders;
 
 namespace Procon.Database.Serialization {
     public class CompiledQuery : ICompiledQuery {
+        /// <summary>
+        /// List of compiled child queries.
+        /// </summary>
+        public List<ICompiledQuery> Children { get; set; }
+
+        /// <summary>
+        /// The base element in the query being serialized.
+        /// </summary>
+        public IQuery Root { get; set; }
 
         /// <summary>
         /// The compiled query, used for SQL queries.

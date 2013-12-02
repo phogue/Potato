@@ -14,7 +14,8 @@ namespace Procon.Database.Serialization {
         protected virtual String PaseFieldName(String name, Collection collection) {
             String parsed = "";
 
-            if (collection == null || this.Collections.Contains(collection.Name) == true) {
+            // todo this.Parsed should not be referenced here. We should refactor so this.Parsed cannot be referenced here.
+            if (collection == null || this.Parsed.Collections.Contains(collection.Name) == true) {
                 parsed = String.Format("{0}", name);
             }
             // The logic below is for shorthand methods that already split by "." and favour sql format where
@@ -259,29 +260,29 @@ namespace Procon.Database.Serialization {
             return new List<String>() {
                 sortings.ToString(Formatting.None)
             };
-        } 
+        }
 
-        public override ICompiledQuery Compile() {
+        public override ICompiledQuery Compile(IParsedQuery parsed) {
             return new CompiledQuery {
-                Method = this.Methods.FirstOrDefault(),
-                Collections = this.Collections.FirstOrDefault(),
-                Conditions = this.Conditions.FirstOrDefault(),
-                Fields = this.Fields,
-                Sortings = this.Sortings.FirstOrDefault()
+                Method = parsed.Methods.FirstOrDefault(),
+                Collections = parsed.Collections.FirstOrDefault(),
+                Conditions = parsed.Conditions.FirstOrDefault(),
+                Fields = parsed.Fields,
+                Sortings = parsed.Sortings.FirstOrDefault()
             };
         }
 
-        public override ISerializer Parse(Method method) {
+        public override ISerializer Parse(Method method, IParsedQuery parsed) {
 
-            this.Methods = this.ParseMethod(method);
+            parsed.Methods = this.ParseMethod(method);
 
-            this.Collections = this.ParseCollections(method);
+            parsed.Collections = this.ParseCollections(method);
 
-            this.Conditions = this.ParseConditions(method);
+            parsed.Conditions = this.ParseConditions(method);
 
-            this.Fields = this.ParseFields(method);
+            parsed.Fields = this.ParseFields(method);
 
-            this.Sortings = this.ParseSortings(method);
+            parsed.Sortings = this.ParseSortings(method);
 
             return this;
         }

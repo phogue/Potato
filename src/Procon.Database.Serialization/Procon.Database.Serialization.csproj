@@ -49,6 +49,7 @@
     <Compile Include="Builders\Attributes\Unsigned.cs" />
     <Compile Include="Builders\Collection.cs" />
     <Compile Include="Builders\Assignment.cs" />
+    <Compile Include="Builders\Merge.cs" />
     <Compile Include="Builders\Create.cs" />
     <Compile Include="Builders\Database.cs" />
     <Compile Include="Builders\Distinct.cs" />
@@ -87,7 +88,9 @@
     <Compile Include="Builders\Value.cs" />
     <Compile Include="Exceptions\SerializationException.cs" />
     <Compile Include="ICompiledQuery.cs" />
+    <Compile Include="IParsedQuery.cs" />
     <Compile Include="ISerializer.cs" />
+    <Compile Include="ParsedQuery.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CompiledQuery.cs" />
     <Compile Include="Serializer.cs" />

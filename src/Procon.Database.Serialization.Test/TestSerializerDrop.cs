@@ -18,17 +18,17 @@ namespace Procon.Database.Serialization.Test {
 
         #endregion
 
-        #region TestDropTableProcon
+        #region TestDropTablePlayer
 
-        protected IQuery TestDropTableProconExplicit = new Drop()
+        protected IQuery TestDropTablePlayerExplicit = new Drop()
             .Collection(new Builders.Collection() {
-                Name = "Procon"
+                Name = "Player"
             });
 
-        protected IQuery TestDropTableProconImplicit = new Drop()
-            .Collection("Procon");
+        protected IQuery TestDropTablePlayerImplicit = new Drop()
+            .Collection("Player");
 
-        public abstract void TestDropTableProcon();
+        public abstract void TestDropTablePlayer();
 
         #endregion
     }

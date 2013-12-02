@@ -48,6 +48,7 @@
     <Compile Include="Builders\Attributes\Nullable.cs" />
     <Compile Include="Builders\Attributes\Unsigned.cs" />
     <Compile Include="Builders\Collection.cs" />
+    <Compile Include="Builders\Assignment.cs" />
     <Compile Include="Builders\Create.cs" />
     <Compile Include="Builders\Database.cs" />
     <Compile Include="Builders\Distinct.cs" />

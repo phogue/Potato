@@ -109,12 +109,6 @@ namespace Procon.Database.Serialization.Builders {
             throw new NotImplementedException();
         }
 
-        public Query Condition(IQuery data) {
-            this.Add(data);
-
-            return this;
-        }
-
         /// <summary>
         /// Builds a field name with a bias for mysql "table.field" value when there is only
         /// a single decimal it will split to collection.field. If there is multiple decimals 
@@ -147,16 +141,11 @@ namespace Procon.Database.Serialization.Builders {
         }
 
         /// <summary>
-        /// Works out the best matching Value based on the supplied data and completes the
-        /// equality object.
+        /// Builds a value object from a simple object data
         /// </summary>
-        /// <param name="equality"></param>
-        /// <param name="name"></param>
         /// <param name="data"></param>
         /// <returns></returns>
-        protected Equality BuildEquality(Equality equality, String name, Object data) {
-            Field field = this.BuildField(name);
-
+        protected Value BuildValue(Object data) {
             Value value = null;
 
             if (data is int) {
@@ -175,6 +164,21 @@ namespace Procon.Database.Serialization.Builders {
                 };
             }
 
+            return value;
+        }
+
+        /// <summary>
+        /// Works out the best matching Value based on the supplied data and completes the
+        /// equality object.
+        /// </summary>
+        /// <param name="equality"></param>
+        /// <param name="name"></param>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        protected Equality BuildEquality(Equality equality, String name, Object data) {
+            Field field = this.BuildField(name);
+            Value value = this.BuildValue(data);
+
             if (equality != null && value != null) {
                 equality.AddRange(new List<IQuery>() {
                     field,
@@ -183,6 +187,12 @@ namespace Procon.Database.Serialization.Builders {
             }
 
             return equality;
+        }
+
+        public Query Condition(IQuery data) {
+            this.Add(data);
+
+            return this;
         }
 
         /// <summary>
@@ -210,6 +220,26 @@ namespace Procon.Database.Serialization.Builders {
 
         public Query Conditions(IQuery data) {
             throw new NotImplementedException();
+        }
+
+        public Query Assignment(IQuery data) {
+            this.Add(data);
+
+            return this;
+        }
+
+        public Query Assignment(String name, Object data) {
+            Field field = this.BuildField(name);
+            Value value = this.BuildValue(data);
+
+            if (field != null && value != null) {
+                this.Add(new Assignment() {
+                    field,
+                    value
+                });
+            }
+
+            return this;
         }
 
         public Query Collection(IQuery data) {

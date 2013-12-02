@@ -20,6 +20,11 @@ namespace Procon.Database.Serialization {
         List<String> Fields { get; }
 
         /// <summary>
+        /// The fields to set during the query
+        /// </summary>
+        String Assignments { get; }
+
+        /// <summary>
         /// The conditions placed on a select, update or delete method
         /// </summary>
         String Conditions { get; }

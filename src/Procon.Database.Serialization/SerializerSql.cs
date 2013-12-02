@@ -109,9 +109,9 @@ namespace Procon.Database.Serialization {
         }
 
         protected virtual String ParseSort(Sort sort) {
-            List<String> parsed = new List<String>();
-
-            parsed.Add(sort.Collection == null ? String.Format("`{0}`", sort.Name) : String.Format("`{0}`.`{1}`", sort.Collection.Name, sort.Name));
+            List<String> parsed = new List<String> {
+                sort.Collection == null ? String.Format("`{0}`", sort.Name) : String.Format("`{0}`.`{1}`", sort.Collection.Name, sort.Name)
+            };
 
             if (sort.Any(attribute => attribute is Descending)) {
                 parsed.Add("DESC");
@@ -302,31 +302,29 @@ namespace Procon.Database.Serialization {
             return conditions;
         }
 
-        protected virtual List<String> ParseSortings(IQuery query) {
-            return query.Where(sort => sort is Sort).Select(sort => this.ParseSort(sort as Sort)).ToList();
-        } 
+        /// <summary>
+        /// Parse field assignments, similar to conditions, but without the conditionals.
+        /// </summary>
+        /// <param name="query"></param>
+        /// <returns></returns>
+        protected virtual List<String> ParseAssignments(IQuery query) {
+            List<String> assignments = new List<String>();
 
-        protected virtual String Compile(Method method) {
-            List<String> compiled = new List<String>() {
-                this.Methods.FirstOrDefault()
-            };
+            foreach (Assignment assignment in query.Where(statement => statement is Assignment)) {
+                Field field = assignment.FirstOrDefault(statement => statement is Field) as Field;
+                Value value = assignment.FirstOrDefault(statement => statement is Value) as Value;
 
-            if (method is Find) {
-                compiled.Add(this.Fields.Any() == true ? String.Join(", ", this.Fields.ToArray()) : "*");
-
-                if (this.Collections.Any() == true) {
-                    compiled.Add("FROM");
-                    compiled.Add(String.Join(", ", this.Collections.ToArray()));
-                }
-                
-                if (this.Conditions.Any() == true) {
-                    compiled.Add("WHERE");
-                    compiled.Add(String.Join(" AND ", this.Conditions.ToArray()));
+                if (field != null && value != null) {
+                    assignments.Add(String.Format("{0} = {1}", this.ParseField(field), this.ParseValue(value)));
                 }
             }
 
-            return String.Join(" ", compiled.ToArray());
+            return assignments;
         }
+
+        protected virtual List<String> ParseSortings(IQuery query) {
+            return query.Where(sort => sort is Sort).Select(sort => this.ParseSort(sort as Sort)).ToList();
+        } 
 
         public override ICompiledQuery Compile() {
             CompiledQuery serializedQuery = new CompiledQuery();
@@ -377,13 +375,30 @@ namespace Procon.Database.Serialization {
                     }
                 }
             }
+            else if (this.Root is Save) {
+                if (this.Collections.Any() == true) {
+                    compiled.Add("INTO");
+                    serializedQuery.Collections = this.Collections.FirstOrDefault();
+                    compiled.Add(serializedQuery.Collections);
+                }
+
+                if (this.Assignments.Any() == true) {
+                    serializedQuery.Assignments = String.Join(", ", this.Assignments.ToArray());
+                    compiled.Add("SET");
+                    compiled.Add(serializedQuery.Assignments);
+                }
+            }
             else if (this.Root is Modify) {
                 if (this.Collections.Any() == true) {
                     serializedQuery.Collections = String.Join(", ", this.Collections.ToArray());
                     compiled.Add(serializedQuery.Collections);
                 }
 
-                // SET
+                if (this.Assignments.Any() == true) {
+                    serializedQuery.Assignments = String.Join(", ", this.Assignments.ToArray());
+                    compiled.Add("SET");
+                    compiled.Add(serializedQuery.Assignments);
+                }
 
                 if (this.Conditions.Any() == true) {
                     serializedQuery.Conditions = String.Join(" AND ", this.Conditions.ToArray());
@@ -432,6 +447,8 @@ namespace Procon.Database.Serialization {
             this.Indices = this.ParseIndices(method);
 
             this.Fields = this.ParseFields(method);
+
+            this.Assignments = this.ParseAssignments(method);
 
             this.Conditions = this.ParseConditions(method);
 

@@ -21,6 +21,11 @@ namespace Procon.Database.Serialization {
         protected List<String> Fields { get; set; }
 
         /// <summary>
+        /// The fields used to when assigning a value to a field (update, insert)
+        /// </summary>
+        protected List<String> Assignments { get; set; }
+
+        /// <summary>
         /// The indices to apply when the alter/create
         /// </summary>
         protected List<String> Indices { get; set; }
@@ -44,6 +49,7 @@ namespace Procon.Database.Serialization {
             this.Methods = new List<String>();
             this.Databases = new List<String>();
             this.Fields = new List<String>();
+            this.Assignments = new List<String>();
             this.Conditions = new List<String>();
             this.Collections = new List<String>();
             this.Sortings = new List<String>();

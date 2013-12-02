@@ -9,8 +9,8 @@ namespace Procon.Database.Serialization.Test.MySql {
         }
 
         [Test]
-        public override void TestDropTableProcon() {
-            Assert.AreEqual(@"DROP TABLE `Procon`", new SerializerMySql().Parse(this.TestDropTableProconExplicit).Compile().Completed);
+        public override void TestDropTablePlayer() {
+            Assert.AreEqual(@"DROP TABLE `Player`", new SerializerMySql().Parse(this.TestDropTablePlayerExplicit).Compile().Completed);
         }
     }
 }

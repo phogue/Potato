@@ -97,6 +97,9 @@ namespace Procon.Database.Serialization {
             else if (method is Remove) {
                 parsed.Add("DELETE");
             }
+            else if (method is Drop) {
+                parsed.Add("DROP");
+            }
 
             return parsed;
         }
@@ -372,6 +375,44 @@ namespace Procon.Database.Serialization {
                     else {
                         compiled.Add(String.Format("({0})", String.Join(", ", this.Fields.ToArray())));
                     }
+                }
+            }
+            else if (this.Root is Modify) {
+                if (this.Collections.Any() == true) {
+                    serializedQuery.Collections = String.Join(", ", this.Collections.ToArray());
+                    compiled.Add(serializedQuery.Collections);
+                }
+
+                // SET
+
+                if (this.Conditions.Any() == true) {
+                    serializedQuery.Conditions = String.Join(" AND ", this.Conditions.ToArray());
+                    compiled.Add("WHERE");
+                    compiled.Add(serializedQuery.Conditions);
+                }
+
+            }
+            else if (this.Root is Remove) {
+                if (this.Collections.Any() == true) {
+                    serializedQuery.Collections = String.Join(", ", this.Collections.ToArray());
+                    compiled.Add(serializedQuery.Collections);
+                }
+
+                if (this.Conditions.Any() == true) {
+                    serializedQuery.Conditions = String.Join(" AND ", this.Conditions.ToArray());
+                    compiled.Add("WHERE");
+                    compiled.Add(serializedQuery.Conditions);
+                }
+            }
+            else if (this.Root is Drop) {
+                if (this.Databases.Any() == true) {
+                    compiled.Add("DATABASE");
+                    compiled.Add(this.Databases.FirstOrDefault());
+                }
+                else if (this.Collections.Any() == true) {
+                    compiled.Add("TABLE");
+                    serializedQuery.Collections = this.Collections.FirstOrDefault();
+                    compiled.Add(serializedQuery.Collections);
                 }
             }
 

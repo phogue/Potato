@@ -48,6 +48,9 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MySql\TestSerializerMySqlDropExplicit.cs" />
+    <Compile Include="MySql\TestSerializerMySqlDropImplicit.cs" />
+    <Compile Include="TestSerializerDrop.cs" />
     <Compile Include="MongoDb\TestSerializerMongoDbFindImplicit.cs" />
     <Compile Include="MongoDb\TestSerializerMongoDbFindExplicit.cs" />
     <Compile Include="MySql\TestSerializerMySqlCreateImplicit.cs" />

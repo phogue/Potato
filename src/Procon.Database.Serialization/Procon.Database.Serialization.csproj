@@ -51,6 +51,7 @@
     <Compile Include="Builders\Create.cs" />
     <Compile Include="Builders\Database.cs" />
     <Compile Include="Builders\Distinct.cs" />
+    <Compile Include="Builders\Drop.cs" />
     <Compile Include="Builders\Equality.cs" />
     <Compile Include="Builders\Equals.cs" />
     <Compile Include="Builders\Field.cs" />

@@ -395,6 +395,7 @@ namespace Procon.Database.Serialization {
             else if (this.Root is Remove) {
                 if (this.Collections.Any() == true) {
                     serializedQuery.Collections = String.Join(", ", this.Collections.ToArray());
+                    compiled.Add("FROM");
                     compiled.Add(serializedQuery.Collections);
                 }
 

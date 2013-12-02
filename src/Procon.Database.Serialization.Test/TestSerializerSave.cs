@@ -28,7 +28,6 @@ namespace Procon.Database.Serialization.Test {
 
         #endregion
 
-
         #region TestSaveIntoPlayerSetNameScore
 
         protected IQuery TestSaveIntoPlayerSetNameScoreExplicit = new Save()

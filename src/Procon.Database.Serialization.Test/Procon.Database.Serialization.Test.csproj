@@ -48,6 +48,9 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MySql\TestSerializerMySqlModifyExplicit.cs" />
+    <Compile Include="MySql\TestSerializerMySqlModifyImplicit.cs" />
+    <Compile Include="TestSerializerModify.cs" />
     <Compile Include="MySql\TestSerializerMySqlSaveImplicit.cs" />
     <Compile Include="MySql\TestSerializerMySqlSaveExplicit.cs" />
     <Compile Include="TestSerializerSave.cs" />

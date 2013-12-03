@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Procon.Database.Serialization.Builders;
+﻿using Procon.Database.Serialization.Builders;
 
 namespace Procon.Database.Serialization {
     public abstract class Serializer : ISerializer {

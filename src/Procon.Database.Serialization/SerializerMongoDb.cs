@@ -124,6 +124,9 @@ namespace Procon.Database.Serialization {
             else if (method is Modify) {
                 parsed.Add("findAndModify");
             }
+            else if (method is Save) {
+                parsed.Add("save");
+            }
 
             return parsed;
         }

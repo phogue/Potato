@@ -118,6 +118,9 @@ namespace Procon.Database.Serialization {
             else if (method is Find) {
                 parsed.Add("find");
             }
+            else if (method is Remove) {
+                parsed.Add("remove");
+            }
 
             return parsed;
         }

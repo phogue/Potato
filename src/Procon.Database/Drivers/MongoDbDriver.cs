@@ -4,7 +4,6 @@ using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
 using Procon.Database.Serialization;
-using Procon.Database.Serialization.Builders;
 using Procon.Database.Serialization.Builders.Methods;
 using Procon.Database.Serialization.Builders.Values;
 
@@ -82,12 +81,6 @@ namespace Procon.Database.Drivers {
 
                     result.Add(row);
                 }
-
-                //var yy = results.ToList();
-
-                var x = 0;
-
-                //this.Read(query, result);
             }
             else {
                 //this.Execute(query, result);

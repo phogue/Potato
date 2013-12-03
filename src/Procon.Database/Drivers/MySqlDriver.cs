@@ -3,7 +3,6 @@ using System.Data;
 using System.Data.Common;
 using MySql.Data.MySqlClient;
 using Procon.Database.Serialization;
-using Procon.Database.Serialization.Builders;
 using Procon.Database.Serialization.Builders.Methods;
 using Procon.Database.Serialization.Builders.Modifiers;
 using Procon.Database.Serialization.Builders.Values;

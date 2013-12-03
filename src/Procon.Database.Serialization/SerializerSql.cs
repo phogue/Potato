@@ -53,7 +53,7 @@ namespace Procon.Database.Serialization {
         /// </summary>
         /// <param name="query"></param>
         /// <returns></returns>
-        protected virtual List<String> ParseIndices(IQuery query) {
+        protected virtual List<String> ParseIndices(IDatabaseObject query) {
             return query.Where(statement => statement is Index).Select(index => this.ParseIndex(index as Index)).ToList();
         } 
 
@@ -71,7 +71,7 @@ namespace Procon.Database.Serialization {
         /// </summary>
         /// <param name="query"></param>
         /// <returns></returns>
-        protected virtual List<String> ParseDatabases(IQuery query) {
+        protected virtual List<String> ParseDatabases(IDatabaseObject query) {
             return query.Where(statement => statement is Builders.Database).Select(database => this.ParseDatabase(database as Builders.Database)).ToList();
         }
 
@@ -219,7 +219,7 @@ namespace Procon.Database.Serialization {
             return parsed;
         }
 
-        protected virtual List<String> ParseFields(IQuery query) {
+        protected virtual List<String> ParseFields(IDatabaseObject query) {
             List<String> parsed = new List<String>();
 
             // If we have a distinct field, but no specific fields
@@ -249,11 +249,11 @@ namespace Procon.Database.Serialization {
         /// </summary>
         /// <param name="query"></param>
         /// <returns></returns>
-        protected virtual List<String> ParseCollections(IQuery query) {
+        protected virtual List<String> ParseCollections(IDatabaseObject query) {
             return query.Where(logical => logical is Collection).Select(collection => this.ParseCollection(collection as Collection)).ToList();
         }
 
-        protected virtual List<String> ParseEqualities(IQuery query) {
+        protected virtual List<String> ParseEqualities(IDatabaseObject query) {
             List<String> equalities = new List<String>();
 
             foreach (Equality equality in query.Where(statement => statement is Equality)) {
@@ -273,7 +273,7 @@ namespace Procon.Database.Serialization {
         /// </summary>
         /// <param name="query"></param>
         /// <returns></returns>
-        protected virtual List<String> ParseLogicals(IQuery query) {
+        protected virtual List<String> ParseLogicals(IDatabaseObject query) {
             List<String> logicals = new List<String>();
 
             foreach (Logical logical in query.Where(logical => logical is Logical)) {
@@ -294,7 +294,7 @@ namespace Procon.Database.Serialization {
         /// </summary>
         /// <param name="query"></param>
         /// <returns></returns>
-        protected virtual List<String> ParseConditions(IQuery query) {
+        protected virtual List<String> ParseConditions(IDatabaseObject query) {
             List<String> conditions = this.ParseLogicals(query);
 
             conditions.AddRange(this.ParseEqualities(query));
@@ -307,7 +307,7 @@ namespace Procon.Database.Serialization {
         /// </summary>
         /// <param name="query"></param>
         /// <returns></returns>
-        protected virtual List<String> ParseAssignments(IQuery query) {
+        protected virtual List<String> ParseAssignments(IDatabaseObject query) {
             List<String> assignments = new List<String>();
 
             foreach (Assignment assignment in query.Where(statement => statement is Assignment)) {
@@ -322,7 +322,7 @@ namespace Procon.Database.Serialization {
             return assignments;
         }
 
-        protected virtual List<String> ParseSortings(IQuery query) {
+        protected virtual List<String> ParseSortings(IDatabaseObject query) {
             return query.Where(sort => sort is Sort).Select(sort => this.ParseSort(sort as Sort)).ToList();
         } 
 

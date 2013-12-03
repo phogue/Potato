@@ -1,4 +1,4 @@
 namespace Procon.Database.Serialization.Builders {
-    public class Operator : Query {
+    public class Operator : DatabaseObject {
     }
 }

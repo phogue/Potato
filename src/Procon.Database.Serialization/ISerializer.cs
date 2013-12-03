@@ -23,6 +23,6 @@ namespace Procon.Database.Serialization {
         /// </summary>
         /// <param name="query"></param>
         /// <returns></returns>
-        ISerializer Parse(IQuery query);
+        ISerializer Parse(IDatabaseObject query);
     }
 }

@@ -2,7 +2,7 @@
 using System;
 
 namespace Procon.Database.Serialization.Builders {
-    public class Index : Query {
+    public class Index : DatabaseObject {
         /// <summary>
         /// The name of the index
         /// </summary>

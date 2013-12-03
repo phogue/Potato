@@ -5,12 +5,12 @@ namespace Procon.Database.Serialization.Test {
 
         #region TestRemoveAllFromPlayer
 
-        protected IQuery TestRemoveAllFromPlayerExplicit = new Remove()
+        protected IDatabaseObject TestRemoveAllFromPlayerExplicit = new Remove()
             .Collection(new Collection() {
                 Name = "Player"
             });
 
-        protected IQuery TestRemoveAllFromPlayerImplicit = new Remove()
+        protected IDatabaseObject TestRemoveAllFromPlayerImplicit = new Remove()
             .Collection("Player");
 
         public abstract void TestRemoveAllFromPlayer();
@@ -19,7 +19,7 @@ namespace Procon.Database.Serialization.Test {
 
         #region TestRemoveAllFromPlayerWhereNameEqualsPhogue
 
-        protected IQuery TestRemoveAllFromPlayerWhereNameEqualsPhogueExplicit = new Remove()
+        protected IDatabaseObject TestRemoveAllFromPlayerWhereNameEqualsPhogueExplicit = new Remove()
             .Condition(new Equals() {
                     new Field() {
                         Name = "Name"
@@ -32,7 +32,7 @@ namespace Procon.Database.Serialization.Test {
                 Name = "Player"
             });
 
-        protected IQuery TestRemoveAllFromPlayerWhereNameEqualsPhogueImplicit = new Remove()
+        protected IDatabaseObject TestRemoveAllFromPlayerWhereNameEqualsPhogueImplicit = new Remove()
             .Condition("Name", "Phogue")
             .Collection("Player");
 
@@ -42,7 +42,7 @@ namespace Procon.Database.Serialization.Test {
 
         #region TestRemoveAllFromPlayerWherePlayerNameEqualsPhogue
 
-        protected IQuery TestRemoveAllFromPlayerWherePlayerNameEqualsPhogueExplicit = new Remove()
+        protected IDatabaseObject TestRemoveAllFromPlayerWherePlayerNameEqualsPhogueExplicit = new Remove()
             .Condition(new Equals() {
                     new Field() {
                         Name = "Name",
@@ -58,7 +58,7 @@ namespace Procon.Database.Serialization.Test {
                 Name = "Player"
             });
 
-        protected IQuery TestRemoveAllFromPlayerWherePlayerNameEqualsPhogueImplicit = new Remove()
+        protected IDatabaseObject TestRemoveAllFromPlayerWherePlayerNameEqualsPhogueImplicit = new Remove()
             .Condition("Player.Name", "Phogue")
             .Collection("Player");
 
@@ -68,7 +68,7 @@ namespace Procon.Database.Serialization.Test {
 
         #region TestRemoveAllFromPlayerWhereNameEqualsPhogueAndScoreEqualsTen
 
-        protected IQuery TestRemoveAllFromPlayerWhereNameEqualsPhogueAndScoreEqualsTenExplicit = new Remove()
+        protected IDatabaseObject TestRemoveAllFromPlayerWhereNameEqualsPhogueAndScoreEqualsTenExplicit = new Remove()
             .Condition(new Equals() {
                     new Field() {
                         Name = "Name"
@@ -89,7 +89,7 @@ namespace Procon.Database.Serialization.Test {
                 Name = "Player"
             });
 
-        protected IQuery TestRemoveAllFromPlayerWhereNameEqualsPhogueAndScoreEqualsTenImplicit = new Remove()
+        protected IDatabaseObject TestRemoveAllFromPlayerWhereNameEqualsPhogueAndScoreEqualsTenImplicit = new Remove()
             .Condition("Name", "Phogue")
             .Condition("Score", 10)
             .Collection("Player");
@@ -100,7 +100,7 @@ namespace Procon.Database.Serialization.Test {
 
         #region TestRemoveAllFromPlayerWhereNameEqualsPhogueOrZaeed
 
-        protected IQuery TestRemoveAllFromPlayerWhereNameEqualsPhogueOrZaeedExplicit = new Remove()
+        protected IDatabaseObject TestRemoveAllFromPlayerWhereNameEqualsPhogueOrZaeedExplicit = new Remove()
             .Condition(new Or() {
                     new Equals() {
                         new Field() {
@@ -123,7 +123,7 @@ namespace Procon.Database.Serialization.Test {
                 Name = "Player"
             });
 
-        protected IQuery TestRemoveAllFromPlayerWhereNameEqualsPhogueOrZaeedImplicit = new Remove()
+        protected IDatabaseObject TestRemoveAllFromPlayerWhereNameEqualsPhogueOrZaeedImplicit = new Remove()
             .Condition(new Or().Condition("Name", "Phogue").Condition("Name", "Zaeed"))
             .Collection("Player");
 
@@ -133,7 +133,7 @@ namespace Procon.Database.Serialization.Test {
 
         #region TestRemoveAllFromPlayerWhereNameEqualsPhogueOrZaeedAndScoreAbove10AndBelow20
 
-        protected IQuery TestRemoveAllFromPlayerWhereNameEqualsPhogueOrZaeedAndScoreAbove10AndBelow20Explicit = new Remove()
+        protected IDatabaseObject TestRemoveAllFromPlayerWhereNameEqualsPhogueOrZaeedAndScoreAbove10AndBelow20Explicit = new Remove()
             .Condition(new Or() {
                     new Equals() {
                         new Field() {
@@ -172,7 +172,7 @@ namespace Procon.Database.Serialization.Test {
                 Name = "Player"
             });
 
-        protected IQuery TestRemoveAllFromPlayerWhereNameEqualsPhogueOrZaeedAndScoreAbove10AndBelow20Implicit = new Remove()
+        protected IDatabaseObject TestRemoveAllFromPlayerWhereNameEqualsPhogueOrZaeedAndScoreAbove10AndBelow20Implicit = new Remove()
             .Condition(new Or().Condition("Name", "Phogue").Condition("Name", "Zaeed"))
             .Condition("Score", new GreaterThan(), 10)
             .Condition("Score", new LessThan(), 20)
@@ -184,7 +184,7 @@ namespace Procon.Database.Serialization.Test {
 
         #region TestRemoveAllFromPlayerWhereNameEqualsPhogueAndScoreAbove50OrNameEqualsZaeedAndScoreBelow50
 
-        protected IQuery TestRemoveAllFromPlayerWhereNameEqualsPhogueAndScoreAbove50OrNameEqualsZaeedAndScoreBelow50Explicit = new Remove()
+        protected IDatabaseObject TestRemoveAllFromPlayerWhereNameEqualsPhogueAndScoreAbove50OrNameEqualsZaeedAndScoreBelow50Explicit = new Remove()
             .Condition(new Or() {
                     new And() {
                         new Equals() {
@@ -227,7 +227,7 @@ namespace Procon.Database.Serialization.Test {
                 Name = "Player"
             });
 
-        protected IQuery TestRemoveAllFromPlayerWhereNameEqualsPhogueAndScoreAbove50OrNameEqualsZaeedAndScoreBelow50Implicit = new Remove()
+        protected IDatabaseObject TestRemoveAllFromPlayerWhereNameEqualsPhogueAndScoreAbove50OrNameEqualsZaeedAndScoreBelow50Implicit = new Remove()
         .Condition(new Or()
             .Condition(
                 new And().Condition("Name", "Phogue").Condition("Score", new GreaterThan(), 50)

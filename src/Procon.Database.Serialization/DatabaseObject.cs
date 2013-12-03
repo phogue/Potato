@@ -8,9 +8,9 @@ using Attribute = Procon.Database.Serialization.Builders.Attribute;
 using Type = Procon.Database.Serialization.Builders.Type;
 
 namespace Procon.Database.Serialization {
-    public abstract class Query : List<IQuery>, IQuery {
+    public abstract class DatabaseObject : List<IDatabaseObject>, IDatabaseObject {
 
-        protected virtual Query Append(IQuery data) {
+        protected virtual DatabaseObject Append(IDatabaseObject data) {
             if (data.Count > 1) {
                 this.AddRange(data);
             }
@@ -21,19 +21,19 @@ namespace Procon.Database.Serialization {
             return this;
         }
 
-        public Query Method(IQuery data) {
+        public IDatabaseObject Method(IDatabaseObject data) {
             this.Add(data);
 
             return this;
         }
 
-        public Query Database(IQuery data) {
+        public IDatabaseObject Database(IDatabaseObject data) {
             this.Add(data);
 
             return this;
         }
 
-        public Query Database(String name) {
+        public IDatabaseObject Database(String name) {
             this.Add(new Builders.Database() {
                 Name = name
             });
@@ -41,13 +41,13 @@ namespace Procon.Database.Serialization {
             return this;
         }
 
-        public Query Index(IQuery data) {
+        public IDatabaseObject Index(IDatabaseObject data) {
             this.Add(data);
 
             return this;
         }
 
-        public Query Index(String name) {
+        public IDatabaseObject Index(String name) {
             Field field = this.BuildField(name);
 
             return this.Index(
@@ -63,7 +63,7 @@ namespace Procon.Database.Serialization {
             );
         }
 
-        public Query Index(String name, Attribute attribute) {
+        public IDatabaseObject Index(String name, Attribute attribute) {
             Field field = this.BuildField(name);
 
             return this.Index(
@@ -80,29 +80,29 @@ namespace Procon.Database.Serialization {
             );
         }
 
-        public Query Attribute(IQuery data) {
+        public IDatabaseObject Attribute(IDatabaseObject data) {
             this.Add(data);
 
             return this;
         }
 
-        public Query Field(IQuery data) {
+        public IDatabaseObject Field(IDatabaseObject data) {
             this.Add(data);
 
             return this;
         }
 
-        public Query Field(String name) {
+        public IDatabaseObject Field(String name) {
             return this.Field(this.BuildField(name));
         }
 
-        public Query Field(String name, Type type, bool nullable = true) {
+        public IDatabaseObject Field(String name, Type type, bool nullable = true) {
             if (nullable == true) type.Add(new Builders.Attributes.Nullable());
 
             return this.Field(this.BuildField(name).Attribute(type));
         }
 
-        public Query Field(String name, int length, bool nullable = true) {
+        public IDatabaseObject Field(String name, int length, bool nullable = true) {
             Type type = new StringType();
 
             type.Attribute(new Length() {
@@ -112,10 +112,6 @@ namespace Procon.Database.Serialization {
             if (nullable == true) type.Add(new Builders.Attributes.Nullable());
 
             return this.Field(this.BuildField(name).Attribute(type));
-        }
-
-        public Query Fields(IQuery data) {
-            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -189,7 +185,7 @@ namespace Procon.Database.Serialization {
             Value value = this.BuildValue(data);
 
             if (equality != null && value != null) {
-                equality.AddRange(new List<IQuery>() {
+                equality.AddRange(new List<IDatabaseObject>() {
                     field,
                     value
                 });
@@ -198,7 +194,7 @@ namespace Procon.Database.Serialization {
             return equality;
         }
 
-        public Query Condition(IQuery data) {
+        public IDatabaseObject Condition(IDatabaseObject data) {
             this.Add(data);
 
             return this;
@@ -210,7 +206,7 @@ namespace Procon.Database.Serialization {
         /// <param name="name"></param>
         /// <param name="data"></param>
         /// <returns></returns>
-        public Query Condition(String name, Object data) {
+        public IDatabaseObject Condition(String name, Object data) {
             return this.Condition(name, new Equals(), data);
         }
 
@@ -221,23 +217,19 @@ namespace Procon.Database.Serialization {
         /// <param name="equality"></param>
         /// <param name="data"></param>
         /// <returns></returns>
-        public Query Condition(String name, Equality equality, Object data) {
+        public IDatabaseObject Condition(String name, Equality equality, Object data) {
             this.Add(this.BuildEquality(equality, name, data));
 
             return this;
         }
 
-        public Query Conditions(IQuery data) {
-            throw new NotImplementedException();
-        }
-
-        public Query Assignment(IQuery data) {
+        public IDatabaseObject Assignment(IDatabaseObject data) {
             this.Add(data);
 
             return this;
         }
 
-        public Query Assignment(String name, Object data) {
+        public IDatabaseObject Assignment(String name, Object data) {
             Field field = this.BuildField(name);
             Value value = this.BuildValue(data);
 
@@ -251,7 +243,7 @@ namespace Procon.Database.Serialization {
             return this;
         }
 
-        public Query Collection(IQuery data) {
+        public IDatabaseObject Collection(IDatabaseObject data) {
             this.Add(data);
 
             return this;
@@ -262,7 +254,7 @@ namespace Procon.Database.Serialization {
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        public Query Collection(String name) {
+        public IDatabaseObject Collection(String name) {
             this.Add(new Collection() {
                 Name = name
             });
@@ -270,17 +262,13 @@ namespace Procon.Database.Serialization {
             return this;
         }
 
-        public Query Collections(IQuery data) {
-            throw new NotImplementedException();
-        }
-
-        public Query Sort(IQuery data) {
+        public IDatabaseObject Sort(IDatabaseObject data) {
             this.Add(data);
 
             return this;
         }
 
-        public Query Sort(String name) {
+        public IDatabaseObject Sort(String name) {
             Field field = this.BuildField(name);
 
             return this.Sort(new Sort() {

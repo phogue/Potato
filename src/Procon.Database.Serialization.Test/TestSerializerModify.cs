@@ -5,7 +5,7 @@ namespace Procon.Database.Serialization.Test {
 
         #region TestModifyPlayerSetName
 
-        protected IQuery TestModifyPlayerSetNameExplicit = new Modify()
+        protected IDatabaseObject TestModifyPlayerSetNameExplicit = new Modify()
             .Collection(new Collection() {
                 Name = "Player"
             })
@@ -18,7 +18,7 @@ namespace Procon.Database.Serialization.Test {
                 }
             });
 
-        protected IQuery TestModifyPlayerSetNameImplicit = new Modify()
+        protected IDatabaseObject TestModifyPlayerSetNameImplicit = new Modify()
             .Collection("Player")
             .Assignment("Name", "Phogue");
 
@@ -28,7 +28,7 @@ namespace Procon.Database.Serialization.Test {
 
         #region TestModifyIntoPlayerSetNameScore
 
-        protected IQuery TestModifyPlayerSetNameScoreExplicit = new Modify()
+        protected IDatabaseObject TestModifyPlayerSetNameScoreExplicit = new Modify()
             .Collection(new Collection() {
                 Name = "Player"
             })
@@ -49,7 +49,7 @@ namespace Procon.Database.Serialization.Test {
                 }
             });
 
-        protected IQuery TestModifyPlayerSetNameScoreImplicit = new Modify()
+        protected IDatabaseObject TestModifyPlayerSetNameScoreImplicit = new Modify()
             .Collection("Player")
             .Assignment("Name", "Phogue")
             .Assignment("Score", 50);
@@ -60,7 +60,7 @@ namespace Procon.Database.Serialization.Test {
 
         #region TestModifyPlayerSetScoreWhereNameEqualsPhogue
 
-        protected IQuery TestModifyPlayerSetScoreWhereNameEqualsPhogueExplicit = new Modify()
+        protected IDatabaseObject TestModifyPlayerSetScoreWhereNameEqualsPhogueExplicit = new Modify()
             .Collection(new Collection() {
                 Name = "Player"
             })
@@ -81,7 +81,7 @@ namespace Procon.Database.Serialization.Test {
                 }
             });
 
-        protected IQuery TestModifyPlayerSetScoreWhereNameEqualsPhogueImplicit = new Modify()
+        protected IDatabaseObject TestModifyPlayerSetScoreWhereNameEqualsPhogueImplicit = new Modify()
             .Collection("Player")
             .Assignment("Score", 50)
             .Condition("Name", "Phogue");
@@ -93,7 +93,7 @@ namespace Procon.Database.Serialization.Test {
 
         #region TestModifyPlayerSetScoreWhereNameEqualsPhogueAndRankAbove10
 
-        protected IQuery TestModifyPlayerSetScoreWhereNameEqualsPhogueAndRankAbove10Explicit = new Modify()
+        protected IDatabaseObject TestModifyPlayerSetScoreWhereNameEqualsPhogueAndRankAbove10Explicit = new Modify()
             .Collection(new Collection() {
                 Name = "Player"
             })
@@ -122,7 +122,7 @@ namespace Procon.Database.Serialization.Test {
                 }
             });
 
-        protected IQuery TestModifyPlayerSetScoreWhereNameEqualsPhogueAndRankAbove10Implicit = new Modify()
+        protected IDatabaseObject TestModifyPlayerSetScoreWhereNameEqualsPhogueAndRankAbove10Implicit = new Modify()
             .Collection("Player")
             .Assignment("Score", 50)
             .Condition("Name", "Phogue")

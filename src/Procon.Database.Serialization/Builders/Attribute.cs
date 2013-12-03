@@ -1,4 +1,4 @@
 namespace Procon.Database.Serialization.Builders {
-    public abstract class Attribute : Query {
+    public abstract class Attribute : DatabaseObject {
     }
 }

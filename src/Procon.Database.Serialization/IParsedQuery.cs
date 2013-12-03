@@ -52,6 +52,6 @@ namespace Procon.Database.Serialization {
         /// <summary>
         /// The base element in the query being serialized.
         /// </summary>
-        IQuery Root { get; set; }
+        IDatabaseObject Root { get; set; }
     }
 }

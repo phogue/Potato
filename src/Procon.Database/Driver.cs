@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Data.Common;
+using Procon.Database.Serialization;
+using Procon.Database.Serialization.Builders;
 
 namespace Procon.Database {
-    public abstract class Driver : IDisposable, ICloneable, IEquatable<Driver> {
+    public abstract class Driver : IDriver, IDisposable, ICloneable, IEquatable<Driver> {
 
         /// <summary>
         /// The name of this driver.
@@ -22,7 +24,7 @@ namespace Procon.Database {
         /// <summary>
         /// The username for authentication.
         /// </summary>
-        public String Uid { get; set; }
+        public String Username { get; set; }
 
         /// <summary>
         /// The password for authentication.
@@ -42,15 +44,27 @@ namespace Procon.Database {
         /// <summary>
         /// Opens the connection to the database.
         /// </summary>
-        public abstract bool OpenConnection();
+        public abstract bool Connect();
+
+        /// <summary>
+        /// Runs a compiled query
+        /// </summary>
+        /// <param name="query"></param>
+        protected abstract IDatabaseObject Query(ICompiledQuery query);
+
+        /// <summary>
+        /// Query the open driver
+        /// </summary>
+        /// <param name="query"></param>
+        public abstract IDatabaseObject Query(IDatabaseObject query);
+
+        /// <summary>
+        /// Closes the open connection the database.
+        /// </summary>
+        public abstract void Close();
 
         public void Dispose() {
-            if (this.Connection != null) {
-                this.Connection.Close();
-                // Is this already disposed when closed?
-                this.Connection.Dispose();
-                this.Connection = null;
-            }
+            this.Close();
         }
 
         public object Clone() {
@@ -62,7 +76,7 @@ namespace Procon.Database {
                 return false;
             if (ReferenceEquals(this, other))
                 return true;
-            return string.Equals(Hostname, other.Hostname) && Port == other.Port && string.Equals(Uid, other.Uid) && string.Equals(Password, other.Password) && string.Equals(Database, other.Database);
+            return string.Equals(Hostname, other.Hostname) && Port == other.Port && string.Equals(Username, other.Username) && string.Equals(Password, other.Password) && string.Equals(Database, other.Database);
         }
 
         public override bool Equals(object obj) {
@@ -79,7 +93,7 @@ namespace Procon.Database {
             unchecked {
                 int hashCode = (Hostname != null ? Hostname.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (int)Port;
-                hashCode = (hashCode * 397) ^ (Uid != null ? Uid.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Username != null ? Username.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (Password != null ? Password.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (Database != null ? Database.GetHashCode() : 0);
                 return hashCode;

@@ -52,7 +52,7 @@ namespace Procon.Database.Serialization {
         /// <summary>
         /// The base element in the query being serialized.
         /// </summary>
-        public IQuery Root { get; set; }
+        public IDatabaseObject Root { get; set; }
 
         public ParsedQuery() {
             this.Children = new List<IParsedQuery>();

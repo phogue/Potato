@@ -60,12 +60,13 @@
     <Compile Include="Builders\Index.cs" />
     <Compile Include="Builders\Attributes\Primary.cs" />
     <Compile Include="Builders\Attributes\Unique.cs" />
+    <Compile Include="Builders\Results\Result.cs" />
     <Compile Include="Builders\Save.cs" />
     <Compile Include="Builders\Type.cs" />
     <Compile Include="Builders\Find.cs" />
     <Compile Include="Builders\GreaterThan.cs" />
     <Compile Include="Builders\GreaterThanEquals.cs" />
-    <Compile Include="IQuery.cs" />
+    <Compile Include="IDatabaseObject.cs" />
     <Compile Include="Builders\LessThan.cs" />
     <Compile Include="Builders\LessThanEquals.cs" />
     <Compile Include="Builders\Logical.cs" />
@@ -74,7 +75,7 @@
     <Compile Include="Builders\NumericValue.cs" />
     <Compile Include="Builders\Operator.cs" />
     <Compile Include="Builders\Or.cs" />
-    <Compile Include="Query.cs" />
+    <Compile Include="DatabaseObject.cs" />
     <Compile Include="Builders\RawValue.cs" />
     <Compile Include="Builders\Remove.cs" />
     <Compile Include="Builders\Sort.cs" />
@@ -86,7 +87,6 @@
     <Compile Include="Builders\Types\StringType.cs" />
     <Compile Include="Builders\Types\TextType.cs" />
     <Compile Include="Builders\Value.cs" />
-    <Compile Include="CompiledQueryResult.cs" />
     <Compile Include="Exceptions\SerializationException.cs" />
     <Compile Include="ICompiledQuery.cs" />
     <Compile Include="IParsedQuery.cs" />
@@ -94,6 +94,8 @@
     <Compile Include="ParsedQuery.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CompiledQuery.cs" />
+    <Compile Include="Builders\Results\Affected.cs" />
+    <Compile Include="Builders\Results\Row.cs" />
     <Compile Include="Serializer.cs" />
     <Compile Include="SerializerMongoDb.cs" />
     <Compile Include="SerializerMySql.cs" />

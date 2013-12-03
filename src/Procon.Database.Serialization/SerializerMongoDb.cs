@@ -95,7 +95,7 @@ namespace Procon.Database.Serialization {
             return outer;
         }
 
-        protected virtual List<String> ParseFields(IQuery query) {
+        protected virtual List<String> ParseFields(IDatabaseObject query) {
             return query.Where(logical => logical is Field).Select(field => this.ParseField(field as Field)).ToList();
         }
 
@@ -118,7 +118,7 @@ namespace Procon.Database.Serialization {
         /// </summary>
         /// <param name="query"></param>
         /// <returns></returns>
-        protected virtual List<String> ParseCollections(IQuery query) {
+        protected virtual List<String> ParseCollections(IDatabaseObject query) {
             List<String> parsed = new List<String>();
 
             Collection collection = query.FirstOrDefault(logical => logical is Collection) as Collection;
@@ -152,7 +152,7 @@ namespace Procon.Database.Serialization {
         /// <param name="query"></param>
         /// <param name="outer"></param>
         /// <returns></returns>
-        protected virtual JArray ParseEqualities(IQuery query, JArray outer) {
+        protected virtual JArray ParseEqualities(IDatabaseObject query, JArray outer) {
             foreach (Equality equality in query.Where(statement => statement is Equality)) {
                 outer.Add(this.ParseEquality(equality, new JObject()));
             }
@@ -166,7 +166,7 @@ namespace Procon.Database.Serialization {
         /// <param name="query"></param>
         /// <param name="outer"></param>
         /// <returns></returns>
-        protected virtual JObject ParseEqualities(IQuery query, JObject outer) {
+        protected virtual JObject ParseEqualities(IDatabaseObject query, JObject outer) {
             foreach (Equality equality in query.Where(statement => statement is Equality)) {
                 this.ParseEquality(equality, outer);
             }
@@ -210,7 +210,7 @@ namespace Procon.Database.Serialization {
         /// <param name="query"></param>
         /// <param name="outer"></param>
         /// <returns></returns>
-        protected virtual JArray ParseLogicals(IQuery query, JArray outer) {
+        protected virtual JArray ParseLogicals(IDatabaseObject query, JArray outer) {
             foreach (Logical logical in query.Where(logical => logical is Logical)) {
                 outer.Add(this.ParseLogicals(logical, new JObject()));
             }
@@ -224,7 +224,7 @@ namespace Procon.Database.Serialization {
         /// <param name="query"></param>
         /// <param name="outer"></param>
         /// <returns></returns>
-        protected virtual JObject ParseLogicals(IQuery query, JObject outer) {
+        protected virtual JObject ParseLogicals(IDatabaseObject query, JObject outer) {
             foreach (Logical logical in query.Where(logical => logical is Logical)) {
                 outer[this.ParseLogical(logical)] = new JArray();
 
@@ -242,7 +242,7 @@ namespace Procon.Database.Serialization {
         /// </summary>
         /// <param name="query"></param>
         /// <returns></returns>
-        protected virtual List<String> ParseConditions(IQuery query) {
+        protected virtual List<String> ParseConditions(IDatabaseObject query) {
             JObject conditions = this.ParseLogicals(query, new JObject());
 
             return new List<String>() {
@@ -250,7 +250,7 @@ namespace Procon.Database.Serialization {
             };
         }
 
-        protected virtual List<String> ParseSortings(IQuery query) {
+        protected virtual List<String> ParseSortings(IDatabaseObject query) {
             JObject sortings = new JObject();
 
             foreach (Sort sort in query.Where(sort => sort is Sort)) {

@@ -4,7 +4,7 @@ namespace Procon.Database.Serialization.Test {
     public abstract class TestSerializerMerge {
         #region TestMergeCollectionPlayerSaveNameScoreUpdateScore
 
-        protected IQuery TestMergeCollectionPlayerSaveNameScoreUpdateScoreExplicit = new Merge()
+        protected IDatabaseObject TestMergeCollectionPlayerSaveNameScoreUpdateScoreExplicit = new Merge()
             .Method(
                 new Save()
                 .Collection(new Collection() {
@@ -50,7 +50,7 @@ namespace Procon.Database.Serialization.Test {
                 })
             );
 
-        protected IQuery TestMergeCollectionPlayerSaveNameScoreUpdateScoreImplicit = new Merge() {
+        protected IDatabaseObject TestMergeCollectionPlayerSaveNameScoreUpdateScoreImplicit = new Merge() {
             new Save()
             .Collection("Player")
             .Assignment("Name", "Phogue")
@@ -67,7 +67,7 @@ namespace Procon.Database.Serialization.Test {
 
         #region TestMergeCollectionPlayerSaveNameScoreRankUpdateScoreRankScore
 
-        protected IQuery TestMergeCollectionPlayerSaveNameScoreRankUpdateScoreRankScoreExplicit = new Merge()
+        protected IDatabaseObject TestMergeCollectionPlayerSaveNameScoreRankUpdateScoreRankScoreExplicit = new Merge()
             .Method(
                 new Save()
                 .Collection(new Collection() {
@@ -129,7 +129,7 @@ namespace Procon.Database.Serialization.Test {
                 })
             );
 
-        protected IQuery TestMergeCollectionPlayerSaveNameScoreRankUpdateScoreRankScoreImplicit = new Merge() {
+        protected IDatabaseObject TestMergeCollectionPlayerSaveNameScoreRankUpdateScoreRankScoreImplicit = new Merge() {
             new Save()
             .Collection("Player")
             .Assignment("Name", "Phogue")

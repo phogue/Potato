@@ -5,7 +5,7 @@ namespace Procon.Database.Serialization.Test {
 
         #region TestSaveIntoPlayerSetName
 
-        protected IQuery TestSaveIntoPlayerSetNameExplicit = new Save()
+        protected IDatabaseObject TestSaveIntoPlayerSetNameExplicit = new Save()
             .Collection(new Collection() {
                 Name = "Player"
             })
@@ -18,7 +18,7 @@ namespace Procon.Database.Serialization.Test {
                 }
             });
 
-        protected IQuery TestSaveIntoPlayerSetNameImplicit = new Save()
+        protected IDatabaseObject TestSaveIntoPlayerSetNameImplicit = new Save()
             .Collection("Player")
             .Assignment("Name", "Phogue");
 
@@ -28,7 +28,7 @@ namespace Procon.Database.Serialization.Test {
 
         #region TestSaveIntoPlayerSetNameScore
 
-        protected IQuery TestSaveIntoPlayerSetNameScoreExplicit = new Save()
+        protected IDatabaseObject TestSaveIntoPlayerSetNameScoreExplicit = new Save()
             .Collection(new Collection() {
                 Name = "Player"
             })
@@ -49,7 +49,7 @@ namespace Procon.Database.Serialization.Test {
                 }
             });
 
-        protected IQuery TestSaveIntoPlayerSetNameScoreImplicit = new Save()
+        protected IDatabaseObject TestSaveIntoPlayerSetNameScoreImplicit = new Save()
             .Collection("Player")
             .Assignment("Name", "Phogue")
             .Assignment("Score", 50);

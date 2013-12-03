@@ -6,12 +6,12 @@ namespace Procon.Database.Serialization.Test {
     public abstract class TestSerializerCreate {
         #region TestCreateDatabaseProcon
 
-        protected IQuery TestCreateDatabaseProconExplicit = new Create()
+        protected IDatabaseObject TestCreateDatabaseProconExplicit = new Create()
             .Database(new Builders.Database() {
                 Name = "Procon"
             });
 
-        protected IQuery TestCreateDatabaseProconImplicit = new Create()
+        protected IDatabaseObject TestCreateDatabaseProconImplicit = new Create()
             .Database("Procon");
 
         public abstract void TestCreateDatabaseProcon();
@@ -20,7 +20,7 @@ namespace Procon.Database.Serialization.Test {
 
         #region TestCreatePlayerWithFieldStringName
 
-        protected IQuery TestCreatePlayerWithFieldStringNameExplicit = new Create()
+        protected IDatabaseObject TestCreatePlayerWithFieldStringNameExplicit = new Create()
             .Collection(new Collection() {
                 Name = "Player"
             })
@@ -34,7 +34,7 @@ namespace Procon.Database.Serialization.Test {
                 )
             );
 
-        protected IQuery TestCreatePlayerWithFieldStringNameImplicit = new Create()
+        protected IDatabaseObject TestCreatePlayerWithFieldStringNameImplicit = new Create()
             .Collection("Player")
             .Field("Name", new StringType());
 
@@ -44,7 +44,7 @@ namespace Procon.Database.Serialization.Test {
 
         #region TestCreatePlayerWithFieldStringSpecifiedLengthName
 
-        protected IQuery TestCreatePlayerWithFieldStringSpecifiedLengthNameExplicit = new Create()
+        protected IDatabaseObject TestCreatePlayerWithFieldStringSpecifiedLengthNameExplicit = new Create()
             .Collection(new Collection() {
                 Name = "Player"
             })
@@ -63,7 +63,7 @@ namespace Procon.Database.Serialization.Test {
                 )
             );
 
-        protected IQuery TestCreatePlayerWithFieldStringSpecifiedLengthNameImplicit = new Create()
+        protected IDatabaseObject TestCreatePlayerWithFieldStringSpecifiedLengthNameImplicit = new Create()
             .Collection("Player")
             .Field("Name", 40);
 
@@ -73,7 +73,7 @@ namespace Procon.Database.Serialization.Test {
 
         #region TestCreatePlayerWithFieldStringSpecifiedLengthNameAndFieldIntegerScore
 
-        protected IQuery TestCreatePlayerWithFieldStringSpecifiedLengthNameAndFieldIntegerScoreExplicit = new Create()
+        protected IDatabaseObject TestCreatePlayerWithFieldStringSpecifiedLengthNameAndFieldIntegerScoreExplicit = new Create()
             .Collection(new Collection() {
                 Name = "Player"
             })
@@ -101,7 +101,7 @@ namespace Procon.Database.Serialization.Test {
                 )
             );
 
-        protected IQuery TestCreatePlayerWithFieldStringSpecifiedLengthNameAndFieldIntegerScoreImplicit = new Create()
+        protected IDatabaseObject TestCreatePlayerWithFieldStringSpecifiedLengthNameAndFieldIntegerScoreImplicit = new Create()
             .Collection("Player")
             .Field("Name", 40)
             .Field("Score", new IntegerType());
@@ -112,7 +112,7 @@ namespace Procon.Database.Serialization.Test {
 
         #region TestCreatePlayerWithFieldStringSpecifiedLengthNameNotNullAndFieldIntegerScore
 
-        protected IQuery TestCreatePlayerWithFieldStringSpecifiedLengthNameNotNullAndFieldIntegerScoreExplicit = new Create()
+        protected IDatabaseObject TestCreatePlayerWithFieldStringSpecifiedLengthNameNotNullAndFieldIntegerScoreExplicit = new Create()
             .Collection(new Collection() {
                 Name = "Player"
             })
@@ -139,7 +139,7 @@ namespace Procon.Database.Serialization.Test {
                 )
             );
 
-        protected IQuery TestCreatePlayerWithFieldStringSpecifiedLengthNameNotNullAndFieldIntegerScoreImplicit = new Create()
+        protected IDatabaseObject TestCreatePlayerWithFieldStringSpecifiedLengthNameNotNullAndFieldIntegerScoreImplicit = new Create()
             .Collection("Player")
             .Field("Name", 40, false)
             .Field("Score", new IntegerType());
@@ -150,7 +150,7 @@ namespace Procon.Database.Serialization.Test {
 
         #region TestCreatePlayerWithFieldIntegerScoreUnsigned
 
-        protected IQuery TestCreatePlayerWithFieldIntegerScoreUnsignedExplicit = new Create()
+        protected IDatabaseObject TestCreatePlayerWithFieldIntegerScoreUnsignedExplicit = new Create()
             .Collection(new Collection() {
                 Name = "Player"
             })
@@ -165,7 +165,7 @@ namespace Procon.Database.Serialization.Test {
                 )
             );
 
-        protected IQuery TestCreatePlayerWithFieldIntegerScoreUnsignedImplicit = new Create()
+        protected IDatabaseObject TestCreatePlayerWithFieldIntegerScoreUnsignedImplicit = new Create()
             .Collection("Player")
             // There is no shorthand for something this uncommon.
             .Field("Score", new IntegerType() {
@@ -178,7 +178,7 @@ namespace Procon.Database.Serialization.Test {
 
         #region TestCreatePlayerWithFieldIntegerScoreUnsignedAutoIncrement
 
-        protected IQuery TestCreatePlayerWithFieldIntegerScoreUnsignedAutoIncrementExplicit = new Create()
+        protected IDatabaseObject TestCreatePlayerWithFieldIntegerScoreUnsignedAutoIncrementExplicit = new Create()
             .Collection(new Collection() {
                 Name = "Player"
             })
@@ -194,7 +194,7 @@ namespace Procon.Database.Serialization.Test {
                 )
             );
 
-        protected IQuery TestCreatePlayerWithFieldIntegerScoreUnsignedAutoIncrementImplicit = new Create()
+        protected IDatabaseObject TestCreatePlayerWithFieldIntegerScoreUnsignedAutoIncrementImplicit = new Create()
             .Collection("Player")
             // There is no shorthand for something this uncommon.
             .Field("Score", new IntegerType() {
@@ -208,7 +208,7 @@ namespace Procon.Database.Serialization.Test {
 
         #region TestCreatePlayerWithFieldStringNameWithIndexOnName
 
-        protected IQuery TestCreatePlayerWithFieldStringNameWithIndexOnNameExplicit = new Create()
+        protected IDatabaseObject TestCreatePlayerWithFieldStringNameWithIndexOnNameExplicit = new Create()
             .Collection(new Collection() {
                 Name = "Player"
             })
@@ -232,7 +232,7 @@ namespace Procon.Database.Serialization.Test {
                 )
             );
 
-        protected IQuery TestCreatePlayerWithFieldStringNameWithIndexOnNameImplicit = new Create()
+        protected IDatabaseObject TestCreatePlayerWithFieldStringNameWithIndexOnNameImplicit = new Create()
             .Collection("Player")
             .Field("Name", new StringType())
             .Index("Name");
@@ -243,7 +243,7 @@ namespace Procon.Database.Serialization.Test {
 
         #region TestCreatePlayerWithFieldStringNameWithIndexOnNameDescending
 
-        protected IQuery TestCreatePlayerWithFieldStringNameWithIndexOnNameDescendingExplicit = new Create()
+        protected IDatabaseObject TestCreatePlayerWithFieldStringNameWithIndexOnNameDescendingExplicit = new Create()
             .Collection(new Collection() {
                 Name = "Player"
             })
@@ -267,7 +267,7 @@ namespace Procon.Database.Serialization.Test {
                 )
             );
 
-        protected IQuery TestCreatePlayerWithFieldStringNameWithIndexOnNameDescendingImplicit = new Create()
+        protected IDatabaseObject TestCreatePlayerWithFieldStringNameWithIndexOnNameDescendingImplicit = new Create()
             .Collection("Player")
             .Field("Name", new StringType())
             .Index("Name", new Descending());

@@ -6,12 +6,12 @@ namespace Procon.Database.Serialization.Test {
 
         #region TestSelectAllFromPlayer
 
-        protected IQuery TestSelectAllFromPlayerExplicit = new Find()
+        protected IDatabaseObject TestSelectAllFromPlayerExplicit = new Find()
             .Collection(new Collection() {
                 Name = "Player"
             });
 
-        protected IQuery TestSelectAllFromPlayerImplicit = new Find()
+        protected IDatabaseObject TestSelectAllFromPlayerImplicit = new Find()
             .Collection("Player");
 
         public abstract void TestSelectAllFromPlayer();
@@ -20,13 +20,13 @@ namespace Procon.Database.Serialization.Test {
 
         #region TestSelectDistinctAllFromPlayer
 
-        protected IQuery TestSelectDistinctAllFromPlayerExplicit = new Find()
+        protected IDatabaseObject TestSelectDistinctAllFromPlayerExplicit = new Find()
             .Attribute(new Distinct())
             .Collection(new Collection() {
                 Name = "Player"
             });
 
-        protected IQuery TestSelectDistinctAllFromPlayerImplicit = new Find()
+        protected IDatabaseObject TestSelectDistinctAllFromPlayerImplicit = new Find()
             .Attribute(new Distinct())
             .Collection("Player");
 
@@ -36,7 +36,7 @@ namespace Procon.Database.Serialization.Test {
 
         #region TestSelectAllFromPlayerWhereNameEqualsPhogue
 
-        protected IQuery TestSelectAllFromPlayerWhereNameEqualsPhogueExplicit = new Find()
+        protected IDatabaseObject TestSelectAllFromPlayerWhereNameEqualsPhogueExplicit = new Find()
             .Condition(new Equals() {
                     new Field() {
                         Name = "Name"
@@ -49,7 +49,7 @@ namespace Procon.Database.Serialization.Test {
                 Name = "Player"
             });
 
-        protected IQuery TestSelectAllFromPlayerWhereNameEqualsPhogueImplicit = new Find()
+        protected IDatabaseObject TestSelectAllFromPlayerWhereNameEqualsPhogueImplicit = new Find()
             .Condition("Name", "Phogue")
             .Collection("Player");
 
@@ -59,7 +59,7 @@ namespace Procon.Database.Serialization.Test {
 
         #region TestSelectAllFromPlayerWherePlayerNameEqualsPhogue
 
-        protected IQuery TestSelectAllFromPlayerWherePlayerNameEqualsPhogueExplicit = new Find()
+        protected IDatabaseObject TestSelectAllFromPlayerWherePlayerNameEqualsPhogueExplicit = new Find()
             .Condition(new Equals() {
                     new Field() {
                         Name = "Name",
@@ -75,7 +75,7 @@ namespace Procon.Database.Serialization.Test {
                 Name = "Player"
             });
 
-        protected IQuery TestSelectAllFromPlayerWherePlayerNameEqualsPhogueImplicit = new Find()
+        protected IDatabaseObject TestSelectAllFromPlayerWherePlayerNameEqualsPhogueImplicit = new Find()
             .Condition("Player.Name", "Phogue")
             .Collection("Player");
 
@@ -85,7 +85,7 @@ namespace Procon.Database.Serialization.Test {
 
         #region TestSelectScoreFromPlayerWhereNameEqualsPhogue
 
-        protected IQuery TestSelectScoreFromPlayerWhereNameEqualsPhogueExplicit = new Find()
+        protected IDatabaseObject TestSelectScoreFromPlayerWhereNameEqualsPhogueExplicit = new Find()
             .Condition(new Equals() {
                     new Field() {
                         Name = "Name"
@@ -101,7 +101,7 @@ namespace Procon.Database.Serialization.Test {
                 Name = "Score"
             });
 
-        protected IQuery TestSelectScoreFromPlayerWhereNameEqualsPhogueImplicit = new Find()
+        protected IDatabaseObject TestSelectScoreFromPlayerWhereNameEqualsPhogueImplicit = new Find()
             .Condition("Name", "Phogue")
             .Collection("Player")
             .Field("Score");
@@ -112,7 +112,7 @@ namespace Procon.Database.Serialization.Test {
 
         #region TestSelectScoreRankFromPlayerWhereNameEqualsPhogue
 
-        protected IQuery TestSelectScoreRankFromPlayerWhereNameEqualsPhogueExplicit = new Find()
+        protected IDatabaseObject TestSelectScoreRankFromPlayerWhereNameEqualsPhogueExplicit = new Find()
             .Condition(new Equals() {
                     new Field() {
                         Name = "Name"
@@ -131,7 +131,7 @@ namespace Procon.Database.Serialization.Test {
                 Name = "Rank"
             });
 
-        protected IQuery TestSelectScoreRankFromPlayerWhereNameEqualsPhogueImplicit = new Find()
+        protected IDatabaseObject TestSelectScoreRankFromPlayerWhereNameEqualsPhogueImplicit = new Find()
             .Condition("Name", "Phogue")
             .Collection("Player")
             .Field("Score")
@@ -143,7 +143,7 @@ namespace Procon.Database.Serialization.Test {
 
         #region TestSelectAllFromPlayerWhereNameEqualsPhogueAndScoreEqualsTen
 
-        protected IQuery TestSelectAllFromPlayerWhereNameEqualsPhogueAndScoreEqualsTenExplicit = new Find()
+        protected IDatabaseObject TestSelectAllFromPlayerWhereNameEqualsPhogueAndScoreEqualsTenExplicit = new Find()
             .Condition(new Equals() {
                     new Field() {
                         Name = "Name"
@@ -164,7 +164,7 @@ namespace Procon.Database.Serialization.Test {
                 Name = "Player"
             });
 
-        protected IQuery TestSelectAllFromPlayerWhereNameEqualsPhogueAndScoreEqualsTenImplicit = new Find()
+        protected IDatabaseObject TestSelectAllFromPlayerWhereNameEqualsPhogueAndScoreEqualsTenImplicit = new Find()
             .Condition("Name", "Phogue")
             .Condition("Score", 10)
             .Collection("Player");
@@ -175,7 +175,7 @@ namespace Procon.Database.Serialization.Test {
 
         #region TestSelectAllFromPlayerWhereNameEqualsPhogueOrZaeed
 
-        protected IQuery TestSelectAllFromPlayerWhereNameEqualsPhogueOrZaeedExplicit = new Find()
+        protected IDatabaseObject TestSelectAllFromPlayerWhereNameEqualsPhogueOrZaeedExplicit = new Find()
             .Condition(new Or() {
                     new Equals() {
                         new Field() {
@@ -198,7 +198,7 @@ namespace Procon.Database.Serialization.Test {
                 Name = "Player"
             });
 
-        protected IQuery TestSelectAllFromPlayerWhereNameEqualsPhogueOrZaeedImplicit = new Find()
+        protected IDatabaseObject TestSelectAllFromPlayerWhereNameEqualsPhogueOrZaeedImplicit = new Find()
             .Condition(new Or().Condition("Name", "Phogue").Condition("Name", "Zaeed"))
             .Collection("Player");
 
@@ -208,7 +208,7 @@ namespace Procon.Database.Serialization.Test {
 
         #region TestSelectAllFromPlayerWhereNameEqualsPhogueOrZaeedAndScoreAbove10AndBelow20
 
-        protected IQuery TestSelectAllFromPlayerWhereNameEqualsPhogueOrZaeedAndScoreAbove10AndBelow20Explicit = new Find()
+        protected IDatabaseObject TestSelectAllFromPlayerWhereNameEqualsPhogueOrZaeedAndScoreAbove10AndBelow20Explicit = new Find()
             .Condition(new Or() {
                     new Equals() {
                         new Field() {
@@ -247,7 +247,7 @@ namespace Procon.Database.Serialization.Test {
                 Name = "Player"
             });
 
-        protected IQuery TestSelectAllFromPlayerWhereNameEqualsPhogueOrZaeedAndScoreAbove10AndBelow20Implicit = new Find()
+        protected IDatabaseObject TestSelectAllFromPlayerWhereNameEqualsPhogueOrZaeedAndScoreAbove10AndBelow20Implicit = new Find()
             .Condition(new Or().Condition("Name", "Phogue").Condition("Name", "Zaeed"))
             .Condition("Score", new GreaterThan(), 10)
             .Condition("Score", new LessThan(), 20)
@@ -259,7 +259,7 @@ namespace Procon.Database.Serialization.Test {
 
         #region TestSelectAllFromPlayerWhereNameEqualsPhogueAndScoreAbove50OrNameEqualsZaeedAndScoreBelow50
 
-        protected IQuery TestSelectAllFromPlayerWhereNameEqualsPhogueAndScoreAbove50OrNameEqualsZaeedAndScoreBelow50Explicit = new Find()
+        protected IDatabaseObject TestSelectAllFromPlayerWhereNameEqualsPhogueAndScoreAbove50OrNameEqualsZaeedAndScoreBelow50Explicit = new Find()
             .Condition(new Or() {
                     new And() {
                         new Equals() {
@@ -302,7 +302,7 @@ namespace Procon.Database.Serialization.Test {
                 Name = "Player"
             });
 
-        protected IQuery TestSelectAllFromPlayerWhereNameEqualsPhogueAndScoreAbove50OrNameEqualsZaeedAndScoreBelow50Implicit = new Find()
+        protected IDatabaseObject TestSelectAllFromPlayerWhereNameEqualsPhogueAndScoreAbove50OrNameEqualsZaeedAndScoreBelow50Implicit = new Find()
         .Condition(new Or()
             .Condition(
                 new And().Condition("Name", "Phogue").Condition("Score", new GreaterThan(), 50)
@@ -318,7 +318,7 @@ namespace Procon.Database.Serialization.Test {
 
         #region TestSelectAllFromPlayerSortByScore
 
-        protected IQuery TestSelectAllFromPlayerSortByScoreExplicit = new Find()
+        protected IDatabaseObject TestSelectAllFromPlayerSortByScoreExplicit = new Find()
             .Collection(new Collection() {
                 Name = "Player"
             })
@@ -326,7 +326,7 @@ namespace Procon.Database.Serialization.Test {
                 Name = "Score"
             });
 
-        protected IQuery TestSelectAllFromPlayerSortByScoreImplicit = new Find()
+        protected IDatabaseObject TestSelectAllFromPlayerSortByScoreImplicit = new Find()
             .Collection("Player")
             .Sort("Score");
 
@@ -336,7 +336,7 @@ namespace Procon.Database.Serialization.Test {
 
         #region TestSelectAllFromPlayerSortByNameThenScoreDescending
 
-        protected IQuery TestSelectAllFromPlayerSortByNameThenScoreDescendingExplicit = new Find()
+        protected IDatabaseObject TestSelectAllFromPlayerSortByNameThenScoreDescendingExplicit = new Find()
             .Collection(new Collection() {
                 Name = "Player"
             })
@@ -347,7 +347,7 @@ namespace Procon.Database.Serialization.Test {
                 Name = "Score"
             }.Attribute(new Descending()));
 
-        protected IQuery TestSelectAllFromPlayerSortByNameThenScoreDescendingImplicit = new Find()
+        protected IDatabaseObject TestSelectAllFromPlayerSortByNameThenScoreDescendingImplicit = new Find()
             .Collection("Player")
             .Sort("Name")
             .Sort(new Sort() { Name = "Score" }.Attribute(new Descending()));

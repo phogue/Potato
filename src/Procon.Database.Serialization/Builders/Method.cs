@@ -1,5 +1,5 @@
 namespace Procon.Database.Serialization.Builders {
-    public abstract class Method : Query {
+    public abstract class Method : DatabaseObject {
 
     }
 }

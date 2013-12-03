@@ -13,7 +13,7 @@ namespace Procon.Core.Database {
         /// <summary>
         /// The currently opened database drivers.
         /// </summary>
-        public Dictionary<String, Driver> OpenDrivers { get; set; }
+        public Dictionary<String, IDriver> OpenDrivers { get; set; }
 
         /// <summary>
         /// List of drivers available for cloning and using.
@@ -23,7 +23,7 @@ namespace Procon.Core.Database {
         };
 
         public DatabaseController() : base() {
-            this.OpenDrivers = new Dictionary<String, Driver>();
+            this.OpenDrivers = new Dictionary<String, IDriver>();
         }
 
         /// <summary>
@@ -61,11 +61,11 @@ namespace Procon.Core.Database {
 
                         driver.Hostname = this.Variables.Get(Variable.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabaseHostname), String.Empty);
                         driver.Port = this.Variables.Get<ushort>(Variable.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabasePort));
-                        driver.Uid = this.Variables.Get(Variable.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabaseUid), String.Empty);
+                        driver.Username = this.Variables.Get(Variable.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabaseUid), String.Empty);
                         driver.Password = this.Variables.Get(Variable.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabasePassword), String.Empty);
 
                         // If we don't already have this exact driver loaded and a connection can be established.
-                        if (this.OpenDrivers.ContainsValue(driver) == false && driver.OpenConnection() == true) {
+                        if (this.OpenDrivers.ContainsValue(driver) == false && driver.Connect() == true) {
                             this.OpenDrivers.Add(databaseGroupName, driver);
                         }
                     }
@@ -92,8 +92,8 @@ namespace Procon.Core.Database {
         public override void Dispose() {
             this.Variables.Variable(CommonVariableNames.DatabaseConfigGroups).PropertyChanged -= new PropertyChangedEventHandler(databaseGroupNameVariable_PropertyChanged);
 
-            foreach (KeyValuePair<String, Driver> driver in this.OpenDrivers) {
-                driver.Value.Dispose();
+            foreach (var driver in this.OpenDrivers) {
+                driver.Value.Close();
             }
             
             this.OpenDrivers.Clear();

@@ -39,7 +39,7 @@ namespace Procon.Database.Serialization {
             return this;
         }
 
-        public ISerializer Parse(IQuery query) {
+        public ISerializer Parse(IDatabaseObject query) {
             this.Parse(query as Method);
 
             return this;

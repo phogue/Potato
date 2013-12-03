@@ -27,7 +27,7 @@ namespace Procon.Database.Serialization.Builders.Values {
                     CollectionValue collection = value as CollectionValue;
 
                     // If it's a sub document..
-                    if (document != null ) {
+                    if (document != null) {
                         data.Add(new JProperty(field.Name, document.ToJObject()));
                     }
                     // If it's an array of values (no assignments)

@@ -121,6 +121,9 @@ namespace Procon.Database.Serialization {
             else if (method is Remove) {
                 parsed.Add("remove");
             }
+            else if (method is Modify) {
+                parsed.Add("findAndModify");
+            }
 
             return parsed;
         }
@@ -263,6 +266,37 @@ namespace Procon.Database.Serialization {
             };
         }
 
+        /// <summary>
+        /// Parse field assignments, similar to conditions, but without the conditionals.
+        /// </summary>
+        /// <param name="query"></param>
+        /// <returns></returns>
+        protected virtual List<String> ParseAssignments(IDatabaseObject query) {
+            DocumentValue document = new DocumentValue();
+            document.AddRange(query.Where(statement => statement is Assignment));
+            
+            return new List<String>() {
+                document.ToJObject().ToString(Formatting.None)
+            };
+            /*
+
+            List<String> assignments = new List<String>();
+
+            foreach (Assignment assignment in query.Where(statement => statement is Assignment)) {
+                
+
+                Field field = assignment.FirstOrDefault(statement => statement is Field) as Field;
+                Value value = assignment.FirstOrDefault(statement => statement is Value) as Value;
+
+                if (field != null && value != null) {
+                    assignments.Add(String.Format("{0} = {1}", this.ParseField(field), this.ParseValue(value)));
+                }
+            }
+
+            return assignments;
+            */
+        }
+
         protected virtual List<String> ParseSortings(IDatabaseObject query) {
             JObject sortings = new JObject();
 
@@ -283,6 +317,7 @@ namespace Procon.Database.Serialization {
                 Collections = parsed.Collections.FirstOrDefault(),
                 Conditions = parsed.Conditions.FirstOrDefault(),
                 Fields = parsed.Fields,
+                Assignments = parsed.Assignments.FirstOrDefault(),
                 Sortings = parsed.Sortings.FirstOrDefault()
             };
         }
@@ -299,6 +334,8 @@ namespace Procon.Database.Serialization {
             parsed.Conditions = this.ParseConditions(method);
 
             parsed.Fields = this.ParseFields(method);
+
+            parsed.Assignments = this.ParseAssignments(method);
 
             parsed.Sortings = this.ParseSortings(method);
 

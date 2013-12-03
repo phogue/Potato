@@ -48,8 +48,10 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MongoDb\TestSerializerMongoDbModifyImplicit.cs" />
     <Compile Include="MongoDb\TestSerializerMongoDbRemoveImplicit.cs" />
     <Compile Include="MongoDb\TestSerializerMongoDbRemoveExplicit.cs" />
+    <Compile Include="MongoDb\TestSerializerMongoDbModifyExplicit.cs" />
     <Compile Include="MySql\TestSerializerMySqlMergeExplicit.cs" />
     <Compile Include="MySql\TestSerializerMySqlMergeImplicit.cs" />
     <Compile Include="TestSerializerMerge.cs" />

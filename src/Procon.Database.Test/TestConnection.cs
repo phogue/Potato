@@ -3,9 +3,11 @@ using System.Text;
 using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
+using Newtonsoft.Json.Linq;
 using Procon.Database.Drivers;
 using Procon.Database.Serialization;
 using Procon.Database.Serialization.Builders;
+using Procon.Database.Serialization.Builders.Results;
 using Procon.Database.Serialization.Builders.Types;
 
 namespace Procon.Database.Test {
@@ -60,7 +62,13 @@ namespace Procon.Database.Test {
             );
             */
 
-            IDatabaseObject result = driver.Query(new Find().Collection("player").Condition("Name", "Phogue").Assignment("Score", 99));
+            Result result = driver.Query(new Find().Collection("player").Condition("Name", "Phogue").Assignment("Score", 99)) as Result;
+
+            JArray array = result.ToJArray();
+
+            foreach (JObject obj in result.ToJArray()) {
+                var x = 0;
+            }
 
             driver.Close();
         }

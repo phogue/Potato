@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Data.Common;
 using Procon.Database.Serialization;
-using Procon.Database.Serialization.Builders;
 
 namespace Procon.Database {
     public abstract class Driver : IDriver, IDisposable, ICloneable, IEquatable<Driver> {

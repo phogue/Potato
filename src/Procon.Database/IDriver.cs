@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Procon.Database.Serialization;
-using Procon.Database.Serialization.Builders;
 
 namespace Procon.Database {
     public interface IDriver {

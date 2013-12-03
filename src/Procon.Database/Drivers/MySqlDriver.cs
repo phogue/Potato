@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Data;
 using MySql.Data.MySqlClient;
-using Newtonsoft.Json.Linq;
 using Procon.Database.Serialization;
 using Procon.Database.Serialization.Builders;
 using Procon.Database.Serialization.Builders.Results;
 
 namespace Procon.Database.Drivers {
-    public class MySqlDriver : SqlDriver {
+    public class MySqlDriver : Driver {
 
         public override String Name {
             get {
@@ -58,7 +57,7 @@ namespace Procon.Database.Drivers {
         /// <param name="query"></param>
         /// <param name="result"></param>
         /// <returns></returns>
-        protected void QueryReader(ICompiledQuery query, Result result) {
+        protected void Read(ICompiledQuery query, Result result) {
             if (this.Connection != null && this.Connection.State == ConnectionState.Open) {
                 using (IDbCommand command = this.Connection.CreateCommand()) {
                     command.CommandText = query.Completed;
@@ -66,7 +65,7 @@ namespace Procon.Database.Drivers {
                     using (IDataReader reader = command.ExecuteReader()) {
                         if (reader != null) {
                             while (reader.Read() == true) {
-                                Row row = new Row();
+                                Document row = new Document();
 
                                 for (int field = 0; field < reader.FieldCount; field++) {
                                     row.Assignment(reader.GetName(field), reader.GetValue(field));
@@ -86,7 +85,7 @@ namespace Procon.Database.Drivers {
         /// <param name="query"></param>
         /// <param name="result"></param>
         /// <returns></returns>
-        protected void QueryNonQuery(ICompiledQuery query, Result result) {
+        protected void Execute(ICompiledQuery query, Result result) {
             if (this.Connection != null && this.Connection.State == ConnectionState.Open) {
                 using (IDbCommand command = this.Connection.CreateCommand()) {
                     command.CommandText = query.Completed;
@@ -106,10 +105,10 @@ namespace Procon.Database.Drivers {
             Result result = new Result();
 
             if (query.Root is Find) {
-                this.QueryReader(query, result);
+                this.Read(query, result);
             }
             else {
-                this.QueryNonQuery(query, result);
+                this.Execute(query, result);
             }
 
             return result;

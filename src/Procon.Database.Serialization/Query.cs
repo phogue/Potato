@@ -1,10 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Procon.Database.Serialization.Builders;
 using Procon.Database.Serialization.Builders.Attributes;
 using Procon.Database.Serialization.Builders.Types;
+using Attribute = Procon.Database.Serialization.Builders.Attribute;
+using Type = Procon.Database.Serialization.Builders.Type;
 
-namespace Procon.Database.Serialization.Builders {
+namespace Procon.Database.Serialization {
     public abstract class Query : List<IQuery>, IQuery {
 
         protected virtual Query Append(IQuery data) {

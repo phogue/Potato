@@ -65,7 +65,7 @@
     <Compile Include="Builders\Find.cs" />
     <Compile Include="Builders\GreaterThan.cs" />
     <Compile Include="Builders\GreaterThanEquals.cs" />
-    <Compile Include="Builders\IQuery.cs" />
+    <Compile Include="IQuery.cs" />
     <Compile Include="Builders\LessThan.cs" />
     <Compile Include="Builders\LessThanEquals.cs" />
     <Compile Include="Builders\Logical.cs" />
@@ -74,7 +74,7 @@
     <Compile Include="Builders\NumericValue.cs" />
     <Compile Include="Builders\Operator.cs" />
     <Compile Include="Builders\Or.cs" />
-    <Compile Include="Builders\Query.cs" />
+    <Compile Include="Query.cs" />
     <Compile Include="Builders\RawValue.cs" />
     <Compile Include="Builders\Remove.cs" />
     <Compile Include="Builders\Sort.cs" />
@@ -86,6 +86,7 @@
     <Compile Include="Builders\Types\StringType.cs" />
     <Compile Include="Builders\Types\TextType.cs" />
     <Compile Include="Builders\Value.cs" />
+    <Compile Include="CompiledQueryResult.cs" />
     <Compile Include="Exceptions\SerializationException.cs" />
     <Compile Include="ICompiledQuery.cs" />
     <Compile Include="IParsedQuery.cs" />

@@ -1,6 +1,4 @@
 ﻿using Procon.Database.Serialization.Builders;
-using Procon.Database.Serialization.Builders.Attributes;
-using Procon.Database.Serialization.Builders.Types;
 
 namespace Procon.Database.Serialization.Test {
     public abstract class TestSerializerDrop {

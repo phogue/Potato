@@ -264,6 +264,8 @@ namespace Procon.Database.Serialization {
 
         public override ICompiledQuery Compile(IParsedQuery parsed) {
             return new CompiledQuery {
+                Children = parsed.Children.Select(this.Compile).ToList(),
+                Root = parsed.Root,
                 Method = parsed.Methods.FirstOrDefault(),
                 Collections = parsed.Collections.FirstOrDefault(),
                 Conditions = parsed.Conditions.FirstOrDefault(),
@@ -272,7 +274,29 @@ namespace Procon.Database.Serialization {
             };
         }
 
+        /// <summary>
+        /// Parses all children of the method
+        /// </summary>
+        /// <param name="method"></param>
+        /// <returns></returns>
+        protected List<IParsedQuery> ParseChildren(Method method) {
+            List<IParsedQuery> children = new List<IParsedQuery>();
+
+            foreach (Method child in method.Where(child => child is Method)) {
+                IParsedQuery parsedChild = new ParsedQuery();
+
+                this.Parse(child, parsedChild);
+
+                children.Add(parsedChild);
+            }
+
+            return children;
+        }
+
         public override ISerializer Parse(Method method, IParsedQuery parsed) {
+            parsed.Root = method;
+
+            parsed.Children = this.ParseChildren(method);
 
             parsed.Methods = this.ParseMethod(method);
 

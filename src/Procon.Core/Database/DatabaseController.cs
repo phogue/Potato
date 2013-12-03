@@ -59,10 +59,12 @@ namespace Procon.Core.Database {
                     if (driver != null) {
                         driver = (Driver)driver.Clone();
 
-                        driver.Hostname = this.Variables.Get(Variable.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabaseHostname), String.Empty);
-                        driver.Port = this.Variables.Get<ushort>(Variable.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabasePort));
-                        driver.Username = this.Variables.Get(Variable.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabaseUid), String.Empty);
-                        driver.Password = this.Variables.Get(Variable.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabasePassword), String.Empty);
+                        driver.Settings = new DriverSettings() {
+                            Hostname = this.Variables.Get(Variable.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabaseHostname), String.Empty),
+                            Port = this.Variables.Get<ushort>(Variable.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabasePort)),
+                            Username = this.Variables.Get(Variable.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabaseUid), String.Empty),
+                            Password = this.Variables.Get(Variable.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabasePassword), String.Empty)
+                        };
 
                         // If we don't already have this exact driver loaded and a connection can be established.
                         if (this.OpenDrivers.ContainsValue(driver) == false && driver.Connect() == true) {

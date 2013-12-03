@@ -168,6 +168,20 @@ namespace Procon.Database.Serialization {
                     Data = data.ToString()
                 };
             }
+            else if (data is ICollection<Object>) {
+                value = new CollectionValue();
+
+                foreach (var item in data as ICollection<Object>) {
+                    value.Add(this.BuildValue(item));
+                }
+            }
+            else if (data is Dictionary<String, Object>) {
+                value = new DocumentValue();
+
+                foreach (var item in data as Dictionary<String, Object>) {
+                    value.Assignment(item.Key, item.Value);
+                }
+            }
 
             return value;
         }

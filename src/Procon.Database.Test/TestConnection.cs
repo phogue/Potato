@@ -7,7 +7,6 @@ using Newtonsoft.Json.Linq;
 using Procon.Database.Drivers;
 using Procon.Database.Serialization;
 using Procon.Database.Serialization.Builders;
-using Procon.Database.Serialization.Builders.Results;
 using Procon.Database.Serialization.Builders.Types;
 
 namespace Procon.Database.Test {
@@ -16,11 +15,13 @@ namespace Procon.Database.Test {
         [Test]
         public void TestMethod1() {
             IDriver driver = new MySqlDriver() {
-                Hostname = "localhost",
-                Username = "root",
-                Password = "",
-                Port = 3306,
-                Database = "test_connection"
+                Settings = new DriverSettings() {
+                    Hostname = "localhost",
+                    Username = "root",
+                    Password = "",
+                    Port = 3306,
+                    Database = "test_connection"
+                }
             };
 
             driver.Connect();
@@ -43,11 +44,13 @@ namespace Procon.Database.Test {
         [Test]
         public void TestMethod2() {
             IDriver driver = new MySqlDriver() {
-                Hostname = "localhost",
-                Username = "root",
-                Password = "",
-                Port = 3306,
-                Database = "test_connection"
+                Settings = new DriverSettings() {
+                    Hostname = "localhost",
+                    Username = "root",
+                    Password = "",
+                    Port = 3306,
+                    Database = "test_connection"
+                }
             };
 
             driver.Connect();
@@ -62,9 +65,33 @@ namespace Procon.Database.Test {
             );
             */
 
-            Result result = driver.Query(new Find().Collection("player").Condition("Name", "Phogue").Assignment("Score", 99)) as Result;
+            CollectionValue result = driver.Query(new Find().Collection("player").Condition("Name", "Phogue").Assignment("Score", 99)) as CollectionValue;
 
             JArray array = result.ToJArray();
+
+            foreach (JObject obj in result.ToJArray()) {
+                var x = 0;
+            }
+
+            driver.Close();
+        }
+
+        [Test]
+        public void TestMethod3() {
+            IDriver driver = new MongoDbDriver() {
+                Settings = new DriverSettings() {
+                    Hostname = "localhost",
+                    Database = "procon"
+                }
+            };
+
+            driver.Connect();
+
+            CollectionValue result = driver.Query(new Find().Collection("players").Condition("Name", "Curled1")) as CollectionValue;
+
+            JArray array = result.ToJArray();
+
+            String kkll = array.ToString();
 
             foreach (JObject obj in result.ToJArray()) {
                 var x = 0;

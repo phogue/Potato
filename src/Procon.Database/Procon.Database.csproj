@@ -55,8 +55,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Driver.cs" />
+    <Compile Include="DriverSettings.cs" />
+    <Compile Include="Drivers\MongoDbDriver.cs" />
     <Compile Include="Drivers\MySqlDriver.cs" />
     <Compile Include="IDriver.cs" />
+    <Compile Include="IDriverSettings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

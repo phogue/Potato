@@ -1,12 +1,18 @@
 ﻿using System;
 using System.Data;
+using System.Data.Common;
 using MySql.Data.MySqlClient;
 using Procon.Database.Serialization;
 using Procon.Database.Serialization.Builders;
-using Procon.Database.Serialization.Builders.Results;
+using Procon.Database.Serialization.Builders.Attributes;
 
 namespace Procon.Database.Drivers {
     public class MySqlDriver : Driver {
+
+        /// <summary>
+        /// The open connection to the database.
+        /// </summary>
+        protected DbConnection Connection { get; set; }
 
         public override String Name {
             get {
@@ -23,11 +29,11 @@ namespace Procon.Database.Drivers {
             }
 
             MySqlConnectionStringBuilder connectionBuilder = new MySqlConnectionStringBuilder {
-                Server = this.Hostname,
-                Port = this.Port,
-                Database = this.Database,
-                UserID = this.Username,
-                Password = this.Password,
+                Server = this.Settings.Hostname,
+                Port = this.Settings.Port != null ? this.Settings.Port.Value : 0,
+                Database = this.Settings.Database,
+                UserID = this.Settings.Username,
+                Password = this.Settings.Password,
                 UseCompression = true
             };
 
@@ -57,7 +63,7 @@ namespace Procon.Database.Drivers {
         /// <param name="query"></param>
         /// <param name="result"></param>
         /// <returns></returns>
-        protected void Read(ICompiledQuery query, Result result) {
+        protected void Read(ICompiledQuery query, CollectionValue result) {
             if (this.Connection != null && this.Connection.State == ConnectionState.Open) {
                 using (IDbCommand command = this.Connection.CreateCommand()) {
                     command.CommandText = query.Completed;
@@ -65,7 +71,7 @@ namespace Procon.Database.Drivers {
                     using (IDataReader reader = command.ExecuteReader()) {
                         if (reader != null) {
                             while (reader.Read() == true) {
-                                Document row = new Document();
+                                DocumentValue row = new DocumentValue();
 
                                 for (int field = 0; field < reader.FieldCount; field++) {
                                     row.Assignment(reader.GetName(field), reader.GetValue(field));
@@ -85,7 +91,7 @@ namespace Procon.Database.Drivers {
         /// <param name="query"></param>
         /// <param name="result"></param>
         /// <returns></returns>
-        protected void Execute(ICompiledQuery query, Result result) {
+        protected void Execute(ICompiledQuery query, CollectionValue result) {
             if (this.Connection != null && this.Connection.State == ConnectionState.Open) {
                 using (IDbCommand command = this.Connection.CreateCommand()) {
                     command.CommandText = query.Completed;
@@ -102,7 +108,7 @@ namespace Procon.Database.Drivers {
         }
 
         protected override IDatabaseObject Query(ICompiledQuery query) {
-            Result result = new Result();
+            CollectionValue result = new CollectionValue();
 
             if (query.Root is Find) {
                 this.Read(query, result);

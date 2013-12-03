@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 
 namespace Procon.Database.Serialization {
+    [Serializable]
     public class ParsedQuery : IParsedQuery {
         /// <summary>
         /// List of parsed child queries.

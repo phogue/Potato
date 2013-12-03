@@ -5,6 +5,8 @@ using MySql.Data.MySqlClient;
 using Procon.Database.Serialization;
 using Procon.Database.Serialization.Builders;
 using Procon.Database.Serialization.Builders.Attributes;
+using Procon.Database.Serialization.Builders.Methods;
+using Procon.Database.Serialization.Builders.Values;
 
 namespace Procon.Database.Drivers {
     public class MySqlDriver : Driver {

@@ -1,5 +1,7 @@
-namespace Procon.Database.Serialization.Builders {
-    public abstract class Method : DatabaseObject {
+using System;
 
+namespace Procon.Database.Serialization.Builders {
+    [Serializable]
+    public abstract class Method : DatabaseObject {
     }
 }

@@ -19,7 +19,8 @@ namespace Procon.Core.Database {
         /// List of drivers available for cloning and using.
         /// </summary>
         protected List<Driver> AvailableDrivers = new List<Driver>() {
-            new MySqlDriver()
+            new MySqlDriver(),
+            new MongoDbDriver()
         };
 
         public DatabaseController() : base() {
@@ -39,10 +40,10 @@ namespace Procon.Core.Database {
         /// Fetches a list of the names of the grouped drivers and opens them.
         /// </summary>
         protected void OpenGroupedDrivers() {
-            List<String> databaseGroupNames = new List<String>(this.Variables.Variable(CommonVariableNames.DatabaseConfigGroups).ToType(new List<String>()));
-
-            // Add an empty key so no namespace is used.
-            databaseGroupNames.Add(String.Empty);
+            List<String> databaseGroupNames = new List<String>(this.Variables.Variable(CommonVariableNames.DatabaseConfigGroups).ToType(new List<String>())) {
+                // Add an empty key so no namespace is used.
+                String.Empty
+            };
 
             this.OpenGroupedDriverList(databaseGroupNames);
         }

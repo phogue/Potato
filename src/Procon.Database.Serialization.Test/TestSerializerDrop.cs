@@ -1,4 +1,6 @@
 ﻿using Procon.Database.Serialization.Builders;
+using Procon.Database.Serialization.Builders.Methods;
+using Procon.Database.Serialization.Builders.Statements;
 
 namespace Procon.Database.Serialization.Test {
     public abstract class TestSerializerDrop {
@@ -19,7 +21,7 @@ namespace Procon.Database.Serialization.Test {
         #region TestDropTablePlayer
 
         protected IDatabaseObject TestDropTablePlayerExplicit = new Drop()
-            .Collection(new Builders.Collection() {
+            .Collection(new Collection() {
                 Name = "Player"
             });
 

@@ -1,4 +1,9 @@
 using Procon.Database.Serialization.Builders;
+using Procon.Database.Serialization.Builders.Equalities;
+using Procon.Database.Serialization.Builders.Logicals;
+using Procon.Database.Serialization.Builders.Methods;
+using Procon.Database.Serialization.Builders.Statements;
+using Procon.Database.Serialization.Builders.Values;
 
 namespace Procon.Database.Serialization.Test {
     public abstract class TestSerializerRemove {
@@ -45,11 +50,12 @@ namespace Procon.Database.Serialization.Test {
         protected IDatabaseObject TestRemoveAllFromPlayerWherePlayerNameEqualsPhogueExplicit = new Remove()
             .Condition(new Equals() {
                     new Field() {
-                        Name = "Name",
-                        Collection = new Collection() {
+                        Name = "Name"
+                    }.Collection(
+                        new Collection() {
                             Name = "Player"
                         }
-                    },
+                    ),
                     new StringValue() {
                         Data = "Phogue"
                     }

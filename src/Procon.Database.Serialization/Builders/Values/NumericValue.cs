@@ -1,4 +1,7 @@
-namespace Procon.Database.Serialization.Builders {
+using System;
+
+namespace Procon.Database.Serialization.Builders.Values {
+    [Serializable]
     public class NumericValue : Value {
 
         public int? Integer { get; set; }

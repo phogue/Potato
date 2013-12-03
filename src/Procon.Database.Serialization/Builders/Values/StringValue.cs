@@ -1,6 +1,7 @@
 using System;
 
-namespace Procon.Database.Serialization.Builders {
+namespace Procon.Database.Serialization.Builders.Values {
+    [Serializable]
     public class StringValue : Value {
         public String Data { get; set; }
 

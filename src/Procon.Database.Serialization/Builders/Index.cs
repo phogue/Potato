@@ -1,7 +1,7 @@
-﻿
-using System;
+﻿using System;
 
 namespace Procon.Database.Serialization.Builders {
+    [Serializable]
     public class Index : DatabaseObject {
         /// <summary>
         /// The name of the index

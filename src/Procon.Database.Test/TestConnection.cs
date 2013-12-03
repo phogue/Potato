@@ -7,12 +7,15 @@ using Newtonsoft.Json.Linq;
 using Procon.Database.Drivers;
 using Procon.Database.Serialization;
 using Procon.Database.Serialization.Builders;
+using Procon.Database.Serialization.Builders.Methods;
 using Procon.Database.Serialization.Builders.Types;
+using Procon.Database.Serialization.Builders.Values;
 
 namespace Procon.Database.Test {
     [TestFixture]
     public class TestConnection {
         [Test]
+        [Ignore]
         public void TestMethod1() {
             IDriver driver = new MySqlDriver() {
                 Settings = new DriverSettings() {
@@ -42,6 +45,7 @@ namespace Procon.Database.Test {
         }
 
         [Test]
+        [Ignore]
         public void TestMethod2() {
             IDriver driver = new MySqlDriver() {
                 Settings = new DriverSettings() {
@@ -77,6 +81,7 @@ namespace Procon.Database.Test {
         }
 
         [Test]
+        [Ignore]
         public void TestMethod3() {
             IDriver driver = new MongoDbDriver() {
                 Settings = new DriverSettings() {

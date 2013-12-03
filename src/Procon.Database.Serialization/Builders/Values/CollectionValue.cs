@@ -1,7 +1,9 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Newtonsoft.Json.Linq;
 
-namespace Procon.Database.Serialization.Builders {
+namespace Procon.Database.Serialization.Builders.Values {
+    [Serializable]
     public class CollectionValue : Value {
         public JArray ToJArray() {
             JArray array = new JArray();

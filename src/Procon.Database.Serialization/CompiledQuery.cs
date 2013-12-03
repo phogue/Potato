@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 
 namespace Procon.Database.Serialization {
+    [Serializable]
     public class CompiledQuery : ICompiledQuery {
         /// <summary>
         /// List of compiled child queries.

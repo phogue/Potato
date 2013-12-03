@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json.Linq;
+using Procon.Database.Serialization.Builders.Statements;
 
-namespace Procon.Database.Serialization.Builders {
+namespace Procon.Database.Serialization.Builders.Values {
+    [Serializable]
     public class DocumentValue : Value {
 
         /// <summary>

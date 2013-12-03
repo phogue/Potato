@@ -3,11 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using Procon.Database.Serialization.Builders;
 using Procon.Database.Serialization.Builders.Attributes;
+using Procon.Database.Serialization.Builders.Equalities;
+using Procon.Database.Serialization.Builders.Statements;
 using Procon.Database.Serialization.Builders.Types;
+using Procon.Database.Serialization.Builders.Values;
 using Attribute = Procon.Database.Serialization.Builders.Attribute;
 using Type = Procon.Database.Serialization.Builders.Type;
 
 namespace Procon.Database.Serialization {
+    [Serializable]
     public abstract class DatabaseObject : List<IDatabaseObject>, IDatabaseObject {
 
         protected virtual DatabaseObject Append(IDatabaseObject data) {
@@ -49,6 +53,7 @@ namespace Procon.Database.Serialization {
 
         public IDatabaseObject Index(String name) {
             Field field = this.BuildField(name);
+            Collection collection = field.FirstOrDefault(statement => statement is Collection) as Collection;
 
             return this.Index(
                 new Index() {
@@ -56,15 +61,15 @@ namespace Procon.Database.Serialization {
                 }
                 .Sort(
                     new Sort() {
-                        Name = field.Name,
-                        Collection = field.Collection
-                    }
+                        Name = field.Name
+                    }.Collection(collection)
                 )
             );
         }
 
         public IDatabaseObject Index(String name, Attribute attribute) {
             Field field = this.BuildField(name);
+            Collection collection = field.FirstOrDefault(statement => statement is Collection) as Collection;
 
             return this.Index(
                 new Index() {
@@ -72,9 +77,9 @@ namespace Procon.Database.Serialization {
                 }
                 .Sort(
                     new Sort() {
-                        Name = field.Name,
-                        Collection = field.Collection
+                        Name = field.Name
                     }
+                    .Collection(collection)
                     .Attribute(attribute)
                 )
             );
@@ -130,11 +135,10 @@ namespace Procon.Database.Serialization {
 
             if (names.Length == 2) {
                 field = new Field() {
-                    Name = names.Last().Replace("`", ""),
-                    Collection = new Collection() {
-                        Name = names.First().Replace("`", "")
-                    }
+                    Name = names.Last().Replace("`", "")
                 };
+
+                field.Collection(names.First().Replace("`", ""));
             }
             else {
                 field = new Field() {
@@ -284,11 +288,12 @@ namespace Procon.Database.Serialization {
 
         public IDatabaseObject Sort(String name) {
             Field field = this.BuildField(name);
+            Collection collection = field.FirstOrDefault(statement => statement is Collection) as Collection;
 
             return this.Sort(new Sort() {
-                Name = field.Name,
-                Collection = field.Collection
-            });
+                Name = field.Name
+            })
+            .Collection(collection);
         }
 
     }

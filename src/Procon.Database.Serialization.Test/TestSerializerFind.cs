@@ -1,5 +1,10 @@
 using Procon.Database.Serialization.Builders;
 using Procon.Database.Serialization.Builders.Attributes;
+using Procon.Database.Serialization.Builders.Equalities;
+using Procon.Database.Serialization.Builders.Logicals;
+using Procon.Database.Serialization.Builders.Methods;
+using Procon.Database.Serialization.Builders.Statements;
+using Procon.Database.Serialization.Builders.Values;
 
 namespace Procon.Database.Serialization.Test {
     public abstract class TestSerializerFind {
@@ -62,11 +67,12 @@ namespace Procon.Database.Serialization.Test {
         protected IDatabaseObject TestSelectAllFromPlayerWherePlayerNameEqualsPhogueExplicit = new Find()
             .Condition(new Equals() {
                     new Field() {
-                        Name = "Name",
-                        Collection = new Collection() {
+                        Name = "Name"
+                    }.Collection(
+                        new Collection() {
                             Name = "Player"
                         }
-                    },
+                    ),
                     new StringValue() {
                         Data = "Phogue"
                     }

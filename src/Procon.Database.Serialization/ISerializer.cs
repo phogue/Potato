@@ -1,6 +1,10 @@
 using Procon.Database.Serialization.Builders;
 
 namespace Procon.Database.Serialization {
+    /// <summary>
+    /// Base class for serializing a collection of database objects
+    /// to a usable compiled query
+    /// </summary>
     public interface ISerializer {
 
         /// <summary>

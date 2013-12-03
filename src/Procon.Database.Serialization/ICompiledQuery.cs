@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 
 namespace Procon.Database.Serialization {
+    /// <summary>
+    /// A compiled version of the query with as basic information 
+    /// as we can boil the complex query down to
+    /// </summary>
     public interface ICompiledQuery {
 
         /// <summary>

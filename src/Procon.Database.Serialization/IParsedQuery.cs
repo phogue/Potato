@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 
 namespace Procon.Database.Serialization {
+    /// <summary>
+    /// The initial parse to collection peices of information but
+    /// remain in a hierarchy
+    /// </summary>
     public interface IParsedQuery {
         /// <summary>
         /// List of parsed child queries.

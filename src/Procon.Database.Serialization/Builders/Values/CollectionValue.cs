@@ -3,6 +3,9 @@ using System.Linq;
 using Newtonsoft.Json.Linq;
 
 namespace Procon.Database.Serialization.Builders.Values {
+    /// <summary>
+    /// A list of documents
+    /// </summary>
     [Serializable]
     public class CollectionValue : Value {
         public JArray ToJArray() {

@@ -1,10 +1,10 @@
 ﻿using System;
 
-namespace Procon.Database.Serialization.Builders.Attributes {
+namespace Procon.Database.Serialization.Builders.Modifiers {
     /// <summary>
     /// A unique index
     /// </summary>
     [Serializable]
-    public class Unique : Attribute {
+    public class Unique : Modifier {
     }
 }

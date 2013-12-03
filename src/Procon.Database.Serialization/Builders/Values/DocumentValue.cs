@@ -5,6 +5,9 @@ using Newtonsoft.Json.Linq;
 using Procon.Database.Serialization.Builders.Statements;
 
 namespace Procon.Database.Serialization.Builders.Values {
+    /// <summary>
+    /// An object of data, like a dictionary
+    /// </summary>
     [Serializable]
     public class DocumentValue : Value {
 

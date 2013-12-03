@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
 using Procon.Database.Serialization.Builders;
-using Attribute = Procon.Database.Serialization.Builders.Attribute;
-using Type = Procon.Database.Serialization.Builders.Type;
 
 namespace Procon.Database.Serialization {
+    /// <summary>
+    /// The base object with a bunch of helper methods to make
+    /// building a query relatively 
+    /// </summary>
     public interface IDatabaseObject : ICollection<IDatabaseObject> {
 
         IDatabaseObject Method(IDatabaseObject data);
@@ -17,7 +19,7 @@ namespace Procon.Database.Serialization {
 
         IDatabaseObject Index(String name);
 
-        IDatabaseObject Index(String name, Attribute attribute);
+        IDatabaseObject Index(String name, Modifier attribute);
 
         IDatabaseObject Attribute(IDatabaseObject data);
 
@@ -25,7 +27,7 @@ namespace Procon.Database.Serialization {
 
         IDatabaseObject Field(String name);
 
-        IDatabaseObject Field(String name, Type type, bool nullable = true);
+        IDatabaseObject Field(String name, FieldType type, bool nullable = true);
 
         IDatabaseObject Field(String name, int length, bool nullable = true);
 

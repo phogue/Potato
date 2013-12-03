@@ -1,11 +1,10 @@
 using System;
 
 namespace Procon.Database.Serialization.Builders.Statements {
+    /// <summary>
+    /// Specify a field on a document
+    /// </summary>
     [Serializable]
     public class Field : Statement {
-        /// <summary>
-        /// The scope of this field, used when joining on tables.
-        /// </summary>
-        //public new Collection Collection { get; set; }
     }
 }

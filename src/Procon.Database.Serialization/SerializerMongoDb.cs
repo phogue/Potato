@@ -5,15 +5,18 @@ using System.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Procon.Database.Serialization.Builders;
-using Procon.Database.Serialization.Builders.Attributes;
 using Procon.Database.Serialization.Builders.Equalities;
 using Procon.Database.Serialization.Builders.Logicals;
 using Procon.Database.Serialization.Builders.Methods;
+using Procon.Database.Serialization.Builders.Modifiers;
 using Procon.Database.Serialization.Builders.Statements;
 using Procon.Database.Serialization.Builders.Values;
 using Procon.Database.Serialization.Exceptions;
 
 namespace Procon.Database.Serialization {
+    /// <summary>
+    /// Serializer for MongoDb support.
+    /// </summary>
     public class SerializerMongoDb : SerializerNoSql {
 
         protected virtual String PaseFieldName(String name, Collection collection) {
@@ -95,7 +98,9 @@ namespace Procon.Database.Serialization {
         }
 
         protected virtual JObject ParseSort(Sort sort, JObject outer) {
-            outer[this.PaseFieldName(sort.Name, sort.Collection)] = sort.Any(attribute => attribute is Descending) ? -1 : 1;
+            Collection collection = sort.FirstOrDefault(statement => statement is Collection) as Collection;
+
+            outer[this.PaseFieldName(sort.Name, collection)] = sort.Any(attribute => attribute is Descending) ? -1 : 1;
 
             return outer;
         }
@@ -277,25 +282,6 @@ namespace Procon.Database.Serialization {
                 Fields = parsed.Fields,
                 Sortings = parsed.Sortings.FirstOrDefault()
             };
-        }
-
-        /// <summary>
-        /// Parses all children of the method
-        /// </summary>
-        /// <param name="method"></param>
-        /// <returns></returns>
-        protected List<IParsedQuery> ParseChildren(Method method) {
-            List<IParsedQuery> children = new List<IParsedQuery>();
-
-            foreach (Method child in method.Where(child => child is Method)) {
-                IParsedQuery parsedChild = new ParsedQuery();
-
-                this.Parse(child, parsedChild);
-
-                children.Add(parsedChild);
-            }
-
-            return children;
         }
 
         public override ISerializer Parse(Method method, IParsedQuery parsed) {

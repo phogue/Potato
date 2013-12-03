@@ -2,7 +2,7 @@
 
 namespace Procon.Database.Serialization.Builders.Methods {
     /// <summary>
-    /// Insert into a table
+    /// Insert a document into a collection
     /// </summary>
     [Serializable]
     public class Save : Method {

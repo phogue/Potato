@@ -3,15 +3,19 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using Procon.Database.Serialization.Builders;
-using Procon.Database.Serialization.Builders.Attributes;
 using Procon.Database.Serialization.Builders.Equalities;
+using Procon.Database.Serialization.Builders.FieldTypes;
 using Procon.Database.Serialization.Builders.Logicals;
 using Procon.Database.Serialization.Builders.Methods;
+using Procon.Database.Serialization.Builders.Modifiers;
 using Procon.Database.Serialization.Builders.Statements;
-using Procon.Database.Serialization.Builders.Types;
 using Procon.Database.Serialization.Builders.Values;
+using Nullable = Procon.Database.Serialization.Builders.Modifiers.Nullable;
 
 namespace Procon.Database.Serialization {
+    /// <summary>
+    /// Serializer for MySQL support.
+    /// </summary>
     public class SerializerMySql : SerializerSql {
 
         /// <summary>
@@ -104,8 +108,10 @@ namespace Procon.Database.Serialization {
         }
 
         protected virtual String ParseSort(Sort sort) {
+            Collection collection = sort.FirstOrDefault(statement => statement is Collection) as Collection;
+
             List<String> parsed = new List<String> {
-                sort.Collection == null ? String.Format("`{0}`", sort.Name) : String.Format("`{0}`.`{1}`", sort.Collection.Name, sort.Name)
+                collection == null ? String.Format("`{0}`", sort.Name) : String.Format("`{0}`.`{1}`", collection.Name, sort.Name)
             };
 
             if (sort.Any(attribute => attribute is Descending)) {
@@ -115,7 +121,7 @@ namespace Procon.Database.Serialization {
             return String.Join(" ", parsed.ToArray());
         }
 
-        protected virtual String ParseType(Builders.Type type) {
+        protected virtual String ParseType(Builders.FieldType type) {
             List<String> parsed = new List<String>();
 
             Length length = type.FirstOrDefault(attribute => attribute is Length) as Length;
@@ -132,7 +138,7 @@ namespace Procon.Database.Serialization {
                 }
             }
 
-            parsed.Add(type.Any(attribute => attribute is Builders.Attributes.Nullable) == true ? "NULL" : "NOT NULL");
+            parsed.Add(type.Any(attribute => attribute is Nullable) == true ? "NULL" : "NOT NULL");
 
             if (type.Any(attribute => attribute is AutoIncrement) == true) {
                 parsed.Add("AUTO INCREMENT");
@@ -152,8 +158,8 @@ namespace Procon.Database.Serialization {
 
             parsed.Add(collection == null ? String.Format("`{0}`", field.Name) : String.Format("`{0}`.`{1}`", collection.Name, field.Name));
 
-            if (field.Any(attribute => attribute is Builders.Type)) {
-                parsed.Add(this.ParseType(field.First(attribute => attribute is Builders.Type) as Builders.Type));
+            if (field.Any(attribute => attribute is Builders.FieldType)) {
+                parsed.Add(this.ParseType(field.First(attribute => attribute is Builders.FieldType) as Builders.FieldType));
             }
 
             return String.Join(" ", parsed.ToArray());
@@ -448,25 +454,6 @@ namespace Procon.Database.Serialization {
             serializedQuery.Completed = String.Join(" ", compiled.ToArray());
 
             return serializedQuery;
-        }
-
-        /// <summary>
-        /// Parses all children of the method
-        /// </summary>
-        /// <param name="method"></param>
-        /// <returns></returns>
-        protected List<IParsedQuery> ParseChildren(Method method) {
-            List<IParsedQuery> children = new List<IParsedQuery>();
-
-            foreach (Method child in method.Where(child => child is Method)) {
-                IParsedQuery parsedChild = new ParsedQuery();
-
-                this.Parse(child, parsedChild);
-
-                children.Add(parsedChild);
-            }
-
-            return children;
         }
 
         public override ISerializer Parse(Method method, IParsedQuery parsed) {

@@ -2,9 +2,9 @@ using System;
 
 namespace Procon.Database.Serialization.Builders {
     /// <summary>
-    /// Modifier on collection of equations to evaluate truth
+    /// Attached to another DatabaseObject as a modifier
     /// </summary>
     [Serializable]
-    public abstract class Logical : Operator {
+    public abstract class Modifier : DatabaseObject {
     }
 }

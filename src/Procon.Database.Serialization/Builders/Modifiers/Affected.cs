@@ -1,10 +1,10 @@
 ﻿using System;
 
-namespace Procon.Database.Serialization.Builders.Attributes {
+namespace Procon.Database.Serialization.Builders.Modifiers {
     /// <summary>
     /// Affected rows from a query
     /// </summary>
     [Serializable]
-    public class Affected : Attribute {
+    public class Affected : Modifier {
     }
 }

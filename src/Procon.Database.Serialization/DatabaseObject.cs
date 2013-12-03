@@ -2,15 +2,18 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Procon.Database.Serialization.Builders;
-using Procon.Database.Serialization.Builders.Attributes;
 using Procon.Database.Serialization.Builders.Equalities;
+using Procon.Database.Serialization.Builders.FieldTypes;
+using Procon.Database.Serialization.Builders.Modifiers;
 using Procon.Database.Serialization.Builders.Statements;
-using Procon.Database.Serialization.Builders.Types;
 using Procon.Database.Serialization.Builders.Values;
-using Attribute = Procon.Database.Serialization.Builders.Attribute;
-using Type = Procon.Database.Serialization.Builders.Type;
+using Nullable = Procon.Database.Serialization.Builders.Modifiers.Nullable;
 
 namespace Procon.Database.Serialization {
+    /// <summary>
+    /// The base object with a bunch of helper methods to make
+    /// building a query relatively 
+    /// </summary>
     [Serializable]
     public abstract class DatabaseObject : List<IDatabaseObject>, IDatabaseObject {
 
@@ -67,7 +70,7 @@ namespace Procon.Database.Serialization {
             );
         }
 
-        public IDatabaseObject Index(String name, Attribute attribute) {
+        public IDatabaseObject Index(String name, Modifier attribute) {
             Field field = this.BuildField(name);
             Collection collection = field.FirstOrDefault(statement => statement is Collection) as Collection;
 
@@ -101,20 +104,20 @@ namespace Procon.Database.Serialization {
             return this.Field(this.BuildField(name));
         }
 
-        public IDatabaseObject Field(String name, Type type, bool nullable = true) {
-            if (nullable == true) type.Add(new Builders.Attributes.Nullable());
+        public IDatabaseObject Field(String name, FieldType type, bool nullable = true) {
+            if (nullable == true) type.Add(new Nullable());
 
             return this.Field(this.BuildField(name).Attribute(type));
         }
 
         public IDatabaseObject Field(String name, int length, bool nullable = true) {
-            Type type = new StringType();
+            FieldType type = new StringType();
 
             type.Attribute(new Length() {
                 Value = length
             });
 
-            if (nullable == true) type.Add(new Builders.Attributes.Nullable());
+            if (nullable == true) type.Add(new Nullable());
 
             return this.Field(this.BuildField(name).Attribute(type));
         }

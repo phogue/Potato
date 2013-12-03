@@ -1,10 +1,10 @@
-using System;
+﻿using System;
 
 namespace Procon.Database.Serialization.Builders {
     /// <summary>
-    /// Used for comparison between value and field
+    /// A database field type
     /// </summary>
     [Serializable]
-    public abstract class Equality : Operator {
+    public abstract class FieldType : DatabaseObject {
     }
 }

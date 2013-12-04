@@ -19,7 +19,11 @@ namespace Procon.Database.Serialization {
 
         IDatabaseObject Index(String name);
 
-        IDatabaseObject Index(String name, Modifier modifier);
+        IDatabaseObject Index(String name, SortByModifier sortByModifier);
+
+        IDatabaseObject Index(String name, IndexModifer indexModifier);
+
+        IDatabaseObject Index(String name, IndexModifer indexModifier, SortByModifier sortByModifier);
 
         IDatabaseObject Modifier(IDatabaseObject data);
 

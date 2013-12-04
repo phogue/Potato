@@ -8,6 +8,7 @@ using Procon.Database.Drivers;
 using Procon.Database.Serialization;
 using Procon.Database.Serialization.Builders;
 using Procon.Database.Serialization.Builders.Methods;
+using Procon.Database.Serialization.Builders.Modifiers;
 using Procon.Database.Serialization.Builders.Values;
 
 namespace Procon.Database.Test {
@@ -91,7 +92,7 @@ namespace Procon.Database.Test {
 
             driver.Connect();
 
-            CollectionValue result = driver.Query(new Drop().Collection("posts").Condition("text", "So like a year later?").Assignment("subject", "something modified")) as CollectionValue;
+            CollectionValue result = driver.Query(new Create().Collection("posts").Index("Name", new Primary())) as CollectionValue;
 
             JArray array = result.ToJArray();
 

@@ -5,6 +5,6 @@ namespace Procon.Database.Serialization.Builders.Modifiers {
     /// Primary+Unique index
     /// </summary>
     [Serializable]
-    public class Primary : Modifier {
+    public class Primary : IndexModifer {
     }
 }

@@ -39,13 +39,16 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Builders\FieldModifier.cs" />
     <Compile Include="Builders\Logicals\And.cs" />
     <Compile Include="Builders\Modifier.cs" />
     <Compile Include="Builders\Modifiers\Ascending.cs" />
     <Compile Include="Builders\Modifiers\AutoIncrement.cs" />
     <Compile Include="Builders\Modifiers\Descending.cs" />
+    <Compile Include="Builders\IndexModifer.cs" />
     <Compile Include="Builders\Modifiers\Length.cs" />
     <Compile Include="Builders\Modifiers\Nullable.cs" />
+    <Compile Include="Builders\SortByModifier.cs" />
     <Compile Include="Builders\Modifiers\Unsigned.cs" />
     <Compile Include="Builders\Statements\Collection.cs" />
     <Compile Include="Builders\Statements\Assignment.cs" />

@@ -5,7 +5,7 @@ namespace Procon.Database.Serialization.Builders.Modifiers {
     /// The length to apply to a type, like string length
     /// </summary>
     [Serializable]
-    public class Length : Modifier {
+    public class Length : FieldModifier {
 
         /// <summary>
         /// The length of this attribute.

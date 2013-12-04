@@ -65,12 +65,13 @@ namespace Procon.Database.Serialization {
                 .Sort(
                     new Sort() {
                         Name = field.Name
-                    }.Collection(collection)
+                    }
+                    .Collection(collection)
                 )
             );
         }
 
-        public IDatabaseObject Index(String name, Modifier modifier) {
+        public IDatabaseObject Index(string name, SortByModifier sortByModifier) {
             Field field = this.BuildField(name);
             Collection collection = field.FirstOrDefault(statement => statement is Collection) as Collection;
 
@@ -83,8 +84,45 @@ namespace Procon.Database.Serialization {
                         Name = field.Name
                     }
                     .Collection(collection)
-                    .Modifier(modifier)
+                    .Modifier(sortByModifier)
                 )
+            );
+        }
+
+        public IDatabaseObject Index(string name, IndexModifer indexModifier) {
+            Field field = this.BuildField(name);
+            Collection collection = field.FirstOrDefault(statement => statement is Collection) as Collection;
+
+            return this.Index(
+                new Index() {
+                    Name = String.Format("{0}_INDEX", name)
+                }
+                .Sort(
+                    new Sort() {
+                        Name = field.Name
+                    }
+                    .Collection(collection)
+                )
+                .Modifier(indexModifier)
+            );
+        }
+
+        public IDatabaseObject Index(string name, IndexModifer indexModifier, SortByModifier sortByModifier) {
+            Field field = this.BuildField(name);
+            Collection collection = field.FirstOrDefault(statement => statement is Collection) as Collection;
+
+            return this.Index(
+                new Index() {
+                    Name = String.Format("{0}_INDEX", name)
+                }
+                .Sort(
+                    new Sort() {
+                        Name = field.Name
+                    }
+                    .Collection(collection)
+                    .Modifier(sortByModifier)
+                )
+                .Modifier(indexModifier)
             );
         }
 

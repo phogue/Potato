@@ -6,6 +6,6 @@ namespace Procon.Database.Serialization.Builders.Modifiers {
     /// is indicative of ascending order
     /// </summary>
     [Serializable]
-    public class Ascending : Modifier {
+    public class Ascending : SortByModifier {
     }
 }

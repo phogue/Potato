@@ -67,21 +67,14 @@ namespace Procon.Database.Drivers {
             if (query.Collections.Any() == true) {
                 MongoCollection<BsonDocument> collection = this.Database.GetCollection(query.Collections.FirstOrDefault());
 
-                IMongoIndexOptions options = new IndexOptionsDocument();
-
-                collection.EnsureIndex(new IndexKeysDocument(BsonSerializer.Deserialize<BsonDocument>(query.Indices.FirstOrDefault())));
-
-                /*
-                CommandResult commandResult = collection.Drop();
-
-                result.Add(
-                    new Affected() {
-                        new NumericValue() {
-                            Integer = commandResult.Ok == true ? 1 : 0
-                        }
-                    }
-                );
-                */
+                BsonArray indices = BsonSerializer.Deserialize<BsonArray>(query.Indices.FirstOrDefault());
+                
+                if (indices.Count > 1) {
+                    collection.EnsureIndex(new IndexKeysDocument(indices.First().AsBsonDocument), new IndexOptionsDocument(indices.Last().AsBsonDocument));
+                }
+                else {
+                    collection.EnsureIndex(new IndexKeysDocument(indices.First().AsBsonDocument));
+                }
             }
         }
 
@@ -93,7 +86,9 @@ namespace Procon.Database.Drivers {
         protected void QueryFind(ICompiledQuery query, CollectionValue result) {
             MongoCollection<BsonDocument> collection = this.Database.GetCollection(query.Collections.FirstOrDefault());
 
-            foreach (BsonDocument document in collection.Find(new QueryDocument(BsonSerializer.Deserialize<BsonDocument>(query.Conditions.FirstOrDefault())))) {
+            BsonArray conditions = BsonSerializer.Deserialize<BsonArray>(query.Conditions.FirstOrDefault());
+
+            foreach (BsonDocument document in collection.Find(new QueryDocument(conditions.First().AsBsonDocument))) {
                 DocumentValue row = new DocumentValue();
 
                 foreach (BsonElement value in document.Elements) {
@@ -118,8 +113,11 @@ namespace Procon.Database.Drivers {
         protected void QueryModify(ICompiledQuery query, CollectionValue result) {
             MongoCollection<BsonDocument> collection = this.Database.GetCollection(query.Collections.FirstOrDefault());
 
-            QueryDocument queryDocument = new QueryDocument(BsonSerializer.Deserialize<BsonDocument>(query.Conditions.FirstOrDefault()));
-            UpdateDocument updateDocument = new UpdateDocument(BsonSerializer.Deserialize<BsonDocument>(query.Assignments.FirstOrDefault()));
+            BsonArray conditions = BsonSerializer.Deserialize<BsonArray>(query.Conditions.FirstOrDefault());
+            BsonArray assignments = BsonSerializer.Deserialize<BsonArray>(query.Assignments.FirstOrDefault());
+
+            QueryDocument queryDocument = new QueryDocument(conditions.First().AsBsonDocument);
+            UpdateDocument updateDocument = new UpdateDocument(assignments.First().AsBsonDocument);
 
             WriteConcernResult writeConcernResult = collection.Update(queryDocument, updateDocument, UpdateFlags.Multi);
 
@@ -140,7 +138,9 @@ namespace Procon.Database.Drivers {
         protected void QueryRemove(ICompiledQuery query, CollectionValue result) {
             MongoCollection<BsonDocument> collection = this.Database.GetCollection(query.Collections.FirstOrDefault());
 
-            WriteConcernResult writeConcernResult = collection.Remove(new QueryDocument(BsonSerializer.Deserialize<BsonDocument>(query.Conditions.FirstOrDefault())));
+            BsonArray conditions = BsonSerializer.Deserialize<BsonArray>(query.Conditions.FirstOrDefault());
+
+            WriteConcernResult writeConcernResult = collection.Remove(new QueryDocument(conditions.First().AsBsonDocument));
 
             result.Add(
                 new Affected() {
@@ -202,8 +202,8 @@ namespace Procon.Database.Drivers {
             else if (query.Root is Drop) {
                 this.QueryDrop(query, results);
             }
-            else {
-                //this.Execute(query, result);
+            else if (query.Root is Create) {
+                this.QueryCreate(query, results);
             }
 
             return results;

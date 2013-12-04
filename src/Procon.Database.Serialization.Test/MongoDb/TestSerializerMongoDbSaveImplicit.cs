@@ -11,7 +11,7 @@ namespace Procon.Database.Serialization.Test.MongoDb {
 
             Assert.AreEqual(@"save", serialized.Methods.First());
             Assert.AreEqual(@"Player", serialized.Collections.First());
-            Assert.AreEqual(@"{""$set"":{""Name"":""Phogue""}}", serialized.Assignments.First());
+            Assert.AreEqual(@"[{""$set"":{""Name"":""Phogue""}}]", serialized.Assignments.First());
         }
 
         [Test]
@@ -21,7 +21,7 @@ namespace Procon.Database.Serialization.Test.MongoDb {
 
             Assert.AreEqual(@"save", serialized.Methods.First());
             Assert.AreEqual(@"Player", serialized.Collections.First());
-            Assert.AreEqual(@"{""$set"":{""Name"":""Phogue"",""Score"":50.0}}", serialized.Assignments.First());
+            Assert.AreEqual(@"[{""$set"":{""Name"":""Phogue"",""Score"":50.0}}]", serialized.Assignments.First());
         }
     }
 }

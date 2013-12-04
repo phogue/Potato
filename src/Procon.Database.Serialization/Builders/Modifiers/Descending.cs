@@ -5,6 +5,6 @@ namespace Procon.Database.Serialization.Builders.Modifiers {
     /// Descending attribute. The lack of this attribute implies Ascending.
     /// </summary>
     [Serializable]
-    public class Descending : Modifier {
+    public class Descending : SortByModifier {
     }
 }

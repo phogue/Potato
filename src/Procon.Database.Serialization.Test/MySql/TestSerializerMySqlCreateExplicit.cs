@@ -63,5 +63,15 @@ namespace Procon.Database.Serialization.Test.MySql {
         public override void TestCreatePlayerWithFieldStringNameWithIndexOnNameScoreDescendingCompound() {
             Assert.AreEqual(@"CREATE TABLE `Player` (`Name` VARCHAR(255) NULL, INDEX `Name_Score_INDEX` (`Name`, `Score` DESC))", new SerializerMySql().Parse(this.TestCreatePlayerWithFieldStringNameWithIndexOnNameScoreDescendingCompoundExplicit).Compile().Compiled.First());
         }
+
+        [Test]
+        public override void TestCreatePlayerWithFieldStringNameWithPrimaryIndexOnName() {
+            Assert.AreEqual(@"CREATE TABLE `Player` (`Name` VARCHAR(255) NULL, PRIMARY KEY (`Name`))", new SerializerMySql().Parse(this.TestCreatePlayerWithFieldStringNameWithPrimaryIndexOnNameExplicit).Compile().Compiled.First());
+        }
+
+        [Test]
+        public override void TestCreatePlayerWithFieldStringNameWithUniqueIndexOnName() {
+            Assert.AreEqual(@"CREATE TABLE `Player` (`Name` VARCHAR(255) NULL, UNIQUE INDEX `Name_INDEX` (`Name`))", new SerializerMySql().Parse(this.TestCreatePlayerWithFieldStringNameWithUniqueIndexOnNameExplicit).Compile().Compiled.First());
+        }
     }
 }

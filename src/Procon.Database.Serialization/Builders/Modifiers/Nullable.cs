@@ -6,6 +6,6 @@ namespace Procon.Database.Serialization.Builders.Modifiers {
     /// will be marked as not nullable, not allowing void values.
     /// </summary>
     [Serializable]
-    public class Nullable : FieldType {
+    public class Nullable : FieldModifier {
     }
 }

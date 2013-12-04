@@ -21,7 +21,7 @@ namespace Procon.Database.Serialization.Test.MongoDb {
 
             Assert.AreEqual(@"remove", serialized.Methods.First());
             Assert.AreEqual(@"Player", serialized.Collections.First());
-            Assert.AreEqual(@"{""Name"":""Phogue""}", serialized.Conditions.First());
+            Assert.AreEqual(@"[{""Name"":""Phogue""}]", serialized.Conditions.First());
         }
 
         [Test]
@@ -31,7 +31,7 @@ namespace Procon.Database.Serialization.Test.MongoDb {
 
             Assert.AreEqual(@"remove", serialized.Methods.First());
             Assert.AreEqual(@"Player", serialized.Collections.First());
-            Assert.AreEqual(@"{""Name"":""Phogue""}", serialized.Conditions.First());
+            Assert.AreEqual(@"[{""Name"":""Phogue""}]", serialized.Conditions.First());
         }
 
         [Test]
@@ -41,7 +41,7 @@ namespace Procon.Database.Serialization.Test.MongoDb {
 
             Assert.AreEqual(@"remove", serialized.Methods.First());
             Assert.AreEqual(@"Player", serialized.Collections.First());
-            Assert.AreEqual(@"{""Name"":""Phogue"",""Score"":""10""}", serialized.Conditions.First());
+            Assert.AreEqual(@"[{""Name"":""Phogue"",""Score"":""10""}]", serialized.Conditions.First());
         }
 
         [Test]
@@ -51,7 +51,7 @@ namespace Procon.Database.Serialization.Test.MongoDb {
 
             Assert.AreEqual(@"remove", serialized.Methods.First());
             Assert.AreEqual(@"Player", serialized.Collections.First());
-            Assert.AreEqual(@"{""$or"":[{""Name"":""Phogue""},{""Name"":""Zaeed""}]}", serialized.Conditions.First());
+            Assert.AreEqual(@"[{""$or"":[{""Name"":""Phogue""},{""Name"":""Zaeed""}]}]", serialized.Conditions.First());
         }
 
         [Test]
@@ -61,7 +61,7 @@ namespace Procon.Database.Serialization.Test.MongoDb {
 
             Assert.AreEqual(@"remove", serialized.Methods.First());
             Assert.AreEqual(@"Player", serialized.Collections.First());
-            Assert.AreEqual(@"{""$or"":[{""Name"":""Phogue""},{""Name"":""Zaeed""}],""Score"":{""$gt"":""10"",""$lt"":""20""}}", serialized.Conditions.First());
+            Assert.AreEqual(@"[{""$or"":[{""Name"":""Phogue""},{""Name"":""Zaeed""}],""Score"":{""$gt"":""10"",""$lt"":""20""}}]", serialized.Conditions.First());
         }
 
         [Test]
@@ -71,7 +71,7 @@ namespace Procon.Database.Serialization.Test.MongoDb {
 
             Assert.AreEqual(@"remove", serialized.Methods.First());
             Assert.AreEqual(@"Player", serialized.Collections.First());
-            Assert.AreEqual(@"{""$or"":[{""Name"":""Phogue"",""Score"":{""$gt"":""50""}},{""Name"":""Zaeed"",""Score"":{""$lt"":""50""}}]}", serialized.Conditions.First());
+            Assert.AreEqual(@"[{""$or"":[{""Name"":""Phogue"",""Score"":{""$gt"":""50""}},{""Name"":""Zaeed"",""Score"":{""$lt"":""50""}}]}]", serialized.Conditions.First());
         }
     }
 }

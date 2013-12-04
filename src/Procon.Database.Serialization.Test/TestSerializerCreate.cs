@@ -415,5 +415,77 @@ namespace Procon.Database.Serialization.Test {
         public abstract void TestCreatePlayerWithFieldStringNameWithIndexOnNameScoreDescendingCompound();
 
         #endregion
+
+        #region TestCreatePlayerWithFieldStringNameWithPrimaryIndexOnName
+
+        protected IDatabaseObject TestCreatePlayerWithFieldStringNameWithPrimaryIndexOnNameExplicit = new Create()
+            .Collection(new Collection() {
+                Name = "Player"
+            })
+            .Field(
+                new Field() {
+                    Name = "Name"
+                }
+                .Modifier(
+                    new StringType()
+                    .Modifier(new Nullable())
+                )
+            )
+            .Index(
+                new Index() {
+                    Name = "Name_INDEX"
+                }
+                .Sort(
+                    new Sort() {
+                        Name = "Name"
+                    }
+                )
+                .Modifier(new Primary())
+            );
+
+        protected IDatabaseObject TestCreatePlayerWithFieldStringNameWithPrimaryIndexOnNameImplicit = new Create()
+            .Collection("Player")
+            .Field("Name", new StringType())
+            .Index("Name", new Primary());
+
+        public abstract void TestCreatePlayerWithFieldStringNameWithPrimaryIndexOnName();
+
+        #endregion
+
+        #region TestCreatePlayerWithFieldStringNameWithPrimaryIndexOnName
+
+        protected IDatabaseObject TestCreatePlayerWithFieldStringNameWithUniqueIndexOnNameExplicit = new Create()
+            .Collection(new Collection() {
+                Name = "Player"
+            })
+            .Field(
+                new Field() {
+                    Name = "Name"
+                }
+                .Modifier(
+                    new StringType()
+                    .Modifier(new Nullable())
+                )
+            )
+            .Index(
+                new Index() {
+                    Name = "Name_INDEX"
+                }
+                .Sort(
+                    new Sort() {
+                        Name = "Name"
+                    }
+                )
+                .Modifier(new Unique())
+            );
+
+        protected IDatabaseObject TestCreatePlayerWithFieldStringNameWithUniqueIndexOnNameImplicit = new Create()
+            .Collection("Player")
+            .Field("Name", new StringType())
+            .Index("Name", new Unique());
+
+        public abstract void TestCreatePlayerWithFieldStringNameWithUniqueIndexOnName();
+
+        #endregion
     }
 }

@@ -5,6 +5,6 @@ namespace Procon.Database.Serialization.Builders.Modifiers {
     /// A unique index
     /// </summary>
     [Serializable]
-    public class Unique : Modifier {
+    public class Unique : IndexModifer {
     }
 }

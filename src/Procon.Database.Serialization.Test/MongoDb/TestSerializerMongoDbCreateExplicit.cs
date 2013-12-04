@@ -49,7 +49,7 @@ namespace Procon.Database.Serialization.Test.MongoDb {
             ICompiledQuery serialized = serializer.Parse(this.TestCreatePlayerWithFieldStringNameWithIndexOnNameExplicit).Compile();
 
             Assert.AreEqual(@"create", serialized.Methods.First());
-            Assert.AreEqual(@"{""Name"":1}", serialized.Indices.First());
+            Assert.AreEqual(@"[{""Name"":1}]", serialized.Indices.First());
         }
 
         [Test]
@@ -58,7 +58,7 @@ namespace Procon.Database.Serialization.Test.MongoDb {
             ICompiledQuery serialized = serializer.Parse(this.TestCreatePlayerWithFieldStringNameWithIndexOnNameDescendingExplicit).Compile();
 
             Assert.AreEqual(@"create", serialized.Methods.First());
-            Assert.AreEqual(@"{""Name"":-1}", serialized.Indices.First());
+            Assert.AreEqual(@"[{""Name"":-1}]", serialized.Indices.First());
         }
 
         [Test]
@@ -67,8 +67,8 @@ namespace Procon.Database.Serialization.Test.MongoDb {
             ICompiledQuery serialized = serializer.Parse(this.TestCreatePlayerWithFieldStringNameWithIndexOnNameScoreExplicit).Compile();
 
             Assert.AreEqual(@"create", serialized.Methods.First());
-            Assert.AreEqual(@"{""Name"":1}", serialized.Indices.First());
-            Assert.AreEqual(@"{""Score"":1}", serialized.Indices.Last());
+            Assert.AreEqual(@"[{""Name"":1}]", serialized.Indices.First());
+            Assert.AreEqual(@"[{""Score"":1}]", serialized.Indices.Last());
         }
 
         [Test]
@@ -77,7 +77,7 @@ namespace Procon.Database.Serialization.Test.MongoDb {
             ICompiledQuery serialized = serializer.Parse(this.TestCreatePlayerWithFieldStringNameWithIndexOnNameScoreCompoundExplicit).Compile();
 
             Assert.AreEqual(@"create", serialized.Methods.First());
-            Assert.AreEqual(@"{""Name"":1,""Score"":1}", serialized.Indices.First());
+            Assert.AreEqual(@"[{""Name"":1,""Score"":1}]", serialized.Indices.First());
         }
 
         [Test]
@@ -86,7 +86,25 @@ namespace Procon.Database.Serialization.Test.MongoDb {
             ICompiledQuery serialized = serializer.Parse(this.TestCreatePlayerWithFieldStringNameWithIndexOnNameScoreDescendingCompoundExplicit).Compile();
 
             Assert.AreEqual(@"create", serialized.Methods.First());
-            Assert.AreEqual(@"{""Name"":1,""Score"":-1}", serialized.Indices.First());
+            Assert.AreEqual(@"[{""Name"":1,""Score"":-1}]", serialized.Indices.First());
+        }
+
+        [Test]
+        public override void TestCreatePlayerWithFieldStringNameWithPrimaryIndexOnName() {
+            ISerializer serializer = new SerializerMongoDb();
+            ICompiledQuery serialized = serializer.Parse(this.TestCreatePlayerWithFieldStringNameWithPrimaryIndexOnNameExplicit).Compile();
+
+            Assert.AreEqual(@"create", serialized.Methods.First());
+            Assert.AreEqual(@"[{""Name"":1},{""unique"":true}]", serialized.Indices.First());
+        }
+
+        [Test]
+        public override void TestCreatePlayerWithFieldStringNameWithUniqueIndexOnName() {
+            ISerializer serializer = new SerializerMongoDb();
+            ICompiledQuery serialized = serializer.Parse(this.TestCreatePlayerWithFieldStringNameWithUniqueIndexOnNameExplicit).Compile();
+
+            Assert.AreEqual(@"create", serialized.Methods.First());
+            Assert.AreEqual(@"[{""Name"":1},{""unique"":true}]", serialized.Indices.First());
         }
     }
 }

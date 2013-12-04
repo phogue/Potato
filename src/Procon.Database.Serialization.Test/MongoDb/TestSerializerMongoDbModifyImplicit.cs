@@ -11,7 +11,7 @@ namespace Procon.Database.Serialization.Test.MongoDb {
 
             Assert.AreEqual(@"update", serialized.Methods.First());
             Assert.AreEqual(@"Player", serialized.Collections.First());
-            Assert.AreEqual(@"{""$set"":{""Name"":""Phogue""}}", serialized.Assignments.First());
+            Assert.AreEqual(@"[{""$set"":{""Name"":""Phogue""}}]", serialized.Assignments.First());
         }
 
         [Test]
@@ -21,7 +21,7 @@ namespace Procon.Database.Serialization.Test.MongoDb {
 
             Assert.AreEqual(@"update", serialized.Methods.First());
             Assert.AreEqual(@"Player", serialized.Collections.First());
-            Assert.AreEqual(@"{""$set"":{""Name"":""Phogue"",""Score"":50.0}}", serialized.Assignments.First());
+            Assert.AreEqual(@"[{""$set"":{""Name"":""Phogue"",""Score"":50.0}}]", serialized.Assignments.First());
         }
 
         [Test]
@@ -31,8 +31,8 @@ namespace Procon.Database.Serialization.Test.MongoDb {
 
             Assert.AreEqual(@"update", serialized.Methods.First());
             Assert.AreEqual(@"Player", serialized.Collections.First());
-            Assert.AreEqual(@"{""$set"":{""Score"":50.0}}", serialized.Assignments.First());
-            Assert.AreEqual(@"{""Name"":""Phogue""}", serialized.Conditions.First());
+            Assert.AreEqual(@"[{""$set"":{""Score"":50.0}}]", serialized.Assignments.First());
+            Assert.AreEqual(@"[{""Name"":""Phogue""}]", serialized.Conditions.First());
         }
 
         [Test]
@@ -42,8 +42,8 @@ namespace Procon.Database.Serialization.Test.MongoDb {
 
             Assert.AreEqual(@"update", serialized.Methods.First());
             Assert.AreEqual(@"Player", serialized.Collections.First());
-            Assert.AreEqual(@"{""$set"":{""Score"":50.0}}", serialized.Assignments.First());
-            Assert.AreEqual(@"{""Name"":""Phogue"",""Rank"":{""$gt"":""10""}}", serialized.Conditions.First());
+            Assert.AreEqual(@"[{""$set"":{""Score"":50.0}}]", serialized.Assignments.First());
+            Assert.AreEqual(@"[{""Name"":""Phogue"",""Rank"":{""$gt"":""10""}}]", serialized.Conditions.First());
         }
     }
 }

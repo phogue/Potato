@@ -5,6 +5,6 @@ namespace Procon.Database.Serialization.Builders.Modifiers {
     /// Sql specific attribute to specify a field as autoincrement value
     /// </summary>
     [Serializable]
-    public class AutoIncrement : Modifier {
+    public class AutoIncrement : FieldModifier {
     }
 }

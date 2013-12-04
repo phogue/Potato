@@ -24,7 +24,28 @@ namespace Procon.Database.Serialization {
         /// <param name="index"></param>
         /// <returns></returns>
         protected virtual String ParseIndex(Index index) {
-            return this.ParseSortings(index).FirstOrDefault();
+            Primary primary = index.FirstOrDefault(attribute => attribute is Primary) as Primary;
+            Unique unique = index.FirstOrDefault(attribute => attribute is Unique) as Unique;
+
+            JArray details = new JArray();
+
+            JObject sortings = new JObject();
+
+            foreach (Sort sort in index.Where(sort => sort is Sort)) {
+                this.ParseSort(sort, sortings);
+            }
+
+            details.Add(sortings);
+
+            if (primary != null || unique != null) {
+                details.Add(
+                    new JObject() {
+                        new JProperty("unique", true)
+                    }
+                );
+            }
+
+            return details.ToString(Formatting.None);
         }
 
         /// <summary>
@@ -36,7 +57,7 @@ namespace Procon.Database.Serialization {
             return query.Where(statement => statement is Index).Select(index => this.ParseIndex(index as Index)).ToList();
         }
 
-        protected virtual String PaseFieldName(String name, Collection collection) {
+        protected virtual String ParseFieldName(String name, Collection collection) {
             String parsed = "";
 
             // todo this.Parsed should not be referenced here. We should refactor so this.Parsed cannot be referenced here.
@@ -55,7 +76,7 @@ namespace Procon.Database.Serialization {
         }
 
         protected virtual String ParseField(Field field) {
-            return this.PaseFieldName(field.Name, field.FirstOrDefault(statement => statement is Collection) as Collection);
+            return this.ParseFieldName(field.Name, field.FirstOrDefault(statement => statement is Collection) as Collection);
         }
 
         protected virtual String ParseEquality(Equality equality) {
@@ -117,7 +138,7 @@ namespace Procon.Database.Serialization {
         protected virtual JObject ParseSort(Sort sort, JObject outer) {
             Collection collection = sort.FirstOrDefault(statement => statement is Collection) as Collection;
 
-            outer[this.PaseFieldName(sort.Name, collection)] = sort.Any(attribute => attribute is Descending) ? -1 : 1;
+            outer[this.ParseFieldName(sort.Name, collection)] = sort.Any(attribute => attribute is Descending) ? -1 : 1;
 
             return outer;
         }
@@ -297,7 +318,9 @@ namespace Procon.Database.Serialization {
             JObject conditions = this.ParseLogicals(query, new JObject());
 
             return new List<String>() {
-                conditions.ToString(Formatting.None)
+                new JArray() {
+                    conditions
+                }.ToString(Formatting.None)
             };
         }
 
@@ -311,8 +334,10 @@ namespace Procon.Database.Serialization {
             document.AddRange(query.Where(statement => statement is Assignment));
             
             return new List<String>() {
-                new JObject() {
-                    new JProperty("$set", document.ToJObject())
+                new JArray() {
+                    new JObject() {
+                        new JProperty("$set", document.ToJObject())
+                    }
                 }.ToString(Formatting.None)
             };
         }
@@ -325,7 +350,9 @@ namespace Procon.Database.Serialization {
             }
 
             return new List<String>() {
-                sortings.ToString(Formatting.None)
+                new JArray() {
+                    sortings
+                }.ToString(Formatting.None)
             };
         }
 

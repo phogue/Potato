@@ -10,9 +10,9 @@ namespace Procon.Database.Serialization.Test.MongoDb {
 
             Assert.AreEqual(@"save", serialized.Method);
             Assert.AreEqual(@"Player", serialized.Collections);
-            Assert.AreEqual(@"{""Name"":""Phogue""}", serialized.Assignments);
+            Assert.AreEqual(@"{""$set"":{""Name"":""Phogue""}}", serialized.Assignments);
         }
-
+        
         [Test]
         public override void TestSaveIntoPlayerSetNameScore() {
             ISerializer serializer = new SerializerMongoDb();
@@ -20,7 +20,7 @@ namespace Procon.Database.Serialization.Test.MongoDb {
 
             Assert.AreEqual(@"save", serialized.Method);
             Assert.AreEqual(@"Player", serialized.Collections);
-            Assert.AreEqual(@"{""Name"":""Phogue"",""Score"":50.0}", serialized.Assignments);
+            Assert.AreEqual(@"{""$set"":{""Name"":""Phogue"",""Score"":50.0}}", serialized.Assignments);
         }
     }
 }

@@ -85,13 +85,13 @@ namespace Procon.Database.Test {
             IDriver driver = new MongoDbDriver() {
                 Settings = new DriverSettings() {
                     Hostname = "localhost",
-                    Database = "procon"
+                    Database = "chataway"
                 }
             };
 
             driver.Connect();
 
-            CollectionValue result = driver.Query(new Find().Collection("players").Condition("Name", "Curled1")) as CollectionValue;
+            CollectionValue result = driver.Query(new Modify().Collection("posts").Condition("text", "So like a year later?").Assignment("subject", "something modified")) as CollectionValue;
 
             JArray array = result.ToJArray();
 

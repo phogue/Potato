@@ -122,7 +122,7 @@ namespace Procon.Database.Serialization {
                 parsed.Add("remove");
             }
             else if (method is Modify) {
-                parsed.Add("findAndModify");
+                parsed.Add("update");
             }
             else if (method is Save) {
                 parsed.Add("save");
@@ -279,25 +279,10 @@ namespace Procon.Database.Serialization {
             document.AddRange(query.Where(statement => statement is Assignment));
             
             return new List<String>() {
-                document.ToJObject().ToString(Formatting.None)
+                new JObject() {
+                    new JProperty("$set", document.ToJObject())
+                }.ToString(Formatting.None)
             };
-            /*
-
-            List<String> assignments = new List<String>();
-
-            foreach (Assignment assignment in query.Where(statement => statement is Assignment)) {
-                
-
-                Field field = assignment.FirstOrDefault(statement => statement is Field) as Field;
-                Value value = assignment.FirstOrDefault(statement => statement is Value) as Value;
-
-                if (field != null && value != null) {
-                    assignments.Add(String.Format("{0} = {1}", this.ParseField(field), this.ParseValue(value)));
-                }
-            }
-
-            return assignments;
-            */
         }
 
         protected virtual List<String> ParseSortings(IDatabaseObject query) {

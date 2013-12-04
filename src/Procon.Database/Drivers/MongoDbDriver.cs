@@ -5,6 +5,7 @@ using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
 using Procon.Database.Serialization;
 using Procon.Database.Serialization.Builders.Methods;
+using Procon.Database.Serialization.Builders.Modifiers;
 using Procon.Database.Serialization.Builders.Values;
 
 namespace Procon.Database.Drivers {
@@ -56,37 +57,93 @@ namespace Procon.Database.Drivers {
             return opened;
         }
 
+        /// <summary>
+        /// Select query on the database
+        /// </summary>
+        /// <param name="query"></param>
+        /// <param name="result"></param>
+        protected void QueryFind(ICompiledQuery query, CollectionValue result) {
+            MongoCollection<BsonDocument> collection = this.Database.GetCollection(query.Collections);
+
+            foreach (BsonDocument document in collection.Find(new QueryDocument(BsonSerializer.Deserialize<BsonDocument>(query.Conditions)))) {
+                DocumentValue row = new DocumentValue();
+
+                foreach (BsonElement value in document.Elements) {
+                    var dotNetValue = BsonTypeMapper.MapToDotNetValue(value.Value);
+
+                    if (dotNetValue is ObjectId) {
+                        dotNetValue = dotNetValue.ToString();
+                    }
+
+                    row.Assignment(value.Name, dotNetValue);
+                }
+
+                result.Add(row);
+            }
+        }
+
+        /// <summary>
+        /// Modify all documents that match a query
+        /// </summary>
+        /// <param name="query"></param>
+        /// <param name="result"></param>
+        protected void QueryModify(ICompiledQuery query, CollectionValue result) {
+            MongoCollection<BsonDocument> collection = this.Database.GetCollection(query.Collections);
+
+            QueryDocument queryDocument = new QueryDocument(BsonSerializer.Deserialize<BsonDocument>(query.Conditions));
+            UpdateDocument updateDocument = new UpdateDocument(BsonSerializer.Deserialize<BsonDocument>(query.Assignments));
+
+            WriteConcernResult writeConcernResult = collection.Update(queryDocument, updateDocument, UpdateFlags.Multi);
+
+            result.Add(
+                new Affected() {
+                    new NumericValue() {
+                        Integer = (int)writeConcernResult.DocumentsAffected
+                    }
+                }
+            );
+        }
+
+        /// <summary>
+        /// Query to remove documents from a collection.
+        /// </summary>
+        /// <param name="query"></param>
+        /// <param name="result"></param>
+        protected void QueryRemove(ICompiledQuery query, CollectionValue result) {
+            MongoCollection<BsonDocument> collection = this.Database.GetCollection(query.Collections);
+
+            WriteConcernResult writeConcernResult = collection.Remove(new QueryDocument(BsonSerializer.Deserialize<BsonDocument>(query.Conditions)));
+
+            result.Add(
+                new Affected() {
+                    new NumericValue() {
+                        Integer = (int)writeConcernResult.DocumentsAffected
+                    }
+                }
+            );
+        }
+
         public override IDatabaseObject Query(IDatabaseObject query) {
             return this.Query(new SerializerMongoDb().Parse(query).Compile());
         }
 
         protected override IDatabaseObject Query(ICompiledQuery query) {
-            CollectionValue result = new CollectionValue();
+            CollectionValue results = new CollectionValue();
 
             if (query.Root is Find) {
-                MongoCollection<BsonDocument> collection = this.Database.GetCollection(query.Collections);
-
-                foreach (BsonDocument document in collection.Find(new QueryDocument(BsonSerializer.Deserialize<BsonDocument>(query.Conditions)))) {
-                    DocumentValue row = new DocumentValue();
-
-                    foreach (BsonElement value in document.Elements) {
-                        var dotNetValue = BsonTypeMapper.MapToDotNetValue(value.Value);
-
-                        if (dotNetValue is ObjectId) {
-                            dotNetValue = dotNetValue.ToString();
-                        }
-
-                        row.Assignment(value.Name, dotNetValue);
-                    }
-
-                    result.Add(row);
-                }
+                this.QueryFind(query, results);
+            }
+            else if (query.Root is Modify) {
+                this.QueryModify(query, results);
+            }
+            else if (query.Root is Remove) {
+                this.QueryRemove(query, results);
             }
             else {
                 //this.Execute(query, result);
             }
 
-            return result;
+            return results;
         }
 
         public override void Close() {

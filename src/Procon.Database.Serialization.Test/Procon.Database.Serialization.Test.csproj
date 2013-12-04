@@ -48,6 +48,7 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MongoDb\TestSerializerMongoDbMergeImplicit.cs" />
     <Compile Include="MongoDb\TestSerializerMongoDbCreateImplicit.cs" />
     <Compile Include="MongoDb\TestSerializerMongoDbDropImplicit.cs" />
     <Compile Include="MongoDb\TestSerializerMongoDbSaveImplicit.cs" />
@@ -58,6 +59,7 @@
     <Compile Include="MongoDb\TestSerializerMongoDbSaveExplicit.cs" />
     <Compile Include="MongoDb\TestSerializerMongoDbDropExplicit.cs" />
     <Compile Include="MongoDb\TestSerializerMongoDbCreateExplicit.cs" />
+    <Compile Include="MongoDb\TestSerializerMongoDbMergeExplicit.cs" />
     <Compile Include="MySql\TestSerializerMySqlMergeExplicit.cs" />
     <Compile Include="MySql\TestSerializerMySqlMergeImplicit.cs" />
     <Compile Include="TestSerializerMerge.cs" />

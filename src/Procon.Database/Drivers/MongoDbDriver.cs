@@ -59,6 +59,27 @@ namespace Procon.Database.Drivers {
         }
 
         /// <summary>
+        /// Converts a BsonDocument to a DocumentValue (known to procon)
+        /// </summary>
+        /// <param name="document"></param>
+        /// <returns></returns>
+        protected DocumentValue ToDocument(BsonDocument document) {
+            DocumentValue row = new DocumentValue();
+
+            foreach (BsonElement value in document.Elements) {
+                var dotNetValue = BsonTypeMapper.MapToDotNetValue(value.Value);
+
+                if (dotNetValue is ObjectId) {
+                    dotNetValue = dotNetValue.ToString();
+                }
+
+                row.Assignment(value.Name, dotNetValue);
+            }
+
+            return row;
+        }
+
+        /// <summary>
         /// Create table/database query. Creating table ignores all fields except for indexes
         /// </summary>
         /// <param name="query"></param>
@@ -89,19 +110,7 @@ namespace Procon.Database.Drivers {
             BsonArray conditions = BsonSerializer.Deserialize<BsonArray>(query.Conditions.FirstOrDefault());
 
             foreach (BsonDocument document in collection.Find(new QueryDocument(conditions.First().AsBsonDocument))) {
-                DocumentValue row = new DocumentValue();
-
-                foreach (BsonElement value in document.Elements) {
-                    var dotNetValue = BsonTypeMapper.MapToDotNetValue(value.Value);
-
-                    if (dotNetValue is ObjectId) {
-                        dotNetValue = dotNetValue.ToString();
-                    }
-
-                    row.Assignment(value.Name, dotNetValue);
-                }
-
-                result.Add(row);
+                result.Add(this.ToDocument(document));
             }
         }
 
@@ -183,6 +192,34 @@ namespace Procon.Database.Drivers {
             }
         }
 
+        /// <summary>
+        /// find and update, with upsert.
+        /// </summary>
+        /// <param name="query"></param>
+        /// <param name="result"></param>
+        protected void QueryMerge(ICompiledQuery query, CollectionValue result) {
+            MongoCollection<BsonDocument> collection = this.Database.GetCollection(query.Collections.FirstOrDefault());
+
+            ICompiledQuery save = query.Children.FirstOrDefault(child => child.Root is Save);
+            ICompiledQuery modify = query.Children.FirstOrDefault(child => child.Root is Modify);
+
+            if (save != null && modify != null) {
+                BsonArray conditions = BsonSerializer.Deserialize<BsonArray>(modify.Conditions.FirstOrDefault());
+                BsonArray assignments = BsonSerializer.Deserialize<BsonArray>(save.Assignments.FirstOrDefault());
+                BsonArray indices = BsonSerializer.Deserialize<BsonArray>(modify.Indices.FirstOrDefault());
+
+                QueryDocument queryDocument = new QueryDocument(conditions.First().AsBsonDocument);
+                IMongoSortBy sortByDocument = new SortByDocument(indices.First().AsBsonDocument);
+                UpdateDocument updateDocument = new UpdateDocument(assignments.First().AsBsonDocument);
+
+                FindAndModifyResult findAndModifyResult = collection.FindAndModify(queryDocument, sortByDocument, updateDocument, true, true);
+
+                result.Add(this.ToDocument(findAndModifyResult.ModifiedDocument));
+            }
+
+
+        }
+
         public override IDatabaseObject Query(IDatabaseObject query) {
             return this.Query(new SerializerMongoDb().Parse(query).Compile());
         }
@@ -204,6 +241,9 @@ namespace Procon.Database.Drivers {
             }
             else if (query.Root is Create) {
                 this.QueryCreate(query, results);
+            }
+            else if (query.Root is Merge) {
+                this.QueryMerge(query, results);
             }
 
             return results;

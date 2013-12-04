@@ -171,6 +171,9 @@ namespace Procon.Database.Serialization {
             else if (method is Drop) {
                 parsed.Add("drop");
             }
+            else if (method is Merge) {
+                parsed.Add("findAndModify");
+            }
 
             return parsed;
         }

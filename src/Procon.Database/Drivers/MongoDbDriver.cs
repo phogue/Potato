@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
@@ -63,12 +64,12 @@ namespace Procon.Database.Drivers {
         /// <param name="query"></param>
         /// <param name="result"></param>
         protected void QueryCreate(ICompiledQuery query, CollectionValue result) {
-            if (String.IsNullOrEmpty(query.Collections) == false) {
-                MongoCollection<BsonDocument> collection = this.Database.GetCollection(query.Collections);
+            if (query.Collections.Any() == true) {
+                MongoCollection<BsonDocument> collection = this.Database.GetCollection(query.Collections.FirstOrDefault());
 
                 IMongoIndexOptions options = new IndexOptionsDocument();
 
-                collection.EnsureIndex(new IndexKeysDocument(BsonSerializer.Deserialize<BsonDocument>(query.Indices)));
+                collection.EnsureIndex(new IndexKeysDocument(BsonSerializer.Deserialize<BsonDocument>(query.Indices.FirstOrDefault())));
 
                 /*
                 CommandResult commandResult = collection.Drop();
@@ -90,9 +91,9 @@ namespace Procon.Database.Drivers {
         /// <param name="query"></param>
         /// <param name="result"></param>
         protected void QueryFind(ICompiledQuery query, CollectionValue result) {
-            MongoCollection<BsonDocument> collection = this.Database.GetCollection(query.Collections);
+            MongoCollection<BsonDocument> collection = this.Database.GetCollection(query.Collections.FirstOrDefault());
 
-            foreach (BsonDocument document in collection.Find(new QueryDocument(BsonSerializer.Deserialize<BsonDocument>(query.Conditions)))) {
+            foreach (BsonDocument document in collection.Find(new QueryDocument(BsonSerializer.Deserialize<BsonDocument>(query.Conditions.FirstOrDefault())))) {
                 DocumentValue row = new DocumentValue();
 
                 foreach (BsonElement value in document.Elements) {
@@ -115,10 +116,10 @@ namespace Procon.Database.Drivers {
         /// <param name="query"></param>
         /// <param name="result"></param>
         protected void QueryModify(ICompiledQuery query, CollectionValue result) {
-            MongoCollection<BsonDocument> collection = this.Database.GetCollection(query.Collections);
+            MongoCollection<BsonDocument> collection = this.Database.GetCollection(query.Collections.FirstOrDefault());
 
-            QueryDocument queryDocument = new QueryDocument(BsonSerializer.Deserialize<BsonDocument>(query.Conditions));
-            UpdateDocument updateDocument = new UpdateDocument(BsonSerializer.Deserialize<BsonDocument>(query.Assignments));
+            QueryDocument queryDocument = new QueryDocument(BsonSerializer.Deserialize<BsonDocument>(query.Conditions.FirstOrDefault()));
+            UpdateDocument updateDocument = new UpdateDocument(BsonSerializer.Deserialize<BsonDocument>(query.Assignments.FirstOrDefault()));
 
             WriteConcernResult writeConcernResult = collection.Update(queryDocument, updateDocument, UpdateFlags.Multi);
 
@@ -137,9 +138,9 @@ namespace Procon.Database.Drivers {
         /// <param name="query"></param>
         /// <param name="result"></param>
         protected void QueryRemove(ICompiledQuery query, CollectionValue result) {
-            MongoCollection<BsonDocument> collection = this.Database.GetCollection(query.Collections);
+            MongoCollection<BsonDocument> collection = this.Database.GetCollection(query.Collections.FirstOrDefault());
 
-            WriteConcernResult writeConcernResult = collection.Remove(new QueryDocument(BsonSerializer.Deserialize<BsonDocument>(query.Conditions)));
+            WriteConcernResult writeConcernResult = collection.Remove(new QueryDocument(BsonSerializer.Deserialize<BsonDocument>(query.Conditions.FirstOrDefault())));
 
             result.Add(
                 new Affected() {
@@ -156,7 +157,7 @@ namespace Procon.Database.Drivers {
         /// <param name="query"></param>
         /// <param name="result"></param>
         protected void QueryDrop(ICompiledQuery query, CollectionValue result) {
-            if (String.IsNullOrEmpty(query.Databases) == false && this.Database.Name == query.Databases) {
+            if (query.Databases.Any() == true && this.Database.Name == query.Databases.FirstOrDefault()) {
                 this.Database.Drop();
 
                 result.Add(
@@ -168,7 +169,7 @@ namespace Procon.Database.Drivers {
                 );
             }
             else {
-                MongoCollection<BsonDocument> collection = this.Database.GetCollection(query.Collections);
+                MongoCollection<BsonDocument> collection = this.Database.GetCollection(query.Collections.FirstOrDefault());
 
                 CommandResult commandResult = collection.Drop();
 

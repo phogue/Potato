@@ -50,10 +50,8 @@ namespace Procon.Database.Serialization.Builders.Values {
                 Field field = assignment.FirstOrDefault(statement => statement is Field) as Field;
                 Value value = assignment.FirstOrDefault(statement => statement is Value) as Value;
 
-                if (field != null && value != null) {
-                    if (data.ContainsKey(field.Name) == false) {
-                        data.Add(field.Name, value.ToObject());
-                    }
+                if (field != null && value != null && data.ContainsKey(field.Name) == false) {
+                    data.Add(field.Name, value.ToObject());
                 }
             }
 

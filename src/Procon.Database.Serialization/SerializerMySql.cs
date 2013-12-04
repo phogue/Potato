@@ -332,7 +332,8 @@ namespace Procon.Database.Serialization {
         public override ICompiledQuery Compile(IParsedQuery parsed) {
             CompiledQuery serializedQuery = new CompiledQuery() {
                 Children = parsed.Children.Select(this.Compile).ToList(),
-                Root = parsed.Root
+                Root = parsed.Root,
+                Methods = parsed.Methods
             };
 
             List<String> compiled = new List<String>() {
@@ -345,11 +346,11 @@ namespace Procon.Database.Serialization {
 
                 if (save != null && modify != null) {
                     compiled.Add("INTO");
-                    compiled.Add(save.Collections);
+                    compiled.Add(save.Collections.FirstOrDefault());
                     compiled.Add("SET");
-                    compiled.Add(save.Assignments);
+                    compiled.Add(save.Assignments.FirstOrDefault());
                     compiled.Add("ON DUPLICATE KEY UPDATE");
-                    compiled.Add(modify.Assignments);
+                    compiled.Add(modify.Assignments.FirstOrDefault());
                 }
             }
             else if (parsed.Root is Find) {
@@ -357,28 +358,28 @@ namespace Procon.Database.Serialization {
                 compiled.Add(parsed.Fields.Any() == true ? String.Join(", ", parsed.Fields.ToArray()) : "*");
 
                 if (parsed.Collections.Any() == true) {
-                    serializedQuery.Collections = String.Join(", ", parsed.Collections.ToArray());
+                    serializedQuery.Collections.Add(String.Join(", ", parsed.Collections.ToArray()));
                     compiled.Add("FROM");
-                    compiled.Add(serializedQuery.Collections);
+                    compiled.Add(serializedQuery.Collections.FirstOrDefault());
                 }
 
                 if (parsed.Conditions.Any() == true) {
-                    serializedQuery.Conditions = String.Join(" AND ", parsed.Conditions.ToArray());
+                    serializedQuery.Conditions.Add(String.Join(" AND ", parsed.Conditions.ToArray()));
                     compiled.Add("WHERE");
-                    compiled.Add(serializedQuery.Conditions);
+                    compiled.Add(serializedQuery.Conditions.FirstOrDefault());
                 }
 
                 if (parsed.Sortings.Any() == true) {
-                    serializedQuery.Sortings = String.Join(", ", parsed.Sortings.ToArray());
+                    serializedQuery.Sortings.Add(String.Join(", ", parsed.Sortings.ToArray()));
                     compiled.Add("ORDER BY");
-                    compiled.Add(serializedQuery.Sortings);
+                    compiled.Add(serializedQuery.Sortings.FirstOrDefault());
                 }
             }
             else if (parsed.Root is Create) {
                 if (parsed.Databases.Any() == true) {
-                    serializedQuery.Databases = parsed.Databases.FirstOrDefault();
+                    serializedQuery.Databases.Add(parsed.Databases.FirstOrDefault());
                     compiled.Add("DATABASE");
-                    compiled.Add(serializedQuery.Databases);
+                    compiled.Add(serializedQuery.Databases.FirstOrDefault());
                 }
                 else if (parsed.Collections.Any() == true) {
                     compiled.Add("TABLE");
@@ -388,9 +389,9 @@ namespace Procon.Database.Serialization {
                         List<String> fieldsIndicesCombination = new List<String>(parsed.Fields);
                         fieldsIndicesCombination.AddRange(parsed.Indices);
 
-                        serializedQuery.Indices = String.Join(", ", fieldsIndicesCombination.ToArray());
+                        serializedQuery.Indices.Add(String.Join(", ", fieldsIndicesCombination.ToArray()));
 
-                        compiled.Add(String.Format("({0})", serializedQuery.Indices));
+                        compiled.Add(String.Format("({0})", serializedQuery.Indices.FirstOrDefault()));
                     }
                     else {
                         compiled.Add(String.Format("({0})", String.Join(", ", parsed.Fields.ToArray())));
@@ -400,62 +401,62 @@ namespace Procon.Database.Serialization {
             else if (parsed.Root is Save) {
                 if (parsed.Collections.Any() == true) {
                     compiled.Add("INTO");
-                    serializedQuery.Collections = parsed.Collections.FirstOrDefault();
-                    compiled.Add(serializedQuery.Collections);
+                    serializedQuery.Collections.Add(parsed.Collections.FirstOrDefault());
+                    compiled.Add(serializedQuery.Collections.FirstOrDefault());
                 }
 
                 if (parsed.Assignments.Any() == true) {
-                    serializedQuery.Assignments = String.Join(", ", parsed.Assignments.ToArray());
+                    serializedQuery.Assignments.Add(String.Join(", ", parsed.Assignments.ToArray()));
                     compiled.Add("SET");
-                    compiled.Add(serializedQuery.Assignments);
+                    compiled.Add(serializedQuery.Assignments.FirstOrDefault());
                 }
             }
             else if (parsed.Root is Modify) {
                 if (parsed.Collections.Any() == true) {
-                    serializedQuery.Collections = String.Join(", ", parsed.Collections.ToArray());
-                    compiled.Add(serializedQuery.Collections);
+                    serializedQuery.Collections.Add(String.Join(", ", parsed.Collections.ToArray()));
+                    compiled.Add(serializedQuery.Collections.FirstOrDefault());
                 }
 
                 if (parsed.Assignments.Any() == true) {
-                    serializedQuery.Assignments = String.Join(", ", parsed.Assignments.ToArray());
+                    serializedQuery.Assignments.Add(String.Join(", ", parsed.Assignments.ToArray()));
                     compiled.Add("SET");
-                    compiled.Add(serializedQuery.Assignments);
+                    compiled.Add(serializedQuery.Assignments.FirstOrDefault());
                 }
 
                 if (parsed.Conditions.Any() == true) {
-                    serializedQuery.Conditions = String.Join(" AND ", parsed.Conditions.ToArray());
+                    serializedQuery.Conditions.Add(String.Join(" AND ", parsed.Conditions.ToArray()));
                     compiled.Add("WHERE");
-                    compiled.Add(serializedQuery.Conditions);
+                    compiled.Add(serializedQuery.Conditions.FirstOrDefault());
                 }
 
             }
             else if (parsed.Root is Remove) {
                 if (parsed.Collections.Any() == true) {
-                    serializedQuery.Collections = String.Join(", ", parsed.Collections.ToArray());
+                    serializedQuery.Collections.Add(String.Join(", ", parsed.Collections.ToArray()));
                     compiled.Add("FROM");
-                    compiled.Add(serializedQuery.Collections);
+                    compiled.Add(serializedQuery.Collections.FirstOrDefault());
                 }
 
                 if (parsed.Conditions.Any() == true) {
-                    serializedQuery.Conditions = String.Join(" AND ", parsed.Conditions.ToArray());
+                    serializedQuery.Conditions.Add(String.Join(" AND ", parsed.Conditions.ToArray()));
                     compiled.Add("WHERE");
-                    compiled.Add(serializedQuery.Conditions);
+                    compiled.Add(serializedQuery.Conditions.FirstOrDefault());
                 }
             }
             else if (parsed.Root is Drop) {
                 if (parsed.Databases.Any() == true) {
-                    serializedQuery.Databases = parsed.Databases.FirstOrDefault();
+                    serializedQuery.Databases.Add(parsed.Databases.FirstOrDefault());
                     compiled.Add("DATABASE");
-                    compiled.Add(serializedQuery.Databases);
+                    compiled.Add(serializedQuery.Databases.FirstOrDefault());
                 }
                 else if (parsed.Collections.Any() == true) {
                     compiled.Add("TABLE");
-                    serializedQuery.Collections = parsed.Collections.FirstOrDefault();
-                    compiled.Add(serializedQuery.Collections);
+                    serializedQuery.Collections.Add(parsed.Collections.FirstOrDefault());
+                    compiled.Add(serializedQuery.Collections.FirstOrDefault());
                 }
             }
 
-            serializedQuery.Completed = String.Join(" ", compiled.ToArray());
+            serializedQuery.Compiled.Add(String.Join(" ", compiled.ToArray()));
 
             return serializedQuery;
         }

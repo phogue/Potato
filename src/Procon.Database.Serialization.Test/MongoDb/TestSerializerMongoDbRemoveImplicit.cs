@@ -10,8 +10,8 @@ namespace Procon.Database.Serialization.Test.MongoDb {
             ISerializer serializer = new SerializerMongoDb();
             ICompiledQuery serialized = serializer.Parse(this.TestRemoveAllFromPlayerImplicit).Compile();
 
-            Assert.AreEqual(@"remove", serialized.Method);
-            Assert.AreEqual(@"Player", serialized.Collections);
+            Assert.AreEqual(@"remove", serialized.Methods.First());
+            Assert.AreEqual(@"Player", serialized.Collections.First());
         }
         
         [Test]
@@ -19,9 +19,9 @@ namespace Procon.Database.Serialization.Test.MongoDb {
             ISerializer serializer = new SerializerMongoDb();
             ICompiledQuery serialized = serializer.Parse(this.TestRemoveAllFromPlayerWhereNameEqualsPhogueImplicit).Compile();
 
-            Assert.AreEqual(@"remove", serialized.Method);
-            Assert.AreEqual(@"Player", serialized.Collections);
-            Assert.AreEqual(@"{""Name"":""Phogue""}", serialized.Conditions);
+            Assert.AreEqual(@"remove", serialized.Methods.First());
+            Assert.AreEqual(@"Player", serialized.Collections.First());
+            Assert.AreEqual(@"{""Name"":""Phogue""}", serialized.Conditions.First());
         }
 
         [Test]
@@ -29,9 +29,9 @@ namespace Procon.Database.Serialization.Test.MongoDb {
             ISerializer serializer = new SerializerMongoDb();
             ICompiledQuery serialized = serializer.Parse(this.TestRemoveAllFromPlayerWherePlayerNameEqualsPhogueImplicit).Compile();
 
-            Assert.AreEqual(@"remove", serialized.Method);
-            Assert.AreEqual(@"Player", serialized.Collections);
-            Assert.AreEqual(@"{""Name"":""Phogue""}", serialized.Conditions);
+            Assert.AreEqual(@"remove", serialized.Methods.First());
+            Assert.AreEqual(@"Player", serialized.Collections.First());
+            Assert.AreEqual(@"{""Name"":""Phogue""}", serialized.Conditions.First());
         }
 
         [Test]
@@ -39,9 +39,9 @@ namespace Procon.Database.Serialization.Test.MongoDb {
             ISerializer serializer = new SerializerMongoDb();
             ICompiledQuery serialized = serializer.Parse(this.TestRemoveAllFromPlayerWhereNameEqualsPhogueAndScoreEqualsTenImplicit).Compile();
 
-            Assert.AreEqual(@"remove", serialized.Method);
-            Assert.AreEqual(@"Player", serialized.Collections);
-            Assert.AreEqual(@"{""Name"":""Phogue"",""Score"":""10""}", serialized.Conditions);
+            Assert.AreEqual(@"remove", serialized.Methods.First());
+            Assert.AreEqual(@"Player", serialized.Collections.First());
+            Assert.AreEqual(@"{""Name"":""Phogue"",""Score"":""10""}", serialized.Conditions.First());
         }
 
         [Test]
@@ -49,9 +49,9 @@ namespace Procon.Database.Serialization.Test.MongoDb {
             ISerializer serializer = new SerializerMongoDb();
             ICompiledQuery serialized = serializer.Parse(this.TestRemoveAllFromPlayerWhereNameEqualsPhogueOrZaeedImplicit).Compile();
 
-            Assert.AreEqual(@"remove", serialized.Method);
-            Assert.AreEqual(@"Player", serialized.Collections);
-            Assert.AreEqual(@"{""$or"":[{""Name"":""Phogue""},{""Name"":""Zaeed""}]}", serialized.Conditions);
+            Assert.AreEqual(@"remove", serialized.Methods.First());
+            Assert.AreEqual(@"Player", serialized.Collections.First());
+            Assert.AreEqual(@"{""$or"":[{""Name"":""Phogue""},{""Name"":""Zaeed""}]}", serialized.Conditions.First());
         }
 
         [Test]
@@ -59,9 +59,9 @@ namespace Procon.Database.Serialization.Test.MongoDb {
             ISerializer serializer = new SerializerMongoDb();
             ICompiledQuery serialized = serializer.Parse(this.TestRemoveAllFromPlayerWhereNameEqualsPhogueOrZaeedAndScoreAbove10AndBelow20Implicit).Compile();
 
-            Assert.AreEqual(@"remove", serialized.Method);
-            Assert.AreEqual(@"Player", serialized.Collections);
-            Assert.AreEqual(@"{""$or"":[{""Name"":""Phogue""},{""Name"":""Zaeed""}],""Score"":{""$gt"":""10"",""$lt"":""20""}}", serialized.Conditions);
+            Assert.AreEqual(@"remove", serialized.Methods.First());
+            Assert.AreEqual(@"Player", serialized.Collections.First());
+            Assert.AreEqual(@"{""$or"":[{""Name"":""Phogue""},{""Name"":""Zaeed""}],""Score"":{""$gt"":""10"",""$lt"":""20""}}", serialized.Conditions.First());
         }
 
         [Test]
@@ -69,9 +69,9 @@ namespace Procon.Database.Serialization.Test.MongoDb {
             ISerializer serializer = new SerializerMongoDb();
             ICompiledQuery serialized = serializer.Parse(this.TestRemoveAllFromPlayerWhereNameEqualsPhogueAndScoreAbove50OrNameEqualsZaeedAndScoreBelow50Implicit).Compile();
 
-            Assert.AreEqual(@"remove", serialized.Method);
-            Assert.AreEqual(@"Player", serialized.Collections);
-            Assert.AreEqual(@"{""$or"":[{""Name"":""Phogue"",""Score"":{""$gt"":""50""}},{""Name"":""Zaeed"",""Score"":{""$lt"":""50""}}]}", serialized.Conditions);
+            Assert.AreEqual(@"remove", serialized.Methods.First());
+            Assert.AreEqual(@"Player", serialized.Collections.First());
+            Assert.AreEqual(@"{""$or"":[{""Name"":""Phogue"",""Score"":{""$gt"":""50""}},{""Name"":""Zaeed"",""Score"":{""$lt"":""50""}}]}", serialized.Conditions.First());
         }
     }
 }

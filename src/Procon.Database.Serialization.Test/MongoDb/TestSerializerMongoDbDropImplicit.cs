@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using System.Linq;
+using NUnit.Framework;
 
 namespace Procon.Database.Serialization.Test.MongoDb {
     [TestFixture]
@@ -8,8 +9,8 @@ namespace Procon.Database.Serialization.Test.MongoDb {
             ISerializer serializer = new SerializerMongoDb();
             ICompiledQuery serialized = serializer.Parse(this.TestDropDatabaseProconImplicit).Compile();
 
-            Assert.AreEqual(@"drop", serialized.Method);
-            Assert.AreEqual(@"Procon", serialized.Databases);
+            Assert.AreEqual(@"drop", serialized.Methods.First());
+            Assert.AreEqual(@"Procon", serialized.Databases.First());
         }
 
         [Test]
@@ -17,8 +18,8 @@ namespace Procon.Database.Serialization.Test.MongoDb {
             ISerializer serializer = new SerializerMongoDb();
             ICompiledQuery serialized = serializer.Parse(this.TestDropTablePlayerImplicit).Compile();
 
-            Assert.AreEqual(@"drop", serialized.Method);
-            Assert.AreEqual(@"Player", serialized.Collections);
+            Assert.AreEqual(@"drop", serialized.Methods.First());
+            Assert.AreEqual(@"Player", serialized.Collections.First());
         }
     }
 }

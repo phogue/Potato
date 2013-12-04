@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using System.Linq;
+using NUnit.Framework;
 
 namespace Procon.Database.Serialization.Test.MongoDb {
     [TestFixture]
@@ -8,9 +9,9 @@ namespace Procon.Database.Serialization.Test.MongoDb {
             ISerializer serializer = new SerializerMongoDb();
             ICompiledQuery serialized = serializer.Parse(this.TestSaveIntoPlayerSetNameExplicit).Compile();
 
-            Assert.AreEqual(@"save", serialized.Method);
-            Assert.AreEqual(@"Player", serialized.Collections);
-            Assert.AreEqual(@"{""$set"":{""Name"":""Phogue""}}", serialized.Assignments);
+            Assert.AreEqual(@"save", serialized.Methods.First());
+            Assert.AreEqual(@"Player", serialized.Collections.First());
+            Assert.AreEqual(@"{""$set"":{""Name"":""Phogue""}}", serialized.Assignments.First());
         }
         
         [Test]
@@ -18,9 +19,9 @@ namespace Procon.Database.Serialization.Test.MongoDb {
             ISerializer serializer = new SerializerMongoDb();
             ICompiledQuery serialized = serializer.Parse(this.TestSaveIntoPlayerSetNameScoreExplicit).Compile();
 
-            Assert.AreEqual(@"save", serialized.Method);
-            Assert.AreEqual(@"Player", serialized.Collections);
-            Assert.AreEqual(@"{""$set"":{""Name"":""Phogue"",""Score"":50.0}}", serialized.Assignments);
+            Assert.AreEqual(@"save", serialized.Methods.First());
+            Assert.AreEqual(@"Player", serialized.Collections.First());
+            Assert.AreEqual(@"{""$set"":{""Name"":""Phogue"",""Score"":50.0}}", serialized.Assignments.First());
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using System.Data.Common;
+using System.Linq;
 using MySql.Data.MySqlClient;
 using Procon.Database.Serialization;
 using Procon.Database.Serialization.Builders.Methods;
@@ -67,7 +68,7 @@ namespace Procon.Database.Drivers {
         protected void Read(ICompiledQuery query, CollectionValue result) {
             if (this.Connection != null && this.Connection.State == ConnectionState.Open) {
                 using (IDbCommand command = this.Connection.CreateCommand()) {
-                    command.CommandText = query.Completed;
+                    command.CommandText = query.Compiled.FirstOrDefault();
 
                     using (IDataReader reader = command.ExecuteReader()) {
                         if (reader != null) {
@@ -95,7 +96,7 @@ namespace Procon.Database.Drivers {
         protected void Execute(ICompiledQuery query, CollectionValue result) {
             if (this.Connection != null && this.Connection.State == ConnectionState.Open) {
                 using (IDbCommand command = this.Connection.CreateCommand()) {
-                    command.CommandText = query.Completed;
+                    command.CommandText = query.Compiled.FirstOrDefault();
 
                     result.Add(
                         new Affected() {

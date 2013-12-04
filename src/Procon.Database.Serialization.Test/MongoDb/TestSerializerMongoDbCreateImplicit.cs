@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using System.Linq;
+using NUnit.Framework;
 
 namespace Procon.Database.Serialization.Test.MongoDb {
     [TestFixture]
@@ -8,8 +9,8 @@ namespace Procon.Database.Serialization.Test.MongoDb {
             ISerializer serializer = new SerializerMongoDb();
             ICompiledQuery serialized = serializer.Parse(this.TestCreateDatabaseProconImplicit).Compile();
 
-            Assert.AreEqual(@"create", serialized.Method);
-            Assert.AreEqual(@"Procon", serialized.Databases);
+            Assert.AreEqual(@"create", serialized.Methods.First());
+            Assert.AreEqual(@"Procon", serialized.Databases.First());
         }
 
         [Test, Ignore]
@@ -47,8 +48,8 @@ namespace Procon.Database.Serialization.Test.MongoDb {
             ISerializer serializer = new SerializerMongoDb();
             ICompiledQuery serialized = serializer.Parse(this.TestCreatePlayerWithFieldStringNameWithIndexOnNameImplicit).Compile();
 
-            Assert.AreEqual(@"create", serialized.Method);
-            Assert.AreEqual(@"{""Name"":1}", serialized.Indices);
+            Assert.AreEqual(@"create", serialized.Methods.First());
+            Assert.AreEqual(@"{""Name"":1}", serialized.Indices.First());
         }
 
         [Test]
@@ -56,8 +57,8 @@ namespace Procon.Database.Serialization.Test.MongoDb {
             ISerializer serializer = new SerializerMongoDb();
             ICompiledQuery serialized = serializer.Parse(this.TestCreatePlayerWithFieldStringNameWithIndexOnNameDescendingImplicit).Compile();
 
-            Assert.AreEqual(@"create", serialized.Method);
-            Assert.AreEqual(@"{""Name"":-1}", serialized.Indices);
+            Assert.AreEqual(@"create", serialized.Methods.First());
+            Assert.AreEqual(@"{""Name"":-1}", serialized.Indices.First());
         }
     }
 }

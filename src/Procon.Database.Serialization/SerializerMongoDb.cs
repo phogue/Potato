@@ -333,14 +333,14 @@ namespace Procon.Database.Serialization {
             return new CompiledQuery {
                 Children = parsed.Children.Select(this.Compile).ToList(),
                 Root = parsed.Root,
-                Method = parsed.Methods.FirstOrDefault(),
-                Databases = parsed.Databases.FirstOrDefault(),
-                Collections = parsed.Collections.FirstOrDefault(),
-                Conditions = parsed.Conditions.FirstOrDefault(),
+                Methods = parsed.Methods,
+                Databases = parsed.Databases,
+                Collections = parsed.Collections,
+                Conditions = parsed.Conditions,
                 Fields = parsed.Fields,
-                Assignments = parsed.Assignments.FirstOrDefault(),
-                Indices = parsed.Indices.FirstOrDefault(),
-                Sortings = parsed.Sortings.FirstOrDefault()
+                Assignments = parsed.Assignments,
+                Indices = parsed.Indices,
+                Sortings = parsed.Sortings
             };
         }
 

@@ -29,6 +29,11 @@ namespace Procon.Database.Serialization {
         public String Method { get; set; }
 
         /// <summary>
+        /// The databases to query against
+        /// </summary>
+        public string Databases { get; set; }
+
+        /// <summary>
         /// The fields to select from the collections
         /// </summary>
         public List<String> Fields { get; set; }

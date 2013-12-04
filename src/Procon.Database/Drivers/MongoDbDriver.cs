@@ -123,6 +123,38 @@ namespace Procon.Database.Drivers {
             );
         }
 
+        /// <summary>
+        /// Drops a database or collection
+        /// </summary>
+        /// <param name="query"></param>
+        /// <param name="result"></param>
+        protected void QueryDrop(ICompiledQuery query, CollectionValue result) {
+            if (String.IsNullOrEmpty(query.Databases) == false && this.Database.Name == query.Databases) {
+                this.Database.Drop();
+
+                result.Add(
+                    new Affected() {
+                        new NumericValue() {
+                            Integer = 1
+                        }
+                    }
+                );
+            }
+            else {
+                MongoCollection<BsonDocument> collection = this.Database.GetCollection(query.Collections);
+
+                CommandResult commandResult = collection.Drop();
+
+                result.Add(
+                    new Affected() {
+                        new NumericValue() {
+                            Integer = commandResult.Ok == true ? 1 : 0
+                        }
+                    }
+                );
+            }
+        }
+
         public override IDatabaseObject Query(IDatabaseObject query) {
             return this.Query(new SerializerMongoDb().Parse(query).Compile());
         }
@@ -138,6 +170,9 @@ namespace Procon.Database.Drivers {
             }
             else if (query.Root is Remove) {
                 this.QueryRemove(query, results);
+            }
+            else if (query.Root is Drop) {
+                this.QueryDrop(query, results);
             }
             else {
                 //this.Execute(query, result);

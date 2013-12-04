@@ -91,7 +91,7 @@ namespace Procon.Database.Test {
 
             driver.Connect();
 
-            CollectionValue result = driver.Query(new Modify().Collection("posts").Condition("text", "So like a year later?").Assignment("subject", "something modified")) as CollectionValue;
+            CollectionValue result = driver.Query(new Drop().Collection("posts").Condition("text", "So like a year later?").Assignment("subject", "something modified")) as CollectionValue;
 
             JArray array = result.ToJArray();
 

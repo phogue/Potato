@@ -11,7 +11,6 @@ using Procon.Database.Serialization.Builders.Methods;
 using Procon.Database.Serialization.Builders.Modifiers;
 using Procon.Database.Serialization.Builders.Statements;
 using Procon.Database.Serialization.Builders.Values;
-using Procon.Database.Serialization.Exceptions;
 
 namespace Procon.Database.Serialization {
     /// <summary>
@@ -127,6 +126,21 @@ namespace Procon.Database.Serialization {
             else if (method is Save) {
                 parsed.Add("save");
             }
+            else if (method is Drop) {
+                parsed.Add("drop");
+            }
+
+            return parsed;
+        }
+
+        protected virtual List<String> ParseDatabases(IDatabaseObject query) {
+            List<String> parsed = new List<String>();
+
+            Builders.Database database = query.FirstOrDefault(statement => statement is Builders.Database) as Builders.Database;
+
+            if (database != null) {
+                parsed.Add(database.Name);
+            }
 
             return parsed;
         }
@@ -140,13 +154,10 @@ namespace Procon.Database.Serialization {
         protected virtual List<String> ParseCollections(IDatabaseObject query) {
             List<String> parsed = new List<String>();
 
-            Collection collection = query.FirstOrDefault(logical => logical is Collection) as Collection;
+            Collection collection = query.FirstOrDefault(statement => statement is Collection) as Collection;
 
             if (collection != null) {
                 parsed.Add(collection.Name);
-            }
-            else {
-                throw new SerializationException("Missing collection name");
             }
 
             return parsed;
@@ -302,6 +313,7 @@ namespace Procon.Database.Serialization {
                 Children = parsed.Children.Select(this.Compile).ToList(),
                 Root = parsed.Root,
                 Method = parsed.Methods.FirstOrDefault(),
+                Databases = parsed.Databases.FirstOrDefault(),
                 Collections = parsed.Collections.FirstOrDefault(),
                 Conditions = parsed.Conditions.FirstOrDefault(),
                 Fields = parsed.Fields,
@@ -316,6 +328,8 @@ namespace Procon.Database.Serialization {
             parsed.Children = this.ParseChildren(method);
 
             parsed.Methods = this.ParseMethod(method);
+
+            parsed.Databases = this.ParseDatabases(method);
 
             parsed.Collections = this.ParseCollections(method);
 

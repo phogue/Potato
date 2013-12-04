@@ -376,8 +376,9 @@ namespace Procon.Database.Serialization {
             }
             else if (parsed.Root is Create) {
                 if (parsed.Databases.Any() == true) {
+                    serializedQuery.Databases = parsed.Databases.FirstOrDefault();
                     compiled.Add("DATABASE");
-                    compiled.Add(parsed.Databases.FirstOrDefault());
+                    compiled.Add(serializedQuery.Databases);
                 }
                 else if (parsed.Collections.Any() == true) {
                     compiled.Add("TABLE");
@@ -441,8 +442,9 @@ namespace Procon.Database.Serialization {
             }
             else if (parsed.Root is Drop) {
                 if (parsed.Databases.Any() == true) {
+                    serializedQuery.Databases = parsed.Databases.FirstOrDefault();
                     compiled.Add("DATABASE");
-                    compiled.Add(parsed.Databases.FirstOrDefault());
+                    compiled.Add(serializedQuery.Databases);
                 }
                 else if (parsed.Collections.Any() == true) {
                     compiled.Add("TABLE");

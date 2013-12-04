@@ -19,9 +19,9 @@ namespace Procon.Database.Serialization {
 
         IDatabaseObject Index(String name);
 
-        IDatabaseObject Index(String name, Modifier attribute);
+        IDatabaseObject Index(String name, Modifier modifier);
 
-        IDatabaseObject Attribute(IDatabaseObject data);
+        IDatabaseObject Modifier(IDatabaseObject data);
 
         IDatabaseObject Field(IDatabaseObject data);
 
@@ -65,6 +65,6 @@ namespace Procon.Database.Serialization {
 
         IDatabaseObject Sort(IDatabaseObject data);
 
-        IDatabaseObject Sort(String name);
+        IDatabaseObject Sort(String name, Modifier modifier = null);
     }
 }

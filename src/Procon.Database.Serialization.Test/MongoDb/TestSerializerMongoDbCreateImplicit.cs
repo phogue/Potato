@@ -60,5 +60,33 @@ namespace Procon.Database.Serialization.Test.MongoDb {
             Assert.AreEqual(@"create", serialized.Methods.First());
             Assert.AreEqual(@"{""Name"":-1}", serialized.Indices.First());
         }
+
+        [Test]
+        public override void TestCreatePlayerWithFieldStringNameWithIndexOnNameScore() {
+            ISerializer serializer = new SerializerMongoDb();
+            ICompiledQuery serialized = serializer.Parse(this.TestCreatePlayerWithFieldStringNameWithIndexOnNameScoreImplicit).Compile();
+
+            Assert.AreEqual(@"create", serialized.Methods.First());
+            Assert.AreEqual(@"{""Name"":1}", serialized.Indices.First());
+            Assert.AreEqual(@"{""Score"":1}", serialized.Indices.Last());
+        }
+
+        [Test]
+        public override void TestCreatePlayerWithFieldStringNameWithIndexOnNameScoreCompound() {
+            ISerializer serializer = new SerializerMongoDb();
+            ICompiledQuery serialized = serializer.Parse(this.TestCreatePlayerWithFieldStringNameWithIndexOnNameScoreCompoundImplicit).Compile();
+
+            Assert.AreEqual(@"create", serialized.Methods.First());
+            Assert.AreEqual(@"{""Name"":1,""Score"":1}", serialized.Indices.First());
+        }
+
+        [Test]
+        public override void TestCreatePlayerWithFieldStringNameWithIndexOnNameScoreDescendingCompound() {
+            ISerializer serializer = new SerializerMongoDb();
+            ICompiledQuery serialized = serializer.Parse(this.TestCreatePlayerWithFieldStringNameWithIndexOnNameScoreDescendingCompoundImplicit).Compile();
+
+            Assert.AreEqual(@"create", serialized.Methods.First());
+            Assert.AreEqual(@"{""Name"":1,""Score"":-1}", serialized.Indices.First());
+        }
     }
 }

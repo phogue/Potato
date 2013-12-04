@@ -70,7 +70,7 @@ namespace Procon.Database.Serialization {
             );
         }
 
-        public IDatabaseObject Index(String name, Modifier attribute) {
+        public IDatabaseObject Index(String name, Modifier modifier) {
             Field field = this.BuildField(name);
             Collection collection = field.FirstOrDefault(statement => statement is Collection) as Collection;
 
@@ -83,12 +83,12 @@ namespace Procon.Database.Serialization {
                         Name = field.Name
                     }
                     .Collection(collection)
-                    .Attribute(attribute)
+                    .Modifier(modifier)
                 )
             );
         }
 
-        public IDatabaseObject Attribute(IDatabaseObject data) {
+        public IDatabaseObject Modifier(IDatabaseObject data) {
             this.Add(data);
 
             return this;
@@ -107,19 +107,19 @@ namespace Procon.Database.Serialization {
         public IDatabaseObject Field(String name, FieldType type, bool nullable = true) {
             if (nullable == true) type.Add(new Nullable());
 
-            return this.Field(this.BuildField(name).Attribute(type));
+            return this.Field(this.BuildField(name).Modifier(type));
         }
 
         public IDatabaseObject Field(String name, int length, bool nullable = true) {
             FieldType type = new StringType();
 
-            type.Attribute(new Length() {
+            type.Modifier(new Length() {
                 Value = length
             });
 
             if (nullable == true) type.Add(new Nullable());
 
-            return this.Field(this.BuildField(name).Attribute(type));
+            return this.Field(this.BuildField(name).Modifier(type));
         }
 
         /// <summary>
@@ -289,15 +289,17 @@ namespace Procon.Database.Serialization {
             return this;
         }
 
-        public IDatabaseObject Sort(String name) {
+        public IDatabaseObject Sort(String name, Modifier modifier = null) {
             Field field = this.BuildField(name);
             Collection collection = field.FirstOrDefault(statement => statement is Collection) as Collection;
 
-            return this.Sort(new Sort() {
-                Name = field.Name
-            })
+            return this.Sort(
+                new Sort() {
+                    Name = field.Name
+                }
+                .Modifier(modifier ?? new Ascending())
+            )
             .Collection(collection);
         }
-
     }
 }

@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Procon.Database.Serialization {
+    /// <summary>
+    /// The base shared data between Compiled and Parsed data.
+    /// </summary>
     public abstract class QueryData : IQueryData {
 
         /// <summary>

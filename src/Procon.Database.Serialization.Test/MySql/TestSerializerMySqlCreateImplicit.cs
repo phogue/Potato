@@ -48,5 +48,19 @@ namespace Procon.Database.Serialization.Test.MySql {
         public override void TestCreatePlayerWithFieldStringNameWithIndexOnNameDescending() {
             Assert.AreEqual(@"CREATE TABLE `Player` (`Name` VARCHAR(255) NULL, INDEX `Name_INDEX` (`Name` DESC))", new SerializerMySql().Parse(this.TestCreatePlayerWithFieldStringNameWithIndexOnNameDescendingImplicit).Compile().Compiled.First());
         }
+
+        [Test]
+        public override void TestCreatePlayerWithFieldStringNameWithIndexOnNameScore() {
+            Assert.AreEqual(@"CREATE TABLE `Player` (`Name` VARCHAR(255) NULL, INDEX `Name_INDEX` (`Name`), INDEX `Score_INDEX` (`Score`))", new SerializerMySql().Parse(this.TestCreatePlayerWithFieldStringNameWithIndexOnNameScoreExplicit).Compile().Compiled.First());
+        }
+        [Test]
+        public override void TestCreatePlayerWithFieldStringNameWithIndexOnNameScoreCompound() {
+            Assert.AreEqual(@"CREATE TABLE `Player` (`Name` VARCHAR(255) NULL, INDEX `Name_Score_INDEX` (`Name`, `Score`))", new SerializerMySql().Parse(this.TestCreatePlayerWithFieldStringNameWithIndexOnNameScoreCompoundImplicit).Compile().Compiled.First());
+        }
+
+        [Test]
+        public override void TestCreatePlayerWithFieldStringNameWithIndexOnNameScoreDescendingCompound() {
+            Assert.AreEqual(@"CREATE TABLE `Player` (`Name` VARCHAR(255) NULL, INDEX `Name_Score_INDEX` (`Name`, `Score` DESC))", new SerializerMySql().Parse(this.TestCreatePlayerWithFieldStringNameWithIndexOnNameScoreDescendingCompoundImplicit).Compile().Compiled.First());
+        }
     }
 }

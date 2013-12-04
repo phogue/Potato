@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 
 namespace Procon.Database.Serialization {
+    /// <summary>
+    /// The base shared data between Compiled and Parsed data.
+    /// </summary>
     public interface IQueryData {
         /// <summary>
         /// The method used in the SQL (SELECT, INSERT, UPDATE, DELETE)

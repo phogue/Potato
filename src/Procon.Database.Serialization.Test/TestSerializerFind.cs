@@ -26,13 +26,13 @@ namespace Procon.Database.Serialization.Test {
         #region TestSelectDistinctAllFromPlayer
 
         protected IDatabaseObject TestSelectDistinctAllFromPlayerExplicit = new Find()
-            .Attribute(new Distinct())
+            .Modifier(new Distinct())
             .Collection(new Collection() {
                 Name = "Player"
             });
 
         protected IDatabaseObject TestSelectDistinctAllFromPlayerImplicit = new Find()
-            .Attribute(new Distinct())
+            .Modifier(new Distinct())
             .Collection("Player");
 
         public abstract void TestSelectDistinctAllFromPlayer();
@@ -351,12 +351,12 @@ namespace Procon.Database.Serialization.Test {
             })
             .Sort(new Sort() {
                 Name = "Score"
-            }.Attribute(new Descending()));
+            }.Modifier(new Descending()));
 
         protected IDatabaseObject TestSelectAllFromPlayerSortByNameThenScoreDescendingImplicit = new Find()
             .Collection("Player")
             .Sort("Name")
-            .Sort(new Sort() { Name = "Score" }.Attribute(new Descending()));
+            .Sort(new Sort() { Name = "Score" }.Modifier(new Descending()));
 
         public abstract void TestSelectAllFromPlayerSortByNameThenScoreDescending();
 

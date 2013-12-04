@@ -58,6 +58,33 @@ namespace Procon.Database.Drivers {
         }
 
         /// <summary>
+        /// Create table/database query. Creating table ignores all fields except for indexes
+        /// </summary>
+        /// <param name="query"></param>
+        /// <param name="result"></param>
+        protected void QueryCreate(ICompiledQuery query, CollectionValue result) {
+            if (String.IsNullOrEmpty(query.Collections) == false) {
+                MongoCollection<BsonDocument> collection = this.Database.GetCollection(query.Collections);
+
+                IMongoIndexOptions options = new IndexOptionsDocument();
+
+                collection.EnsureIndex(new IndexKeysDocument(BsonSerializer.Deserialize<BsonDocument>(query.Indices)));
+
+                /*
+                CommandResult commandResult = collection.Drop();
+
+                result.Add(
+                    new Affected() {
+                        new NumericValue() {
+                            Integer = commandResult.Ok == true ? 1 : 0
+                        }
+                    }
+                );
+                */
+            }
+        }
+
+        /// <summary>
         /// Select query on the database
         /// </summary>
         /// <param name="query"></param>

@@ -44,6 +44,11 @@ namespace Procon.Database.Serialization {
         String Assignments { get; }
 
         /// <summary>
+        /// The indices to apply when the alter/create
+        /// </summary>
+        String Indices { get; set; }
+
+        /// <summary>
         /// The conditions placed on a select, update or delete method
         /// </summary>
         String Conditions { get; }

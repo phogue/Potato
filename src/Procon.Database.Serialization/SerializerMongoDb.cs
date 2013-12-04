@@ -18,6 +18,24 @@ namespace Procon.Database.Serialization {
     /// </summary>
     public class SerializerMongoDb : SerializerNoSql {
 
+        /// <summary>
+        /// Parses an index
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns></returns>
+        protected virtual String ParseIndex(Index index) {
+            return this.ParseSortings(index).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Parses the list of indexes 
+        /// </summary>
+        /// <param name="query"></param>
+        /// <returns></returns>
+        protected virtual List<String> ParseIndices(IDatabaseObject query) {
+            return query.Where(statement => statement is Index).Select(index => this.ParseIndex(index as Index)).ToList();
+        }
+
         protected virtual String PaseFieldName(String name, Collection collection) {
             String parsed = "";
 
@@ -113,6 +131,9 @@ namespace Procon.Database.Serialization {
 
             if (method.Any(item => item is Distinct) == true) {
                 parsed.Add("distinct");
+            }
+            else if (method is Create) {
+                parsed.Add("create");
             }
             else if (method is Find) {
                 parsed.Add("find");
@@ -318,6 +339,7 @@ namespace Procon.Database.Serialization {
                 Conditions = parsed.Conditions.FirstOrDefault(),
                 Fields = parsed.Fields,
                 Assignments = parsed.Assignments.FirstOrDefault(),
+                Indices = parsed.Indices.FirstOrDefault(),
                 Sortings = parsed.Sortings.FirstOrDefault()
             };
         }
@@ -330,6 +352,8 @@ namespace Procon.Database.Serialization {
             parsed.Methods = this.ParseMethod(method);
 
             parsed.Databases = this.ParseDatabases(method);
+
+            parsed.Indices = this.ParseIndices(method);
 
             parsed.Collections = this.ParseCollections(method);
 

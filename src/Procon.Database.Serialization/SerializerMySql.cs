@@ -388,7 +388,9 @@ namespace Procon.Database.Serialization {
                         List<String> fieldsIndicesCombination = new List<String>(parsed.Fields);
                         fieldsIndicesCombination.AddRange(parsed.Indices);
 
-                        compiled.Add(String.Format("({0})", String.Join(", ", fieldsIndicesCombination.ToArray())));
+                        serializedQuery.Indices = String.Join(", ", fieldsIndicesCombination.ToArray());
+
+                        compiled.Add(String.Format("({0})", serializedQuery.Indices));
                     }
                     else {
                         compiled.Add(String.Format("({0})", String.Join(", ", parsed.Fields.ToArray())));

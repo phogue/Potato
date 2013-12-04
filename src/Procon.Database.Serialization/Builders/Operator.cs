@@ -1,4 +1,10 @@
+using System;
+
 namespace Procon.Database.Serialization.Builders {
-    public class Operator : Query {
+    /// <summary>
+    /// An operation between field and value, field field or value value
+    /// </summary>
+    [Serializable]
+    public class Operator : DatabaseObject {
     }
 }

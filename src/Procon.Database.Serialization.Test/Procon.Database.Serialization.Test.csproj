@@ -48,11 +48,41 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MongoDb\TestSerializerMongoDbMergeImplicit.cs" />
+    <Compile Include="MongoDb\TestSerializerMongoDbCreateImplicit.cs" />
+    <Compile Include="MongoDb\TestSerializerMongoDbDropImplicit.cs" />
+    <Compile Include="MongoDb\TestSerializerMongoDbSaveImplicit.cs" />
+    <Compile Include="MongoDb\TestSerializerMongoDbModifyImplicit.cs" />
+    <Compile Include="MongoDb\TestSerializerMongoDbRemoveImplicit.cs" />
+    <Compile Include="MongoDb\TestSerializerMongoDbRemoveExplicit.cs" />
+    <Compile Include="MongoDb\TestSerializerMongoDbModifyExplicit.cs" />
+    <Compile Include="MongoDb\TestSerializerMongoDbSaveExplicit.cs" />
+    <Compile Include="MongoDb\TestSerializerMongoDbDropExplicit.cs" />
+    <Compile Include="MongoDb\TestSerializerMongoDbCreateExplicit.cs" />
+    <Compile Include="MongoDb\TestSerializerMongoDbMergeExplicit.cs" />
+    <Compile Include="MySql\TestSerializerMySqlMergeExplicit.cs" />
+    <Compile Include="MySql\TestSerializerMySqlMergeImplicit.cs" />
+    <Compile Include="TestSerializerMerge.cs" />
+    <Compile Include="MySql\TestSerializerMySqlModifyExplicit.cs" />
+    <Compile Include="MySql\TestSerializerMySqlModifyImplicit.cs" />
+    <Compile Include="TestSerializerModify.cs" />
+    <Compile Include="MySql\TestSerializerMySqlSaveImplicit.cs" />
+    <Compile Include="MySql\TestSerializerMySqlSaveExplicit.cs" />
+    <Compile Include="TestSerializerSave.cs" />
+    <Compile Include="MySql\TestSerializerMySqlRemoveExplicit.cs" />
+    <Compile Include="MySql\TestSerializerMySqlRemoveImplicit.cs" />
+    <Compile Include="TestSerializerRemove.cs" />
+    <Compile Include="MySql\TestSerializerMySqlDropExplicit.cs" />
+    <Compile Include="MySql\TestSerializerMySqlDropImplicit.cs" />
+    <Compile Include="TestSerializerDrop.cs" />
     <Compile Include="MongoDb\TestSerializerMongoDbFindImplicit.cs" />
     <Compile Include="MongoDb\TestSerializerMongoDbFindExplicit.cs" />
+    <Compile Include="MySql\TestSerializerMySqlCreateImplicit.cs" />
+    <Compile Include="MySql\TestSerializerMySqlCreateExplicit.cs" />
     <Compile Include="MySql\TestSerializerMySqlFindExplicit.cs" />
     <Compile Include="MySql\TestSerializerMySqlFindImplicit.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestSerializerCreate.cs" />
     <Compile Include="TestSerializerFind.cs" />
   </ItemGroup>
   <ItemGroup>

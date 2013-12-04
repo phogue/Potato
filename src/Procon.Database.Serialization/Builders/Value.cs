@@ -1,4 +1,11 @@
+using System;
+
 namespace Procon.Database.Serialization.Builders {
-    public abstract class Value : Query {
+    /// <summary>
+    /// A value 
+    /// </summary>
+    [Serializable]
+    public abstract class Value : DatabaseObject {
+        public abstract object ToObject();
     }
 }

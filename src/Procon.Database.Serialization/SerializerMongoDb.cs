@@ -5,15 +5,63 @@ using System.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Procon.Database.Serialization.Builders;
-using Procon.Database.Serialization.Exceptions;
+using Procon.Database.Serialization.Builders.Equalities;
+using Procon.Database.Serialization.Builders.Logicals;
+using Procon.Database.Serialization.Builders.Methods;
+using Procon.Database.Serialization.Builders.Modifiers;
+using Procon.Database.Serialization.Builders.Statements;
+using Procon.Database.Serialization.Builders.Values;
 
 namespace Procon.Database.Serialization {
+    /// <summary>
+    /// Serializer for MongoDb support.
+    /// </summary>
     public class SerializerMongoDb : SerializerNoSql {
 
-        protected virtual String PaseFieldName(String name, Collection collection) {
+        /// <summary>
+        /// Parses an index
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns></returns>
+        protected virtual String ParseIndex(Index index) {
+            Primary primary = index.FirstOrDefault(attribute => attribute is Primary) as Primary;
+            Unique unique = index.FirstOrDefault(attribute => attribute is Unique) as Unique;
+
+            JArray details = new JArray();
+
+            JObject sortings = new JObject();
+
+            foreach (Sort sort in index.Where(sort => sort is Sort)) {
+                this.ParseSort(sort, sortings);
+            }
+
+            details.Add(sortings);
+
+            if (primary != null || unique != null) {
+                details.Add(
+                    new JObject() {
+                        new JProperty("unique", true)
+                    }
+                );
+            }
+
+            return details.ToString(Formatting.None);
+        }
+
+        /// <summary>
+        /// Parses the list of indexes 
+        /// </summary>
+        /// <param name="query"></param>
+        /// <returns></returns>
+        protected virtual List<String> ParseIndices(IDatabaseObject query) {
+            return query.Where(statement => statement is Index).Select(index => this.ParseIndex(index as Index)).ToList();
+        }
+
+        protected virtual String ParseFieldName(String name, Collection collection) {
             String parsed = "";
 
-            if (collection == null || this.Collections.Contains(collection.Name) == true) {
+            // todo this.Parsed should not be referenced here. We should refactor so this.Parsed cannot be referenced here.
+            if (collection == null || this.Parsed.Collections.Contains(collection.Name) == true) {
                 parsed = String.Format("{0}", name);
             }
             // The logic below is for shorthand methods that already split by "." and favour sql format where
@@ -28,7 +76,7 @@ namespace Procon.Database.Serialization {
         }
 
         protected virtual String ParseField(Field field) {
-            return this.PaseFieldName(field.Name, field.Collection);
+            return this.ParseFieldName(field.Name, field.FirstOrDefault(statement => statement is Collection) as Collection);
         }
 
         protected virtual String ParseEquality(Equality equality) {
@@ -88,12 +136,14 @@ namespace Procon.Database.Serialization {
         }
 
         protected virtual JObject ParseSort(Sort sort, JObject outer) {
-            outer[this.PaseFieldName(sort.Name, sort.Collection)] = sort.Any(attribute => attribute is Descending) ? -1 : 1;
+            Collection collection = sort.FirstOrDefault(statement => statement is Collection) as Collection;
+
+            outer[this.ParseFieldName(sort.Name, collection)] = sort.Any(attribute => attribute is Descending) ? -1 : 1;
 
             return outer;
         }
 
-        protected virtual List<String> ParseFields(IQuery query) {
+        protected virtual List<String> ParseFields(IDatabaseObject query) {
             return query.Where(logical => logical is Field).Select(field => this.ParseField(field as Field)).ToList();
         }
 
@@ -103,8 +153,38 @@ namespace Procon.Database.Serialization {
             if (method.Any(item => item is Distinct) == true) {
                 parsed.Add("distinct");
             }
+            else if (method is Create) {
+                parsed.Add("create");
+            }
             else if (method is Find) {
                 parsed.Add("find");
+            }
+            else if (method is Remove) {
+                parsed.Add("remove");
+            }
+            else if (method is Modify) {
+                parsed.Add("update");
+            }
+            else if (method is Save) {
+                parsed.Add("save");
+            }
+            else if (method is Drop) {
+                parsed.Add("drop");
+            }
+            else if (method is Merge) {
+                parsed.Add("findAndModify");
+            }
+
+            return parsed;
+        }
+
+        protected virtual List<String> ParseDatabases(IDatabaseObject query) {
+            List<String> parsed = new List<String>();
+
+            Builders.Database database = query.FirstOrDefault(statement => statement is Builders.Database) as Builders.Database;
+
+            if (database != null) {
+                parsed.Add(database.Name);
             }
 
             return parsed;
@@ -116,16 +196,13 @@ namespace Procon.Database.Serialization {
         /// </summary>
         /// <param name="query"></param>
         /// <returns></returns>
-        protected virtual List<String> ParseCollections(IQuery query) {
+        protected virtual List<String> ParseCollections(IDatabaseObject query) {
             List<String> parsed = new List<String>();
 
-            Collection collection = query.FirstOrDefault(logical => logical is Collection) as Collection;
+            Collection collection = query.FirstOrDefault(statement => statement is Collection) as Collection;
 
             if (collection != null) {
                 parsed.Add(collection.Name);
-            }
-            else {
-                throw new SerializationException("Missing collection name");
             }
 
             return parsed;
@@ -150,7 +227,7 @@ namespace Procon.Database.Serialization {
         /// <param name="query"></param>
         /// <param name="outer"></param>
         /// <returns></returns>
-        protected virtual JArray ParseEqualities(IQuery query, JArray outer) {
+        protected virtual JArray ParseEqualities(IDatabaseObject query, JArray outer) {
             foreach (Equality equality in query.Where(statement => statement is Equality)) {
                 outer.Add(this.ParseEquality(equality, new JObject()));
             }
@@ -164,7 +241,7 @@ namespace Procon.Database.Serialization {
         /// <param name="query"></param>
         /// <param name="outer"></param>
         /// <returns></returns>
-        protected virtual JObject ParseEqualities(IQuery query, JObject outer) {
+        protected virtual JObject ParseEqualities(IDatabaseObject query, JObject outer) {
             foreach (Equality equality in query.Where(statement => statement is Equality)) {
                 this.ParseEquality(equality, outer);
             }
@@ -208,7 +285,7 @@ namespace Procon.Database.Serialization {
         /// <param name="query"></param>
         /// <param name="outer"></param>
         /// <returns></returns>
-        protected virtual JArray ParseLogicals(IQuery query, JArray outer) {
+        protected virtual JArray ParseLogicals(IDatabaseObject query, JArray outer) {
             foreach (Logical logical in query.Where(logical => logical is Logical)) {
                 outer.Add(this.ParseLogicals(logical, new JObject()));
             }
@@ -222,7 +299,7 @@ namespace Procon.Database.Serialization {
         /// <param name="query"></param>
         /// <param name="outer"></param>
         /// <returns></returns>
-        protected virtual JObject ParseLogicals(IQuery query, JObject outer) {
+        protected virtual JObject ParseLogicals(IDatabaseObject query, JObject outer) {
             foreach (Logical logical in query.Where(logical => logical is Logical)) {
                 outer[this.ParseLogical(logical)] = new JArray();
 
@@ -240,15 +317,35 @@ namespace Procon.Database.Serialization {
         /// </summary>
         /// <param name="query"></param>
         /// <returns></returns>
-        protected virtual List<String> ParseConditions(IQuery query) {
+        protected virtual List<String> ParseConditions(IDatabaseObject query) {
             JObject conditions = this.ParseLogicals(query, new JObject());
 
             return new List<String>() {
-                conditions.ToString(Formatting.None)
+                new JArray() {
+                    conditions
+                }.ToString(Formatting.None)
             };
         }
 
-        protected virtual List<String> ParseSortings(IQuery query) {
+        /// <summary>
+        /// Parse field assignments, similar to conditions, but without the conditionals.
+        /// </summary>
+        /// <param name="query"></param>
+        /// <returns></returns>
+        protected virtual List<String> ParseAssignments(IDatabaseObject query) {
+            DocumentValue document = new DocumentValue();
+            document.AddRange(query.Where(statement => statement is Assignment));
+            
+            return new List<String>() {
+                new JArray() {
+                    new JObject() {
+                        new JProperty("$set", document.ToJObject())
+                    }
+                }.ToString(Formatting.None)
+            };
+        }
+
+        protected virtual List<String> ParseSortings(IDatabaseObject query) {
             JObject sortings = new JObject();
 
             foreach (Sort sort in query.Where(sort => sort is Sort)) {
@@ -256,31 +353,47 @@ namespace Procon.Database.Serialization {
             }
 
             return new List<String>() {
-                sortings.ToString(Formatting.None)
-            };
-        } 
-
-        public override ICompiledQuery Compile() {
-            return new CompiledQuery {
-                Method = this.Methods.FirstOrDefault(),
-                Collections = this.Collections.FirstOrDefault(),
-                Conditions = this.Conditions.FirstOrDefault(),
-                Fields = this.Fields,
-                Sortings = this.Sortings.FirstOrDefault()
+                new JArray() {
+                    sortings
+                }.ToString(Formatting.None)
             };
         }
 
-        public override ISerializer Parse(Method method) {
+        public override ICompiledQuery Compile(IParsedQuery parsed) {
+            return new CompiledQuery {
+                Children = parsed.Children.Select(this.Compile).ToList(),
+                Root = parsed.Root,
+                Methods = parsed.Methods,
+                Databases = parsed.Databases,
+                Collections = parsed.Collections,
+                Conditions = parsed.Conditions,
+                Fields = parsed.Fields,
+                Assignments = parsed.Assignments,
+                Indices = parsed.Indices,
+                Sortings = parsed.Sortings
+            };
+        }
 
-            this.Methods = this.ParseMethod(method);
+        public override ISerializer Parse(Method method, IParsedQuery parsed) {
+            parsed.Root = method;
 
-            this.Collections = this.ParseCollections(method);
+            parsed.Children = this.ParseChildren(method);
 
-            this.Conditions = this.ParseConditions(method);
+            parsed.Methods = this.ParseMethod(method);
 
-            this.Fields = this.ParseFields(method);
+            parsed.Databases = this.ParseDatabases(method);
 
-            this.Sortings = this.ParseSortings(method);
+            parsed.Indices = this.ParseIndices(method);
+
+            parsed.Collections = this.ParseCollections(method);
+
+            parsed.Conditions = this.ParseConditions(method);
+
+            parsed.Fields = this.ParseFields(method);
+
+            parsed.Assignments = this.ParseAssignments(method);
+
+            parsed.Sortings = this.ParseSortings(method);
 
             return this;
         }

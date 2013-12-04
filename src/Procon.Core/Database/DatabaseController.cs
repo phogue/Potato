@@ -13,17 +13,18 @@ namespace Procon.Core.Database {
         /// <summary>
         /// The currently opened database drivers.
         /// </summary>
-        public Dictionary<String, Driver> OpenDrivers { get; set; }
+        public Dictionary<String, IDriver> OpenDrivers { get; set; }
 
         /// <summary>
         /// List of drivers available for cloning and using.
         /// </summary>
         protected List<Driver> AvailableDrivers = new List<Driver>() {
-            new MySqlDriver()
+            new MySqlDriver(),
+            new MongoDbDriver()
         };
 
         public DatabaseController() : base() {
-            this.OpenDrivers = new Dictionary<String, Driver>();
+            this.OpenDrivers = new Dictionary<String, IDriver>();
         }
 
         /// <summary>
@@ -39,10 +40,10 @@ namespace Procon.Core.Database {
         /// Fetches a list of the names of the grouped drivers and opens them.
         /// </summary>
         protected void OpenGroupedDrivers() {
-            List<String> databaseGroupNames = new List<String>(this.Variables.Variable(CommonVariableNames.DatabaseConfigGroups).ToType(new List<String>()));
-
-            // Add an empty key so no namespace is used.
-            databaseGroupNames.Add(String.Empty);
+            List<String> databaseGroupNames = new List<String>(this.Variables.Variable(CommonVariableNames.DatabaseConfigGroups).ToType(new List<String>())) {
+                // Add an empty key so no namespace is used.
+                String.Empty
+            };
 
             this.OpenGroupedDriverList(databaseGroupNames);
         }
@@ -59,13 +60,15 @@ namespace Procon.Core.Database {
                     if (driver != null) {
                         driver = (Driver)driver.Clone();
 
-                        driver.Hostname = this.Variables.Get(Variable.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabaseHostname), String.Empty);
-                        driver.Port = this.Variables.Get<ushort>(Variable.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabasePort));
-                        driver.Uid = this.Variables.Get(Variable.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabaseUid), String.Empty);
-                        driver.Password = this.Variables.Get(Variable.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabasePassword), String.Empty);
+                        driver.Settings = new DriverSettings() {
+                            Hostname = this.Variables.Get(Variable.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabaseHostname), String.Empty),
+                            Port = this.Variables.Get<ushort>(Variable.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabasePort)),
+                            Username = this.Variables.Get(Variable.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabaseUid), String.Empty),
+                            Password = this.Variables.Get(Variable.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabasePassword), String.Empty)
+                        };
 
                         // If we don't already have this exact driver loaded and a connection can be established.
-                        if (this.OpenDrivers.ContainsValue(driver) == false && driver.OpenConnection() == true) {
+                        if (this.OpenDrivers.ContainsValue(driver) == false && driver.Connect() == true) {
                             this.OpenDrivers.Add(databaseGroupName, driver);
                         }
                     }
@@ -92,8 +95,8 @@ namespace Procon.Core.Database {
         public override void Dispose() {
             this.Variables.Variable(CommonVariableNames.DatabaseConfigGroups).PropertyChanged -= new PropertyChangedEventHandler(databaseGroupNameVariable_PropertyChanged);
 
-            foreach (KeyValuePair<String, Driver> driver in this.OpenDrivers) {
-                driver.Value.Dispose();
+            foreach (var driver in this.OpenDrivers) {
+                driver.Value.Close();
             }
             
             this.OpenDrivers.Clear();

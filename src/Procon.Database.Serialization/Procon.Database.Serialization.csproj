@@ -92,7 +92,6 @@
     <Compile Include="Builders\FieldTypes\StringType.cs" />
     <Compile Include="Builders\FieldTypes\TextType.cs" />
     <Compile Include="Builders\Value.cs" />
-    <Compile Include="Exceptions\SerializationException.cs" />
     <Compile Include="ICompiledQuery.cs" />
     <Compile Include="IParsedQuery.cs" />
     <Compile Include="IQueryData.cs" />

@@ -108,6 +108,7 @@
     <Compile Include="SerializerMySql.cs" />
     <Compile Include="SerializerNoSql.cs" />
     <Compile Include="SerializerSql.cs" />
+    <Compile Include="Utils\DatabaseObjectUtils.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

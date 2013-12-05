@@ -2,6 +2,9 @@
 using Procon.Database.Serialization;
 
 namespace Procon.Database {
+    /// <summary>
+    /// Base driver for a database connection
+    /// </summary>
     public abstract class Driver : IDriver, IDisposable, ICloneable {
 
         /// <summary>
@@ -30,6 +33,13 @@ namespace Procon.Database {
         /// </summary>
         /// <param name="query"></param>
         public abstract IDatabaseObject Query(IDatabaseObject query);
+
+        /// <summary>
+        /// Loop through escaping all StringValue database objects anywhere in the tree.
+        /// </summary>
+        /// <param name="query"></param>
+        /// <returns></returns>
+        public abstract IDatabaseObject EscapeStringValues(IDatabaseObject query);
 
         /// <summary>
         /// Closes the open connection the database.

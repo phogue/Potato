@@ -7,8 +7,12 @@ using Procon.Database.Serialization;
 using Procon.Database.Serialization.Builders.Methods;
 using Procon.Database.Serialization.Builders.Modifiers;
 using Procon.Database.Serialization.Builders.Values;
+using Procon.Database.Serialization.Utils;
 
 namespace Procon.Database.Drivers {
+    /// <summary>
+    /// Driver support for MySQL
+    /// </summary>
     public class MySqlDriver : Driver {
 
         /// <summary>
@@ -56,7 +60,15 @@ namespace Procon.Database.Drivers {
         }
 
         public override IDatabaseObject Query(IDatabaseObject query) {
-            return this.Query(new SerializerMySql().Parse(query).Compile());
+            return this.Query(new SerializerMySql().Parse(this.EscapeStringValues(query)).Compile());
+        }
+
+        public override IDatabaseObject EscapeStringValues(IDatabaseObject query) {
+            foreach (StringValue item in query.DescendantsAndSelf<StringValue>()) {
+                item.Data = MySqlHelper.EscapeString(item.Data);
+            }
+
+            return query;
         }
 
         /// <summary>

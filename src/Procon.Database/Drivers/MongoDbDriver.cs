@@ -10,6 +10,9 @@ using Procon.Database.Serialization.Builders.Modifiers;
 using Procon.Database.Serialization.Builders.Values;
 
 namespace Procon.Database.Drivers {
+    /// <summary>
+    /// Driver support for MonogDb
+    /// </summary>
     public class MongoDbDriver : Driver {
 
         /// <summary>
@@ -109,9 +112,7 @@ namespace Procon.Database.Drivers {
 
             BsonArray conditions = BsonSerializer.Deserialize<BsonArray>(query.Conditions.FirstOrDefault());
 
-            foreach (BsonDocument document in collection.Find(new QueryDocument(conditions.First().AsBsonDocument))) {
-                result.Add(this.ToDocument(document));
-            }
+            result.AddRange(collection.Find(new QueryDocument(conditions.First().AsBsonDocument)).Select(this.ToDocument));
         }
 
         /// <summary>
@@ -216,12 +217,15 @@ namespace Procon.Database.Drivers {
 
                 result.Add(this.ToDocument(findAndModifyResult.ModifiedDocument));
             }
-
-
         }
 
         public override IDatabaseObject Query(IDatabaseObject query) {
-            return this.Query(new SerializerMongoDb().Parse(query).Compile());
+            return this.Query(new SerializerMongoDb().Parse(this.EscapeStringValues(query)).Compile());
+        }
+
+        public override IDatabaseObject EscapeStringValues(IDatabaseObject query) {
+            // No escaping is required
+            return query;
         }
 
         protected override IDatabaseObject Query(ICompiledQuery query) {

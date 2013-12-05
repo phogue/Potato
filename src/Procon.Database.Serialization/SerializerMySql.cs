@@ -187,16 +187,6 @@ namespace Procon.Database.Serialization {
             return parsed;
         }
 
-        /// <summary>
-        /// Escapes a value of a string 
-        /// @todo implement properly
-        /// </summary>
-        /// <param name="value"></param>
-        /// <returns></returns>
-        protected virtual String EscapeString(String value) {
-            return value;
-        }
-
         protected virtual String ParseValue(Value value) {
             String parsed = "";
 
@@ -213,7 +203,8 @@ namespace Procon.Database.Serialization {
                 }
             }
             else if (@string != null) {
-                parsed = String.Format(@"""{0}""", this.EscapeString(@string.Data));
+                // Note that the string should have been parsed by the driver to escape it.
+                parsed = String.Format(@"""{0}""", @string.Data);
             }
             else if (raw != null) {
                 parsed = raw.Data;

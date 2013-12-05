@@ -18,6 +18,9 @@ namespace Procon.Database.Serialization {
         /// </summary>
         public List<String> Compiled { get; set; }
 
+        /// <summary>
+        /// Initializes all defaults
+        /// </summary>
         public CompiledQuery() : base() {
             this.Children = new List<ICompiledQuery>();
             this.Compiled = new List<String>();

@@ -17,6 +17,10 @@ namespace Procon.Database.Serialization.Builders.Values {
         /// </summary>
         public float? Float { get; set; }
 
+        /// <summary>
+        /// Casts the text into a simple object
+        /// </summary>
+        /// <returns></returns>
         public override object ToObject() {
             return this.Integer ?? this.Float;
         }

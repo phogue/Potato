@@ -8,6 +8,12 @@ namespace Procon.Database.Serialization.Builders.Values {
     /// </summary>
     [Serializable]
     public class CollectionValue : Value {
+
+        /// <summary>
+        /// Converts each sub-value attached to this object into a JObject,
+        /// then returning a JArray of JObject's
+        /// </summary>
+        /// <returns>An array of the sub documents converted to JObject</returns>
         public JArray ToJArray() {
             JArray array = new JArray();
 

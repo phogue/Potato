@@ -1,6 +1,9 @@
 ﻿using System;
 
 namespace Procon.Database {
+    /// <summary>
+    /// The connection details for a driver to use when connecting/authenticating
+    /// </summary>
     public class DriverSettings : IDriverSettings {
         /// <summary>
         /// The hostname to connect to.

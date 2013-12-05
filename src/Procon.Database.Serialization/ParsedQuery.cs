@@ -13,6 +13,9 @@ namespace Procon.Database.Serialization {
         /// </summary>
         public List<IParsedQuery> Children { get; set; }
 
+        /// <summary>
+        /// Initializes all defaults
+        /// </summary>
         public ParsedQuery() : base() {
             this.Children = new List<IParsedQuery>();
         }

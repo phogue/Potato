@@ -2,6 +2,9 @@
 using Procon.Database.Serialization;
 
 namespace Procon.Database {
+    /// <summary>
+    /// Base driver for a database connection
+    /// </summary>
     public interface IDriver {
 
         /// <summary>

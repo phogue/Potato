@@ -34,6 +34,26 @@ namespace Procon.Database.Serialization.Test.MongoDb {
         }
 
         [Test]
+        public override void TestSelectAllFromPlayerWhereKdrGreaterThanEqualTo31F() {
+            ISerializer serializer = new SerializerMongoDb();
+            ICompiledQuery serialized = serializer.Parse(this.TestSelectAllFromPlayerWhereKdrGreaterThanEqualTo31FExplicit).Compile();
+
+            Assert.AreEqual(@"find", serialized.Methods.First());
+            Assert.AreEqual(@"Player", serialized.Collections.First());
+            Assert.AreEqual(@"[{""Kdr"":{""$gte"":""3.1""}}]", serialized.Conditions.First());
+        }
+
+        [Test]
+        public override void TestSelectAllFromPlayerWhereKdrLessThanEqualTo31F() {
+            ISerializer serializer = new SerializerMongoDb();
+            ICompiledQuery serialized = serializer.Parse(this.TestSelectAllFromPlayerWhereKdrLessThanEqualTo31FExplicit).Compile();
+
+            Assert.AreEqual(@"find", serialized.Methods.First());
+            Assert.AreEqual(@"Player", serialized.Collections.First());
+            Assert.AreEqual(@"[{""Kdr"":{""$lte"":""3.1""}}]", serialized.Conditions.First());
+        }
+
+        [Test]
         public override void TestSelectAllFromPlayerWherePlayerNameEqualsPhogue() {
             ISerializer serializer = new SerializerMongoDb();
             ICompiledQuery serialized = serializer.Parse(this.TestSelectAllFromPlayerWherePlayerNameEqualsPhogueExplicit).Compile();

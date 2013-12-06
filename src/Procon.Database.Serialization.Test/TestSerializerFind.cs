@@ -62,6 +62,52 @@ namespace Procon.Database.Serialization.Test {
 
         #endregion
 
+        #region TestSelectAllFromPlayerWhereKdrGreaterThanEqualTo31F
+
+        protected IDatabaseObject TestSelectAllFromPlayerWhereKdrGreaterThanEqualTo31FExplicit = new Find()
+            .Condition(new GreaterThanEquals() {
+                    new Field() {
+                        Name = "Kdr"
+                    },
+                    new NumericValue() {
+                        Float = 3.1F
+                    }
+                })
+            .Collection(new Collection() {
+                Name = "Player"
+            });
+
+        protected IDatabaseObject TestSelectAllFromPlayerWhereKdrGreaterThanEqualTo31FImplicit = new Find()
+            .Condition("Kdr", new GreaterThanEquals(), 3.1F)
+            .Collection("Player");
+
+        public abstract void TestSelectAllFromPlayerWhereKdrGreaterThanEqualTo31F();
+
+        #endregion
+
+        #region TestSelectAllFromPlayerWhereKdrLessThanEqualTo31F
+
+        protected IDatabaseObject TestSelectAllFromPlayerWhereKdrLessThanEqualTo31FExplicit = new Find()
+            .Condition(new LessThanEquals() {
+                    new Field() {
+                        Name = "Kdr"
+                    },
+                    new NumericValue() {
+                        Float = 3.1F
+                    }
+                })
+            .Collection(new Collection() {
+                Name = "Player"
+            });
+
+        protected IDatabaseObject TestSelectAllFromPlayerWhereKdrLessThanEqualTo31FImplicit = new Find()
+            .Condition("Kdr", new LessThanEquals(), 3.1F)
+            .Collection("Player");
+
+        public abstract void TestSelectAllFromPlayerWhereKdrLessThanEqualTo31F();
+
+        #endregion
+
         #region TestSelectAllFromPlayerWherePlayerNameEqualsPhogue
 
         protected IDatabaseObject TestSelectAllFromPlayerWherePlayerNameEqualsPhogueExplicit = new Find()

@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using Procon.Core.Connections.Plugins;
 using Procon.Core.Events;
 using Procon.Core.Repositories;
+using Procon.Database.Serialization;
 using Procon.Net;
 using Procon.Net.Actions;
 using Procon.Net.Data;
@@ -16,6 +17,9 @@ namespace Procon.Core {
     using Procon.Core.Connections;
     using Procon.Core.Connections.TextCommands;
 
+    /// <summary>
+    /// All data types, as lists, that can be attached to a command.
+    /// </summary>
     [Serializable]
     public sealed class CommandData : IDisposable {
 
@@ -157,6 +161,12 @@ namespace Procon.Core {
         public List<IPacket> Packets { get; set; }
 
         /// <summary>
+        /// A query or query result.
+        /// </summary>
+        [XmlIgnore, JsonIgnore]
+        public List<IDatabaseObject> Queries { get; set; }
+
+        /// <summary>
         /// Empties and clears the list, but does not remove the actual elements as they
         /// may reference data that still exists.
         /// </summary>
@@ -232,6 +242,9 @@ namespace Procon.Core {
 
             if (this.Packets != null) this.Packets.Clear();
             this.Packets = null;
+
+            if (this.Queries != null) this.Queries.Clear();
+            this.Queries = null;
         }
     }
 }

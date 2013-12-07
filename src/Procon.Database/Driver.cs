@@ -5,7 +5,7 @@ namespace Procon.Database {
     /// <summary>
     /// Base driver for a database connection
     /// </summary>
-    public abstract class Driver : IDriver, IDisposable, ICloneable {
+    public abstract class Driver : IDriver, ICloneable {
 
         /// <summary>
         /// The name of this driver.
@@ -45,10 +45,6 @@ namespace Procon.Database {
         /// Closes the open connection the database.
         /// </summary>
         public abstract void Close();
-
-        public void Dispose() {
-            this.Close();
-        }
 
         public object Clone() {
             return this.MemberwiseClone();

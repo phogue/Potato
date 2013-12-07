@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using Procon.Core.Scheduler;
 
 namespace Procon.Core.Variables {
     /// <summary>
     /// Listens to changes on a list of variabels 
     /// </summary>
-    public class GroupedVariableListener {
+    public class GroupedVariableListener  {
 
         /// <summary>
         /// The variables controller
@@ -46,14 +47,6 @@ namespace Procon.Core.Variables {
         /// </summary>
         public GroupedVariableListener() : base() {
             this.ListeningVariables = new List<Variable>();
-        }
-
-        /// <summary>
-        /// Listen to changes on a variable
-        /// </summary>
-        /// <param name="variable"></param>
-        public void ListenTo(Variable variable) {
-            this.ListeningVariables.Add(variable);
         }
 
         /// <summary>
@@ -125,5 +118,6 @@ namespace Procon.Core.Variables {
                 handler(this, groupNames);
             }
         }
+
     }
 }

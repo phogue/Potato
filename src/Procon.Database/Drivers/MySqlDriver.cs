@@ -29,37 +29,41 @@ namespace Procon.Database.Drivers {
         public override bool Connect() {
             bool opened = true;
 
-            if (this.Connection != null) {
-                this.Connection.Close();
-                this.Connection = null;
-            }
-
-            MySqlConnectionStringBuilder connectionBuilder = new MySqlConnectionStringBuilder {
-                Server = this.Settings.Hostname,
-                Port = this.Settings.Port != null ? this.Settings.Port.Value : 0,
-                Database = this.Settings.Database,
-                UserID = this.Settings.Username,
-                Password = this.Settings.Password,
-                UseCompression = true
-            };
-
-            try {
-                this.Connection = new MySqlConnection(connectionBuilder.ToString());
-                this.Connection.Open();
-
-                if (this.Connection.State != ConnectionState.Open) {
+            if (this.Connection == null || this.Connection.State == ConnectionState.Closed) {
+                if (this.Connection != null) {
                     this.Connection.Close();
                     this.Connection = null;
                 }
-            }
-            catch {
-                opened = false;
+
+                MySqlConnectionStringBuilder connectionBuilder = new MySqlConnectionStringBuilder {
+                    Server = this.Settings.Hostname,
+                    Port = this.Settings.Port != null ? this.Settings.Port.Value : 0,
+                    Database = this.Settings.Database,
+                    UserID = this.Settings.Username,
+                    Password = this.Settings.Password,
+                    UseCompression = true
+                };
+
+                try {
+                    this.Connection = new MySqlConnection(connectionBuilder.ToString());
+                    this.Connection.Open();
+
+                    if (this.Connection.State != ConnectionState.Open) {
+                        this.Connection.Close();
+                        this.Connection = null;
+                    }
+                }
+                catch {
+                    opened = false;
+                }
             }
 
             return opened;
         }
 
         public override IDatabaseObject Query(IDatabaseObject query) {
+            this.Connect();
+
             return this.Query(new SerializerMySql().Parse(this.EscapeStringValues(query)).Compile());
         }
 

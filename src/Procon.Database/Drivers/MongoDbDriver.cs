@@ -33,29 +33,31 @@ namespace Procon.Database.Drivers {
 
         public override bool Connect() {
             bool opened = true;
-            
-            try {
-                MongoClientSettings settings = new MongoClientSettings();
 
-                if (this.Settings.Hostname != null && this.Settings.Port.HasValue == true) {
-                    settings.Server = new MongoServerAddress(this.Settings.Hostname, (int)this.Settings.Port.Value);
-                }
-                else if (this.Settings.Hostname != null) {
-                    settings.Server = new MongoServerAddress(this.Settings.Hostname);
-                }
+            if (this.Client == null) {
+                try {
+                    MongoClientSettings settings = new MongoClientSettings();
 
-                if (this.Database != null && this.Settings.Username != null && this.Settings.Password != null) {
-                    settings.Credentials = new List<MongoCredential>() {
+                    if (this.Settings.Hostname != null && this.Settings.Port.HasValue == true) {
+                        settings.Server = new MongoServerAddress(this.Settings.Hostname, (int)this.Settings.Port.Value);
+                    }
+                    else if (this.Settings.Hostname != null) {
+                        settings.Server = new MongoServerAddress(this.Settings.Hostname);
+                    }
+
+                    if (this.Database != null && this.Settings.Username != null && this.Settings.Password != null) {
+                        settings.Credentials = new List<MongoCredential>() {
                         MongoCredential.CreateMongoCRCredential(this.Settings.Database, this.Settings.Username, this.Settings.Password)
                     };
-                }
-            
-                this.Client = new MongoClient(settings);
+                    }
 
-                this.Database = this.Client.GetServer().GetDatabase(this.Settings.Database);
-            }
-            catch {
-                opened = false;
+                    this.Client = new MongoClient(settings);
+
+                    this.Database = this.Client.GetServer().GetDatabase(this.Settings.Database);
+                }
+                catch {
+                    opened = false;
+                }
             }
 
             return opened;
@@ -220,6 +222,8 @@ namespace Procon.Database.Drivers {
         }
 
         public override IDatabaseObject Query(IDatabaseObject query) {
+            this.Connect();
+
             return this.Query(new SerializerMongoDb().Parse(this.EscapeStringValues(query)).Compile());
         }
 

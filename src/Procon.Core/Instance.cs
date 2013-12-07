@@ -18,6 +18,9 @@ namespace Procon.Core {
     using Procon.Net;
     using Procon.Service.Shared;
     
+    /// <summary>
+    /// The core controller of Procon, an instance of Procon.
+    /// </summary>
     public class Instance : Executable, IService {
 
         /// <summary>
@@ -56,6 +59,9 @@ namespace Procon.Core {
         /// </summary>
         protected ServiceMessage ServiceMessage { get; set; }
 
+        /// <summary>
+        /// Creates a new instance of Procon, setting up daemon, packages and tasks
+        /// </summary>
         public Instance() : base() {
             this.Connections = new List<Connection>();
 
@@ -689,6 +695,12 @@ namespace Procon.Core {
             return this.InstanceRemoveConnection(command, connection);
         }
 
+        /// <summary>
+        /// Queries this instance for a snapshot as it exists now
+        /// </summary>
+        /// <param name="command"></param>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
         public CommandResultArgs InstanceQuery(Command command, Dictionary<String, CommandParameter> parameters) {
             CommandResultArgs result = null;
 

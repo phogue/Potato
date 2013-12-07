@@ -9,6 +9,7 @@ using Procon.Core.Localization;
 using Procon.Core.Repositories;
 using Procon.Core.Security;
 using Procon.Core.Variables;
+using Procon.Database.Serialization;
 using Procon.Net;
 using Procon.Net.Actions;
 using Procon.Net.Data;
@@ -47,7 +48,9 @@ namespace Procon.Core {
             typeof (Ban),
             typeof (Settings),
             typeof (Map),
-            typeof (CommandResultArgs)
+            typeof (CommandResultArgs),
+            typeof (IDatabaseObject),
+            typeof (IPacket)
         };
 
         /// <summary>
@@ -144,6 +147,12 @@ namespace Procon.Core {
             }
             else if (t == typeof(CommandResultArgs) && this.Data.CommandResults != null) {
                 all = this.Data.CommandResults.Cast<Object>().ToList();
+            }
+            else if (t == typeof(IPacket) && this.Data.CommandResults != null) {
+                all = this.Data.Packets.Cast<Object>().ToList();
+            }
+            else if (t == typeof(IDatabaseObject) && this.Data.CommandResults != null) {
+                all = this.Data.Queries.Cast<Object>().ToList();
             }
 
             return all;

@@ -81,7 +81,7 @@ namespace Procon.Core.Events {
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="pushEventsGroupNames"></param>
-        private void GroupedVariableListenerOnVariablesModified(GroupedVariableListener sender, List<string> pushEventsGroupNames) {
+        private void GroupedVariableListenerOnVariablesModified(GroupedVariableListener sender, List<String> pushEventsGroupNames) {
             foreach (String pushEventsGroupName in pushEventsGroupNames) {
                 String pushUri = this.Variables.Get(Variable.NamespaceVariableName(pushEventsGroupName, CommonVariableNames.EventsPushUri), String.Empty);
 

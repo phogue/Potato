@@ -119,6 +119,7 @@
     <Compile Include="Utils\XElementValidator.cs" />
     <Compile Include="Utils\DirectoryInfoExtensions.cs" />
     <Compile Include="Variables\CommonVariableNames.cs" />
+    <Compile Include="Variables\GroupedVariableListener.cs" />
     <Compile Include="Variables\Variable.cs" />
     <Compile Include="Variables\VariableController.cs" />
     <Compile Include="Localization\LanguageController.cs" />

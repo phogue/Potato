@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using Procon.Core.Scheduler;
 using Procon.Core.Variables;
 using Procon.Net.Utils.HTTP;
@@ -20,24 +19,28 @@ namespace Procon.Core.Events {
         /// Our own task controller since various sources can set their own interval to be pushed.
         /// </summary>
         public TaskController Tasks { get; set; }
-
-        /// <summary>
-        /// List of variables we have assigned event handlers to. Allows us to cleanup properly
-        /// during a dispose. We also do it this way because a group may be removed, in which case
-        /// we won't know what variable to dereference.
-        /// </summary>
-        protected List<Variable> ListeningVariables { get; set; }
-
-        /// <summary>
-        /// Lock used whenever a property is altered on any listening variable, just to avoid
-        /// unassigning events when multiple events are fired simultaneously.
-        /// </summary>
-        protected readonly Object ListeningVariablePropertyChangedLock = new Object();
         
+        /// <summary>
+        /// Manages the grouped variable names, listening for grouped changes.
+        /// </summary>
+        public GroupedVariableListener GroupedVariableListener { get; set; }
+
+        /// <summary>
+        /// Initializes with default attributes
+        /// </summary>
         public PushEventsController() : base() {
-            this.ListeningVariables = new List<Variable>();
             this.EndPoints = new Dictionary<String, PushEventsEndPoint>();
             this.Tasks = new TaskController();
+
+            this.GroupedVariableListener = new GroupedVariableListener() {
+                GroupsVariableName = CommonVariableNames.EventsPushConfigGroups.ToString(),
+                ListeningVariablesNames = new List<String>() {
+                    CommonVariableNames.EventsPushUri.ToString(),
+                    CommonVariableNames.EventPushIntervalSeconds.ToString(),
+                    CommonVariableNames.EventPushContentType.ToString(),
+                    CommonVariableNames.EventPushStreamKey.ToString()
+                }
+            };
         }
 
         /// <summary>
@@ -49,20 +52,9 @@ namespace Procon.Core.Events {
             // Remove all current handlers, also clears the list in this.ListeningVariables
             this.UnassignEvents();
 
-            // Populate the list of variables we're listening to events on.
-            this.ListeningVariables.Add(this.Variables.Variable(CommonVariableNames.EventsPushConfigGroups));
-            foreach (String pushEventsGroupName in this.GetGroupedPushEventNames()) {
-                this.ListeningVariables.Add(this.Variables.Variable(Variable.NamespaceVariableName(pushEventsGroupName, CommonVariableNames.EventsPushUri)));
-                this.ListeningVariables.Add(this.Variables.Variable(Variable.NamespaceVariableName(pushEventsGroupName, CommonVariableNames.EventPushIntervalSeconds)));
-                this.ListeningVariables.Add(this.Variables.Variable(Variable.NamespaceVariableName(pushEventsGroupName, CommonVariableNames.EventPushContentType)));
-                this.ListeningVariables.Add(this.Variables.Variable(Variable.NamespaceVariableName(pushEventsGroupName, CommonVariableNames.EventPushStreamKey)));
-            }
-
-            // Now assign all of the event handlers.
-            foreach (Variable variable in this.ListeningVariables) {
-                variable.PropertyChanged += new PropertyChangedEventHandler(EventsPushConfigGroups_PropertyChanged);
-            }
-
+            this.GroupedVariableListener.AssignEvents();
+            this.GroupedVariableListener.VariablesModified += GroupedVariableListenerOnVariablesModified;
+            
             foreach (Task task in this.Tasks) {
                 task.Tick += OnTick;
             }
@@ -74,59 +66,22 @@ namespace Procon.Core.Events {
         /// Removes all current event handlers.
         /// </summary>
         protected void UnassignEvents() {
-            foreach (Variable variable in this.ListeningVariables) {
-                variable.PropertyChanged -= new PropertyChangedEventHandler(EventsPushConfigGroups_PropertyChanged);
-            }
+            this.GroupedVariableListener.VariablesModified -= GroupedVariableListenerOnVariablesModified;
+            this.GroupedVariableListener.UnassignEvents();
 
             this.Events.EventLogged -= new EventsController.EventLoggedHandler(MasterEvents_EventLogged);
 
             foreach (Task task in this.Tasks) {
                 task.Tick -= OnTick;
             }
-
-            this.ListeningVariables.Clear();
-        }
-
-        /// <summary>
-        /// Fired whenever the group name list is altered for the database config.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void EventsPushConfigGroups_PropertyChanged(object sender, PropertyChangedEventArgs e) {
-            lock (this.ListeningVariablePropertyChangedLock) {
-                this.OpenGroupedPushEvents();
-
-                this.AssignEvents();
-            }
-        }
-
-        /// <summary>
-        /// Fetches a list of push group names.
-        /// </summary>
-        /// <returns></returns>
-        private List<String> GetGroupedPushEventNames() {
-            List<String> pushEventsGroupNames = this.Variables.Variable(CommonVariableNames.EventsPushConfigGroups).ToList<String>();
-
-            // Add an empty key so no namespace is used.
-            pushEventsGroupNames.Add(String.Empty);
-
-            return pushEventsGroupNames;
-        } 
-
-        /// <summary>
-        /// Fetches a list of the names of the grouped drivers and opens them.
-        /// </summary>
-        protected void OpenGroupedPushEvents() {
-            List<String> pushEventsGroupNames = this.GetGroupedPushEventNames();
-
-            this.OpenGroupedPushEventsControllerList(pushEventsGroupNames);
         }
 
         /// <summary>
         /// Opens all of the database groups.
         /// </summary>
+        /// <param name="sender"></param>
         /// <param name="pushEventsGroupNames"></param>
-        protected void OpenGroupedPushEventsControllerList(List<String> pushEventsGroupNames) {
+        private void GroupedVariableListenerOnVariablesModified(GroupedVariableListener sender, List<string> pushEventsGroupNames) {
             foreach (String pushEventsGroupName in pushEventsGroupNames) {
                 String pushUri = this.Variables.Get(Variable.NamespaceVariableName(pushEventsGroupName, CommonVariableNames.EventsPushUri), String.Empty);
 
@@ -208,10 +163,10 @@ namespace Procon.Core.Events {
         }
 
         public override ExecutableBase Execute() {
+            this.GroupedVariableListener.Variables = this.Variables;
+
             this.AssignEvents();
-
-            this.OpenGroupedPushEvents();
-
+            
             this.Tasks.Start();
 
             return base.Execute();
@@ -231,10 +186,7 @@ namespace Procon.Core.Events {
             }
             this.EndPoints.Clear();
             this.EndPoints = null;
-
-            this.ListeningVariables.Clear();
-            this.ListeningVariables = null;
-
+            
             this.Tasks.Dispose();
             this.Tasks = null;
 

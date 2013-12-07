@@ -1,16 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
-using System.IO;
 using System.Xml;
 using System.Xml.Linq;
+using Procon.Core.Variables;
 using Procon.Net.Utils;
 using Procon.Service.Shared;
 
 namespace Procon.Core.Events {
-    using Procon.Core.Variables;
-    using Procon.Core.Utils;
 
     /// <summary>
     /// Logs events, keeping them in memory until a specific time occurs that will write all
@@ -44,8 +43,17 @@ namespace Procon.Core.Events {
         /// Fired when an event has been logged.
         /// </summary>
         public event EventLoggedHandler EventLogged;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender">The sender</param>
+        /// <param name="e">The event that has been logged</param>
         public delegate void EventLoggedHandler(Object sender, GenericEventArgs e);
 
+        /// <summary>
+        /// Initializes default attributes and sets up command dispatching
+        /// </summary>
         public EventsController() : base() {
             this.LoggedEvents = new List<GenericEventArgs>();
 

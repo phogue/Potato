@@ -8,6 +8,7 @@ using Procon.Database.Serialization;
 using Procon.Database.Serialization.Builders.Methods;
 using Procon.Database.Serialization.Builders.Modifiers;
 using Procon.Database.Serialization.Builders.Values;
+using Procon.Database.Serialization.Serializers.NoSql;
 
 namespace Procon.Database.Drivers {
     /// <summary>

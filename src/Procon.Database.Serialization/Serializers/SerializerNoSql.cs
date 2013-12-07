@@ -1,4 +1,4 @@
-namespace Procon.Database.Serialization {
+namespace Procon.Database.Serialization.Serializers {
     /// <summary>
     /// A NoSql base class for all common functionality between drivers
     /// </summary>

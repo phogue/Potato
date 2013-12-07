@@ -12,7 +12,7 @@ using Procon.Database.Serialization.Builders.Modifiers;
 using Procon.Database.Serialization.Builders.Statements;
 using Procon.Database.Serialization.Builders.Values;
 
-namespace Procon.Database.Serialization {
+namespace Procon.Database.Serialization.Serializers.NoSql {
     /// <summary>
     /// Serializer for MongoDb support.
     /// </summary>

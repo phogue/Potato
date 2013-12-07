@@ -1,5 +1,6 @@
 using System.Linq;
 using NUnit.Framework;
+using Procon.Database.Serialization.Serializers.NoSql;
 
 namespace Procon.Database.Serialization.Test.MongoDb {
     [TestFixture]

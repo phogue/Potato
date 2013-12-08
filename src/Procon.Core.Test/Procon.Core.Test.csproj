@@ -72,6 +72,7 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Database\TestDatabaseController.cs" />
     <Compile Include="ExecutableCommands\TestCommandParameter.cs" />
     <Compile Include="Plugins\TestPluginsDisabled.cs" />
     <Compile Include="Plugins\TestPluginsEnabled.cs" />

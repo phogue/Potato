@@ -42,7 +42,8 @@ namespace Procon.Examples.Actions {
                 Scope = {
                     Players = new List<Player>() {
                         new Player() {
-                            Uid = "EA_12345"
+                            Uid = "EA_12345",
+                            Name = "Phogue"
                         }
                     },
                     Content = new List<String>() {
@@ -54,8 +55,10 @@ namespace Procon.Examples.Actions {
             // That's it. You can see the queued packets (which might have debugtext in them, might not just yet)
             // If you do need to know everything that was sent/recv for a packet you should look at deferred actions.
 
+            command.Result.Now.Content = new List<String>();
+
             foreach (IPacket packet in result.Now.Packets) {
-                Console.WriteLine("KickPlayer.Result.packet: {0} {1} {2} {3}", packet.Origin, packet.Type, packet.RequestId, packet.DebugText);
+                command.Result.Now.Content.Add(String.Format("KickPlayer.Result.packet: {0} {1} {2} {3}", packet.Origin, packet.Type, packet.RequestId, packet.DebugText));
             }
 
             return command.Result;
@@ -68,6 +71,12 @@ namespace Procon.Examples.Actions {
         /// <param name="parameters"></param>
         /// <returns></returns>
         protected CommandResultArgs DeferredKickPlayer(Command command, Dictionary<String, CommandParameter> parameters) {
+            command.Result = new CommandResultArgs {
+                Now = {
+                    Content = new List<String>()
+                }
+            };
+
             this.Action(new DeferredAction<Kick>() {
 
                 // The action to send to the networking layer. 
@@ -77,18 +86,30 @@ namespace Procon.Examples.Actions {
                     Scope = {
                         Players = new List<Player>() {
                             new Player() {
-                                Uid = "EA_12345"
+                                Uid = "EA_12345",
+                                Name = "Phogue"
                             }
+                        },
+                            Content = new List<String>() {
+                            "This is a reason to kick this person"
                         }
                     }
                 },
 
-                // Sent is called when execution has returned from the networking layer. The packets have been sent
+                // All delegates assigned below are optional, but if you don't assign one you
+                // might as well just send the action and not bother with a deferred action
+
+                // (Optional) Sent is called when execution has returned from the networking layer. The packets have been sent
                 // or are queued to be sent, so they may not have gone through the serialization for packets
                 // therefore some of these requests may appear "empty". You should wait for responses in Each/Done
                 // to see the full packets both sent and received.
                 Sent = (action, requests) => {
                     Console.WriteLine("DeferredKickPlayer: {0}", action.Uid);
+
+                    // Add to our return. This callback is synchronous
+                    foreach (IPacket packet in requests) {
+                        command.Result.Now.Content.Add(String.Format("KickPlayer.Result.packet: {0} {1} {2} {3}", packet.Origin, packet.Type, packet.RequestId, packet.DebugText));
+                    }
 
                     foreach (IPacket packet in requests) {
                         Console.WriteLine("DeferredKickPlayer.Sent.packet: {0} {1} {2} {3}", packet.Origin, packet.Type, packet.RequestId, packet.DebugText);
@@ -101,24 +122,23 @@ namespace Procon.Examples.Actions {
                     Console.WriteLine("DeferredKickPlayer.Each {0} {1} ({2}) ({3})", action.Uid, request.RequestId, request.DebugText, response.DebugText);
                 },
 
-                // Done is called when all responses to all sent packets have been received, but is
+                // (Optional) Done is called when all responses to all sent packets have been received, but is
                 // called after "Each"
                 Done = (action, requests, responses) => {
                     Console.WriteLine("DeferredKickPlayer.Done {0}", action.Uid);
                 },
 
-                // Expired is called when packets have been sent, but responses that match the RequestId
+                // (Optional) Expired is called when packets have been sent, but responses that match the RequestId
                 // have not been recieved. We've waited, but now we're giving up.
                 Expired = (action, requests, responses) => {
                     Console.WriteLine("DeferredKickPlayer.Expired {0}", action.Uid);
                 },
 
-                // If the action is done or expired, this method will always be called when the request is finalized.
+                // (Optional) If the action is done or expired, this method will always be called when the request is finalized.
                 Always = action => {
                     Console.WriteLine("DeferredKickPlayer.Always {0}", action.Uid);
                 }
             });
-
 
             return command.Result;
         }

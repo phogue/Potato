@@ -3,11 +3,10 @@ using System.IO;
 using System.Runtime.Remoting.Lifetime;
 using System.Xml.Serialization;
 using Newtonsoft.Json;
+using Procon.Core.Events;
 using Procon.Service.Shared;
 
 namespace Procon.Core.Connections.Plugins {
-    using Procon.Core.Events;
-    using Procon.Core.Utils;
 
     /// <summary>
     /// This is the Procon side class to handle the proxy to the app domain, as well as the plugins

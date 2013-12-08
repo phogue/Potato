@@ -52,7 +52,7 @@ namespace Procon.Core.Connections.Plugins {
         /// <summary>
         /// The interface to callback from the plugin side to Procon.
         /// </summary>
-        public IList<IExecutableBase> PluginCallback { private get; set; }
+        //public IList<IExecutableBase> PluginCallback { private get; set; }
 
         /// <summary>
         /// All actions awaiting responses from the game networking layer
@@ -104,15 +104,11 @@ namespace Procon.Core.Connections.Plugins {
             if (command.Scope != null && command.Scope.PluginGuid == this.PluginGuid) {
                 command.Result = this.Tunnel(command);
             }
-            else if (this.PluginCallback != null) {
+            else if (this.BubbleObjects != null) {
                 command.Result = base.Bubble(command);
             }
 
             return command.Result;
-        }
-
-        protected override IList<IExecutableBase> BubbleExecutableObjects(Command command) {
-            return this.PluginCallback ?? new List<IExecutableBase>();
         }
 
         /// <summary>
@@ -211,8 +207,6 @@ namespace Procon.Core.Connections.Plugins {
                 Config config = new Config();
                 config.Create(this.GetType());
                 this.WriteConfig(config);
-
-                String t = this.ConfigDirectoryInfo.FullName;
 
                 config.Save(new FileInfo(Path.Combine(this.ConfigDirectoryInfo.FullName, this.GetType().Namespace + ".xml")));
             }

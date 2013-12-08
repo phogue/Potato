@@ -9,6 +9,9 @@ using Procon.Net.Utils;
 
 namespace Procon.Core {
 
+    /// <summary>
+    /// Handles command routing and config handling
+    /// </summary>
     [Serializable]
     public abstract class ExecutableBase : MarshalByRefObject, INotifyPropertyChanged, IDisposable, ICloneable, IExecutableBase {
 
@@ -18,6 +21,23 @@ namespace Procon.Core {
         protected readonly Dictionary<CommandAttribute, CommandDispatchHandler> CommandDispatchHandlers = new Dictionary<CommandAttribute, CommandDispatchHandler>();
 
         protected delegate CommandResultArgs CommandDispatchHandler(Command command, Dictionary<String, CommandParameter> parameters);
+
+        /// <summary>
+        /// All objects to tunnel downwards
+        /// </summary>
+        [XmlIgnore, JsonIgnore]
+        public List<IExecutableBase> TunnelObjects { get; set; }
+
+        /// <summary>
+        /// All objects to bubble upwards
+        /// </summary>
+        [XmlIgnore, JsonIgnore]
+        public List<IExecutableBase> BubbleObjects { get; set; }
+
+        protected ExecutableBase() : base() {
+            this.TunnelObjects = new List<IExecutableBase>();
+            this.BubbleObjects = new List<IExecutableBase>();
+        }
 
         /// <summary>
         /// Appends a list of dispatch handlers to the internal list, updating existing handlers if they exist.
@@ -54,6 +74,12 @@ namespace Procon.Core {
         public virtual void Dispose() {
             this.OnDisposed();
 
+            if (this.BubbleObjects != null) this.BubbleObjects.Clear();
+            this.BubbleObjects = null;
+
+            if (this.TunnelObjects != null) this.TunnelObjects.Clear();
+            this.TunnelObjects = null;
+
             this.Disposed = null;
         }
 
@@ -76,6 +102,10 @@ namespace Procon.Core {
             return this;
         }
 
+        /// <summary>
+        /// Called after the constructor is called
+        /// </summary>
+        /// <returns></returns>
         public virtual ExecutableBase Execute() {
             return this;
         }
@@ -106,11 +136,23 @@ namespace Procon.Core {
             }
         }
 
-        // Events.
+        
+        /// <summary>
+        /// Event for whenever a property is modified on this executable object
+        /// </summary>
+        /// <remarks>I think this is only used for variables, which I would like to move specifically to
+        /// the variables controlle. There is no need for other variables to use this functionality.</remarks>
         public event PropertyChangedEventHandler PropertyChanged;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="property"></param>
         protected void OnPropertyChanged(Object sender, String property) {
-            if (PropertyChanged != null) {
-                PropertyChanged(sender, new PropertyChangedEventArgs(property));
+            var handler = this.PropertyChanged;
+            if (handler != null) {
+                handler(sender, new PropertyChangedEventArgs(property));
             }
         }
 
@@ -192,8 +234,10 @@ namespace Procon.Core {
             if (command.Result.Status == CommandResultType.Continue) {
                 IList<IExecutableBase> propogationList = tunnel == true ? this.TunnelExecutableObjects(command) : this.BubbleExecutableObjects(command);
 
-                for (int offset = 0; offset < propogationList.Count && command.Result.Status == CommandResultType.Continue; offset++) {
-                    command.Result = propogationList[offset].PropogatePreview(command, tunnel);
+                for (int offset = 0; propogationList != null && offset < propogationList.Count && command.Result.Status == CommandResultType.Continue; offset++) {
+                    if (propogationList[offset] != null) {
+                        command.Result = propogationList[offset].PropogatePreview(command, tunnel);
+                    }
                 }
             }
 
@@ -212,8 +256,10 @@ namespace Procon.Core {
             if (command.Result.Status == CommandResultType.Continue) {
                 IList<IExecutableBase> propogationList = tunnel == true ? this.TunnelExecutableObjects(command) : this.BubbleExecutableObjects(command);
 
-                for (int offset = 0; offset < propogationList.Count && command.Result.Status == CommandResultType.Continue; offset++) {
-                    command.Result = propogationList[offset].PropogateHandler(command, tunnel);
+                for (int offset = 0; propogationList != null && offset < propogationList.Count && command.Result.Status == CommandResultType.Continue; offset++) {
+                    if (propogationList[offset] != null) {
+                        command.Result = propogationList[offset].PropogateHandler(command, tunnel);
+                    }
                 }
             }
 
@@ -231,8 +277,12 @@ namespace Procon.Core {
 
             IList<IExecutableBase> propogationList = tunnel == true ? this.TunnelExecutableObjects(command) : this.BubbleExecutableObjects(command);
 
-            foreach (ExecutableBase executable in propogationList) {
-                command.Result = executable.PropogateExecuted(command, tunnel);
+            if (propogationList != null) {
+                foreach (ExecutableBase executable in propogationList) {
+                    if (executable != null) {
+                        command.Result = executable.PropogateExecuted(command, tunnel);
+                    }
+                }
             }
 
             return command.Result;
@@ -285,11 +335,11 @@ namespace Procon.Core {
         }
 
         protected virtual IList<IExecutableBase> TunnelExecutableObjects(Command command) {
-            return new List<IExecutableBase>();
+            return this.TunnelObjects;
         }
 
         protected virtual IList<IExecutableBase> BubbleExecutableObjects(Command command) {
-            return new List<IExecutableBase>();
+            return this.BubbleObjects;
         } 
 
         public object Clone() {

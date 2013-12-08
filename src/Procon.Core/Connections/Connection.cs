@@ -4,17 +4,20 @@ using System.Globalization;
 using System.Linq;
 using System.Xml.Serialization;
 using Newtonsoft.Json;
+using Procon.Core.Connections.Plugins;
+using Procon.Core.Connections.TextCommands;
 using Procon.Core.Events;
 using Procon.Core.Variables;
+using Procon.Net;
 using Procon.Net.Actions;
 using Procon.Net.Data;
+using Procon.Net.Utils;
 
 namespace Procon.Core.Connections {
-    using Procon.Core.Connections.TextCommands;
-    using Procon.Core.Connections.Plugins;
-    using Procon.Net;
-    using Procon.Net.Utils;
 
+    /// <summary>
+    /// Handles connections, plugins and text commands for a single game server.
+    /// </summary>
     [Serializable]
     public class Connection : Executable {
 
@@ -194,6 +197,14 @@ namespace Procon.Core.Connections {
                 Connection = this
             };
 
+            // Go up to the the instance that owns this connection
+            this.BubbleObjects.Add(this.Instance);
+
+            // Go down to the text commands or plugins owned by this connection.
+            this.TunnelObjects.Add(this.TextCommands);
+            this.TunnelObjects.Add(this.Plugins);
+
+            // Registered bubble/tunnel objects, now go.
             this.TextCommands.Execute();
             this.Plugins.Execute();
             
@@ -259,20 +270,9 @@ namespace Procon.Core.Connections {
             return base.PropogateExecuted(command, tunnel);
         }
 
-        protected override IList<IExecutableBase> BubbleExecutableObjects(Command command) {
-            return this.Instance != null ? new List<IExecutableBase>() {
-                this.Instance
-            } : new List<IExecutableBase>();
-        }
-
-        protected override IList<IExecutableBase> TunnelExecutableObjects(Command command) {
-            return new List<IExecutableBase> {
-                this.TextCommands,
-                this.Plugins
-            };
-        }
-
-        // Attempts to begin communication with the game server.
+        /// <summary>
+        /// Attempts communication with the game server.
+        /// </summary>
         public void AttemptConnection() {
             if (this.Game != null) {
                 this.Game.AttemptConnection();

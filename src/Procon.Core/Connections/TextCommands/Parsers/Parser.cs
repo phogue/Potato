@@ -1,16 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Xml.Linq;
 using System.Reflection;
+using System.Xml.Linq;
+using Procon.Core.Events;
+using Procon.Core.Security;
+using Procon.Fuzzy;
+using Procon.Fuzzy.Tokens.Object;
+using Procon.Fuzzy.Utils;
 using Procon.Net.Data;
 
 namespace Procon.Core.Connections.TextCommands.Parsers {
-    using Procon.Fuzzy;
-    using Procon.Fuzzy.Utils;
-    using Procon.Fuzzy.Tokens.Object;
-    using Procon.Core.Connections;
-    using Procon.Core.Security;
-    using Procon.Core.Events;
 
     public abstract class Parser : IFuzzyState {
 

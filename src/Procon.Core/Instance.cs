@@ -68,7 +68,7 @@ namespace Procon.Core {
             this.Packages = new RepositoryController();
 
             this.Daemon = new DaemonController() {
-                ExecutableObjects = {
+                TunnelObjects = new List<IExecutableBase>() {
                     this
                 }
             };

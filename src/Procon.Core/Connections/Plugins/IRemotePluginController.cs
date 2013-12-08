@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using Procon.Net;
 
 namespace Procon.Core.Connections.Plugins {
@@ -7,11 +6,6 @@ namespace Procon.Core.Connections.Plugins {
     /// Remoting interface for Procon.Core to communicate with remote Plugin.
     /// </summary>
     public interface IRemotePluginController : IExecutableBase {
-
-        /// <summary>
-        /// Callbacks to execute commands on the host appdomain.
-        /// </summary>
-        IList<IExecutableBase> PluginCallback { set; }
 
         /// <summary>
         /// Creates an instance of a type in an assembly.

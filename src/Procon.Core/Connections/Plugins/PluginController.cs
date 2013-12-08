@@ -259,6 +259,9 @@ namespace Procon.Core.Connections.Plugins {
         public override ExecutableBase Execute() {
             this.SetupPluginFactory();
 
+            this.TunnelObjects.Add(this.PluginFactory);
+            this.BubbleObjects.Add(this.Connection);
+
             // Load all the plugins.
             this.LoadPlugins(new DirectoryInfo(Defines.PluginsDirectory));
 
@@ -283,18 +286,6 @@ namespace Procon.Core.Connections.Plugins {
             }
         }
 
-        protected override IList<IExecutableBase> BubbleExecutableObjects(Command command) {
-            return this.Connection != null ? new List<IExecutableBase>() {
-                this.Connection
-            } : new List<IExecutableBase>();
-        }
-
-        protected override IList<IExecutableBase> TunnelExecutableObjects(Command command) {
-            return new List<IExecutableBase>() {
-                this.PluginFactory
-            };
-        }
-
         /// <summary>
         /// Sets everything up to load the plugins, creating the seperate appdomin and permission requirements
         /// </summary>
@@ -316,7 +307,7 @@ namespace Procon.Core.Connections.Plugins {
 
             this.PluginFactory = (IRemotePluginController)this.AppDomainSandbox.CreateInstanceAndUnwrap(Assembly.GetExecutingAssembly().FullName, typeof(RemotePluginController).FullName);
 
-            this.PluginFactory.PluginCallback = new List<IExecutableBase>() {
+            this.PluginFactory.BubbleObjects = new List<IExecutableBase>() {
                 this
             };
         }

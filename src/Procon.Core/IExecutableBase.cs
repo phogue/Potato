@@ -1,8 +1,20 @@
-﻿namespace Procon.Core {
+﻿using System.Collections.Generic;
+
+namespace Procon.Core {
     /// <summary>
     /// The implementing object accepts command execution
     /// </summary>
     public interface IExecutableBase {
+        /// <summary>
+        /// All objects to tunnel downwards during execution
+        /// </summary>
+        List<IExecutableBase> TunnelObjects { get; set; }
+
+        /// <summary>
+        /// All objects to bubble upwards during execution
+        /// </summary>
+        List<IExecutableBase> BubbleObjects { get; set; }
+
         /// <summary>
         /// Run a preview of a command on the current object, then tunnel or bubble the command.
         /// </summary>

@@ -1,15 +1,17 @@
 ﻿using System.IO;
 using System.Xml.Serialization;
 using Newtonsoft.Json;
+using Procon.Core.Events;
+using Procon.Core.Localization;
+using Procon.Core.Security;
+using Procon.Core.Variables;
 using Procon.Service.Shared;
 
 namespace Procon.Core {
-    using Procon.Core.Security;
-    using Procon.Core.Localization;
-    using Procon.Core.Events;
-    using Procon.Core.Variables;
-    using Procon.Core.Utils;
-
+    /// <summary>
+    /// Holds static references to common functionality across procon.
+    /// </summary>
+    /// <remarks>This is kind-of, sort-of global variables but it's restricted to Procon's AppDomain only.</remarks>
     public abstract class Executable : ExecutableBase {
 
         /// <summary>

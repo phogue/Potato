@@ -25,7 +25,7 @@ namespace Procon.Core.Connections.Plugins {
         /// <summary>
         /// Callbacks to execute commands on the host appdomain.
         /// </summary>
-        public IList<IExecutableBase> PluginCallback { private get; set; }
+        // public IList<IExecutableBase> PluginCallback { private get; set; }
 
         /// <summary>
         /// Creates an instance of a type in an assembly.
@@ -65,9 +65,11 @@ namespace Procon.Core.Connections.Plugins {
 
                 this.EnabledPlugins.TryAdd(plugin.PluginGuid, plugin);
 
-                plugin.PluginCallback = new List<IExecutableBase>() {
-                    this
-                };
+                plugin.BubbleObjects.Add(this);
+
+                //plugin.PluginCallback = new List<IExecutableBase>() {
+                //    this
+                //};
 
                 plugin.GenericEvent(new GenericEventArgs() {
                     GenericEventType = GenericEventType.PluginsPluginEnabled
@@ -90,7 +92,7 @@ namespace Procon.Core.Connections.Plugins {
             IRemotePlugin plugin;
 
             if (this.EnabledPlugins.TryRemove(pluginGuid, out plugin) == true) {
-                plugin.PluginCallback = null;
+                plugin.BubbleObjects = null;
 
                 plugin.GenericEvent(new GenericEventArgs() {
                     GenericEventType = GenericEventType.PluginsPluginDisabled
@@ -152,7 +154,7 @@ namespace Procon.Core.Connections.Plugins {
         protected override IList<IExecutableBase> BubbleExecutableObjects(Command command) {
             command.Origin = CommandOrigin.Plugin;
 
-            return this.PluginCallback ?? new List<IExecutableBase>();
+            return this.BubbleObjects ?? new List<IExecutableBase>();
         }
 
         protected override IList<IExecutableBase> TunnelExecutableObjects(Command command) {

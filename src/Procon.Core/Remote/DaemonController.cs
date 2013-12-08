@@ -15,18 +15,9 @@ namespace Procon.Core.Remote {
     public class DaemonController : Executable {
 
         /// <summary>
-        /// The owner of this daemon controller
-        /// </summary>
-        public List<IExecutableBase> ExecutableObjects { get; set; }
-
-        /// <summary>
         /// The client to send/recv remote daemon messages.
         /// </summary>
         public DaemonListener DaemonListener { get; set; }
-
-        public DaemonController() {
-            this.ExecutableObjects = new List<IExecutableBase>();
-        }
 
         public override ExecutableBase Execute() {
             this.Variables.Variable(CommonVariableNames.DaemonEnabled).PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(DaemonController_PropertyChanged);
@@ -42,16 +33,9 @@ namespace Procon.Core.Remote {
 
             this.Variables.Variable(CommonVariableNames.DaemonEnabled).PropertyChanged -= new System.ComponentModel.PropertyChangedEventHandler(DaemonController_PropertyChanged);
             this.Variables.Variable(CommonVariableNames.DaemonListenerPort).PropertyChanged -= new System.ComponentModel.PropertyChangedEventHandler(DaemonController_PropertyChanged);
-
-            this.ExecutableObjects.Clear();
-            this.ExecutableObjects = null;
-
+            
             if (this.DaemonListener != null) this.DaemonListener.Dispose();
             this.DaemonListener = null;
-        }
-
-        protected override IList<IExecutableBase> TunnelExecutableObjects(Command command) {
-            return this.ExecutableObjects;
         }
 
         private void DaemonController_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e) {

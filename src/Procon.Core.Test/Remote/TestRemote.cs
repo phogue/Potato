@@ -52,7 +52,7 @@ namespace Procon.Core.Test.Remote {
             });
 
             DaemonController daemon = new DaemonController() {
-                ExecutableObjects = new List<IExecutableBase>() {
+                TunnelObjects = new List<IExecutableBase>() {
                     plugins
                 },
                 Security = security,
@@ -226,7 +226,7 @@ namespace Procon.Core.Test.Remote {
             daemon.Dispose();
 
             Assert.IsNull(daemon.DaemonListener);
-            Assert.IsNull(daemon.ExecutableObjects);
+            Assert.IsNull(daemon.TunnelObjects);
         }
 
         /// <summary>
@@ -249,7 +249,7 @@ namespace Procon.Core.Test.Remote {
             });
 
             Assert.IsNull(daemon.DaemonListener);
-            Assert.IsNotNull(daemon.ExecutableObjects);
+            Assert.IsNotNull(daemon.TunnelObjects);
         }
 
         /// <summary>

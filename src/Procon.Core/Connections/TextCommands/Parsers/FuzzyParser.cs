@@ -342,11 +342,11 @@ namespace Procon.Core.Connections.TextCommands.Parsers {
                 phrase.RemoveAll(x => x is MethodObjectToken);
             }
 
-            resultMethodList = resultMethodList.OrderByDescending(x => x.Similarity)
-                                               .ThenByDescending(x => x.Text.Length)
+            resultMethodList = resultMethodList.OrderByDescending(token => token.Similarity)
+                                               .ThenByDescending(token => token.Text.Length)
                                                .ToList();
 
-            List<TextCommand> results = resultMethodList.Select(method => this.TextCommands.Find(x => x.PluginCommand == method.MethodName)).Where(command => command != null).ToList();
+            List<TextCommand> results = resultMethodList.Select(method => this.TextCommands.Find(command => command.PluginCommand == method.MethodName)).Where(command => command != null).ToList();
 
             return results.OrderByDescending(x => x.Priority).ToList();
         }
@@ -368,19 +368,19 @@ namespace Procon.Core.Connections.TextCommands.Parsers {
             List<TextCommand> commands = this.ExtractCommandList(sentence);
             TextCommand priorityCommand = commands.FirstOrDefault();
 
-            List<String> quotes = sentence.Where(x => x.Count > 0 && x[0] is StringPrimitiveToken).Select(x => x[0].Text).ToList();
+            List<String> quotes = sentence.Where(token => token.Count > 0 && token[0] is StringPrimitiveToken).Select(token => token[0].Text).ToList();
 
             List<TemporalToken> timeTokens = sentence.ExtractList<TemporalToken>();
-            DateTime? delay = timeTokens.Where(x => x.Pattern != null && x.Pattern.Modifier == TimeModifier.Delay)
-                                        .Select(x => x.Pattern.ToDateTime())
+            DateTime? delay = timeTokens.Where(token => token.Pattern != null && token.Pattern.Modifier == TimeModifier.Delay)
+                                        .Select(token => token.Pattern.ToDateTime())
                                         .FirstOrDefault();
 
-            FuzzyDateTimePattern interval = timeTokens.Where(x => x.Pattern != null && x.Pattern.Modifier == TimeModifier.Interval)
-                                           .Select(x => x.Pattern)
+            FuzzyDateTimePattern interval = timeTokens.Where(token => token.Pattern != null && token.Pattern.Modifier == TimeModifier.Interval)
+                                           .Select(token => token.Pattern)
                                            .FirstOrDefault();
 
-            TimeSpan? period = timeTokens.Where(x => x.Pattern != null && (x.Pattern.Modifier == TimeModifier.Period || x.Pattern.Modifier == TimeModifier.None))
-                                         .Select(x => x.Pattern.ToTimeSpan())
+            TimeSpan? period = timeTokens.Where(token => token.Pattern != null && (token.Pattern.Modifier == TimeModifier.Period || token.Pattern.Modifier == TimeModifier.None))
+                                         .Select(token => token.Pattern.ToTimeSpan())
                                          .FirstOrDefault();
             
             // Must have a method to execute on, the rest is optional.
@@ -396,7 +396,9 @@ namespace Procon.Core.Connections.TextCommands.Parsers {
                         },
                         TextCommands = new List<TextCommand>() {
                             priorityCommand
-                        }.Concat(commands).ToList(),
+                        }
+                        .Concat(commands)
+                        .ToList(),
                         TextCommandMatches = new List<TextCommandMatch>() {
                             new TextCommandMatch() {
                                 Prefix = prefix,

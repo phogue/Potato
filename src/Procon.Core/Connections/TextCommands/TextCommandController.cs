@@ -176,11 +176,12 @@ namespace Procon.Core.Connections.TextCommands {
 
         /// <summary>
         /// Runs through the various parsers for all of the text commands.
-        /// 
+        /// </summary>
+        /// <remarks>
         /// This method may fire multiple events to execute multiple commands
         /// when more than one parser is included in the future. This is expected
         /// behaviour.
-        /// </summary>
+        /// </remarks>
         /// <param name="speakerNetworkPlayer"></param>
         /// <param name="speakerAccount"></param>
         /// <param name="prefix"></param>

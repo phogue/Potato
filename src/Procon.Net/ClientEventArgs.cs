@@ -32,6 +32,9 @@ namespace Procon.Net {
 
         public ClientEventArgs() {
             this.Stamp = DateTime.Now;
+
+            this.Then = new ClientEventData();
+            this.Now = new ClientEventData();
         }
     }
 }

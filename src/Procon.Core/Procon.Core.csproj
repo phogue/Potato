@@ -79,6 +79,7 @@
     <Compile Include="Connections\Connection.cs" />
     <Compile Include="Connections\Plugins\IRemotePluginController.cs" />
     <Compile Include="Connections\Plugins\IRenewableLease.cs" />
+    <Compile Include="Connections\TextCommands\ITextCommandParser.cs" />
     <Compile Include="Connections\TextCommands\TextCommandMatch.cs" />
     <Compile Include="Connections\TextCommands\ParserType.cs" />
     <Compile Include="Connections\TextCommands\TextCommand.cs" />

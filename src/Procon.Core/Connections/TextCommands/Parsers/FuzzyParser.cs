@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using Procon.Core.Events;
+using System.Xml.Linq;
 using Procon.Fuzzy;
 using Procon.Fuzzy.Tokens.Object;
 using Procon.Fuzzy.Tokens.Object.Sets;
@@ -20,8 +20,20 @@ namespace Procon.Core.Connections.TextCommands.Parsers {
     /// <summary>
     /// Finds matches agaisnt text with no structure. Extracts various information from the text
     /// </summary>
-    public class FuzzyParser : Parser {
+    public class FuzzyParser : Parser, IFuzzyState {
 
+        /// <summary>
+        /// The document to use for localization purposes. This is a raw format to be used
+        /// by Procon.Fuzzy
+        /// </summary>
+        public XElement Document { get; set; }
+
+
+        /// <summary>
+        /// Contains a mapping with more information to use on each type.
+        /// </summary>
+        public Dictionary<Type, LinqParameterMapping> LinqParameterMappings { get; set; }
+        
         /// <summary>
         /// Dictionary of cached property info fetches. Minor optimization.
         /// </summary>
@@ -105,7 +117,7 @@ namespace Procon.Core.Connections.TextCommands.Parsers {
         /// <param name="state"></param>
         /// <param name="phrase"></param>
         /// <returns></returns>
-        public override Phrase ParseThing(IFuzzyState state, Phrase phrase) {
+        public Phrase ParseThing(IFuzzyState state, Phrase phrase) {
 
             this.ParsePlayerNames(phrase);
             this.ParseMapNames(phrase);
@@ -132,7 +144,7 @@ namespace Procon.Core.Connections.TextCommands.Parsers {
         /// <param name="state"></param>
         /// <param name="phrase"></param>
         /// <returns></returns>
-        public override Phrase ParseMethod(IFuzzyState state, Phrase phrase) {
+        public Phrase ParseMethod(IFuzzyState state, Phrase phrase) {
 
             var methods = from textCommand in this.TextCommands
                           let similarity = this.MaximumLevenshtein(phrase.Text, textCommand.Commands)
@@ -157,10 +169,10 @@ namespace Procon.Core.Connections.TextCommands.Parsers {
         /// <param name="state"></param>
         /// <param name="selfThing"></param>
         /// <returns></returns>
-        public override SelfReflectionThingObjectToken ParseSelfReflectionThing(IFuzzyState state, SelfReflectionThingObjectToken selfThing) {
+        public SelfReflectionThingObjectToken ParseSelfReflectionThing(IFuzzyState state, SelfReflectionThingObjectToken selfThing) {
 
-            if (this.Speaker != null) {
-                selfThing.Reference = this.Speaker.Uid;
+            if (this.SpeakerPlayer != null) {
+                selfThing.Reference = this.SpeakerPlayer.Uid;
                 selfThing.ReferenceProperty = this.GetPropertyInfo<Player>("Uid");
             }
 
@@ -175,7 +187,7 @@ namespace Procon.Core.Connections.TextCommands.Parsers {
         /// </summary>
         /// <param name="propertyName"></param>
         /// <returns></returns>
-        public override PropertyInfo GetPropertyInfo(string propertyName) {
+        public PropertyInfo GetPropertyInfo(string propertyName) {
             return this.GetPropertyInfo<Player>(propertyName) ?? this.GetPropertyInfo<Map>(propertyName);
         }
 
@@ -353,14 +365,7 @@ namespace Procon.Core.Connections.TextCommands.Parsers {
 
         #endregion
 
-        /// <summary>
-        /// Builds a generic event for matching a text command, provided a single text command is found.
-        /// </summary>
-        /// <param name="prefix"></param>
-        /// <param name="text"></param>
-        /// <param name="eventType"></param>
-        /// <returns></returns>
-        public override CommandResultArgs BuildEvent(string prefix, string text, GenericEventType eventType) {
+        public override CommandResultArgs Parse(string prefix, string text) {
             Sentence sentence = new Sentence().Parse(this, text).Reduce(this);
 
             CommandResultArgs commandResult = null;
@@ -392,7 +397,7 @@ namespace Procon.Core.Connections.TextCommands.Parsers {
                     Status = CommandResultType.Success,
                     Now = new CommandData() {
                         Players = new List<Player>() {
-                            this.Speaker
+                            this.SpeakerPlayer
                         },
                         TextCommands = new List<TextCommand>() {
                             priorityCommand

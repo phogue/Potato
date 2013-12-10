@@ -1,41 +1,42 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Reflection;
-using System.Xml.Linq;
-using Procon.Core.Events;
+﻿using System.Collections.Generic;
 using Procon.Core.Security;
-using Procon.Fuzzy;
-using Procon.Fuzzy.Tokens.Object;
-using Procon.Fuzzy.Utils;
 using Procon.Net.Data;
 
 namespace Procon.Core.Connections.TextCommands.Parsers {
 
-    public abstract class Parser : IFuzzyState {
+    /// <summary>
+    /// Base text command parser implementing ITextCommandParser
+    /// attributes shared across 
+    /// </summary>
+    public abstract class Parser : ITextCommandParser {
 
-        public List<TextCommand> TextCommands { get; set; }
-
-        // Elsewhere.
-        public XElement Document { get; set; }
-
-        public Player Speaker { get; set; }
-        public Account SpeakerAccount { get; set; }
-
+        /// <summary>
+        /// The connection which owns this parser, used to fetch player lists, map pools etc.
+        /// </summary>
         public Connection Connection { get; set; }
 
         /// <summary>
-        /// Contains a mapping with more information to use on each type.
+        /// List of potential text commands to match against
         /// </summary>
-        public Dictionary<Type, LinqParameterMapping> LinqParameterMappings { get; set; }
+        public List<TextCommand> TextCommands { get; set; }
 
-        public abstract Phrase ParseThing(IFuzzyState state, Phrase phrase);
+        /// <summary>
+        /// The player (in game) that is currently talking or attached to the account
+        /// that has initiated the action via command.
+        /// </summary>
+        public Player SpeakerPlayer { get; set; }
 
-        public abstract Phrase ParseMethod(IFuzzyState state, Phrase phrase);
+        /// <summary>
+        /// The account of the player that has talked in game or initiated the action via command.
+        /// </summary>
+        public Account SpeakerAccount { get; set; }
 
-        public abstract SelfReflectionThingObjectToken ParseSelfReflectionThing(IFuzzyState state, SelfReflectionThingObjectToken selfThing);
-
-        public abstract PropertyInfo GetPropertyInfo(string propertyName);
-
-        public abstract CommandResultArgs BuildEvent(string prefix, string text, GenericEventType eventType);
+        /// <summary>
+        /// Parses text and a prefix, creating a command result with the containing matches
+        /// </summary>
+        /// <param name="prefix">The text prefix that was used at the start of the text (!, @, #) "!hello world" -> "!"</param>
+        /// <param name="text">The rest of the text "!hello world" -> "hello world"</param>
+        /// <returns></returns>
+        public abstract CommandResultArgs Parse(string prefix, string text);
     }
 }

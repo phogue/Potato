@@ -144,9 +144,8 @@ namespace Procon.Core.Connections.TextCommands {
         /// <param name="commands">A list of commands to check against </param>
         /// <param name="prefix">The first valid character of the command being executed</param>
         /// <param name="text">The next, minus the first character</param>
-        /// <param name="eventType">How the command should be handled, if it is being executed or just previewed.</param>
         /// <returns>The generated event, if any.</returns>
-        protected CommandResultArgs ParseNlp(Player speaker, Account speakerAccount, List<TextCommand> commands, String prefix, String text, GenericEventType eventType = GenericEventType.TextCommandExecuted) {
+        protected CommandResultArgs ParseFuzzy(Player speaker, Account speakerAccount, List<TextCommand> commands, String prefix, String text) {
 
             CommandResultArgs commandResult = null;
             Language selectedLanguage = null;
@@ -159,16 +158,16 @@ namespace Procon.Core.Connections.TextCommands {
             }
 
             if (selectedLanguage != null) {
-                FuzzyParser parser = new FuzzyParser() {
+                ITextCommandParser parser = new FuzzyParser() {
                     Connection = this.Connection,
                     TextCommands = commands,
                     Document = selectedLanguage.Root,
                     LinqParameterMappings = this.LinqParameterMappings,
-                    Speaker = speaker,
+                    SpeakerPlayer = speaker,
                     SpeakerAccount = speakerAccount
                 };
 
-                commandResult = parser.BuildEvent(prefix, text, eventType);
+                commandResult = parser.Parse(prefix, text);
             }
 
             return commandResult;
@@ -186,14 +185,13 @@ namespace Procon.Core.Connections.TextCommands {
         /// <param name="speakerAccount"></param>
         /// <param name="prefix"></param>
         /// <param name="text"></param>
-        /// <param name="eventType"></param>
         /// <returns>The generated event, if any.</returns>
-        protected CommandResultArgs Parse(Player speakerNetworkPlayer, Account speakerAccount, String prefix, String text, GenericEventType eventType = GenericEventType.TextCommandExecuted) {
+        protected CommandResultArgs Parse(Player speakerNetworkPlayer, Account speakerAccount, String prefix, String text) {
 
             // This could execute more in the future, in which case
             // this.TextCommands.Where(x => x.Parser == Parser.NLP).ToList()
             // would be passed to ExecuteNLP
-            return this.ParseNlp(speakerNetworkPlayer, speakerAccount, this.TextCommands, prefix, text, eventType);
+            return this.ParseFuzzy(speakerNetworkPlayer, speakerAccount, this.TextCommands, prefix, text);
         }
 
         /// <summary>
@@ -241,6 +239,8 @@ namespace Procon.Core.Connections.TextCommands {
                 String prefix = this.Variables.Get<String>(CommonVariableNames.TextCommandPublicPrefix);
 
                 result = this.Parse(this.GetAccountNetworkPlayer(command, speakerAccount), speakerAccount, prefix, text) ?? command.Result;
+
+                // todo fire event? GenericEventType.TextCommandExecuted
             }
             else {
                 result = CommandResultArgs.InsufficientPermissions;
@@ -269,7 +269,9 @@ namespace Procon.Core.Connections.TextCommands {
 
                 String prefix = this.Variables.Get<String>(CommonVariableNames.TextCommandPublicPrefix);
 
-                result = this.Parse(this.GetAccountNetworkPlayer(command, speakerAccount), speakerAccount, prefix, text, GenericEventType.TextCommandPreviewed) ?? command.Result;
+                result = this.Parse(this.GetAccountNetworkPlayer(command, speakerAccount), speakerAccount, prefix, text) ?? command.Result;
+
+                // todo fire event? GenericEventType.TextCommandPreviewed
             }
             else {
                 result = CommandResultArgs.InsufficientPermissions;

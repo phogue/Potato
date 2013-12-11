@@ -286,11 +286,18 @@ namespace Procon.Fuzzy {
         }
 
         public T Extract<T>() where T : Token {
-            return (T) this.Combine().Where(token => token is T == true).OrderByDescending(token => token.Similarity).ThenByDescending(token => token.Text.Length).FirstOrDefault();
+            return (T) this.Combine().Where(token => token is T).OrderByDescending(token => token.Similarity).ThenByDescending(token => token.Text.Length).FirstOrDefault();
         }
 
         public List<T> ExtractList<T>() where T : Token {
-            return this.Combine().Where(token => token is T == true).OrderByDescending(token => token.Similarity).ThenByDescending(token => token.Text.Length).Select(token => token as T).ToList();
+            return this.Combine().Where(token => token is T).OrderByDescending(token => token.Similarity).ThenByDescending(token => token.Text.Length).Select(token => token as T).ToList();
+        }
+
+        // todo replace ExtractList if the other is not used.
+        public List<T> ExtractListStrict<T>() where T : Token {
+            return this.Where(phrase => phrase.Any()).Select(phrase => phrase.First()).Where(token => token.GetType() == typeof(T)).OrderByDescending(token => token.Similarity).ThenByDescending(token => token.Text.Length).Select(token => token as T).ToList();
+
+            //return this.Where(token => token.GetType() == typeof(T)).OrderByDescending(token => token.Similarity).ThenByDescending(token => token.Text.Length).Select(token => token as T).ToList();
         }
 
         public List<Token> Combine() {

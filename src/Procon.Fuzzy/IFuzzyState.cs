@@ -18,11 +18,24 @@ namespace Procon.Fuzzy {
         /// </summary>
         Dictionary<Type, LinqParameterMapping> LinqParameterMappings { get; }
 
+        /// <summary>
+        /// Converts a phrase into a token if the token matches an object
+        /// </summary>
+        /// <param name="state"></param>
+        /// <param name="phrase"></param>
+        /// <returns></returns>
         Phrase ParseThing(IFuzzyState state, Phrase phrase);
+
+        /// <summary>
+        /// Parses the text for any commands it can use.
+        /// </summary>
+        /// <param name="state"></param>
+        /// <param name="phrase"></param>
+        /// <returns></returns>
         Phrase ParseMethod(IFuzzyState state, Phrase phrase);
 
-        SelfReflectionThingObjectToken ParseSelfReflectionThing(IFuzzyState state, SelfReflectionThingObjectToken selfThing);
+        Phrase ParseProperty(IFuzzyState state, Phrase phrase);
 
-        PropertyInfo GetPropertyInfo(string propertyName);
+        SelfReflectionThingObjectToken ParseSelfReflectionThing(IFuzzyState state, SelfReflectionThingObjectToken selfThing);
     }
 }

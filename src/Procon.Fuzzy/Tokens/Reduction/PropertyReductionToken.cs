@@ -10,16 +10,17 @@ namespace Procon.Fuzzy.Tokens.Reduction {
     using Procon.Fuzzy.Tokens.Operator.Logical.Equality;
 
     public class PropertyReductionToken : ReductionToken {
-        public static Phrase ReducePropertyEqualityNumber(IFuzzyState state, Dictionary<String, Token> parameters) {
-            PropertyObjectToken property = (PropertyObjectToken) parameters["property"];
+        public static Phrase ReduceThingPropertyEqualityNumber(IFuzzyState state, Dictionary<String, Token> parameters) {
+            ThingObjectToken thing = (ThingObjectToken)parameters["thing"];
+            NumericPropertyObjectToken property = (NumericPropertyObjectToken)parameters["property"];
             EqualityLogicalOperatorToken equality = (EqualityLogicalOperatorToken) parameters["equality"];
             FloatNumericPrimitiveToken number = (FloatNumericPrimitiveToken) parameters["number"];
 
             ReductionToken reducedToken = new PropertyReductionToken() {
-                Text = String.Format("{0} {1} {2}", property.Text, equality.Text, number.Text),
+                Text = String.Format("{0} {1} {2} {3}", thing.Text, property.Text, equality.Text, number.Text),
                 Similarity = 100.0F
             };
-
+            /*
             PropertyInfo propertyInfo = state.GetPropertyInfo(property.PropertyName);
 
             if (propertyInfo != null) {
@@ -27,7 +28,7 @@ namespace Procon.Fuzzy.Tokens.Reduction {
 
                 reducedToken.LinqExpression = Expression.MakeBinary(equality.ExpressionType, Expression.MakeMemberAccess(reducedToken.Parameter, propertyInfo), Expression.Constant(number.ToFloat().ConvertTo(propertyInfo.PropertyType)));
             }
-
+            */
             return new Phrase() {
                 reducedToken
             };

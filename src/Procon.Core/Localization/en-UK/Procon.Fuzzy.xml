@@ -17,32 +17,14 @@
         <Diacritic key="Ö" value="Oe"/>
       </TokenReflection>
       <Object>
-        <Properties>
-          <Property name="Name">
-            <Match text="name"/>
-            <Match text="player name"/>
-          </Property>
-          <Property name="Ping">
-            <Match text="ping"/>
-          </Property>
-          <Property name="Score">
-            <Match text="score"/>
-          </Property>
-          <Property name="CountryName">
-            <Match text="country"/>
-          </Property>
-          <Property name="Kills">
-            <Match text="kills"/>
-          </Property>
-          <Property name="Deaths">
-            <Match text="deaths"/>
-          </Property>
-          <Property name="Kdr">
-            <Match text="kdr"/>
-            <Match text="ratio"/>
-          </Property>
-        </Properties>
-
+        <NumericPropertyObjectToken>
+          <Match name="Ping" text="ping"/>
+          <Match name="Score" text="score"/>
+          <Match name="Kills" text="kills"/>
+          <Match name="Deaths" text="deaths"/>
+          <Match name="Kdr" text="kdr"/>
+          <Match name="Kdr" text="ratio"/>
+        </NumericPropertyObjectToken>
         <SelfReflectionThingObjectToken>
           <Match text="me"/>
           <Match text="my"/>
@@ -51,6 +33,14 @@
           <Match text="am I"/>
           <Match text="I"/>
         </SelfReflectionThingObjectToken>
+        <ThingObjectToken>
+          <Match name="Players" text="everyone" value="Player"/>
+          <Match name="Players" text="players" value="Player"/>
+          <Match name="Players" text="all players" value="Player"/>
+          <Match name="Players" text="every player" value="Player"/>
+          <Match name="Maps" text="all maps" value="Map"/>
+          <Match name="Maps" text="every map" value="Map"/>
+        </ThingObjectToken>
       </Object>
 
       <Operator>

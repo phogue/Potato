@@ -15,6 +15,13 @@ namespace Procon.Fuzzy {
         public Object Value { get; set; }
 
         /// <summary>
+        /// A name attached from the match to always describe the matching item
+        /// </summary>
+        /// <remarks>Text or value is what was said to arrive to the match, but this is from the
+        /// localization file to describe what was matched.</remarks>
+        public String Name { get; set; }
+
+        /// <summary>
         /// The matching similarity this token has to the text supplied
         /// </summary>
         public float Similarity { get; set; }

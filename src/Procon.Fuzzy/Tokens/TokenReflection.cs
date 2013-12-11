@@ -5,7 +5,6 @@ using System.Text.RegularExpressions;
 using System.Xml.Linq;
 using Procon.Fuzzy.Utils;
 using Procon.Fuzzy.Tokens.Object;
-using Procon.Fuzzy.Tokens.Object.Sets;
 using Procon.Fuzzy.Tokens.Operator.Arithmetic.FirstOrder;
 using Procon.Fuzzy.Tokens.Operator.Arithmetic.SecondOrder;
 using Procon.Fuzzy.Tokens.Operator.Arithmetic.ThirdOrder;
@@ -64,68 +63,10 @@ namespace Procon.Fuzzy.Tokens {
         /// </summary>
         public static readonly Dictionary<TokenMethodMetadata, ReduceDelegateHandler> TokenCombineHandlers = new Dictionary<TokenMethodMetadata, ReduceDelegateHandler>() {
 
-            // Procon.Fuzzy.Tokens.Object.Sets.SetsThingObjectToken
+            // Procon.Fuzzy.Tokens.Object.ThingObjectToken
             { 
                 new TokenMethodMetadata() {
-                    Namespace = "Procon.Fuzzy.Tokens.Object.Sets.SetsThingObjectToken",
-                    DemandTokenCompatability = true,
-                    Parameters = new List<TokenParameter>() {
-                        new TokenParameter() {
-                            Name = "set1",
-                            Type = typeof(SetsThingObjectToken)
-                        },
-                        new TokenParameter() {
-                            Name = "and",
-                            Type = typeof(AndLogicalOperatorToken)
-                        },
-                        new TokenParameter() {
-                            Name = "set2",
-                            Type = typeof(SetsThingObjectToken)
-                        }
-                    }
-                },
-                new ReduceDelegateHandler(SetsThingObjectToken.CombineSetAndSet)
-            }, { 
-                new TokenMethodMetadata() {
-                    Namespace = "Procon.Fuzzy.Tokens.Object.Sets.SetsThingObjectToken",
-                    DemandTokenCompatability = true,
-                    ExactMatchType = true,
-                    Parameters = new List<TokenParameter>() {
-                        new TokenParameter() {
-                            Name = "set",
-                            Type = typeof(SetsThingObjectToken)
-                        },
-                        new TokenParameter() {
-                            Name = "thing",
-                            Type = typeof(ThingObjectToken)
-                        }
-                    }
-                },
-                new ReduceDelegateHandler(SetsThingObjectToken.CombineSetThing)
-            }, { 
-                new TokenMethodMetadata() {
-                    Namespace = "Procon.Fuzzy.Tokens.Object.Sets.SetsThingObjectToken",
-                    DemandTokenCompatability = true,
-                    ExactMatchType = true,
-                    Parameters = new List<TokenParameter>() {
-                        new TokenParameter() {
-                            Name = "set",
-                            Type = typeof(SetsThingObjectToken)
-                        },
-                        new TokenParameter() {
-                            Name = "and",
-                            Type = typeof(AndLogicalOperatorToken)
-                        },
-                        new TokenParameter() {
-                            Name = "thing",
-                            Type = typeof(ThingObjectToken)
-                        }
-                    }
-                },
-                new ReduceDelegateHandler(SetsThingObjectToken.CombineSetAndThing)
-            }, { 
-                new TokenMethodMetadata() {
-                    Namespace = "Procon.Fuzzy.Tokens.Object.Sets.SetsThingObjectToken",
+                    Namespace = "Procon.Fuzzy.Tokens.Object.ThingObjectToken",
                     DemandTokenCompatability = true,
                     ExactMatchType = true,
                     Parameters = new List<TokenParameter>() {
@@ -139,10 +80,10 @@ namespace Procon.Fuzzy.Tokens {
                         }
                     }
                 },
-                new ReduceDelegateHandler(SetsThingObjectToken.CombineThingThing)
+                new ReduceDelegateHandler(ThingObjectToken.CombineThingThing)
             }, { 
                 new TokenMethodMetadata() {
-                    Namespace = "Procon.Fuzzy.Tokens.Object.Sets.SetsThingObjectToken",
+                    Namespace = "Procon.Fuzzy.Tokens.Object.ThingObjectToken",
                     DemandTokenCompatability = true,
                     ExactMatchType = true,
                     Parameters = new List<TokenParameter>() {
@@ -160,7 +101,80 @@ namespace Procon.Fuzzy.Tokens {
                         }
                     }
                 },
-                new ReduceDelegateHandler(SetsThingObjectToken.CombineThingAndThing)
+                new ReduceDelegateHandler(ThingObjectToken.CombineThingAndThing)
+            }, { 
+                new TokenMethodMetadata() {
+                    Namespace = "Procon.Fuzzy.Tokens.Object.ThingObjectToken",
+                    DemandTokenCompatability = true,
+                    ExactMatchType = true,
+                    Parameters = new List<TokenParameter>() {
+                        new TokenParameter() {
+                            Name = "thing1",
+                            Type = typeof(ThingObjectToken)
+                        },
+                        new TokenParameter() {
+                            Name = "excluding",
+                            Type = typeof(ExcludingLogicalOperatorToken)
+                        },
+                        new TokenParameter() {
+                            Name = "thing2",
+                            Type = typeof(ThingObjectToken)
+                        }
+                    }
+                },
+                new ReduceDelegateHandler(ThingObjectToken.CombineThingExcludingThing)
+            }, { 
+                new TokenMethodMetadata() {
+                    Namespace = "Procon.Fuzzy.Tokens.Object.ThingObjectToken",
+                    DemandTokenCompatability = true,
+                    Parameters = new List<TokenParameter>() {
+                        new TokenParameter() {
+                            Name = "thing",
+                            Type = typeof(ThingObjectToken)
+                        },
+                        new TokenParameter() {
+                            Name = "property",
+                            Type = typeof(NumericPropertyObjectToken)
+                        },
+                        new TokenParameter() {
+                            Name = "equality",
+                            Type = typeof(EqualityLogicalOperatorToken)
+                        },
+                        new TokenParameter() {
+                            Name = "number",
+                            Type = typeof(FloatNumericPrimitiveToken)
+                        }
+                    }
+                },
+                new ReduceDelegateHandler(ThingObjectToken.CombineThingPropertyEqualityNumber)
+            }, { 
+                new TokenMethodMetadata() {
+                    Namespace = "Procon.Fuzzy.Tokens.Object.ThingObjectToken",
+                    DemandTokenCompatability = true,
+                    Parameters = new List<TokenParameter>() {
+                        new TokenParameter() {
+                            Name = "thing",
+                            Type = typeof(ThingObjectToken)
+                        },
+                        new TokenParameter() {
+                            Name = "and",
+                            Type = typeof(AndLogicalOperatorToken)
+                        },
+                        new TokenParameter() {
+                            Name = "property",
+                            Type = typeof(NumericPropertyObjectToken)
+                        },
+                        new TokenParameter() {
+                            Name = "equality",
+                            Type = typeof(EqualityLogicalOperatorToken)
+                        },
+                        new TokenParameter() {
+                            Name = "number",
+                            Type = typeof(FloatNumericPrimitiveToken)
+                        }
+                    }
+                },
+                new ReduceDelegateHandler(ThingObjectToken.CombineThingAndPropertyEqualityNumber)
             },
 
             // Procon.Fuzzy.Tokens.Reduction.NamedAllInclusiveReductionToken
@@ -305,26 +319,7 @@ namespace Procon.Fuzzy.Tokens {
                 },
                 new ReduceDelegateHandler(DateVariableTemporalPrimitiveToken.ReduceDateAndDate)
             },
-            
-            // Procon.Fuzzy.Tokens.Object.Sets
-            { 
-                new TokenMethodMetadata() {
-                    Namespace = "Procon.Fuzzy.Tokens.Object.Sets.SetsThingObjectToken",
-                    ExactMatchSignature = true,
-                    Parameters = new List<TokenParameter>() {
-                        new TokenParameter() {
-                            Name = "excluding",
-                            Type = typeof(ExcludingLogicalOperatorToken)
-                        },
-                        new TokenParameter() {
-                            Name = "thingSet",
-                            Type = typeof(SetsThingObjectToken)
-                        }
-                    }
-                },
-                new ReduceDelegateHandler(SetsThingObjectToken.ReduceExcludingSet)
-            },
-            
+            /*
             // Procon.Fuzzy.Tokens.Object.ThingObjectToken
             { 
                 new TokenMethodMetadata() {
@@ -343,7 +338,7 @@ namespace Procon.Fuzzy.Tokens {
                 },
                 new ReduceDelegateHandler(ThingObjectToken.ReduceExcludingThing)
             },
-            
+            */
             // Procon.Fuzzy.Tokens.Operator.Arithmetic.FirstOrder.FirstOrderArithmeticToken
             { 
                 new TokenMethodMetadata() {
@@ -1239,15 +1234,19 @@ namespace Procon.Fuzzy.Tokens {
                 },
                 new ReduceDelegateHandler(TimeVariableTemporalPrimitiveToken.ReduceTimeAndTime)
             }, 
-            
+            /*
             // Procon.Fuzzy.Tokens.Reduction.PropertyReductionToken
             { 
                 new TokenMethodMetadata() {
-                    Namespace = "Procon.Fuzzy.Tokens.Reduction.PropertyReductionToken",
+                    Namespace = "Procon.Fuzzy.Tokens.Reduction.NumericPropertyObjectToken",
                     Parameters = new List<TokenParameter>() {
                         new TokenParameter() {
+                            Name = "thing",
+                            Type = typeof(ThingObjectToken)
+                        },
+                        new TokenParameter() {
                             Name = "property",
-                            Type = typeof(PropertyObjectToken)
+                            Type = typeof(NumericPropertyObjectToken)
                         },
                         new TokenParameter() {
                             Name = "equality",
@@ -1259,8 +1258,9 @@ namespace Procon.Fuzzy.Tokens {
                         }
                     }
                 },
-                new ReduceDelegateHandler(PropertyReductionToken.ReducePropertyEqualityNumber)
+                new ReduceDelegateHandler(PropertyReductionToken.ReduceThingPropertyEqualityNumber)
             },
+            */
         };
 
         /// <summary>
@@ -1346,7 +1346,7 @@ namespace Procon.Fuzzy.Tokens {
             { new TokenMethodMetadata() { Namespace = "Procon.Fuzzy.Tokens.Object.ThingObjectToken" }, new ParseDelegateHandler(ThingObjectToken.Parse) },
             { new TokenMethodMetadata() { Namespace = "Procon.Fuzzy.Tokens.Object.SelfReflectionThingObjectToken" }, new ParseDelegateHandler(SelfReflectionThingObjectToken.Parse) },
             { new TokenMethodMetadata() { Namespace = "Procon.Fuzzy.Tokens.Object.MethodObjectToken" }, new ParseDelegateHandler(MethodObjectToken.Parse) },
-            { new TokenMethodMetadata() { Namespace = "Procon.Fuzzy.Tokens.Object.PropertyObjectToken" }, new ParseDelegateHandler(PropertyObjectToken.Parse) }
+            { new TokenMethodMetadata() { Namespace = "Procon.Fuzzy.Tokens.Object.NumericPropertyObjectToken" }, new ParseDelegateHandler(NumericPropertyObjectToken.Parse) }
         };
 
         private static Dictionary<XElement, Dictionary<Type, List<XElement>>> SelectedDescendants { get; set; }
@@ -1442,6 +1442,7 @@ namespace Procon.Fuzzy.Tokens {
 
             XAttribute text = element.Attribute("text");
             XAttribute value = element.Attribute("value");
+            XAttribute name = element.Attribute("name");
             XAttribute regex = element.Attribute("regex");
             XAttribute replacedDiacritics = element.Attribute("replacedDiacritics");
             XAttribute removedDiacritics = element.Attribute("removedDiacritics");
@@ -1457,6 +1458,7 @@ namespace Procon.Fuzzy.Tokens {
                 if (similarity >= Token.MinimumSimilarity) {
                     token = new T {
                         Text = phrase.Text,
+                        Name = name != null ? name.Value : String.Empty,
                         Similarity = similarity,
                         Value = value == null ? text.Value : value.Value
                     };
@@ -1473,6 +1475,7 @@ namespace Procon.Fuzzy.Tokens {
                     token = new T() {
                         Text = phrase.Text,
                         Value = match.Groups["value"].Value,
+                        Name = name != null ? name.Value : String.Empty,
                         Similarity = 100.0F
                     };
                 }

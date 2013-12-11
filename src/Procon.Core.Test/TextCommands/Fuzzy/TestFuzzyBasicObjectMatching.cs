@@ -236,22 +236,5 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
                 new List<Map>()
             );
         }
-
-        /// <summary>
-        /// Tests that everything (maps, players, all things) are included in the return
-        /// when a named inclusive reduction token isn't included.
-        /// </summary>
-        [Test]
-        public void TestKickAll() {
-            TextCommandController textCommandController = this.CreateTextCommandController();
-
-            TestFuzzyBase.AssertCommandPlayerListMapList(
-                textCommandController,
-                "kick all",
-                TestFuzzyBase.TextCommandKick,
-                textCommandController.Connection.GameState.Players,
-                textCommandController.Connection.GameState.MapPool
-            );
-        }
     }
 }

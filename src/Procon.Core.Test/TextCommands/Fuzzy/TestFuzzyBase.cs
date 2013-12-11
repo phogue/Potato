@@ -8,7 +8,6 @@ using Procon.Core.Security;
 using Procon.Net.Actions;
 using Procon.Net.Collections;
 using Procon.Net.Data;
-using Procon.Net.Geolocation;
 using Procon.Net.Protocols;
 using Procon.Net.Protocols.Frostbite.Battlefield.Battlefield3;
 using Procon.Fuzzy.Tokens.Primitive.Temporal;
@@ -55,7 +54,8 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
         protected static Player PlayerPhogue = new Player() {
             Name = "Phogue",
             Uid = "EA_63A9F96745B22DFB509C558FC8B5C50F",
-            Ping = (uint)50,
+            Ping = 50,
+            Score = 1000,
             Location = {
                 CountryName = "Australia"
             }
@@ -64,7 +64,8 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
         protected static Player PlayerImisnew2 =  new Player() {
             Name = "Imisnew2",
             Uid = "2",
-            Ping = (uint)100,
+            Ping = 100,
+            Score = 950,
             Location = {
                 CountryName = "United States"
             }
@@ -73,7 +74,8 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
         protected static Player PlayerPhilK = new Player() {
             Name = "Phil_K",
             Uid = "3",
-            Ping = (uint)150,
+            Ping = 150,
+            Score = 900,
             Location = {
                 CountryName = "Germany"
             }
@@ -82,7 +84,8 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
         protected static Player PlayerMorpheus = new Player() {
             Name = "Morpheus(AUT)",
             Uid = "4",
-            Ping = (uint)200,
+            Ping = 200,
+            Score = 850,
             Location = {
                 CountryName = "Austria"
             }
@@ -91,16 +94,18 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
         protected static Player PlayerIke = new Player() {
             Name = "Ike",
             Uid = "5",
-            Ping = (uint)250,
+            Ping = 250,
+            Score = 800,
             Location = {
-                CountryName = "Great Britian"
+                CountryName = "Great Britain"
             }
         };
 
         protected static Player PlayerPapaCharlie9 = new Player() {
             Name = "PapaCharlie9",
             Uid = "6",
-            Ping = (uint)300,
+            Ping = 300,
+            Score = 750,
             Location = {
                 CountryName = "United States"
             }
@@ -109,7 +114,8 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
         protected static Player PlayerEBassie = new Player() {
             Name = "EBassie",
             Uid = "7",
-            Ping = (uint)350,
+            Ping = 350,
+            Score = 700,
             Location = {
                 CountryName = "Netherlands"
             }
@@ -118,7 +124,8 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
         protected static Player PlayerZaeed = new Player() {
             Name = "Zaeed",
             Uid = "8",
-            Ping = (uint)400,
+            Ping = 400,
+            Score = 650,
             Location = {
                 CountryName = "Australia"
             }
@@ -127,7 +134,8 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
         protected static Player PlayerPhogueIsAButterfly = new Player() {
             Name = "Phogue is a butterfly",
             Uid = "9",
-            Ping = (uint)450,
+            Ping = 450,
+            Score = 600,
             Location = {
                 CountryName = "Australia"
             }
@@ -136,7 +144,8 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
         protected static Player PlayerSayaNishino = new Player() {
             Name = "Saya-Nishino",
             Uid = "10",
-            Ping = (uint)0,
+            Ping = 0,
+            Score = 550,
             Location = {
                 CountryName = "Japan"
             }
@@ -145,7 +154,8 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
         protected static Player PlayerMrDiacritic = new Player() {
             Name = "MrDiäcritic",
             Uid = "11",
-            Ping = (uint)0,
+            Ping = 0,
+            Score = 500,
             Location = {
                 CountryName = "United States"
             }

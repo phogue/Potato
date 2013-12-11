@@ -168,7 +168,16 @@ namespace Procon.Core.Connections.TextCommands.Parsers {
                     token.Reference = new PingPropertyReference();
                 }
                 else if (token.Name == "Score") {
-
+                    token.Reference = new ScorePropertyReference();
+                }
+                else if (token.Name == "Kills") {
+                    token.Reference = new KillsPropertyReference();
+                }
+                else if (token.Name == "Deaths") {
+                    token.Reference = new DeathsPropertyReference();
+                }
+                else if (token.Name == "Kdr") {
+                    token.Reference = new KdrPropertyReference();
                 }
             }
 

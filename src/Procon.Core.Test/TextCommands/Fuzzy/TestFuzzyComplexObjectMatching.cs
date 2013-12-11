@@ -149,6 +149,22 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
         }
 
         /// <summary>
+        /// Kick everyone within a range of pings and a score equal to a set number.
+        /// </summary>
+        [Test]
+        public void TestComplexKickPlayersWithinRangeOfPingAndScoreEqualTo1000() {
+            TestFuzzyBase.AssertCommandPlayerListMapList(
+                this.CreateTextCommandController(),
+                "kick players with ping gteq 50 and ping lteq 100 and score = 1000",
+                TestFuzzyBase.TextCommandKick,
+                new List<Player>() {
+                    TestFuzzyBase.PlayerPhogue
+                },
+                new List<Map>()
+            );
+        }
+
+        /// <summary>
         /// Test kicking everyone from australia only, excluding all others.
         /// </summary>
         [Test]
@@ -159,6 +175,24 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
                 TestFuzzyBase.TextCommandKick,
                 new List<Player>() {
                     TestFuzzyBase.PlayerPhogue,
+                    TestFuzzyBase.PlayerZaeed,
+                    TestFuzzyBase.PlayerPhogueIsAButterfly
+                },
+                new List<Map>()
+            );
+        }
+
+        /// <summary>
+        /// Test kicking everyone from australia only, excluding all others and only players with
+        /// a score less than 1000
+        /// </summary>
+        [Test]
+        public void TestComplexKickPlayersFromAustraliaAndScoreLessThan1000() {
+            TestFuzzyBase.AssertCommandPlayerListMapList(
+                this.CreateTextCommandController(),
+                "kick everyone from australia and score less than 1000",
+                TestFuzzyBase.TextCommandKick,
+                new List<Player>() {
                     TestFuzzyBase.PlayerZaeed,
                     TestFuzzyBase.PlayerPhogueIsAButterfly
                 },

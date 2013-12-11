@@ -80,6 +80,10 @@
     <Compile Include="Connections\Plugins\IRemotePluginController.cs" />
     <Compile Include="Connections\Plugins\IRenewableLease.cs" />
     <Compile Include="Connections\TextCommands\ITextCommandParser.cs" />
+    <Compile Include="Connections\TextCommands\Parsers\Fuzzy\KdrPropertyReference.cs" />
+    <Compile Include="Connections\TextCommands\Parsers\Fuzzy\DeathsPropertyReference.cs" />
+    <Compile Include="Connections\TextCommands\Parsers\Fuzzy\KillsPropertyReference.cs" />
+    <Compile Include="Connections\TextCommands\Parsers\Fuzzy\ScorePropertyReference.cs" />
     <Compile Include="Connections\TextCommands\Parsers\Fuzzy\LocationThingReference.cs" />
     <Compile Include="Connections\TextCommands\Parsers\Fuzzy\MapThingReference.cs" />
     <Compile Include="Connections\TextCommands\Parsers\Fuzzy\PingPropertyReference.cs" />

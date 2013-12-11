@@ -5,19 +5,16 @@ using Procon.Net.Geolocation;
 using Procon.Net.Utils;
 
 namespace Procon.Net.Data {
+    /// <summary>
+    /// An in game player
+    /// </summary>
     [Serializable]
     public sealed class Player : NetworkObject {
 
-        // Used when determining a player's Country Name and Code.
+        /// <summary>
+        /// Used when determining a player's Country Name and Code.
+        /// </summary>
         public static readonly IGeolocate Geolocation = new GeolocateIp();
-
-        public Player() {
-            this.Uid = String.Empty;
-            this.ClanTag = String.Empty;
-            this.Name = String.Empty;
-            this.Groups = new Groupings();
-            this.Location = new Location();
-        }
 
         /// <summary>
         /// A Unique Identifier.
@@ -101,12 +98,6 @@ namespace Procon.Net.Data {
         /// </summary>
         public Location Location { get; set; }
 
-        [Obsolete]
-        public String CountryName { get { return this.Location.CountryName; } }
-
-        [Obsolete]
-        public String CountryCode { get { return this.Location.CountryCode; } }
-
         /// <summary>
         /// This player's IP Address.
         /// </summary>
@@ -134,6 +125,17 @@ namespace Procon.Net.Data {
         /// The player's Port Address.
         /// </summary>
         public String Port { get; set; }
+
+        /// <summary>
+        /// Initializes all defaults values for the player
+        /// </summary>
+        public Player() {
+            this.Uid = String.Empty;
+            this.ClanTag = String.Empty;
+            this.Name = String.Empty;
+            this.Groups = new Groupings();
+            this.Location = new Location();
+        }
 
         /// <summary>
         /// Adds or updates an existing group with the same type.

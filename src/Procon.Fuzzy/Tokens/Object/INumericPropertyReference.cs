@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Procon.Fuzzy.Tokens.Operator.Logical.Equality;
+﻿using Procon.Fuzzy.Tokens.Operator.Logical.Equality;
 using Procon.Fuzzy.Tokens.Primitive.Numeric;
 
 namespace Procon.Fuzzy.Tokens.Object {
@@ -14,7 +10,7 @@ namespace Procon.Fuzzy.Tokens.Object {
         IThingReference ThingReference { get; set; }
 
         /// <summary>
-        /// Checks if 
+        /// Remove all references that do not match the comparator
         /// </summary>
         /// <param name="thing"></param>
         /// <param name="comparator"></param>

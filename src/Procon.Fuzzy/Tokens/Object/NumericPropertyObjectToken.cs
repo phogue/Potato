@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Xml.Linq;
-using Procon.Fuzzy.Utils;
-
-namespace Procon.Fuzzy.Tokens.Object {
+﻿namespace Procon.Fuzzy.Tokens.Object {
     public class NumericPropertyObjectToken : PropertyObjectToken {
 
         public INumericPropertyReference Reference { get; set; }

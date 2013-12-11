@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Procon.Fuzzy.Tokens.Object {
+﻿namespace Procon.Fuzzy.Tokens.Object {
     /// <summary>
     /// A reference to an object and how to interact with it.
     /// </summary>

@@ -1,16 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq.Expressions;
-using System.Reflection;
 using Procon.Fuzzy.Tokens.Operator.Logical;
 using Procon.Fuzzy.Tokens.Operator.Logical.Equality;
 using Procon.Fuzzy.Tokens.Primitive.Numeric;
 
 namespace Procon.Fuzzy.Tokens.Object {
     public class ThingObjectToken : ObjectToken {
-        //public object Reference { get; set; }
-        //public PropertyInfo ReferenceProperty { get; set; }
-
         /// <summary>
         /// A reference to an object and how to interact with the object
         /// </summary>
@@ -41,17 +36,7 @@ namespace Procon.Fuzzy.Tokens.Object {
 
             return compatible;
         }
-        /*
-        // This should be done at the very end.
-        public static Phrase ReduceExcludingThing(IFuzzyState state, Dictionary<String, Token> parameters) {
-            // ExcludingLogicalOperatorToken excluding = (ExcludingLogicalOperatorToken)parameters["excluding"];
-            ThingObjectToken thing = (ThingObjectToken) parameters["thing"];
 
-            return new Phrase() {
-                thing
-            };
-        }
-        */
         public static Phrase CombineThingThing(IFuzzyState state, Dictionary<String, Token> parameters) {
             ThingObjectToken thing1 = (ThingObjectToken)parameters["thing1"];
             ThingObjectToken thing2 = (ThingObjectToken)parameters["thing2"];

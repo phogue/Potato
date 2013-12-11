@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Xml.Linq;
-using System.Reflection;
-using Procon.Fuzzy.Utils;
+﻿using System.Xml.Linq;
 using Procon.Fuzzy.Tokens.Object;
 
 namespace Procon.Fuzzy {
+    /// <summary>
+    /// A state passed through to all combination and parse methods
+    /// </summary>
     public interface IFuzzyState {
         /// <summary>
         /// Language file, used to lookup values to attach to each object. The xml should be structured like
@@ -29,8 +28,20 @@ namespace Procon.Fuzzy {
         /// <returns></returns>
         Phrase ParseMethod(IFuzzyState state, Phrase phrase);
 
+        /// <summary>
+        /// Parse a property, building the property reference.
+        /// </summary>
+        /// <param name="state"></param>
+        /// <param name="phrase"></param>
+        /// <returns></returns>
         Phrase ParseProperty(IFuzzyState state, Phrase phrase);
 
+        /// <summary>
+        /// Parses a self reflection token to define who "me" is.
+        /// </summary>
+        /// <param name="state"></param>
+        /// <param name="selfThing"></param>
+        /// <returns></returns>
         SelfReflectionThingObjectToken ParseSelfReflectionThing(IFuzzyState state, SelfReflectionThingObjectToken selfThing);
     }
 }

@@ -1432,7 +1432,7 @@ namespace Procon.Fuzzy.Tokens {
         }
 
         public static Phrase CreateDescendants<T>(IFuzzyState state, Phrase phrase) where T : Token, new() {
-            phrase.AddRange(TokenReflection.SelectMatchDescendants(state.Document, typeof(T)).Select(element => TokenReflection.CreateToken<T>(element, phrase)).Where(token => token != null).Cast<Token>());
+            phrase.AddRange(TokenReflection.SelectMatchDescendants(state.Document, typeof(T)).Select(element => TokenReflection.CreateToken<T>(element, phrase)).Where(token => token != null));
 
             /*
             var list = from element in TokenReflection.SelectMatchDescendants(state.Document, typeof(T))

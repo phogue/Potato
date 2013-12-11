@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Xml.Serialization;
 using Newtonsoft.Json;
 using Procon.Core.Connections.TextCommands.Parsers;
@@ -9,8 +8,6 @@ using Procon.Core.Events;
 using Procon.Core.Localization;
 using Procon.Core.Security;
 using Procon.Core.Variables;
-using Procon.Fuzzy.Utils;
-using Procon.Net.Actions;
 using Procon.Net.Data;
 
 namespace Procon.Core.Connections.TextCommands {

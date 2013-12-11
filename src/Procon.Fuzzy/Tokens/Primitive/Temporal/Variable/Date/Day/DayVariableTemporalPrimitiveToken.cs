@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using Procon.Fuzzy.Tokens.Primitive.Numeric;
+using Procon.Fuzzy.Tokens.Primitive.Temporal.Units;
+using Procon.Fuzzy.Tokens.Syntax.Articles;
+using Procon.Fuzzy.Utils;
 
 namespace Procon.Fuzzy.Tokens.Primitive.Temporal.Variable.Date.Day {
-    using Procon.Fuzzy.Utils;
-    using Procon.Fuzzy.Tokens.Primitive.Temporal.Units;
-    using Procon.Fuzzy.Tokens.Primitive.Numeric;
-    using Procon.Fuzzy.Tokens.Syntax.Articles;
 
     public class DayVariableTemporalPrimitiveToken : DateVariableTemporalPrimitiveToken {
         public static Phrase ReduceNumberDays(IFuzzyState state, Dictionary<String, Token> parameters) {

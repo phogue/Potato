@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using Procon.Fuzzy.Tokens.Primitive.Numeric;
+using Procon.Fuzzy.Tokens.Operator.Logical;
+using Procon.Fuzzy.Tokens.Primitive.Numeric.Cardinal;
+using Procon.Fuzzy.Tokens.Syntax.Punctuation.Parentheses;
 
 namespace Procon.Fuzzy.Tokens.Operator.Arithmetic.FirstOrder {
-    using Procon.Fuzzy.Tokens.Primitive.Numeric;
-    using Procon.Fuzzy.Tokens.Operator.Logical;
-    using Procon.Fuzzy.Tokens.Primitive.Numeric.Cardinal;
-    using Procon.Fuzzy.Tokens.Syntax.Punctuation.Parentheses;
 
     public class FirstOrderArithmeticToken : ArithmeticOperatorToken {
         public static Phrase ReduceOpenParenthesesNumberClosedParentheses(IFuzzyState state, Dictionary<String, Token> parameters) {

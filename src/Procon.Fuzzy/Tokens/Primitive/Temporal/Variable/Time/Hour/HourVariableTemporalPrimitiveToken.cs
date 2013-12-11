@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using Procon.Fuzzy.Tokens.Primitive.Temporal.Units;
+using Procon.Fuzzy.Tokens.Primitive.Temporal.Units.Meridiem;
+using Procon.Fuzzy.Tokens.Primitive.Numeric;
+using Procon.Fuzzy.Tokens.Syntax.Adjectives;
+using Procon.Fuzzy.Tokens.Syntax.Articles;
+using Procon.Fuzzy.Utils;
 
 namespace Procon.Fuzzy.Tokens.Primitive.Temporal.Variable.Time.Hour {
-    using Procon.Fuzzy.Tokens.Primitive.Temporal.Units;
-    using Procon.Fuzzy.Tokens.Primitive.Temporal.Units.Meridiem;
-    using Procon.Fuzzy.Tokens.Primitive.Numeric;
-    using Procon.Fuzzy.Tokens.Syntax.Adjectives;
-    using Procon.Fuzzy.Tokens.Syntax.Articles;
-    using Procon.Fuzzy.Utils;
 
     public class HourVariableTemporalPrimitiveToken : TimeVariableTemporalPrimitiveToken {
         public static Phrase ReduceNumberHours(IFuzzyState state, Dictionary<String, Token> parameters) {

@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Procon.Fuzzy.Tokens;
+using Procon.Fuzzy.Utils;
 
 namespace Procon.Fuzzy {
-    using Procon.Fuzzy.Tokens;
-    using Procon.Fuzzy.Utils;
 
     // a phrase has many different interpretations
     public class Phrase : List<Token> {

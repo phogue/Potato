@@ -1,5 +1,4 @@
-﻿
-namespace Procon.Fuzzy.Tokens.Primitive.Numeric {
+﻿namespace Procon.Fuzzy.Tokens.Primitive.Numeric {
     public class FloatNumericPrimitiveToken : NumericPrimitiveToken {
         public static Phrase Parse(IFuzzyState state, Phrase phrase) {
             return TokenReflection.CreateDescendants<FloatNumericPrimitiveToken>(state, phrase);

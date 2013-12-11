@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using Procon.Fuzzy.Tokens.Primitive.Numeric;
+using Procon.Fuzzy.Tokens.Primitive.Temporal.Units;
+using Procon.Fuzzy.Tokens.Syntax.Articles;
+using Procon.Fuzzy.Utils;
 
 namespace Procon.Fuzzy.Tokens.Primitive.Temporal.Variable.Date.Year {
-    using Procon.Fuzzy.Utils;
-    using Procon.Fuzzy.Tokens.Primitive.Temporal.Units;
-    using Procon.Fuzzy.Tokens.Primitive.Numeric;
-    using Procon.Fuzzy.Tokens.Syntax.Articles;
 
     public class YearVariableTemporalToken : DateVariableTemporalPrimitiveToken {
         public static Phrase ReduceNumberYears(IFuzzyState state, Dictionary<String, Token> parameters) {

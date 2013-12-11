@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using Procon.Fuzzy.Tokens.Primitive.Numeric;
+using Procon.Fuzzy.Tokens.Syntax.Punctuation;
 
 namespace Procon.Fuzzy.Tokens.Operator.Arithmetic.ThirdOrder {
-    using Procon.Fuzzy.Tokens.Primitive.Numeric;
-    using Procon.Fuzzy.Tokens.Syntax.Punctuation;
 
     public class SubtractionThirdOrderArithmeticOperatorToken : ThirdOrderArithmeticOperatorToken {
         public static Phrase Parse(IFuzzyState state, Phrase phrase) {

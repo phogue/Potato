@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using Procon.Fuzzy.Tokens.Primitive.Numeric;
+using Procon.Fuzzy.Tokens.Primitive.Temporal.Units;
+using Procon.Fuzzy.Tokens.Primitive.Temporal.Variable.Months;
+using Procon.Fuzzy.Tokens.Syntax.Adjectives;
+using Procon.Fuzzy.Tokens.Syntax.Articles;
+using Procon.Fuzzy.Utils;
 
 namespace Procon.Fuzzy.Tokens.Primitive.Temporal.Variable.Date.Month {
-    using Procon.Fuzzy.Utils;
-    using Procon.Fuzzy.Tokens.Primitive.Temporal.Units;
-    using Procon.Fuzzy.Tokens.Primitive.Temporal.Variable.Months;
-    using Procon.Fuzzy.Tokens.Primitive.Numeric;
-    using Procon.Fuzzy.Tokens.Syntax.Articles;
-    using Procon.Fuzzy.Tokens.Syntax.Adjectives;
 
     public class MonthVariableTemporalPrimitiveToken : DateVariableTemporalPrimitiveToken {
         public static Phrase ReduceNumberMonths(IFuzzyState state, Dictionary<String, Token> parameters) {

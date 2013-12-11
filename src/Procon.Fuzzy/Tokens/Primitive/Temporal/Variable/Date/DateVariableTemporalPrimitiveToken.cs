@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using Procon.Fuzzy.Tokens.Operator.Logical;
+using Procon.Fuzzy.Tokens.Primitive.Numeric;
+using Procon.Fuzzy.Tokens.Syntax.Articles;
+using Procon.Fuzzy.Tokens.Syntax.Prepositions;
 
 namespace Procon.Fuzzy.Tokens.Primitive.Temporal.Variable.Date {
-    using Procon.Fuzzy.Tokens.Operator.Logical;
-    using Procon.Fuzzy.Tokens.Primitive.Numeric;
-    using Procon.Fuzzy.Tokens.Syntax.Prepositions;
-    using Procon.Fuzzy.Tokens.Syntax.Articles;
 
     public class DateVariableTemporalPrimitiveToken : DateTimeTemporalPrimitiveToken {
         // @todo should this be moved into the Nlp language file instead?

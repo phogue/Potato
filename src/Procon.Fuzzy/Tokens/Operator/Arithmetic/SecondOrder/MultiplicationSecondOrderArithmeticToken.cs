@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using Procon.Fuzzy.Tokens.Primitive.Numeric;
+using Procon.Fuzzy.Tokens.Syntax.Typography;
 
 namespace Procon.Fuzzy.Tokens.Operator.Arithmetic.SecondOrder {
-    using Procon.Fuzzy.Tokens.Primitive.Numeric;
-    using Procon.Fuzzy.Tokens.Syntax.Typography;
 
     public class MultiplicationSecondOrderArithmeticToken : SecondOrderArithmeticToken {
         public static Phrase Parse(IFuzzyState state, Phrase phrase) {

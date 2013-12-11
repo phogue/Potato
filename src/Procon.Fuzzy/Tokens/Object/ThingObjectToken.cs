@@ -5,7 +5,6 @@ using System.Reflection;
 using Procon.Fuzzy.Tokens.Operator.Logical;
 using Procon.Fuzzy.Tokens.Operator.Logical.Equality;
 using Procon.Fuzzy.Tokens.Primitive.Numeric;
-using Procon.Fuzzy.Tokens.Reduction;
 
 namespace Procon.Fuzzy.Tokens.Object {
     public class ThingObjectToken : ObjectToken {

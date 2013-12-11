@@ -10,7 +10,6 @@ using Procon.Fuzzy.Tokens.Object;
 using Procon.Fuzzy.Tokens.Primitive;
 using Procon.Fuzzy.Tokens.Primitive.Numeric;
 using Procon.Fuzzy.Tokens.Primitive.Temporal;
-using Procon.Fuzzy.Tokens.Reduction;
 using Procon.Fuzzy.Utils;
 using Procon.Net.Actions;
 using Procon.Net.Data;
@@ -29,11 +28,6 @@ namespace Procon.Core.Connections.TextCommands.Parsers {
         /// </summary>
         public XElement Document { get; set; }
 
-        /// <summary>
-        /// Contains a mapping with more information to use on each type.
-        /// </summary>
-        public Dictionary<Type, LinqParameterMapping> LinqParameterMappings { get; set; }
-        
         /// <summary>
         /// Dictionary of cached property info fetches. Minor optimization.
         /// </summary>

@@ -26,7 +26,6 @@ using Procon.Fuzzy.Tokens.Primitive.Temporal.Variable.Time;
 using Procon.Fuzzy.Tokens.Primitive.Temporal.Variable.Time.Hour;
 using Procon.Fuzzy.Tokens.Primitive.Temporal.Variable.Time.Minute;
 using Procon.Fuzzy.Tokens.Primitive.Temporal.Variable.Time.Second;
-using Procon.Fuzzy.Tokens.Reduction;
 using Procon.Fuzzy.Tokens.Syntax.Adjectives;
 using Procon.Fuzzy.Tokens.Syntax.Articles;
 using Procon.Fuzzy.Tokens.Syntax.Prepositions;
@@ -177,24 +176,6 @@ namespace Procon.Fuzzy.Tokens {
                 new ReduceDelegateHandler(ThingObjectToken.CombineThingAndPropertyEqualityNumber)
             },
 
-            // Procon.Fuzzy.Tokens.Reduction.NamedAllInclusiveReductionToken
-            { 
-                new TokenMethodMetadata() {
-                    Namespace = "Procon.Fuzzy.Tokens.Reduction.NamedAllInclusiveReductionToken",
-                    DemandTokenCompatability = true,
-                    Parameters = new List<TokenParameter>() {
-                        new TokenParameter() {
-                            Name = "allInclusiveReduction",
-                            Type = typeof(AllInclusiveReductionToken)
-                        },
-                        new TokenParameter() {
-                            Name = "namedReduction",
-                            Type = typeof(NamedAllInclusiveReductionToken)
-                        }
-                    }
-                },
-                new ReduceDelegateHandler(NamedAllInclusiveReductionToken.CombineAllInclusiveNamedReduction)
-            },
         };
 
         public static readonly Dictionary<TokenMethodMetadata, ReduceDelegateHandler> TokenReduceHandlers = new Dictionary<TokenMethodMetadata, ReduceDelegateHandler>() {
@@ -319,26 +300,7 @@ namespace Procon.Fuzzy.Tokens {
                 },
                 new ReduceDelegateHandler(DateVariableTemporalPrimitiveToken.ReduceDateAndDate)
             },
-            /*
-            // Procon.Fuzzy.Tokens.Object.ThingObjectToken
-            { 
-                new TokenMethodMetadata() {
-                    Namespace = "Procon.Fuzzy.Tokens.Object.ThingObjectToken",
-                    ExactMatchSignature = true,
-                    Parameters = new List<TokenParameter>() {
-                        new TokenParameter() {
-                            Name = "excluding",
-                            Type = typeof(ExcludingLogicalOperatorToken)
-                        },
-                        new TokenParameter() {
-                            Name = "thing",
-                            Type = typeof(ThingObjectToken)
-                        }
-                    }
-                },
-                new ReduceDelegateHandler(ThingObjectToken.ReduceExcludingThing)
-            },
-            */
+
             // Procon.Fuzzy.Tokens.Operator.Arithmetic.FirstOrder.FirstOrderArithmeticToken
             { 
                 new TokenMethodMetadata() {
@@ -1234,33 +1196,6 @@ namespace Procon.Fuzzy.Tokens {
                 },
                 new ReduceDelegateHandler(TimeVariableTemporalPrimitiveToken.ReduceTimeAndTime)
             }, 
-            /*
-            // Procon.Fuzzy.Tokens.Reduction.PropertyReductionToken
-            { 
-                new TokenMethodMetadata() {
-                    Namespace = "Procon.Fuzzy.Tokens.Reduction.NumericPropertyObjectToken",
-                    Parameters = new List<TokenParameter>() {
-                        new TokenParameter() {
-                            Name = "thing",
-                            Type = typeof(ThingObjectToken)
-                        },
-                        new TokenParameter() {
-                            Name = "property",
-                            Type = typeof(NumericPropertyObjectToken)
-                        },
-                        new TokenParameter() {
-                            Name = "equality",
-                            Type = typeof(EqualityLogicalOperatorToken)
-                        },
-                        new TokenParameter() {
-                            Name = "number",
-                            Type = typeof(FloatNumericPrimitiveToken)
-                        }
-                    }
-                },
-                new ReduceDelegateHandler(PropertyReductionToken.ReduceThingPropertyEqualityNumber)
-            },
-            */
         };
 
         /// <summary>
@@ -1341,8 +1276,6 @@ namespace Procon.Fuzzy.Tokens {
             { new TokenMethodMetadata() { Namespace = "Procon.Fuzzy.Tokens.Syntax.Articles.DefiniteArticlesSyntaxToken" }, new ParseDelegateHandler(DefiniteArticlesSyntaxToken.Parse) },
             { new TokenMethodMetadata() { Namespace = "Procon.Fuzzy.Tokens.Syntax.Articles.IndefiniteArticlesSyntaxToken" }, new ParseDelegateHandler(IndefiniteArticlesSyntaxToken.Parse) },
             { new TokenMethodMetadata() { Namespace = "Procon.Fuzzy.Tokens.Primitive.StringPrimitiveToken" }, new ParseDelegateHandler(StringPrimitiveToken.Parse) },
-            { new TokenMethodMetadata() { Namespace = "Procon.Fuzzy.Tokens.Reduction.AllInclusiveReductionToken" }, new ParseDelegateHandler(AllInclusiveReductionToken.Parse) },
-            { new TokenMethodMetadata() { Namespace = "Procon.Fuzzy.Tokens.Reduction.NamedAllInclusiveReductionToken" }, new ParseDelegateHandler(NamedAllInclusiveReductionToken.Parse) },
             { new TokenMethodMetadata() { Namespace = "Procon.Fuzzy.Tokens.Object.ThingObjectToken" }, new ParseDelegateHandler(ThingObjectToken.Parse) },
             { new TokenMethodMetadata() { Namespace = "Procon.Fuzzy.Tokens.Object.SelfReflectionThingObjectToken" }, new ParseDelegateHandler(SelfReflectionThingObjectToken.Parse) },
             { new TokenMethodMetadata() { Namespace = "Procon.Fuzzy.Tokens.Object.MethodObjectToken" }, new ParseDelegateHandler(MethodObjectToken.Parse) },

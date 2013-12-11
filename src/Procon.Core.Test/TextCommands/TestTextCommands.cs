@@ -57,7 +57,6 @@ namespace Procon.Core.Test.TextCommands {
             textCommands.Dispose();
 
             Assert.IsNull(textCommands.TextCommands);
-            Assert.IsNull(textCommands.LinqParameterMappings);
             Assert.IsNull(textCommands.Connection);
         }
 

@@ -21,12 +21,6 @@ namespace Procon.Core.Connections.TextCommands {
     public class TextCommandController : Executable {
 
         /// <summary>
-        /// All linq commands require the exact same object in order to compile
-        /// </summary>
-        [XmlIgnore, JsonIgnore]
-        public Dictionary<Type, LinqParameterMapping> LinqParameterMappings { get; set; }
-
-        /// <summary>
         /// Full list of text commands to check against.
         /// </summary>
         [XmlIgnore, JsonIgnore]
@@ -43,7 +37,6 @@ namespace Procon.Core.Connections.TextCommands {
         /// </summary>
         public TextCommandController() {
             this.TextCommands = new List<TextCommand>();
-            this.LinqParameterMappings = new Dictionary<Type, LinqParameterMapping>();
 
             this.AppendDispatchHandlers(new Dictionary<CommandAttribute, CommandDispatchHandler>() {
                 {
@@ -94,29 +87,6 @@ namespace Procon.Core.Connections.TextCommands {
             });
         }
 
-        public override ExecutableBase Execute() {
-            this.LinqParameterMappings = new Dictionary<Type, LinqParameterMapping>() {
-                {
-                    typeof(Player),
-                    new LinqParameterMapping() { 
-                        Type = typeof(Player),
-                        Parameter = Expression.Parameter(typeof(Player), "p"),
-                        Collection = this.Connection.GameState.Players
-                    }
-                },
-                {
-                    typeof(Map),
-                    new LinqParameterMapping() { 
-                        Type = typeof(Map),
-                        Parameter = Expression.Parameter(typeof(Map), "m"),
-                        Collection = this.Connection.GameState.MapPool
-                    }
-                }
-            };
-
-            return base.Execute();
-        }
-
         /// <summary>
         /// Does nothing.  Information about this object is handled via it's parent interface.
         /// </summary>
@@ -127,9 +97,6 @@ namespace Procon.Core.Connections.TextCommands {
 
             this.TextCommands.Clear();
             this.TextCommands = null;
-
-            this.LinqParameterMappings.Clear();
-            this.LinqParameterMappings = null;
 
             this.Connection = null;
 
@@ -162,7 +129,6 @@ namespace Procon.Core.Connections.TextCommands {
                     Connection = this.Connection,
                     TextCommands = commands,
                     Document = selectedLanguage.Root,
-                    LinqParameterMappings = this.LinqParameterMappings,
                     SpeakerPlayer = speaker,
                     SpeakerAccount = speakerAccount
                 };

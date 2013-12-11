@@ -421,18 +421,6 @@
           </CaretTypographySyntaxToken>
         </Typography>
       </Syntax>
-      <Reduction>
-        <AllInclusiveReductionToken>
-          <Match text="all"/>
-        </AllInclusiveReductionToken>
-        <NamedAllInclusiveReductionToken>
-          <Match text="everyone" value="Player"/>
-          <Match text="players" value="Player"/>
-          <Match text="every player" value="Player"/>
-          <Match text="maps" value="Map"/>
-          <Match text="every map" value="Map"/>
-        </NamedAllInclusiveReductionToken>
-      </Reduction>
     </Tokens>
   </Fuzzy>
 </Procon>

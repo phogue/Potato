@@ -123,12 +123,8 @@
     <Compile Include="Tokens\Primitive\Temporal\Variable\Time\Minute\MinuteVariableTemporalPrimitiveToken.cs" />
     <Compile Include="Tokens\Primitive\Temporal\Variable\Time\Second\SecondVariableTemporalPrimitiveToken.cs" />
     <Compile Include="Tokens\Primitive\Temporal\Variable\Time\TimeVariableTemporalPrimitiveToken.cs" />
-    <Compile Include="Tokens\Reduction\AllInclusiveReductionToken.cs" />
     <Compile Include="Tokens\Object\SelfReflectionThingObjectToken.cs" />
     <Compile Include="Tokens\Primitive\StringPrimitiveToken.cs" />
-    <Compile Include="Tokens\Reduction\NamedAllInclusiveReductionToken.cs" />
-    <Compile Include="Tokens\Reduction\ReductionToken.cs" />
-    <Compile Include="Tokens\Reduction\PropertyReductionToken.cs" />
     <Compile Include="Tokens\Object\MethodObjectToken.cs" />
     <Compile Include="Tokens\Object\ObjectToken.cs" />
     <Compile Include="Tokens\Object\PropertyObjectToken.cs" />

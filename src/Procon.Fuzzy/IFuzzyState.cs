@@ -14,11 +14,6 @@ namespace Procon.Fuzzy {
         XElement Document { get; set; }
 
         /// <summary>
-        /// Dictionary of types and the attached linq mapping parameter used in built expressions
-        /// </summary>
-        Dictionary<Type, LinqParameterMapping> LinqParameterMappings { get; }
-
-        /// <summary>
         /// Converts a phrase into a token if the token matches an object
         /// </summary>
         /// <param name="state"></param>

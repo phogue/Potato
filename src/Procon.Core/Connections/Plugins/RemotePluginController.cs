@@ -23,11 +23,6 @@ namespace Procon.Core.Connections.Plugins {
         protected ConcurrentDictionary<Guid, IRemotePlugin> EnabledPlugins = new ConcurrentDictionary<Guid, IRemotePlugin>();
 
         /// <summary>
-        /// Callbacks to execute commands on the host appdomain.
-        /// </summary>
-        // public IList<IExecutableBase> PluginCallback { private get; set; }
-
-        /// <summary>
         /// Creates an instance of a type in an assembly.
         /// </summary>
         /// <param name="assemblyFile"></param>

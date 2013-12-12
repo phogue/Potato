@@ -1,20 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Procon.Core;
 using Procon.Core.Connections.Plugins;
 using Procon.Core.Connections.TextCommands;
 using Procon.Core.Events;
-using Procon.Net.Actions;
 
 namespace Procon.Examples.TextCommands {
     public class Program : RemotePlugin {
 
         public Program() : base() {
 
-            // 1. Setup a command dispatch.
-
+            // 1. Setup a command dispatch to let us know when the command has been executed.
+            // Commands can be executed from within game or via the daemon
             this.AppendDispatchHandlers(new Dictionary<CommandAttribute, CommandDispatchHandler>() {
                 {
                     new CommandAttribute() {
@@ -30,7 +28,7 @@ namespace Procon.Examples.TextCommands {
                 }
             });
         }
-
+        
         public override void GenericEvent(Core.Events.GenericEventArgs e) {
             base.GenericEvent(e);
 
@@ -39,6 +37,7 @@ namespace Procon.Examples.TextCommands {
                 // Plugin is enabled and Procon will now accept our commands/actions.
 
                 // 2. Register a text command (tell it what command to call when it is matched)
+                // If you wanted to follow the execution of this eventually you will find yourself in Procon.Core.Connections.TextCommands.TextCommandController.RegisterTextCommand
                 this.Bubble(new Command() {
                     CommandType = CommandType.TextCommandsRegister,
                     Scope = new CommandScope() {
@@ -84,15 +83,15 @@ namespace Procon.Examples.TextCommands {
             }
 
             if (match.Delay != null) {
-                Console.WriteLine(String.Format("Delay: {0} (UTC+9:30 Adelaide)", match.Delay));
+                Console.WriteLine("Delay: {0} (UTC+9:30 Adelaide)", match.Delay);
             }
 
             if (match.Interval != null) {
-                Console.WriteLine(String.Format("Interval: {0}", match.Interval));
+                Console.WriteLine("Interval: {0}", match.Interval);
             }
 
             if (match.Period != null) {
-                Console.WriteLine(String.Format("Duration: {0}", match.Period));
+                Console.WriteLine("Duration: {0}", match.Period);
             }
 
             if (e.Now.TextCommands.Count > 1) {

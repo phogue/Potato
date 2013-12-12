@@ -2,6 +2,9 @@
 using Procon.Fuzzy.Tokens.Primitive.Numeric;
 
 namespace Procon.Fuzzy.Tokens.Object {
+    /// <summary>
+    /// How to interact with a numeric property on a given thing
+    /// </summary>
     public interface INumericPropertyReference {
 
         /// <summary>

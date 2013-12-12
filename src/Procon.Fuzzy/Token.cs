@@ -1,7 +1,13 @@
 ﻿using System;
 
 namespace Procon.Fuzzy {
+    /// <summary>
+    /// The base class for all tokens 
+    /// </summary>
     public class Token {
+        /// <summary>
+        /// The default minimum similarity that must be matched to text within the localization file
+        /// </summary>
         public static int MinimumSimilarity = 80;
 
         /// <summary>
@@ -32,6 +38,9 @@ namespace Procon.Fuzzy {
         /// </summary>
         public int MinimumWeightedSimilarity { get; set; }
 
+        /// <summary>
+        /// Empty constructor to initialize default attributes
+        /// </summary>
         public Token() : base() {
             this.MinimumWeightedSimilarity = Token.MinimumSimilarity;
         }

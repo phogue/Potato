@@ -56,7 +56,7 @@ namespace Procon.Core.Connections.TextCommands.Parsers {
             List<Token> names = new List<Token>();
             mapNames.ToList().ForEach(names.Add);
 
-            phrase.AddDistinctRange(names);
+            phrase.AppendDistinctRange(names);
         }
 
         protected void ParsePlayerNames(Phrase phrase) {
@@ -83,7 +83,7 @@ namespace Procon.Core.Connections.TextCommands.Parsers {
             List<Token> names = new List<Token>();
             playerNames.ToList().ForEach(names.Add);
 
-            phrase.AddDistinctRange(names);
+            phrase.AppendDistinctRange(names);
         }
 
         protected void ParseCountryNames(Phrase phrase) {
@@ -106,7 +106,7 @@ namespace Procon.Core.Connections.TextCommands.Parsers {
             List<Token> names = new List<Token>();
             playerCountries.ToList().ForEach(names.Add);
 
-            phrase.AddDistinctRange(names);
+            phrase.AppendDistinctRange(names);
         }
 
         public Phrase ParseThing(IFuzzyState state, Phrase phrase) {
@@ -156,7 +156,7 @@ namespace Procon.Core.Connections.TextCommands.Parsers {
 
             List<Token> names = new List<Token>();
             methods.ToList().ForEach(names.Add);
-            phrase.AddDistinctRange(names);
+            phrase.AppendDistinctRange(names);
 
             return phrase;
         }
@@ -205,7 +205,7 @@ namespace Procon.Core.Connections.TextCommands.Parsers {
         private List<TextCommand> ExtractCommandList(Sentence sentence) {
 
             // We need to know this method ahead of time so we can clear all other tokens in this phrase.
-            MethodObjectToken mainMethod = sentence.Extract<MethodObjectToken>();
+            MethodObjectToken mainMethod = sentence.ExtractFirstOrDefault<MethodObjectToken>();
             List<MethodObjectToken> resultMethodList = new List<MethodObjectToken>();
 
             foreach (Phrase phrase in sentence) {
@@ -238,9 +238,9 @@ namespace Procon.Core.Connections.TextCommands.Parsers {
         /// <param name="sentence"></param>
         /// <returns></returns>
         public List<T> ExtractThings<T>(Sentence sentence) where T : IThingReference {
-            List<T> things = sentence.ExtractListStrict<ThingObjectToken>().Where(token => token.Reference is T).Select(token => token.Reference).Cast<T>().ToList();
+            List<T> things = sentence.ScrapeStrictList<ThingObjectToken>().Where(token => token.Reference is T).Select(token => token.Reference).Cast<T>().ToList();
 
-            things.AddRange(sentence.ExtractListStrict<SelfReflectionThingObjectToken>().Where(token => token.Reference is T).Select(token => token.Reference).Cast<T>());
+            things.AddRange(sentence.ScrapeStrictList<SelfReflectionThingObjectToken>().Where(token => token.Reference is T).Select(token => token.Reference).Cast<T>());
             
             return things;
         } 

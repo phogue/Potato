@@ -5,12 +5,23 @@ using Procon.Fuzzy.Utils;
 using Procon.Fuzzy.Tokens;
 
 namespace Procon.Fuzzy {
+    /// <summary>
+    /// A sentence (for our purposes) is a list of phrase's
+    /// </summary>
     public class Sentence : List<Phrase>, ICloneable {
+
+        /// <summary>
+        /// Empty constructor
+        /// </summary>
         public Sentence() {
         }
 
-        public Sentence(IEnumerable<Phrase> t) {
-            this.AddRange(t);
+        /// <summary>
+        /// Appends a list of phrases to this new empty sentence
+        /// </summary>
+        /// <param name="phrases">The phrases to append</param>
+        public Sentence(IEnumerable<Phrase> phrases) {
+            this.AddRange(phrases);
         }
 
         protected Sentence CollectClear(IFuzzyState state) {
@@ -26,6 +37,12 @@ namespace Procon.Fuzzy {
             return this;
         }
 
+        /// <summary>
+        /// Parses a new sentence text into this sentence
+        /// </summary>
+        /// <param name="state">The persistent state of the parser</param>
+        /// <param name="sentenceText">The raw text to parse</param>
+        /// <returns>this</returns>
         public Sentence Parse(IFuzzyState state, string sentenceText) {
             this.AddRange(sentenceText.Wordify().Select(phrase => new Phrase() {
                 Text = phrase
@@ -49,6 +66,12 @@ namespace Procon.Fuzzy {
             return this;
         }
 
+        /// <summary>
+        /// Refactores all phrases, combining phrases if a better match exists between multiple phrases
+        /// </summary>
+        /// <param name="state">The persistent state of the parser</param>
+        /// <param name="tokenNamespace">The namespace to search for parse methods</param>
+        /// <returns>this</returns>
         public Sentence Refactor(IFuzzyState state, string tokenNamespace) {
             for (int count = 2; count <= this.Count; count++) {
                 for (int offset = 0; offset <= this.Count - count; offset++) {
@@ -68,23 +91,8 @@ namespace Procon.Fuzzy {
                     betterPhrase = betterPhrase && (// We didn't know any better before hand?
                                                        originalTokens.Count == 0 // OR if the refactored token has our first original token, but it's been moved up a rank..
                                                        || refactoredPhrase.IndexOf(originalTokens.FirstOrDefault()) > 0
-                                                   // || originalTokens.Where(token => token.Similarity >= originalTokens.FirstOrDefault().Similarity).Contains(refactoredPhrase.FirstOrDefault()) == false
                                                    );
-                    /*
-                    bool betterPhrase = refactoredPhrase.Count > originalTokens.Count;
-                    betterPhrase = betterPhrase && (
-                        // We didn't know any better before hand?
-                        originalTokens.Count == 0
-                        || (
-                                // The first item in the sorted list is at least as good or better than our original list.
-                                refactoredPhrase.FirstOrDefault().Similarity >= originalTokens.FirstOrDefault().Similarity
-                                // The first item in the original list does not appear in a filtered list of the best match
-                                // of the refactored phrase.
-                                // Meaning, we have found a much better match
-                             && originalTokens.Where(token => token.Similarity == originalTokens.FirstOrDefault().Similarity).Contains(refactoredPhrase.FirstOrDefault()) == false
-                        )
-                    );
-                    */
+
                     if (betterPhrase == true) {
                         this.RemoveRange(offset, count);
                         this.Insert(offset, refactoredPhrase);
@@ -271,6 +279,11 @@ namespace Procon.Fuzzy {
             }
         }
 
+        /// <summary>
+        /// Reduces multiple phrases to a single phrase if 
+        /// </summary>
+        /// <param name="state">The persistent state of the parser</param>
+        /// <returns>this</returns>
         public Sentence Reduce(IFuzzyState state) {
             this.CollectClear(state);
 
@@ -285,21 +298,38 @@ namespace Procon.Fuzzy {
             return this;
         }
 
-        public T Extract<T>() where T : Token {
+        /// <summary>
+        /// Combines and orders the tokens by their simlarity, then by the text length. Fetching
+        /// the best matching token.
+        /// </summary>
+        /// <typeparam name="T">The type of token to fetch</typeparam>
+        /// <returns>The extracted token, or null if nothing is found.</returns>
+        public T ExtractFirstOrDefault<T>() where T : Token {
             return (T) this.Combine().Where(token => token is T).OrderByDescending(token => token.Similarity).ThenByDescending(token => token.Text.Length).FirstOrDefault();
         }
 
+        /// <summary>
+        /// Combines, orders and selects all tokens that match a type
+        /// </summary>
+        /// <typeparam name="T">The type of tokens to extract</typeparam>
+        /// <returns>The list of matching tokens, ordered by how well they match</returns>
         public List<T> ExtractList<T>() where T : Token {
             return this.Combine().Where(token => token is T).OrderByDescending(token => token.Similarity).ThenByDescending(token => token.Text.Length).Select(token => token as T).ToList();
         }
 
-        // todo replace ExtractList if the other is not used.
-        public List<T> ExtractListStrict<T>() where T : Token {
+        /// <summary>
+        /// Orders all top level phrases in the sentence of a strict type
+        /// </summary>
+        /// <typeparam name="T">The type of tokens to extract</typeparam>
+        /// <returns>The list of matching tokens, ordered by how well they match</returns>
+        public List<T> ScrapeStrictList<T>() where T : Token {
             return this.Where(phrase => phrase.Any()).Select(phrase => phrase.First()).Where(token => token.GetType() == typeof(T)).OrderByDescending(token => token.Similarity).ThenByDescending(token => token.Text.Length).Select(token => token as T).ToList();
-
-            //return this.Where(token => token.GetType() == typeof(T)).OrderByDescending(token => token.Similarity).ThenByDescending(token => token.Text.Length).Select(token => token as T).ToList();
         }
 
+        /// <summary>
+        /// Combines all phrases into a single list
+        /// </summary>
+        /// <returns></returns>
         public List<Token> Combine() {
             return Phrase.OrderByWeightedSimilarity(this.SelectMany(phrase => phrase).ToList());
         }

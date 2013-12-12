@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
-using Procon.Fuzzy.Utils;
 using Procon.Fuzzy.Tokens.Object;
 using Procon.Fuzzy.Tokens.Operator.Arithmetic.FirstOrder;
 using Procon.Fuzzy.Tokens.Operator.Arithmetic.SecondOrder;
@@ -33,6 +32,7 @@ using Procon.Fuzzy.Tokens.Syntax.Prepositions.Adpositions;
 using Procon.Fuzzy.Tokens.Syntax.Punctuation;
 using Procon.Fuzzy.Tokens.Syntax.Punctuation.Parentheses;
 using Procon.Fuzzy.Tokens.Syntax.Typography;
+using Procon.Fuzzy.Utils;
 
 namespace Procon.Fuzzy.Tokens {
     public static class TokenReflection {

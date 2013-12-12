@@ -166,16 +166,16 @@ namespace Procon.Core.Test.Serialization.Xml {
             TextCommandMatch match = new TextCommandMatch() {
                 Delay = now,
                 // This isn't a valid date or time of course, but we're just looking to make sure it serializes correctly.
-                Interval = new FuzzyDateTimePattern() {
-                    Rule = TimeType.Definitive,
-                    Modifier = TimeModifier.Interval,
+                Interval = new TextCommandInterval() {
+                    // Rule = TimeType.Definitive,
+                    // Modifier = TimeModifier.Interval,
                     Year = 2013,
                     Month = 8,
                     Day = 2,
                     Hour = 8,
                     Minute = 4,
                     Second = 2,
-                    TemporalInterval = TemporalInterval.First,
+                    IntervalType = TextCommandIntervalType.First,
                     DayOfWeek = DayOfWeek.Tuesday
                 },
                 Numeric = new List<float>() {
@@ -196,8 +196,6 @@ namespace Procon.Core.Test.Serialization.Xml {
 
             Assert.AreEqual(now.ToString("s", System.Globalization.CultureInfo.InvariantCulture), DateTime.Parse(element.Element("Delay").Value).ToString("s", System.Globalization.CultureInfo.InvariantCulture));
 
-            Assert.AreEqual("Definitive", element.Element("Interval").Element("Rule").Value);
-            Assert.AreEqual("Interval", element.Element("Interval").Element("Modifier").Value);
             Assert.AreEqual("2013", element.Element("Interval").Element("Year").Value);
             Assert.AreEqual("8", element.Element("Interval").Element("Month").Value);
             Assert.AreEqual("2", element.Element("Interval").Element("Day").Value);
@@ -205,7 +203,7 @@ namespace Procon.Core.Test.Serialization.Xml {
             Assert.AreEqual("8", element.Element("Interval").Element("Hour").Value);
             Assert.AreEqual("4", element.Element("Interval").Element("Minute").Value);
             Assert.AreEqual("2", element.Element("Interval").Element("Second").Value);
-            Assert.AreEqual("First", element.Element("Interval").Element("TemporalInterval").Value);
+            Assert.AreEqual("First", element.Element("Interval").Element("IntervalType").Value);
 
             Assert.AreEqual("8", element.Element("Numeric").Elements("float").Skip(0).First().Value);
             Assert.AreEqual("4", element.Element("Numeric").Elements("float").Skip(1).First().Value);
@@ -234,16 +232,16 @@ namespace Procon.Core.Test.Serialization.Xml {
             TextCommandMatch serializeMatch = new TextCommandMatch() {
                 Delay = now,
                 // This isn't a valid date or time of course, but we're just looking to make sure it serializes correctly.
-                Interval = new FuzzyDateTimePattern() {
-                    Rule = TimeType.Definitive,
-                    Modifier = TimeModifier.Interval,
+                Interval = new TextCommandInterval() {
+                    //Rule = TimeType.Definitive,
+                    //Modifier = TimeModifier.Interval,
                     Year = 2013,
                     Month = 8,
                     Day = 2,
                     Hour = 8,
                     Minute = 4,
                     Second = 2,
-                    TemporalInterval = TemporalInterval.First,
+                    IntervalType = TextCommandIntervalType.First,
                     DayOfWeek = DayOfWeek.Tuesday
                 },
                 Numeric = new List<float>() {

@@ -79,6 +79,7 @@
     <Compile Include="Connections\Connection.cs" />
     <Compile Include="Connections\Plugins\IRemotePluginController.cs" />
     <Compile Include="Connections\Plugins\IRenewableLease.cs" />
+    <Compile Include="Connections\TextCommands\TextCommandIntervalType.cs" />
     <Compile Include="Connections\TextCommands\ITextCommandParser.cs" />
     <Compile Include="Connections\TextCommands\Parsers\Fuzzy\KdrPropertyReference.cs" />
     <Compile Include="Connections\TextCommands\Parsers\Fuzzy\DeathsPropertyReference.cs" />
@@ -88,6 +89,7 @@
     <Compile Include="Connections\TextCommands\Parsers\Fuzzy\MapThingReference.cs" />
     <Compile Include="Connections\TextCommands\Parsers\Fuzzy\PingPropertyReference.cs" />
     <Compile Include="Connections\TextCommands\Parsers\Fuzzy\PlayerThingReference.cs" />
+    <Compile Include="Connections\TextCommands\TextCommandInterval.cs" />
     <Compile Include="Connections\TextCommands\TextCommandMatch.cs" />
     <Compile Include="Connections\TextCommands\ParserType.cs" />
     <Compile Include="Connections\TextCommands\TextCommand.cs" />

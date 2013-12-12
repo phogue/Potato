@@ -144,15 +144,17 @@ namespace Procon.Core.Connections.TextCommands.Parsers {
         }
 
         public Phrase ParseMethod(IFuzzyState state, Phrase phrase) {
-            var methods = from textCommand in this.TextCommands
-                          let similarity = this.MaximumLevenshtein(phrase.Text, textCommand.Commands)
-                          where similarity >= 60
-                          select new MethodObjectToken() {
-                              MethodName = textCommand.PluginCommand,
-                              Text = phrase.Text,
-                              Similarity = similarity,
-                              MinimumWeightedSimilarity = 60
-                          };
+            var methods = this.TextCommands.Select(textCommand => new {
+                textCommand,
+                similarity = this.MaximumLevenshtein(phrase.Text, textCommand.Commands)
+            })
+            .Where(@t => @t.similarity >= 60)
+            .Select(@t => new MethodObjectToken() {
+                MethodName = @t.textCommand.PluginCommand,
+                Text = phrase.Text,
+                Similarity = @t.similarity,
+                MinimumWeightedSimilarity = 60
+            });
 
             List<Token> names = new List<Token>();
             methods.ToList().ForEach(names.Add);
@@ -243,12 +245,35 @@ namespace Procon.Core.Connections.TextCommands.Parsers {
             things.AddRange(sentence.ScrapeStrictList<SelfReflectionThingObjectToken>().Where(token => token.Reference is T).Select(token => token.Reference).Cast<T>());
             
             return things;
-        } 
+        }
+
+        protected TextCommandInterval ExtractTextCommandInterval(Sentence sentence) {
+            TextCommandInterval interval = null;
+
+            FuzzyDateTimePattern pattern = sentence.ExtractList<TemporalToken>().Where(token => token.Pattern != null && token.Pattern.Modifier == TimeModifier.Interval)
+                                           .Select(token => token.Pattern)
+                                           .FirstOrDefault();
+
+            if (pattern != null) {
+                interval = new TextCommandInterval() {
+                    Day = pattern.Day,
+                    DayOfWeek = pattern.DayOfWeek,
+                    Hour = pattern.Hour,
+                    IntervalType = (TextCommandIntervalType) Enum.Parse(typeof (TextCommandIntervalType), pattern.TemporalInterval.ToString()),
+                    Minute = pattern.Minute,
+                    Month = pattern.Month,
+                    Second = pattern.Second,
+                    Year = pattern.Year,
+                };
+            }
+
+            return interval;
+        }
 
         public override CommandResultArgs Parse(string prefix, string text) {
             Sentence sentence = new Sentence().Parse(this, text).Reduce(this);
 
-            CommandResultArgs commandResult = null;
+            CommandResultArgs result = null;
             
             List<TextCommand> commands = this.ExtractCommandList(sentence);
             TextCommand priorityCommand = commands.FirstOrDefault();
@@ -260,10 +285,6 @@ namespace Procon.Core.Connections.TextCommands.Parsers {
                                         .Select(token => token.Pattern.ToDateTime())
                                         .FirstOrDefault();
 
-            FuzzyDateTimePattern interval = timeTokens.Where(token => token.Pattern != null && token.Pattern.Modifier == TimeModifier.Interval)
-                                           .Select(token => token.Pattern)
-                                           .FirstOrDefault();
-
             TimeSpan? period = timeTokens.Where(token => token.Pattern != null && (token.Pattern.Modifier == TimeModifier.Period || token.Pattern.Modifier == TimeModifier.None))
                                          .Select(token => token.Pattern.ToTimeSpan())
                                          .FirstOrDefault();
@@ -272,9 +293,7 @@ namespace Procon.Core.Connections.TextCommands.Parsers {
             if (priorityCommand != null) {
                 commands.Remove(priorityCommand);
 
-                var players = this.ExtractThings<PlayerThingReference>(sentence).Select(thing => thing.Players).ToList();
-                
-                commandResult = new CommandResultArgs() {
+                result = new CommandResultArgs() {
                     Success = true,
                     Status = CommandResultType.Success,
                     Now = new CommandData() {
@@ -294,7 +313,7 @@ namespace Procon.Core.Connections.TextCommands.Parsers {
                                 Numeric = sentence.ExtractList<FloatNumericPrimitiveToken>().Select(token => token.ToFloat()).ToList(),
                                 Delay = delay,
                                 Period = period,
-                                Interval = interval,
+                                Interval = this.ExtractTextCommandInterval(sentence),
                                 Text = text,
                                 Quotes = quotes
                             }
@@ -303,8 +322,7 @@ namespace Procon.Core.Connections.TextCommands.Parsers {
                 };
             }
 
-            return commandResult;
+            return result;
         }
-
     }
 }

@@ -87,10 +87,6 @@
       <Name>Procon.Core</Name>
       <Private>False</Private>
     </ProjectReference>
-    <ProjectReference Include="..\Procon.Fuzzy\Procon.Fuzzy.csproj">
-      <Project>{4B55557F-C2AA-4047-9ED9-3E4BBF9CF670}</Project>
-      <Name>Procon.Fuzzy</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Procon.Net\Procon.Net.csproj">
       <Project>{65C1DB17-18E0-4AC5-8709-3F7E04B88CA1}</Project>
       <Name>Procon.Net</Name>

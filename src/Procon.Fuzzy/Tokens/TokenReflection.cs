@@ -67,7 +67,6 @@ namespace Procon.Fuzzy.Tokens {
                 new TokenMethodMetadata() {
                     Namespace = "Procon.Fuzzy.Tokens.Object.ThingObjectToken",
                     DemandTokenCompatability = true,
-                    ExactMatchType = true,
                     Parameters = new List<TokenParameter>() {
                         new TokenParameter() {
                             Name = "thing1",
@@ -84,7 +83,6 @@ namespace Procon.Fuzzy.Tokens {
                 new TokenMethodMetadata() {
                     Namespace = "Procon.Fuzzy.Tokens.Object.ThingObjectToken",
                     DemandTokenCompatability = true,
-                    ExactMatchType = true,
                     Parameters = new List<TokenParameter>() {
                         new TokenParameter() {
                             Name = "thing1",
@@ -105,7 +103,6 @@ namespace Procon.Fuzzy.Tokens {
                 new TokenMethodMetadata() {
                     Namespace = "Procon.Fuzzy.Tokens.Object.ThingObjectToken",
                     DemandTokenCompatability = true,
-                    ExactMatchType = true,
                     Parameters = new List<TokenParameter>() {
                         new TokenParameter() {
                             Name = "thing1",

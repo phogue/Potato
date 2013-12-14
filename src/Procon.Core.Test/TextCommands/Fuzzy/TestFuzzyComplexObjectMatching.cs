@@ -261,6 +261,19 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
         }
 
         [Test]
+        public void TestComplexKickEveryoneExceptMe() {
+            TextCommandController textCommandController = this.CreateTextCommandController();
+
+            TestFuzzyBase.AssertCommandPlayerListMapList(
+                textCommandController,
+                "kick everyone except me",
+                TestFuzzyBase.TextCommandKick,
+                textCommandController.Connection.GameState.Players.Where(player => player != TestFuzzyBase.PlayerPhogue).ToList(),
+                new List<Map>()
+            );
+        }
+
+        [Test]
         public void TestComplexKickEveryoneExceptPhogueOnAllMapsButPortValdez() {
             TextCommandController textCommandController = this.CreateTextCommandController();
 

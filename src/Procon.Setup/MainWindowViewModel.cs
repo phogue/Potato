@@ -4,6 +4,8 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using MahApps.Metro.Controls;
@@ -28,6 +30,11 @@ namespace Procon.Setup {
         /// List of panorama groups for the language tab
         /// </summary>
         public ObservableCollection<PanoramaGroup> LanguageGroups { get; set; }
+
+        /// <summary>
+        /// THe loaded or generated certificate
+        /// </summary>
+        public CertificateModel Certificate { get; set; }
 
         /// <summary>
         /// General bool to describe the application is currently doing something or not.
@@ -64,16 +71,36 @@ namespace Procon.Setup {
 
         public ICommand ButtonCommand { get; set; }
 
+        /// <summary>
+        /// Randomize the certificate password
+        /// </summary>
+        public ICommand CertificateRandomizePasswordCommand { get; set; }
+
+        /// <summary>
+        /// Generate a new certificate with the supplied password
+        /// </summary>
+        public ICommand CertificateGenerateCommand { get; set; }
+
+        /// <summary>
+        /// Delete the existing certificate.
+        /// </summary>
+        public ICommand CertificateDeleteCommand { get; set; }
+
         public MainWindowViewModel() {
             
             SelectLanguageCommand = new RelayCommand(new Action<Object>(SelectLanguage));
             ButtonCommand = new RelayCommand(new Action<Object>(ShowMessage));
+            CertificateRandomizePasswordCommand = new RelayCommand(new Action<Object>(CertificateRandomizePassword));
+            CertificateGenerateCommand = new RelayCommand(new Action<Object>(CertificateGenerate));
+            CertificateDeleteCommand = new RelayCommand(new Action<Object>(CertificateDelete));
 
             this.LanguageModels = new ObservableCollection<LanguageModel>();
 
             this.LanguageGroups = new ObservableCollection<PanoramaGroup>() {
                 new PanoramaGroup("languages", this.LanguageModels)
             };
+
+            this.Certificate = new CertificateModel();
         }
 
         /// <summary>
@@ -131,7 +158,7 @@ namespace Procon.Setup {
         /// </summary>
         protected void RefreshSelectedLanguage() {
             if (this.Instance != null) {
-                String localizationDefaultLanguageCode = this.Instance.Variables.Get<String>(CommonVariableNames.LocalizationDefaultLanguageCode, "en-UK");
+                String localizationDefaultLanguageCode = this.Instance.Variables.Get(CommonVariableNames.LocalizationDefaultLanguageCode, "en-UK");
 
                 foreach (LanguageModel language in this.LanguageModels) {
                     language.IsSelected = language.LanguageCode == localizationDefaultLanguageCode;
@@ -149,6 +176,30 @@ namespace Procon.Setup {
                     Origin = CommandOrigin.Local
                 }, CommonVariableNames.LocalizationDefaultLanguageCode, value);
             }
+        }
+
+        public void CertificateRandomizePassword(Object value) {
+            this.Certificate.RandomizePassword();
+        }
+
+        public void CertificateGenerate(Object value) {
+            this.Busy = true;
+
+            Task.Factory.StartNew(() => {
+                this.Certificate.Generate();
+
+                this.Busy = false;
+            });
+        }
+
+        public void CertificateDelete(Object value) {
+            this.Busy = true;
+
+            Task.Factory.StartNew(() => {
+                this.Certificate.Delete();
+
+                this.Busy = false;
+            });
         }
 
         public void ShowMessage(Object value) {

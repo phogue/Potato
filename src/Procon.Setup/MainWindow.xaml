@@ -5,6 +5,7 @@
                       xmlns:local="clr-namespace:Procon.Setup"
                       xmlns:Models="clr-namespace:Procon.Setup.Models"
                       xmlns:converters="clr-namespace:Procon.Setup.Converters"
+                      xmlns:models="clr-namespace:Procon.Setup.Models;assembly=Procon.Setup.Models"
                       Title="Procon Setup" Height="436" Width="718" ResizeMode="CanResize" Icon="/Procon.Setup;component/Images/logo.ico">
 
     <Window.Resources>
@@ -19,9 +20,10 @@
                 <ResourceDictionary Source="pack://application:,,,/Procon.Resources;component/Flags.xaml" />
                 <ResourceDictionary Source="/Resources/Icons.xaml" />
             </ResourceDictionary.MergedDictionaries>
+            <converters:IsDisabledConverter x:Key="IsDisabledConverter"/>
             <converters:FlagsUriResourceConverter x:Key="FlagsUriResourceConverter"/>
             <converters:SelectedLanguageToOpacityConverter x:Key="SelectedLanguageToOpacityConverter"/>
-            <DataTemplate DataType="{x:Type Models:LanguageModel}">
+            <DataTemplate DataType="{x:Type models:LanguageModel}">
                 <Controls:Tile Title="{Binding Name}" Command="{Binding Path=DataContext.SelectLanguageCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}" CommandParameter="{Binding LanguageCode}" ClickMode="Release">
                     <Image Source="{Binding CountryCode, Converter={StaticResource FlagsUriResourceConverter} }"  Width="48" Height="48" Opacity="{Binding IsSelected, Converter={StaticResource SelectedLanguageToOpacityConverter} }"/>
                 </Controls:Tile>
@@ -32,21 +34,35 @@
     <Controls:MetroContentControl>
         <Grid>
             <TabControl> 
-                <TabItem Header="Language" Name="tabLanguage">
+                <TabItem Header="Language" Name="TabLanguage">
                     <Grid>
                         <Controls:Panorama x:Name="MainPanorama" ItemBox="140" ItemsSource="{Binding LanguageGroups}" HeaderFontSize="0" />
                         <Controls:ProgressRing IsActive="{Binding Busy}" VerticalAlignment="Center" HorizontalAlignment="Center" />
                     </Grid>
                 </TabItem>
-                <TabItem Header="Users" Name="tabUsers">
+                <TabItem Header="Users" Name="TabUsers">
                     <Grid>
                         <Button Content="Click" Command="{Binding ButtonCommand}" />
                     </Grid>
                 </TabItem>
-                <TabItem Header="Certificate" Name="tabCertificate">
-                    <Grid />
+                <TabItem Header="Certificate" Name="TabCertificate">
+                    <Grid>
+                        <TextBox Controls:TextboxHelper.Watermark="Enter Password"
+                                     Controls:TextboxHelper.ClearTextButton="True"
+                                         Margin="88.694,36.96,0,0"
+                                         VerticalAlignment="Top"
+                                         HorizontalAlignment="Left"
+                                         Width="237"
+										 VerticalContentAlignment="Center" Height="26"
+                                 Text="{Binding Certificate.Password}"
+                                 IsEnabled="{Binding Certificate.Exists, Converter={StaticResource IsDisabledConverter}}" />
+                        <Button Content="randomize" Command="{Binding CertificateRandomizePasswordCommand}" IsEnabled="{Binding Certificate.Exists, Converter={StaticResource IsDisabledConverter}}" VerticalAlignment="Top" Margin="89,73,0,0" Style="{DynamicResource SquareButtonStyle}" Width="237" HorizontalAlignment="Left"/>
+                        <Button Content="generate" Command="{Binding CertificateGenerateCommand}" IsEnabled="{Binding Certificate.Exists, Converter={StaticResource IsDisabledConverter}}" HorizontalAlignment="Left" Margin="88,111,0,0" Style="{DynamicResource SquareButtonStyle}" VerticalAlignment="Top" Width="237"/>
+                        <Button Content="delete" Command="{Binding CertificateDeleteCommand}" IsEnabled="{Binding Certificate.Exists}" HorizontalAlignment="Left" Margin="88,149,0,0" Style="{DynamicResource SquareButtonStyle}" VerticalAlignment="Top" Width="237" />
+                        <Controls:ProgressRing IsActive="{Binding Busy}" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                    </Grid>
                 </TabItem>
-                <TabItem Header="Daemon" Name="tabDaemon">
+                <TabItem Header="Command Server" Name="TabCommandServer">
                     <Grid />
                 </TabItem>
             </TabControl>

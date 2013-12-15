@@ -63,6 +63,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Converters\FlagsUriResourceConverter.cs" />
+    <Compile Include="Converters\IsDisabledConverter.cs" />
     <Compile Include="Converters\SelectedLanguageToOpacityConverter.cs" />
     <Compile Include="RelayCommand.cs" />
     <Page Include="MainWindow.xaml">
@@ -84,7 +85,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MainWindowViewModel.cs" />
-    <Compile Include="Models\LanguageModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -132,6 +132,10 @@
     <ProjectReference Include="..\Procon.Service.Shared\Procon.Service.Shared.csproj">
       <Project>{3F9E6801-A015-4F7E-9B67-7015F1F58B18}</Project>
       <Name>Procon.Service.Shared</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Procon.Setup.Models\Procon.Setup.Models.csproj">
+      <Project>{A20CFF83-65F7-425B-AC97-43A975855CBE}</Project>
+      <Name>Procon.Setup.Models</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

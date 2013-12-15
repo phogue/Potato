@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Xml.Linq;
 using Newtonsoft.Json;
@@ -63,6 +64,27 @@ namespace Procon.Core.Remote {
             }
         }
 
+        protected X509Certificate2 LoadCertificate(String certificatePath) {
+            X509Certificate2 certificate;
+
+            try {
+                certificate = new X509Certificate2(certificatePath, "password1");
+                //certificate = new X509Certificate2(X509Certificate.CreateFromCertFile(certificatePath));
+            }
+            catch (CryptographicException e) {
+                certificate = null;
+
+                this.Events.Log(new GenericEventArgs() {
+                    Message = String.Format("Error loading certificate @ path \"{0}\" \"{1}\".", certificatePath, e.Message),
+                    GenericEventType = GenericEventType.CommandServerStarted,
+                    Success = false,
+                    Status = CommandResultType.Failed
+                });
+            }
+
+            return certificate;
+        }
+
         /// <summary>
         /// Configures the command server, listening for any changes to the configuration and altering
         /// accordingly.
@@ -74,24 +96,27 @@ namespace Procon.Core.Remote {
                 String certificatePath = this.Variables.Get(CommonVariableNames.CommandServerCertificate, Defines.CertificatesDirectoryCommandServerPfx);
 
                 if (File.Exists(certificatePath) == true) {
-                    X509Certificate2 certificate = new X509Certificate2(X509Certificate.CreateFromCertFile(certificatePath));
+                    X509Certificate2 certificate = this.LoadCertificate(certificatePath);
 
-                    this.CommandServerListener = new CommandServerListener() {
-                        Certificate = certificate,
-                        Port = this.Variables.Get<int>(CommonVariableNames.CommandServerPort)
-                    };
+                    if (certificate != null) {
+                        this.CommandServerListener = new CommandServerListener() {
+                            Certificate = certificate,
+                            Port = this.Variables.Get<int>(CommonVariableNames.CommandServerPort)
+                        };
 
-                    // Assign events.
-                    this.CommandServerListener.PacketReceived += CommandServerListener_PacketReceived;
+                        // Assign events.
+                        this.CommandServerListener.PacketReceived += CommandServerListener_PacketReceived;
 
-                    // Start accepting connections.
-                    this.CommandServerListener.BeginListener();
+                        // Start accepting connections.
+                        this.CommandServerListener.BeginListener();
 
-                    this.Events.Log(new GenericEventArgs() {
-                        GenericEventType = GenericEventType.CommandServerStarted,
-                        Success = true,
-                        Status = CommandResultType.Success
-                    });
+                        this.Events.Log(new GenericEventArgs() {
+                            GenericEventType = GenericEventType.CommandServerStarted,
+                            Success = true,
+                            Status = CommandResultType.Success
+                        });
+                    }
+                    // Error will have been logged during load.
                 }
                 else {
                     // Panic, no certificate exists. Cannot start server.

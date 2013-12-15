@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Net;
 using System.Net.Sockets;
 
@@ -14,7 +15,7 @@ namespace Procon.Net {
         /// <summary>
         /// The stream to read and write data to.
         /// </summary>
-        protected NetworkStream NetworkStream;
+        protected Stream Stream;
 
         /// <summary>
         /// Buffer for the data currently being read from the stream. This is appended to the received buffer.
@@ -42,9 +43,9 @@ namespace Procon.Net {
 
             IPacketWrapper packet = (IPacketWrapper)ar.AsyncState;
 
-            if (this.NetworkStream != null) {
+            if (this.Stream != null) {
                 try {
-                    this.NetworkStream.EndWrite(ar);
+                    this.Stream.EndWrite(ar);
 
                     this.OnPacketSent(packet);
                 }
@@ -65,12 +66,12 @@ namespace Procon.Net {
             IPacket sent = null;
 
             if (wrapper != null) {
-                if (this.BeforePacketSend(wrapper) == false && this.NetworkStream != null) {
+                if (this.BeforePacketSend(wrapper) == false && this.Stream != null) {
 
                     byte[] bytePacket = this.PacketSerializer.Serialize(wrapper);
 
                     if (bytePacket != null && bytePacket.Length > 0) {
-                        this.NetworkStream.BeginWrite(bytePacket, 0, bytePacket.Length, this.SendAsynchronousCallback, wrapper);
+                        this.Stream.BeginWrite(bytePacket, 0, bytePacket.Length, this.SendAsynchronousCallback, wrapper);
 
                         sent = wrapper.Packet;
                     }
@@ -105,9 +106,9 @@ namespace Procon.Net {
         }
 
         protected virtual void ReadCallback(IAsyncResult ar) {
-            if (this.NetworkStream != null) {
+            if (this.Stream != null) {
                 try {
-                    int bytesRead = this.NetworkStream.EndRead(ar);
+                    int bytesRead = this.Stream.EndRead(ar);
 
                     if (bytesRead > 0) {
                         this.PacketStream.Push(this.ReceivedBuffer, bytesRead);
@@ -133,7 +134,7 @@ namespace Procon.Net {
                             this.ReceivedBuffer = null;
                             this.Shutdown(new Exception("Exceeded maximum garbage packet"));
                         }
-                        else if (this.NetworkStream != null) {
+                        else if (this.Stream != null) {
                             this.BeginRead();
                         }
                     }
@@ -158,7 +159,7 @@ namespace Procon.Net {
         /// </summary>
         /// <returns></returns>
         public override IAsyncResult BeginRead() {
-            return this.NetworkStream != null ? this.NetworkStream.BeginRead(this.ReceivedBuffer, 0, this.ReceivedBuffer.Length, this.ReadCallback, this) : null;
+            return this.Stream != null ? this.Stream.BeginRead(this.ReceivedBuffer, 0, this.ReceivedBuffer.Length, this.ReadCallback, this) : null;
         }
 
         /// <summary>
@@ -175,7 +176,7 @@ namespace Procon.Net {
                 this.LocalEndPoint = (IPEndPoint)this.Client.Client.LocalEndPoint;
                 this.RemoteEndPoint = (IPEndPoint)this.Client.Client.RemoteEndPoint;
 
-                this.NetworkStream = this.Client.GetStream();
+                this.Stream = this.Client.GetStream();
                 this.BeginRead();
 
                 this.ConnectionState = Net.ConnectionState.ConnectionReady;
@@ -265,10 +266,10 @@ namespace Procon.Net {
                 if (this.Client != null) {
 
                     try {
-                        if (this.NetworkStream != null) {
-                            this.NetworkStream.Close();
-                            this.NetworkStream.Dispose();
-                            this.NetworkStream = null;
+                        if (this.Stream != null) {
+                            this.Stream.Close();
+                            this.Stream.Dispose();
+                            this.Stream = null;
                         }
 
                         if (this.Client != null) {

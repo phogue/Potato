@@ -13,6 +13,7 @@ namespace Procon.Service.Shared {
         public static readonly String ProconFuzzyDll = "Procon.Fuzzy.dll";
         public static readonly String NewtonsoftJsonDll = "Newtonsoft.Json.dll";
         public static readonly String UpdateLog = "Update.log";
+        public static readonly String DaemonPfx = "Daemon.pfx";
 
         /// <summary>
         /// Directories
@@ -25,6 +26,7 @@ namespace Procon.Service.Shared {
         public static readonly String ConfigsDirectory = Path.Combine(Defines.BaseDirectory, "Configs");
         public static readonly String ConfigsBackupDirectory = Path.Combine(ConfigsDirectory, "Backups");
         public static readonly String ConfigsGamesDirectory = Path.Combine(ConfigsDirectory, "Games");
+        public static readonly String CertificatesDirectory = Path.Combine(Defines.BaseDirectory, "Certificates");
         public static readonly String PackagesDirectory = Path.Combine(Defines.BaseDirectory, "Packages");
         public static readonly String PackagesUpdatesDirectory = Path.Combine(UpdatesDirectory, "Packages");
         public static readonly String TemporaryUpdatesDirectory = Path.Combine(UpdatesDirectory, "Temporary");
@@ -37,6 +39,7 @@ namespace Procon.Service.Shared {
         public static readonly String ProconDirectoryProconNetDll = Path.Combine(Defines.BaseDirectory, ProconNetDll);
         public static readonly String ProconDirectoryProconFuzzyDll = Path.Combine(Defines.BaseDirectory, ProconFuzzyDll);
         public static readonly String ProconDirectoryNewtonsoftJsonNet35Dll = Path.Combine(Defines.BaseDirectory, NewtonsoftJsonDll);
+        public static readonly String CertificatesDirectoryDaemonPfx = Path.Combine(Defines.CertificatesDirectory, DaemonPfx);
 
         /// <summary>
         /// Path to files awaiting updates

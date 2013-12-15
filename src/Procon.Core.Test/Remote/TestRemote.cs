@@ -20,13 +20,14 @@ namespace Procon.Core.Test.Remote {
     [TestFixture]
     public class TestRemote {
         
-        // Daemon runs, can authenticate and call function in test plugin
+        [SetUp]
+        protected void Setup() {
+            // We could actually validate the certificate in /Certificates directory
+            // but for unit testing I find this acceptable enough.
 
-        // Daemon runs, denied authentication (account does not exist)
-
-        // Daemon runs, maximum requests are handled
-        
-        // Daemon runs, handles several thousand calls in a second.
+            // If you're reading this, never put this into production (anywhere.)
+            ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
+        }
 
         /// <summary>
         /// Sets up a daemon for us to poke at.
@@ -94,7 +95,7 @@ namespace Procon.Core.Test.Remote {
 
             this.SetupDaemon(listeningPort);
 
-            Request request = new Request(String.Format("http://127.0.0.1:{0}/", listeningPort)) {
+            Request request = new Request(String.Format("https://127.0.0.1:{0}/", listeningPort)) {
                 Method = "POST",
                 RequestContent = new Command() {
                     Scope = new CommandScope(),
@@ -134,7 +135,7 @@ namespace Procon.Core.Test.Remote {
 
             this.SetupDaemon(listeningPort);
 
-            Request request = new Request(String.Format("http://127.0.0.1:{0}/", listeningPort)) {
+            Request request = new Request(String.Format("https://127.0.0.1:{0}/", listeningPort)) {
                 Method = "POST",
                 RequestContent = new Command() {
                     Scope = new CommandScope(),
@@ -180,7 +181,7 @@ namespace Procon.Core.Test.Remote {
 
             this.SetupDaemon(listeningPort);
 
-            Request request = new Request(String.Format("http://127.0.0.1:{0}/", listeningPort)) {
+            Request request = new Request(String.Format("https://127.0.0.1:{0}/", listeningPort)) {
                 Method = "POST",
                 RequestContent = new Command() {
                     Name = "/test/parameters",
@@ -264,7 +265,7 @@ namespace Procon.Core.Test.Remote {
 
             this.SetupDaemon(listeningPort);
 
-            Request request = new Request(String.Format("http://127.0.0.1:{0}/", listeningPort)) {
+            Request request = new Request(String.Format("https://127.0.0.1:{0}/", listeningPort)) {
                 Method = "POST",
                 RequestContent = "Lulz, whats up?"
             };
@@ -298,7 +299,7 @@ namespace Procon.Core.Test.Remote {
 
             this.SetupDaemon(listeningPort);
 
-            Request request = new Request(String.Format("http://127.0.0.1:{0}/", listeningPort)) {
+            Request request = new Request(String.Format("https://127.0.0.1:{0}/", listeningPort)) {
                 Method = "POST",
                 RequestContentType = Mime.ApplicationJson,
                 RequestContent = JsonConvert.SerializeObject(new Command() {
@@ -345,7 +346,7 @@ namespace Procon.Core.Test.Remote {
 
             this.SetupDaemon(listeningPort);
 
-            Request request = new Request(String.Format("http://127.0.0.1:{0}/", listeningPort)) {
+            Request request = new Request(String.Format("https://127.0.0.1:{0}/", listeningPort)) {
                 Method = "POST",
                 RequestContentType = Mime.ApplicationJson,
                 RequestContent = JsonConvert.SerializeObject(new Command() {

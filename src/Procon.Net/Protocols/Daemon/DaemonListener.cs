@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Procon.Net.Protocols.Daemon {
-    // Should listen to and manage connections at a basic level for a daemon
-    // Security and packet logic should be handled elsewhere.
+    /// <summary>
+    /// Should listen to and manage connections at a basic level for a daemon Security and packet logic should be handled elsewhere.
+    /// </summary>
     public class DaemonListener : IDisposable {
 
         /// <summary>
@@ -16,7 +18,7 @@ namespace Procon.Net.Protocols.Daemon {
         /// <summary>
         /// A list of active clients with open connections
         /// </summary>
-        protected List<DaemonClient> Clients { get; set; }
+        protected List<DaemonClient> Clients = new List<DaemonClient>();
 
         /// <summary>
         /// The listener 
@@ -34,20 +36,19 @@ namespace Procon.Net.Protocols.Daemon {
         protected readonly Object DisposeLock = new Object();
 
         /// <summary>
+        /// The loaded daemon.pfx certificate to encrypt incoming stream
+        /// </summary>
+        public X509Certificate2 Certificate { get; set; }
+
+        /// <summary>
         /// Fired whenever an incoming request occurs.
         /// </summary>
-        public event PacketReceivedHandler PacketReceived;
-        public delegate void PacketReceivedHandler(IClient client, DaemonPacket request);
+        public event Action<IClient, DaemonPacket> PacketReceived;
 
         /// <summary>
         /// An exception occured.
         /// </summary>
-        public event ExceptionHandler Exception;
-        public delegate void ExceptionHandler(Exception exception);
-
-        public DaemonListener() {
-            this.Clients = new List<DaemonClient>();
-        }
+        public event Action<Exception> Exception;
 
         /// <summary>
         /// Creates and starts listening for tcp clients on the specified port.
@@ -75,7 +76,7 @@ namespace Procon.Net.Protocols.Daemon {
             if (daemonListener.Listener != null) {
                 try {
                     // End the operation and display the received data on the console.
-                    DaemonClient client = new DaemonClient(daemonListener.Listener.EndAcceptTcpClient(ar));
+                    DaemonClient client = new DaemonClient(daemonListener.Listener.EndAcceptTcpClient(ar), daemonListener.Certificate);
 
                     // Make sure we have a reference to our client.
                     lock (daemonListener.ClientsLock) {
@@ -164,7 +165,7 @@ namespace Procon.Net.Protocols.Daemon {
         }
 
         protected virtual void OnPacketReceived(IClient client, DaemonPacket request) {
-            PacketReceivedHandler handler = PacketReceived;
+            var handler = PacketReceived;
 
             if (handler != null) {
                 handler(client, request);
@@ -172,7 +173,7 @@ namespace Procon.Net.Protocols.Daemon {
         }
 
         protected virtual void OnException(Exception exception) {
-            ExceptionHandler handler = Exception;
+            var handler = Exception;
 
             if (handler != null) {
                 handler(exception);

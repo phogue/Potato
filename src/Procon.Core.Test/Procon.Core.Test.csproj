@@ -241,6 +241,11 @@
     <Folder Include="Utils\DirectoryInfoExtensions\Clean\" />
     <Folder Include="Utils\DirectoryInfoExtensions\Zip\" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Certificates\Daemon.pfx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>tasklist /FI "IMAGENAME eq QTAgent32.exe" 2&gt;NUL | find /I /N "QTAgent32.exe"&gt;NUL

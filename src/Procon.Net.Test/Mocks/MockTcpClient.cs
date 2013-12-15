@@ -13,7 +13,7 @@ namespace Procon.Net.Test.Mocks {
         public MockTcpClient(System.Net.Sockets.TcpClient client)
             : base(((IPEndPoint)client.Client.RemoteEndPoint).Address.ToString(), (ushort)((IPEndPoint)client.Client.RemoteEndPoint).Port) {
             this.Client = client;
-            this.NetworkStream = client.GetStream();
+            this.Stream = client.GetStream();
             this.ConnectionState = Net.ConnectionState.ConnectionLoggedIn;
 
             this.PacketSerializer = new MockPacketSerializer();

@@ -3,6 +3,9 @@ using System.Collections.Specialized;
 using System.Net;
 
 namespace Procon.Net.Protocols.Daemon {
+    /// <summary>
+    /// A packet (essentially http) for communication via the daemon
+    /// </summary>
     [Serializable]
     public class DaemonPacket : IPacketWrapper {
 
@@ -48,6 +51,9 @@ namespace Procon.Net.Protocols.Daemon {
 
         public IPacket Packet { get; set; }
 
+        /// <summary>
+        /// Initializes default values.
+        /// </summary>
         public DaemonPacket() {
             this.Headers = new WebHeaderCollection();
             this.Query = new NameValueCollection();

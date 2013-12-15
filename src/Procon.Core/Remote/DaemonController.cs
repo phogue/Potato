@@ -1,17 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
+using System.Security.Cryptography.X509Certificates;
 using System.Xml.Linq;
 using Newtonsoft.Json;
+using Procon.Core.Events;
 using Procon.Core.Variables;
 using Procon.Net;
+using Procon.Net.Protocols.Daemon;
 using Procon.Net.Utils;
 using Procon.Net.Utils.HTTP;
+using Procon.Service.Shared;
 
 namespace Procon.Core.Remote {
-    using Procon.Net.Protocols.Daemon;
-
+    /// <summary>
+    /// Listens for incoming connections, authenticates and dispatches commands
+    /// </summary>
     public class DaemonController : Executable {
 
         /// <summary>
@@ -63,22 +69,46 @@ namespace Procon.Core.Remote {
         /// </summary>
         protected void ConfigureDaemon() {
             if (this.Variables.Get<bool>(CommonVariableNames.DaemonEnabled) == true) {
-                this.DaemonListener = new DaemonListener() {
-                    Port = this.Variables.Get<int>(CommonVariableNames.DaemonListenerPort)
-                };
 
-                // Assign events.
-                this.DaemonListener.PacketReceived += new Net.Protocols.Daemon.DaemonListener.PacketReceivedHandler(DaemonListener_PacketReceived);
+                if (File.Exists(Defines.CertificatesDirectoryDaemonPfx) == true) {
+                    X509Certificate2 certificate = new X509Certificate2(X509Certificate.CreateFromCertFile(Defines.CertificatesDirectoryDaemonPfx));
 
-                // Start accepting connections.
-                this.DaemonListener.BeginListener();
+                    this.DaemonListener = new DaemonListener() {
+                        Certificate = certificate,
+                        Port = this.Variables.Get<int>(CommonVariableNames.DaemonListenerPort)
+                    };
+
+                    // Assign events.
+                    this.DaemonListener.PacketReceived += DaemonListener_PacketReceived;
+
+                    // Start accepting connections.
+                    this.DaemonListener.BeginListener();
+
+                    this.Events.Log(new GenericEventArgs() {
+                        GenericEventType = GenericEventType.DaemonStarted,
+                        Success = true,
+                        Status = CommandResultType.Success
+                    });
+                }
+                else {
+                    // Panic, no certificate exists. Cannot start daemon.
+                    this.Events.Log(new GenericEventArgs() {
+                        Message = "Command server certificate does not exists.",
+                        GenericEventType = GenericEventType.DaemonStarted,
+                        Success = false,
+                        Status = CommandResultType.Failed
+                    });
+                }
             }
             else if (this.DaemonListener != null) {
                 this.DaemonListener.Dispose();
                 this.DaemonListener = null;
 
-                // Disable listener
-                // Dispose listener
+                this.Events.Log(new GenericEventArgs() {
+                    GenericEventType = GenericEventType.DaemonStopped,
+                    Success = true,
+                    Status = CommandResultType.Success
+                });
             }
         }
 

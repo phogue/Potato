@@ -152,3 +152,6 @@ $RECYCLE.BIN/
 
 # Procon specific folders
 /builds
+
+# Keep unit test daemon certificate
+!/src/Procon.Core.Test/Certificates/Daemon.pfx

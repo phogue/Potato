@@ -9,10 +9,9 @@ using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
+using Procon.Net.Utils;
 
 namespace Procon.Net.Protocols.Daemon {
-    using Procon.Net.Utils;
-
     /// <summary>
     /// This entire serializer is only ever meant to handle small requests. It's supposed
     /// to be used to issue command requests and get responses.
@@ -22,6 +21,9 @@ namespace Procon.Net.Protocols.Daemon {
 
         public uint PacketHeaderSize { get; set; }
 
+        /// <summary>
+        /// Initializes the packet header size requirment for this packet type
+        /// </summary>
         public DaemonPacketSerializer() : base() {
             this.PacketHeaderSize = 14;
         }
@@ -185,8 +187,8 @@ namespace Procon.Net.Protocols.Daemon {
             DaemonPacket packet = new DaemonPacket();
             DaemonPacketSerializer.Parse(packet, packetData);
 
-            long length = packetData.Length;
-
+            long length = 0;
+            
             // If the headers contain a content-length variable, use that.
             if (packet.Headers[HttpRequestHeader.ContentLength] != null) {
                 // todo Potential issues with content encoding?

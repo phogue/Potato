@@ -4,11 +4,12 @@ using System.Net;
 using System.Net.Sockets;
 using System.Security.Cryptography.X509Certificates;
 
-namespace Procon.Net.Protocols.Daemon {
+namespace Procon.Net.Protocols.CommandServer {
     /// <summary>
-    /// Should listen to and manage connections at a basic level for a daemon Security and packet logic should be handled elsewhere.
+    /// Should listen to and manage connections at a basic level for a command 
+    /// Security and packet logic should be handled elsewhere.
     /// </summary>
-    public class DaemonListener : IDisposable {
+    public class CommandServerListener : IDisposable {
 
         /// <summary>
         /// The port to listen on.
@@ -18,7 +19,7 @@ namespace Procon.Net.Protocols.Daemon {
         /// <summary>
         /// A list of active clients with open connections
         /// </summary>
-        protected List<DaemonClient> Clients = new List<DaemonClient>();
+        protected List<CommandServerClient> Clients = new List<CommandServerClient>();
 
         /// <summary>
         /// The listener 
@@ -36,14 +37,14 @@ namespace Procon.Net.Protocols.Daemon {
         protected readonly Object DisposeLock = new Object();
 
         /// <summary>
-        /// The loaded daemon.pfx certificate to encrypt incoming stream
+        /// The loaded CommandServer.pfx certificate to encrypt incoming stream
         /// </summary>
         public X509Certificate2 Certificate { get; set; }
 
         /// <summary>
         /// Fired whenever an incoming request occurs.
         /// </summary>
-        public event Action<IClient, DaemonPacket> PacketReceived;
+        public event Action<IClient, CommandServerPacket> PacketReceived;
 
         /// <summary>
         /// An exception occured.
@@ -59,7 +60,7 @@ namespace Procon.Net.Protocols.Daemon {
                 this.Listener.Start();
 
                 // Accept the connection.
-                this.Listener.BeginAcceptTcpClient(new AsyncCallback(DaemonListener.AcceptTcpClientCallback), this);
+                this.Listener.BeginAcceptTcpClient(new AsyncCallback(CommandServerListener.AcceptTcpClientCallback), this);
             }
             catch (Exception e) {
                 this.OnException(e);
@@ -71,31 +72,31 @@ namespace Procon.Net.Protocols.Daemon {
         protected static void AcceptTcpClientCallback(IAsyncResult ar) {
 
             // Get the listener that handles the client request.
-            DaemonListener daemonListener = (DaemonListener)ar.AsyncState;
+            CommandServerListener commandServerListener = (CommandServerListener)ar.AsyncState;
 
-            if (daemonListener.Listener != null) {
+            if (commandServerListener.Listener != null) {
                 try {
                     // End the operation and display the received data on the console.
-                    DaemonClient client = new DaemonClient(daemonListener.Listener.EndAcceptTcpClient(ar), daemonListener.Certificate);
+                    CommandServerClient client = new CommandServerClient(commandServerListener.Listener.EndAcceptTcpClient(ar), commandServerListener.Certificate);
 
                     // Make sure we have a reference to our client.
-                    lock (daemonListener.ClientsLock) {
-                        daemonListener.Clients.Add(client);
+                    lock (commandServerListener.ClientsLock) {
+                        commandServerListener.Clients.Add(client);
                     }
 
                     // Listen for events on our new client
-                    client.PacketReceived += new ClientBase.PacketDispatchHandler(daemonListener.client_PacketReceived);
-                    client.ConnectionStateChanged += new ClientBase.ConnectionStateChangedHandler(daemonListener.client_ConnectionStateChanged);
+                    client.PacketReceived += new ClientBase.PacketDispatchHandler(commandServerListener.client_PacketReceived);
+                    client.ConnectionStateChanged += new ClientBase.ConnectionStateChangedHandler(commandServerListener.client_ConnectionStateChanged);
 
                     // k, go. Now start reading.
                     client.BeginRead();
 
                     // Signal the calling thread to continue.
-                    daemonListener.Listener.BeginAcceptTcpClient(new AsyncCallback(AcceptTcpClientCallback), daemonListener);
+                    commandServerListener.Listener.BeginAcceptTcpClient(new AsyncCallback(AcceptTcpClientCallback), commandServerListener);
                 }
                 catch (Exception e) {
-                    daemonListener.OnException(e);
-                    daemonListener.Dispose();
+                    commandServerListener.OnException(e);
+                    commandServerListener.Dispose();
                 }
             }
         }
@@ -108,7 +109,7 @@ namespace Procon.Net.Protocols.Daemon {
         /// <param name="sender">The client that received the response.</param>
         /// <param name="request">The original packet received by the listener.</param>
         /// <param name="response">The response to send to the server.</param>
-        public void Respond(IClient sender, DaemonPacket request, DaemonPacket response) {
+        public void Respond(IClient sender, CommandServerPacket request, CommandServerPacket response) {
             response.Method = request.Method;
             response.ProtocolVersion = request.ProtocolVersion;
 
@@ -131,12 +132,12 @@ namespace Procon.Net.Protocols.Daemon {
         /// </summary>
         public void Poke() {
             if (this.Clients != null) {
-                List<DaemonClient> poked;
+                List<CommandServerClient> poked;
 
                 // Note we modify the Clients list in events fired from the client
                 // so we take a copy to poke in case this results in a dead lock.
                 lock (this.ClientsLock) {
-                    poked = new List<DaemonClient>(this.Clients);
+                    poked = new List<CommandServerClient>(this.Clients);
                 }
 
                 poked.ForEach(client => client.Poke());
@@ -145,7 +146,7 @@ namespace Procon.Net.Protocols.Daemon {
 
         protected void client_PacketReceived(IClient sender, IPacketWrapper packet) {
             // Bubble the packet for processing.
-            this.OnPacketReceived(sender, packet as DaemonPacket);
+            this.OnPacketReceived(sender, packet as CommandServerPacket);
         }
 
         /// <summary>
@@ -159,12 +160,12 @@ namespace Procon.Net.Protocols.Daemon {
                     sender.PacketReceived -= new ClientBase.PacketDispatchHandler(this.client_PacketReceived);
                     sender.ConnectionStateChanged -= new ClientBase.ConnectionStateChangedHandler(this.client_ConnectionStateChanged);
 
-                    this.Clients.Remove(sender as DaemonClient);
+                    this.Clients.Remove(sender as CommandServerClient);
                 }
             }
         }
 
-        protected virtual void OnPacketReceived(IClient client, DaemonPacket request) {
+        protected virtual void OnPacketReceived(IClient client, CommandServerPacket request) {
             var handler = PacketReceived;
 
             if (handler != null) {
@@ -187,7 +188,7 @@ namespace Procon.Net.Protocols.Daemon {
                     this.Listener = null;
 
                     lock (this.ClientsLock) {
-                        foreach (DaemonClient client in this.Clients) {
+                        foreach (CommandServerClient client in this.Clients) {
                             client.Shutdown();
                             client.PacketReceived -= new ClientBase.PacketDispatchHandler(this.client_PacketReceived);
                             client.ConnectionStateChanged -= new ClientBase.ConnectionStateChangedHandler(this.client_ConnectionStateChanged);

@@ -228,7 +228,7 @@ namespace Procon.Core.Test.Variables {
         /// </summary>
         [Test]
         public void TestVariablesBuildNamespaceVariableKeyEmptyNamespace() {
-            Assert.AreEqual("DaemonEnabled", Variable.NamespaceVariableName("", CommonVariableNames.DaemonEnabled));
+            Assert.AreEqual("CommandServerEnabled", Variable.NamespaceVariableName("", CommonVariableNames.CommandServerEnabled));
         }
 
         /// <summary>
@@ -237,7 +237,7 @@ namespace Procon.Core.Test.Variables {
         /// </summary>
         [Test]
         public void TestVariablesBuildNamespaceVariableKeyWithNamespace() {
-            Assert.AreEqual("my.namespace.DaemonEnabled", Variable.NamespaceVariableName("my.namespace", CommonVariableNames.DaemonEnabled));
+            Assert.AreEqual("my.namespace.CommandServerEnabled", Variable.NamespaceVariableName("my.namespace", CommonVariableNames.CommandServerEnabled));
         }
         
     }

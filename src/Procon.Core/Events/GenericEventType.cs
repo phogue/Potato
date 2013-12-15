@@ -56,13 +56,13 @@ namespace Procon.Core.Events {
         SecurityPlayerRemoved,
 
         /// <summary>
-        /// The daemon has started up, listening for incoming connections
+        /// The command server has started up, listening for incoming connections
         /// </summary>
-        DaemonStarted,
+        CommandServerStarted,
         /// <summary>
-        /// The daemon has been stopped and is no longer listening for incoming connections
+        /// The command server has been stopped and is no longer listening for incoming connections
         /// </summary>
-        DaemonStopped,
+        CommandServerStopped,
 
         /// <summary>
         /// The repository controller has rebuilt what it knows about the packages (local, remote, updated etc.)

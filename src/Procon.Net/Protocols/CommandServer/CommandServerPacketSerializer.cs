@@ -11,28 +11,28 @@ using System.Text.RegularExpressions;
 using System.Web;
 using Procon.Net.Utils;
 
-namespace Procon.Net.Protocols.Daemon {
+namespace Procon.Net.Protocols.CommandServer {
     /// <summary>
     /// This entire serializer is only ever meant to handle small requests. It's supposed
     /// to be used to issue command requests and get responses.
     /// </summary>
     /// <remarks><para>If we ever need additional functionality or handle larger request/response sizes I'll probably look into a third party implementation.</para></remarks>
-    public class DaemonPacketSerializer : IPacketSerializer {
+    public class CommandServerPacketSerializer : IPacketSerializer {
 
         public uint PacketHeaderSize { get; set; }
 
         /// <summary>
         /// Initializes the packet header size requirment for this packet type
         /// </summary>
-        public DaemonPacketSerializer() : base() {
+        public CommandServerPacketSerializer() : base() {
             this.PacketHeaderSize = 14;
         }
 
-        protected static NameValueCollection ParseGet(DaemonPacket packet) {
+        protected static NameValueCollection ParseGet(CommandServerPacket packet) {
             return HttpUtility.ParseQueryString(packet.Request.Query);
         }
 
-        protected static NameValueCollection ParsePost(DaemonPacket packet) {
+        protected static NameValueCollection ParsePost(CommandServerPacket packet) {
             NameValueCollection query = new NameValueCollection();
 
             if (packet.Content != null) {
@@ -54,7 +54,7 @@ namespace Procon.Net.Protocols.Daemon {
             return query;
         }
 
-        protected static void Parse(DaemonPacket packet, byte[] packetData) {
+        protected static void Parse(CommandServerPacket packet, byte[] packetData) {
             String[] packetStringData = Regex.Split(Encoding.UTF8.GetString(packetData), @"\r\n\r\n");
 
             packet.Header = packetStringData.FirstOrDefault();
@@ -120,17 +120,17 @@ namespace Procon.Net.Protocols.Daemon {
         /// </summary>
         /// <param name="packet"></param>
         /// <returns></returns>
-        protected byte[] SerializeContent(DaemonPacket packet) {
+        protected byte[] SerializeContent(CommandServerPacket packet) {
             byte[] data = Encoding.UTF8.GetBytes(packet.Content);
 
             if (packet.Headers[HttpRequestHeader.ContentEncoding] != null) {
                 String contentEncoding = packet.Headers[HttpRequestHeader.ContentEncoding].ToLowerInvariant();
 
                 if (contentEncoding.Contains("gzip") == true) {
-                    data = DaemonPacketSerializer.GzipCompress(data);
+                    data = CommandServerPacketSerializer.GzipCompress(data);
                 }
                 else if (contentEncoding.Contains("deflate") == true) {
-                    data = DaemonPacketSerializer.DeflateCompress(data);
+                    data = CommandServerPacketSerializer.DeflateCompress(data);
                 }
             }
 
@@ -143,7 +143,7 @@ namespace Procon.Net.Protocols.Daemon {
         /// <param name="packet"></param>
         /// <param name="content"></param>
         /// <returns></returns>
-        protected byte[] SerializeHeader(DaemonPacket packet, byte[] content) {
+        protected byte[] SerializeHeader(CommandServerPacket packet, byte[] content) {
             StringBuilder builder = new StringBuilder();
 
             // Ensure a couple of headers are through..
@@ -158,12 +158,12 @@ namespace Procon.Net.Protocols.Daemon {
         }
 
         public byte[] Serialize(IPacketWrapper wrapper) {
-            DaemonPacket daemonPacket = wrapper as DaemonPacket;
+            CommandServerPacket commandServerWrapper = wrapper as CommandServerPacket;
             byte[] serialized = null;
 
-            if (daemonPacket != null) {
-                byte[] content = this.SerializeContent(daemonPacket);
-                byte[] header = this.SerializeHeader(daemonPacket, content);
+            if (commandServerWrapper != null) {
+                byte[] content = this.SerializeContent(commandServerWrapper);
+                byte[] header = this.SerializeHeader(commandServerWrapper, content);
                 serialized = new byte[header.Length + content.Length];
 
                 Array.Copy(header, serialized, header.Length);
@@ -174,18 +174,18 @@ namespace Procon.Net.Protocols.Daemon {
         }
 
         public IPacketWrapper Deserialize(byte[] packetData) {
-            DaemonPacket packet = new DaemonPacket();
+            CommandServerPacket packet = new CommandServerPacket();
 
-            DaemonPacketSerializer.Parse(packet, packetData);
-            packet.Query = DaemonPacketSerializer.CombineNameValueCollections(DaemonPacketSerializer.ParseGet(packet), DaemonPacketSerializer.ParsePost(packet));
+            CommandServerPacketSerializer.Parse(packet, packetData);
+            packet.Query = CommandServerPacketSerializer.CombineNameValueCollections(CommandServerPacketSerializer.ParseGet(packet), CommandServerPacketSerializer.ParsePost(packet));
 
             return packet;
         }
 
         public long ReadPacketSize(byte[] packetData) {
             // Attempt an initial parse to get the headers.
-            DaemonPacket packet = new DaemonPacket();
-            DaemonPacketSerializer.Parse(packet, packetData);
+            CommandServerPacket packet = new CommandServerPacket();
+            CommandServerPacketSerializer.Parse(packet, packetData);
 
             long length = 0;
             

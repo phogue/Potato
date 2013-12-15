@@ -3,15 +3,15 @@ using System.Net.Security;
 using System.Security.Authentication;
 using System.Security.Cryptography.X509Certificates;
 
-namespace Procon.Net.Protocols.Daemon {
+namespace Procon.Net.Protocols.CommandServer {
     /// <summary>
-    /// Handles a https client issuing a daemon request
+    /// Handles a https client issuing a command server request
     /// </summary>
     /// <remarks>We can recycle this from the client since a client does not matter where the origin/server is.</remarks>
-    public class DaemonClient : Procon.Net.TcpClient {
+    public class CommandServerClient : Procon.Net.TcpClient {
 
         /// <summary>
-        /// The loaded daemon.pfx certificate to encrypt incoming stream
+        /// The loaded CommandServer.pfx certificate to encrypt incoming stream
         /// </summary>
         protected X509Certificate2 Certificate { get; set; }
 
@@ -20,11 +20,11 @@ namespace Procon.Net.Protocols.Daemon {
         /// </summary>
         /// <param name="client"></param>
         /// <param name="certificate"></param>
-        public DaemonClient(System.Net.Sockets.TcpClient client, X509Certificate2 certificate)
+        public CommandServerClient(System.Net.Sockets.TcpClient client, X509Certificate2 certificate)
             : base(((IPEndPoint)client.Client.RemoteEndPoint).Address.ToString(), (ushort)((IPEndPoint)client.Client.RemoteEndPoint).Port) {
             this.Client = client;
 
-            this.PacketSerializer = new DaemonPacketSerializer();
+            this.PacketSerializer = new CommandServerPacketSerializer();
 
             this.Certificate = certificate;
 

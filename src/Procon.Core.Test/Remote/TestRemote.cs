@@ -30,9 +30,9 @@ namespace Procon.Core.Test.Remote {
         }
 
         /// <summary>
-        /// Sets up a daemon for us to poke at.
+        /// Sets up a command server for us to poke at.
         /// </summary>
-        protected DaemonController SetupDaemon(int listeningPort = 3222) {
+        protected CommandServerController SetupCommandServer(int listeningPort = 3222) {
             VariableController variables = new VariableController();
             SecurityController security = new SecurityController();
 
@@ -52,7 +52,7 @@ namespace Procon.Core.Test.Remote {
                 }
             });
 
-            DaemonController daemon = new DaemonController() {
+            CommandServerController commandServer = new CommandServerController() {
                 TunnelObjects = new List<IExecutableBase>() {
                     plugins
                 },
@@ -64,23 +64,23 @@ namespace Procon.Core.Test.Remote {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.VariablesSet,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
-                    CommonVariableNames.DaemonListenerPort,
+                    CommonVariableNames.CommandServerPort,
                     listeningPort
                 })
             });
 
-            daemon.Execute();
+            commandServer.Execute();
 
             variables.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.VariablesSet,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
-                    CommonVariableNames.DaemonEnabled,
+                    CommonVariableNames.CommandServerEnabled,
                     true
                 })
             });
 
-            return daemon;
+            return commandServer;
         }
 
         /// <summary>
@@ -93,7 +93,7 @@ namespace Procon.Core.Test.Remote {
             AutoResetEvent requestWait = new AutoResetEvent(false);
             bool isSuccess = false;
 
-            this.SetupDaemon(listeningPort);
+            this.SetupCommandServer(listeningPort);
 
             Request request = new Request(String.Format("https://127.0.0.1:{0}/", listeningPort)) {
                 Method = "POST",
@@ -133,7 +133,7 @@ namespace Procon.Core.Test.Remote {
             AutoResetEvent requestWait = new AutoResetEvent(false);
             bool isSuccess = false;
 
-            this.SetupDaemon(listeningPort);
+            this.SetupCommandServer(listeningPort);
 
             Request request = new Request(String.Format("https://127.0.0.1:{0}/", listeningPort)) {
                 Method = "POST",
@@ -170,7 +170,7 @@ namespace Procon.Core.Test.Remote {
         }
 
         /// <summary>
-        /// Tests that a html file can be fetched via the daemon.
+        /// Tests that a html file can be fetched via the command server.
         /// </summary>
         [Test]
         public void TestRemoteSandboxIndexHtml() {
@@ -179,7 +179,7 @@ namespace Procon.Core.Test.Remote {
             AutoResetEvent requestWait = new AutoResetEvent(false);
             bool isSuccess = false;
 
-            this.SetupDaemon(listeningPort);
+            this.SetupCommandServer(listeningPort);
 
             Request request = new Request(String.Format("https://127.0.0.1:{0}/", listeningPort)) {
                 Method = "POST",
@@ -219,51 +219,51 @@ namespace Procon.Core.Test.Remote {
         /// Tests variables are nulled during a dispose.
         /// </summary>
         [Test]
-        public void TestRemoteDaemonDispose() {
+        public void TestRemoteCommandServerDispose() {
             const int listeningPort = 3224;
 
-            DaemonController daemon = this.SetupDaemon(listeningPort);
+            CommandServerController commandServer = this.SetupCommandServer(listeningPort);
 
-            daemon.Dispose();
+            commandServer.Dispose();
 
-            Assert.IsNull(daemon.DaemonListener);
-            Assert.IsNull(daemon.TunnelObjects);
+            Assert.IsNull(commandServer.CommandServerListener);
+            Assert.IsNull(commandServer.TunnelObjects);
         }
 
         /// <summary>
-        /// Tests that altering the daemon enabled/disabled variable
+        /// Tests that altering the command server enabled/disabled variable
         /// on an active listener will disable and null the listener.
         /// </summary>
         [Test]
-        public void TestRemoteDaemonVariableDisabled() {
+        public void TestRemoteCommandServerVariableDisabled() {
             const int listeningPort = 3225;
 
-            DaemonController daemon = this.SetupDaemon(listeningPort);
+            CommandServerController commandServer = this.SetupCommandServer(listeningPort);
 
-            daemon.Variables.Tunnel(new Command() {
+            commandServer.Variables.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.VariablesSet,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
-                    CommonVariableNames.DaemonEnabled,
+                    CommonVariableNames.CommandServerEnabled,
                     false
                 })
             });
 
-            Assert.IsNull(daemon.DaemonListener);
-            Assert.IsNotNull(daemon.TunnelObjects);
+            Assert.IsNull(commandServer.CommandServerListener);
+            Assert.IsNotNull(commandServer.TunnelObjects);
         }
 
         /// <summary>
         /// Tests that sending a malformed command will return a bad request response.
         /// </summary>
         [Test]
-        public void TestRemoteDaemonMalformedCommandRequest() {
+        public void TestRemoteCommandServerMalformedCommandRequest() {
             const int listeningPort = 3226;
 
             AutoResetEvent requestWait = new AutoResetEvent(false);
             bool isSuccess = false;
 
-            this.SetupDaemon(listeningPort);
+            this.SetupCommandServer(listeningPort);
 
             Request request = new Request(String.Format("https://127.0.0.1:{0}/", listeningPort)) {
                 Method = "POST",
@@ -288,7 +288,7 @@ namespace Procon.Core.Test.Remote {
         }
 
         /// <summary>
-        /// Tests that a html file can be fetched via the daemon, even when a content type is specified and it is json
+        /// Tests that a html file can be fetched via the command server, even when a content type is specified and it is json
         /// </summary>
         [Test]
         public void TestRemoteSandboxJsonRequestIndexHtml() {
@@ -297,7 +297,7 @@ namespace Procon.Core.Test.Remote {
             AutoResetEvent requestWait = new AutoResetEvent(false);
             bool isSuccess = false;
 
-            this.SetupDaemon(listeningPort);
+            this.SetupCommandServer(listeningPort);
 
             Request request = new Request(String.Format("https://127.0.0.1:{0}/", listeningPort)) {
                 Method = "POST",
@@ -344,7 +344,7 @@ namespace Procon.Core.Test.Remote {
             AutoResetEvent requestWait = new AutoResetEvent(false);
             bool isSuccess = false;
 
-            this.SetupDaemon(listeningPort);
+            this.SetupCommandServer(listeningPort);
 
             Request request = new Request(String.Format("https://127.0.0.1:{0}/", listeningPort)) {
                 Method = "POST",
@@ -378,41 +378,5 @@ namespace Procon.Core.Test.Remote {
 
             Assert.AreEqual("TestPluginsCommandsZeroParameters", result.Message);
         }
-
-        /*
-        [Test]
-        public void TestRemoteSandbox() {
-            Executable.MasterSecurity.Dispose();
-            Executable.MasterSecurity.Execute();
-            Executable.MasterSecurity.Execute(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityAddGroup, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "GroupName" }) });
-            Executable.MasterSecurity.Execute(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityGroupAddAccount, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "GroupName", "Phogue" }) });
-            Executable.MasterSecurity.Execute(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityAccountSetPassword, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "Phogue", "password" }) });
-            Executable.MasterSecurity.Execute(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityGroupSetPermission, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "GroupName", CommandType.SecurityAccountAuthenticate, 1 }) });
-
-            DaemonController daemon = new DaemonController();
-
-            Executable.MasterVariables.Execute(new Command() {
-                Origin = CommandOrigin.Local,
-                CommandType = CommandType.VariablesSet,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
-                    CommonVariableNames.DaemonListenerPort,
-                    3222
-                }
-            });
-
-            daemon.Execute();
-
-            Executable.MasterVariables.Execute(new Command() {
-                Origin = CommandOrigin.Local,
-                CommandType = CommandType.VariablesSet,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
-                    CommonVariableNames.DaemonEnabled,
-                    true
-                }
-            });
-
-            System.Threading.Thread.Sleep(10000000);
-        }
-        */
     }
 }

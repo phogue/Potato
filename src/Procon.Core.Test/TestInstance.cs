@@ -159,7 +159,7 @@ namespace Procon.Core.Test {
             Assert.IsNull(instance.Security);
             Assert.IsNull(instance.Events);
             Assert.IsNull(instance.Languages);
-            Assert.IsNull(instance.Daemon);
+            Assert.IsNull(instance.CommandServer);
             Assert.IsNull(instance.Connections);
             Assert.IsNull(instance.Packages);
             Assert.IsNull(instance.Tasks);

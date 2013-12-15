@@ -9,7 +9,7 @@ using Newtonsoft.Json;
 using Procon.Core.Events;
 using Procon.Core.Variables;
 using Procon.Net;
-using Procon.Net.Protocols.Daemon;
+using Procon.Net.Protocols.CommandServer;
 using Procon.Net.Utils;
 using Procon.Net.Utils.HTTP;
 using Procon.Service.Shared;
@@ -18,18 +18,18 @@ namespace Procon.Core.Remote {
     /// <summary>
     /// Listens for incoming connections, authenticates and dispatches commands
     /// </summary>
-    public class DaemonController : Executable {
+    public class CommandServerController : Executable {
 
         /// <summary>
-        /// The client to send/recv remote daemon messages.
+        /// The client to send/recv remote commands.
         /// </summary>
-        public DaemonListener DaemonListener { get; set; }
+        public CommandServerListener CommandServerListener { get; set; }
 
         public override ExecutableBase Execute() {
-            this.Variables.Variable(CommonVariableNames.DaemonEnabled).PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(DaemonController_PropertyChanged);
-            this.Variables.Variable(CommonVariableNames.DaemonListenerPort).PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(DaemonController_PropertyChanged);
+            this.Variables.Variable(CommonVariableNames.CommandServerEnabled).PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(CommandServerController_PropertyChanged);
+            this.Variables.Variable(CommonVariableNames.CommandServerPort).PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(CommandServerController_PropertyChanged);
 
-            this.ConfigureDaemon();
+            this.Configure();
 
             return base.Execute();
         }
@@ -37,15 +37,15 @@ namespace Procon.Core.Remote {
         public override void Dispose() {
             base.Dispose();
 
-            this.Variables.Variable(CommonVariableNames.DaemonEnabled).PropertyChanged -= new System.ComponentModel.PropertyChangedEventHandler(DaemonController_PropertyChanged);
-            this.Variables.Variable(CommonVariableNames.DaemonListenerPort).PropertyChanged -= new System.ComponentModel.PropertyChangedEventHandler(DaemonController_PropertyChanged);
+            this.Variables.Variable(CommonVariableNames.CommandServerEnabled).PropertyChanged -= new System.ComponentModel.PropertyChangedEventHandler(CommandServerController_PropertyChanged);
+            this.Variables.Variable(CommonVariableNames.CommandServerPort).PropertyChanged -= new System.ComponentModel.PropertyChangedEventHandler(CommandServerController_PropertyChanged);
             
-            if (this.DaemonListener != null) this.DaemonListener.Dispose();
-            this.DaemonListener = null;
+            if (this.CommandServerListener != null) this.CommandServerListener.Dispose();
+            this.CommandServerListener = null;
         }
 
-        private void DaemonController_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e) {
-            this.ConfigureDaemon();
+        private void CommandServerController_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e) {
+            this.Configure();
         }
 
         /// <summary>
@@ -56,56 +56,56 @@ namespace Procon.Core.Remote {
             // Method implemented here instead of calling the public method so we can do
             // additional work during a Poke in the future.
 
-            if (this.DaemonListener != null) {
-                this.DaemonListener.Poke();
+            if (this.CommandServerListener != null) {
+                this.CommandServerListener.Poke();
             }
         }
 
         /// <summary>
-        /// Configures the daemon, listening for any changes to the configuration and altering
+        /// Configures the command server, listening for any changes to the configuration and altering
         /// accordingly.
         /// 
-        /// We should fetch and listen for changes to the Daemon* variables
+        /// We should fetch and listen for changes to the CommandServer* variables
         /// </summary>
-        protected void ConfigureDaemon() {
-            if (this.Variables.Get<bool>(CommonVariableNames.DaemonEnabled) == true) {
+        protected void Configure() {
+            if (this.Variables.Get<bool>(CommonVariableNames.CommandServerEnabled) == true) {
 
-                if (File.Exists(Defines.CertificatesDirectoryDaemonPfx) == true) {
-                    X509Certificate2 certificate = new X509Certificate2(X509Certificate.CreateFromCertFile(Defines.CertificatesDirectoryDaemonPfx));
+                if (File.Exists(Defines.CertificatesDirectoryCommandServerPfx) == true) {
+                    X509Certificate2 certificate = new X509Certificate2(X509Certificate.CreateFromCertFile(Defines.CertificatesDirectoryCommandServerPfx));
 
-                    this.DaemonListener = new DaemonListener() {
+                    this.CommandServerListener = new CommandServerListener() {
                         Certificate = certificate,
-                        Port = this.Variables.Get<int>(CommonVariableNames.DaemonListenerPort)
+                        Port = this.Variables.Get<int>(CommonVariableNames.CommandServerPort)
                     };
 
                     // Assign events.
-                    this.DaemonListener.PacketReceived += DaemonListener_PacketReceived;
+                    this.CommandServerListener.PacketReceived += CommandServerListener_PacketReceived;
 
                     // Start accepting connections.
-                    this.DaemonListener.BeginListener();
+                    this.CommandServerListener.BeginListener();
 
                     this.Events.Log(new GenericEventArgs() {
-                        GenericEventType = GenericEventType.DaemonStarted,
+                        GenericEventType = GenericEventType.CommandServerStarted,
                         Success = true,
                         Status = CommandResultType.Success
                     });
                 }
                 else {
-                    // Panic, no certificate exists. Cannot start daemon.
+                    // Panic, no certificate exists. Cannot start server.
                     this.Events.Log(new GenericEventArgs() {
                         Message = "Command server certificate does not exists.",
-                        GenericEventType = GenericEventType.DaemonStarted,
+                        GenericEventType = GenericEventType.CommandServerStarted,
                         Success = false,
                         Status = CommandResultType.Failed
                     });
                 }
             }
-            else if (this.DaemonListener != null) {
-                this.DaemonListener.Dispose();
-                this.DaemonListener = null;
+            else if (this.CommandServerListener != null) {
+                this.CommandServerListener.Dispose();
+                this.CommandServerListener = null;
 
                 this.Events.Log(new GenericEventArgs() {
-                    GenericEventType = GenericEventType.DaemonStopped,
+                    GenericEventType = GenericEventType.CommandServerStopped,
                     Success = true,
                     Status = CommandResultType.Success
                 });
@@ -117,7 +117,7 @@ namespace Procon.Core.Remote {
         /// </summary>
         /// <param name="request">The http request for this command</param>
         /// <returns>The deserialized command or null if an error occured during deserialization</returns>
-        protected Command DeserializeCommand(DaemonPacket request) {
+        protected Command DeserializeCommand(CommandServerPacket request) {
             Command command = null;
 
             try {
@@ -164,7 +164,7 @@ namespace Procon.Core.Remote {
         /// <param name="command">The command that has been dispatched for execution</param>
         /// <param name="result">The result of the command (also found in the command object, but placed here for readability)</param>
         /// <returns>The existing response packet, modified with the result of the command execution.</returns>
-        protected DaemonPacket SerializeResponse(DaemonPacket response, Command command, CommandResultArgs result) {
+        protected CommandServerPacket SerializeResponse(CommandServerPacket response, Command command, CommandResultArgs result) {
 
             String responseContentType = result.ContentType;
 
@@ -207,8 +207,8 @@ namespace Procon.Core.Remote {
             return response;
         }
 
-        protected void DaemonListener_PacketReceived(IClient client, DaemonPacket request) {
-            DaemonPacket response = new DaemonPacket() {
+        protected void CommandServerListener_PacketReceived(IClient client, CommandServerPacket request) {
+            CommandServerPacket response = new CommandServerPacket() {
                 Packet = {
                     Type = PacketType.Response,
                     Origin = PacketOrigin.Client,
@@ -247,7 +247,7 @@ namespace Procon.Core.Remote {
                 response.StatusCode = HttpStatusCode.BadRequest;
             }
 
-            this.DaemonListener.Respond(client, request, response);
+            this.CommandServerListener.Respond(client, request, response);
         }
 
         protected bool Authenticate(String username, String passwordPlainText) {

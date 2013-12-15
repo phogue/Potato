@@ -154,4 +154,4 @@ $RECYCLE.BIN/
 /builds
 
 # Keep unit test daemon certificate
-!/src/Procon.Core.Test/Certificates/Daemon.pfx
+!/src/Procon.Core.Test/Certificates/CommandServer.pfx

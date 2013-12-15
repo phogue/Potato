@@ -242,7 +242,7 @@
     <Folder Include="Utils\DirectoryInfoExtensions\Zip\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Certificates\Daemon.pfx">
+    <Content Include="Certificates\CommandServer.pfx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

@@ -2,12 +2,12 @@
 using System.Collections.Specialized;
 using System.Net;
 
-namespace Procon.Net.Protocols.Daemon {
+namespace Procon.Net.Protocols.CommandServer {
     /// <summary>
-    /// A packet (essentially http) for communication via the daemon
+    /// A packet (essentially http) for communication via the command server
     /// </summary>
     [Serializable]
-    public class DaemonPacket : IPacketWrapper {
+    public class CommandServerPacket : IPacketWrapper {
 
         /// <summary>
         /// The requested Uri
@@ -54,7 +54,7 @@ namespace Procon.Net.Protocols.Daemon {
         /// <summary>
         /// Initializes default values.
         /// </summary>
-        public DaemonPacket() {
+        public CommandServerPacket() {
             this.Headers = new WebHeaderCollection();
             this.Query = new NameValueCollection();
             this.Content = String.Empty;

@@ -93,10 +93,10 @@
     <Compile Include="GameEventData.cs" />
     <Compile Include="IPacketStream.cs" />
     <Compile Include="PacketStream.cs" />
-    <Compile Include="Protocols\Daemon\DaemonClient.cs" />
-    <Compile Include="Protocols\Daemon\DaemonPacket.cs" />
-    <Compile Include="Protocols\Daemon\DaemonPacketSerializer.cs" />
-    <Compile Include="Protocols\Daemon\DaemonListener.cs" />
+    <Compile Include="Protocols\CommandServer\CommandServerClient.cs" />
+    <Compile Include="Protocols\CommandServer\CommandServerPacket.cs" />
+    <Compile Include="Protocols\CommandServer\CommandServerPacketSerializer.cs" />
+    <Compile Include="Protocols\CommandServer\CommandServerListener.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="GameEventArgs.cs" />
     <Compile Include="GameEventType.cs" />

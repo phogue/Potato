@@ -106,7 +106,7 @@
     <Compile Include="Events\PushEventsRequest.cs" />
     <Compile Include="ExecutableBase.cs" />
     <Compile Include="IExecutableBase.cs" />
-    <Compile Include="Remote\DaemonController.cs" />
+    <Compile Include="Remote\CommandServerController.cs" />
     <Compile Include="Events\PushEventsController.cs" />
     <Compile Include="Events\PushEventsEndPoint.cs" />
     <Compile Include="Repositories\FlatPackedPackage.cs" />

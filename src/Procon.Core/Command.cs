@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Xml.Linq;
 using System.Xml.Serialization;
 using Newtonsoft.Json;
+using Procon.Net.Protocols.CommandServer;
 using Procon.Net.Utils;
 
 namespace Procon.Core {
     using Procon.Net.Protocols;
-    using Procon.Net.Protocols.Daemon;
 
     [Serializable]
     public class Command : CommandAttribute {
@@ -31,7 +31,7 @@ namespace Procon.Core {
         /// The original request from a remote source.
         /// </summary>
         [XmlIgnore, JsonIgnore]
-        public DaemonPacket RemoteRequest { get; set; }
+        public CommandServerPacket RemoteRequest { get; set; }
 
         /// <summary>
         /// The raw parameters to be passed into the executable command.

@@ -33,18 +33,18 @@
         /// </summary>
         WriteLogEventsToFile,
         /// <summary>
-        /// (bool) Flag turning te daemon on/off
+        /// (bool) Flag turning te command sever on/off
         /// </summary>
-        DaemonEnabled,
+        CommandServerEnabled,
         /// <summary>
         /// (uint) The port to listen for connections on.
         /// </summary>
-        DaemonListenerPort,
+        CommandServerPort,
         /// <summary>
         /// (string) The path to the certificate file. If the file does not exist then the contents of
         /// the variable will be used as the certificate.
         /// </summary>
-        DaemonListenerCertificate,
+        CommandServerCertificate,
         /// <summary>
         /// List[String] list of strings to ignore if they match
         /// </summary>

@@ -12,7 +12,7 @@ namespace Procon.Core {
         /// </summary>
         Local,
         /// <summary>
-        /// The command came from a remote daemon client
+        /// The command came from a remote client
         /// </summary>
         Remote,
         /// <summary>

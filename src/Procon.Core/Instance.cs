@@ -34,9 +34,9 @@ namespace Procon.Core {
         public RepositoryController Packages { get; protected set; }
 
         /// <summary>
-        /// The daemon controller, if active.
+        /// The command server controller, if active.
         /// </summary>
-        public DaemonController Daemon { get; protected set; }
+        public CommandServerController CommandServer { get; protected set; }
 
         /// <summary>
         /// Controller to push events to various sources.
@@ -60,14 +60,14 @@ namespace Procon.Core {
         protected ServiceMessage ServiceMessage { get; set; }
 
         /// <summary>
-        /// Creates a new instance of Procon, setting up daemon, packages and tasks
+        /// Creates a new instance of Procon, setting up command server, packages and tasks
         /// </summary>
         public Instance() : base() {
             this.Connections = new List<Connection>();
 
             this.Packages = new RepositoryController();
 
-            this.Daemon = new DaemonController() {
+            this.CommandServer = new CommandServerController() {
                 TunnelObjects = new List<IExecutableBase>() {
                     this
                 }
@@ -104,7 +104,7 @@ namespace Procon.Core {
                         (date, task) => date.Minute % 1 == 0 && date.Second == 0
                     }
                 }
-            ).Tick += new Task.TickHandler(Daemon_Tick);
+            ).Tick += new Task.TickHandler(CommandServer_Tick);
 
             this.Tasks.Add(
                 new Task() {
@@ -252,14 +252,14 @@ namespace Procon.Core {
         }
 
         /// <summary>
-        /// Pokes the daemon and all current active clients, ensuring we don't have any stale clients
+        /// Pokes the command server and all current active clients, ensuring we don't have any stale clients
         /// still held in memory.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        protected void Daemon_Tick(Object sender, TickEventArgs e) {
-            if (this.Daemon != null) {
-                this.Daemon.Poke();
+        protected void CommandServer_Tick(Object sender, TickEventArgs e) {
+            if (this.CommandServer != null) {
+                this.CommandServer.Poke();
             }
         }
 
@@ -285,7 +285,7 @@ namespace Procon.Core {
         public override ExecutableBase Execute() {
             this.EventsConsole.Execute();
             this.Packages.Execute();
-            this.Daemon.Execute();
+            this.CommandServer.Execute();
             this.PushEvents.Execute();
 
             this.Tasks.Start();
@@ -344,9 +344,9 @@ namespace Procon.Core {
             this.Security.WriteConfig(securityConfig);
             config.Combine(securityConfig);
 
-            Config daemonConfig = new Config().Create(this.Daemon.GetType());
-            this.Daemon.WriteConfig(daemonConfig);
-            config.Combine(daemonConfig);
+            Config commandServerConfig = new Config().Create(this.CommandServer.GetType());
+            this.CommandServer.WriteConfig(commandServerConfig);
+            config.Combine(commandServerConfig);
 
             Config pushEventsConfig = new Config().Create(this.PushEvents.GetType());
             this.PushEvents.WriteConfig(pushEventsConfig);
@@ -487,8 +487,8 @@ namespace Procon.Core {
             this.Packages.Dispose();
             this.Packages = null;
 
-            this.Daemon.Dispose();
-            this.Daemon = null;
+            this.CommandServer.Dispose();
+            this.CommandServer = null;
 
             this.PushEvents.Dispose();
             this.PushEvents = null;

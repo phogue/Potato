@@ -44,7 +44,11 @@
         /// (string) The path to the certificate file. If unset then Procon's default /Certificates/CommandServer.pfx
         /// will be used.
         /// </summary>
-        CommandServerCertificate,
+        CommandServerCertificatePath,
+        /// <summary>
+        /// (string) The password to the certificate store
+        /// </summary>
+        CommandServerCertificatePassword,
         /// <summary>
         /// List[String] list of strings to ignore if they match
         /// </summary>

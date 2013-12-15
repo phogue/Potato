@@ -29,7 +29,7 @@ namespace Procon.Core.Remote {
         public override ExecutableBase Execute() {
             this.Variables.Variable(CommonVariableNames.CommandServerEnabled).PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(CommandServerController_PropertyChanged);
             this.Variables.Variable(CommonVariableNames.CommandServerPort).PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(CommandServerController_PropertyChanged);
-            this.Variables.Variable(CommonVariableNames.CommandServerCertificate).PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(CommandServerController_PropertyChanged);
+            this.Variables.Variable(CommonVariableNames.CommandServerCertificatePath).PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(CommandServerController_PropertyChanged);
 
             this.Configure();
 
@@ -41,7 +41,7 @@ namespace Procon.Core.Remote {
 
             this.Variables.Variable(CommonVariableNames.CommandServerEnabled).PropertyChanged -= new System.ComponentModel.PropertyChangedEventHandler(CommandServerController_PropertyChanged);
             this.Variables.Variable(CommonVariableNames.CommandServerPort).PropertyChanged -= new System.ComponentModel.PropertyChangedEventHandler(CommandServerController_PropertyChanged);
-            this.Variables.Variable(CommonVariableNames.CommandServerCertificate).PropertyChanged -= new System.ComponentModel.PropertyChangedEventHandler(CommandServerController_PropertyChanged);
+            this.Variables.Variable(CommonVariableNames.CommandServerCertificatePath).PropertyChanged -= new System.ComponentModel.PropertyChangedEventHandler(CommandServerController_PropertyChanged);
             
             if (this.CommandServerListener != null) this.CommandServerListener.Dispose();
             this.CommandServerListener = null;
@@ -66,10 +66,10 @@ namespace Procon.Core.Remote {
 
         protected X509Certificate2 LoadCertificate(String certificatePath) {
             X509Certificate2 certificate;
+            String certificatePassword = this.Variables.Get<String>(CommonVariableNames.CommandServerCertificatePassword);
 
             try {
-                certificate = new X509Certificate2(certificatePath, "password1");
-                //certificate = new X509Certificate2(X509Certificate.CreateFromCertFile(certificatePath));
+                certificate = certificatePassword != null ? new X509Certificate2(certificatePath, certificatePassword) : new X509Certificate2(certificatePath);
             }
             catch (CryptographicException e) {
                 certificate = null;
@@ -93,7 +93,7 @@ namespace Procon.Core.Remote {
         /// </summary>
         protected void Configure() {
             if (this.Variables.Get<bool>(CommonVariableNames.CommandServerEnabled) == true) {
-                String certificatePath = this.Variables.Get(CommonVariableNames.CommandServerCertificate, Defines.CertificatesDirectoryCommandServerPfx);
+                String certificatePath = this.Variables.Get(CommonVariableNames.CommandServerCertificatePath, Defines.CertificatesDirectoryCommandServerPfx);
 
                 if (File.Exists(certificatePath) == true) {
                     X509Certificate2 certificate = this.LoadCertificate(certificatePath);

@@ -41,8 +41,8 @@
         /// </summary>
         CommandServerPort,
         /// <summary>
-        /// (string) The path to the certificate file. If the file does not exist then the contents of
-        /// the variable will be used as the certificate.
+        /// (string) The path to the certificate file. If unset then Procon's default /Certificates/CommandServer.pfx
+        /// will be used.
         /// </summary>
         CommandServerCertificate,
         /// <summary>

@@ -28,6 +28,7 @@ namespace Procon.Core.Remote {
         public override ExecutableBase Execute() {
             this.Variables.Variable(CommonVariableNames.CommandServerEnabled).PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(CommandServerController_PropertyChanged);
             this.Variables.Variable(CommonVariableNames.CommandServerPort).PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(CommandServerController_PropertyChanged);
+            this.Variables.Variable(CommonVariableNames.CommandServerCertificate).PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(CommandServerController_PropertyChanged);
 
             this.Configure();
 
@@ -39,6 +40,7 @@ namespace Procon.Core.Remote {
 
             this.Variables.Variable(CommonVariableNames.CommandServerEnabled).PropertyChanged -= new System.ComponentModel.PropertyChangedEventHandler(CommandServerController_PropertyChanged);
             this.Variables.Variable(CommonVariableNames.CommandServerPort).PropertyChanged -= new System.ComponentModel.PropertyChangedEventHandler(CommandServerController_PropertyChanged);
+            this.Variables.Variable(CommonVariableNames.CommandServerCertificate).PropertyChanged -= new System.ComponentModel.PropertyChangedEventHandler(CommandServerController_PropertyChanged);
             
             if (this.CommandServerListener != null) this.CommandServerListener.Dispose();
             this.CommandServerListener = null;
@@ -69,9 +71,10 @@ namespace Procon.Core.Remote {
         /// </summary>
         protected void Configure() {
             if (this.Variables.Get<bool>(CommonVariableNames.CommandServerEnabled) == true) {
+                String certificatePath = this.Variables.Get(CommonVariableNames.CommandServerCertificate, Defines.CertificatesDirectoryCommandServerPfx);
 
-                if (File.Exists(Defines.CertificatesDirectoryCommandServerPfx) == true) {
-                    X509Certificate2 certificate = new X509Certificate2(X509Certificate.CreateFromCertFile(Defines.CertificatesDirectoryCommandServerPfx));
+                if (File.Exists(certificatePath) == true) {
+                    X509Certificate2 certificate = new X509Certificate2(X509Certificate.CreateFromCertFile(certificatePath));
 
                     this.CommandServerListener = new CommandServerListener() {
                         Certificate = certificate,
@@ -93,7 +96,7 @@ namespace Procon.Core.Remote {
                 else {
                     // Panic, no certificate exists. Cannot start server.
                     this.Events.Log(new GenericEventArgs() {
-                        Message = "Command server certificate does not exists.",
+                        Message = String.Format("Command server certificate @ path \"{0}\" does not exists.", certificatePath),
                         GenericEventType = GenericEventType.CommandServerStarted,
                         Success = false,
                         Status = CommandResultType.Failed

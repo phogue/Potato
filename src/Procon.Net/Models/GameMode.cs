@@ -1,7 +1,7 @@
 ﻿using System;
 using Procon.Net.Collections;
 
-namespace Procon.Net.Data {
+namespace Procon.Net.Models {
 
     [Serializable]
     public sealed class GameMode : NetworkObject {

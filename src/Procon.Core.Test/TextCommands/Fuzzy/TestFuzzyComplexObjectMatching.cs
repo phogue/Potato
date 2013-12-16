@@ -3,7 +3,7 @@ using System.Linq;
 using NUnit.Framework;
 using Procon.Core.Connections.TextCommands;
 using Procon.Net.Actions;
-using Procon.Net.Data;
+using Procon.Net.Models;
 
 namespace Procon.Core.Test.TextCommands.Fuzzy {
     [TestFixture]

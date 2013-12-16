@@ -8,6 +8,8 @@
 // </auto-generated>
 // ------------------------------------------------------------------------------
 
+using Procon.Net.Models;
+
 namespace Procon.Examples.UserInterface.Pages
 {
 #line 1 "C:\Users\P\Documents\Projects\clients\myrcon\procon\Procon-2\src\Procon.Examples.PluginUserInterface\Pages\SettingsPageView.tt"
@@ -26,7 +28,7 @@ namespace Procon.Examples.UserInterface.Pages
             this.Write("</b>");
             
             #line 2 "C:\Users\P\Documents\Projects\clients\myrcon\procon\Procon-2\src\Procon.Examples.PluginUserInterface\Pages\SettingsPageView.tt"
- foreach (Procon.Net.Data.Player player in this.MyListOfPlayers) { 
+ foreach (Player player in this.MyListOfPlayers) { 
             
             #line default
             #line hidden

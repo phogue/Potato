@@ -4,7 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using Procon.Net.Actions;
-using Procon.Net.Data;
+using Procon.Net.Models;
 using Procon.Net.Protocols.Myrcon.Frostbite.Objects;
 using Procon.Net.Protocols.PunkBuster;
 using Procon.Net.Protocols.PunkBuster.Packets;

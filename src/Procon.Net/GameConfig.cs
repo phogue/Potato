@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Xml.Linq;
 using Procon.Net.Actions;
-using Procon.Net.Data;
+using Procon.Net.Models;
 using Procon.Net.Utils;
 
 namespace Procon.Net {

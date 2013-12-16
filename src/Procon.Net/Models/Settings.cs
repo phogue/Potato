@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Procon.Net.Data {
+namespace Procon.Net.Models {
 
     /// <summary>
     /// The current, maximum and minimum settings 

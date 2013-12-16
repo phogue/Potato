@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Procon.Net.Data;
+using Procon.Net.Models;
 
 namespace Procon.Net.Protocols.Myrcon.Frostbite.Objects {
 

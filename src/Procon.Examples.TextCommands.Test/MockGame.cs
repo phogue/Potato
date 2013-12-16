@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Procon.Net;
 using Procon.Net.Actions;
-using Procon.Net.Data;
+using Procon.Net.Models;
 
 namespace Procon.Examples.TextCommands.Test {
     public class MockGame : Game {

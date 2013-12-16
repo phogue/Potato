@@ -1,5 +1,5 @@
 ﻿using NUnit.Framework;
-using Procon.Net.Data;
+using Procon.Net.Models;
 
 namespace Procon.Net.Test.Data {
     [TestFixture]

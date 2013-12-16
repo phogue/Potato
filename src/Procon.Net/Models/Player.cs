@@ -4,7 +4,7 @@ using Procon.Net.Collections;
 using Procon.Net.Geolocation;
 using Procon.Net.Utils;
 
-namespace Procon.Net.Data {
+namespace Procon.Net.Models {
     /// <summary>
     /// An in game player
     /// </summary>

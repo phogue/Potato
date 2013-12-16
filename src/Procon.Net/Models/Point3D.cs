@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Procon.Net.Data {
+namespace Procon.Net.Models {
 
     /// <summary>
     /// A three dimensional location of a player/object.

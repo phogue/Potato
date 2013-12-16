@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Procon.Net.Data {
+namespace Procon.Net.Models {
     [Flags, Serializable]
     public enum HumanHitLocation {
         Head = 0x1,

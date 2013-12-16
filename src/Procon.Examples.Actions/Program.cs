@@ -7,7 +7,7 @@ using Procon.Core.Connections.Plugins;
 using Procon.Net;
 using Procon.Net.Actions;
 using Procon.Net.Actions.Deferred;
-using Procon.Net.Data;
+using Procon.Net.Models;
 
 namespace Procon.Examples.Actions {
     public class Program : RemotePlugin {

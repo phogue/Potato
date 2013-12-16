@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Procon.Net.Data {
+namespace Procon.Net.Models {
     [Serializable]
     public sealed class Inventory : NetworkObject {
 

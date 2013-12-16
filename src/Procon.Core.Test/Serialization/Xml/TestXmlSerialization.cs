@@ -11,7 +11,7 @@ using Procon.Core.Variables;
 using Procon.Net;
 using Procon.Net.Actions;
 using Procon.Net.Collections;
-using Procon.Net.Data;
+using Procon.Net.Models;
 using Procon.Net.Protocols;
 using Procon.Net.Utils;
 using Procon.Fuzzy.Tokens.Primitive.Temporal;

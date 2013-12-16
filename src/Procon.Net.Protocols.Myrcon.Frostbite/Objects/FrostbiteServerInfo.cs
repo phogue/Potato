@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 using System.ComponentModel;
-using Procon.Net.Data;
+using Procon.Net.Models;
 
 namespace Procon.Net.Protocols.Myrcon.Frostbite.Objects {
     [Serializable]

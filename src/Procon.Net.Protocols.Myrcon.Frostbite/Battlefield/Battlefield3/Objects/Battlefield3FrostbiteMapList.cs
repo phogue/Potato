@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Procon.Net.Actions;
-using Procon.Net.Data;
+using Procon.Net.Models;
 using Procon.Net.Protocols.Myrcon.Frostbite.Objects;
 
 namespace Procon.Net.Protocols.Myrcon.Frostbite.Battlefield.Battlefield3.Objects {

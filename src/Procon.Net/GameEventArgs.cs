@@ -1,5 +1,5 @@
 ﻿using System;
-using Procon.Net.Data;
+using Procon.Net.Models;
 
 namespace Procon.Net {
     /// <summary>

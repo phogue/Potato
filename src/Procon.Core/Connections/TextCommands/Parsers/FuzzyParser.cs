@@ -11,8 +11,8 @@ using Procon.Fuzzy.Tokens.Primitive.Numeric;
 using Procon.Fuzzy.Tokens.Primitive.Temporal;
 using Procon.Fuzzy.Utils;
 using Procon.Net.Actions;
-using Procon.Net.Data;
 using Procon.Net.Geolocation;
+using Procon.Net.Models;
 
 namespace Procon.Core.Connections.TextCommands.Parsers {
 

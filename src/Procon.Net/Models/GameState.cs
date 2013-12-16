@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Procon.Net.Actions;
 using Procon.Net.Collections;
 
-namespace Procon.Net.Data {
+namespace Procon.Net.Models {
     [Serializable]
     public class GameState {
         public GameState() {

@@ -5,7 +5,7 @@ using System.Xml;
 using System.Xml.Serialization;
 using Newtonsoft.Json;
 using Procon.Net.Actions;
-using Procon.Net.Data;
+using Procon.Net.Models;
 
 namespace Procon.Core.Connections.TextCommands {
 

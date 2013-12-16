@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Procon.Net.Data;
+using Procon.Net.Models;
 
 namespace Procon.Examples.UserInterface.Pages {
     public partial class SettingsPageView {

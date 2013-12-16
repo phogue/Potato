@@ -10,7 +10,7 @@ using Procon.Core.Events;
 using Procon.Core.Variables;
 using Procon.Net;
 using Procon.Net.Actions;
-using Procon.Net.Data;
+using Procon.Net.Models;
 using Procon.Net.Utils;
 
 namespace Procon.Core.Connections {

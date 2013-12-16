@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Xml.Serialization;
 using Newtonsoft.Json;
-using Procon.Net.Data;
+using Procon.Net.Models;
 
 namespace Procon.Net.Actions {
 

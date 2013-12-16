@@ -7,7 +7,7 @@ using Procon.Core.Connections;
 using Procon.Core.Security;
 using Procon.Net.Actions;
 using Procon.Net.Collections;
-using Procon.Net.Data;
+using Procon.Net.Models;
 using Procon.Net.Protocols;
 using Procon.Fuzzy.Tokens.Primitive.Temporal;
 using Procon.Net.Protocols.Myrcon.Frostbite.Battlefield.Battlefield3;

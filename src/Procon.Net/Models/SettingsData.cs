@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Procon.Net.Data {
+namespace Procon.Net.Models {
     /// <summary>
     /// Note that the property names will more than likely lengthen to very specific for their task.
     /// 

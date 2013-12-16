@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Procon.Net.Data {
+namespace Procon.Net.Models {
     [Serializable]
     public enum TimeSubsetContext {
         None,

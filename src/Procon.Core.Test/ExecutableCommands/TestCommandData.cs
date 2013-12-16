@@ -9,7 +9,7 @@ using Procon.Core.Localization;
 using Procon.Core.Security;
 using Procon.Core.Variables;
 using Procon.Net.Actions;
-using Procon.Net.Data;
+using Procon.Net.Models;
 
 namespace Procon.Core.Test.ExecutableCommands {
     [TestFixture]

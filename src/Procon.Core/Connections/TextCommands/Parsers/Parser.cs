@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using Procon.Core.Security;
-using Procon.Net.Data;
+using Procon.Net.Models;
 
 namespace Procon.Core.Connections.TextCommands.Parsers {
 

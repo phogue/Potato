@@ -8,7 +8,7 @@ using Procon.Core.Events;
 using Procon.Core.Localization;
 using Procon.Core.Security;
 using Procon.Core.Variables;
-using Procon.Net.Data;
+using Procon.Net.Models;
 
 namespace Procon.Core.Connections.TextCommands {
 

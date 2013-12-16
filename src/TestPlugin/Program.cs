@@ -4,7 +4,7 @@ using System.Linq;
 using Procon.Net;
 using Procon.Net.Actions;
 using Procon.Net.Actions.Deferred;
-using Procon.Net.Data;
+using Procon.Net.Models;
 
 namespace TestPlugin {
     using Tests;

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Procon.Core;
 using Procon.Core.Connections.Plugins;
 using Procon.Examples.UserInterface.Pages;
-using Procon.Net.Data;
+using Procon.Net.Models;
 using Procon.Net.Utils.HTTP;
 
 namespace Procon.Examples.UserInterface {

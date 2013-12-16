@@ -26,7 +26,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using Procon.Net.Actions;
-using Procon.Net.Data;
+using Procon.Net.Models;
 
 namespace Procon.Tools.NetworkConsole.Controls {
     using Procon.Net;

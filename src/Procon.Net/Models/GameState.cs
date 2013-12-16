@@ -14,6 +14,7 @@ namespace Procon.Net.Models {
             this.MapPool = new List<Map>();
             this.GameModePool = new List<GameMode>();
             this.Groupings = new List<Grouping>();
+            this.Items = new List<Item>();
 
             this.Settings = new Settings();
         }

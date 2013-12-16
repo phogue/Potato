@@ -3062,7 +3062,7 @@
     </Item>
     <Item>
       <Name>U_V40</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>V40 Mini</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>None</string>
         <string>Auxiliary</string>

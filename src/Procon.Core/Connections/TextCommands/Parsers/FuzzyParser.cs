@@ -110,7 +110,7 @@ namespace Procon.Core.Connections.TextCommands.Parsers {
         }
 
         protected void ParseItemNames(Phrase phrase) {
-            var playerItems = this.Connection.GameState.Players.SelectMany(player => player.Inventory.Items).Select(item => new {
+            var playerItems = this.Connection.GameState.Items.Select(item => new {
                 item,
                 similarity = Math.Max(item.FriendlyName.StringSimularitySubsetBonusRatio(phrase.Text), item.Tags.Select(tag => tag.StringSimularitySubsetBonusRatio(phrase.Text)).Max())
             })
@@ -118,8 +118,8 @@ namespace Procon.Core.Connections.TextCommands.Parsers {
             .Select(@t => new ThingObjectToken() {
                 Reference = new ItemThingReference() {
                     Items = new List<Item>() {
-                        @t.item
-                    }
+                                    @t.item
+                                }
                 },
                 Text = phrase.Text,
                 Similarity = @t.similarity,

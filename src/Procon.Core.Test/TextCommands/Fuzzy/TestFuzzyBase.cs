@@ -346,6 +346,8 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
                 TestFuzzyBase.PlayerMrDiacritic
             });
 
+            textCommandController.Connection.GameState.Items = textCommandController.Connection.GameState.Players.SelectMany(player => player.Inventory.Items).ToList();
+
             textCommandController.Connection.GameState.MapPool.AddRange(new List<Map>() {
                 TestFuzzyBase.MapPortValdez,
                 TestFuzzyBase.MapValparaiso,

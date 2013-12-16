@@ -157,7 +157,7 @@
       <Project>{4B55557F-C2AA-4047-9ED9-3E4BBF9CF670}</Project>
       <Name>Procon.Fuzzy</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Procon.Net.Protocols.Frostbite\Procon.Net.Protocols.Frostbite.csproj">
+    <ProjectReference Include="..\Procon.Net.Protocols.Myrcon.Frostbite\Procon.Net.Protocols.Myrcon.Frostbite.csproj">
       <Project>{299A4619-928D-4D7F-8857-644B5F57F6FC}</Project>
       <Name>Procon.Net.Protocols.Frostbite</Name>
     </ProjectReference>

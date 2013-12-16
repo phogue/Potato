@@ -9,8 +9,8 @@ using Procon.Net.Actions;
 using Procon.Net.Collections;
 using Procon.Net.Data;
 using Procon.Net.Protocols;
-using Procon.Net.Protocols.Frostbite.Battlefield.Battlefield3;
 using Procon.Fuzzy.Tokens.Primitive.Temporal;
+using Procon.Net.Protocols.Myrcon.Frostbite.Battlefield.Battlefield3;
 
 namespace Procon.Core.Test.TextCommands.Fuzzy {
     public abstract class TestFuzzyBase {

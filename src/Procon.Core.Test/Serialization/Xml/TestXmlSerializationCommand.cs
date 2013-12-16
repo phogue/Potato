@@ -9,7 +9,6 @@ using Procon.Core.Events;
 using Procon.Core.Utils;
 using Procon.Net;
 using Procon.Net.Actions;
-using Procon.Net.Protocols.Frostbite.Objects;
 using Procon.Net.Utils;
 
 namespace Procon.Core.Test.Serialization.Xml {

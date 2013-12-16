@@ -128,24 +128,32 @@ namespace Procon.Net.Protocols.Myrcon.Frostbite.Battlefield.Battlefield4 {
 
                 if (bool.TryParse(request.Packet.Words[4], out headshot) == true) {
 
+                    Item item = this.State.Items.FirstOrDefault(i => i.Name == Regex.Replace(request.Packet.Words[3], @"[^\w\/_-]+", ""));
+
+                    Player killer = this.State.Players.Find(x => x.Name == request.Packet.Words[1]);
+                    Player victim = this.State.Players.Find(x => x.Name == request.Packet.Words[2]);
+
+                    // Assign the item to the player, overwriting everything else attached to this killer.
+                    if (killer != null) {
+                        killer.Inventory.Items.Clear();
+                        killer.Inventory.Items.Add(item);
+                    }
+
                     this.OnGameEvent(GameEventType.GamePlayerKill, new GameEventData() {
                         Kills = new List<Kill>() {
                             new Kill() {
                                 HumanHitLocation = headshot == true ? FrostbiteGame.Headshot : FrostbiteGame.Bodyshot,
                                 Scope = {
                                     Players = new List<Player>() {
-                                        this.State.Players.Find(x => x.Name == request.Packet.Words[2])
+                                        victim
                                     },
                                     Items = new List<Item>() {
-                                        new Item() {
-                                            // Servers sends garbage at the end of the round?
-                                            Name = Regex.Replace(request.Packet.Words[3], @"[^\\w\\/_-]+", "")
-                                        }
+                                        item
                                     }
                                 },
                                 Now = {
                                     Players = new List<Player>() {
-                                        this.State.Players.Find(x => x.Name == request.Packet.Words[1])
+                                        killer
                                     }
                                 }
                             }

@@ -58,6 +58,19 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
             Score = 1000,
             Location = {
                 CountryName = "Australia"
+            },
+            Inventory = {
+                Items = {
+                    new Item() {
+                        Name = "U_CZ805",
+                        FriendlyName = "CZ-805",
+                        Tags = {
+                            "Assault",
+                            "Primary",
+                            "AssaultRifle"
+                        }
+                    }
+                }
             }
         };
 
@@ -68,6 +81,19 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
             Score = 950,
             Location = {
                 CountryName = "United States"
+            },
+            Inventory = {
+                Items = {
+                    new Item() {
+                        Name = "U_C4",
+                        FriendlyName = "C4",
+                        Tags = {
+                            "Recon",
+                            "Secondary",
+                            "Explosive"
+                        }
+                    }
+                }
             }
         };
 
@@ -78,6 +104,19 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
             Score = 900,
             Location = {
                 CountryName = "Germany"
+            },
+            Inventory = {
+                Items = {
+                    new Item() {
+                        Name = "U_CZ75",
+                        FriendlyName = "CZ-75",
+                        Tags = {
+                            "None",
+                            "Auxiliary",
+                            "Handgun"
+                        }
+                    }
+                }
             }
         };
 
@@ -88,6 +127,19 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
             Score = 850,
             Location = {
                 CountryName = "Austria"
+            },
+            Inventory = {
+                Items = {
+                    new Item() {
+                        Name = "U_DBV12",
+                        FriendlyName = "DBV-12",
+                        Tags = {
+                            "None",
+                            "Primary",
+                            "Shotgun"
+                        }
+                    }
+                }
             }
         };
 
@@ -98,6 +150,19 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
             Score = 800,
             Location = {
                 CountryName = "Great Britain"
+            },
+            Inventory = {
+                Items = {
+                    new Item() {
+                        Name = "U_Defib",
+                        FriendlyName = "Defibrilator",
+                        Tags = {
+                            "Assault",
+                            "Secondary",
+                            "Melee"
+                        }
+                    }
+                }
             }
         };
 
@@ -108,6 +173,19 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
             Score = 750,
             Location = {
                 CountryName = "United States"
+            },
+            Inventory = {
+                Items = {
+                    new Item() {
+                        Name = "U_FGM148",
+                        FriendlyName = "FGM-148 Javelin",
+                        Tags = {
+                            "Demolition",
+                            "Secondary",
+                            "ProjectileExplosive"
+                        }
+                    }
+                }
             }
         };
 
@@ -118,6 +196,19 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
             Score = 700,
             Location = {
                 CountryName = "Netherlands"
+            },
+            Inventory = {
+                Items = {
+                    new Item() {
+                        Name = "U_Flashbang",
+                        FriendlyName = "Flashbang",
+                        Tags = {
+                            "None",
+                            "Auxiliary",
+                            "Explosive"
+                        }
+                    }
+                }
             }
         };
 
@@ -128,6 +219,19 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
             Score = 650,
             Location = {
                 CountryName = "Australia"
+            },
+            Inventory = {
+                Items = {
+                    new Item() {
+                        Name = "U_AMR2",
+                        FriendlyName = "AMR2-2",
+                        Tags = {
+                            "None",
+                            "Primary",
+                            "SniperRifle"
+                        }
+                    }
+                }
             }
         };
 
@@ -138,6 +242,19 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
             Score = 600,
             Location = {
                 CountryName = "Australia"
+            },
+            Inventory = {
+                Items = {
+                    new Item() {
+                        Name = "U_AMR2",
+                        FriendlyName = "AMR2-2",
+                        Tags = {
+                            "None",
+                            "Primary",
+                            "SniperRifle"
+                        }
+                    }
+                }
             }
         };
 

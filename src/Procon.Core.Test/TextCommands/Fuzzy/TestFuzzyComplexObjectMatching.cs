@@ -288,5 +288,21 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
                 }
             );
         }
+
+        [Test]
+        public void TestComplexKickEveryoneUsingSniperRifles() {
+            TextCommandController textCommandController = this.CreateTextCommandController();
+
+            TestFuzzyBase.AssertCommandPlayerListMapList(
+                textCommandController,
+                "kick everyone using sniper rifles",
+                TestFuzzyBase.TextCommandKick,
+                new List<Player>() {
+                    TestFuzzyBase.PlayerZaeed,
+                    TestFuzzyBase.PlayerPhogueIsAButterfly
+                },
+                new List<Map>()
+            );
+        }
     }
 }

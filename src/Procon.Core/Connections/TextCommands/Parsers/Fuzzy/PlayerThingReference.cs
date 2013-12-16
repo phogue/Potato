@@ -15,12 +15,13 @@ namespace Procon.Core.Connections.TextCommands.Parsers.Fuzzy {
         public List<Player> Players { get; set; }
 
         public bool CompatibleWith(IThingReference other) {
-            return other is PlayerThingReference || other is LocationThingReference;
+            return other is PlayerThingReference || other is LocationThingReference || other is ItemThingReference;
         }
 
         public IThingReference Union(IThingReference other) {
             PlayerThingReference playerThingReference = other as PlayerThingReference;
             LocationThingReference locationThingReference = other as LocationThingReference;
+            ItemThingReference itemThingReference = other as ItemThingReference;
 
             if (playerThingReference != null) {
                 // Players and Players
@@ -30,6 +31,10 @@ namespace Procon.Core.Connections.TextCommands.Parsers.Fuzzy {
                 // All players from australia
                 this.Players.RemoveAll(player => locationThingReference.Locations.Any(location => location.CountryName != player.Location.CountryName));
             }
+            else if (itemThingReference != null) {
+                // All players using sniper rifle
+                this.Players.RemoveAll(player => itemThingReference.Items.Any(item => player.Inventory.Items.Any(playerItem => item.Name == playerItem.Name)) == false);
+            }
 
             return this;
         }
@@ -37,6 +42,7 @@ namespace Procon.Core.Connections.TextCommands.Parsers.Fuzzy {
         public IThingReference Complement(IThingReference other) {
             PlayerThingReference playerThingReference = other as PlayerThingReference;
             LocationThingReference locationThingReference = other as LocationThingReference;
+            ItemThingReference itemThingReference = other as ItemThingReference;
 
             if (playerThingReference != null) {
                 // Players excluding Players
@@ -45,7 +51,10 @@ namespace Procon.Core.Connections.TextCommands.Parsers.Fuzzy {
             else if (locationThingReference != null) {
                 // All players not from australia
                 this.Players.RemoveAll(player => locationThingReference.Locations.Any(location => location.CountryName == player.Location.CountryName));
-
+            }
+            else if (itemThingReference != null) {
+                // All players not using sniper rifle
+                this.Players.RemoveAll(player => itemThingReference.Items.Any(item => player.Inventory.Items.Any(playerItem => item.Name == playerItem.Name)));
             }
 
             return this;

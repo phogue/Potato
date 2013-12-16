@@ -79,6 +79,7 @@
     <Compile Include="Connections\Connection.cs" />
     <Compile Include="Connections\Plugins\IRemotePluginController.cs" />
     <Compile Include="Connections\Plugins\IRenewableLease.cs" />
+    <Compile Include="Connections\TextCommands\Parsers\Fuzzy\ItemThingReference.cs" />
     <Compile Include="Connections\TextCommands\TextCommandIntervalType.cs" />
     <Compile Include="Connections\TextCommands\ITextCommandParser.cs" />
     <Compile Include="Connections\TextCommands\Parsers\Fuzzy\KdrPropertyReference.cs" />

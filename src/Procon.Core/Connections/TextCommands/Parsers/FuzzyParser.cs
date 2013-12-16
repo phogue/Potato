@@ -109,6 +109,29 @@ namespace Procon.Core.Connections.TextCommands.Parsers {
             phrase.AppendDistinctRange(names);
         }
 
+        protected void ParseItemNames(Phrase phrase) {
+            var playerItems = this.Connection.GameState.Players.SelectMany(player => player.Inventory.Items).Select(item => new {
+                item,
+                similarity = Math.Max(item.FriendlyName.StringSimularitySubsetBonusRatio(phrase.Text), item.Tags.Select(tag => tag.StringSimularitySubsetBonusRatio(phrase.Text)).Max())
+            })
+            .Where(@t => @t.similarity >= 60)
+            .Select(@t => new ThingObjectToken() {
+                Reference = new ItemThingReference() {
+                    Items = new List<Item>() {
+                        @t.item
+                    }
+                },
+                Text = phrase.Text,
+                Similarity = @t.similarity,
+                MinimumWeightedSimilarity = 60
+            });
+
+            List<Token> names = new List<Token>();
+            playerItems.ToList().ForEach(names.Add);
+
+            phrase.AppendDistinctRange(names);
+        }
+
         public Phrase ParseThing(IFuzzyState state, Phrase phrase) {
 
             if (phrase.Any()) {
@@ -131,6 +154,7 @@ namespace Procon.Core.Connections.TextCommands.Parsers {
             this.ParsePlayerNames(phrase);
             this.ParseMapNames(phrase);
             this.ParseCountryNames(phrase);
+            this.ParseItemNames(phrase);
 
             return phrase;
         }

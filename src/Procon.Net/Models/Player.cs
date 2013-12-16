@@ -135,6 +135,7 @@ namespace Procon.Net.Models {
             this.Name = String.Empty;
             this.Groups = new Groupings();
             this.Location = new Location();
+            this.Inventory = new Inventory();
         }
 
         /// <summary>

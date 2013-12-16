@@ -27,6 +27,8 @@ namespace Procon.Net.Models {
         /// Initializes default values.
         /// </summary>
         public Item() {
+            this.Name = String.Empty;
+            this.FriendlyName = String.Empty;
             this.Tags = new List<String>();
         }
     }

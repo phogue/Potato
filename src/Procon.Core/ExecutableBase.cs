@@ -95,6 +95,9 @@ namespace Procon.Core {
         /// <param name="config"></param>
         /// <returns></returns>
         public virtual ExecutableBase Execute(Config config) {
+            this.TunnelObjects = this.TunnelObjects ?? new List<IExecutableBase>();
+            this.BubbleObjects = this.BubbleObjects ?? new List<IExecutableBase>();
+
             this.Execute(new Command() {
                 Origin = CommandOrigin.Local
             }, config);
@@ -107,6 +110,9 @@ namespace Procon.Core {
         /// </summary>
         /// <returns></returns>
         public virtual ExecutableBase Execute() {
+            this.TunnelObjects = this.TunnelObjects ?? new List<IExecutableBase>();
+            this.BubbleObjects = this.BubbleObjects ?? new List<IExecutableBase>();
+
             return this;
         }
 

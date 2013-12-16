@@ -7,12 +7,12 @@
 //     the code is regenerated.
 // </auto-generated>
 // ------------------------------------------------------------------------------
-
-using Procon.Net.Models;
-
 namespace Procon.Examples.UserInterface.Pages
 {
-#line 1 "C:\Users\P\Documents\Projects\clients\myrcon\procon\Procon-2\src\Procon.Examples.PluginUserInterface\Pages\SettingsPageView.tt"
+    using System;
+    
+    
+    #line 1 "C:\Users\P\Documents\Projects\clients\myrcon\procon\Procon-2\src\Procon.Examples.UserInterface\Pages\SettingsPageView.tt"
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "10.0.0.0")]
     public partial class SettingsPageView : SettingsPageViewBase
     {
@@ -20,34 +20,34 @@ namespace Procon.Examples.UserInterface.Pages
         {
             this.Write("<h2>Settings</h2><b>");
             
-            #line 2 "C:\Users\P\Documents\Projects\clients\myrcon\procon\Procon-2\src\Procon.Examples.PluginUserInterface\Pages\SettingsPageView.tt"
+            #line 2 "C:\Users\P\Documents\Projects\clients\myrcon\procon\Procon-2\src\Procon.Examples.UserInterface\Pages\SettingsPageView.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(this.MyStringyVariable));
             
             #line default
             #line hidden
             this.Write("</b>");
             
-            #line 2 "C:\Users\P\Documents\Projects\clients\myrcon\procon\Procon-2\src\Procon.Examples.PluginUserInterface\Pages\SettingsPageView.tt"
- foreach (Player player in this.MyListOfPlayers) { 
+            #line 2 "C:\Users\P\Documents\Projects\clients\myrcon\procon\Procon-2\src\Procon.Examples.UserInterface\Pages\SettingsPageView.tt"
+ foreach (Procon.Net.Models.Player player in this.MyListOfPlayers) { 
             
             #line default
             #line hidden
             
-            #line 2 "C:\Users\P\Documents\Projects\clients\myrcon\procon\Procon-2\src\Procon.Examples.PluginUserInterface\Pages\SettingsPageView.tt"
+            #line 2 "C:\Users\P\Documents\Projects\clients\myrcon\procon\Procon-2\src\Procon.Examples.UserInterface\Pages\SettingsPageView.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(player.Name));
             
             #line default
             #line hidden
             this.Write(" (Score: ");
             
-            #line 2 "C:\Users\P\Documents\Projects\clients\myrcon\procon\Procon-2\src\Procon.Examples.PluginUserInterface\Pages\SettingsPageView.tt"
+            #line 2 "C:\Users\P\Documents\Projects\clients\myrcon\procon\Procon-2\src\Procon.Examples.UserInterface\Pages\SettingsPageView.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(player.Score));
             
             #line default
             #line hidden
             this.Write(")<br/>");
             
-            #line 2 "C:\Users\P\Documents\Projects\clients\myrcon\procon\Procon-2\src\Procon.Examples.PluginUserInterface\Pages\SettingsPageView.tt"
+            #line 2 "C:\Users\P\Documents\Projects\clients\myrcon\procon\Procon-2\src\Procon.Examples.UserInterface\Pages\SettingsPageView.tt"
  } 
             
             #line default

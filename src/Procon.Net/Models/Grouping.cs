@@ -1,7 +1,9 @@
 ﻿using System;
 
 namespace Procon.Net.Models {
-
+    /// <summary>
+    /// A group identifier to group players by
+    /// </summary>
     [Serializable]
     public class Grouping : NetworkModel {
 
@@ -33,9 +35,18 @@ namespace Procon.Net.Models {
         /// </summary>
         public String Uid { get; set; }
 
+        /// <summary>
+        /// A friendly name for the team, potentially used to lookup a localized name.
+        /// </summary>
+        public String FriendlyName { get; set; }
+
+        /// <summary>
+        /// Initializes default values.
+        /// </summary>
         public Grouping() {
             this.Type = String.Empty;
             this.Uid = null;
+            this.FriendlyName = String.Empty;
         }
     }
 }

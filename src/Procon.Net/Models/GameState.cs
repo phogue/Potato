@@ -13,6 +13,7 @@ namespace Procon.Net.Models {
 
             this.MapPool = new List<Map>();
             this.GameModePool = new List<GameMode>();
+            this.Groupings = new List<Grouping>();
 
             this.Settings = new Settings();
         }
@@ -41,6 +42,11 @@ namespace Procon.Net.Models {
         /// List of available game modes for this game.
         /// </summary>
         public List<GameMode> GameModePool { get; set; }
+
+        /// <summary>
+        /// List of potential groups available 
+        /// </summary>
+        public List<Grouping> Groupings { get; set; }  
 
         /// <summary>
         /// Various settings that are sent by the server.

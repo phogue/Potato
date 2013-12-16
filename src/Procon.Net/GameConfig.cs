@@ -18,7 +18,12 @@ namespace Procon.Net {
         /// <summary>
         /// List of available game modes for this game.
         /// </summary>
-        public List<GameMode> GameModePool { get; set; }
+        public List<GameMode> GameModes { get; set; }
+
+        /// <summary>
+        /// List of groupings for this game
+        /// </summary>
+        public List<Grouping> Groupings { get; set; } 
 
         /// <summary>
         /// Parses this config into a game object.
@@ -26,7 +31,8 @@ namespace Procon.Net {
         /// <param name="game">The game to load this config into</param>
         public virtual void Parse(IGame game) {
             game.State.MapPool = this.MapPool;
-            game.State.GameModePool = this.GameModePool;
+            game.State.GameModePool = this.GameModes;
+            game.State.Groupings = this.Groupings;
 
             game.State.MapPool.ForEach(map => map.ActionType = NetworkActionType.NetworkMapPooled);
         }
@@ -55,7 +61,7 @@ namespace Procon.Net {
                 if (File.Exists(configPath) == true) {
                     XDocument document = XDocument.Load(configPath);
 
-                    config = document.Root.FromXElement<T>();
+                    config = document.Root.QuerySelectReferences().FromXElement<T>();
                 }
             }
             catch {

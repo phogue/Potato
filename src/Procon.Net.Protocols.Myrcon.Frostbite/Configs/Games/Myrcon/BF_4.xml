@@ -1,35 +1,49 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <GameConfig>
+  <Groupings>
+    <Grouping>
+      <Uid>1</Uid>
+      <Type>Team</Type>
+      <FriendlyName>United States</FriendlyName>
+    </Grouping>
+    <Grouping>
+      <Uid>2</Uid>
+      <Type>Team</Type>
+      <FriendlyName>Russia</FriendlyName>
+    </Grouping>
+    <Grouping>
+      <Uid>3</Uid>
+      <Type>Team</Type>
+      <FriendlyName>China</FriendlyName>
+    </Grouping>
+    <Grouping>
+      <Uid>0</Uid>
+      <Type>Squad</Type>
+      <FriendlyName>None</FriendlyName>
+    </Grouping>
+    <Grouping>
+      <Uid>1</Uid>
+      <Type>Squad</Type>
+      <FriendlyName>Alpha</FriendlyName>
+    </Grouping>
+  </Groupings>
+  <GameModes>
+    <GameMode>
+      <Name>ConquestLarge0</Name>
+      <FriendlyName>Conquest Large</FriendlyName>
+      <TeamCount>2</TeamCount>
+      <DefaultGroups>
+        <Reference select="/GameConfig/Groupings/Grouping[Uid='0' and Type='Squad']/."/>
+      </DefaultGroups>
+    </GameMode>
+  </GameModes>
   <MapPool>
     <Map>
       <Index>0</Index>
       <Rounds>2</Rounds>
       <Name>MP_Siege</Name>
       <FriendlyName>Siege of Shanghai</FriendlyName>
-      <GameMode>
-        <Name>ConquestLarge0</Name>
-        <FriendlyName>Conquest Large</FriendlyName>
-        <TeamCount>2</TeamCount>
-        <DefaultGroups>
-          <Grouping>
-            <Type>Squad</Type>
-            <Uid>0</Uid>
-          </Grouping>
-        </DefaultGroups>
-      </GameMode>
+      <Reference select="/GameConfig/GameModes/GameMode[Name='ConquestLarge0']/."/>
     </Map>
   </MapPool>
-  <GameModePool>
-    <GameMode>
-      <Name>ConquestLarge0</Name>
-      <FriendlyName>Conquest Large</FriendlyName>
-      <TeamCount>2</TeamCount>
-      <DefaultGroups>
-        <Grouping>
-          <Type>Squad</Type>
-          <Uid>0</Uid>
-        </Grouping>
-      </DefaultGroups>
-    </GameMode>
-  </GameModePool>
 </GameConfig>

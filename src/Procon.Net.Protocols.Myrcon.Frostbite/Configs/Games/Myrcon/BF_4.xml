@@ -1088,4 +1088,2013 @@
     </Map>
 
   </MapPool>
+  <Items>
+    <Item>
+      <Name>DamageArea</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>None</string>
+        <string>Primary</string>
+        <string>Suicide</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>Death</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>None</string>
+        <string>Primary</string>
+        <string>None</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>Melee</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>None</string>
+        <string>Secondary</string>
+        <string>Melee</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>RoadKill</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>None</string>
+        <string>Primary</string>
+        <string>None</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>SoldierCollision</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>None</string>
+        <string>Primary</string>
+        <string>Suicide</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>Suicide</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>None</string>
+        <string>Primary</string>
+        <string>Suicide</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_870</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>None</string>
+        <string>Primary</string>
+        <string>Shotgun</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_A91</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>None</string>
+        <string>Primary</string>
+        <string>Carbine</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_ACR</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>None</string>
+        <string>Primary</string>
+        <string>Carbine</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_AEK971</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Assault</string>
+        <string>Primary</string>
+        <string>AssaultRifle</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_AEK971_M26_Buck</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Assault</string>
+        <string>Secondary</string>
+        <string>Shotgun</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_AEK971_M26_Flechette</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Assault</string>
+        <string>Secondary</string>
+        <string>Shotgun</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_AEK971_M26_Frag</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Assault</string>
+        <string>Secondary</string>
+        <string>Shotgun</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_AEK971_M26_Slug</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Assault</string>
+        <string>Secondary</string>
+        <string>Shotgun</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_AEK971_M320_FLASH</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Assault</string>
+        <string>Secondary</string>
+        <string>Impact</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_AEK971_M320_HE</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Assault</string>
+        <string>Secondary</string>
+        <string>ProjectileExplosive</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_AEK971_M320_LVG</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Assault</string>
+        <string>Secondary</string>
+        <string>ProjectileExplosive</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_AEK971_M320_SHG</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Assault</string>
+        <string>Secondary</string>
+        <string>Shotgun</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_AEK971_M320_SMK</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Assault</string>
+        <string>Secondary</string>
+        <string>Impact</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_AK12</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Assault</string>
+        <string>Primary</string>
+        <string>AssaultRifle</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_AK12_M26_Buck</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Assault</string>
+        <string>Secondary</string>
+        <string>Shotgun</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_AK12_M26_Flechette</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Assault</string>
+        <string>Secondary</string>
+        <string>Shotgun</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_AK12_M26_Frag</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Assault</string>
+        <string>Secondary</string>
+        <string>Shotgun</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_AK12_M26_Slug</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Assault</string>
+        <string>Secondary</string>
+        <string>Shotgun</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_AK12_M320_FLASH</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Assault</string>
+        <string>Secondary</string>
+        <string>Impact</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_AK12_M320_HE</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Assault</string>
+        <string>Secondary</string>
+        <string>ProjectileExplosive</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_AK12_M320_LVG</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Assault</string>
+        <string>Secondary</string>
+        <string>ProjectileExplosive</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_AK12_M320_SHG</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Assault</string>
+        <string>Secondary</string>
+        <string>Shotgun</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_AK12_M320_SMK</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Assault</string>
+        <string>Secondary</string>
+        <string>Impact</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_AK5C</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>None</string>
+        <string>Primary</string>
+        <string>Carbine</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_AKU12</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>None</string>
+        <string>Primary</string>
+        <string>Carbine</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_AMR2</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>None</string>
+        <string>Primary</string>
+        <string>SniperRifle</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_AMR2_MED</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>None</string>
+        <string>Primary</string>
+        <string>SniperRifle</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_AT4</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Demolition</string>
+        <string>Secondary</string>
+        <string>ProjectileExplosive</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_C4</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Recon</string>
+        <string>Secondary</string>
+        <string>Explosive</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_C4_Support</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Support</string>
+        <string>Secondary</string>
+        <string>Explosive</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_CBJ-MS</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Demolition</string>
+        <string>Primary</string>
+        <string>SMG</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_Claymore</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Support</string>
+        <string>Secondary</string>
+        <string>Explosive</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_Claymore_Recon</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Recon</string>
+        <string>Secondary</string>
+        <string>Explosive</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_CS-LR4</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Recon</string>
+        <string>Primary</string>
+        <string>SniperRifle</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_CZ805</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Assault</string>
+        <string>Primary</string>
+        <string>AssaultRifle</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_CZ805_M26_Buck</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Assault</string>
+        <string>Secondary</string>
+        <string>Shotgun</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_CZ805_M26_Flechette</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Assault</string>
+        <string>Secondary</string>
+        <string>Shotgun</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_CZ805_M26_Frag</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Assault</string>
+        <string>Secondary</string>
+        <string>Shotgun</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_CZ805_M26_Slug</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Assault</string>
+        <string>Secondary</string>
+        <string>Shotgun</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_CZ805_M320_FLASH</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Assault</string>
+        <string>Secondary</string>
+        <string>Impact</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_CZ805_M320_HE</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Assault</string>
+        <string>Secondary</string>
+        <string>ProjectileExplosive</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_CZ805_M320_LVG</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Assault</string>
+        <string>Secondary</string>
+        <string>ProjectileExplosive</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_CZ805_M320_SHG</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Assault</string>
+        <string>Secondary</string>
+        <string>Shotgun</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_CZ805_M320_SMK</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Assault</string>
+        <string>Secondary</string>
+        <string>Impact</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_CZ75</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>None</string>
+        <string>Auxiliary</string>
+        <string>Handgun</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_DBV12</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>None</string>
+        <string>Primary</string>
+        <string>Shotgun</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_Defib</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Assault</string>
+        <string>Secondary</string>
+        <string>Melee</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_FAMAS</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Assault</string>
+        <string>Primary</string>
+        <string>AssaultRifle</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_FGM148</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Demolition</string>
+        <string>Secondary</string>
+        <string>ProjectileExplosive</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_FIM92</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Demolition</string>
+        <string>Secondary</string>
+        <string>ProjectileExplosive</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_Flashbang</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>None</string>
+        <string>Auxiliary</string>
+        <string>Explosive</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_FN57</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>None</string>
+        <string>Auxiliary</string>
+        <string>Handgun</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_FY-JS</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Recon</string>
+        <string>Primary</string>
+        <string>SniperRifle</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_G36C</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>None</string>
+        <string>Primary</string>
+        <string>Carbine</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_GalilACE</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>None</string>
+        <string>Primary</string>
+        <string>Carbine</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_GalilACE23</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Assault</string>
+        <string>Primary</string>
+        <string>AssaultRifle</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_GalilACE52</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>None</string>
+        <string>Primary</string>
+        <string>Carbine</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_GalilACE53</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>None</string>
+        <string>Primary</string>
+        <string>DMR</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_Glock18</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>None</string>
+        <string>Auxiliary</string>
+        <string>Handgun</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_Grenade_RGO</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>None</string>
+        <string>Auxiliary</string>
+        <string>Explosive</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_HAWK</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>None</string>
+        <string>Primary</string>
+        <string>Shotgun</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_HK45C</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>None</string>
+        <string>Auxiliary</string>
+        <string>Handgun</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_JNG90</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Recon</string>
+        <string>Primary</string>
+        <string>SniperRifle</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_JS2</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Demolition</string>
+        <string>Primary</string>
+        <string>SMG</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_L85A2</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Assault</string>
+        <string>Primary</string>
+        <string>AssaultRifle</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_L85A2_M26_Buck</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Assault</string>
+        <string>Secondary</string>
+        <string>Shotgun</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_L85A2_M26_Flechette</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Assault</string>
+        <string>Secondary</string>
+        <string>Shotgun</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_L85A2_M26_Frag</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Assault</string>
+        <string>Secondary</string>
+        <string>Shotgun</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_L85A2_M26_Slug</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Assault</string>
+        <string>Secondary</string>
+        <string>Shotgun</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_L85A2_M320_FLASH</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Assault</string>
+        <string>Secondary</string>
+        <string>Impact</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_L85A2_M320_HE</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Assault</string>
+        <string>Secondary</string>
+        <string>ProjectileExplosive</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_L85A2_M320_LVG</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Assault</string>
+        <string>Secondary</string>
+        <string>ProjectileExplosive</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_L85A2_M320_SHG</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Assault</string>
+        <string>Secondary</string>
+        <string>Shotgun</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_L85A2_M320_SMK</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Assault</string>
+        <string>Secondary</string>
+        <string>Impact</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_L96A1</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Recon</string>
+        <string>Primary</string>
+        <string>SniperRifle</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_LSAT</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Support</string>
+        <string>Primary</string>
+        <string>LMG</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_M1014</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>None</string>
+        <string>Primary</string>
+        <string>Shotgun</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_M15</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Demolition</string>
+        <string>Secondary</string>
+        <string>Explosive</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_M16A4</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Assault</string>
+        <string>Primary</string>
+        <string>AssaultRifle</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_M16A4_M26_Buck</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Assault</string>
+        <string>Secondary</string>
+        <string>Shotgun</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_M16A4_M26_Flechette</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Assault</string>
+        <string>Secondary</string>
+        <string>Shotgun</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_M16A4_M26_Frag</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Assault</string>
+        <string>Secondary</string>
+        <string>Shotgun</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_M16A4_M26_Slug</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Assault</string>
+        <string>Secondary</string>
+        <string>Shotgun</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_M16A4_M320_FLASH</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Assault</string>
+        <string>Secondary</string>
+        <string>Impact</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_M16A4_M320_HE</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Assault</string>
+        <string>Secondary</string>
+        <string>ProjectileExplosive</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_M16A4_M320_LVG</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Assault</string>
+        <string>Secondary</string>
+        <string>ProjectileExplosive</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_M16A4_M320_SHG</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Assault</string>
+        <string>Secondary</string>
+        <string>Shotgun</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_M16A4_M320_SMK</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Assault</string>
+        <string>Secondary</string>
+        <string>Impact</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_M1911</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>None</string>
+        <string>Auxiliary</string>
+        <string>Handgun</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_M200</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Recon</string>
+        <string>Primary</string>
+        <string>SniperRifle</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_M240</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Support</string>
+        <string>Primary</string>
+        <string>LMG</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_M249</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Support</string>
+        <string>Primary</string>
+        <string>LMG</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_M26Mass</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Assault</string>
+        <string>Secondary</string>
+        <string>Shotgun</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_M26Mass_Flechette</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Assault</string>
+        <string>Secondary</string>
+        <string>Shotgun</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_M26Mass_Frag</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Assault</string>
+        <string>Secondary</string>
+        <string>Shotgun</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_M26Mass_Slug</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Assault</string>
+        <string>Secondary</string>
+        <string>Shotgun</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_M320_FLASH</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Assault</string>
+        <string>Secondary</string>
+        <string>Impact</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_M320_HE</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Assault</string>
+        <string>Secondary</string>
+        <string>ProjectileExplosive</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_M320_LVG</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Assault</string>
+        <string>Secondary</string>
+        <string>ProjectileExplosive</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_M320_SHG</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Assault</string>
+        <string>Secondary</string>
+        <string>Shotgun</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_M320_SMK</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Assault</string>
+        <string>Secondary</string>
+        <string>Impact</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_M34</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>None</string>
+        <string>Auxiliary</string>
+        <string>Explosive</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_M39EBR</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>None</string>
+        <string>Primary</string>
+        <string>DMR</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_M40A5</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Recon</string>
+        <string>Primary</string>
+        <string>SniperRifle</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_M416</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Assault</string>
+        <string>Primary</string>
+        <string>AssaultRifle</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_M416_M26_Buck</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Assault</string>
+        <string>Secondary</string>
+        <string>Shotgun</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_M416_M26_Flechette</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Assault</string>
+        <string>Secondary</string>
+        <string>Shotgun</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_M416_M26_Frag</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Assault</string>
+        <string>Secondary</string>
+        <string>Shotgun</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_M416_M26_Slug</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Assault</string>
+        <string>Secondary</string>
+        <string>Shotgun</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_M416_M320_FLASH</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Assault</string>
+        <string>Secondary</string>
+        <string>Impact</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_M416_M320_HE</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Assault</string>
+        <string>Secondary</string>
+        <string>ProjectileExplosive</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_M416_M320_LVG</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Assault</string>
+        <string>Secondary</string>
+        <string>ProjectileExplosive</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_M416_M320_SHG</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Assault</string>
+        <string>Secondary</string>
+        <string>Shotgun</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_M416_M320_SMK</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Assault</string>
+        <string>Secondary</string>
+        <string>Impact</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_M4A1</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>None</string>
+        <string>Primary</string>
+        <string>Carbine</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_M67</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>None</string>
+        <string>Auxiliary</string>
+        <string>Explosive</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_M82A3</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>None</string>
+        <string>Primary</string>
+        <string>SniperRifle</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_M82A3_CQB</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>None</string>
+        <string>Primary</string>
+        <string>SniperRifle</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_M82A3_MED</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>None</string>
+        <string>Primary</string>
+        <string>SniperRifle</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_M9</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>None</string>
+        <string>Auxiliary</string>
+        <string>Handgun</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_M93R</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>None</string>
+        <string>Auxiliary</string>
+        <string>Handgun</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_M98B</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Recon</string>
+        <string>Primary</string>
+        <string>SniperRifle</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_MagpulPDR</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Demolition</string>
+        <string>Primary</string>
+        <string>SMG</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_Medkit</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Assault</string>
+        <string>Auxiliary</string>
+        <string>Nonlethal</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_MG4</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Support</string>
+        <string>Primary</string>
+        <string>LMG</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_MGL</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>None</string>
+        <string>Primary</string>
+        <string>ProjectileExplosive</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_MK11</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>None</string>
+        <string>Primary</string>
+        <string>DMR</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_MP7</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Demolition</string>
+        <string>Primary</string>
+        <string>SMG</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_MP412Rex</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>None</string>
+        <string>Auxiliary</string>
+        <string>Handgun</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_MP443</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>None</string>
+        <string>Auxiliary</string>
+        <string>Handgun</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_MTAR21</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>None</string>
+        <string>Primary</string>
+        <string>Carbine</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_MX4</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Demolition</string>
+        <string>Primary</string>
+        <string>SMG</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_NLAW</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Demolition</string>
+        <string>Secondary</string>
+        <string>ProjectileExplosive</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_P226</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>None</string>
+        <string>Auxiliary</string>
+        <string>Handgun</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_P90</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Demolition</string>
+        <string>Primary</string>
+        <string>SMG</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_Pecheneg</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Support</string>
+        <string>Primary</string>
+        <string>LMG</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_PortableMedicpack</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Assault</string>
+        <string>Auxiliary</string>
+        <string>Nonlethal</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_PP2000</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Demolition</string>
+        <string>Primary</string>
+        <string>SMG</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_QBB95</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Support</string>
+        <string>Primary</string>
+        <string>LMG</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_QBS09</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>None</string>
+        <string>Primary</string>
+        <string>Shotgun</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_QBU88</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>None</string>
+        <string>Primary</string>
+        <string>DMR</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_QBZ951</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Assault</string>
+        <string>Primary</string>
+        <string>AssaultRifle</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_QBZ951_M26_Buck</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Assault</string>
+        <string>Secondary</string>
+        <string>Shotgun</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_QBZ951_M26_Flechette</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Assault</string>
+        <string>Secondary</string>
+        <string>Shotgun</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_QBZ951_M26_Frag</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Assault</string>
+        <string>Secondary</string>
+        <string>Shotgun</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_QBZ951_M26_Slug</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Assault</string>
+        <string>Secondary</string>
+        <string>Shotgun</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_QBZ951_M320_FLASH</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Assault</string>
+        <string>Secondary</string>
+        <string>Impact</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_QBZ951_M320_HE</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Assault</string>
+        <string>Secondary</string>
+        <string>ProjectileExplosive</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_QBZ951_M320_LVG</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Assault</string>
+        <string>Secondary</string>
+        <string>ProjectileExplosive</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_QBZ951_M320_SHG</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Assault</string>
+        <string>Secondary</string>
+        <string>Shotgun</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_QBZ951_M320_SMK</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Assault</string>
+        <string>Secondary</string>
+        <string>Impact</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_QSZ92</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>None</string>
+        <string>Auxiliary</string>
+        <string>Handgun</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_Repairtool</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Demolition</string>
+        <string>Secondary</string>
+        <string>Melee</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_RFB</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>None</string>
+        <string>Primary</string>
+        <string>DMR</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_RPG7</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Demolition</string>
+        <string>Secondary</string>
+        <string>ProjectileExplosive</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_RPK12</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Support</string>
+        <string>Primary</string>
+        <string>LMG</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_RPK-74</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Support</string>
+        <string>Primary</string>
+        <string>LMG</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_Sa18IGLA</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Demolition</string>
+        <string>Secondary</string>
+        <string>ProjectileExplosive</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_SAIGA_20K</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>None</string>
+        <string>Primary</string>
+        <string>Shotgun</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_SAR21</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Assault</string>
+        <string>Primary</string>
+        <string>AssaultRifle</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_SAR21_M26_Buck</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Assault</string>
+        <string>Secondary</string>
+        <string>Shotgun</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_SAR21_M26_Flechette</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Assault</string>
+        <string>Secondary</string>
+        <string>Shotgun</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_SAR21_M26_Frag</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Assault</string>
+        <string>Secondary</string>
+        <string>Shotgun</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_SAR21_M26_Slug</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Assault</string>
+        <string>Secondary</string>
+        <string>Shotgun</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_SAR21_M320_FLASH</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Assault</string>
+        <string>Secondary</string>
+        <string>Impact</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_SAR21_M320_HE</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Assault</string>
+        <string>Secondary</string>
+        <string>ProjectileExplosive</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_SAR21_M320_LVG</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Assault</string>
+        <string>Secondary</string>
+        <string>ProjectileExplosive</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_SAR21_M320_SHG</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Assault</string>
+        <string>Secondary</string>
+        <string>Shotgun</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_SAR21_M320_SMK</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Assault</string>
+        <string>Secondary</string>
+        <string>Impact</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_SCAR-H</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Assault</string>
+        <string>Primary</string>
+        <string>AssaultRifle</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_SCAR-H_M26_Buck</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Assault</string>
+        <string>Secondary</string>
+        <string>Shotgun</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_SCAR-H_M26_Flechette</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Assault</string>
+        <string>Secondary</string>
+        <string>Shotgun</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_SCAR-H_M26_Frag</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Assault</string>
+        <string>Secondary</string>
+        <string>Shotgun</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_SCAR-H_M26_Slug</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Assault</string>
+        <string>Secondary</string>
+        <string>Shotgun</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_SCAR-H_M320_FLASH</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Assault</string>
+        <string>Secondary</string>
+        <string>Impact</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_SCAR-H_M320_HE</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Assault</string>
+        <string>Secondary</string>
+        <string>ProjectileExplosive</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_SCAR-H_M320_LVG</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Assault</string>
+        <string>Secondary</string>
+        <string>ProjectileExplosive</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_SCAR-H_M320_SHG</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Assault</string>
+        <string>Secondary</string>
+        <string>Shotgun</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_SCAR-H_M320_SMK</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Assault</string>
+        <string>Secondary</string>
+        <string>Impact</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_SCAR-HSV</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>None</string>
+        <string>Primary</string>
+        <string>DMR</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_Scorpion</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Demolition</string>
+        <string>Primary</string>
+        <string>SMG</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_Scout</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Recon</string>
+        <string>Primary</string>
+        <string>SniperRifle</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_SerbuShorty</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>None</string>
+        <string>Auxiliary</string>
+        <string>Shotgun</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_SG553LB</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>None</string>
+        <string>Primary</string>
+        <string>Carbine</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_SKS</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>None</string>
+        <string>Primary</string>
+        <string>DMR</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_SLAM</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>None</string>
+        <string>Auxiliary</string>
+        <string>Explosive</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_SMAW</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Demolition</string>
+        <string>Secondary</string>
+        <string>ProjectileExplosive</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_SPAS12</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>None</string>
+        <string>Primary</string>
+        <string>Shotgun</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_SRAW</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Demolition</string>
+        <string>Secondary</string>
+        <string>ProjectileExplosive</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_SRS</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Recon</string>
+        <string>Primary</string>
+        <string>SniperRifle</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_Starstreak</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Demolition</string>
+        <string>Secondary</string>
+        <string>ProjectileExplosive</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_SteyrAug</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Assault</string>
+        <string>Primary</string>
+        <string>AssaultRifle</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_SteyrAug_M26_Buck</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Assault</string>
+        <string>Secondary</string>
+        <string>Shotgun</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_SteyrAug_M26_Flechette</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Assault</string>
+        <string>Secondary</string>
+        <string>Shotgun</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_SteyrAug_M26_Frag</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Assault</string>
+        <string>Secondary</string>
+        <string>Shotgun</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_SteyrAug_M26_Slug</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Assault</string>
+        <string>Secondary</string>
+        <string>Shotgun</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_SteyrAug_M320_FLASH</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Assault</string>
+        <string>Secondary</string>
+        <string>Impact</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_SteyrAug_M320_HE</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Assault</string>
+        <string>Secondary</string>
+        <string>ProjectileExplosive</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_SteyrAug_M320_LVG</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Assault</string>
+        <string>Secondary</string>
+        <string>ProjectileExplosive</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_SteyrAug_M320_SHG</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Assault</string>
+        <string>Secondary</string>
+        <string>Shotgun</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_SteyrAug_M320_SMK</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Assault</string>
+        <string>Secondary</string>
+        <string>Impact</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_SV98</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Recon</string>
+        <string>Primary</string>
+        <string>SniperRifle</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_SVD12</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>None</string>
+        <string>Primary</string>
+        <string>DMR</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_Taurus44</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>None</string>
+        <string>Auxiliary</string>
+        <string>Handgun</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_Tomahawk</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>None</string>
+        <string>Primary</string>
+        <string>VehicleLight</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_Type88</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Support</string>
+        <string>Primary</string>
+        <string>LMG</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_Type95B</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>None</string>
+        <string>Primary</string>
+        <string>Carbine</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_Ultimax</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Support</string>
+        <string>Primary</string>
+        <string>LMG</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_UMP9</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Demolition</string>
+        <string>Primary</string>
+        <string>SMG</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_UMP45</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Demolition</string>
+        <string>Primary</string>
+        <string>SMG</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_USAS-12</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>None</string>
+        <string>Primary</string>
+        <string>Shotgun</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_USAS-12_Nightvision</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>None</string>
+        <string>Primary</string>
+        <string>Shotgun</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_UTAS</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>None</string>
+        <string>Primary</string>
+        <string>Shotgun</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_V40</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>None</string>
+        <string>Auxiliary</string>
+        <string>Explosive</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_XM25</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Support</string>
+        <string>Secondary</string>
+        <string>ProjectileExplosive</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_XM25_Flechette</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Support</string>
+        <string>Secondary</string>
+        <string>Shotgun</string>
+      </Tags>
+    </Item>
+    <Item>
+      <Name>U_XM25_Smoke</Name>
+      <FriendlyName />
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>Support</string>
+        <string>Secondary</string>
+        <string>Impact</string>
+      </Tags>
+    </Item>
+  </Items>
 </GameConfig>

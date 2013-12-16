@@ -39,9 +39,9 @@ namespace Procon.Core.Connections.TextCommands.Parsers {
         protected void ParseMapNames(Phrase phrase) {
             var mapNames = this.Connection.GameState.MapPool.Select(map => new {
                 map,
-                similarity = Math.Max(map.FriendlyName.DePluralStringSimularity(phrase.Text), map.Name.DePluralStringSimularity(phrase.Text))
+                Similarity = Math.Max(map.FriendlyName.DePluralStringSimularity(phrase.Text), map.Name.DePluralStringSimularity(phrase.Text))
             })
-            .Where(@t => @t.similarity >= 60)
+            .Where(@t => @t.Similarity >= 60)
             .Select(@t => new ThingObjectToken() {
                 Reference = new MapThingReference() {
                     Maps = new List<Map>() {
@@ -49,7 +49,7 @@ namespace Procon.Core.Connections.TextCommands.Parsers {
                     }
                 },
                 Text = phrase.Text,
-                Similarity = @t.similarity,
+                Similarity = @t.Similarity,
                 MinimumWeightedSimilarity = 60
             });
 
@@ -66,9 +66,9 @@ namespace Procon.Core.Connections.TextCommands.Parsers {
 
             var playerNames = this.Connection.GameState.Players.Select(player => new {
                 player,
-                similarity = Math.Max(player.NameStripped.DePluralStringSimularity(phrase.Text), player.Name.DePluralStringSimularity(phrase.Text))
+                Similarity = Math.Max(player.NameStripped.DePluralStringSimularity(phrase.Text), player.Name.DePluralStringSimularity(phrase.Text))
             })
-            .Where(@t => @t.similarity >= this.MinimumSimilarity(55, 70, maximumNameLength, @t.player.Name.Length))
+            .Where(@t => @t.Similarity >= this.MinimumSimilarity(55, 70, maximumNameLength, @t.player.Name.Length))
             .Select(@t => new ThingObjectToken() {
                 Reference = new PlayerThingReference() {
                     Players = new List<Player>() {
@@ -76,7 +76,7 @@ namespace Procon.Core.Connections.TextCommands.Parsers {
                     }
                 },
                 Text = phrase.Text,
-                Similarity = @t.similarity,
+                Similarity = @t.Similarity,
                 MinimumWeightedSimilarity = 55
             });
 
@@ -89,9 +89,9 @@ namespace Procon.Core.Connections.TextCommands.Parsers {
         protected void ParseCountryNames(Phrase phrase) {
             var playerCountries = this.Connection.GameState.Players.Select(player => new {
                 player,
-                similarity = player.Location.CountryName.StringSimularitySubsetBonusRatio(phrase.Text)
+                Similarity = player.Location.CountryName.StringSimularitySubsetBonusRatio(phrase.Text)
             })
-            .Where(@t => @t.similarity >= 60)
+            .Where(@t => @t.Similarity >= 60)
             .Select(@t => new ThingObjectToken() {
                 Reference = new LocationThingReference() {
                     Locations = new List<Location>() {
@@ -99,7 +99,7 @@ namespace Procon.Core.Connections.TextCommands.Parsers {
                     }
                 },
                 Text = phrase.Text,
-                Similarity = @t.similarity,
+                Similarity = @t.Similarity,
                 MinimumWeightedSimilarity = 60
             });
 
@@ -110,26 +110,28 @@ namespace Procon.Core.Connections.TextCommands.Parsers {
         }
 
         protected void ParseItemNames(Phrase phrase) {
-            var playerItems = this.Connection.GameState.Items.Select(item => new {
+            // Select all items that match our phrase. We don't deal with
+            // items individually as many items share many tags, so you'll always need to deal
+            // with them as sets.
+            var items = this.Connection.GameState.Items.Select(item => new {
                 item,
-                similarity = Math.Max(item.FriendlyName.StringSimularitySubsetBonusRatio(phrase.Text), item.Tags.Select(tag => tag.StringSimularitySubsetBonusRatio(phrase.Text)).Max())
-            })
-            .Where(@t => @t.similarity >= 60)
-            .Select(@t => new ThingObjectToken() {
-                Reference = new ItemThingReference() {
-                    Items = new List<Item>() {
-                                    @t.item
-                                }
-                },
-                Text = phrase.Text,
-                Similarity = @t.similarity,
-                MinimumWeightedSimilarity = 60
-            });
+                Similarity = Math.Max(item.FriendlyName.StringSimularitySubsetBonusRatio(phrase.Text), item.Tags.Select(tag => tag.StringSimularitySubsetBonusRatio(phrase.Text)).Max())
+            }).Where(@t => @t.Similarity >= 60)
+            .ToList();
 
-            List<Token> names = new List<Token>();
-            playerItems.ToList().ForEach(names.Add);
-
-            phrase.AppendDistinctRange(names);
+            // We have at least one matching item, add it as a token.
+            if (items.Any()) {
+                phrase.AppendDistinctRange(new List<Token>() {
+                    new ThingObjectToken() {
+                        Reference = new ItemThingReference() {
+                            Items = items.Select(item => item.item).ToList()
+                        },
+                        Text = phrase.Text,
+                        Similarity = items.Max(item => item.Similarity),
+                        MinimumWeightedSimilarity = 60
+                    }
+                });
+            }
         }
 
         public Phrase ParseThing(IFuzzyState state, Phrase phrase) {

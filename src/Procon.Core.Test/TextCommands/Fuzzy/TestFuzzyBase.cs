@@ -246,8 +246,8 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
             Inventory = {
                 Items = {
                     new Item() {
-                        Name = "U_AMR2",
-                        FriendlyName = "AMR2-2",
+                        Name = "U_AMR2_MED",
+                        FriendlyName = "AMR2-2 CQB",
                         Tags = {
                             "None",
                             "Primary",

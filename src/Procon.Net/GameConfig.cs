@@ -23,7 +23,12 @@ namespace Procon.Net {
         /// <summary>
         /// List of groupings for this game
         /// </summary>
-        public List<Grouping> Groupings { get; set; } 
+        public List<Grouping> Groupings { get; set; }
+
+        /// <summary>
+        /// List of items for this game.
+        /// </summary>
+        public List<Item> Items { get; set; } 
 
         /// <summary>
         /// Parses this config into a game object.
@@ -33,6 +38,7 @@ namespace Procon.Net {
             game.State.MapPool = this.MapPool;
             game.State.GameModePool = this.GameModes;
             game.State.Groupings = this.Groupings;
+            game.State.Items = this.Items;
 
             game.State.MapPool.ForEach(map => map.ActionType = NetworkActionType.NetworkMapPooled);
         }

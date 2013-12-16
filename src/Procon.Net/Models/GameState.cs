@@ -46,7 +46,12 @@ namespace Procon.Net.Models {
         /// <summary>
         /// List of potential groups available 
         /// </summary>
-        public List<Grouping> Groupings { get; set; }  
+        public List<Grouping> Groupings { get; set; }
+
+        /// <summary>
+        /// List of potential items available in this game.
+        /// </summary>
+        public List<Item> Items { get; set; } 
 
         /// <summary>
         /// Various settings that are sent by the server.

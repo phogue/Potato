@@ -2,7 +2,7 @@
 
 namespace Procon.Net.Models {
     [Serializable]
-    public sealed class Spawn : NetworkObject {
+    public sealed class Spawn : NetworkModel {
 
         /// <summary>
         /// The player who spawned in

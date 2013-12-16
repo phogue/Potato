@@ -4,7 +4,7 @@ using Procon.Net.Models;
 namespace Procon.Net.Actions {
 
     [Serializable]
-    public abstract class NetworkAction : NetworkObject {
+    public abstract class NetworkAction : NetworkModel {
 
         /// <summary>
         /// The specific type of action taken with this object.

@@ -3,7 +3,7 @@ using Procon.Net.Models;
 
 namespace Procon.Net.Protocols.Myrcon.Frostbite.Objects {
     [Serializable]
-    public class TeamScore : NetworkObject {
+    public class TeamScore : NetworkModel {
 
         public int TeamID { get; set; }
 

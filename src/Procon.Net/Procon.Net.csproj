@@ -129,7 +129,7 @@
     <Compile Include="Models\Point3D.cs" />
     <Compile Include="Models\Player.cs" />
     <Compile Include="Collections\Groupings.cs" />
-    <Compile Include="Models\NetworkObject.cs" />
+    <Compile Include="Models\NetworkModel.cs" />
     <Compile Include="Models\Role.cs" />
     <Compile Include="Models\GameState.cs" />
     <Compile Include="Models\SettingsData.cs" />

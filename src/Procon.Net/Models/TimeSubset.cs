@@ -2,7 +2,7 @@
 
 namespace Procon.Net.Models {
     [Serializable]
-    public sealed class TimeSubset : NetworkObject {
+    public sealed class TimeSubset : NetworkModel {
 
         public TimeSubsetContext Context { get; set; }
 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Procon.Net.Models {
     [Serializable]
-    public sealed class Inventory : NetworkObject {
+    public sealed class Inventory : NetworkModel {
 
         /// <summary>
         /// List of items found in this inventory

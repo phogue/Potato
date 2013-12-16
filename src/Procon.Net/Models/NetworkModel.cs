@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 namespace Procon.Net.Models {
 
     [Serializable]
-    public abstract class NetworkObject : ICloneable {
+    public abstract class NetworkModel : ICloneable {
 
         /// <summary>
         /// When this object was created.
@@ -13,7 +13,7 @@ namespace Procon.Net.Models {
         [XmlIgnore, JsonIgnore]
         public DateTime Created { get; set; }
 
-        protected NetworkObject() {
+        protected NetworkModel() {
             this.Created = DateTime.Now;
         }
 

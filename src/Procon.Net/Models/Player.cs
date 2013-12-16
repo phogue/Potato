@@ -9,7 +9,7 @@ namespace Procon.Net.Models {
     /// An in game player
     /// </summary>
     [Serializable]
-    public sealed class Player : NetworkObject {
+    public sealed class Player : NetworkModel {
 
         /// <summary>
         /// Used when determining a player's Country Name and Code.

@@ -4,7 +4,7 @@ using Procon.Net.Collections;
 namespace Procon.Net.Models {
 
     [Serializable]
-    public sealed class GameMode : NetworkObject {
+    public sealed class GameMode : NetworkModel {
 
         /// <summary>
         /// This game mode's name as it is used via Rcon.

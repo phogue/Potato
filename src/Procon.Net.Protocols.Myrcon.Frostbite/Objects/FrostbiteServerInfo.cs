@@ -6,7 +6,7 @@ using Procon.Net.Models;
 
 namespace Procon.Net.Protocols.Myrcon.Frostbite.Objects {
     [Serializable]
-    public class FrostbiteServerInfo : NetworkObject {
+    public class FrostbiteServerInfo : NetworkModel {
 
         public GameMods GameMod { get; set; }
 

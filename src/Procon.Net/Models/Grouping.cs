@@ -3,7 +3,7 @@
 namespace Procon.Net.Models {
 
     [Serializable]
-    public class Grouping : NetworkObject {
+    public class Grouping : NetworkModel {
 
         /// <summary>
         /// A majority of games have teams, teams have squads. So we have these variables

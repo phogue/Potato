@@ -6,7 +6,7 @@ namespace Procon.Net.Models {
     /// A three dimensional location of a player/object.
     /// </summary>
     [Serializable]
-    public sealed class Point3D : NetworkObject {
+    public sealed class Point3D : NetworkModel {
 
         /// <summary>
         /// X coordinate of the player or object

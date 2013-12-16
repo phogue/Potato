@@ -75,7 +75,7 @@ namespace Procon.Tools.NetworkConsole.Controls {
                 .Items
                 .Cast<ListViewItem>()
                 .Where(
-                    x => ((x.Tag is NetworkObject) && (x.Tag as NetworkObject).Created < DateTime.Now.AddMinutes(-5))
+                    x => ((x.Tag is NetworkModel) && (x.Tag as NetworkModel).Created < DateTime.Now.AddMinutes(-5))
                 ).Select(x => x);
 
             foreach (ListViewItem eventListItem in expiredList) {

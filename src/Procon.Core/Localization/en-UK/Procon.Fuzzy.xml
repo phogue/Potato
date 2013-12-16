@@ -83,6 +83,7 @@
           <AndLogicalOperatorToken>
             <Match text="and"/>
             <Match text="in"/>
+            <Match text="using"/>
           </AndLogicalOperatorToken>
           <ExcludingLogicalOperatorToken>
             <Match text="exclude"/>
@@ -94,6 +95,7 @@
             <Match text="not in"/>
             <Match text="not from"/>
             <Match text="outside"/>
+            <Match text="not using"/>
           </ExcludingLogicalOperatorToken>
           <NotLogicalOperatorToken>
             <Match text="not"/>

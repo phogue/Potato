@@ -304,5 +304,18 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
                 new List<Map>()
             );
         }
+
+        [Test]
+        public void TestComplexKickEveryoneNotUsingC4() {
+            TextCommandController textCommandController = this.CreateTextCommandController();
+            
+            TestFuzzyBase.AssertCommandPlayerListMapList(
+                textCommandController,
+                "kick everyone not using C4",
+                TestFuzzyBase.TextCommandKick,
+                textCommandController.Connection.GameState.Players.Where(player => player != TestFuzzyBase.PlayerImisnew2).ToList(),
+                new List<Map>()
+            );
+        }
     }
 }

@@ -84,18 +84,22 @@
             <Match text="and"/>
             <Match text="in"/>
             <Match text="using"/>
+            <Match text="using a"/>
+            <Match text="from"/>
           </AndLogicalOperatorToken>
           <ExcludingLogicalOperatorToken>
             <Match text="exclude"/>
             <Match text="excluding"/>
             <Match text="but"/>
             <Match text="but not"/>
+            <Match text="but not on"/>
             <Match text="but not in"/>
-            <Match text="except"/>
-            <Match text="not in"/>
             <Match text="not from"/>
-            <Match text="outside"/>
             <Match text="not using"/>
+            <Match text="not on"/>
+            <Match text="not in"/>
+            <Match text="except"/>
+            <Match text="outside"/>
           </ExcludingLogicalOperatorToken>
           <NotLogicalOperatorToken>
             <Match text="not"/>
@@ -329,13 +333,6 @@
             </Date>
           </Variable>
         </Temporal>
-        <!--
-        <garbagePrimitiveToken>
-          <match text="the"/>
-          <match text="a"/>
-          <match text="at"/>
-        </garbagePrimitiveToken>
-        -->
       </Primitive>
       <Syntax>
         <Prepositions>

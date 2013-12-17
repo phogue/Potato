@@ -48,20 +48,20 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="SqlLite\TestSerializerSqlLiteCreateExplicit.cs" />
-    <Compile Include="SqlLite\TestSerializerSqlLiteCreateImplicit.cs" />
-    <Compile Include="SqlLite\TestSerializerSqlLiteDropExplicit.cs" />
-    <Compile Include="SqlLite\TestSerializerSqlLiteDropImplicit.cs" />
-    <Compile Include="SqlLite\TestSerializerSqlLiteFindExplicit.cs" />
-    <Compile Include="SqlLite\TestSerializerSqlLiteFindImplicit.cs" />
-    <Compile Include="SqlLite\TestSerializerSqlLiteMergeExplicit.cs" />
-    <Compile Include="SqlLite\TestSerializerSqlLiteMergeImplicit.cs" />
-    <Compile Include="SqlLite\TestSerializerSqlLiteModifyExplicit.cs" />
-    <Compile Include="SqlLite\TestSerializerSqlLiteModifyImplicit.cs" />
-    <Compile Include="SqlLite\TestSerializerSqlLiteRemoveExplicit.cs" />
-    <Compile Include="SqlLite\TestSerializerSqlLiteRemoveImplicit.cs" />
-    <Compile Include="SqlLite\TestSerializerSqlLiteSaveExplicit.cs" />
-    <Compile Include="SqlLite\TestSerializerSqlLiteSaveImplicit.cs" />
+    <Compile Include="SqLite\TestSerializerSqLiteCreateExplicit.cs" />
+    <Compile Include="SqLite\TestSerializerSqLiteCreateImplicit.cs" />
+    <Compile Include="SqLite\TestSerializerSqLiteDropExplicit.cs" />
+    <Compile Include="SqLite\TestSerializerSqLiteDropImplicit.cs" />
+    <Compile Include="SqLite\TestSerializerSqLiteFindExplicit.cs" />
+    <Compile Include="SqLite\TestSerializerSqLiteFindImplicit.cs" />
+    <Compile Include="SqLite\TestSerializerSqLiteMergeExplicit.cs" />
+    <Compile Include="SqLite\TestSerializerSqLiteMergeImplicit.cs" />
+    <Compile Include="SqLite\TestSerializerSqLiteModifyExplicit.cs" />
+    <Compile Include="SqLite\TestSerializerSqLiteModifyImplicit.cs" />
+    <Compile Include="SqLite\TestSerializerSqLiteRemoveExplicit.cs" />
+    <Compile Include="SqLite\TestSerializerSqLiteRemoveImplicit.cs" />
+    <Compile Include="SqLite\TestSerializerSqLiteSaveExplicit.cs" />
+    <Compile Include="SqLite\TestSerializerSqLiteSaveImplicit.cs" />
     <Compile Include="MongoDb\TestSerializerMongoDbMergeImplicit.cs" />
     <Compile Include="MongoDb\TestSerializerMongoDbCreateImplicit.cs" />
     <Compile Include="MongoDb\TestSerializerMongoDbDropImplicit.cs" />

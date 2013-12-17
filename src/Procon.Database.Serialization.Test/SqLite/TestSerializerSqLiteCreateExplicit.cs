@@ -2,47 +2,47 @@
 using NUnit.Framework;
 using Procon.Database.Serialization.Serializers.Sql;
 
-namespace Procon.Database.Serialization.Test.SqlLite {
+namespace Procon.Database.Serialization.Test.SqLite {
     [TestFixture]
-    public class TestSerializerSqlLiteCreateImplicit : TestSerializerCreate {
+    public class TestSerializerSqLiteCreateExplicit : TestSerializerCreate {
         [Test]
         public override void TestCreateDatabaseProcon() {
-            Assert.AreEqual(@"ATTACH DATABASE `Procon`", new SerializerSqlLite().Parse(this.TestCreateDatabaseProconImplicit).Compile().Compiled.First());
+            Assert.AreEqual(@"ATTACH DATABASE `Procon`", new SerializerSqLite().Parse(this.TestCreateDatabaseProconExplicit).Compile().Compiled.First());
         }
 
         [Test]
         public override void TestCreatePlayerWithFieldStringName() {
-            Assert.AreEqual(@"CREATE TABLE `Player` (`Name` VARCHAR(255))", new SerializerSqlLite().Parse(this.TestCreatePlayerWithFieldStringNameImplicit).Compile().Compiled.First());
+            Assert.AreEqual(@"CREATE TABLE `Player` (`Name` VARCHAR(255))", new SerializerSqLite().Parse(this.TestCreatePlayerWithFieldStringNameExplicit).Compile().Compiled.First());
         }
 
         [Test]
         public override void TestCreatePlayerWithFieldStringSpecifiedLengthName() {
-            Assert.AreEqual(@"CREATE TABLE `Player` (`Name` VARCHAR(40))", new SerializerSqlLite().Parse(this.TestCreatePlayerWithFieldStringSpecifiedLengthNameImplicit).Compile().Compiled.First());
+            Assert.AreEqual(@"CREATE TABLE `Player` (`Name` VARCHAR(40))", new SerializerSqLite().Parse(this.TestCreatePlayerWithFieldStringSpecifiedLengthNameExplicit).Compile().Compiled.First());
         }
 
         [Test]
         public override void TestCreatePlayerWithFieldStringSpecifiedLengthNameAndFieldIntegerScore() {
-            Assert.AreEqual(@"CREATE TABLE `Player` (`Name` VARCHAR(40), `Score` INTEGER)", new SerializerSqlLite().Parse(this.TestCreatePlayerWithFieldStringSpecifiedLengthNameAndFieldIntegerScoreImplicit).Compile().Compiled.First());
+            Assert.AreEqual(@"CREATE TABLE `Player` (`Name` VARCHAR(40), `Score` INTEGER)", new SerializerSqLite().Parse(this.TestCreatePlayerWithFieldStringSpecifiedLengthNameAndFieldIntegerScoreExplicit).Compile().Compiled.First());
         }
 
         [Test]
         public override void TestCreatePlayerWithFieldStringSpecifiedLengthNameNotNullAndFieldIntegerScore() {
-            Assert.AreEqual(@"CREATE TABLE `Player` (`Name` VARCHAR(40) NOT NULL, `Score` INTEGER)", new SerializerSqlLite().Parse(this.TestCreatePlayerWithFieldStringSpecifiedLengthNameNotNullAndFieldIntegerScoreImplicit).Compile().Compiled.First());
+            Assert.AreEqual(@"CREATE TABLE `Player` (`Name` VARCHAR(40) NOT NULL, `Score` INTEGER)", new SerializerSqLite().Parse(this.TestCreatePlayerWithFieldStringSpecifiedLengthNameNotNullAndFieldIntegerScoreExplicit).Compile().Compiled.First());
         }
 
         [Test]
         public override void TestCreatePlayerWithFieldIntegerScoreUnsigned() {
-            Assert.AreEqual(@"CREATE TABLE `Player` (`Score` INTEGER)", new SerializerSqlLite().Parse(this.TestCreatePlayerWithFieldIntegerScoreUnsignedImplicit).Compile().Compiled.First());
+            Assert.AreEqual(@"CREATE TABLE `Player` (`Score` INTEGER)", new SerializerSqLite().Parse(this.TestCreatePlayerWithFieldIntegerScoreUnsignedExplicit).Compile().Compiled.First());
         }
 
         [Test]
         public override void TestCreatePlayerWithFieldIntegerScoreUnsignedAutoIncrement() {
-            Assert.AreEqual(@"CREATE TABLE `Player` (`Score` INTEGER AUTO INCREMENT)", new SerializerSqlLite().Parse(this.TestCreatePlayerWithFieldIntegerScoreUnsignedAutoIncrementImplicit).Compile().Compiled.First());
+            Assert.AreEqual(@"CREATE TABLE `Player` (`Score` INTEGER AUTO INCREMENT)", new SerializerSqLite().Parse(this.TestCreatePlayerWithFieldIntegerScoreUnsignedAutoIncrementExplicit).Compile().Compiled.First());
         }
 
         [Test]
         public override void TestCreatePlayerWithFieldStringNameWithIndexOnName() {
-            ICompiledQuery serialized = new SerializerSqlLite().Parse(this.TestCreatePlayerWithFieldStringNameWithIndexOnNameImplicit).Compile();
+            ICompiledQuery serialized = new SerializerSqLite().Parse(this.TestCreatePlayerWithFieldStringNameWithIndexOnNameExplicit).Compile();
 
             Assert.AreEqual(@"CREATE TABLE `Player` (`Name` VARCHAR(255))", serialized.Compiled.First());
             Assert.AreEqual(@"CREATE INDEX IF NOT EXISTS `Name_INDEX` ON `Player` (`Name`)", serialized.Children.First().Compiled.First());
@@ -50,7 +50,7 @@ namespace Procon.Database.Serialization.Test.SqlLite {
 
         [Test]
         public override void TestCreatePlayerWithFieldStringNameWithIndexOnNameDescending() {
-            ICompiledQuery serialized = new SerializerSqlLite().Parse(this.TestCreatePlayerWithFieldStringNameWithIndexOnNameDescendingImplicit).Compile();
+            ICompiledQuery serialized = new SerializerSqLite().Parse(this.TestCreatePlayerWithFieldStringNameWithIndexOnNameDescendingExplicit).Compile();
 
             Assert.AreEqual(@"CREATE TABLE `Player` (`Name` VARCHAR(255))", serialized.Compiled.First());
             Assert.AreEqual(@"CREATE INDEX IF NOT EXISTS `Name_INDEX` ON `Player` (`Name` DESC)", serialized.Children.First().Compiled.First());
@@ -58,7 +58,7 @@ namespace Procon.Database.Serialization.Test.SqlLite {
 
         [Test]
         public override void TestCreatePlayerWithFieldStringNameWithIndexOnNameScore() {
-            ICompiledQuery serialized = new SerializerSqlLite().Parse(this.TestCreatePlayerWithFieldStringNameWithIndexOnNameScoreImplicit).Compile();
+            ICompiledQuery serialized = new SerializerSqLite().Parse(this.TestCreatePlayerWithFieldStringNameWithIndexOnNameScoreExplicit).Compile();
 
             Assert.AreEqual(@"CREATE TABLE `Player` (`Name` VARCHAR(255))", serialized.Compiled.First());
             Assert.AreEqual(@"CREATE INDEX IF NOT EXISTS `Name_INDEX` ON `Player` (`Name`)", serialized.Children.First().Compiled.First());
@@ -67,7 +67,7 @@ namespace Procon.Database.Serialization.Test.SqlLite {
 
         [Test]
         public override void TestCreatePlayerWithFieldStringNameWithIndexOnNameScoreCompound() {
-            ICompiledQuery serialized = new SerializerSqlLite().Parse(this.TestCreatePlayerWithFieldStringNameWithIndexOnNameScoreCompoundImplicit).Compile();
+            ICompiledQuery serialized = new SerializerSqLite().Parse(this.TestCreatePlayerWithFieldStringNameWithIndexOnNameScoreCompoundExplicit).Compile();
 
             Assert.AreEqual(@"CREATE TABLE `Player` (`Name` VARCHAR(255))", serialized.Compiled.First());
             Assert.AreEqual(@"CREATE INDEX IF NOT EXISTS `Name_Score_INDEX` ON `Player` (`Name`, `Score`)", serialized.Children.First().Compiled.First());
@@ -75,7 +75,7 @@ namespace Procon.Database.Serialization.Test.SqlLite {
 
         [Test]
         public override void TestCreatePlayerWithFieldStringNameWithIndexOnNameScoreDescendingCompound() {
-            ICompiledQuery serialized = new SerializerSqlLite().Parse(this.TestCreatePlayerWithFieldStringNameWithIndexOnNameScoreDescendingCompoundImplicit).Compile();
+            ICompiledQuery serialized = new SerializerSqLite().Parse(this.TestCreatePlayerWithFieldStringNameWithIndexOnNameScoreDescendingCompoundExplicit).Compile();
 
             Assert.AreEqual(@"CREATE TABLE `Player` (`Name` VARCHAR(255))", serialized.Compiled.First());
             Assert.AreEqual(@"CREATE INDEX IF NOT EXISTS `Name_Score_INDEX` ON `Player` (`Name`, `Score` DESC)", serialized.Children.First().Compiled.First());
@@ -83,12 +83,12 @@ namespace Procon.Database.Serialization.Test.SqlLite {
 
         [Test]
         public override void TestCreatePlayerWithFieldStringNameWithPrimaryIndexOnName() {
-            Assert.AreEqual(@"CREATE TABLE `Player` (`Name` VARCHAR(255), PRIMARY KEY (`Name`))", new SerializerSqlLite().Parse(this.TestCreatePlayerWithFieldStringNameWithPrimaryIndexOnNameImplicit).Compile().Compiled.First());
+            Assert.AreEqual(@"CREATE TABLE `Player` (`Name` VARCHAR(255), PRIMARY KEY (`Name`))", new SerializerSqLite().Parse(this.TestCreatePlayerWithFieldStringNameWithPrimaryIndexOnNameExplicit).Compile().Compiled.First());
         }
 
         [Test]
         public override void TestCreatePlayerWithFieldStringNameWithUniqueIndexOnName() {
-            ICompiledQuery serialized = new SerializerSqlLite().Parse(this.TestCreatePlayerWithFieldStringNameWithUniqueIndexOnNameImplicit).Compile();
+            ICompiledQuery serialized = new SerializerSqLite().Parse(this.TestCreatePlayerWithFieldStringNameWithUniqueIndexOnNameExplicit).Compile();
 
             Assert.AreEqual(@"CREATE TABLE `Player` (`Name` VARCHAR(255))", serialized.Compiled.First());
             Assert.AreEqual(@"CREATE UNIQUE INDEX IF NOT EXISTS `Name_INDEX` ON `Player` (`Name`)", serialized.Children.First().Compiled.First());

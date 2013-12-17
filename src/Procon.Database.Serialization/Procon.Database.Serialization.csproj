@@ -109,7 +109,7 @@
     <Compile Include="Serializers\Sql\SerializerMySql.cs" />
     <Compile Include="Serializers\SerializerNoSql.cs" />
     <Compile Include="Serializers\SerializerSql.cs" />
-    <Compile Include="Serializers\Sql\SerializerSqlLite.cs" />
+    <Compile Include="Serializers\Sql\SerializerSqLite.cs" />
     <Compile Include="Utils\DatabaseObjectUtils.cs" />
   </ItemGroup>
   <ItemGroup />

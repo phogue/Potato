@@ -13,9 +13,9 @@ using Procon.Database.Serialization.Builders.Values;
 
 namespace Procon.Database.Serialization.Serializers.Sql {
     /// <summary>
-    /// Serializer for SqlLite support.
+    /// Serializer for SqLite support.
     /// </summary>
-    public class SerializerSqlLite : SerializerSql {
+    public class SerializerSqLite : SerializerSql {
 
         /// <summary>
         /// Parses an index

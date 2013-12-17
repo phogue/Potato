@@ -41,35 +41,39 @@ namespace Procon.Database.Serialization {
         /// <summary>
         /// Creates a new ascending index on a field with name
         /// </summary>
+        /// <param name="collection">The name of the collectionthe field with name exists in</param>
         /// <param name="name">The name of the field to index on</param>
         /// <returns>this</returns>
-        IDatabaseObject Index(String name);
+        IDatabaseObject Index(String collection, String name);
 
         /// <summary>
         /// Creates a new ascending or descending index on a field with name
         /// </summary>
+        /// <param name="collection">The name of the collectionthe field with name exists in</param>
         /// <param name="name">The name of the field to index on</param>
         /// <param name="sortByModifier">The direction to sort by</param>
         /// <returns>this</returns>
         /// <remarks>Passing Ascending through is as good as using Index(name)</remarks>
-        IDatabaseObject Index(String name, SortByModifier sortByModifier);
+        IDatabaseObject Index(String collection, String name, SortByModifier sortByModifier);
 
         /// <summary>
         /// Creates a new ascending index on a field with name, potentially a unique or primary key
         /// </summary>
+        /// <param name="collection">The name of the collectionthe field with name exists in</param>
         /// <param name="name">The name of the field to index on</param>
         /// <param name="indexModifier">The type of index (primary, unique etc.)</param>
         /// <returns>this</returns>
-        IDatabaseObject Index(String name, IndexModifer indexModifier);
+        IDatabaseObject Index(String collection, String name, IndexModifer indexModifier);
 
         /// <summary>
         /// Creates a new ascending or descenting index on a field with name, potentially a unique or primary key
         /// </summary>
+        /// <param name="collection">The name of the collectionthe field with name exists in</param>
         /// <param name="name">The name of the field to index on</param>
         /// <param name="indexModifier">The type of index (primary, unique etc.)</param>
         /// <param name="sortByModifier">The direction to sort by</param>
         /// <returns>this</returns>
-        IDatabaseObject Index(String name, IndexModifer indexModifier, SortByModifier sortByModifier);
+        IDatabaseObject Index(String collection, String name, IndexModifer indexModifier, SortByModifier sortByModifier);
 
         /// <summary>
         /// Appends a modifier
@@ -141,6 +145,26 @@ namespace Procon.Database.Serialization {
         /// <param name="data">The data to compare against</param>
         /// <returns>this</returns>
         IDatabaseObject Condition(String name, Equality equality, Object data);
+
+        /// <summary>
+        /// Creates a new condition object, a field with name equaling data
+        /// </summary>
+        /// <param name="collection">The specific collection to prefix the field with e.g "Player.Name"</param>
+        /// <param name="name">The name of the field to compare against</param>
+        /// <param name="data">The data to compare against</param>
+        /// <returns>this</returns>
+        IDatabaseObject Condition(String collection, String name, Object data);
+
+        /// <summary>
+        /// Create a new condition object, field with name, a comparison of equality
+        /// against data
+        /// </summary>
+        /// <param name="collection">The specific collection to prefix the field with e.g "Player.Name"</param>
+        /// <param name="name">The name of the field to compare against</param>
+        /// <param name="equality">The equality to compare the field against the data</param>
+        /// <param name="data">The data to compare against</param>
+        /// <returns>this</returns>
+        IDatabaseObject Condition(String collection, String name, Equality equality, Object data);
 
         /// <summary>
         /// Appends an assignment object to the chain

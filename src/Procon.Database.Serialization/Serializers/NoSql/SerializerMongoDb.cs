@@ -56,19 +56,9 @@ namespace Procon.Database.Serialization.Serializers.NoSql {
         protected virtual List<String> ParseIndices(IDatabaseObject query) {
             return query.Where(statement => statement is Index).Union(new List<IDatabaseObject>() { query }.Where(owner => owner is Index)).Select(index => this.ParseIndex(index as Index)).ToList();
         }
-
-        // todo this makes very little sense. It's essentially just dropping the collection name since something magically
-        // todo needs to appear (it can't be explictly or implicitly added?)
-        protected virtual String ParseFieldName(String name, Collection collection) {
-            // The logic below is for shorthand methods that already split by "." and favour sql format where
-            // a table must be specified when joins occur e.g Player.Name (Table "Player", Field "Name") but
-            // since everything occurs on a single collection in mongo we join them back here, as it would instead
-            // mean a field belonging to a collection.
-            return collection != null && collection.Any(modifier => modifier is Implicit) == false && collection.Any(modifier => modifier is Explicit) == false ? String.Format("{0}.{1}", collection.Name, name) : String.Format("{0}", name);
-        }
-
+        
         protected virtual String ParseField(Field field) {
-            return this.ParseFieldName(field.Name, field.FirstOrDefault(statement => statement is Collection) as Collection);
+            return field.Name;
         }
 
         protected virtual String ParseEquality(Equality equality) {
@@ -128,9 +118,7 @@ namespace Procon.Database.Serialization.Serializers.NoSql {
         }
 
         protected virtual JObject ParseSort(Sort sort, JObject outer) {
-            Collection collection = sort.FirstOrDefault(statement => statement is Collection) as Collection;
-
-            outer[this.ParseFieldName(sort.Name, collection)] = sort.Any(attribute => attribute is Descending) ? -1 : 1;
+            outer[sort.Name] = sort.Any(attribute => attribute is Descending) ? -1 : 1;
 
             return outer;
         }

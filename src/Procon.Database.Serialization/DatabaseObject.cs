@@ -19,36 +19,14 @@ namespace Procon.Database.Serialization {
     public abstract class DatabaseObject : List<IDatabaseObject>, IDatabaseObject {
 
         /// <summary>
-        /// Builds a field name with a bias for mysql "table.field" value when there is only
-        /// a single decimal it will split to collection.field. If there is multiple decimals 
-        /// then it will just use the full name passed through for the field name, since this
-        /// wouldn't be valid sql anyway. It's expected serializers for nosql would check and
-        /// combine the field if a collection is present.
+        /// Builds a field name, stripping mysql quotations from the name.
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
         protected Field BuildField(String name) {
-            Field field = null;
-
-            String[] names = name.Split(new[] { '.' }, 2);
-
-            if (names.Length == 2) {
-                field = new Field() {
-                    Name = names.Last().Replace("`", "")
-                };
-
-                field.Collection(
-                    new Collection() {
-                        Name = names.First().Replace("`", "")
-                    }
-                    .Implicit()
-                );
-            }
-            else {
-                field = new Field() {
-                    Name = name.Replace("`", "")
-                };
-            }
+            Field field = new Field() {
+                Name = name.Replace("`", "")
+            };
 
             field.Implicit();
 
@@ -122,6 +100,33 @@ namespace Procon.Database.Serialization {
             return equality;
         }
 
+        /// <summary>
+        /// Works out the best matching Value based on the supplied data and completes the
+        /// equality object.
+        /// </summary>
+        /// <param name="equality"></param>
+        /// <param name="collection"></param>
+        /// <param name="name"></param>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        protected Equality BuildEquality(Equality equality, String collection, String name, Object data) {
+            Field field = this.BuildField(name);
+            field.Collection(new Collection() {
+                Name = collection
+            }).Implicit();
+
+            Value value = this.BuildValue(data);
+
+            if (equality != null && value != null) {
+                equality.AddRange(new List<IDatabaseObject>() {
+                    field,
+                    value
+                });
+            }
+
+            return equality;
+        }
+
         public IDatabaseObject Method(IDatabaseObject data) {
             this.Add(data.Explicit());
 
@@ -146,86 +151,94 @@ namespace Procon.Database.Serialization {
             return this;
         }
 
-        public IDatabaseObject Index(String name) {
+        public IDatabaseObject Index(String collection, String name) {
             Field field = this.BuildField(name);
-            Collection collection = field.FirstOrDefault(statement => statement is Collection) as Collection;
 
             return this.Raw(
                 new Index() {
-                    Name = String.Format("{0}_INDEX", name)
+                    Name = String.Format("{0}_INDEX", field.Name)
                 }
                 .Sort(
                     new Sort() {
                         Name = field.Name
                     }
-                    .Raw(collection)
                     .Implicit()
                 )
-                .Raw(collection)
+                .Raw(
+                    new Collection() {
+                        Name = collection
+                    }.Implicit()
+                )
                 .Implicit()
             );
         }
 
-        public IDatabaseObject Index(string name, SortByModifier sortByModifier) {
+        public IDatabaseObject Index(String collection, String name, SortByModifier sortByModifier) {
             Field field = this.BuildField(name);
-            Collection collection = field.FirstOrDefault(statement => statement is Collection) as Collection;
 
             return this.Raw(
                 new Index() {
-                    Name = String.Format("{0}_INDEX", name)
+                    Name = String.Format("{0}_INDEX", field.Name)
                 }
                 .Sort(
                     new Sort() {
                         Name = field.Name
                     }
-                    .Raw(collection)
                     .Modifier(sortByModifier)
                     .Implicit()
                 )
-                .Raw(collection)
+                .Raw(
+                    new Collection() {
+                        Name = collection
+                    }.Implicit()
+                )
                 .Implicit()
             );
         }
 
-        public IDatabaseObject Index(string name, IndexModifer indexModifier) {
+        public IDatabaseObject Index(String collection, String name, IndexModifer indexModifier) {
             Field field = this.BuildField(name);
-            Collection collection = field.FirstOrDefault(statement => statement is Collection) as Collection;
 
             return this.Raw(
                 new Index() {
-                    Name = String.Format("{0}_INDEX", name)
+                    Name = String.Format("{0}_INDEX", field.Name)
                 }
                 .Sort(
                     new Sort() {
                         Name = field.Name
                     }
-                    .Raw(collection)
                     .Implicit()
                 )
                 .Modifier(indexModifier)
-                .Raw(collection)
+                .Raw(
+                    new Collection() {
+                        Name = collection
+                    }.Implicit()
+                )
                 .Implicit()
             );
         }
 
-        public IDatabaseObject Index(string name, IndexModifer indexModifier, SortByModifier sortByModifier) {
+        public IDatabaseObject Index(String collection, String name, IndexModifer indexModifier, SortByModifier sortByModifier) {
             Field field = this.BuildField(name);
-            Collection collection = field.FirstOrDefault(statement => statement is Collection) as Collection;
 
             return this.Raw(
                 new Index() {
-                    Name = String.Format("{0}_INDEX", name)
+                    Name = String.Format("{0}_INDEX", field.Name)
                 }
                 .Sort(
                     new Sort() {
                         Name = field.Name
                     }
-                    .Raw(collection)
                     .Modifier(sortByModifier)
                     .Implicit()
                 )
                 .Modifier(indexModifier)
-                .Raw(collection)
+                .Raw(
+                    new Collection() {
+                        Name = collection
+                    }.Implicit()
+                )
                 .Implicit()
             );
         }
@@ -282,6 +295,16 @@ namespace Procon.Database.Serialization {
 
         public IDatabaseObject Condition(String name, Equality equality, Object data) {
             this.Add(this.BuildEquality(equality, name, data));
+
+            return this;
+        }
+
+        public IDatabaseObject Condition(String collection, String name, object data) {
+            return this.Condition(collection, name, new Equals().Implicit() as Equals, data);
+        }
+
+        public IDatabaseObject Condition(String collection, String name, Equality equality, object data) {
+            this.Add(this.BuildEquality(equality, collection, name, data));
 
             return this;
         }

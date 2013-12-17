@@ -65,7 +65,7 @@ namespace Procon.Database.Serialization.Test {
             });
 
         protected IDatabaseObject TestRemoveAllFromPlayerWherePlayerNameEqualsPhogueImplicit = new Remove()
-            .Condition("Player.Name", "Phogue")
+            .Condition("Player", "Name", "Phogue")
             .Collection("Player");
 
         public abstract void TestRemoveAllFromPlayerWherePlayerNameEqualsPhogue();

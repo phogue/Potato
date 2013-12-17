@@ -240,7 +240,7 @@ namespace Procon.Database.Serialization.Test {
         protected IDatabaseObject TestCreatePlayerWithFieldStringNameWithIndexOnNameImplicit = new Create()
             .Collection("Player")
             .Field("Name", new StringType())
-            .Index("Player.Name");
+            .Index("Player", "Name");
 
         public abstract void TestCreatePlayerWithFieldStringNameWithIndexOnName();
 
@@ -278,7 +278,7 @@ namespace Procon.Database.Serialization.Test {
         protected IDatabaseObject TestCreatePlayerWithFieldStringNameWithIndexOnNameDescendingImplicit = new Create()
             .Collection("Player")
             .Field("Name", new StringType())
-            .Index("Player.Name", new Descending());
+            .Index("Player", "Name", new Descending());
 
         public abstract void TestCreatePlayerWithFieldStringNameWithIndexOnNameDescending();
 
@@ -329,8 +329,8 @@ namespace Procon.Database.Serialization.Test {
         protected IDatabaseObject TestCreatePlayerWithFieldStringNameWithIndexOnNameScoreImplicit = new Create()
             .Collection("Player")
             .Field("Name", new StringType())
-            .Index("Player.Name")
-            .Index("Player.Score");
+            .Index("Player", "Name")
+            .Index("Player", "Score");
 
         public abstract void TestCreatePlayerWithFieldStringNameWithIndexOnNameScore();
 
@@ -469,7 +469,7 @@ namespace Procon.Database.Serialization.Test {
         protected IDatabaseObject TestCreatePlayerWithFieldStringNameWithPrimaryIndexOnNameImplicit = new Create()
             .Collection("Player")
             .Field("Name", new StringType())
-            .Index("Player.Name", new Primary());
+            .Index("Player", "Name", new Primary());
 
         public abstract void TestCreatePlayerWithFieldStringNameWithPrimaryIndexOnName();
 
@@ -508,7 +508,7 @@ namespace Procon.Database.Serialization.Test {
         protected IDatabaseObject TestCreatePlayerWithFieldStringNameWithUniqueIndexOnNameImplicit = new Create()
             .Collection("Player")
             .Field("Name", new StringType())
-            .Index("Player.Name", new Unique());
+            .Index("Player", "Name", new Unique());
 
         public abstract void TestCreatePlayerWithFieldStringNameWithUniqueIndexOnName();
 

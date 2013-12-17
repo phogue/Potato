@@ -16,45 +16,6 @@ namespace Procon.Database.Serialization.Serializers.Sql {
     /// Serializer for MySQL support.
     /// </summary>
     public class SerializerMySql : SerializerSql {
-        /*
-        /// <summary>
-        /// Parses an index
-        /// </summary>
-        /// <param name="index"></param>
-        /// <returns></returns>
-        protected virtual String ParseIndex(Index index) {
-            String parsed = String.Empty;
-
-            Primary primary = index.FirstOrDefault(attribute => attribute is Primary) as Primary;
-            Unique unique = index.FirstOrDefault(attribute => attribute is Unique) as Unique;
-
-            List<String> fields = this.ParseSortings(index);
-
-            // PRIMARY KEY (`Name`)
-            if (primary != null) {
-                parsed = String.Format("PRIMARY KEY ({0})", String.Join(", ", fields.ToArray()));
-            }
-            // UNIQUE INDEX `Score_UNIQUE` (`Score` ASC)
-            else if (unique != null) {
-                parsed = String.Format("UNIQUE INDEX `{0}` ({1})", index.Name, String.Join(", ", fields.ToArray()));
-            }
-            // INDEX `Name_INDEX` (`Name` ASC)
-            else {
-                parsed = String.Format("INDEX `{0}` ({1})", index.Name, String.Join(", ", fields.ToArray()));
-            }
-
-            return parsed;
-        }
-
-        /// <summary>
-        /// Parses the list of indexes 
-        /// </summary>
-        /// <param name="query"></param>
-        /// <returns></returns>
-        protected virtual List<String> ParseIndices(IDatabaseObject query) {
-            return query.Where(statement => statement is Index).Select(index => this.ParseIndex(index as Index)).ToList();
-        }
-        */
 
         /// <summary>
         /// Formats the database name.

@@ -128,7 +128,7 @@ namespace Procon.Database.Serialization.Test {
             });
 
         protected IDatabaseObject TestSelectAllFromPlayerWherePlayerNameEqualsPhogueImplicit = new Find()
-            .Condition("Player.Name", "Phogue")
+            .Condition("Player", "Name", "Phogue")
             .Collection("Player");
 
         public abstract void TestSelectAllFromPlayerWherePlayerNameEqualsPhogue();

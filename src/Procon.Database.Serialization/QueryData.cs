@@ -63,6 +63,7 @@ namespace Procon.Database.Serialization {
             this.Fields = new List<String>();
             this.Values = new List<String>();
             this.Assignments = new List<String>();
+            this.Indices = new List<String>();
             this.Conditions = new List<String>();
             this.Collections = new List<String>();
             this.Sortings = new List<String>();

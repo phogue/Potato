@@ -5,12 +5,12 @@ using Procon.Database.Serialization.Serializers.Sql;
 namespace Procon.Database.Serialization.Test.SqlLite {
     [TestFixture]
     public class TestSerializerSqlLiteSaveImplicit : TestSerializerSave {
-        // [Test]
+        [Test]
         public override void TestSaveIntoPlayerSetName() {
             Assert.AreEqual(@"INSERT INTO `Player` (`Name`) VALUES (""Phogue"")", new SerializerSqlLite().Parse(this.TestSaveIntoPlayerSetNameImplicit).Compile().Compiled.First());
         }
 
-        // [Test]
+        [Test]
         public override void TestSaveIntoPlayerSetNameScore() {
             Assert.AreEqual(@"INSERT INTO `Player` (`Name`, `Score`) VALUES (""Phogue"", 50)", new SerializerSqlLite().Parse(this.TestSaveIntoPlayerSetNameScoreImplicit).Compile().Compiled.First());
         }

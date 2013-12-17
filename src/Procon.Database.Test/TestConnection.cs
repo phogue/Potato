@@ -92,7 +92,7 @@ namespace Procon.Database.Test {
 
             driver.Connect();
 
-            CollectionValue result = driver.Query(new Create().Collection("posts").Index("Name", new Primary())) as CollectionValue;
+            CollectionValue result = driver.Query(new Create().Collection("posts").Index("Player", "Name", new Primary())) as CollectionValue;
 
             JArray array = result.ToJArray();
 

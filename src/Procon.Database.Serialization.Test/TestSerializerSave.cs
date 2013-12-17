@@ -48,7 +48,7 @@ namespace Procon.Database.Serialization.Test {
                     Name = "Score"
                 },
                 new NumericValue() {
-                    Integer = 50
+                    Long = 50
                 }
             });
 

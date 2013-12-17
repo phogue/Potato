@@ -104,5 +104,37 @@ namespace Procon.Database.Test {
 
             driver.Close();
         }
+
+        [Test]
+        [Ignore]
+        public void TestMethod4() {
+            IDriver driver = new SqLiteDriver() {
+                Settings = new DriverSettings() {
+                    Database = "test_connection"
+                }
+            };
+
+            driver.Connect();
+
+            /*
+            driver.Query(
+                new Save()
+                .Collection("player")
+                .Assignment("Name", "Phogue")
+                .Assignment("Rank", 10)
+                .Assignment("Score", 50)
+            );
+            */
+
+            //CollectionValue result = driver.Query(new Create().Collection("Player").Field("Name").Field("Score").Index("player", "Name")) as CollectionValue;
+
+
+            List<IDatabaseObject> result = driver.Query(new Find().Collection("Player").Condition("Score", 100));
+
+            JArray array = ((CollectionValue)result.First()).ToJArray();
+
+            driver.Close();
+        }
+
     }
 }

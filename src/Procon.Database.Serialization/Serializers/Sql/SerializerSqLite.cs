@@ -184,8 +184,8 @@ namespace Procon.Database.Serialization.Serializers.Sql {
             RawValue raw = value as RawValue;
 
             if (numeric != null) {
-                if (numeric.Integer.HasValue == true) {
-                    parsed = numeric.Integer.Value.ToString(CultureInfo.InvariantCulture);
+                if (numeric.Long.HasValue == true) {
+                    parsed = numeric.Long.Value.ToString(CultureInfo.InvariantCulture);
                 }
                 else if (numeric.Float.HasValue == true) {
                     parsed = numeric.Float.Value.ToString(CultureInfo.InvariantCulture);

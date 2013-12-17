@@ -121,7 +121,7 @@ namespace Procon.Database.Drivers {
                     result.Add(
                         new Affected() {
                             new NumericValue() {
-                                Integer = command.ExecuteNonQuery()
+                                Long = command.ExecuteNonQuery()
                             }
                         }
                     );

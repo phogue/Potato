@@ -43,7 +43,12 @@ namespace Procon.Database.Serialization {
 
             if (data is int) {
                 value = new NumericValue() {
-                    Integer = (int)data
+                    Long = Convert.ToInt64(data)
+                };
+            }
+            else if (data is long) {
+                value = new NumericValue() {
+                    Long = (long)data
                 };
             }
             else if (data is float) {

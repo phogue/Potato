@@ -132,7 +132,7 @@ namespace Procon.Database.Drivers {
             result.Add(
                 new Affected() {
                     new NumericValue() {
-                        Integer = (int)writeConcernResult.DocumentsAffected
+                        Long = (int)writeConcernResult.DocumentsAffected
                     }
                 }
             );
@@ -153,7 +153,7 @@ namespace Procon.Database.Drivers {
             result.Add(
                 new Affected() {
                     new NumericValue() {
-                        Integer = (int)writeConcernResult.DocumentsAffected
+                        Long = (int)writeConcernResult.DocumentsAffected
                     }
                 }
             );
@@ -171,7 +171,7 @@ namespace Procon.Database.Drivers {
                 result.Add(
                     new Affected() {
                         new NumericValue() {
-                            Integer = 1
+                            Long = 1
                         }
                     }
                 );
@@ -184,7 +184,7 @@ namespace Procon.Database.Drivers {
                 result.Add(
                     new Affected() {
                         new NumericValue() {
-                            Integer = commandResult.Ok == true ? 1 : 0
+                            Long = commandResult.Ok == true ? 1 : 0
                         }
                     }
                 );

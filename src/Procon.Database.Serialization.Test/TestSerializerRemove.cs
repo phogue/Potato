@@ -88,7 +88,7 @@ namespace Procon.Database.Serialization.Test {
                         Name = "Score"
                     },
                     new NumericValue() {
-                        Integer = 10
+                        Long = 10
                     }
                 })
             .Collection(new Collection() {
@@ -163,7 +163,7 @@ namespace Procon.Database.Serialization.Test {
                     Name = "Score"
                 },
                 new NumericValue() {
-                    Integer = 10
+                    Long = 10
                 }
             })
             .Condition(new LessThan() {
@@ -171,7 +171,7 @@ namespace Procon.Database.Serialization.Test {
                     Name = "Score"
                 },
                 new NumericValue() {
-                    Integer = 20
+                    Long = 20
                 }
             })
             .Collection(new Collection() {
@@ -206,7 +206,7 @@ namespace Procon.Database.Serialization.Test {
                                 Name = "Score"
                             },
                             new NumericValue() {
-                                Integer = 50
+                                Long = 50
                             }
                         }
                     },
@@ -224,7 +224,7 @@ namespace Procon.Database.Serialization.Test {
                                 Name = "Score"
                             },
                             new NumericValue() {
-                                Integer = 50
+                                Long = 50
                             }
                         }
                     }

@@ -27,7 +27,7 @@ namespace Procon.Database.Serialization.Test {
                         Name = "Score"
                     },
                     new NumericValue() {
-                        Integer = 50
+                        Long = 50
                     }
                 })
             )
@@ -41,7 +41,7 @@ namespace Procon.Database.Serialization.Test {
                         Name = "Score"
                     },
                     new NumericValue() {
-                        Integer = 50
+                        Long = 50
                     }
                 })
                 .Condition(new Equals() {
@@ -90,7 +90,7 @@ namespace Procon.Database.Serialization.Test {
                         Name = "Score"
                     },
                     new NumericValue() {
-                        Integer = 50
+                        Long = 50
                     }
                 })
                 .Assignment(new Assignment() {
@@ -98,7 +98,7 @@ namespace Procon.Database.Serialization.Test {
                         Name = "Rank"
                     },
                     new NumericValue() {
-                        Integer = 10
+                        Long = 10
                     }
                 })
             )
@@ -112,7 +112,7 @@ namespace Procon.Database.Serialization.Test {
                         Name = "Score"
                     },
                     new NumericValue() {
-                        Integer = 50
+                        Long = 50
                     }
                 })
                 .Assignment(new Assignment() {
@@ -120,7 +120,7 @@ namespace Procon.Database.Serialization.Test {
                         Name = "Rank"
                     },
                     new NumericValue() {
-                        Integer = 10
+                        Long = 10
                     }
                 })
                 .Condition(new Equals() {

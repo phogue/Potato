@@ -10,7 +10,7 @@ namespace Procon.Database.Serialization.Builders.Values {
         /// <summary>
         /// The integer value of this object
         /// </summary>
-        public int? Integer { get; set; }
+        public long? Long { get; set; }
 
         /// <summary>
         /// The float value of this object
@@ -22,7 +22,7 @@ namespace Procon.Database.Serialization.Builders.Values {
         /// </summary>
         /// <returns></returns>
         public override object ToObject() {
-            return this.Integer ?? this.Float;
+            return this.Long ?? this.Float;
         }
     }
 }

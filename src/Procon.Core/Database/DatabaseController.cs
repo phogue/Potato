@@ -28,7 +28,8 @@ namespace Procon.Core.Database {
         /// </summary>
         protected List<IDriver> AvailableDrivers = new List<IDriver>() {
             new MySqlDriver(),
-            new MongoDbDriver()
+            new MongoDbDriver(),
+            new SqLiteDriver()
         };
 
         /// <summary>

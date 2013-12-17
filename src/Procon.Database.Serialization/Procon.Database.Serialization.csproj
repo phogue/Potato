@@ -42,6 +42,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Builders\FieldModifier.cs" />
+    <Compile Include="Builders\Modifiers\Explicit.cs" />
+    <Compile Include="Builders\Modifiers\Implicit.cs" />
     <Compile Include="Builders\Logicals\And.cs" />
     <Compile Include="Builders\Modifier.cs" />
     <Compile Include="Builders\Modifiers\Ascending.cs" />
@@ -63,7 +65,7 @@
     <Compile Include="Builders\Equality.cs" />
     <Compile Include="Builders\Equalities\Equals.cs" />
     <Compile Include="Builders\Statements\Field.cs" />
-    <Compile Include="Builders\Index.cs" />
+    <Compile Include="Builders\Methods\Index.cs" />
     <Compile Include="Builders\Modifiers\Primary.cs" />
     <Compile Include="Builders\Modifiers\Unique.cs" />
     <Compile Include="Builders\Methods\Save.cs" />

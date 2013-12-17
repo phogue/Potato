@@ -1,11 +1,11 @@
 ﻿using System;
 
-namespace Procon.Database.Serialization.Builders {
+namespace Procon.Database.Serialization.Builders.Methods {
     /// <summary>
     /// An index on a field
     /// </summary>
     [Serializable]
-    public class Index : DatabaseObject {
+    public class Index : Method {
         /// <summary>
         /// The name of the index
         /// </summary>

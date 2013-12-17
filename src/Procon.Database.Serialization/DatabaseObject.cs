@@ -4,6 +4,7 @@ using System.Linq;
 using Procon.Database.Serialization.Builders;
 using Procon.Database.Serialization.Builders.Equalities;
 using Procon.Database.Serialization.Builders.FieldTypes;
+using Procon.Database.Serialization.Builders.Methods;
 using Procon.Database.Serialization.Builders.Modifiers;
 using Procon.Database.Serialization.Builders.Statements;
 using Procon.Database.Serialization.Builders.Values;
@@ -36,13 +37,20 @@ namespace Procon.Database.Serialization {
                     Name = names.Last().Replace("`", "")
                 };
 
-                field.Collection(names.First().Replace("`", ""));
+                field.Collection(
+                    new Collection() {
+                        Name = names.First().Replace("`", "")
+                    }
+                    .Implicit()
+                );
             }
             else {
                 field = new Field() {
                     Name = name.Replace("`", "")
                 };
             }
+
+            field.Implicit();
 
             return field;
         }
@@ -85,6 +93,10 @@ namespace Procon.Database.Serialization {
                 }
             }
 
+            if (value != null) {
+                value.Implicit();
+            }
+
             return value;
         }
 
@@ -111,27 +123,25 @@ namespace Procon.Database.Serialization {
         }
 
         public IDatabaseObject Method(IDatabaseObject data) {
-            this.Add(data);
+            this.Add(data.Explicit());
 
             return this;
         }
 
         public IDatabaseObject Database(IDatabaseObject data) {
-            this.Add(data);
+            this.Add(data.Explicit());
 
             return this;
         }
 
         public IDatabaseObject Database(String name) {
-            this.Add(new Builders.Database() {
+            return this.Raw(new Builders.Database() {
                 Name = name
             });
-
-            return this;
         }
 
         public IDatabaseObject Index(IDatabaseObject data) {
-            this.Add(data);
+            this.Add(data.Explicit());
 
             return this;
         }
@@ -140,7 +150,7 @@ namespace Procon.Database.Serialization {
             Field field = this.BuildField(name);
             Collection collection = field.FirstOrDefault(statement => statement is Collection) as Collection;
 
-            return this.Index(
+            return this.Raw(
                 new Index() {
                     Name = String.Format("{0}_INDEX", name)
                 }
@@ -148,8 +158,11 @@ namespace Procon.Database.Serialization {
                     new Sort() {
                         Name = field.Name
                     }
-                    .Collection(collection)
+                    .Raw(collection)
+                    .Implicit()
                 )
+                .Raw(collection)
+                .Implicit()
             );
         }
 
@@ -157,7 +170,7 @@ namespace Procon.Database.Serialization {
             Field field = this.BuildField(name);
             Collection collection = field.FirstOrDefault(statement => statement is Collection) as Collection;
 
-            return this.Index(
+            return this.Raw(
                 new Index() {
                     Name = String.Format("{0}_INDEX", name)
                 }
@@ -165,9 +178,12 @@ namespace Procon.Database.Serialization {
                     new Sort() {
                         Name = field.Name
                     }
-                    .Collection(collection)
+                    .Raw(collection)
                     .Modifier(sortByModifier)
+                    .Implicit()
                 )
+                .Raw(collection)
+                .Implicit()
             );
         }
 
@@ -175,7 +191,7 @@ namespace Procon.Database.Serialization {
             Field field = this.BuildField(name);
             Collection collection = field.FirstOrDefault(statement => statement is Collection) as Collection;
 
-            return this.Index(
+            return this.Raw(
                 new Index() {
                     Name = String.Format("{0}_INDEX", name)
                 }
@@ -183,9 +199,12 @@ namespace Procon.Database.Serialization {
                     new Sort() {
                         Name = field.Name
                     }
-                    .Collection(collection)
+                    .Raw(collection)
+                    .Implicit()
                 )
                 .Modifier(indexModifier)
+                .Raw(collection)
+                .Implicit()
             );
         }
 
@@ -193,7 +212,7 @@ namespace Procon.Database.Serialization {
             Field field = this.BuildField(name);
             Collection collection = field.FirstOrDefault(statement => statement is Collection) as Collection;
 
-            return this.Index(
+            return this.Raw(
                 new Index() {
                     Name = String.Format("{0}_INDEX", name)
                 }
@@ -201,61 +220,64 @@ namespace Procon.Database.Serialization {
                     new Sort() {
                         Name = field.Name
                     }
-                    .Collection(collection)
+                    .Raw(collection)
                     .Modifier(sortByModifier)
+                    .Implicit()
                 )
                 .Modifier(indexModifier)
+                .Raw(collection)
+                .Implicit()
             );
         }
 
         public IDatabaseObject Modifier(IDatabaseObject data) {
-            this.Add(data);
+            this.Add(data.Explicit());
 
             return this;
         }
 
         public IDatabaseObject FieldType(IDatabaseObject data) {
-            this.Add(data);
+            this.Add(data.Explicit());
 
             return this;
         }
 
         public IDatabaseObject Field(IDatabaseObject data) {
-            this.Add(data);
+            this.Add(data.Explicit());
 
             return this;
         }
 
         public IDatabaseObject Field(String name) {
-            return this.Field(this.BuildField(name));
+            return this.Raw(this.BuildField(name));
         }
 
         public IDatabaseObject Field(String name, FieldType type, bool nullable = true) {
             if (nullable == true) type.Add(new Nullable());
 
-            return this.Field(this.BuildField(name).FieldType(type) as Field);
+            return this.Raw(this.BuildField(name).FieldType(type) as Field);
         }
 
         public IDatabaseObject Field(String name, int length, bool nullable = true) {
             FieldType type = new StringType();
 
-            type.Modifier(new Length() {
+            type.Raw(new Length() {
                 Value = length
             });
 
             if (nullable == true) type.Add(new Nullable());
 
-            return this.Field(this.BuildField(name).FieldType(type));
+            return this.Raw(this.BuildField(name).FieldType(type));
         }
 
         public IDatabaseObject Condition(IDatabaseObject data) {
-            this.Add(data);
+            this.Add(data.Explicit());
 
             return this;
         }
 
         public IDatabaseObject Condition(String name, Object data) {
-            return this.Condition(name, new Equals(), data);
+            return this.Condition(name, new Equals().Implicit() as Equals, data);
         }
 
         public IDatabaseObject Condition(String name, Equality equality, Object data) {
@@ -265,7 +287,7 @@ namespace Procon.Database.Serialization {
         }
 
         public IDatabaseObject Assignment(IDatabaseObject data) {
-            this.Add(data);
+            this.Add(data.Explicit());
 
             return this;
         }
@@ -285,7 +307,7 @@ namespace Procon.Database.Serialization {
         }
 
         public IDatabaseObject Collection(IDatabaseObject data) {
-            this.Add(data);
+            this.Add(data.Explicit());
 
             return this;
         }
@@ -312,9 +334,29 @@ namespace Procon.Database.Serialization {
                 new Sort() {
                     Name = field.Name
                 }
-                .Modifier(modifier ?? new Ascending())
+                .Raw(modifier != null ? modifier.Explicit() : new Ascending().Implicit())
+                .Implicit()
             )
-            .Collection(collection);
+            .Raw(collection)
+            .Implicit();
+        }
+
+        public IDatabaseObject Implicit() {
+            this.Add(new Implicit());
+
+            return this;
+        }
+
+        public IDatabaseObject Explicit() {
+            this.Add(new Explicit());
+
+            return this;
+        }
+
+        public IDatabaseObject Raw(IDatabaseObject item) {
+            this.Add(item);
+
+            return this;
         }
     }
 }

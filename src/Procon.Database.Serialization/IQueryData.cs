@@ -22,6 +22,11 @@ namespace Procon.Database.Serialization {
         List<String> Fields { get; set; }
 
         /// <summary>
+        /// The values to assign to fields
+        /// </summary>
+        List<String> Values { get; set; }
+
+        /// <summary>
         /// The fields used to when assigning a value to a field (update, insert)
         /// </summary>
         List<String> Assignments { get; set; }

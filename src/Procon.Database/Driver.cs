@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Procon.Database.Serialization;
 
 namespace Procon.Database {
@@ -26,13 +27,13 @@ namespace Procon.Database {
         /// Runs a compiled query
         /// </summary>
         /// <param name="query"></param>
-        protected abstract IDatabaseObject Query(ICompiledQuery query);
+        protected abstract List<IDatabaseObject> Query(ICompiledQuery query);
 
         /// <summary>
         /// Query the open driver
         /// </summary>
         /// <param name="query"></param>
-        public abstract IDatabaseObject Query(IDatabaseObject query);
+        public abstract List<IDatabaseObject> Query(IDatabaseObject query);
 
         /// <summary>
         /// Loop through escaping all StringValue database objects anywhere in the tree.

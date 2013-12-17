@@ -232,12 +232,15 @@ namespace Procon.Database.Serialization.Test {
                         Name = "Name"
                     }
                 )
+                .Collection(new Collection() {
+                    Name = "Player"
+                })
             );
 
         protected IDatabaseObject TestCreatePlayerWithFieldStringNameWithIndexOnNameImplicit = new Create()
             .Collection("Player")
             .Field("Name", new StringType())
-            .Index("Name");
+            .Index("Player.Name");
 
         public abstract void TestCreatePlayerWithFieldStringNameWithIndexOnName();
 
@@ -267,12 +270,15 @@ namespace Procon.Database.Serialization.Test {
                         Name = "Name"
                     }.Modifier(new Descending())
                 )
+                .Collection(new Collection() {
+                    Name = "Player"
+                })
             );
 
         protected IDatabaseObject TestCreatePlayerWithFieldStringNameWithIndexOnNameDescendingImplicit = new Create()
             .Collection("Player")
             .Field("Name", new StringType())
-            .Index("Name", new Descending());
+            .Index("Player.Name", new Descending());
 
         public abstract void TestCreatePlayerWithFieldStringNameWithIndexOnNameDescending();
 
@@ -302,6 +308,9 @@ namespace Procon.Database.Serialization.Test {
                         Name = "Name"
                     }
                 )
+                .Collection(new Collection() {
+                    Name = "Player"
+                })
             )
             .Index(
                 new Index() {
@@ -312,13 +321,16 @@ namespace Procon.Database.Serialization.Test {
                         Name = "Score"
                     }
                 )
+                .Collection(new Collection() {
+                    Name = "Player"
+                })
             );
 
         protected IDatabaseObject TestCreatePlayerWithFieldStringNameWithIndexOnNameScoreImplicit = new Create()
             .Collection("Player")
             .Field("Name", new StringType())
-            .Index("Name")
-            .Index("Score");
+            .Index("Player.Name")
+            .Index("Player.Score");
 
         public abstract void TestCreatePlayerWithFieldStringNameWithIndexOnNameScore();
 
@@ -353,6 +365,9 @@ namespace Procon.Database.Serialization.Test {
                         Name = "Score"
                     }
                 )
+                .Collection(new Collection() {
+                    Name = "Player"
+                })
             );
 
         protected IDatabaseObject TestCreatePlayerWithFieldStringNameWithIndexOnNameScoreCompoundImplicit = new Create()
@@ -363,6 +378,7 @@ namespace Procon.Database.Serialization.Test {
                     Name = "Name_Score_INDEX"
                 }.Sort("Name")
                 .Sort("Score")
+                .Collection("Player")
             );
 
         public abstract void TestCreatePlayerWithFieldStringNameWithIndexOnNameScoreCompound();
@@ -399,6 +415,9 @@ namespace Procon.Database.Serialization.Test {
                     }
                     .Modifier(new Descending())
                 )
+                .Collection(new Collection() {
+                    Name = "Player"
+                })
             );
 
         protected IDatabaseObject TestCreatePlayerWithFieldStringNameWithIndexOnNameScoreDescendingCompoundImplicit = new Create()
@@ -410,6 +429,7 @@ namespace Procon.Database.Serialization.Test {
                 }
                 .Sort("Name")
                 .Sort("Score", new Descending())
+                .Collection("Player")
             );
 
         public abstract void TestCreatePlayerWithFieldStringNameWithIndexOnNameScoreDescendingCompound();
@@ -441,12 +461,15 @@ namespace Procon.Database.Serialization.Test {
                     }
                 )
                 .Modifier(new Primary())
+                .Collection(new Collection() {
+                    Name = "Player"
+                })
             );
 
         protected IDatabaseObject TestCreatePlayerWithFieldStringNameWithPrimaryIndexOnNameImplicit = new Create()
             .Collection("Player")
             .Field("Name", new StringType())
-            .Index("Name", new Primary());
+            .Index("Player.Name", new Primary());
 
         public abstract void TestCreatePlayerWithFieldStringNameWithPrimaryIndexOnName();
 
@@ -477,12 +500,15 @@ namespace Procon.Database.Serialization.Test {
                     }
                 )
                 .Modifier(new Unique())
+                .Collection(new Collection() {
+                    Name = "Player"
+                })
             );
 
         protected IDatabaseObject TestCreatePlayerWithFieldStringNameWithUniqueIndexOnNameImplicit = new Create()
             .Collection("Player")
             .Field("Name", new StringType())
-            .Index("Name", new Unique());
+            .Index("Player.Name", new Unique());
 
         public abstract void TestCreatePlayerWithFieldStringNameWithUniqueIndexOnName();
 

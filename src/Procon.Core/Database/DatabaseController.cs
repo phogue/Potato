@@ -170,7 +170,7 @@ namespace Procon.Core.Database {
                 };
 
                 foreach (IDatabaseObject query in queries) {
-                    result.Now.Queries.Add(this.OpenDrivers[driver].Query(query));
+                    result.Now.Queries.AddRange(this.OpenDrivers[driver].Query(query));
                 }
             }
             else {

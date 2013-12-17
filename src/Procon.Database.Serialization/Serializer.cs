@@ -13,7 +13,7 @@ namespace Procon.Database.Serialization {
         /// Stores the currently working parsed object
         /// </summary>
         /// <remarks></remarks>
-        protected IParsedQuery Parsed { get; set; }
+        private IParsedQuery Parsed { get; set; }
 
         protected Serializer() {
             this.Parsed = new ParsedQuery();

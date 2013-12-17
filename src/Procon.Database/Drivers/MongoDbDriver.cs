@@ -85,17 +85,12 @@ namespace Procon.Database.Drivers {
             return row;
         }
 
-        /// <summary>
-        /// Create table/database query. Creating table ignores all fields except for indexes
-        /// </summary>
-        /// <param name="query"></param>
-        /// <param name="result"></param>
-        protected void QueryCreate(ICompiledQuery query, CollectionValue result) {
+        protected void QueryCreateIndex(ICompiledQuery query, CollectionValue result) {
             if (query.Collections.Any() == true) {
                 MongoCollection<BsonDocument> collection = this.Database.GetCollection(query.Collections.FirstOrDefault());
 
                 BsonArray indices = BsonSerializer.Deserialize<BsonArray>(query.Indices.FirstOrDefault());
-                
+
                 if (indices.Count > 1) {
                     collection.EnsureIndex(new IndexKeysDocument(indices.First().AsBsonDocument), new IndexOptionsDocument(indices.Last().AsBsonDocument));
                 }
@@ -210,10 +205,10 @@ namespace Procon.Database.Drivers {
             if (save != null && modify != null) {
                 BsonArray conditions = BsonSerializer.Deserialize<BsonArray>(modify.Conditions.FirstOrDefault());
                 BsonArray assignments = BsonSerializer.Deserialize<BsonArray>(save.Assignments.FirstOrDefault());
-                BsonArray indices = BsonSerializer.Deserialize<BsonArray>(modify.Indices.FirstOrDefault());
+                BsonArray sortings = BsonSerializer.Deserialize<BsonArray>(modify.Sortings.FirstOrDefault());
 
                 QueryDocument queryDocument = new QueryDocument(conditions.First().AsBsonDocument);
-                IMongoSortBy sortByDocument = new SortByDocument(indices.First().AsBsonDocument);
+                IMongoSortBy sortByDocument = new SortByDocument(sortings.First().AsBsonDocument);
                 UpdateDocument updateDocument = new UpdateDocument(assignments.First().AsBsonDocument);
 
                 FindAndModifyResult findAndModifyResult = collection.FindAndModify(queryDocument, sortByDocument, updateDocument, true, true);
@@ -222,7 +217,7 @@ namespace Procon.Database.Drivers {
             }
         }
 
-        public override IDatabaseObject Query(IDatabaseObject query) {
+        public override List<IDatabaseObject> Query(IDatabaseObject query) {
             this.Connect();
 
             return this.Query(new SerializerMongoDb().Parse(this.EscapeStringValues(query)).Compile());
@@ -233,26 +228,34 @@ namespace Procon.Database.Drivers {
             return query;
         }
 
-        protected override IDatabaseObject Query(ICompiledQuery query) {
-            CollectionValue results = new CollectionValue();
+        protected override List<IDatabaseObject> Query(ICompiledQuery query) {
+            List<IDatabaseObject> results = new List<IDatabaseObject>();
+            CollectionValue result = new CollectionValue();
 
             if (query.Root is Find) {
-                this.QueryFind(query, results);
+                this.QueryFind(query, result);
             }
             else if (query.Root is Modify) {
-                this.QueryModify(query, results);
+                this.QueryModify(query, result);
             }
             else if (query.Root is Remove) {
-                this.QueryRemove(query, results);
+                this.QueryRemove(query, result);
             }
             else if (query.Root is Drop) {
-                this.QueryDrop(query, results);
+                this.QueryDrop(query, result);
             }
-            else if (query.Root is Create) {
-                this.QueryCreate(query, results);
-            }
+            // Essentially ignore the create command and process the index children instead.
+            //else if (query.Root is Create) {
+            //    this.QueryCreate(query, results);
+            //}
             else if (query.Root is Merge) {
-                this.QueryMerge(query, results);
+                this.QueryMerge(query, result);
+            }
+
+            results.Add(result);
+            
+            foreach (ICompiledQuery child in query.Children) {
+                results.AddRange(this.Query(child));    
             }
 
             return results;

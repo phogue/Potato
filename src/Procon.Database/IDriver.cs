@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Procon.Database.Serialization;
 
 namespace Procon.Database {
@@ -26,7 +27,7 @@ namespace Procon.Database {
         /// Query the open driver
         /// </summary>
         /// <param name="query"></param>
-        IDatabaseObject Query(IDatabaseObject query);
+        List<IDatabaseObject> Query(IDatabaseObject query);
 
         /// <summary>
         /// Closes the open connection the database.

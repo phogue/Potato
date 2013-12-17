@@ -23,6 +23,11 @@ namespace Procon.Database.Serialization {
         public List<String> Fields { get; set; }
 
         /// <summary>
+        /// The values to assign to fields
+        /// </summary>
+        public List<String> Values { get; set; }
+
+        /// <summary>
         /// The fields used to when assigning a value to a field (update, insert)
         /// </summary>
         public List<String> Assignments { get; set; }
@@ -56,13 +61,12 @@ namespace Procon.Database.Serialization {
             this.Methods = new List<String>();
             this.Databases = new List<String>();
             this.Fields = new List<String>();
+            this.Values = new List<String>();
             this.Assignments = new List<String>();
-            this.Indices = new List<String>();
             this.Conditions = new List<String>();
             this.Collections = new List<String>();
             this.Sortings = new List<String>();
             this.Root = null;
         }
-
     }
 }

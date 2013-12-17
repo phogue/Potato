@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Linq;
@@ -62,7 +63,7 @@ namespace Procon.Database.Drivers {
             return opened;
         }
 
-        public override IDatabaseObject Query(IDatabaseObject query) {
+        public override List<IDatabaseObject> Query(IDatabaseObject query) {
             this.Connect();
 
             return this.Query(new SerializerMySql().Parse(this.EscapeStringValues(query)).Compile());
@@ -82,7 +83,7 @@ namespace Procon.Database.Drivers {
         /// <param name="query"></param>
         /// <param name="result"></param>
         /// <returns></returns>
-        protected void Read(ICompiledQuery query, CollectionValue result) {
+        protected CollectionValue Read(ICompiledQuery query, CollectionValue result) {
             if (this.Connection != null && this.Connection.State == ConnectionState.Open) {
                 using (IDbCommand command = this.Connection.CreateCommand()) {
                     command.CommandText = query.Compiled.FirstOrDefault();
@@ -102,6 +103,8 @@ namespace Procon.Database.Drivers {
                     }
                 }
             }
+
+            return result;
         }
 
         /// <summary>
@@ -110,7 +113,7 @@ namespace Procon.Database.Drivers {
         /// <param name="query"></param>
         /// <param name="result"></param>
         /// <returns></returns>
-        protected void Execute(ICompiledQuery query, CollectionValue result) {
+        protected CollectionValue Execute(ICompiledQuery query, CollectionValue result) {
             if (this.Connection != null && this.Connection.State == ConnectionState.Open) {
                 using (IDbCommand command = this.Connection.CreateCommand()) {
                     command.CommandText = query.Compiled.FirstOrDefault();
@@ -124,19 +127,23 @@ namespace Procon.Database.Drivers {
                     );
                 }
             }
-        }
-
-        protected override IDatabaseObject Query(ICompiledQuery query) {
-            CollectionValue result = new CollectionValue();
-
-            if (query.Root is Find) {
-                this.Read(query, result);
-            }
-            else {
-                this.Execute(query, result);
-            }
 
             return result;
+        }
+
+        protected override List<IDatabaseObject> Query(ICompiledQuery query) {
+            CollectionValue result = new CollectionValue();
+
+            List<IDatabaseObject> results = new List<IDatabaseObject>() {
+                query.Root is Find ? this.Read(query, result) : this.Execute(query, result)
+            };
+
+            // Execute any index calls.
+            foreach (ICompiledQuery child in query.Children.Where(child => !(child.Root is Merge))) {
+                results.AddRange(this.Query(child));
+            }
+
+            return results;
         }
 
         public override void Close() {

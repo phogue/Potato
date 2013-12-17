@@ -39,7 +39,7 @@ namespace Procon.Database.Test {
             );
             */
 
-            IDatabaseObject result = driver.Query(new Find().Collection("player").Condition("Name", "Phogue"));
+            List<IDatabaseObject> result = driver.Query(new Find().Collection("player").Condition("Name", "Phogue"));
 
             driver.Close();
         }

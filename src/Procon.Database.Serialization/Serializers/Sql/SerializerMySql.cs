@@ -82,7 +82,7 @@ namespace Procon.Database.Serialization.Serializers.Sql {
                 parsed.Add("DESC");
             }
 
-            return String.Join(" ", parsed.ToArray());
+            return String.Join(" ", parsed);
         }
 
         protected virtual String ParseType(Builders.FieldType type) {
@@ -108,7 +108,7 @@ namespace Procon.Database.Serialization.Serializers.Sql {
                 parsed.Add("AUTO INCREMENT");
             }
 
-            return String.Join(" ", parsed.ToArray());
+            return String.Join(" ", parsed);
         }
 
         protected virtual String ParseField(Field field) {
@@ -126,7 +126,7 @@ namespace Procon.Database.Serialization.Serializers.Sql {
                 parsed.Add(this.ParseType(field.First(attribute => attribute is Builders.FieldType) as Builders.FieldType));
             }
 
-            return String.Join(" ", parsed.ToArray());
+            return String.Join(" ", parsed);
         }
 
         protected virtual String ParseEquality(Equality equality) {
@@ -237,8 +237,8 @@ namespace Procon.Database.Serialization.Serializers.Sql {
             foreach (Logical logical in query.Where(logical => logical is Logical)) {
                 String separator = logical is Or ? " OR " : " AND ";
 
-                String childLogicals = String.Join(separator, this.ParseLogicals(logical).ToArray());
-                String childEqualities = String.Join(separator, this.ParseEqualities(logical).ToArray());
+                String childLogicals = String.Join(separator, this.ParseLogicals(logical));
+                String childEqualities = String.Join(separator, this.ParseEqualities(logical));
 
                 if (String.IsNullOrEmpty(childLogicals) == false) logicals.Add(String.Format("({0})", childLogicals));
                 if (String.IsNullOrEmpty(childEqualities) == false) logicals.Add(String.Format("({0})", childEqualities));
@@ -310,7 +310,7 @@ namespace Procon.Database.Serialization.Serializers.Sql {
             }
             else if (parsed.Root is Index) {
                 if (parsed.Collections.Any() == true) {
-                    serializedQuery.Collections.Add(String.Join(", ", parsed.Collections.ToArray()));
+                    serializedQuery.Collections.Add(String.Join(", ", parsed.Collections));
                     compiled.Add(serializedQuery.Collections.FirstOrDefault());
                 }
 
@@ -336,28 +336,28 @@ namespace Procon.Database.Serialization.Serializers.Sql {
                 }
 
                 if (parsed.Sortings.Any() == true) {
-                    serializedQuery.Sortings.Add(String.Join(", ", parsed.Sortings.ToArray()));
+                    serializedQuery.Sortings.Add(String.Join(", ", parsed.Sortings));
                     compiled.Add(String.Format("({0})", serializedQuery.Sortings.FirstOrDefault()));
                 }
             }
             else if (parsed.Root is Find) {
                 serializedQuery.Fields = new List<String>(parsed.Fields);
-                compiled.Add(parsed.Fields.Any() == true ? String.Join(", ", parsed.Fields.ToArray()) : "*");
+                compiled.Add(parsed.Fields.Any() == true ? String.Join(", ", parsed.Fields) : "*");
 
                 if (parsed.Collections.Any() == true) {
-                    serializedQuery.Collections.Add(String.Join(", ", parsed.Collections.ToArray()));
+                    serializedQuery.Collections.Add(String.Join(", ", parsed.Collections));
                     compiled.Add("FROM");
                     compiled.Add(serializedQuery.Collections.FirstOrDefault());
                 }
 
                 if (parsed.Conditions.Any() == true) {
-                    serializedQuery.Conditions.Add(String.Join(" AND ", parsed.Conditions.ToArray()));
+                    serializedQuery.Conditions.Add(String.Join(" AND ", parsed.Conditions));
                     compiled.Add("WHERE");
                     compiled.Add(serializedQuery.Conditions.FirstOrDefault());
                 }
 
                 if (parsed.Sortings.Any() == true) {
-                    serializedQuery.Sortings.Add(String.Join(", ", parsed.Sortings.ToArray()));
+                    serializedQuery.Sortings.Add(String.Join(", ", parsed.Sortings));
                     compiled.Add("ORDER BY");
                     compiled.Add(serializedQuery.Sortings.FirstOrDefault());
                 }
@@ -372,7 +372,7 @@ namespace Procon.Database.Serialization.Serializers.Sql {
                     compiled.Add("TABLE");
                     compiled.Add(parsed.Collections.FirstOrDefault());
 
-                    compiled.Add(String.Format("({0})", String.Join(", ", parsed.Fields.ToArray())));
+                    compiled.Add(String.Format("({0})", String.Join(", ", parsed.Fields)));
                 }
             }
             else if (parsed.Root is Save) {
@@ -383,25 +383,25 @@ namespace Procon.Database.Serialization.Serializers.Sql {
                 }
 
                 if (parsed.Assignments.Any() == true) {
-                    serializedQuery.Assignments.Add(String.Join(", ", parsed.Assignments.ToArray()));
+                    serializedQuery.Assignments.Add(String.Join(", ", parsed.Assignments));
                     compiled.Add("SET");
                     compiled.Add(serializedQuery.Assignments.FirstOrDefault());
                 }
             }
             else if (parsed.Root is Modify) {
                 if (parsed.Collections.Any() == true) {
-                    serializedQuery.Collections.Add(String.Join(", ", parsed.Collections.ToArray()));
+                    serializedQuery.Collections.Add(String.Join(", ", parsed.Collections));
                     compiled.Add(serializedQuery.Collections.FirstOrDefault());
                 }
 
                 if (parsed.Assignments.Any() == true) {
-                    serializedQuery.Assignments.Add(String.Join(", ", parsed.Assignments.ToArray()));
+                    serializedQuery.Assignments.Add(String.Join(", ", parsed.Assignments));
                     compiled.Add("SET");
                     compiled.Add(serializedQuery.Assignments.FirstOrDefault());
                 }
 
                 if (parsed.Conditions.Any() == true) {
-                    serializedQuery.Conditions.Add(String.Join(" AND ", parsed.Conditions.ToArray()));
+                    serializedQuery.Conditions.Add(String.Join(" AND ", parsed.Conditions));
                     compiled.Add("WHERE");
                     compiled.Add(serializedQuery.Conditions.FirstOrDefault());
                 }
@@ -409,13 +409,13 @@ namespace Procon.Database.Serialization.Serializers.Sql {
             }
             else if (parsed.Root is Remove) {
                 if (parsed.Collections.Any() == true) {
-                    serializedQuery.Collections.Add(String.Join(", ", parsed.Collections.ToArray()));
+                    serializedQuery.Collections.Add(String.Join(", ", parsed.Collections));
                     compiled.Add("FROM");
                     compiled.Add(serializedQuery.Collections.FirstOrDefault());
                 }
 
                 if (parsed.Conditions.Any() == true) {
-                    serializedQuery.Conditions.Add(String.Join(" AND ", parsed.Conditions.ToArray()));
+                    serializedQuery.Conditions.Add(String.Join(" AND ", parsed.Conditions));
                     compiled.Add("WHERE");
                     compiled.Add(serializedQuery.Conditions.FirstOrDefault());
                 }
@@ -433,7 +433,7 @@ namespace Procon.Database.Serialization.Serializers.Sql {
                 }
             }
 
-            serializedQuery.Compiled.Add(String.Join(" ", compiled.ToArray()));
+            serializedQuery.Compiled.Add(String.Join(" ", compiled));
 
             return serializedQuery;
         }

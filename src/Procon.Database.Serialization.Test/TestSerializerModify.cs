@@ -94,7 +94,6 @@ namespace Procon.Database.Serialization.Test {
 
         #endregion
 
-
         #region TestModifyPlayerSetScoreWhereNameEqualsPhogueAndRankAbove10
 
         protected IDatabaseObject TestModifyPlayerSetScoreWhereNameEqualsPhogueAndRankAbove10Explicit = new Modify()

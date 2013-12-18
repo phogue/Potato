@@ -15,7 +15,7 @@ namespace Procon.Database.Test.Integration.SqLite {
         /// <param name="setup">A list of queries to run prior to running a find query</param>
         /// <param name="query"></param>
         /// <param name="expected"></param>
-        public void TestFindQuery(List<IDatabaseObject> setup, IDatabaseObject query, JArray expected) {
+        public void TestFindQuery(IEnumerable<IDatabaseObject> setup, IDatabaseObject query, JArray expected) {
             IDriver driver = new SqLiteDriver() {
                 Settings = new DriverSettings() {
                     Memory = true
@@ -24,7 +24,9 @@ namespace Procon.Database.Test.Integration.SqLite {
 
             driver.Connect();
 
-            setup.ForEach(item => driver.Query(item));
+            foreach (var item in setup) {
+                driver.Query(item);
+            }
 
             List<IDatabaseObject> results = driver.Query(query);
 

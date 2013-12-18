@@ -11,7 +11,7 @@ namespace Procon.Database.Test.Integration.SqLite {
 
         [Test]
         public override void TestSelectAllFromPlayer() {
-            this.Integration.TestFindQuery(this.TestTableSetup, this.TestSelectAllFromPlayerImplicit, new JArray() {
+            this.Integration.TestFindQuery(this.TestPlayerTableSetup, this.TestSelectAllFromPlayerImplicit, new JArray() {
                 new JObject() {
                     new JProperty("Name", "Phogue"),
                     new JProperty("Score", 100.0),
@@ -41,7 +41,7 @@ namespace Procon.Database.Test.Integration.SqLite {
 
         [Test]
         public override void TestSelectDistinctAllFromPlayer() {
-            this.Integration.TestFindQuery(this.TestTableSetup, this.TestSelectDistinctAllFromPlayerImplicit, new JArray() {
+            this.Integration.TestFindQuery(this.TestPlayerTableSetup, this.TestSelectDistinctAllFromPlayerImplicit, new JArray() {
                 new JObject() {
                     new JProperty("Name", "Phogue"),
                     new JProperty("Score", 100.0),
@@ -65,7 +65,7 @@ namespace Procon.Database.Test.Integration.SqLite {
 
         [Test]
         public override void TestSelectAllFromPlayerWhereNameEqualsPhogue() {
-            this.Integration.TestFindQuery(this.TestTableSetup, this.TestSelectAllFromPlayerWhereNameEqualsPhogueImplicit, new JArray() {
+            this.Integration.TestFindQuery(this.TestPlayerTableSetup, this.TestSelectAllFromPlayerWhereNameEqualsPhogueImplicit, new JArray() {
                 new JObject() {
                     new JProperty("Name", "Phogue"),
                     new JProperty("Score", 100.0),
@@ -77,7 +77,7 @@ namespace Procon.Database.Test.Integration.SqLite {
 
         [Test]
         public override void TestSelectAllFromPlayerWhereKdrGreaterThanEqualTo31F() {
-            this.Integration.TestFindQuery(this.TestTableSetup, this.TestSelectAllFromPlayerWhereKdrGreaterThanEqualTo31FImplicit, new JArray() {
+            this.Integration.TestFindQuery(this.TestPlayerTableSetup, this.TestSelectAllFromPlayerWhereKdrGreaterThanEqualTo31FImplicit, new JArray() {
                 new JObject() {
                     new JProperty("Name", "Duplicate"),
                     new JProperty("Score", 1000.00),
@@ -95,7 +95,7 @@ namespace Procon.Database.Test.Integration.SqLite {
 
         [Test]
         public override void TestSelectAllFromPlayerWhereKdrLessThanEqualTo31F() {
-            this.Integration.TestFindQuery(this.TestTableSetup, this.TestSelectAllFromPlayerWhereKdrLessThanEqualTo31FImplicit, new JArray() {
+            this.Integration.TestFindQuery(this.TestPlayerTableSetup, this.TestSelectAllFromPlayerWhereKdrLessThanEqualTo31FImplicit, new JArray() {
                 new JObject() {
                     new JProperty("Name", "Phogue"),
                     new JProperty("Score", 100.0),
@@ -113,7 +113,7 @@ namespace Procon.Database.Test.Integration.SqLite {
 
         [Test]
         public override void TestSelectAllFromPlayerWherePlayerNameEqualsPhogue() {
-            this.Integration.TestFindQuery(this.TestTableSetup, this.TestSelectAllFromPlayerWherePlayerNameEqualsPhogueImplicit, new JArray() {
+            this.Integration.TestFindQuery(this.TestPlayerTableSetup, this.TestSelectAllFromPlayerWherePlayerNameEqualsPhogueImplicit, new JArray() {
                 new JObject() {
                     new JProperty("Name", "Phogue"),
                     new JProperty("Score", 100.0),
@@ -125,7 +125,7 @@ namespace Procon.Database.Test.Integration.SqLite {
 
         [Test]
         public override void TestSelectScoreFromPlayerWhereNameEqualsPhogue() {
-            this.Integration.TestFindQuery(this.TestTableSetup, this.TestSelectScoreFromPlayerWhereNameEqualsPhogueImplicit, new JArray() {
+            this.Integration.TestFindQuery(this.TestPlayerTableSetup, this.TestSelectScoreFromPlayerWhereNameEqualsPhogueImplicit, new JArray() {
                 new JObject() {
                     new JProperty("Score", 100.0)
                 }
@@ -134,7 +134,7 @@ namespace Procon.Database.Test.Integration.SqLite {
 
         [Test]
         public override void TestSelectScoreRankFromPlayerWhereNameEqualsPhogue() {
-            this.Integration.TestFindQuery(this.TestTableSetup, this.TestSelectScoreRankFromPlayerWhereNameEqualsPhogueImplicit, new JArray() {
+            this.Integration.TestFindQuery(this.TestPlayerTableSetup, this.TestSelectScoreRankFromPlayerWhereNameEqualsPhogueImplicit, new JArray() {
                 new JObject() {
                     new JProperty("Score", 100.0),
                     new JProperty("Rank", 10.0)
@@ -144,14 +144,14 @@ namespace Procon.Database.Test.Integration.SqLite {
 
         [Test]
         public override void TestSelectAllFromPlayerWhereNameEqualsPhogueAndScoreEqualsTen() {
-            this.Integration.TestFindQuery(this.TestTableSetup, this.TestSelectAllFromPlayerWhereNameEqualsPhogueAndScoreEqualsTenImplicit, new JArray() {
+            this.Integration.TestFindQuery(this.TestPlayerTableSetup, this.TestSelectAllFromPlayerWhereNameEqualsPhogueAndScoreEqualsTenImplicit, new JArray() {
 
             });
         }
 
         [Test]
         public override void TestSelectAllFromPlayerWhereNameEqualsPhogueOrZaeed() {
-            this.Integration.TestFindQuery(this.TestTableSetup, this.TestSelectAllFromPlayerWhereNameEqualsPhogueOrZaeedImplicit, new JArray() {
+            this.Integration.TestFindQuery(this.TestPlayerTableSetup, this.TestSelectAllFromPlayerWhereNameEqualsPhogueOrZaeedImplicit, new JArray() {
                 new JObject() {
                     new JProperty("Name", "Phogue"),
                     new JProperty("Score", 100.0),
@@ -169,7 +169,7 @@ namespace Procon.Database.Test.Integration.SqLite {
 
         [Test]
         public override void TestSelectAllFromPlayerWhereNameEqualsPhogueOrZaeedAndScoreAbove10AndBelow20() {
-            this.Integration.TestFindQuery(this.TestTableSetup, this.TestSelectAllFromPlayerWhereNameEqualsPhogueOrZaeedAndScoreAbove10AndBelow20Implicit, new JArray() {
+            this.Integration.TestFindQuery(this.TestPlayerTableSetup, this.TestSelectAllFromPlayerWhereNameEqualsPhogueOrZaeedAndScoreAbove10AndBelow20Implicit, new JArray() {
                 new JObject() {
                     new JProperty("Name", "Zaeed"),
                     new JProperty("Score", 15.0),
@@ -180,7 +180,7 @@ namespace Procon.Database.Test.Integration.SqLite {
         }
 
         public override void TestSelectAllFromPlayerWhereNameEqualsPhogueAndScoreAbove50OrNameEqualsZaeedAndScoreBelow50() {
-            this.Integration.TestFindQuery(this.TestTableSetup, this.TestSelectAllFromPlayerWhereNameEqualsPhogueAndScoreAbove50OrNameEqualsZaeedAndScoreBelow50Implicit, new JArray() {
+            this.Integration.TestFindQuery(this.TestPlayerTableSetup, this.TestSelectAllFromPlayerWhereNameEqualsPhogueAndScoreAbove50OrNameEqualsZaeedAndScoreBelow50Implicit, new JArray() {
                 new JObject() {
                     new JProperty("Name", "Phogue"),
                     new JProperty("Score", 100.0),
@@ -198,7 +198,7 @@ namespace Procon.Database.Test.Integration.SqLite {
 
         [Test]
         public override void TestSelectAllFromPlayerSortByScore() {
-            this.Integration.TestFindQuery(this.TestTableSetup, this.TestSelectAllFromPlayerSortByScoreImplicit, new JArray() {
+            this.Integration.TestFindQuery(this.TestPlayerTableSetup, this.TestSelectAllFromPlayerSortByScoreImplicit, new JArray() {
                 new JObject() {
                     new JProperty("Name", "Zaeed"),
                     new JProperty("Score", 15.0),
@@ -228,7 +228,7 @@ namespace Procon.Database.Test.Integration.SqLite {
 
         [Test]
         public override void TestSelectAllFromPlayerSortByNameThenScoreDescending() {
-            this.Integration.TestFindQuery(this.TestTableSetup, this.TestSelectAllFromPlayerSortByNameThenScoreDescendingImplicit, new JArray() {
+            this.Integration.TestFindQuery(this.TestPlayerTableSetup, this.TestSelectAllFromPlayerSortByNameThenScoreDescendingImplicit, new JArray() {
                 new JObject() {
                     new JProperty("Name", "Duplicate"),
                     new JProperty("Score", 1000.00),

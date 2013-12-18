@@ -49,6 +49,8 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Integration\SqLite\TestSqLiteIntegrationModify.cs" />
+    <Compile Include="Integration\TestDatabaseIntegrationModify.cs" />
     <Compile Include="Integration\IDatabaseIntegration.cs" />
     <Compile Include="Integration\SqLite\TestSqLiteIntegrationFind.cs" />
     <Compile Include="Integration\SqLite\SqLiteDatabaseIntegration.cs" />

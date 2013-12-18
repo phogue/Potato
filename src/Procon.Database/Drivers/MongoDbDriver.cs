@@ -110,7 +110,17 @@ namespace Procon.Database.Drivers {
 
             BsonArray conditions = BsonSerializer.Deserialize<BsonArray>(query.Conditions.FirstOrDefault());
 
-            result.AddRange(collection.Find(new QueryDocument(conditions.First().AsBsonDocument)).Select(this.ToDocument));
+            MongoCursor<BsonDocument> cursor = collection.Find(new QueryDocument(conditions.First().AsBsonDocument));
+
+            if (query.Limit != null) {
+                cursor.SetLimit((int)query.Limit.Value);
+            }
+
+            if (query.Skip != null) {
+                cursor.SetSkip((int)query.Skip.Value);
+            }
+
+            result.AddRange(cursor.Select(this.ToDocument));
         }
 
         /// <summary>

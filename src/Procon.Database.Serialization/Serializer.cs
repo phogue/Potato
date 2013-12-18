@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Procon.Database.Serialization.Builders;
+using Procon.Database.Serialization.Builders.Modifiers;
+using Procon.Database.Serialization.Builders.Values;
 
 namespace Procon.Database.Serialization {
     /// <summary>
@@ -83,5 +85,24 @@ namespace Procon.Database.Serialization {
 
             return this;
         }
+
+        /// <summary>
+        /// Fetches the numeric value from a skip object
+        /// </summary>
+        /// <param name="query"></param>
+        /// <returns></returns>
+        protected virtual long? ParseSkip(IDatabaseObject query) {
+            return query.Where(skip => skip is Skip && skip.Any(value => value is NumericValue)).Select(skip => ((NumericValue)skip.First(value => value is NumericValue)).Long).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Fetches the numeric value from a limit object
+        /// </summary>
+        /// <param name="query"></param>
+        /// <returns></returns>
+        protected virtual long? ParseLimit(IDatabaseObject query) {
+            return query.Where(limit => limit is Limit && limit.Any(value => value is NumericValue)).Select(limit => ((NumericValue)limit.First(value => value is NumericValue)).Long).FirstOrDefault();
+        }
+
     }
 }

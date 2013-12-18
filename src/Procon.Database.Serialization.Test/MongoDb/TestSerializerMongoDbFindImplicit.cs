@@ -146,5 +146,26 @@ namespace Procon.Database.Serialization.Test.MongoDb {
             Assert.AreEqual(@"Player", serialized.Collections.First());
             Assert.AreEqual(@"[{""Name"":1,""Score"":-1}]", serialized.Sortings.First());
         }
+
+        [Test]
+        public override void TestSelectAllFromPlayerLimit1() {
+            ISerializer serializer = new SerializerMongoDb();
+            ICompiledQuery serialized = serializer.Parse(this.TestSelectAllFromPlayerLimit1Implicit).Compile();
+
+            Assert.AreEqual(@"find", serialized.Methods.First());
+            Assert.AreEqual(@"Player", serialized.Collections.First());
+            Assert.AreEqual(1, serialized.Limit);
+        }
+
+        [Test]
+        public override void TestSelectAllFromPlayerLimit1Skip2() {
+            ISerializer serializer = new SerializerMongoDb();
+            ICompiledQuery serialized = serializer.Parse(this.TestSelectAllFromPlayerLimit1Skip2Implicit).Compile();
+
+            Assert.AreEqual(@"find", serialized.Methods.First());
+            Assert.AreEqual(@"Player", serialized.Collections.First());
+            Assert.AreEqual(1, serialized.Limit);
+            Assert.AreEqual(2, serialized.Skip);
+        }
     }
 }

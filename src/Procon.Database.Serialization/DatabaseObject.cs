@@ -384,6 +384,46 @@ namespace Procon.Database.Serialization {
             .Implicit();
         }
 
+        public IDatabaseObject Limit(IDatabaseObject data) {
+            this.Add(data.Explicit());
+
+            return this;
+        }
+
+        public IDatabaseObject Limit(int limit) {
+            this.Raw(
+                new Limit() {
+                    new NumericValue() {
+                        Long = limit
+                    }
+                    .Implicit()
+                }
+                .Implicit()
+            );
+
+            return this;
+        }
+
+        public IDatabaseObject Skip(IDatabaseObject data) {
+            this.Add(data.Explicit());
+
+            return this;
+        }
+
+        public IDatabaseObject Skip(int skip) {
+            this.Raw(
+                new Skip() {
+                    new NumericValue() {
+                        Long = skip
+                    }
+                    .Implicit()
+                }
+                .Implicit()
+            );
+
+            return this;
+        }
+
         public IDatabaseObject Implicit() {
             this.Add(new Implicit());
 

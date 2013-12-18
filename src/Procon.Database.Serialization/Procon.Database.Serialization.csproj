@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Builders\FieldModifier.cs" />
+    <Compile Include="Builders\Modifiers\Skip.cs" />
     <Compile Include="Builders\Modifiers\Explicit.cs" />
     <Compile Include="Builders\Modifiers\Implicit.cs" />
     <Compile Include="Builders\Logicals\And.cs" />
@@ -51,6 +52,7 @@
     <Compile Include="Builders\Modifiers\Descending.cs" />
     <Compile Include="Builders\IndexModifer.cs" />
     <Compile Include="Builders\Modifiers\Length.cs" />
+    <Compile Include="Builders\Modifiers\Limit.cs" />
     <Compile Include="Builders\Modifiers\Nullable.cs" />
     <Compile Include="Builders\SortByModifier.cs" />
     <Compile Include="Builders\Modifiers\Unsigned.cs" />

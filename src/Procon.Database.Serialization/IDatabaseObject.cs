@@ -220,6 +220,34 @@ namespace Procon.Database.Serialization {
         IDatabaseObject Sort(String collection, String name, SortByModifier modifier = null);
 
         /// <summary>
+        /// Appends a limit modifer to the chain
+        /// </summary>
+        /// <param name="data">The limit object</param>
+        /// <returns>this</returns>
+        IDatabaseObject Limit(IDatabaseObject data);
+
+        /// <summary>
+        /// Creates a new limit modifier and appends it to the chain
+        /// </summary>
+        /// <param name="limit">The value to place inside the limit</param>
+        /// <returns>this</returns>
+        IDatabaseObject Limit(int limit);
+
+        /// <summary>
+        /// Appends a skip modifer to the chain
+        /// </summary>
+        /// <param name="data">The skip object</param>
+        /// <returns>this</returns>
+        IDatabaseObject Skip(IDatabaseObject data);
+
+        /// <summary>
+        /// Creates a new skip modifier and appends it to the chain
+        /// </summary>
+        /// <param name="skip">The value to place inside the skip object</param>
+        /// <returns>this</returns>
+        IDatabaseObject Skip(int skip);
+
+        /// <summary>
         /// Tags this object with a implicit modifier, letting the serializer know that it has been automatically generated
         /// while using shorthand methods.
         /// </summary>

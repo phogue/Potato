@@ -288,7 +288,9 @@ namespace Procon.Database.Serialization.Serializers.Sql {
             CompiledQuery serializedQuery = new CompiledQuery() {
                 Children = parsed.Children.Select(this.Compile).ToList(),
                 Root = parsed.Root,
-                Methods = parsed.Methods
+                Methods = parsed.Methods,
+                Skip = parsed.Skip,
+                Limit = parsed.Limit
             };
 
             List<String> compiled = new List<String>() {
@@ -360,6 +362,16 @@ namespace Procon.Database.Serialization.Serializers.Sql {
                     serializedQuery.Sortings.Add(String.Join(", ", parsed.Sortings));
                     compiled.Add("ORDER BY");
                     compiled.Add(serializedQuery.Sortings.FirstOrDefault());
+                }
+
+                if (parsed.Limit != null) {
+                    compiled.Add("LIMIT");
+                    compiled.Add(parsed.Limit.Value.ToString(CultureInfo.InvariantCulture));
+                }
+
+                if (parsed.Skip != null) {
+                    compiled.Add("OFFSET");
+                    compiled.Add(parsed.Skip.Value.ToString(CultureInfo.InvariantCulture));
                 }
             }
             else if (parsed.Root is Create) {
@@ -444,6 +456,10 @@ namespace Procon.Database.Serialization.Serializers.Sql {
             parsed.Children = this.ParseChildren(method);
 
             parsed.Methods = this.ParseMethod(method);
+
+            parsed.Skip = this.ParseSkip(method);
+
+            parsed.Limit = this.ParseLimit(method);
 
             parsed.Databases = this.ParseDatabases(method);
 

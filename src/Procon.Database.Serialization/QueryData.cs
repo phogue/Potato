@@ -6,6 +6,15 @@ namespace Procon.Database.Serialization {
     /// The base shared data between Compiled and Parsed data.
     /// </summary>
     public abstract class QueryData : IQueryData {
+        /// <summary>
+        /// The number of documents to read or edit before ignoring.
+        /// </summary>
+        public long? Limit { get; set; }
+
+        /// <summary>
+        /// The number of documents to ignore before reading or editing.
+        /// </summary>
+        public long? Skip { get; set; }
 
         /// <summary>
         /// The method used in the SQL (SELECT, INSERT, UPDATE, DELETE)

@@ -407,5 +407,51 @@ namespace Procon.Database.Serialization.Test {
         public abstract void TestSelectAllFromPlayerSortByNameThenScoreDescending();
 
         #endregion
+
+        #region TestSelectAllFromPlayerLimit1
+
+        protected IDatabaseObject TestSelectAllFromPlayerLimit1Explicit = new Find()
+            .Collection(new Collection() {
+                Name = "Player"
+            })
+            .Limit(new Limit() {
+                new NumericValue() {
+                    Long = 1
+                }
+            });
+
+        protected IDatabaseObject TestSelectAllFromPlayerLimit1Implicit = new Find()
+            .Collection("Player")
+            .Limit(1);
+
+        public abstract void TestSelectAllFromPlayerLimit1();
+
+        #endregion
+
+        #region TestSelectAllFromPlayerLimit1Skip2
+
+        protected IDatabaseObject TestSelectAllFromPlayerLimit1Skip2Explicit = new Find()
+            .Collection(new Collection() {
+                Name = "Player"
+            })
+            .Limit(new Limit() {
+                new NumericValue() {
+                    Long = 1
+                }
+            })
+            .Limit(new Skip() {
+                new NumericValue() {
+                    Long = 2
+                }
+            });
+
+        protected IDatabaseObject TestSelectAllFromPlayerLimit1Skip2Implicit = new Find()
+            .Collection("Player")
+            .Limit(1)
+            .Skip(2);
+
+        public abstract void TestSelectAllFromPlayerLimit1Skip2();
+
+        #endregion
     }
 }

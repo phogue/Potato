@@ -344,6 +344,8 @@ namespace Procon.Database.Serialization.Serializers.NoSql {
                 Children = parsed.Children.Select(this.Compile).ToList(),
                 Root = parsed.Root,
                 Methods = parsed.Methods,
+                Skip = parsed.Skip,
+                Limit = parsed.Limit,
                 Databases = parsed.Databases,
                 Collections = parsed.Collections,
                 Conditions = parsed.Conditions,
@@ -356,10 +358,14 @@ namespace Procon.Database.Serialization.Serializers.NoSql {
 
         public override ISerializer Parse(Method method, IParsedQuery parsed) {
             parsed.Root = method;
-
+            
             parsed.Children = this.ParseChildren(method);
 
             parsed.Methods = this.ParseMethod(method);
+
+            parsed.Skip = this.ParseSkip(method);
+
+            parsed.Limit = this.ParseLimit(method);
 
             parsed.Databases = this.ParseDatabases(method);
 

@@ -7,6 +7,16 @@ namespace Procon.Database.Serialization {
     /// </summary>
     public interface IQueryData {
         /// <summary>
+        /// The number of documents to read or edit before ignoring.
+        /// </summary>
+        long? Limit { get; set; }
+
+        /// <summary>
+        /// The number of documents to ignore before reading or editing.
+        /// </summary>
+        long? Skip { get; set; }
+
+        /// <summary>
         /// The method used in the SQL (SELECT, INSERT, UPDATE, DELETE)
         /// </summary>
         List<String> Methods { get; set; }

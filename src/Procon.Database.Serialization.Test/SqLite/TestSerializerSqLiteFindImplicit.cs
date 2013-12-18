@@ -75,5 +75,15 @@ namespace Procon.Database.Serialization.Test.SqLite {
         public override void TestSelectAllFromPlayerSortByNameThenScoreDescending() {
             Assert.AreEqual(@"SELECT * FROM `Player` ORDER BY `Name`, `Score` DESC", new SerializerSqLite().Parse(this.TestSelectAllFromPlayerSortByNameThenScoreDescendingImplicit).Compile().Compiled.First());
         }
+
+        [Test]
+        public override void TestSelectAllFromPlayerLimit1() {
+            Assert.AreEqual(@"SELECT * FROM `Player` LIMIT 1", new SerializerMySql().Parse(this.TestSelectAllFromPlayerLimit1Implicit).Compile().Compiled.First());
+        }
+
+        [Test]
+        public override void TestSelectAllFromPlayerLimit1Skip2() {
+            Assert.AreEqual(@"SELECT * FROM `Player` LIMIT 1 OFFSET 2", new SerializerMySql().Parse(this.TestSelectAllFromPlayerLimit1Skip2Implicit).Compile().Compiled.First());
+        }
     }
 }

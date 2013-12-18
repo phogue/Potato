@@ -78,6 +78,10 @@
         /// </summary>
         DatabasePassword,
         /// <summary>
+        /// (Bool) True if the database should exist in memory only
+        /// </summary>
+        DatabaseMemory,
+        /// <summary>
         /// (String) The maximum number of rows to fetch from a query. This is 20 by default.
         /// </summary>
         DatabaseMaximumSelectedRows,

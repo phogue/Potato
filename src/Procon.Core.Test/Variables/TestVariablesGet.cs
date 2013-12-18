@@ -169,31 +169,6 @@ namespace Procon.Core.Test.Variables {
         }
 
         /// <summary>
-        /// Fetches the first type that matches in the variable list.
-        /// </summary>
-        [Test]
-        public void TestVariablesGetValueFirstValueType() {
-            VariableController variables = new VariableController() {
-                VolatileVariables = new List<Variable>() {
-                    new Variable() {
-                        Name = "key",
-                        Value = "ten"
-                    },
-                    new Variable() {
-                        Name = "key",
-                        Value = "20"
-                    },
-                    new Variable() {
-                        Name = "key",
-                        Value = 30
-                    }
-                }
-            };
-
-            Assert.AreEqual(variables.Get<int>(), 30);
-        }
-
-        /// <summary>
         /// Validates that getting a variable value directly with an invalid cast
         /// will fallback to the default value.
         /// </summary>

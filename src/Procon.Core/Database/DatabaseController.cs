@@ -39,13 +39,15 @@ namespace Procon.Core.Database {
             this.OpenDrivers = new Dictionary<String, IDriver>();
             
             this.GroupedVariableListener = new GroupedVariableListener() {
+                Variables = this.Variables,
                 GroupsVariableName = CommonVariableNames.DatabaseConfigGroups.ToString(),
                 ListeningVariablesNames = new List<String>() {
                     CommonVariableNames.DatabaseDriverName.ToString(),
                     CommonVariableNames.DatabaseHostname.ToString(),
                     CommonVariableNames.DatabasePort.ToString(),
                     CommonVariableNames.DatabaseUid.ToString(),
-                    CommonVariableNames.DatabasePassword.ToString()
+                    CommonVariableNames.DatabasePassword.ToString(),
+                    CommonVariableNames.DatabaseMemory.ToString()
                 }
             };
 
@@ -109,9 +111,9 @@ namespace Procon.Core.Database {
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="databaseGroupNames"></param>
-        private void GroupedVariableListenerOnVariablesModified(GroupedVariableListener sender, List<string> databaseGroupNames) {
+        private void GroupedVariableListenerOnVariablesModified(GroupedVariableListener sender, List<String> databaseGroupNames) {
             foreach (String databaseGroupName in databaseGroupNames) {
-                IDriver driver = this.AvailableDrivers.FirstOrDefault(pool => String.Compare(pool.Name, Variable.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabaseDriverName), StringComparison.InvariantCultureIgnoreCase) == 0);
+                IDriver driver = this.AvailableDrivers.FirstOrDefault(pool => String.Compare(pool.Name,  this.Variables.Get<String>(Variable.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabaseDriverName)), StringComparison.InvariantCultureIgnoreCase) == 0);
 
                 if (driver != null) {
                     if (this.OpenDrivers.ContainsKey(databaseGroupName) == false) {
@@ -121,7 +123,8 @@ namespace Procon.Core.Database {
                             Hostname = this.Variables.Get(Variable.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabaseHostname), String.Empty),
                             Port = this.Variables.Get<ushort>(Variable.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabasePort)),
                             Username = this.Variables.Get(Variable.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabaseUid), String.Empty),
-                            Password = this.Variables.Get(Variable.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabasePassword), String.Empty)
+                            Password = this.Variables.Get(Variable.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabasePassword), String.Empty),
+                            Memory = this.Variables.Get(Variable.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabaseMemory), false)
                         };
 
                         this.OpenDrivers.Add(databaseGroupName, driver);
@@ -134,7 +137,8 @@ namespace Procon.Core.Database {
                             Hostname = this.Variables.Get(Variable.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabaseHostname), String.Empty),
                             Port = this.Variables.Get<ushort>(Variable.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabasePort)),
                             Username = this.Variables.Get(Variable.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabaseUid), String.Empty),
-                            Password = this.Variables.Get(Variable.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabasePassword), String.Empty)
+                            Password = this.Variables.Get(Variable.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabasePassword), String.Empty),
+                            Memory = this.Variables.Get(Variable.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabaseMemory), false)
                         };
                     }
                 }

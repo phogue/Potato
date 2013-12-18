@@ -415,23 +415,6 @@ namespace Procon.Core.Variables {
         }
 
         /// <summary>
-        /// Fetches the first value in the variable list of a type
-        /// </summary>
-        /// <typeparam name="T">The type of value to fetch from the variable list.</typeparam>
-        /// <param name="defaultValue">The default value to use if no value is found</param>
-        /// <returns>The first matching variable value or the default value if no value of type T is found</returns>
-        public T Get<T>(T defaultValue = default(T)) {
-            T result = defaultValue;
-            Variable variable = null;
-
-            if ((variable = this.VolatileVariables.Find(x => x.Value is T)) != null) {
-                result = (T)variable.Value;
-            }
-
-            return result;
-        }
-
-        /// <summary>
         /// Gets and converts a value given a name
         /// </summary>
         /// <typeparam name="T">The type of value to return</typeparam>

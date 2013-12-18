@@ -153,6 +153,14 @@
       <Project>{153B5418-C6B3-43A5-A432-BAFFA8EFAA16}</Project>
       <Name>Procon.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Procon.Database.Serialization\Procon.Database.Serialization.csproj">
+      <Project>{C9FD27C8-167E-4B6A-82C0-8C9925584EE3}</Project>
+      <Name>Procon.Database.Serialization</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Procon.Database\Procon.Database.csproj">
+      <Project>{7703A41E-41E1-4D58-B686-07FD497D15F7}</Project>
+      <Name>Procon.Database</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Procon.Fuzzy\Procon.Fuzzy.csproj">
       <Project>{4B55557F-C2AA-4047-9ED9-3E4BBF9CF670}</Project>
       <Name>Procon.Fuzzy</Name>

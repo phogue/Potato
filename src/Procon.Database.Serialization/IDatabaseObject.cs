@@ -211,6 +211,15 @@ namespace Procon.Database.Serialization {
         IDatabaseObject Sort(String name, SortByModifier modifier = null);
 
         /// <summary>
+        /// Creates a new sort object, then appends to the list
+        /// </summary>
+        /// <param name="collection">The collection the field exists in to sort</param>
+        /// <param name="name">The name of the field to sort</param>
+        /// <param name="modifier">Ascending or descending, which appends a Ascending order modifier if null (default) </param>
+        /// <returns>this</returns>
+        IDatabaseObject Sort(String collection, String name, SortByModifier modifier = null);
+
+        /// <summary>
         /// Tags this object with a implicit modifier, letting the serializer know that it has been automatically generated
         /// while using shorthand methods.
         /// </summary>

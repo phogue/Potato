@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Procon.Database.Serialization.Builders;
 using Procon.Database.Serialization.Builders.Equalities;
 using Procon.Database.Serialization.Builders.FieldTypes;
@@ -349,23 +348,39 @@ namespace Procon.Database.Serialization {
         }
 
         public IDatabaseObject Sort(IDatabaseObject data) {
-            this.Add(data);
+            this.Add(data.Explicit());
 
             return this;
         }
 
-        public IDatabaseObject Sort(String name, SortByModifier modifier = null) {
+        public IDatabaseObject Sort(string name, SortByModifier modifier = null) {
             Field field = this.BuildField(name);
-            Collection collection = field.FirstOrDefault(statement => statement is Collection) as Collection;
 
-            return this.Sort(
+            return this.Raw(
                 new Sort() {
                     Name = field.Name
                 }
                 .Raw(modifier != null ? modifier.Explicit() : new Ascending().Implicit())
                 .Implicit()
             )
-            .Raw(collection)
+            .Implicit();
+        }
+
+        public IDatabaseObject Sort(String collection, String name, SortByModifier modifier = null) {
+            Field field = this.BuildField(name);
+
+            return this.Raw(
+                new Sort() {
+                    Name = field.Name
+                }
+                .Raw(modifier != null ? modifier.Explicit() : new Ascending().Implicit())
+                .Implicit()
+            )
+            .Raw(
+                new Collection() {
+                    Name = collection
+                }.Implicit()
+            )
             .Implicit();
         }
 

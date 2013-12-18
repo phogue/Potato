@@ -69,6 +69,11 @@ namespace Procon.Core {
 
         #endregion
 
+        /// <summary>
+        /// Queries the database controller, dispatching a query to an open driver.
+        /// </summary>
+        DatabaseQuery,
+
         TextCommandsExecute,
         TextCommandsPreview,
         TextCommandsRegister,

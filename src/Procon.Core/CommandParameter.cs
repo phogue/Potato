@@ -151,7 +151,7 @@ namespace Procon.Core {
             else if (t == typeof(IPacket) && this.Data.CommandResults != null) {
                 all = this.Data.Packets.Cast<Object>().ToList();
             }
-            else if (t == typeof(IDatabaseObject) && this.Data.CommandResults != null) {
+            else if (t == typeof(IDatabaseObject) && this.Data.Queries != null) {
                 all = this.Data.Queries.Cast<Object>().ToList();
             }
 

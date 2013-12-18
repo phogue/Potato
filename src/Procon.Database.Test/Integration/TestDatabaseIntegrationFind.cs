@@ -4,7 +4,6 @@ using Procon.Database.Serialization.Builders.Logicals;
 using Procon.Database.Serialization.Builders.Methods;
 using Procon.Database.Serialization.Builders.Modifiers;
 using Procon.Database.Serialization.Builders.Statements;
-using Procon.Database.Serialization.Builders.Values;
 
 namespace Procon.Database.Test.Integration {
     public abstract class TestDatabaseIntegrationFind : TestDatabaseIntegrationBase {
@@ -26,19 +25,6 @@ namespace Procon.Database.Test.Integration {
         protected IDatabaseObject TestSelectAllFromPlayerWherePlayerNameEqualsPhogueImplicit = new Find().Condition("Player", "Name", "Phogue").Collection("Player");
 
         protected IDatabaseObject TestSelectDistinctAllFromPlayerImplicit = new Find().Modifier(new Distinct()).Collection("Player");
-
-        protected IDatabaseObject TestSelectScoreFromPlayerWhereNameEqualsPhogueExplicit = new Find().Condition(new Equals() {
-            new Field() {
-                Name = "Name"
-            },
-            new StringValue() {
-                Data = "Phogue"
-            }
-        }).Collection(new Collection() {
-            Name = "Player"
-        }).Field(new Field() {
-            Name = "Score"
-        });
 
         protected IDatabaseObject TestSelectScoreFromPlayerWhereNameEqualsPhogueImplicit = new Find().Condition("Name", "Phogue").Collection("Player").Field("Score");
         protected IDatabaseObject TestSelectScoreRankFromPlayerWhereNameEqualsPhogueImplicit = new Find().Condition("Name", "Phogue").Collection("Player").Field("Score").Field("Rank");

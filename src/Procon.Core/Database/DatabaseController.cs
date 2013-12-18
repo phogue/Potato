@@ -26,7 +26,7 @@ namespace Procon.Core.Database {
         /// <summary>
         /// List of drivers available for cloning and using.
         /// </summary>
-        protected List<IDriver> AvailableDrivers = new List<IDriver>() {
+        public List<IDriver> AvailableDrivers = new List<IDriver>() {
             new MySqlDriver(),
             new MongoDbDriver(),
             new SqLiteDriver()
@@ -54,7 +54,19 @@ namespace Procon.Core.Database {
             this.AppendDispatchHandlers(new Dictionary<CommandAttribute, CommandDispatchHandler>() {
                 {
                     new CommandAttribute() {
-                        CommandType = CommandType.VariablesSet,
+                        CommandType = CommandType.DatabaseQuery,
+                        ParameterTypes = new List<CommandParameterType>() {
+                            new CommandParameterType() {
+                                Name = "query",
+                                Type = typeof(IDatabaseObject)
+                            }
+                        }
+                    },
+                    new CommandDispatchHandler(this.Query)
+                },
+                {
+                    new CommandAttribute() {
+                        CommandType = CommandType.DatabaseQuery,
                         ParameterTypes = new List<CommandParameterType>() {
                             new CommandParameterType() {
                                 Name = "query",
@@ -67,7 +79,23 @@ namespace Procon.Core.Database {
                 },
                 {
                     new CommandAttribute() {
-                        CommandType = CommandType.VariablesSet,
+                        CommandType = CommandType.DatabaseQuery,
+                        ParameterTypes = new List<CommandParameterType>() {
+                            new CommandParameterType() {
+                                Name = "driver",
+                                Type = typeof(String)
+                            },
+                            new CommandParameterType() {
+                                Name = "query",
+                                Type = typeof(IDatabaseObject)
+                            }
+                        }
+                    },
+                    new CommandDispatchHandler(this.QueryDriver)
+                },
+                {
+                    new CommandAttribute() {
+                        CommandType = CommandType.DatabaseQuery,
                         ParameterTypes = new List<CommandParameterType>() {
                             new CommandParameterType() {
                                 Name = "driver",
@@ -197,17 +225,9 @@ namespace Procon.Core.Database {
             return this.Security.DispatchPermissionsCheck(command, command.Name).Success == true ? this.ExecuteQueryOnDriver(parameters["query"].All<IDatabaseObject>(), parameters["driver"].First<String>()) : CommandResultArgs.InsufficientPermissions;
         }
 
-        /// <summary>
-        /// Runs a query on a 
-        /// </summary>
-        /// <param name="command"></param>
-        /// <param name="query"></param>
-        public void Query(Command command, String query) {
-            
-        }
-
         public override void Dispose() {
             this.UnassignEvents();
+            this.GroupedVariableListener = null;
 
             foreach (var driver in this.OpenDrivers) {
                 driver.Value.Close();

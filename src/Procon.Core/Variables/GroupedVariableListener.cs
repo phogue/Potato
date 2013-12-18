@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using Procon.Core.Scheduler;
 
 namespace Procon.Core.Variables {
     /// <summary>

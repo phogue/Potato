@@ -75,6 +75,7 @@
     <Compile Include="Builders\Methods\Find.cs" />
     <Compile Include="Builders\Equalities\GreaterThan.cs" />
     <Compile Include="Builders\Equalities\GreaterThanEquals.cs" />
+    <Compile Include="Builders\Values\DateTimeValue.cs" />
     <Compile Include="IDatabaseObject.cs" />
     <Compile Include="Builders\Equalities\LessThan.cs" />
     <Compile Include="Builders\Equalities\LessThanEquals.cs" />

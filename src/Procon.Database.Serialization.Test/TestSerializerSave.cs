@@ -1,4 +1,5 @@
-﻿using Procon.Database.Serialization.Builders;
+﻿using System;
+using Procon.Database.Serialization.Builders;
 using Procon.Database.Serialization.Builders.Methods;
 using Procon.Database.Serialization.Builders.Statements;
 using Procon.Database.Serialization.Builders.Values;
@@ -60,5 +61,38 @@ namespace Procon.Database.Serialization.Test {
         public abstract void TestSaveIntoPlayerSetNameScore();
 
         #endregion
+
+        #region TestSaveIntoPlayerSetNameAndStamp
+
+        protected IDatabaseObject TestSaveIntoPlayerSetNameAndStampExplicit = new Save()
+            .Collection(new Collection() {
+                Name = "Player"
+            })
+            .Set(new Assignment() {
+                new Field() {
+                    Name = "Name"
+                },
+                new StringValue() {
+                    Data = "Phogue"
+                }
+            })
+            .Set(new Assignment() {
+                new Field() {
+                    Name = "Stamp"
+                },
+                new DateTimeValue() {
+                    Data = new DateTime(2013,12, 19, 1, 8, 0)
+                }
+            });
+
+        protected IDatabaseObject TestSaveIntoPlayerSetNameAndStampImplicit = new Save()
+            .Collection("Player")
+            .Set("Name", "Phogue")
+            .Set("Stamp", new DateTime(2013, 12, 19, 1, 8, 0));
+
+        public abstract void TestSaveIntoPlayerSetNameAndStamp();
+
+        #endregion
+
     }
 }

@@ -24,5 +24,15 @@ namespace Procon.Database.Serialization.Test.MongoDb {
             Assert.AreEqual(@"Player", serialized.Collections.First());
             Assert.AreEqual(@"[{""$set"":{""Name"":""Phogue"",""Score"":50.0}}]", serialized.Assignments.First());
         }
+
+        [Test]
+        public override void TestSaveIntoPlayerSetNameAndStamp() {
+            ISerializer serializer = new SerializerMongoDb();
+            ICompiledQuery serialized = serializer.Parse(this.TestSaveIntoPlayerSetNameAndStampExplicit).Compile();
+
+            Assert.AreEqual(@"save", serialized.Methods.First());
+            Assert.AreEqual(@"Player", serialized.Collections.First());
+            Assert.AreEqual(@"[{""$set"":{""Name"":""Phogue"",""Stamp"":""2013-12-19T01:08:00""}}]", serialized.Assignments.First());
+        }
     }
 }

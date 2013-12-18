@@ -179,11 +179,15 @@ namespace Procon.Database.Serialization.Serializers.Sql {
         protected virtual String ParseValue(Value value) {
             String parsed = "";
 
+            DateTimeValue dateTime = value as DateTimeValue;
             NumericValue numeric = value as NumericValue;
             StringValue @string = value as StringValue;
             RawValue raw = value as RawValue;
 
-            if (numeric != null) {
+            if (dateTime != null) {
+                parsed = String.Format(@"""{0}""", dateTime.Data.ToString("yyyy-MM-dd HH:mm:ss"));
+            }
+            else if (numeric != null) {
                 if (numeric.Long.HasValue == true) {
                     parsed = numeric.Long.Value.ToString(CultureInfo.InvariantCulture);
                 }

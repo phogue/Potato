@@ -83,23 +83,18 @@ namespace Procon.Database.Serialization.Serializers.NoSql {
             return parsed;
         }
 
-        /// <summary>
-        /// todo implement.
-        /// </summary>
-        /// <param name="value"></param>
-        /// <returns></returns>
-        protected virtual String EscapeString(String value) {
-            return value;
-        }
+        protected virtual Object ParseValue(Value value) {
+            Object parsed = null;
 
-        protected virtual String ParseValue(Value value) {
-            String parsed = "";
-
+            DateTimeValue dateTime = value as DateTimeValue;
             NumericValue numeric = value as NumericValue;
             StringValue @string = value as StringValue;
             RawValue raw = value as RawValue;
 
-            if (numeric != null) {
+            if (dateTime != null) {
+                parsed = dateTime.Data; // String.Format(@"""{0}""", dateTime.Data.ToString("s"));
+            }
+            else if (numeric != null) {
                 if (numeric.Long.HasValue == true) {
                     parsed = numeric.Long.Value.ToString(CultureInfo.InvariantCulture);
                 }
@@ -108,7 +103,7 @@ namespace Procon.Database.Serialization.Serializers.NoSql {
                 }
             }
             else if (@string != null) {
-                parsed = this.EscapeString(@string.Data);
+                parsed = @string.Data;
             }
             else if (raw != null) {
                 parsed = raw.Data;
@@ -242,17 +237,17 @@ namespace Procon.Database.Serialization.Serializers.NoSql {
             if (field != null && value != null) {
                 String parsedField = this.ParseField(field);
                 String parsedEquality = this.ParseEquality(equality);
-                String parsedValue = this.ParseValue(value);
+                Object parsedValue = this.ParseValue(value);
 
                 if (String.IsNullOrEmpty(parsedEquality) == true) {
-                    outer[parsedField] = parsedValue;
+                    outer.Add(new JProperty(parsedField, parsedValue));
                 }
                 else {
                     if (outer[parsedField] == null) {
                         outer[parsedField] = new JObject();
                     }
 
-                    outer[parsedField][parsedEquality] = parsedValue;
+                    ((JObject)outer[parsedField]).Add(new JProperty(parsedEquality, parsedValue));
                 }
             }
 

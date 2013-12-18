@@ -55,6 +55,11 @@ namespace Procon.Database.Serialization {
                     Float = (float)data
                 };
             }
+            else if (data is DateTime) {
+                value = new DateTimeValue() {
+                    Data = (DateTime)data
+                };
+            }
             else if (data is string) {
                 value = new StringValue() {
                     Data = data.ToString()

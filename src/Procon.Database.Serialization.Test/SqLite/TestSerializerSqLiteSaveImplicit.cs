@@ -14,5 +14,10 @@ namespace Procon.Database.Serialization.Test.SqLite {
         public override void TestSaveIntoPlayerSetNameScore() {
             Assert.AreEqual(@"INSERT INTO `Player` (`Name`, `Score`) VALUES (""Phogue"", 50)", new SerializerSqLite().Parse(this.TestSaveIntoPlayerSetNameScoreImplicit).Compile().Compiled.First());
         }
+
+        [Test]
+        public override void TestSaveIntoPlayerSetNameAndStamp() {
+            Assert.AreEqual(@"INSERT INTO `Player` SET `Name` = ""Phogue"", `Stamp` = ""2013-12-19 01:08:00""", new SerializerMySql().Parse(this.TestSaveIntoPlayerSetNameAndStampImplicit).Compile().Compiled.First());
+        }
     }
 }

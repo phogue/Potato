@@ -14,7 +14,7 @@ namespace Procon.Database.Serialization.Test {
                 .Collection(new Collection() {
                     Name = "Player"
                 })
-                .Assignment(new Assignment() {
+                .Set(new Assignment() {
                     new Field() {
                         Name = "Name"
                     },
@@ -22,7 +22,7 @@ namespace Procon.Database.Serialization.Test {
                         Data = "Phogue"
                     }
                 })
-                .Assignment(new Assignment() {
+                .Set(new Assignment() {
                     new Field() {
                         Name = "Score"
                     },
@@ -36,7 +36,7 @@ namespace Procon.Database.Serialization.Test {
                 .Collection(new Collection() {
                     Name = "Player"
                 })
-                .Assignment(new Assignment() {
+                .Set(new Assignment() {
                     new Field() {
                         Name = "Score"
                     },
@@ -57,11 +57,11 @@ namespace Procon.Database.Serialization.Test {
         protected IDatabaseObject TestMergeCollectionPlayerSaveNameScoreUpdateScoreImplicit = new Merge() {
             new Save()
             .Collection("Player")
-            .Assignment("Name", "Phogue")
-            .Assignment("Score", 50),
+            .Set("Name", "Phogue")
+            .Set("Score", 50),
             new Modify()
             .Collection("Player")
-            .Assignment("Score", 50)
+            .Set("Score", 50)
             .Condition("Name", "Phogue")
         };
 
@@ -77,7 +77,7 @@ namespace Procon.Database.Serialization.Test {
                 .Collection(new Collection() {
                     Name = "Player"
                 })
-                .Assignment(new Assignment() {
+                .Set(new Assignment() {
                     new Field() {
                         Name = "Name"
                     },
@@ -85,7 +85,7 @@ namespace Procon.Database.Serialization.Test {
                         Data = "Phogue"
                     }
                 })
-                .Assignment(new Assignment() {
+                .Set(new Assignment() {
                     new Field() {
                         Name = "Score"
                     },
@@ -93,7 +93,7 @@ namespace Procon.Database.Serialization.Test {
                         Long = 50
                     }
                 })
-                .Assignment(new Assignment() {
+                .Set(new Assignment() {
                     new Field() {
                         Name = "Rank"
                     },
@@ -107,7 +107,7 @@ namespace Procon.Database.Serialization.Test {
                 .Collection(new Collection() {
                     Name = "Player"
                 })
-                .Assignment(new Assignment() {
+                .Set(new Assignment() {
                     new Field() {
                         Name = "Score"
                     },
@@ -115,7 +115,7 @@ namespace Procon.Database.Serialization.Test {
                         Long = 50
                     }
                 })
-                .Assignment(new Assignment() {
+                .Set(new Assignment() {
                     new Field() {
                         Name = "Rank"
                     },
@@ -136,13 +136,13 @@ namespace Procon.Database.Serialization.Test {
         protected IDatabaseObject TestMergeCollectionPlayerSaveNameScoreRankUpdateScoreRankScoreImplicit = new Merge() {
             new Save()
             .Collection("Player")
-            .Assignment("Name", "Phogue")
-            .Assignment("Score", 50)
-            .Assignment("Rank", 10),
+            .Set("Name", "Phogue")
+            .Set("Score", 50)
+            .Set("Rank", 10),
             new Modify()
             .Collection("Player")
-            .Assignment("Score", 50)
-            .Assignment("Rank", 10)
+            .Set("Score", 50)
+            .Set("Rank", 10)
             .Condition("Name", "Phogue")
         };
 

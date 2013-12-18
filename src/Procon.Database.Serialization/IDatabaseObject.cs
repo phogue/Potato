@@ -171,7 +171,7 @@ namespace Procon.Database.Serialization {
         /// </summary>
         /// <param name="data">The assignment object</param>
         /// <returns>this</returns>
-        IDatabaseObject Assignment(IDatabaseObject data);
+        IDatabaseObject Set(IDatabaseObject data);
 
         /// <summary>
         /// Creates a new assignment object to set a field with `name` to `data`
@@ -179,8 +179,8 @@ namespace Procon.Database.Serialization {
         /// <param name="name">The field to set</param>
         /// <param name="data">The data to set the field as</param>
         /// <returns>this</returns>
-        IDatabaseObject Assignment(String name, Object data);
-
+        IDatabaseObject Set(String name, Object data);
+        
         /// <summary>
         /// Appends a collection object to the chain
         /// </summary>

@@ -13,10 +13,10 @@ namespace Procon.Database.Test.Integration {
         /// </summary>
         protected List<IDatabaseObject> TestPlayerTableSetup = new List<IDatabaseObject>() {
             new Create().Collection("Player").Field("Name", new StringType()).Field("Score", new IntegerType()).Field("Rank", new IntegerType()).Field("Kdr", new FloatType()),
-            new Save().Collection("Player").Assignment("Name", "Phogue").Assignment("Score", 100).Assignment("Rank", 10).Assignment("Kdr", 1),
-            new Save().Collection("Player").Assignment("Name", "Zaeed").Assignment("Score", 15).Assignment("Rank", 20).Assignment("Kdr", 2),
-            new Save().Collection("Player").Assignment("Name", "Duplicate").Assignment("Score", 1000).Assignment("Rank", 100).Assignment("Kdr", 4),
-            new Save().Collection("Player").Assignment("Name", "Duplicate").Assignment("Score", 1000).Assignment("Rank", 100).Assignment("Kdr", 4)
+            new Save().Collection("Player").Set("Name", "Phogue").Set("Score", 100).Set("Rank", 10).Set("Kdr", 1),
+            new Save().Collection("Player").Set("Name", "Zaeed").Set("Score", 15).Set("Rank", 20).Set("Kdr", 2),
+            new Save().Collection("Player").Set("Name", "Duplicate").Set("Score", 1000).Set("Rank", 100).Set("Kdr", 4),
+            new Save().Collection("Player").Set("Name", "Duplicate").Set("Score", 1000).Set("Rank", 100).Set("Kdr", 4)
         };
     }
 }

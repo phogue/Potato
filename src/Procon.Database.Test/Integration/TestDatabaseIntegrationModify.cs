@@ -7,27 +7,27 @@ namespace Procon.Database.Test.Integration {
 
         protected IDatabaseObject TestModifyPlayerSetNameImplicit = new Modify()
             .Collection("Player")
-            .Assignment("Name", "Phogue");
+            .Set("Name", "Phogue");
 
         public abstract void TestModifyPlayerSetName();
 
         protected IDatabaseObject TestModifyPlayerSetNameScoreImplicit = new Modify()
             .Collection("Player")
-            .Assignment("Name", "Phogue")
-            .Assignment("Score", 50);
+            .Set("Name", "Phogue")
+            .Set("Score", 50);
 
         public abstract void TestModifyPlayerSetNameScore();
 
         protected IDatabaseObject TestModifyPlayerSetScoreWhereNameEqualsPhogueImplicit = new Modify()
             .Collection("Player")
-            .Assignment("Score", 50)
+            .Set("Score", 50)
             .Condition("Name", "Phogue");
 
         public abstract void TestModifyPlayerSetScoreWhereNameEqualsPhogue();
 
         protected IDatabaseObject TestModifyPlayerSetScoreWhereNameEqualsPhogueAndRankAbove10Implicit = new Modify()
             .Collection("Player")
-            .Assignment("Score", 50)
+            .Set("Score", 50)
             .Condition("Name", "Phogue")
             .Condition("Rank", new GreaterThan(), 10);
 

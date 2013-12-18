@@ -69,7 +69,7 @@ namespace Procon.Database.Test {
             );
             */
 
-            CollectionValue result = driver.Query(new Find().Collection("player").Condition("Name", "Phogue").Assignment("Score", 99)) as CollectionValue;
+            CollectionValue result = driver.Query(new Find().Collection("player").Condition("Name", "Phogue").Set("Score", 99)) as CollectionValue;
 
             JArray array = result.ToJArray();
 

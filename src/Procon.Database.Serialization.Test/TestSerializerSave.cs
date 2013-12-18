@@ -12,7 +12,7 @@ namespace Procon.Database.Serialization.Test {
             .Collection(new Collection() {
                 Name = "Player"
             })
-            .Assignment(new Assignment() {
+            .Set(new Assignment() {
                 new Field() {
                     Name = "Name"
                 },
@@ -23,7 +23,7 @@ namespace Procon.Database.Serialization.Test {
 
         protected IDatabaseObject TestSaveIntoPlayerSetNameImplicit = new Save()
             .Collection("Player")
-            .Assignment("Name", "Phogue");
+            .Set("Name", "Phogue");
 
         public abstract void TestSaveIntoPlayerSetName();
 
@@ -35,7 +35,7 @@ namespace Procon.Database.Serialization.Test {
             .Collection(new Collection() {
                 Name = "Player"
             })
-            .Assignment(new Assignment() {
+            .Set(new Assignment() {
                 new Field() {
                     Name = "Name"
                 },
@@ -43,7 +43,7 @@ namespace Procon.Database.Serialization.Test {
                     Data = "Phogue"
                 }
             })
-            .Assignment(new Assignment() {
+            .Set(new Assignment() {
                 new Field() {
                     Name = "Score"
                 },
@@ -54,8 +54,8 @@ namespace Procon.Database.Serialization.Test {
 
         protected IDatabaseObject TestSaveIntoPlayerSetNameScoreImplicit = new Save()
             .Collection("Player")
-            .Assignment("Name", "Phogue")
-            .Assignment("Score", 50);
+            .Set("Name", "Phogue")
+            .Set("Score", 50);
 
         public abstract void TestSaveIntoPlayerSetNameScore();
 

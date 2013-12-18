@@ -71,7 +71,7 @@ namespace Procon.Database.Serialization {
                 value = new DocumentValue();
 
                 foreach (var item in data as Dictionary<String, Object>) {
-                    value.Assignment(item.Key, item.Value);
+                    value.Set(item.Key, item.Value);
                 }
             }
 
@@ -313,13 +313,13 @@ namespace Procon.Database.Serialization {
             return this;
         }
 
-        public IDatabaseObject Assignment(IDatabaseObject data) {
+        public IDatabaseObject Set(IDatabaseObject data) {
             this.Add(data.Explicit());
 
             return this;
         }
 
-        public IDatabaseObject Assignment(String name, Object data) {
+        public IDatabaseObject Set(String name, Object data) {
             Field field = this.BuildField(name);
             Value value = this.BuildValue(data);
 

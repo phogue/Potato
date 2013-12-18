@@ -94,7 +94,7 @@ namespace Procon.Database.Drivers {
                                 DocumentValue row = new DocumentValue();
 
                                 for (int field = 0; field < reader.FieldCount; field++) {
-                                    row.Assignment(reader.GetName(field), reader.GetValue(field));
+                                    row.Set(reader.GetName(field), reader.GetValue(field));
                                 }
 
                                 result.Add(row);

@@ -79,7 +79,7 @@ namespace Procon.Database.Drivers {
                     dotNetValue = dotNetValue.ToString();
                 }
 
-                row.Assignment(value.Name, dotNetValue);
+                row.Set(value.Name, dotNetValue);
             }
 
             return row;

@@ -37,9 +37,19 @@ namespace Procon.Database.Drivers {
                     this.Connection = null;
                 }
 
+                var dataSource = "";
+
+                if (this.Settings.Memory == true) {
+                    dataSource = ":memory:";
+                }
+                else if (this.Settings.Database != null) {
+                    dataSource = this.Settings.Database + (this.Settings.Database.EndsWith(".sqlite") == false ? ".sqlite" : "");
+                }
+
                 SQLiteConnectionStringBuilder connectionBuilder = new SQLiteConnectionStringBuilder {
-                    DataSource = this.Settings.Database + (this.Settings.Database.EndsWith(".sqlite") == false ? ".sqlite" : ""),
-                    Password = this.Settings.Password
+                    DataSource = dataSource,
+                    Password = this.Settings.Password,
+                    
                 };
 
                 try {

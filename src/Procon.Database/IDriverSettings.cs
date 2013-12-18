@@ -29,5 +29,10 @@ namespace Procon.Database {
         /// The name of the database to select.
         /// </summary>
         String Database { get; set; }
+
+        /// <summary>
+        /// If the database should exists in memory only, not on a file system.
+        /// </summary>
+        bool Memory { get; set; }
     }
 }

@@ -144,9 +144,7 @@ namespace Procon.Database.Test.Integration.SqLite {
 
         [Test]
         public override void TestSelectAllFromPlayerWhereNameEqualsPhogueAndScoreEqualsTen() {
-            this.Integration.TestFindQuery(this.TestPlayerTableSetup, this.TestSelectAllFromPlayerWhereNameEqualsPhogueAndScoreEqualsTenImplicit, new JArray() {
-
-            });
+            this.Integration.TestFindQuery(this.TestPlayerTableSetup, this.TestSelectAllFromPlayerWhereNameEqualsPhogueAndScoreEqualsTenImplicit, new JArray());
         }
 
         [Test]

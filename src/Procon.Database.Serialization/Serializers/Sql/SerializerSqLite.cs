@@ -355,12 +355,20 @@ namespace Procon.Database.Serialization.Serializers.Sql {
                     if (unique != null) {
                         compiled.Add("UNIQUE INDEX");
 
+                        if (parsed.Root.Any(attribute => attribute is IfNotExists)) {
+                            compiled.Add("IF NOT EXISTS");
+                        }
+
                         // todo move the name element to a modifier?
                         compiled.Add(String.Format("`{0}`", ((Index)parsed.Root).Name));
                     }
                     // INDEX `Name_INDEX` (`Name` ASC)
                     else {
                         compiled.Add("INDEX");
+
+                        if (parsed.Root.Any(attribute => attribute is IfNotExists)) {
+                            compiled.Add("IF NOT EXISTS");
+                        }
 
                         // todo move the name element to a modifier?
                         compiled.Add(String.Format("`{0}`", ((Index)parsed.Root).Name));

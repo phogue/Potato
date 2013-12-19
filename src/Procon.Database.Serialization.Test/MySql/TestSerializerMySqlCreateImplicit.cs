@@ -112,5 +112,14 @@ namespace Procon.Database.Serialization.Test.MySql {
         public override void TestCreatePlayerWithFieldDateTimeStamp() {
             Assert.AreEqual(@"CREATE TABLE `Player` (`Stamp` DATETIME NULL)", new SerializerMySql().Parse(this.TestCreatePlayerWithFieldDateTimeStampImplicit).Compile().Compiled.First());
         }
+
+        [Test]
+        public override void TestCreatePlayerWithFieldStringNameWithIndexIfNotExistsOnName() {
+            ISerializer serializer = new SerializerMySql();
+            ICompiledQuery serialized = serializer.Parse(this.TestCreatePlayerWithFieldStringNameWithIndexIfNotExistsOnNameImplicit).Compile();
+
+            Assert.AreEqual(@"CREATE TABLE `Player` (`Name` VARCHAR(255) NULL)", serialized.Compiled.First());
+            Assert.AreEqual(@"ALTER TABLE `Player` ADD INDEX IF NOT EXISTS `Name_INDEX` (`Name`)", serialized.Children.First().Compiled.First());
+        }
     }
 }

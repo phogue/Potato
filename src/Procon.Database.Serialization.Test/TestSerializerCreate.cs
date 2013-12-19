@@ -563,5 +563,53 @@ namespace Procon.Database.Serialization.Test {
 
         #endregion
 
+        #region TestCreatePlayerWithFieldStringNameWithIndexIfNotExistsOnName
+
+        protected IDatabaseObject TestCreatePlayerWithFieldStringNameWithIndexIfNotExistsOnNameExplicit = new Create()
+            .Collection(new Collection() {
+                Name = "Player"
+            })
+            .Field(
+                new Field() {
+                    Name = "Name"
+                }
+                .Modifier(
+                    new StringType()
+                    .Modifier(new Nullable())
+                )
+            )
+            .Index(
+                new Index() {
+                    Name = "Name_INDEX"
+                }
+                .Sort(
+                    new Sort() {
+                        Name = "Name"
+                    }
+                )
+                .Collection(new Collection() {
+                    Name = "Player"
+                })
+                .Modifier(
+                    new IfNotExists()
+                )
+            );
+
+        protected IDatabaseObject TestCreatePlayerWithFieldStringNameWithIndexIfNotExistsOnNameImplicit = new Create()
+            .Collection("Player")
+            .Field("Name", new StringType())
+            .Index(
+                new Index() {
+                    Name = "Name_INDEX"
+                }
+                .Collection("Player")
+                .Sort("Name")
+                .Modifier(new IfNotExists())
+            );
+
+        public abstract void TestCreatePlayerWithFieldStringNameWithIndexIfNotExistsOnName();
+
+        #endregion
+
     }
 }

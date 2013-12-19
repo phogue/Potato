@@ -103,5 +103,13 @@ namespace Procon.Database.Serialization.Test.SqLite {
         public override void TestCreatePlayerWithFieldDateTimeStamp() {
             Assert.AreEqual(@"CREATE TABLE `Player` (`Stamp` DATETIME NULL)", new SerializerMySql().Parse(this.TestCreatePlayerWithFieldDateTimeStampImplicit).Compile().Compiled.First());
         }
+
+        [Test]
+        public override void TestCreatePlayerWithFieldStringNameWithIndexIfNotExistsOnName() {
+            ICompiledQuery serialized = new SerializerSqLite().Parse(this.TestCreatePlayerWithFieldStringNameWithIndexIfNotExistsOnNameImplicit).Compile();
+
+            Assert.AreEqual(@"CREATE TABLE `Player` (`Name` VARCHAR(255))", serialized.Compiled.First());
+            Assert.AreEqual(@"CREATE INDEX IF NOT EXISTS `Name_INDEX` ON `Player` (`Name`)", serialized.Children.First().Compiled.First());
+        }
     }
 }

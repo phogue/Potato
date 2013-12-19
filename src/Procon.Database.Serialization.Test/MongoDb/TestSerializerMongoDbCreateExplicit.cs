@@ -117,5 +117,14 @@ namespace Procon.Database.Serialization.Test.MongoDb {
         public override void TestCreatePlayerWithFieldDateTimeStamp() {
             
         }
+
+        [Test]
+        public override void TestCreatePlayerWithFieldStringNameWithIndexIfNotExistsOnName() {
+            ISerializer serializer = new SerializerMongoDb();
+            ICompiledQuery serialized = serializer.Parse(this.TestCreatePlayerWithFieldStringNameWithIndexIfNotExistsOnNameExplicit).Compile();
+
+            Assert.AreEqual(@"create", serialized.Methods.First());
+            Assert.AreEqual(@"[{""Name"":1}]", serialized.Children.First().Indices.First());
+        }
     }
 }

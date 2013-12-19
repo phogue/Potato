@@ -32,7 +32,7 @@ namespace Procon.Database.Serialization.Test.MongoDb {
 
             Assert.AreEqual(@"save", serialized.Methods.First());
             Assert.AreEqual(@"Player", serialized.Collections.First());
-            Assert.AreEqual(@"[{""$set"":{""Name"":""Phogue"",""Stamp"":""2013-12-19T01:08:00""}}]", serialized.Assignments.First());
+            Assert.AreEqual(@"[{""$set"":{""Name"":""Phogue"",""Stamp"":""2013-12-19T01:08:00.055""}}]", serialized.Assignments.First());
         }
     }
 }

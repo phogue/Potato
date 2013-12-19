@@ -189,7 +189,7 @@ namespace Procon.Database.Serialization.Serializers.Sql {
             RawValue raw = value as RawValue;
 
             if (dateTime != null) {
-                parsed = String.Format(@"""{0}""", dateTime.Data.ToString("yyyy-MM-dd HH:mm:ss"));
+                parsed = String.Format(@"""{0}""", dateTime.Data.ToString("yyyy-MM-dd HH:mm:ss.fff"));
             }
             else if (numeric != null) {
                 if (numeric.Long.HasValue == true) {

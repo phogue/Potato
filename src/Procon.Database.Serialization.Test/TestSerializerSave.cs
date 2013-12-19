@@ -81,14 +81,14 @@ namespace Procon.Database.Serialization.Test {
                     Name = "Stamp"
                 },
                 new DateTimeValue() {
-                    Data = new DateTime(2013,12, 19, 1, 8, 0)
+                    Data = new DateTime(2013,12, 19, 1, 8, 0, 55)
                 }
             });
 
         protected IDatabaseObject TestSaveIntoPlayerSetNameAndStampImplicit = new Save()
             .Collection("Player")
             .Set("Name", "Phogue")
-            .Set("Stamp", new DateTime(2013, 12, 19, 1, 8, 0));
+            .Set("Stamp", new DateTime(2013, 12, 19, 1, 8, 0, 55));
 
         public abstract void TestSaveIntoPlayerSetNameAndStamp();
 

@@ -146,7 +146,7 @@ namespace Procon.Database.Drivers {
             List<IDatabaseObject> results = new List<IDatabaseObject>();
 
             try {
-                results.AddRange(query.Root is Find ? this.Read(query, result) : this.Execute(query, result));
+                results.Add(query.Root is Find ? this.Read(query, result) : this.Execute(query, result));
             }
             catch (Exception exception) {
                 results.Add(new Error() {

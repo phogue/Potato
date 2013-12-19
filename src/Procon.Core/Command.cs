@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using System.Xml.Linq;
 using System.Xml.Serialization;
 using Newtonsoft.Json;
+using Procon.Net.Protocols;
 using Procon.Net.Protocols.CommandServer;
 using Procon.Net.Utils;
 
 namespace Procon.Core {
-    using Procon.Net.Protocols;
-
+    /// <summary>
+    /// A simple command to be passed between executable objects, allowing for commands
+    /// to originate for various sources but allow for security, serialization and general neatness.
+    /// </summary>
     [Serializable]
     public class Command : CommandAttribute {
 
@@ -64,12 +67,26 @@ namespace Procon.Core {
 
         #endregion
 
+        /// <summary>
+        /// Initializes a new command with the default values.
+        /// </summary>
         public Command() {
             this.Username = null;
             this.GameType = CommonGameType.None;
             this.Uid = null;
 
             this.Scope = new CommandScope();
+        }
+
+        /// <summary>
+        /// Sets the origin of the command, then returns the command. Allows for method chaining
+        /// </summary>
+        /// <param name="origin">The origin to set this command</param>
+        /// <returns>this</returns>
+        public Command SetOrigin(CommandOrigin origin) {
+            this.Origin = origin;
+
+            return this;
         }
 
         /// <summary>

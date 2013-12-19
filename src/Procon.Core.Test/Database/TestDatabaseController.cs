@@ -16,7 +16,7 @@ namespace Procon.Core.Test.Database {
     [TestFixture]
     public class TestDatabaseController {
 
-        protected DatabaseController OpenSqLiteDriver(String @namespace = "") {
+        public static DatabaseController OpenSqLiteDriver(String @namespace = "") {
 
             VariableController variables = new VariableController();
 
@@ -49,7 +49,7 @@ namespace Procon.Core.Test.Database {
         /// </summary>
         [Test]
         public void TestSqLiteMemoryDatabaseOpened() {
-            DatabaseController database = this.OpenSqLiteDriver();
+            DatabaseController database = TestDatabaseController.OpenSqLiteDriver();
 
             Assert.AreEqual(1, database.OpenDrivers.Count);
         }
@@ -61,7 +61,7 @@ namespace Procon.Core.Test.Database {
         public void TestSqLiteMemoryDatabaseOpenedNamespaced() {
             String @namespace = StringExtensions.RandomString(10);
 
-            DatabaseController database = this.OpenSqLiteDriver(@namespace);
+            DatabaseController database = TestDatabaseController.OpenSqLiteDriver(@namespace);
 
             Assert.AreEqual(1, database.OpenDrivers.Count);
         }
@@ -73,7 +73,7 @@ namespace Procon.Core.Test.Database {
         /// that it's all functional in one hit here.</remarks>
         [Test]
         public void TestSqLiteSetupAndFindQuery() {
-            DatabaseController database = this.OpenSqLiteDriver();
+            DatabaseController database = TestDatabaseController.OpenSqLiteDriver();
 
             database.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
@@ -83,10 +83,10 @@ namespace Procon.Core.Test.Database {
                         Data = {
                             Queries = new List<IDatabaseObject>() {
                                 new Create().Collection("Player").Field("Name", new StringType()).Field("Score", new IntegerType()).Field("Rank", new IntegerType()).Field("Kdr", new FloatType()),
-                                new Save().Collection("Player").Assignment("Name", "Phogue").Assignment("Score", 100).Assignment("Rank", 10).Assignment("Kdr", 1),
-                                new Save().Collection("Player").Assignment("Name", "Zaeed").Assignment("Score", 15).Assignment("Rank", 20).Assignment("Kdr", 2),
-                                new Save().Collection("Player").Assignment("Name", "Duplicate").Assignment("Score", 1000).Assignment("Rank", 100).Assignment("Kdr", 4),
-                                new Save().Collection("Player").Assignment("Name", "Duplicate").Assignment("Score", 1000).Assignment("Rank", 100).Assignment("Kdr", 4)
+                                new Save().Collection("Player").Set("Name", "Phogue").Set("Score", 100).Set("Rank", 10).Set("Kdr", 1),
+                                new Save().Collection("Player").Set("Name", "Zaeed").Set("Score", 15).Set("Rank", 20).Set("Kdr", 2),
+                                new Save().Collection("Player").Set("Name", "Duplicate").Set("Score", 1000).Set("Rank", 100).Set("Kdr", 4),
+                                new Save().Collection("Player").Set("Name", "Duplicate").Set("Score", 1000).Set("Rank", 100).Set("Kdr", 4)
                             }
                         }
                     }
@@ -126,7 +126,7 @@ namespace Procon.Core.Test.Database {
         public void TestSqLiteSetupAndFindQueryNamespaced() {
             String @namespace = StringExtensions.RandomString(10);
 
-            DatabaseController database = this.OpenSqLiteDriver(@namespace);
+            DatabaseController database = TestDatabaseController.OpenSqLiteDriver(@namespace);
 
             database.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
@@ -143,10 +143,10 @@ namespace Procon.Core.Test.Database {
                         Data = {
                             Queries = new List<IDatabaseObject>() {
                                 new Create().Collection("Player").Field("Name", new StringType()).Field("Score", new IntegerType()).Field("Rank", new IntegerType()).Field("Kdr", new FloatType()),
-                                new Save().Collection("Player").Assignment("Name", "Phogue").Assignment("Score", 100).Assignment("Rank", 10).Assignment("Kdr", 1),
-                                new Save().Collection("Player").Assignment("Name", "Zaeed").Assignment("Score", 15).Assignment("Rank", 20).Assignment("Kdr", 2),
-                                new Save().Collection("Player").Assignment("Name", "Duplicate").Assignment("Score", 1000).Assignment("Rank", 100).Assignment("Kdr", 4),
-                                new Save().Collection("Player").Assignment("Name", "Duplicate").Assignment("Score", 1000).Assignment("Rank", 100).Assignment("Kdr", 4)
+                                new Save().Collection("Player").Set("Name", "Phogue").Set("Score", 100).Set("Rank", 10).Set("Kdr", 1),
+                                new Save().Collection("Player").Set("Name", "Zaeed").Set("Score", 15).Set("Rank", 20).Set("Kdr", 2),
+                                new Save().Collection("Player").Set("Name", "Duplicate").Set("Score", 1000).Set("Rank", 100).Set("Kdr", 4),
+                                new Save().Collection("Player").Set("Name", "Duplicate").Set("Score", 1000).Set("Rank", 100).Set("Kdr", 4)
                             }
                         }
                     }
@@ -195,7 +195,7 @@ namespace Procon.Core.Test.Database {
             String databaseNamespace = StringExtensions.RandomString(10);
             String queryNamespace = StringExtensions.RandomString(10);
 
-            DatabaseController database = this.OpenSqLiteDriver(databaseNamespace);
+            DatabaseController database = TestDatabaseController.OpenSqLiteDriver(databaseNamespace);
 
             CommandResultArgs result = database.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
@@ -228,7 +228,7 @@ namespace Procon.Core.Test.Database {
         /// </summary>
         [Test]
         public void TestSqLiteMemoryDatabaseDisposed() {
-            DatabaseController database = this.OpenSqLiteDriver();
+            DatabaseController database = TestDatabaseController.OpenSqLiteDriver();
 
             Assert.AreEqual(1, database.OpenDrivers.Count);
 

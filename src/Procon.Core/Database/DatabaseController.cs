@@ -152,6 +152,7 @@ namespace Procon.Core.Database {
                             Port = this.Variables.Get<ushort>(Variable.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabasePort)),
                             Username = this.Variables.Get(Variable.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabaseUid), String.Empty),
                             Password = this.Variables.Get(Variable.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabasePassword), String.Empty),
+                            Database = this.Variables.Get(Variable.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabaseName), String.Empty),
                             Memory = this.Variables.Get(Variable.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabaseMemory), false)
                         };
 
@@ -166,6 +167,7 @@ namespace Procon.Core.Database {
                             Port = this.Variables.Get<ushort>(Variable.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabasePort)),
                             Username = this.Variables.Get(Variable.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabaseUid), String.Empty),
                             Password = this.Variables.Get(Variable.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabasePassword), String.Empty),
+                            Database = this.Variables.Get(Variable.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabaseName), String.Empty),
                             Memory = this.Variables.Get(Variable.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabaseMemory), false)
                         };
                     }
@@ -182,33 +184,48 @@ namespace Procon.Core.Database {
         }
 
         /// <summary>
-        /// Runs a query on a specific driver
+        /// Executes the list of queries, returning the results of the queries.
         /// </summary>
-        /// <param name="queries"></param>
-        /// <param name="driver"></param>
-        /// <returns></returns>
-        protected CommandResultArgs ExecuteQueryOnDriver(List<IDatabaseObject> queries, String driver = "") {
+        /// <param name="driver">The driver to execute the query on</param>
+        /// <param name="queries">The queries to execute</param>
+        /// <returns>The result of the commands containing the results of each query.</returns>
+        protected CommandResultArgs ExecuteQueriesOnDriver(IDriver driver, List<IDatabaseObject> queries) {
             CommandResultArgs result = null;
 
-            if (this.OpenDrivers.ContainsKey(driver) == true) {
-                result = new CommandResultArgs() {
-                    Success = true,
-                    Status = CommandResultType.Success,
-                    Then = {
-                        Queries = new List<IDatabaseObject>(queries)
-                    },
-                    Now = {
-                        Queries = new List<IDatabaseObject>()
-                    }
-                };
-
-                foreach (IDatabaseObject query in queries) {
-                    result.Now.Queries.AddRange(this.OpenDrivers[driver].Query(query));
+            result = new CommandResultArgs() {
+                Success = true,
+                Status = CommandResultType.Success,
+                Then = {
+                    Queries = new List<IDatabaseObject>(queries)
+                },
+                Now = {
+                    Queries = new List<IDatabaseObject>()
                 }
+            };
+
+            foreach (IDatabaseObject query in queries) {
+                // todo is this correct, or should it instead have a CollectionValue?
+                result.Now.Queries.AddRange(driver.Query(query));
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Runs a query on a specific driver by its name.
+        /// </summary>
+        /// <param name="databaseGroupName">The name of the database group to use</param>
+        /// <param name="queries">The queries to execute on the matching driver</param>
+        /// <returns>The result of the commands containing the results of each query.</returns>
+        protected CommandResultArgs ExecuteQueriesOnGroupName(String databaseGroupName, List<IDatabaseObject> queries) {
+            CommandResultArgs result = null;
+
+            if (this.OpenDrivers.ContainsKey(databaseGroupName) == true) {
+                result = this.ExecuteQueriesOnDriver(this.OpenDrivers[databaseGroupName], queries);
             }
             else {
                 result = new CommandResultArgs() {
-                    Message = String.Format(@"Database driver ""{0}"" is not supported.", driver),
+                    Message = String.Format(@"Database driver ""{0}"" is not supported.", databaseGroupName),
                     Status = CommandResultType.DoesNotExists,
                     Success = false
                 };
@@ -217,12 +234,22 @@ namespace Procon.Core.Database {
             return result;
         }
 
+        protected CommandResultArgs ExecuteQueriesOnAllDrivers(List<IDatabaseObject> queries) {
+            CommandResultArgs result = null;
+
+            foreach (var databaseGroup in this.OpenDrivers) {
+                result = this.ExecuteQueriesOnDriver(databaseGroup.Value, queries);
+            }
+
+            return result;
+        }
+
         protected CommandResultArgs Query(Command command, Dictionary<String, CommandParameter> parameters) {
-            return this.Security.DispatchPermissionsCheck(command, command.Name).Success == true ? this.ExecuteQueryOnDriver(parameters["query"].All<IDatabaseObject>()) : CommandResultArgs.InsufficientPermissions;
+            return this.Security.DispatchPermissionsCheck(command, command.Name).Success == true ? this.ExecuteQueriesOnAllDrivers(parameters["query"].All<IDatabaseObject>()) : CommandResultArgs.InsufficientPermissions;
         }
 
         protected CommandResultArgs QueryDriver(Command command, Dictionary<String, CommandParameter> parameters) {
-            return this.Security.DispatchPermissionsCheck(command, command.Name).Success == true ? this.ExecuteQueryOnDriver(parameters["query"].All<IDatabaseObject>(), parameters["driver"].First<String>()) : CommandResultArgs.InsufficientPermissions;
+            return this.Security.DispatchPermissionsCheck(command, command.Name).Success == true ? this.ExecuteQueriesOnGroupName(parameters["driver"].First<String>(), parameters["query"].All<IDatabaseObject>()) : CommandResultArgs.InsufficientPermissions;
         }
 
         public override void Dispose() {

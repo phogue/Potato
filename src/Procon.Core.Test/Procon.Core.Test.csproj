@@ -73,7 +73,12 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Database\Helpers\TestMigrationTrackerHelper.cs" />
+    <Compile Include="Database\Mocks\MockComplexModel.cs" />
+    <Compile Include="Database\Mocks\MockSimpleModel.cs" />
     <Compile Include="Database\TestDatabaseController.cs" />
+    <Compile Include="Database\TestDatabaseMigrationController.cs" />
+    <Compile Include="Database\TestDatabaseModel.cs" />
     <Compile Include="ExecutableCommands\TestCommandParameter.cs" />
     <Compile Include="Plugins\TestPluginsDisabled.cs" />
     <Compile Include="Plugins\TestPluginsEnabled.cs" />

@@ -78,6 +78,10 @@
         /// </summary>
         DatabasePassword,
         /// <summary>
+        /// (String) The name of the database to use once connected.
+        /// </summary>
+        DatabaseName,
+        /// <summary>
         /// (Bool) True if the database should exist in memory only
         /// </summary>
         DatabaseMemory,

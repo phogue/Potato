@@ -67,6 +67,7 @@
     <Compile Include="Command.cs" />
     <Compile Include="CommandAttribute.cs" />
     <Compile Include="CommandAttributeType.cs" />
+    <Compile Include="CommandBuilder.cs" />
     <Compile Include="CommandParameter.cs" />
     <Compile Include="CommandData.cs" />
     <Compile Include="CommandParameterType.cs" />
@@ -99,6 +100,15 @@
     <Compile Include="Connections\TextCommands\Parsers\Parser.cs" />
     <Compile Include="Connections\Plugins\IRemotePlugin.cs" />
     <Compile Include="Database\DatabaseController.cs" />
+    <Compile Include="Database\DatabaseModel.cs" />
+    <Compile Include="Database\DatabaseModelExtensions.cs" />
+    <Compile Include="Database\Migrations\IMigration.cs" />
+    <Compile Include="Database\Migrations\IMigrationSettings.cs" />
+    <Compile Include="Database\Migrations\Migration.cs" />
+    <Compile Include="Database\Migrations\MigrationController.cs" />
+    <Compile Include="Database\Migrations\MigrationModel.cs" />
+    <Compile Include="Database\Migrations\MigrationSettings.cs" />
+    <Compile Include="Database\Migrations\MigrationOrigin.cs" />
     <Compile Include="Events\EventsConsoleController.cs" />
     <Compile Include="Events\GenericEventArgs.cs" />
     <Compile Include="Events\GenericEventData.cs" />

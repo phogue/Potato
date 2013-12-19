@@ -70,7 +70,7 @@ namespace Procon.Database.Serialization.Test {
                         Name = "Kdr"
                     },
                     new NumericValue() {
-                        Float = 3.1F
+                        Double = 3.1F
                     }
                 })
             .Collection(new Collection() {
@@ -93,7 +93,7 @@ namespace Procon.Database.Serialization.Test {
                         Name = "Kdr"
                     },
                     new NumericValue() {
-                        Float = 3.1F
+                        Double = 3.1F
                     }
                 })
             .Collection(new Collection() {

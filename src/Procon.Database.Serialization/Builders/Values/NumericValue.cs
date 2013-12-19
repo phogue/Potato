@@ -15,14 +15,14 @@ namespace Procon.Database.Serialization.Builders.Values {
         /// <summary>
         /// The float value of this object
         /// </summary>
-        public float? Float { get; set; }
+        public double? Double { get; set; }
 
         /// <summary>
         /// Casts the text into a simple object
         /// </summary>
         /// <returns></returns>
         public override object ToObject() {
-            return this.Long ?? this.Float;
+            return this.Long ?? this.Double;
         }
     }
 }

@@ -191,8 +191,8 @@ namespace Procon.Database.Serialization.Serializers.Sql {
                 if (numeric.Long.HasValue == true) {
                     parsed = numeric.Long.Value.ToString(CultureInfo.InvariantCulture);
                 }
-                else if (numeric.Float.HasValue == true) {
-                    parsed = numeric.Float.Value.ToString(CultureInfo.InvariantCulture);
+                else if (numeric.Double.HasValue == true) {
+                    parsed = numeric.Double.Value.ToString(CultureInfo.InvariantCulture);
                 }
             }
             else if (@string != null) {

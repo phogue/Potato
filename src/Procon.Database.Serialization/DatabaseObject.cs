@@ -52,7 +52,12 @@ namespace Procon.Database.Serialization {
             }
             else if (data is float) {
                 value = new NumericValue() {
-                    Float = (float)data
+                    Double = Convert.ToDouble(data)
+                };
+            }
+            else if (data is double) {
+                value = new NumericValue() {
+                    Double = (double)data
                 };
             }
             else if (data is DateTime) {

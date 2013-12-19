@@ -124,6 +124,9 @@ namespace Procon.Database.Serialization.Serializers.Sql {
             else if (type is IntegerType) {
                 parsed.Add("INTEGER");
             }
+            else if (type is DateTimeType) {
+                parsed.Add("DATETIME");
+            }
 
             if (type.Any(attribute => attribute is Builders.Modifiers.Nullable) == false) {
                 parsed.Add("NOT NULL");

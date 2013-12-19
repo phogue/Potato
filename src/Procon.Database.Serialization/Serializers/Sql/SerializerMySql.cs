@@ -101,6 +101,9 @@ namespace Procon.Database.Serialization.Serializers.Sql {
                     parsed.Add("UNSIGNED");
                 }
             }
+            else if (type is DateTimeType) {
+                parsed.Add("DATETIME");
+            }
 
             parsed.Add(type.Any(attribute => attribute is Builders.Modifiers.Nullable) == true ? "NULL" : "NOT NULL");
 

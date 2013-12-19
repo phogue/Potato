@@ -539,5 +539,30 @@ namespace Procon.Database.Serialization.Test {
         public abstract void TestCreatePlayerWithFieldStringNameIfNotExists();
 
         #endregion
+
+        #region TestCreatePlayerWithFieldDateTimeStamp
+
+        protected IDatabaseObject TestCreatePlayerWithFieldDateTimeStampExplicit = new Create()
+            .Collection(new Collection() {
+                Name = "Player"
+            })
+            .Field(
+                new Field() {
+                    Name = "Stamp"
+                }
+                .Modifier(
+                    new DateTimeType()
+                    .Modifier(new Nullable())
+                )
+            );
+
+        protected IDatabaseObject TestCreatePlayerWithFieldDateTimeStampImplicit = new Create()
+            .Collection("Player")
+            .Field("Stamp", new DateTimeType());
+
+        public abstract void TestCreatePlayerWithFieldDateTimeStamp();
+
+        #endregion
+
     }
 }

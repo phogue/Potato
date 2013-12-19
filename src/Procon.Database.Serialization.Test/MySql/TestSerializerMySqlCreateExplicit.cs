@@ -108,5 +108,10 @@ namespace Procon.Database.Serialization.Test.MySql {
         public override void TestCreatePlayerWithFieldStringNameIfNotExists() {
             Assert.AreEqual(@"CREATE TABLE IF NOT EXISTS `Player` (`Name` VARCHAR(255))", new SerializerSqLite().Parse(this.TestCreatePlayerWithFieldStringNameIfNotExistsExplicit).Compile().Compiled.First());
         }
+
+        [Test]
+        public override void TestCreatePlayerWithFieldDateTimeStamp() {
+            Assert.AreEqual(@"CREATE TABLE `Player` (`Stamp` DATETIME NULL)", new SerializerMySql().Parse(this.TestCreatePlayerWithFieldDateTimeStampExplicit).Compile().Compiled.First());
+        }
     }
 }

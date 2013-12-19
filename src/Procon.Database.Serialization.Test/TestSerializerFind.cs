@@ -1,4 +1,3 @@
-using Procon.Database.Serialization.Builders;
 using Procon.Database.Serialization.Builders.Equalities;
 using Procon.Database.Serialization.Builders.Logicals;
 using Procon.Database.Serialization.Builders.Methods;
@@ -78,7 +77,7 @@ namespace Procon.Database.Serialization.Test {
             });
 
         protected IDatabaseObject TestSelectAllFromPlayerWhereKdrGreaterThanEqualTo31DImplicit = new Find()
-            .Condition("Kdr", new GreaterThanEquals(), 3.1F)
+            .Condition("Kdr", new GreaterThanEquals(), 3.1D)
             .Collection("Player");
 
         public abstract void TestSelectAllFromPlayerWhereKdrGreaterThanEqualTo31D();
@@ -101,7 +100,7 @@ namespace Procon.Database.Serialization.Test {
             });
 
         protected IDatabaseObject TestSelectAllFromPlayerWhereKdrLessThanEqualTo31DImplicit = new Find()
-            .Condition("Kdr", new LessThanEquals(), 3.1F)
+            .Condition("Kdr", new LessThanEquals(), 3.1D)
             .Collection("Player");
 
         public abstract void TestSelectAllFromPlayerWhereKdrLessThanEqualTo31D();

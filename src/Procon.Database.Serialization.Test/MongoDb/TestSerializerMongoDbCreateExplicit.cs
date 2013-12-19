@@ -112,5 +112,10 @@ namespace Procon.Database.Serialization.Test.MongoDb {
         public override void TestCreatePlayerWithFieldStringNameIfNotExists() {
             
         }
+
+        [Test, Ignore]
+        public override void TestCreatePlayerWithFieldDateTimeStamp() {
+            
+        }
     }
 }

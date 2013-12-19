@@ -18,6 +18,31 @@ namespace Procon.Database.Serialization.Serializers.Sql {
     public class SerializerMySql : SerializerSql {
 
         /// <summary>
+        /// Parses an index
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns></returns>
+        protected virtual String ParseIndex(Index index) {
+            String parsed = String.Empty;
+
+            // PRIMARY KEY (`Name`)
+            if (index.Any(attribute => attribute is Primary)) {
+                parsed = String.Format("PRIMARY KEY ({0})", String.Join(", ", this.ParseSortings(index)));
+            }
+
+            return parsed;
+        }
+
+        /// <summary>
+        /// Parses the list of indexes 
+        /// </summary>
+        /// <param name="query"></param>
+        /// <returns></returns>
+        protected virtual List<String> ParseIndices(IDatabaseObject query) {
+            return query.Where(statement => statement is Index).Union(new List<IDatabaseObject>() { query }.Where(owner => owner is Index)).Select(index => this.ParseIndex(index as Index)).Where(index => String.IsNullOrEmpty(index) == false).ToList();
+        }
+
+        /// <summary>
         /// Formats the database name.
         /// </summary>
         /// <param name="database"></param>
@@ -108,7 +133,7 @@ namespace Procon.Database.Serialization.Serializers.Sql {
             parsed.Add(type.Any(attribute => attribute is Builders.Modifiers.Nullable) == true ? "NULL" : "NOT NULL");
 
             if (type.Any(attribute => attribute is AutoIncrement) == true) {
-                parsed.Add("AUTO INCREMENT");
+                parsed.Add("AUTO_INCREMENT");
             }
 
             return String.Join(" ", parsed);
@@ -318,35 +343,36 @@ namespace Procon.Database.Serialization.Serializers.Sql {
                 }
             }
             else if (parsed.Root is Index) {
-                if (parsed.Collections.Any() == true) {
-                    serializedQuery.Collections.Add(String.Join(", ", parsed.Collections));
-                    compiled.Add(serializedQuery.Collections.FirstOrDefault());
-                }
-
                 Primary primary = parsed.Root.FirstOrDefault(attribute => attribute is Primary) as Primary;
                 Unique unique = parsed.Root.FirstOrDefault(attribute => attribute is Unique) as Unique;
 
-                if (primary != null) {
-                    compiled.Add("ADD PRIMARY KEY");
-                }
-                // UNIQUE INDEX `Score_UNIQUE` (`Score` ASC)
-                else if (unique != null) {
-                    compiled.Add("ADD UNIQUE INDEX");
+                if (primary == null) {
+                    if (parsed.Collections.Any() == true) {
+                        serializedQuery.Collections.Add(String.Join(", ", parsed.Collections));
+                        compiled.Add(serializedQuery.Collections.FirstOrDefault());
+                    }
 
-                    // todo move the name element to a modifier?
-                    compiled.Add(String.Format("`{0}`", ((Index)parsed.Root).Name));
+                    if (unique != null) {
+                        compiled.Add("ADD UNIQUE INDEX");
+
+                        // todo move the name element to a modifier?
+                        compiled.Add(String.Format("`{0}`", ((Index)parsed.Root).Name));
+                    }
+                    // INDEX `Name_INDEX` (`Name` ASC)
+                    else {
+                        compiled.Add("ADD INDEX");
+
+                        // todo move the name element to a modifier?
+                        compiled.Add(String.Format("`{0}`", ((Index)parsed.Root).Name));
+                    }
+
+                    if (parsed.Sortings.Any() == true) {
+                        serializedQuery.Sortings.Add(String.Join(", ", parsed.Sortings));
+                        compiled.Add(String.Format("({0})", serializedQuery.Sortings.FirstOrDefault()));
+                    }
                 }
-                // INDEX `Name_INDEX` (`Name` ASC)
                 else {
-                    compiled.Add("ADD INDEX");
-
-                    // todo move the name element to a modifier?
-                    compiled.Add(String.Format("`{0}`", ((Index)parsed.Root).Name));
-                }
-
-                if (parsed.Sortings.Any() == true) {
-                    serializedQuery.Sortings.Add(String.Join(", ", parsed.Sortings));
-                    compiled.Add(String.Format("({0})", serializedQuery.Sortings.FirstOrDefault()));
+                    serializedQuery = null;
                 }
             }
             else if (parsed.Root is Find) {
@@ -396,7 +422,17 @@ namespace Procon.Database.Serialization.Serializers.Sql {
 
                     compiled.Add(parsed.Collections.FirstOrDefault());
 
-                    compiled.Add(String.Format("({0})", String.Join(", ", parsed.Fields)));
+                    if (parsed.Indices.Any() == true) {
+                        List<String> fieldsIndicesCombination = new List<String>(parsed.Fields);
+                        fieldsIndicesCombination.AddRange(parsed.Indices);
+
+                        serializedQuery.Indices.Add(String.Join(", ", fieldsIndicesCombination.ToArray()));
+
+                        compiled.Add(String.Format("({0})", serializedQuery.Indices.FirstOrDefault()));
+                    }
+                    else {
+                        compiled.Add(String.Format("({0})", String.Join(", ", parsed.Fields.ToArray())));
+                    }
                 }
             }
             else if (parsed.Root is Save) {
@@ -457,7 +493,7 @@ namespace Procon.Database.Serialization.Serializers.Sql {
                 }
             }
 
-            serializedQuery.Compiled.Add(String.Join(" ", compiled));
+            if (serializedQuery != null) serializedQuery.Compiled.Add(String.Join(" ", compiled));
 
             return serializedQuery;
         }
@@ -474,6 +510,8 @@ namespace Procon.Database.Serialization.Serializers.Sql {
             parsed.Limit = this.ParseLimit(method);
 
             parsed.Databases = this.ParseDatabases(method);
+
+            parsed.Indices = this.ParseIndices(method);
 
             parsed.Fields = this.ParseFields(method);
 

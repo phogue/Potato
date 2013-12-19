@@ -133,7 +133,7 @@ namespace Procon.Database.Serialization.Serializers.Sql {
             }
 
             if (type.Any(attribute => attribute is AutoIncrement) == true) {
-                parsed.Add("AUTO INCREMENT");
+                parsed.Add("AUTO_INCREMENT");
             }
 
             return String.Join(" ", parsed);

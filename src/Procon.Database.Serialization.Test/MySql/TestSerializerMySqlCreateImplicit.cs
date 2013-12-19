@@ -37,7 +37,7 @@ namespace Procon.Database.Serialization.Test.MySql {
 
         [Test]
         public override void TestCreatePlayerWithFieldIntegerScoreUnsignedAutoIncrement() {
-            Assert.AreEqual(@"CREATE TABLE `Player` (`Score` INT UNSIGNED NULL AUTO INCREMENT)", new SerializerMySql().Parse(this.TestCreatePlayerWithFieldIntegerScoreUnsignedAutoIncrementImplicit).Compile().Compiled.First());
+            Assert.AreEqual(@"CREATE TABLE `Player` (`Score` INT UNSIGNED NULL AUTO_INCREMENT)", new SerializerMySql().Parse(this.TestCreatePlayerWithFieldIntegerScoreUnsignedAutoIncrementImplicit).Compile().Compiled.First());
         }
 
         [Test]
@@ -91,8 +91,7 @@ namespace Procon.Database.Serialization.Test.MySql {
             ISerializer serializer = new SerializerMySql();
             ICompiledQuery serialized = serializer.Parse(this.TestCreatePlayerWithFieldStringNameWithPrimaryIndexOnNameImplicit).Compile();
 
-            Assert.AreEqual(@"CREATE TABLE `Player` (`Name` VARCHAR(255) NULL)", serialized.Compiled.First());
-            Assert.AreEqual(@"ALTER TABLE `Player` ADD PRIMARY KEY (`Name`)", serialized.Children.First().Compiled.First());
+            Assert.AreEqual(@"CREATE TABLE `Player` (`Name` VARCHAR(255) NULL, PRIMARY KEY (`Name`))", serialized.Compiled.First());
         }
 
         [Test]

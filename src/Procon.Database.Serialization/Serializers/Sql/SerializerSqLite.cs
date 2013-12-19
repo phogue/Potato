@@ -353,14 +353,14 @@ namespace Procon.Database.Serialization.Serializers.Sql {
                 if (primary == null) {
                     // UNIQUE INDEX `Score_UNIQUE` (`Score` ASC)
                     if (unique != null) {
-                        compiled.Add("UNIQUE INDEX IF NOT EXISTS");
+                        compiled.Add("UNIQUE INDEX");
 
                         // todo move the name element to a modifier?
                         compiled.Add(String.Format("`{0}`", ((Index)parsed.Root).Name));
                     }
                     // INDEX `Name_INDEX` (`Name` ASC)
                     else {
-                        compiled.Add("INDEX IF NOT EXISTS");
+                        compiled.Add("INDEX");
 
                         // todo move the name element to a modifier?
                         compiled.Add(String.Format("`{0}`", ((Index)parsed.Root).Name));

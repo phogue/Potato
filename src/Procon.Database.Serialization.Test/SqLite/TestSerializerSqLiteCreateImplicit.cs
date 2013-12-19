@@ -45,7 +45,7 @@ namespace Procon.Database.Serialization.Test.SqLite {
             ICompiledQuery serialized = new SerializerSqLite().Parse(this.TestCreatePlayerWithFieldStringNameWithIndexOnNameImplicit).Compile();
 
             Assert.AreEqual(@"CREATE TABLE `Player` (`Name` VARCHAR(255))", serialized.Compiled.First());
-            Assert.AreEqual(@"CREATE INDEX IF NOT EXISTS `Name_INDEX` ON `Player` (`Name`)", serialized.Children.First().Compiled.First());
+            Assert.AreEqual(@"CREATE INDEX `Name_INDEX` ON `Player` (`Name`)", serialized.Children.First().Compiled.First());
         }
 
         [Test]
@@ -53,7 +53,7 @@ namespace Procon.Database.Serialization.Test.SqLite {
             ICompiledQuery serialized = new SerializerSqLite().Parse(this.TestCreatePlayerWithFieldStringNameWithIndexOnNameDescendingImplicit).Compile();
 
             Assert.AreEqual(@"CREATE TABLE `Player` (`Name` VARCHAR(255))", serialized.Compiled.First());
-            Assert.AreEqual(@"CREATE INDEX IF NOT EXISTS `Name_INDEX` ON `Player` (`Name` DESC)", serialized.Children.First().Compiled.First());
+            Assert.AreEqual(@"CREATE INDEX `Name_INDEX` ON `Player` (`Name` DESC)", serialized.Children.First().Compiled.First());
         }
 
         [Test]
@@ -61,8 +61,8 @@ namespace Procon.Database.Serialization.Test.SqLite {
             ICompiledQuery serialized = new SerializerSqLite().Parse(this.TestCreatePlayerWithFieldStringNameWithIndexOnNameScoreImplicit).Compile();
 
             Assert.AreEqual(@"CREATE TABLE `Player` (`Name` VARCHAR(255))", serialized.Compiled.First());
-            Assert.AreEqual(@"CREATE INDEX IF NOT EXISTS `Name_INDEX` ON `Player` (`Name`)", serialized.Children.First().Compiled.First());
-            Assert.AreEqual(@"CREATE INDEX IF NOT EXISTS `Score_INDEX` ON `Player` (`Score`)", serialized.Children.Last().Compiled.First());
+            Assert.AreEqual(@"CREATE INDEX `Name_INDEX` ON `Player` (`Name`)", serialized.Children.First().Compiled.First());
+            Assert.AreEqual(@"CREATE INDEX `Score_INDEX` ON `Player` (`Score`)", serialized.Children.Last().Compiled.First());
         }
 
         [Test]
@@ -70,7 +70,7 @@ namespace Procon.Database.Serialization.Test.SqLite {
             ICompiledQuery serialized = new SerializerSqLite().Parse(this.TestCreatePlayerWithFieldStringNameWithIndexOnNameScoreCompoundImplicit).Compile();
 
             Assert.AreEqual(@"CREATE TABLE `Player` (`Name` VARCHAR(255))", serialized.Compiled.First());
-            Assert.AreEqual(@"CREATE INDEX IF NOT EXISTS `Name_Score_INDEX` ON `Player` (`Name`, `Score`)", serialized.Children.First().Compiled.First());
+            Assert.AreEqual(@"CREATE INDEX `Name_Score_INDEX` ON `Player` (`Name`, `Score`)", serialized.Children.First().Compiled.First());
         }
 
         [Test]
@@ -78,7 +78,7 @@ namespace Procon.Database.Serialization.Test.SqLite {
             ICompiledQuery serialized = new SerializerSqLite().Parse(this.TestCreatePlayerWithFieldStringNameWithIndexOnNameScoreDescendingCompoundImplicit).Compile();
 
             Assert.AreEqual(@"CREATE TABLE `Player` (`Name` VARCHAR(255))", serialized.Compiled.First());
-            Assert.AreEqual(@"CREATE INDEX IF NOT EXISTS `Name_Score_INDEX` ON `Player` (`Name`, `Score` DESC)", serialized.Children.First().Compiled.First());
+            Assert.AreEqual(@"CREATE INDEX `Name_Score_INDEX` ON `Player` (`Name`, `Score` DESC)", serialized.Children.First().Compiled.First());
         }
 
         [Test]
@@ -91,7 +91,7 @@ namespace Procon.Database.Serialization.Test.SqLite {
             ICompiledQuery serialized = new SerializerSqLite().Parse(this.TestCreatePlayerWithFieldStringNameWithUniqueIndexOnNameImplicit).Compile();
 
             Assert.AreEqual(@"CREATE TABLE `Player` (`Name` VARCHAR(255))", serialized.Compiled.First());
-            Assert.AreEqual(@"CREATE UNIQUE INDEX IF NOT EXISTS `Name_INDEX` ON `Player` (`Name`)", serialized.Children.First().Compiled.First());
+            Assert.AreEqual(@"CREATE UNIQUE INDEX `Name_INDEX` ON `Player` (`Name`)", serialized.Children.First().Compiled.First());
         }
 
         [Test]

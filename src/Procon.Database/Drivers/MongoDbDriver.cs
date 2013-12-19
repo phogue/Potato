@@ -5,6 +5,7 @@ using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
 using Procon.Database.Serialization;
+using Procon.Database.Serialization.Builders;
 using Procon.Database.Serialization.Builders.Methods;
 using Procon.Database.Serialization.Builders.Modifiers;
 using Procon.Database.Serialization.Builders.Values;
@@ -242,28 +243,37 @@ namespace Procon.Database.Drivers {
             List<IDatabaseObject> results = new List<IDatabaseObject>();
             CollectionValue result = new CollectionValue();
 
-            if (query.Root is Find) {
-                this.QueryFind(query, result);
+            try {
+                if (query.Root is Find) {
+                    this.QueryFind(query, result);
+                }
+                else if (query.Root is Modify) {
+                    this.QueryModify(query, result);
+                }
+                else if (query.Root is Remove) {
+                    this.QueryRemove(query, result);
+                }
+                else if (query.Root is Drop) {
+                    this.QueryDrop(query, result);
+                }
+                // Essentially ignore the create command and process the index children instead.
+                //else if (query.Root is Create) {
+                //    this.QueryCreate(query, results);
+                //}
+                else if (query.Root is Merge) {
+                    this.QueryMerge(query, result);
+                }
+
+                results.Add(result);
             }
-            else if (query.Root is Modify) {
-                this.QueryModify(query, result);
-            }
-            else if (query.Root is Remove) {
-                this.QueryRemove(query, result);
-            }
-            else if (query.Root is Drop) {
-                this.QueryDrop(query, result);
-            }
-            // Essentially ignore the create command and process the index children instead.
-            //else if (query.Root is Create) {
-            //    this.QueryCreate(query, results);
-            //}
-            else if (query.Root is Merge) {
-                this.QueryMerge(query, result);
+            catch (Exception exception) {
+                results.Add(new Error() {
+                    new StringValue() {
+                        Data = exception.Message
+                    }
+                });
             }
 
-            results.Add(result);
-            
             foreach (ICompiledQuery child in query.Children) {
                 results.AddRange(this.Query(child));    
             }

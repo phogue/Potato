@@ -5,6 +5,7 @@ using System.Data.Common;
 using System.Linq;
 using MySql.Data.MySqlClient;
 using Procon.Database.Serialization;
+using Procon.Database.Serialization.Builders;
 using Procon.Database.Serialization.Builders.Methods;
 using Procon.Database.Serialization.Builders.Modifiers;
 using Procon.Database.Serialization.Builders.Values;
@@ -118,13 +119,11 @@ namespace Procon.Database.Drivers {
                 using (IDbCommand command = this.Connection.CreateCommand()) {
                     command.CommandText = query.Compiled.FirstOrDefault();
 
-                    result.Add(
-                        new Affected() {
-                            new NumericValue() {
-                                Long = command.ExecuteNonQuery()
-                            }
+                    result.Add(new Affected() {
+                        new NumericValue() {
+                            Long = command.ExecuteNonQuery()
                         }
-                    );
+                    });
                 }
             }
 
@@ -134,9 +133,18 @@ namespace Procon.Database.Drivers {
         protected override List<IDatabaseObject> Query(ICompiledQuery query) {
             CollectionValue result = new CollectionValue();
 
-            List<IDatabaseObject> results = new List<IDatabaseObject>() {
-                query.Root is Find ? this.Read(query, result) : this.Execute(query, result)
-            };
+            List<IDatabaseObject> results = new List<IDatabaseObject>();
+
+            try {
+                results.AddRange(query.Root is Find ? this.Read(query, result) : this.Execute(query, result));
+            }
+            catch (Exception exception) {
+                results.Add(new Error() {
+                    new StringValue() {
+                        Data = exception.Message
+                    }
+                });
+            }
 
             // Execute any index calls.
             foreach (ICompiledQuery child in query.Children.Where(child => !(child.Root is Merge))) {

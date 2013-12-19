@@ -93,5 +93,10 @@ namespace Procon.Database.Serialization.Test.SqLite {
             Assert.AreEqual(@"CREATE TABLE `Player` (`Name` VARCHAR(255))", serialized.Compiled.First());
             Assert.AreEqual(@"CREATE UNIQUE INDEX IF NOT EXISTS `Name_INDEX` ON `Player` (`Name`)", serialized.Children.First().Compiled.First());
         }
+
+        [Test]
+        public override void TestCreatePlayerWithFieldStringNameIfNotExists() {
+            Assert.AreEqual(@"CREATE TABLE IF NOT EXISTS `Player` (`Name` VARCHAR(255))", new SerializerSqLite().Parse(this.TestCreatePlayerWithFieldStringNameIfNotExistsExplicit).Compile().Compiled.First());
+        }
     }
 }

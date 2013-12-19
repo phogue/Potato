@@ -103,5 +103,10 @@ namespace Procon.Database.Serialization.Test.MySql {
             Assert.AreEqual(@"CREATE TABLE `Player` (`Name` VARCHAR(255) NULL)", serialized.Compiled.First());
             Assert.AreEqual(@"ALTER TABLE `Player` ADD UNIQUE INDEX `Name_INDEX` (`Name`)", serialized.Children.First().Compiled.First());
         }
+
+        [Test]
+        public override void TestCreatePlayerWithFieldStringNameIfNotExists() {
+            Assert.AreEqual(@"CREATE TABLE IF NOT EXISTS `Player` (`Name` VARCHAR(255))", new SerializerSqLite().Parse(this.TestCreatePlayerWithFieldStringNameIfNotExistsImplicit).Compile().Compiled.First());
+        }
     }
 }

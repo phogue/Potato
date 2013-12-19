@@ -22,13 +22,13 @@ namespace Procon.Database.Serialization.Test.MySql {
         }
 
         [Test]
-        public override void TestSelectAllFromPlayerWhereKdrGreaterThanEqualTo31F() {
-            Assert.AreEqual(@"SELECT * FROM `Player` WHERE `Kdr` >= 3.1", new SerializerMySql().Parse(this.TestSelectAllFromPlayerWhereKdrGreaterThanEqualTo31FExplicit).Compile().Compiled.First());
+        public override void TestSelectAllFromPlayerWhereKdrGreaterThanEqualTo31D() {
+            Assert.AreEqual(@"SELECT * FROM `Player` WHERE `Kdr` >= 3.1", new SerializerMySql().Parse(this.TestSelectAllFromPlayerWhereKdrGreaterThanEqualTo31DExplicit).Compile().Compiled.First());
         }
 
         [Test]
-        public override void TestSelectAllFromPlayerWhereKdrLessThanEqualTo31F() {
-            Assert.AreEqual(@"SELECT * FROM `Player` WHERE `Kdr` <= 3.1", new SerializerMySql().Parse(this.TestSelectAllFromPlayerWhereKdrLessThanEqualTo31FExplicit).Compile().Compiled.First());
+        public override void TestSelectAllFromPlayerWhereKdrLessThanEqualTo31D() {
+            Assert.AreEqual(@"SELECT * FROM `Player` WHERE `Kdr` <= 3.1", new SerializerMySql().Parse(this.TestSelectAllFromPlayerWhereKdrLessThanEqualTo31DExplicit).Compile().Compiled.First());
         }
 
         [Test]

@@ -513,5 +513,31 @@ namespace Procon.Database.Serialization.Test {
         public abstract void TestCreatePlayerWithFieldStringNameWithUniqueIndexOnName();
 
         #endregion
+
+        #region TestCreatePlayerWithFieldStringNameIfNotExists
+
+        protected IDatabaseObject TestCreatePlayerWithFieldStringNameIfNotExistsExplicit = new Create()
+            .Collection(new Collection() {
+                Name = "Player"
+            })
+            .Field(
+                new Field() {
+                    Name = "Name"
+                }
+                .Modifier(
+                    new StringType()
+                    .Modifier(new Nullable())
+                )
+            )
+            .Modifier(new IfNotExists());
+
+        protected IDatabaseObject TestCreatePlayerWithFieldStringNameIfNotExistsImplicit = new Create()
+            .Collection("Player")
+            .Modifier(new IfNotExists())
+            .Field("Name", new StringType());
+
+        public abstract void TestCreatePlayerWithFieldStringNameIfNotExists();
+
+        #endregion
     }
 }

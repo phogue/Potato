@@ -62,49 +62,49 @@ namespace Procon.Database.Serialization.Test {
 
         #endregion
 
-        #region TestSelectAllFromPlayerWhereKdrGreaterThanEqualTo31F
+        #region TestSelectAllFromPlayerWhereKdrGreaterThanEqualTo31D
 
-        protected IDatabaseObject TestSelectAllFromPlayerWhereKdrGreaterThanEqualTo31FExplicit = new Find()
+        protected IDatabaseObject TestSelectAllFromPlayerWhereKdrGreaterThanEqualTo31DExplicit = new Find()
             .Condition(new GreaterThanEquals() {
                     new Field() {
                         Name = "Kdr"
                     },
                     new NumericValue() {
-                        Double = 3.1F
+                        Double = 3.1D
                     }
                 })
             .Collection(new Collection() {
                 Name = "Player"
             });
 
-        protected IDatabaseObject TestSelectAllFromPlayerWhereKdrGreaterThanEqualTo31FImplicit = new Find()
+        protected IDatabaseObject TestSelectAllFromPlayerWhereKdrGreaterThanEqualTo31DImplicit = new Find()
             .Condition("Kdr", new GreaterThanEquals(), 3.1F)
             .Collection("Player");
 
-        public abstract void TestSelectAllFromPlayerWhereKdrGreaterThanEqualTo31F();
+        public abstract void TestSelectAllFromPlayerWhereKdrGreaterThanEqualTo31D();
 
         #endregion
 
-        #region TestSelectAllFromPlayerWhereKdrLessThanEqualTo31F
+        #region TestSelectAllFromPlayerWhereKdrLessThanEqualTo31D
 
-        protected IDatabaseObject TestSelectAllFromPlayerWhereKdrLessThanEqualTo31FExplicit = new Find()
+        protected IDatabaseObject TestSelectAllFromPlayerWhereKdrLessThanEqualTo31DExplicit = new Find()
             .Condition(new LessThanEquals() {
                     new Field() {
                         Name = "Kdr"
                     },
                     new NumericValue() {
-                        Double = 3.1F
+                        Double = 3.1D
                     }
                 })
             .Collection(new Collection() {
                 Name = "Player"
             });
 
-        protected IDatabaseObject TestSelectAllFromPlayerWhereKdrLessThanEqualTo31FImplicit = new Find()
+        protected IDatabaseObject TestSelectAllFromPlayerWhereKdrLessThanEqualTo31DImplicit = new Find()
             .Condition("Kdr", new LessThanEquals(), 3.1F)
             .Collection("Player");
 
-        public abstract void TestSelectAllFromPlayerWhereKdrLessThanEqualTo31F();
+        public abstract void TestSelectAllFromPlayerWhereKdrLessThanEqualTo31D();
 
         #endregion
 

@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Builders\FieldModifier.cs" />
+    <Compile Include="Builders\Modifiers\IfNotExists.cs" />
     <Compile Include="Builders\Modifiers\Skip.cs" />
     <Compile Include="Builders\Modifiers\Explicit.cs" />
     <Compile Include="Builders\Modifiers\Implicit.cs" />

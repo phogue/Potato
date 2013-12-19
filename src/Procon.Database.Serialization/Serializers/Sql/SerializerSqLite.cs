@@ -423,6 +423,11 @@ namespace Procon.Database.Serialization.Serializers.Sql {
                 }
                 else if (parsed.Collections.Any() == true) {
                     compiled.Add("TABLE");
+
+                    if (parsed.Root.Any(modifier => modifier is IfNotExists) == true) {
+                        compiled.Add("IF NOT EXISTS");
+                    }
+
                     compiled.Add(parsed.Collections.FirstOrDefault());
 
                     if (parsed.Indices.Any() == true) {

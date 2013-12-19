@@ -107,5 +107,10 @@ namespace Procon.Database.Serialization.Test.MongoDb {
             Assert.AreEqual(@"create", serialized.Methods.First());
             Assert.AreEqual(@"[{""Name"":1},{""unique"":true}]", serialized.Children.First().Indices.First());
         }
+
+        [Test, Ignore]
+        public override void TestCreatePlayerWithFieldStringNameIfNotExists() {
+
+        }
     }
 }

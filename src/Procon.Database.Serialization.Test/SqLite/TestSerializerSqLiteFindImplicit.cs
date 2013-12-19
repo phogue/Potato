@@ -22,13 +22,13 @@ namespace Procon.Database.Serialization.Test.SqLite {
         }
 
         [Test]
-        public override void TestSelectAllFromPlayerWhereKdrGreaterThanEqualTo31F() {
-            Assert.AreEqual(@"SELECT * FROM `Player` WHERE `Kdr` >= 3.1", new SerializerSqLite().Parse(this.TestSelectAllFromPlayerWhereKdrGreaterThanEqualTo31FImplicit).Compile().Compiled.First());
+        public override void TestSelectAllFromPlayerWhereKdrGreaterThanEqualTo31D() {
+            Assert.AreEqual(@"SELECT * FROM `Player` WHERE `Kdr` >= 3.1", new SerializerSqLite().Parse(this.TestSelectAllFromPlayerWhereKdrGreaterThanEqualTo31DImplicit).Compile().Compiled.First());
         }
 
         [Test]
-        public override void TestSelectAllFromPlayerWhereKdrLessThanEqualTo31F() {
-            Assert.AreEqual(@"SELECT * FROM `Player` WHERE `Kdr` <= 3.1", new SerializerSqLite().Parse(this.TestSelectAllFromPlayerWhereKdrLessThanEqualTo31FImplicit).Compile().Compiled.First());
+        public override void TestSelectAllFromPlayerWhereKdrLessThanEqualTo31D() {
+            Assert.AreEqual(@"SELECT * FROM `Player` WHERE `Kdr` <= 3.1", new SerializerSqLite().Parse(this.TestSelectAllFromPlayerWhereKdrLessThanEqualTo31DImplicit).Compile().Compiled.First());
         }
 
         [Test]

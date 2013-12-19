@@ -86,7 +86,7 @@ namespace Procon.Database.Serialization.Serializers.Sql {
                 parsed.Add("DROP");
             }
             else if (method is Index) {
-                parsed.Add("ALTER TABLE");
+                parsed.Add("ALTER");
             }
 
             return parsed;
@@ -347,6 +347,8 @@ namespace Procon.Database.Serialization.Serializers.Sql {
                 Unique unique = parsed.Root.FirstOrDefault(attribute => attribute is Unique) as Unique;
 
                 if (primary == null) {
+                    compiled.Add("TABLE");
+
                     if (parsed.Collections.Any() == true) {
                         serializedQuery.Collections.Add(String.Join(", ", parsed.Collections));
                         compiled.Add(serializedQuery.Collections.FirstOrDefault());
@@ -355,20 +357,12 @@ namespace Procon.Database.Serialization.Serializers.Sql {
                     if (unique != null) {
                         compiled.Add("ADD UNIQUE INDEX");
 
-                        if (parsed.Root.Any(attribute => attribute is IfNotExists)) {
-                            compiled.Add("IF NOT EXISTS");
-                        }
-
                         // todo move the name element to a modifier?
                         compiled.Add(String.Format("`{0}`", ((Index)parsed.Root).Name));
                     }
                     // INDEX `Name_INDEX` (`Name` ASC)
                     else {
                         compiled.Add("ADD INDEX");
-
-                        if (parsed.Root.Any(attribute => attribute is IfNotExists)) {
-                            compiled.Add("IF NOT EXISTS");
-                        }
 
                         // todo move the name element to a modifier?
                         compiled.Add(String.Format("`{0}`", ((Index)parsed.Root).Name));

@@ -119,7 +119,7 @@ namespace Procon.Database.Serialization.Test.MySql {
             ICompiledQuery serialized = serializer.Parse(this.TestCreatePlayerWithFieldStringNameWithIndexIfNotExistsOnNameExplicit).Compile();
 
             Assert.AreEqual(@"CREATE TABLE `Player` (`Name` VARCHAR(255) NULL)", serialized.Compiled.First());
-            Assert.AreEqual(@"ALTER TABLE `Player` ADD INDEX IF NOT EXISTS `Name_INDEX` (`Name`)", serialized.Children.First().Compiled.First());
+            Assert.AreEqual(@"ALTER TABLE `Player` ADD INDEX `Name_INDEX` (`Name`)", serialized.Children.First().Compiled.First());
         }
     }
 }

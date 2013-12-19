@@ -318,7 +318,7 @@ namespace Procon.Database.Serialization.Serializers.Sql {
 
         public override ICompiledQuery Compile(IParsedQuery parsed) {
             CompiledQuery serializedQuery = new CompiledQuery() {
-                Children = parsed.Children.Select(this.Compile).ToList(),
+                Children = parsed.Children.Select(this.Compile).Where(child => child != null).ToList(),
                 Root = parsed.Root,
                 Methods = parsed.Methods,
                 Skip = parsed.Skip,

@@ -26,6 +26,19 @@ namespace Procon.Database.Serialization.Builders.Values {
             return array;
         }
 
+        /// <summary>
+        /// Converts a JObject to a series of assignment objects, set to this document.
+        /// </summary>
+        /// <param name="data">The data to convert</param>
+        /// <returns>this</returns>
+        public IDatabaseObject FromJObject(JArray data) {
+            foreach (var item in data) {
+                this.Add(new DocumentValue().FromJObject(item as JObject));
+            }
+
+            return this;
+        }
+
         public override object ToObject() {
             return this.Where(statement => statement is Value).Cast<Value>().Select(statement => statement.ToObject()).ToList();
         }

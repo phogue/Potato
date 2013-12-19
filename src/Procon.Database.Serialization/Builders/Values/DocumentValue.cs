@@ -43,6 +43,39 @@ namespace Procon.Database.Serialization.Builders.Values {
             return data;
         }
 
+        /// <summary>
+        /// Converts a JObject to a series of assignment objects, set to this document.
+        /// </summary>
+        /// <param name="data">The data to convert</param>
+        /// <returns>this</returns>
+        public IDatabaseObject FromJObject(JObject data) {
+            foreach (var property in data) {
+                var value = property.Value as JValue;
+                var obj = property.Value as JObject;
+                var array = property.Value as JArray;
+
+                if (value != null) {
+                    this.Set(property.Key, value.Value);
+                }
+                else if (obj != null) {
+                    DocumentValue document = new DocumentValue();
+
+                    document.FromJObject(obj);
+
+                    this.Set(property.Key, document.ToObject());
+                }
+                else if (array != null) {
+                    CollectionValue collection = new CollectionValue();
+
+                    collection.FromJObject(array);
+
+                    this.Set(property.Key, collection.ToObject());
+                }
+            }
+
+            return this;
+        }
+
         public override object ToObject() {
             Dictionary<String, Object> data = new Dictionary<string, Object>();
 

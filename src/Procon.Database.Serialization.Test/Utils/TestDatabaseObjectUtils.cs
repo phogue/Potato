@@ -49,7 +49,7 @@ namespace Procon.Database.Serialization.Test.Utils {
                     )
                 );
 
-            IEnumerable<StringValue> descendants = query.DescendantsAndSelf<StringValue>();
+            List<StringValue> descendants = query.DescendantsAndSelf<StringValue>().ToList();
 
             Assert.AreEqual(4, descendants.Count());
             
@@ -67,7 +67,7 @@ namespace Procon.Database.Serialization.Test.Utils {
                 Data = "0"
             };
 
-            IEnumerable<StringValue> descendants = value.DescendantsAndSelf<StringValue>();
+            List<StringValue> descendants = value.DescendantsAndSelf<StringValue>().ToList();
 
             Assert.AreEqual(1, descendants.Count());
             Assert.AreEqual(value, descendants.First());

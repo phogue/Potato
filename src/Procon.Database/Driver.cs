@@ -6,7 +6,7 @@ namespace Procon.Database {
     /// <summary>
     /// Base driver for a database connection
     /// </summary>
-    public abstract class Driver : IDriver, ICloneable {
+    public abstract class Driver : IDriver {
 
         /// <summary>
         /// The name of this driver.

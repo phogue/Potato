@@ -101,7 +101,6 @@
     <Compile Include="Connections\Plugins\IRemotePlugin.cs" />
     <Compile Include="Database\DatabaseController.cs" />
     <Compile Include="Database\DatabaseModel.cs" />
-    <Compile Include="Database\DatabaseModelExtensions.cs" />
     <Compile Include="Database\Migrations\IMigration.cs" />
     <Compile Include="Database\Migrations\IMigrationSettings.cs" />
     <Compile Include="Database\Migrations\Migration.cs" />

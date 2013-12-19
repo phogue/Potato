@@ -37,7 +37,10 @@ namespace Procon.Database.Serialization.Test.SqLite {
 
         [Test]
         public override void TestCreatePlayerWithFieldIntegerScoreUnsignedAutoIncrement() {
-            Assert.AreEqual(@"CREATE TABLE `Player` (`Score` INTEGER AUTO_INCREMENT)", new SerializerSqLite().Parse(this.TestCreatePlayerWithFieldIntegerScoreUnsignedAutoIncrementExplicit).Compile().Compiled.First());
+            ICompiledQuery serialized = new SerializerSqLite().Parse(this.TestCreatePlayerWithFieldIntegerScoreUnsignedAutoIncrementExplicit).Compile();
+
+            Assert.AreEqual(@"CREATE TABLE `Player` (`Score` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL)", serialized.Compiled.First());
+            Assert.IsFalse(serialized.Children.Any());
         }
 
         [Test]

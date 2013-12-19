@@ -10,6 +10,7 @@ using Procon.Database.Serialization.Builders.Methods;
 using Procon.Database.Serialization.Builders.Modifiers;
 using Procon.Database.Serialization.Builders.Statements;
 using Procon.Database.Serialization.Builders.Values;
+using Procon.Database.Serialization.Utils;
 
 namespace Procon.Database.Serialization.Serializers.Sql {
     /// <summary>
@@ -128,12 +129,12 @@ namespace Procon.Database.Serialization.Serializers.Sql {
                 parsed.Add("DATETIME");
             }
 
-            if (type.Any(attribute => attribute is Builders.Modifiers.Nullable) == false) {
-                parsed.Add("NOT NULL");
-            }
-
+            // Enforce NOT NULL and inline primary key when AutoIncrement is used.
             if (type.Any(attribute => attribute is AutoIncrement) == true) {
-                parsed.Add("AUTO_INCREMENT");
+                parsed.Add("PRIMARY KEY AUTOINCREMENT NOT NULL");
+            }
+            else if (type.Any(attribute => attribute is Builders.Modifiers.Nullable) == false) {
+                parsed.Add("NOT NULL");
             }
 
             return String.Join(" ", parsed);
@@ -441,7 +442,8 @@ namespace Procon.Database.Serialization.Serializers.Sql {
 
                     compiled.Add(parsed.Collections.FirstOrDefault());
 
-                    if (parsed.Indices.Any() == true) {
+                    // parsed.Indices will only hae primary keys generated. Autoincrement primary keys mut be inline.
+                    if (parsed.Indices.Any() == true && parsed.Root.DescendantsAndSelf<AutoIncrement>().Any() == false) {
                         List<String> fieldsIndicesCombination = new List<String>(parsed.Fields);
                         fieldsIndicesCombination.AddRange(parsed.Indices);
 

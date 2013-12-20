@@ -1,6 +1,4 @@
-﻿using Procon.Database.Serialization.Builders;
-using Procon.Database.Serialization.Builders.Equalities;
-using Procon.Database.Serialization.Builders.Methods;
+﻿using Procon.Database.Serialization.Builders.Equalities;
 using Procon.Database.Serialization.Builders.Methods.Data;
 using Procon.Database.Serialization.Builders.Statements;
 using Procon.Database.Serialization.Builders.Values;

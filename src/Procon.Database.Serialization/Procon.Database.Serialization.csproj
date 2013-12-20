@@ -44,6 +44,7 @@
     <Compile Include="Builders\Error.cs" />
     <Compile Include="Builders\FieldModifier.cs" />
     <Compile Include="Builders\FieldTypes\DateTimeType.cs" />
+    <Compile Include="Builders\Methods\Schema\Alter.cs" />
     <Compile Include="Builders\Modifiers\IfNotExists.cs" />
     <Compile Include="Builders\Modifiers\Skip.cs" />
     <Compile Include="Builders\Modifiers\Explicit.cs" />

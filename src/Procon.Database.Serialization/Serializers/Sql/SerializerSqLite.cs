@@ -6,7 +6,6 @@ using Procon.Database.Serialization.Builders;
 using Procon.Database.Serialization.Builders.Equalities;
 using Procon.Database.Serialization.Builders.FieldTypes;
 using Procon.Database.Serialization.Builders.Logicals;
-using Procon.Database.Serialization.Builders.Methods;
 using Procon.Database.Serialization.Builders.Methods.Data;
 using Procon.Database.Serialization.Builders.Methods.Schema;
 using Procon.Database.Serialization.Builders.Modifiers;
@@ -80,7 +79,15 @@ namespace Procon.Database.Serialization.Serializers.Sql {
                 parsed.Add("REPLACE");
             }
             else if (method is Create) {
-                parsed.Add("CREATE");
+                if (method.Any(statement => statement is Builders.Database) == true) {
+                    parsed.Add("CREATE");
+                }
+                else if (method.Any(statement => statement is Collection) == true) {
+                    parsed.Add("CREATE");
+                }
+                else if (method.Any(statement => statement is Field) == true) {
+                    parsed.Add("ADD");
+                }
             }
             else if (method is Modify) {
                 parsed.Add("UPDATE");
@@ -93,6 +100,9 @@ namespace Procon.Database.Serialization.Serializers.Sql {
             }
             else if (method is Index) {
                 parsed.Add("CREATE");
+            }
+            else if (method is Alter) {
+                parsed.Add("ALTER");
             }
 
             return parsed;
@@ -394,6 +404,16 @@ namespace Procon.Database.Serialization.Serializers.Sql {
                     serializedQuery = null;
                 }
             }
+            else if (parsed.Root is Alter) {
+                if (parsed.Collections.Any() == true) {
+                    compiled.Add("TABLE");
+
+                    serializedQuery.Collections.Add(String.Join(", ", parsed.Collections));
+                    compiled.Add(serializedQuery.Collections.FirstOrDefault());
+                }
+
+                compiled.Add(String.Join(", ", serializedQuery.Children.Where(child => child.Root is Create).SelectMany(child => child.Compiled)));
+            }
             else if (parsed.Root is Find) {
                 serializedQuery.Fields = new List<String>(parsed.Fields);
                 compiled.Add(parsed.Fields.Any() == true ? String.Join(", ", parsed.Fields) : "*");
@@ -456,6 +476,11 @@ namespace Procon.Database.Serialization.Serializers.Sql {
                     else {
                         compiled.Add(String.Format("({0})", String.Join(", ", parsed.Fields.ToArray())));
                     }
+                }
+                else if (parsed.Fields.Any() == true) {
+                    compiled.Add("COLUMN");
+
+                    compiled.Add(String.Join(", ", parsed.Fields.ToArray()));
                 }
             }
             else if (parsed.Root is Save) {
@@ -527,7 +552,7 @@ namespace Procon.Database.Serialization.Serializers.Sql {
                     compiled.Add(serializedQuery.Collections.FirstOrDefault());
                 }
             }
-            
+
             if (serializedQuery != null) serializedQuery.Compiled.Add(String.Join(" ", compiled));
 
             return serializedQuery;

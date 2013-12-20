@@ -48,6 +48,10 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MySql\TestSerializerMySqlAlterExplicit.cs" />
+    <Compile Include="MySql\TestSerializerMySqlAlterImplicit.cs" />
+    <Compile Include="SqLite\TestSerializerSqLiteAlterImplicit.cs" />
+    <Compile Include="SqLite\TestSerializerSqLiteAlterExplicit.cs" />
     <Compile Include="SqLite\TestSerializerSqLiteCreateExplicit.cs" />
     <Compile Include="SqLite\TestSerializerSqLiteCreateImplicit.cs" />
     <Compile Include="SqLite\TestSerializerSqLiteDropExplicit.cs" />
@@ -76,6 +80,7 @@
     <Compile Include="MongoDb\TestSerializerMongoDbMergeExplicit.cs" />
     <Compile Include="MySql\TestSerializerMySqlMergeExplicit.cs" />
     <Compile Include="MySql\TestSerializerMySqlMergeImplicit.cs" />
+    <Compile Include="TestSerializerAlter.cs" />
     <Compile Include="TestSerializerMerge.cs" />
     <Compile Include="MySql\TestSerializerMySqlModifyExplicit.cs" />
     <Compile Include="MySql\TestSerializerMySqlModifyImplicit.cs" />

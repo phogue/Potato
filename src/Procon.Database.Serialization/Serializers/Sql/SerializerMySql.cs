@@ -75,10 +75,7 @@ namespace Procon.Database.Serialization.Serializers.Sql {
                 parsed.Add("INSERT");
             }
             else if (method is Create) {
-                if (method.Any(statement => statement is Builders.Database) == true) {
-                    parsed.Add("CREATE");
-                }
-                else if (method.Any(statement => statement is Collection) == true) {
+                if (method.Any(statement => statement is Builders.Database) == true || method.Any(statement => statement is Collection) == true) {
                     parsed.Add("CREATE");
                 }
                 else if (method.Any(statement => statement is Field) == true) {
@@ -397,7 +394,7 @@ namespace Procon.Database.Serialization.Serializers.Sql {
                     compiled.Add(serializedQuery.Collections.FirstOrDefault());
                 }
 
-                compiled.Add(String.Join(", ", serializedQuery.Children.Where(child => child.Root is Create).SelectMany(child => child.Compiled)));
+                compiled.Add(String.Join(", ", serializedQuery.Children.Where(child => child.Root is Create || child.Root is Drop).SelectMany(child => child.Compiled)));
             }
             else if (parsed.Root is Find) {
                 serializedQuery.Fields = new List<String>(parsed.Fields);
@@ -519,6 +516,11 @@ namespace Procon.Database.Serialization.Serializers.Sql {
                     compiled.Add("TABLE");
                     serializedQuery.Collections.Add(parsed.Collections.FirstOrDefault());
                     compiled.Add(serializedQuery.Collections.FirstOrDefault());
+                }
+                else if (parsed.Fields.Any() == true) {
+                    compiled.Add("COLUMN");
+
+                    compiled.Add(String.Join(", ", parsed.Fields.ToArray()));
                 }
             }
 

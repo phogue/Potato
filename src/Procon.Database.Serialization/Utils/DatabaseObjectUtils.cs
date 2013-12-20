@@ -14,11 +14,9 @@ namespace Procon.Database.Serialization.Utils {
         /// <param name="self">The object to search for sub values on</param>
         /// <returns></returns>
         public static IEnumerable<T> Descendants<T>(this IDatabaseObject self) where T : IDatabaseObject {
-            List<T> items = self.Where(item => item is T).Cast<T>().ToList();
-
-            items.AddRange(self.SelectMany(item => item.Descendants<T>()));
-
-            return items;
+            IEnumerable<T> items = self.Where(item => item is T).Cast<T>();
+            
+            return items.Union(self.SelectMany(item => item.Descendants<T>()));
         }
 
         /// <summary>
@@ -29,13 +27,9 @@ namespace Procon.Database.Serialization.Utils {
         /// <param name="self">The object to search for sub values on</param>
         /// <returns></returns>
         public static IEnumerable<T> DescendantsAndSelf<T>(this IDatabaseObject self) where T : IDatabaseObject {
-            List<T> items = self.Where(item => item is T).Cast<T>().ToList();
+            IEnumerable<T> items = self.Union(new List<IDatabaseObject>() { self }).Where(item => item is T).Cast<T>();
 
-            items.AddRange(self.SelectMany(item => item.Descendants<T>()));
-            
-            if (self is T) items.Add((T)self);
-
-            return items;
+            return items.Union(self.SelectMany(item => item.Descendants<T>()));
         }
     }
 }

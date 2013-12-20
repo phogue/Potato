@@ -1,8 +1,11 @@
-﻿using Procon.Core;
+﻿using System.Linq;
+using Procon.Core;
 using Procon.Core.Database.Migrations;
+using Procon.Database.Serialization.Builders;
 using Procon.Database.Serialization.Builders.FieldTypes;
 using Procon.Database.Serialization.Builders.Methods.Schema;
 using Procon.Database.Serialization.Builders.Modifiers;
+using Procon.Database.Serialization.Utils;
 
 namespace Procon.Examples.Database {
     /// <summary>
@@ -42,7 +45,7 @@ namespace Procon.Examples.Database {
                     new Migration() {
                         // Up, moving upstream in changes.
                         Up = () => {
-                            this.Bubble(
+                            CommandResultArgs result = this.Bubble(
                                 CommandBuilder.DatabaseQuery(
                                     new Create()
                                     // You should namespace/prefix your collections/tables to avoid clashes with other plugins
@@ -53,21 +56,21 @@ namespace Procon.Examples.Database {
                                 )
                             );
 
-                            return true;
+                            return result.Now.Queries.First().DescendantsAndSelf<Error>().Any() == false;
                         },
                         // Down, moving downstream in changes (do the opposite of Up)
                         Down = () => {
                             // Including Down is not critical when moving upstream, but it's good
                             // practice to include Down. We may in the future include plugin uninstalling
                             // and down migrations would allow the database to be uninstalled.
-                            this.Bubble(
+                            CommandResultArgs result = this.Bubble(
                                 CommandBuilder.DatabaseQuery(
                                     new Drop()
                                     .Collection("Procon_Example_Database_Users")
                                 )
                             );
 
-                            return true;
+                            return result.Now.Queries.First().DescendantsAndSelf<Error>().Any() == false;
                         }
                     },
                     // Pretend you released 1.0.0.0, then released an update later
@@ -75,7 +78,7 @@ namespace Procon.Examples.Database {
                     new Migration() {
                         Up = () => {
                             // Add another field to our example
-                            this.Bubble(
+                            CommandResultArgs result = this.Bubble(
                                 CommandBuilder.DatabaseQuery(
                                     new Alter()
                                     .Collection("Procon_Example_Database_Users")
@@ -86,12 +89,12 @@ namespace Procon.Examples.Database {
                                 )
                             );
 
-                            return true;
+                            return result.Now.Queries.First().DescendantsAndSelf<Error>().Any() == false;
                         },
                         Down = () => {
                             // Drop the field, so people can revert this migration or uninstall can go
                             // through the motions.
-                            this.Bubble(
+                            CommandResultArgs result = this.Bubble(
                                 CommandBuilder.DatabaseQuery(
                                     new Alter()
                                     .Collection("Procon_Example_Database_Users")
@@ -102,7 +105,7 @@ namespace Procon.Examples.Database {
                                 )
                             );
 
-                            return true;
+                            return result.Now.Queries.First().DescendantsAndSelf<Error>().Any() == false;
                         }
                     }
                 }

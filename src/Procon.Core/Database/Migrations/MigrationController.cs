@@ -113,7 +113,8 @@ namespace Procon.Core.Database.Migrations {
         /// Migrates upstream with an optional version to migrate up to.
         /// </summary>
         /// <param name="until">An optional version to migrate to.</param>
-        public void Up(int? until = null) {
+        public bool Up(int? until = null) {
+            bool success = true;
 
             int current = this.FindCurrentVersion();
 
@@ -123,25 +124,28 @@ namespace Procon.Core.Database.Migrations {
             }
 
             // Find out the current version.
-            while (current < until) {
+            while (current < until && success == true) {
                 // Current is zero indexed, until is one.
                 IMigration migration = this.Migrations.ElementAtOrDefault(current);
 
                 if (migration != null) {
-                    if (migration.Up() == true) {
+                    if ((success = migration.Up()) == true) {
                         this.SaveVersion(current + 1);
                     }
                 }
 
                 current = this.FindCurrentVersion();
             }
+
+            return success;
         }
 
         /// <summary>
         /// Migrates upstream with an optional version to migrate up to.
         /// </summary>
         /// <param name="until">An optional version to migrate to.</param>
-        public void Down(int? until = null) {
+        public bool Down(int? until = null) {
+            bool success = true;
 
             int current = this.FindCurrentVersion();
 
@@ -151,18 +155,20 @@ namespace Procon.Core.Database.Migrations {
             }
 
             // Find out the current version.
-            while (current > until) {
+            while (current > until && success == true) {
                 // Current is zero indexed, until is one.
                 IMigration migration = this.Migrations.ElementAtOrDefault(current - 1);
 
                 if (migration != null) {
-                    if (migration.Down() == true) {
+                    if ((success = migration.Down()) == true) {
                         this.SaveVersion(current - 1);
                     }
                 }
 
                 current = this.FindCurrentVersion();
             }
+
+            return success;
         }
     }
 }

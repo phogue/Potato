@@ -1,5 +1,8 @@
-﻿using NUnit.Framework;
+﻿using System.Collections.Generic;
+using NUnit.Framework;
+using Procon.Core.Database.Migrations;
 using Procon.Core.Test.Database.Helpers;
+using Procon.Net.Utils;
 
 namespace Procon.Core.Test.Database {
     [TestFixture]
@@ -118,6 +121,45 @@ namespace Procon.Core.Test.Database {
 
             Assert.AreEqual(0, helper.Counter);
             Assert.AreEqual(0, helper.Tracker);
+        }
+
+        [Test]
+        public void TestMigrationUpFromNothingButCanceled() {
+            int counter = 0;
+
+            MigrationController migrations = new MigrationController() {
+                // Bubble all commands to the database controller
+                BubbleObjects = new List<IExecutableBase>() {
+                    TestDatabaseController.OpenSqLiteDriver()
+                },
+                Migrations = new List<IMigration>() {
+                    new Migration() {
+                        Up = () => {
+                            counter++;
+
+                            return false;
+                        },
+                        Down = () => {
+                            counter++;
+
+                            return false;
+                        }
+                    }
+                },
+                Settings = new MigrationSettings() {
+                    // Create a random stream name
+                    Name = StringExtensions.RandomString(10),
+                    // Just use Core as the origin for testing
+                    Origin = MigrationOrigin.Core
+                }
+            };
+
+            migrations.Execute();
+
+            migrations.Up();
+
+            Assert.AreEqual(1, counter);
+            Assert.AreEqual(0, migrations.FindCurrentVersion());
         }
     }
 }

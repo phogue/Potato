@@ -18,15 +18,13 @@ namespace Procon.Examples.Commands {
         //           but then remain constant over your releases.
         //           Procon uses the GUID to pipe through events/commands.
 
-        /// <summary>
-        /// Store instances of child objects that inherit from ExecutableBase
-        /// </summary>
-        public List<IExecutableBase> ChildObjects;
-
         public Program() : base() {
-            this.ChildObjects = new List<IExecutableBase>() {
+            // Store references to children so commands will tunnel on to them.
+            this.TunnelObjects = new List<IExecutableBase>() {
                 new TunneledCommands() {
-                    ParentObjects = new List<IExecutableBase>() {
+                    // Make sure child classes have a reference back to our class, so they
+                    // can bubble commands back up.
+                    BubbleObjects = new List<IExecutableBase>() {
                         this
                     }
                 }
@@ -70,18 +68,6 @@ namespace Procon.Examples.Commands {
                     new CommandDispatchHandler(this.NoParameterCommand)
                 }
             });
-        }
-
-        /// <summary>
-        /// Now override this method, called within ExecutableBase, to specify what objects
-        /// we should pass the command to. We're just passing it to all of the commands
-        /// here, but you could check the command and only dispatch to certain objects if
-        /// you want.
-        /// </summary>
-        /// <param name="command"></param>
-        /// <returns></returns>
-        protected override IList<IExecutableBase> TunnelExecutableObjects(Command command) {
-            return this.ChildObjects;
         }
 
         /// <summary>

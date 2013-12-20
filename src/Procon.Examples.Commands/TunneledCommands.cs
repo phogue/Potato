@@ -9,11 +9,6 @@ namespace Procon.Examples.Commands {
     /// </summary>
     public class TunneledCommands : ExecutableBase {
 
-        /// <summary>
-        /// Store instances of child objects that inherit from ExecutableBase
-        /// </summary>
-        public List<IExecutableBase> ParentObjects;
-
         public TunneledCommands() : base() {
             this.AppendDispatchHandlers(new Dictionary<CommandAttribute, CommandDispatchHandler>() {
                 {
@@ -37,10 +32,6 @@ namespace Procon.Examples.Commands {
                     new CommandDispatchHandler(this.NoParameterBubbleCommand)
                 }
             });
-        }
-
-        protected override IList<IExecutableBase> BubbleExecutableObjects(Command command) {
-            return this.ParentObjects;
         }
 
         protected CommandResultArgs ThisCommandIsInAChildObject(Command command, Dictionary<String, CommandParameter> parameters) {

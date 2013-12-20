@@ -1,6 +1,6 @@
 using System;
 
-namespace Procon.Database.Serialization.Builders.Methods {
+namespace Procon.Database.Serialization.Builders.Methods.Schema {
     /// <summary>
     /// Create a new table or database
     /// </summary>

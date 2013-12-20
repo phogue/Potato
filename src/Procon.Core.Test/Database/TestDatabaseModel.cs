@@ -6,6 +6,7 @@ using Procon.Core.Database;
 using Procon.Core.Test.Database.Mocks;
 using Procon.Database.Serialization;
 using Procon.Database.Serialization.Builders.Methods;
+using Procon.Database.Serialization.Builders.Methods.Data;
 using Procon.Database.Serialization.Builders.Values;
 
 namespace Procon.Core.Test.Database {

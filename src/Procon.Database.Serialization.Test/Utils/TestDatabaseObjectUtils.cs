@@ -2,6 +2,8 @@
 using System.Linq;
 using NUnit.Framework;
 using Procon.Database.Serialization.Builders.Methods;
+using Procon.Database.Serialization.Builders.Methods.Data;
+using Procon.Database.Serialization.Builders.Methods.Schema;
 using Procon.Database.Serialization.Builders.Values;
 using Procon.Database.Serialization.Utils;
 

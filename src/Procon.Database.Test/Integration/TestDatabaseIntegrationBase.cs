@@ -2,6 +2,8 @@
 using Procon.Database.Serialization;
 using Procon.Database.Serialization.Builders.FieldTypes;
 using Procon.Database.Serialization.Builders.Methods;
+using Procon.Database.Serialization.Builders.Methods.Data;
+using Procon.Database.Serialization.Builders.Methods.Schema;
 
 namespace Procon.Database.Test.Integration {
     public abstract class TestDatabaseIntegrationBase {

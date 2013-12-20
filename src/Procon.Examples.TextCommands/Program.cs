@@ -9,6 +9,11 @@ using Procon.Core.Events;
 namespace Procon.Examples.TextCommands {
     public class Program : RemotePlugin {
 
+        // Critical: You need to create a new project, not reuse this project.
+        //           The critical part is the assembly GUID, which must be unique per plugin
+        //           but then remain constant over your releases.
+        //           Procon uses the GUID to pipe through events/commands.
+
         public Program() : base() {
 
             // 1. Setup a command dispatch to let us know when the command has been executed.

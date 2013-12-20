@@ -9,6 +9,8 @@ using Procon.Core.Variables;
 using Procon.Database.Serialization;
 using Procon.Database.Serialization.Builders.FieldTypes;
 using Procon.Database.Serialization.Builders.Methods;
+using Procon.Database.Serialization.Builders.Methods.Data;
+using Procon.Database.Serialization.Builders.Methods.Schema;
 using Procon.Database.Serialization.Builders.Values;
 using Procon.Net.Utils;
 

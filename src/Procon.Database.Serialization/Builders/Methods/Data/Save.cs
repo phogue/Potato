@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Procon.Database.Serialization.Builders.Methods {
+namespace Procon.Database.Serialization.Builders.Methods.Data {
     /// <summary>
     /// Insert a document into a collection
     /// </summary>

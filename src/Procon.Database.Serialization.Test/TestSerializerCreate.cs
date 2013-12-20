@@ -1,5 +1,6 @@
 ﻿using Procon.Database.Serialization.Builders.FieldTypes;
 using Procon.Database.Serialization.Builders.Methods;
+using Procon.Database.Serialization.Builders.Methods.Schema;
 using Procon.Database.Serialization.Builders.Modifiers;
 using Procon.Database.Serialization.Builders.Statements;
 

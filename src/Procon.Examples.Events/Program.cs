@@ -12,6 +12,11 @@ namespace Procon.Examples.Events {
     /// </summary>
     public class Program : RemotePlugin {
 
+        // Critical: You need to create a new project, not reuse this project.
+        //           The critical part is the assembly GUID, which must be unique per plugin
+        //           but then remain constant over your releases.
+        //           Procon uses the GUID to pipe through events/commands.
+
         public override void ClientEvent(ClientEventArgs e) {
             // Unless you specifically want to override some of the plugins default
             // functionality, you should always call the base method.

@@ -3,6 +3,7 @@ using System.Linq;
 using Newtonsoft.Json.Linq;
 using Procon.Database.Serialization;
 using Procon.Database.Serialization.Builders.Methods;
+using Procon.Database.Serialization.Builders.Methods.Data;
 using Procon.Database.Serialization.Builders.Values;
 
 namespace Procon.Core.Database {

@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using NUnit.Framework;
 using Procon.Database.Serialization.Builders.Methods;
+using Procon.Database.Serialization.Builders.Methods.Data;
 using Procon.Database.Serialization.Serializers.NoSql;
 
 namespace Procon.Database.Serialization.Test.MongoDb {

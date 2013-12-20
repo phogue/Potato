@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text;
 using Procon.Core;
 using Procon.Core.Connections.Plugins;
 
 namespace Procon.Examples.Configs {
     public class Program : RemotePlugin {
+
+        // Critical: You need to create a new project, not reuse this project.
+        //           The critical part is the assembly GUID, which must be unique per plugin
+        //           but then remain constant over your releases.
+        //           Procon uses the GUID to pipe through events/commands.
 
         public Program() : base() {
             this.AppendDispatchHandlers(new Dictionary<CommandAttribute, CommandDispatchHandler>() {

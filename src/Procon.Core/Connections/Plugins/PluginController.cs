@@ -6,7 +6,6 @@ using System.Reflection;
 using System.Runtime.Remoting.Lifetime;
 using System.Security;
 using System.Security.Permissions;
-using System.Security.Policy;
 using System.Xml.Serialization;
 using Newtonsoft.Json;
 using Procon.Core.Events;
@@ -184,17 +183,6 @@ namespace Procon.Core.Connections.Plugins {
         }
 
         /// <summary>
-        /// Create the evidence required to create an appdomain.
-        /// </summary>
-        /// <returns></returns>
-        protected Evidence CreateEvidence() {
-            Evidence evidence = new Evidence();
-            evidence.AddHostEvidence(new Zone(SecurityZone.Internet));
-
-            return evidence;
-        }
-
-        /// <summary>
         /// Create the app domain setup options required to create the app domain.
         /// </summary>
         /// <returns></returns>
@@ -294,15 +282,12 @@ namespace Procon.Core.Connections.Plugins {
 
             this.CreatePluginDirectory(new DirectoryInfo(Defines.PluginsDirectory));
 
-            // Use the same evidence as MyComputer.
-            Evidence evidence = this.CreateEvidence();
-
             AppDomainSetup setup = this.CreateAppDomainSetup();
 
             PermissionSet permissions = this.CreatePermissionSet();
 
             // Create the app domain and the plugin factory in the new domain.
-            this.AppDomainSandbox = AppDomain.CreateDomain(String.Format("Procon.{0}.Plugin", this.Connection != null ? this.Connection.ConnectionGuid.ToString() : String.Empty), evidence, setup, permissions);
+            this.AppDomainSandbox = AppDomain.CreateDomain(String.Format("Procon.{0}.Plugin", this.Connection != null ? this.Connection.ConnectionGuid.ToString() : String.Empty), null, setup, permissions);
 
             this.PluginFactory = (IRemotePluginController)this.AppDomainSandbox.CreateInstanceAndUnwrap(Assembly.GetExecutingAssembly().FullName, typeof(RemotePluginController).FullName);
 

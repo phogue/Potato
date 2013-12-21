@@ -34,7 +34,7 @@ namespace Procon.Core.Database.Migrations {
 
         public override ExecutableBase Execute() {
             // Managing migrations 
-            this.Bubble(
+            CommandResultArgs result = this.Bubble(
                 CommandBuilder.DatabaseQuery(
                     new Create()
                     .Collection("Migrations")

@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{30A34B9C-0760-40E4-92C5-81EB58C06311}</ProjectGuid>
+    <ProjectGuid>{8B919F30-AA02-44DD-8223-285D6B8FDB2D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Procon.Examples.Database</RootNamespace>
-    <AssemblyName>Procon.Examples.Database</AssemblyName>
+    <RootNamespace>Procon.Examples.Database.Test</RootNamespace>
+    <AssemblyName>Procon.Examples.Database.Test</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -17,10 +17,11 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\builds\Examples\Debug\</OutputPath>
+    <OutputPath>..\..\builds\Tests\Procon.Examples.Database.Test\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -31,6 +32,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="nunit.framework">
+      <HintPath>..\..\lib\NUnit\2.6.3\nunit.framework.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -40,10 +44,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Migrations.cs" />
-    <Compile Include="Program.cs" />
+    <Compile Include="TestDatabase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UserModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Procon.Core\Procon.Core.csproj">
@@ -54,12 +56,20 @@
       <Project>{C9FD27C8-167E-4B6A-82C0-8C9925584EE3}</Project>
       <Name>Procon.Database.Serialization</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Procon.Net\Procon.Net.csproj">
-      <Project>{65C1DB17-18E0-4AC5-8709-3F7E04B88CA1}</Project>
-      <Name>Procon.Net</Name>
+    <ProjectReference Include="..\Procon.Database\Procon.Database.csproj">
+      <Project>{7703A41E-41E1-4D58-B686-07FD497D15F7}</Project>
+      <Name>Procon.Database</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Procon.Examples.Database\Procon.Examples.Database.csproj">
+      <Project>{30A34B9C-0760-40E4-92C5-81EB58C06311}</Project>
+      <Name>Procon.Examples.Database</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>mkdir "$(TargetDir)plugins\"
+move /Y "$(TargetDir)Procon.Examples.Database.dll" "$(TargetDir)plugins\Procon.Examples.Database.dll"</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

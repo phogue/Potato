@@ -213,8 +213,8 @@ namespace Procon.Core.Connections {
             this.UnassignEvents();
 
             if (this.Game != null) {
-                this.Game.ClientEvent += new Net.Game.ClientEventHandler(Game_ClientEvent);
-                this.Game.GameEvent += new Net.Game.GameEventHandler(Game_GameEvent);
+                this.Game.ClientEvent += Game_ClientEvent;
+                this.Game.GameEvent += Game_GameEvent;
             }
         }
 
@@ -223,8 +223,8 @@ namespace Procon.Core.Connections {
         /// </summary>
         protected void UnassignEvents() {
             if (this.Game != null) {
-                this.Game.ClientEvent -= new Net.Game.ClientEventHandler(Game_ClientEvent);
-                this.Game.GameEvent -= new Net.Game.GameEventHandler(Game_GameEvent);
+                this.Game.ClientEvent -= Game_ClientEvent;
+                this.Game.GameEvent -= Game_GameEvent;
             }
         }
 

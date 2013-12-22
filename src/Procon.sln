@@ -82,6 +82,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procon.Core.Shared", "Proco
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procon.Database.Shared", "Procon.Database.Shared\Procon.Database.Shared.csproj", "{F6F1BD6C-1743-492A-A18C-810E2C5601F2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procon.Net.Shared", "Procon.Net.Shared\Procon.Net.Shared.csproj", "{4FDF48B5-790A-4717-A798-D18D76032DF7}"
+EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Procon.vsmdi
@@ -429,6 +431,16 @@ Global
 		{F6F1BD6C-1743-492A-A18C-810E2C5601F2}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{F6F1BD6C-1743-492A-A18C-810E2C5601F2}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{F6F1BD6C-1743-492A-A18C-810E2C5601F2}.Release|x86.ActiveCfg = Release|Any CPU
+		{4FDF48B5-790A-4717-A798-D18D76032DF7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4FDF48B5-790A-4717-A798-D18D76032DF7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4FDF48B5-790A-4717-A798-D18D76032DF7}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{4FDF48B5-790A-4717-A798-D18D76032DF7}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{4FDF48B5-790A-4717-A798-D18D76032DF7}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{4FDF48B5-790A-4717-A798-D18D76032DF7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4FDF48B5-790A-4717-A798-D18D76032DF7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4FDF48B5-790A-4717-A798-D18D76032DF7}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{4FDF48B5-790A-4717-A798-D18D76032DF7}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{4FDF48B5-790A-4717-A798-D18D76032DF7}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

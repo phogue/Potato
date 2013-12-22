@@ -19,11 +19,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using System.Timers;
 using Procon.Net.Actions;
@@ -48,7 +44,7 @@ namespace Procon.Tools.NetworkConsole.Controls {
 
                 // Assign events.
                 if (this.m_activeGame != null) {
-                    this.m_activeGame.GameEvent += new Game.GameEventHandler(m_activeGame_GameEvent);
+                    this.m_activeGame.GameEvent += m_activeGame_GameEvent;
                 }
             }
         }

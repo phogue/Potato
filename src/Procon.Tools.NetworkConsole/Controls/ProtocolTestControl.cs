@@ -1,11 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 using System.Xml.Linq;
@@ -13,7 +9,6 @@ using Procon.Net;
 using Procon.Net.Utils;
 using ConnectionState = Procon.Net.ConnectionState;
 using Procon.Net.Utils.Tests;
-using Procon.Core.Utils;
 
 namespace Procon.Tools.NetworkConsole.Controls {
     public partial class ProtocolTestControl : UserControl {
@@ -29,8 +24,8 @@ namespace Procon.Tools.NetworkConsole.Controls {
 
                 // Assign events.
                 if (this._activeGame != null) {
-                    this._activeGame.GameEvent += new Game.GameEventHandler(m_activeGame_GameEvent);
-                    this._activeGame.ClientEvent += new Game.ClientEventHandler(m_activeGame_ClientEvent);
+                    this._activeGame.GameEvent += m_activeGame_GameEvent;
+                    this._activeGame.ClientEvent += m_activeGame_ClientEvent;
                 }
             }
         }
@@ -188,7 +183,7 @@ namespace Procon.Tools.NetworkConsole.Controls {
 
             test.TestEvent -= new ProtocolUnitTest.TestEventHandler(Test_TestEvent);
             test.TestSetup -= new ProtocolUnitTest.TestEventHandler(Test_TestSetup);
-            this.ActiveGame.ClientEvent -= new Game.ClientEventHandler(ActiveGame_ClientEvent);
+            this.ActiveGame.ClientEvent -= ActiveGame_ClientEvent;
         }
 
         protected void ProtocolTestRun_TestFailed(ProtocolTestRun sender, ProtocolUnitTestEventArgs e) {
@@ -227,7 +222,7 @@ namespace Procon.Tools.NetworkConsole.Controls {
         }
 
         protected void Test_TestSetup(ProtocolUnitTest sender, ProtocolUnitTestEventArgs args) {
-            this.ActiveGame.ClientEvent += new Game.ClientEventHandler(ActiveGame_ClientEvent);
+            this.ActiveGame.ClientEvent += ActiveGame_ClientEvent;
         }
 
         protected void ActiveGame_ClientEvent(Game sender, ClientEventArgs e) {

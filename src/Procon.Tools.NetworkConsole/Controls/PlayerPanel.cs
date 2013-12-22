@@ -1,29 +1,8 @@
-﻿// Copyright 2011 Geoffrey 'Phogue' Green
-// 
-// http://www.phogue.net
-//  
-// This file is part of Procon 2.
-// 
-// Procon 2 is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-// 
-// Procon 2 is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-// 
-// You should have received a copy of the GNU General Public License
-// along with Procon 2.  If not, see <http://www.gnu.org/licenses/>.
-
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Drawing;
-using System.Data;
+using System.Globalization;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using Procon.Net.Actions;
 using Procon.Net.Models;
@@ -43,8 +22,8 @@ namespace Procon.Tools.NetworkConsole.Controls {
 
                 // Assign events.
                 if (this.m_activeGame != null) {
-                    this.m_activeGame.GameEvent += new Game.GameEventHandler(m_activeGame_GameEvent);
-                    this.m_activeGame.ClientEvent += new Game.ClientEventHandler(m_activeGame_ClientEvent);
+                    this.m_activeGame.GameEvent += m_activeGame_GameEvent;
+                    this.m_activeGame.ClientEvent += m_activeGame_ClientEvent;
                 }
             }
         }
@@ -92,27 +71,27 @@ namespace Procon.Tools.NetworkConsole.Controls {
                         Grouping teamGroup = playerObject.Groups.FirstOrDefault(group => group.Type == Grouping.Team);
 
                         player.SubItems.AddRange(
-                            new ListViewItem.ListViewSubItem[] {
+                            new[] {
                                 new ListViewItem.ListViewSubItem() {
                                     Text = playerObject.Uid
                                 },
                                 new ListViewItem.ListViewSubItem() {
-                                    Text = playerObject.Score.ToString()
+                                    Text = playerObject.Score.ToString(CultureInfo.InvariantCulture)
                                 },
                                 new ListViewItem.ListViewSubItem() {
-                                    Text = playerObject.Kills.ToString()
+                                    Text = playerObject.Kills.ToString(CultureInfo.InvariantCulture)
                                 },
                                 new ListViewItem.ListViewSubItem() {
-                                    Text = playerObject.Deaths.ToString()
+                                    Text = playerObject.Deaths.ToString(CultureInfo.InvariantCulture)
                                 },
                                 new ListViewItem.ListViewSubItem() {
-                                    Text = playerObject.Kdr.ToString()
+                                    Text = playerObject.Kdr.ToString(CultureInfo.InvariantCulture)
                                 },
                                 new ListViewItem.ListViewSubItem() {
-                                    Text = playerObject.Ping.ToString()
+                                    Text = playerObject.Ping.ToString(CultureInfo.InvariantCulture)
                                 },
                                 new ListViewItem.ListViewSubItem() {
-                                    Text = teamGroup != null ? teamGroup.Uid.ToString() : String.Empty
+                                    Text = teamGroup != null ? teamGroup.Uid.ToString(CultureInfo.InvariantCulture) : String.Empty
                                 }
                             }
                         );
@@ -121,12 +100,12 @@ namespace Procon.Tools.NetworkConsole.Controls {
                         Grouping teamGroup = playerObject.Groups.FirstOrDefault(group => group.Type == Grouping.Team);
 
                         player.SubItems[1].Text = playerObject.Uid;
-                        player.SubItems[2].Text = playerObject.Score.ToString();
-                        player.SubItems[3].Text = playerObject.Kills.ToString();
-                        player.SubItems[4].Text = playerObject.Deaths.ToString();
-                        player.SubItems[5].Text = playerObject.Kdr.ToString();
-                        player.SubItems[6].Text = playerObject.Ping.ToString();
-                        player.SubItems[7].Text = teamGroup != null ? teamGroup.Uid.ToString() : String.Empty;
+                        player.SubItems[2].Text = playerObject.Score.ToString(CultureInfo.InvariantCulture);
+                        player.SubItems[3].Text = playerObject.Kills.ToString(CultureInfo.InvariantCulture);
+                        player.SubItems[4].Text = playerObject.Deaths.ToString(CultureInfo.InvariantCulture);
+                        player.SubItems[5].Text = playerObject.Kdr.ToString(CultureInfo.InvariantCulture);
+                        player.SubItems[6].Text = playerObject.Ping.ToString(CultureInfo.InvariantCulture);
+                        player.SubItems[7].Text = teamGroup != null ? teamGroup.Uid.ToString(CultureInfo.InvariantCulture) : String.Empty;
                     }
                 }
             }

@@ -1,29 +1,5 @@
-﻿// Copyright 2011 Geoffrey 'Phogue' Green
-// 
-// http://www.phogue.net
-//  
-// This file is part of Procon 2.
-// 
-// Procon 2 is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-// 
-// Procon 2 is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-// 
-// You should have received a copy of the GNU General Public License
-// along with Procon 2.  If not, see <http://www.gnu.org/licenses/>.
-
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
+﻿using System;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using System.Timers;
 
@@ -41,8 +17,8 @@ namespace Procon.Tools.NetworkConsole.Controls {
 
                 // Assign events.
                 if (this.m_activeGame != null) {
-                    this.m_activeGame.GameEvent += new Game.GameEventHandler(m_activeGame_GameEvent);
-                    this.m_activeGame.ClientEvent += new Game.ClientEventHandler(m_activeGame_ClientEvent);
+                    this.m_activeGame.GameEvent += m_activeGame_GameEvent;
+                    this.m_activeGame.ClientEvent += m_activeGame_ClientEvent;
                 }
             }
         }

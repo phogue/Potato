@@ -263,8 +263,8 @@ namespace Procon.Core.Connections.Plugins {
             this.LoadPlugins(new DirectoryInfo(Defines.PluginsDirectory));
 
             if (this.Connection != null && this.Connection.Game != null) {
-                this.Connection.Game.ClientEvent += new Game.ClientEventHandler(Connection_ClientEvent);
-                this.Connection.Game.GameEvent += new Game.GameEventHandler(Connection_GameEvent);
+                this.Connection.Game.ClientEvent += Connection_ClientEvent;
+                this.Connection.Game.GameEvent += Connection_GameEvent;
             }
 
             // Return the base execution.

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net.Sockets;
 
 namespace Procon.Net {
     public interface IClient {
@@ -21,27 +22,27 @@ namespace Procon.Net {
         /// <summary>
         /// Fired when a packet is successfully sent to the remote end point.
         /// </summary>
-        event ClientBase.PacketDispatchHandler PacketSent;
+        event Action<IClient, IPacketWrapper> PacketSent;
 
         /// <summary>
         /// Fired when a packet is successfully deserialized from the server.
         /// </summary>
-        event ClientBase.PacketDispatchHandler PacketReceived;
+        event Action<IClient, IPacketWrapper> PacketReceived;
 
         /// <summary>
         /// Fired when a socket exception (something goes wrong with the connection)
         /// </summary>
-        event ClientBase.SocketExceptionHandler SocketException;
+        event Action<IClient, SocketException> SocketException;
 
         /// <summary>
         /// Fired when an exception occurs somewhere in the client (which we should debug eh)
         /// </summary>
-        event ClientBase.FailureHandler ConnectionFailure;
+        event Action<IClient, Exception> ConnectionFailure;
 
         /// <summary>
         /// Fired whenever this connection state has changed.
         /// </summary>
-        event ClientBase.ConnectionStateChangedHandler ConnectionStateChanged;
+        event Action<IClient, ConnectionState> ConnectionStateChanged;
 
         /// <summary>
         /// Pokes the connection, ensuring that the connection is still alive. If

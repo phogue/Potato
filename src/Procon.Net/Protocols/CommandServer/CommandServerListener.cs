@@ -85,8 +85,8 @@ namespace Procon.Net.Protocols.CommandServer {
                     }
 
                     // Listen for events on our new client
-                    client.PacketReceived += new ClientBase.PacketDispatchHandler(commandServerListener.client_PacketReceived);
-                    client.ConnectionStateChanged += new ClientBase.ConnectionStateChangedHandler(commandServerListener.client_ConnectionStateChanged);
+                    client.PacketReceived += commandServerListener.client_PacketReceived;
+                    client.ConnectionStateChanged += commandServerListener.client_ConnectionStateChanged;
 
                     // k, go. Now start reading.
                     client.BeginRead();
@@ -157,8 +157,8 @@ namespace Procon.Net.Protocols.CommandServer {
         protected void client_ConnectionStateChanged(IClient sender, ConnectionState newState) {
             if (newState == ConnectionState.ConnectionDisconnected) {
                 lock (this.ClientsLock) {
-                    sender.PacketReceived -= new ClientBase.PacketDispatchHandler(this.client_PacketReceived);
-                    sender.ConnectionStateChanged -= new ClientBase.ConnectionStateChangedHandler(this.client_ConnectionStateChanged);
+                    sender.PacketReceived -= this.client_PacketReceived;
+                    sender.ConnectionStateChanged -= this.client_ConnectionStateChanged;
 
                     this.Clients.Remove(sender as CommandServerClient);
                 }
@@ -190,8 +190,8 @@ namespace Procon.Net.Protocols.CommandServer {
                     lock (this.ClientsLock) {
                         foreach (CommandServerClient client in this.Clients) {
                             client.Shutdown();
-                            client.PacketReceived -= new ClientBase.PacketDispatchHandler(this.client_PacketReceived);
-                            client.ConnectionStateChanged -= new ClientBase.ConnectionStateChangedHandler(this.client_ConnectionStateChanged);
+                            client.PacketReceived -= this.client_PacketReceived;
+                            client.ConnectionStateChanged -= this.client_ConnectionStateChanged;
                         }
 
                         this.Clients.Clear();

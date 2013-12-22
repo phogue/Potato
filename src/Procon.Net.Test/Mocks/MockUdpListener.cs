@@ -51,8 +51,8 @@ namespace Procon.Net.Test.Mocks {
                 
                 this.Listener.Client.Client.SetSocketOption(SocketOptionLevel.IP, SocketOptionName.MulticastTimeToLive, true);
 
-                this.Listener.PacketReceived += new ClientBase.PacketDispatchHandler(Listener_PacketReceived);
-                this.Listener.ConnectionStateChanged += new ClientBase.ConnectionStateChangedHandler(Listener_ConnectionStateChanged);
+                this.Listener.PacketReceived += Listener_PacketReceived;
+                this.Listener.ConnectionStateChanged += Listener_ConnectionStateChanged;
 
                 // Accept the connection.
                 this.Listener.BeginRead();
@@ -69,8 +69,8 @@ namespace Procon.Net.Test.Mocks {
 
         protected void Listener_ConnectionStateChanged(IClient sender, ConnectionState newState) {
             if (newState == ConnectionState.ConnectionDisconnected) {
-                sender.PacketReceived -= new ClientBase.PacketDispatchHandler(this.Listener_PacketReceived);
-                sender.ConnectionStateChanged -= new ClientBase.ConnectionStateChangedHandler(this.Listener_ConnectionStateChanged);
+                sender.PacketReceived -= this.Listener_PacketReceived;
+                sender.ConnectionStateChanged -= this.Listener_ConnectionStateChanged;
             }
         }
 

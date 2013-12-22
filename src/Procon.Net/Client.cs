@@ -4,7 +4,7 @@ using System.Net.Sockets;
 
 namespace Procon.Net {
 
-    public abstract class Client : ClientBase, IClient {
+    public abstract class Client : IClient {
 
         /// <summary>
         /// The hostname to connect to.
@@ -105,27 +105,27 @@ namespace Procon.Net {
         /// <summary>
         /// Fired when a packet is successfully sent to the remote end point.
         /// </summary>
-        public event PacketDispatchHandler PacketSent;
+        public event Action<IClient, IPacketWrapper> PacketSent;
 
         /// <summary>
         /// Fired when a packet is successfully deserialized from the server.
         /// </summary>
-        public event PacketDispatchHandler PacketReceived;
+        public event Action<IClient, IPacketWrapper> PacketReceived;
 
         /// <summary>
         /// Fired when a socket exception (something goes wrong with the connection)
         /// </summary>
-        public event SocketExceptionHandler SocketException;
+        public event Action<IClient, SocketException> SocketException;
 
         /// <summary>
         /// Fired when an exception occurs somewhere in the client (which we should debug eh)
         /// </summary>
-        public event FailureHandler ConnectionFailure;
+        public event Action<IClient, Exception> ConnectionFailure;
 
         /// <summary>
         /// Fired whenever this connection state has changed.
         /// </summary>
-        public event ConnectionStateChangedHandler ConnectionStateChanged;
+        public event Action<IClient, ConnectionState> ConnectionStateChanged;
 
         protected Client(string hostname, UInt16 port) {
             this.Hostname = hostname;

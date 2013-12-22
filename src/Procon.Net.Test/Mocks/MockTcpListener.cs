@@ -65,8 +65,8 @@ namespace Procon.Net.Test.Mocks {
                     MockTcpClient client = new MockTcpClient(listener.Listener.EndAcceptTcpClient(ar));
 
                     // Listen for events on our new client
-                    client.PacketReceived += new ClientBase.PacketDispatchHandler(listener.client_PacketReceived);
-                    client.ConnectionStateChanged += new ClientBase.ConnectionStateChangedHandler(listener.client_ConnectionStateChanged);
+                    client.PacketReceived += listener.client_PacketReceived;
+                    client.ConnectionStateChanged += listener.client_ConnectionStateChanged;
 
                     listener.Clients.Add(client);
 
@@ -89,8 +89,8 @@ namespace Procon.Net.Test.Mocks {
 
         protected void client_ConnectionStateChanged(IClient sender, ConnectionState newState) {
             if (newState == ConnectionState.ConnectionDisconnected) {
-                sender.PacketReceived -= new ClientBase.PacketDispatchHandler(this.client_PacketReceived);
-                sender.ConnectionStateChanged -= new ClientBase.ConnectionStateChangedHandler(this.client_ConnectionStateChanged);
+                sender.PacketReceived -= this.client_PacketReceived;
+                sender.ConnectionStateChanged -= this.client_ConnectionStateChanged;
             }
         }
 
@@ -117,8 +117,8 @@ namespace Procon.Net.Test.Mocks {
 
                 foreach (MockTcpClient client in this.Clients) {
                     client.Shutdown();
-                    client.PacketReceived -= new ClientBase.PacketDispatchHandler(this.client_PacketReceived);
-                    client.ConnectionStateChanged -= new ClientBase.ConnectionStateChangedHandler(this.client_ConnectionStateChanged);
+                    client.PacketReceived -= this.client_PacketReceived;
+                    client.ConnectionStateChanged -= this.client_ConnectionStateChanged;
                 }
 
                 this.Clients.Clear();

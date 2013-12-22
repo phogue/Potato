@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using NUnit.Framework;
 using Procon.Net.Test.Mocks;
 
@@ -26,11 +27,11 @@ namespace Procon.Net.Test {
 
             AutoResetEvent connectionWait = new AutoResetEvent(false);
 
-            ClientBase.ConnectionStateChangedHandler connectionStateChangeHandler = new ClientBase.ConnectionStateChangedHandler((sender, state) => {
+            Action<IClient, ConnectionState> connectionStateChangeHandler = (sender, state) => {
                 if (state == ConnectionState.ConnectionReady) {
                     connectionWait.Set();
                 }
-            });
+            };
 
             client.ConnectionStateChanged += connectionStateChangeHandler;
 

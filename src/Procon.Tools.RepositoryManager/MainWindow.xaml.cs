@@ -10,6 +10,7 @@ using System.Windows.Input;
 using System.Windows.Forms;
 using System.IO;
 using Procon.Core.Utils;
+using Procon.Net.Shared.Utils;
 
 namespace Procon.Tools.RepositoryManager {
     using Procon.Tools.RepositoryManager.Models;

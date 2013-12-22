@@ -1,5 +1,6 @@
 using System;
 using Procon.Net;
+using Procon.Net.Shared;
 
 namespace Procon.Core.Shared.Plugins {
     /// <summary>

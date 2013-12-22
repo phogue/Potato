@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using Procon.Net.Actions;
-using Procon.Net.Models;
 using Procon.Net.Protocols.Myrcon.Frostbite.Battlefield.Battlefield4.Objects;
 using Procon.Net.Protocols.Myrcon.Frostbite.Objects;
+using Procon.Net.Shared;
+using Procon.Net.Shared.Actions;
+using Procon.Net.Shared.Models;
 
 namespace Procon.Net.Protocols.Myrcon.Frostbite.Battlefield.Battlefield4 {
     [GameDeclaration(Type = CommonGameType.BF_4, Name = "Battlefield 4", Provider = "Myrcon")]

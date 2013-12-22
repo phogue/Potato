@@ -1,7 +1,8 @@
 ﻿using System;
+using Procon.Net.Shared;
 
 namespace Procon.Net {
-    public sealed class PacketDispatch : IEquatable<PacketDispatch> {
+    public sealed class PacketDispatch : IEquatable<PacketDispatch>, IPacketDispatch {
 
         /// <summary>
         /// The name of the packet we should check against

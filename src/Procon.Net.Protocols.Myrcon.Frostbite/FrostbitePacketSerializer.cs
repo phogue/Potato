@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Text;
+using Procon.Net.Shared;
 
 namespace Procon.Net.Protocols.Myrcon.Frostbite {
     public class FrostbitePacketSerializer : IPacketSerializer {

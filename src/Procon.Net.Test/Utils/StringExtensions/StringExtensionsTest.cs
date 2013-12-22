@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
+using Procon.Net.Shared.Utils;
 using Procon.Net.Utils;
 
 namespace Procon.Net.Test.Utils.StringExtensions {
@@ -21,7 +22,7 @@ namespace Procon.Net.Test.Utils.StringExtensions {
             List<String> generated = new List<String>();
 
             for (var count = 0; count < 20; count++) {
-                generated.Add(Procon.Net.Utils.StringExtensions.RandomString(30));
+                generated.Add(Shared.Utils.StringExtensions.RandomString(30));
             }
 
             Assert.AreEqual(20, generated.Distinct().Count());

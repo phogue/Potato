@@ -32,6 +32,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\JSON\Bin\Net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -44,7 +48,79 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Actions\Ban.cs" />
+    <Compile Include="Actions\Chat.cs" />
+    <Compile Include="Actions\ChatOrigin.cs" />
+    <Compile Include="Actions\Deferred\DeferredAction.cs" />
+    <Compile Include="Actions\Deferred\IDeferredAction.cs" />
+    <Compile Include="Actions\Deferred\IWaitingAction.cs" />
+    <Compile Include="Actions\Deferred\IWaitingActions.cs" />
+    <Compile Include="Actions\Deferred\WaitingAction.cs" />
+    <Compile Include="Actions\Deferred\WaitingActions.cs" />
+    <Compile Include="Actions\Kick.cs" />
+    <Compile Include="Actions\Kill.cs" />
+    <Compile Include="Actions\Map.cs" />
+    <Compile Include="Actions\Move.cs" />
+    <Compile Include="Actions\NetworkAction.cs" />
+    <Compile Include="Actions\NetworkActionData.cs" />
+    <Compile Include="Actions\NetworkActionType.cs" />
+    <Compile Include="Actions\Raw.cs" />
+    <Compile Include="ClientEventArgs.cs" />
+    <Compile Include="ClientEventData.cs" />
+    <Compile Include="ClientEventType.cs" />
+    <Compile Include="Collections\Bans.cs" />
+    <Compile Include="Collections\Groupings.cs" />
+    <Compile Include="Collections\Maps.cs" />
+    <Compile Include="Collections\Players.cs" />
+    <Compile Include="ConnectionState.cs" />
+    <Compile Include="GameEventArgs.cs" />
+    <Compile Include="GameEventData.cs" />
+    <Compile Include="GameEventType.cs" />
+    <Compile Include="GameType.cs" />
+    <Compile Include="Geolocation\GeolocateIp.cs" />
+    <Compile Include="Geolocation\IGeolocate.cs" />
+    <Compile Include="Geolocation\Location.cs" />
+    <Compile Include="Geolocation\Maxmind\CountryLookup.cs" />
+    <Compile Include="IClient.cs" />
+    <Compile Include="IGame.cs" />
+    <Compile Include="IGameType.cs" />
+    <Compile Include="IPacket.cs" />
+    <Compile Include="IPacketDispatch.cs" />
+    <Compile Include="IPacketDispatcher.cs" />
+    <Compile Include="IPacketQueue.cs" />
+    <Compile Include="IPacketSerializer.cs" />
+    <Compile Include="IPacketStream.cs" />
+    <Compile Include="IPacketWrapper.cs" />
+    <Compile Include="Models\GameMode.cs" />
+    <Compile Include="Models\GameState.cs" />
+    <Compile Include="Models\Grouping.cs" />
+    <Compile Include="Models\HumanHitLocation.cs" />
+    <Compile Include="Models\Inventory.cs" />
+    <Compile Include="Models\Item.cs" />
+    <Compile Include="Models\NetworkModel.cs" />
+    <Compile Include="Models\Player.cs" />
+    <Compile Include="Models\Point3D.cs" />
+    <Compile Include="Models\Role.cs" />
+    <Compile Include="Models\Settings.cs" />
+    <Compile Include="Models\SettingsData.cs" />
+    <Compile Include="Models\Spawn.cs" />
+    <Compile Include="Models\TimeSubset.cs" />
+    <Compile Include="Models\TimeSubsetContext.cs" />
+    <Compile Include="PacketOrigin.cs" />
+    <Compile Include="PacketType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utils\BCrypt.cs" />
+    <Compile Include="Utils\HTTP\Mime.cs" />
+    <Compile Include="Utils\MD5.cs" />
+    <Compile Include="Utils\Network.cs" />
+    <Compile Include="Utils\StreamExtensions.cs" />
+    <Compile Include="Utils\StringExtensions.cs" />
+    <Compile Include="Utils\XElementExtensions.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="GeoIP.dat">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

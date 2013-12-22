@@ -12,6 +12,7 @@ using Procon.Core.Repositories;
 using Procon.Core.Shared;
 using Procon.Core.Shared.Events;
 using Procon.Core.Utils;
+using Procon.Net.Shared.Utils;
 using Procon.Net.Utils;
 
 #endregion

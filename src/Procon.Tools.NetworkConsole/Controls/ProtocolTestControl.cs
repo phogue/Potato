@@ -6,8 +6,10 @@ using System.Threading;
 using System.Windows.Forms;
 using System.Xml.Linq;
 using Procon.Net;
+using Procon.Net.Shared;
+using Procon.Net.Shared.Utils;
 using Procon.Net.Utils;
-using ConnectionState = Procon.Net.ConnectionState;
+using ConnectionState = Procon.Net.Shared.ConnectionState;
 using Procon.Net.Utils.Tests;
 
 namespace Procon.Tools.NetworkConsole.Controls {

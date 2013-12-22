@@ -7,6 +7,9 @@
 //     the code is regenerated.
 // </auto-generated>
 // ------------------------------------------------------------------------------
+
+using Procon.Net.Shared.Models;
+
 namespace Procon.Examples.UserInterface.Pages
 {
     using System;
@@ -28,7 +31,7 @@ namespace Procon.Examples.UserInterface.Pages
             this.Write("</b>");
             
             #line 2 "C:\Users\P\Documents\Projects\clients\myrcon\procon\Procon-2\src\Procon.Examples.UserInterface\Pages\SettingsPageView.tt"
- foreach (Procon.Net.Models.Player player in this.MyListOfPlayers) { 
+ foreach (Player player in this.MyListOfPlayers) { 
             
             #line default
             #line hidden

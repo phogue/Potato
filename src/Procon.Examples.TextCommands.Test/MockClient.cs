@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net.Sockets;
 using Procon.Net;
+using Procon.Net.Shared;
 
 namespace Procon.Examples.TextCommands.Test {
     class MockClient : Client {

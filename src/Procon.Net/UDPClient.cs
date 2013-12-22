@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net;
 using System.Net.Sockets;
+using Procon.Net.Shared;
 
 namespace Procon.Net {
 
@@ -30,7 +31,7 @@ namespace Procon.Net {
                 this.MarkManager.Mark();
 
                 try {
-                    this.ConnectionState = Net.ConnectionState.ConnectionConnecting;
+                    this.ConnectionState = ConnectionState.ConnectionConnecting;
 
                     this.Client = new System.Net.Sockets.UdpClient(this.Hostname, this.Port) {
                         DontFragment = true
@@ -39,7 +40,7 @@ namespace Procon.Net {
                     this.RemoteIpEndPoint = new IPEndPoint(IPAddress.Any, 0);
                     this.Client.BeginReceive(this.ReadCallback, null);
 
-                    this.ConnectionState = Net.ConnectionState.ConnectionReady;
+                    this.ConnectionState = ConnectionState.ConnectionReady;
                 }
                 catch (SocketException se) {
                     this.Shutdown(se);
@@ -149,7 +150,7 @@ namespace Procon.Net {
 
             lock (this.ShutdownConnectionLock) {
 
-                this.ConnectionState = Net.ConnectionState.ConnectionDisconnecting;
+                this.ConnectionState = ConnectionState.ConnectionDisconnecting;
 
                 if (this.Client != null) {
 
@@ -166,12 +167,12 @@ namespace Procon.Net {
 
                     }
                     finally {
-                        this.ConnectionState = Net.ConnectionState.ConnectionDisconnected;
+                        this.ConnectionState = ConnectionState.ConnectionDisconnected;
                     }
                 }
                 else {
                     // Nothing connected, set to disconnected.
-                    this.ConnectionState = Net.ConnectionState.ConnectionDisconnected;
+                    this.ConnectionState = ConnectionState.ConnectionDisconnected;
                 }
             }
         }

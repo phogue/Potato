@@ -1,4 +1,6 @@
-﻿namespace Procon.Net.Protocols.Myrcon.Frostbite {
+﻿using Procon.Net.Shared;
+
+namespace Procon.Net.Protocols.Myrcon.Frostbite {
 
     public class FrostbitePacket : IPacketWrapper {
 

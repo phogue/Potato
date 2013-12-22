@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 using System.Security.Cryptography.X509Certificates;
+using Procon.Net.Shared;
 
 namespace Procon.Net.Protocols.CommandServer {
     /// <summary>

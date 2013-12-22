@@ -4,8 +4,9 @@ using System.Drawing;
 using System.Globalization;
 using System.Linq;
 using System.Windows.Forms;
-using Procon.Net.Actions;
-using Procon.Net.Models;
+using Procon.Net.Shared;
+using Procon.Net.Shared.Actions;
+using Procon.Net.Shared.Models;
 
 namespace Procon.Tools.NetworkConsole.Controls {
     using Procon.Net;

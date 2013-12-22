@@ -4,8 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
 using Procon.Core.Connections.TextCommands;
-using Procon.Net.Actions;
-using Procon.Net.Models;
+using Procon.Net.Shared.Actions;
+using Procon.Net.Shared.Models;
 
 #endregion
 

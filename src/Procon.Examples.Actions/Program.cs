@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using Procon.Core.Shared;
 using Procon.Core.Shared.Plugins;
 using Procon.Net;
-using Procon.Net.Actions;
-using Procon.Net.Actions.Deferred;
-using Procon.Net.Models;
+using Procon.Net.Shared;
+using Procon.Net.Shared.Actions;
+using Procon.Net.Shared.Actions.Deferred;
+using Procon.Net.Shared.Models;
 
 namespace Procon.Examples.Actions {
     public class Program : RemotePlugin {

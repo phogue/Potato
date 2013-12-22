@@ -13,6 +13,7 @@ using Procon.Core.Shared.Events;
 using Procon.Core.Shared.Models;
 using Procon.Core.Shared.Scheduler;
 using Procon.Net.Protocols;
+using Procon.Net.Shared;
 
 namespace Procon.Core {
     using Procon.Core.Connections;

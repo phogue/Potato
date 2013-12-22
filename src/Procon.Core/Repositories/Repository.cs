@@ -5,6 +5,7 @@ using System.Xml.Linq;
 using System.IO;
 using System.Net;
 using Procon.Core.Utils;
+using Procon.Net.Shared.Utils;
 using Procon.Net.Utils;
 
 namespace Procon.Core.Repositories {

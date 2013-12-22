@@ -13,6 +13,7 @@ namespace Procon.Service.Shared {
         public static readonly String ProconDatabaseSharedDll = "Procon.Database.Shared.dll";
         public static readonly String ProconDatabaseSerializationDll = "Procon.Database.Serialization.dll";
         public static readonly String ProconNetDll = "Procon.Net.dll";
+        public static readonly String ProconNetSharedDll = "Procon.Net.Shared.dll";
         public static readonly String ProconFuzzyDll = "Procon.Fuzzy.dll";
         public static readonly String NewtonsoftJsonDll = "Newtonsoft.Json.dll";
         public static readonly String UpdateLog = "Update.log";

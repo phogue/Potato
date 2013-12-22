@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Procon.Net.Shared;
 
 namespace Procon.Net.Protocols.Myrcon.Frostbite {
     public class FrostbiteClient : Procon.Net.TcpClient {

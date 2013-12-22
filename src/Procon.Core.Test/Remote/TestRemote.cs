@@ -14,6 +14,8 @@ using Procon.Core.Security;
 using Procon.Core.Shared;
 using Procon.Core.Shared.Models;
 using Procon.Core.Variables;
+using Procon.Net.Shared.Utils;
+using Procon.Net.Shared.Utils.HTTP;
 using Procon.Net.Utils;
 using Procon.Net.Utils.HTTP;
 

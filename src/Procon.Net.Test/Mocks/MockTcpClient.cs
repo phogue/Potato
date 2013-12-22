@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net;
+using Procon.Net.Shared;
 
 namespace Procon.Net.Test.Mocks {
     public class MockTcpClient : TcpClient {
@@ -14,7 +15,7 @@ namespace Procon.Net.Test.Mocks {
             : base(((IPEndPoint)client.Client.RemoteEndPoint).Address.ToString(), (ushort)((IPEndPoint)client.Client.RemoteEndPoint).Port) {
             this.Client = client;
             this.Stream = client.GetStream();
-            this.ConnectionState = Net.ConnectionState.ConnectionLoggedIn;
+            this.ConnectionState = ConnectionState.ConnectionLoggedIn;
 
             this.PacketSerializer = new MockPacketSerializer();
         }

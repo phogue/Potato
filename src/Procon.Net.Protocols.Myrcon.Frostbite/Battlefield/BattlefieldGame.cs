@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using Procon.Net.Actions;
-using Procon.Net.Models;
 using Procon.Net.Protocols.Myrcon.Frostbite.Objects;
+using Procon.Net.Shared;
+using Procon.Net.Shared.Actions;
+using Procon.Net.Shared.Models;
 
 namespace Procon.Net.Protocols.Myrcon.Frostbite.Battlefield {
     public abstract class BattlefieldGame : FrostbiteGame {

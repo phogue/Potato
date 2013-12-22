@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Procon.Net.Collections;
+using Procon.Net.Shared.Collections;
 
 namespace Procon.Net.Protocols.Myrcon.Frostbite.Objects {
     [Serializable]

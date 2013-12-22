@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Xml.Linq;
-using Procon.Net.Actions;
-using Procon.Net.Models;
+using Procon.Net.Shared;
+using Procon.Net.Shared.Actions;
+using Procon.Net.Shared.Models;
+using Procon.Net.Shared.Utils;
 using Procon.Net.Utils;
 
 namespace Procon.Net {

@@ -10,6 +10,7 @@ using Procon.Core.Security;
 using Procon.Core.Shared;
 using Procon.Core.Shared.Models;
 using Procon.Net.Protocols;
+using Procon.Net.Shared.Utils;
 using Procon.Net.Utils;
 
 #endregion

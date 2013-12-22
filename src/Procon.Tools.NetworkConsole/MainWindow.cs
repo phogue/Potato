@@ -6,8 +6,9 @@ using System.Linq;
 using System.Windows.Forms;
 using System.Reflection;
 using System.Timers;
-using Procon.Net.Actions;
 using Procon.Net.Protocols;
+using Procon.Net.Shared;
+using Procon.Net.Shared.Actions;
 
 namespace Procon.Tools.NetworkConsole {
     using Procon.Net;
@@ -140,7 +141,7 @@ namespace Procon.Tools.NetworkConsole {
                 if (e.EventType == ClientEventType.ClientConnectionStateChange) {
                     this.ConsoleAppendLine("State: ^6{0}", e.ConnectionState.ToString());
 
-                    if (e.ConnectionState == Net.ConnectionState.ConnectionDisconnected) {
+                    if (e.ConnectionState == ConnectionState.ConnectionDisconnected) {
                         this.btnConnect.Text = "Connect";
                         this.pnlConnection.Enabled = true;
                     }

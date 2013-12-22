@@ -9,6 +9,7 @@ using System.Xml.Linq;
 using NUnit.Framework;
 using Procon.Core.Repositories;
 using Procon.Core.Repositories.Serialization;
+using Procon.Net.Shared.Utils;
 using Procon.Net.Utils;
 
 #endregion

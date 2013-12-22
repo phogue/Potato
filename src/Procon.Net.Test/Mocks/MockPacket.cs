@@ -1,4 +1,6 @@
 ﻿using System;
+using Procon.Net.Shared;
+using Procon.Net.Shared.Utils;
 using Procon.Net.Utils;
 
 namespace Procon.Net.Test.Mocks {

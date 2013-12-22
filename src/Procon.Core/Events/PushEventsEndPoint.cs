@@ -4,6 +4,8 @@ using System.IO;
 using System.Net;
 using Newtonsoft.Json;
 using Procon.Core.Shared.Events;
+using Procon.Net.Shared.Utils;
+using Procon.Net.Shared.Utils.HTTP;
 using Procon.Net.Utils;
 using Procon.Net.Utils.HTTP;
 

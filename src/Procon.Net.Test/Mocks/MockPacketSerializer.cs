@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text;
+using Procon.Net.Shared;
 
 namespace Procon.Net.Test.Mocks {
     public class MockPacketSerializer : IPacketSerializer {

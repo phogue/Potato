@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using Procon.Net.Actions;
-using Procon.Net.Models;
 using Procon.Net.Protocols.Myrcon.Frostbite.Battlefield.Battlefield3.Objects;
 using Procon.Net.Protocols.Myrcon.Frostbite.Objects;
+using Procon.Net.Shared;
+using Procon.Net.Shared.Actions;
+using Procon.Net.Shared.Models;
 
 namespace Procon.Net.Protocols.Myrcon.Frostbite.Battlefield.Battlefield3 {
     [GameDeclaration(Type = CommonGameType.BF_3, Name = "Battlefield 3", Provider = "Myrcon")]
@@ -31,13 +32,13 @@ namespace Procon.Net.Protocols.Myrcon.Frostbite.Battlefield.Battlefield3 {
                 "RoundTime"
             };
 
-            this.PacketDispatcher.Append(new Dictionary<PacketDispatch, PacketDispatcher.PacketDispatchHandler>() {
+            this.PacketDispatcher.Append(new Dictionary<IPacketDispatch, Action<IPacketWrapper, IPacketWrapper>>() {
                 {
                     new PacketDispatch() {
                         Name = "player.ping", 
                         Origin = PacketOrigin.Client
                     },
-                    new PacketDispatcher.PacketDispatchHandler(this.PlayerPingResponseDispatchHandler)
+                    new Action<IPacketWrapper, IPacketWrapper>(this.PlayerPingResponseDispatchHandler)
                 }
             });
         }

@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using NUnit.Framework;
+using Procon.Net.Shared;
 using Procon.Net.Test.Mocks;
 
 namespace Procon.Net.Test {
@@ -16,7 +18,7 @@ namespace Procon.Net.Test {
 
             MockPacketDispatcher dispatcher = new MockPacketDispatcher();
 
-            dispatcher.Append(new Dictionary<PacketDispatch, PacketDispatcher.PacketDispatchHandler>() {
+            dispatcher.Append(new Dictionary<IPacketDispatch, Action<IPacketWrapper, IPacketWrapper>>() {
                 { 
                     new PacketDispatch() {
                         Name = "TestMockPacketDispatcherSuccess", Origin = PacketOrigin.Client
@@ -50,7 +52,7 @@ namespace Procon.Net.Test {
                 MissingDispatchHandler = (identifer, request, response) => { failed = true; }
             };
 
-            dispatcher.Append(new Dictionary<PacketDispatch, PacketDispatcher.PacketDispatchHandler>() {
+            dispatcher.Append(new Dictionary<IPacketDispatch, Action<IPacketWrapper, IPacketWrapper>>() {
                 { 
                     new PacketDispatch() {
                         Name = "TestMockPacketDispatcherDifferentOriginFailed", Origin = PacketOrigin.Client
@@ -85,7 +87,7 @@ namespace Procon.Net.Test {
                 MissingDispatchHandler = (identifer, request, response) => { failed = true; }
             };
 
-            dispatcher.Append(new Dictionary<PacketDispatch, PacketDispatcher.PacketDispatchHandler>() {
+            dispatcher.Append(new Dictionary<IPacketDispatch, Action<IPacketWrapper, IPacketWrapper>>() {
                 { 
                     new PacketDispatch() {
                         Name = "TestMockPacketDispatcherMissingDispatchNameFailed", Origin = PacketOrigin.Client
@@ -118,7 +120,7 @@ namespace Procon.Net.Test {
 
             MockPacketDispatcher dispatcher = new MockPacketDispatcher();
 
-            dispatcher.Append(new Dictionary<PacketDispatch, PacketDispatcher.PacketDispatchHandler>() {
+            dispatcher.Append(new Dictionary<IPacketDispatch, Action<IPacketWrapper, IPacketWrapper>>() {
                 { 
                     new PacketDispatch() {
                         Name = "TestMockPacketDispatcherReplacedDispatcherSuccess", Origin = PacketOrigin.Client
@@ -128,7 +130,7 @@ namespace Procon.Net.Test {
                 }
             });
 
-            dispatcher.Append(new Dictionary<PacketDispatch, PacketDispatcher.PacketDispatchHandler>() {
+            dispatcher.Append(new Dictionary<IPacketDispatch, Action<IPacketWrapper, IPacketWrapper>>() {
                 { 
                     new PacketDispatch() {
                         Name = "TestMockPacketDispatcherReplacedDispatcherSuccess", Origin = PacketOrigin.Client

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using Procon.Core.Shared;
-using Procon.Net.Models;
-using Procon.Net.Utils.HTTP;
+using Procon.Net.Shared.Models;
+using Procon.Net.Shared.Utils.HTTP;
 using TestPlugin.Pages;
 
 namespace TestPlugin.Tests {

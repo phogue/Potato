@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using NUnit.Framework;
+using Procon.Net.Shared;
 using Procon.Net.Test.Mocks;
 
 namespace Procon.Net.Test {

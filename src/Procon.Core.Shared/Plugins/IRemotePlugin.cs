@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using Procon.Core.Shared.Events;
 using Procon.Net;
+using Procon.Net.Shared;
 
 namespace Procon.Core.Shared.Plugins {
     /// <summary>

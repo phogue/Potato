@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using Procon.Net.Shared.Utils;
 
 namespace Procon.Net.Utils.HTTP {
     public class PostParameter {

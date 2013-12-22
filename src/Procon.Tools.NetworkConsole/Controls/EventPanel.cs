@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Windows.Forms;
 using System.Timers;
+using Procon.Net.Shared;
 
 namespace Procon.Tools.NetworkConsole.Controls {
     using Procon.Net;

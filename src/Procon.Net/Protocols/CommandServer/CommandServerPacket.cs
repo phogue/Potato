@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Specialized;
 using System.Net;
+using Procon.Net.Shared;
 
 namespace Procon.Net.Protocols.CommandServer {
     /// <summary>

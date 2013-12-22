@@ -10,6 +10,7 @@ using Procon.Core.Repositories;
 using Procon.Core.Security;
 using Procon.Core.Shared;
 using Procon.Core.Shared.Events;
+using Procon.Net.Shared.Utils;
 using Procon.Net.Utils;
 
 #endregion

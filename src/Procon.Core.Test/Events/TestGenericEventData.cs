@@ -6,8 +6,9 @@ using NUnit.Framework;
 using Procon.Core.Shared;
 using Procon.Core.Shared.Events;
 using Procon.Net;
-using Procon.Net.Actions;
-using Procon.Net.Models;
+using Procon.Net.Shared;
+using Procon.Net.Shared.Actions;
+using Procon.Net.Shared.Models;
 
 #endregion
 

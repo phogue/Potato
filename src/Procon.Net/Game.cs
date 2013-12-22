@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Procon.Net.Actions;
-using Procon.Net.Actions.Deferred;
-using Procon.Net.Models;
 using Procon.Net.Protocols;
+using Procon.Net.Shared;
+using Procon.Net.Shared.Actions;
+using Procon.Net.Shared.Actions.Deferred;
+using Procon.Net.Shared.Models;
 
 namespace Procon.Net {
     public abstract class Game : IGame {

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
-using Procon.Net.Actions;
+using Procon.Net.Shared;
+using Procon.Net.Shared.Actions;
 
 namespace Procon.Net.Test.Mocks {
 

@@ -2,6 +2,7 @@
 using System.Net.Security;
 using System.Security.Authentication;
 using System.Security.Cryptography.X509Certificates;
+using Procon.Net.Shared;
 
 namespace Procon.Net.Protocols.CommandServer {
     /// <summary>
@@ -40,7 +41,7 @@ namespace Procon.Net.Protocols.CommandServer {
             try {
                 stream.AuthenticateAsServer(this.Certificate);
 
-                this.ConnectionState = Net.ConnectionState.ConnectionReady;
+                this.ConnectionState = ConnectionState.ConnectionReady;
             }
             catch (AuthenticationException e) {
                 this.Shutdown(e);

@@ -10,11 +10,11 @@ using Procon.Core.Security;
 using Procon.Core.Shared;
 using Procon.Core.Shared.Models;
 using Procon.Fuzzy.Tokens.Primitive.Temporal;
-using Procon.Net.Actions;
-using Procon.Net.Collections;
-using Procon.Net.Models;
 using Procon.Net.Protocols;
 using Procon.Net.Protocols.Myrcon.Frostbite.Battlefield.Battlefield3;
+using Procon.Net.Shared.Actions;
+using Procon.Net.Shared.Collections;
+using Procon.Net.Shared.Models;
 
 #endregion
 

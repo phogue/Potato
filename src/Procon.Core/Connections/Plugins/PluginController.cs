@@ -12,6 +12,7 @@ using Procon.Core.Shared.Events;
 using Procon.Core.Shared.Models;
 using Procon.Core.Shared.Plugins;
 using Procon.Net;
+using Procon.Net.Shared;
 using Procon.Service.Shared;
 
 namespace Procon.Core.Connections.Plugins {
@@ -318,7 +319,8 @@ namespace Procon.Core.Connections.Plugins {
                                                                   file.Name != Defines.NewtonsoftJsonDll &&
                                                                   file.Name != Defines.ProconCoreSharedDll &&
                                                                   file.Name != Defines.ProconDatabaseSharedDll &&
-                                                                  file.Name != Defines.ProconDatabaseSerializationDll);
+                                                                  file.Name != Defines.ProconDatabaseSerializationDll &&
+                                                                  file.Name != Defines.ProconNetSharedDll);
 
             // If there are dll files in this directory, setup the plugins.
             foreach (String path in files.Select(file => file.FullName)) {

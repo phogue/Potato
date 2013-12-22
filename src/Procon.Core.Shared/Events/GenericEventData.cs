@@ -1,4 +1,5 @@
 ﻿using Procon.Net;
+using Procon.Net.Shared;
 
 namespace Procon.Core.Shared.Events {
     public static class GenericEventData {

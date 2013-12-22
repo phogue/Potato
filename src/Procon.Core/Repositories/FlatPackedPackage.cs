@@ -5,6 +5,7 @@ using System.IO;
 using System.Xml.Serialization;
 using Ionic.Zip;
 using Newtonsoft.Json;
+using Procon.Net.Shared.Utils;
 using Procon.Service.Shared;
 
 namespace Procon.Core.Repositories {

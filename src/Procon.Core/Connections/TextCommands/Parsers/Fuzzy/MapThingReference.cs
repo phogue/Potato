@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Procon.Fuzzy.Tokens.Object;
-using Procon.Net.Actions;
+using Procon.Net.Shared.Actions;
 
 namespace Procon.Core.Connections.TextCommands.Parsers.Fuzzy {
     /// <summary>

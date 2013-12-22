@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using NUnit.Framework;
-using Procon.Net.Actions;
-using Procon.Net.Actions.Deferred;
+using Procon.Net.Shared;
+using Procon.Net.Shared.Actions;
+using Procon.Net.Shared.Actions.Deferred;
 
 namespace Procon.Net.Test.Actions.Deferred {
     [TestFixture]

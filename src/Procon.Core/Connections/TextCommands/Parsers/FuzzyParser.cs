@@ -12,9 +12,9 @@ using Procon.Fuzzy.Tokens.Primitive;
 using Procon.Fuzzy.Tokens.Primitive.Numeric;
 using Procon.Fuzzy.Tokens.Primitive.Temporal;
 using Procon.Fuzzy.Utils;
-using Procon.Net.Actions;
-using Procon.Net.Geolocation;
-using Procon.Net.Models;
+using Procon.Net.Shared.Actions;
+using Procon.Net.Shared.Geolocation;
+using Procon.Net.Shared.Models;
 
 namespace Procon.Core.Connections.TextCommands.Parsers {
 

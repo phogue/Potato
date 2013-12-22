@@ -1,4 +1,6 @@
-﻿namespace Procon.Net.Test.Mocks {
+﻿using Procon.Net.Shared;
+
+namespace Procon.Net.Test.Mocks {
     public class MockPacketDispatcher : PacketDispatcher {
 
         public override void Dispatch(IPacketWrapper wrapper) {

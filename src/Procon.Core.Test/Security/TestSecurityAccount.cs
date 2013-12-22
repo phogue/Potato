@@ -6,6 +6,7 @@ using System.Linq;
 using NUnit.Framework;
 using Procon.Core.Security;
 using Procon.Core.Shared;
+using Procon.Net.Shared.Utils;
 using Procon.Net.Utils;
 
 #endregion

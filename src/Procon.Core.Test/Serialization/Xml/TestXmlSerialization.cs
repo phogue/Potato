@@ -10,10 +10,11 @@ using Procon.Core.Localization;
 using Procon.Core.Security;
 using Procon.Core.Shared;
 using Procon.Core.Shared.Models;
-using Procon.Net.Actions;
-using Procon.Net.Collections;
-using Procon.Net.Models;
 using Procon.Net.Protocols;
+using Procon.Net.Shared.Actions;
+using Procon.Net.Shared.Collections;
+using Procon.Net.Shared.Models;
+using Procon.Net.Shared.Utils;
 using Procon.Net.Utils;
 
 #endregion

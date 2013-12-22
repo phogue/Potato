@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Linq;
+using Procon.Net.Shared;
 
 namespace Procon.Net {
     /// <summary>

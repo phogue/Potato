@@ -7,8 +7,8 @@ using Procon.Core.Connections;
 using Procon.Core.Localization;
 using Procon.Core.Shared;
 using Procon.Core.Shared.Models;
-using Procon.Net.Actions;
-using Procon.Net.Models;
+using Procon.Net.Shared.Actions;
+using Procon.Net.Shared.Models;
 
 #endregion
 

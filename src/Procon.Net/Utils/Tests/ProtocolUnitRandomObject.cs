@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.Runtime.Serialization;
+using Procon.Net.Shared.Utils;
 
 namespace Procon.Net.Utils.Tests {
     public class ProtocolUnitRandomObject : IDisposable {

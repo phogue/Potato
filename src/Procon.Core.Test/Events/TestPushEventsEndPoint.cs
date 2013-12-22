@@ -10,6 +10,7 @@ using NUnit.Framework;
 using Newtonsoft.Json;
 using Procon.Core.Events;
 using Procon.Core.Shared.Events;
+using Procon.Net.Shared.Utils.HTTP;
 using Procon.Net.Utils.HTTP;
 
 #endregion

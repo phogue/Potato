@@ -8,6 +8,7 @@ using System.Xml.Linq;
 using Procon.Core.Shared;
 using Procon.Core.Shared.Events;
 using Procon.Core.Shared.Models;
+using Procon.Net.Shared.Utils;
 using Procon.Net.Utils;
 using Procon.Service.Shared;
 

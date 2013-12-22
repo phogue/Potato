@@ -22,8 +22,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 using System.Timers;
-using Procon.Net.Actions;
-using Procon.Net.Models;
+using Procon.Net.Shared;
+using Procon.Net.Shared.Actions;
+using Procon.Net.Shared.Models;
 
 namespace Procon.Tools.NetworkConsole.Controls {
     using Procon.Net;

@@ -6,7 +6,8 @@ using System.Globalization;
 using System.Xml.Linq;
 using NUnit.Framework;
 using Procon.Core.Shared;
-using Procon.Net.Actions;
+using Procon.Net.Shared.Actions;
+using Procon.Net.Shared.Utils;
 using Procon.Net.Utils;
 
 #endregion

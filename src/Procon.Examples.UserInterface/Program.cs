@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using Procon.Core.Shared;
 using Procon.Core.Shared.Plugins;
 using Procon.Examples.UserInterface.Pages;
-using Procon.Net.Models;
-using Procon.Net.Utils.HTTP;
+using Procon.Net.Shared.Models;
+using Procon.Net.Shared.Utils.HTTP;
 
 namespace Procon.Examples.UserInterface {
     /// <summary>

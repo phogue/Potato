@@ -15,6 +15,7 @@ using Procon.Database.Serialization.Builders.Methods.Data;
 using Procon.Database.Serialization.Builders.Methods.Schema;
 using Procon.Database.Serialization.Builders.Values;
 using Procon.Database.Shared;
+using Procon.Net.Shared.Utils;
 using Procon.Net.Utils;
 
 #endregion

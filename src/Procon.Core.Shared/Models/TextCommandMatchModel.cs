@@ -4,8 +4,8 @@ using System.ComponentModel;
 using System.Xml;
 using System.Xml.Serialization;
 using Newtonsoft.Json;
-using Procon.Net.Actions;
-using Procon.Net.Models;
+using Procon.Net.Shared.Actions;
+using Procon.Net.Shared.Models;
 
 namespace Procon.Core.Shared.Models {
 

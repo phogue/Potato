@@ -1,4 +1,5 @@
 ﻿using System;
+using Procon.Net.Shared;
 
 namespace Procon.Net {
     public class PacketStream : IPacketStream {

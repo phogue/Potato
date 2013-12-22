@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using Procon.Net.Actions;
-using Procon.Net.Collections;
+using Procon.Net.Shared.Actions;
+using Procon.Net.Shared.Collections;
 
 namespace Procon.Net.Protocols.Myrcon.Frostbite.Objects {
     [Serializable]

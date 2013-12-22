@@ -1,4 +1,5 @@
 ﻿using System;
+using Procon.Net.Shared.Utils;
 
 namespace Procon.Core.Repositories {
     using Procon.Net.Utils;

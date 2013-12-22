@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
+using Procon.Net.Shared;
 
 namespace Procon.Net.Test.Mocks {
     public class MockTcpListener {

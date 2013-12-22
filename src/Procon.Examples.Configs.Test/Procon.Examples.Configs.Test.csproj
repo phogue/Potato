@@ -63,6 +63,10 @@
       <Project>{9BD2735E-A370-4730-B892-FA2EE2C228FB}</Project>
       <Name>Procon.Examples.Configs</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Procon.Net.Shared\Procon.Net.Shared.csproj">
+      <Project>{4FDF48B5-790A-4717-A798-D18D76032DF7}</Project>
+      <Name>Procon.Net.Shared</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Procon.Net\Procon.Net.csproj">
       <Project>{65C1DB17-18E0-4AC5-8709-3F7E04B88CA1}</Project>
       <Name>Procon.Net</Name>

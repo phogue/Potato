@@ -2,6 +2,7 @@
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
+using Procon.Net.Shared;
 
 namespace Procon.Net {
 
@@ -172,14 +173,14 @@ namespace Procon.Net {
                 this.Client.EndConnect(ar);
                 this.Client.NoDelay = true;
 
-                this.ConnectionState = Net.ConnectionState.ConnectionConnected;
+                this.ConnectionState = ConnectionState.ConnectionConnected;
                 this.LocalEndPoint = (IPEndPoint)this.Client.Client.LocalEndPoint;
                 this.RemoteEndPoint = (IPEndPoint)this.Client.Client.RemoteEndPoint;
 
                 this.Stream = this.Client.GetStream();
                 this.BeginRead();
 
-                this.ConnectionState = Net.ConnectionState.ConnectionReady;
+                this.ConnectionState = ConnectionState.ConnectionReady;
             }
             catch (SocketException se) {
                 this.Shutdown(se);
@@ -203,7 +204,7 @@ namespace Procon.Net {
 
                         this.SequenceNumber = 0;
 
-                        this.ConnectionState = Net.ConnectionState.ConnectionConnecting;
+                        this.ConnectionState = ConnectionState.ConnectionConnecting;
 
                         this.Client = new System.Net.Sockets.TcpClient {
                             NoDelay = true
@@ -261,7 +262,7 @@ namespace Procon.Net {
 
             lock (this.ShutdownConnectionLock) {
 
-                this.ConnectionState = Net.ConnectionState.ConnectionDisconnecting;
+                this.ConnectionState = ConnectionState.ConnectionDisconnecting;
 
                 if (this.Client != null) {
 
@@ -284,12 +285,12 @@ namespace Procon.Net {
                         this.OnConnectionFailure(e);
                     }
                     finally {
-                        this.ConnectionState = Net.ConnectionState.ConnectionDisconnected;
+                        this.ConnectionState = ConnectionState.ConnectionDisconnected;
                     }
                 }
                 else {
                     // Nothing open, let's disconnect.
-                    this.ConnectionState = Net.ConnectionState.ConnectionDisconnected;
+                    this.ConnectionState = ConnectionState.ConnectionDisconnected;
                 }
             }
         }

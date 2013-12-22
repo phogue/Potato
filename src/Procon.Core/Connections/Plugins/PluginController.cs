@@ -185,10 +185,15 @@ namespace Procon.Core.Connections.Plugins {
         /// Copies the necessary files to execute a plugin to the specified directory.
         /// </summary>
         protected void CreatePluginDirectory(FileSystemInfo pluginDirectory) {
+            List<String> files = new List<String>() {
+                Defines.ProconCoreSharedDll,
+                Defines.ProconNetSharedDll,
+                Defines.ProconDatabaseSharedDll,
+                Defines.NewtonsoftJsonDll
+            };
+
             try {
-                File.Copy(Defines.ProconDirectoryProconCoreDll, Path.Combine(pluginDirectory.FullName, Defines.ProconCoreDll), true);
-                File.Copy(Defines.ProconDirectoryProconNetDll, Path.Combine(pluginDirectory.FullName, Defines.ProconNetDll), true);
-                // File.Copy(Defines.ProconDirectoryNewtonsoftJsonNet35Dll, Path.Combine(pluginDirectory.FullName, Defines.NewtonsoftJsonNet35Dll), true);
+                files.ForEach(file => File.Copy(Path.Combine(Defines.BaseDirectory, file), Path.Combine(pluginDirectory.FullName, file), true));
             }
             catch (Exception) { }
         }

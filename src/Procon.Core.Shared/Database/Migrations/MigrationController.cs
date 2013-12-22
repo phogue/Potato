@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Procon.Database.Serialization.Builders.FieldTypes;
-using Procon.Database.Serialization.Builders.Methods.Data;
-using Procon.Database.Serialization.Builders.Methods.Schema;
-using Procon.Database.Serialization.Builders.Modifiers;
+using Procon.Database.Shared.Builders.FieldTypes;
+using Procon.Database.Shared.Builders.Methods.Data;
+using Procon.Database.Shared.Builders.Methods.Schema;
+using Procon.Database.Shared.Builders.Modifiers;
 
 namespace Procon.Core.Shared.Database.Migrations {
     /// <summary>

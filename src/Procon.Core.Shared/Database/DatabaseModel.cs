@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json.Linq;
-using Procon.Database.Serialization.Builders.Methods.Data;
-using Procon.Database.Serialization.Builders.Values;
 using Procon.Database.Shared;
+using Procon.Database.Shared.Builders.Methods.Data;
+using Procon.Database.Shared.Builders.Values;
 
 namespace Procon.Core.Shared.Database {
     /// <summary>

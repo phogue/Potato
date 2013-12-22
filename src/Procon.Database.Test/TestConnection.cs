@@ -5,12 +5,11 @@ using System.Linq;
 using NUnit.Framework;
 using Newtonsoft.Json.Linq;
 using Procon.Database.Drivers;
-using Procon.Database.Serialization;
-using Procon.Database.Serialization.Builders.Methods.Data;
-using Procon.Database.Serialization.Builders.Methods.Schema;
-using Procon.Database.Serialization.Builders.Modifiers;
-using Procon.Database.Serialization.Builders.Values;
 using Procon.Database.Shared;
+using Procon.Database.Shared.Builders.Methods.Data;
+using Procon.Database.Shared.Builders.Methods.Schema;
+using Procon.Database.Shared.Builders.Modifiers;
+using Procon.Database.Shared.Builders.Values;
 
 namespace Procon.Database.Test {
     [TestFixture]

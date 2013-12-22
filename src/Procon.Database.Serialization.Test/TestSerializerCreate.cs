@@ -1,15 +1,15 @@
-﻿using Procon.Database.Serialization.Builders.FieldTypes;
-using Procon.Database.Serialization.Builders.Methods.Schema;
-using Procon.Database.Serialization.Builders.Modifiers;
-using Procon.Database.Serialization.Builders.Statements;
-using Procon.Database.Shared;
+﻿using Procon.Database.Shared;
+using Procon.Database.Shared.Builders.FieldTypes;
+using Procon.Database.Shared.Builders.Methods.Schema;
+using Procon.Database.Shared.Builders.Modifiers;
+using Procon.Database.Shared.Builders.Statements;
 
 namespace Procon.Database.Serialization.Test {
     public abstract class TestSerializerCreate {
         #region TestCreateDatabaseProcon
 
         protected IDatabaseObject TestCreateDatabaseProconExplicit = new Create()
-            .Database(new Builders.Database() {
+            .Database(new Shared.Builders.Database() {
                 Name = "Procon"
             });
 

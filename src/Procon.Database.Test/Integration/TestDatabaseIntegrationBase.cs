@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using Procon.Database.Serialization.Builders.FieldTypes;
-using Procon.Database.Serialization.Builders.Methods.Data;
-using Procon.Database.Serialization.Builders.Methods.Schema;
 using Procon.Database.Shared;
+using Procon.Database.Shared.Builders.FieldTypes;
+using Procon.Database.Shared.Builders.Methods.Data;
+using Procon.Database.Shared.Builders.Methods.Schema;
 
 namespace Procon.Database.Test.Integration {
     public abstract class TestDatabaseIntegrationBase {

@@ -4,8 +4,8 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 using Procon.Database.Drivers;
-using Procon.Database.Serialization.Builders.Values;
 using Procon.Database.Shared;
+using Procon.Database.Shared.Builders.Values;
 
 namespace Procon.Database.Test.Integration.SqLite {
     public class SqLiteDatabaseIntegration : IDatabaseIntegration {

@@ -1,11 +1,11 @@
 ﻿using System.Linq;
 using Procon.Core.Shared;
 using Procon.Core.Shared.Database.Migrations;
-using Procon.Database.Serialization.Builders;
-using Procon.Database.Serialization.Builders.FieldTypes;
-using Procon.Database.Serialization.Builders.Methods.Schema;
-using Procon.Database.Serialization.Builders.Modifiers;
-using Procon.Database.Serialization.Utils;
+using Procon.Database.Shared.Builders;
+using Procon.Database.Shared.Builders.FieldTypes;
+using Procon.Database.Shared.Builders.Methods.Schema;
+using Procon.Database.Shared.Builders.Modifiers;
+using Procon.Database.Shared.Utils;
 
 namespace Procon.Examples.Database {
     /// <summary>

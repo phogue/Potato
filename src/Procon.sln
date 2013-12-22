@@ -37,8 +37,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procon.Database", "Procon.D
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procon.Database.Test", "Procon.Database.Test\Procon.Database.Test.csproj", "{8BBACCEF-0CF7-4D5E-B4EF-DDB1DFE6CAB5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procon.Database.Serialization", "Procon.Database.Serialization\Procon.Database.Serialization.csproj", "{C9FD27C8-167E-4B6A-82C0-8C9925584EE3}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procon.Database.Serialization.Test", "Procon.Database.Serialization.Test\Procon.Database.Serialization.Test.csproj", "{D7DA532C-7168-4D54-B413-EE31E107C187}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{0274CCAA-A949-4071-AEC6-387CA6FC9FC2}"
@@ -241,16 +239,6 @@ Global
 		{8BBACCEF-0CF7-4D5E-B4EF-DDB1DFE6CAB5}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{8BBACCEF-0CF7-4D5E-B4EF-DDB1DFE6CAB5}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{8BBACCEF-0CF7-4D5E-B4EF-DDB1DFE6CAB5}.Release|x86.ActiveCfg = Release|Any CPU
-		{C9FD27C8-167E-4B6A-82C0-8C9925584EE3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C9FD27C8-167E-4B6A-82C0-8C9925584EE3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C9FD27C8-167E-4B6A-82C0-8C9925584EE3}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{C9FD27C8-167E-4B6A-82C0-8C9925584EE3}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{C9FD27C8-167E-4B6A-82C0-8C9925584EE3}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{C9FD27C8-167E-4B6A-82C0-8C9925584EE3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C9FD27C8-167E-4B6A-82C0-8C9925584EE3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C9FD27C8-167E-4B6A-82C0-8C9925584EE3}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{C9FD27C8-167E-4B6A-82C0-8C9925584EE3}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{C9FD27C8-167E-4B6A-82C0-8C9925584EE3}.Release|x86.ActiveCfg = Release|Any CPU
 		{D7DA532C-7168-4D54-B413-EE31E107C187}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D7DA532C-7168-4D54-B413-EE31E107C187}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D7DA532C-7168-4D54-B413-EE31E107C187}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU

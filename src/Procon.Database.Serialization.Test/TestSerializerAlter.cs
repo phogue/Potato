@@ -1,8 +1,8 @@
-﻿using Procon.Database.Serialization.Builders.FieldTypes;
-using Procon.Database.Serialization.Builders.Methods.Schema;
-using Procon.Database.Serialization.Builders.Statements;
-using Procon.Database.Shared;
-using Nullable = Procon.Database.Serialization.Builders.Modifiers.Nullable;
+﻿using Procon.Database.Shared;
+using Procon.Database.Shared.Builders.FieldTypes;
+using Procon.Database.Shared.Builders.Methods.Schema;
+using Procon.Database.Shared.Builders.Statements;
+using Nullable = Procon.Database.Shared.Builders.Modifiers.Nullable;
 
 namespace Procon.Database.Serialization.Test {
     public abstract class TestSerializerAlter {

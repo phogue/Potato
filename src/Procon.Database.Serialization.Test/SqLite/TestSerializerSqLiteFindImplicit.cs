@@ -1,6 +1,6 @@
 using System.Linq;
 using NUnit.Framework;
-using Procon.Database.Serialization.Serializers.Sql;
+using Procon.Database.Shared.Serializers.Sql;
 
 namespace Procon.Database.Serialization.Test.SqLite {
     [TestFixture]

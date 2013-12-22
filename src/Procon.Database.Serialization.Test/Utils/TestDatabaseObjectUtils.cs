@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
-using Procon.Database.Serialization.Builders.Methods.Data;
-using Procon.Database.Serialization.Builders.Methods.Schema;
-using Procon.Database.Serialization.Builders.Values;
-using Procon.Database.Serialization.Utils;
 using Procon.Database.Shared;
+using Procon.Database.Shared.Builders.Methods.Data;
+using Procon.Database.Shared.Builders.Methods.Schema;
+using Procon.Database.Shared.Builders.Values;
+using Procon.Database.Shared.Utils;
 
 namespace Procon.Database.Serialization.Test.Utils {
     [TestFixture]

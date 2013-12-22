@@ -4,7 +4,7 @@ using System.Linq;
 using Procon.Core.Shared;
 using Procon.Core.Shared.Events;
 using Procon.Core.Shared.Plugins;
-using Procon.Database.Serialization.Builders.Methods.Data;
+using Procon.Database.Shared.Builders.Methods.Data;
 
 namespace Procon.Examples.Database {
     /// <summary>

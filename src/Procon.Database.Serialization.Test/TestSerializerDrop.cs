@@ -1,13 +1,13 @@
-﻿using Procon.Database.Serialization.Builders.Methods.Schema;
-using Procon.Database.Serialization.Builders.Statements;
-using Procon.Database.Shared;
+﻿using Procon.Database.Shared;
+using Procon.Database.Shared.Builders.Methods.Schema;
+using Procon.Database.Shared.Builders.Statements;
 
 namespace Procon.Database.Serialization.Test {
     public abstract class TestSerializerDrop {
         #region TestDropDatabaseProcon
 
         protected IDatabaseObject TestDropDatabaseProconExplicit = new Drop()
-            .Database(new Builders.Database() {
+            .Database(new Shared.Builders.Database() {
                 Name = "Procon"
             });
 

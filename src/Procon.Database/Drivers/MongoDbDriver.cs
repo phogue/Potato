@@ -4,13 +4,13 @@ using System.Linq;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
-using Procon.Database.Serialization.Builders;
-using Procon.Database.Serialization.Builders.Methods.Data;
-using Procon.Database.Serialization.Builders.Methods.Schema;
-using Procon.Database.Serialization.Builders.Modifiers;
-using Procon.Database.Serialization.Builders.Values;
-using Procon.Database.Serialization.Serializers.NoSql;
 using Procon.Database.Shared;
+using Procon.Database.Shared.Builders;
+using Procon.Database.Shared.Builders.Methods.Data;
+using Procon.Database.Shared.Builders.Methods.Schema;
+using Procon.Database.Shared.Builders.Modifiers;
+using Procon.Database.Shared.Builders.Values;
+using Procon.Database.Shared.Serializers.NoSql;
 
 namespace Procon.Database.Drivers {
     /// <summary>

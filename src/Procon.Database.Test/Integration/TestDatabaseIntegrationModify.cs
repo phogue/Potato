@@ -1,6 +1,6 @@
-using Procon.Database.Serialization.Builders.Equalities;
-using Procon.Database.Serialization.Builders.Methods.Data;
 using Procon.Database.Shared;
+using Procon.Database.Shared.Builders.Equalities;
+using Procon.Database.Shared.Builders.Methods.Data;
 
 namespace Procon.Database.Test.Integration {
     public abstract class TestDatabaseIntegrationModify : TestDatabaseIntegrationBase {

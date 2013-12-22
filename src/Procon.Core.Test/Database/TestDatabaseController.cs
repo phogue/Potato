@@ -10,11 +10,11 @@ using Procon.Core.Database;
 using Procon.Core.Shared;
 using Procon.Core.Shared.Models;
 using Procon.Core.Variables;
-using Procon.Database.Serialization.Builders.FieldTypes;
-using Procon.Database.Serialization.Builders.Methods.Data;
-using Procon.Database.Serialization.Builders.Methods.Schema;
-using Procon.Database.Serialization.Builders.Values;
 using Procon.Database.Shared;
+using Procon.Database.Shared.Builders.FieldTypes;
+using Procon.Database.Shared.Builders.Methods.Data;
+using Procon.Database.Shared.Builders.Methods.Schema;
+using Procon.Database.Shared.Builders.Values;
 using Procon.Net.Shared.Utils;
 using Procon.Net.Utils;
 

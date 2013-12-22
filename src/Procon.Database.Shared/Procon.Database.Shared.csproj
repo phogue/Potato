@@ -32,6 +32,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\JSON\Bin\Net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -44,17 +48,88 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Builders\Database.cs" />
+    <Compile Include="Builders\Equalities\Equals.cs" />
+    <Compile Include="Builders\Equalities\GreaterThan.cs" />
+    <Compile Include="Builders\Equalities\GreaterThanEquals.cs" />
+    <Compile Include="Builders\Equalities\LessThan.cs" />
+    <Compile Include="Builders\Equalities\LessThanEquals.cs" />
+    <Compile Include="Builders\Equality.cs" />
+    <Compile Include="Builders\Error.cs" />
+    <Compile Include="Builders\FieldModifier.cs" />
+    <Compile Include="Builders\FieldType.cs" />
+    <Compile Include="Builders\FieldTypes\BooleanType.cs" />
+    <Compile Include="Builders\FieldTypes\DateTimeType.cs" />
+    <Compile Include="Builders\FieldTypes\FloatType.cs" />
+    <Compile Include="Builders\FieldTypes\IntegerType.cs" />
+    <Compile Include="Builders\FieldTypes\StringType.cs" />
+    <Compile Include="Builders\FieldTypes\TextType.cs" />
     <Compile Include="Builders\IEquality.cs" />
     <Compile Include="Builders\IFieldType.cs" />
     <Compile Include="Builders\IIndexModifier.cs" />
     <Compile Include="Builders\IMethod.cs" />
+    <Compile Include="Builders\IndexModifier.cs" />
     <Compile Include="Builders\ISortByModifier.cs" />
+    <Compile Include="Builders\Logical.cs" />
+    <Compile Include="Builders\Logicals\And.cs" />
+    <Compile Include="Builders\Logicals\Or.cs" />
+    <Compile Include="Builders\Method.cs" />
+    <Compile Include="Builders\Methods\Data\Find.cs" />
+    <Compile Include="Builders\Methods\Data\Merge.cs" />
+    <Compile Include="Builders\Methods\Data\Modify.cs" />
+    <Compile Include="Builders\Methods\Data\Remove.cs" />
+    <Compile Include="Builders\Methods\Data\Save.cs" />
+    <Compile Include="Builders\Methods\Schema\Alter.cs" />
+    <Compile Include="Builders\Methods\Schema\Create.cs" />
+    <Compile Include="Builders\Methods\Schema\Drop.cs" />
+    <Compile Include="Builders\Methods\Schema\Index.cs" />
+    <Compile Include="Builders\Modifier.cs" />
+    <Compile Include="Builders\Modifiers\Affected.cs" />
+    <Compile Include="Builders\Modifiers\Ascending.cs" />
+    <Compile Include="Builders\Modifiers\AutoIncrement.cs" />
+    <Compile Include="Builders\Modifiers\Descending.cs" />
+    <Compile Include="Builders\Modifiers\Distinct.cs" />
+    <Compile Include="Builders\Modifiers\Explicit.cs" />
+    <Compile Include="Builders\Modifiers\IfNotExists.cs" />
+    <Compile Include="Builders\Modifiers\Implicit.cs" />
+    <Compile Include="Builders\Modifiers\Length.cs" />
+    <Compile Include="Builders\Modifiers\Limit.cs" />
+    <Compile Include="Builders\Modifiers\Nullable.cs" />
+    <Compile Include="Builders\Modifiers\Primary.cs" />
+    <Compile Include="Builders\Modifiers\Skip.cs" />
+    <Compile Include="Builders\Modifiers\Unique.cs" />
+    <Compile Include="Builders\Modifiers\Unsigned.cs" />
+    <Compile Include="Builders\Operator.cs" />
+    <Compile Include="Builders\SortByModifier.cs" />
+    <Compile Include="Builders\Statement.cs" />
+    <Compile Include="Builders\Statements\Assignment.cs" />
+    <Compile Include="Builders\Statements\Collection.cs" />
+    <Compile Include="Builders\Statements\Field.cs" />
+    <Compile Include="Builders\Statements\Sort.cs" />
+    <Compile Include="Builders\Value.cs" />
+    <Compile Include="Builders\Values\CollectionValue.cs" />
+    <Compile Include="Builders\Values\DateTimeValue.cs" />
+    <Compile Include="Builders\Values\DocumentValue.cs" />
+    <Compile Include="Builders\Values\NumericValue.cs" />
+    <Compile Include="Builders\Values\RawValue.cs" />
+    <Compile Include="Builders\Values\StringValue.cs" />
+    <Compile Include="CompiledQuery.cs" />
+    <Compile Include="DatabaseObject.cs" />
     <Compile Include="ICompiledQuery.cs" />
     <Compile Include="IDatabaseObject.cs" />
     <Compile Include="IParsedQuery.cs" />
     <Compile Include="IQueryData.cs" />
     <Compile Include="ISerializer.cs" />
+    <Compile Include="ParsedQuery.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="QueryData.cs" />
+    <Compile Include="Serializer.cs" />
+    <Compile Include="Serializers\NoSql\SerializerMongoDb.cs" />
+    <Compile Include="Serializers\SerializerNoSql.cs" />
+    <Compile Include="Serializers\SerializerSql.cs" />
+    <Compile Include="Serializers\Sql\SerializerMySql.cs" />
+    <Compile Include="Serializers\Sql\SerializerSqLite.cs" />
+    <Compile Include="Utils\DatabaseObjectUtils.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

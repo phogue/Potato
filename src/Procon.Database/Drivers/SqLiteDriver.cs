@@ -4,13 +4,13 @@ using System.Data;
 using System.Data.Common;
 using System.Linq;
 using System.Data.SQLite;
-using Procon.Database.Serialization.Builders;
-using Procon.Database.Serialization.Builders.Methods.Data;
-using Procon.Database.Serialization.Builders.Modifiers;
-using Procon.Database.Serialization.Builders.Values;
-using Procon.Database.Serialization.Serializers.Sql;
-using Procon.Database.Serialization.Utils;
 using Procon.Database.Shared;
+using Procon.Database.Shared.Builders;
+using Procon.Database.Shared.Builders.Methods.Data;
+using Procon.Database.Shared.Builders.Modifiers;
+using Procon.Database.Shared.Builders.Values;
+using Procon.Database.Shared.Serializers.Sql;
+using Procon.Database.Shared.Utils;
 
 namespace Procon.Database.Drivers {
     /// <summary>

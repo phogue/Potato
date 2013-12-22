@@ -46,11 +46,25 @@ namespace Procon.Core.Connections.Plugins {
         [XmlIgnore, JsonIgnore]
         public Connection Connection { get; set; }
 
+
+        /// <summary>
+        /// Works between PluginController and RemotePluginController as a known type by a plugin
+        /// assembly and Core, just bubbling (not tunneling) commands.
+        /// </summary>
+        [XmlIgnore, JsonIgnore]
+        public LocalCallbackProxy LocalCallbackProxy { get; set; }
+
         /// <summary>
         /// Default Initialization
         /// </summary>
         public PluginController() : base() {
             this.Plugins = new List<HostPlugin>();
+
+            this.LocalCallbackProxy = new LocalCallbackProxy() {
+                BubbleObjects = {
+                    this
+                }
+            };
 
             this.AppendDispatchHandlers(new Dictionary<CommandAttribute, CommandDispatchHandler>() {
                 {
@@ -308,7 +322,7 @@ namespace Procon.Core.Connections.Plugins {
             this.PluginFactory = (IRemotePluginController)this.AppDomainSandbox.CreateInstanceAndUnwrap(typeof(RemotePluginController).Assembly.FullName, typeof(RemotePluginController).FullName);
 
             this.PluginFactory.BubbleObjects = new List<IExecutableBase>() {
-                this
+                this.LocalCallbackProxy
             };
         }
 

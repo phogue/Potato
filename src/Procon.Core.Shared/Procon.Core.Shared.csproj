@@ -99,6 +99,7 @@
     <Compile Include="Plugins\IRemotePlugin.cs" />
     <Compile Include="Plugins\IRemotePluginController.cs" />
     <Compile Include="Plugins\IRenewableLease.cs" />
+    <Compile Include="Plugins\LocalCallbackProxy.cs" />
     <Compile Include="Plugins\RemotePlugin.cs" />
     <Compile Include="Plugins\RemotePluginController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

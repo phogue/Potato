@@ -40,13 +40,13 @@ namespace Procon.Net {
         /// <summary>
         /// Fired when ever a dispatched game event occurs.
         /// </summary>
-        event Action<Game, GameEventArgs> GameEvent;
+        event Action<IGame, GameEventArgs> GameEvent;
 
         /// <summary>
         /// Fired when something occurs with the underlying client. This can
         /// be connections, disconnections, logins or raw packets being recieved.
         /// </summary>
-        event Action<Game, ClientEventArgs> ClientEvent;
+        event Action<IGame, ClientEventArgs> ClientEvent;
 
         /// <summary>
         /// Process a generic network action. All packets generated and sent to the server should be returned here.

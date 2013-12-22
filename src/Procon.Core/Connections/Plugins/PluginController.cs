@@ -271,13 +271,13 @@ namespace Procon.Core.Connections.Plugins {
             return base.Execute();
         }
 
-        private void Connection_ClientEvent(Game sender, ClientEventArgs e) {
+        private void Connection_ClientEvent(IGame sender, ClientEventArgs e) {
             if (this.PluginFactory != null) {
                 this.PluginFactory.ClientEvent(e);
             }
         }
 
-        private void Connection_GameEvent(Game sender, GameEventArgs e) {
+        private void Connection_GameEvent(IGame sender, GameEventArgs e) {
             if (this.PluginFactory != null) {
                 this.PluginFactory.GameEvent(e);
             }

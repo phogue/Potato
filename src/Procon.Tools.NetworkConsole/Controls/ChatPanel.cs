@@ -85,7 +85,7 @@ namespace Procon.Tools.NetworkConsole.Controls {
             this.lsvChatObjects.EndUpdate();
         }
 
-        private void m_activeGame_GameEvent(Game sender, GameEventArgs e) {
+        private void m_activeGame_GameEvent(IGame sender, GameEventArgs e) {
             if (this.InvokeRequired == true) {
                 this.Invoke(new Action<Game, GameEventArgs>(this.m_activeGame_GameEvent), sender, e);
                 return;

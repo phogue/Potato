@@ -121,7 +121,7 @@ namespace Procon.Tools.NetworkConsole {
             }
         }
 
-        void ActiveGame_GameEvent(Game sender, GameEventArgs e) {
+        void ActiveGame_GameEvent(IGame sender, GameEventArgs e) {
             if (this.InvokeRequired == true) {
                 this.Invoke(new Action<Game, GameEventArgs>(this.ActiveGame_GameEvent), sender, e);
                 return;
@@ -130,7 +130,7 @@ namespace Procon.Tools.NetworkConsole {
             this.gameStatePropertyGrid.Refresh();
         }
 
-        void ActiveGame_ClientEvent(Game sender, ClientEventArgs e) {
+        void ActiveGame_ClientEvent(IGame sender, ClientEventArgs e) {
             if (this.InvokeRequired == true) {
                 this.Invoke(new Action<Game, ClientEventArgs>(this.ActiveGame_ClientEvent), sender, e);
                 return;

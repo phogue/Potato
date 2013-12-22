@@ -152,7 +152,7 @@ namespace Procon.Net {
         /// <summary>
         /// Fired when ever a dispatched game event occurs.
         /// </summary>
-        public virtual event Action<Game, GameEventArgs> GameEvent;
+        public virtual event Action<IGame, GameEventArgs> GameEvent;
 
         protected void OnGameEvent(GameEventType eventType, GameEventData now = null, GameEventData then = null) {
             var handler = this.GameEvent;
@@ -174,7 +174,7 @@ namespace Procon.Net {
         /// Fired when something occurs with the underlying client. This can
         /// be connections, disconnections, logins or raw packets being recieved.
         /// </summary>
-        public virtual event Action<Game, ClientEventArgs> ClientEvent;
+        public virtual event Action<IGame, ClientEventArgs> ClientEvent;
 
         protected void OnClientEvent(ClientEventType eventType, ClientEventData now = null, ClientEventData then = null) {
             var handler = this.ClientEvent;

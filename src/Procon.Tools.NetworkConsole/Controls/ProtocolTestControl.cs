@@ -41,7 +41,7 @@ namespace Procon.Tools.NetworkConsole.Controls {
         }
 
 
-        private void m_activeGame_ClientEvent(Game sender, ClientEventArgs e) {
+        private void m_activeGame_ClientEvent(IGame sender, ClientEventArgs e) {
             if (this.InvokeRequired == true) {
                 this.Invoke(new Action<Game, ClientEventArgs>(this.m_activeGame_ClientEvent), sender, e);
                 return;
@@ -52,7 +52,7 @@ namespace Procon.Tools.NetworkConsole.Controls {
             }
         }
 
-        private void m_activeGame_GameEvent(Game sender, GameEventArgs e) {
+        private void m_activeGame_GameEvent(IGame sender, GameEventArgs e) {
             if (this.InvokeRequired == true) {
                 this.Invoke(new Action<Game, GameEventArgs>(this.m_activeGame_GameEvent), sender, e);
                 return;
@@ -225,7 +225,7 @@ namespace Procon.Tools.NetworkConsole.Controls {
             this.ActiveGame.ClientEvent += ActiveGame_ClientEvent;
         }
 
-        protected void ActiveGame_ClientEvent(Game sender, ClientEventArgs e) {
+        protected void ActiveGame_ClientEvent(IGame sender, ClientEventArgs e) {
             if (this.InvokeRequired == true) {
                 this.Invoke(new Action<Game, ClientEventArgs>(this.ActiveGame_ClientEvent), sender, e);
                 return;

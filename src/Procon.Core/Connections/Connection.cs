@@ -548,7 +548,7 @@ namespace Procon.Core.Connections {
             return result;
         }
 
-        private void Game_ClientEvent(Game sender, ClientEventArgs e) {
+        private void Game_ClientEvent(IGame sender, ClientEventArgs e) {
             if (e.EventType == ClientEventType.ClientConnectionStateChange) {
                 if (this.Game != null) {
                     this.ConnectionModel.GameType = this.Game.GameType as GameType;
@@ -594,7 +594,7 @@ namespace Procon.Core.Connections {
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Game_GameEvent(Game sender, GameEventArgs e) {
+        private void Game_GameEvent(IGame sender, GameEventArgs e) {
             if (this.Variables.Get<List<String>>(CommonVariableNames.GameEventsIgnoreList).Contains(e.GameEventType.ToString()) == false) {
                 this.Events.Log(new GenericEventArgs() {
                     Name = e.GameEventType.ToString(),

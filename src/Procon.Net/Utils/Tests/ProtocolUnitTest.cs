@@ -76,7 +76,7 @@ namespace Procon.Net.Utils.Tests {
             if (game.Client.ConnectionState != ConnectionState.ConnectionDisconnected) {
                 AutoResetEvent disconnectEvent = new AutoResetEvent(false);
 
-                Action<Game, ClientEventArgs> handler = (sender, args) => {
+                Action<IGame, ClientEventArgs> handler = (sender, args) => {
                     if (args.EventType == ClientEventType.ClientConnectionStateChange) {
                         if (args.ConnectionState == ConnectionState.ConnectionDisconnected) {
                             disconnectEvent.Set();
@@ -109,7 +109,7 @@ namespace Procon.Net.Utils.Tests {
             if (game.Client.ConnectionState != ConnectionState.ConnectionLoggedIn) {
                 AutoResetEvent loginEvent = new AutoResetEvent(false);
 
-                Action<Game, ClientEventArgs> handler = (sender, args) => {
+                Action<IGame, ClientEventArgs> handler = (sender, args) => {
                     if (args.EventType == ClientEventType.ClientConnectionStateChange) {
                         if (args.ConnectionState == ConnectionState.ConnectionLoggedIn) {
                             loginEvent.Set();
@@ -159,7 +159,7 @@ namespace Procon.Net.Utils.Tests {
 
                     ProtocolUnitTestCommand localCommand = command;
 
-                    Action<Game, ClientEventArgs> handler = (sender, args) => {
+                    Action<IGame, ClientEventArgs> handler = (sender, args) => {
                         if (args.EventType == ClientEventType.ClientPacketReceived) {
                             ProtocolUnitTestPacket matchedPacket = args.Now.Packets.First().Type == PacketType.Response ? localCommand.Responses.FirstOrDefault(response => response.Matches(args.Now.Packets.First().ToString())) : localCommand.Requests.FirstOrDefault(request => request.Matches(args.Now.Packets.First().ToString()));
 

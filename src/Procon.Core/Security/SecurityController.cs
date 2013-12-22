@@ -5,6 +5,7 @@ using Procon.Core.Shared;
 using Procon.Core.Shared.Events;
 using Procon.Core.Shared.Models;
 using Procon.Net.Protocols;
+using Procon.Net.Shared.Protocols;
 using Procon.Net.Shared.Utils;
 
 namespace Procon.Core.Security {

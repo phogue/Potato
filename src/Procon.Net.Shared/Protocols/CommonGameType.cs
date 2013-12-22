@@ -1,6 +1,6 @@
-﻿using System;
+using System;
 
-namespace Procon.Net.Protocols {
+namespace Procon.Net.Shared.Protocols {
 
     /// <summary>
     /// The purpose of this over "Connection is BFBC2" is so the game has a

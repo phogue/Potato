@@ -13,6 +13,7 @@ using Procon.Core.Security;
 using Procon.Core.Shared;
 using Procon.Core.Variables;
 using Procon.Net.Protocols;
+using Procon.Net.Shared.Protocols;
 using Procon.Net.Shared.Utils;
 using Procon.Net.Utils;
 using Procon.Service.Shared;

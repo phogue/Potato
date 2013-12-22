@@ -9,6 +9,7 @@ using System.Timers;
 using Procon.Net.Protocols;
 using Procon.Net.Shared;
 using Procon.Net.Shared.Actions;
+using Procon.Net.Shared.Protocols;
 
 namespace Procon.Tools.NetworkConsole {
     using Procon.Net;

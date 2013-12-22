@@ -8,6 +8,7 @@ using Procon.Core.Shared;
 using Procon.Core.Shared.Models;
 using Procon.Core.Variables;
 using Procon.Net.Protocols;
+using Procon.Net.Shared.Protocols;
 using Procon.Service.Shared;
 
 #endregion

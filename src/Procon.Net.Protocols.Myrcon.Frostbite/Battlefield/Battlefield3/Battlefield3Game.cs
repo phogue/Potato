@@ -7,6 +7,7 @@ using Procon.Net.Protocols.Myrcon.Frostbite.Objects;
 using Procon.Net.Shared;
 using Procon.Net.Shared.Actions;
 using Procon.Net.Shared.Models;
+using Procon.Net.Shared.Protocols;
 
 namespace Procon.Net.Protocols.Myrcon.Frostbite.Battlefield.Battlefield3 {
     [GameDeclaration(Type = CommonGameType.BF_3, Name = "Battlefield 3", Provider = "Myrcon")]

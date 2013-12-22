@@ -14,6 +14,7 @@ using Procon.Net.Protocols;
 using Procon.Net.Shared.Actions;
 using Procon.Net.Shared.Collections;
 using Procon.Net.Shared.Models;
+using Procon.Net.Shared.Protocols;
 using Procon.Net.Shared.Utils;
 using Procon.Net.Utils;
 

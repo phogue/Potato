@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Xml.Serialization;
 using Newtonsoft.Json;
-using Procon.Net.Protocols;
+using Procon.Net.Shared.Protocols;
 
 namespace Procon.Core.Shared.Models {
     [Serializable]
@@ -25,7 +25,7 @@ namespace Procon.Core.Shared.Models {
         public AccountModel Account { get; set; }
 
         public AccountPlayerModel() {
-            this.GameType = Net.Protocols.CommonGameType.None;
+            this.GameType = CommonGameType.None;
 
             this.Uid = String.Empty;
         }

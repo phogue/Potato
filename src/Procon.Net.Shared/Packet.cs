@@ -1,9 +1,8 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Net;
-using Procon.Net.Shared;
 
-namespace Procon.Net {
+namespace Procon.Net.Shared {
 
     [Serializable]
     public sealed class Packet : IPacket {

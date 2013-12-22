@@ -7,6 +7,7 @@ using NUnit.Framework;
 using Procon.Core.Security;
 using Procon.Core.Shared;
 using Procon.Net.Protocols;
+using Procon.Net.Shared.Protocols;
 
 #endregion
 

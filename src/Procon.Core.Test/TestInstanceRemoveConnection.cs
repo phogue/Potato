@@ -7,6 +7,7 @@ using System.Linq;
 using NUnit.Framework;
 using Procon.Core.Shared;
 using Procon.Net.Protocols;
+using Procon.Net.Shared.Protocols;
 using Procon.Service.Shared;
 
 #endregion

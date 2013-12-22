@@ -10,6 +10,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
 using Procon.Net.Shared;
+using Procon.Net.Shared.Protocols.CommandServer;
 using Procon.Net.Shared.Utils;
 using Procon.Net.Utils;
 

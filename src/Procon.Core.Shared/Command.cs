@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.Xml.Linq;
 using System.Xml.Serialization;
 using Newtonsoft.Json;
-using Procon.Net.Protocols;
-using Procon.Net.Protocols.CommandServer;
+using Procon.Net.Shared.Protocols;
+using Procon.Net.Shared.Protocols.CommandServer;
 using Procon.Net.Shared.Utils;
-using Procon.Net.Utils;
 
 namespace Procon.Core.Shared {
     /// <summary>

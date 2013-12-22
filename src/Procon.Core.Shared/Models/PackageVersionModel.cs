@@ -5,7 +5,6 @@ using System.IO;
 using System.Xml.Serialization;
 using Procon.Core.Shared.Models.Serialization;
 using Procon.Net.Shared.Utils;
-using Procon.Net.Utils;
 
 namespace Procon.Core.Shared.Models {
     [Serializable, XmlRoot(ElementName = "package_version")]

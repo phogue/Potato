@@ -13,6 +13,7 @@ using Procon.Core.Shared.Models;
 using Procon.Net;
 using Procon.Net.Protocols.CommandServer;
 using Procon.Net.Shared;
+using Procon.Net.Shared.Protocols.CommandServer;
 using Procon.Net.Shared.Utils;
 using Procon.Net.Shared.Utils.HTTP;
 using Procon.Net.Utils;

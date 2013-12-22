@@ -11,6 +11,7 @@ using Procon.Core.Shared;
 using Procon.Core.Shared.Models;
 using Procon.Net.Protocols;
 using Procon.Net.Protocols.Myrcon.Frostbite.Battlefield.Battlefield3;
+using Procon.Net.Shared.Protocols;
 
 #endregion
 

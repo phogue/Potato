@@ -14,6 +14,7 @@ using Procon.Core.Shared.Models;
 using Procon.Core.Shared.Scheduler;
 using Procon.Net.Protocols;
 using Procon.Net.Shared;
+using Procon.Net.Shared.Protocols;
 
 namespace Procon.Core {
     using Procon.Core.Connections;

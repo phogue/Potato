@@ -54,6 +54,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\CommonAssemblyInfo.cs">
+      <Link>Properties\CommonAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="Battlefield\Battlefield3\Battlefield3Game.cs" />
     <Compile Include="Battlefield\Battlefield3\Objects\Battlefield3FrostbiteMapList.cs" />
     <Compile Include="Battlefield\Battlefield3\Objects\Battlefield3PlayerList.cs" />

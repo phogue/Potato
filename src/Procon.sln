@@ -37,7 +37,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procon.Database", "Procon.D
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procon.Database.Test", "Procon.Database.Test\Procon.Database.Test.csproj", "{8BBACCEF-0CF7-4D5E-B4EF-DDB1DFE6CAB5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procon.Database.Serialization.Test", "Procon.Database.Serialization.Test\Procon.Database.Serialization.Test.csproj", "{D7DA532C-7168-4D54-B413-EE31E107C187}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procon.Database.Shared.Test", "Procon.Database.Shared.Test\Procon.Database.Shared.Test.csproj", "{D7DA532C-7168-4D54-B413-EE31E107C187}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{0274CCAA-A949-4071-AEC6-387CA6FC9FC2}"
 EndProject

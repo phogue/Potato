@@ -1,0 +1,137 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{1B4351C6-BAAD-4075-A322-CAF4FE582392}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Procon.Core.Shared</RootNamespace>
+    <AssemblyName>Procon.Core.Shared</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\builds\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>..\..\builds\Documentation\Procon.Core.Shared.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\JSON\Bin\Net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\CommonAssemblyInfo.cs">
+      <Link>Properties\CommonAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="Command.cs" />
+    <Compile Include="CommandAttribute.cs" />
+    <Compile Include="CommandAttributeType.cs" />
+    <Compile Include="CommandBuilder.cs" />
+    <Compile Include="CommandData.cs" />
+    <Compile Include="CommandOrigin.cs" />
+    <Compile Include="CommandParameter.cs" />
+    <Compile Include="CommandParameterType.cs" />
+    <Compile Include="CommandResultArgs.cs" />
+    <Compile Include="CommandResultType.cs" />
+    <Compile Include="CommandScope.cs" />
+    <Compile Include="CommandType.cs" />
+    <Compile Include="Config.cs" />
+    <Compile Include="Database\DatabaseModel.cs" />
+    <Compile Include="Database\Migrations\IMigration.cs" />
+    <Compile Include="Database\Migrations\IMigrationSettings.cs" />
+    <Compile Include="Database\Migrations\Migration.cs" />
+    <Compile Include="Database\Migrations\MigrationController.cs" />
+    <Compile Include="Database\Migrations\MigrationModel.cs" />
+    <Compile Include="Database\Migrations\MigrationOrigin.cs" />
+    <Compile Include="Database\Migrations\MigrationSettings.cs" />
+    <Compile Include="Events\GenericEventArgs.cs" />
+    <Compile Include="Events\GenericEventData.cs" />
+    <Compile Include="Events\GenericEventType.cs" />
+    <Compile Include="ExecutableBase.cs" />
+    <Compile Include="IExecutableBase.cs" />
+    <Compile Include="CoreModel.cs" />
+    <Compile Include="Models\AccountModel.cs" />
+    <Compile Include="Models\AccountPlayerModel.cs" />
+    <Compile Include="Models\CommonVariableNames.cs" />
+    <Compile Include="Models\ConnectionModel.cs" />
+    <Compile Include="Models\GroupModel.cs" />
+    <Compile Include="Models\LanguageModel.cs" />
+    <Compile Include="Models\PackageFileModel.cs" />
+    <Compile Include="Models\PackageModel.cs" />
+    <Compile Include="Models\PackageState.cs" />
+    <Compile Include="Models\PackageType.cs" />
+    <Compile Include="Models\PackageVersionModel.cs" />
+    <Compile Include="Models\ParserType.cs" />
+    <Compile Include="Models\PermissionModel.cs" />
+    <Compile Include="Models\PluginModel.cs" />
+    <Compile Include="Models\RepositoryModel.cs" />
+    <Compile Include="Models\Serialization\SerializableVersionModel.cs" />
+    <Compile Include="Models\TextCommandModel.cs" />
+    <Compile Include="Models\TextCommandIntervalModel.cs" />
+    <Compile Include="Models\TextCommandIntervalType.cs" />
+    <Compile Include="Models\TextCommandMatchModel.cs" />
+    <Compile Include="Models\VariableModel.cs" />
+    <Compile Include="Plugins\IRemotePlugin.cs" />
+    <Compile Include="Plugins\IRemotePluginController.cs" />
+    <Compile Include="Plugins\IRenewableLease.cs" />
+    <Compile Include="Plugins\RemotePlugin.cs" />
+    <Compile Include="Plugins\RemotePluginController.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Scheduler\Task.cs" />
+    <Compile Include="Scheduler\TaskController.cs" />
+    <Compile Include="Scheduler\Temporal.cs" />
+    <Compile Include="Scheduler\TickEventArgs.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Procon.Database.Serialization\Procon.Database.Serialization.csproj">
+      <Project>{C9FD27C8-167E-4B6A-82C0-8C9925584EE3}</Project>
+      <Name>Procon.Database.Serialization</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Procon.Database.Shared\Procon.Database.Shared.csproj">
+      <Project>{F6F1BD6C-1743-492A-A18C-810E2C5601F2}</Project>
+      <Name>Procon.Database.Shared</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Procon.Net\Procon.Net.csproj">
+      <Project>{65C1DB17-18E0-4AC5-8709-3F7E04B88CA1}</Project>
+      <Name>Procon.Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Procon.Service.Shared\Procon.Service.Shared.csproj">
+      <Project>{3F9E6801-A015-4F7E-9B67-7015F1F58B18}</Project>
+      <Name>Procon.Service.Shared</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

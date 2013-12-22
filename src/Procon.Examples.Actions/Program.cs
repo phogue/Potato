@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Procon.Core;
-using Procon.Core.Connections.Plugins;
+using Procon.Core.Shared;
+using Procon.Core.Shared.Plugins;
 using Procon.Net;
 using Procon.Net.Actions;
 using Procon.Net.Actions.Deferred;

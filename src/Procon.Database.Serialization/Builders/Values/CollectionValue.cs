@@ -1,6 +1,7 @@
-﻿using System;
+using System;
 using System.Linq;
 using Newtonsoft.Json.Linq;
+using Procon.Database.Shared;
 
 namespace Procon.Database.Serialization.Builders.Values {
     /// <summary>
@@ -17,7 +18,7 @@ namespace Procon.Database.Serialization.Builders.Values {
         public JArray ToJArray() {
             JArray array = new JArray();
 
-            foreach (Value value in this.Where(statement => statement is Value)) {
+            foreach (Value value in Enumerable.Where<IDatabaseObject>(this, statement => statement is Value)) {
                 DocumentValue document = value as DocumentValue;
 
                 array.Add(document != null ? new JObject(document.ToJObject()) : new JObject(value.ToObject()));
@@ -40,7 +41,7 @@ namespace Procon.Database.Serialization.Builders.Values {
         }
 
         public override object ToObject() {
-            return this.Where(statement => statement is Value).Cast<Value>().Select(statement => statement.ToObject()).ToList();
+            return Enumerable.Where<IDatabaseObject>(this, statement => statement is Value).Cast<Value>().Select(statement => statement.ToObject()).ToList();
         }
     }
 }

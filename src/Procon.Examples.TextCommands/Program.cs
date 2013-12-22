@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Procon.Core;
-using Procon.Core.Connections.Plugins;
-using Procon.Core.Connections.TextCommands;
-using Procon.Core.Events;
+using Procon.Core.Shared;
+using Procon.Core.Shared.Events;
+using Procon.Core.Shared.Models;
+using Procon.Core.Shared.Plugins;
 
 namespace Procon.Examples.TextCommands {
     public class Program : RemotePlugin {
@@ -34,7 +34,7 @@ namespace Procon.Examples.TextCommands {
             });
         }
         
-        public override void GenericEvent(Core.Events.GenericEventArgs e) {
+        public override void GenericEvent(GenericEventArgs e) {
             base.GenericEvent(e);
 
             if (e.GenericEventType == GenericEventType.PluginsPluginEnabled) {
@@ -51,8 +51,8 @@ namespace Procon.Examples.TextCommands {
                     Parameters = new List<CommandParameter>() {
                         new CommandParameter() {
                             Data = {
-                                TextCommands = new List<TextCommand>() {
-                                    new TextCommand() {
+                                TextCommands = new List<TextCommandModel>() {
+                                    new TextCommandModel() {
                                         PluginUid = this.PluginGuid.ToString(),
                                         PluginCommand = "TestCommand", // This will be the command name that comes through
                                         DescriptionKey = "TestCommandDescription",
@@ -73,7 +73,7 @@ namespace Procon.Examples.TextCommands {
         protected CommandResultArgs TestCommand(Command command, Dictionary<String, CommandParameter> parameters) {
             CommandResultArgs e = parameters["e"].First<CommandResultArgs>();
 
-            TextCommandMatch match = e.Now.TextCommandMatches.First();
+            TextCommandMatchModel match = e.Now.TextCommandMatches.First();
 
             if (match.Players != null && match.Players.Count > 0) {
                 Console.WriteLine("Players: " + String.Join(", ", match.Players.Select(x => x.Name).ToArray()));

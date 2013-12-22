@@ -1,23 +1,28 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
-using Procon.Core.Connections.TextCommands;
 using Procon.Core.Connections;
+using Procon.Core.Connections.TextCommands;
 using Procon.Core.Security;
+using Procon.Core.Shared;
+using Procon.Core.Shared.Models;
+using Procon.Fuzzy.Tokens.Primitive.Temporal;
 using Procon.Net.Actions;
 using Procon.Net.Collections;
 using Procon.Net.Models;
 using Procon.Net.Protocols;
-using Procon.Fuzzy.Tokens.Primitive.Temporal;
 using Procon.Net.Protocols.Myrcon.Frostbite.Battlefield.Battlefield3;
+
+#endregion
 
 namespace Procon.Core.Test.TextCommands.Fuzzy {
     public abstract class TestFuzzyBase {
-
         //protected TextCommandController TextCommandController { get; set; }
 
-        protected static TextCommand TextCommandKick = new TextCommand() {
+        protected static TextCommandModel TextCommandKick = new TextCommandModel() {
             Commands = new List<string>() {
                 "kick",
                 "get rid of"
@@ -26,7 +31,7 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
             DescriptionKey = "KICK"
         };
 
-        protected static TextCommand TextCommandTest = new TextCommand() {
+        protected static TextCommandModel TextCommandTest = new TextCommandModel() {
             Commands = new List<string>() {
                 "test"
             },
@@ -34,7 +39,7 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
             DescriptionKey = "TEST"
         };
 
-        protected static TextCommand TextCommandChangeMap = new TextCommand() {
+        protected static TextCommandModel TextCommandChangeMap = new TextCommandModel() {
             Commands = new List<string>() {
                 "change map",
                 "play"
@@ -43,7 +48,7 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
             DescriptionKey = "CHANGEMAP"
         };
 
-        protected static TextCommand TextCommandCalculate = new TextCommand() {
+        protected static TextCommandModel TextCommandCalculate = new TextCommandModel() {
             Commands = new List<string>() {
                 "calculate"
             },
@@ -74,7 +79,7 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
             }
         };
 
-        protected static Player PlayerImisnew2 =  new Player() {
+        protected static Player PlayerImisnew2 = new Player() {
             Name = "Imisnew2",
             Uid = "2",
             Ping = 100,
@@ -306,13 +311,34 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
         };
 
         protected TextCommandController CreateTextCommandController() {
-            SecurityController security = new SecurityController().Execute() as SecurityController;
-            
-            security.Tunnel(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityAddGroup, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "GroupName" }) });
-            security.Tunnel(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityGroupAddAccount, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "GroupName", "Phogue" }) });
-            security.Tunnel(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityAccountAddPlayer, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "Phogue", CommonGameType.BF_3, "EA_63A9F96745B22DFB509C558FC8B5C50F" }) });
+            var security = new SecurityController().Execute() as SecurityController;
 
-            TextCommandController textCommandController = new TextCommandController() {
+            security.Tunnel(new Command() {
+                Origin = CommandOrigin.Local,
+                CommandType = CommandType.SecurityAddGroup,
+                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                    "GroupName"
+                })
+            });
+            security.Tunnel(new Command() {
+                Origin = CommandOrigin.Local,
+                CommandType = CommandType.SecurityGroupAddAccount,
+                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                    "GroupName",
+                    "Phogue"
+                })
+            });
+            security.Tunnel(new Command() {
+                Origin = CommandOrigin.Local,
+                CommandType = CommandType.SecurityAccountAddPlayer,
+                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                    "Phogue",
+                    CommonGameType.BF_3,
+                    "EA_63A9F96745B22DFB509C558FC8B5C50F"
+                })
+            });
+
+            var textCommandController = new TextCommandController() {
                 Security = security,
                 //Languages = languages,
                 Connection = new Connection() {
@@ -325,40 +351,40 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
 
             textCommandController.Execute();
 
-            textCommandController.TextCommands.AddRange(new List<TextCommand>() {
-                TestFuzzyBase.TextCommandKick,
-                TestFuzzyBase.TextCommandChangeMap,
-                TestFuzzyBase.TextCommandCalculate,
-                TestFuzzyBase.TextCommandTest
+            textCommandController.TextCommands.AddRange(new List<TextCommandModel>() {
+                TextCommandKick,
+                TextCommandChangeMap,
+                TextCommandCalculate,
+                TextCommandTest
             });
 
             textCommandController.Connection.GameState.Players.AddRange(new Players() {
-                TestFuzzyBase.PlayerPhogue,
-                TestFuzzyBase.PlayerImisnew2,
-                TestFuzzyBase.PlayerPhilK,
-                TestFuzzyBase.PlayerMorpheus,
-                TestFuzzyBase.PlayerIke,
-                TestFuzzyBase.PlayerPapaCharlie9,
-                TestFuzzyBase.PlayerEBassie,
-                TestFuzzyBase.PlayerZaeed,
-                TestFuzzyBase.PlayerPhogueIsAButterfly,
-                TestFuzzyBase.PlayerSayaNishino,
-                TestFuzzyBase.PlayerMrDiacritic
+                PlayerPhogue,
+                PlayerImisnew2,
+                PlayerPhilK,
+                PlayerMorpheus,
+                PlayerIke,
+                PlayerPapaCharlie9,
+                PlayerEBassie,
+                PlayerZaeed,
+                PlayerPhogueIsAButterfly,
+                PlayerSayaNishino,
+                PlayerMrDiacritic
             });
 
             textCommandController.Connection.GameState.Items = textCommandController.Connection.GameState.Players.SelectMany(player => player.Inventory.Items).ToList();
 
             textCommandController.Connection.GameState.MapPool.AddRange(new List<Map>() {
-                TestFuzzyBase.MapPortValdez,
-                TestFuzzyBase.MapValparaiso,
-                TestFuzzyBase.MapPanamaCanal
+                MapPortValdez,
+                MapValparaiso,
+                MapPanamaCanal
             });
 
             return textCommandController;
         }
 
         /// <summary>
-        /// Executes a command as the username "Phogue" by default
+        ///     Executes a command as the username "Phogue" by default
         /// </summary>
         /// <param name="textCommandController"></param>
         /// <param name="command">The text based command to execute.</param>
@@ -369,22 +395,19 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
                 Username = username,
                 Origin = CommandOrigin.Local
             }, new Dictionary<string, CommandParameter>() {
-                { 
-                    "text", 
-                    new CommandParameter() {
-                        Data = {
-                            Content = new List<string>() {
-                                command
-                            }
+                {"text", new CommandParameter() {
+                    Data = {
+                        Content = new List<string>() {
+                            command
                         }
                     }
-                }
+                }}
             });
-            
+
             return result;
         }
 
-        protected static void AssertExecutedCommandAgainstSentencesList(CommandResultArgs args, TextCommand primaryCommand, List<String> sentences) {
+        protected static void AssertExecutedCommandAgainstSentencesList(CommandResultArgs args, TextCommandModel primaryCommand, List<String> sentences) {
             Assert.AreEqual(primaryCommand, args.Now.TextCommands.First(), String.Format("Has not used the '{0}' command", primaryCommand.PluginCommand));
             Assert.AreEqual(sentences.Count, args.Now.TextCommandMatches.First().Quotes != null ? args.Now.TextCommandMatches.First().Quotes.Count : 0, "Incorrect numbers of sentences returned");
 
@@ -393,20 +416,20 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
             }
         }
 
-        protected static void AssertCommandSentencesList(TextCommandController textCommandController, String command, TextCommand primaryCommand, List<String> sentences) {
-            CommandResultArgs args = TestFuzzyBase.ExecuteTextCommand(textCommandController, command);
+        protected static void AssertCommandSentencesList(TextCommandController textCommandController, String command, TextCommandModel primaryCommand, List<String> sentences) {
+            CommandResultArgs args = ExecuteTextCommand(textCommandController, command);
 
-            TestFuzzyBase.AssertExecutedCommandAgainstSentencesList(args, primaryCommand, sentences);
+            AssertExecutedCommandAgainstSentencesList(args, primaryCommand, sentences);
         }
 
         /// <summary>
-        /// Validates the results of an executed player/maps combination command
+        ///     Validates the results of an executed player/maps combination command
         /// </summary>
         /// <param name="args">The generated event from the already executed command.</param>
         /// <param name="primaryCommand">The command to check against - the returning primary command must be this</param>
         /// <param name="players">The list of players that must be in the resulting matched players (nothing more, nothing less)</param>
         /// <param name="maps">The list of maps that must be in the resulting matched maps (nothing more, nothing less)</param>
-        protected static void AssertExecutedCommandAgainstPlayerListMapList(CommandResultArgs args, TextCommand primaryCommand, List<Player> players, List<Map> maps) {
+        protected static void AssertExecutedCommandAgainstPlayerListMapList(CommandResultArgs args, TextCommandModel primaryCommand, List<Player> players, List<Map> maps) {
             Assert.AreEqual(primaryCommand, args.Now.TextCommands.First(), String.Format("Has not used the '{0}' command", primaryCommand.PluginCommand));
             Assert.AreEqual(players.Count, args.Now.TextCommandMatches.First().Players != null ? args.Now.TextCommandMatches.First().Players.Count : 0, "Incorrect numbers of players returned");
             Assert.AreEqual(maps.Count, args.Now.TextCommandMatches.First().Maps != null ? args.Now.TextCommandMatches.First().Maps.Count : 0, "Incorrect numbers of maps returned");
@@ -421,48 +444,48 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
         }
 
         /// <summary>
-        /// Executes a command and validates the results against a simple player and map list.
+        ///     Executes a command and validates the results against a simple player and map list.
         /// </summary>
         /// <param name="textCommandController"></param>
         /// <param name="command">The text command to execute</param>
         /// <param name="primaryCommand">The command to check against - the returning primary command must be this</param>
         /// <param name="players">The list of players that must be in the resulting matched players (nothing more, nothing less)</param>
         /// <param name="maps">The list of maps that must be in the resulting matched maps (nothing more, nothing less)</param>
-        protected static void AssertCommandPlayerListMapList(TextCommandController textCommandController, String command, TextCommand primaryCommand, List<Player> players, List<Map> maps) {
-            CommandResultArgs args = TestFuzzyBase.ExecuteTextCommand(textCommandController, command);
+        protected static void AssertCommandPlayerListMapList(TextCommandController textCommandController, String command, TextCommandModel primaryCommand, List<Player> players, List<Map> maps) {
+            CommandResultArgs args = ExecuteTextCommand(textCommandController, command);
 
-            TestFuzzyBase.AssertExecutedCommandAgainstPlayerListMapList(args, primaryCommand, players, maps);
+            AssertExecutedCommandAgainstPlayerListMapList(args, primaryCommand, players, maps);
         }
 
         /// <summary>
-        /// Validates the results of an executed arithmetic command
+        ///     Validates the results of an executed arithmetic command
         /// </summary>
         /// <param name="args">The generated event from the already executed command.</param>
         /// <param name="primaryCommand">The command to check against - the returning primary command must be this</param>
         /// <param name="value">The value of the arithmetic return. There must be only one value returned.</param>
-        protected static void AssertExecutedCommandAgainstNumericValue(CommandResultArgs args, TextCommand primaryCommand, float value) {
+        protected static void AssertExecutedCommandAgainstNumericValue(CommandResultArgs args, TextCommandModel primaryCommand, float value) {
             Assert.AreEqual(primaryCommand, args.Now.TextCommands.First(), String.Format("Has not used the '{0}' command", primaryCommand.PluginCommand));
             Assert.AreEqual(1, args.Now.TextCommandMatches.First().Numeric.Count, "Not exactly one numeric value returned");
             Assert.AreEqual(value, args.Now.TextCommandMatches.First().Numeric.FirstOrDefault());
         }
 
         /// <summary>
-        /// Little helper used for basic arithmetic tests
+        ///     Little helper used for basic arithmetic tests
         /// </summary>
         /// <param name="textCommandController"></param>
         /// <param name="command">The text command to execute</param>
         /// <param name="primaryCommand">The command to check against - the returning primary command must be this</param>
         /// <param name="value">The value of the arithmetic return. There must be only one value returned.</param>
-        protected static void AssertNumericCommand(TextCommandController textCommandController, String command, TextCommand primaryCommand, float value) {
-            CommandResultArgs args = TestFuzzyBase.ExecuteTextCommand(textCommandController, command);
+        protected static void AssertNumericCommand(TextCommandController textCommandController, String command, TextCommandModel primaryCommand, float value) {
+            CommandResultArgs args = ExecuteTextCommand(textCommandController, command);
 
-            TestFuzzyBase.AssertExecutedCommandAgainstNumericValue(args, primaryCommand, value);
+            AssertExecutedCommandAgainstNumericValue(args, primaryCommand, value);
         }
 
-        protected static void AssertExecutedCommandAgainstTemporalValue(CommandResultArgs args, TextCommand primaryCommand, TimeSpan? period = null, DateTime? delay = null, FuzzyDateTimePattern interval = null) {
+        protected static void AssertExecutedCommandAgainstTemporalValue(CommandResultArgs args, TextCommandModel primaryCommand, TimeSpan? period = null, DateTime? delay = null, FuzzyDateTimePattern interval = null) {
             Assert.AreEqual(primaryCommand, args.Now.TextCommands.First(), String.Format("Has not used the '{0}' command", primaryCommand.PluginCommand));
 
-            TextCommandMatch match = args.Now.TextCommandMatches.First();
+            TextCommandMatchModel match = args.Now.TextCommandMatches.First();
 
             Assert.IsNotNull(match);
 
@@ -485,7 +508,7 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
                 // Whatever is passed into this function is generated after the command has been run.
                 Assert.IsTrue(delay.Value - match.Delay.Value < new TimeSpan(TimeSpan.TicksPerSecond * 1));
 
-               // Assert.AreEqual(delay.Value, args.After.TextCommandMatches.First().Delay.Value);
+                // Assert.AreEqual(delay.Value, args.After.TextCommandMatches.First().Delay.Value);
             }
             else {
                 Assert.IsNull(match.Delay);
@@ -501,11 +524,10 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
             }
         }
 
-        protected static void AssertTemporalCommand(TextCommandController textCommandController, String command, TextCommand primaryCommand, TimeSpan? period = null, DateTime? delay = null, FuzzyDateTimePattern interval = null) {
-            CommandResultArgs args = TestFuzzyBase.ExecuteTextCommand(textCommandController, command);
+        protected static void AssertTemporalCommand(TextCommandController textCommandController, String command, TextCommandModel primaryCommand, TimeSpan? period = null, DateTime? delay = null, FuzzyDateTimePattern interval = null) {
+            CommandResultArgs args = ExecuteTextCommand(textCommandController, command);
 
-            TestFuzzyBase.AssertExecutedCommandAgainstTemporalValue(args, primaryCommand, period, delay, interval);
+            AssertExecutedCommandAgainstTemporalValue(args, primaryCommand, period, delay, interval);
         }
-
     }
 }

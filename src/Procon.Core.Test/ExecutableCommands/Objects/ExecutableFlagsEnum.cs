@@ -1,4 +1,8 @@
-﻿using System;
+﻿#region
+
+using System;
+
+#endregion
 
 namespace Procon.Core.Test.ExecutableCommands.Objects {
     [Flags]

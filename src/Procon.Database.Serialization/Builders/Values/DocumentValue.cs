@@ -1,8 +1,9 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json.Linq;
 using Procon.Database.Serialization.Builders.Statements;
+using Procon.Database.Shared;
 
 namespace Procon.Database.Serialization.Builders.Values {
     /// <summary>
@@ -18,9 +19,9 @@ namespace Procon.Database.Serialization.Builders.Values {
         public JObject ToJObject() {
             JObject data = new JObject();
 
-            foreach (Assignment assignment in this.Where(statement => statement is Assignment)) {
-                Field field = assignment.FirstOrDefault(statement => statement is Field) as Field;
-                Value value = assignment.FirstOrDefault(statement => statement is Value) as Value;
+            foreach (Assignment assignment in Enumerable.Where<IDatabaseObject>(this, statement => statement is Assignment)) {
+                Field field = Enumerable.FirstOrDefault<IDatabaseObject>(assignment, statement => statement is Field) as Field;
+                Value value = Enumerable.FirstOrDefault<IDatabaseObject>(assignment, statement => statement is Value) as Value;
 
                 if (field != null && value != null) {
                     DocumentValue document = value as DocumentValue;
@@ -79,9 +80,9 @@ namespace Procon.Database.Serialization.Builders.Values {
         public override object ToObject() {
             Dictionary<String, Object> data = new Dictionary<string, Object>();
 
-            foreach (Assignment assignment in this.Where(statement => statement is Assignment)) {
-                Field field = assignment.FirstOrDefault(statement => statement is Field) as Field;
-                Value value = assignment.FirstOrDefault(statement => statement is Value) as Value;
+            foreach (Assignment assignment in Enumerable.Where<IDatabaseObject>(this, statement => statement is Assignment)) {
+                Field field = Enumerable.FirstOrDefault<IDatabaseObject>(assignment, statement => statement is Field) as Field;
+                Value value = Enumerable.FirstOrDefault<IDatabaseObject>(assignment, statement => statement is Value) as Value;
 
                 if (field != null && value != null && data.ContainsKey(field.Name) == false) {
                     data.Add(field.Name, value.ToObject());

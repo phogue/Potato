@@ -9,6 +9,9 @@ namespace Procon.Service.Shared {
         public static readonly String ProconExe = "Procon.exe";
         public static readonly String ProconXml = "Procon.xml";
         public static readonly String ProconCoreDll = "Procon.Core.dll";
+        public static readonly String ProconCoreSharedDll = "Procon.Core.Shared.dll";
+        public static readonly String ProconDatabaseSharedDll = "Procon.Database.Shared.dll";
+        public static readonly String ProconDatabaseSerializationDll = "Procon.Database.Serialization.dll";
         public static readonly String ProconNetDll = "Procon.Net.dll";
         public static readonly String ProconFuzzyDll = "Procon.Fuzzy.dll";
         public static readonly String NewtonsoftJsonDll = "Newtonsoft.Json.dll";

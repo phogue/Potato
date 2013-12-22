@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Text;
 using System.Collections.Generic;
 using System.Linq;
-using Procon.Core;
+using Procon.Core.Shared;
 using Procon.Net;
 using Procon.Net.Actions;
 using Procon.Net.Actions.Deferred;

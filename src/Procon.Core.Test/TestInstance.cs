@@ -1,6 +1,8 @@
-﻿using System;
-using System.IO;
+﻿#region
+
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Xml.Linq;
@@ -8,17 +10,17 @@ using NUnit.Framework;
 using Procon.Core.Events;
 using Procon.Core.Localization;
 using Procon.Core.Security;
+using Procon.Core.Shared;
 using Procon.Core.Variables;
 using Procon.Net.Protocols;
 using Procon.Net.Utils;
 using Procon.Service.Shared;
 
+#endregion
+
 namespace Procon.Core.Test {
     [TestFixture]
     public class TestInstance {
-
-        protected static FileInfo ConfigFileInfo = new FileInfo(Path.Combine(Defines.ConfigsDirectory, "Procon.Core.xml"));
-
         [SetUp]
         public void Initialize() {
             if (File.Exists(ConfigFileInfo.FullName)) {
@@ -26,15 +28,17 @@ namespace Procon.Core.Test {
             }
         }
 
+        protected static FileInfo ConfigFileInfo = new FileInfo(Path.Combine(Defines.ConfigsDirectory, "Procon.Core.xml"));
+
         /// <summary>
-        /// Tests that providing no connection scope will tunnel the command over all
-        /// executable objects in the instance. The variable should be set.
+        ///     Tests that providing no connection scope will tunnel the command over all
+        ///     executable objects in the instance. The VariableModel should be set.
         /// </summary>
         [Test]
         public void TestInstanceCommandScopeNoScope() {
-            VariableController variables = new VariableController();
+            var variables = new VariableController();
 
-            Instance instance = new Instance() {
+            var instance = new Instance() {
                 Variables = variables,
                 Security = new SecurityController(),
                 Events = new EventsController(),
@@ -72,14 +76,14 @@ namespace Procon.Core.Test {
         }
 
         /// <summary>
-        /// Tests that variable will not set on the instance as it will
-        /// bypass the instance executable objects and execute only on the connection.
+        ///     Tests that VariableModel will not set on the instance as it will
+        ///     bypass the instance executable objects and execute only on the connection.
         /// </summary>
         [Test]
         public void TestInstanceCommandScopeWithConnectionScope() {
-            VariableController variables = new VariableController();
+            var variables = new VariableController();
 
-            Instance instance = new Instance() {
+            var instance = new Instance() {
                 Variables = variables,
                 Security = new SecurityController(),
                 Events = new EventsController(),
@@ -106,7 +110,7 @@ namespace Procon.Core.Test {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.VariablesSet,
                 Scope = {
-                    ConnectionGuid = instance.Connections.First().ConnectionGuid
+                    ConnectionGuid = instance.Connections.First().ConnectionModel.ConnectionGuid
                 },
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     "key",
@@ -120,14 +124,57 @@ namespace Procon.Core.Test {
         }
 
         /// <summary>
-        /// Tests that everything is nulled after disposing.
+        ///     Tests the integrity of the config written by the instance.
+        /// </summary>
+        /// <remarks>We test individual controllers configs in other unit tests.</remarks>
+        [Test]
+        public void TestInstanceConfigWritten() {
+            var instance = new Instance() {
+                Variables = new VariableController().Execute() as VariableController,
+                Security = new SecurityController().Execute() as SecurityController,
+                Events = new EventsController().Execute() as EventsController,
+                Languages = new LanguageController().Execute() as LanguageController
+            }.Execute() as Instance;
+
+            // Add a single connection, just so we can validate that it has been removed.
+            instance.Tunnel(new Command() {
+                Origin = CommandOrigin.Local,
+                CommandType = CommandType.InstanceAddConnection,
+                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                    "Myrcon",
+                    CommonGameType.BF_3,
+                    "93.186.198.11",
+                    27516,
+                    "phogueisabutterfly",
+                    ""
+                })
+            });
+
+            instance.WriteConfig();
+
+            var loadConfig = new Config();
+            loadConfig.Load(ConfigFileInfo);
+
+            var commands = loadConfig.Root.Descendants("Instance").Elements("Command").Select(xCommand => xCommand.FromXElement<Command>()).ToList();
+
+            Assert.AreEqual("InstanceAddConnection", commands[0].Name);
+            Assert.AreEqual("Myrcon", commands[0].Parameters[0].First<String>());
+            Assert.AreEqual("BF_3", commands[0].Parameters[1].First<String>());
+            Assert.AreEqual("93.186.198.11", commands[0].Parameters[2].First<String>());
+            Assert.AreEqual("27516", commands[0].Parameters[3].First<String>());
+            Assert.AreEqual("phogueisabutterfly", commands[0].Parameters[4].First<String>());
+            Assert.AreEqual("", commands[0].Parameters[5].First<String>());
+        }
+
+        /// <summary>
+        ///     Tests that everything is nulled after disposing.
         /// </summary>
         /// <remarks>The controllers have their own individual dispose methods that are tested.</remarks>
         [Test]
         public void TestInstanceDispose() {
-            AutoResetEvent requestWait = new AutoResetEvent(false);
+            var requestWait = new AutoResetEvent(false);
 
-            Instance instance = new Instance() {
+            var instance = new Instance() {
                 Variables = new VariableController(),
                 Security = new SecurityController(),
                 Events = new EventsController(),
@@ -164,49 +211,6 @@ namespace Procon.Core.Test {
             Assert.IsNull(instance.Packages);
             Assert.IsNull(instance.Tasks);
             Assert.IsNull(instance.PushEvents);
-        }
-
-        /// <summary>
-        /// Tests the integrity of the config written by the instance.
-        /// </summary>
-        /// <remarks>We test individual controllers configs in other unit tests.</remarks>
-        [Test]
-        public void TestInstanceConfigWritten() {
-            Instance instance = new Instance() {
-                Variables = new VariableController().Execute() as VariableController,
-                Security = new SecurityController().Execute() as SecurityController,
-                Events = new EventsController().Execute() as EventsController,
-                Languages = new LanguageController().Execute() as LanguageController
-            }.Execute() as Instance;
-
-            // Add a single connection, just so we can validate that it has been removed.
-            instance.Tunnel(new Command() {
-                Origin = CommandOrigin.Local,
-                CommandType = CommandType.InstanceAddConnection,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
-                    "Myrcon",
-                    CommonGameType.BF_3,
-                    "93.186.198.11",
-                    27516,
-                    "phogueisabutterfly",
-                    ""
-                })
-            });
-
-            instance.WriteConfig();
-
-            Config loadConfig = new Config();
-            loadConfig.Load(TestInstance.ConfigFileInfo);
-
-            var commands = loadConfig.Root.Descendants("Instance").Elements("Command").Select(xCommand => xCommand.FromXElement<Command>()).ToList();
-
-            Assert.AreEqual("InstanceAddConnection", commands[0].Name);
-            Assert.AreEqual("Myrcon", commands[0].Parameters[0].First<String>());
-            Assert.AreEqual("BF_3", commands[0].Parameters[1].First<String>());
-            Assert.AreEqual("93.186.198.11", commands[0].Parameters[2].First<String>());
-            Assert.AreEqual("27516", commands[0].Parameters[3].First<String>());
-            Assert.AreEqual("phogueisabutterfly", commands[0].Parameters[4].First<String>());
-            Assert.AreEqual("", commands[0].Parameters[5].First<String>());
         }
     }
 }

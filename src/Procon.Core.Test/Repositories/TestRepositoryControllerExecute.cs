@@ -1,4 +1,6 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -7,19 +9,16 @@ using System.Xml.Linq;
 using NUnit.Framework;
 using Procon.Core.Events;
 using Procon.Core.Repositories;
+using Procon.Core.Shared;
+using Procon.Core.Shared.Events;
 using Procon.Core.Utils;
 using Procon.Net.Utils;
+
+#endregion
 
 namespace Procon.Core.Test.Repositories {
     [TestFixture]
     public class TestRepositoryControllerExecute {
-
-        protected static String ExecuteInstalledPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Repositories\RepositoryController\Execute\Installed");
-        protected static String ExecutePackagesInstalledPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Repositories\RepositoryController\Execute\Installed\Packages");
-        protected static String ExecuteUpdatesPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Repositories\RepositoryController\Execute\Installed\Updates");
-        protected static String ExecutePackagesUpdatesPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Repositories\RepositoryController\Execute\Installed\Updates\Packages");
-        protected static String ExecuteTemporaryUpdatesPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Repositories\RepositoryController\Execute\Installed\Updates\Temporary");
-
         [SetUp]
         public void Initialize() {
             Directory.CreateDirectory(ExecuteInstalledPath);
@@ -27,10 +26,16 @@ namespace Procon.Core.Test.Repositories {
             Directory.CreateDirectory(ExecuteUpdatesPath);
             Directory.CreateDirectory(ExecutePackagesUpdatesPath);
             Directory.CreateDirectory(ExecuteTemporaryUpdatesPath);
-             
+
             // Remove all files and directories within the execute installed path for each test.
             new DirectoryInfo(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Repositories\RepositoryController\Execute\Installed")).Clean();
         }
+
+        protected static String ExecuteInstalledPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Repositories\RepositoryController\Execute\Installed");
+        protected static String ExecutePackagesInstalledPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Repositories\RepositoryController\Execute\Installed\Packages");
+        protected static String ExecuteUpdatesPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Repositories\RepositoryController\Execute\Installed\Updates");
+        protected static String ExecutePackagesUpdatesPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Repositories\RepositoryController\Execute\Installed\Updates\Packages");
+        protected static String ExecuteTemporaryUpdatesPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Repositories\RepositoryController\Execute\Installed\Updates\Temporary");
 
         protected FlatPackedPackage SetupAndSaveExecutePackage(String path, String repositoryUrlSlug) {
             XElement element = XElement.Parse(@"<package>
@@ -66,7 +71,7 @@ namespace Procon.Core.Test.Repositories {
     </package_versions>
 </package>");
 
-            FlatPackedPackage package = element.FromXElement<FlatPackedPackage>();
+            var package = element.FromXElement<FlatPackedPackage>();
 
             package.PackagesUpdatesPath = path;
 
@@ -98,58 +103,41 @@ namespace Procon.Core.Test.Repositories {
             Assert.AreEqual("01952484abdda0158c827a8848528e90", package.Versions[0].Files[1].Md5);
         }
 
-        protected Core.Repositories.RepositoryController SetupRepositoryController() {
-            return new Core.Repositories.RepositoryController() {
+        protected RepositoryController SetupRepositoryController() {
+            return new RepositoryController() {
                 PackagesPath = ExecutePackagesInstalledPath,
                 PackagesUpdatesPath = ExecutePackagesUpdatesPath
             };
         }
 
         /// <summary>
-        /// Tests that existing installed packages are loaded up in the controller.
+        ///     Tests that existing installed packages are loaded up in the controller.
         /// </summary>
-        [Test]
-        [Ignore]
+        [Test, Ignore]
+        
         public void TestRepositoryControllerInstalledRepository() {
-            this.SetupAndSaveExecutePackage(ExecutePackagesInstalledPath, "repomyrconcom_procon2");
+            SetupAndSaveExecutePackage(ExecutePackagesInstalledPath, "repomyrconcom_procon2");
 
-            Core.Repositories.RepositoryController repositoryController = this.SetupRepositoryController();
+            RepositoryController repositoryController = SetupRepositoryController();
 
             repositoryController.Execute();
 
             Repository locallyInstalledRepository = repositoryController.LocalInstalledRepositories.First();
-            
-            this.ValidateExecutePackage(locallyInstalledRepository.Packages.First());
+
+            ValidateExecutePackage(locallyInstalledRepository.Packages.First());
         }
-        
+
         /// <summary>
-        /// Tests that existing updates packages are loaded up in the controller.
+        ///     Tests that existing updates packages are loaded up in the controller.
         /// </summary>
-        [Test]
-        [Ignore]
-        public void TestRepositoryControllerUpdatedRepository() {
-            this.SetupAndSaveExecutePackage(ExecutePackagesUpdatesPath, "repomyrconcom_procon2");
-
-            Core.Repositories.RepositoryController repositoryController = this.SetupRepositoryController();
-
-            repositoryController.Execute();
-
-            Repository locallyInstalledRepository = repositoryController.LocalUpdatedRepositories.First();
-
-            this.ValidateExecutePackage(locallyInstalledRepository.Packages.First());
-        }
+        [Test, Ignore]
         
-        /// <summary>
-        /// Tests that existing updates packages are loaded up in the controller.
-        /// </summary>
-        [Test]
-        [Ignore]
         public void TestRepositoryControllerRemoteRepository() {
-            AutoResetEvent requestWait = new AutoResetEvent(false);
+            var requestWait = new AutoResetEvent(false);
 
-            RepositoryController repositoryController = this.SetupRepositoryController();
+            RepositoryController repositoryController = SetupRepositoryController();
 
-            EventsController eventsController = new EventsController();
+            var eventsController = new EventsController();
 
             repositoryController.Events = eventsController;
 
@@ -176,6 +164,23 @@ namespace Procon.Core.Test.Repositories {
             Assert.IsTrue(requestWait.WaitOne(60000));
 
             Assert.IsTrue(repositoryController.RemoteRepositories.First().Packages.Count > 0);
+        }
+
+        /// <summary>
+        ///     Tests that existing updates packages are loaded up in the controller.
+        /// </summary>
+        [Test, Ignore]
+        
+        public void TestRepositoryControllerUpdatedRepository() {
+            SetupAndSaveExecutePackage(ExecutePackagesUpdatesPath, "repomyrconcom_procon2");
+
+            RepositoryController repositoryController = SetupRepositoryController();
+
+            repositoryController.Execute();
+
+            Repository locallyInstalledRepository = repositoryController.LocalUpdatedRepositories.First();
+
+            ValidateExecutePackage(locallyInstalledRepository.Packages.First());
         }
     }
 }

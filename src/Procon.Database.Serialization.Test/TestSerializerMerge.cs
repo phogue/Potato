@@ -2,6 +2,7 @@
 using Procon.Database.Serialization.Builders.Methods.Data;
 using Procon.Database.Serialization.Builders.Statements;
 using Procon.Database.Serialization.Builders.Values;
+using Procon.Database.Shared;
 
 namespace Procon.Database.Serialization.Test {
     public abstract class TestSerializerMerge {

@@ -5,6 +5,7 @@ using Procon.Database.Serialization.Builders.Methods.Data;
 using Procon.Database.Serialization.Builders.Methods.Schema;
 using Procon.Database.Serialization.Builders.Values;
 using Procon.Database.Serialization.Utils;
+using Procon.Database.Shared;
 
 namespace Procon.Database.Serialization.Test.Utils {
     [TestFixture]

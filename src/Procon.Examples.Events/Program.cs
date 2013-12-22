@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
-using Procon.Core.Connections.Plugins;
-using Procon.Core.Events;
+using Procon.Core.Shared.Events;
+using Procon.Core.Shared.Plugins;
 using Procon.Net;
 using Procon.Net.Actions;
 using Procon.Net.Models;
@@ -48,7 +48,7 @@ namespace Procon.Examples.Events {
             // else more!
         }
 
-        public override void GenericEvent(Core.Events.GenericEventArgs e) {
+        public override void GenericEvent(GenericEventArgs e) {
             // Unless you specifically want to override some of the plugins default
             // functionality, you should always call the base method.
             base.GenericEvent(e);

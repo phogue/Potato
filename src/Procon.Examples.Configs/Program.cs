@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using Procon.Core;
-using Procon.Core.Connections.Plugins;
+using Procon.Core.Shared;
+using Procon.Core.Shared.Plugins;
 
 namespace Procon.Examples.Configs {
     public class Program : RemotePlugin {

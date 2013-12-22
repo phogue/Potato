@@ -1,23 +1,24 @@
-﻿using System;
-using System.Text;
+﻿#region
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
+using Procon.Core.Connections.TextCommands;
+using Procon.Core.Shared;
+using Procon.Core.Shared.Models;
+
+#endregion
 
 namespace Procon.Core.Test.TextCommands {
-    using Procon.Core.Connections.TextCommands;
-
     [TestFixture]
     public class TestTextCommandRegistration {
-
-        #region Register
-
         /// <summary>
-        /// Tests that we can register a command via the command interface.
+        ///     Tests that we can register a command via the command interface.
         /// </summary>
         [Test]
         public void TestTextCommandRegister() {
-            TextCommandController textCommands = new TextCommandController();
+            var textCommands = new TextCommandController();
 
             CommandResultArgs result = textCommands.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
@@ -25,8 +26,8 @@ namespace Procon.Core.Test.TextCommands {
                 Parameters = new List<CommandParameter>() {
                     new CommandParameter() {
                         Data = {
-                            TextCommands = new List<TextCommand>() {
-                                new TextCommand() {
+                            TextCommands = new List<TextCommandModel>() {
+                                new TextCommandModel() {
                                     PluginUid = "Plugin1",
                                     PluginCommand = "Command1",
                                     Commands = new List<String>() {
@@ -46,12 +47,12 @@ namespace Procon.Core.Test.TextCommands {
         }
 
         /// <summary>
-        /// Tests that adding the same command twice (same plugin uid & plugin command) will 
-        /// only succeed the first time around.
+        ///     Tests that adding the same command twice (same plugin uid & plugin command) will
+        ///     only succeed the first time around.
         /// </summary>
         [Test]
         public void TestTextCommandRegisterDuplication() {
-            TextCommandController textCommands = new TextCommandController();
+            var textCommands = new TextCommandController();
 
             textCommands.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
@@ -59,8 +60,8 @@ namespace Procon.Core.Test.TextCommands {
                 Parameters = new List<CommandParameter>() {
                     new CommandParameter() {
                         Data = {
-                            TextCommands = new List<TextCommand>() {
-                                new TextCommand() {
+                            TextCommands = new List<TextCommandModel>() {
+                                new TextCommandModel() {
                                     PluginUid = "Plugin1",
                                     PluginCommand = "Command1",
                                     Commands = new List<String>() {
@@ -79,8 +80,8 @@ namespace Procon.Core.Test.TextCommands {
                 Parameters = new List<CommandParameter>() {
                     new CommandParameter() {
                         Data = {
-                            TextCommands = new List<TextCommand>() {
-                                new TextCommand() {
+                            TextCommands = new List<TextCommandModel>() {
+                                new TextCommandModel() {
                                     PluginUid = "Plugin1",
                                     PluginCommand = "Command1",
                                     Commands = new List<String>() {
@@ -99,11 +100,11 @@ namespace Procon.Core.Test.TextCommands {
         }
 
         /// <summary>
-        /// Tests that commands can only be executed if the user has sufficient permissions.
+        ///     Tests that commands can only be executed if the user has sufficient permissions.
         /// </summary>
         [Test]
         public void TestTextCommandRegisterInsufficientPermission() {
-            TextCommandController textCommands = new TextCommandController();
+            var textCommands = new TextCommandController();
 
             CommandResultArgs result = textCommands.Tunnel(new Command() {
                 Username = "Phogue",
@@ -112,8 +113,8 @@ namespace Procon.Core.Test.TextCommands {
                 Parameters = new List<CommandParameter>() {
                     new CommandParameter() {
                         Data = {
-                            TextCommands = new List<TextCommand>() {
-                                new TextCommand() {
+                            TextCommands = new List<TextCommandModel>() {
+                                new TextCommandModel() {
                                     PluginUid = "Plugin1",
                                     PluginCommand = "Command1",
                                     Commands = new List<String>() {
@@ -130,16 +131,12 @@ namespace Procon.Core.Test.TextCommands {
             Assert.AreEqual(CommandResultType.InsufficientPermissions, result.Status);
         }
 
-        #endregion
-
-        #region Unregister
-
         /// <summary>
-        /// Tests that a command can successfully remove a text command.
+        ///     Tests that a command can successfully remove a text command.
         /// </summary>
         [Test]
         public void TestTextCommandUnregister() {
-            TextCommandController textCommands = new TextCommandController();
+            var textCommands = new TextCommandController();
 
             textCommands.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
@@ -147,8 +144,8 @@ namespace Procon.Core.Test.TextCommands {
                 Parameters = new List<CommandParameter>() {
                     new CommandParameter() {
                         Data = {
-                            TextCommands = new List<TextCommand>() {
-                                new TextCommand() {
+                            TextCommands = new List<TextCommandModel>() {
+                                new TextCommandModel() {
                                     PluginUid = "Plugin1",
                                     PluginCommand = "Command1",
                                     Commands = new List<String>() {
@@ -171,8 +168,8 @@ namespace Procon.Core.Test.TextCommands {
                 Parameters = new List<CommandParameter>() {
                     new CommandParameter() {
                         Data = {
-                            TextCommands = new List<TextCommand>() {
-                                new TextCommand() {
+                            TextCommands = new List<TextCommandModel>() {
+                                new TextCommandModel() {
                                     PluginUid = "Plugin1",
                                     PluginCommand = "Command1"
                                 }
@@ -188,11 +185,11 @@ namespace Procon.Core.Test.TextCommands {
         }
 
         /// <summary>
-        /// Tests the unregister command fails with the correct status if the command does not exist.
+        ///     Tests the unregister command fails with the correct status if the command does not exist.
         /// </summary>
         [Test]
         public void TestTextCommandUnregisterDoesNotExist() {
-            TextCommandController textCommands = new TextCommandController();
+            var textCommands = new TextCommandController();
 
             CommandResultArgs result = textCommands.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
@@ -200,8 +197,8 @@ namespace Procon.Core.Test.TextCommands {
                 Parameters = new List<CommandParameter>() {
                     new CommandParameter() {
                         Data = {
-                            TextCommands = new List<TextCommand>() {
-                                new TextCommand() {
+                            TextCommands = new List<TextCommandModel>() {
+                                new TextCommandModel() {
                                     PluginUid = "Plugin1",
                                     PluginCommand = "Command1"
                                 }
@@ -216,11 +213,11 @@ namespace Procon.Core.Test.TextCommands {
         }
 
         /// <summary>
-        /// Tests that a command cannot be unregistered without the correct permissions to do so.
+        ///     Tests that a command cannot be unregistered without the correct permissions to do so.
         /// </summary>
         [Test]
         public void TestTextCommandUnregisterInsufficientPermission() {
-            TextCommandController textCommands = new TextCommandController();
+            var textCommands = new TextCommandController();
 
             textCommands.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
@@ -228,8 +225,8 @@ namespace Procon.Core.Test.TextCommands {
                 Parameters = new List<CommandParameter>() {
                     new CommandParameter() {
                         Data = {
-                            TextCommands = new List<TextCommand>() {
-                                new TextCommand() {
+                            TextCommands = new List<TextCommandModel>() {
+                                new TextCommandModel() {
                                     PluginUid = "Plugin1",
                                     PluginCommand = "Command1",
                                     Commands = new List<String>() {
@@ -253,8 +250,8 @@ namespace Procon.Core.Test.TextCommands {
                 Parameters = new List<CommandParameter>() {
                     new CommandParameter() {
                         Data = {
-                            TextCommands = new List<TextCommand>() {
-                                new TextCommand() {
+                            TextCommands = new List<TextCommandModel>() {
+                                new TextCommandModel() {
                                     PluginUid = "Plugin1",
                                     PluginCommand = "Command1",
                                     Commands = new List<String>() {
@@ -270,7 +267,5 @@ namespace Procon.Core.Test.TextCommands {
             Assert.IsFalse(result.Success);
             Assert.AreEqual(CommandResultType.InsufficientPermissions, result.Status);
         }
-
-        #endregion
     }
 }

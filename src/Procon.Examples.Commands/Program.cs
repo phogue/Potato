@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using Procon.Core;
-using Procon.Core.Connections.Plugins;
+using Procon.Core.Shared;
+using Procon.Core.Shared.Plugins;
 
 namespace Procon.Examples.Commands {
     /// <summary>

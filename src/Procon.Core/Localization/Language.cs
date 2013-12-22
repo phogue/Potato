@@ -2,22 +2,18 @@
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
+using Procon.Core.Shared;
+using Procon.Core.Shared.Models;
 
 namespace Procon.Core.Localization {
 
     [Serializable]
     public class Language : Config {
-        /// <summary>
-        /// IETF language tag for the LanguageCode string.
-        /// http://en.wikipedia.org/wiki/IETF_language_tag
-        /// http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
-        /// http://en.wikipedia.org/wiki/ISO_3166-1
-        /// </summary>
-        public String LanguageCode { get; set; }
+        public LanguageModel LanguageModel { get; set; }
 
         // Default Initialization
         public Language() {
-            this.LanguageCode = String.Empty;
+            this.LanguageModel = new LanguageModel();
         }
 
         /// <summary>
@@ -34,7 +30,7 @@ namespace Procon.Core.Localization {
             foreach (var instruction in instructions) {
                 switch (instruction.Target) {
                     case "ietf-language-tag":
-                        LanguageCode = instruction.Data;
+                        this.LanguageModel.LanguageCode = instruction.Data;
                         break;
                 }
             }

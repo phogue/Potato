@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Procon.Core.Shared.Events;
 
 namespace Procon.Core.Events {
     public class PushEventsRequest {

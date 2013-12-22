@@ -1,10 +1,14 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Collections.Generic;
-using Procon.Core.Database;
+using Procon.Core.Shared.Database;
+
+#endregion
 
 namespace Procon.Core.Test.Database.Mocks {
     /// <summary>
-    /// A mock model with all types of models
+    ///     A mock model with all types of models
     /// </summary>
     public class MockComplexModel : DatabaseModel<MockComplexModel> {
         public int IntegerValue { get; set; }

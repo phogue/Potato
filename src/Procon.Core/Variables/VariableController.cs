@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Procon.Core.Events;
+using Procon.Core.Shared;
+using Procon.Core.Shared.Events;
+using Procon.Core.Shared.Models;
 
 namespace Procon.Core.Variables {
 
@@ -11,16 +13,16 @@ namespace Procon.Core.Variables {
         /// Anything in this list is volatile and will not be saved on
         /// exit.
         /// </summary>
-        public List<Variable> VolatileVariables { get; set; }
+        public List<VariableModel> VolatileVariables { get; set; }
 
         /// <summary>
         /// Anything in this list will be saved to the config
         /// </summary>
-        protected List<Variable> ArchiveVariables { get; set; }
+        protected List<VariableModel> ArchiveVariables { get; set; }
 
         public VariableController() : base() {
-            this.VolatileVariables = new List<Variable>();
-            this.ArchiveVariables = new List<Variable>();
+            this.VolatileVariables = new List<VariableModel>();
+            this.ArchiveVariables = new List<VariableModel>();
 
             this.AppendDispatchHandlers(new Dictionary<CommandAttribute, CommandDispatchHandler>() {
                 {
@@ -119,12 +121,10 @@ namespace Procon.Core.Variables {
                 Origin = CommandOrigin.Local
             }, CommonVariableNames.DatabaseMaximumSelectedRows, 20);
 
-            Variable variable = this.Variable(CommonVariableNames.PackagesProcon2RepositoryUrl);
+            VariableModel variable = this.Variable(CommonVariableNames.PackagesProcon2RepositoryUrl);
             variable.Value = "https://repo.myrcon.com/procon2/";
             variable.Readonly = true;
         }
-
-        #region Executable
 
         /// <summary>
         /// Begins the execution of this variable controller.
@@ -142,11 +142,11 @@ namespace Procon.Core.Variables {
         /// Information about this object is handled via it's parent interface.
         /// </summary>
         public override void Dispose() {
-            foreach (Variable variable in this.VolatileVariables) {
+            foreach (VariableModel variable in this.VolatileVariables) {
                 variable.Dispose();
             }
 
-            foreach (Variable archiveVariable in this.ArchiveVariables) {
+            foreach (VariableModel archiveVariable in this.ArchiveVariables) {
                 archiveVariable.Dispose();
             }
 
@@ -161,7 +161,7 @@ namespace Procon.Core.Variables {
         /// Does nothing.  Information about this object is handled via it's parent interface.
         /// </summary>
         public override void WriteConfig(Config config) {
-            foreach (Variable archiveVariable in this.ArchiveVariables) {
+            foreach (VariableModel archiveVariable in this.ArchiveVariables) {
                 config.Root.Add(new Command() {
                     CommandType = CommandType.VariablesSetA,
                     Parameters = new List<CommandParameter>() {
@@ -184,8 +184,6 @@ namespace Procon.Core.Variables {
             }
         }
 
-        #endregion
-
         protected void AssignEvents() {
             
         }
@@ -195,11 +193,11 @@ namespace Procon.Core.Variables {
         /// </summary>
         /// <param name="name">The name of the variable object</param>
         /// <returns>The variable, if available. False otherwise.</returns>
-        public Variable Variable(String name) {
-            Variable variable = this.VolatileVariables.Find(x => String.Compare(x.Name, name, StringComparison.InvariantCultureIgnoreCase) == 0);
+        public VariableModel Variable(String name) {
+            VariableModel variable = this.VolatileVariables.Find(x => String.Compare(x.Name, name, StringComparison.InvariantCultureIgnoreCase) == 0);
 
             if (variable == null) {
-                variable = new Variable() {
+                variable = new VariableModel() {
                     Name = name
                 };
 
@@ -214,7 +212,7 @@ namespace Procon.Core.Variables {
         /// </summary>
         /// <param name="name">The name of the variable object</param>
         /// <returns>The variable, if available. False otherwise.</returns>
-        public Variable Variable(CommonVariableNames name) {
+        public VariableModel Variable(CommonVariableNames name) {
             return this.Variable(name.ToString());
         }
 
@@ -231,7 +229,7 @@ namespace Procon.Core.Variables {
                     // Trims any hyphens from the start of the argument. Allows for "-argument" and "--argument"
                     argument = argument.TrimStart('-');
 
-                    Variable variable = null;
+                    VariableModel variable = null;
 
                     // Does another argument exist?
                     if (offset + 1 < arguments.Count && arguments[offset + 1][0] != '-') {
@@ -298,7 +296,7 @@ namespace Procon.Core.Variables {
 
             if (command.Origin == CommandOrigin.Local || this.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
                 if (name.Length > 0) {
-                    Variable variable = this.Variable(name);
+                    VariableModel variable = this.Variable(name);
 
                     if (variable.Readonly == false) {
                         variable.Value = value;
@@ -308,7 +306,7 @@ namespace Procon.Core.Variables {
                             Status = CommandResultType.Success,
                             Message = String.Format(@"Successfully set value of variable name ""{0}"" to ""{1}"".", variable.Name, variable.Value),
                             Now = new CommandData() {
-                                Variables = new List<Variable>() {
+                                Variables = new List<VariableModel>() {
                                     variable
                                 }
                             }
@@ -370,7 +368,7 @@ namespace Procon.Core.Variables {
 
                 if (volatileSetResult.Success == true) {
                     // All good.
-                    Variable variable = this.Set(command, name, value).Now.Variables.First();
+                    VariableModel variable = this.Set(command, name, value).Now.Variables.First();
 
                     if (this.ArchiveVariables.Find(x => x.Name == variable.Name) == null) {
                         this.ArchiveVariables.Add(variable);
@@ -384,7 +382,7 @@ namespace Procon.Core.Variables {
                         Status = CommandResultType.Success,
                         Message = String.Format(@"Successfully set value of variable name ""{0}"" to ""{1}"".", variable.Name, variable.Value),
                         Now = new CommandData() {
-                            Variables = new List<Variable>() {
+                            Variables = new List<VariableModel>() {
                                 variable
                             }
                         }
@@ -424,7 +422,7 @@ namespace Procon.Core.Variables {
         public T Get<T>(String name, T defaultValue = default(T)) {
             T result = defaultValue;
 
-            Variable variable = this.Variable(name);
+            VariableModel variable = this.Variable(name);
 
             result = variable.ToType(defaultValue);
 
@@ -464,14 +462,14 @@ namespace Procon.Core.Variables {
 
             if (command.Origin == CommandOrigin.Local || this.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
                 if (name.Length > 0) {
-                    Variable variable = this.Variable(name);
+                    VariableModel variable = this.Variable(name);
 
                     result = new CommandResultArgs() {
                         Success = true,
                         Status = CommandResultType.Success,
                         Message = String.Format(@"Value of variable with name ""{0}"" is ""{1}"".", variable.Name, variable.Value),
                         Now = new CommandData() {
-                            Variables = new List<Variable>() {
+                            Variables = new List<VariableModel>() {
                                 variable
                             }
                         }
@@ -514,7 +512,7 @@ namespace Procon.Core.Variables {
         public T GetA<T>(String name, T defaultValue = default(T)) {
 
             T result = defaultValue;
-            Variable variable = null;
+            VariableModel variable = null;
 
             if ((variable = this.ArchiveVariables.Find(x => x.Name == name)) != null) {
                 result = variable.ToType<T>();

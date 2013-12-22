@@ -3,6 +3,8 @@ using System.Linq;
 using Procon.Database.Serialization.Builders;
 using Procon.Database.Serialization.Builders.Modifiers;
 using Procon.Database.Serialization.Builders.Values;
+using Procon.Database.Shared;
+using Procon.Database.Shared.Builders;
 
 namespace Procon.Database.Serialization {
     /// <summary>
@@ -41,7 +43,7 @@ namespace Procon.Database.Serialization {
         /// </summary>
         /// <param name="method"></param>
         /// <returns></returns>
-        protected List<IParsedQuery> ParseChildren(Method method) {
+        protected List<IParsedQuery> ParseChildren(IMethod method) {
             List<IParsedQuery> children = new List<IParsedQuery>();
 
             foreach (Method child in method.Where(child => child is Method)) {
@@ -61,7 +63,7 @@ namespace Procon.Database.Serialization {
         /// <param name="method"></param>
         /// <param name="parsed"></param>
         /// <returns></returns>
-        public abstract ISerializer Parse(Method method, IParsedQuery parsed);
+        public abstract ISerializer Parse(IMethod method, IParsedQuery parsed);
 
         /// <summary>
         /// Converts a query into the required query (String by default), however
@@ -69,7 +71,7 @@ namespace Procon.Database.Serialization {
         /// </summary>
         /// <param name="method">The method object</param>
         /// <returns></returns>
-        public ISerializer Parse(Method method) {
+        public ISerializer Parse(IMethod method) {
             this.Parse(method, this.Parsed);
 
             return this;

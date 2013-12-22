@@ -1,28 +1,76 @@
-﻿using System;
-using System.Reflection;
+﻿#region
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using NUnit.Framework;
+using Procon.Core.Connections.Plugins;
+using Procon.Core.Shared;
 using Procon.Service.Shared;
 
-namespace Procon.Core.Test.Plugins {
-    using Procon.Core.Connections.Plugins;
+#endregion
 
+namespace Procon.Core.Test.Plugins {
     [TestFixture]
     public class TestPluginsIsolation {
-        
         /// <summary>
-        /// Makes sure the plugin is not loaded into the current appdomain.
+        ///     Helper to test writing files to various directories and testing the output.
         /// </summary>
-        [Test]
-        public void TestPluginsIsolationCleanCurrentAppDomain() {
-            PluginController plugins = new PluginController().Execute() as PluginController;
+        /// <param name="path"></param>
+        /// <param name="expectedSuccessFlag"></param>
+        /// <param name="resultType"></param>
+        protected void TestPluginsIsolationWriteToDirectory(String path, bool expectedSuccessFlag, CommandResultType resultType) {
+            var plugins = new PluginController().Execute() as PluginController;
 
             plugins.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.PluginsEnable,
                 Scope = {
-                    PluginGuid = plugins.Plugins.First().PluginGuid
+                    PluginGuid = plugins.Plugins.First().PluginModel.PluginGuid
+                }
+            });
+
+            CommandResultArgs result = plugins.Tunnel(new Command() {
+                Name = "TestPluginsIsolationWriteToDirectory",
+                Username = "Phogue",
+                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                    path
+                })
+            });
+
+            Assert.IsTrue(result.Success == expectedSuccessFlag);
+            Assert.AreEqual(resultType, result.Status);
+        }
+
+        /// <summary>
+        ///     Tests that a plugin can write to the plugins directory.
+        /// </summary>
+        [Test]
+        public void TestPluginsIsolationAllowedWriteAccessToLogsDirectory() {
+            TestPluginsIsolationWriteToDirectory(Defines.LogsDirectory, true, CommandResultType.Success);
+        }
+
+        /// <summary>
+        ///     Tests that a plugin can write to the plugins directory.
+        /// </summary>
+        [Test]
+        public void TestPluginsIsolationAllowedWriteAccessToPluginsDirectory() {
+            TestPluginsIsolationWriteToDirectory(Defines.PluginsDirectory, true, CommandResultType.Success);
+        }
+
+        /// <summary>
+        ///     Makes sure the plugin is not loaded into the current appdomain.
+        /// </summary>
+        [Test]
+        public void TestPluginsIsolationCleanCurrentAppDomain() {
+            var plugins = new PluginController().Execute() as PluginController;
+
+            plugins.Tunnel(new Command() {
+                Origin = CommandOrigin.Local,
+                CommandType = CommandType.PluginsEnable,
+                Scope = {
+                    PluginGuid = plugins.Plugins.First().PluginModel.PluginGuid
                 }
             });
 
@@ -49,64 +97,19 @@ namespace Procon.Core.Test.Plugins {
         }
 
         /// <summary>
-        /// Helper to test writing files to various directories and testing the output.
-        /// </summary>
-        /// <param name="path"></param>
-        /// <param name="expectedSuccessFlag"></param>
-        /// <param name="resultType"></param>
-        protected void TestPluginsIsolationWriteToDirectory(String path, bool expectedSuccessFlag, CommandResultType resultType) {
-            PluginController plugins = new PluginController().Execute() as PluginController;
-
-            plugins.Tunnel(new Command() {
-                Origin = CommandOrigin.Local,
-                CommandType = CommandType.PluginsEnable,
-                Scope = {
-                    PluginGuid = plugins.Plugins.First().PluginGuid
-                }
-            });
-
-            CommandResultArgs result = plugins.Tunnel(new Command() {
-                Name = "TestPluginsIsolationWriteToDirectory",
-                Username = "Phogue",
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
-                    path
-                })
-            });
-
-            Assert.IsTrue(result.Success == expectedSuccessFlag);
-            Assert.AreEqual(resultType, result.Status);
-        }
-
-        /// <summary>
-        /// Tests that a plugin in the AppDomain cannot write to the root directory of Procon
-        /// </summary>
-        [Test]
-        public void TestPluginsIsolationProhibtedWriteAccessToRootDirectory() {
-            this.TestPluginsIsolationWriteToDirectory(AppDomain.CurrentDomain.BaseDirectory, false, CommandResultType.Failed);
-        }
-
-        /// <summary>
-        /// Tests that a plugin can write to the plugins directory.
-        /// </summary>
-        [Test]
-        public void TestPluginsIsolationAllowedWriteAccessToPluginsDirectory() {
-            this.TestPluginsIsolationWriteToDirectory(Defines.PluginsDirectory, true, CommandResultType.Success);
-        }
-
-        /// <summary>
-        /// Tests that a plugin can write to the plugins directory.
-        /// </summary>
-        [Test]
-        public void TestPluginsIsolationAllowedWriteAccessToLogsDirectory() {
-            this.TestPluginsIsolationWriteToDirectory(Defines.LogsDirectory, true, CommandResultType.Success);
-        }
-
-        /// <summary>
-        /// Tests that a plugin can write to the plugins directory.
+        ///     Tests that a plugin can write to the plugins directory.
         /// </summary>
         [Test]
         public void TestPluginsIsolationProhibitedWriteAccessToLocalizationDirectory() {
-            this.TestPluginsIsolationWriteToDirectory(Defines.LocalizationDirectory, false, CommandResultType.Failed);
+            TestPluginsIsolationWriteToDirectory(Defines.LocalizationDirectory, false, CommandResultType.Failed);
+        }
+
+        /// <summary>
+        ///     Tests that a plugin in the AppDomain cannot write to the root directory of Procon
+        /// </summary>
+        [Test]
+        public void TestPluginsIsolationProhibtedWriteAccessToRootDirectory() {
+            TestPluginsIsolationWriteToDirectory(AppDomain.CurrentDomain.BaseDirectory, false, CommandResultType.Failed);
         }
     }
 }

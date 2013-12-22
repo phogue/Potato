@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Text;
 using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
-using Procon.Core;
 using Procon.Core.Connections.Plugins;
+using Procon.Core.Shared;
 
 namespace Procon.Examples.CommandRouting.Test {
     [TestFixture]
@@ -24,7 +23,7 @@ namespace Procon.Examples.CommandRouting.Test {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.PluginsEnable,
                 Scope = {
-                    PluginGuid = plugins.Plugins.First().PluginGuid
+                    PluginGuid = plugins.Plugins.First().PluginModel.PluginGuid
                 }
             });
 
@@ -62,7 +61,7 @@ namespace Procon.Examples.CommandRouting.Test {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.PluginsEnable,
                 Scope = {
-                    PluginGuid = plugins.Plugins.First().PluginGuid
+                    PluginGuid = plugins.Plugins.First().PluginModel.PluginGuid
                 }
             });
 
@@ -100,7 +99,7 @@ namespace Procon.Examples.CommandRouting.Test {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.PluginsEnable,
                 Scope = {
-                    PluginGuid = plugins.Plugins.First().PluginGuid
+                    PluginGuid = plugins.Plugins.First().PluginModel.PluginGuid
                 }
             });
 
@@ -129,7 +128,7 @@ namespace Procon.Examples.CommandRouting.Test {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.PluginsEnable,
                 Scope = {
-                    PluginGuid = plugins.Plugins.First().PluginGuid
+                    PluginGuid = plugins.Plugins.First().PluginModel.PluginGuid
                 }
             });
 

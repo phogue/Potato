@@ -1,19 +1,24 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Xml.Linq;
 using NUnit.Framework;
+using Procon.Core.Events;
+using Procon.Core.Shared;
+using Procon.Core.Shared.Events;
+using Procon.Core.Shared.Models;
 using Procon.Service.Shared;
 
-namespace Procon.Core.Test.Events {
-    using Procon.Core.Events;
-    using Procon.Core.Security;
+#endregion
 
+namespace Procon.Core.Test.Events {
     [TestFixture]
     public class TestEvents {
-
         [SetUp]
         public void Initialize() {
             if (Directory.Exists(Defines.LogsDirectory) == true) {
@@ -27,11 +32,11 @@ namespace Procon.Core.Test.Events {
         }
 
         /// <summary>
-        /// Tests that events are logged correctly.
+        ///     Tests that events are logged correctly.
         /// </summary>
         [Test]
         public void TestEventsLogged() {
-            EventsController events = new EventsController();
+            var events = new EventsController();
 
             events.Log(new GenericEventArgs() {
                 Success = true,
@@ -42,12 +47,29 @@ namespace Procon.Core.Test.Events {
         }
 
         /// <summary>
-        /// Tests that an event is fired whenever an event is logged.
+        ///     Tests that the events are disposed of correctly.
+        /// </summary>
+        [Test]
+        public void TestEventsLoggedDisposed() {
+            var events = new EventsController();
+
+            events.Log(new GenericEventArgs() {
+                Success = true,
+                GenericEventType = GenericEventType.SecurityGroupAdded
+            });
+
+            events.Dispose();
+
+            Assert.IsNull(events.LoggedEvents);
+        }
+
+        /// <summary>
+        ///     Tests that an event is fired whenever an event is logged.
         /// </summary>
         [Test]
         public void TestEventsLoggedEventFired() {
-            AutoResetEvent requestWait = new AutoResetEvent(false);
-            EventsController events = new EventsController();
+            var requestWait = new AutoResetEvent(false);
+            var events = new EventsController();
 
             events.EventLogged += (sender, args) => requestWait.Set();
 
@@ -61,24 +83,7 @@ namespace Procon.Core.Test.Events {
         }
 
         /// <summary>
-        /// Tests that the events are disposed of correctly.
-        /// </summary>
-        [Test]
-        public void TestEventsLoggedDisposed() {
-            EventsController events = new EventsController();
-
-            events.Log(new GenericEventArgs() {
-                Success = true,
-                GenericEventType = GenericEventType.SecurityGroupAdded
-            });
-
-            events.Dispose();
-
-            Assert.IsNull(events.LoggedEvents);
-        }
-
-        /// <summary>
-        /// Tests that events written with the method with no parameters 
+        ///     Tests that events written with the method with no parameters
         /// </summary>
         [Test]
         public void TestEventsNoParametersWrittenToFile() {
@@ -89,16 +94,16 @@ namespace Procon.Core.Test.Events {
             DateTime then = now.AddHours(-1);
 
             // Then, rounded to the nearest hour.
-            DateTime roundedThenHour = new DateTime(then.Year, then.Month, then.Day, then.Hour, 0, 0);
+            var roundedThenHour = new DateTime(then.Year, then.Month, then.Day, then.Hour, 0, 0);
 
-            EventsController events = new EventsController();
+            var events = new EventsController();
 
             events.Log(new GenericEventArgs() {
                 Success = true,
                 GenericEventType = GenericEventType.SecurityGroupAdded,
                 Scope = new CommandData() {
-                    Accounts = new List<Account>() {
-                        new Account() {
+                    Accounts = new List<AccountModel>() {
+                        new AccountModel() {
                             Username = "Phogue"
                         }
                     }
@@ -114,13 +119,14 @@ namespace Procon.Core.Test.Events {
 
             Assert.AreEqual("true", logEventElement.Element("Success").Value);
             Assert.AreEqual("SecurityGroupAdded", logEventElement.Element("Name").Value);
-            Assert.AreEqual(then.ToString("s", System.Globalization.CultureInfo.InvariantCulture), DateTime.Parse(logEventElement.Element("Stamp").Value).ToString("s", System.Globalization.CultureInfo.InvariantCulture));
+            Assert.AreEqual(then.ToString("s", CultureInfo.InvariantCulture), DateTime.Parse(logEventElement.Element("Stamp").Value).ToString("s", CultureInfo.InvariantCulture));
 
-            Assert.AreEqual("Phogue", logEventElement.Descendants("Account").First().Element("Username").Value);
+            Assert.AreEqual("Phogue", logEventElement.Descendants("AccountModel").First().Element("Username").Value);
         }
+
         /// <summary>
-        /// Tests that an event that is one hour old (older than the five minute expire time)
-        /// will be written to a log file.
+        ///     Tests that an event that is one hour old (older than the five minute expire time)
+        ///     will be written to a log file.
         /// </summary>
         [Test]
         public void TestEventsSingleWrittenToFile() {
@@ -131,16 +137,16 @@ namespace Procon.Core.Test.Events {
             DateTime then = now.AddHours(-1);
 
             // Then, rounded to the nearest hour.
-            DateTime roundedThenHour = new DateTime(then.Year, then.Month, then.Day, then.Hour, 0, 0);
+            var roundedThenHour = new DateTime(then.Year, then.Month, then.Day, then.Hour, 0, 0);
 
-            EventsController events = new EventsController();
+            var events = new EventsController();
 
             events.Log(new GenericEventArgs() {
                 Success = true,
                 GenericEventType = GenericEventType.SecurityGroupAdded,
                 Scope = new CommandData() {
-                    Accounts = new List<Account>() {
-                        new Account() {
+                    Accounts = new List<AccountModel>() {
+                        new AccountModel() {
                             Username = "Phogue"
                         }
                     }
@@ -156,14 +162,14 @@ namespace Procon.Core.Test.Events {
 
             Assert.AreEqual("true", logEventElement.Element("Success").Value);
             Assert.AreEqual("SecurityGroupAdded", logEventElement.Element("Name").Value);
-            Assert.AreEqual(then.ToString("s", System.Globalization.CultureInfo.InvariantCulture), DateTime.Parse(logEventElement.Element("Stamp").Value).ToString("s", System.Globalization.CultureInfo.InvariantCulture));
+            Assert.AreEqual(then.ToString("s", CultureInfo.InvariantCulture), DateTime.Parse(logEventElement.Element("Stamp").Value).ToString("s", CultureInfo.InvariantCulture));
 
-            Assert.AreEqual("Phogue", logEventElement.Descendants("Account").First().Element("Username").Value);
+            Assert.AreEqual("Phogue", logEventElement.Descendants("AccountModel").First().Element("Username").Value);
         }
 
         /// <summary>
-        /// Tests that an expired event will be written to a log file, but a non-expired
-        /// event will remain in memory.
+        ///     Tests that an expired event will be written to a log file, but a non-expired
+        ///     event will remain in memory.
         /// </summary>
         [Test]
         public void TestEventsUnexpiredWrittenToFile() {
@@ -174,16 +180,16 @@ namespace Procon.Core.Test.Events {
             DateTime then = now.AddHours(-1);
 
             // Then, rounded to the nearest hour.
-            DateTime roundedThenHour = new DateTime(then.Year, then.Month, then.Day, then.Hour, 0, 0);
+            var roundedThenHour = new DateTime(then.Year, then.Month, then.Day, then.Hour, 0, 0);
 
-            EventsController events = new EventsController();
+            var events = new EventsController();
 
             events.Log(new GenericEventArgs() {
                 Success = true,
                 GenericEventType = GenericEventType.SecurityGroupAdded,
                 Scope = new CommandData() {
-                    Accounts = new List<Account>() {
-                        new Account() {
+                    Accounts = new List<AccountModel>() {
+                        new AccountModel() {
                             Username = "Zaeed"
                         }
                     }
@@ -195,8 +201,8 @@ namespace Procon.Core.Test.Events {
                 Success = true,
                 GenericEventType = GenericEventType.SecurityGroupAdded,
                 Scope = new CommandData() {
-                    Accounts = new List<Account>() {
-                        new Account() {
+                    Accounts = new List<AccountModel>() {
+                        new AccountModel() {
                             Username = "Phogue"
                         }
                     }
@@ -215,9 +221,9 @@ namespace Procon.Core.Test.Events {
 
             Assert.AreEqual("true", logEventElement.Element("Success").Value);
             Assert.AreEqual("SecurityGroupAdded", logEventElement.Element("Name").Value);
-            Assert.AreEqual(then.ToString("s", System.Globalization.CultureInfo.InvariantCulture), DateTime.Parse(logEventElement.Element("Stamp").Value).ToString("s", System.Globalization.CultureInfo.InvariantCulture));
+            Assert.AreEqual(then.ToString("s", CultureInfo.InvariantCulture), DateTime.Parse(logEventElement.Element("Stamp").Value).ToString("s", CultureInfo.InvariantCulture));
 
-            Assert.AreEqual("Phogue", logEventElement.Descendants("Account").First().Element("Username").Value);
+            Assert.AreEqual("Phogue", logEventElement.Descendants("AccountModel").First().Element("Username").Value);
         }
     }
 }

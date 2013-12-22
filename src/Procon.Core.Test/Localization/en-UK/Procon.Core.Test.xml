@@ -1,5 +1,6 @@
-<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <?ietf-language-tag en-UK?>
+
 <!DOCTYPE Procon [
   <!ATTLIST Match regex CDATA #IMPLIED>
   <!ATTLIST Match text CDATA #IMPLIED>

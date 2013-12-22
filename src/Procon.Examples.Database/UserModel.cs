@@ -1,5 +1,5 @@
 ﻿using System;
-using Procon.Core.Database;
+using Procon.Core.Shared.Database;
 
 namespace Procon.Examples.Database {
     public class UserModel : DatabaseModel<UserModel> {

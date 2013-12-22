@@ -1,20 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Procon.Core.Events;
+using Procon.Core.Shared;
+using Procon.Core.Shared.Events;
+using Procon.Core.Shared.Models;
+using Procon.Net.Protocols;
 
 namespace Procon.Core.Security {
-    using Procon.Net.Protocols;
 
     public class SecurityController : Executable {
-        // Why is this here?
-        //public List<Account> Accounts { get; protected set; }
 
-        public List<Group> Groups { get; protected set; }
+        /// <summary>
+        /// List of group models within this security controller
+        /// </summary>
+        public List<GroupModel> Groups { get; protected set; }
 
-        // Base Initialization
+        /// <summary>
+        /// Initializes a security controller with the default values and dispatch.
+        /// </summary>
         public SecurityController() : base() {
-            this.Groups = new List<Group>();
+            this.Groups = new List<GroupModel>();
 
             this.AppendDispatchHandlers(new Dictionary<CommandAttribute, CommandDispatchHandler>() {
                 {
@@ -27,7 +32,7 @@ namespace Procon.Core.Security {
                             }
                         }
                     },
-                    new CommandDispatchHandler(this.AddGroup)
+                    new CommandDispatchHandler(this.SecurityAddGroup)
                 }, {
                     new CommandAttribute() {
                         CommandType = CommandType.SecurityRemoveGroup,
@@ -38,7 +43,7 @@ namespace Procon.Core.Security {
                             }
                         }
                     },
-                    new CommandDispatchHandler(this.RemoveGroup)
+                    new CommandDispatchHandler(this.SecurityRemoveGroup)
                 }, {
                     new CommandAttribute() {
                         CommandType = CommandType.SecurityRemoveAccount,
@@ -49,7 +54,7 @@ namespace Procon.Core.Security {
                             }
                         }
                     },
-                    new CommandDispatchHandler(this.RemoveAccount)
+                    new CommandDispatchHandler(this.SecurityRemoveAccount)
                 }, {
                     new CommandAttribute() {
                         CommandType = CommandType.SecurityRemovePlayer,
@@ -64,7 +69,7 @@ namespace Procon.Core.Security {
                             }
                         }
                     },
-                    new CommandDispatchHandler(this.RemovePlayer)
+                    new CommandDispatchHandler(this.SecurityRemovePlayer)
                 }, {
                     new CommandAttribute() {
                         CommandType = CommandType.SecurityQueryPermission,
@@ -110,6 +115,140 @@ namespace Procon.Core.Security {
                         }
                     },
                     new CommandDispatchHandler(this.DispatchPermissionsCheckByCommand)
+                },
+
+                // Groups
+                {
+                    new CommandAttribute() {
+                        CommandType = CommandType.SecurityGroupSetPermission,
+                        ParameterTypes = new List<CommandParameterType>() {
+                            new CommandParameterType() {
+                                Name = "groupName",
+                                Type = typeof(String)
+                            },
+                            new CommandParameterType() {
+                                Name = "permissionName",
+                                Type = typeof(String)
+                            },
+                            new CommandParameterType() {
+                                Name = "authority",
+                                Type = typeof(int)
+                            }
+                        }
+                    },
+                    new CommandDispatchHandler(this.SecurityGroupSetPermission)
+                }, {
+                    new CommandAttribute() {
+                        CommandType = CommandType.SecurityGroupCopyPermissions,
+                        ParameterTypes = new List<CommandParameterType>() {
+                            new CommandParameterType() {
+                                Name = "sourceGroupName",
+                                Type = typeof(String)
+                            },
+                            new CommandParameterType() {
+                                Name = "destinationGroupName",
+                                Type = typeof(String)
+                            }
+                        }
+                    },
+                    new CommandDispatchHandler(this.SecurityGroupCopyPermissions)
+                }, {
+                    new CommandAttribute() {
+                        CommandType = CommandType.SecurityGroupAddAccount,
+                        ParameterTypes = new List<CommandParameterType>() {
+                            new CommandParameterType() {
+                                Name = "groupName",
+                                Type = typeof(String)
+                            },
+                            new CommandParameterType() {
+                                Name = "username",
+                                Type = typeof(String)
+                            }
+                        }
+                    },
+                    new CommandDispatchHandler(this.SecurityGroupAddAccount)
+                },
+
+                // Accounts
+                {
+                    new CommandAttribute() {
+                        CommandType = CommandType.SecurityAccountAddPlayer,
+                        ParameterTypes = new List<CommandParameterType>() {
+                            new CommandParameterType() {
+                                Name = "username",
+                                Type = typeof(String)
+                            },
+                            new CommandParameterType() {
+                                Name = "gameType",
+                                Type = typeof(String)
+                            },
+                            new CommandParameterType() {
+                                Name = "uid",
+                                Type = typeof(String)
+                            }
+                        }
+                    },
+                    new CommandDispatchHandler(this.SecurityAccountAddPlayer)
+                }, {
+                    new CommandAttribute() {
+                        CommandType = CommandType.SecurityAccountSetPassword,
+                        ParameterTypes = new List<CommandParameterType>() {
+                            new CommandParameterType() {
+                                Name = "username",
+                                Type = typeof(String)
+                            },
+                            new CommandParameterType() {
+                                Name = "password",
+                                Type = typeof(String)
+                            }
+                        }
+                    },
+                    new CommandDispatchHandler(this.SecurityAccountSetPassword)
+                }, {
+                    new CommandAttribute() {
+                        CommandType = CommandType.SecurityAccountSetPasswordHash,
+                        ParameterTypes = new List<CommandParameterType>() {
+                            new CommandParameterType() {
+                                Name = "username",
+                                Type = typeof(String)
+                            },
+                            new CommandParameterType() {
+                                Name = "passwordHash",
+                                Type = typeof(String)
+                            }
+                        }
+                    },
+                    new CommandDispatchHandler(this.SecurityAccountSetPasswordHash)
+                }, {
+                    new CommandAttribute() {
+                        CommandType = CommandType.SecurityAccountAuthenticate,
+                        ParameterTypes = new List<CommandParameterType>() {
+                            new CommandParameterType() {
+                                Name = "username",
+                                Type = typeof(String)
+                            },
+                            new CommandParameterType() {
+                                Name = "passwordPlainText",
+                                Type = typeof(String)
+                            }
+                        }
+                    },
+                    new CommandDispatchHandler(this.SecurityAccountAuthenticate)
+                }, {
+                    new CommandAttribute() {
+                        CommandType = CommandType.SecurityAccountSetPreferredLanguageCode,
+                        ParameterTypes = new List<CommandParameterType>() {
+                            new CommandParameterType() {
+                                Name = "username",
+                                Type = typeof(String)
+                            },
+                            new CommandParameterType() {
+                                Name = "languageCode",
+                                Type = typeof(String)
+                            }
+                        }
+                    },
+                    new CommandDispatchHandler(this.SecurityAccountSetPreferredLanguageCode)
                 }
             });
         }
@@ -120,24 +259,16 @@ namespace Procon.Core.Security {
         /// Executes the commands specified in the config file and returns a reference itself.
         /// </summary>
         public override ExecutableBase Execute() {
-            this.Groups = new List<Group>();
+            this.Groups = new List<GroupModel>();
 
             return base.Execute();
-        }
-
-        protected override IList<IExecutableBase> TunnelExecutableObjects(Command command) {
-            List<IExecutableBase> list = new List<IExecutableBase>();
-
-            this.Groups.ForEach(list.Add);
-
-            return list;
         }
 
         /// <summary>
         /// Relies on children classes to implement this.
         /// </summary>
         public override void Dispose() {
-            foreach (Group group in this.Groups) {
+            foreach (GroupModel group in this.Groups) {
                 group.Dispose();
             }
 
@@ -151,7 +282,7 @@ namespace Procon.Core.Security {
         public override void WriteConfig(Config config) {
             base.WriteConfig(config);
 
-            foreach (Group group in this.Groups) {
+            foreach (GroupModel group in this.Groups) {
                 config.Root.Add(new Command() {
                     CommandType = CommandType.SecurityAddGroup,
                     Parameters = new List<CommandParameter>() {
@@ -165,7 +296,128 @@ namespace Procon.Core.Security {
                     }
                 }.ToConfigCommand());
 
-                group.WriteConfig(config);
+
+                foreach (PermissionModel permission in group.Permissions) {
+                    if (permission.Authority.HasValue == true) {
+                        config.Root.Add(new Command() {
+                            CommandType = CommandType.SecurityGroupSetPermission,
+                            Parameters = new List<CommandParameter>() {
+                                new CommandParameter() {
+                                    Data = {
+                                        Content = new List<String>() {
+                                            group.Name
+                                        }
+                                    }
+                                },
+                                new CommandParameter() {
+                                    Data = {
+                                        Content = new List<String>() {
+                                            permission.Name
+                                        }
+                                    }
+                                },
+                                new CommandParameter() {
+                                    Data = {
+                                        Content = new List<String>() {
+                                            permission.Authority.ToString()
+                                        }
+                                    }
+                                }
+                            }
+                        }.ToConfigCommand());
+                    }
+                }
+
+                foreach (AccountModel account in group.Accounts) {
+                    config.Root.Add(new Command() {
+                        CommandType = CommandType.SecurityGroupAddAccount,
+                        Parameters = new List<CommandParameter>() {
+                            new CommandParameter() {
+                                Data = {
+                                    Content = new List<String>() {
+                                        group.Name
+                                    }
+                                }
+                            },
+                            new CommandParameter() {
+                                Data = {
+                                    Content = new List<String>() {
+                                        account.Username
+                                    }
+                                }
+                            }
+                        }
+                    }.ToConfigCommand());
+
+                    config.Root.Add(new Command() {
+                        CommandType = CommandType.SecurityAccountSetPasswordHash,
+                        Parameters = new List<CommandParameter>() {
+                            new CommandParameter() {
+                                Data = {
+                                    Content = new List<String>() {
+                                        account.Username
+                                    }
+                                }
+                            },
+                            new CommandParameter() {
+                                Data = {
+                                    Content = new List<String>() {
+                                        account.PasswordHash
+                                    }
+                                }
+                            }
+                        }
+                    }.ToConfigCommand());
+
+                    config.Root.Add(new Command() {
+                        CommandType = CommandType.SecurityAccountSetPreferredLanguageCode,
+                        Parameters = new List<CommandParameter>() {
+                            new CommandParameter() {
+                                Data = {
+                                    Content = new List<String>() {
+                                        account.Username
+                                    }
+                                }
+                            },
+                            new CommandParameter() {
+                                Data = {
+                                    Content = new List<String>() {
+                                        account.PreferredLanguageCode
+                                    }
+                                }
+                            }
+                        }
+                    }.ToConfigCommand());
+
+                    foreach (AccountPlayerModel assignment in account.Players) {
+                        config.Root.Add(new Command() {
+                            CommandType = CommandType.SecurityAccountAddPlayer,
+                            Parameters = new List<CommandParameter>() {
+                                new CommandParameter() {
+                                    Data = {
+                                        Content = new List<String>() {
+                                            account.Username
+                                        }
+                                    }
+                                },
+                                new CommandParameter() {
+                                    Data = {
+                                        Content = new List<String>() {
+                                            assignment.GameType
+                                        }
+                                    }
+                                },
+                                new CommandParameter() {
+                                    Data = {
+                                        Content = new List<String>() {
+                                            assignment.Uid
+                                        }
+                                    }
+                                }
+                            }
+                        }.ToConfigCommand());
+                    }
+                }
             }
         }
 
@@ -174,7 +426,7 @@ namespace Procon.Core.Security {
         /// <summary>
         /// Creates a new group if the specified name is unique.
         /// </summary>
-        public CommandResultArgs AddGroup(Command command, Dictionary<String, CommandParameter> parameters) {
+        public CommandResultArgs SecurityAddGroup(Command command, Dictionary<String, CommandParameter> parameters) {
             CommandResultArgs result = null;
 
             String groupName = parameters["groupName"].First<String>();
@@ -182,10 +434,9 @@ namespace Procon.Core.Security {
             if (this.DispatchPermissionsCheck(command, command.Name).Success == true) {
                 if (groupName.Length > 0) {
                     if (this.Groups.FirstOrDefault(group => @group.Name == groupName) == null) {
-                        Group group = new Group() {
-                            Name = groupName,
-                            Security = this
-                        }.Execute() as Group;
+                        GroupModel group = new GroupModel() {
+                            Name = groupName
+                        };
 
                         this.Groups.Add(group);
 
@@ -194,7 +445,7 @@ namespace Procon.Core.Security {
                             Status = CommandResultType.Success,
                             Message = String.Format(@"Group ""{0}"" created successfully.", groupName),
                             Now = new CommandData() {
-                                Groups = new List<Group>() {
+                                Groups = new List<GroupModel>() {
                                     group
                                 }
                             }
@@ -233,14 +484,14 @@ namespace Procon.Core.Security {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public CommandResultArgs RemoveGroup(Command command, Dictionary<String, CommandParameter> parameters) {
+        public CommandResultArgs SecurityRemoveGroup(Command command, Dictionary<String, CommandParameter> parameters) {
             CommandResultArgs result = null;
 
             String groupName = parameters["groupName"].First<String>();
 
             if (this.DispatchPermissionsCheck(command, command.Name).Success == true) {
                 if (groupName.Length > 0) {
-                    Group group = this.Groups.FirstOrDefault(g => g.Name == groupName);
+                    GroupModel group = this.Groups.FirstOrDefault(g => g.Name == groupName);
 
                     if (group != null) {
                         Groups.Remove(group);
@@ -250,8 +501,8 @@ namespace Procon.Core.Security {
                             Status = CommandResultType.Success,
                             Message = String.Format(@"Group ""{0}"" successfully removed.", groupName),
                             Then = new CommandData() {
-                                Groups = new List<Group>() {
-                                    group.Clone() as Group
+                                Groups = new List<GroupModel>() {
+                                    group.Clone() as GroupModel
                                 }
                             }
                         };
@@ -289,7 +540,7 @@ namespace Procon.Core.Security {
         /// <summary>
         /// Removes an account, whatever group it is assigned to.
         /// </summary>
-        public CommandResultArgs RemoveAccount(Command command, Dictionary<String, CommandParameter> parameters) {
+        public CommandResultArgs SecurityRemoveAccount(Command command, Dictionary<String, CommandParameter> parameters) {
             CommandResultArgs result = null;
 
             String username = parameters["username"].First<String>();
@@ -297,7 +548,7 @@ namespace Procon.Core.Security {
             if (this.DispatchPermissionsCheck(command, command.Name).Success == true) {
                 if (username.Length > 0) {
                     // Fetch the account, whatever group it is added to.
-                    Account account = this.Groups.SelectMany(group => @group.Accounts).FirstOrDefault(a => a.Username == username);
+                    AccountModel account = this.Groups.SelectMany(group => @group.Accounts).FirstOrDefault(a => a.Username == username);
 
                     if (account != null) {
                         account.Group.Accounts.Remove(account);
@@ -307,10 +558,10 @@ namespace Procon.Core.Security {
                             Status = CommandResultType.Success,
                             Message = String.Format(@"Account ""{0}"" successfully removed.", account.Username),
                             Then = new CommandData() {
-                                Accounts = new List<Account>() {
-                                    account.Clone() as Account
+                                Accounts = new List<AccountModel>() {
+                                    account.Clone() as AccountModel
                                 },
-                                Groups = new List<Group>() {
+                                Groups = new List<GroupModel>() {
                                     account.Group
                                 }
                             }
@@ -353,7 +604,7 @@ namespace Procon.Core.Security {
         /// </summary>
         /// <param name="command"></param>
         /// <param name="parameters"></param>
-        public CommandResultArgs RemovePlayer(Command command, Dictionary<String, CommandParameter> parameters) { // (Command command, String gameType, String uid) {
+        public CommandResultArgs SecurityRemovePlayer(Command command, Dictionary<String, CommandParameter> parameters) { // (Command command, String gameType, String uid) {
             CommandResultArgs result = null;
 
             String gameType = parameters["gameType"].First<String>();
@@ -362,7 +613,7 @@ namespace Procon.Core.Security {
             if (this.DispatchPermissionsCheck(command, command.Name).Success == true) {
 
                 if (uid.Length > 0) {
-                    AccountPlayer player = this.Groups.SelectMany(group => @group.Accounts)
+                    AccountPlayerModel player = this.Groups.SelectMany(group => @group.Accounts)
                                                .SelectMany(account => account.Players).FirstOrDefault(x => x.GameType == gameType && x.Uid == uid);
 
                     // If the player exists for any other player..
@@ -375,10 +626,10 @@ namespace Procon.Core.Security {
                             Status = CommandResultType.Success,
                             Message = String.Format(@"Player with UID of ""{0}"" in game type ""{1}"" successfully removed from account ""{2}"".", player.Uid, player.GameType, player.Account.Username),
                             Then = new CommandData() {
-                                AccountPlayers = new List<AccountPlayer>() {
-                                    player.Clone() as AccountPlayer
+                                AccountPlayers = new List<AccountPlayerModel>() {
+                                    player.Clone() as AccountPlayerModel
                                 },
-                                Accounts = new List<Account>() {
+                                Accounts = new List<AccountModel>() {
                                     player.Account
                                 }
                             }
@@ -414,7 +665,7 @@ namespace Procon.Core.Security {
             return result;
         }
 
-        private static CommandResultArgs CheckPermissions(Account initiatorAccount, String commandName, Account targetAccount = null) {
+        private static CommandResultArgs CheckPermissions(AccountModel initiatorAccount, String commandName, AccountModel targetAccount = null) {
             CommandResultArgs result = null;
 
             int? initiatorAuthority = SecurityController.HighestAuthority(initiatorAccount, commandName);
@@ -465,7 +716,7 @@ namespace Procon.Core.Security {
         /// <param name="commandName"></param>
         /// <param name="targetAccount"></param>
         /// <returns></returns>
-        protected CommandResultArgs DispatchPermissionsCheck(Command command, Account initiatorAccount, String commandName, Account targetAccount = null) {
+        protected CommandResultArgs DispatchPermissionsCheck(Command command, AccountModel initiatorAccount, String commandName, AccountModel targetAccount = null) {
             CommandResultArgs result = null;
 
             if (command.Origin == CommandOrigin.Local) {
@@ -549,7 +800,7 @@ namespace Procon.Core.Security {
             return this.DispatchPermissionsCheck(command, this.GetAccount(command), commandName);
         }
 
-        private static int? HighestAuthority(Account account, String permission) {
+        private static int? HighestAuthority(AccountModel account, String permission) {
             return account != null ? account.Group.Permissions.Where(perm => perm.Name == permission).Select(perm => perm.Authority).FirstOrDefault() : null;
         }
 
@@ -558,14 +809,14 @@ namespace Procon.Core.Security {
         /// </summary>
         /// <param name="command"></param>
         /// <returns></returns>
-        public Account GetAccount(Command command) {
+        public AccountModel GetAccount(Command command) {
             return this.GetAccount(command.Username) ?? this.GetAccount(command.GameType, command.Uid);
         }
 
         /// <summary>
         /// Retrieves an account that contains a specified uid.
         /// </summary>
-        public Account GetAccount(String gameType, String uid) {
+        public AccountModel GetAccount(String gameType, String uid) {
             return this.Groups.SelectMany(group => group.Accounts)
                               .SelectMany(account => account.Players)
                               .Where(player => player.GameType == gameType)
@@ -577,9 +828,582 @@ namespace Procon.Core.Security {
         /// <summary>
         /// Retrieves an account whose username matches the username specified.
         /// </summary>
-        public Account GetAccount(String username) {
+        public AccountModel GetAccount(String username) {
             return this.Groups.SelectMany(group => group.Accounts)
                               .FirstOrDefault(account => account.Username == username);
         }
+
+        #region Group
+
+        /// <summary>
+        /// Sets a permission on the current group, provided the groupName parameter matches this group.
+        /// </summary>
+        /// <param name="command"></param>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
+        public CommandResultArgs SecurityGroupSetPermission(Command command, Dictionary<String, CommandParameter> parameters) {
+            CommandResultArgs result = null;
+
+            String groupName = parameters["groupName"].First<String>();
+            String permissionName = parameters["permissionName"].First<String>();
+            int authority = parameters["authority"].First<int>();
+
+            if (this.DispatchPermissionsCheck(command, command.Name).Success == true) {
+                GroupModel group = this.Groups.FirstOrDefault(g => g.Name == groupName);
+
+                if (group != null) {
+                    // Fetch or create the permission. Should always exist in our config, even if it is null.
+                    // This also allows for new permissions to be added to CommandName in the future
+                    // without breaking old configs.
+                    PermissionModel permission = group.Permissions.FirstOrDefault(perm => perm.Name == permissionName);
+
+                    if (permission == null) {
+                        permission = new PermissionModel() {
+                            Name = permissionName,
+                            Authority = authority
+                        };
+
+                        group.Permissions.Add(permission);
+                    }
+                    else {
+                        permission.Authority = authority;
+                    }
+
+                    result = new CommandResultArgs() {
+                        Success = true,
+                        Status = CommandResultType.Success,
+                        Message = String.Format(@"Permission ""{0}"" successfully set to {1}.", permission.Name, permission.Authority),
+                        Scope = new CommandData() {
+                            Groups = new List<GroupModel>() {
+                                group
+                            }
+                        },
+                        Now = new CommandData() {
+                            Permissions = new List<PermissionModel>() {
+                                permission
+                            }
+                        }
+                    };
+
+                    if (this.Events != null) {
+                        this.Events.Log(GenericEventArgs.ConvertToGenericEvent(result, GenericEventType.SecurityGroupPermissionAuthorityChanged));
+                    }
+                }
+                else {
+                    result = new CommandResultArgs() {
+                        Message = String.Format(@"Group with name ""{0}"" does not exists.", groupName),
+                        Success = false,
+                        Status = CommandResultType.DoesNotExists
+                    };
+                }
+            }
+            else {
+                result = CommandResultArgs.InsufficientPermissions;
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Copies the permissions from one group to this group.
+        /// </summary>
+        /// <param name="command"></param>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
+        public CommandResultArgs SecurityGroupCopyPermissions(Command command, Dictionary<String, CommandParameter> parameters) {
+            CommandResultArgs result = null;
+
+            String sourceGroupName = parameters["sourceGroupName"].First<String>();
+            String destinationGroupName = parameters["destinationGroupName"].First<String>();
+
+            if (this.DispatchPermissionsCheck(command, command.Name).Success == true) {
+                GroupModel destinationGroup = this.Groups.FirstOrDefault(g => g.Name == destinationGroupName);
+
+                if (destinationGroup != null) {
+                    GroupModel sourceGroup = this.Groups.FirstOrDefault(group => @group.Name == sourceGroupName);
+
+                    if (sourceGroup != null) {
+
+                        foreach (PermissionModel sourcePermission in sourceGroup.Permissions) {
+                            PermissionModel destinationPermission = destinationGroup.Permissions.FirstOrDefault(permission => sourcePermission.Name == permission.Name);
+
+                            if (destinationPermission != null) {
+                                destinationPermission.Authority = sourcePermission.Authority;
+                            }
+                        }
+
+                        result = new CommandResultArgs() {
+                            Success = true,
+                            Status = CommandResultType.Success,
+                            Message = String.Format(@"Successfully copied permissions from group ""{0}"" to {1}.", sourceGroup.Name, destinationGroup.Name),
+                            Scope = new CommandData() {
+                                Groups = new List<GroupModel>() {
+                                    destinationGroup
+                                }
+                            },
+                            Now = new CommandData() {
+                                Permissions = destinationGroup.Permissions
+                            }
+                        };
+
+                        if (this.Events != null) {
+                            this.Events.Log(GenericEventArgs.ConvertToGenericEvent(result, GenericEventType.SecurityGroupPermissionsCopied));
+                        }
+                    }
+                    else {
+                        result = new CommandResultArgs() {
+                            Success = false,
+                            Status = CommandResultType.DoesNotExists,
+                            Message = String.Format(@"Source group ""{0}"" does not exist.", sourceGroupName)
+                        };
+                    }
+                }
+                else {
+                    result = new CommandResultArgs() {
+                        Success = false,
+                        Status = CommandResultType.DoesNotExists,
+                        Message = String.Format(@"Destination group ""{0}"" does not exist.", sourceGroupName)
+                    };
+                }
+            }
+            else {
+                result = CommandResultArgs.InsufficientPermissions;
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Creates a new account if the specified name is unique.
+        /// </summary>
+        public CommandResultArgs SecurityGroupAddAccount(Command command, Dictionary<String, CommandParameter> parameters) { // , String groupName, String username) {
+            CommandResultArgs result = null;
+
+            String groupName = parameters["groupName"].First<String>();
+            String username = parameters["username"].First<String>();
+
+            if (this.DispatchPermissionsCheck(command, command.Name).Success == true) {
+                GroupModel group = this.Groups.FirstOrDefault(g => g.Name == groupName);
+
+                if (group != null) {
+                    if (username.Length > 0) {
+                        AccountModel account = this.Groups.SelectMany(g => g.Accounts).FirstOrDefault(a => a.Username == username);
+
+                        // If the account does not exist in any other group yet..
+                        if (account == null) {
+                            account = new AccountModel() {
+                                Username = username,
+                                Group = group,
+                            };
+
+                            group.Accounts.Add(account);
+
+                            result = new CommandResultArgs() {
+                                Success = true,
+                                Status = CommandResultType.Success,
+                                Message = String.Format(@"Account ""{0}"" successfully added to group ""{1}"".", account.Username, group.Name),
+                                Scope = new CommandData() {
+                                    Groups = new List<GroupModel>() {
+                                        group
+                                    }
+                                },
+                                Now = new CommandData() {
+                                    Accounts = new List<AccountModel>() {
+                                        account
+                                    }
+                                }
+                            };
+
+                            if (this.Events != null) {
+                                this.Events.Log(GenericEventArgs.ConvertToGenericEvent(result, GenericEventType.SecurityAccountAdded));
+                            }
+                        }
+                        // Else the account exists already, relocate it.
+                        else {
+                            GroupModel existingGroup = account.Group;
+
+                            // Remove it from the other group
+                            account.Group.Accounts.Remove(account);
+
+                            // Add the account to this group.
+                            account.Group = group;
+                            group.Accounts.Add(account);
+
+                            result = new CommandResultArgs() {
+                                Success = true,
+                                Status = CommandResultType.Success,
+                                Message = String.Format(@"Account ""{0}"" successfully added to group ""{1}"".", account.Username, group.Name),
+                                Scope = new CommandData() {
+                                    Accounts = new List<AccountModel>() {
+                                        account
+                                    }
+                                },
+                                Then = new CommandData() {
+                                    Groups = new List<GroupModel>() {
+                                        existingGroup
+                                    }
+                                },
+                                Now = new CommandData() {
+                                    Groups = new List<GroupModel>() {
+                                        group
+                                    }
+                                }
+                            };
+
+                            if (this.Events != null) {
+                                this.Events.Log(GenericEventArgs.ConvertToGenericEvent(result, GenericEventType.SecurityAccountAdded));
+                            }
+                        }
+                    }
+                    else {
+                        result = new CommandResultArgs() {
+                            Success = false,
+                            Status = CommandResultType.InvalidParameter,
+                            Message = "An account username must not be zero length"
+                        };
+                    }
+                }
+                else {
+                    result = new CommandResultArgs() {
+                        Message = String.Format(@"Group with name ""{0}"" does not exists.", groupName),
+                        Success = false,
+                        Status = CommandResultType.DoesNotExists
+                    };
+                }
+            }
+            else {
+                result = CommandResultArgs.InsufficientPermissions;
+            }
+
+            return result;
+        }
+
+        #endregion
+
+        #region Account
+
+        /// <summary>
+        /// procon.private.account.assign "Phogue" "CallOfDuty" "101478382" -- guid
+        /// procon.private.account.assign "Phogue" "BFBC2" "ABCDABCDABCD" -- cdkey
+        /// </summary>
+        /// <param name="command"></param>
+        /// <param name="parameters"></param>
+        public CommandResultArgs SecurityAccountAddPlayer(Command command, Dictionary<String, CommandParameter> parameters) {
+            CommandResultArgs result = null;
+
+            // <param name="username">The unique name of the account.  Account.Name</param>
+            // <param name="gameType">The name of the game, found in Procon.Core.Connections.Support</param>
+            // <param name="uid">The UID of the player by cd key, name - etc.</param>
+            String username = parameters["username"].First<String>();
+            String gameType = parameters["gameType"].First<String>();
+            String uid = parameters["uid"].First<String>();
+
+            if (this.DispatchPermissionsCheck(command, command.Name).Success == true) {
+                AccountModel account = this.Groups.SelectMany(g => g.Accounts).FirstOrDefault(a => a.Username == username);
+
+                if (account != null) {
+                    if (uid.Length > 0) {
+                        AccountPlayerModel player = this.Groups.SelectMany(group => @group.Accounts)
+                                                   .SelectMany(a => a.Players)
+                                                   .FirstOrDefault(x => x.GameType == gameType && x.Uid == uid);
+
+                        // If the player does not exist for any other player..
+                        if (player == null) {
+                            player = new AccountPlayerModel() {
+                                GameType = gameType,
+                                Uid = uid,
+                                Account = account
+                            };
+
+                            account.Players.Add(player);
+
+                            result = new CommandResultArgs() {
+                                Success = true,
+                                Status = CommandResultType.Success,
+                                Message = String.Format(@"Player with UID of ""{0}"" in game type ""{1}"" successfully added to account ""{2}"".", player.Uid, player.GameType, account.Username),
+                                Scope = new CommandData() {
+                                    Accounts = new List<AccountModel>() {
+                                        account
+                                    },
+                                    Groups = new List<GroupModel>() {
+                                        account.Group
+                                    }
+                                },
+                                Now = new CommandData() {
+                                    AccountPlayers = new List<AccountPlayerModel>() {
+                                        player
+                                    }
+                                }
+                            };
+
+                            if (this.Events != null) {
+                                this.Events.Log(GenericEventArgs.ConvertToGenericEvent(result, GenericEventType.SecurityPlayerAdded));
+                            }
+                        }
+                        // Else the player already exists and is attached to another account. Reassign it.
+                        else {
+                            AccountModel existingAccount = player.Account;
+
+                            // Remove the player from the other account
+                            player.Account.Players.Remove(player);
+
+                            // Add the player to this account.
+                            player.Account = account;
+                            account.Players.Add(player);
+
+                            result = new CommandResultArgs() {
+                                Success = true,
+                                Status = CommandResultType.Success,
+                                Message = String.Format(@"Player with UID of ""{0}"" in game type ""{1}"" successfully added to account ""{2}"".", player.Uid, player.GameType, account.Username),
+                                Scope = new CommandData() {
+                                    AccountPlayers = new List<AccountPlayerModel>() {
+                                        player
+                                    }
+                                },
+                                Then = new CommandData() {
+                                    Accounts = new List<AccountModel>() {
+                                        existingAccount
+                                    }
+                                },
+                                Now = new CommandData() {
+                                    Accounts = new List<AccountModel>() {
+                                        account
+                                    }
+                                }
+                            };
+
+                            if (this.Events != null) {
+                                this.Events.Log(GenericEventArgs.ConvertToGenericEvent(result, GenericEventType.SecurityPlayerAdded));
+                            }
+                        }
+                    }
+                    else {
+                        result = new CommandResultArgs() {
+                            Success = false,
+                            Status = CommandResultType.InvalidParameter,
+                            Message = "A player uid must not be zero length"
+                        };
+                    }
+                }
+                else {
+                    result = new CommandResultArgs() {
+                        Message = String.Format(@"Account with username ""{0}"" does not exists.", username),
+                        Success = false,
+                        Status = CommandResultType.DoesNotExists
+                    };
+                }
+            }
+            else {
+                result = CommandResultArgs.InsufficientPermissions;
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// procon.private.account.setPassword "Phogue" "pass"
+        /// procon.private.account.setPassword "Hassan" "password1"
+        /// </summary>
+        /// <param name="command"></param>
+        /// <param name="parameters"></param>
+        public CommandResultArgs SecurityAccountSetPassword(Command command, Dictionary<String, CommandParameter> parameters) {
+            CommandResultArgs result = null;
+
+            // <param name="username">The unique name of the account.  Account.Name</param>
+            // <param name="password">The person password to login to the layer.  Account.Password</param>
+            String username = parameters["username"].First<String>();
+            String password = parameters["password"].First<String>();
+
+            if (this.DispatchPermissionsCheck(command, command.Name).Success == true) {
+                AccountModel account = this.Groups.SelectMany(g => g.Accounts).FirstOrDefault(a => a.Username == username);
+
+                if (account != null) {
+                    if (password.Length > 0) {
+                        account.PasswordHash = BCrypt.HashPassword(password, BCrypt.GenerateSalt());
+
+                        result = new CommandResultArgs() {
+                            Success = true,
+                            Status = CommandResultType.Success,
+                            Message = String.Format(@"Successfully changed password for account with username ""{0}"".", account.Username)
+                        };
+                    }
+                    else {
+                        result = new CommandResultArgs() {
+                            Success = false,
+                            Status = CommandResultType.InvalidParameter,
+                            Message = "A password must not be zero length"
+                        };
+                    }
+                }
+                else {
+                    result = new CommandResultArgs() {
+                        Message = String.Format(@"Account with username ""{0}"" does not exists.", username),
+                        Success = false,
+                        Status = CommandResultType.DoesNotExists
+                    };
+                }
+            }
+            else {
+                result = CommandResultArgs.InsufficientPermissions;
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Sets the password hash without any other processing. Used when loading from a config.
+        /// </summary>
+        /// <param name="command"></param>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
+        public CommandResultArgs SecurityAccountSetPasswordHash(Command command, Dictionary<String, CommandParameter> parameters) {
+            CommandResultArgs result = null;
+
+            String username = parameters["username"].First<String>();
+            String passwordHash = parameters["passwordHash"].First<String>();
+
+            if (this.DispatchPermissionsCheck(command, command.Name).Success == true) {
+                AccountModel account = this.Groups.SelectMany(g => g.Accounts).FirstOrDefault(a => a.Username == username);
+
+                if (account != null) {
+                    if (passwordHash.Length > 0) {
+                        account.PasswordHash = passwordHash;
+
+                        result = new CommandResultArgs() {
+                            Success = true,
+                            Status = CommandResultType.Success,
+                            Message = String.Format(@"Successfully set password for account with username ""{0}"".", account.Username)
+                        };
+                    }
+                    else {
+                        result = new CommandResultArgs() {
+                            Success = false,
+                            Status = CommandResultType.InvalidParameter,
+                            Message = "A password hash must not be zero length"
+                        };
+                    }
+                }
+                else {
+                    result = new CommandResultArgs() {
+                        Message = String.Format(@"Account with username ""{0}"" does not exists.", username),
+                        Success = false,
+                        Status = CommandResultType.DoesNotExists
+                    };
+                }
+            }
+            else {
+                result = CommandResultArgs.InsufficientPermissions;
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Authenticates an account
+        /// </summary>
+        /// <param name="command"></param>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
+        public CommandResultArgs SecurityAccountAuthenticate(Command command, Dictionary<String, CommandParameter> parameters) {
+            CommandResultArgs result = null;
+
+            String username = parameters["username"].First<String>();
+            String passwordPlainText = parameters["passwordPlainText"].First<String>();
+
+            if (this.DispatchPermissionsCheck(command, command.Name).Success == true) {
+                AccountModel account = this.Groups.SelectMany(g => g.Accounts).FirstOrDefault(a => a.Username == username);
+
+                if (account != null) {
+                    if (account.PasswordHash.Length > 0) {
+                        if (BCrypt.CheckPassword(passwordPlainText, account.PasswordHash) == true) {
+                            result = new CommandResultArgs() {
+                                Success = true,
+                                Status = CommandResultType.Success,
+                                Message = String.Format(@"Successfully authenticated against account with username ""{0}"".", account.Username)
+                            };
+                        }
+                        else {
+                            result = new CommandResultArgs() {
+                                Success = false,
+                                Status = CommandResultType.Failed,
+                                Message = "Invalid username or password."
+                            };
+                        }
+                    }
+                    else {
+                        result = new CommandResultArgs() {
+                            Success = false,
+                            Status = CommandResultType.DoesNotExists,
+                            Message = String.Format(@"A password has not been setup for account with username ""{0}"".", account.Username)
+                        };
+                    }
+                }
+                else {
+                    result = new CommandResultArgs() {
+                        Message = String.Format(@"Account with username ""{0}"" does not exists.", username),
+                        Success = false,
+                        Status = CommandResultType.DoesNotExists
+                    };
+                }
+            }
+            else {
+                result = CommandResultArgs.InsufficientPermissions;
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// procon.private.account.setPreferredLanguageCode "Phogue" "en"
+        /// </summary>
+        /// <param name="command"></param>
+        /// <param name="parameters"></param>
+        public CommandResultArgs SecurityAccountSetPreferredLanguageCode(Command command, Dictionary<String, CommandParameter> parameters) {
+            CommandResultArgs result = null;
+
+            // <param name="username">The unique name of the account.  Account.Name</param>
+            // <param name="languageCode">ISO 639-1 preferred language code</param>
+            String username = parameters["username"].First<String>();
+            String languageCode = parameters["languageCode"].First<String>();
+
+            if (this.DispatchPermissionsCheck(command, command.Name).Success == true) {
+                AccountModel account = this.Groups.SelectMany(g => g.Accounts).FirstOrDefault(a => a.Username == username);
+
+                if (account != null) {
+                    LanguageModel language = this.Languages.LoadedLanguageFiles.Where(l => l.LanguageModel.LanguageCode == languageCode).Select(l => l.LanguageModel).FirstOrDefault();
+
+                    if (language != null) {
+                        account.PreferredLanguageCode = language.LanguageCode;
+
+                        result = new CommandResultArgs() {
+                            Success = true,
+                            Status = CommandResultType.Success,
+                            Message = String.Format(@"Account with username ""{0}"" successfully set preferred language to ""{1}"".", account.Username, language.LanguageCode)
+                        };
+                    }
+                    else {
+                        result = new CommandResultArgs() {
+                            Success = false,
+                            Status = CommandResultType.DoesNotExists,
+                            Message = String.Format(@"Language with code ""{0}"" does not exist.", languageCode)
+                        };
+                    }
+                }
+                else {
+                    result = new CommandResultArgs() {
+                        Message = String.Format(@"Account with username ""{0}"" does not exists.", username),
+                        Success = false,
+                        Status = CommandResultType.DoesNotExists
+                    };
+                }
+            }
+            else {
+                result = CommandResultArgs.InsufficientPermissions;
+            }
+
+            return result;
+        }
+
+        #endregion
     }
 }

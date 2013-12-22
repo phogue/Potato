@@ -6,6 +6,8 @@ using NUnit.Framework;
 using Procon.Core;
 using Procon.Core.Connections.Plugins;
 using Procon.Core.Database;
+using Procon.Core.Shared;
+using Procon.Core.Shared.Models;
 using Procon.Core.Variables;
 
 namespace Procon.Examples.Database.Test {
@@ -58,7 +60,7 @@ namespace Procon.Examples.Database.Test {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.PluginsEnable,
                 Scope = {
-                    PluginGuid = plugins.Plugins.First().PluginGuid
+                    PluginGuid = plugins.Plugins.First().PluginModel.PluginGuid
                 }
             });
 

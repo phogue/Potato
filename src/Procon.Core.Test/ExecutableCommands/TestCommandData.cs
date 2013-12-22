@@ -1,36 +1,36 @@
-﻿using System;
-using System.Text;
+﻿#region
+
+using System;
 using System.Collections.Generic;
-using System.Linq;
 using NUnit.Framework;
 using Procon.Core.Connections;
-using Procon.Core.Connections.TextCommands;
 using Procon.Core.Localization;
-using Procon.Core.Security;
-using Procon.Core.Variables;
+using Procon.Core.Shared;
+using Procon.Core.Shared.Models;
 using Procon.Net.Actions;
 using Procon.Net.Models;
+
+#endregion
 
 namespace Procon.Core.Test.ExecutableCommands {
     [TestFixture]
     public class TestCommandData {
-
         /// <summary>
-        /// Tests that all references are removed by emptying and nulling the lists.
+        ///     Tests that all references are removed by emptying and nulling the lists.
         /// </summary>
         [Test]
         public void TestCommandDataDispose() {
-            CommandData data = new CommandData() {
+            var data = new CommandData() {
                 Content = new List<String>(),
-                Connections = new List<Connection>(),
-                Groups = new List<Group>(),
-                Accounts = new List<Account>(),
-                Permissions = new List<Permission>(),
-                AccountPlayers = new List<AccountPlayer>(),
-                Variables = new List<Variable>(),
-                Languages = new List<Language>(),
-                TextCommands = new List<TextCommand>(),
-                TextCommandMatches = new List<TextCommandMatch>(),
+                Connections = new List<ConnectionModel>(),
+                Groups = new List<GroupModel>(),
+                Accounts = new List<AccountModel>(),
+                Permissions = new List<PermissionModel>(),
+                AccountPlayers = new List<AccountPlayerModel>(),
+                Variables = new List<VariableModel>(),
+                Languages = new List<LanguageModel>(),
+                TextCommands = new List<TextCommandModel>(),
+                TextCommandMatches = new List<TextCommandMatchModel>(),
                 Chats = new List<Chat>(),
                 Players = new List<Player>(),
                 Kills = new List<Kill>(),

@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using Procon.Database.Serialization.Builders;
 using Procon.Database.Serialization.Builders.Equalities;
 using Procon.Database.Serialization.Builders.FieldTypes;
-using Procon.Database.Serialization.Builders.Methods;
 using Procon.Database.Serialization.Builders.Methods.Schema;
 using Procon.Database.Serialization.Builders.Modifiers;
 using Procon.Database.Serialization.Builders.Statements;
 using Procon.Database.Serialization.Builders.Values;
+using Procon.Database.Shared;
+using Procon.Database.Shared.Builders;
 using Nullable = Procon.Database.Serialization.Builders.Modifiers.Nullable;
 
 namespace Procon.Database.Serialization {
@@ -101,15 +102,13 @@ namespace Procon.Database.Serialization {
         /// <param name="name"></param>
         /// <param name="data"></param>
         /// <returns></returns>
-        protected Equality BuildEquality(Equality equality, String name, Object data) {
+        protected IEquality BuildEquality(IEquality equality, String name, Object data) {
             Field field = this.BuildField(name);
             Value value = this.BuildValue(data);
 
             if (equality != null && value != null) {
-                equality.AddRange(new List<IDatabaseObject>() {
-                    field,
-                    value
-                });
+                equality.Add(field);
+                equality.Add(value);
             }
 
             return equality;
@@ -124,7 +123,7 @@ namespace Procon.Database.Serialization {
         /// <param name="name"></param>
         /// <param name="data"></param>
         /// <returns></returns>
-        protected Equality BuildEquality(Equality equality, String collection, String name, Object data) {
+        protected IEquality BuildEquality(IEquality equality, String collection, String name, Object data) {
             Field field = this.BuildField(name);
             field.Collection(new Collection() {
                 Name = collection
@@ -133,10 +132,8 @@ namespace Procon.Database.Serialization {
             Value value = this.BuildValue(data);
 
             if (equality != null && value != null) {
-                equality.AddRange(new List<IDatabaseObject>() {
-                    field,
-                    value
-                });
+                equality.Add(field);
+                equality.Add(value);
             }
 
             return equality;
@@ -188,7 +185,7 @@ namespace Procon.Database.Serialization {
             );
         }
 
-        public IDatabaseObject Index(String collection, String name, SortByModifier sortByModifier) {
+        public IDatabaseObject Index(String collection, String name, ISortByModifier sortByModifier) {
             Field field = this.BuildField(name);
 
             return this.Raw(
@@ -211,7 +208,7 @@ namespace Procon.Database.Serialization {
             );
         }
 
-        public IDatabaseObject Index(String collection, String name, IndexModifer indexModifier) {
+        public IDatabaseObject Index(String collection, String name, IIndexModifier indexModifier) {
             Field field = this.BuildField(name);
 
             return this.Raw(
@@ -234,7 +231,7 @@ namespace Procon.Database.Serialization {
             );
         }
 
-        public IDatabaseObject Index(String collection, String name, IndexModifer indexModifier, SortByModifier sortByModifier) {
+        public IDatabaseObject Index(String collection, String name, IIndexModifier indexModifier, ISortByModifier sortByModifier) {
             Field field = this.BuildField(name);
 
             return this.Raw(
@@ -280,7 +277,7 @@ namespace Procon.Database.Serialization {
             return this.Raw(this.BuildField(name));
         }
 
-        public IDatabaseObject Field(String name, FieldType type, bool nullable = true) {
+        public IDatabaseObject Field(String name, IFieldType type, bool nullable = true) {
             if (nullable == true) type.Add(new Nullable());
 
             return this.Raw(this.BuildField(name).FieldType(type) as Field);
@@ -308,7 +305,7 @@ namespace Procon.Database.Serialization {
             return this.Condition(name, new Equals().Implicit() as Equals, data);
         }
 
-        public IDatabaseObject Condition(String name, Equality equality, Object data) {
+        public IDatabaseObject Condition(String name, IEquality equality, Object data) {
             this.Add(this.BuildEquality(equality, name, data));
 
             return this;
@@ -318,7 +315,7 @@ namespace Procon.Database.Serialization {
             return this.Condition(collection, name, new Equals().Implicit() as Equals, data);
         }
 
-        public IDatabaseObject Condition(String collection, String name, Equality equality, object data) {
+        public IDatabaseObject Condition(String collection, String name, IEquality equality, object data) {
             this.Add(this.BuildEquality(equality, collection, name, data));
 
             return this;
@@ -364,7 +361,7 @@ namespace Procon.Database.Serialization {
             return this;
         }
 
-        public IDatabaseObject Sort(string name, SortByModifier modifier = null) {
+        public IDatabaseObject Sort(string name, ISortByModifier modifier = null) {
             Field field = this.BuildField(name);
 
             return this.Raw(
@@ -377,7 +374,7 @@ namespace Procon.Database.Serialization {
             .Implicit();
         }
 
-        public IDatabaseObject Sort(String collection, String name, SortByModifier modifier = null) {
+        public IDatabaseObject Sort(String collection, String name, ISortByModifier modifier = null) {
             Field field = this.BuildField(name);
 
             return this.Raw(

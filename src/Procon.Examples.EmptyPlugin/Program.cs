@@ -1,4 +1,4 @@
-﻿using Procon.Core.Connections.Plugins;
+﻿using Procon.Core.Shared.Plugins;
 
 namespace Procon.Examples.EmptyPlugin {
     /// <summary>

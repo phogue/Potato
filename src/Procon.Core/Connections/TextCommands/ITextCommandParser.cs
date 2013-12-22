@@ -1,4 +1,6 @@
-﻿namespace Procon.Core.Connections.TextCommands {
+﻿using Procon.Core.Shared;
+
+namespace Procon.Core.Connections.TextCommands {
     /// <summary>
     /// A parser for text commands
     /// </summary>

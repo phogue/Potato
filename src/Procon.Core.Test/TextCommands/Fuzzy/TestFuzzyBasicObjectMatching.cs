@@ -1,104 +1,29 @@
-﻿using System.Collections.Generic;
+﻿#region
+
+using System.Collections.Generic;
 using NUnit.Framework;
-using Procon.Core.Connections.TextCommands;
+using Procon.Core.Shared;
 using Procon.Net.Actions;
 using Procon.Net.Models;
+
+#endregion
 
 namespace Procon.Core.Test.TextCommands.Fuzzy {
     [TestFixture]
     public class TestFuzzyBasicObjectMatching : TestFuzzyBase {
-
         [Test]
-        public void TestBasicKickPhogue() {
-            TestFuzzyBase.AssertCommandPlayerListMapList(
-                this.CreateTextCommandController(), 
-                "kick phogue",
-                TestFuzzyBase.TextCommandKick,
-                new List<Player>() {
-                    TestFuzzyBase.PlayerPhogue
-                },
-                new List<Map>()
-            );
-        }
-
-
-        [Test]
-        public void TestBasicKickDiacritic() {
-            TestFuzzyBase.AssertCommandPlayerListMapList(
-                this.CreateTextCommandController(), 
-                "kick MrDiacritic",
-                TestFuzzyBase.TextCommandKick,
-                new List<Player>() {
-                    TestFuzzyBase.PlayerMrDiacritic
-                },
-                new List<Map>()
-            ); 
-        }
-
-        [Test]
-        public void TestBasicKickSelf() {
-            TestFuzzyBase.AssertCommandPlayerListMapList(
-                this.CreateTextCommandController(), 
-                "kick me",
-                TestFuzzyBase.TextCommandKick,
-                new List<Player>() {
-                    TestFuzzyBase.PlayerPhogue
-                },
-                new List<Map>()
-            );
-        }
-
-        [Test]
-        public void TestBasicKickPhogueNameTypo() {
-            TestFuzzyBase.AssertCommandPlayerListMapList(
-                this.CreateTextCommandController(), 
-                "kick phouge",
-                TestFuzzyBase.TextCommandKick,
-                new List<Player>() {
-                    TestFuzzyBase.PlayerPhogue
-                },
-                new List<Map>()
-            );
-        }
-
-        [Test]
-        public void TestBasicKickPhogueCommandSmallTypo() {
-            CommandResultArgs result = this.CreateTextCommandController().ExecuteTextCommand(new Command() {
+        public void TestBasicAlternateKickPhogueCommandSevereTypo() {
+            CommandResultArgs result = CreateTextCommandController().ExecuteTextCommand(new Command() {
                 Username = "Phogue",
                 Origin = CommandOrigin.Local
             }, new Dictionary<string, CommandParameter>() {
-                { 
-                    "text", 
-                    new CommandParameter() {
-                        Data = {
-                            Content = new List<string>() {
-                                "kcik phogue"
-                            }
+                {"text", new CommandParameter() {
+                    Data = {
+                        Content = new List<string>() {
+                            "getch rids of phogue"
                         }
                     }
-                }
-            });
-
-            // No event should be fired. The command has a much lower tolerance for typos (good thing)
-            Assert.IsNull(result, "Argument has passed, but should have failed due to severe typo in command");
-        }
-
-        [Test]
-        public void TestBasicKickPhogueCommandSevereTypo() {
-            CommandResultArgs result = this.CreateTextCommandController().ExecuteTextCommand(new Command() {
-                Username = "Phogue",
-                Origin = CommandOrigin.Local
-            }, new Dictionary<string, CommandParameter>() {
-                { 
-                    "text", 
-                    new CommandParameter() {
-                        Data = {
-                            Content = new List<string>() {
-                                "kik phogue"
-                            }
-                        }
-                    }
-                }
+                }}
             });
 
             // No event should be fired. The command has a much lower tolerance for typos (good thing)
@@ -107,134 +32,130 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
 
         [Test]
         public void TestBasicAlternateKickPhogueCommandSmallTypo() {
-            TestFuzzyBase.AssertCommandPlayerListMapList(
-                this.CreateTextCommandController(), 
-                "get rdi of phogue",
-                TestFuzzyBase.TextCommandKick,
-                new List<Player>() {
-                    TestFuzzyBase.PlayerPhogue
-                },
-                new List<Map>()
-            );
+            AssertCommandPlayerListMapList(CreateTextCommandController(), "get rdi of phogue", TextCommandKick, new List<Player>() {
+                PlayerPhogue
+            }, new List<Map>());
         }
 
         [Test]
-        public void TestBasicAlternateKickPhogueCommandSevereTypo() {
-            CommandResultArgs result = this.CreateTextCommandController().ExecuteTextCommand(new Command() {
+        public void TestBasicKickDiacritic() {
+            AssertCommandPlayerListMapList(CreateTextCommandController(), "kick MrDiacritic", TextCommandKick, new List<Player>() {
+                PlayerMrDiacritic
+            }, new List<Map>());
+        }
+
+        [Test]
+        public void TestBasicKickPhogue() {
+            AssertCommandPlayerListMapList(CreateTextCommandController(), "kick phogue", TextCommandKick, new List<Player>() {
+                PlayerPhogue
+            }, new List<Map>());
+        }
+
+        [Test]
+        public void TestBasicKickPhogueCommandSevereTypo() {
+            CommandResultArgs result = CreateTextCommandController().ExecuteTextCommand(new Command() {
                 Username = "Phogue",
                 Origin = CommandOrigin.Local
             }, new Dictionary<string, CommandParameter>() {
-                { 
-                    "text", 
-                    new CommandParameter() {
-                        Data = {
-                            Content = new List<string>() {
-                                "getch rids of phogue"
-                            }
+                {"text", new CommandParameter() {
+                    Data = {
+                        Content = new List<string>() {
+                            "kik phogue"
                         }
                     }
-                }
+                }}
             });
 
             // No event should be fired. The command has a much lower tolerance for typos (good thing)
             Assert.IsNull(result, "Argument has passed, but should have failed due to severe typo in command");
         }
 
-        /// <summary>
-        /// Kicks Phogue and morpheus using a comma to seperate the two items.
-        /// </summary>
         [Test]
-        public void TestKickPhogueCommaMorpheus() {
-            TestFuzzyBase.AssertCommandPlayerListMapList(
-                this.CreateTextCommandController(), 
-                "kick phogue, morpheus(aut)",
-                TestFuzzyBase.TextCommandKick,
-                new List<Player>() {
-                    TestFuzzyBase.PlayerPhogue,
-                    TestFuzzyBase.PlayerMorpheus
-                },
-                new List<Map>()
-            );
+        public void TestBasicKickPhogueCommandSmallTypo() {
+            CommandResultArgs result = CreateTextCommandController().ExecuteTextCommand(new Command() {
+                Username = "Phogue",
+                Origin = CommandOrigin.Local
+            }, new Dictionary<string, CommandParameter>() {
+                {"text", new CommandParameter() {
+                    Data = {
+                        Content = new List<string>() {
+                            "kcik phogue"
+                        }
+                    }
+                }}
+            });
+
+            // No event should be fired. The command has a much lower tolerance for typos (good thing)
+            Assert.IsNull(result, "Argument has passed, but should have failed due to severe typo in command");
         }
 
         [Test]
-        public void TestKickPhogueMorpheusTruncated() {
-            TestFuzzyBase.AssertCommandPlayerListMapList(
-                this.CreateTextCommandController(), 
-                "kick pho, morph",
-                TestFuzzyBase.TextCommandKick,
-                new List<Player>() {
-                    TestFuzzyBase.PlayerPhogue,
-                    TestFuzzyBase.PlayerMorpheus
-                },
-                new List<Map>()
-            );
+        public void TestBasicKickPhogueNameTypo() {
+            AssertCommandPlayerListMapList(CreateTextCommandController(), "kick phouge", TextCommandKick, new List<Player>() {
+                PlayerPhogue
+            }, new List<Map>());
         }
 
         [Test]
-        public void TestKickPhogueMorpheusSevereTypo() {
-            TestFuzzyBase.AssertCommandPlayerListMapList(
-                this.CreateTextCommandController(), 
-                "kick phage, marphius aut",
-                TestFuzzyBase.TextCommandKick,
-                new List<Player>() {
-                    TestFuzzyBase.PlayerPhogue,
-                    TestFuzzyBase.PlayerMorpheus
-                },
-                new List<Map>()
-            );
-        }
-
-        [Test]
-        public void TestKickPhogueIsAButterfly() {
-            TestFuzzyBase.AssertCommandPlayerListMapList(
-                this.CreateTextCommandController(), 
-                "kick phogue is a butterfly",
-                TestFuzzyBase.TextCommandKick,
-                new List<Player>() {
-                    TestFuzzyBase.PlayerPhogueIsAButterfly
-                },
-                new List<Map>()
-            );
+        public void TestBasicKickSelf() {
+            AssertCommandPlayerListMapList(CreateTextCommandController(), "kick me", TextCommandKick, new List<Player>() {
+                PlayerPhogue
+            }, new List<Map>());
         }
 
         [Test]
         public void TestKickPhogueButNotPhogueIsAButterflyWithHighSimilarity() {
-            TestFuzzyBase.AssertCommandPlayerListMapList(
-                this.CreateTextCommandController(), 
-                "kick phogue is perhaps not a butterfly",
-                TestFuzzyBase.TextCommandKick,
-                new List<Player>() {
-                    TestFuzzyBase.PlayerPhogue
-                },
-                new List<Map>()
-            );
+            AssertCommandPlayerListMapList(CreateTextCommandController(), "kick phogue is perhaps not a butterfly", TextCommandKick, new List<Player>() {
+                PlayerPhogue
+            }, new List<Map>());
+        }
+
+        /// <summary>
+        ///     Kicks Phogue and morpheus using a comma to seperate the two items.
+        /// </summary>
+        [Test]
+        public void TestKickPhogueCommaMorpheus() {
+            AssertCommandPlayerListMapList(CreateTextCommandController(), "kick phogue, morpheus(aut)", TextCommandKick, new List<Player>() {
+                PlayerPhogue,
+                PlayerMorpheus
+            }, new List<Map>());
+        }
+
+        [Test]
+        public void TestKickPhogueIsAButterfly() {
+            AssertCommandPlayerListMapList(CreateTextCommandController(), "kick phogue is a butterfly", TextCommandKick, new List<Player>() {
+                PlayerPhogueIsAButterfly
+            }, new List<Map>());
         }
 
         [Test]
         public void TestKickPhogueIsAButterflySmallTypo() {
-            TestFuzzyBase.AssertCommandPlayerListMapList(
-                this.CreateTextCommandController(), 
-                "kick phogue is a buttrfly",
-                TestFuzzyBase.TextCommandKick, 
-                new List<Player>() {
-                    TestFuzzyBase.PlayerPhogueIsAButterfly
-                },
-                new List<Map>()
-            );
+            AssertCommandPlayerListMapList(CreateTextCommandController(), "kick phogue is a buttrfly", TextCommandKick, new List<Player>() {
+                PlayerPhogueIsAButterfly
+            }, new List<Map>());
+        }
+
+        [Test]
+        public void TestKickPhogueMorpheusSevereTypo() {
+            AssertCommandPlayerListMapList(CreateTextCommandController(), "kick phage, marphius aut", TextCommandKick, new List<Player>() {
+                PlayerPhogue,
+                PlayerMorpheus
+            }, new List<Map>());
+        }
+
+        [Test]
+        public void TestKickPhogueMorpheusTruncated() {
+            AssertCommandPlayerListMapList(CreateTextCommandController(), "kick pho, morph", TextCommandKick, new List<Player>() {
+                PlayerPhogue,
+                PlayerMorpheus
+            }, new List<Map>());
         }
 
         [Test]
         public void TestKickSplitNameDoubleSubsetMatch() {
-            TestFuzzyBase.AssertCommandPlayerListMapList(
-                this.CreateTextCommandController(), 
-                "kick say nish",
-                TestFuzzyBase.TextCommandKick,
-                new List<Player>() {
-                    TestFuzzyBase.PlayerSayaNishino
-                },
-                new List<Map>()
-            );
+            AssertCommandPlayerListMapList(CreateTextCommandController(), "kick say nish", TextCommandKick, new List<Player>() {
+                PlayerSayaNishino
+            }, new List<Map>());
         }
     }
 }

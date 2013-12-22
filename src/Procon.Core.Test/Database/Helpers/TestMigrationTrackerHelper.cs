@@ -1,26 +1,16 @@
-﻿using System.Collections.Generic;
-using Procon.Core.Database.Migrations;
+﻿#region
+
+using System.Collections.Generic;
+using Procon.Core.Shared;
+using Procon.Core.Shared.Database.Migrations;
 using Procon.Net.Utils;
+
+#endregion
 
 namespace Procon.Core.Test.Database.Helpers {
     public class TestMigrationTrackerHelper {
-        /// <summary>
-        /// Tracks the last migration called.
-        /// </summary>
-        public int Tracker { get; set; }
-
-        /// <summary>
-        /// Counts how many migrations were called (up or down)
-        /// </summary>
-        public int Counter { get; set; }
-
-        /// <summary>
-        /// Handle to the migration controller.
-        /// </summary>
-        public MigrationController Migrations { get; set; }
-
         public TestMigrationTrackerHelper() {
-            this.Migrations = new MigrationController() {
+            Migrations = new MigrationController() {
                 // Bubble all commands to the database controller
                 BubbleObjects = new List<IExecutableBase>() {
                     TestDatabaseController.OpenSqLiteDriver()
@@ -28,64 +18,64 @@ namespace Procon.Core.Test.Database.Helpers {
                 Migrations = new List<IMigration>() {
                     new Migration() {
                         Up = () => {
-                            this.Tracker = 1;
+                            Tracker = 1;
 
-                            this.Counter++;
+                            Counter++;
 
                             return true;
                         },
                         Down = () => {
-                            this.Tracker = 0;
+                            Tracker = 0;
 
-                            this.Counter++;
+                            Counter++;
 
                             return true;
                         }
                     },
                     new Migration() {
                         Up = () => {
-                            this.Tracker = 2;
+                            Tracker = 2;
 
-                            this.Counter++;
+                            Counter++;
 
                             return true;
                         },
                         Down = () => {
-                            this.Tracker = 1;
+                            Tracker = 1;
 
-                            this.Counter++;
+                            Counter++;
 
                             return true;
                         }
                     },
                     new Migration() {
                         Up = () => {
-                            this.Tracker = 3;
+                            Tracker = 3;
 
-                            this.Counter++;
+                            Counter++;
 
                             return true;
                         },
                         Down = () => {
-                            this.Tracker = 2;
+                            Tracker = 2;
 
-                            this.Counter++;
+                            Counter++;
 
                             return true;
                         }
                     },
                     new Migration() {
                         Up = () => {
-                            this.Tracker = 4;
+                            Tracker = 4;
 
-                            this.Counter++;
+                            Counter++;
 
                             return true;
                         },
                         Down = () => {
-                            this.Tracker = 3;
+                            Tracker = 3;
 
-                            this.Counter++;
+                            Counter++;
 
                             return true;
                         }
@@ -99,5 +89,20 @@ namespace Procon.Core.Test.Database.Helpers {
                 }
             }.Execute() as MigrationController;
         }
+
+        /// <summary>
+        ///     Tracks the last migration called.
+        /// </summary>
+        public int Tracker { get; set; }
+
+        /// <summary>
+        ///     Counts how many migrations were called (up or down)
+        /// </summary>
+        public int Counter { get; set; }
+
+        /// <summary>
+        ///     Handle to the migration controller.
+        /// </summary>
+        public MigrationController Migrations { get; set; }
     }
 }

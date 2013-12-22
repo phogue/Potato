@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Procon.Core;
+using Procon.Core.Shared;
 
 namespace Procon.Examples.Commands {
     /// <summary>

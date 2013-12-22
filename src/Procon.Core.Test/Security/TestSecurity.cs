@@ -1,22 +1,22 @@
-﻿using System;
-using System.IO;
-using System.Text;
+﻿#region
+
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Xml.Linq;
 using NUnit.Framework;
-using Procon.Core.Utils;
+using Procon.Core.Security;
+using Procon.Core.Shared;
+using Procon.Core.Shared.Models;
+using Procon.Net.Protocols;
 using Procon.Net.Utils;
 
-namespace Procon.Core.Test.Security {
-    using Procon.Core.Security;
-    using Procon.Net.Protocols;
+#endregion
 
+namespace Procon.Core.Test.Security {
     [TestFixture]
     public class TestSecurity {
-
-        protected static FileInfo ConfigFileInfo = new FileInfo("Procon.Core.Test.Security.xml");
-
         [SetUp]
         public void Initialize() {
             if (File.Exists(ConfigFileInfo.FullName)) {
@@ -24,30 +24,286 @@ namespace Procon.Core.Test.Security {
             }
         }
 
+        protected static FileInfo ConfigFileInfo = new FileInfo("Procon.Core.Test.Security.xml");
+
         /// <summary>
-        /// Tests that a config can be written in a specific format.
+        ///     Tests that when disposing of the security object, all other items are cleaned up.
+        /// </summary>
+        [Test]
+        public void TestSecurityDispose() {
+            var security = new SecurityController();
+            security.Tunnel(new Command() {
+                Origin = CommandOrigin.Local,
+                CommandType = CommandType.SecurityAddGroup,
+                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                    "GroupName"
+                })
+            });
+            security.Tunnel(new Command() {
+                Origin = CommandOrigin.Local,
+                CommandType = CommandType.SecurityGroupSetPermission,
+                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                    "GroupName",
+                    CommandType.NetworkProtocolActionKick,
+                    77
+                })
+            });
+            security.Tunnel(new Command() {
+                Origin = CommandOrigin.Local,
+                CommandType = CommandType.SecurityGroupAddAccount,
+                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                    "GroupName",
+                    "Phogue"
+                })
+            });
+            security.Tunnel(new Command() {
+                Origin = CommandOrigin.Local,
+                CommandType = CommandType.SecurityAccountSetPassword,
+                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                    "Phogue",
+                    "password"
+                })
+            });
+            security.Tunnel(new Command() {
+                Origin = CommandOrigin.Local,
+                CommandType = CommandType.SecurityAccountSetPreferredLanguageCode,
+                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                    "Phogue",
+                    "de-DE"
+                })
+            });
+            security.Tunnel(new Command() {
+                Origin = CommandOrigin.Local,
+                CommandType = CommandType.SecurityAccountAddPlayer,
+                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                    "Phogue",
+                    CommonGameType.BF_3,
+                    "ABCDEF"
+                })
+            });
+
+            GroupModel group = security.Groups.First();
+            AccountModel account = group.Accounts.First();
+            PermissionModel permission = group.Permissions.First(p => p.Name == CommandType.NetworkProtocolActionKick.ToString());
+            AccountPlayerModel accountPlayer = account.Players.First();
+
+            security.Dispose();
+
+            // Test that all the lists and data within each item has been nulled.
+            Assert.IsNull(security.Groups);
+
+            Assert.IsNull(group.Name);
+            Assert.IsNull(group.Permissions);
+            Assert.IsNull(group.Accounts);
+
+            Assert.IsNull(account.Username);
+            Assert.IsNull(account.PreferredLanguageCode);
+            Assert.IsNull(account.PasswordHash);
+            Assert.IsNull(account.Players);
+            Assert.IsNull(account.Group);
+
+            Assert.AreEqual(CommandType.None, permission.CommandType);
+            Assert.IsNull(permission.Name);
+            Assert.IsNull(permission.Authority);
+
+            Assert.AreEqual(CommonGameType.None, accountPlayer.GameType);
+            Assert.IsNull(accountPlayer.Uid);
+            Assert.IsNull(accountPlayer.Account);
+        }
+
+        /// <summary>
+        ///     Tests that a config can be successfully loaded
+        /// </summary>
+        [Test]
+        public void TestSecurityLoadConfig() {
+            var saveSecurity = new SecurityController();
+            saveSecurity.Tunnel(new Command() {
+                Origin = CommandOrigin.Local,
+                CommandType = CommandType.SecurityAddGroup,
+                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                    "GroupName"
+                })
+            });
+            saveSecurity.Tunnel(new Command() {
+                Origin = CommandOrigin.Local,
+                CommandType = CommandType.SecurityGroupSetPermission,
+                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                    "GroupName",
+                    "CustomPermission",
+                    22
+                })
+            });
+            saveSecurity.Tunnel(new Command() {
+                Origin = CommandOrigin.Local,
+                CommandType = CommandType.SecurityGroupSetPermission,
+                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                    "GroupName",
+                    CommandType.NetworkProtocolActionKick,
+                    77
+                })
+            });
+            saveSecurity.Tunnel(new Command() {
+                Origin = CommandOrigin.Local,
+                CommandType = CommandType.SecurityGroupSetPermission,
+                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                    "GroupName",
+                    CommandType.NetworkProtocolActionBan,
+                    88
+                })
+            });
+            saveSecurity.Tunnel(new Command() {
+                Origin = CommandOrigin.Local,
+                CommandType = CommandType.SecurityGroupAddAccount,
+                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                    "GroupName",
+                    "Phogue"
+                })
+            });
+            saveSecurity.Tunnel(new Command() {
+                Origin = CommandOrigin.Local,
+                CommandType = CommandType.SecurityAccountSetPassword,
+                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                    "Phogue",
+                    "password"
+                })
+            });
+            saveSecurity.Tunnel(new Command() {
+                Origin = CommandOrigin.Local,
+                CommandType = CommandType.SecurityAccountSetPreferredLanguageCode,
+                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                    "Phogue",
+                    "de-DE"
+                })
+            });
+            saveSecurity.Tunnel(new Command() {
+                Origin = CommandOrigin.Local,
+                CommandType = CommandType.SecurityAccountAddPlayer,
+                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                    "Phogue",
+                    CommonGameType.BF_3,
+                    "ABCDEF"
+                })
+            });
+
+            // Save a config of the security controller
+            var saveConfig = new Config();
+            saveConfig.Create(typeof (SecurityController));
+            saveSecurity.WriteConfig(saveConfig);
+            saveConfig.Save(ConfigFileInfo);
+
+            // Load the config in a new config.
+            var loadSecurity = new SecurityController().Execute() as SecurityController;
+            var loadConfig = new Config();
+            loadConfig.Load(ConfigFileInfo);
+            loadSecurity.Execute(loadConfig);
+
+            Assert.AreEqual("GroupName", loadSecurity.Groups.First().Name);
+            Assert.AreEqual(22, loadSecurity.Groups.FirstOrDefault(group => group.Name == "GroupName").Permissions.Where(permission => permission.Name == "CustomPermission").First().Authority);
+            Assert.AreEqual(77, loadSecurity.Groups.FirstOrDefault(group => group.Name == "GroupName").Permissions.Where(permission => permission.Name == CommandType.NetworkProtocolActionKick.ToString()).First().Authority);
+            Assert.AreEqual(88, loadSecurity.Groups.FirstOrDefault(group => group.Name == "GroupName").Permissions.Where(permission => permission.Name == CommandType.NetworkProtocolActionBan.ToString()).First().Authority);
+            Assert.AreEqual("Phogue", loadSecurity.Groups.SelectMany(group => group.Accounts).First().Username);
+            Assert.AreEqual("de-DE", loadSecurity.Groups.First().Accounts.First().PreferredLanguageCode);
+            Assert.AreEqual(CommonGameType.BF_3, loadSecurity.Groups.SelectMany(group => group.Accounts).SelectMany(account => account.Players).First().GameType);
+            Assert.AreEqual("ABCDEF", loadSecurity.Groups.SelectMany(group => group.Accounts).SelectMany(account => account.Players).First().Uid);
+
+            // Now validate that we can authenticate against the loaded in password
+            CommandResultArgs result = loadSecurity.Tunnel(new Command() {
+                Origin = CommandOrigin.Local,
+                CommandType = CommandType.SecurityAccountAuthenticate,
+                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                    "Phogue",
+                    "password"
+                })
+            });
+
+            // Validate that we could authenticate with our new password.
+            Assert.IsTrue(result.Success);
+            Assert.AreEqual(result.Status, CommandResultType.Success);
+        }
+
+        /// <summary>
+        ///     Tests that a config can be written in a specific format.
         /// </summary>
         [Test]
         public void TestSecurityWriteConfig() {
-            SecurityController security = new SecurityController();
-            security.Tunnel(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityAddGroup, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "GroupName" }) });
-            security.Tunnel(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityGroupSetPermission, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "GroupName", "CustomPermission", 22 }) });
-            security.Tunnel(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityGroupSetPermission, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "GroupName", CommandType.NetworkProtocolActionKick, 77 }) });
-            security.Tunnel(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityGroupSetPermission, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "GroupName", CommandType.NetworkProtocolActionBan, 88 }) });
-            security.Tunnel(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityGroupAddAccount, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "GroupName", "Phogue" }) });
-            security.Tunnel(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityAccountSetPassword, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "Phogue", "password" }) });
-            security.Tunnel(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityAccountSetPreferredLanguageCode, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "Phogue", "de-DE" }) });
-            security.Tunnel(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityAccountAddPlayer, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "Phogue", CommonGameType.BF_3, "ABCDEF" }) });
+            var security = new SecurityController();
+            security.Tunnel(new Command() {
+                Origin = CommandOrigin.Local,
+                CommandType = CommandType.SecurityAddGroup,
+                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                    "GroupName"
+                })
+            });
+            security.Tunnel(new Command() {
+                Origin = CommandOrigin.Local,
+                CommandType = CommandType.SecurityGroupSetPermission,
+                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                    "GroupName",
+                    "CustomPermission",
+                    22
+                })
+            });
+            security.Tunnel(new Command() {
+                Origin = CommandOrigin.Local,
+                CommandType = CommandType.SecurityGroupSetPermission,
+                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                    "GroupName",
+                    CommandType.NetworkProtocolActionKick,
+                    77
+                })
+            });
+            security.Tunnel(new Command() {
+                Origin = CommandOrigin.Local,
+                CommandType = CommandType.SecurityGroupSetPermission,
+                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                    "GroupName",
+                    CommandType.NetworkProtocolActionBan,
+                    88
+                })
+            });
+            security.Tunnel(new Command() {
+                Origin = CommandOrigin.Local,
+                CommandType = CommandType.SecurityGroupAddAccount,
+                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                    "GroupName",
+                    "Phogue"
+                })
+            });
+            security.Tunnel(new Command() {
+                Origin = CommandOrigin.Local,
+                CommandType = CommandType.SecurityAccountSetPassword,
+                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                    "Phogue",
+                    "password"
+                })
+            });
+            security.Tunnel(new Command() {
+                Origin = CommandOrigin.Local,
+                CommandType = CommandType.SecurityAccountSetPreferredLanguageCode,
+                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                    "Phogue",
+                    "de-DE"
+                })
+            });
+            security.Tunnel(new Command() {
+                Origin = CommandOrigin.Local,
+                CommandType = CommandType.SecurityAccountAddPlayer,
+                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                    "Phogue",
+                    CommonGameType.BF_3,
+                    "ABCDEF"
+                })
+            });
 
             // Save a config of the language controller
-            Config saveConfig = new Config();
-            saveConfig.Create(typeof(Procon.Core.Security.SecurityController));
+            var saveConfig = new Config();
+            saveConfig.Create(typeof (SecurityController));
             security.WriteConfig(saveConfig);
-            saveConfig.Save(TestSecurity.ConfigFileInfo);
+            saveConfig.Save(ConfigFileInfo);
 
             // Load the config in a new config.
-            Config loadConfig = new Config();
-            loadConfig.Load(TestSecurity.ConfigFileInfo);
+            var loadConfig = new Config();
+            loadConfig.Load(ConfigFileInfo);
 
             var commands = loadConfig.Root.Descendants("SecurityController").Elements("Command").Select(xCommand => xCommand.FromXElement<Command>()).ToList();
 
@@ -86,94 +342,6 @@ namespace Procon.Core.Test.Security {
             Assert.AreEqual("Phogue", commands[7].Parameters[0].First<String>());
             Assert.AreEqual("BF_3", commands[7].Parameters[1].First<String>());
             Assert.AreEqual("ABCDEF", commands[7].Parameters[2].First<String>());
-        }
-
-        /// <summary>
-        /// Tests that a config can be successfully loaded 
-        /// </summary>
-        [Test]
-        public void TestSecurityLoadConfig() {
-            SecurityController saveSecurity = new SecurityController();
-            saveSecurity.Tunnel(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityAddGroup, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "GroupName" }) });
-            saveSecurity.Tunnel(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityGroupSetPermission, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "GroupName", "CustomPermission", 22 }) });
-            saveSecurity.Tunnel(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityGroupSetPermission, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "GroupName", CommandType.NetworkProtocolActionKick, 77 }) });
-            saveSecurity.Tunnel(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityGroupSetPermission, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "GroupName", CommandType.NetworkProtocolActionBan, 88 }) });
-            saveSecurity.Tunnel(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityGroupAddAccount, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "GroupName", "Phogue" }) });
-            saveSecurity.Tunnel(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityAccountSetPassword, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "Phogue", "password" }) });
-            saveSecurity.Tunnel(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityAccountSetPreferredLanguageCode, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "Phogue", "de-DE" }) });
-            saveSecurity.Tunnel(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityAccountAddPlayer, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "Phogue", CommonGameType.BF_3, "ABCDEF" }) });
-
-            // Save a config of the security controller
-            Config saveConfig = new Config();
-            saveConfig.Create(typeof(Procon.Core.Security.SecurityController));
-            saveSecurity.WriteConfig(saveConfig);
-            saveConfig.Save(TestSecurity.ConfigFileInfo);
-
-            // Load the config in a new config.
-            SecurityController loadSecurity = new SecurityController().Execute() as SecurityController;
-            Config loadConfig = new Config();
-            loadConfig.Load(TestSecurity.ConfigFileInfo);
-            loadSecurity.Execute(loadConfig);
-
-            Assert.AreEqual("GroupName", loadSecurity.Groups.First().Name);
-            Assert.AreEqual(22, loadSecurity.Groups.FirstOrDefault(group => group.Name == "GroupName").Permissions.Where(permission => permission.Name == "CustomPermission").First().Authority);
-            Assert.AreEqual(77, loadSecurity.Groups.FirstOrDefault(group => group.Name == "GroupName").Permissions.Where(permission => permission.Name == CommandType.NetworkProtocolActionKick.ToString()).First().Authority);
-            Assert.AreEqual(88, loadSecurity.Groups.FirstOrDefault(group => group.Name == "GroupName").Permissions.Where(permission => permission.Name == CommandType.NetworkProtocolActionBan.ToString()).First().Authority);
-            Assert.AreEqual("Phogue", loadSecurity.Groups.SelectMany(group => group.Accounts).First().Username);
-            Assert.AreEqual("de-DE", loadSecurity.Groups.First().Accounts.First().PreferredLanguageCode);
-            Assert.AreEqual(CommonGameType.BF_3, loadSecurity.Groups.SelectMany(group => group.Accounts).SelectMany(account => account.Players).First().GameType);
-            Assert.AreEqual("ABCDEF", loadSecurity.Groups.SelectMany(group => group.Accounts).SelectMany(account => account.Players).First().Uid);
-
-            // Now validate that we can authenticate against the loaded in password
-            CommandResultArgs result = loadSecurity.Tunnel(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityAccountAuthenticate, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "Phogue", "password" }) });
-
-            // Validate that we could authenticate with our new password.
-            Assert.IsTrue(result.Success);
-            Assert.AreEqual(result.Status, CommandResultType.Success);
-        }
-
-        /// <summary>
-        /// Tests that when disposing of the security object, all other items are cleaned up.
-        /// </summary>
-        [Test]
-        public void TestSecurityDispose() {
-            SecurityController security = new SecurityController();
-            security.Tunnel(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityAddGroup, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "GroupName" }) });
-            security.Tunnel(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityGroupSetPermission, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "GroupName", CommandType.NetworkProtocolActionKick, 77 }) });
-            security.Tunnel(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityGroupAddAccount, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "GroupName", "Phogue" }) });
-            security.Tunnel(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityAccountSetPassword, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "Phogue", "password" }) });
-            security.Tunnel(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityAccountSetPreferredLanguageCode, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "Phogue", "de-DE" }) });
-            security.Tunnel(new Command() { Origin = CommandOrigin.Local, CommandType = CommandType.SecurityAccountAddPlayer, Parameters = TestHelpers.ObjectListToContentList(new List<Object>() { "Phogue", CommonGameType.BF_3, "ABCDEF" }) });
-
-            Group group = security.Groups.First();
-            Account account = group.Accounts.First();
-            Permission permission = group.Permissions.First(p => p.Name == CommandType.NetworkProtocolActionKick.ToString());
-            AccountPlayer accountPlayer = account.Players.First();
-
-            security.Dispose();
-
-            // Test that all the lists and data within each item has been nulled.
-            Assert.IsNull(security.Groups);
-
-            Assert.IsNull(group.Name);
-            Assert.IsNull(group.Permissions);
-            Assert.IsNull(group.Accounts);
-            Assert.IsNull(group.Security);
-
-            Assert.IsNull(account.Username);
-            Assert.IsNull(account.PreferredLanguageCode);
-            Assert.IsNull(account.PasswordHash);
-            Assert.IsNull(account.Players);
-            Assert.IsNull(account.Group);
-            Assert.IsNull(account.Security);
-
-            Assert.AreEqual(CommandType.None, permission.CommandType);
-            Assert.IsNull(permission.Name);
-            Assert.IsNull(permission.Authority);
-
-            Assert.AreEqual(CommonGameType.None, accountPlayer.GameType);
-            Assert.IsNull(accountPlayer.Uid);
-            Assert.IsNull(accountPlayer.Account);
         }
     }
 }

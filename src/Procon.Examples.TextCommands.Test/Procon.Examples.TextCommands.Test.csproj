@@ -53,6 +53,10 @@
     <Compile Include="TestTextCommands.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Procon.Core.Shared\Procon.Core.Shared.csproj">
+      <Project>{1B4351C6-BAAD-4075-A322-CAF4FE582392}</Project>
+      <Name>Procon.Core.Shared</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Procon.Core\Procon.Core.csproj">
       <Project>{153B5418-C6B3-43A5-A432-BAFFA8EFAA16}</Project>
       <Name>Procon.Core</Name>

@@ -2,9 +2,8 @@
 using Newtonsoft.Json.Linq;
 using System.Linq;
 using NUnit.Framework;
-using Procon.Database.Serialization;
-using Procon.Database.Serialization.Builders.Methods;
 using Procon.Database.Serialization.Builders.Methods.Data;
+using Procon.Database.Shared;
 
 namespace Procon.Database.Test.Integration.SqLite {
     [TestFixture]

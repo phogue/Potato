@@ -1,18 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Procon.Core.Shared;
+using Procon.Core.Shared.Events;
+using Procon.Core.Shared.Models;
+using Procon.Core.Shared.Plugins;
 using Procon.Net;
 using Procon.Net.Actions;
 using Procon.Net.Actions.Deferred;
 using Procon.Net.Models;
+using TestPlugin.Tests;
+using Procon.Net.Utils;
 
 namespace TestPlugin {
-    using Tests;
-    using Procon.Core;
-    using Procon.Core.Events;
-    using Procon.Core.Connections.Plugins;
-    using Procon.Core.Connections.TextCommands;
-    using Procon.Net.Utils;
 
     public class Program : RemotePlugin {
         //Ignore this: - Actually, depending on how you wanna save info for plugins, the actually plugin could save it here.
@@ -21,7 +21,7 @@ namespace TestPlugin {
         // protected override void WriteConfig(System.Xml.Linq.XElement xNamespace) { }
         // public override void Dispose() { }
 
-        private List<TextCommand> Commands { get; set; }
+        private List<TextCommandModel> Commands { get; set; }
 
         public List<IExecutableBase> Tests = new List<IExecutableBase>() {
             new TestPluginsSerialization(),
@@ -36,7 +36,7 @@ namespace TestPlugin {
             //this.Website = "http://phogue.net";
             //this.Description = "herro";
 
-            this.Commands = new List<TextCommand>();
+            this.Commands = new List<TextCommandModel>();
 
             this.AppendDispatchHandlers(new Dictionary<CommandAttribute, CommandDispatchHandler>() {
                 {
@@ -79,7 +79,7 @@ namespace TestPlugin {
                         ParameterTypes = new List<CommandParameterType>() {
                             new CommandParameterType() {
                                 Name = "textCommand",
-                                Type = typeof(TextCommand)
+                                Type = typeof(TextCommandModel)
                             }
                         }
                     },
@@ -91,7 +91,7 @@ namespace TestPlugin {
                         ParameterTypes = new List<CommandParameterType>() {
                             new CommandParameterType() {
                                 Name = "textCommand",
-                                Type = typeof(TextCommand)
+                                Type = typeof(TextCommandModel)
                             }
                         }
                     },
@@ -135,7 +135,7 @@ namespace TestPlugin {
                 }
             }
             else {
-                foreach (TextCommand alternate in e.Now.TextCommands.Skip(1)) {
+                foreach (TextCommandModel alternate in e.Now.TextCommands.Skip(1)) {
                     //string description = String.Format("> {0}: {1}", alternate.Commands.FirstOrDefault(), this.NamespacePlayerLoc(e.Now.Players.First(), this.GetType().Namespace + "." + alternate.PluginUid, alternate.PluginCommand));
                     string description = String.Format("> {0}", alternate.Commands.FirstOrDefault());
 
@@ -155,7 +155,7 @@ namespace TestPlugin {
         protected CommandResultArgs KillCommand(Command command, Dictionary<String, CommandParameter> parameters) {
             CommandResultArgs e = parameters["e"].First<CommandResultArgs>();
 
-            TextCommandMatch match = e.Now.TextCommandMatches.First();
+            TextCommandMatchModel match = e.Now.TextCommandMatches.First();
 
             if (match.Players != null && match.Players.Count > 0) {
                 this.Action(new DeferredAction<Kill>() {
@@ -203,7 +203,7 @@ namespace TestPlugin {
 
             Console.WriteLine(e.Now.TextCommands.First().DescriptionKey);
 
-            TextCommandMatch match = e.Now.TextCommandMatches.First();
+            TextCommandMatchModel match = e.Now.TextCommandMatches.First();
 
             if (match.Players != null && match.Players.Count > 0) {
                 output.Now.Content.Add("Players: " + String.Join(", ", match.Players.Select(x => x.Name).ToArray()));
@@ -273,8 +273,8 @@ namespace TestPlugin {
                     Parameters = new List<CommandParameter>() {
                         new CommandParameter() {
                             Data = {
-                                TextCommands = new List<TextCommand>() {
-                                    new TextCommand() {
+                                TextCommands = new List<TextCommandModel>() {
+                                    new TextCommandModel() {
                                         PluginUid = this.PluginGuid.ToString(),
                                         PluginCommand = "TestCommand",
                                         DescriptionKey = "TestCommandDescription",
@@ -296,8 +296,8 @@ namespace TestPlugin {
                     Parameters = new List<CommandParameter>() {
                         new CommandParameter() {
                             Data = {
-                                TextCommands = new List<TextCommand>() {
-                                    new TextCommand() {
+                                TextCommands = new List<TextCommandModel>() {
+                                    new TextCommandModel() {
                                         PluginUid = this.PluginGuid.ToString(),
                                         PluginCommand = "KillCommand",
                                         DescriptionKey = "KillCommandDescription",
@@ -319,8 +319,8 @@ namespace TestPlugin {
                     Parameters = new List<CommandParameter>() {
                         new CommandParameter() {
                             Data = {
-                                TextCommands = new List<TextCommand>() {
-                                    new TextCommand() {
+                                TextCommands = new List<TextCommandModel>() {
+                                    new TextCommandModel() {
                                         PluginUid = this.PluginGuid.ToString(),
                                         PluginCommand = "HelpCommand",
                                         Priority = 100,

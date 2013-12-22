@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Procon.Database.Serialization;
+using Procon.Database.Shared;
 
 namespace Procon.Database {
     /// <summary>

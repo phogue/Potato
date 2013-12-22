@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using Procon.Core.Security;
+using Procon.Core.Shared;
+using Procon.Core.Shared.Models;
 using Procon.Net.Models;
 
 namespace Procon.Core.Connections.TextCommands.Parsers {
@@ -18,7 +20,7 @@ namespace Procon.Core.Connections.TextCommands.Parsers {
         /// <summary>
         /// List of potential text commands to match against
         /// </summary>
-        public List<TextCommand> TextCommands { get; set; }
+        public List<TextCommandModel> TextCommands { get; set; }
 
         /// <summary>
         /// The player (in game) that is currently talking or attached to the account
@@ -29,7 +31,7 @@ namespace Procon.Core.Connections.TextCommands.Parsers {
         /// <summary>
         /// The account of the player that has talked in game or initiated the action via command.
         /// </summary>
-        public Account SpeakerAccount { get; set; }
+        public AccountModel SpeakerAccount { get; set; }
 
         /// <summary>
         /// Parses text and a prefix, creating a command result with the containing matches

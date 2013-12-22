@@ -2,13 +2,15 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Runtime.Remoting.Lifetime;
 using System.Security;
 using System.Security.Permissions;
 using System.Xml.Serialization;
 using Newtonsoft.Json;
-using Procon.Core.Events;
+using Procon.Core.Shared;
+using Procon.Core.Shared.Events;
+using Procon.Core.Shared.Models;
+using Procon.Core.Shared.Plugins;
 using Procon.Net;
 using Procon.Service.Shared;
 
@@ -76,18 +78,22 @@ namespace Procon.Core.Connections.Plugins {
             if (this.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
                 Guid pluginGuid = command.Scope.PluginGuid;
 
-                if (this.Plugins.Count(plugin => plugin.PluginGuid == pluginGuid) > 0) {
+                if (this.Plugins.Count(plugin => plugin.PluginModel.PluginGuid == pluginGuid) > 0) {
                     if (this.PluginFactory.TryEnablePlugin(pluginGuid) == true) {
+                        HostPlugin hostPlugin = this.Plugins.First(plugin => plugin.PluginModel.PluginGuid == pluginGuid);
+
+                        hostPlugin.PluginModel.IsEnabled = true;
+
                         result = new CommandResultArgs() {
                             Status = CommandResultType.Success,
                             Success = true,
                             Message = String.Format("Plugin {0} has been enabled", pluginGuid),
                             Scope = {
-                                Connections = new List<Connection>() {
-                                    this.Connection
+                                Connections = new List<ConnectionModel>() {
+                                    this.Connection != null ? this.Connection.ConnectionModel : null
                                 },
-                                Plugins = new List<HostPlugin>() {
-                                    this.Plugins.First(plugin => plugin.PluginGuid == pluginGuid)
+                                Plugins = new List<PluginModel>() {
+                                    hostPlugin.PluginModel
                                 }
                             }
                         };
@@ -129,18 +135,22 @@ namespace Procon.Core.Connections.Plugins {
             if (this.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
                 Guid pluginGuid = command.Scope.PluginGuid;
 
-                if (this.Plugins.Count(plugin => plugin.PluginGuid == pluginGuid) > 0) {
+                if (this.Plugins.Count(plugin => plugin.PluginModel.PluginGuid == pluginGuid) > 0) {
                     if (this.PluginFactory.TryDisablePlugin(pluginGuid) == true) {
+                        HostPlugin hostPlugin = this.Plugins.First(plugin => plugin.PluginModel.PluginGuid == pluginGuid);
+
+                        hostPlugin.PluginModel.IsEnabled = false;
+
                         result = new CommandResultArgs() {
                             Status = CommandResultType.Success,
                             Success = true,
                             Message = String.Format("Plugin {0} has been disabled", pluginGuid),
                             Scope = {
-                                Connections = new List<Connection>() {
-                                    this.Connection
+                                Connections = new List<ConnectionModel>() {
+                                    this.Connection != null ? this.Connection.ConnectionModel : null
                                 },
-                                Plugins = new List<HostPlugin>() {
-                                    this.Plugins.First(plugin => plugin.PluginGuid == pluginGuid)
+                                Plugins = new List<PluginModel>() {
+                                    hostPlugin.PluginModel
                                 }
                             }
                         };
@@ -221,7 +231,7 @@ namespace Procon.Core.Connections.Plugins {
             permissions.AddPermission(new FileIOPermission(FileIOPermissionAccess.AllAccess, Defines.LogsDirectory));
             permissions.AddPermission(new FileIOPermission(FileIOPermissionAccess.Read | FileIOPermissionAccess.PathDiscovery, Defines.LocalizationDirectory));
             permissions.AddPermission(new FileIOPermission(FileIOPermissionAccess.Read | FileIOPermissionAccess.PathDiscovery, Defines.ConfigsDirectory));
-            permissions.AddPermission(new FileIOPermission(FileIOPermissionAccess.AllAccess, Path.Combine(Defines.ConfigsDirectory, this.Connection != null ? this.Connection.ConnectionGuid.ToString() : Guid.Empty.ToString())));
+            permissions.AddPermission(new FileIOPermission(FileIOPermissionAccess.AllAccess, Path.Combine(Defines.ConfigsDirectory, this.Connection != null ? this.Connection.ConnectionModel.ConnectionGuid.ToString() : Guid.Empty.ToString())));
             
             permissions.AddPermission(new ReflectionPermission(ReflectionPermissionFlag.MemberAccess));
 
@@ -229,12 +239,12 @@ namespace Procon.Core.Connections.Plugins {
         }
 
         public override void WriteConfig(Config config) {
-            foreach (HostPlugin plugin in this.Plugins.Where(plugin => plugin.IsEnabled == true)) {
+            foreach (HostPlugin plugin in this.Plugins.Where(plugin => plugin.PluginModel.IsEnabled == true)) {
                 config.Root.Add(new Command() {
                     CommandType = CommandType.PluginsEnable,
                     Scope = {
-                        ConnectionGuid = this.Connection.ConnectionGuid,
-                        PluginGuid = plugin.PluginGuid
+                        ConnectionGuid = this.Connection.ConnectionModel.ConnectionGuid,
+                        PluginGuid = plugin.PluginModel.PluginGuid
                     }
                 }.ToConfigCommand());
             }
@@ -287,9 +297,9 @@ namespace Procon.Core.Connections.Plugins {
             PermissionSet permissions = this.CreatePermissionSet();
 
             // Create the app domain and the plugin factory in the new domain.
-            this.AppDomainSandbox = AppDomain.CreateDomain(String.Format("Procon.{0}.Plugin", this.Connection != null ? this.Connection.ConnectionGuid.ToString() : String.Empty), null, setup, permissions);
+            this.AppDomainSandbox = AppDomain.CreateDomain(String.Format("Procon.{0}.Plugin", this.Connection != null ? this.Connection.ConnectionModel.ConnectionGuid.ToString() : String.Empty), null, setup, permissions);
 
-            this.PluginFactory = (IRemotePluginController)this.AppDomainSandbox.CreateInstanceAndUnwrap(Assembly.GetExecutingAssembly().FullName, typeof(RemotePluginController).FullName);
+            this.PluginFactory = (IRemotePluginController)this.AppDomainSandbox.CreateInstanceAndUnwrap(typeof(RemotePluginController).Assembly.FullName, typeof(RemotePluginController).FullName);
 
             this.PluginFactory.BubbleObjects = new List<IExecutableBase>() {
                 this
@@ -305,14 +315,17 @@ namespace Procon.Core.Connections.Plugins {
                                                                   file.Name != Defines.ProconCoreDll &&
                                                                   file.Name != Defines.ProconNetDll &&
                                                                   file.Name != Defines.ProconFuzzyDll &&
-                                                                  file.Name != Defines.NewtonsoftJsonDll);
+                                                                  file.Name != Defines.NewtonsoftJsonDll &&
+                                                                  file.Name != Defines.ProconCoreSharedDll &&
+                                                                  file.Name != Defines.ProconDatabaseSharedDll &&
+                                                                  file.Name != Defines.ProconDatabaseSerializationDll);
 
             // If there are dll files in this directory, setup the plugins.
             foreach (String path in files.Select(file => file.FullName)) {
                 this.Plugins.Add(new HostPlugin() {
                     Path = path,
                     PluginFactory = PluginFactory,
-                    ConnectionGuid = this.Connection != null ? this.Connection.ConnectionGuid : Guid.Empty
+                    ConnectionGuid = this.Connection != null ? this.Connection.ConnectionModel.ConnectionGuid : Guid.Empty
                 }.Execute() as HostPlugin);
             }
         }

@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Security;
+using Procon.Core.Shared;
 
 namespace TestPlugin.Tests {
-    using Procon.Core;
-
     public class TestPluginsIsolation : ExecutableBase {
 
         public TestPluginsIsolation() : base() {

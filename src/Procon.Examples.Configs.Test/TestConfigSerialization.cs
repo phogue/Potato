@@ -26,11 +26,13 @@ namespace Procon.Examples.Configs.Test {
 
             PluginController pluginsSaving = new PluginController() {
                 Connection = new Connection() {
-                    ConnectionGuid = connectionGuid
+                    ConnectionModel = {
+                        ConnectionGuid = connectionGuid
+                    }
                 }
             }.Execute() as PluginController;
 
-            Guid pluginGuid = pluginsSaving.Plugins.First().PluginGuid;
+            Guid pluginGuid = pluginsSaving.Plugins.First().PluginModel.PluginGuid;
 
             // Now shut it down..
             pluginsSaving.Dispose();
@@ -56,11 +58,13 @@ namespace Procon.Examples.Configs.Test {
 
             PluginController pluginsSaving = new PluginController() {
                 Connection = new Connection() {
-                    ConnectionGuid = connectionGuid
+                    ConnectionModel = {
+                        ConnectionGuid = connectionGuid
+                    }
                 }
             }.Execute() as PluginController;
 
-            Guid pluginGuid = pluginsSaving.Plugins.First().PluginGuid;
+            Guid pluginGuid = pluginsSaving.Plugins.First().PluginModel.PluginGuid;
 
             // Now shut it down..
             pluginsSaving.Dispose();
@@ -74,7 +78,9 @@ namespace Procon.Examples.Configs.Test {
             // ---------- 
             new PluginController() {
                 Connection = new Connection() {
-                    ConnectionGuid = connectionGuid
+                    ConnectionModel = {
+                        ConnectionGuid = connectionGuid
+                    }
                 }
             }.Execute();
 

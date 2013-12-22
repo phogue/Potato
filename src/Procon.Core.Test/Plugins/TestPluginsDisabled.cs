@@ -1,22 +1,26 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
+using Procon.Core.Connections.Plugins;
 using Procon.Core.Security;
+using Procon.Core.Shared;
+
+#endregion
 
 namespace Procon.Core.Test.Plugins {
-    using Procon.Core.Connections.Plugins;
     [TestFixture]
     public class TestPluginsDisabled {
-
         /// <summary>
-        /// Tests that a plugin can be Disabled if the parameter matches up to an existing plugin
-        /// and the user has permission
+        ///     Tests that a plugin can be Disabled if the parameter matches up to an existing plugin
+        ///     and the user has permission
         /// </summary>
         [Test]
         public void TestPluginDisable() {
-            SecurityController security = new SecurityController();
-            PluginController plugins = new PluginController() {
+            var security = new SecurityController();
+            var plugins = new PluginController() {
                 Security = security
             }.Execute() as PluginController;
 
@@ -24,7 +28,7 @@ namespace Procon.Core.Test.Plugins {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.PluginsEnable,
                 Scope = {
-                    PluginGuid = plugins.Plugins.First().PluginGuid
+                    PluginGuid = plugins.Plugins.First().PluginModel.PluginGuid
                 }
             });
 
@@ -32,7 +36,7 @@ namespace Procon.Core.Test.Plugins {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.PluginsDisable,
                 Scope = {
-                    PluginGuid = plugins.Plugins.First().PluginGuid
+                    PluginGuid = plugins.Plugins.First().PluginModel.PluginGuid
                 }
             });
 
@@ -41,12 +45,12 @@ namespace Procon.Core.Test.Plugins {
         }
 
         /// <summary>
-        /// Tests that a plugin will return false if it is already disabled
+        ///     Tests that a plugin will return false if it is already disabled
         /// </summary>
         [Test]
         public void TestPluginDisableAlreadyDisabled() {
-            SecurityController security = new SecurityController();
-            PluginController plugins = new PluginController() {
+            var security = new SecurityController();
+            var plugins = new PluginController() {
                 Security = security
             }.Execute() as PluginController;
 
@@ -54,7 +58,7 @@ namespace Procon.Core.Test.Plugins {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.PluginsDisable,
                 Scope = {
-                    PluginGuid = plugins.Plugins.First().PluginGuid
+                    PluginGuid = plugins.Plugins.First().PluginModel.PluginGuid
                 }
             });
 
@@ -63,58 +67,12 @@ namespace Procon.Core.Test.Plugins {
         }
 
         /// <summary>
-        /// Tests that a plugin will return a DoesNotExist message if the player guid does not
-        /// match up to any loaded plugin
-        /// </summary>
-        [Test]
-        public void TestPluginDisableDoesNotExist() {
-            SecurityController security = new SecurityController();
-            PluginController plugins = new PluginController() {
-                Security = security
-            }.Execute() as PluginController;
-
-            CommandResultArgs result = plugins.Tunnel(new Command() {
-                Origin = CommandOrigin.Local,
-                CommandType = CommandType.PluginsDisable,
-                Scope = {
-                    PluginGuid = Guid.NewGuid()
-                }
-            });
-
-            Assert.IsFalse(result.Success);
-            Assert.AreEqual(CommandResultType.DoesNotExists, result.Status);
-        }
-        
-        /// <summary>
-        /// Tests that a plugin cannot be disabled if the user has insufficient permissions to do so.
-        /// </summary>
-        [Test]
-        public void TestPluginDisableInsufficientPermission() {
-            SecurityController security = new SecurityController();
-            PluginController plugins = new PluginController() {
-                Security = security
-            }.Execute() as PluginController;
-
-            CommandResultArgs result = plugins.Tunnel(new Command() {
-                Origin = CommandOrigin.Remote,
-                Username = "Phogue",
-                CommandType = CommandType.PluginsDisable,
-                Scope = {
-                    PluginGuid = plugins.Plugins.First().PluginGuid
-                }
-            });
-
-            Assert.IsFalse(result.Success);
-            Assert.AreEqual(CommandResultType.InsufficientPermissions, result.Status);
-        }
-
-        /// <summary>
-        /// Tests that disabling a plugin will allow commands within that plugin to be executed.
+        ///     Tests that disabling a plugin will allow commands within that plugin to be executed.
         /// </summary>
         [Test]
         public void TestPluginDisableCommandSuccessful() {
-            SecurityController security = new SecurityController();
-            PluginController plugins = new PluginController() {
+            var security = new SecurityController();
+            var plugins = new PluginController() {
                 Security = security
             }.Execute() as PluginController;
 
@@ -130,6 +88,52 @@ namespace Procon.Core.Test.Plugins {
             Assert.IsTrue(result.Success);
             Assert.AreEqual(CommandResultType.Continue, result.Status);
             Assert.AreEqual("", result.Message);
+        }
+
+        /// <summary>
+        ///     Tests that a plugin will return a DoesNotExist message if the player guid does not
+        ///     match up to any loaded plugin
+        /// </summary>
+        [Test]
+        public void TestPluginDisableDoesNotExist() {
+            var security = new SecurityController();
+            var plugins = new PluginController() {
+                Security = security
+            }.Execute() as PluginController;
+
+            CommandResultArgs result = plugins.Tunnel(new Command() {
+                Origin = CommandOrigin.Local,
+                CommandType = CommandType.PluginsDisable,
+                Scope = {
+                    PluginGuid = Guid.NewGuid()
+                }
+            });
+
+            Assert.IsFalse(result.Success);
+            Assert.AreEqual(CommandResultType.DoesNotExists, result.Status);
+        }
+
+        /// <summary>
+        ///     Tests that a plugin cannot be disabled if the user has insufficient permissions to do so.
+        /// </summary>
+        [Test]
+        public void TestPluginDisableInsufficientPermission() {
+            var security = new SecurityController();
+            var plugins = new PluginController() {
+                Security = security
+            }.Execute() as PluginController;
+
+            CommandResultArgs result = plugins.Tunnel(new Command() {
+                Origin = CommandOrigin.Remote,
+                Username = "Phogue",
+                CommandType = CommandType.PluginsDisable,
+                Scope = {
+                    PluginGuid = plugins.Plugins.First().PluginModel.PluginGuid
+                }
+            });
+
+            Assert.IsFalse(result.Success);
+            Assert.AreEqual(CommandResultType.InsufficientPermissions, result.Status);
         }
     }
 }

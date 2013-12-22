@@ -1,6 +1,8 @@
-﻿using System;
-using System.IO;
+﻿#region
+
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Xml.Linq;
 using NUnit.Framework;
@@ -8,15 +10,16 @@ using Procon.Core.Repositories;
 using Procon.Core.Repositories.Serialization;
 using Procon.Net.Utils;
 
+#endregion
+
 namespace Procon.Core.Test.Repositories {
     [TestFixture]
     public class TestPackageVersion {
-
         /// <summary>
-        /// Tests that a package version can be deserialized alone with no sub files.
+        ///     Tests that a package version can be deserialized alone with no sub files.
         /// </summary>
-        [Test]
-        [Ignore]
+        [Test, Ignore]
+        
         public void TestPackageVersionDeserialization() {
             XElement element = XElement.Parse(@"<package_version>
     <version>
@@ -45,7 +48,7 @@ namespace Procon.Core.Test.Repositories {
     </files>
 </package_version>");
 
-            PackageVersion packageVersion = element.FromXElement<PackageVersion>();
+            var packageVersion = element.FromXElement<PackageVersion>();
 
             Assert.AreEqual(new Version(1, 2, 3, 4), packageVersion.Version.SystemVersion);
 
@@ -63,13 +66,13 @@ namespace Procon.Core.Test.Repositories {
         }
 
         /// <summary>
-        /// Test that a stored md5 hash of a file will be picked up when scanning a directory for changes.
+        ///     Test that a stored md5 hash of a file will be picked up when scanning a directory for changes.
         /// </summary>
         [Test]
         public void TestPackageVersionModifiedFilesAtModified() {
             String repositoryModifiedFilesAtValidPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Repositories\ModifiedFilesAt\Valid");
 
-            PackageVersion packageVersion = new PackageVersion() {
+            var packageVersion = new PackageVersion() {
                 Version = new SerializableVersion() {
                     Build = 1,
                     Minor = 2,
@@ -93,13 +96,13 @@ namespace Procon.Core.Test.Repositories {
         }
 
         /// <summary>
-        /// Tests that no modifications are found if the hash matches the file hash.
+        ///     Tests that no modifications are found if the hash matches the file hash.
         /// </summary>
         [Test]
         public void TestPackageVersionModifiedFilesAtNoModifications() {
             String repositoryModifiedFilesAtValidPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Repositories\ModifiedFilesAt\Valid");
 
-            PackageVersion packageVersion = new PackageVersion() {
+            var packageVersion = new PackageVersion() {
                 Version = new SerializableVersion() {
                     Build = 1,
                     Minor = 2,

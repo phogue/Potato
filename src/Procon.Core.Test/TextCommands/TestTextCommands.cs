@@ -1,46 +1,25 @@
-﻿using System;
-using System.Text;
+﻿#region
+
+using System;
 using System.Collections.Generic;
-using System.Linq;
 using NUnit.Framework;
+using Procon.Core.Connections.TextCommands;
+using Procon.Core.Shared;
+using Procon.Core.Shared.Models;
+
+#endregion
 
 namespace Procon.Core.Test.TextCommands {
-    using Procon.Core.Connections.TextCommands;
-
     [TestFixture]
     public class TestTextCommands {
-
         /// <summary>
-        /// Tests that a text command will clean itself up correctly, at least to a point
-        /// where the command would become inert.
-        /// </summary>
-        [Test]
-        public void TestTextCommandDispose() {
-
-            TextCommand testCommand = new TextCommand() {
-                Commands = new List<String>() {
-                    "DisposeTest"
-                }
-            };
-
-            testCommand.Dispose();
-
-            Assert.AreEqual(ParserType.Fuzzy, testCommand.Parser);
-            Assert.IsNull(testCommand.PluginUid);
-            Assert.IsNull(testCommand.PluginCommand);
-            Assert.IsNull(testCommand.DescriptionKey);
-            Assert.IsNull(testCommand.Commands);
-        }
-
-        /// <summary>
-        /// Tests that the text command controller will clean itself up.
+        ///     Tests that the text command controller will clean itself up.
         /// </summary>
         [Test]
         public void TestTextCommandControllerDispose() {
+            var textCommands = new TextCommandController();
 
-            TextCommandController textCommands = new TextCommandController();
-
-            TextCommand testCommand = new TextCommand() {
+            var testCommand = new TextCommandModel() {
                 Commands = new List<String>() {
                     "DisposeTest"
                 }
@@ -61,31 +40,52 @@ namespace Procon.Core.Test.TextCommands {
         }
 
         [Test]
-        public void TestTextCommandControllerPrefixValidPublic() {
-            TextCommandController textCommands = new TextCommandController();
+        public void TestTextCommandControllerPrefixInvalid() {
+            var textCommands = new TextCommandController();
 
-            Assert.AreEqual("!", textCommands.GetValidTextCommandPrefix("!"));
-        }
-
-        [Test]
-        public void TestTextCommandControllerPrefixValidProtected() {
-            TextCommandController textCommands = new TextCommandController();
-
-            Assert.AreEqual("#", textCommands.GetValidTextCommandPrefix("#"));
+            Assert.IsNull(textCommands.GetValidTextCommandPrefix("gg"));
         }
 
         [Test]
         public void TestTextCommandControllerPrefixValidPrivate() {
-            TextCommandController textCommands = new TextCommandController();
+            var textCommands = new TextCommandController();
 
             Assert.AreEqual("@", textCommands.GetValidTextCommandPrefix("@"));
         }
 
         [Test]
-        public void TestTextCommandControllerPrefixInvalid() {
-            TextCommandController textCommands = new TextCommandController();
+        public void TestTextCommandControllerPrefixValidProtected() {
+            var textCommands = new TextCommandController();
 
-            Assert.IsNull(textCommands.GetValidTextCommandPrefix("gg"));
+            Assert.AreEqual("#", textCommands.GetValidTextCommandPrefix("#"));
+        }
+
+        [Test]
+        public void TestTextCommandControllerPrefixValidPublic() {
+            var textCommands = new TextCommandController();
+
+            Assert.AreEqual("!", textCommands.GetValidTextCommandPrefix("!"));
+        }
+
+        /// <summary>
+        ///     Tests that a text command will clean itself up correctly, at least to a point
+        ///     where the command would become inert.
+        /// </summary>
+        [Test]
+        public void TestTextCommandDispose() {
+            var testCommand = new TextCommandModel() {
+                Commands = new List<String>() {
+                    "DisposeTest"
+                }
+            };
+
+            testCommand.Dispose();
+
+            Assert.AreEqual(ParserType.Fuzzy, testCommand.Parser);
+            Assert.IsNull(testCommand.PluginUid);
+            Assert.IsNull(testCommand.PluginCommand);
+            Assert.IsNull(testCommand.DescriptionKey);
+            Assert.IsNull(testCommand.Commands);
         }
     }
 }

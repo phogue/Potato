@@ -1,18 +1,19 @@
-﻿using System;
-using System.IO;
-using System.Text;
+﻿#region
+
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Xml.Linq;
 using NUnit.Framework;
 using Procon.Core.Repositories;
+using Procon.Core.Shared;
+
+#endregion
 
 namespace Procon.Core.Test.Repositories {
     [TestFixture]
     public class TestRepositoryController {
-
-        protected static FileInfo ConfigFileInfo = new FileInfo("Procon.Core.Test.Repository.xml");
-
         [SetUp]
         public void Initialize() {
             if (File.Exists(ConfigFileInfo.FullName)) {
@@ -20,12 +21,14 @@ namespace Procon.Core.Test.Repositories {
             }
         }
 
+        protected static FileInfo ConfigFileInfo = new FileInfo("Procon.Core.Test.Repository.xml");
+
         /// <summary>
-        /// Tests that a config can be written in a specific format.
+        ///     Tests that a config can be written in a specific format.
         /// </summary>
         [Test]
         public void TestRepositoryControllerWriteConfig() {
-            RepositoryController repository = new RepositoryController();
+            var repository = new RepositoryController();
 
             repository.Tunnel(new Command() {
                 CommandType = CommandType.PackagesAddRemoteRepository,
@@ -63,20 +66,20 @@ namespace Procon.Core.Test.Repositories {
             });
 
             // Save a config of the language controller
-            Config saveConfig = new Config();
-            saveConfig.Create(typeof(RepositoryController));
+            var saveConfig = new Config();
+            saveConfig.Create(typeof (RepositoryController));
             repository.WriteConfig(saveConfig);
-            saveConfig.Save(TestRepositoryController.ConfigFileInfo);
+            saveConfig.Save(ConfigFileInfo);
 
             // Load the config in a new config.
-            Config loadConfig = new Config();
-            loadConfig.Load(TestRepositoryController.ConfigFileInfo);
+            var loadConfig = new Config();
+            loadConfig.Load(ConfigFileInfo);
 
             var commands = loadConfig.Root.Descendants("RepositoryController").Elements("Command").ToList();
 
             Assert.AreEqual("PackagesAddRemoteRepository", commands[0].Attribute("name").Value);
             Assert.AreEqual("http://localhost/", commands[0].Element("url").Value);
-            
+
             Assert.AreEqual("PackagesIngoreAutomaticUpdateOnPackage", commands[1].Attribute("name").Value);
             Assert.AreEqual("localhost", commands[1].Element("urlSlug").Value);
             Assert.AreEqual("packageUid", commands[1].Element("packageUid").Value);

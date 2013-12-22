@@ -7,8 +7,11 @@ using Procon.Core.Connections.Plugins;
 using Procon.Core.Events;
 using Procon.Core.Localization;
 using Procon.Core.Remote;
-using Procon.Core.Scheduler;
 using Procon.Core.Security;
+using Procon.Core.Shared;
+using Procon.Core.Shared.Events;
+using Procon.Core.Shared.Models;
+using Procon.Core.Shared.Scheduler;
 using Procon.Net.Protocols;
 
 namespace Procon.Core {
@@ -362,28 +365,28 @@ namespace Procon.Core {
                             new CommandParameter() {
                                 Data = {
                                     Content = new List<String>() {
-                                        connection.GameType.Provider
+                                        connection.ConnectionModel.GameType.Provider
                                     }
                                 }
                             },
                             new CommandParameter() {
                                 Data = {
                                     Content = new List<String>() {
-                                        connection.GameType.Type
+                                        connection.ConnectionModel.GameType.Type
                                     }
                                 }
                             },
                             new CommandParameter() {
                                 Data = {
                                     Content = new List<String>() {
-                                        connection.Hostname
+                                        connection.ConnectionModel.Hostname
                                     }
                                 }
                             },
                             new CommandParameter() {
                                 Data = {
                                     Content = new List<String>() {
-                                        connection.Port.ToString(CultureInfo.InvariantCulture)
+                                        connection.ConnectionModel.Port.ToString(CultureInfo.InvariantCulture)
                                     }
                                 }
                             },
@@ -427,7 +430,7 @@ namespace Procon.Core {
 
             if (command.Scope != null && command.Scope.ConnectionGuid != Guid.Empty) {
                 // Focus only on the connection.
-                this.Connections.Where(connection => connection.ConnectionGuid == command.Scope.ConnectionGuid).ToList().ForEach(list.Add);
+                this.Connections.Where(connection => connection.ConnectionModel.ConnectionGuid == command.Scope.ConnectionGuid).ToList().ForEach(list.Add);
             }
             else {
                 // Add all of the connections.
@@ -549,7 +552,7 @@ namespace Procon.Core {
                 // As long as we have less than the maximum amount of connections...
                 if (this.Connections.Count < this.Variables.Get(CommonVariableNames.MaximumGameConnections, 9000)) {
                     // As long as the connection for that specific game, hostname, and port does not exist...
-                    if (this.Connections.FirstOrDefault(c => c.GameType.Type == gameTypeType && c.Hostname == hostName && c.Port == port) == null) {
+                    if (this.Connections.FirstOrDefault(c => c.ConnectionModel.GameType.Type == gameTypeType && c.ConnectionModel.Hostname == hostName && c.ConnectionModel.Port == port) == null) {
                         // As long as the game type is defined...
 
                         Type gameType = SupportedGameTypes.GetSupportedGames().Where(g => g.Key.Provider == gameTypeProvider && g.Key.Type == gameTypeType).Select(g => g.Value).FirstOrDefault();
@@ -578,8 +581,8 @@ namespace Procon.Core {
                                 Status = CommandResultType.Success,
                                 Success = true,
                                 Now = {
-                                    Connections = new List<Connection>() {
-                                        connection
+                                    Connections = new List<ConnectionModel>() {
+                                        connection.ConnectionModel
                                     }
                                 }
                             };
@@ -630,13 +633,12 @@ namespace Procon.Core {
                     }
 
                     result = new CommandResultArgs() {
-                        Message = String.Format(@"Successfully removed connection with connection to {0}:{1} and game type ""{2}"".", connection.Hostname, connection.Port, connection),
+                        Message = String.Format(@"Successfully removed connection with connection to {0}:{1} and game type ""{2}"".", connection.ConnectionModel.Hostname, connection.ConnectionModel.Port, connection),
                         Status = CommandResultType.Success,
                         Success = true,
                         Now = {
-                            Connections = new List<Connection>() {
-                                // Clone it, cause we're about to properly dispose the connection.
-                                connection.Clone() as Connection
+                            Connections = new List<ConnectionModel>() {
+                                connection.ConnectionModel
                             }
                         }
                     };
@@ -669,7 +671,7 @@ namespace Procon.Core {
         public CommandResultArgs InstanceRemoveConnectionByGuid(Command command, Dictionary<String, CommandParameter> parameters) {
             String connectionGuid = parameters["connectionGuid"].First<String>();
 
-            Connection connection = this.Connections.FirstOrDefault(x => String.Compare(x.ConnectionGuid.ToString(), connectionGuid, StringComparison.OrdinalIgnoreCase) == 0);
+            Connection connection = this.Connections.FirstOrDefault(x => String.Compare(x.ConnectionModel.ConnectionGuid.ToString(), connectionGuid, StringComparison.OrdinalIgnoreCase) == 0);
 
             return this.InstanceRemoveConnection(command, connection);
         }
@@ -685,11 +687,11 @@ namespace Procon.Core {
             String hostName = parameters["hostName"].First<String>();
             UInt16 port = parameters["port"].First<UInt16>();
 
-            Connection connection = this.Connections.FirstOrDefault(c => 
-                c.GameType.Provider == gameTypeProvider && 
-                c.GameType.Type == gameTypeType && 
-                c.Hostname == hostName && 
-                c.Port == port
+            Connection connection = this.Connections.FirstOrDefault(c =>
+                c.ConnectionModel.GameType.Provider == gameTypeProvider &&
+                c.ConnectionModel.GameType.Type == gameTypeType &&
+                c.ConnectionModel.Hostname == hostName &&
+                c.ConnectionModel.Port == port
             );
 
             return this.InstanceRemoveConnection(command, connection);
@@ -709,13 +711,13 @@ namespace Procon.Core {
                     Success = true,
                     Status = CommandResultType.Success,
                     Now = new CommandData() {
-                        Connections = new List<Connection>(this.Connections),
+                        Connections = this.Connections.Select(connection => connection.ConnectionModel).ToList(),
                         GameTypes = new List<GameType>(SupportedGameTypes.GetSupportedGames().Select(k => k.Key as GameType)),
-                        Repositories = new List<Repository>(this.Packages.RemoteRepositories),
-                        Packages = new List<FlatPackedPackage>(this.Packages.Packages),
-                        Groups = new List<Group>(this.Security.Groups),
-                        Languages = new List<Language>(this.Languages.LoadedLanguageFiles),
-                        Variables = new List<Variable>(this.Variables.VolatileVariables)
+                        //Repositories = new List<RepositoryModel>(this.Packages.RemoteRepositories),
+                        //Packages = new List<PackageModel>(this.Packages.Packages),
+                        Groups = new List<GroupModel>(this.Security.Groups),
+                        Languages = this.Languages.LoadedLanguageFiles.Select(language => language.LanguageModel).ToList(),
+                        Variables = new List<VariableModel>(this.Variables.VolatileVariables)
                     }
                 };
             }

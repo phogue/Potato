@@ -1,8 +1,8 @@
-﻿using System;
-using System.Text;
-using System.Collections.Generic;
-using System.Linq;
+﻿#region
+
 using NUnit.Framework;
+
+#endregion
 
 namespace Procon.Core.Test.Serialization {
     [TestFixture]

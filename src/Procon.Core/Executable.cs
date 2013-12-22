@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using Procon.Core.Events;
 using Procon.Core.Localization;
 using Procon.Core.Security;
+using Procon.Core.Shared;
 using Procon.Core.Variables;
 using Procon.Service.Shared;
 
@@ -80,10 +81,10 @@ namespace Procon.Core {
         /// </summary>
         static Executable() {
 
-            MasterVariables = new VariableController().Execute() as VariableController;
-            MasterLanguages = new LanguageController().Execute() as LanguageController;
-            MasterSecurity = new SecurityController().Execute() as SecurityController;
-            MasterEvents = new EventsController().Execute() as EventsController;
+            MasterVariables = new VariableController();
+            MasterLanguages = new LanguageController();
+            MasterSecurity = new SecurityController();
+            MasterEvents = new EventsController();
 
             if (Executable.MasterVariables != null && Executable.MasterLanguages != null && Executable.MasterSecurity != null && Executable.MasterEvents != null) {
                 Executable.MasterVariables.Variables = Executable.MasterLanguages.Variables = Executable.MasterSecurity.Variables = Executable.MasterEvents.Variables = Executable.MasterVariables;
@@ -91,19 +92,10 @@ namespace Procon.Core {
                 Executable.MasterVariables.Security = Executable.MasterLanguages.Security = Executable.MasterSecurity.Security = Executable.MasterEvents.Security = Executable.MasterSecurity;
                 Executable.MasterVariables.Events = Executable.MasterLanguages.Events = Executable.MasterSecurity.Events = Executable.MasterEvents.Events = Executable.MasterEvents;
 
-                Executable.MasterSecurity.Groups.ForEach(group => {
-                    group.Variables = Executable.MasterVariables;
-                    group.Languages = Executable.MasterLanguages;
-                    group.Security = Executable.MasterSecurity;
-                    group.Events = Executable.MasterEvents;
-
-                    group.Accounts.ForEach(account => {
-                        account.Variables = Executable.MasterVariables;
-                        account.Languages = Executable.MasterLanguages;
-                        account.Security = Executable.MasterSecurity;
-                        account.Events = Executable.MasterEvents;
-                    });
-                });
+                MasterVariables.Execute();
+                MasterLanguages.Execute();
+                MasterSecurity.Execute();
+                MasterEvents.Execute();
             }
         }
 

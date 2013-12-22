@@ -1,24 +1,25 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.IO;
-using System.Text;
-using System.Collections.Generic;
 using System.Linq;
 using Ionic.Zip;
 using NUnit.Framework;
 using Procon.Core.Utils;
 
+#endregion
+
 namespace Procon.Core.Test.Utils {
     [TestFixture]
     public class TestDirectoryInfoExtensions {
-
         /// <summary>
-        /// Tests that files and sub directories of a directory will be deleted.
+        ///     Tests that files and sub directories of a directory will be deleted.
         /// </summary>
         [Test]
         public void TestDirectoryInfoExtensionsClean() {
             String cleanPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Utils\DirectoryInfoExtensions\Clean");
-            FileInfo fileA = new FileInfo(Path.Combine(cleanPath, @"a.txt"));
-            FileInfo fileB = new FileInfo(Path.Combine(cleanPath, @"sub\b.txt"));
+            var fileA = new FileInfo(Path.Combine(cleanPath, @"a.txt"));
+            var fileB = new FileInfo(Path.Combine(cleanPath, @"sub\b.txt"));
 
             // Make sure the directories exist
             fileA.Directory.Create();
@@ -46,13 +47,13 @@ namespace Procon.Core.Test.Utils {
         }
 
         /// <summary>
-        /// Checks that a directory can be zipped up. Validates the files are in the resulting zip file in memory.
+        ///     Checks that a directory can be zipped up. Validates the files are in the resulting zip file in memory.
         /// </summary>
         [Test]
         public void TestDirectoryInfoExtensionsZip() {
             String cleanPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Utils\DirectoryInfoExtensions\Zip");
-            FileInfo fileA = new FileInfo(Path.Combine(cleanPath, @"a.txt"));
-            FileInfo fileB = new FileInfo(Path.Combine(cleanPath, @"sub\b.txt"));
+            var fileA = new FileInfo(Path.Combine(cleanPath, @"a.txt"));
+            var fileB = new FileInfo(Path.Combine(cleanPath, @"sub\b.txt"));
 
             // Make sure the directories exist
             fileA.Directory.Create();

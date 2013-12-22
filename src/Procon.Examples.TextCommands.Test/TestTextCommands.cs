@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
-using Procon.Core;
 using Procon.Core.Connections;
+using Procon.Core.Shared;
 
 namespace Procon.Examples.TextCommands.Test {
     /// <summary>
@@ -38,7 +38,7 @@ namespace Procon.Examples.TextCommands.Test {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.PluginsEnable,
                 Scope = {
-                    PluginGuid = connection.Plugins.Plugins.First().PluginGuid
+                    PluginGuid = connection.Plugins.Plugins.First().PluginModel.PluginGuid
                 }
             });
 

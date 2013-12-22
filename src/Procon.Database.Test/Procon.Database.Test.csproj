@@ -67,6 +67,10 @@
       <Project>{C9FD27C8-167E-4B6A-82C0-8C9925584EE3}</Project>
       <Name>Procon.Database.Serialization</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Procon.Database.Shared\Procon.Database.Shared.csproj">
+      <Project>{F6F1BD6C-1743-492A-A18C-810E2C5601F2}</Project>
+      <Name>Procon.Database.Shared</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Procon.Database\Procon.Database.csproj">
       <Project>{7703A41E-41E1-4D58-B686-07FD497D15F7}</Project>
       <Name>Procon.Database</Name>

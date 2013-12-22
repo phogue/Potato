@@ -4,10 +4,10 @@ using System.Linq;
 using System.Xml.Serialization;
 using Newtonsoft.Json;
 using Procon.Core.Connections.TextCommands.Parsers;
-using Procon.Core.Events;
 using Procon.Core.Localization;
-using Procon.Core.Security;
-using Procon.Core.Variables;
+using Procon.Core.Shared;
+using Procon.Core.Shared.Events;
+using Procon.Core.Shared.Models;
 using Procon.Net.Models;
 
 namespace Procon.Core.Connections.TextCommands {
@@ -21,7 +21,7 @@ namespace Procon.Core.Connections.TextCommands {
         /// Full list of text commands to check against.
         /// </summary>
         [XmlIgnore, JsonIgnore]
-        public List<TextCommand> TextCommands { get; protected set; }
+        public List<TextCommandModel> TextCommands { get; protected set; }
 
         /// <summary>
         /// The owner of this controller, used to lookup the game with all the player data and such in it.
@@ -33,7 +33,7 @@ namespace Procon.Core.Connections.TextCommands {
         /// Creates new controller with the default attributes set
         /// </summary>
         public TextCommandController() {
-            this.TextCommands = new List<TextCommand>();
+            this.TextCommands = new List<TextCommandModel>();
 
             this.AppendDispatchHandlers(new Dictionary<CommandAttribute, CommandDispatchHandler>() {
                 {
@@ -64,7 +64,7 @@ namespace Procon.Core.Connections.TextCommands {
                         ParameterTypes = new List<CommandParameterType>() {
                             new CommandParameterType() {
                                 Name = "textCommand",
-                                Type = typeof(TextCommand)
+                                Type = typeof(TextCommandModel)
                             }
                         }
                     },
@@ -75,7 +75,7 @@ namespace Procon.Core.Connections.TextCommands {
                         ParameterTypes = new List<CommandParameterType>() {
                             new CommandParameterType() {
                                 Name = "textCommand",
-                                Type = typeof(TextCommand)
+                                Type = typeof(TextCommandModel)
                             }
                         }
                     },
@@ -88,7 +88,7 @@ namespace Procon.Core.Connections.TextCommands {
         /// Does nothing.  Information about this object is handled via it's parent interface.
         /// </summary>
         public override void Dispose() {
-            foreach (TextCommand textCommand in this.TextCommands) {
+            foreach (TextCommandModel textCommand in this.TextCommands) {
                 textCommand.Dispose();
             }
 
@@ -109,13 +109,13 @@ namespace Procon.Core.Connections.TextCommands {
         /// <param name="prefix">The first valid character of the command being executed</param>
         /// <param name="text">The next, minus the first character</param>
         /// <returns>The generated event, if any.</returns>
-        protected CommandResultArgs ParseFuzzy(Player speaker, Account speakerAccount, List<TextCommand> commands, String prefix, String text) {
+        protected CommandResultArgs ParseFuzzy(Player speaker, AccountModel speakerAccount, List<TextCommandModel> commands, String prefix, String text) {
 
             CommandResultArgs commandResult = null;
             Language selectedLanguage = null;
 
             if (speakerAccount != null && speakerAccount.PreferredLanguageCode != String.Empty) {
-                selectedLanguage = this.Languages.LoadedLanguageFiles.Find(x => x.LanguageCode == speakerAccount.PreferredLanguageCode);
+                selectedLanguage = this.Languages.LoadedLanguageFiles.Find(language => language.LanguageModel.LanguageCode == speakerAccount.PreferredLanguageCode);
             }
             else {
                 selectedLanguage = this.Languages.Default;
@@ -149,7 +149,7 @@ namespace Procon.Core.Connections.TextCommands {
         /// <param name="prefix"></param>
         /// <param name="text"></param>
         /// <returns>The generated event, if any.</returns>
-        protected CommandResultArgs Parse(Player speakerNetworkPlayer, Account speakerAccount, String prefix, String text) {
+        protected CommandResultArgs Parse(Player speakerNetworkPlayer, AccountModel speakerAccount, String prefix, String text) {
 
             // This could execute more in the future, in which case
             // this.TextCommands.Where(x => x.Parser == Parser.NLP).ToList()
@@ -169,11 +169,11 @@ namespace Procon.Core.Connections.TextCommands {
         /// <param name="command"></param>
         /// <param name="speaker"></param>
         /// <returns></returns>
-        protected Player GetAccountNetworkPlayer(Command command, Account speaker) {
+        protected Player GetAccountNetworkPlayer(Command command, AccountModel speaker) {
             Player player = this.Connection.GameState.Players.FirstOrDefault(x => x.Uid == command.Uid);
 
             if (speaker != null) {
-                AccountPlayer accountPlayer = speaker.Players.FirstOrDefault(p => p.GameType == this.Connection.GameType.Type);
+                AccountPlayerModel accountPlayer = speaker.Players.FirstOrDefault(p => p.GameType == this.Connection.ConnectionModel.GameType.Type);
 
                 if (accountPlayer != null) {
                     player = this.Connection.GameState.Players.FirstOrDefault(x => x.Uid == accountPlayer.Uid);
@@ -195,7 +195,7 @@ namespace Procon.Core.Connections.TextCommands {
             String text = parameters["text"].First<String>();
 
             if (this.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
-                Account speakerAccount = this.Security.GetAccount(command);
+                AccountModel speakerAccount = this.Security.GetAccount(command);
 
                 // @todo pull the prefix from the text?
 
@@ -226,7 +226,7 @@ namespace Procon.Core.Connections.TextCommands {
             String text = parameters["text"].First<String>();
 
             if (this.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
-                Account speakerAccount = this.Security.GetAccount(command);
+                AccountModel speakerAccount = this.Security.GetAccount(command);
 
                 // @todo pull the prefix from the text?
 
@@ -252,10 +252,10 @@ namespace Procon.Core.Connections.TextCommands {
         public CommandResultArgs RegisterTextCommand(Command command, Dictionary<String, CommandParameter> parameters) {
             CommandResultArgs result = null;
 
-            TextCommand textCommand = parameters["textCommand"].First<TextCommand>();
+            TextCommandModel textCommand = parameters["textCommand"].First<TextCommandModel>();
 
             if (this.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
-                TextCommand existingRegisteredCommand = this.TextCommands.Find(existingCommand => existingCommand.PluginUid == textCommand.PluginUid && existingCommand.PluginCommand == textCommand.PluginCommand);
+                TextCommandModel existingRegisteredCommand = this.TextCommands.Find(existingCommand => existingCommand.PluginUid == textCommand.PluginUid && existingCommand.PluginCommand == textCommand.PluginCommand);
 
                 if (existingRegisteredCommand == null) {
                     this.TextCommands.Add(textCommand);
@@ -264,12 +264,12 @@ namespace Procon.Core.Connections.TextCommands {
                         Success = true,
                         Status = CommandResultType.Success,
                         Scope = {
-                            Connections = new List<Connection>() {
-                                this.Connection
+                            Connections = new List<ConnectionModel>() {
+                                this.Connection != null ? this.Connection.ConnectionModel : null
                             }
                         },
                         Now = new CommandData() {
-                            TextCommands = new List<TextCommand>() {
+                            TextCommands = new List<TextCommandModel>() {
                                 textCommand
                             }
                         }
@@ -302,10 +302,10 @@ namespace Procon.Core.Connections.TextCommands {
         public CommandResultArgs UnregisterTextCommand(Command command, Dictionary<String, CommandParameter> parameters) {
             CommandResultArgs result = null;
 
-            TextCommand textCommand = parameters["textCommand"].First<TextCommand>();
+            TextCommandModel textCommand = parameters["textCommand"].First<TextCommandModel>();
 
             if (this.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
-                TextCommand existingRegisteredCommand = this.TextCommands.Find(existingCommand => existingCommand.PluginUid == textCommand.PluginUid && existingCommand.PluginCommand == textCommand.PluginCommand);
+                TextCommandModel existingRegisteredCommand = this.TextCommands.Find(existingCommand => existingCommand.PluginUid == textCommand.PluginUid && existingCommand.PluginCommand == textCommand.PluginCommand);
 
                 if (existingRegisteredCommand != null) {
                     this.TextCommands.Remove(existingRegisteredCommand);
@@ -314,12 +314,12 @@ namespace Procon.Core.Connections.TextCommands {
                         Success = true,
                         Status = CommandResultType.Success,
                         Scope = {
-                            Connections = new List<Connection>() {
-                                this.Connection
+                            Connections = new List<ConnectionModel>() {
+                                this.Connection != null ? this.Connection.ConnectionModel : null
                             }
                         },
                         Now = new CommandData() {
-                            TextCommands = new List<TextCommand>() {
+                            TextCommands = new List<TextCommandModel>() {
                                 textCommand
                             }
                         }

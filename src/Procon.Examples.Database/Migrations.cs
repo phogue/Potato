@@ -1,6 +1,6 @@
 ﻿using System.Linq;
-using Procon.Core;
-using Procon.Core.Database.Migrations;
+using Procon.Core.Shared;
+using Procon.Core.Shared.Database.Migrations;
 using Procon.Database.Serialization.Builders;
 using Procon.Database.Serialization.Builders.FieldTypes;
 using Procon.Database.Serialization.Builders.Methods.Schema;

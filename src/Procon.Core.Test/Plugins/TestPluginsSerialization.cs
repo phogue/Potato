@@ -1,27 +1,30 @@
-﻿using System;
-using System.Text;
+﻿#region
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
+using Procon.Core.Connections.Plugins;
+using Procon.Core.Shared;
+
+#endregion
 
 namespace Procon.Core.Test.Plugins {
-    using Procon.Core.Connections.Plugins;
     [TestFixture]
     public class TestPluginsSerialization {
-
         /// <summary>
-        /// Makes sure executing a command across the appdomain will serialize
-        /// the basic command result across the app domain.
+        ///     Makes sure executing a command across the appdomain will serialize
+        ///     the basic command result across the app domain.
         /// </summary>
         [Test]
         public void TestPluginsSerializationCommandResult() {
-            PluginController plugins = new PluginController().Execute() as PluginController;
+            var plugins = new PluginController().Execute() as PluginController;
 
             plugins.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.PluginsEnable,
                 Scope = {
-                    PluginGuid = plugins.Plugins.First().PluginGuid
+                    PluginGuid = plugins.Plugins.First().PluginModel.PluginGuid
                 }
             });
 

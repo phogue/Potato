@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
-using Procon.Database.Serialization;
+using Procon.Database.Shared;
 
 namespace Procon.Database.Test.Integration {
     public interface IDatabaseIntegration {

@@ -5,7 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 using System.Xml.Linq;
-using Procon.Core.Variables;
+using Procon.Core.Shared;
+using Procon.Core.Shared.Events;
+using Procon.Core.Shared.Models;
 using Procon.Net.Utils;
 using Procon.Service.Shared;
 

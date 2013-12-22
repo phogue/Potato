@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using Procon.Core.Shared;
 
 namespace TestPlugin.Tests {
-    using Procon.Core;
-
     public class TestPluginsSerialization : ExecutableBase {
 
         public TestPluginsSerialization() : base() {

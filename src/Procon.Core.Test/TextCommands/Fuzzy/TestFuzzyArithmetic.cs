@@ -1,142 +1,145 @@
-﻿using NUnit.Framework;
+﻿#region
+
+using NUnit.Framework;
+
+#endregion
 
 namespace Procon.Core.Test.TextCommands.Fuzzy {
     [TestFixture]
     public class TestFuzzyArithmetic : TestFuzzyBase {
-
         [Test]
         public void TestCalculateBasicArithmeticAddition() {
-            TestFuzzyBase.AssertNumericCommand(this.CreateTextCommandController(), "calculate 1 + 2", TestFuzzyBase.TextCommandCalculate, 3.0F); 
-        }
-
-        [Test]
-        public void TestCalculateBasicArithmeticSubtractionOperator() {
-            TestFuzzyBase.AssertNumericCommand(this.CreateTextCommandController(), "calculate 1 - 2", TestFuzzyBase.TextCommandCalculate, -1.0F);
-        }
-
-        [Test]
-        public void TestCalculateBasicArithmeticSubtractionWord() {
-            TestFuzzyBase.AssertNumericCommand(this.CreateTextCommandController(), "calculate 1 minus 2", TestFuzzyBase.TextCommandCalculate, -1.0F);
-        }
-
-        [Test]
-        public void TestCalculateBasicArithmeticMultiplicationOperator() {
-            TestFuzzyBase.AssertNumericCommand(this.CreateTextCommandController(), "calculate 1 * 2", TestFuzzyBase.TextCommandCalculate, 2.0F);
-        }
-
-        [Test]
-        public void TestCalculateBasicArithmeticMultiplicationWord() {
-            TestFuzzyBase.AssertNumericCommand(this.CreateTextCommandController(), "calculate 1 multiplied by 2", TestFuzzyBase.TextCommandCalculate, 2.0F);
-        }
-
-        [Test]
-        public void TestCalculateBasicArithmeticDivisionOperator() {
-            TestFuzzyBase.AssertNumericCommand(this.CreateTextCommandController(), "calculate 1 / 2", TestFuzzyBase.TextCommandCalculate, 0.5F);
-        }
-
-        [Test]
-        public void TestCalculateBasicArithmeticDivisionWord() {
-            TestFuzzyBase.AssertNumericCommand(this.CreateTextCommandController(), "calculate 1 divide by 2", TestFuzzyBase.TextCommandCalculate, 0.5F);
-        }
-
-        [Test]
-        public void TestCalculateBasicArithmeticDivisionOperatorDivisionByZero() {
-            TestFuzzyBase.AssertNumericCommand(this.CreateTextCommandController(), "calculate 1 / 0", TestFuzzyBase.TextCommandCalculate, 0.0F);
-        }
-
-        [Test]
-        public void TestCalculateBasicArithmeticPower() {
-            TestFuzzyBase.AssertNumericCommand(this.CreateTextCommandController(), "calculate 3 ^ 2", TestFuzzyBase.TextCommandCalculate, 9.0F);
-        }
-
-        [Test]
-        public void TestCalculateBasicArithmeticBodmasAdditionLeftMultiplicationRight() {
-            TestFuzzyBase.AssertNumericCommand(this.CreateTextCommandController(), "calculate 1 + 2 * 3", TestFuzzyBase.TextCommandCalculate, 7.0F);
-        }
-
-        [Test]
-        public void TestCalculateBasicArithmeticBodmasAdditionRightMultiplicationLeft() {
-            TestFuzzyBase.AssertNumericCommand(this.CreateTextCommandController(), "calculate 1 * 2 + 3", TestFuzzyBase.TextCommandCalculate, 5.0F);
-        }
-
-        [Test]
-        public void TestCalculateCardinals() {
-            TestFuzzyBase.AssertNumericCommand(this.CreateTextCommandController(), "calculate one", TestFuzzyBase.TextCommandCalculate, 1.0F);
-        }
-
-        [Test]
-        public void TestCalculateCardinalsImpliedAdditionTens() {
-            TestFuzzyBase.AssertNumericCommand(this.CreateTextCommandController(), "calculate twenty one", TestFuzzyBase.TextCommandCalculate, 21.0F);
-        }
-
-        [Test]
-        public void TestCalculateCardinalsImpliedAdditionHundreds() {
-            TestFuzzyBase.AssertNumericCommand(this.CreateTextCommandController(), "calculate hundred twenty one", TestFuzzyBase.TextCommandCalculate, 121.0F);
-        }
-
-        [Test]
-        public void TestCalculateCardinalsExtendedOneImpliedAdditionHundreds() {
-            TestFuzzyBase.AssertNumericCommand(this.CreateTextCommandController(), "calculate one hundred twenty one", TestFuzzyBase.TextCommandCalculate, 121.0F);
-        }
-
-        [Test]
-        public void TestCalculateCardinalsExtendedTwoImpliedAdditionHundreds() {
-            TestFuzzyBase.AssertNumericCommand(this.CreateTextCommandController(), "calculate two hundred twenty one", TestFuzzyBase.TextCommandCalculate, 221.0F);
-        }
-
-        [Test]
-        public void TestCalculateCardinalsAddition() {
-            TestFuzzyBase.AssertNumericCommand(this.CreateTextCommandController(), "calculate twenty one + one hundred and one", TestFuzzyBase.TextCommandCalculate, 122.0F);
+            AssertNumericCommand(CreateTextCommandController(), "calculate 1 + 2", TextCommandCalculate, 3.0F);
         }
 
         [Test]
         public void TestCalculateBasicArithmeticAdditionNoSpaces() {
-            TestFuzzyBase.AssertNumericCommand(this.CreateTextCommandController(), "calculate 1+2", TestFuzzyBase.TextCommandCalculate, 3.0F);
+            AssertNumericCommand(CreateTextCommandController(), "calculate 1+2", TextCommandCalculate, 3.0F);
+        }
+
+        [Test]
+        public void TestCalculateBasicArithmeticBodmasAdditionLeftMultiplicationRight() {
+            AssertNumericCommand(CreateTextCommandController(), "calculate 1 + 2 * 3", TextCommandCalculate, 7.0F);
         }
 
         [Test]
         public void TestCalculateBasicArithmeticBodmasAdditionLeftMultiplicationRightNoSpaces() {
-            TestFuzzyBase.AssertNumericCommand(this.CreateTextCommandController(), "calculate 1+2*3", TestFuzzyBase.TextCommandCalculate, 7.0F);
+            AssertNumericCommand(CreateTextCommandController(), "calculate 1+2*3", TextCommandCalculate, 7.0F);
+        }
+
+        [Test]
+        public void TestCalculateBasicArithmeticBodmasAdditionRightMultiplicationLeft() {
+            AssertNumericCommand(CreateTextCommandController(), "calculate 1 * 2 + 3", TextCommandCalculate, 5.0F);
         }
 
         [Test]
         public void TestCalculateBasicArithmeticBodmasAdditionRightMultiplicationLeftNoSpaces() {
-            TestFuzzyBase.AssertNumericCommand(this.CreateTextCommandController(), "calculate 1*2+3", TestFuzzyBase.TextCommandCalculate, 5.0F);
+            AssertNumericCommand(CreateTextCommandController(), "calculate 1*2+3", TextCommandCalculate, 5.0F);
+        }
+
+        [Test]
+        public void TestCalculateBasicArithmeticDivisionOperator() {
+            AssertNumericCommand(CreateTextCommandController(), "calculate 1 / 2", TextCommandCalculate, 0.5F);
+        }
+
+        [Test]
+        public void TestCalculateBasicArithmeticDivisionOperatorDivisionByZero() {
+            AssertNumericCommand(CreateTextCommandController(), "calculate 1 / 0", TextCommandCalculate, 0.0F);
+        }
+
+        [Test]
+        public void TestCalculateBasicArithmeticDivisionWord() {
+            AssertNumericCommand(CreateTextCommandController(), "calculate 1 divide by 2", TextCommandCalculate, 0.5F);
+        }
+
+        [Test]
+        public void TestCalculateBasicArithmeticMultiplicationOperator() {
+            AssertNumericCommand(CreateTextCommandController(), "calculate 1 * 2", TextCommandCalculate, 2.0F);
+        }
+
+        [Test]
+        public void TestCalculateBasicArithmeticMultiplicationWord() {
+            AssertNumericCommand(CreateTextCommandController(), "calculate 1 multiplied by 2", TextCommandCalculate, 2.0F);
+        }
+
+        [Test]
+        public void TestCalculateBasicArithmeticPower() {
+            AssertNumericCommand(CreateTextCommandController(), "calculate 3 ^ 2", TextCommandCalculate, 9.0F);
+        }
+
+        [Test]
+        public void TestCalculateBasicArithmeticSubtractionOperator() {
+            AssertNumericCommand(CreateTextCommandController(), "calculate 1 - 2", TextCommandCalculate, -1.0F);
+        }
+
+        [Test]
+        public void TestCalculateBasicArithmeticSubtractionWord() {
+            AssertNumericCommand(CreateTextCommandController(), "calculate 1 minus 2", TextCommandCalculate, -1.0F);
         }
 
         [Test]
         public void TestCalculateBracketedArithmeticAdditionNoSpaces() {
-            TestFuzzyBase.AssertNumericCommand(this.CreateTextCommandController(), "calculate (1+2)", TestFuzzyBase.TextCommandCalculate, 3.0F);
+            AssertNumericCommand(CreateTextCommandController(), "calculate (1+2)", TextCommandCalculate, 3.0F);
         }
 
         [Test]
         public void TestCalculateBracketedArithmeticBodmasAdditionLeftMultiplicationRightNoSpaces() {
-            TestFuzzyBase.AssertNumericCommand(this.CreateTextCommandController(), "calculate (1+2)*3", TestFuzzyBase.TextCommandCalculate, 9.0F);
+            AssertNumericCommand(CreateTextCommandController(), "calculate (1+2)*3", TextCommandCalculate, 9.0F);
         }
 
         [Test]
         public void TestCalculateBracketedArithmeticBodmasAdditionRightMultiplicationLeftNoSpaces() {
-            TestFuzzyBase.AssertNumericCommand(this.CreateTextCommandController(), "calculate 1*(2+3)", TestFuzzyBase.TextCommandCalculate, 5.0F);
+            AssertNumericCommand(CreateTextCommandController(), "calculate 1*(2+3)", TextCommandCalculate, 5.0F);
+        }
+
+        [Test]
+        public void TestCalculateCardinals() {
+            AssertNumericCommand(CreateTextCommandController(), "calculate one", TextCommandCalculate, 1.0F);
+        }
+
+        [Test]
+        public void TestCalculateCardinalsAddition() {
+            AssertNumericCommand(CreateTextCommandController(), "calculate twenty one + one hundred and one", TextCommandCalculate, 122.0F);
+        }
+
+        [Test]
+        public void TestCalculateCardinalsExtendedOneImpliedAdditionHundreds() {
+            AssertNumericCommand(CreateTextCommandController(), "calculate one hundred twenty one", TextCommandCalculate, 121.0F);
+        }
+
+        [Test]
+        public void TestCalculateCardinalsExtendedTwoImpliedAdditionHundreds() {
+            AssertNumericCommand(CreateTextCommandController(), "calculate two hundred twenty one", TextCommandCalculate, 221.0F);
+        }
+
+        [Test]
+        public void TestCalculateCardinalsImpliedAdditionHundreds() {
+            AssertNumericCommand(CreateTextCommandController(), "calculate hundred twenty one", TextCommandCalculate, 121.0F);
+        }
+
+        [Test]
+        public void TestCalculateCardinalsImpliedAdditionTens() {
+            AssertNumericCommand(CreateTextCommandController(), "calculate twenty one", TextCommandCalculate, 21.0F);
         }
 
         [Test]
         public void TestCalculateComplexBracketedArithmeticBodmasLevelOne() {
-            TestFuzzyBase.AssertNumericCommand(this.CreateTextCommandController(), "calculate 6*((2+3*3)/2)", TestFuzzyBase.TextCommandCalculate, 33.0F);
-        }
-
-        [Test]
-        public void TestCalculateComplexBracketedArithmeticBodmasLevelTwo() {
-            TestFuzzyBase.AssertNumericCommand(this.CreateTextCommandController(), "calculate (51+3)/6*((2+3*3)/2)", TestFuzzyBase.TextCommandCalculate, 49.5F);
+            AssertNumericCommand(CreateTextCommandController(), "calculate 6*((2+3*3)/2)", TextCommandCalculate, 33.0F);
         }
 
         [Test]
         public void TestCalculateComplexBracketedArithmeticBodmasLevelThree() {
-            TestFuzzyBase.AssertNumericCommand(this.CreateTextCommandController(), "calculate (51+3)/6*((2+3*3)/2)*(51+3)/6*((2+3*3)/2)", TestFuzzyBase.TextCommandCalculate, 2450.25F);
+            AssertNumericCommand(CreateTextCommandController(), "calculate (51+3)/6*((2+3*3)/2)*(51+3)/6*((2+3*3)/2)", TextCommandCalculate, 2450.25F);
+        }
+
+        [Test]
+        public void TestCalculateComplexBracketedArithmeticBodmasLevelTwo() {
+            AssertNumericCommand(CreateTextCommandController(), "calculate (51+3)/6*((2+3*3)/2)", TextCommandCalculate, 49.5F);
         }
 
         [Test]
         public void TestCalculateComplexBracketedArithmeticBodmasPowerFunction() {
-            TestFuzzyBase.AssertNumericCommand(this.CreateTextCommandController(), "calculate 3 pow(2+1)", TestFuzzyBase.TextCommandCalculate, 27.0F);
+            AssertNumericCommand(CreateTextCommandController(), "calculate 3 pow(2+1)", TextCommandCalculate, 27.0F);
         }
     }
 }

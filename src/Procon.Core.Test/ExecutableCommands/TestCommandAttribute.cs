@@ -1,20 +1,39 @@
-﻿using System;
+﻿#region
+
+using System;
 using NUnit.Framework;
+using Procon.Core.Shared;
+
+#endregion
 
 namespace Procon.Core.Test.ExecutableCommands {
     [TestFixture]
     public class TestCommandAttribute {
+        /// <summary>
+        ///     Tests the command attribute can be disposed properly, making the attribute inert.
+        /// </summary>
+        [Test]
+        public void TestCommandAttributeDisposal() {
+            var command = new CommandAttribute() {
+                Name = "dispose"
+            };
+
+            command.Dispose();
+
+            Assert.IsNull(command.Name);
+            Assert.AreEqual(CommandType.None, command.CommandType);
+        }
 
         /// <summary>
-        /// Tests equality with another object with the same value.
+        ///     Tests equality with another object with the same value.
         /// </summary>
         [Test]
         public void TestCommandAttributeEquality() {
-            CommandAttribute commandA = new CommandAttribute() {
+            var commandA = new CommandAttribute() {
                 Name = "equal"
             };
 
-            CommandAttribute commandB = new CommandAttribute() {
+            var commandB = new CommandAttribute() {
                 Name = "equal"
             };
 
@@ -22,37 +41,11 @@ namespace Procon.Core.Test.ExecutableCommands {
         }
 
         /// <summary>
-        /// Tests a comparison with null will not be true.
-        /// </summary>
-        [Test]
-        public void TestCommandAttributeEqualityAgainstNull() {
-            CommandAttribute command = new CommandAttribute() {
-                Name = "equal"
-            };
-
-            Assert.IsFalse(command.Equals(null));
-        }
-
-        /// <summary>
-        /// Tests that a command attribute will be equal against a reference to itself.
-        /// </summary>
-        [Test]
-        public void TestCommandAttributeEqualityAgainstReferenceToSameObject() {
-            CommandAttribute commandA = new CommandAttribute() {
-                Name = "equal"
-            };
-
-            CommandAttribute commandB = commandA;
-
-            Assert.IsTrue(commandA.Equals(commandB));
-        }
-
-        /// <summary>
-        /// Tests that a comparison with a different type will come back as false.
+        ///     Tests that a comparison with a different type will come back as false.
         /// </summary>
         [Test]
         public void TestCommandAttributeEqualityAgainstDifferenceType() {
-            CommandAttribute commandA = new CommandAttribute() {
+            var commandA = new CommandAttribute() {
                 Name = "equal"
             };
 
@@ -62,15 +55,41 @@ namespace Procon.Core.Test.ExecutableCommands {
         }
 
         /// <summary>
-        /// Tests the same value in two different objects with have the same hash codes.
+        ///     Tests a comparison with null will not be true.
         /// </summary>
         [Test]
-        public void TestCommandAttributeEqualityHashCode() {
-            CommandAttribute commandA = new CommandAttribute() {
+        public void TestCommandAttributeEqualityAgainstNull() {
+            var command = new CommandAttribute() {
                 Name = "equal"
             };
 
-            CommandAttribute commandB = new CommandAttribute() {
+            Assert.IsFalse(command.Equals(null));
+        }
+
+        /// <summary>
+        ///     Tests that a command attribute will be equal against a reference to itself.
+        /// </summary>
+        [Test]
+        public void TestCommandAttributeEqualityAgainstReferenceToSameObject() {
+            var commandA = new CommandAttribute() {
+                Name = "equal"
+            };
+
+            CommandAttribute commandB = commandA;
+
+            Assert.IsTrue(commandA.Equals(commandB));
+        }
+
+        /// <summary>
+        ///     Tests the same value in two different objects with have the same hash codes.
+        /// </summary>
+        [Test]
+        public void TestCommandAttributeEqualityHashCode() {
+            var commandA = new CommandAttribute() {
+                Name = "equal"
+            };
+
+            var commandB = new CommandAttribute() {
                 Name = "equal"
             };
 
@@ -78,44 +97,40 @@ namespace Procon.Core.Test.ExecutableCommands {
         }
 
         /// <summary>
-        /// Tests that different values will yield a different hash code.
-        /// </summary>
-        [Test]
-        public void TestCommandAttributeNotEqualHashCode() {
-            CommandAttribute commandA = new CommandAttribute() {
-                Name = "equalA"
-            };
-
-            CommandAttribute commandB = new CommandAttribute() {
-                Name = "equalB"
-            };
-
-            Assert.AreNotEqual(commandA.GetHashCode(), commandB.GetHashCode());
-        }
-
-        /// <summary>
-        /// Tests the equality operator
+        ///     Tests the equality operator
         /// </summary>
         [Test]
         public void TestCommandAttributeEqualityOperator() {
-            CommandAttribute commandA = new CommandAttribute() {
+            var commandA = new CommandAttribute() {
                 Name = "equal"
             };
 
-            CommandAttribute commandB = new CommandAttribute() {
+            var commandB = new CommandAttribute() {
                 Name = "equal"
             };
 
             Assert.IsTrue(commandA == commandB);
         }
 
+        /// <summary>
+        ///     Tests a reference comparison for equality.
+        /// </summary>
+        [Test]
+        public void TestCommandAttributeEqualityOperatorNull() {
+            var commandA = new CommandAttribute() {
+                Name = "equal"
+            };
+
+            Assert.IsFalse(commandA == null);
+        }
+
         [Test]
         public void TestCommandAttributeInequalityOperator() {
-            CommandAttribute commandA = new CommandAttribute() {
+            var commandA = new CommandAttribute() {
                 Name = "equalA"
             };
 
-            CommandAttribute commandB = new CommandAttribute() {
+            var commandB = new CommandAttribute() {
                 Name = "equalB"
             };
 
@@ -123,37 +138,11 @@ namespace Procon.Core.Test.ExecutableCommands {
         }
 
         /// <summary>
-        /// Tests a reference comparison for equality.
-        /// </summary>
-        [Test]
-        public void TestCommandAttributeReferenceEqualityOperator() {
-            CommandAttribute commandA = new CommandAttribute() {
-                Name = "equal"
-            };
-
-            CommandAttribute commandB = commandA;
-
-            Assert.IsTrue(commandA == commandB);
-        }
-
-        /// <summary>
-        /// Tests a reference comparison for equality.
-        /// </summary>
-        [Test]
-        public void TestCommandAttributeEqualityOperatorNull() {
-            CommandAttribute commandA = new CommandAttribute() {
-                Name = "equal"
-            };
-
-            Assert.IsFalse(commandA == null);
-        }
-
-        /// <summary>
-        /// Tests that a command type will pass on the value as a string to the Name attribute.
+        ///     Tests that a command type will pass on the value as a string to the Name attribute.
         /// </summary>
         [Test]
         public void TestCommandAttributeNameAliasFromCommandType() {
-            CommandAttribute command = new CommandAttribute() {
+            var command = new CommandAttribute() {
                 CommandType = CommandType.InstanceAddConnection
             };
 
@@ -162,18 +151,23 @@ namespace Procon.Core.Test.ExecutableCommands {
         }
 
         /// <summary>
-        /// Tests the command type can be found from the string.
+        ///     Tests that different values will yield a different hash code.
         /// </summary>
         [Test]
-        public void TestCommandAttributeParseValidCommandType() {
-            CommandAttribute command = new CommandAttribute().ParseCommandType("InstanceAddConnection");
+        public void TestCommandAttributeNotEqualHashCode() {
+            var commandA = new CommandAttribute() {
+                Name = "equalA"
+            };
 
-            Assert.AreEqual("InstanceAddConnection", command.Name);
-            Assert.AreEqual(CommandType.InstanceAddConnection, command.CommandType);
+            var commandB = new CommandAttribute() {
+                Name = "equalB"
+            };
+
+            Assert.AreNotEqual(commandA.GetHashCode(), commandB.GetHashCode());
         }
 
         /// <summary>
-        /// Tests that if a command type is not valid during parsing the Name will at least be populated (good thing)
+        ///     Tests that if a command type is not valid during parsing the Name will at least be populated (good thing)
         /// </summary>
         [Test]
         public void TestCommandAttributeParseInvalidCommandType() {
@@ -184,18 +178,28 @@ namespace Procon.Core.Test.ExecutableCommands {
         }
 
         /// <summary>
-        /// Tests the command attribute can be disposed properly, making the attribute inert.
+        ///     Tests the command type can be found from the string.
         /// </summary>
         [Test]
-        public void TestCommandAttributeDisposal() {
-            CommandAttribute command = new CommandAttribute() {
-                Name = "dispose"
+        public void TestCommandAttributeParseValidCommandType() {
+            CommandAttribute command = new CommandAttribute().ParseCommandType("InstanceAddConnection");
+
+            Assert.AreEqual("InstanceAddConnection", command.Name);
+            Assert.AreEqual(CommandType.InstanceAddConnection, command.CommandType);
+        }
+
+        /// <summary>
+        ///     Tests a reference comparison for equality.
+        /// </summary>
+        [Test]
+        public void TestCommandAttributeReferenceEqualityOperator() {
+            var commandA = new CommandAttribute() {
+                Name = "equal"
             };
 
-            command.Dispose();
+            CommandAttribute commandB = commandA;
 
-            Assert.IsNull(command.Name);
-            Assert.AreEqual(CommandType.None, command.CommandType);
+            Assert.IsTrue(commandA == commandB);
         }
     }
 }

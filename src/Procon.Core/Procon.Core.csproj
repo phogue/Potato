@@ -64,24 +64,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Command.cs" />
-    <Compile Include="CommandAttribute.cs" />
-    <Compile Include="CommandAttributeType.cs" />
-    <Compile Include="CommandBuilder.cs" />
-    <Compile Include="CommandParameter.cs" />
-    <Compile Include="CommandData.cs" />
-    <Compile Include="CommandParameterType.cs" />
-    <Compile Include="CommandScope.cs" />
-    <Compile Include="CommandType.cs" />
-    <Compile Include="CommandOrigin.cs" />
-    <Compile Include="CommandResultArgs.cs" />
-    <Compile Include="CommandResultType.cs" />
-    <Compile Include="Config.cs" />
     <Compile Include="Connections\Connection.cs" />
-    <Compile Include="Connections\Plugins\IRemotePluginController.cs" />
-    <Compile Include="Connections\Plugins\IRenewableLease.cs" />
+    <Compile Include="Connections\Plugins\HostPlugin.cs" />
     <Compile Include="Connections\TextCommands\Parsers\Fuzzy\ItemThingReference.cs" />
-    <Compile Include="Connections\TextCommands\TextCommandIntervalType.cs" />
     <Compile Include="Connections\TextCommands\ITextCommandParser.cs" />
     <Compile Include="Connections\TextCommands\Parsers\Fuzzy\KdrPropertyReference.cs" />
     <Compile Include="Connections\TextCommands\Parsers\Fuzzy\DeathsPropertyReference.cs" />
@@ -91,31 +76,13 @@
     <Compile Include="Connections\TextCommands\Parsers\Fuzzy\MapThingReference.cs" />
     <Compile Include="Connections\TextCommands\Parsers\Fuzzy\PingPropertyReference.cs" />
     <Compile Include="Connections\TextCommands\Parsers\Fuzzy\PlayerThingReference.cs" />
-    <Compile Include="Connections\TextCommands\TextCommandInterval.cs" />
-    <Compile Include="Connections\TextCommands\TextCommandMatch.cs" />
-    <Compile Include="Connections\TextCommands\ParserType.cs" />
-    <Compile Include="Connections\TextCommands\TextCommand.cs" />
     <Compile Include="Connections\TextCommands\TextCommandController.cs" />
     <Compile Include="Connections\TextCommands\Parsers\FuzzyParser.cs" />
     <Compile Include="Connections\TextCommands\Parsers\Parser.cs" />
-    <Compile Include="Connections\Plugins\IRemotePlugin.cs" />
     <Compile Include="Database\DatabaseController.cs" />
-    <Compile Include="Database\DatabaseModel.cs" />
-    <Compile Include="Database\Migrations\IMigration.cs" />
-    <Compile Include="Database\Migrations\IMigrationSettings.cs" />
-    <Compile Include="Database\Migrations\Migration.cs" />
-    <Compile Include="Database\Migrations\MigrationController.cs" />
-    <Compile Include="Database\Migrations\MigrationModel.cs" />
-    <Compile Include="Database\Migrations\MigrationSettings.cs" />
-    <Compile Include="Database\Migrations\MigrationOrigin.cs" />
     <Compile Include="Events\EventsConsoleController.cs" />
-    <Compile Include="Events\GenericEventArgs.cs" />
-    <Compile Include="Events\GenericEventData.cs" />
     <Compile Include="Events\EventsController.cs" />
-    <Compile Include="Events\GenericEventType.cs" />
     <Compile Include="Events\PushEventsRequest.cs" />
-    <Compile Include="ExecutableBase.cs" />
-    <Compile Include="IExecutableBase.cs" />
     <Compile Include="Remote\CommandServerController.cs" />
     <Compile Include="Events\PushEventsController.cs" />
     <Compile Include="Events\PushEventsEndPoint.cs" />
@@ -128,37 +95,32 @@
     <Compile Include="Repositories\PackageState.cs" />
     <Compile Include="Repositories\PackageType.cs" />
     <Compile Include="Repositories\RepositoryController.cs" />
-    <Compile Include="Scheduler\TickEventArgs.cs" />
-    <Compile Include="Security\Account.cs" />
     <Compile Include="Executable.cs" />
-    <Compile Include="Connections\Plugins\HostPlugin.cs" />
-    <Compile Include="Connections\Plugins\RemotePlugin.cs" />
     <Compile Include="Connections\Plugins\PluginController.cs" />
-    <Compile Include="Connections\Plugins\RemotePluginController.cs" />
     <Compile Include="Instance.cs" />
     <Compile Include="Repositories\Serialization\SerializableVersion.cs" />
     <Compile Include="Utils\XElementValidator.cs" />
     <Compile Include="Utils\DirectoryInfoExtensions.cs" />
-    <Compile Include="Variables\CommonVariableNames.cs" />
     <Compile Include="Variables\GroupedVariableListener.cs" />
-    <Compile Include="Variables\Variable.cs" />
     <Compile Include="Variables\VariableController.cs" />
     <Compile Include="Localization\LanguageController.cs" />
-    <Compile Include="Security\AccountPlayer.cs" />
-    <Compile Include="Security\Group.cs" />
-    <Compile Include="Security\Permission.cs" />
     <Compile Include="Security\SecurityController.cs" />
     <Compile Include="Localization\Language.cs" />
-    <Compile Include="Scheduler\Task.cs" />
-    <Compile Include="Scheduler\TaskController.cs" />
-    <Compile Include="Scheduler\Temporal.cs" />
     <Compile Include="Utils\PathValidator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Procon.Core.Shared\Procon.Core.Shared.csproj">
+      <Project>{1B4351C6-BAAD-4075-A322-CAF4FE582392}</Project>
+      <Name>Procon.Core.Shared</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Procon.Database.Serialization\Procon.Database.Serialization.csproj">
       <Project>{C9FD27C8-167E-4B6A-82C0-8C9925584EE3}</Project>
       <Name>Procon.Database.Serialization</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Procon.Database.Shared\Procon.Database.Shared.csproj">
+      <Project>{F6F1BD6C-1743-492A-A18C-810E2C5601F2}</Project>
+      <Name>Procon.Database.Shared</Name>
     </ProjectReference>
     <ProjectReference Include="..\Procon.Database\Procon.Database.csproj">
       <Project>{7703A41E-41E1-4D58-B686-07FD497D15F7}</Project>

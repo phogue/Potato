@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Linq;
-using Procon.Core.Connections;
-using Procon.Core.Connections.TextCommands;
+using Procon.Core.Shared;
+using Procon.Core.Shared.Events;
+using Procon.Core.Shared.Models;
 
 namespace Procon.Core.Events {
 
@@ -46,8 +47,8 @@ namespace Procon.Core.Events {
 
             switch (item.Name) {
                 case "TextCommandRegistered":
-                    TextCommand firstTextCommand = item.Now.TextCommands.FirstOrDefault();
-                    Connection firstConnection = item.Scope.Connections.FirstOrDefault();
+                    TextCommandModel firstTextCommand = item.Now.TextCommands.FirstOrDefault();
+                    ConnectionModel firstConnection = item.Scope.Connections.FirstOrDefault();
 
                     if (firstTextCommand != null && firstConnection != null) {
                         text = String.Format(@"Registed command(s) ""{0}"" to plugin {1} on connection {2}.", String.Join(", ", firstTextCommand.Commands.ToArray()), this.FormatGuid(firstTextCommand.PluginUid), this.FormatGuid(firstConnection.ConnectionGuid));

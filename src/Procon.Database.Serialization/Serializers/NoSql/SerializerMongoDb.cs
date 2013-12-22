@@ -12,6 +12,8 @@ using Procon.Database.Serialization.Builders.Methods.Schema;
 using Procon.Database.Serialization.Builders.Modifiers;
 using Procon.Database.Serialization.Builders.Statements;
 using Procon.Database.Serialization.Builders.Values;
+using Procon.Database.Shared;
+using Procon.Database.Shared.Builders;
 
 namespace Procon.Database.Serialization.Serializers.NoSql {
     /// <summary>
@@ -123,7 +125,7 @@ namespace Procon.Database.Serialization.Serializers.NoSql {
             return query.Where(logical => logical is Field).Select(field => this.ParseField(field as Field)).ToList();
         }
 
-        protected virtual List<String> ParseMethod(Method method) {
+        protected virtual List<String> ParseMethod(IMethod method) {
             List<String> parsed = new List<string>();
 
             if (method.Any(item => item is Distinct) == true) {
@@ -352,7 +354,7 @@ namespace Procon.Database.Serialization.Serializers.NoSql {
             };
         }
 
-        public override ISerializer Parse(Method method, IParsedQuery parsed) {
+        public override ISerializer Parse(IMethod method, IParsedQuery parsed) {
             parsed.Root = method;
             
             parsed.Children = this.ParseChildren(method);

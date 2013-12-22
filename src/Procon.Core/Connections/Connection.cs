@@ -6,8 +6,9 @@ using System.Xml.Serialization;
 using Newtonsoft.Json;
 using Procon.Core.Connections.Plugins;
 using Procon.Core.Connections.TextCommands;
-using Procon.Core.Events;
-using Procon.Core.Variables;
+using Procon.Core.Shared;
+using Procon.Core.Shared.Events;
+using Procon.Core.Shared.Models;
 using Procon.Net;
 using Procon.Net.Actions;
 using Procon.Net.Models;
@@ -21,31 +22,7 @@ namespace Procon.Core.Connections {
     [Serializable]
     public class Connection : Executable {
 
-        /// <summary>
-        /// The unique hash for this connection. This simplifies identifying a connection to a single string that can be compared.
-        /// </summary>
-        public Guid ConnectionGuid { get; set; }
-
-        public GameType GameType {
-            get { return this.Game != null ? this.Game.GameType as GameType : null; }
-            // ReSharper disable ValueParameterNotUsed
-            set { }
-            // ReSharper restore ValueParameterNotUsed
-        }
-
-        public String Hostname {
-            get { return this.Game != null ? this.Game.Client.Hostname : String.Empty; }
-            // ReSharper disable ValueParameterNotUsed
-            set { }
-            // ReSharper restore ValueParameterNotUsed
-        }
-
-        public ushort Port {
-            get { return this.Game != null ? this.Game.Client.Port : (ushort)0; }
-            // ReSharper disable ValueParameterNotUsed
-            set { }
-            // ReSharper restore ValueParameterNotUsed
-        }
+        public ConnectionModel ConnectionModel { get; set; }
 
         [XmlIgnore, JsonIgnore]
         public String Password {
@@ -87,6 +64,8 @@ namespace Procon.Core.Connections {
         }
 
         public Connection() : base() {
+
+            this.ConnectionModel = new ConnectionModel();
 
             this.AppendDispatchHandlers(new Dictionary<CommandAttribute, CommandDispatchHandler>() {
                 {
@@ -185,7 +164,13 @@ namespace Procon.Core.Connections {
         }
 
         public override ExecutableBase Execute() {
-            this.ConnectionGuid = MD5.Guid(String.Format("{0}:{1}:{2}", this.GameType, this.Hostname, this.Port));
+            if (this.Game != null) {
+                this.ConnectionModel.GameType = this.Game.GameType as GameType;
+                this.ConnectionModel.Hostname = this.Game.Client.Hostname;
+                this.ConnectionModel.Port = this.Game.Client.Port;
+            }
+
+            this.ConnectionModel.ConnectionGuid = MD5.Guid(String.Format("{0}:{1}:{2}", this.ConnectionModel.GameType, this.ConnectionModel.Hostname, this.ConnectionModel.Port));
 
             this.AssignEvents();
 
@@ -244,7 +229,7 @@ namespace Procon.Core.Connections {
         }
 
         public override CommandResultArgs PropogatePreview(Command command, bool tunnel = true) {
-            if (tunnel == false && command.Scope != null && command.Scope.ConnectionGuid == this.ConnectionGuid) {
+            if (tunnel == false && command.Scope != null && command.Scope.ConnectionGuid == this.ConnectionModel.ConnectionGuid) {
                 // We've bubbled up far enough, time to tunnel down this connection to find our result.
                 return this.Tunnel(command);
             }
@@ -253,7 +238,7 @@ namespace Procon.Core.Connections {
         }
 
         public override CommandResultArgs PropogateHandler(Command command, bool tunnel = true) {
-            if (tunnel == false && command.Scope != null && command.Scope.ConnectionGuid == this.ConnectionGuid) {
+            if (tunnel == false && command.Scope != null && command.Scope.ConnectionGuid == this.ConnectionModel.ConnectionGuid) {
                 // We've bubbled up far enough, time to tunnel down this connection to find our result.
                 return this.Tunnel(command);
             }
@@ -262,7 +247,7 @@ namespace Procon.Core.Connections {
         }
 
         public override CommandResultArgs PropogateExecuted(Command command, bool tunnel = true) {
-            if (tunnel == false && command.Scope != null && command.Scope.ConnectionGuid == this.ConnectionGuid) {
+            if (tunnel == false && command.Scope != null && command.Scope.ConnectionGuid == this.ConnectionModel.ConnectionGuid) {
                 // We've bubbled up far enough, time to tunnel down this connection to find our result.
                 return this.Tunnel(command);
             }
@@ -303,13 +288,13 @@ namespace Procon.Core.Connections {
                     Success = true,
                     Status = CommandResultType.Success,
                     Scope = new CommandData() {
-                        Connections = new List<Connection>() {
-                            this
+                        Connections = new List<ConnectionModel>() {
+                            this.ConnectionModel
                         }
                     },
                     Now = new CommandData() {
                         // I didn't want plugins to be able to hide themselves.
-                        Plugins = new List<HostPlugin>(this.Plugins.Plugins),
+                        Plugins = new List<PluginModel>(this.Plugins.Plugins.Select(p => p.PluginModel)),
                         Players = players.Now.Players,
                         Settings = settings.Now.Settings,
                         Bans = bans.Now.Bans,
@@ -332,8 +317,8 @@ namespace Procon.Core.Connections {
                     Success = true,
                     Status = CommandResultType.Success,
                     Scope = new CommandData() {
-                        Connections = new List<Connection>() {
-                            this
+                        Connections = new List<ConnectionModel>() {
+                            this.ConnectionModel
                         }
                     },
                     Now = new CommandData() {
@@ -356,8 +341,8 @@ namespace Procon.Core.Connections {
                     Success = true,
                     Status = CommandResultType.Success,
                     Scope = new CommandData() {
-                        Connections = new List<Connection>() {
-                            this
+                        Connections = new List<ConnectionModel>() {
+                            this.ConnectionModel
                         }
                     },
                     Now = new CommandData() {
@@ -382,8 +367,8 @@ namespace Procon.Core.Connections {
                     Success = true,
                     Status = CommandResultType.Success,
                     Scope = new CommandData() {
-                        Connections = new List<Connection>() {
-                            this
+                        Connections = new List<ConnectionModel>() {
+                            this.ConnectionModel
                         }
                     },
                     Now = new CommandData() {
@@ -406,8 +391,8 @@ namespace Procon.Core.Connections {
                     Success = true,
                     Status = CommandResultType.Success,
                     Scope = new CommandData() {
-                        Connections = new List<Connection>() {
-                            this
+                        Connections = new List<ConnectionModel>() {
+                            this.ConnectionModel
                         }
                     },
                     Now = new CommandData() {
@@ -430,8 +415,8 @@ namespace Procon.Core.Connections {
                     Success = true,
                     Status = CommandResultType.Success,
                     Scope = new CommandData() {
-                        Connections = new List<Connection>() {
-                            this
+                        Connections = new List<ConnectionModel>() {
+                            this.ConnectionModel
                         }
                     },
                     Now = new CommandData() {
@@ -565,6 +550,11 @@ namespace Procon.Core.Connections {
 
         private void Game_ClientEvent(Game sender, ClientEventArgs e) {
             if (e.EventType == ClientEventType.ClientConnectionStateChange) {
+                if (this.Game != null) {
+                    this.ConnectionModel.GameType = this.Game.GameType as GameType;
+                    this.ConnectionModel.Hostname = this.Game.Client.Hostname;
+                    this.ConnectionModel.Port = this.Game.Client.Port;
+                }
 
                 // Once connected, sync the connection.
                 if (e.ConnectionState == ConnectionState.ConnectionLoggedIn) {
@@ -574,8 +564,8 @@ namespace Procon.Core.Connections {
                 this.Events.Log(new GenericEventArgs() {
                     Name = e.ConnectionState.ToString(),
                     Scope = new CommandData() {
-                        Connections = new List<Connection>() {
-                            this
+                        Connections = new List<ConnectionModel>() {
+                            this.ConnectionModel
                         }
                     },
                     Stamp = e.Stamp
@@ -588,8 +578,8 @@ namespace Procon.Core.Connections {
                     Name = e.EventType.ToString(),
                     Message = exception != null ? exception.Message : String.Empty,
                     Scope = new CommandData() {
-                        Connections = new List<Connection>() {
-                            this
+                        Connections = new List<ConnectionModel>() {
+                            this.ConnectionModel
                         }
                     },
                     Stamp = e.Stamp
@@ -611,8 +601,8 @@ namespace Procon.Core.Connections {
                     Then = GenericEventData.Parse(e.Then),
                     Now = GenericEventData.Parse(e.Now),
                     Scope = new CommandData() {
-                        Connections = new List<Connection>() {
-                            this
+                        Connections = new List<ConnectionModel>() {
+                            this.ConnectionModel
                         }
                     },
                     Stamp = e.Stamp
@@ -631,7 +621,7 @@ namespace Procon.Core.Connections {
 
                     if ((prefix = this.TextCommands.GetValidTextCommandPrefix(prefix)) != null) {
                         this.Tunnel(new Command() {
-                            GameType = this.GameType.Type,
+                            GameType = this.ConnectionModel.GameType.Type,
                             Origin = CommandOrigin.Plugin,
                             Uid = chat.Now.Players.First().Uid,
                             CommandType = CommandType.TextCommandsExecute,
@@ -652,9 +642,9 @@ namespace Procon.Core.Connections {
 
         public override void Dispose() {
 
-            this.GameType = null;
-            this.Hostname = null;
-            this.Port = 0;
+            this.ConnectionModel.GameType = null;
+            this.ConnectionModel.Hostname = null;
+            this.ConnectionModel.Port = 0;
 
             // Now shutdown and null out the game. Note that we want to capture and report
             // events during the shutdown, but then we want to unassign events to the game

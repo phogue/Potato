@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
-using Procon.Core.Variables;
+using Procon.Core.Shared;
+using Procon.Core.Shared.Models;
 using Procon.Service.Shared;
 
 namespace Procon.Core.Localization {
@@ -109,7 +110,7 @@ namespace Procon.Core.Localization {
             foreach (DirectoryInfo languageDirectory in localizationDirectory.GetDirectories()) {
                 Language language = new Language().Load(languageDirectory) as Language;
 
-                if (language != null && language.LanguageCode != null) {
+                if (language != null && language.LanguageModel.LanguageCode != null) {
                     this.LoadedLanguageFiles.Add(language);
                 }
             }
@@ -151,7 +152,7 @@ namespace Procon.Core.Localization {
         protected void LoadDefaultLanguage() {
             String languageCode = this.Variables.Variable(CommonVariableNames.LocalizationDefaultLanguageCode).ToType("en-UK");
 
-            Language language = this.LoadedLanguageFiles.FirstOrDefault(lang => lang.LanguageCode == languageCode);
+            Language language = this.LoadedLanguageFiles.FirstOrDefault(lang => lang.LanguageModel.LanguageCode == languageCode);
 
             if (language != null) {
                 this.Default = language;
@@ -198,7 +199,7 @@ namespace Procon.Core.Localization {
             CommandResultArgs result = null;
 
             if (command.Origin == CommandOrigin.Local || this.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
-                Language language = this.LoadedLanguageFiles.FirstOrDefault(lang => lang.LanguageCode == languageCode);
+                Language language = this.LoadedLanguageFiles.FirstOrDefault(lang => lang.LanguageModel.LanguageCode == languageCode);
 
                 if (language != null) {
                     result = new CommandResultArgs() {

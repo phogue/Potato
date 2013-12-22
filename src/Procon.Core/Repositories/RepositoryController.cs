@@ -4,6 +4,9 @@ using System.Linq;
 using System.Xml.Linq;
 using System.IO;
 using Procon.Core.Events;
+using Procon.Core.Shared;
+using Procon.Core.Shared.Events;
+using Procon.Core.Shared.Models;
 using Procon.Core.Variables;
 using Procon.Service.Shared;
 
@@ -300,8 +303,8 @@ namespace Procon.Core.Repositories {
                         Status = CommandResultType.Success,
                         Message = "The package is currently installing",
                         Scope = {
-                            Packages = new List<FlatPackedPackage>() {
-                                package
+                            Packages = new List<PackageModel>() {
+                                // package
                             }
                         }
                     };
@@ -351,8 +354,8 @@ namespace Procon.Core.Repositories {
                         Status = CommandResultType.Success,
                         Message = String.Format("Added repository with url {0}", url),
                         Now = {
-                            Repositories = new List<Repository>() {
-                                repository
+                            Repositories = new List<RepositoryModel>() {
+                                // repository
                             }
                         }
                     };
@@ -404,8 +407,8 @@ namespace Procon.Core.Repositories {
                         Status = CommandResultType.Success,
                         Message = "Successfully removed the repository",
                         Then = {
-                            Repositories = new List<Repository>() {
-                                repository
+                            Repositories = new List<RepositoryModel>() {
+                                // repository
                             }
                         }
                     };
@@ -460,8 +463,8 @@ namespace Procon.Core.Repositories {
                     Status = CommandResultType.Success,
                     Message = "The package is currently installing",
                     Now = {
-                        Packages = new List<FlatPackedPackage>() {
-                            this.Packages.Find(p => p.Repository.UrlSlug == urlSlug && p.Uid == packageUid)
+                        Packages = new List<PackageModel>() {
+                            // this.Packages.Find(p => p.Repository.UrlSlug == urlSlug && p.Uid == packageUid)
                         }
                     }
                 };
@@ -500,8 +503,8 @@ namespace Procon.Core.Repositories {
                     Status = CommandResultType.Success,
                     Message = "The package is currently installing",
                     Then = {
-                        Packages = new List<FlatPackedPackage>() {
-                            this.Packages.Find(p => p.Repository.UrlSlug == urlSlug && p.Uid == packageUid)
+                        Packages = new List<PackageModel>() {
+                            // this.Packages.Find(p => p.Repository.UrlSlug == urlSlug && p.Uid == packageUid)
                         }
                     }
                 };

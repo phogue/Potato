@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Procon.Core.Shared;
+using Procon.Core.Shared.Models;
 using Procon.Core.Variables;
 using Procon.Database;
 using Procon.Database.Drivers;
-using Procon.Database.Serialization;
+using Procon.Database.Shared;
 
 namespace Procon.Core.Database {
 
@@ -141,19 +143,19 @@ namespace Procon.Core.Database {
         /// <param name="databaseGroupNames"></param>
         private void GroupedVariableListenerOnVariablesModified(GroupedVariableListener sender, List<String> databaseGroupNames) {
             foreach (String databaseGroupName in databaseGroupNames) {
-                IDriver driver = this.AvailableDrivers.FirstOrDefault(pool => String.Compare(pool.Name,  this.Variables.Get<String>(Variable.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabaseDriverName)), StringComparison.InvariantCultureIgnoreCase) == 0);
+                IDriver driver = this.AvailableDrivers.FirstOrDefault(pool => String.Compare(pool.Name, this.Variables.Get<String>(VariableModel.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabaseDriverName)), StringComparison.InvariantCultureIgnoreCase) == 0);
 
                 if (driver != null) {
                     if (this.OpenDrivers.ContainsKey(databaseGroupName) == false) {
                         driver = (IDriver)driver.Clone();
 
                         driver.Settings = new DriverSettings() {
-                            Hostname = this.Variables.Get(Variable.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabaseHostname), String.Empty),
-                            Port = this.Variables.Get<ushort>(Variable.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabasePort)),
-                            Username = this.Variables.Get(Variable.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabaseUid), String.Empty),
-                            Password = this.Variables.Get(Variable.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabasePassword), String.Empty),
-                            Database = this.Variables.Get(Variable.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabaseName), String.Empty),
-                            Memory = this.Variables.Get(Variable.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabaseMemory), false)
+                            Hostname = this.Variables.Get(VariableModel.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabaseHostname), String.Empty),
+                            Port = this.Variables.Get<ushort>(VariableModel.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabasePort)),
+                            Username = this.Variables.Get(VariableModel.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabaseUid), String.Empty),
+                            Password = this.Variables.Get(VariableModel.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabasePassword), String.Empty),
+                            Database = this.Variables.Get(VariableModel.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabaseName), String.Empty),
+                            Memory = this.Variables.Get(VariableModel.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabaseMemory), false)
                         };
 
                         this.OpenDrivers.Add(databaseGroupName, driver);
@@ -163,12 +165,12 @@ namespace Procon.Core.Database {
                         this.OpenDrivers[databaseGroupName].Close();
 
                         this.OpenDrivers[databaseGroupName].Settings = new DriverSettings() {
-                            Hostname = this.Variables.Get(Variable.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabaseHostname), String.Empty),
-                            Port = this.Variables.Get<ushort>(Variable.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabasePort)),
-                            Username = this.Variables.Get(Variable.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabaseUid), String.Empty),
-                            Password = this.Variables.Get(Variable.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabasePassword), String.Empty),
-                            Database = this.Variables.Get(Variable.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabaseName), String.Empty),
-                            Memory = this.Variables.Get(Variable.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabaseMemory), false)
+                            Hostname = this.Variables.Get(VariableModel.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabaseHostname), String.Empty),
+                            Port = this.Variables.Get<ushort>(VariableModel.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabasePort)),
+                            Username = this.Variables.Get(VariableModel.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabaseUid), String.Empty),
+                            Password = this.Variables.Get(VariableModel.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabasePassword), String.Empty),
+                            Database = this.Variables.Get(VariableModel.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabaseName), String.Empty),
+                            Memory = this.Variables.Get(VariableModel.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabaseMemory), false)
                         };
                     }
                 }

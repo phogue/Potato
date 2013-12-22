@@ -1,19 +1,18 @@
-﻿using System.Collections.Generic;
+﻿#region
+
+using System.Collections.Generic;
 using NUnit.Framework;
+
+#endregion
 
 namespace Procon.Core.Test.TextCommands.Fuzzy {
     [TestFixture]
     public class TestFuzzySentences : TestFuzzyBase {
         [Test]
         public void TestSentencesHelloWorldQuoted() {
-            TestFuzzyBase.AssertCommandSentencesList(
-                this.CreateTextCommandController(), 
-                "test \"Hello World!\"",
-                TestFuzzyBase.TextCommandTest,
-                new List<string>() {
-                    "Hello World!"
-                }
-            );
+            AssertCommandSentencesList(CreateTextCommandController(), "test \"Hello World!\"", TextCommandTest, new List<string>() {
+                "Hello World!"
+            });
         }
 
         /*

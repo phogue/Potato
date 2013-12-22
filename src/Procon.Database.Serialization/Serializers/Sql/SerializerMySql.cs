@@ -11,6 +11,9 @@ using Procon.Database.Serialization.Builders.Methods.Schema;
 using Procon.Database.Serialization.Builders.Modifiers;
 using Procon.Database.Serialization.Builders.Statements;
 using Procon.Database.Serialization.Builders.Values;
+using Procon.Database.Shared;
+using Procon.Database.Shared.Builders;
+using Nullable = Procon.Database.Serialization.Builders.Modifiers.Nullable;
 
 namespace Procon.Database.Serialization.Serializers.Sql {
     /// <summary>
@@ -65,7 +68,7 @@ namespace Procon.Database.Serialization.Serializers.Sql {
         /// Fetches the method from the type of query 
         /// </summary>
         /// <param name="method"></param>
-        protected virtual List<string> ParseMethod(Method method) {
+        protected virtual List<string> ParseMethod(IMethod method) {
             List<string> parsed = new List<string>();
 
             if (method is Find) {
@@ -119,7 +122,7 @@ namespace Procon.Database.Serialization.Serializers.Sql {
             return String.Join(" ", parsed);
         }
 
-        protected virtual String ParseType(Builders.FieldType type) {
+        protected virtual String ParseType(FieldType type) {
             List<String> parsed = new List<String>();
 
             Length length = type.FirstOrDefault(attribute => attribute is Length) as Length;
@@ -139,7 +142,7 @@ namespace Procon.Database.Serialization.Serializers.Sql {
                 parsed.Add("DATETIME");
             }
 
-            parsed.Add(type.Any(attribute => attribute is Builders.Modifiers.Nullable) == true ? "NULL" : "NOT NULL");
+            parsed.Add(type.Any(attribute => attribute is Nullable) == true ? "NULL" : "NOT NULL");
 
             if (type.Any(attribute => attribute is AutoIncrement) == true) {
                 parsed.Add("AUTO_INCREMENT");
@@ -159,8 +162,8 @@ namespace Procon.Database.Serialization.Serializers.Sql {
 
             parsed.Add(collection == null ? String.Format("`{0}`", field.Name) : String.Format("`{0}`.`{1}`", collection.Name, field.Name));
 
-            if (field.Any(attribute => attribute is Builders.FieldType)) {
-                parsed.Add(this.ParseType(field.First(attribute => attribute is Builders.FieldType) as Builders.FieldType));
+            if (field.Any(attribute => attribute is FieldType)) {
+                parsed.Add(this.ParseType(field.First(attribute => attribute is FieldType) as FieldType));
             }
 
             return String.Join(" ", parsed);
@@ -529,7 +532,7 @@ namespace Procon.Database.Serialization.Serializers.Sql {
             return serializedQuery;
         }
 
-        public override ISerializer Parse(Method method, IParsedQuery parsed) {
+        public override ISerializer Parse(IMethod method, IParsedQuery parsed) {
             parsed.Root = method;
 
             parsed.Children = this.ParseChildren(method);

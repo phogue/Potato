@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Procon.Core;
-using Procon.Core.Connections.Plugins;
-using Procon.Core.Events;
+using Procon.Core.Shared;
+using Procon.Core.Shared.Events;
+using Procon.Core.Shared.Plugins;
 using Procon.Database.Serialization.Builders.Methods.Data;
 
 namespace Procon.Examples.Database {
@@ -88,7 +88,7 @@ namespace Procon.Examples.Database {
         /// See the Procon.Examples.Events project for details on why this event handler exists.
         /// </summary>
         /// <param name="e"></param>
-        public override void GenericEvent(Core.Events.GenericEventArgs e) {
+        public override void GenericEvent(GenericEventArgs e) {
             base.GenericEvent(e);
 
             if (e.GenericEventType == GenericEventType.PluginsPluginEnabled) {

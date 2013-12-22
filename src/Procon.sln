@@ -16,6 +16,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procon.Core.Test", "Procon.
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{29FDEAFB-A9D6-4A22-AB6F-E989319331FF}"
 	ProjectSection(SolutionItems) = preProject
+		CommonAssemblyInfo.cs = CommonAssemblyInfo.cs
 		Local.testsettings = Local.testsettings
 		Procon.vsmdi = Procon.vsmdi
 	EndProjectSection
@@ -76,6 +77,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procon.Examples.Database", "Procon.Examples.Database\Procon.Examples.Database.csproj", "{30A34B9C-0760-40E4-92C5-81EB58C06311}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procon.Examples.Database.Test", "Procon.Examples.Database.Test\Procon.Examples.Database.Test.csproj", "{8B919F30-AA02-44DD-8223-285D6B8FDB2D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procon.Core.Shared", "Procon.Core.Shared\Procon.Core.Shared.csproj", "{1B4351C6-BAAD-4075-A322-CAF4FE582392}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procon.Database.Shared", "Procon.Database.Shared\Procon.Database.Shared.csproj", "{F6F1BD6C-1743-492A-A18C-810E2C5601F2}"
 EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
@@ -404,6 +409,26 @@ Global
 		{8B919F30-AA02-44DD-8223-285D6B8FDB2D}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{8B919F30-AA02-44DD-8223-285D6B8FDB2D}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{8B919F30-AA02-44DD-8223-285D6B8FDB2D}.Release|x86.ActiveCfg = Release|Any CPU
+		{1B4351C6-BAAD-4075-A322-CAF4FE582392}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B4351C6-BAAD-4075-A322-CAF4FE582392}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1B4351C6-BAAD-4075-A322-CAF4FE582392}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{1B4351C6-BAAD-4075-A322-CAF4FE582392}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{1B4351C6-BAAD-4075-A322-CAF4FE582392}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{1B4351C6-BAAD-4075-A322-CAF4FE582392}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1B4351C6-BAAD-4075-A322-CAF4FE582392}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1B4351C6-BAAD-4075-A322-CAF4FE582392}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{1B4351C6-BAAD-4075-A322-CAF4FE582392}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{1B4351C6-BAAD-4075-A322-CAF4FE582392}.Release|x86.ActiveCfg = Release|Any CPU
+		{F6F1BD6C-1743-492A-A18C-810E2C5601F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F6F1BD6C-1743-492A-A18C-810E2C5601F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F6F1BD6C-1743-492A-A18C-810E2C5601F2}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{F6F1BD6C-1743-492A-A18C-810E2C5601F2}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{F6F1BD6C-1743-492A-A18C-810E2C5601F2}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{F6F1BD6C-1743-492A-A18C-810E2C5601F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F6F1BD6C-1743-492A-A18C-810E2C5601F2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F6F1BD6C-1743-492A-A18C-810E2C5601F2}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{F6F1BD6C-1743-492A-A18C-810E2C5601F2}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{F6F1BD6C-1743-492A-A18C-810E2C5601F2}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

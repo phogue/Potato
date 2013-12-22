@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using Procon.Core;
-using Procon.Core.Connections.Plugins;
+using Procon.Core.Shared;
+using Procon.Core.Shared.Plugins;
 using Procon.Examples.UserInterface.Pages;
 using Procon.Net.Models;
 using Procon.Net.Utils.HTTP;

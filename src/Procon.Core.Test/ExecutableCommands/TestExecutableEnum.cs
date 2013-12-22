@@ -1,36 +1,22 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Collections.Generic;
 using NUnit.Framework;
+using Procon.Core.Shared;
 using Procon.Core.Test.ExecutableCommands.Objects;
+
+#endregion
 
 namespace Procon.Core.Test.ExecutableCommands {
     [TestFixture]
     public class TestExecutableEnum {
-
         /// <summary>
-        /// Tests that a flag enumerator will be passed through with the same type.
-        /// </summary>
-        [Test]
-        public void TestExecutableEnumParserFlags() {
-            ExecutableEnumTester tester = new ExecutableEnumTester();
-
-            tester.Tunnel(new Command() {
-                Origin = CommandOrigin.Local,
-                CommandType = CommandType.VariablesSet,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
-                    ExecutableFlagsEnum.Three
-                })
-            });
-
-            Assert.AreEqual(ExecutableFlagsEnum.Three, tester.TestExecutableFlagsEnum);
-        }
-
-        /// <summary>
-        /// Tests that a enumerator will be passed through with the same type.
+        ///     Tests that a enumerator will be passed through with the same type.
         /// </summary>
         [Test]
         public void TestExecutableEnumParser() {
-            ExecutableEnumTester tester = new ExecutableEnumTester();
+            var tester = new ExecutableEnumTester();
 
             tester.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
@@ -44,11 +30,29 @@ namespace Procon.Core.Test.ExecutableCommands {
         }
 
         /// <summary>
-        /// Tests that a string value will be converted to a enumerator.
+        ///     Tests that a flag enumerator will be passed through with the same type.
+        /// </summary>
+        [Test]
+        public void TestExecutableEnumParserFlags() {
+            var tester = new ExecutableEnumTester();
+
+            tester.Tunnel(new Command() {
+                Origin = CommandOrigin.Local,
+                CommandType = CommandType.VariablesSet,
+                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                    ExecutableFlagsEnum.Three
+                })
+            });
+
+            Assert.AreEqual(ExecutableFlagsEnum.Three, tester.TestExecutableFlagsEnum);
+        }
+
+        /// <summary>
+        ///     Tests that a string value will be converted to a enumerator.
         /// </summary>
         [Test]
         public void TestExecutableEnumParserTypeConversion() {
-            ExecutableEnumTester tester = new ExecutableEnumTester();
+            var tester = new ExecutableEnumTester();
 
             tester.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,

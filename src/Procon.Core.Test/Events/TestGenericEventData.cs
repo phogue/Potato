@@ -1,20 +1,22 @@
-﻿using System;
-using System.Text;
+﻿#region
+
 using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
-using Procon.Core.Events;
+using Procon.Core.Shared;
+using Procon.Core.Shared.Events;
 using Procon.Net;
 using Procon.Net.Actions;
 using Procon.Net.Models;
+
+#endregion
 
 namespace Procon.Core.Test.Events {
     [TestFixture]
     public class TestGenericEventData {
         [Test]
         public void TestGameEventObjectConversion() {
-
-            GameEventData gameEventData = new GameEventData() {
+            var gameEventData = new GameEventData() {
                 Bans = new List<Ban>() {
                     new Ban() {
                         ActionType = NetworkActionType.NetworkYell,

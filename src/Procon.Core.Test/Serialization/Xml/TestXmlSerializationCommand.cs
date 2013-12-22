@@ -1,54 +1,27 @@
-﻿using System;
-using System.Text;
+﻿#region
+
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Xml;
+using System.Globalization;
 using System.Xml.Linq;
 using NUnit.Framework;
-using Procon.Core.Events;
-using Procon.Core.Utils;
-using Procon.Net;
+using Procon.Core.Shared;
 using Procon.Net.Actions;
 using Procon.Net.Utils;
+
+#endregion
 
 namespace Procon.Core.Test.Serialization.Xml {
     [TestFixture]
     public class TestXmlSerializationCommand {
-
         /// <summary>
-        /// Tests the command result with no event data (blank Scope, Then & Now)
-        /// will succeed with xml serialization.
-        /// </summary>
-        [Test]
-        public void TestXmlSerializationCommandResultNoData() {
-            DateTime now = DateTime.Now;
-
-            CommandResultArgs result = new CommandResultArgs() {
-                Message = "Serialization Message",
-                Now = null,
-                Then = null,
-                Scope = null,
-                Status = CommandResultType.Success,
-                Success = true,
-                Stamp = now
-            };
-
-            XElement element = result.ToXElement();
-
-            Assert.AreEqual("Serialization Message", element.Element("Message").Value);
-            Assert.AreEqual("Success", element.Element("Status").Value);
-            Assert.AreEqual(now.ToString("s", System.Globalization.CultureInfo.InvariantCulture), DateTime.Parse(element.Element("Stamp").Value).ToString("s", System.Globalization.CultureInfo.InvariantCulture));
-        }
-
-
-        /// <summary>
-        /// Tests that a derived type will be serialized as the known base type.
+        ///     Tests that a derived type will be serialized as the known base type.
         /// </summary>
         [Test]
         public void TestXmlSerializationCommandResultDerivedType() {
             DateTime now = DateTime.Now;
 
-            CommandResultArgs result = new CommandResultArgs() {
+            var result = new CommandResultArgs() {
                 Message = "Serialization Message",
                 Now = null,
                 Then = null,
@@ -73,7 +46,32 @@ namespace Procon.Core.Test.Serialization.Xml {
             Assert.AreEqual("Serialization Message", element.Element("Message").Value);
             Assert.AreEqual("Success", element.Element("Status").Value);
 
-            Assert.AreEqual(now.ToString("s", System.Globalization.CultureInfo.InvariantCulture), DateTime.Parse(element.Element("Stamp").Value).ToString("s", System.Globalization.CultureInfo.InvariantCulture));
+            Assert.AreEqual(now.ToString("s", CultureInfo.InvariantCulture), DateTime.Parse(element.Element("Stamp").Value).ToString("s", CultureInfo.InvariantCulture));
+        }
+
+        /// <summary>
+        ///     Tests the command result with no event data (blank Scope, Then & Now)
+        ///     will succeed with xml serialization.
+        /// </summary>
+        [Test]
+        public void TestXmlSerializationCommandResultNoData() {
+            DateTime now = DateTime.Now;
+
+            var result = new CommandResultArgs() {
+                Message = "Serialization Message",
+                Now = null,
+                Then = null,
+                Scope = null,
+                Status = CommandResultType.Success,
+                Success = true,
+                Stamp = now
+            };
+
+            XElement element = result.ToXElement();
+
+            Assert.AreEqual("Serialization Message", element.Element("Message").Value);
+            Assert.AreEqual("Success", element.Element("Status").Value);
+            Assert.AreEqual(now.ToString("s", CultureInfo.InvariantCulture), DateTime.Parse(element.Element("Stamp").Value).ToString("s", CultureInfo.InvariantCulture));
         }
     }
 }

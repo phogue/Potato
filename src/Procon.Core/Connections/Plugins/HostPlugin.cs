@@ -1,9 +1,12 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Runtime.Remoting.Lifetime;
 using System.Xml.Serialization;
 using Newtonsoft.Json;
-using Procon.Core.Events;
+using Procon.Core.Shared;
+using Procon.Core.Shared.Events;
+using Procon.Core.Shared.Models;
+using Procon.Core.Shared.Plugins;
 using Procon.Service.Shared;
 
 namespace Procon.Core.Connections.Plugins {
@@ -12,40 +15,9 @@ namespace Procon.Core.Connections.Plugins {
     /// This is the Procon side class to handle the proxy to the app domain, as well as the plugins
     /// cleanup.
     /// </summary>
-    public sealed class HostPlugin : Executable, IRenewableLease {
+    public sealed class HostPlugin : ExecutableBase, IRenewableLease, IDisposable {
 
-        /// <summary>
-        /// The name of the plugin, also used as it's namespace
-        /// </summary>
-        public String Name { get; set; }
-
-        /// <summary>
-        /// The loaded plugin GUID
-        /// todo This remotes once, which isn't very expensive if used in moderation, but perhaps we should cache this result if this ever becomes a hot spot?
-        /// </summary>
-        public Guid PluginGuid {
-            get {
-                return this.Proxy != null ? this.Proxy.PluginGuid : Guid.Empty;
-            }
-            // Commented so this object can be serialized.
-            // ReSharper disable ValueParameterNotUsed
-            set { }
-            // ReSharper restore ValueParameterNotUsed
-        }
-
-        /// <summary>
-        /// If this plugin is enabled or not.
-        /// todo This remotes twice, which isn't very expensive if used in moderation, but perhaps we should cache this result if this ever becomes a hot spot?
-        /// </summary>
-        public bool IsEnabled {
-            get {
-                return this.PluginFactory != null && this.PluginFactory.IsPluginEnabled(this.PluginGuid);
-            }
-            // Commented so this object can be serialized.
-            // ReSharper disable ValueParameterNotUsed
-            set { }
-            // ReSharper restore ValueParameterNotUsed
-        }
+        public PluginModel PluginModel { get; set; }
 
         /// <summary>
         /// The path to the dll file
@@ -70,23 +42,28 @@ namespace Procon.Core.Connections.Plugins {
         /// </summary>
         private IRemotePlugin Proxy { get; set; }
 
+        public HostPlugin() : base() {
+            this.PluginModel = new PluginModel(); ;
+        }
+
         public override ExecutableBase Execute() {
             if (File.Exists(this.Path) == true) {
-                this.Name = new FileInfo(this.Path).Name.Replace(".dll", "");
+                this.PluginModel.Name = new FileInfo(this.Path).Name.Replace(".dll", "");
 
-                this.Proxy = this.PluginFactory.Create(this.Path, this.Name + ".Program");
+                this.Proxy = this.PluginFactory.Create(this.Path, this.PluginModel.Name + ".Program");
 
                 if (this.Proxy != null) {
+                    this.PluginModel.PluginGuid = this.Proxy.PluginGuid;
 
                     // register game specific call backs.
                     this.Proxy.ConnectionGuid = this.ConnectionGuid;
 
                     // check the plugin's config directory
-                    this.Proxy.ConfigDirectoryInfo = new DirectoryInfo(System.IO.Path.Combine(Defines.ConfigsDirectory,this.ConnectionGuid.ToString(), this.PluginGuid.ToString()));
+                    this.Proxy.ConfigDirectoryInfo = new DirectoryInfo(System.IO.Path.Combine(Defines.ConfigsDirectory, this.ConnectionGuid.ToString(), this.PluginModel.PluginGuid.ToString()));
                     this.Proxy.ConfigDirectoryInfo.Create();
                         
                     // check the plugin's log directory
-                    this.Proxy.LogDirectoryInfo = new DirectoryInfo(System.IO.Path.Combine(Defines.LogsDirectory, this.ConnectionGuid.ToString(), this.PluginGuid.ToString()));
+                    this.Proxy.LogDirectoryInfo = new DirectoryInfo(System.IO.Path.Combine(Defines.LogsDirectory, this.ConnectionGuid.ToString(), this.PluginModel.PluginGuid.ToString()));
                     this.Proxy.LogDirectoryInfo.Create();
 
                     // Tell the plugin it's ready to begin, everything is setup and ready 
@@ -111,7 +88,7 @@ namespace Procon.Core.Connections.Plugins {
             }
         }
 
-        public override void Dispose() {
+        public void Dispose() {
 
             if (this.Proxy != null) this.Proxy.Dispose();
             this.Proxy = null;

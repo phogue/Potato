@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using Procon.Core.Shared.Models;
 
 namespace Procon.Core.Variables {
     /// <summary>
@@ -28,7 +29,7 @@ namespace Procon.Core.Variables {
         /// during a dispose. We also do it this way because a group may be removed, in which case
         /// we won't know what variable to dereference.
         /// </summary>
-        protected List<Variable> ListeningVariables { get; set; }
+        protected List<VariableModel> ListeningVariables { get; set; }
 
         /// <summary>
         /// Lock used whenever a property is altered on any listening variable, just to avoid
@@ -45,7 +46,7 @@ namespace Procon.Core.Variables {
         /// Initializes with default attributes
         /// </summary>
         public GroupedVariableListener() : base() {
-            this.ListeningVariables = new List<Variable>();
+            this.ListeningVariables = new List<VariableModel>();
         }
 
         /// <summary>
@@ -60,12 +61,12 @@ namespace Procon.Core.Variables {
             this.ListeningVariables.Add(this.Variables.Variable(this.GroupsVariableName));
             foreach (String groupName in this.GetGroupedNames()) {
                 foreach (String listeningVariable in this.ListeningVariablesNames) {
-                    this.ListeningVariables.Add(this.Variables.Variable(Variable.NamespaceVariableName(groupName, listeningVariable)));
+                    this.ListeningVariables.Add(this.Variables.Variable(VariableModel.NamespaceVariableName(groupName, listeningVariable)));
                 }
             }
 
             // Now assign all of the event handlers.
-            foreach (Variable variable in this.ListeningVariables) {
+            foreach (VariableModel variable in this.ListeningVariables) {
                 variable.PropertyChanged += new PropertyChangedEventHandler(EventsPushConfigGroups_PropertyChanged);
             }
         }
@@ -74,7 +75,7 @@ namespace Procon.Core.Variables {
         /// Removes all current event handlers.
         /// </summary>
         public void UnassignEvents() {
-            foreach (Variable variable in this.ListeningVariables) {
+            foreach (VariableModel variable in this.ListeningVariables) {
                 variable.PropertyChanged -= new PropertyChangedEventHandler(EventsPushConfigGroups_PropertyChanged);
             }
 

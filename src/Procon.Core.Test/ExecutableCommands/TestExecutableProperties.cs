@@ -1,6 +1,10 @@
-﻿using System;
+﻿#region
+
+using System;
 using NUnit.Framework;
 using Procon.Core.Test.ExecutableCommands.Objects;
+
+#endregion
 
 namespace Procon.Core.Test.ExecutableCommands {
     [TestFixture]
@@ -9,7 +13,7 @@ namespace Procon.Core.Test.ExecutableCommands {
         public void TestExecutablePropertiesEvent() {
             String eventPropertyChanged = String.Empty;
 
-            ExecutableBasicTester tester = new ExecutableBasicTester();
+            var tester = new ExecutableBasicTester();
 
             tester.PropertyChanged += (sender, args) => { eventPropertyChanged = args.PropertyName; };
             tester.TestNumber = 10;

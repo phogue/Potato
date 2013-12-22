@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace Procon.Database.Serialization.Builders.Methods.Schema {
     /// <summary>

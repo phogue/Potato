@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using Newtonsoft.Json;
+using Procon.Core.Shared.Events;
 using Procon.Net.Utils;
 using Procon.Net.Utils.HTTP;
 

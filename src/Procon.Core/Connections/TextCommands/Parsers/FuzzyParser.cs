@@ -4,6 +4,8 @@ using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
 using Procon.Core.Connections.TextCommands.Parsers.Fuzzy;
+using Procon.Core.Shared;
+using Procon.Core.Shared.Models;
 using Procon.Fuzzy;
 using Procon.Fuzzy.Tokens.Object;
 using Procon.Fuzzy.Tokens.Primitive;
@@ -230,7 +232,7 @@ namespace Procon.Core.Connections.TextCommands.Parsers {
             return selfThing;
         }
 
-        private List<TextCommand> ExtractCommandList(Sentence sentence) {
+        private List<TextCommandModel> ExtractCommandList(Sentence sentence) {
 
             // We need to know this method ahead of time so we can clear all other tokens in this phrase.
             MethodObjectToken mainMethod = sentence.ExtractFirstOrDefault<MethodObjectToken>();
@@ -254,7 +256,7 @@ namespace Procon.Core.Connections.TextCommands.Parsers {
                                                .ThenByDescending(token => token.Text.Length)
                                                .ToList();
 
-            List<TextCommand> results = resultMethodList.Select(method => this.TextCommands.Find(command => command.PluginCommand == method.MethodName)).Where(command => command != null).ToList();
+            List<TextCommandModel> results = resultMethodList.Select(method => this.TextCommands.Find(command => command.PluginCommand == method.MethodName)).Where(command => command != null).ToList();
 
             return results.OrderByDescending(token => token.Priority).ToList();
         }
@@ -273,15 +275,15 @@ namespace Procon.Core.Connections.TextCommands.Parsers {
             return things;
         }
 
-        protected TextCommandInterval ExtractTextCommandInterval(Sentence sentence) {
-            TextCommandInterval interval = null;
+        protected TextCommandIntervalModel ExtractTextCommandInterval(Sentence sentence) {
+            TextCommandIntervalModel interval = null;
 
             FuzzyDateTimePattern pattern = sentence.ExtractList<TemporalToken>().Where(token => token.Pattern != null && token.Pattern.Modifier == TimeModifier.Interval)
                                            .Select(token => token.Pattern)
                                            .FirstOrDefault();
 
             if (pattern != null) {
-                interval = new TextCommandInterval() {
+                interval = new TextCommandIntervalModel() {
                     Day = pattern.Day,
                     DayOfWeek = pattern.DayOfWeek,
                     Hour = pattern.Hour,
@@ -300,9 +302,9 @@ namespace Procon.Core.Connections.TextCommands.Parsers {
             Sentence sentence = new Sentence().Parse(this, text).Reduce(this);
 
             CommandResultArgs result = null;
-            
-            List<TextCommand> commands = this.ExtractCommandList(sentence);
-            TextCommand priorityCommand = commands.FirstOrDefault();
+
+            List<TextCommandModel> commands = this.ExtractCommandList(sentence);
+            TextCommandModel priorityCommand = commands.FirstOrDefault();
 
             List<String> quotes = sentence.Where(token => token.Count > 0 && token[0] is StringPrimitiveToken).Select(token => token[0].Text).ToList();
 
@@ -326,13 +328,13 @@ namespace Procon.Core.Connections.TextCommands.Parsers {
                         Players = new List<Player>() {
                             this.SpeakerPlayer
                         },
-                        TextCommands = new List<TextCommand>() {
+                        TextCommands = new List<TextCommandModel>() {
                             priorityCommand
                         }
                         .Concat(commands)
                         .ToList(),
-                        TextCommandMatches = new List<TextCommandMatch>() {
-                            new TextCommandMatch() {
+                        TextCommandMatches = new List<TextCommandMatchModel>() {
+                            new TextCommandMatchModel() {
                                 Prefix = prefix,
                                 Players = this.ExtractThings<PlayerThingReference>(sentence).SelectMany(thing => thing.Players).ToList(),
                                 Maps = this.ExtractThings<MapThingReference>(sentence).SelectMany(thing => thing.Maps).ToList(),

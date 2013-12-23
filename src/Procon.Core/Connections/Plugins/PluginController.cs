@@ -253,8 +253,6 @@ namespace Procon.Core.Connections.Plugins {
             permissions.AddPermission(new FileIOPermission(FileIOPermissionAccess.Read | FileIOPermissionAccess.PathDiscovery, Defines.ConfigsDirectory));
             permissions.AddPermission(new FileIOPermission(FileIOPermissionAccess.AllAccess, Path.Combine(Defines.ConfigsDirectory, this.Connection != null ? this.Connection.ConnectionModel.ConnectionGuid.ToString() : Guid.Empty.ToString())));
             
-            permissions.AddPermission(new ReflectionPermission(ReflectionPermissionFlag.MemberAccess));
-
             return permissions;
         }
 

@@ -67,8 +67,7 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="Connections\Connection.cs" />
-    <Compile Include="Connections\Plugins\HostPlugin.cs" />
+    <Compile Include="Connections\ConnectionController.cs" />
     <Compile Include="Connections\TextCommands\Parsers\Fuzzy\ItemThingReference.cs" />
     <Compile Include="Connections\TextCommands\ITextCommandParser.cs" />
     <Compile Include="Connections\TextCommands\Parsers\Fuzzy\KdrPropertyReference.cs" />
@@ -98,8 +97,8 @@
     <Compile Include="Repositories\PackageState.cs" />
     <Compile Include="Repositories\PackageType.cs" />
     <Compile Include="Repositories\RepositoryController.cs" />
-    <Compile Include="Executable.cs" />
-    <Compile Include="Connections\Plugins\PluginController.cs" />
+    <Compile Include="SharedController.cs" />
+    <Compile Include="Connections\Plugins\CorePluginController.cs" />
     <Compile Include="Instance.cs" />
     <Compile Include="Repositories\Serialization\SerializableVersion.cs" />
     <Compile Include="Utils\XElementValidator.cs" />
@@ -108,7 +107,7 @@
     <Compile Include="Variables\VariableController.cs" />
     <Compile Include="Localization\LanguageController.cs" />
     <Compile Include="Security\SecurityController.cs" />
-    <Compile Include="Localization\Language.cs" />
+    <Compile Include="Localization\LanguageConfig.cs" />
     <Compile Include="Utils\PathValidator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

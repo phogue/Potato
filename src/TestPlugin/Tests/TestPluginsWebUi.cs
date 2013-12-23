@@ -7,7 +7,7 @@ using TestPlugin.Pages;
 
 namespace TestPlugin.Tests {
 
-    public class TestPluginsWebUi : ExecutableBase {
+    public class TestPluginsWebUi : CoreController {
 
         public TestPluginsWebUi() : base() {
             this.AppendDispatchHandlers(new Dictionary<CommandAttribute, CommandDispatchHandler>() {

@@ -15,7 +15,7 @@ namespace Procon.Core.Connections.TextCommands {
     /// <summary>
     /// Manages registering, dispatching text commands
     /// </summary>
-    public class TextCommandController : Executable {
+    public class TextCommandController : SharedController {
 
         /// <summary>
         /// Full list of text commands to check against.
@@ -27,7 +27,7 @@ namespace Procon.Core.Connections.TextCommands {
         /// The owner of this controller, used to lookup the game with all the player data and such in it.
         /// </summary>
         [XmlIgnore, JsonIgnore]
-        public Connection Connection { get; set; }
+        public ConnectionController Connection { get; set; }
         
         /// <summary>
         /// Creates new controller with the default attributes set
@@ -112,7 +112,7 @@ namespace Procon.Core.Connections.TextCommands {
         protected CommandResultArgs ParseFuzzy(Player speaker, AccountModel speakerAccount, List<TextCommandModel> commands, String prefix, String text) {
 
             CommandResultArgs commandResult = null;
-            Language selectedLanguage = null;
+            LanguageConfig selectedLanguage = null;
 
             if (speakerAccount != null && speakerAccount.PreferredLanguageCode != String.Empty) {
                 selectedLanguage = this.Languages.LoadedLanguageFiles.Find(language => language.LanguageModel.LanguageCode == speakerAccount.PreferredLanguageCode);

@@ -7,7 +7,7 @@ using Procon.Core.Shared;
 #endregion
 
 namespace Procon.Core.Test.ExecutableCommands.Objects {
-    public class ExecutableEnumTester : ExecutableBase {
+    public class ExecutableEnumTester : CoreController {
         public ExecutableEnumTester() : base() {
             this.AppendDispatchHandlers(new Dictionary<CommandAttribute, CommandDispatchHandler>() {
                 {new CommandAttribute() {

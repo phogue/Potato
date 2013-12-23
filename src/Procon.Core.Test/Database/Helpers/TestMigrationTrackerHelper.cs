@@ -13,7 +13,7 @@ namespace Procon.Core.Test.Database.Helpers {
         public TestMigrationTrackerHelper() {
             Migrations = new MigrationController() {
                 // Bubble all commands to the database controller
-                BubbleObjects = new List<IExecutableBase>() {
+                BubbleObjects = new List<ICoreController>() {
                     TestDatabaseController.OpenSqLiteDriver()
                 },
                 Migrations = new List<IMigration>() {

@@ -26,9 +26,9 @@ namespace Procon.Core.Events {
     ///       This is to be used for debugging mostly, so output level 0 = nothing output, but then it should be human readable
     ///       at a glance to quickly debug.
     /// </summary>
-    public class EventsConsoleController : Executable {
+    public class EventsConsoleController : SharedController {
 
-        public override ExecutableBase Execute() {
+        public override CoreController Execute() {
             this.Events.EventLogged += new Core.Events.EventsController.EventLoggedHandler(Events_EventLogged);
 
             return base.Execute();

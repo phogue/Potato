@@ -5,7 +5,7 @@ using System.Security;
 using Procon.Core.Shared;
 
 namespace TestPlugin.Tests {
-    public class TestPluginsIsolation : ExecutableBase {
+    public class TestPluginsIsolation : CoreController {
 
         public TestPluginsIsolation() : base() {
             this.AppendDispatchHandlers(new Dictionary<CommandAttribute, CommandDispatchHandler>() {

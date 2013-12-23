@@ -18,8 +18,8 @@ namespace Procon.Examples.TextCommands.Test {
         /// </summary>
         /// <remarks>The plugin will be enabled during this process.</remarks>
         /// <returns></returns>
-        protected Connection CreateConnection() {
-            Connection connection = new Connection() {
+        protected ConnectionController CreateConnection() {
+            ConnectionController connection = new ConnectionController() {
                 // This won't actually connect to anything.
                 // It's just a mock so the GameState is available to be modified.
                 // See MockGame for all the mock data we create.
@@ -38,7 +38,7 @@ namespace Procon.Examples.TextCommands.Test {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.PluginsEnable,
                 Scope = {
-                    PluginGuid = connection.Plugins.Plugins.First().PluginModel.PluginGuid
+                    PluginGuid = connection.Plugins.LoadedPlugins.First().PluginGuid
                 }
             });
 
@@ -51,7 +51,7 @@ namespace Procon.Examples.TextCommands.Test {
         /// </summary>
         [Test]
         public void TestBasicCommand() {
-            Connection connection = this.CreateConnection();
+            ConnectionController connection = this.CreateConnection();
 
             // 3. Execute a text command. This could come from in game text or via the daemon.
             // When executed from in game the command built is identical but the content is
@@ -74,7 +74,7 @@ namespace Procon.Examples.TextCommands.Test {
 
         [Test]
         public void TestCommandPhogue() {
-            Connection connection = this.CreateConnection();
+            ConnectionController connection = this.CreateConnection();
 
             // 3. Execute a text command. This could come from in game text or via the daemon.
             // When executed from in game the command built is identical but the content is
@@ -97,7 +97,7 @@ namespace Procon.Examples.TextCommands.Test {
 
         [Test]
         public void TestCommandScoreEqualsZero() {
-            Connection connection = this.CreateConnection();
+            ConnectionController connection = this.CreateConnection();
 
             // 3. Execute a text command. This could come from in game text or via the daemon.
             // When executed from in game the command built is identical but the content is

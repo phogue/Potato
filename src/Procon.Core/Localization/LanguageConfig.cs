@@ -8,11 +8,11 @@ using Procon.Core.Shared.Models;
 namespace Procon.Core.Localization {
 
     [Serializable]
-    public class Language : Config {
+    public class LanguageConfig : Config {
         public LanguageModel LanguageModel { get; set; }
 
         // Default Initialization
-        public Language() {
+        public LanguageConfig() {
             this.LanguageModel = new LanguageModel();
         }
 

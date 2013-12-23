@@ -1,14 +1,13 @@
 using System;
 using System.IO;
 using Procon.Core.Shared.Events;
-using Procon.Net;
 using Procon.Net.Shared;
 
 namespace Procon.Core.Shared.Plugins {
     /// <summary>
     /// Interface for procon to communicate across the AppDomain to the plugin
     /// </summary>
-    public interface IRemotePlugin : IExecutableBase, IDisposable {
+    public interface IPluginController : ICoreController, IDisposable {
         /// <summary>
         /// The Guid of the executing assembly. Used to uniquely identify this plugin. 
         /// </summary>

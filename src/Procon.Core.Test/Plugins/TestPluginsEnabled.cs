@@ -20,15 +20,15 @@ namespace Procon.Core.Test.Plugins {
         [Test]
         public void TestPluginEnable() {
             var security = new SecurityController();
-            var plugins = new PluginController() {
+            var plugins = new CorePluginController() {
                 Security = security
-            }.Execute() as PluginController;
+            }.Execute() as CorePluginController;
 
             CommandResultArgs result = plugins.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.PluginsEnable,
                 Scope = {
-                    PluginGuid = plugins.Plugins.First().PluginModel.PluginGuid
+                    PluginGuid = plugins.LoadedPlugins.First().PluginGuid
                 }
             });
 
@@ -42,15 +42,15 @@ namespace Procon.Core.Test.Plugins {
         [Test]
         public void TestPluginEnableAlreadyEnabled() {
             var security = new SecurityController();
-            var plugins = new PluginController() {
+            var plugins = new CorePluginController() {
                 Security = security
-            }.Execute() as PluginController;
+            }.Execute() as CorePluginController;
 
             plugins.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.PluginsEnable,
                 Scope = {
-                    PluginGuid = plugins.Plugins.First().PluginModel.PluginGuid
+                    PluginGuid = plugins.LoadedPlugins.First().PluginGuid
                 }
             });
 
@@ -58,7 +58,7 @@ namespace Procon.Core.Test.Plugins {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.PluginsEnable,
                 Scope = {
-                    PluginGuid = plugins.Plugins.First().PluginModel.PluginGuid
+                    PluginGuid = plugins.LoadedPlugins.First().PluginGuid
                 }
             });
 
@@ -72,15 +72,15 @@ namespace Procon.Core.Test.Plugins {
         [Test]
         public void TestPluginEnableCommandSuccessful() {
             var security = new SecurityController();
-            var plugins = new PluginController() {
+            var plugins = new CorePluginController() {
                 Security = security
-            }.Execute() as PluginController;
+            }.Execute() as CorePluginController;
 
             CommandResultArgs result = plugins.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.PluginsEnable,
                 Scope = {
-                    PluginGuid = plugins.Plugins.First().PluginModel.PluginGuid
+                    PluginGuid = plugins.LoadedPlugins.First().PluginGuid
                 }
             });
 
@@ -107,9 +107,9 @@ namespace Procon.Core.Test.Plugins {
         [Test]
         public void TestPluginEnableDoesNotExist() {
             var security = new SecurityController();
-            var plugins = new PluginController() {
+            var plugins = new CorePluginController() {
                 Security = security
-            }.Execute() as PluginController;
+            }.Execute() as CorePluginController;
 
             CommandResultArgs result = plugins.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
@@ -129,16 +129,16 @@ namespace Procon.Core.Test.Plugins {
         [Test]
         public void TestPluginEnableInsufficientPermission() {
             var security = new SecurityController();
-            var plugins = new PluginController() {
+            var plugins = new CorePluginController() {
                 Security = security
-            }.Execute() as PluginController;
+            }.Execute() as CorePluginController;
 
             CommandResultArgs result = plugins.Tunnel(new Command() {
                 Origin = CommandOrigin.Remote,
                 Username = "Phogue",
                 CommandType = CommandType.PluginsEnable,
                 Scope = {
-                    PluginGuid = plugins.Plugins.First().PluginModel.PluginGuid
+                    PluginGuid = plugins.LoadedPlugins.First().PluginGuid
                 }
             });
 

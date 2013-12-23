@@ -25,12 +25,12 @@ namespace Procon.Core.Test.TextCommands {
         public void TestTextCommandParsingExecute() {
             var textCommands = new TextCommandController() {
                 //Languages = languages,
-                Connection = new Connection() {
+                Connection = new ConnectionController() {
                     Game = new Battlefield3Game(String.Empty, 25200) {
                         Additional = "",
                         Password = ""
                     }
-                }.Execute() as Connection
+                }.Execute() as ConnectionController
             };
 
             textCommands.Execute();
@@ -144,12 +144,12 @@ namespace Procon.Core.Test.TextCommands {
             var textCommands = new TextCommandController() {
                 Security = security,
                 //Languages = languages,
-                Connection = new Connection() {
+                Connection = new ConnectionController() {
                     Game = new Battlefield3Game(String.Empty, 25200) {
                         Additional = "",
                         Password = ""
                     }
-                }.Execute() as Connection
+                }.Execute() as ConnectionController
             };
 
             textCommands.Execute();
@@ -197,12 +197,12 @@ namespace Procon.Core.Test.TextCommands {
         public void TestTextCommandParsingPreview() {
             var textCommands = new TextCommandController() {
                 //Languages = languages,
-                Connection = new Connection() {
+                Connection = new ConnectionController() {
                     Game = new Battlefield3Game(String.Empty, 25200) {
                         Additional = "",
                         Password = ""
                     }
-                }.Execute() as Connection
+                }.Execute() as ConnectionController
             };
 
             textCommands.Execute();

@@ -14,7 +14,7 @@ using TestPlugin.Tests;
 
 namespace TestPlugin {
 
-    public class Program : RemotePlugin {
+    public class Program : PluginController {
         //Ignore this: - Actually, depending on how you wanna save info for plugins, the actually plugin could save it here.
         // For now, it's in PluginAPI
         // 
@@ -23,7 +23,7 @@ namespace TestPlugin {
 
         private List<TextCommandModel> Commands { get; set; }
 
-        public List<IExecutableBase> Tests = new List<IExecutableBase>() {
+        public List<ICoreController> Tests = new List<ICoreController>() {
             new TestPluginsSerialization(),
             new TestPluginsEnabled(),
             new TestPluginsIsolation(),
@@ -100,7 +100,7 @@ namespace TestPlugin {
             });
         }
 
-        protected override IList<IExecutableBase> TunnelExecutableObjects(Command command) {
+        protected override IList<ICoreController> TunnelExecutableObjects(Command command) {
             return this.Tests;
         }
 

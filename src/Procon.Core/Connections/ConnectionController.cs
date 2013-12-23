@@ -9,12 +9,10 @@ using Procon.Core.Connections.TextCommands;
 using Procon.Core.Shared;
 using Procon.Core.Shared.Events;
 using Procon.Core.Shared.Models;
-using Procon.Net;
 using Procon.Net.Shared;
 using Procon.Net.Shared.Actions;
 using Procon.Net.Shared.Models;
 using Procon.Net.Shared.Utils;
-using Procon.Net.Utils;
 
 namespace Procon.Core.Connections {
 
@@ -22,7 +20,7 @@ namespace Procon.Core.Connections {
     /// Handles connections, plugins and text commands for a single game server.
     /// </summary>
     [Serializable]
-    public class Connection : Executable {
+    public class ConnectionController : SharedController {
 
         public ConnectionModel ConnectionModel { get; set; }
 
@@ -40,7 +38,7 @@ namespace Procon.Core.Connections {
         /// The controller to load up and manage plugins
         /// </summary>
         [XmlIgnore, JsonIgnore]
-        public PluginController Plugins { get; set; }
+        public CorePluginController Plugins { get; set; }
 
         /// <summary>
         /// Text command controller to pipe all text chats through for analysis of text commands.
@@ -65,7 +63,7 @@ namespace Procon.Core.Connections {
             get { return this.Game != null ? this.Game.State : null; }
         }
 
-        public Connection() : base() {
+        public ConnectionController() : base() {
 
             this.ConnectionModel = new ConnectionModel();
 
@@ -160,12 +158,12 @@ namespace Procon.Core.Connections {
         }
 
         public override void WriteConfig(Config config) {
-            Config pluginConfig = new Config().Create(typeof(PluginController));
+            Config pluginConfig = new Config().Create(typeof(CorePluginController));
             this.Plugins.WriteConfig(pluginConfig);
             config.Combine(pluginConfig);
         }
 
-        public override ExecutableBase Execute() {
+        public override CoreController Execute() {
             if (this.Game != null) {
                 this.ConnectionModel.GameType = this.Game.GameType as GameType;
                 this.ConnectionModel.Hostname = this.Game.Client.Hostname;
@@ -180,7 +178,7 @@ namespace Procon.Core.Connections {
                 Connection = this
             };
 
-            this.Plugins = new PluginController() {
+            this.Plugins = new CorePluginController() {
                 Connection = this
             };
 
@@ -296,7 +294,7 @@ namespace Procon.Core.Connections {
                     },
                     Now = new CommandData() {
                         // I didn't want plugins to be able to hide themselves.
-                        Plugins = new List<PluginModel>(this.Plugins.Plugins.Select(p => p.PluginModel)),
+                        Plugins = new List<PluginModel>(this.Plugins.LoadedPlugins),
                         Players = players.Now.Players,
                         Settings = settings.Now.Settings,
                         Bans = bans.Now.Bans,

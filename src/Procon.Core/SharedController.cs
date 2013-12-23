@@ -13,7 +13,7 @@ namespace Procon.Core {
     /// Holds static references to common functionality across procon.
     /// </summary>
     /// <remarks>This is kind-of, sort-of global variables but it's restricted to Procon's AppDomain only.</remarks>
-    public abstract class Executable : ExecutableBase {
+    public abstract class SharedController : CoreController {
 
         /// <summary>
         /// Master list of variables.
@@ -63,11 +63,11 @@ namespace Procon.Core {
         [XmlIgnore, JsonIgnore]
         public EventsController Events { get; set; }
 
-        protected Executable() : base() {
-            this.Variables = Executable.MasterVariables;
-            this.Languages = Executable.MasterLanguages;
-            this.Security = Executable.MasterSecurity;
-            this.Events = Executable.MasterEvents;
+        protected SharedController() : base() {
+            this.Variables = SharedController.MasterVariables;
+            this.Languages = SharedController.MasterLanguages;
+            this.Security = SharedController.MasterSecurity;
+            this.Events = SharedController.MasterEvents;
         }
 
         /// <summary>
@@ -79,18 +79,18 @@ namespace Procon.Core {
         /// object (useful for unit testing!). The alternative is to not have the static objects at all, but the
         /// code does get very messy on some of the controllers that go a few levels deep (Procon.Core.Security or ..Plugins)
         /// </summary>
-        static Executable() {
+        static SharedController() {
 
             MasterVariables = new VariableController();
             MasterLanguages = new LanguageController();
             MasterSecurity = new SecurityController();
             MasterEvents = new EventsController();
 
-            if (Executable.MasterVariables != null && Executable.MasterLanguages != null && Executable.MasterSecurity != null && Executable.MasterEvents != null) {
-                Executable.MasterVariables.Variables = Executable.MasterLanguages.Variables = Executable.MasterSecurity.Variables = Executable.MasterEvents.Variables = Executable.MasterVariables;
-                Executable.MasterVariables.Languages = Executable.MasterLanguages.Languages = Executable.MasterSecurity.Languages = Executable.MasterEvents.Languages = Executable.MasterLanguages;
-                Executable.MasterVariables.Security = Executable.MasterLanguages.Security = Executable.MasterSecurity.Security = Executable.MasterEvents.Security = Executable.MasterSecurity;
-                Executable.MasterVariables.Events = Executable.MasterLanguages.Events = Executable.MasterSecurity.Events = Executable.MasterEvents.Events = Executable.MasterEvents;
+            if (SharedController.MasterVariables != null && SharedController.MasterLanguages != null && SharedController.MasterSecurity != null && SharedController.MasterEvents != null) {
+                SharedController.MasterVariables.Variables = SharedController.MasterLanguages.Variables = SharedController.MasterSecurity.Variables = SharedController.MasterEvents.Variables = SharedController.MasterVariables;
+                SharedController.MasterVariables.Languages = SharedController.MasterLanguages.Languages = SharedController.MasterSecurity.Languages = SharedController.MasterEvents.Languages = SharedController.MasterLanguages;
+                SharedController.MasterVariables.Security = SharedController.MasterLanguages.Security = SharedController.MasterSecurity.Security = SharedController.MasterEvents.Security = SharedController.MasterSecurity;
+                SharedController.MasterVariables.Events = SharedController.MasterLanguages.Events = SharedController.MasterSecurity.Events = SharedController.MasterEvents.Events = SharedController.MasterEvents;
 
                 MasterVariables.Execute();
                 MasterLanguages.Execute();
@@ -103,7 +103,7 @@ namespace Procon.Core {
         /// Loads the configuration file.
         /// </summary>
         /// <returns></returns>
-        public override ExecutableBase Execute() {
+        public override CoreController Execute() {
             this.Execute(new Command() {
                 Origin = CommandOrigin.Local
             }, new Config().Load(new DirectoryInfo(Defines.ConfigsDirectory)));

@@ -13,7 +13,7 @@ namespace Procon.Examples.Actions.Test {
     /// </summary>
     /// <remarks>This code here does not really reflect anything located within Procon.
     /// It's just a class to pretend actions are being handled</remarks>
-    public class MockNetworkLayer : ExecutableBase {
+    public class MockNetworkLayer : CoreController {
         
         /// <summary>
         /// Holds all deferred actions we have recieved.

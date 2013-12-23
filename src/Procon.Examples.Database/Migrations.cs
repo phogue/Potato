@@ -13,11 +13,11 @@ namespace Procon.Examples.Database {
     /// so we can keep Program.cs cleaner. All of this can be done inside Program.cs
     /// if you want.
     /// </summary>
-    public class Migrations : ExecutableBase {
+    public class Migrations : CoreController {
 
         protected MigrationController MigrationController { get; set; }
 
-        public override ExecutableBase Execute() {
+        public override CoreController Execute() {
             // 1. Create our migration controller 
             this.MigrationController = new MigrationController() {
                 // 2. Tell the migration controller where it should send it's commands.

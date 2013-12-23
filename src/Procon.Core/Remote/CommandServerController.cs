@@ -24,14 +24,14 @@ namespace Procon.Core.Remote {
     /// <summary>
     /// Listens for incoming connections, authenticates and dispatches commands
     /// </summary>
-    public class CommandServerController : Executable {
+    public class CommandServerController : SharedController {
 
         /// <summary>
         /// The client to send/recv remote commands.
         /// </summary>
         public CommandServerListener CommandServerListener { get; set; }
 
-        public override ExecutableBase Execute() {
+        public override CoreController Execute() {
             this.Variables.Variable(CommonVariableNames.CommandServerEnabled).PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(CommandServerController_PropertyChanged);
             this.Variables.Variable(CommonVariableNames.CommandServerPort).PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(CommandServerController_PropertyChanged);
             this.Variables.Variable(CommonVariableNames.CommandServerCertificatePath).PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(CommandServerController_PropertyChanged);

@@ -17,7 +17,7 @@ namespace Procon.Examples.Actions.Test {
         [Test]
         public void TestKickPlayerAction() {
             // Create a new plugin controller to load up the test plugin
-            PluginController plugins = new PluginController();
+            CorePluginController plugins = new CorePluginController();
 
             // Now setup a mock handler to accept actions from the plugin
             MockNetworkLayer layer = new MockNetworkLayer();
@@ -31,7 +31,7 @@ namespace Procon.Examples.Actions.Test {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.PluginsEnable,
                 Scope = {
-                    PluginGuid = plugins.Plugins.First().PluginModel.PluginGuid
+                    PluginGuid = plugins.LoadedPlugins.First().PluginGuid
                 }
             });
 
@@ -53,7 +53,7 @@ namespace Procon.Examples.Actions.Test {
         [Test]
         public void TestDeferredKickPlayerAction() {
             // Create a new plugin controller to load up the test plugin
-            PluginController plugins = new PluginController();
+            CorePluginController plugins = new CorePluginController();
 
             // Now setup a mock handler to accept actions from the plugin
             MockNetworkLayer layer = new MockNetworkLayer();
@@ -66,7 +66,7 @@ namespace Procon.Examples.Actions.Test {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.PluginsEnable,
                 Scope = {
-                    PluginGuid = plugins.Plugins.First().PluginModel.PluginGuid
+                    PluginGuid = plugins.LoadedPlugins.First().PluginGuid
                 }
             });
 

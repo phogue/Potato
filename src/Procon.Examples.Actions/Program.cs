@@ -9,7 +9,7 @@ using Procon.Net.Shared.Actions.Deferred;
 using Procon.Net.Shared.Models;
 
 namespace Procon.Examples.Actions {
-    public class Program : RemotePlugin {
+    public class Program : PluginController {
         public Program() : base() {
             this.AppendDispatchHandlers(new Dictionary<CommandAttribute, CommandDispatchHandler>() {
                 {

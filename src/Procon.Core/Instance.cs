@@ -26,12 +26,12 @@ namespace Procon.Core {
     /// <summary>
     /// The core controller of Procon, an instance of Procon.
     /// </summary>
-    public class Instance : Executable, IService {
+    public class Instance : SharedController, IService {
 
         /// <summary>
         /// List of game connections
         /// </summary>
-        public List<Connection> Connections { get; protected set; }
+        public List<ConnectionController> Connections { get; protected set; }
 
         /// <summary>
         /// The packages that are intalled or can be installed.
@@ -68,12 +68,12 @@ namespace Procon.Core {
         /// Creates a new instance of Procon, setting up command server, packages and tasks
         /// </summary>
         public Instance() : base() {
-            this.Connections = new List<Connection>();
+            this.Connections = new List<ConnectionController>();
 
             this.Packages = new RepositoryController();
 
             this.CommandServer = new CommandServerController() {
-                TunnelObjects = new List<IExecutableBase>() {
+                TunnelObjects = new List<ICoreController>() {
                     this
                 }
             };
@@ -244,7 +244,7 @@ namespace Procon.Core {
         private void Connection_Tick(Object sender, TickEventArgs e) {
             if (this.Connections != null) {
                 lock (this.Connections) {
-                    foreach (Connection connection in this.Connections.Where(connection => connection.Game != null)) {
+                    foreach (ConnectionController connection in this.Connections.Where(connection => connection.Game != null)) {
                         if (connection.Game.State != null && connection.Game.State.Settings.Current.ConnectionState == ConnectionState.ConnectionDisconnected) {
                             connection.AttemptConnection();
                         }
@@ -275,7 +275,7 @@ namespace Procon.Core {
         /// <param name="e"></param>
         protected void Plugin_Tick(Object sender, TickEventArgs e) {
             if (this.Connections != null) {
-                foreach (PluginController plugins in this.Connections.Select(connection => connection.Plugins)) {
+                foreach (CorePluginController plugins in this.Connections.Select(connection => connection.Plugins)) {
                     plugins.RenewLease();
                 }
             }
@@ -287,7 +287,7 @@ namespace Procon.Core {
         /// Loads the configuration file.
         /// </summary>
         /// <returns></returns>
-        public override ExecutableBase Execute() {
+        public override CoreController Execute() {
             this.EventsConsole.Execute();
             this.Packages.Execute();
             this.CommandServer.Execute();
@@ -358,7 +358,7 @@ namespace Procon.Core {
             config.Combine(pushEventsConfig);
 
             lock (this.Connections) {
-                foreach (Connection connection in this.Connections) {
+                foreach (ConnectionController connection in this.Connections) {
                     // This command is executed in the Instance object.
                     // I had to write this comment because I kept moving it to the actual connection and failing oh so hard.
                     config.Root.Add(new Command() {
@@ -427,8 +427,8 @@ namespace Procon.Core {
             return this.Tunnel(command);
         }
 
-        protected override IList<IExecutableBase> TunnelExecutableObjects(Command command) {
-            List<IExecutableBase> list = new List<IExecutableBase>();
+        protected override IList<ICoreController> TunnelExecutableObjects(Command command) {
+            List<ICoreController> list = new List<ICoreController>();
 
             if (command.Scope != null && command.Scope.ConnectionGuid != Guid.Empty) {
                 // Focus only on the connection.
@@ -473,7 +473,7 @@ namespace Procon.Core {
 
             // 3. Stop/disconnect all game server connections, unload any plugins etc.
             lock (this.Connections) {
-                foreach (Connection connection in this.Connections) {
+                foreach (ConnectionController connection in this.Connections) {
                     connection.Dispose();
                 }
             }
@@ -566,7 +566,7 @@ namespace Procon.Core {
                             game.Password = password;
                             game.GameConfigPath = Defines.ConfigsGamesDirectory;
 
-                            Connection connection = new Connection() {
+                            ConnectionController connection = new ConnectionController() {
                                 Game = game,
                                 Instance = this
                             };
@@ -622,7 +622,7 @@ namespace Procon.Core {
             return result;
         }
 
-        protected CommandResultArgs InstanceRemoveConnection(Command command, Connection connection) {
+        protected CommandResultArgs InstanceRemoveConnection(Command command, ConnectionController connection) {
             CommandResultArgs result = null;
 
             // As long as the current account is allowed to execute this command...
@@ -673,7 +673,7 @@ namespace Procon.Core {
         public CommandResultArgs InstanceRemoveConnectionByGuid(Command command, Dictionary<String, CommandParameter> parameters) {
             String connectionGuid = parameters["connectionGuid"].First<String>();
 
-            Connection connection = this.Connections.FirstOrDefault(x => String.Compare(x.ConnectionModel.ConnectionGuid.ToString(), connectionGuid, StringComparison.OrdinalIgnoreCase) == 0);
+            ConnectionController connection = this.Connections.FirstOrDefault(x => String.Compare(x.ConnectionModel.ConnectionGuid.ToString(), connectionGuid, StringComparison.OrdinalIgnoreCase) == 0);
 
             return this.InstanceRemoveConnection(command, connection);
         }
@@ -689,7 +689,7 @@ namespace Procon.Core {
             String hostName = parameters["hostName"].First<String>();
             UInt16 port = parameters["port"].First<UInt16>();
 
-            Connection connection = this.Connections.FirstOrDefault(c =>
+            ConnectionController connection = this.Connections.FirstOrDefault(c =>
                 c.ConnectionModel.GameType.Provider == gameTypeProvider &&
                 c.ConnectionModel.GameType.Type == gameTypeType &&
                 c.ConnectionModel.Hostname == hostName &&

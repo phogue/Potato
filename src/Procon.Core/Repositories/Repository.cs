@@ -11,7 +11,7 @@ using Procon.Net.Utils;
 namespace Procon.Core.Repositories {
     using Procon.Net.Utils.HTTP;
 
-    public class Repository : Executable {
+    public class Repository : SharedController {
 
         /// <summary>
         /// List of packages available in the repository

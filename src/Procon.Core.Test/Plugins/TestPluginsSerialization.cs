@@ -18,13 +18,13 @@ namespace Procon.Core.Test.Plugins {
         /// </summary>
         [Test]
         public void TestPluginsSerializationCommandResult() {
-            var plugins = new PluginController().Execute() as PluginController;
+            var plugins = new CorePluginController().Execute() as CorePluginController;
 
             plugins.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.PluginsEnable,
                 Scope = {
-                    PluginGuid = plugins.Plugins.First().PluginModel.PluginGuid
+                    PluginGuid = plugins.LoadedPlugins.First().PluginGuid
                 }
             });
 

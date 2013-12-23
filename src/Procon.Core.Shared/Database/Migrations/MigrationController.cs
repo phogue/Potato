@@ -11,7 +11,7 @@ namespace Procon.Core.Shared.Database.Migrations {
     /// Handles the current migration and migrations up/down to newer/older version
     /// of the database.
     /// </summary>
-    public class MigrationController : ExecutableBase {
+    public class MigrationController : CoreController {
 
         /// <summary>
         /// The settings used to control how migrations are handled.
@@ -31,7 +31,7 @@ namespace Procon.Core.Shared.Database.Migrations {
             this.Migrations = new List<IMigration>();
         }
 
-        public override ExecutableBase Execute() {
+        public override CoreController Execute() {
             // Managing migrations 
             CommandResultArgs result = this.Bubble(
                 CommandBuilder.DatabaseQuery(

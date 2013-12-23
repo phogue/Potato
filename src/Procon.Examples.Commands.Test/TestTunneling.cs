@@ -15,7 +15,7 @@ namespace Procon.Examples.CommandRouting.Test {
         [Test]
         public void TestSingleParameterPassing() {
             // Create a new plugin controller to load up the test plugin
-            PluginController plugins = new PluginController().Execute() as PluginController;
+            CorePluginController plugins = new CorePluginController().Execute() as CorePluginController;
 
             // Enable the single plugin that was loaded, otherwise it won't recieve any tunneled
             // commands.
@@ -23,7 +23,7 @@ namespace Procon.Examples.CommandRouting.Test {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.PluginsEnable,
                 Scope = {
-                    PluginGuid = plugins.Plugins.First().PluginModel.PluginGuid
+                    PluginGuid = plugins.LoadedPlugins.First().PluginGuid
                 }
             });
 
@@ -53,7 +53,7 @@ namespace Procon.Examples.CommandRouting.Test {
         [Test]
         public void TestSingleConvertedParameterPassing() {
             // Create a new plugin controller to load up the test plugin
-            PluginController plugins = new PluginController().Execute() as PluginController;
+            CorePluginController plugins = new CorePluginController().Execute() as CorePluginController;
 
             // Enable the single plugin that was loaded, otherwise it won't recieve any tunneled
             // commands.
@@ -61,7 +61,7 @@ namespace Procon.Examples.CommandRouting.Test {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.PluginsEnable,
                 Scope = {
-                    PluginGuid = plugins.Plugins.First().PluginModel.PluginGuid
+                    PluginGuid = plugins.LoadedPlugins.First().PluginGuid
                 }
             });
 
@@ -91,7 +91,7 @@ namespace Procon.Examples.CommandRouting.Test {
         [Test]
         public void TestNoParameterPassing() {
             // Create a new plugin controller to load up the test plugin
-            PluginController plugins = new PluginController().Execute() as PluginController;
+            CorePluginController plugins = new CorePluginController().Execute() as CorePluginController;
 
             // Enable the single plugin that was loaded, otherwise it won't recieve any tunneled
             // commands.
@@ -99,7 +99,7 @@ namespace Procon.Examples.CommandRouting.Test {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.PluginsEnable,
                 Scope = {
-                    PluginGuid = plugins.Plugins.First().PluginModel.PluginGuid
+                    PluginGuid = plugins.LoadedPlugins.First().PluginGuid
                 }
             });
 
@@ -120,7 +120,7 @@ namespace Procon.Examples.CommandRouting.Test {
         [Test]
         public void TestTunneledCommandPassing() {
             // Create a new plugin controller to load up the test plugin
-            PluginController plugins = new PluginController().Execute() as PluginController;
+            CorePluginController plugins = new CorePluginController().Execute() as CorePluginController;
 
             // Enable the single plugin that was loaded, otherwise it won't recieve any tunneled
             // commands.
@@ -128,7 +128,7 @@ namespace Procon.Examples.CommandRouting.Test {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.PluginsEnable,
                 Scope = {
-                    PluginGuid = plugins.Plugins.First().PluginModel.PluginGuid
+                    PluginGuid = plugins.LoadedPlugins.First().PluginGuid
                 }
             });
 

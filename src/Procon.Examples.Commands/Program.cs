@@ -11,7 +11,7 @@ namespace Procon.Examples.Commands {
     /// <remarks>
     /// This is deliberately empty as this is the minimal code to run by Procon.
     /// </remarks>
-    public class Program : RemotePlugin {
+    public class Program : PluginController {
 
         // Critical: You need to create a new project, not reuse this project.
         //           The critical part is the assembly GUID, which must be unique per plugin
@@ -20,11 +20,11 @@ namespace Procon.Examples.Commands {
 
         public Program() : base() {
             // Store references to children so commands will tunnel on to them.
-            this.TunnelObjects = new List<IExecutableBase>() {
+            this.TunnelObjects = new List<ICoreController>() {
                 new TunneledCommands() {
                     // Make sure child classes have a reference back to our class, so they
                     // can bubble commands back up.
-                    BubbleObjects = new List<IExecutableBase>() {
+                    BubbleObjects = new List<ICoreController>() {
                         this
                     }
                 }

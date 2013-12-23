@@ -24,7 +24,7 @@ namespace Procon.Examples.Events.Test {
         [Test]
         public void TestClientEventClientPacketReceived() {
             // Create a new plugin controller to load up the test plugin
-            PluginController plugins = new PluginController().Execute() as PluginController;
+            CorePluginController plugins = new CorePluginController().Execute() as CorePluginController;
 
             // Enable the single plugin that was loaded, otherwise it won't recieve any tunneled
             // commands or events.
@@ -32,7 +32,7 @@ namespace Procon.Examples.Events.Test {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.PluginsEnable,
                 Scope = {
-                    PluginGuid = plugins.Plugins.First().PluginModel.PluginGuid
+                    PluginGuid = plugins.LoadedPlugins.First().PluginGuid
                 }
             });
 
@@ -64,7 +64,7 @@ namespace Procon.Examples.Events.Test {
         [Test]
         public void TestGameEventGameChat() {
             // Create a new plugin controller to load up the test plugin
-            PluginController plugins = new PluginController().Execute() as PluginController;
+            CorePluginController plugins = new CorePluginController().Execute() as CorePluginController;
 
             // Enable the single plugin that was loaded, otherwise it won't recieve any tunneled
             // commands or events.
@@ -72,7 +72,7 @@ namespace Procon.Examples.Events.Test {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.PluginsEnable,
                 Scope = {
-                    PluginGuid = plugins.Plugins.First().PluginModel.PluginGuid
+                    PluginGuid = plugins.LoadedPlugins.First().PluginGuid
                 }
             });
 
@@ -117,7 +117,7 @@ namespace Procon.Examples.Events.Test {
         [Test]
         public void TestGenericEventPluginsPluginEnabled() {
             // Create a new plugin controller to load up the test plugin
-            PluginController plugins = new PluginController().Execute() as PluginController;
+            CorePluginController plugins = new CorePluginController().Execute() as CorePluginController;
 
             // Enable the single plugin that was loaded, otherwise it won't recieve any tunneled
             // commands or events.
@@ -125,7 +125,7 @@ namespace Procon.Examples.Events.Test {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.PluginsEnable,
                 Scope = {
-                    PluginGuid = plugins.Plugins.First().PluginModel.PluginGuid
+                    PluginGuid = plugins.LoadedPlugins.First().PluginGuid
                 }
             });
 

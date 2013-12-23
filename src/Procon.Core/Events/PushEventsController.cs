@@ -12,7 +12,7 @@ namespace Procon.Core.Events {
     /// <summary>
     /// Pushes events at a set interval to various servers.
     /// </summary>
-    public class PushEventsController : Executable {
+    public class PushEventsController : SharedController {
 
         /// <summary>
         /// The end points to push new events to.
@@ -166,7 +166,7 @@ namespace Procon.Core.Events {
             }
         }
 
-        public override ExecutableBase Execute() {
+        public override CoreController Execute() {
             this.GroupedVariableListener.Variables = this.Variables;
 
             this.AssignEvents();

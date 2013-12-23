@@ -14,7 +14,7 @@ using Procon.Service.Shared;
 namespace Procon.Core.Repositories {
     using Procon.Net.Utils;
 
-    public class RepositoryController : Executable {
+    public class RepositoryController : SharedController {
 
         /// <summary>
         /// The path that files should finally be installed to (where Procon.exe is)
@@ -232,7 +232,7 @@ namespace Procon.Core.Repositories {
             this.BuildFlatPackedPackages();
         }
 
-        public override ExecutableBase Execute() {
+        public override CoreController Execute() {
 
             this.LoadLocalRepository(this.LocalInstalledRepositories, this.PackagesPath);
 

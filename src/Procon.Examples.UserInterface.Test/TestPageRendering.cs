@@ -13,7 +13,7 @@ namespace Procon.Examples.UserInterface.Test {
         /// </summary>
         [Test]
         public void TestIndexRender() {
-            PluginController plugins = new PluginController().Execute() as PluginController;
+            CorePluginController plugins = new CorePluginController().Execute() as CorePluginController;
 
             // Enable the single plugin that was loaded, otherwise it won't recieve any tunneled
             // commands.
@@ -21,7 +21,7 @@ namespace Procon.Examples.UserInterface.Test {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.PluginsEnable,
                 Scope = {
-                    PluginGuid = plugins.Plugins.First().PluginModel.PluginGuid
+                    PluginGuid = plugins.LoadedPlugins.First().PluginGuid
                 }
             });
 
@@ -44,7 +44,7 @@ namespace Procon.Examples.UserInterface.Test {
         /// <remarks>You should note the fully qualified names within PluginUserInterface.Pages.SettingsPageView.tt</remarks>
         [Test]
         public void TestSettingsRender() {
-            PluginController plugins = new PluginController().Execute() as PluginController;
+            CorePluginController plugins = new CorePluginController().Execute() as CorePluginController;
 
             // Enable the single plugin that was loaded, otherwise it won't recieve any tunneled
             // commands.
@@ -52,7 +52,7 @@ namespace Procon.Examples.UserInterface.Test {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.PluginsEnable,
                 Scope = {
-                    PluginGuid = plugins.Plugins.First().PluginModel.PluginGuid
+                    PluginGuid = plugins.LoadedPlugins.First().PluginGuid
                 }
             });
 

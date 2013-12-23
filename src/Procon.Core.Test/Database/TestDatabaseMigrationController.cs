@@ -107,7 +107,7 @@ namespace Procon.Core.Test.Database {
 
             var migrations = new MigrationController() {
                 // Bubble all commands to the database controller
-                BubbleObjects = new List<IExecutableBase>() {
+                BubbleObjects = new List<ICoreController>() {
                     TestDatabaseController.OpenSqLiteDriver()
                 },
                 Migrations = new List<IMigration>() {

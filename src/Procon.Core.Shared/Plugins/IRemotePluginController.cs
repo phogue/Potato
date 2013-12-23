@@ -1,12 +1,11 @@
 using System;
-using Procon.Net;
 using Procon.Net.Shared;
 
 namespace Procon.Core.Shared.Plugins {
     /// <summary>
     /// Remoting interface for Procon.Core to communicate with remote Plugin.
     /// </summary>
-    public interface IRemotePluginController : IExecutableBase {
+    public interface IRemotePluginController : ICoreController {
 
         /// <summary>
         /// Creates an instance of a type in an assembly.
@@ -14,7 +13,7 @@ namespace Procon.Core.Shared.Plugins {
         /// <param name="assemblyFile"></param>
         /// <param name="typeName"></param>
         /// <returns></returns>
-        IRemotePlugin Create(String assemblyFile, String typeName);
+        IPluginController Create(String assemblyFile, String typeName);
 
         /// <summary>
         /// Enables a plugin by it's guid, allowing it to accept events and commands.

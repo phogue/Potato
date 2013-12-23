@@ -8,13 +8,11 @@ using Newtonsoft.Json;
 using Procon.Net.Shared.Utils;
 
 namespace Procon.Core.Shared {
-
     /// <summary>
     /// Handles command routing and config handling
     /// </summary>
     [Serializable]
-    public abstract class ExecutableBase : MarshalByRefObject, INotifyPropertyChanged, IDisposable, ICloneable, IExecutableBase {
-
+    public abstract class CoreController : MarshalByRefObject, INotifyPropertyChanged, IDisposable, ICloneable, ICoreController {
         /// <summary>
         /// List of dispatch attributes to the method to call, provided the parameter list matches.
         /// </summary>
@@ -26,17 +24,17 @@ namespace Procon.Core.Shared {
         /// All objects to tunnel downwards
         /// </summary>
         [XmlIgnore, JsonIgnore]
-        public List<IExecutableBase> TunnelObjects { get; set; }
+        public List<ICoreController> TunnelObjects { get; set; }
 
         /// <summary>
         /// All objects to bubble upwards
         /// </summary>
         [XmlIgnore, JsonIgnore]
-        public List<IExecutableBase> BubbleObjects { get; set; }
+        public List<ICoreController> BubbleObjects { get; set; }
 
-        protected ExecutableBase() : base() {
-            this.TunnelObjects = new List<IExecutableBase>();
-            this.BubbleObjects = new List<IExecutableBase>();
+        protected CoreController() : base() {
+            this.TunnelObjects = new List<ICoreController>();
+            this.BubbleObjects = new List<ICoreController>();
         }
 
         /// <summary>
@@ -94,9 +92,9 @@ namespace Procon.Core.Shared {
         /// </summary>
         /// <param name="config"></param>
         /// <returns></returns>
-        public virtual ExecutableBase Execute(Config config) {
-            this.TunnelObjects = this.TunnelObjects ?? new List<IExecutableBase>();
-            this.BubbleObjects = this.BubbleObjects ?? new List<IExecutableBase>();
+        public virtual CoreController Execute(Config config) {
+            this.TunnelObjects = this.TunnelObjects ?? new List<ICoreController>();
+            this.BubbleObjects = this.BubbleObjects ?? new List<ICoreController>();
 
             this.Execute(new Command() {
                 Origin = CommandOrigin.Local
@@ -109,9 +107,9 @@ namespace Procon.Core.Shared {
         /// Called after the constructor is called
         /// </summary>
         /// <returns></returns>
-        public virtual ExecutableBase Execute() {
-            this.TunnelObjects = this.TunnelObjects ?? new List<IExecutableBase>();
-            this.BubbleObjects = this.BubbleObjects ?? new List<IExecutableBase>();
+        public virtual CoreController Execute() {
+            this.TunnelObjects = this.TunnelObjects ?? new List<ICoreController>();
+            this.BubbleObjects = this.BubbleObjects ?? new List<ICoreController>();
 
             return this;
         }
@@ -218,7 +216,7 @@ namespace Procon.Core.Shared {
             command.Result = this.Run(CommandAttributeType.Preview, command, CommandResultType.Continue);
 
             if (command.Result.Status == CommandResultType.Continue) {
-                IList<IExecutableBase> propogationList = tunnel == true ? this.TunnelExecutableObjects(command) : this.BubbleExecutableObjects(command);
+                IList<ICoreController> propogationList = tunnel == true ? this.TunnelExecutableObjects(command) : this.BubbleExecutableObjects(command);
 
                 for (int offset = 0; propogationList != null && offset < propogationList.Count && command.Result.Status == CommandResultType.Continue; offset++) {
                     if (propogationList[offset] != null) {
@@ -240,7 +238,7 @@ namespace Procon.Core.Shared {
             command.Result = this.Run(CommandAttributeType.Handler, command, CommandResultType.Continue);
 
             if (command.Result.Status == CommandResultType.Continue) {
-                IList<IExecutableBase> propogationList = tunnel == true ? this.TunnelExecutableObjects(command) : this.BubbleExecutableObjects(command);
+                IList<ICoreController> propogationList = tunnel == true ? this.TunnelExecutableObjects(command) : this.BubbleExecutableObjects(command);
 
                 for (int offset = 0; propogationList != null && offset < propogationList.Count && command.Result.Status == CommandResultType.Continue; offset++) {
                     if (propogationList[offset] != null) {
@@ -261,10 +259,10 @@ namespace Procon.Core.Shared {
         public virtual CommandResultArgs PropogateExecuted(Command command, bool tunnel = true) {
             command.Result = this.Run(CommandAttributeType.Executed, command, command.Result.Status);
 
-            IList<IExecutableBase> propogationList = tunnel == true ? this.TunnelExecutableObjects(command) : this.BubbleExecutableObjects(command);
+            IList<ICoreController> propogationList = tunnel == true ? this.TunnelExecutableObjects(command) : this.BubbleExecutableObjects(command);
 
             if (propogationList != null) {
-                foreach (ExecutableBase executable in propogationList) {
+                foreach (CoreController executable in propogationList) {
                     if (executable != null) {
                         command.Result = executable.PropogateExecuted(command, tunnel);
                     }
@@ -320,11 +318,11 @@ namespace Procon.Core.Shared {
             return command.Result;
         }
 
-        protected virtual IList<IExecutableBase> TunnelExecutableObjects(Command command) {
+        protected virtual IList<ICoreController> TunnelExecutableObjects(Command command) {
             return this.TunnelObjects;
         }
 
-        protected virtual IList<IExecutableBase> BubbleExecutableObjects(Command command) {
+        protected virtual IList<ICoreController> BubbleExecutableObjects(Command command) {
             return this.BubbleObjects;
         } 
 

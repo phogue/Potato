@@ -8,7 +8,7 @@ using Procon.Core.Shared.Models;
 #endregion
 
 namespace Procon.Core.Test.ExecutableCommands.Objects {
-    public class ExecutableBasicTester : ExecutableBase {
+    public class ExecutableBasicTester : CoreController {
         private int _testNumber;
 
         public ExecutableBasicTester() : base() {

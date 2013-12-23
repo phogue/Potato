@@ -7,7 +7,7 @@ namespace Procon.Examples.Commands {
     /// Note we need to inherit from ExecutableBase which has all the methods
     /// required to dispatch commands
     /// </summary>
-    public class TunneledCommands : ExecutableBase {
+    public class TunneledCommands : CoreController {
 
         public TunneledCommands() : base() {
             this.AppendDispatchHandlers(new Dictionary<CommandAttribute, CommandDispatchHandler>() {

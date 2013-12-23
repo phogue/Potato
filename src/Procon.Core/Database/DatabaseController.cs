@@ -13,7 +13,7 @@ namespace Procon.Core.Database {
     /// <summary>
     /// Handles opening, managing and dispatching queries in databases
     /// </summary>
-    public class DatabaseController : Executable {
+    public class DatabaseController : SharedController {
 
         /// <summary>
         /// The currently opened database drivers.
@@ -177,7 +177,7 @@ namespace Procon.Core.Database {
             }
         }
 
-        public override ExecutableBase Execute() {
+        public override CoreController Execute() {
             this.GroupedVariableListener.Variables = this.Variables;
 
             this.AssignEvents();

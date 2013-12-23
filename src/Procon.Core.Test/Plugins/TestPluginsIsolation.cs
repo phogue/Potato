@@ -21,13 +21,13 @@ namespace Procon.Core.Test.Plugins {
         /// <param name="expectedSuccessFlag"></param>
         /// <param name="resultType"></param>
         protected void TestPluginsIsolationWriteToDirectory(String path, bool expectedSuccessFlag, CommandResultType resultType) {
-            var plugins = new PluginController().Execute() as PluginController;
+            var plugins = new CorePluginController().Execute() as CorePluginController;
 
             plugins.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.PluginsEnable,
                 Scope = {
-                    PluginGuid = plugins.Plugins.First().PluginModel.PluginGuid
+                    PluginGuid = plugins.LoadedPlugins.First().PluginGuid
                 }
             });
 
@@ -64,13 +64,13 @@ namespace Procon.Core.Test.Plugins {
         /// </summary>
         [Test]
         public void TestPluginsIsolationCleanCurrentAppDomain() {
-            var plugins = new PluginController().Execute() as PluginController;
+            var plugins = new CorePluginController().Execute() as CorePluginController;
 
             plugins.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.PluginsEnable,
                 Scope = {
-                    PluginGuid = plugins.Plugins.First().PluginModel.PluginGuid
+                    PluginGuid = plugins.LoadedPlugins.First().PluginGuid
                 }
             });
 

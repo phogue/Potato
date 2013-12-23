@@ -7,7 +7,6 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using Procon.Core.Shared.Events;
 using Procon.Core.Shared.Scheduler;
-using Procon.Net;
 using Procon.Net.Shared;
 using Procon.Net.Shared.Actions;
 using Procon.Net.Shared.Actions.Deferred;
@@ -19,7 +18,7 @@ namespace Procon.Core.Shared.Plugins {
     /// The class in which all plugins should inherit from. This class handles all remoting
     /// to Procon and other standard tasks 
     /// </summary>
-    public abstract class RemotePlugin : ExecutableBase, IRemotePlugin {
+    public abstract class PluginController : CoreController, IPluginController {
         /// <summary>
         /// The Guid of the executing assembly. Used to uniquely identify this plugin. 
         /// </summary>
@@ -60,7 +59,7 @@ namespace Procon.Core.Shared.Plugins {
         /// </summary>
         protected ConcurrentDictionary<Guid, IDeferredAction> DeferredActions { get; set; } 
 
-        protected RemotePlugin() : base() {
+        protected PluginController() : base() {
             this.Tasks = new TaskController().Start();
 
             this.PluginGuid = this.GetAssemblyGuid();

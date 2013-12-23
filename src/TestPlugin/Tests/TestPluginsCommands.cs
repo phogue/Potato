@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Procon.Core.Shared;
 
 namespace TestPlugin.Tests {
-    public class TestPluginsCommands : ExecutableBase {
+    public class TestPluginsCommands : CoreController {
 
         public TestPluginsCommands() : base() {
             this.AppendDispatchHandlers(new Dictionary<CommandAttribute, CommandDispatchHandler>() {

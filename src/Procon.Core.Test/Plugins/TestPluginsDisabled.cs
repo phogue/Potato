@@ -20,15 +20,15 @@ namespace Procon.Core.Test.Plugins {
         [Test]
         public void TestPluginDisable() {
             var security = new SecurityController();
-            var plugins = new PluginController() {
+            var plugins = new CorePluginController() {
                 Security = security
-            }.Execute() as PluginController;
+            }.Execute() as CorePluginController;
 
             plugins.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.PluginsEnable,
                 Scope = {
-                    PluginGuid = plugins.Plugins.First().PluginModel.PluginGuid
+                    PluginGuid = plugins.LoadedPlugins.First().PluginGuid
                 }
             });
 
@@ -36,7 +36,7 @@ namespace Procon.Core.Test.Plugins {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.PluginsDisable,
                 Scope = {
-                    PluginGuid = plugins.Plugins.First().PluginModel.PluginGuid
+                    PluginGuid = plugins.LoadedPlugins.First().PluginGuid
                 }
             });
 
@@ -50,15 +50,15 @@ namespace Procon.Core.Test.Plugins {
         [Test]
         public void TestPluginDisableAlreadyDisabled() {
             var security = new SecurityController();
-            var plugins = new PluginController() {
+            var plugins = new CorePluginController() {
                 Security = security
-            }.Execute() as PluginController;
+            }.Execute() as CorePluginController;
 
             CommandResultArgs result = plugins.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.PluginsDisable,
                 Scope = {
-                    PluginGuid = plugins.Plugins.First().PluginModel.PluginGuid
+                    PluginGuid = plugins.LoadedPlugins.First().PluginGuid
                 }
             });
 
@@ -72,9 +72,9 @@ namespace Procon.Core.Test.Plugins {
         [Test]
         public void TestPluginDisableCommandSuccessful() {
             var security = new SecurityController();
-            var plugins = new PluginController() {
+            var plugins = new CorePluginController() {
                 Security = security
-            }.Execute() as PluginController;
+            }.Execute() as CorePluginController;
 
             // The plugin will be disabled right now.
             CommandResultArgs result = plugins.Tunnel(new Command() {
@@ -97,9 +97,9 @@ namespace Procon.Core.Test.Plugins {
         [Test]
         public void TestPluginDisableDoesNotExist() {
             var security = new SecurityController();
-            var plugins = new PluginController() {
+            var plugins = new CorePluginController() {
                 Security = security
-            }.Execute() as PluginController;
+            }.Execute() as CorePluginController;
 
             CommandResultArgs result = plugins.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
@@ -119,16 +119,16 @@ namespace Procon.Core.Test.Plugins {
         [Test]
         public void TestPluginDisableInsufficientPermission() {
             var security = new SecurityController();
-            var plugins = new PluginController() {
+            var plugins = new CorePluginController() {
                 Security = security
-            }.Execute() as PluginController;
+            }.Execute() as CorePluginController;
 
             CommandResultArgs result = plugins.Tunnel(new Command() {
                 Origin = CommandOrigin.Remote,
                 Username = "Phogue",
                 CommandType = CommandType.PluginsDisable,
                 Scope = {
-                    PluginGuid = plugins.Plugins.First().PluginModel.PluginGuid
+                    PluginGuid = plugins.LoadedPlugins.First().PluginGuid
                 }
             });
 

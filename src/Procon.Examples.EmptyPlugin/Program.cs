@@ -7,7 +7,7 @@ namespace Procon.Examples.EmptyPlugin {
     /// <remarks>
     /// This is deliberately empty as this is the minimal code to run by Procon.
     /// </remarks>
-    public class Program : RemotePlugin {
+    public class Program : PluginController {
 
         // Critical: You need to create a new project, not reuse this project.
         //           The critical part is the assembly GUID, which must be unique per plugin

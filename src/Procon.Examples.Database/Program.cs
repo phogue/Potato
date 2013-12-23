@@ -15,7 +15,7 @@ namespace Procon.Examples.Database {
     /// you'll never need to worry about the underlying type of database being used.</para>
     /// <para>Think Key-Value-Store instead of full fledged database and you'll be golden.</para>
     /// </remarks>
-    public class Program : RemotePlugin {
+    public class Program : PluginController {
 
         // Critical: You need to create a new project, not reuse this project.
         //           The critical part is the assembly GUID, which must be unique per plugin

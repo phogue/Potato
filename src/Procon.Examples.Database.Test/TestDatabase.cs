@@ -46,7 +46,7 @@ namespace Procon.Examples.Database.Test {
         public void TestSavingSingleRowFromModel() {
 
             // Create a new plugin controller to load up the test plugin
-            PluginController plugins = new PluginController() {
+            CorePluginController plugins = new CorePluginController() {
                 BubbleObjects = {
                     TestDatabase.OpenDatabaseDriver()
                 }
@@ -60,7 +60,7 @@ namespace Procon.Examples.Database.Test {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.PluginsEnable,
                 Scope = {
-                    PluginGuid = plugins.Plugins.First().PluginModel.PluginGuid
+                    PluginGuid = plugins.LoadedPlugins.First().PluginGuid
                 }
             });
 

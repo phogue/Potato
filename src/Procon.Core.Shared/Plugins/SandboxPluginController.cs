@@ -3,25 +3,24 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Reflection;
 using Procon.Core.Shared.Events;
-using Procon.Net;
 using Procon.Net.Shared;
 
 namespace Procon.Core.Shared.Plugins {
     /// <summary>
     /// Controller to run on the plugin side of the AppDomain
     /// </summary>
-    public class RemotePluginController : ExecutableBase, IRemotePluginController {
+    public class SandboxPluginController : CoreController, IRemotePluginController {
 
         /// <summary>
         /// A list of loaded plugins. This can be considered a pool of plugins that
         /// exist, but not necessarily plugins that should recieve events and commands.
         /// </summary>
-        protected ConcurrentDictionary<Guid, IRemotePlugin> LoadedPlugins = new ConcurrentDictionary<Guid, IRemotePlugin>();
+        protected ConcurrentDictionary<Guid, IPluginController> LoadedPlugins = new ConcurrentDictionary<Guid, IPluginController>();
 
         /// <summary>
         /// A list of plugins that are enabled which should recieve events and commands.
         /// </summary>
-        protected ConcurrentDictionary<Guid, IRemotePlugin> EnabledPlugins = new ConcurrentDictionary<Guid, IRemotePlugin>();
+        protected ConcurrentDictionary<Guid, IPluginController> EnabledPlugins = new ConcurrentDictionary<Guid, IPluginController>();
 
         /// <summary>
         /// Creates an instance of a type in an assembly.
@@ -29,9 +28,9 @@ namespace Procon.Core.Shared.Plugins {
         /// <param name="assemblyFile"></param>
         /// <param name="typeName"></param>
         /// <returns></returns>
-        public IRemotePlugin Create(String assemblyFile, String typeName) {
+        public IPluginController Create(String assemblyFile, String typeName) {
 
-            IRemotePlugin loadedPlugin = (IRemotePlugin)Activator.CreateInstanceFrom(
+            IPluginController loadedPlugin = (IPluginController)Activator.CreateInstanceFrom(
                 assemblyFile,
                 typeName,
                 false,
@@ -57,7 +56,7 @@ namespace Procon.Core.Shared.Plugins {
 
             // If we have the plugin and the plugin isn't already in the dictionary.
             if (this.LoadedPlugins.ContainsKey(pluginGuid) == true && this.EnabledPlugins.ContainsKey(pluginGuid) == false) {
-                IRemotePlugin plugin = this.LoadedPlugins[pluginGuid];
+                IPluginController plugin = this.LoadedPlugins[pluginGuid];
 
                 this.EnabledPlugins.TryAdd(plugin.PluginGuid, plugin);
 
@@ -85,7 +84,7 @@ namespace Procon.Core.Shared.Plugins {
         public bool TryDisablePlugin(Guid pluginGuid) {
             bool wasDisabled = false;
 
-            IRemotePlugin plugin;
+            IPluginController plugin;
 
             if (this.EnabledPlugins.TryRemove(pluginGuid, out plugin) == true) {
                 plugin.BubbleObjects = null;
@@ -147,17 +146,17 @@ namespace Procon.Core.Shared.Plugins {
         /// </summary>
         /// <param name="command"></param>
         /// <returns></returns>
-        protected override IList<IExecutableBase> BubbleExecutableObjects(Command command) {
+        protected override IList<ICoreController> BubbleExecutableObjects(Command command) {
             command.Origin = CommandOrigin.Plugin;
 
-            return this.BubbleObjects ?? new List<IExecutableBase>();
+            return this.BubbleObjects ?? new List<ICoreController>();
         }
 
-        protected override IList<IExecutableBase> TunnelExecutableObjects(Command command) {
-            List<IExecutableBase> list = new List<IExecutableBase>();
+        protected override IList<ICoreController> TunnelExecutableObjects(Command command) {
+            List<ICoreController> list = new List<ICoreController>();
 
             if (command.Scope != null && command.Scope.PluginGuid != Guid.Empty) {
-                IRemotePlugin enabledPlugin;
+                IPluginController enabledPlugin;
 
                 // Get the enabled plugin if it exists.
                 if (this.EnabledPlugins.TryGetValue(command.Scope.PluginGuid, out enabledPlugin) == true) {

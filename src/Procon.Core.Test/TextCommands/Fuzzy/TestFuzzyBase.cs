@@ -342,12 +342,12 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
             var textCommandController = new TextCommandController() {
                 Security = security,
                 //Languages = languages,
-                Connection = new Connection() {
+                Connection = new ConnectionController() {
                     Game = new Battlefield3Game(String.Empty, 25200) {
                         Additional = "",
                         Password = ""
                     }
-                }.Execute() as Connection
+                }.Execute() as ConnectionController
             };
 
             textCommandController.Execute();

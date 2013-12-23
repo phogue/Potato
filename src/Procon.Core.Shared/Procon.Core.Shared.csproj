@@ -72,8 +72,8 @@
     <Compile Include="Events\GenericEventArgs.cs" />
     <Compile Include="Events\GenericEventData.cs" />
     <Compile Include="Events\GenericEventType.cs" />
-    <Compile Include="ExecutableBase.cs" />
-    <Compile Include="IExecutableBase.cs" />
+    <Compile Include="CoreController.cs" />
+    <Compile Include="ICoreController.cs" />
     <Compile Include="CoreModel.cs" />
     <Compile Include="Models\AccountModel.cs" />
     <Compile Include="Models\AccountPlayerModel.cs" />
@@ -96,12 +96,12 @@
     <Compile Include="Models\TextCommandIntervalType.cs" />
     <Compile Include="Models\TextCommandMatchModel.cs" />
     <Compile Include="Models\VariableModel.cs" />
-    <Compile Include="Plugins\IRemotePlugin.cs" />
+    <Compile Include="Plugins\IPluginController.cs" />
     <Compile Include="Plugins\IRemotePluginController.cs" />
     <Compile Include="Plugins\IRenewableLease.cs" />
-    <Compile Include="Plugins\LocalCallbackProxy.cs" />
-    <Compile Include="Plugins\RemotePlugin.cs" />
-    <Compile Include="Plugins\RemotePluginController.cs" />
+    <Compile Include="Plugins\CorePluginControllerCallbackProxy.cs" />
+    <Compile Include="Plugins\PluginController.cs" />
+    <Compile Include="Plugins\SandboxPluginController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scheduler\Task.cs" />
     <Compile Include="Scheduler\TaskController.cs" />

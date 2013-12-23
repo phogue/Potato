@@ -7,7 +7,7 @@ using Procon.Core.Shared.Models;
 
 namespace Procon.Core.Variables {
 
-    public class VariableController : Executable {
+    public class VariableController : SharedController {
 
         /// <summary>
         /// Anything in this list is volatile and will not be saved on
@@ -130,7 +130,7 @@ namespace Procon.Core.Variables {
         /// Begins the execution of this variable controller.
         /// Assigns events and loads the config for this file.
         /// </summary>
-        public override ExecutableBase Execute() {
+        public override CoreController Execute() {
             this.AssignEvents();
 
             this.SetupDefaultVariables();

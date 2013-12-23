@@ -25,15 +25,15 @@ namespace Procon.Examples.Configs.Test {
             // I added this here just so you know what's used to name the directory.
             Guid connectionGuid = MD5.Guid("not a zero guid");
 
-            PluginController pluginsSaving = new PluginController() {
-                Connection = new Connection() {
+            CorePluginController pluginsSaving = new CorePluginController() {
+                Connection = new ConnectionController() {
                     ConnectionModel = {
                         ConnectionGuid = connectionGuid
                     }
                 }
-            }.Execute() as PluginController;
+            }.Execute() as CorePluginController;
 
-            Guid pluginGuid = pluginsSaving.Plugins.First().PluginModel.PluginGuid;
+            Guid pluginGuid = pluginsSaving.LoadedPlugins.First().PluginGuid;
 
             // Now shut it down..
             pluginsSaving.Dispose();
@@ -57,15 +57,15 @@ namespace Procon.Examples.Configs.Test {
             // I added this here just so you know what's used to name the directory.
             Guid connectionGuid = MD5.Guid("not a zero guid");
 
-            PluginController pluginsSaving = new PluginController() {
-                Connection = new Connection() {
+            CorePluginController pluginsSaving = new CorePluginController() {
+                Connection = new ConnectionController() {
                     ConnectionModel = {
                         ConnectionGuid = connectionGuid
                     }
                 }
-            }.Execute() as PluginController;
+            }.Execute() as CorePluginController;
 
-            Guid pluginGuid = pluginsSaving.Plugins.First().PluginModel.PluginGuid;
+            Guid pluginGuid = pluginsSaving.LoadedPlugins.First().PluginGuid;
 
             // Now shut it down..
             pluginsSaving.Dispose();
@@ -77,8 +77,8 @@ namespace Procon.Examples.Configs.Test {
 
             // Now the config is saved we can load up the config.
             // ---------- 
-            new PluginController() {
-                Connection = new Connection() {
+            new CorePluginController() {
+                Connection = new ConnectionController() {
                     ConnectionModel = {
                         ConnectionGuid = connectionGuid
                     }

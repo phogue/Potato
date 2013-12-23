@@ -4,16 +4,16 @@ namespace Procon.Core.Shared {
     /// <summary>
     /// The implementing object accepts command execution
     /// </summary>
-    public interface IExecutableBase {
+    public interface ICoreController {
         /// <summary>
         /// All objects to tunnel downwards during execution
         /// </summary>
-        List<IExecutableBase> TunnelObjects { get; set; }
+        List<ICoreController> TunnelObjects { get; set; }
 
         /// <summary>
         /// All objects to bubble upwards during execution
         /// </summary>
-        List<IExecutableBase> BubbleObjects { get; set; }
+        List<ICoreController> BubbleObjects { get; set; }
 
         /// <summary>
         /// Run a preview of a command on the current object, then tunnel or bubble the command.

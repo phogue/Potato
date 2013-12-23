@@ -10,7 +10,7 @@ using Procon.Net.Shared.Utils;
 
 namespace Procon.Core.Security {
 
-    public class SecurityController : Executable {
+    public class SecurityController : SharedController {
 
         /// <summary>
         /// List of group models within this security controller
@@ -260,7 +260,7 @@ namespace Procon.Core.Security {
         /// <summary>
         /// Executes the commands specified in the config file and returns a reference itself.
         /// </summary>
-        public override ExecutableBase Execute() {
+        public override CoreController Execute() {
             this.Groups = new List<GroupModel>();
 
             return base.Execute();

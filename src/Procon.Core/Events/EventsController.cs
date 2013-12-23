@@ -18,7 +18,7 @@ namespace Procon.Core.Events {
     /// Logs events, keeping them in memory until a specific time occurs that will write all
     /// events older than a time period to disk.
     /// </summary>
-    public class EventsController : Executable {
+    public class EventsController : SharedController {
 
         /// <summary>
         /// List of events for history

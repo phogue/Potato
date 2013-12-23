@@ -8,7 +8,7 @@ using Procon.Core.Shared.Models;
 #endregion
 
 namespace Procon.Core.Test.ExecutableCommands.Objects {
-    public class ExecutableOverrideTester : ExecutableBase {
+    public class ExecutableOverrideTester : CoreController {
         public ExecutableOverrideTester() : base() {
             this.AppendDispatchHandlers(new Dictionary<CommandAttribute, CommandDispatchHandler>() {
                 {new CommandAttribute() {

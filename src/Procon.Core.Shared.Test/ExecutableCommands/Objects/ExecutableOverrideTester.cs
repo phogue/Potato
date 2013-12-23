@@ -2,12 +2,11 @@
 
 using System;
 using System.Collections.Generic;
-using Procon.Core.Shared;
 using Procon.Core.Shared.Models;
 
 #endregion
 
-namespace Procon.Core.Test.ExecutableCommands.Objects {
+namespace Procon.Core.Shared.Test.ExecutableCommands.Objects {
     public class ExecutableOverrideTester : CoreController {
         public ExecutableOverrideTester() : base() {
             this.AppendDispatchHandlers(new Dictionary<CommandAttribute, CommandDispatchHandler>() {

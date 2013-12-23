@@ -2,11 +2,11 @@
 
 using System;
 using NUnit.Framework;
-using Procon.Core.Test.ExecutableCommands.Objects;
+using Procon.Core.Shared.Test.ExecutableCommands.Objects;
 
 #endregion
 
-namespace Procon.Core.Test.ExecutableCommands {
+namespace Procon.Core.Shared.Test.ExecutableCommands {
     [TestFixture]
     public class TestExecutableProperties {
         [Test]

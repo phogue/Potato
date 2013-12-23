@@ -4,13 +4,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
-using Procon.Core.Test.Database.Mocks;
+using Procon.Core.Shared.Test.Database.Mocks;
 using Procon.Database.Shared.Builders.Methods.Data;
 using Procon.Database.Shared.Builders.Values;
 
 #endregion
 
-namespace Procon.Core.Test.Database {
+namespace Procon.Core.Shared.Test.Database {
     /// <summary>
     ///     Tests serialization of a database model
     /// </summary>

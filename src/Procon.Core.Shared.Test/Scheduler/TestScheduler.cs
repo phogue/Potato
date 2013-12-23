@@ -7,7 +7,7 @@ using Procon.Core.Shared.Scheduler;
 
 #endregion
 
-namespace Procon.Core.Test.Scheduler {
+namespace Procon.Core.Shared.Test.Scheduler {
     [TestFixture]
     public class TestScheduler {
         /// <summary>

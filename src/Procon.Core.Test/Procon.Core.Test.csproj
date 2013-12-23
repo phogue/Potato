@@ -74,12 +74,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Database\Helpers\TestMigrationTrackerHelper.cs" />
-    <Compile Include="Database\Mocks\MockComplexModel.cs" />
-    <Compile Include="Database\Mocks\MockSimpleModel.cs" />
     <Compile Include="Database\TestDatabaseController.cs" />
     <Compile Include="Database\TestDatabaseMigrationController.cs" />
-    <Compile Include="Database\TestDatabaseModel.cs" />
-    <Compile Include="ExecutableCommands\TestCommandParameter.cs" />
     <Compile Include="Plugins\TestPluginsDisabled.cs" />
     <Compile Include="Plugins\TestPluginsEnabled.cs" />
     <Compile Include="Repositories\TestRepositoryController.cs" />
@@ -97,21 +93,6 @@
     <Compile Include="Events\TestEventsPushController.cs" />
     <Compile Include="Events\TestGenericEventData.cs" />
     <Compile Include="Events\TestPushEventsEndPoint.cs" />
-    <Compile Include="ExecutableCommands\Objects\ExecutableEnum.cs" />
-    <Compile Include="ExecutableCommands\Objects\ExecutableEnumTester.cs" />
-    <Compile Include="ExecutableCommands\Objects\ExecutableFlagsEnum.cs" />
-    <Compile Include="ExecutableCommands\TestCommandAttribute.cs" />
-    <Compile Include="ExecutableCommands\TestCommandData.cs" />
-    <Compile Include="ExecutableCommands\TestExecutableEnum.cs" />
-    <Compile Include="ExecutableCommands\TestExecutableExecuted.cs" />
-    <Compile Include="ExecutableCommands\Objects\ExecutableExecutedTester.cs" />
-    <Compile Include="ExecutableCommands\TestExecutablePreview.cs" />
-    <Compile Include="ExecutableCommands\Objects\ExecutablePreviewTester.cs" />
-    <Compile Include="ExecutableCommands\TestExecutableOverride.cs" />
-    <Compile Include="ExecutableCommands\Objects\ExecutableOverrideTester.cs" />
-    <Compile Include="ExecutableCommands\TestExecutableBasic.cs" />
-    <Compile Include="ExecutableCommands\Objects\ExecutableBasicTester.cs" />
-    <Compile Include="ExecutableCommands\TestExecutableProperties.cs" />
     <Compile Include="Localization\TestLocalization.cs" />
     <Compile Include="Remote\TestRemote.cs" />
     <Compile Include="Serialization\Xml\TestXmlSerialization.cs" />
@@ -133,7 +114,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TextCommands\Fuzzy\TestFuzzyBase.cs" />
     <Compile Include="Repositories\TestRepository.cs" />
-    <Compile Include="Scheduler\TestScheduler.cs" />
     <Compile Include="Security\TestSecurityPermission.cs" />
     <Compile Include="Security\TestSecurity.cs" />
     <Compile Include="Security\TestSecurityAccount.cs" />

@@ -6,7 +6,6 @@ using Procon.Core.Shared;
 using Procon.Core.Shared.Database.Migrations;
 using Procon.Core.Test.Database.Helpers;
 using Procon.Net.Shared.Utils;
-using Procon.Net.Utils;
 
 #endregion
 

@@ -2,11 +2,10 @@
 
 using System;
 using System.Collections.Generic;
-using Procon.Core.Shared;
 
 #endregion
 
-namespace Procon.Core.Test.ExecutableCommands.Objects {
+namespace Procon.Core.Shared.Test.ExecutableCommands.Objects {
     public class ExecutableExecutedTester : ExecutableBasicTester {
         public ExecutableExecutedTester() : base() {
             this.AppendDispatchHandlers(new Dictionary<CommandAttribute, CommandDispatchHandler>() {

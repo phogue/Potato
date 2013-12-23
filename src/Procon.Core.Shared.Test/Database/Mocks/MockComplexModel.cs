@@ -6,7 +6,7 @@ using Procon.Core.Shared.Database;
 
 #endregion
 
-namespace Procon.Core.Test.Database.Mocks {
+namespace Procon.Core.Shared.Test.Database.Mocks {
     /// <summary>
     ///     A mock model with all types of models
     /// </summary>

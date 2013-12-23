@@ -3,16 +3,13 @@
 using System;
 using System.Collections.Generic;
 using NUnit.Framework;
-using Procon.Core.Connections;
-using Procon.Core.Localization;
-using Procon.Core.Shared;
 using Procon.Core.Shared.Models;
 using Procon.Net.Shared.Actions;
 using Procon.Net.Shared.Models;
 
 #endregion
 
-namespace Procon.Core.Test.ExecutableCommands {
+namespace Procon.Core.Shared.Test.ExecutableCommands {
     [TestFixture]
     public class TestCommandData {
         /// <summary>

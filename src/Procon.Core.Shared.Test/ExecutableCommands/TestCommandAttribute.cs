@@ -2,11 +2,10 @@
 
 using System;
 using NUnit.Framework;
-using Procon.Core.Shared;
 
 #endregion
 
-namespace Procon.Core.Test.ExecutableCommands {
+namespace Procon.Core.Shared.Test.ExecutableCommands {
     [TestFixture]
     public class TestCommandAttribute {
         /// <summary>

@@ -4,7 +4,7 @@ using System;
 
 #endregion
 
-namespace Procon.Core.Test.ExecutableCommands.Objects {
+namespace Procon.Core.Shared.Test.ExecutableCommands.Objects {
     [Flags]
     public enum ExecutableFlagsEnum {
         None = 0x00,

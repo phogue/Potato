@@ -4,12 +4,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
-using Procon.Core.Shared;
-using Procon.Core.Test.ExecutableCommands.Objects;
+using Procon.Core.Shared.Test.ExecutableCommands.Objects;
 
 #endregion
 
-namespace Procon.Core.Test.ExecutableCommands {
+namespace Procon.Core.Shared.Test.ExecutableCommands {
     [TestFixture]
     public class TestCommandParameter {
         /// <summary>

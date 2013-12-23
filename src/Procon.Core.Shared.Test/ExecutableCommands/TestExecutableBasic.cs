@@ -2,15 +2,15 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading;
 using NUnit.Framework;
-using Procon.Core.Shared;
-using Procon.Core.Test.ExecutableCommands.Objects;
+using Procon.Core.Shared.Test.ExecutableCommands.Objects;
 
 #endregion
 
-namespace Procon.Core.Test.ExecutableCommands {
+namespace Procon.Core.Shared.Test.ExecutableCommands {
     /// <summary>
     ///     Summary description for ExecutableBase
     /// </summary>
@@ -28,9 +28,15 @@ namespace Procon.Core.Test.ExecutableCommands {
             tester.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 Name = "CustomSet",
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
-                    50
-                })
+                Parameters = new List<CommandParameter>() {
+                    new CommandParameter() {
+                        Data = {
+                            Content = new List<string>() {
+                                50.ToString()
+                            }
+                        }
+                    }
+                }
             });
 
             Assert.AreEqual(tester.TestNumber, 50);
@@ -48,9 +54,15 @@ namespace Procon.Core.Test.ExecutableCommands {
             tester.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 Name = "CustomSet",
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
-                    "cheese"
-                })
+                Parameters = new List<CommandParameter>() {
+                    new CommandParameter() {
+                        Data = {
+                            Content = new List<string>() {
+                                "cheese"
+                            }
+                        }
+                    }
+                }
             });
 
             Assert.AreEqual(tester.TestNumber, 0);
@@ -68,9 +80,15 @@ namespace Procon.Core.Test.ExecutableCommands {
             tester.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 Name = "CustomSet",
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
-                    "50"
-                })
+                Parameters = new List<CommandParameter>() {
+                    new CommandParameter() {
+                        Data = {
+                            Content = new List<string>() {
+                                "50"
+                            }
+                        }
+                    }
+                }
             });
 
             Assert.AreEqual(tester.TestNumber, 50);
@@ -106,9 +124,15 @@ namespace Procon.Core.Test.ExecutableCommands {
             tester.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.VariablesSet,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
-                    50
-                })
+                Parameters = new List<CommandParameter>() {
+                    new CommandParameter() {
+                        Data = {
+                            Content = new List<string>() {
+                                50.ToString(CultureInfo.InvariantCulture)
+                            }
+                        }
+                    }
+                }
             });
 
             Assert.AreEqual(tester.TestNumber, 50);
@@ -126,9 +150,15 @@ namespace Procon.Core.Test.ExecutableCommands {
             tester.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.VariablesSet,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
-                    "cheese"
-                })
+                Parameters = new List<CommandParameter>() {
+                    new CommandParameter() {
+                        Data = {
+                            Content = new List<string>() {
+                                "cheese"
+                            }
+                        }
+                    }
+                }
             });
 
             Assert.AreEqual(tester.TestNumber, 0);
@@ -146,9 +176,15 @@ namespace Procon.Core.Test.ExecutableCommands {
             tester.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.VariablesSet,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
-                    "50"
-                })
+                Parameters = new List<CommandParameter>() {
+                    new CommandParameter() {
+                        Data = {
+                            Content = new List<string>() {
+                                "50"
+                            }
+                        }
+                    }
+                }
             });
 
             Assert.AreEqual(tester.TestNumber, 50);

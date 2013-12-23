@@ -3,12 +3,11 @@
 using System;
 using System.Collections.Generic;
 using NUnit.Framework;
-using Procon.Core.Shared;
-using Procon.Core.Test.ExecutableCommands.Objects;
+using Procon.Core.Shared.Test.ExecutableCommands.Objects;
 
 #endregion
 
-namespace Procon.Core.Test.ExecutableCommands {
+namespace Procon.Core.Shared.Test.ExecutableCommands {
     [TestFixture]
     public class TestExecutableEnum {
         /// <summary>
@@ -21,9 +20,15 @@ namespace Procon.Core.Test.ExecutableCommands {
             tester.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.VariablesSet,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
-                    ExecutableEnum.Seven
-                })
+                Parameters = new List<CommandParameter>() {
+                    new CommandParameter() {
+                        Data = {
+                            Content = new List<string>() {
+                                ExecutableEnum.Seven.ToString()
+                            }
+                        }
+                    }
+                }
             });
 
             Assert.AreEqual(ExecutableEnum.Seven, tester.TestExecutableEnum);
@@ -39,9 +44,15 @@ namespace Procon.Core.Test.ExecutableCommands {
             tester.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.VariablesSet,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
-                    ExecutableFlagsEnum.Three
-                })
+                Parameters = new List<CommandParameter>() {
+                    new CommandParameter() {
+                        Data = {
+                            Content = new List<string>() {
+                                ExecutableFlagsEnum.Three.ToString()
+                            }
+                        }
+                    }
+                }
             });
 
             Assert.AreEqual(ExecutableFlagsEnum.Three, tester.TestExecutableFlagsEnum);
@@ -57,9 +68,15 @@ namespace Procon.Core.Test.ExecutableCommands {
             tester.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.VariablesSet,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
-                    "Eight"
-                })
+                Parameters = new List<CommandParameter>() {
+                    new CommandParameter() {
+                        Data = {
+                            Content = new List<string>() {
+                                "Eight"
+                            }
+                        }
+                    }
+                }
             });
 
             Assert.AreEqual(ExecutableEnum.Eight, tester.TestExecutableEnum);

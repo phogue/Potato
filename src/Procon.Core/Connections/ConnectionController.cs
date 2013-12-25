@@ -20,7 +20,7 @@ namespace Procon.Core.Connections {
     /// Handles connections, plugins and text commands for a single game server.
     /// </summary>
     [Serializable]
-    public class ConnectionController : SharedController {
+    public class ConnectionController : CoreController, ISharedReferenceAccess {
 
         public ConnectionModel ConnectionModel { get; set; }
 
@@ -63,7 +63,11 @@ namespace Procon.Core.Connections {
             get { return this.Game != null ? this.Game.State : null; }
         }
 
+        [XmlIgnore, JsonIgnore]
+        public SharedReferences Shared { get; private set; }
+
         public ConnectionController() : base() {
+            this.Shared = new SharedReferences();
 
             this.ConnectionModel = new ConnectionModel();
 
@@ -194,7 +198,7 @@ namespace Procon.Core.Connections {
             this.Plugins.Execute();
             
             // Set the default ignore list.
-            this.Variables.Set(new Command() {
+            this.Shared.Variables.Set(new Command() {
                 Origin = CommandOrigin.Local
             }, CommonVariableNames.GameEventsIgnoreList, new List<String>() {
                 GameEventType.GameBanlistUpdated.ToString(), 
@@ -267,7 +271,7 @@ namespace Procon.Core.Connections {
         public CommandResultArgs ConnectionQuery(Command command, Dictionary<String, CommandParameter> parameters) {
             CommandResultArgs result = null;
 
-            if (this.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
+            if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
                 CommandResultArgs players = this.Tunnel(new Command(command) {
                     CommandType = CommandType.NetworkProtocolQueryPlayers
                 });
@@ -312,7 +316,7 @@ namespace Procon.Core.Connections {
         public CommandResultArgs NetworkProtocolQueryPlayers(Command command, Dictionary<String, CommandParameter> parameters) {
             CommandResultArgs result = null;
 
-            if (this.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
+            if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
                 result = new CommandResultArgs() {
                     Success = true,
                     Status = CommandResultType.Success,
@@ -336,7 +340,7 @@ namespace Procon.Core.Connections {
         public CommandResultArgs NetworkProtocolQuerySettings(Command command, Dictionary<String, CommandParameter> parameters) {
             CommandResultArgs result = null;
 
-            if (this.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
+            if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
                 result = new CommandResultArgs() {
                     Success = true,
                     Status = CommandResultType.Success,
@@ -362,7 +366,7 @@ namespace Procon.Core.Connections {
         public CommandResultArgs NetworkProtocolQueryBans(Command command, Dictionary<String, CommandParameter> parameters) {
             CommandResultArgs result = null;
 
-            if (this.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
+            if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
                 result = new CommandResultArgs() {
                     Success = true,
                     Status = CommandResultType.Success,
@@ -386,7 +390,7 @@ namespace Procon.Core.Connections {
         public CommandResultArgs NetworkProtocolQueryMaps(Command command, Dictionary<String, CommandParameter> parameters) {
             CommandResultArgs result = null;
 
-            if (this.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
+            if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
                 result = new CommandResultArgs() {
                     Success = true,
                     Status = CommandResultType.Success,
@@ -410,7 +414,7 @@ namespace Procon.Core.Connections {
         public CommandResultArgs NetworkProtocolQueryMapPool(Command command, Dictionary<String, CommandParameter> parameters) {
             CommandResultArgs result = null;
 
-            if (this.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
+            if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
                 result = new CommandResultArgs() {
                     Success = true,
                     Status = CommandResultType.Success,
@@ -436,7 +440,7 @@ namespace Procon.Core.Connections {
 
             Raw raw = parameters["raw"].First<Raw>();
 
-            if (this.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
+            if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
                 result = new CommandResultArgs() {
                     Success = true,
                     Status = CommandResultType.Success,
@@ -457,7 +461,7 @@ namespace Procon.Core.Connections {
 
             Chat chat = parameters["chat"].First<Chat>();
 
-            if (this.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
+            if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
                 result = new CommandResultArgs() {
                     Success = true,
                     Status = CommandResultType.Success,
@@ -481,7 +485,7 @@ namespace Procon.Core.Connections {
 
             Kill kill = parameters["kill"].First<Kill>();
             
-            if (this.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
+            if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
                 result = new CommandResultArgs() {
                     Success = true,
                     Status = CommandResultType.Success,
@@ -505,7 +509,7 @@ namespace Procon.Core.Connections {
 
             Move move = parameters["move"].First<Move>();
 
-            if (this.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
+            if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
                 result = new CommandResultArgs() {
                     Success = true,
                     Status = CommandResultType.Success,
@@ -529,7 +533,7 @@ namespace Procon.Core.Connections {
 
             Kick kick = parameters["kick"].First<Kick>();
 
-            if (this.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
+            if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
                 result = new CommandResultArgs() {
                     Success = true,
                     Status = CommandResultType.Success,
@@ -561,7 +565,7 @@ namespace Procon.Core.Connections {
                     this.Game.Synchronize();
                 }
 
-                this.Events.Log(new GenericEventArgs() {
+                this.Shared.Events.Log(new GenericEventArgs() {
                     Name = e.ConnectionState.ToString(),
                     Scope = new CommandData() {
                         Connections = new List<ConnectionModel>() {
@@ -574,7 +578,7 @@ namespace Procon.Core.Connections {
             else if (e.EventType == ClientEventType.ClientConnectionFailure || e.EventType == ClientEventType.ClientSocketException) {
                 Exception exception = e.Now.Exceptions.FirstOrDefault();
 
-                this.Events.Log(new GenericEventArgs() {
+                this.Shared.Events.Log(new GenericEventArgs() {
                     Name = e.EventType.ToString(),
                     Message = exception != null ? exception.Message : String.Empty,
                     Scope = new CommandData() {
@@ -595,8 +599,8 @@ namespace Procon.Core.Connections {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void Game_GameEvent(IGame sender, GameEventArgs e) {
-            if (this.Variables.Get<List<String>>(CommonVariableNames.GameEventsIgnoreList).Contains(e.GameEventType.ToString()) == false) {
-                this.Events.Log(new GenericEventArgs() {
+            if (this.Shared.Variables.Get<List<String>>(CommonVariableNames.GameEventsIgnoreList).Contains(e.GameEventType.ToString()) == false) {
+                this.Shared.Events.Log(new GenericEventArgs() {
                     Name = e.GameEventType.ToString(),
                     Then = GenericEventData.Parse(e.Then),
                     Now = GenericEventData.Parse(e.Now),

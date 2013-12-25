@@ -118,6 +118,5 @@ namespace Procon.Core.Variables {
                 handler(this, groupNames);
             }
         }
-
     }
 }

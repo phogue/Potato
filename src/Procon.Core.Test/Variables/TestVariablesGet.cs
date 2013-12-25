@@ -61,7 +61,7 @@ namespace Procon.Core.Test.Variables {
 
             Assert.IsTrue(result.Success);
             Assert.AreEqual(CommandResultType.Success, result.Status);
-            Assert.AreEqual("value", result.Now.Variables.First().ToType<String>(String.Empty));
+            Assert.AreEqual("value", result.Now.Variables.First().ToType(String.Empty));
         }
 
         /// <summary>
@@ -160,7 +160,9 @@ namespace Procon.Core.Test.Variables {
         [Test]
         public void TestVariablesGetValueInsufficientPermission() {
             var variables = new VariableController() {
-                Security = new SecurityController().Execute() as SecurityController,
+                Shared = {
+                    Security = new SecurityController().Execute() as SecurityController,
+                },
                 VolatileVariables = new List<VariableModel>() {
                     new VariableModel() {
                         Name = "key",

@@ -11,7 +11,6 @@ using Procon.Core.Security;
 using Procon.Core.Shared;
 using Procon.Core.Shared.Events;
 using Procon.Net.Shared.Utils;
-using Procon.Net.Utils;
 
 #endregion
 
@@ -40,8 +39,10 @@ namespace Procon.Core.Test.Repositories {
                 UpdatesPath = ExecuteUpdatesPath,
                 InstallPath = ExecuteInstalledPath,
                 TemporaryUpdatesPath = ExecuteTemporaryUpdatesPath,
-                Security = new SecurityController(),
-                Events = new EventsController()
+                Shared = {
+                    Security = new SecurityController(),
+                    Events = new EventsController()
+                }
             };
 
             repository.Execute();
@@ -150,7 +151,7 @@ namespace Procon.Core.Test.Repositories {
 
             RepositoryController repository = SetupRepositoryController();
 
-            repository.Events.EventLogged += (sender, args) => {
+            repository.Shared.Events.EventLogged += (sender, args) => {
                 if (args.GenericEventType == GenericEventType.RepositoriesPackagesRebuilt) {
                     requestWait.Set();
                 }
@@ -207,7 +208,7 @@ namespace Procon.Core.Test.Repositories {
 
             RepositoryController repository = SetupRepositoryController();
 
-            repository.Events.EventLogged += (sender, args) => {
+            repository.Shared.Events.EventLogged += (sender, args) => {
                 if (args.GenericEventType == GenericEventType.RepositoriesPackagesRebuilt) {
                     requestWait.Set();
                 }
@@ -252,7 +253,7 @@ namespace Procon.Core.Test.Repositories {
 
             RepositoryController repository = SetupRepositoryController();
 
-            repository.Events.EventLogged += (sender, args) => {
+            repository.Shared.Events.EventLogged += (sender, args) => {
                 if (args.GenericEventType == GenericEventType.RepositoriesPackagesRebuilt) {
                     requestWait.Set();
                 }
@@ -330,7 +331,7 @@ namespace Procon.Core.Test.Repositories {
 
             RepositoryController repository = SetupRepositoryController();
 
-            repository.Events.EventLogged += (sender, args) => {
+            repository.Shared.Events.EventLogged += (sender, args) => {
                 if (args.GenericEventType == GenericEventType.RepositoriesPackagesRebuilt) {
                     requestWait.Set();
                 }
@@ -362,7 +363,7 @@ namespace Procon.Core.Test.Repositories {
                 }
             };
 
-            CommandResultArgs result = repository.Tunnel(new Command() {
+            repository.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.PackagesInstallPackage,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -404,7 +405,7 @@ namespace Procon.Core.Test.Repositories {
 
             RepositoryController repository = SetupRepositoryController();
 
-            repository.Events.EventLogged += (sender, args) => {
+            repository.Shared.Events.EventLogged += (sender, args) => {
                 if (args.GenericEventType == GenericEventType.RepositoriesPackagesRebuilt) {
                     requestWait.Set();
                 }

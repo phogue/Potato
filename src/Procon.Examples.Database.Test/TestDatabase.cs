@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using NUnit.Framework;
-using Procon.Core;
 using Procon.Core.Connections.Plugins;
 using Procon.Core.Database;
 using Procon.Core.Shared;
@@ -22,7 +18,9 @@ namespace Procon.Examples.Database.Test {
             VariableController variables = new VariableController();
 
             DatabaseController database = new DatabaseController() {
-                Variables = variables
+                Shared = {
+                    Variables = variables
+                }
             }.Execute() as DatabaseController;
             
             variables.Set(new Command() {

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml.Serialization;
+using Newtonsoft.Json;
 using Procon.Core.Shared;
 using Procon.Core.Shared.Models;
 using Procon.Core.Variables;
@@ -13,7 +15,7 @@ namespace Procon.Core.Database {
     /// <summary>
     /// Handles opening, managing and dispatching queries in databases
     /// </summary>
-    public class DatabaseController : SharedController {
+    public class DatabaseController : CoreController, ISharedReferenceAccess {
 
         /// <summary>
         /// The currently opened database drivers.
@@ -34,14 +36,18 @@ namespace Procon.Core.Database {
             new SqLiteDriver()
         };
 
+        [XmlIgnore, JsonIgnore]
+        public SharedReferences Shared { get; private set; }
+
         /// <summary>
         /// Initializes default attributes
         /// </summary>
         public DatabaseController() : base() {
+            this.Shared = new SharedReferences();
             this.OpenDrivers = new Dictionary<String, IDriver>();
             
             this.GroupedVariableListener = new GroupedVariableListener() {
-                Variables = this.Variables,
+                Variables = this.Shared.Variables,
                 GroupsVariableName = CommonVariableNames.DatabaseConfigGroups.ToString(),
                 ListeningVariablesNames = new List<String>() {
                     CommonVariableNames.DatabaseDriverName.ToString(),
@@ -143,19 +149,19 @@ namespace Procon.Core.Database {
         /// <param name="databaseGroupNames"></param>
         private void GroupedVariableListenerOnVariablesModified(GroupedVariableListener sender, List<String> databaseGroupNames) {
             foreach (String databaseGroupName in databaseGroupNames) {
-                IDriver driver = this.AvailableDrivers.FirstOrDefault(pool => String.Compare(pool.Name, this.Variables.Get<String>(VariableModel.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabaseDriverName)), StringComparison.InvariantCultureIgnoreCase) == 0);
+                IDriver driver = this.AvailableDrivers.FirstOrDefault(pool => String.Compare(pool.Name, this.Shared.Variables.Get<String>(VariableModel.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabaseDriverName)), StringComparison.InvariantCultureIgnoreCase) == 0);
 
                 if (driver != null) {
                     if (this.OpenDrivers.ContainsKey(databaseGroupName) == false) {
                         driver = (IDriver)driver.Clone();
 
                         driver.Settings = new DriverSettings() {
-                            Hostname = this.Variables.Get(VariableModel.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabaseHostname), String.Empty),
-                            Port = this.Variables.Get<ushort>(VariableModel.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabasePort)),
-                            Username = this.Variables.Get(VariableModel.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabaseUid), String.Empty),
-                            Password = this.Variables.Get(VariableModel.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabasePassword), String.Empty),
-                            Database = this.Variables.Get(VariableModel.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabaseName), String.Empty),
-                            Memory = this.Variables.Get(VariableModel.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabaseMemory), false)
+                            Hostname = this.Shared.Variables.Get(VariableModel.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabaseHostname), String.Empty),
+                            Port = this.Shared.Variables.Get<ushort>(VariableModel.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabasePort)),
+                            Username = this.Shared.Variables.Get(VariableModel.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabaseUid), String.Empty),
+                            Password = this.Shared.Variables.Get(VariableModel.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabasePassword), String.Empty),
+                            Database = this.Shared.Variables.Get(VariableModel.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabaseName), String.Empty),
+                            Memory = this.Shared.Variables.Get(VariableModel.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabaseMemory), false)
                         };
 
                         this.OpenDrivers.Add(databaseGroupName, driver);
@@ -165,12 +171,12 @@ namespace Procon.Core.Database {
                         this.OpenDrivers[databaseGroupName].Close();
 
                         this.OpenDrivers[databaseGroupName].Settings = new DriverSettings() {
-                            Hostname = this.Variables.Get(VariableModel.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabaseHostname), String.Empty),
-                            Port = this.Variables.Get<ushort>(VariableModel.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabasePort)),
-                            Username = this.Variables.Get(VariableModel.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabaseUid), String.Empty),
-                            Password = this.Variables.Get(VariableModel.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabasePassword), String.Empty),
-                            Database = this.Variables.Get(VariableModel.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabaseName), String.Empty),
-                            Memory = this.Variables.Get(VariableModel.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabaseMemory), false)
+                            Hostname = this.Shared.Variables.Get(VariableModel.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabaseHostname), String.Empty),
+                            Port = this.Shared.Variables.Get<ushort>(VariableModel.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabasePort)),
+                            Username = this.Shared.Variables.Get(VariableModel.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabaseUid), String.Empty),
+                            Password = this.Shared.Variables.Get(VariableModel.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabasePassword), String.Empty),
+                            Database = this.Shared.Variables.Get(VariableModel.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabaseName), String.Empty),
+                            Memory = this.Shared.Variables.Get(VariableModel.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabaseMemory), false)
                         };
                     }
                 }
@@ -178,7 +184,7 @@ namespace Procon.Core.Database {
         }
 
         public override CoreController Execute() {
-            this.GroupedVariableListener.Variables = this.Variables;
+            this.GroupedVariableListener.Variables = this.Shared.Variables;
 
             this.AssignEvents();
 
@@ -247,11 +253,11 @@ namespace Procon.Core.Database {
         }
 
         protected CommandResultArgs Query(Command command, Dictionary<String, CommandParameter> parameters) {
-            return this.Security.DispatchPermissionsCheck(command, command.Name).Success == true ? this.ExecuteQueriesOnAllDrivers(parameters["query"].All<IDatabaseObject>()) : CommandResultArgs.InsufficientPermissions;
+            return this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true ? this.ExecuteQueriesOnAllDrivers(parameters["query"].All<IDatabaseObject>()) : CommandResultArgs.InsufficientPermissions;
         }
 
         protected CommandResultArgs QueryDriver(Command command, Dictionary<String, CommandParameter> parameters) {
-            return this.Security.DispatchPermissionsCheck(command, command.Name).Success == true ? this.ExecuteQueriesOnGroupName(parameters["driver"].First<String>(), parameters["query"].All<IDatabaseObject>()) : CommandResultArgs.InsufficientPermissions;
+            return this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true ? this.ExecuteQueriesOnGroupName(parameters["driver"].First<String>(), parameters["query"].All<IDatabaseObject>()) : CommandResultArgs.InsufficientPermissions;
         }
 
         public override void Dispose() {

@@ -11,7 +11,6 @@ using Procon.Core.Shared.Events;
 using Procon.Core.Shared.Models;
 using Procon.Core.Variables;
 using Procon.Net.Shared.Utils;
-using Procon.Net.Utils;
 
 #endregion
 
@@ -31,8 +30,10 @@ namespace Procon.Core.Test.Events {
             var events = new EventsController();
 
             var pushEvents = new PushEventsController() {
-                Variables = variables,
-                Events = events
+                Shared = {
+                    Variables = variables,
+                    Events = events
+                }
             }.Execute() as PushEventsController;
 
             var groupVariables = new Dictionary<String, Object>() {
@@ -80,8 +81,10 @@ namespace Procon.Core.Test.Events {
             var events = new EventsController();
 
             var pushEvents = new PushEventsController() {
-                Variables = variables,
-                Events = events
+                Shared = {
+                    Variables = variables,
+                    Events = events
+                }
             }.Execute() as PushEventsController;
 
             variables.Set(new Command() {
@@ -119,8 +122,10 @@ namespace Procon.Core.Test.Events {
             var events = new EventsController();
 
             var pushEvents = new PushEventsController() {
-                Variables = variables,
-                Events = events
+                Shared = {
+                    Variables = variables,
+                    Events = events
+                }
             }.Execute() as PushEventsController;
 
             variables.Set(new Command() {
@@ -189,8 +194,10 @@ namespace Procon.Core.Test.Events {
             var events = new EventsController();
 
             var pushEvents = new PushEventsController() {
-                Variables = variables,
-                Events = events
+                Shared = {
+                    Variables = variables,
+                    Events = events
+                }
             }.Execute() as PushEventsController;
 
             variables.Set(new Command() {
@@ -230,8 +237,10 @@ namespace Procon.Core.Test.Events {
             var events = new EventsController();
 
             var pushEvents = new PushEventsController() {
-                Variables = variables,
-                Events = events
+                Shared = {
+                    Variables = variables,
+                    Events = events
+                }
             }.Execute() as PushEventsController;
 
             variables.Set(new Command() {
@@ -267,8 +276,10 @@ namespace Procon.Core.Test.Events {
             var events = new EventsController();
 
             var pushEvents = new PushEventsController() {
-                Variables = variables,
-                Events = events
+                Shared = {
+                    Variables = variables,
+                    Events = events
+                }
             }.Execute() as PushEventsController;
 
             variables.Set(new Command() {

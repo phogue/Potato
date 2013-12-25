@@ -6,6 +6,7 @@ using System.Net;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Xml.Linq;
+using System.Xml.Serialization;
 using Newtonsoft.Json;
 using Procon.Core.Shared;
 using Procon.Core.Shared.Events;
@@ -21,17 +22,24 @@ namespace Procon.Core.Remote {
     /// <summary>
     /// Listens for incoming connections, authenticates and dispatches commands
     /// </summary>
-    public class CommandServerController : SharedController {
+    public class CommandServerController : CoreController, ISharedReferenceAccess {
 
         /// <summary>
         /// The client to send/recv remote commands.
         /// </summary>
         public CommandServerListener CommandServerListener { get; set; }
 
+        [XmlIgnore, JsonIgnore]
+        public SharedReferences Shared { get; private set; }
+
+        public CommandServerController() : base() {
+            this.Shared = new SharedReferences();
+        }
+
         public override CoreController Execute() {
-            this.Variables.Variable(CommonVariableNames.CommandServerEnabled).PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(CommandServerController_PropertyChanged);
-            this.Variables.Variable(CommonVariableNames.CommandServerPort).PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(CommandServerController_PropertyChanged);
-            this.Variables.Variable(CommonVariableNames.CommandServerCertificatePath).PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(CommandServerController_PropertyChanged);
+            this.Shared.Variables.Variable(CommonVariableNames.CommandServerEnabled).PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(CommandServerController_PropertyChanged);
+            this.Shared.Variables.Variable(CommonVariableNames.CommandServerPort).PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(CommandServerController_PropertyChanged);
+            this.Shared.Variables.Variable(CommonVariableNames.CommandServerCertificatePath).PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(CommandServerController_PropertyChanged);
 
             this.Configure();
 
@@ -41,9 +49,9 @@ namespace Procon.Core.Remote {
         public override void Dispose() {
             base.Dispose();
 
-            this.Variables.Variable(CommonVariableNames.CommandServerEnabled).PropertyChanged -= new System.ComponentModel.PropertyChangedEventHandler(CommandServerController_PropertyChanged);
-            this.Variables.Variable(CommonVariableNames.CommandServerPort).PropertyChanged -= new System.ComponentModel.PropertyChangedEventHandler(CommandServerController_PropertyChanged);
-            this.Variables.Variable(CommonVariableNames.CommandServerCertificatePath).PropertyChanged -= new System.ComponentModel.PropertyChangedEventHandler(CommandServerController_PropertyChanged);
+            this.Shared.Variables.Variable(CommonVariableNames.CommandServerEnabled).PropertyChanged -= new System.ComponentModel.PropertyChangedEventHandler(CommandServerController_PropertyChanged);
+            this.Shared.Variables.Variable(CommonVariableNames.CommandServerPort).PropertyChanged -= new System.ComponentModel.PropertyChangedEventHandler(CommandServerController_PropertyChanged);
+            this.Shared.Variables.Variable(CommonVariableNames.CommandServerCertificatePath).PropertyChanged -= new System.ComponentModel.PropertyChangedEventHandler(CommandServerController_PropertyChanged);
             
             if (this.CommandServerListener != null) this.CommandServerListener.Dispose();
             this.CommandServerListener = null;
@@ -68,7 +76,7 @@ namespace Procon.Core.Remote {
 
         protected X509Certificate2 LoadCertificate(String certificatePath) {
             X509Certificate2 certificate;
-            String certificatePassword = this.Variables.Get<String>(CommonVariableNames.CommandServerCertificatePassword);
+            String certificatePassword = this.Shared.Variables.Get<String>(CommonVariableNames.CommandServerCertificatePassword);
 
             try {
                 certificate = certificatePassword != null ? new X509Certificate2(certificatePath, certificatePassword) : new X509Certificate2(certificatePath);
@@ -76,7 +84,7 @@ namespace Procon.Core.Remote {
             catch (CryptographicException e) {
                 certificate = null;
 
-                this.Events.Log(new GenericEventArgs() {
+                this.Shared.Events.Log(new GenericEventArgs() {
                     Message = String.Format("Error loading certificate @ path \"{0}\" \"{1}\".", certificatePath, e.Message),
                     GenericEventType = GenericEventType.CommandServerStarted,
                     Success = false,
@@ -94,8 +102,8 @@ namespace Procon.Core.Remote {
         /// We should fetch and listen for changes to the CommandServer* variables
         /// </summary>
         protected void Configure() {
-            if (this.Variables.Get<bool>(CommonVariableNames.CommandServerEnabled) == true) {
-                String certificatePath = this.Variables.Get(CommonVariableNames.CommandServerCertificatePath, Defines.CertificatesDirectoryCommandServerPfx);
+            if (this.Shared.Variables.Get<bool>(CommonVariableNames.CommandServerEnabled) == true) {
+                String certificatePath = this.Shared.Variables.Get(CommonVariableNames.CommandServerCertificatePath, Defines.CertificatesDirectoryCommandServerPfx);
 
                 if (File.Exists(certificatePath) == true) {
                     X509Certificate2 certificate = this.LoadCertificate(certificatePath);
@@ -103,7 +111,7 @@ namespace Procon.Core.Remote {
                     if (certificate != null) {
                         this.CommandServerListener = new CommandServerListener() {
                             Certificate = certificate,
-                            Port = this.Variables.Get<int>(CommonVariableNames.CommandServerPort)
+                            Port = this.Shared.Variables.Get<int>(CommonVariableNames.CommandServerPort)
                         };
 
                         // Assign events.
@@ -112,7 +120,7 @@ namespace Procon.Core.Remote {
                         // Start accepting connections.
                         this.CommandServerListener.BeginListener();
 
-                        this.Events.Log(new GenericEventArgs() {
+                        this.Shared.Events.Log(new GenericEventArgs() {
                             GenericEventType = GenericEventType.CommandServerStarted,
                             Success = true,
                             Status = CommandResultType.Success
@@ -122,7 +130,7 @@ namespace Procon.Core.Remote {
                 }
                 else {
                     // Panic, no certificate exists. Cannot start server.
-                    this.Events.Log(new GenericEventArgs() {
+                    this.Shared.Events.Log(new GenericEventArgs() {
                         Message = String.Format("Command server certificate @ path \"{0}\" does not exists.", certificatePath),
                         GenericEventType = GenericEventType.CommandServerStarted,
                         Success = false,
@@ -134,7 +142,7 @@ namespace Procon.Core.Remote {
                 this.CommandServerListener.Dispose();
                 this.CommandServerListener = null;
 
-                this.Events.Log(new GenericEventArgs() {
+                this.Shared.Events.Log(new GenericEventArgs() {
                     GenericEventType = GenericEventType.CommandServerStopped,
                     Success = true,
                     Status = CommandResultType.Success
@@ -282,7 +290,7 @@ namespace Procon.Core.Remote {
 
         protected bool Authenticate(String username, String passwordPlainText) {
             // @todo while this is passing plain text passwords we restrict it to the security controller
-            CommandResultArgs result = this.Security.Tunnel(new Command() {
+            CommandResultArgs result = this.Shared.Security.Tunnel(new Command() {
                 Origin = CommandOrigin.Remote,
                 Username =  username,
                 CommandType = CommandType.SecurityAccountAuthenticate,

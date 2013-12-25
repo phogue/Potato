@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 using System.Xml.Linq;
+using System.Xml.Serialization;
+using Newtonsoft.Json;
 using Procon.Core.Shared;
 using Procon.Core.Shared.Events;
 using Procon.Core.Shared.Models;
@@ -18,7 +20,7 @@ namespace Procon.Core.Events {
     /// Logs events, keeping them in memory until a specific time occurs that will write all
     /// events older than a time period to disk.
     /// </summary>
-    public class EventsController : SharedController {
+    public class EventsController : CoreController, ISharedReferenceAccess {
 
         /// <summary>
         /// List of events for history
@@ -54,10 +56,14 @@ namespace Procon.Core.Events {
         /// <param name="e">The event that has been logged</param>
         public delegate void EventLoggedHandler(Object sender, GenericEventArgs e);
 
+        [XmlIgnore, JsonIgnore]
+        public SharedReferences Shared { get; private set; }
+
         /// <summary>
         /// Initializes default attributes and sets up command dispatching
         /// </summary>
         public EventsController() : base() {
+            this.Shared = new SharedReferences();
             this.LoggedEvents = new List<GenericEventArgs>();
 
             this.AppendDispatchHandlers(new Dictionary<CommandAttribute, CommandDispatchHandler>() {
@@ -131,7 +137,7 @@ namespace Procon.Core.Events {
         /// </summary>
         /// <param name="events">The events to write.</param>
         protected void WriteEventsList(List<GenericEventArgs> events) {
-            if (this.Variables.Get(CommonVariableNames.WriteLogEventsToFile, true) == true) {
+            if (this.Shared.Variables.Get(CommonVariableNames.WriteLogEventsToFile, true) == true) {
                 foreach (var eventHourlyGroup in events.GroupBy(e => new DateTime(e.Stamp.Year, e.Stamp.Month, e.Stamp.Day, e.Stamp.Hour, 0, 0))) {
                     String logFileName = this.EventsLogFileName(eventHourlyGroup.Key);
 
@@ -177,7 +183,7 @@ namespace Procon.Core.Events {
                 List<GenericEventArgs> flushEvents = null;
 
                 lock (this.LoggedEvents) {
-                    DateTime before = now - TimeSpan.FromSeconds(this.Variables.Get(CommonVariableNames.MaximumEventsTimeSeconds, 30));
+                    DateTime before = now - TimeSpan.FromSeconds(this.Shared.Variables.Get(CommonVariableNames.MaximumEventsTimeSeconds, 30));
 
                     // All events are appended to the Events list, so we
                     // remove all events until we find one that isn't old enough.
@@ -210,11 +216,11 @@ namespace Procon.Core.Events {
 
             ulong eventId = parameters["eventId"].First<ulong>();
 
-            if (this.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
+            if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
                 List<GenericEventArgs> events = null;
 
                 lock (this.LoggedEvents) {
-                    events = this.LoggedEvents.Where(e => e.Stamp > DateTime.Now - TimeSpan.FromSeconds(this.Variables.Get(CommonVariableNames.MaximumEventsTimeSeconds, 300)))
+                    events = this.LoggedEvents.Where(e => e.Stamp > DateTime.Now - TimeSpan.FromSeconds(this.Shared.Variables.Get(CommonVariableNames.MaximumEventsTimeSeconds, 300)))
                                               .Where(e => e.Id > eventId)
                                               .OrderBy(e => e.Id)
                                               .ToList();

@@ -10,7 +10,6 @@ using Procon.Core.Security;
 using Procon.Core.Shared;
 using Procon.Core.Shared.Models;
 using Procon.Fuzzy.Tokens.Primitive.Temporal;
-using Procon.Net.Protocols;
 using Procon.Net.Protocols.Myrcon.Frostbite.Battlefield.Battlefield3;
 using Procon.Net.Shared.Actions;
 using Procon.Net.Shared.Collections;
@@ -340,7 +339,9 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
             });
 
             var textCommandController = new TextCommandController() {
-                Security = security,
+                Shared = {
+                    Security = security
+                },
                 //Languages = languages,
                 Connection = new ConnectionController() {
                     Game = new Battlefield3Game(String.Empty, 25200) {

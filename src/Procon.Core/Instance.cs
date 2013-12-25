@@ -3,30 +3,27 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Xml.Serialization;
+using Newtonsoft.Json;
 using Procon.Core.Connections.Plugins;
 using Procon.Core.Events;
-using Procon.Core.Localization;
 using Procon.Core.Remote;
-using Procon.Core.Security;
 using Procon.Core.Shared;
 using Procon.Core.Shared.Events;
 using Procon.Core.Shared.Models;
 using Procon.Core.Shared.Scheduler;
-using Procon.Net.Protocols;
 using Procon.Net.Shared;
 using Procon.Net.Shared.Protocols;
+using Procon.Core.Connections;
+using Procon.Core.Repositories;
+using Procon.Net;
+using Procon.Service.Shared;
 
 namespace Procon.Core {
-    using Procon.Core.Connections;
-    using Procon.Core.Repositories;
-    using Procon.Core.Variables;
-    using Procon.Net;
-    using Procon.Service.Shared;
-    
     /// <summary>
     /// The core controller of Procon, an instance of Procon.
     /// </summary>
-    public class Instance : SharedController, IService {
+    public class Instance : CoreController, ISharedReferenceAccess, IService {
 
         /// <summary>
         /// List of game connections
@@ -64,10 +61,15 @@ namespace Procon.Core {
         /// </summary>
         protected ServiceMessage ServiceMessage { get; set; }
 
+        [XmlIgnore, JsonIgnore]
+        public SharedReferences Shared { get; private set; }
+
         /// <summary>
         /// Creates a new instance of Procon, setting up command server, packages and tasks
         /// </summary>
         public Instance() : base() {
+            this.Shared = new SharedReferences();
+
             this.Connections = new List<ConnectionController>();
 
             this.Packages = new RepositoryController();
@@ -232,7 +234,7 @@ namespace Procon.Core {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void Events_Tick(object sender, TickEventArgs e) {
-            this.Events.WriteEvents();
+            this.Shared.Events.WriteEvents();
         }
 
         /// <summary>
@@ -295,6 +297,10 @@ namespace Procon.Core {
 
             this.Tasks.Start();
 
+            this.Execute(new Command() {
+                Origin = CommandOrigin.Local
+            }, new Config().Load(new DirectoryInfo(Defines.ConfigsDirectory)));
+
             return base.Execute();
         }
 
@@ -310,7 +316,7 @@ namespace Procon.Core {
         /// </summary>
         /// <param name="arguments"></param>
         public void ParseCommandLineArguments(List<String> arguments) {
-            this.Variables.ParseArguments(arguments);
+            this.Shared.Variables.ParseArguments(arguments);
         }
 
         /// <summary>
@@ -329,24 +335,24 @@ namespace Procon.Core {
         /// </summary>
         /// <param name="config"></param>
         public override void WriteConfig(Config config) {
-            Config variablesConfig = new Config().Create(this.Variables.GetType());
-            this.Variables.WriteConfig(variablesConfig);
+            Config variablesConfig = new Config().Create(this.Shared.Variables.GetType());
+            this.Shared.Variables.WriteConfig(variablesConfig);
             config.Combine(variablesConfig);
 
-            Config eventsConfig = new Config().Create(this.Events.GetType());
-            this.Events.WriteConfig(eventsConfig);
+            Config eventsConfig = new Config().Create(this.Shared.Events.GetType());
+            this.Shared.Events.WriteConfig(eventsConfig);
             config.Combine(eventsConfig);
 
             Config packagesConfig = new Config().Create(this.Packages.GetType());
             this.Packages.WriteConfig(packagesConfig);
             config.Combine(packagesConfig);
 
-            Config languagesConfig = new Config().Create(this.Languages.GetType());
-            this.Languages.WriteConfig(languagesConfig);
+            Config languagesConfig = new Config().Create(this.Shared.Languages.GetType());
+            this.Shared.Languages.WriteConfig(languagesConfig);
             config.Combine(languagesConfig);
 
-            Config securityConfig = new Config().Create(this.Security.GetType());
-            this.Security.WriteConfig(securityConfig);
+            Config securityConfig = new Config().Create(this.Shared.Security.GetType());
+            this.Shared.Security.WriteConfig(securityConfig);
             config.Combine(securityConfig);
 
             Config commandServerConfig = new Config().Create(this.CommandServer.GetType());
@@ -439,10 +445,10 @@ namespace Procon.Core {
                 this.Connections.ForEach(list.Add);
 
                 list.Add(this.PushEvents);
-                list.Add(this.Security);
-                list.Add(this.Languages);
-                list.Add(this.Variables);
-                list.Add(this.Events);
+                list.Add(this.Shared.Security);
+                list.Add(this.Shared.Languages);
+                list.Add(this.Shared.Variables);
+                list.Add(this.Shared.Events);
                 list.Add(this.Packages);
             }
             
@@ -468,8 +474,8 @@ namespace Procon.Core {
             // 2. Events contains varies references to other data through out Procon. This 
             // data should be written out first, writing out the full events data then 
             // moving on to disposing the actual data.
-            this.Events.Dispose();
-            this.Events = null;
+            this.Shared.Events.Dispose();
+            this.Shared.Events = null;
 
             // 3. Stop/disconnect all game server connections, unload any plugins etc.
             lock (this.Connections) {
@@ -483,11 +489,11 @@ namespace Procon.Core {
 
             // @todo Does the order matter here? If so, document why.
 
-            this.Security.Dispose();
-            this.Security = null;
+            this.Shared.Security.Dispose();
+            this.Shared.Security = null;
 
-            this.Languages.Dispose();
-            this.Languages = null;
+            this.Shared.Languages.Dispose();
+            this.Shared.Languages = null;
 
             this.Packages.Dispose();
             this.Packages = null;
@@ -498,8 +504,8 @@ namespace Procon.Core {
             this.PushEvents.Dispose();
             this.PushEvents = null;
 
-            this.Variables.Dispose();
-            this.Variables = null;
+            this.Shared.Variables.Dispose();
+            this.Shared.Variables = null;
 
             base.Dispose();
         }
@@ -514,7 +520,7 @@ namespace Procon.Core {
             CommandResultArgs result = null;
 
             // As long as the current account is allowed to execute this command...
-            if (this.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
+            if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
                 this.ServiceMessage = new ServiceMessage() {
                     Name = "restart"
                 };
@@ -525,7 +531,7 @@ namespace Procon.Core {
                     Success = true
                 };
 
-                this.Events.Log(GenericEventArgs.ConvertToGenericEvent(result, GenericEventType.InstanceServiceRestarting));
+                this.Shared.Events.Log(GenericEventArgs.ConvertToGenericEvent(result, GenericEventType.InstanceServiceRestarting));
             }
             else {
                 result = CommandResultArgs.InsufficientPermissions;
@@ -550,9 +556,9 @@ namespace Procon.Core {
             String additional = parameters["additional"].First<String>();
 
             // As long as the current account is allowed to execute this command...
-            if (this.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
+            if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
                 // As long as we have less than the maximum amount of connections...
-                if (this.Connections.Count < this.Variables.Get(CommonVariableNames.MaximumGameConnections, 9000)) {
+                if (this.Connections.Count < this.Shared.Variables.Get(CommonVariableNames.MaximumGameConnections, 9000)) {
                     // As long as the connection for that specific game, hostname, and port does not exist...
                     if (this.Connections.FirstOrDefault(c => c.ConnectionModel.GameType.Type == gameTypeType && c.ConnectionModel.Hostname == hostName && c.ConnectionModel.Port == port) == null) {
                         // As long as the game type is defined...
@@ -589,7 +595,7 @@ namespace Procon.Core {
                                 }
                             };
 
-                            this.Events.Log(GenericEventArgs.ConvertToGenericEvent(result, GenericEventType.InstanceConnectionAdded));
+                            this.Shared.Events.Log(GenericEventArgs.ConvertToGenericEvent(result, GenericEventType.InstanceConnectionAdded));
                         }
                         else {
                             result = new CommandResultArgs() {
@@ -626,7 +632,7 @@ namespace Procon.Core {
             CommandResultArgs result = null;
 
             // As long as the current account is allowed to execute this command...
-            if (this.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
+            if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
 
                 // As long as the connection for that specific game, hostname, and port exists...
                 if (connection != null) {
@@ -645,7 +651,7 @@ namespace Procon.Core {
                         }
                     };
 
-                    this.Events.Log(GenericEventArgs.ConvertToGenericEvent(result, GenericEventType.InstanceConnectionRemoved));
+                    this.Shared.Events.Log(GenericEventArgs.ConvertToGenericEvent(result, GenericEventType.InstanceConnectionRemoved));
 
                     connection.Dispose();
                 }
@@ -708,7 +714,7 @@ namespace Procon.Core {
         public CommandResultArgs InstanceQuery(Command command, Dictionary<String, CommandParameter> parameters) {
             CommandResultArgs result = null;
 
-            if (this.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
+            if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
                 result = new CommandResultArgs() {
                     Success = true,
                     Status = CommandResultType.Success,
@@ -717,9 +723,9 @@ namespace Procon.Core {
                         GameTypes = new List<GameType>(SupportedGameTypes.GetSupportedGames().Select(k => k.Key as GameType)),
                         //Repositories = new List<RepositoryModel>(this.Packages.RemoteRepositories),
                         //Packages = new List<PackageModel>(this.Packages.Packages),
-                        Groups = new List<GroupModel>(this.Security.Groups),
-                        Languages = this.Languages.LoadedLanguageFiles.Select(language => language.LanguageModel).ToList(),
-                        Variables = new List<VariableModel>(this.Variables.VolatileVariables)
+                        Groups = new List<GroupModel>(this.Shared.Security.Groups),
+                        Languages = this.Shared.Languages.LoadedLanguageFiles.Select(language => language.LanguageModel).ToList(),
+                        Variables = new List<VariableModel>(this.Shared.Variables.VolatileVariables)
                     }
                 };
             }

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 using System.IO;
+using System.Xml.Serialization;
+using Newtonsoft.Json;
 using Procon.Core.Events;
 using Procon.Core.Shared;
 using Procon.Core.Shared.Events;
@@ -14,7 +16,7 @@ using Procon.Service.Shared;
 namespace Procon.Core.Repositories {
     using Procon.Net.Utils;
 
-    public class RepositoryController : SharedController {
+    public class RepositoryController : CoreController, ISharedReferenceAccess {
 
         /// <summary>
         /// The path that files should finally be installed to (where Procon.exe is)
@@ -106,10 +108,13 @@ namespace Procon.Core.Repositories {
         /// </remarks>
         public List<RepositoryPackageReference> CachedAutoUpdateReferences { get; set; }
 
-
         protected readonly Object BuildFlatPackedPackagesLock = new Object();
 
+        [XmlIgnore, JsonIgnore]
+        public SharedReferences Shared { get; private set; }
+
         public RepositoryController() : base() {
+            this.Shared = new SharedReferences();
 
             this.PackagesPath = Defines.PackagesDirectory;
             this.PackagesUpdatesPath = Defines.PackagesUpdatesDirectory;
@@ -247,7 +252,7 @@ namespace Procon.Core.Repositories {
                 { "url", new CommandParameter() {
                     Data = new CommandData() {
                         Content = new List<String>() {
-                            this.Variables.Get<String>(CommonVariableNames.PackagesProcon2RepositoryUrl)
+                            this.Shared.Variables.Get<String>(CommonVariableNames.PackagesProcon2RepositoryUrl)
                         }
                     }
                 }}
@@ -292,7 +297,7 @@ namespace Procon.Core.Repositories {
             String urlSlug = parameters["urlSlug"].First<String>();
             String packageUid = parameters["packageUid"].First<String>();
 
-            if (this.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
+            if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
 
                 FlatPackedPackage package = this.Packages.FirstOrDefault(p => p.Repository.UrlSlug == urlSlug && p.Uid == packageUid);
 
@@ -337,7 +342,7 @@ namespace Procon.Core.Repositories {
 
             String url = parameters["url"].First<String>();
 
-            if (this.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
+            if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
                 Repository repository = this.RemoteRepositories.FirstOrDefault(r => r.UrlSlug == url.UrlSlug());
 
                 if (repository == null) {
@@ -361,8 +366,8 @@ namespace Procon.Core.Repositories {
                         }
                     };
 
-                    if (this.Events != null) {
-                        this.Events.Log(GenericEventArgs.ConvertToGenericEvent(result, GenericEventType.RepositoriesRepositoryAdded));
+                    if (this.Shared.Events != null) {
+                        this.Shared.Events.Log(GenericEventArgs.ConvertToGenericEvent(result, GenericEventType.RepositoriesRepositoryAdded));
                     }
                 }
                 else {
@@ -391,7 +396,7 @@ namespace Procon.Core.Repositories {
 
             String urlSlug = parameters["urlSlug"].First<String>();
 
-            if (this.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
+            if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
 
                 // Force the sluggified version of what whatever was passed in.
                 urlSlug = urlSlug.UrlSlug();
@@ -414,8 +419,8 @@ namespace Procon.Core.Repositories {
                         }
                     };
 
-                    if (this.Events != null) {
-                        this.Events.Log(GenericEventArgs.ConvertToGenericEvent(result, GenericEventType.RepositoriesRepositoryRemoved));
+                    if (this.Shared.Events != null) {
+                        this.Shared.Events.Log(GenericEventArgs.ConvertToGenericEvent(result, GenericEventType.RepositoriesRepositoryRemoved));
                     }
                 }
                 else {
@@ -445,7 +450,7 @@ namespace Procon.Core.Repositories {
             String urlSlug = parameters["urlSlug"].First<String>();
             String packageUid = parameters["packageUid"].First<String>();
 
-            if (this.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
+            if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
 
                 // Force the sluggified version of what whatever was passed in.
                 urlSlug = urlSlug.UrlSlug();
@@ -488,7 +493,7 @@ namespace Procon.Core.Repositories {
             String urlSlug = parameters["urlSlug"].First<String>();
             String packageUid = parameters["packageUid"].First<String>();
 
-            if (this.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
+            if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
 
                 // Force the sluggified version of what whatever was passed in.
                 urlSlug = urlSlug.UrlSlug();
@@ -614,7 +619,7 @@ namespace Procon.Core.Repositories {
                 // Now see if there are any new packages to update..
                 this.AutoUpdatePackages();
 
-                this.Events.Log(new GenericEventArgs() {
+                this.Shared.Events.Log(new GenericEventArgs() {
                     GenericEventType = GenericEventType.RepositoriesPackagesRebuilt
                 });
             }

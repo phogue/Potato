@@ -4,23 +4,27 @@ using System.Linq;
 using Procon.Core.Shared;
 using Procon.Core.Shared.Events;
 using Procon.Core.Shared.Models;
-using Procon.Net.Protocols;
 using Procon.Net.Shared.Protocols;
 using Procon.Net.Shared.Utils;
 
 namespace Procon.Core.Security {
-
-    public class SecurityController : SharedController {
+    /// <summary>
+    /// Manages user accounts, groups and players attached to accounts.
+    /// </summary>
+    public class SecurityController : CoreController, ISharedReferenceAccess {
 
         /// <summary>
         /// List of group models within this security controller
         /// </summary>
         public List<GroupModel> Groups { get; protected set; }
 
+        public SharedReferences Shared { get; private set; }
+
         /// <summary>
         /// Initializes a security controller with the default values and dispatch.
         /// </summary>
         public SecurityController() : base() {
+            this.Shared = new SharedReferences();
             this.Groups = new List<GroupModel>();
 
             this.AppendDispatchHandlers(new Dictionary<CommandAttribute, CommandDispatchHandler>() {
@@ -453,8 +457,8 @@ namespace Procon.Core.Security {
                             }
                         };
 
-                        if (this.Events != null) {
-                            this.Events.Log(GenericEventArgs.ConvertToGenericEvent(result, GenericEventType.SecurityGroupAdded));
+                        if (this.Shared.Events != null) {
+                            this.Shared.Events.Log(GenericEventArgs.ConvertToGenericEvent(result, GenericEventType.SecurityGroupAdded));
                         }
                     }
                     else {
@@ -509,8 +513,8 @@ namespace Procon.Core.Security {
                             }
                         };
 
-                        if (this.Events != null) {
-                            this.Events.Log(GenericEventArgs.ConvertToGenericEvent(result, GenericEventType.SecurityGroupRemoved));
+                        if (this.Shared.Events != null) {
+                            this.Shared.Events.Log(GenericEventArgs.ConvertToGenericEvent(result, GenericEventType.SecurityGroupRemoved));
                         }
 
                         // Now cleanup our stored account
@@ -569,8 +573,8 @@ namespace Procon.Core.Security {
                             }
                         };
 
-                        if (this.Events != null) {
-                            this.Events.Log(GenericEventArgs.ConvertToGenericEvent(result, GenericEventType.SecurityAccountRemoved));
+                        if (this.Shared.Events != null) {
+                            this.Shared.Events.Log(GenericEventArgs.ConvertToGenericEvent(result, GenericEventType.SecurityAccountRemoved));
                         }
 
                         // Now cleanup our stored account
@@ -637,8 +641,8 @@ namespace Procon.Core.Security {
                             }
                         };
 
-                        if (this.Events != null) {
-                            this.Events.Log(GenericEventArgs.ConvertToGenericEvent(result, GenericEventType.SecurityPlayerRemoved));
+                        if (this.Shared.Events != null) {
+                            this.Shared.Events.Log(GenericEventArgs.ConvertToGenericEvent(result, GenericEventType.SecurityPlayerRemoved));
                         }
 
                         // Now cleanup our stored player
@@ -887,8 +891,8 @@ namespace Procon.Core.Security {
                         }
                     };
 
-                    if (this.Events != null) {
-                        this.Events.Log(GenericEventArgs.ConvertToGenericEvent(result, GenericEventType.SecurityGroupPermissionAuthorityChanged));
+                    if (this.Shared.Events != null) {
+                        this.Shared.Events.Log(GenericEventArgs.ConvertToGenericEvent(result, GenericEventType.SecurityGroupPermissionAuthorityChanged));
                     }
                 }
                 else {
@@ -948,8 +952,8 @@ namespace Procon.Core.Security {
                             }
                         };
 
-                        if (this.Events != null) {
-                            this.Events.Log(GenericEventArgs.ConvertToGenericEvent(result, GenericEventType.SecurityGroupPermissionsCopied));
+                        if (this.Shared.Events != null) {
+                            this.Shared.Events.Log(GenericEventArgs.ConvertToGenericEvent(result, GenericEventType.SecurityGroupPermissionsCopied));
                         }
                     }
                     else {
@@ -1016,8 +1020,8 @@ namespace Procon.Core.Security {
                                 }
                             };
 
-                            if (this.Events != null) {
-                                this.Events.Log(GenericEventArgs.ConvertToGenericEvent(result, GenericEventType.SecurityAccountAdded));
+                            if (this.Shared.Events != null) {
+                                this.Shared.Events.Log(GenericEventArgs.ConvertToGenericEvent(result, GenericEventType.SecurityAccountAdded));
                             }
                         }
                         // Else the account exists already, relocate it.
@@ -1052,8 +1056,8 @@ namespace Procon.Core.Security {
                                 }
                             };
 
-                            if (this.Events != null) {
-                                this.Events.Log(GenericEventArgs.ConvertToGenericEvent(result, GenericEventType.SecurityAccountAdded));
+                            if (this.Shared.Events != null) {
+                                this.Shared.Events.Log(GenericEventArgs.ConvertToGenericEvent(result, GenericEventType.SecurityAccountAdded));
                             }
                         }
                     }
@@ -1138,8 +1142,8 @@ namespace Procon.Core.Security {
                                 }
                             };
 
-                            if (this.Events != null) {
-                                this.Events.Log(GenericEventArgs.ConvertToGenericEvent(result, GenericEventType.SecurityPlayerAdded));
+                            if (this.Shared.Events != null) {
+                                this.Shared.Events.Log(GenericEventArgs.ConvertToGenericEvent(result, GenericEventType.SecurityPlayerAdded));
                             }
                         }
                         // Else the player already exists and is attached to another account. Reassign it.
@@ -1174,8 +1178,8 @@ namespace Procon.Core.Security {
                                 }
                             };
 
-                            if (this.Events != null) {
-                                this.Events.Log(GenericEventArgs.ConvertToGenericEvent(result, GenericEventType.SecurityPlayerAdded));
+                            if (this.Shared.Events != null) {
+                                this.Shared.Events.Log(GenericEventArgs.ConvertToGenericEvent(result, GenericEventType.SecurityPlayerAdded));
                             }
                         }
                     }
@@ -1372,7 +1376,7 @@ namespace Procon.Core.Security {
                 AccountModel account = this.Groups.SelectMany(g => g.Accounts).FirstOrDefault(a => a.Username == username);
 
                 if (account != null) {
-                    LanguageModel language = this.Languages.LoadedLanguageFiles.Where(l => l.LanguageModel.LanguageCode == languageCode).Select(l => l.LanguageModel).FirstOrDefault();
+                    LanguageModel language = this.Shared.Languages.LoadedLanguageFiles.Where(l => l.LanguageModel.LanguageCode == languageCode).Select(l => l.LanguageModel).FirstOrDefault();
 
                     if (language != null) {
                         account.PreferredLanguageCode = language.LanguageCode;

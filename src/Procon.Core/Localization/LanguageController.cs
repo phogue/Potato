@@ -3,13 +3,15 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Xml.Serialization;
+using Newtonsoft.Json;
 using Procon.Core.Shared;
 using Procon.Core.Shared.Models;
 using Procon.Service.Shared;
 
 namespace Procon.Core.Localization {
 
-    public class LanguageController : SharedController {
+    public class LanguageController : CoreController, ISharedReferenceAccess {
         
         /// <summary>
         /// The default language to fall back on
@@ -21,8 +23,12 @@ namespace Procon.Core.Localization {
         /// </summary>
         public List<LanguageConfig> LoadedLanguageFiles { get; protected set; }
 
+        [XmlIgnore, JsonIgnore]
+        public SharedReferences Shared { get; private set; }
+
         // Default Initialization
-        public LanguageController() {
+        public LanguageController() : base() {
+            this.Shared = new SharedReferences();
             this.Default = null;
             this.LoadedLanguageFiles = new List<LanguageConfig>();
 
@@ -117,7 +123,7 @@ namespace Procon.Core.Localization {
 
             this.AssignEvents();
 
-            this.Variables.Variable(CommonVariableNames.LocalizationDefaultLanguageCode).Value = "en-UK";
+            this.Shared.Variables.Variable(CommonVariableNames.LocalizationDefaultLanguageCode).Value = "en-UK";
 
             this.LoadDefaultLanguage();
 
@@ -130,14 +136,14 @@ namespace Procon.Core.Localization {
         protected void AssignEvents() {
             this.UnassignEvents();
 
-            this.Variables.Variable(CommonVariableNames.LocalizationDefaultLanguageCode).PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(LanguageController_PropertyChanged);
+            this.Shared.Variables.Variable(CommonVariableNames.LocalizationDefaultLanguageCode).PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(LanguageController_PropertyChanged);
 
         }
         /// <summary>
         /// Removes all current event handlers.
         /// </summary>
         protected void UnassignEvents() {
-            this.Variables.Variable(CommonVariableNames.LocalizationDefaultLanguageCode).PropertyChanged -= new System.ComponentModel.PropertyChangedEventHandler(LanguageController_PropertyChanged);
+            this.Shared.Variables.Variable(CommonVariableNames.LocalizationDefaultLanguageCode).PropertyChanged -= new System.ComponentModel.PropertyChangedEventHandler(LanguageController_PropertyChanged);
         }
 
         /// <summary>
@@ -150,7 +156,7 @@ namespace Procon.Core.Localization {
         }
         
         protected void LoadDefaultLanguage() {
-            String languageCode = this.Variables.Variable(CommonVariableNames.LocalizationDefaultLanguageCode).ToType("en-UK");
+            String languageCode = this.Shared.Variables.Variable(CommonVariableNames.LocalizationDefaultLanguageCode).ToType("en-UK");
 
             LanguageConfig language = this.LoadedLanguageFiles.FirstOrDefault(lang => lang.LanguageModel.LanguageCode == languageCode);
 
@@ -198,7 +204,7 @@ namespace Procon.Core.Localization {
         public CommandResultArgs Localize(Command command, String languageCode, String @namespace, String name, Object[] args) {
             CommandResultArgs result = null;
 
-            if (command.Origin == CommandOrigin.Local || this.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
+            if (command.Origin == CommandOrigin.Local || this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
                 LanguageConfig language = this.LoadedLanguageFiles.FirstOrDefault(lang => lang.LanguageModel.LanguageCode == languageCode);
 
                 if (language != null) {

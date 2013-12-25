@@ -140,7 +140,7 @@ namespace Procon.Core.Test.Repositories {
 
             var eventsController = new EventsController();
 
-            repositoryController.Events = eventsController;
+            repositoryController.Shared.Events = eventsController;
 
             repositoryController.Tunnel(new Command() {
                 CommandType = CommandType.PackagesAddRemoteRepository,

@@ -210,7 +210,9 @@ namespace Procon.Core.Test.Variables {
         [Test]
         public void TestVariablesSetValueInsufficientPermission() {
             var variables = new VariableController() {
-                Security = new SecurityController().Execute() as SecurityController
+                Shared = {
+                    Security = new SecurityController().Execute() as SecurityController
+                }
             };
 
             CommandResultArgs result = variables.Tunnel(new Command() {

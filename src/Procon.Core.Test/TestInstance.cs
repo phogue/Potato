@@ -41,10 +41,12 @@ namespace Procon.Core.Test {
             var variables = new VariableController();
 
             var instance = new Instance() {
-                Variables = variables,
-                Security = new SecurityController(),
-                Events = new EventsController(),
-                Languages = new LanguageController()
+                Shared = {
+                    Variables = variables,
+                    Security = new SecurityController(),
+                    Events = new EventsController(),
+                    Languages = new LanguageController()
+                }
             }.Execute() as Instance;
 
             instance.Tunnel(new Command() {
@@ -86,10 +88,12 @@ namespace Procon.Core.Test {
             var variables = new VariableController();
 
             var instance = new Instance() {
-                Variables = variables,
-                Security = new SecurityController(),
-                Events = new EventsController(),
-                Languages = new LanguageController()
+                Shared = {
+                    Variables = variables,
+                    Security = new SecurityController(),
+                    Events = new EventsController(),
+                    Languages = new LanguageController()
+                }
             }.Execute() as Instance;
 
             instance.Tunnel(new Command() {
@@ -132,10 +136,12 @@ namespace Procon.Core.Test {
         [Test]
         public void TestInstanceConfigWritten() {
             var instance = new Instance() {
-                Variables = new VariableController().Execute() as VariableController,
-                Security = new SecurityController().Execute() as SecurityController,
-                Events = new EventsController().Execute() as EventsController,
-                Languages = new LanguageController().Execute() as LanguageController
+                Shared = {
+                    Variables = new VariableController().Execute() as VariableController,
+                    Security = new SecurityController().Execute() as SecurityController,
+                    Events = new EventsController().Execute() as EventsController,
+                    Languages = new LanguageController().Execute() as LanguageController
+                }
             }.Execute() as Instance;
 
             // Add a single connection, just so we can validate that it has been removed.
@@ -177,10 +183,12 @@ namespace Procon.Core.Test {
             var requestWait = new AutoResetEvent(false);
 
             var instance = new Instance() {
-                Variables = new VariableController(),
-                Security = new SecurityController(),
-                Events = new EventsController(),
-                Languages = new LanguageController()
+                Shared = {
+                    Variables = new VariableController(),
+                    Security = new SecurityController(),
+                    Events = new EventsController(),
+                    Languages = new LanguageController()
+                }
             }.Execute() as Instance;
 
             // Add a single connection, just so we can validate that it has been removed.
@@ -204,10 +212,10 @@ namespace Procon.Core.Test {
 
             // Now validate everything is nulled.
             // We test if each object has been disposed of with its own unit test elsewhere.
-            Assert.IsNull(instance.Variables);
-            Assert.IsNull(instance.Security);
-            Assert.IsNull(instance.Events);
-            Assert.IsNull(instance.Languages);
+            Assert.IsNull(instance.Shared.Variables);
+            Assert.IsNull(instance.Shared.Security);
+            Assert.IsNull(instance.Shared.Events);
+            Assert.IsNull(instance.Shared.Languages);
             Assert.IsNull(instance.CommandServer);
             Assert.IsNull(instance.Connections);
             Assert.IsNull(instance.Packages);

@@ -7,7 +7,6 @@ using NUnit.Framework;
 using Procon.Core.Shared;
 using Procon.Core.Shared.Models;
 using Procon.Core.Variables;
-using Procon.Net.Protocols;
 using Procon.Net.Shared.Protocols;
 using Procon.Service.Shared;
 
@@ -74,7 +73,9 @@ namespace Procon.Core.Test {
         public void TestInstanceAddConnectionExceedMaximumConnectionLimit() {
             var variables = new VariableController();
             var instance = new Instance() {
-                Variables = variables
+                Shared = {
+                    Variables = variables
+                }
             }.Execute() as Instance;
 
             // Lower the maximum connections to nothing

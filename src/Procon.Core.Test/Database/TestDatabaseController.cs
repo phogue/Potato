@@ -27,7 +27,9 @@ namespace Procon.Core.Test.Database {
             var variables = new VariableController();
 
             var database = new DatabaseController() {
-                Variables = variables
+                Shared = {
+                    Variables = variables
+                }
             }.Execute() as DatabaseController;
 
             variables.Set(new Command() {

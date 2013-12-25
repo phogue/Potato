@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml.Serialization;
+using Newtonsoft.Json;
 using Procon.Core.Shared;
 using Procon.Core.Shared.Events;
 using Procon.Core.Shared.Models;
 
 namespace Procon.Core.Variables {
 
-    public class VariableController : SharedController {
+    public class VariableController : CoreController, ISharedReferenceAccess {
 
         /// <summary>
         /// Anything in this list is volatile and will not be saved on
@@ -20,7 +22,11 @@ namespace Procon.Core.Variables {
         /// </summary>
         protected List<VariableModel> ArchiveVariables { get; set; }
 
+        [XmlIgnore, JsonIgnore]
+        public SharedReferences Shared { get; private set; }
+
         public VariableController() : base() {
+            this.Shared = new SharedReferences();
             this.VolatileVariables = new List<VariableModel>();
             this.ArchiveVariables = new List<VariableModel>();
 
@@ -294,7 +300,7 @@ namespace Procon.Core.Variables {
         public CommandResultArgs Set(Command command, String name, Object value) {
             CommandResultArgs result = null;
 
-            if (command.Origin == CommandOrigin.Local || this.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
+            if (command.Origin == CommandOrigin.Local || this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
                 if (name.Length > 0) {
                     VariableModel variable = this.Variable(name);
 
@@ -312,8 +318,8 @@ namespace Procon.Core.Variables {
                             }
                         };
 
-                        if (this.Events != null) {
-                            this.Events.Log(GenericEventArgs.ConvertToGenericEvent(result, GenericEventType.VariablesSet));
+                        if (this.Shared.Events != null) {
+                            this.Shared.Events.Log(GenericEventArgs.ConvertToGenericEvent(result, GenericEventType.VariablesSet));
                         }
                     }
                     else {
@@ -363,7 +369,7 @@ namespace Procon.Core.Variables {
         public CommandResultArgs SetA(Command command, String name, Object value) {
             CommandResultArgs result = null;
 
-            if (command.Origin == CommandOrigin.Local || this.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
+            if (command.Origin == CommandOrigin.Local || this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
                 CommandResultArgs volatileSetResult = this.Set(command, name, value);
 
                 if (volatileSetResult.Success == true) {
@@ -460,7 +466,7 @@ namespace Procon.Core.Variables {
         public CommandResultArgs Get(Command command, String name, Object defaultValue = null) {
             CommandResultArgs result = null;
 
-            if (command.Origin == CommandOrigin.Local || this.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
+            if (command.Origin == CommandOrigin.Local || this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
                 if (name.Length > 0) {
                     VariableModel variable = this.Variable(name);
 

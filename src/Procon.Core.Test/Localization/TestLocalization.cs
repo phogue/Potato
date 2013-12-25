@@ -178,7 +178,9 @@ namespace Procon.Core.Test.Localization {
         [Test]
         public void TestEnglishLocalizationControllerGetInsufficientPermission() {
             var language = new LanguageController() {
-                Security = new SecurityController().Execute() as SecurityController
+                Shared = {
+                    Security = new SecurityController().Execute() as SecurityController
+                }
             }.Execute() as LanguageController;
 
             CommandResultArgs result = language.Tunnel(new Command() {
@@ -213,7 +215,7 @@ namespace Procon.Core.Test.Localization {
         public void TestLanguageSetDefaultLanguage() {
             var language = new LanguageController().Execute() as LanguageController;
 
-            language.Variables.Set(new Command() {
+            language.Shared.Variables.Set(new Command() {
                 Origin = CommandOrigin.Local
             }, CommonVariableNames.LocalizationDefaultLanguageCode, "de-DE");
 

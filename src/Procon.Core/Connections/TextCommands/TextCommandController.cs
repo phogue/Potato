@@ -15,7 +15,7 @@ namespace Procon.Core.Connections.TextCommands {
     /// <summary>
     /// Manages registering, dispatching text commands
     /// </summary>
-    public class TextCommandController : SharedController {
+    public class TextCommandController : CoreController, ISharedReferenceAccess {
 
         /// <summary>
         /// Full list of text commands to check against.
@@ -28,11 +28,15 @@ namespace Procon.Core.Connections.TextCommands {
         /// </summary>
         [XmlIgnore, JsonIgnore]
         public ConnectionController Connection { get; set; }
-        
+
+        [XmlIgnore, JsonIgnore]
+        public SharedReferences Shared { get; private set; }
+
         /// <summary>
         /// Creates new controller with the default attributes set
         /// </summary>
         public TextCommandController() {
+            this.Shared = new SharedReferences();
             this.TextCommands = new List<TextCommandModel>();
 
             this.AppendDispatchHandlers(new Dictionary<CommandAttribute, CommandDispatchHandler>() {
@@ -115,10 +119,10 @@ namespace Procon.Core.Connections.TextCommands {
             LanguageConfig selectedLanguage = null;
 
             if (speakerAccount != null && speakerAccount.PreferredLanguageCode != String.Empty) {
-                selectedLanguage = this.Languages.LoadedLanguageFiles.Find(language => language.LanguageModel.LanguageCode == speakerAccount.PreferredLanguageCode);
+                selectedLanguage = this.Shared.Languages.LoadedLanguageFiles.Find(language => language.LanguageModel.LanguageCode == speakerAccount.PreferredLanguageCode);
             }
             else {
-                selectedLanguage = this.Languages.Default;
+                selectedLanguage = this.Shared.Languages.Default;
             }
 
             if (selectedLanguage != null) {
@@ -194,12 +198,12 @@ namespace Procon.Core.Connections.TextCommands {
 
             String text = parameters["text"].First<String>();
 
-            if (this.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
-                AccountModel speakerAccount = this.Security.GetAccount(command);
+            if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
+                AccountModel speakerAccount = this.Shared.Security.GetAccount(command);
 
                 // @todo pull the prefix from the text?
 
-                String prefix = this.Variables.Get<String>(CommonVariableNames.TextCommandPublicPrefix);
+                String prefix = this.Shared.Variables.Get<String>(CommonVariableNames.TextCommandPublicPrefix);
 
                 result = this.Parse(this.GetAccountNetworkPlayer(command, speakerAccount), speakerAccount, prefix, text) ?? command.Result;
 
@@ -225,12 +229,12 @@ namespace Procon.Core.Connections.TextCommands {
 
             String text = parameters["text"].First<String>();
 
-            if (this.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
-                AccountModel speakerAccount = this.Security.GetAccount(command);
+            if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
+                AccountModel speakerAccount = this.Shared.Security.GetAccount(command);
 
                 // @todo pull the prefix from the text?
 
-                String prefix = this.Variables.Get<String>(CommonVariableNames.TextCommandPublicPrefix);
+                String prefix = this.Shared.Variables.Get<String>(CommonVariableNames.TextCommandPublicPrefix);
 
                 result = this.Parse(this.GetAccountNetworkPlayer(command, speakerAccount), speakerAccount, prefix, text) ?? command.Result;
 
@@ -254,7 +258,7 @@ namespace Procon.Core.Connections.TextCommands {
 
             TextCommandModel textCommand = parameters["textCommand"].First<TextCommandModel>();
 
-            if (this.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
+            if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
                 TextCommandModel existingRegisteredCommand = this.TextCommands.Find(existingCommand => existingCommand.PluginUid == textCommand.PluginUid && existingCommand.PluginCommand == textCommand.PluginCommand);
 
                 if (existingRegisteredCommand == null) {
@@ -275,8 +279,8 @@ namespace Procon.Core.Connections.TextCommands {
                         }
                     };
 
-                    if (this.Events != null) {
-                        this.Events.Log(GenericEventArgs.ConvertToGenericEvent(result, GenericEventType.TextCommandRegistered));
+                    if (this.Shared.Events != null) {
+                        this.Shared.Events.Log(GenericEventArgs.ConvertToGenericEvent(result, GenericEventType.TextCommandRegistered));
                     }
                 }
                 else {
@@ -304,7 +308,7 @@ namespace Procon.Core.Connections.TextCommands {
 
             TextCommandModel textCommand = parameters["textCommand"].First<TextCommandModel>();
 
-            if (this.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
+            if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
                 TextCommandModel existingRegisteredCommand = this.TextCommands.Find(existingCommand => existingCommand.PluginUid == textCommand.PluginUid && existingCommand.PluginCommand == textCommand.PluginCommand);
 
                 if (existingRegisteredCommand != null) {
@@ -325,8 +329,8 @@ namespace Procon.Core.Connections.TextCommands {
                         }
                     };
 
-                    if (this.Events != null) {
-                        this.Events.Log(GenericEventArgs.ConvertToGenericEvent(result, GenericEventType.TextCommandUnregistered));
+                    if (this.Shared.Events != null) {
+                        this.Shared.Events.Log(GenericEventArgs.ConvertToGenericEvent(result, GenericEventType.TextCommandUnregistered));
                     }
                 }
                 else {
@@ -351,9 +355,9 @@ namespace Procon.Core.Connections.TextCommands {
         public String GetValidTextCommandPrefix(String prefix) {
             String result = null;
 
-            if (prefix == this.Variables.Get<String>(CommonVariableNames.TextCommandPublicPrefix) ||
-                prefix == this.Variables.Get<String>(CommonVariableNames.TextCommandProtectedPrefix) ||
-                prefix == this.Variables.Get<String>(CommonVariableNames.TextCommandPrivatePrefix)) {
+            if (prefix == this.Shared.Variables.Get<String>(CommonVariableNames.TextCommandPublicPrefix) ||
+                prefix == this.Shared.Variables.Get<String>(CommonVariableNames.TextCommandProtectedPrefix) ||
+                prefix == this.Shared.Variables.Get<String>(CommonVariableNames.TextCommandPrivatePrefix)) {
                 result = prefix;
             }
 

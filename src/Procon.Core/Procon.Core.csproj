@@ -81,10 +81,12 @@
     <Compile Include="Connections\TextCommands\TextCommandController.cs" />
     <Compile Include="Connections\TextCommands\Parsers\FuzzyParser.cs" />
     <Compile Include="Connections\TextCommands\Parsers\Parser.cs" />
+    <Compile Include="SharedReferences.cs" />
     <Compile Include="Database\DatabaseController.cs" />
     <Compile Include="Events\EventsConsoleController.cs" />
     <Compile Include="Events\EventsController.cs" />
     <Compile Include="Events\PushEventsRequest.cs" />
+    <Compile Include="ISharedReference.cs" />
     <Compile Include="Remote\CommandServerController.cs" />
     <Compile Include="Events\PushEventsController.cs" />
     <Compile Include="Events\PushEventsEndPoint.cs" />
@@ -97,7 +99,6 @@
     <Compile Include="Repositories\PackageState.cs" />
     <Compile Include="Repositories\PackageType.cs" />
     <Compile Include="Repositories\RepositoryController.cs" />
-    <Compile Include="SharedController.cs" />
     <Compile Include="Connections\Plugins\CorePluginController.cs" />
     <Compile Include="Instance.cs" />
     <Compile Include="Repositories\Serialization\SerializableVersion.cs" />

@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Xml.Serialization;
+using Newtonsoft.Json;
 using Procon.Core.Shared;
 using Procon.Core.Shared.Events;
 using Procon.Core.Shared.Models;
@@ -12,7 +14,7 @@ namespace Procon.Core.Events {
     /// <summary>
     /// Pushes events at a set interval to various servers.
     /// </summary>
-    public class PushEventsController : SharedController {
+    public class PushEventsController : CoreController, ISharedReferenceAccess {
 
         /// <summary>
         /// The end points to push new events to.
@@ -29,10 +31,14 @@ namespace Procon.Core.Events {
         /// </summary>
         public GroupedVariableListener GroupedVariableListener { get; set; }
 
+        [XmlIgnore, JsonIgnore]
+        public SharedReferences Shared { get; private set; }
+
         /// <summary>
         /// Initializes with default attributes
         /// </summary>
         public PushEventsController() : base() {
+            this.Shared = new SharedReferences();
             this.EndPoints = new Dictionary<String, PushEventsEndPoint>();
             this.Tasks = new TaskController();
 
@@ -63,7 +69,7 @@ namespace Procon.Core.Events {
                 task.Tick += OnTick;
             }
 
-            this.Events.EventLogged += new EventsController.EventLoggedHandler(MasterEvents_EventLogged);
+            this.Shared.Events.EventLogged += new EventsController.EventLoggedHandler(MasterEvents_EventLogged);
         }
 
         /// <summary>
@@ -73,7 +79,7 @@ namespace Procon.Core.Events {
             this.GroupedVariableListener.VariablesModified -= GroupedVariableListenerOnVariablesModified;
             this.GroupedVariableListener.UnassignEvents();
 
-            this.Events.EventLogged -= new EventsController.EventLoggedHandler(MasterEvents_EventLogged);
+            this.Shared.Events.EventLogged -= new EventsController.EventLoggedHandler(MasterEvents_EventLogged);
 
             foreach (Task task in this.Tasks) {
                 task.Tick -= OnTick;
@@ -87,7 +93,7 @@ namespace Procon.Core.Events {
         /// <param name="pushEventsGroupNames"></param>
         private void GroupedVariableListenerOnVariablesModified(GroupedVariableListener sender, List<String> pushEventsGroupNames) {
             foreach (String pushEventsGroupName in pushEventsGroupNames) {
-                String pushUri = this.Variables.Get(VariableModel.NamespaceVariableName(pushEventsGroupName, CommonVariableNames.EventsPushUri), String.Empty);
+                String pushUri = this.Shared.Variables.Get(VariableModel.NamespaceVariableName(pushEventsGroupName, CommonVariableNames.EventsPushUri), String.Empty);
 
                 // Make sure we have the available data to setup this end point.
                 if (String.IsNullOrEmpty(pushUri) == false) {
@@ -98,15 +104,15 @@ namespace Procon.Core.Events {
                             Id = pushEventsGroupName,
 
                             // The password used to push data. Optional. Can be blank, null or garbage. It's just passed on to the server.
-                            StreamKey = this.Variables.Get(VariableModel.NamespaceVariableName(pushEventsGroupName, CommonVariableNames.EventPushStreamKey), String.Empty),
+                            StreamKey = this.Shared.Variables.Get(VariableModel.NamespaceVariableName(pushEventsGroupName, CommonVariableNames.EventPushStreamKey), String.Empty),
 
-                            Uri = new Uri(this.Variables.Get(VariableModel.NamespaceVariableName(pushEventsGroupName, CommonVariableNames.EventsPushUri), String.Empty)),
+                            Uri = new Uri(this.Shared.Variables.Get(VariableModel.NamespaceVariableName(pushEventsGroupName, CommonVariableNames.EventsPushUri), String.Empty)),
 
                             // Defaults to a 1 second interval
-                            Interval = this.Variables.Get(VariableModel.NamespaceVariableName(pushEventsGroupName, CommonVariableNames.EventPushIntervalSeconds), 1),
+                            Interval = this.Shared.Variables.Get(VariableModel.NamespaceVariableName(pushEventsGroupName, CommonVariableNames.EventPushIntervalSeconds), 1),
 
                             // Defaults to Xml serialization
-                            ContentType = Mime.ToMimeType(this.Variables.Get(VariableModel.NamespaceVariableName(pushEventsGroupName, CommonVariableNames.EventPushContentType), Mime.ApplicationXml), Mime.ApplicationXml)
+                            ContentType = Mime.ToMimeType(this.Shared.Variables.Get(VariableModel.NamespaceVariableName(pushEventsGroupName, CommonVariableNames.EventPushContentType), Mime.ApplicationXml), Mime.ApplicationXml)
                         };
 
                         // Now make sure we don't already push to this Uri with the same interval.
@@ -116,10 +122,10 @@ namespace Procon.Core.Events {
                     }
                     // Else, modify the existing end point.
                     else {
-                        this.EndPoints[pushEventsGroupName].StreamKey = this.Variables.Get(VariableModel.NamespaceVariableName(pushEventsGroupName, CommonVariableNames.EventPushStreamKey), String.Empty);
-                        this.EndPoints[pushEventsGroupName].Uri = new Uri(this.Variables.Get(VariableModel.NamespaceVariableName(pushEventsGroupName, CommonVariableNames.EventsPushUri), String.Empty));
-                        this.EndPoints[pushEventsGroupName].Interval = this.Variables.Get(VariableModel.NamespaceVariableName(pushEventsGroupName, CommonVariableNames.EventPushIntervalSeconds), 1);
-                        this.EndPoints[pushEventsGroupName].ContentType = Mime.ToMimeType(this.Variables.Get(VariableModel.NamespaceVariableName(pushEventsGroupName, CommonVariableNames.EventPushContentType), Mime.ApplicationXml), Mime.ApplicationXml);
+                        this.EndPoints[pushEventsGroupName].StreamKey = this.Shared.Variables.Get(VariableModel.NamespaceVariableName(pushEventsGroupName, CommonVariableNames.EventPushStreamKey), String.Empty);
+                        this.EndPoints[pushEventsGroupName].Uri = new Uri(this.Shared.Variables.Get(VariableModel.NamespaceVariableName(pushEventsGroupName, CommonVariableNames.EventsPushUri), String.Empty));
+                        this.EndPoints[pushEventsGroupName].Interval = this.Shared.Variables.Get(VariableModel.NamespaceVariableName(pushEventsGroupName, CommonVariableNames.EventPushIntervalSeconds), 1);
+                        this.EndPoints[pushEventsGroupName].ContentType = Mime.ToMimeType(this.Shared.Variables.Get(VariableModel.NamespaceVariableName(pushEventsGroupName, CommonVariableNames.EventPushContentType), Mime.ApplicationXml), Mime.ApplicationXml);
                     }
                 }
             }
@@ -167,7 +173,7 @@ namespace Procon.Core.Events {
         }
 
         public override CoreController Execute() {
-            this.GroupedVariableListener.Variables = this.Variables;
+            this.GroupedVariableListener.Variables = this.Shared.Variables;
 
             this.AssignEvents();
             

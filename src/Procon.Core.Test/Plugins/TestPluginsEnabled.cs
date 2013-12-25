@@ -21,7 +21,9 @@ namespace Procon.Core.Test.Plugins {
         public void TestPluginEnable() {
             var security = new SecurityController();
             var plugins = new CorePluginController() {
-                Security = security
+                Shared = {
+                    Security = security
+                }
             }.Execute() as CorePluginController;
 
             CommandResultArgs result = plugins.Tunnel(new Command() {
@@ -43,7 +45,9 @@ namespace Procon.Core.Test.Plugins {
         public void TestPluginEnableAlreadyEnabled() {
             var security = new SecurityController();
             var plugins = new CorePluginController() {
-                Security = security
+                Shared = {
+                    Security = security
+                }
             }.Execute() as CorePluginController;
 
             plugins.Tunnel(new Command() {
@@ -73,7 +77,9 @@ namespace Procon.Core.Test.Plugins {
         public void TestPluginEnableCommandSuccessful() {
             var security = new SecurityController();
             var plugins = new CorePluginController() {
-                Security = security
+                Shared = {
+                    Security = security
+                }
             }.Execute() as CorePluginController;
 
             CommandResultArgs result = plugins.Tunnel(new Command() {
@@ -108,7 +114,9 @@ namespace Procon.Core.Test.Plugins {
         public void TestPluginEnableDoesNotExist() {
             var security = new SecurityController();
             var plugins = new CorePluginController() {
-                Security = security
+                Shared = {
+                    Security = security
+                }
             }.Execute() as CorePluginController;
 
             CommandResultArgs result = plugins.Tunnel(new Command() {
@@ -130,7 +138,9 @@ namespace Procon.Core.Test.Plugins {
         public void TestPluginEnableInsufficientPermission() {
             var security = new SecurityController();
             var plugins = new CorePluginController() {
-                Security = security
+                Shared = {
+                    Security = security
+                }
             }.Execute() as CorePluginController;
 
             CommandResultArgs result = plugins.Tunnel(new Command() {

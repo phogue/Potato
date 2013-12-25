@@ -76,7 +76,9 @@ namespace Procon.Core.Test.TextCommands {
         [Test]
         public void TestTextCommandParsingExecuteInsufficientPermissions() {
             var textCommands = new TextCommandController() {
-                Security = new SecurityController().Execute() as SecurityController
+                Shared = {
+                    Security = new SecurityController().Execute() as SecurityController
+                }
             };
 
             CommandResultArgs result = textCommands.Tunnel(new Command() {
@@ -142,7 +144,9 @@ namespace Procon.Core.Test.TextCommands {
             });
 
             var textCommands = new TextCommandController() {
-                Security = security,
+                Shared = {
+                    Security = security
+                },
                 //Languages = languages,
                 Connection = new ConnectionController() {
                     Game = new Battlefield3Game(String.Empty, 25200) {
@@ -248,7 +252,9 @@ namespace Procon.Core.Test.TextCommands {
         [Test]
         public void TestTextCommandParsingPreviewInsufficientPermissions() {
             var textCommands = new TextCommandController() {
-                Security = new SecurityController().Execute() as SecurityController
+                Shared = {
+                    Security = new SecurityController().Execute() as SecurityController
+                }
             };
 
             CommandResultArgs result = textCommands.Tunnel(new Command() {

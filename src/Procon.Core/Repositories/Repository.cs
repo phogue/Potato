@@ -4,6 +4,9 @@ using System.Linq;
 using System.Xml.Linq;
 using System.IO;
 using System.Net;
+using System.Xml.Serialization;
+using Newtonsoft.Json;
+using Procon.Core.Shared;
 using Procon.Core.Utils;
 using Procon.Net.Shared.Utils;
 using Procon.Net.Utils;
@@ -11,7 +14,7 @@ using Procon.Net.Utils;
 namespace Procon.Core.Repositories {
     using Procon.Net.Utils.HTTP;
 
-    public class Repository : SharedController {
+    public class Repository : CoreController, ISharedReferenceAccess {
 
         /// <summary>
         /// List of packages available in the repository
@@ -122,11 +125,15 @@ namespace Procon.Core.Repositories {
                 handler(this);
             }
         }
-        
+
         #endregion
+
+        [XmlIgnore, JsonIgnore]
+        public SharedReferences Shared { get; private set; }
 
         // Default Initialization
         public Repository() : base() {
+            this.Shared = new SharedReferences();
             this.Packages = new List<Package>();
         }
 

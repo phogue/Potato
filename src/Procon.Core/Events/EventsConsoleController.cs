@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Linq;
+using System.Xml.Serialization;
+using Newtonsoft.Json;
 using Procon.Core.Shared;
 using Procon.Core.Shared.Events;
 using Procon.Core.Shared.Models;
@@ -26,10 +28,17 @@ namespace Procon.Core.Events {
     ///       This is to be used for debugging mostly, so output level 0 = nothing output, but then it should be human readable
     ///       at a glance to quickly debug.
     /// </summary>
-    public class EventsConsoleController : SharedController {
+    public class EventsConsoleController : CoreController, ISharedReferenceAccess {
+
+        [XmlIgnore, JsonIgnore]
+        public SharedReferences Shared { get; private set; }
+
+        public EventsConsoleController() : base() {
+            this.Shared = new SharedReferences();
+        }
 
         public override CoreController Execute() {
-            this.Events.EventLogged += new Core.Events.EventsController.EventLoggedHandler(Events_EventLogged);
+            this.Shared.Events.EventLogged += new Core.Events.EventsController.EventLoggedHandler(Events_EventLogged);
 
             return base.Execute();
         }
@@ -86,7 +95,7 @@ namespace Procon.Core.Events {
         }
 
         public override void Dispose() {
-            this.Events.EventLogged -= new Core.Events.EventsController.EventLoggedHandler(Events_EventLogged);
+            this.Shared.Events.EventLogged -= new Core.Events.EventsController.EventLoggedHandler(Events_EventLogged);
 
             base.Dispose();
         }

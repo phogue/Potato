@@ -88,8 +88,10 @@ namespace Procon.Core.Test.Remote {
                 TunnelObjects = new List<ICoreController>() {
                     plugins
                 },
-                Security = security,
-                Variables = variables
+                Shared = {
+                    Security = security,
+                    Variables = variables
+                }
             };
 
             variables.Tunnel(new Command() {
@@ -174,7 +176,7 @@ namespace Procon.Core.Test.Remote {
 
             CommandServerController commandServer = SetupCommandServer(listeningPort);
 
-            commandServer.Variables.Tunnel(new Command() {
+            commandServer.Shared.Variables.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.VariablesSet,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {

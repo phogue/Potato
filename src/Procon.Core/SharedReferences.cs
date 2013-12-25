@@ -1,20 +1,16 @@
-﻿using System.IO;
-using System.Xml.Serialization;
+﻿using System.Xml.Serialization;
 using Newtonsoft.Json;
 using Procon.Core.Events;
 using Procon.Core.Localization;
 using Procon.Core.Security;
-using Procon.Core.Shared;
 using Procon.Core.Variables;
-using Procon.Service.Shared;
 
 namespace Procon.Core {
     /// <summary>
     /// Holds static references to common functionality across procon.
     /// </summary>
     /// <remarks>This is kind-of, sort-of global variables but it's restricted to Procon's AppDomain only.</remarks>
-    public abstract class SharedController : CoreController {
-
+    public class SharedReferences {
         /// <summary>
         /// Master list of variables.
         /// </summary>
@@ -63,11 +59,14 @@ namespace Procon.Core {
         [XmlIgnore, JsonIgnore]
         public EventsController Events { get; set; }
 
-        protected SharedController() : base() {
-            this.Variables = SharedController.MasterVariables;
-            this.Languages = SharedController.MasterLanguages;
-            this.Security = SharedController.MasterSecurity;
-            this.Events = SharedController.MasterEvents;
+        /// <summary>
+        /// Initializes the default references from the static controllers.
+        /// </summary>
+        public SharedReferences() : base() {
+            this.Variables = SharedReferences.MasterVariables;
+            this.Languages = SharedReferences.MasterLanguages;
+            this.Security = SharedReferences.MasterSecurity;
+            this.Events = SharedReferences.MasterEvents;
         }
 
         /// <summary>
@@ -79,36 +78,24 @@ namespace Procon.Core {
         /// object (useful for unit testing!). The alternative is to not have the static objects at all, but the
         /// code does get very messy on some of the controllers that go a few levels deep (Procon.Core.Security or ..Plugins)
         /// </summary>
-        static SharedController() {
+        static SharedReferences() {
 
             MasterVariables = new VariableController();
             MasterLanguages = new LanguageController();
             MasterSecurity = new SecurityController();
             MasterEvents = new EventsController();
 
-            if (SharedController.MasterVariables != null && SharedController.MasterLanguages != null && SharedController.MasterSecurity != null && SharedController.MasterEvents != null) {
-                SharedController.MasterVariables.Variables = SharedController.MasterLanguages.Variables = SharedController.MasterSecurity.Variables = SharedController.MasterEvents.Variables = SharedController.MasterVariables;
-                SharedController.MasterVariables.Languages = SharedController.MasterLanguages.Languages = SharedController.MasterSecurity.Languages = SharedController.MasterEvents.Languages = SharedController.MasterLanguages;
-                SharedController.MasterVariables.Security = SharedController.MasterLanguages.Security = SharedController.MasterSecurity.Security = SharedController.MasterEvents.Security = SharedController.MasterSecurity;
-                SharedController.MasterVariables.Events = SharedController.MasterLanguages.Events = SharedController.MasterSecurity.Events = SharedController.MasterEvents.Events = SharedController.MasterEvents;
+            if (SharedReferences.MasterVariables != null && SharedReferences.MasterLanguages != null && SharedReferences.MasterSecurity != null && SharedReferences.MasterEvents != null) {
+                SharedReferences.MasterVariables.Shared.Variables = SharedReferences.MasterLanguages.Shared.Variables = SharedReferences.MasterSecurity.Shared.Variables = SharedReferences.MasterEvents.Shared.Variables = SharedReferences.MasterVariables;
+                SharedReferences.MasterVariables.Shared.Languages = SharedReferences.MasterLanguages.Shared.Languages = SharedReferences.MasterSecurity.Shared.Languages = SharedReferences.MasterEvents.Shared.Languages = SharedReferences.MasterLanguages;
+                SharedReferences.MasterVariables.Shared.Security = SharedReferences.MasterLanguages.Shared.Security = SharedReferences.MasterSecurity.Shared.Security = SharedReferences.MasterEvents.Shared.Security = SharedReferences.MasterSecurity;
+                SharedReferences.MasterVariables.Shared.Events = SharedReferences.MasterLanguages.Shared.Events = SharedReferences.MasterSecurity.Shared.Events = SharedReferences.MasterEvents.Shared.Events = SharedReferences.MasterEvents;
 
                 MasterVariables.Execute();
                 MasterLanguages.Execute();
                 MasterSecurity.Execute();
                 MasterEvents.Execute();
             }
-        }
-
-        /// <summary>
-        /// Loads the configuration file.
-        /// </summary>
-        /// <returns></returns>
-        public override CoreController Execute() {
-            this.Execute(new Command() {
-                Origin = CommandOrigin.Local
-            }, new Config().Load(new DirectoryInfo(Defines.ConfigsDirectory)));
-
-            return this;
         }
     }
 }

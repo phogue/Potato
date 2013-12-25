@@ -19,7 +19,7 @@ namespace Procon.Core.Connections.Plugins {
     /// Manages loading and propogating plugin events, as well as callbacks from
     /// a plugin back to Procon.
     /// </summary>
-    public class CorePluginController : SharedController, IRenewableLease {
+    public class CorePluginController : CoreController, ISharedReferenceAccess, IRenewableLease {
 
         /// <summary>
         /// The appdomain all of the plugins are loaded into.
@@ -45,7 +45,6 @@ namespace Procon.Core.Connections.Plugins {
         [XmlIgnore, JsonIgnore]
         public ConnectionController Connection { get; set; }
 
-
         /// <summary>
         /// Works between PluginController and RemotePluginController as a known type by a plugin
         /// assembly and Core, just bubbling (not tunneling) commands.
@@ -53,10 +52,14 @@ namespace Procon.Core.Connections.Plugins {
         [XmlIgnore, JsonIgnore]
         public CorePluginControllerCallbackProxy CorePluginControllerCallbackProxy { get; set; }
 
+        [XmlIgnore, JsonIgnore]
+        public SharedReferences Shared { get; private set; }
+
         /// <summary>
         /// Default Initialization
         /// </summary>
         public CorePluginController() : base() {
+            this.Shared = new SharedReferences();
             this.LoadedPlugins = new List<PluginModel>();
 
             this.CorePluginControllerCallbackProxy = new CorePluginControllerCallbackProxy() {
@@ -89,7 +92,7 @@ namespace Procon.Core.Connections.Plugins {
         public CommandResultArgs EnablePlugin(Command command, Dictionary<String, CommandParameter> parameters) {
             CommandResultArgs result = null;
 
-            if (this.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
+            if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
                 Guid pluginGuid = command.Scope.PluginGuid;
 
                 if (this.LoadedPlugins.Count(plugin => plugin.PluginGuid == pluginGuid) > 0) {
@@ -112,8 +115,8 @@ namespace Procon.Core.Connections.Plugins {
                             }
                         };
 
-                        if (this.Events != null) {
-                            this.Events.Log(GenericEventArgs.ConvertToGenericEvent(result, GenericEventType.PluginsPluginEnabled));
+                        if (this.Shared.Events != null) {
+                            this.Shared.Events.Log(GenericEventArgs.ConvertToGenericEvent(result, GenericEventType.PluginsPluginEnabled));
                         }
                     }
                     else {
@@ -146,7 +149,7 @@ namespace Procon.Core.Connections.Plugins {
         public CommandResultArgs DisablePlugin(Command command, Dictionary<String, CommandParameter> parameters) {
             CommandResultArgs result = null;
 
-            if (this.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
+            if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
                 Guid pluginGuid = command.Scope.PluginGuid;
 
                 if (this.LoadedPlugins.Count(plugin => plugin.PluginGuid == pluginGuid) > 0) {
@@ -169,8 +172,8 @@ namespace Procon.Core.Connections.Plugins {
                             }
                         };
 
-                        if (this.Events != null) {
-                            this.Events.Log(GenericEventArgs.ConvertToGenericEvent(result, GenericEventType.PluginsPluginDisabled));
+                        if (this.Shared.Events != null) {
+                            this.Shared.Events.Log(GenericEventArgs.ConvertToGenericEvent(result, GenericEventType.PluginsPluginDisabled));
                         }
                     }
                     else {

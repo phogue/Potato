@@ -43,6 +43,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AsynchronousExecutableCommands\Mocks\MockAsynchronousCoreController.cs" />
+    <Compile Include="AsynchronousExecutableCommands\Mocks\MockSynchronousCoreController.cs" />
     <Compile Include="Database\Mocks\MockComplexModel.cs" />
     <Compile Include="Database\Mocks\MockSimpleModel.cs" />
     <Compile Include="Database\TestDatabaseModel.cs" />
@@ -64,6 +66,7 @@
     <Compile Include="ExecutableCommands\TestExecutableProperties.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scheduler\TestScheduler.cs" />
+    <Compile Include="AsynchronousExecutableCommands\TestAsynchronousCoreController.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Procon.Core.Shared\Procon.Core.Shared.csproj">

@@ -16,6 +16,11 @@ namespace Procon.Core.Shared {
     public class Command : CommandAttribute {
 
         /// <summary>
+        /// The commands unique identifier, created when the command object is created.
+        /// </summary>
+        public Guid CommandGuid { get; set; }
+
+        /// <summary>
         /// The scope that this commands execution should be limited to.
         /// </summary>
         public CommandScope Scope { get; set; }
@@ -71,6 +76,7 @@ namespace Procon.Core.Shared {
         /// Initializes a new command with the default values.
         /// </summary>
         public Command() {
+            this.CommandGuid = Guid.NewGuid();
             this.Username = null;
             this.GameType = CommonGameType.None;
             this.Uid = null;

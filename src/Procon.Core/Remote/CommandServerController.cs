@@ -10,14 +10,11 @@ using Newtonsoft.Json;
 using Procon.Core.Shared;
 using Procon.Core.Shared.Events;
 using Procon.Core.Shared.Models;
-using Procon.Net;
 using Procon.Net.Protocols.CommandServer;
 using Procon.Net.Shared;
 using Procon.Net.Shared.Protocols.CommandServer;
 using Procon.Net.Shared.Utils;
 using Procon.Net.Shared.Utils.HTTP;
-using Procon.Net.Utils;
-using Procon.Net.Utils.HTTP;
 using Procon.Service.Shared;
 
 namespace Procon.Core.Remote {

@@ -30,11 +30,6 @@ namespace Procon.Core.Shared.Models {
         public AutoResetEvent TaskQueueWait { get; set; }
 
         /// <summary>
-        /// The number of milliseconds a task should wait before cancelling.
-        /// </summary>
-        public int TaskTimeout { get; set; }
-
-        /// <summary>
         /// Initalizes with the default values.
         /// </summary>
         public AsynchronousCommandStateModel() : base() {
@@ -42,7 +37,6 @@ namespace Procon.Core.Shared.Models {
             this.ExecutedCommandsPool = new ConcurrentDictionary<Guid, AsynchronousCommandModel>();
             this.TaskQueueWaitCancellationTokenSource = new CancellationTokenSource();
             this.TaskQueueWait = new AutoResetEvent(false);
-            this.TaskTimeout = 1000;
         }
         
         /// <summary>

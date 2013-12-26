@@ -61,12 +61,6 @@ namespace Procon.Core.Shared {
                         }
                     });
                 }
-
-                // If we have noting else queued up, go back to sleep.
-                if (this.AsyncStateModel.PendingCommandsQueue.Count == 0) {
-                    
-                    //this.AsyncStateModel.TaskQueueWait.Reset();
-                }
             }
 
             // Cleanup
@@ -160,23 +154,7 @@ namespace Procon.Core.Shared {
 
             // If we are waiting for it and we have removed the executed wrapper successfully.
             if (this.AsyncStateModel.ExecutedCommandsPool.TryRemove(command.CommandGuid, out asynchronousCommandModel) == true) {
-                CancellationTokenSource commandResultCancellationTokenSource = new CancellationTokenSource();
-
-                Task task = new Task(() => {
-                    asynchronousCommandModel.OnResult(command.Result);
-
-                    commandResultCancellationTokenSource.Token.ThrowIfCancellationRequested();
-                }, commandResultCancellationTokenSource.Token);
-                
-                task.Start();
-
-                task.Wait();
-
-                //if (task.Wait(this.AsyncStateModel.TaskTimeout) == false) {
-                    // log command to file, it timed out.
-                //    commandResultCancellationTokenSource.Cancel();
-                //}
-                // ELSE - All good, we got execution back without having to cut them off.
+                Task.Factory.StartNew(() => asynchronousCommandModel.OnResult(command.Result));
             }
 
             return base.PropogateExecuted(command, tunnel);

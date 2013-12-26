@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="AsynchronousExecutableCommands\Mocks\MockAsynchronousCoreController.cs" />
     <Compile Include="AsynchronousExecutableCommands\Mocks\MockSynchronousCoreController.cs" />
+    <Compile Include="AsynchronousExecutableCommands\TestAsynchronousCommandStateModel.cs" />
     <Compile Include="Database\Mocks\MockComplexModel.cs" />
     <Compile Include="Database\Mocks\MockSimpleModel.cs" />
     <Compile Include="Database\TestDatabaseModel.cs" />

@@ -94,8 +94,6 @@ namespace Procon.Examples.Database {
             base.GenericEvent(e);
 
             if (e.GenericEventType == GenericEventType.PluginsPluginEnabled) {
-                var y = AppDomain.CurrentDomain;
-
                 // You don't need to store a reference to this object as it'll only be executed
                 // the once then forgotten.
                 new Migrations() {

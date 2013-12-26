@@ -38,7 +38,6 @@ namespace Procon.Core.Shared.Test.AsynchronousExecutableCommands {
             Assert.IsTrue(state.IsKnown(commandModel.Command.CommandGuid));
         }
 
-
         /// <summary>
         /// Tests that a command will be known if it is in both pending and executed pools
         /// </summary>

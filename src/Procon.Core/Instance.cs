@@ -335,33 +335,19 @@ namespace Procon.Core {
         /// </summary>
         /// <param name="config"></param>
         public override void WriteConfig(Config config) {
-            Config variablesConfig = new Config().Create(this.Shared.Variables.GetType());
-            this.Shared.Variables.WriteConfig(variablesConfig);
-            config.Combine(variablesConfig);
+            this.Shared.Variables.WriteConfig(config);
 
-            Config eventsConfig = new Config().Create(this.Shared.Events.GetType());
-            this.Shared.Events.WriteConfig(eventsConfig);
-            config.Combine(eventsConfig);
+            this.Shared.Events.WriteConfig(config);
 
-            Config packagesConfig = new Config().Create(this.Packages.GetType());
-            this.Packages.WriteConfig(packagesConfig);
-            config.Combine(packagesConfig);
+            this.Packages.WriteConfig(config);
 
-            Config languagesConfig = new Config().Create(this.Shared.Languages.GetType());
-            this.Shared.Languages.WriteConfig(languagesConfig);
-            config.Combine(languagesConfig);
+            this.Shared.Languages.WriteConfig(config);
 
-            Config securityConfig = new Config().Create(this.Shared.Security.GetType());
-            this.Shared.Security.WriteConfig(securityConfig);
-            config.Combine(securityConfig);
+            this.Shared.Security.WriteConfig(config);
 
-            Config commandServerConfig = new Config().Create(this.CommandServer.GetType());
-            this.CommandServer.WriteConfig(commandServerConfig);
-            config.Combine(commandServerConfig);
-
-            Config pushEventsConfig = new Config().Create(this.PushEvents.GetType());
-            this.PushEvents.WriteConfig(pushEventsConfig);
-            config.Combine(pushEventsConfig);
+            this.CommandServer.WriteConfig(config);
+            
+            this.PushEvents.WriteConfig(config);
 
             lock (this.Connections) {
                 foreach (ConnectionController connection in this.Connections) {
@@ -415,9 +401,7 @@ namespace Procon.Core {
                         }
                     }.ToConfigCommand());
 
-                    Config connectionConfig = new Config().Create(connection.GetType());
-                    connection.WriteConfig(connectionConfig);
-                    config.Combine(connectionConfig);
+                    connection.WriteConfig(config);
                 }
             }
         }

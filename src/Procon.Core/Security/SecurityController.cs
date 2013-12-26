@@ -259,17 +259,6 @@ namespace Procon.Core.Security {
             });
         }
 
-        #region Executable
-
-        /// <summary>
-        /// Executes the commands specified in the config file and returns a reference itself.
-        /// </summary>
-        public override ICoreController Execute() {
-            this.Groups = new List<GroupModel>();
-
-            return base.Execute();
-        }
-
         /// <summary>
         /// Relies on children classes to implement this.
         /// </summary>
@@ -426,8 +415,6 @@ namespace Procon.Core.Security {
                 }
             }
         }
-
-        #endregion
 
         /// <summary>
         /// Creates a new group if the specified name is unique.

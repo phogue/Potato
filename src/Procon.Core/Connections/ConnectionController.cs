@@ -162,9 +162,7 @@ namespace Procon.Core.Connections {
         }
 
         public override void WriteConfig(Config config) {
-            Config pluginConfig = new Config().Create(typeof(CorePluginController));
-            this.Plugins.WriteConfig(pluginConfig);
-            config.Combine(pluginConfig);
+            this.Plugins.WriteConfig(config);
         }
 
         public override ICoreController Execute() {

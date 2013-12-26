@@ -163,7 +163,7 @@ namespace Procon.Core.Test {
             var loadConfig = new Config();
             loadConfig.Load(ConfigFileInfo);
 
-            var commands = loadConfig.Root.Descendants("Instance").Elements("Command").Select(xCommand => xCommand.FromXElement<Command>()).ToList();
+            var commands = loadConfig.Root.Descendants("Instance").Elements("Command").Where(e => e.Element("Name") != null && e.Element("Name").Value == "InstanceAddConnection").Select(xCommand => xCommand.FromXElement<Command>()).ToList();
 
             Assert.AreEqual("InstanceAddConnection", commands[0].Name);
             Assert.AreEqual("Myrcon", commands[0].Parameters[0].First<String>());

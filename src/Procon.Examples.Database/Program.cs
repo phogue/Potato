@@ -78,6 +78,8 @@ namespace Procon.Examples.Database {
             UserModel model = UserModel.FirstFromQuery(fetchResult.Now.Queries.FirstOrDefault());
 
             if (model != null) {
+                command.Result.Status = CommandResultType.Success;
+                command.Result.Success = true;
                 command.Result.Message = model.Name;
             }
 

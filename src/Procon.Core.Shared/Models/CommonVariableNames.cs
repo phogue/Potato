@@ -113,6 +113,10 @@ namespace Procon.Core.Shared.Models {
         /// </summary>
         EventPushStreamKey,
         /// <summary>
+        /// List[String] A list of ignored event names that won't be logged to the file.
+        /// </summary>
+        EventsLogIgnoredNames,
+        /// <summary>
         /// (string) Url to download the procon repository. This repository is automatically
         /// added to procon. While it is also a define in the Procon.Core.dll we use it as
         /// variable that can be set for consistency and unit testing.

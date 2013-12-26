@@ -10,8 +10,8 @@ using Newtonsoft.Json;
 using Procon.Core.Shared;
 using Procon.Core.Shared.Events;
 using Procon.Core.Shared.Models;
+using Procon.Net.Shared;
 using Procon.Net.Shared.Utils;
-using Procon.Net.Utils;
 using Procon.Service.Shared;
 
 namespace Procon.Core.Events {
@@ -58,6 +58,11 @@ namespace Procon.Core.Events {
 
         [XmlIgnore, JsonIgnore]
         public SharedReferences Shared { get; private set; }
+
+        protected List<String> DefaultEventsLogIgnoredNames = new List<String>() {
+            GameEventType.GamePlayerlistUpdated.ToString(),
+            GameEventType.GameSettingsUpdated.ToString()
+        };
 
         /// <summary>
         /// Initializes default attributes and sets up command dispatching
@@ -187,7 +192,7 @@ namespace Procon.Core.Events {
 
                     // All events are appended to the Events list, so we
                     // remove all events until we find one that isn't old enough.
-                    flushEvents = this.LoggedEvents.Where(e => e.Stamp < before).ToList();
+                    flushEvents = this.LoggedEvents.Where(e => e.Stamp < before).Where(e => this.Shared.Variables.Get(CommonVariableNames.EventsLogIgnoredNames, this.DefaultEventsLogIgnoredNames).Contains(e.Name) == false).ToList();
                 }
 
                 // Don't hold up other threads attempting to log an event.

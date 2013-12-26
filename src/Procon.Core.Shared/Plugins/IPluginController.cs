@@ -29,6 +29,11 @@ namespace Procon.Core.Shared.Plugins {
         DirectoryInfo LogDirectoryInfo { get; set; }
 
         /// <summary>
+        /// Execute the controller
+        /// </summary>
+        ICoreController Execute();
+
+        /// <summary>
         /// Fired whenever an event is passed from the client, to the game layer
         /// then processed with as an event from the game server. (OnChat, OnKill etc.)
         /// </summary>

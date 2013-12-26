@@ -43,6 +43,8 @@ namespace Procon.Core.Shared.Plugins {
 
             this.LoadedPlugins.TryAdd(loadedPlugin.PluginGuid, loadedPlugin);
 
+            loadedPlugin.Execute();
+
             return loadedPlugin;
         }
 

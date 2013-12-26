@@ -5,6 +5,7 @@ using Procon.Core.Database;
 using Procon.Core.Shared;
 using Procon.Core.Shared.Models;
 using Procon.Core.Variables;
+using Procon.Database.Shared.Builders.Methods.Data;
 
 namespace Procon.Examples.Database.Test {
     [TestFixture]
@@ -40,13 +41,14 @@ namespace Procon.Examples.Database.Test {
         /// Test for you to debug.
         /// Set a breakpoint within Procon.Examples.Database.SaveOneUser
         /// </summary>
-        [Test, Ignore]
+        [Test]
         public void TestSavingSingleRowFromModel() {
+            DatabaseController database = TestDatabase.OpenDatabaseDriver();
 
             // Create a new plugin controller to load up the test plugin
             CorePluginController plugins = new CorePluginController() {
                 BubbleObjects = {
-                    TestDatabase.OpenDatabaseDriver()
+                    database
                 }
             };
 
@@ -72,8 +74,26 @@ namespace Procon.Examples.Database.Test {
                 }
             });
 
+            // Test the command was successful
             Assert.AreEqual(true, result.Success);
             Assert.AreEqual(CommandResultType.Success, result.Status);
+
+            // Test that data was inserted.
+            result = database.Tunnel(
+                CommandBuilder.DatabaseQuery(
+                new Find()
+                .Collection("Procon_Example_Database_Users")
+                .Limit(1)
+                ).SetOrigin(CommandOrigin.Local)
+            );
+
+            Assert.AreEqual(true, result.Success);
+            Assert.AreEqual(CommandResultType.Success, result.Status);
+
+            // UserModel is found in Procon.Examples.Database.UserModel. We reuse it here in the test to keep everything consistent.
+            UserModel model = UserModel.FirstFromQuery(result.Now.Queries.FirstOrDefault());
+
+            Assert.AreEqual("Phogue", model.Name);
         }
     }
 }

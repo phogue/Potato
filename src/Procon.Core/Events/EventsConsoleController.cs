@@ -33,6 +33,9 @@ namespace Procon.Core.Events {
         [XmlIgnore, JsonIgnore]
         public SharedReferences Shared { get; private set; }
 
+        /// <summary>
+        /// Initializes events console with default values.
+        /// </summary>
         public EventsConsoleController() : base() {
             this.Shared = new SharedReferences();
         }

@@ -6,10 +6,11 @@ using Newtonsoft.Json;
 using Procon.Core.Shared.Events;
 using Procon.Net.Shared.Utils;
 using Procon.Net.Shared.Utils.HTTP;
-using Procon.Net.Utils;
-using Procon.Net.Utils.HTTP;
 
 namespace Procon.Core.Events {
+    /// <summary>
+    /// An end point to push grouped events to via http/https
+    /// </summary>
     public class PushEventsEndPoint : IDisposable {
 
         /// <summary>
@@ -53,6 +54,9 @@ namespace Procon.Core.Events {
         /// </summary>
         public event EventHandler PushCompleted;
 
+        /// <summary>
+        /// Initializes the end point with the default values.
+        /// </summary>
         public PushEventsEndPoint() {
             this.Id = String.Empty;
             this.StreamKey = String.Empty;
@@ -63,6 +67,10 @@ namespace Procon.Core.Events {
             this.Uri = new Uri("http://localhost/");
         }
 
+        /// <summary>
+        /// Appends an event onto the end of the objects to stream next sync
+        /// </summary>
+        /// <param name="item">The event to append</param>
         public void Append(GenericEventArgs item) {
             if (this.EventsStream != null) {
                 lock (this.EventsStream) {

@@ -2,8 +2,10 @@
 using Ionic.Zip;
 
 namespace Procon.Core.Utils {
+    /// <summary>
+    /// Procon extensions to System.IO.DirectoryInfo 
+    /// </summary>
     public static class DirectoryInfoExtensions {
-
         /// <summary>
         /// Zips the contents of the directory.
         /// </summary>

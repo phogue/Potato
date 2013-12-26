@@ -556,11 +556,11 @@ namespace Procon.Core.Connections {
                     this.ConnectionModel.GameType = this.Game.GameType as GameType;
                     this.ConnectionModel.Hostname = this.Game.Client.Hostname;
                     this.ConnectionModel.Port = this.Game.Client.Port;
-                }
 
-                // Once connected, sync the connection.
-                if (e.ConnectionState == ConnectionState.ConnectionLoggedIn) {
-                    this.Game.Synchronize();
+                    // Once connected, sync the connection.
+                    if (e.ConnectionState == ConnectionState.ConnectionLoggedIn) {
+                        this.Game.Synchronize();
+                    }
                 }
 
                 this.Shared.Events.Log(new GenericEventArgs() {

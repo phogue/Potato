@@ -109,7 +109,6 @@
     <Compile Include="Localization\LanguageController.cs" />
     <Compile Include="Security\SecurityController.cs" />
     <Compile Include="Localization\LanguageConfig.cs" />
-    <Compile Include="Utils\PathValidator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

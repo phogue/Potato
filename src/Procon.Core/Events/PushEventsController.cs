@@ -8,7 +8,6 @@ using Procon.Core.Shared.Models;
 using Procon.Core.Shared.Scheduler;
 using Procon.Core.Variables;
 using Procon.Net.Shared.Utils.HTTP;
-using Procon.Net.Utils.HTTP;
 
 namespace Procon.Core.Events {
     /// <summary>

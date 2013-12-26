@@ -50,6 +50,14 @@ namespace Procon.Core.Shared {
         /// <summary>
         /// A limit has been exceeded when attempting to execute the command.
         /// </summary>
-        LimitExceeded
+        LimitExceeded,
+        /// <summary>
+        /// The command is essentially canceled, but is continuing asynchronously.
+        /// </summary>
+        ContinuedAsynchronously,
+        /// <summary>
+        /// The command has times out while executing asynchronously
+        /// </summary>
+        TimeoutAsynchronously,
     }
 }

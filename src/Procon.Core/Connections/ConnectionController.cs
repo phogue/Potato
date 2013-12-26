@@ -233,7 +233,7 @@ namespace Procon.Core.Connections {
         public override CommandResultArgs PropogatePreview(Command command, bool tunnel = true) {
             if (tunnel == false && command.Scope != null && command.Scope.ConnectionGuid == this.ConnectionModel.ConnectionGuid) {
                 // We've bubbled up far enough, time to tunnel down this connection to find our result.
-                return this.Tunnel(command);
+                return base.PropogatePreview(command, true);
             }
 
             return base.PropogatePreview(command, tunnel);
@@ -242,7 +242,7 @@ namespace Procon.Core.Connections {
         public override CommandResultArgs PropogateHandler(Command command, bool tunnel = true) {
             if (tunnel == false && command.Scope != null && command.Scope.ConnectionGuid == this.ConnectionModel.ConnectionGuid) {
                 // We've bubbled up far enough, time to tunnel down this connection to find our result.
-                return this.Tunnel(command);
+                return base.PropogateHandler(command, true);
             }
 
             return base.PropogateHandler(command, tunnel);
@@ -251,7 +251,7 @@ namespace Procon.Core.Connections {
         public override CommandResultArgs PropogateExecuted(Command command, bool tunnel = true) {
             if (tunnel == false && command.Scope != null && command.Scope.ConnectionGuid == this.ConnectionModel.ConnectionGuid) {
                 // We've bubbled up far enough, time to tunnel down this connection to find our result.
-                return this.Tunnel(command);
+                return base.PropogateExecuted(command, true);
             }
 
             return base.PropogateExecuted(command, tunnel);

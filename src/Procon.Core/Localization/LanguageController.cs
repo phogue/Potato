@@ -110,7 +110,7 @@ namespace Procon.Core.Localization {
         /// Executes the commands specified in the configuration file.
         /// Returns a reference back to this object.
         /// </summary>
-        public override CoreController Execute() {
+        public override ICoreController Execute() {
             DirectoryInfo localizationDirectory = new DirectoryInfo(Defines.LocalizationDirectory);
 
             foreach (DirectoryInfo languageDirectory in localizationDirectory.GetDirectories()) {

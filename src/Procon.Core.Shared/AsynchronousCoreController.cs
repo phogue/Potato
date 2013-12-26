@@ -28,7 +28,7 @@ namespace Procon.Core.Shared {
             this.AsyncStateModel = new AsynchronousCommandStateModel();
         }
 
-        public override CoreController Execute() {
+        public override ICoreController Execute() {
             // Start the long running command dispatcher.
             Task.Factory.StartNew(ExecuteQueuedCommands, this.AsyncStateModel.TaskQueueWaitCancellationTokenSource.Token, TaskCreationOptions.LongRunning, TaskScheduler.Default);
 
@@ -52,33 +52,20 @@ namespace Procon.Core.Shared {
                     // Add it so we can look for a reference when it comes back.
                     this.AsyncStateModel.ExecutedCommandsPool.TryAdd(asynchronousCommand.Command.CommandGuid, asynchronousCommand);
 
-                    CancellationTokenSource commandExecuteCancellationTokenSource = new CancellationTokenSource();
-
-                    // Bubble/Tunnel the command. We ignore the return value here, instead using the propogate executed callback. It makes
-                    // the class more versatile when crossing the AppDomain.
-                    Task task = new Task(() => {
+                    Task.Factory.StartNew(() => {
                         if (asynchronousCommand.IsTunneling == true) {
-                            this.Tunnel(asynchronousCommand.Command);
+                            base.Tunnel(asynchronousCommand.Command);
                         }
                         else {
-                            this.Bubble(asynchronousCommand.Command);
+                            base.Bubble(asynchronousCommand.Command);
                         }
-
-                        commandExecuteCancellationTokenSource.Token.ThrowIfCancellationRequested();
-                    }, commandExecuteCancellationTokenSource.Token);
-
-                    task.Start();
-
-                    if (task.Wait(this.AsyncStateModel.TaskTimeout) == false) {
-                        // log command to file, it timed out.
-                        commandExecuteCancellationTokenSource.Cancel();
-                    }
-                    // ELSE - All good, we got execution back without having to cut them off.
+                    });
                 }
 
                 // If we have noting else queued up, go back to sleep.
                 if (this.AsyncStateModel.PendingCommandsQueue.Count == 0) {
-                    this.AsyncStateModel.TaskQueueWait.Reset();
+                    
+                    //this.AsyncStateModel.TaskQueueWait.Reset();
                 }
             }
 
@@ -97,7 +84,7 @@ namespace Procon.Core.Shared {
         /// </summary>
         /// <param name="command">The command to enqueue</param>
         /// <param name="completed">The optional callback when a result is available.</param>
-        public void BeginTunnel(Command command, Action<CommandResultArgs> completed = null) {
+        public virtual void BeginTunnel(Command command, Action<CommandResultArgs> completed = null) {
             if (this.AsyncStateModel != null && this.AsyncStateModel.TaskQueueWaitCancellationTokenSource.IsCancellationRequested == false) {
                 this.AsyncStateModel.PendingCommandsQueue.Enqueue(new AsynchronousCommandModel() {
                     Command = command,
@@ -115,7 +102,7 @@ namespace Procon.Core.Shared {
         /// </summary>
         /// <param name="command">The command to enqueue</param>
         /// <param name="completed">The optional callback when a result is available.</param>
-        public void BeginBubble(Command command, Action<CommandResultArgs> completed = null) {
+        public virtual void BeginBubble(Command command, Action<CommandResultArgs> completed = null) {
             if (this.AsyncStateModel != null && this.AsyncStateModel.TaskQueueWaitCancellationTokenSource.IsCancellationRequested == false) {
                 this.AsyncStateModel.PendingCommandsQueue.Enqueue(new AsynchronousCommandModel() {
                     Command = command,
@@ -125,6 +112,46 @@ namespace Procon.Core.Shared {
 
                 this.AsyncStateModel.TaskQueueWait.Set();
             }
+        }
+
+        /// <summary>
+        /// Executes the command synchronously on this end, blocking until a result has been returned.
+        /// </summary>
+        /// <param name="command"></param>
+        /// <returns></returns>
+        public override CommandResultArgs Tunnel(Command command) {
+            CommandResultArgs synchronousResult = command.Result;
+            AutoResetEvent resultWait = new AutoResetEvent(false);
+
+            this.BeginTunnel(command, result => {
+                synchronousResult = result;
+
+                resultWait.Set();
+            });
+
+            resultWait.WaitOne();
+
+            return synchronousResult;
+        }
+
+        /// <summary>
+        /// Executes the command synchronously on this end, blocking until a result has been returned.
+        /// </summary>
+        /// <param name="command"></param>
+        /// <returns></returns>
+        public override CommandResultArgs Bubble(Command command) {
+            CommandResultArgs synchronousResult = command.Result;
+            AutoResetEvent resultWait = new AutoResetEvent(false);
+
+            this.BeginBubble(command, result => {
+                synchronousResult = result;
+
+                resultWait.Set();
+            });
+
+            resultWait.WaitOne();
+
+            return synchronousResult;
         }
 
         // Captures all executed commands, seeing if this async conroller is waiting for a command to have been executed.
@@ -143,10 +170,12 @@ namespace Procon.Core.Shared {
                 
                 task.Start();
 
-                if (task.Wait(this.AsyncStateModel.TaskTimeout) == false) {
+                task.Wait();
+
+                //if (task.Wait(this.AsyncStateModel.TaskTimeout) == false) {
                     // log command to file, it timed out.
-                    commandResultCancellationTokenSource.Cancel();
-                }
+                //    commandResultCancellationTokenSource.Cancel();
+                //}
                 // ELSE - All good, we got execution back without having to cut them off.
             }
 

@@ -237,7 +237,7 @@ namespace Procon.Core.Repositories {
             this.BuildFlatPackedPackages();
         }
 
-        public override CoreController Execute() {
+        public override ICoreController Execute() {
 
             this.LoadLocalRepository(this.LocalInstalledRepositories, this.PackagesPath);
 

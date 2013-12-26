@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Linq;
 using System.Threading;
 
 namespace Procon.Core.Shared.Models {
@@ -42,6 +43,15 @@ namespace Procon.Core.Shared.Models {
             this.TaskQueueWaitCancellationTokenSource = new CancellationTokenSource();
             this.TaskQueueWait = new AutoResetEvent(false);
             this.TaskTimeout = 1000;
+        }
+        
+        /// <summary>
+        /// Helper to determine if a command is known/propogating/waiting to this controller.
+        /// </summary>
+        /// <param name="commandGuid">The guid to lookup</param>
+        /// <returns>True if the controller currently knows about the command in some context, false otherwise.</returns>
+        public bool IsKnown(Guid commandGuid) {
+            return this.PendingCommandsQueue.Any(command => command.Command.CommandGuid == commandGuid) || this.ExecutedCommandsPool.ContainsKey(commandGuid);
         }
     }
 }

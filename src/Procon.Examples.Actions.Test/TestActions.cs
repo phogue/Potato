@@ -3,7 +3,6 @@ using System.Linq;
 using NUnit.Framework;
 using Procon.Core.Connections.Plugins;
 using Procon.Core.Shared;
-using Procon.Net;
 using Procon.Net.Shared;
 using Procon.Net.Shared.Actions;
 

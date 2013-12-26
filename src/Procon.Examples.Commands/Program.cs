@@ -34,7 +34,7 @@ namespace Procon.Examples.Commands {
                 {
                     new CommandAttribute() {
                         Name = "SingleParameterCommand",
-                        CommandAttributeType = CommandAttributeType.Executed,
+                        CommandAttributeType = CommandAttributeType.Handler,
                         ParameterTypes = new List<CommandParameterType>() {
                             new CommandParameterType() {
                                 Name = "text",
@@ -50,7 +50,7 @@ namespace Procon.Examples.Commands {
                 {
                     new CommandAttribute() {
                         Name = "SingleConvertedParameterCommand",
-                        CommandAttributeType = CommandAttributeType.Executed,
+                        CommandAttributeType = CommandAttributeType.Handler,
                         ParameterTypes = new List<CommandParameterType>() {
                             new CommandParameterType() {
                                 Name = "number",
@@ -63,7 +63,7 @@ namespace Procon.Examples.Commands {
                 {
                     new CommandAttribute() {
                         Name = "NoParameterCommand",
-                        CommandAttributeType = CommandAttributeType.Executed
+                        CommandAttributeType = CommandAttributeType.Handler
                     },
                     new CommandDispatchHandler(this.NoParameterCommand)
                 }

@@ -17,7 +17,7 @@ namespace Procon.Examples.Database {
 
         protected MigrationController MigrationController { get; set; }
 
-        public override CoreController Execute() {
+        public override ICoreController Execute() {
             // 1. Create our migration controller 
             this.MigrationController = new MigrationController() {
                 // 2. Tell the migration controller where it should send it's commands.

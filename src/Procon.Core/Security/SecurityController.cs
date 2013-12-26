@@ -264,7 +264,7 @@ namespace Procon.Core.Security {
         /// <summary>
         /// Executes the commands specified in the config file and returns a reference itself.
         /// </summary>
-        public override CoreController Execute() {
+        public override ICoreController Execute() {
             this.Groups = new List<GroupModel>();
 
             return base.Execute();

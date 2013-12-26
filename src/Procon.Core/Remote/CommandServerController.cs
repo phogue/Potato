@@ -36,7 +36,7 @@ namespace Procon.Core.Remote {
             this.Shared = new SharedReferences();
         }
 
-        public override CoreController Execute() {
+        public override ICoreController Execute() {
             this.Shared.Variables.Variable(CommonVariableNames.CommandServerEnabled).PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(CommandServerController_PropertyChanged);
             this.Shared.Variables.Variable(CommonVariableNames.CommandServerPort).PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(CommandServerController_PropertyChanged);
             this.Shared.Variables.Variable(CommonVariableNames.CommandServerCertificatePath).PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(CommandServerController_PropertyChanged);

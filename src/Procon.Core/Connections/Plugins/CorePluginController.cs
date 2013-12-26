@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.Remoting.Lifetime;
 using System.Security;
 using System.Security.Permissions;
+using System.Threading;
 using System.Xml.Serialization;
 using Newtonsoft.Json;
 using Procon.Core.Shared;
@@ -19,7 +20,7 @@ namespace Procon.Core.Connections.Plugins {
     /// Manages loading and propogating plugin events, as well as callbacks from
     /// a plugin back to Procon.
     /// </summary>
-    public class CorePluginController : CoreController, ISharedReferenceAccess, IRenewableLease {
+    public class CorePluginController : AsynchronousCoreController, ISharedReferenceAccess, IRenewableLease {
 
         /// <summary>
         /// The appdomain all of the plugins are loaded into.
@@ -273,7 +274,7 @@ namespace Procon.Core.Connections.Plugins {
         /// <summary>
         /// Executes the commands specified in the config file and returns a reference itself.
         /// </summary>
-        public override CoreController Execute() {
+        public override ICoreController Execute() {
             this.SetupPluginFactory();
 
             this.TunnelObjects.Add(this.PluginFactory);
@@ -389,6 +390,29 @@ namespace Procon.Core.Connections.Plugins {
             if (lease != null) {
                 lease.Renew(lease.InitialLeaseTime);
             }
+        }
+
+        public override CommandResultArgs PropogatePreview(Command command, bool tunnel = true) {
+            CommandResultArgs synchronousResult = null;
+
+            // If we're bubbling and we have not seen this command yet
+            if (tunnel == false && this.AsyncStateModel.IsKnown(command.CommandGuid) == false) {
+                AutoResetEvent resultWait = new AutoResetEvent(false);
+
+                this.BeginBubble(command, result => {
+                    synchronousResult = result;
+
+                    resultWait.Set();
+                });
+
+                // Wait here until we have a result to return to the plugin AppDomain.
+                resultWait.WaitOne();
+            }
+            else {
+                synchronousResult = base.PropogatePreview(command, tunnel);
+            }
+
+            return synchronousResult;
         }
 
         /// <summary>

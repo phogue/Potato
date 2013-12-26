@@ -26,15 +26,15 @@ namespace Procon.Examples.Database {
             this.AppendDispatchHandlers(new Dictionary<CommandAttribute, CommandDispatchHandler>() {
                 {
                     new CommandAttribute() {
-                        Name = "InsertOneUser",
-                        CommandAttributeType = CommandAttributeType.Executed
+                        Name = "SaveOneUser",
+                        CommandAttributeType = CommandAttributeType.Handler
                     },
                     new CommandDispatchHandler(this.SaveOneUser)
                 },
                 {
                     new CommandAttribute() {
                         Name = "FindOneUser",
-                        CommandAttributeType = CommandAttributeType.Executed
+                        CommandAttributeType = CommandAttributeType.Handler
                     },
                     new CommandDispatchHandler(this.FindOneUser)
                 }

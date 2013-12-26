@@ -18,7 +18,7 @@ namespace Procon.Core.Shared.Plugins {
     /// The class in which all plugins should inherit from. This class handles all remoting
     /// to Procon and other standard tasks 
     /// </summary>
-    public abstract class PluginController : CoreController, IPluginController {
+    public abstract class PluginController : AsynchronousCoreController, IPluginController {
         /// <summary>
         /// The Guid of the executing assembly. Used to uniquely identify this plugin. 
         /// </summary>
@@ -97,6 +97,16 @@ namespace Procon.Core.Shared.Plugins {
             }
 
             return guid;
+        }
+
+        public override void BeginBubble(Command command, Action<CommandResultArgs> completed = null) {
+            // There isn't much point in bubbling up if we just need to come back down here.
+            if (command.Scope != null && command.Scope.PluginGuid == this.PluginGuid) {
+                base.BeginTunnel(command, completed);
+            }
+            else if (this.BubbleObjects != null) {
+                base.BeginBubble(command, completed);
+            }
         }
 
         public override CommandResultArgs Bubble(Command command) {

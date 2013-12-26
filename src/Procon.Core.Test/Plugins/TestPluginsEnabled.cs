@@ -36,6 +36,8 @@ namespace Procon.Core.Test.Plugins {
 
             Assert.IsTrue(result.Success);
             Assert.AreEqual(CommandResultType.Success, result.Status);
+
+            //plugins.Dispose();
         }
 
         /// <summary>

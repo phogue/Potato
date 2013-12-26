@@ -136,7 +136,7 @@ namespace Procon.Core.Variables {
         /// Begins the execution of this variable controller.
         /// Assigns events and loads the config for this file.
         /// </summary>
-        public override CoreController Execute() {
+        public override ICoreController Execute() {
             this.AssignEvents();
 
             this.SetupDefaultVariables();

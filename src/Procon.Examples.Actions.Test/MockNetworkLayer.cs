@@ -70,7 +70,10 @@ namespace Procon.Examples.Actions.Test {
         /// <param name="parameters"></param>
         /// <returns></returns>
         public CommandResultArgs NetworkProtocolActionKick(Command command, Dictionary<String, CommandParameter> parameters) {
-            CommandResultArgs result = new CommandResultArgs();
+            CommandResultArgs result = new CommandResultArgs() {
+                Status = CommandResultType.Success,
+                Success = true
+            };
 
             // You can ignore this. This is a mock of Procon's internal process, but looks nothing like it really
 

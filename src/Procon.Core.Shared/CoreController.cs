@@ -92,7 +92,7 @@ namespace Procon.Core.Shared {
         /// </summary>
         /// <param name="config"></param>
         /// <returns></returns>
-        public virtual CoreController Execute(Config config) {
+        public virtual ICoreController Execute(Config config) {
             this.TunnelObjects = this.TunnelObjects ?? new List<ICoreController>();
             this.BubbleObjects = this.BubbleObjects ?? new List<ICoreController>();
 
@@ -107,7 +107,7 @@ namespace Procon.Core.Shared {
         /// Called after the constructor is called
         /// </summary>
         /// <returns></returns>
-        public virtual CoreController Execute() {
+        public virtual ICoreController Execute() {
             this.TunnelObjects = this.TunnelObjects ?? new List<ICoreController>();
             this.BubbleObjects = this.BubbleObjects ?? new List<ICoreController>();
 
@@ -291,6 +291,10 @@ namespace Procon.Core.Shared {
 
                 command.Result = this.PropogateExecuted(command);
             }
+            // If the preview stole the command and executed it, let everyone know it has been executed.
+            else if (command.Result.Status == CommandResultType.Success) {
+                command.Result = this.PropogateExecuted(command, false);
+            }
 
             return command.Result;
         }
@@ -312,6 +316,10 @@ namespace Procon.Core.Shared {
             if (command.Result.Status == CommandResultType.Continue) {
                 command.Result = this.PropogateHandler(command, false);
 
+                command.Result = this.PropogateExecuted(command, false);
+            }
+            // If the preview stole the command and executed it, let everyone know it has been executed.
+            else if (command.Result.Status == CommandResultType.Success) {
                 command.Result = this.PropogateExecuted(command, false);
             }
 

@@ -183,7 +183,7 @@ namespace Procon.Core.Database {
             }
         }
 
-        public override CoreController Execute() {
+        public override ICoreController Execute() {
             this.GroupedVariableListener.Variables = this.Shared.Variables;
 
             this.AssignEvents();

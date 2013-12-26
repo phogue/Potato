@@ -289,7 +289,7 @@ namespace Procon.Core {
         /// Loads the configuration file.
         /// </summary>
         /// <returns></returns>
-        public override CoreController Execute() {
+        public override ICoreController Execute() {
             this.EventsConsole.Execute();
             this.Packages.Execute();
             this.CommandServer.Execute();

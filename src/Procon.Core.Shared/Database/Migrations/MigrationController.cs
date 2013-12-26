@@ -31,7 +31,7 @@ namespace Procon.Core.Shared.Database.Migrations {
             this.Migrations = new List<IMigration>();
         }
 
-        public override CoreController Execute() {
+        public override ICoreController Execute() {
             // Managing migrations 
             CommandResultArgs result = this.Bubble(
                 CommandBuilder.DatabaseQuery(

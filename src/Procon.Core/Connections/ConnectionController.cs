@@ -167,7 +167,7 @@ namespace Procon.Core.Connections {
             config.Combine(pluginConfig);
         }
 
-        public override CoreController Execute() {
+        public override ICoreController Execute() {
             if (this.Game != null) {
                 this.ConnectionModel.GameType = this.Game.GameType as GameType;
                 this.ConnectionModel.Hostname = this.Game.Client.Hostname;

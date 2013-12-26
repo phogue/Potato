@@ -37,7 +37,7 @@ namespace Procon.Core.Events {
             this.Shared = new SharedReferences();
         }
 
-        public override CoreController Execute() {
+        public override ICoreController Execute() {
             this.Shared.Events.EventLogged += new Core.Events.EventsController.EventLoggedHandler(Events_EventLogged);
 
             return base.Execute();

@@ -14,14 +14,14 @@ namespace Procon.Examples.Commands {
                 {
                     new CommandAttribute() {
                         Name = "ThisCommandIsInAChildObject",
-                        CommandAttributeType = CommandAttributeType.Executed
+                        CommandAttributeType = CommandAttributeType.Handler
                     },
                     new CommandDispatchHandler(this.ThisCommandIsInAChildObject)
                 },
                 {
                     new CommandAttribute() {
                         Name = "NoParameterBubbleCommand",
-                        CommandAttributeType = CommandAttributeType.Executed,
+                        CommandAttributeType = CommandAttributeType.Handler,
                         ParameterTypes = new List<CommandParameterType>() {
                             new CommandParameterType() {
                                 Name = "number",

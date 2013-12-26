@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using Procon.Core.Shared;
 using Procon.Core.Shared.Plugins;
-using Procon.Net;
 using Procon.Net.Shared;
 using Procon.Net.Shared.Actions;
 using Procon.Net.Shared.Actions.Deferred;
@@ -15,14 +14,14 @@ namespace Procon.Examples.Actions {
                 {
                     new CommandAttribute() {
                         Name = "KickPlayer",
-                        CommandAttributeType = CommandAttributeType.Executed
+                        CommandAttributeType = CommandAttributeType.Handler
                     },
                     new CommandDispatchHandler(this.KickPlayer)
                 },
                 {
                     new CommandAttribute() {
                         Name = "DeferredKickPlayer",
-                        CommandAttributeType = CommandAttributeType.Executed
+                        CommandAttributeType = CommandAttributeType.Handler
                     },
                     new CommandDispatchHandler(this.DeferredKickPlayer)
                 }

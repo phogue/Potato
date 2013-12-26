@@ -23,14 +23,14 @@ namespace Procon.Examples.UserInterface {
                 {
                     new CommandAttribute() {
                         Name = "/",
-                        CommandAttributeType = CommandAttributeType.Executed
+                        CommandAttributeType = CommandAttributeType.Handler
                     },
                     new CommandDispatchHandler(this.PageIndex)
                 },
                 {
                     new CommandAttribute() {
                         Name = "/settings",
-                        CommandAttributeType = CommandAttributeType.Executed
+                        CommandAttributeType = CommandAttributeType.Handler
                     },
                     new CommandDispatchHandler(this.PageSettings)
                 }

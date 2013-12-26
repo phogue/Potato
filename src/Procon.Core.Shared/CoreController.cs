@@ -206,21 +206,15 @@ namespace Procon.Core.Shared {
             return command.Result;
         }
 
-        /// <summary>
-        /// Run a preview of a command on the current object, then tunnel or bubble the command.
-        /// </summary>
-        /// <param name="command"></param>
-        /// <param name="tunnel">If the command should then be tunneled or bubbled</param>
-        /// <returns>The result of the preview. A handler may have canceled the command.</returns>
-        public virtual CommandResultArgs PropogatePreview(Command command, bool tunnel = true) {
+        public virtual CommandResultArgs PropogatePreview(Command command, CommandDirection direction) {
             command.Result = this.Run(CommandAttributeType.Preview, command, CommandResultType.Continue);
 
             if (command.Result.Status == CommandResultType.Continue) {
-                IList<ICoreController> propogationList = tunnel == true ? this.TunnelExecutableObjects(command) : this.BubbleExecutableObjects(command);
+                IList<ICoreController> propogationList = direction == CommandDirection.Tunnel ? this.TunnelExecutableObjects(command) : this.BubbleExecutableObjects(command);
 
                 for (int offset = 0; propogationList != null && offset < propogationList.Count && command.Result.Status == CommandResultType.Continue; offset++) {
                     if (propogationList[offset] != null) {
-                        command.Result = propogationList[offset].PropogatePreview(command, tunnel);
+                        command.Result = propogationList[offset].PropogatePreview(command, direction);
                     }
                 }
             }
@@ -228,21 +222,15 @@ namespace Procon.Core.Shared {
             return command.Result;
         }
 
-        /// <summary>
-        /// Run a command on the current object, then tunnel or bubble the command.
-        /// </summary>
-        /// <param name="command"></param>
-        /// <param name="tunnel">If the command should then be tunneled or bubbled</param>
-        /// <returns>The result of the execution.</returns>
-        public virtual CommandResultArgs PropogateHandler(Command command, bool tunnel = true) {
+        public virtual CommandResultArgs PropogateHandler(Command command, CommandDirection direction) {
             command.Result = this.Run(CommandAttributeType.Handler, command, CommandResultType.Continue);
 
             if (command.Result.Status == CommandResultType.Continue) {
-                IList<ICoreController> propogationList = tunnel == true ? this.TunnelExecutableObjects(command) : this.BubbleExecutableObjects(command);
+                IList<ICoreController> propogationList = direction == CommandDirection.Tunnel ? this.TunnelExecutableObjects(command) : this.BubbleExecutableObjects(command);
 
                 for (int offset = 0; propogationList != null && offset < propogationList.Count && command.Result.Status == CommandResultType.Continue; offset++) {
                     if (propogationList[offset] != null) {
-                        command.Result = propogationList[offset].PropogateHandler(command, tunnel);
+                        command.Result = propogationList[offset].PropogateHandler(command, direction);
                     }
                 }
             }
@@ -250,21 +238,15 @@ namespace Procon.Core.Shared {
             return command.Result;
         }
 
-        /// <summary>
-        /// Alert the object that a command has been executed with the following results
-        /// </summary>
-        /// <param name="command"></param>
-        /// <param name="tunnel">If the command should then be tunneled or bubbled</param>
-        /// <returns>The result of the executed.</returns>
-        public virtual CommandResultArgs PropogateExecuted(Command command, bool tunnel = true) {
+        public virtual CommandResultArgs PropogateExecuted(Command command, CommandDirection direction) {
             command.Result = this.Run(CommandAttributeType.Executed, command, command.Result.Status);
 
-            IList<ICoreController> propogationList = tunnel == true ? this.TunnelExecutableObjects(command) : this.BubbleExecutableObjects(command);
+            IList<ICoreController> propogationList = direction == CommandDirection.Tunnel ? this.TunnelExecutableObjects(command) : this.BubbleExecutableObjects(command);
 
             if (propogationList != null) {
                 foreach (CoreController executable in propogationList) {
                     if (executable != null) {
-                        command.Result = executable.PropogateExecuted(command, tunnel);
+                        command.Result = executable.PropogateExecuted(command, direction);
                     }
                 }
             }
@@ -284,16 +266,16 @@ namespace Procon.Core.Shared {
                 Status = CommandResultType.Continue
             };
 
-            command.Result = this.PropogatePreview(command);
+            command.Result = this.PropogatePreview(command, CommandDirection.Tunnel);
 
             if (command.Result.Status == CommandResultType.Continue) {
-                command.Result = this.PropogateHandler(command);
+                command.Result = this.PropogateHandler(command, CommandDirection.Tunnel);
 
-                command.Result = this.PropogateExecuted(command);
+                command.Result = this.PropogateExecuted(command, CommandDirection.Tunnel);
             }
             // If the preview stole the command and executed it, let everyone know it has been executed.
             else if (command.Result.Status == CommandResultType.Success) {
-                command.Result = this.PropogateExecuted(command, false);
+                command.Result = this.PropogateExecuted(command, CommandDirection.Tunnel);
             }
 
             return command.Result;
@@ -311,16 +293,16 @@ namespace Procon.Core.Shared {
                 Status = CommandResultType.Continue
             };
 
-            command.Result = this.PropogatePreview(command, false);
+            command.Result = this.PropogatePreview(command, CommandDirection.Bubble);
 
             if (command.Result.Status == CommandResultType.Continue) {
-                command.Result = this.PropogateHandler(command, false);
+                command.Result = this.PropogateHandler(command, CommandDirection.Bubble);
 
-                command.Result = this.PropogateExecuted(command, false);
+                command.Result = this.PropogateExecuted(command, CommandDirection.Bubble);
             }
             // If the preview stole the command and executed it, let everyone know it has been executed.
             else if (command.Result.Status == CommandResultType.Success) {
-                command.Result = this.PropogateExecuted(command, false);
+                command.Result = this.PropogateExecuted(command, CommandDirection.Bubble);
             }
 
             return command.Result;

@@ -392,11 +392,11 @@ namespace Procon.Core.Connections.Plugins {
             }
         }
 
-        public override CommandResultArgs PropogatePreview(Command command, bool tunnel = true) {
+        public override CommandResultArgs PropogatePreview(Command command, CommandDirection direction) {
             CommandResultArgs synchronousResult = null;
 
             // If we're bubbling and we have not seen this command yet
-            if (tunnel == false && this.AsyncStateModel.IsKnown(command.CommandGuid) == false) {
+            if (direction == CommandDirection.Bubble && this.AsyncStateModel.IsKnown(command.CommandGuid) == false) {
                 AutoResetEvent resultWait = new AutoResetEvent(false);
 
                 this.BeginBubble(command, result => {
@@ -409,7 +409,7 @@ namespace Procon.Core.Connections.Plugins {
                 resultWait.WaitOne();
             }
             else {
-                synchronousResult = base.PropogatePreview(command, tunnel);
+                synchronousResult = base.PropogatePreview(command, direction);
             }
 
             return synchronousResult;

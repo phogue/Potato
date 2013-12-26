@@ -19,25 +19,25 @@ namespace Procon.Core.Shared {
         /// Run a preview of a command on the current object, then tunnel or bubble the command.
         /// </summary>
         /// <param name="command"></param>
-        /// <param name="tunnel">If the command should then be tunneled or bubbled</param>
+        /// <param name="direction">If the command should then be tunneled or bubbled</param>
         /// <returns>The result of the preview. A handler may have canceled the command.</returns>
-        CommandResultArgs PropogatePreview(Command command, bool tunnel = true);
+        CommandResultArgs PropogatePreview(Command command, CommandDirection direction);
 
         /// <summary>
         /// Run a command on the current object, then tunnel or bubble the command.
         /// </summary>
         /// <param name="command"></param>
-        /// <param name="tunnel">If the command should then be tunneled or bubbled</param>
+        /// <param name="direction">If the command should then be tunneled or bubbled</param>
         /// <returns>The result of the execution.</returns>
-        CommandResultArgs PropogateHandler(Command command, bool tunnel = true);
+        CommandResultArgs PropogateHandler(Command command, CommandDirection direction);
 
         /// <summary>
         /// Alert the object that a command has been executed with the following results
         /// </summary>
         /// <param name="command"></param>
-        /// <param name="tunnel">If the command should then be tunneled or bubbled</param>
+        /// <param name="direction">If the command should then be tunneled or bubbled</param>
         /// <returns>The result of the executed.</returns>
-        CommandResultArgs PropogateExecuted(Command command, bool tunnel = true);
+        CommandResultArgs PropogateExecuted(Command command, CommandDirection direction);
 
         /// <summary>
         /// Execute a command, then tunnel it if the dispatch fails or remains as continuing

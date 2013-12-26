@@ -149,7 +149,7 @@ namespace Procon.Core.Shared {
         }
 
         // Captures all executed commands, seeing if this async conroller is waiting for a command to have been executed.
-        public override CommandResultArgs PropogateExecuted(Command command, bool tunnel = true) {
+        public override CommandResultArgs PropogateExecuted(Command command, CommandDirection direction) {
             AsynchronousCommandModel asynchronousCommandModel = null;
 
             // If we are waiting for it and we have removed the executed wrapper successfully.
@@ -157,7 +157,7 @@ namespace Procon.Core.Shared {
                 Task.Factory.StartNew(() => asynchronousCommandModel.OnResult(command.Result));
             }
 
-            return base.PropogateExecuted(command, tunnel);
+            return base.PropogateExecuted(command, direction);
         }
 
         public override void Dispose() {

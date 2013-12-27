@@ -10,7 +10,7 @@ using Procon.Net.Shared.Models;
 
 namespace Procon.Core.Test.TextCommands.Fuzzy {
     [TestFixture]
-    public class TestFuzzyBasicObjectMatching : TestFuzzyBase {
+    public class TestFuzzyBasicObjectMatching : TestTextCommandParserBase {
         [Test]
         public void TestBasicAlternateKickPhogueCommandSevereTypo() {
             CommandResultArgs result = CreateTextCommandController().ExecuteTextCommand(new Command() {

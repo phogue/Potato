@@ -18,8 +18,8 @@ using Procon.Net.Shared.Protocols;
 
 #endregion
 
-namespace Procon.Core.Test.TextCommands.Fuzzy {
-    public abstract class TestFuzzyBase {
+namespace Procon.Core.Test.TextCommands {
+    public abstract class TestTextCommandParserBase {
         //protected TextCommandController TextCommandController { get; set; }
 
         protected static TextCommandModel TextCommandKick = new TextCommandModel() {
@@ -27,6 +27,7 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
                 "kick",
                 "get rid of"
             },
+            Parser = TextCommandParserType.Fuzzy,
             PluginCommand = "KICK",
             DescriptionKey = "KICK"
         };
@@ -35,6 +36,7 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
             Commands = new List<string>() {
                 "test"
             },
+            Parser = TextCommandParserType.Fuzzy,
             PluginCommand = "TEST",
             DescriptionKey = "TEST"
         };
@@ -44,6 +46,7 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
                 "change map",
                 "play"
             },
+            Parser = TextCommandParserType.Fuzzy,
             PluginCommand = "CHANGEMAP",
             DescriptionKey = "CHANGEMAP"
         };
@@ -52,6 +55,7 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
             Commands = new List<string>() {
                 "calculate"
             },
+            Parser = TextCommandParserType.Fuzzy,
             PluginCommand = "CALCULATE",
             DescriptionKey = "CALCULATE"
         };
@@ -407,6 +411,10 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
             });
 
             return result;
+        }
+
+        protected static void AssertExecutedCommand(CommandResultArgs args, TextCommandModel primaryCommand) {
+            Assert.AreEqual(primaryCommand, args.Now.TextCommands.First(), String.Format("Has not used the '{0}' command", primaryCommand.PluginCommand));
         }
 
         protected static void AssertExecutedCommandAgainstSentencesList(CommandResultArgs args, TextCommandModel primaryCommand, List<String> sentences) {

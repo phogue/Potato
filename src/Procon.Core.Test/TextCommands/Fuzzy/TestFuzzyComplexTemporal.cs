@@ -12,7 +12,7 @@ using Procon.Net.Shared.Models;
 
 namespace Procon.Core.Test.TextCommands.Fuzzy {
     [TestFixture]
-    public class TestFuzzyComplexTemporal : TestFuzzyBase {
+    public class TestFuzzyComplexTemporal : TestTextCommandParserBase {
         [Test]
         public void TestTemporalKickPhogueInTwoMinutesOnPortValdezForAMinute() {
             CommandResultArgs args = ExecuteTextCommand(CreateTextCommandController(), "kick phogue in two minutes on port valdez for a minute");

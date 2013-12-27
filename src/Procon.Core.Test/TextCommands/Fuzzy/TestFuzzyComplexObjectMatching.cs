@@ -11,7 +11,7 @@ using Procon.Net.Shared.Models;
 
 namespace Procon.Core.Test.TextCommands.Fuzzy {
     [TestFixture]
-    public class TestFuzzyComplexObjectMatching : TestFuzzyBase {
+    public class TestFuzzyComplexObjectMatching : TestTextCommandParserBase {
         [Test]
         public void TestComplexChangeMapToAllMaps() {
             AssertCommandPlayerListMapList(CreateTextCommandController(), "change map to all maps", TextCommandChangeMap, new List<Player>(), new List<Map>() {

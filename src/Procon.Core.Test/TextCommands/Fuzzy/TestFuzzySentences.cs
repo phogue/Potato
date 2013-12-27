@@ -7,7 +7,7 @@ using NUnit.Framework;
 
 namespace Procon.Core.Test.TextCommands.Fuzzy {
     [TestFixture]
-    public class TestFuzzySentences : TestFuzzyBase {
+    public class TestFuzzySentences : TestTextCommandParserBase {
         [Test]
         public void TestSentencesHelloWorldQuoted() {
             AssertCommandSentencesList(CreateTextCommandController(), "test \"Hello World!\"", TextCommandTest, new List<string>() {

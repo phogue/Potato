@@ -11,7 +11,7 @@ using Procon.Net.Shared.Models;
 
 namespace Procon.Core.Test.TextCommands.Fuzzy {
     [TestFixture]
-    public class TestFuzzySetsObjectMatching : TestFuzzyBase {
+    public class TestFuzzySetsObjectMatching : TestTextCommandParserBase {
         /// <summary>
         ///     Tests that sets won't be combined if not all of the types match.
         /// </summary>

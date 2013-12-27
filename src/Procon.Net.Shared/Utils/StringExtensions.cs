@@ -203,5 +203,20 @@ namespace Procon.Net.Shared.Utils {
 
             return combined.SanitizeDirectory();
         }
+        
+        /// <summary>
+        /// Replaces the first occurance of a string within another string
+        /// </summary>
+        /// <param name="text">The source text to find replacements</param>
+        /// <param name="search">The string to search for</param>
+        /// <param name="replace">The text to replace with</param>
+        /// <returns></returns>
+        public static String ReplaceFirst(this String text, String search, String replace) {
+            int pos = text.IndexOf(search, System.StringComparison.Ordinal);
+            if (pos < 0) {
+                return text;
+            }
+            return text.Substring(0, pos) + replace + text.Substring(pos + search.Length);
+        }
     }
 }

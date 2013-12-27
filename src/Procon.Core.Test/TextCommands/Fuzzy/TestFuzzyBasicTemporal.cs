@@ -9,7 +9,7 @@ using Procon.Fuzzy.Tokens.Primitive.Temporal;
 
 namespace Procon.Core.Test.TextCommands.Fuzzy {
     [TestFixture]
-    public class TestFuzzyBasicTemporal : TestFuzzyBase {
+    public class TestFuzzyBasicTemporal : TestTextCommandParserBase {
         [Test]
         public void TestTemporalKickEveryoneEverySecond() {
             AssertTemporalCommand(CreateTextCommandController(), "kick everyone every second", TextCommandKick, null, null, new FuzzyDateTimePattern() {

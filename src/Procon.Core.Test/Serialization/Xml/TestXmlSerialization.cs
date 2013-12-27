@@ -394,7 +394,7 @@ namespace Procon.Core.Test.Serialization.Xml {
                 },
                 DescriptionKey = "Description",
                 PluginCommand = "Method",
-                Parser = ParserType.Fuzzy,
+                Parser = TextCommandParserType.Fuzzy,
                 Priority = 50,
                 PluginUid = "Uid"
             };

@@ -72,6 +72,10 @@ namespace Procon.Examples.TextCommands.Test {
             });
         }
 
+        /// <summary>
+        /// Test for you to debug.
+        /// Set a breakpoint within Procon.Examples.TextCommands.FuzzyCommand
+        /// </summary>
         [Test]
         public void TestCommandPhogue() {
             ConnectionController connection = this.CreateConnection();
@@ -95,6 +99,10 @@ namespace Procon.Examples.TextCommands.Test {
             });
         }
 
+        /// <summary>
+        /// Test for you to debug.
+        /// Set a breakpoint within Procon.Examples.TextCommands.FuzzyCommand
+        /// </summary>
         [Test]
         public void TestCommandScoreEqualsZero() {
             ConnectionController connection = this.CreateConnection();
@@ -111,6 +119,59 @@ namespace Procon.Examples.TextCommands.Test {
                             Content = new List<string>() {
                                 // You should see a single player "zaeed"
                                 "test players with score = 0"
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        /// <summary>
+        /// Test for you to debug.
+        /// Set a breakpoint within Procon.Examples.TextCommands.RouteCommand
+        /// </summary>
+        [Test]
+        public void TestRouteCommand() {
+            ConnectionController connection = this.CreateConnection();
+
+            // 3. Execute a text command. This could come from in game text or via the daemon.
+            // When executed from in game the command built is identical but the content is
+            // the in game text said and this text must be prefixed with "!, @ or #"
+            connection.Tunnel(new Command() {
+                Origin = CommandOrigin.Local,
+                CommandType = CommandType.TextCommandsExecute,
+                Parameters = new List<CommandParameter>() {
+                    new CommandParameter() {
+                        Data = {
+                            Content = new List<string>() {
+                                "route"
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        /// <summary>
+        /// Test for you to debug.
+        /// Set a breakpoint within Procon.Examples.TextCommands.RouteCommand
+        /// </summary>
+        [Test]
+        public void TestRouteCommandPlayer() {
+            ConnectionController connection = this.CreateConnection();
+
+            // 3. Execute a text command. This could come from in game text or via the daemon.
+            // When executed from in game the command built is identical but the content is
+            // the in game text said and this text must be prefixed with "!, @ or #"
+            connection.Tunnel(new Command() {
+                Origin = CommandOrigin.Local,
+                CommandType = CommandType.TextCommandsExecute,
+                Parameters = new List<CommandParameter>() {
+                    new CommandParameter() {
+                        Data = {
+                            Content = new List<string>() {
+                                // You should see a single player "phogue"
+                                "route phogue"
                             }
                         }
                     }

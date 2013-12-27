@@ -29,7 +29,7 @@ namespace Procon.Core.Shared.Models {
         /// compatible command matching may or may not be added in the future.</para>
         /// <para>Fuzzy is set by default, but should br specified explicitly.</para>
         /// </remarks>
-        public ParserType Parser { get; set; }
+        public TextCommandParserType Parser { get; set; }
 
         /// <summary>
         /// List of commands to find in the string. "Kick", "Get rid of", "gtfo", "cya"
@@ -60,7 +60,7 @@ namespace Procon.Core.Shared.Models {
             this.PluginCommand = String.Empty;
             this.DescriptionKey = String.Empty;
 
-            this.Parser = ParserType.Fuzzy;
+            this.Parser = TextCommandParserType.Fuzzy;
 
             this.Commands = new List<String>();
 
@@ -75,7 +75,7 @@ namespace Procon.Core.Shared.Models {
             this.PluginCommand = null;
             this.DescriptionKey = null;
 
-            this.Parser = ParserType.Fuzzy;
+            this.Parser = TextCommandParserType.Fuzzy;
 
             this.Commands.Clear();
             this.Commands = null;

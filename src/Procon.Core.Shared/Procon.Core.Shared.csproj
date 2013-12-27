@@ -90,7 +90,7 @@
     <Compile Include="Models\PackageState.cs" />
     <Compile Include="Models\PackageType.cs" />
     <Compile Include="Models\PackageVersionModel.cs" />
-    <Compile Include="Models\ParserType.cs" />
+    <Compile Include="Models\TextCommandParserType.cs" />
     <Compile Include="Models\PermissionModel.cs" />
     <Compile Include="Models\PluginModel.cs" />
     <Compile Include="Models\RepositoryModel.cs" />

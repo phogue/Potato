@@ -6,7 +6,7 @@ using NUnit.Framework;
 
 namespace Procon.Core.Test.TextCommands.Fuzzy {
     [TestFixture]
-    public class TestFuzzyArithmetic : TestFuzzyBase {
+    public class TestFuzzyArithmetic : TestTextCommandParserBase {
         [Test]
         public void TestCalculateBasicArithmeticAddition() {
             AssertNumericCommand(CreateTextCommandController(), "calculate 1 + 2", TextCommandCalculate, 3.0F);

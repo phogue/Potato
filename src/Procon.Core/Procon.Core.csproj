@@ -78,6 +78,8 @@
     <Compile Include="Connections\TextCommands\Parsers\Fuzzy\MapThingReference.cs" />
     <Compile Include="Connections\TextCommands\Parsers\Fuzzy\PingPropertyReference.cs" />
     <Compile Include="Connections\TextCommands\Parsers\Fuzzy\PlayerThingReference.cs" />
+    <Compile Include="Connections\TextCommands\Parsers\RouteParser.cs" />
+    <Compile Include="Connections\TextCommands\Parsers\Route\CompiledTextCommand.cs" />
     <Compile Include="Connections\TextCommands\TextCommandController.cs" />
     <Compile Include="Connections\TextCommands\Parsers\FuzzyParser.cs" />
     <Compile Include="Connections\TextCommands\Parsers\Parser.cs" />

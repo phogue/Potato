@@ -112,7 +112,7 @@
     <Compile Include="Plugins\TestPluginsSecurity.cs" />
     <Compile Include="Plugins\TestPluginsSerialization.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TextCommands\Fuzzy\TestFuzzyBase.cs" />
+    <Compile Include="TextCommands\TestTextCommandParserBase.cs" />
     <Compile Include="Repositories\TestRepository.cs" />
     <Compile Include="Security\TestSecurityPermission.cs" />
     <Compile Include="Security\TestSecurity.cs" />
@@ -120,6 +120,7 @@
     <Compile Include="Security\TestSecurityGroup.cs" />
     <Compile Include="Security\TestSecurityPlayer.cs" />
     <Compile Include="Serialization\TestAppDomainSerialization.cs" />
+    <Compile Include="TextCommands\Route\TestRoute.cs" />
     <Compile Include="TextCommands\TestTextCommandParsing.cs" />
     <Compile Include="TextCommands\TestTextCommandRegistration.cs" />
     <Compile Include="TextCommands\TestTextCommands.cs" />

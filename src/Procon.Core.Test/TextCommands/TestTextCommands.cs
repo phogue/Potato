@@ -81,7 +81,7 @@ namespace Procon.Core.Test.TextCommands {
 
             testCommand.Dispose();
 
-            Assert.AreEqual(ParserType.Fuzzy, testCommand.Parser);
+            Assert.AreEqual(TextCommandParserType.Fuzzy, testCommand.Parser);
             Assert.IsNull(testCommand.PluginUid);
             Assert.IsNull(testCommand.PluginCommand);
             Assert.IsNull(testCommand.DescriptionKey);

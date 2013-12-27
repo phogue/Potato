@@ -1,11 +1,9 @@
 ﻿using System.Collections.Generic;
-using Procon.Core.Security;
 using Procon.Core.Shared;
 using Procon.Core.Shared.Models;
 using Procon.Net.Shared.Models;
 
 namespace Procon.Core.Connections.TextCommands.Parsers {
-
     /// <summary>
     /// Base text command parser implementing ITextCommandParser
     /// attributes shared across 

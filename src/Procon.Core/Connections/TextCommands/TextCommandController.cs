@@ -105,17 +105,12 @@ namespace Procon.Core.Connections.TextCommands {
         }
 
         /// <summary>
-        /// Executes a text command using the NLP parser.
+        /// Fetches a fuzzy text parser
         /// </summary>
         /// <param name="speaker">The player executing the command</param>
         /// <param name="speakerAccount">The account executing the command</param>
-        /// <param name="commands">A list of commands to check against </param>
-        /// <param name="prefix">The first valid character of the command being executed</param>
-        /// <param name="text">The next, minus the first character</param>
-        /// <returns>The generated event, if any.</returns>
-        protected CommandResultArgs ParseFuzzy(Player speaker, AccountModel speakerAccount, List<TextCommandModel> commands, String prefix, String text) {
-
-            CommandResultArgs commandResult = null;
+        /// <returns>The fuzzy parser, provided a language could be found.</returns>
+        protected ITextCommandParser BuildFuzzyParser(Player speaker, AccountModel speakerAccount) {
             LanguageConfig selectedLanguage = null;
 
             if (speakerAccount != null && speakerAccount.PreferredLanguageCode != String.Empty) {
@@ -125,19 +120,28 @@ namespace Procon.Core.Connections.TextCommands {
                 selectedLanguage = this.Shared.Languages.Default;
             }
 
-            if (selectedLanguage != null) {
-                ITextCommandParser parser = new FuzzyParser() {
-                    Connection = this.Connection,
-                    TextCommands = commands,
-                    Document = selectedLanguage.Root,
-                    SpeakerPlayer = speaker,
-                    SpeakerAccount = speakerAccount
-                };
+            return new FuzzyParser() {
+                Connection = this.Connection,
+                TextCommands = this.TextCommands.Where(textCommand => textCommand.Parser == TextCommandParserType.Any || textCommand.Parser == TextCommandParserType.Fuzzy).ToList(),
+                Document = selectedLanguage.Root,
+                SpeakerPlayer = speaker,
+                SpeakerAccount = speakerAccount
+            };
+        }
 
-                commandResult = parser.Parse(prefix, text);
-            }
-
-            return commandResult;
+        /// <summary>
+        /// Fetches a route text parser
+        /// </summary>
+        /// <param name="speaker">The player executing the command</param>
+        /// <param name="speakerAccount">The account executing the command</param>
+        /// <returns>The route parser, provided a language could be found.</returns>
+        protected ITextCommandParser BuildRouteParser(Player speaker, AccountModel speakerAccount) {
+            return new RouteParser() {
+                Connection = this.Connection,
+                TextCommands = this.TextCommands.Where(textCommand => textCommand.Parser == TextCommandParserType.Any || textCommand.Parser == TextCommandParserType.Route).ToList(),
+                SpeakerPlayer = speaker,
+                SpeakerAccount = speakerAccount
+            };
         }
 
         /// <summary>
@@ -154,11 +158,12 @@ namespace Procon.Core.Connections.TextCommands {
         /// <param name="text"></param>
         /// <returns>The generated event, if any.</returns>
         protected CommandResultArgs Parse(Player speakerNetworkPlayer, AccountModel speakerAccount, String prefix, String text) {
+            List<ITextCommandParser> parsers = new List<ITextCommandParser>() {
+                this.BuildFuzzyParser(speakerNetworkPlayer, speakerAccount),
+                this.BuildRouteParser(speakerNetworkPlayer, speakerAccount)
+            };
 
-            // This could execute more in the future, in which case
-            // this.TextCommands.Where(x => x.Parser == Parser.NLP).ToList()
-            // would be passed to ExecuteNLP
-            return this.ParseFuzzy(speakerNetworkPlayer, speakerAccount, this.TextCommands, prefix, text);
+            return parsers.Select(parser => parser.Parse(prefix, text)).FirstOrDefault(result => result != null);
         }
 
         /// <summary>

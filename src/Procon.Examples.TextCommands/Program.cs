@@ -21,7 +21,7 @@ namespace Procon.Examples.TextCommands {
             this.AppendDispatchHandlers(new Dictionary<CommandAttribute, CommandDispatchHandler>() {
                 {
                     new CommandAttribute() {
-                        Name = "TestCommand",
+                        Name = "FuzzyCommand",
                         ParameterTypes = new List<CommandParameterType>() {
                             new CommandParameterType() {
                                 Name = "e",
@@ -29,7 +29,19 @@ namespace Procon.Examples.TextCommands {
                             }
                         }
                     },
-                    new CommandDispatchHandler(this.TestCommand)
+                    new CommandDispatchHandler(this.FuzzyCommand)
+                },
+                {
+                    new CommandAttribute() {
+                        Name = "RouteCommand",
+                        ParameterTypes = new List<CommandParameterType>() {
+                            new CommandParameterType() {
+                                Name = "e",
+                                Type = typeof(CommandResultArgs)
+                            }
+                        }
+                    },
+                    new CommandDispatchHandler(this.RouteCommand)
                 }
             });
         }
@@ -54,11 +66,46 @@ namespace Procon.Examples.TextCommands {
                                 TextCommands = new List<TextCommandModel>() {
                                     new TextCommandModel() {
                                         PluginUid = this.PluginGuid.ToString(),
-                                        PluginCommand = "TestCommand", // This will be the command name that comes through
-                                        DescriptionKey = "TestCommandDescription",
+                                        Parser = TextCommandParserType.Fuzzy,
+                                        PluginCommand = "FuzzyCommand", // This will be the command name that comes through
+                                        DescriptionKey = "FuzzyCommandDescription",
+                                        // When using the fuzzy parser you just need to supply keywords to pickup in a text command
                                         Commands = new List<String>() {
                                             "Test",
-                                            "Blah"
+                                            "Blah",
+                                            "Fuzzy"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+
+                // Register a route command, which is a very specific format of text command
+                this.Bubble(new Command() {
+                    CommandType = CommandType.TextCommandsRegister,
+                    Scope = new CommandScope() {
+                        ConnectionGuid = this.ConnectionGuid
+                    },
+                    Parameters = new List<CommandParameter>() {
+                        new CommandParameter() {
+                            Data = {
+                                TextCommands = new List<TextCommandModel>() {
+                                    new TextCommandModel() {
+                                        PluginUid = this.PluginGuid.ToString(),
+                                        Parser = TextCommandParserType.Route,
+                                        PluginCommand = "RouteCommand", // This will be the command name that comes through
+                                        DescriptionKey = "RouteCommandDescription",
+                                        // When using the route parser the structure must be identical
+                                        // to one of the command "routes" supplied below.
+                                        Commands = new List<String>() {
+                                            "route",
+                                            "route :player",
+                                            "route :player :text",
+                                            "route :map",
+                                            "route :map :text",
+                                            "route :number",
                                         }
                                     }
                                 }
@@ -69,8 +116,49 @@ namespace Procon.Examples.TextCommands {
             }
         }
 
-        // 3. Handle the test command.
-        protected CommandResultArgs TestCommand(Command command, Dictionary<String, CommandParameter> parameters) {
+        // 3. Handle the test fuzzy command.
+        protected CommandResultArgs FuzzyCommand(Command command, Dictionary<String, CommandParameter> parameters) {
+            CommandResultArgs e = parameters["e"].First<CommandResultArgs>();
+
+            TextCommandMatchModel match = e.Now.TextCommandMatches.First();
+
+            if (match.Players != null && match.Players.Count > 0) {
+                Console.WriteLine("Players: " + String.Join(", ", match.Players.Select(x => x.Name).ToArray()));
+            }
+
+            if (match.Maps != null && match.Maps.Count > 0) {
+                Console.WriteLine("Maps: " + String.Join(", ", match.Maps.Select(x => x.Name).ToArray()));
+            }
+
+            if (match.Numeric != null && match.Numeric.Count > 0) {
+                Console.WriteLine("Numeric: " + String.Join(", ", match.Numeric.Select(x => String.Format("{0:F2}", x)).ToArray()));
+            }
+
+            if (match.Delay != null) {
+                Console.WriteLine("Delay: {0} (UTC+9:30 Adelaide)", match.Delay);
+            }
+
+            if (match.Interval != null) {
+                Console.WriteLine("Interval: {0}", match.Interval);
+            }
+
+            if (match.Period != null) {
+                Console.WriteLine("Duration: {0}", match.Period);
+            }
+
+            if (e.Now.TextCommands.Count > 1) {
+                Console.WriteLine("Alternate Commands: " + String.Join(" ", e.Now.TextCommands.Skip(1).Select(x => x.PluginCommand).ToArray()));
+            }
+
+            if (match.Quotes != null && match.Quotes.Count > 0) {
+                Console.WriteLine("Quotes: " + String.Join(", ", match.Quotes.Select(x => String.Format("--{0}--", x)).ToArray()));
+            }
+
+            return command.Result;
+        }
+
+        // 3. Handle the test route command.
+        protected CommandResultArgs RouteCommand(Command command, Dictionary<String, CommandParameter> parameters) {
             CommandResultArgs e = parameters["e"].First<CommandResultArgs>();
 
             TextCommandMatchModel match = e.Now.TextCommandMatches.First();

@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Input;
 using MahApps.Metro.Controls;
-using Procon.Core.Variables;
+using Procon.Core.Shared;
+using Procon.Core.Shared.Models;
 
 namespace Procon.Setup {
     using Procon.Core;
@@ -112,7 +108,7 @@ namespace Procon.Setup {
             this.Instance = new Instance().Execute() as Instance;
 
             if (this.Instance != null) {
-                this.Instance.Variables.Variable(CommonVariableNames.LocalizationDefaultLanguageCode).PropertyChanged += new PropertyChangedEventHandler(LocalizationDefaultLanguageCode_PropertyChanged);
+                this.Instance.Shared.Variables.Variable(CommonVariableNames.LocalizationDefaultLanguageCode).PropertyChanged += new PropertyChangedEventHandler(LocalizationDefaultLanguageCode_PropertyChanged);
 
                 created = true;
             }
@@ -142,10 +138,10 @@ namespace Procon.Setup {
         protected void RefreshLanguages() {
             this.LanguageModels.Clear();
 
-            foreach (Procon.Core.Localization.Language language in this.Instance.Languages.LoadedLanguageFiles) {
+            foreach (Procon.Core.Localization.LanguageConfig language in this.Instance.Shared.Languages.LoadedLanguageFiles) {
                 this.LanguageModels.Add(new LanguageModel() {
                     CountryCode = language.CountryCode,
-                    LanguageCode = language.LanguageCode,
+                    LanguageCode = language.LanguageModel.LanguageCode,
                     Name = language.NativeName
                 });
             }
@@ -158,7 +154,7 @@ namespace Procon.Setup {
         /// </summary>
         protected void RefreshSelectedLanguage() {
             if (this.Instance != null) {
-                String localizationDefaultLanguageCode = this.Instance.Variables.Get(CommonVariableNames.LocalizationDefaultLanguageCode, "en-UK");
+                String localizationDefaultLanguageCode = this.Instance.Shared.Variables.Get(CommonVariableNames.LocalizationDefaultLanguageCode, "en-UK");
 
                 foreach (LanguageModel language in this.LanguageModels) {
                     language.IsSelected = language.LanguageCode == localizationDefaultLanguageCode;
@@ -172,7 +168,7 @@ namespace Procon.Setup {
         /// <param name="value">THe value is the language code of the selected language</param>
         public void SelectLanguage(Object value) {
             if (this.Instance != null) {
-                this.Instance.Variables.SetA(new Command() {
+                this.Instance.Shared.Variables.SetA(new Command() {
                     Origin = CommandOrigin.Local
                 }, CommonVariableNames.LocalizationDefaultLanguageCode, value);
             }

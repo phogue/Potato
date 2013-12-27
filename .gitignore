@@ -155,4 +155,4 @@ $RECYCLE.BIN/
 
 # Keep unit test daemon certificate
 !/src/Procon.Core.Test/Certificates/CommandServer.pfx
-!/src/Procon.Database.Serialization/Serializers/Sql
+!/src/Procon.Database.Shared/Serializers/Sql

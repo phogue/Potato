@@ -140,9 +140,9 @@ namespace Procon.Setup {
 
             foreach (Procon.Core.Localization.LanguageConfig language in this.Instance.Shared.Languages.LoadedLanguageFiles) {
                 this.LanguageModels.Add(new LanguageModel() {
-                    CountryCode = language.CountryCode,
+                    CountryCode = language.LanguageModel.CountryCode,
                     LanguageCode = language.LanguageModel.LanguageCode,
-                    Name = language.NativeName
+                    Name = language.LanguageModel.NativeName
                 });
             }
 

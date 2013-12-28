@@ -7,28 +7,19 @@ using Procon.Core.Shared.Models;
 
 namespace Procon.Core.Localization {
 
+    /// <summary>
+    /// A language config file, loaded and combined from various xml sources in the localization folder
+    /// </summary>
     [Serializable]
     public class LanguageConfig : Config {
+        /// <summary>
+        /// Holds the underlying information loaded from the file used to describe the language
+        /// </summary>
         public LanguageModel LanguageModel { get; set; }
 
         /// <summary>
-        /// The ISO 3166 (alpha 2) country code used to represent this language. Though
-        /// not globally accepted for a 1:1 country to language, this should be either
-        /// blank or the country of origin for the language.
+        /// Initializes default values for the language config
         /// </summary>
-        public String CountryCode { get; set; }
-
-        /// <summary>
-        /// The english name of language
-        /// </summary>
-        public String EnglishName { get; set; }
-
-        /// <summary>
-        /// The native name of the language.
-        /// </summary>
-        public String NativeName { get; set; }
-
-        // Default Initialization
         public LanguageConfig() {
             this.LanguageModel = new LanguageModel();
         }
@@ -50,13 +41,13 @@ namespace Procon.Core.Localization {
                         this.LanguageModel.LanguageCode = instruction.Data;
                         break;
                     case "iso-3166-1-alpha-2":
-                        CountryCode = instruction.Data;
+                        this.LanguageModel.CountryCode = instruction.Data;
                         break;
                     case "country-name-english":
-                        EnglishName = instruction.Data;
+                        this.LanguageModel.EnglishName = instruction.Data;
                         break;
                     case "country-name-native":
-                        NativeName = instruction.Data;
+                        this.LanguageModel.NativeName = instruction.Data;
                         break;
                 }
             }

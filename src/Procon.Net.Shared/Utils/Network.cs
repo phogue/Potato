@@ -1,7 +1,12 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
+using System.Net.NetworkInformation;
 
 namespace Procon.Net.Shared.Utils {
-    public class Network {
+    /// <summary>
+    /// Basic networking helpers 
+    /// </summary>
+    public static class Network {
 
         /// <summary>
         /// Resolves a hostname to an ip address
@@ -23,6 +28,24 @@ namespace Procon.Net.Shared.Utils {
             }
 
             return address;
+        }
+
+        /// <summary>
+        /// Fetches the external ip address of the current system by pinging a hostname.
+        /// </summary>
+        /// <param name="hostName">The hostname or ip address</param>
+        /// <returns></returns>
+        public static IPAddress GetExternalIpAddress(String hostName) {
+            PingReply replay = null;
+
+            try {
+                replay = new Ping().Send(hostName);
+            }
+            catch {
+                replay = null;
+            }
+
+            return replay != null && replay.Status == IPStatus.Success ? replay.Address : null;
         }
     }
 }

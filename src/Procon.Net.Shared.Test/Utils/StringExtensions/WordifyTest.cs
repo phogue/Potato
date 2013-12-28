@@ -1,11 +1,9 @@
-﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
 using Procon.Net.Shared.Utils;
-using Procon.Net.Utils;
 
-namespace Procon.Net.Test.Utils.StringExtensions {
+namespace Procon.Net.Shared.Test.Utils.StringExtensions {
     /// <summary>
     /// Tests various cases for StringExtensions.Wordify()
     /// </summary>
@@ -16,7 +14,7 @@ namespace Procon.Net.Test.Utils.StringExtensions {
         /// </summary>
         [Test]
         public void TestWordifySingleWord() {
-            List<String> words = "single".Wordify();
+            List<string> words = "single".Wordify();
 
             Assert.AreEqual(1, words.Count);
             Assert.AreEqual("single", words.First());
@@ -27,7 +25,7 @@ namespace Procon.Net.Test.Utils.StringExtensions {
         /// </summary>
         [Test]
         public void TestWordifyDoubleWord() {
-            List<String> words = "first second".Wordify();
+            List<string> words = "first second".Wordify();
 
             Assert.AreEqual(2, words.Count);
             Assert.AreEqual("first", words.First());
@@ -39,7 +37,7 @@ namespace Procon.Net.Test.Utils.StringExtensions {
         /// </summary>
         [Test]
         public void TestWordifyTripleWordFirstTwoQuoted() {
-            List<String> words = "\"first second\" third".Wordify();
+            List<string> words = "\"first second\" third".Wordify();
 
             Assert.AreEqual(2, words.Count);
             Assert.AreEqual("first second", words.First());
@@ -51,7 +49,7 @@ namespace Procon.Net.Test.Utils.StringExtensions {
         /// </summary>
         [Test]
         public void TestWordifyTripleWordLastTwoQuoted() {
-            List<String> words = "first \"second third\"".Wordify();
+            List<string> words = "first \"second third\"".Wordify();
 
             Assert.AreEqual(2, words.Count);
             Assert.AreEqual("first", words.First());
@@ -63,7 +61,7 @@ namespace Procon.Net.Test.Utils.StringExtensions {
         /// </summary>
         [Test]
         public void TestWordifyEscapedNewLine() {
-            List<String> words = "first\\nsecond".Wordify();
+            List<string> words = "first\\nsecond".Wordify();
 
             Assert.AreEqual(1, words.Count);
             Assert.AreEqual("first\nsecond", words.First());
@@ -74,7 +72,7 @@ namespace Procon.Net.Test.Utils.StringExtensions {
         /// </summary>
         [Test]
         public void TestWordifyEscapedCarriageReturn() {
-            List<String> words = "first\\rsecond".Wordify();
+            List<string> words = "first\\rsecond".Wordify();
 
             Assert.AreEqual(1, words.Count);
             Assert.AreEqual("first\rsecond", words.First());
@@ -85,7 +83,7 @@ namespace Procon.Net.Test.Utils.StringExtensions {
         /// </summary>
         [Test]
         public void TestWordifyEscapedTab() {
-            List<String> words = "first\\tsecond".Wordify();
+            List<string> words = "first\\tsecond".Wordify();
 
             Assert.AreEqual(1, words.Count);
             Assert.AreEqual("first\tsecond", words.First());
@@ -96,7 +94,7 @@ namespace Procon.Net.Test.Utils.StringExtensions {
         /// </summary>
         [Test]
         public void TestWordifyEscapedBackslash() {
-            List<String> words = "first\\\\second".Wordify();
+            List<string> words = "first\\\\second".Wordify();
 
             Assert.AreEqual(1, words.Count);
             Assert.AreEqual("first\\second", words.First());
@@ -107,7 +105,7 @@ namespace Procon.Net.Test.Utils.StringExtensions {
         /// </summary>
         [Test]
         public void TestWordifyQuoteWithinQuote() {
-            List<String> words = "\"first \\\"second\" third".Wordify();
+            List<string> words = "\"first \\\"second\" third".Wordify();
 
             Assert.AreEqual(2, words.Count);
             Assert.AreEqual("first \"second", words.First());

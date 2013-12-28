@@ -1,7 +1,7 @@
-﻿using NUnit.Framework;
+using NUnit.Framework;
 using Procon.Net.Shared.Models;
 
-namespace Procon.Net.Test.Data {
+namespace Procon.Net.Shared.Test.Data {
     [TestFixture]
     public class Point3DTest {
 

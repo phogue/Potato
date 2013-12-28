@@ -1,11 +1,10 @@
-ï»¿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
 using Procon.Net.Shared.Utils;
-using Procon.Net.Utils;
 
-namespace Procon.Net.Test.Utils.StringExtensions {
+namespace Procon.Net.Shared.Test.Utils.StringExtensions {
 
     /// <summary>
     /// Full of one-liner tests for the simple extension methods we have.
@@ -19,7 +18,7 @@ namespace Procon.Net.Test.Utils.StringExtensions {
         /// </summary>
         [Test]
         public void TestRandomStringSuccess() {
-            List<String> generated = new List<String>();
+            List<string> generated = new List<string>();
 
             for (var count = 0; count < 20; count++) {
                 generated.Add(Shared.Utils.StringExtensions.RandomString(30));
@@ -33,11 +32,11 @@ namespace Procon.Net.Test.Utils.StringExtensions {
         /// </summary>
         [Test]
         public void TestWordWrapSuccess() {
-            List<String> wrapped = "Die BrÃ¶sel eines KÃ¤sekuchen verzÃ¼cken mich.".WordWrap(30);
+            List<string> wrapped = "Die Brösel eines Käsekuchen verzücken mich.".WordWrap(30);
 
             Assert.AreEqual(2, wrapped.Count);
-            Assert.AreEqual("Die BrÃ¶sel eines KÃ¤sekuchen", wrapped.First());
-            Assert.AreEqual("verzÃ¼cken mich.", wrapped.Last());
+            Assert.AreEqual("Die Brösel eines Käsekuchen", wrapped.First());
+            Assert.AreEqual("verzücken mich.", wrapped.Last());
         }
 
         /// <summary>
@@ -45,7 +44,7 @@ namespace Procon.Net.Test.Utils.StringExtensions {
         /// </summary>
         [Test]
         public void TestRemoveDiacriticsSuccess() {
-            String removed = "Die BrÃ¶sel eines KÃ¤sekuchen verzÃ¼cken mich.".RemoveDiacritics();
+            String removed = "Die Brösel eines Käsekuchen verzücken mich.".RemoveDiacritics();
 
             Assert.AreEqual("Die Brosel eines Kasekuchen verzucken mich.", removed);
         }
@@ -65,7 +64,7 @@ namespace Procon.Net.Test.Utils.StringExtensions {
         /// </summary>
         [Test]
         public void TestStripSuccess() {
-            String removed = "P]-[0gu3 BrÃ¶sel".Strip();
+            String removed = "P]-[0gu3 Brösel".Strip();
 
             Assert.AreEqual("PHOguE Brosel", removed);
         }

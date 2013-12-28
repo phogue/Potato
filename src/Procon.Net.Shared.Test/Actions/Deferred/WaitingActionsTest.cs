@@ -1,11 +1,10 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using NUnit.Framework;
-using Procon.Net.Shared;
 using Procon.Net.Shared.Actions;
 using Procon.Net.Shared.Actions.Deferred;
 
-namespace Procon.Net.Test.Actions.Deferred {
+namespace Procon.Net.Shared.Test.Actions.Deferred {
     [TestFixture]
     public class WaitingActionsTest {
 

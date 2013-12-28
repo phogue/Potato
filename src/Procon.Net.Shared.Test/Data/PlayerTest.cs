@@ -1,8 +1,8 @@
-ï»¿using System.Linq;
+using System.Linq;
 using NUnit.Framework;
 using Procon.Net.Shared.Models;
 
-namespace Procon.Net.Test.Data {
+namespace Procon.Net.Shared.Test.Data {
     [TestFixture]
     public class PlayerTest {
 
@@ -12,10 +12,10 @@ namespace Procon.Net.Test.Data {
         [Test]
         public void TestNameStripped() {
             Player player = new Player {
-                Name = "P]-[0gu3 BrÃ¶sel"
+                Name = "P]-[0gu3 Brösel"
             };
 
-            Assert.AreEqual("P]-[0gu3 BrÃ¶sel", player.Name);
+            Assert.AreEqual("P]-[0gu3 Brösel", player.Name);
             Assert.AreEqual("PHOguE Brosel", player.NameStripped);
         }
 

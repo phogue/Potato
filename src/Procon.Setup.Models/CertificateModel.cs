@@ -1,26 +1,20 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using Org.BouncyCastle.Asn1;
 using Org.BouncyCastle.Asn1.X509;
 using Org.BouncyCastle.Crypto;
 using Org.BouncyCastle.Crypto.Generators;
-using Org.BouncyCastle.Crypto.Parameters;
 using Org.BouncyCastle.Crypto.Prng;
 using Org.BouncyCastle.Math;
 using Org.BouncyCastle.Pkcs;
 using Org.BouncyCastle.Security;
 using Org.BouncyCastle.X509;
 using Procon.Service.Shared;
-using X509Certificate = Org.BouncyCastle.X509.X509Certificate;
 
 namespace Procon.Setup.Models {
+    /// <summary>
+    /// Model representing a certificate file used for the command server
+    /// </summary>
     public class CertificateModel : INotifyPropertyChanged {
         private FileSystemWatcher _watcher;
         private string _password;
@@ -169,6 +163,9 @@ namespace Procon.Setup.Models {
             return deleted;
         }
 
+        /// <summary>
+        /// Fired whenever a property is changed
+        /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual void OnPropertyChanged(string propertyName) {

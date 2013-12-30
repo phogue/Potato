@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Xml.Serialization;
 using Newtonsoft.Json;
 using Procon.Core.Connections.Plugins;
@@ -11,7 +12,6 @@ using Procon.Core.Remote;
 using Procon.Core.Shared;
 using Procon.Core.Shared.Events;
 using Procon.Core.Shared.Models;
-using Procon.Core.Shared.Scheduler;
 using Procon.Net.Shared;
 using Procon.Net.Shared.Protocols;
 using Procon.Core.Connections;
@@ -49,7 +49,7 @@ namespace Procon.Core {
         /// Tasks to be run by this connection. Primarily used to reattempt connections
         /// or force a synchronization of the game data.
         /// </summary>
-        public TaskController Tasks { get; protected set; }
+        public List<Timer> Tasks { get; set; } 
 
         /// <summary>
         /// Output to the console for all events processed by this instance.
@@ -82,44 +82,14 @@ namespace Procon.Core {
 
             this.PushEvents = new PushEventsController();
 
-            this.Tasks = new TaskController();
+            this.Tasks = new List<Timer>() {
+                new Timer(Connection_Tick, this, TimeSpan.FromSeconds(0), TimeSpan.FromSeconds(15)),
+                new Timer(Events_Tick, this, TimeSpan.FromSeconds(0), TimeSpan.FromSeconds(60)),
+                new Timer(CommandServer_Tick, this, TimeSpan.FromSeconds(0), TimeSpan.FromSeconds(60)),
+                new Timer(Plugin_Tick, this, TimeSpan.FromSeconds(0), TimeSpan.FromSeconds(60))
+            };
 
             this.EventsConsole = new EventsConsoleController();
-
-            // Tick every 15 seconds.
-            this.Tasks.Add(
-                new Task() {
-                    Condition = new Temporal() {
-                        (date, task) => date.Second % 15 == 0
-                    }
-                }
-            ).Tick += new Task.TickHandler(Connection_Tick);
-
-            // Tick every minute.
-            this.Tasks.Add(
-                new Task() {
-                    Condition = new Temporal() {
-                        (date, task) => date.Minute % 1 == 0 && date.Second == 0
-                    }
-                }
-            ).Tick += new Task.TickHandler(Events_Tick);
-
-            // Tick every minute.
-            this.Tasks.Add(
-                new Task() {
-                    Condition = new Temporal() {
-                        (date, task) => date.Minute % 1 == 0 && date.Second == 0
-                    }
-                }
-            ).Tick += new Task.TickHandler(CommandServer_Tick);
-
-            this.Tasks.Add(
-                new Task() {
-                    Condition = new Temporal() {
-                        (date, task) => date.Minute % 1 == 0 && date.Second == 0
-                    }
-                }
-            ).Tick += new Task.TickHandler(Plugin_Tick);
 
             this.AppendDispatchHandlers(new Dictionary<CommandAttribute, CommandDispatchHandler>() {
                 {
@@ -229,21 +199,11 @@ namespace Procon.Core {
         }
 
         /// <summary>
-        /// Writes out the events to file.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Events_Tick(object sender, TickEventArgs e) {
-            this.Shared.Events.WriteEvents();
-        }
-
-        /// <summary>
         /// Reconnects or synchronizes data on each connection. A periodic standard
         /// ten second poke of each connection pretty much.
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Connection_Tick(Object sender, TickEventArgs e) {
+        /// <param name="state"></param>
+        private void Connection_Tick(Object state) {
             if (this.Connections != null) {
                 lock (this.Connections) {
                     foreach (ConnectionController connection in this.Connections.Where(connection => connection.Game != null)) {
@@ -259,12 +219,19 @@ namespace Procon.Core {
         }
 
         /// <summary>
+        /// Writes out the events to file.
+        /// </summary>
+        /// <param name="state"></param>
+        private void Events_Tick(object state) {
+            this.Shared.Events.WriteEvents();
+        }
+
+        /// <summary>
         /// Pokes the command server and all current active clients, ensuring we don't have any stale clients
         /// still held in memory.
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void CommandServer_Tick(Object sender, TickEventArgs e) {
+        /// <param name="state"></param>
+        protected void CommandServer_Tick(Object state) {
             if (this.CommandServer != null) {
                 this.CommandServer.Poke();
             }
@@ -273,9 +240,8 @@ namespace Procon.Core {
         /// <summary>
         /// Renews all of the remoting leases on active plugins for each connection.
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void Plugin_Tick(Object sender, TickEventArgs e) {
+        /// <param name="state"></param>
+        protected void Plugin_Tick(Object state) {
             if (this.Connections != null) {
                 foreach (CorePluginController plugins in this.Connections.Select(connection => connection.Plugins)) {
                     plugins.RenewLease();
@@ -294,8 +260,6 @@ namespace Procon.Core {
             this.Packages.Execute();
             this.CommandServer.Execute();
             this.PushEvents.Execute();
-
-            this.Tasks.Start();
 
             this.Execute(new Command() {
                 Origin = CommandOrigin.Local
@@ -447,12 +411,8 @@ namespace Procon.Core {
         public override void Dispose() {
 
             // 1. Stop all tasks from ticking, removing concurrent executions with this object.
-            foreach (Task task in this.Tasks) {
-                task.Tick -= new Task.TickHandler(Connection_Tick);
-                task.Tick -= new Task.TickHandler(Events_Tick);
-            }
-
-            this.Tasks.Dispose();
+            this.Tasks.ForEach(task => task.Dispose());
+            this.Tasks.Clear();
             this.Tasks = null;
 
             // 2. Events contains varies references to other data through out Procon. This 

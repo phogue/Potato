@@ -113,6 +113,22 @@
     <Compile Include="Protocols\CommandServer\CommandServerPacket.cs" />
     <Compile Include="Protocols\CommonGameType.cs" />
     <Compile Include="Protocols\SupportedGameTypes.cs" />
+    <Compile Include="Truths\Agents\GroupAgent.cs" />
+    <Compile Include="Truths\Streams\CanFlow.cs" />
+    <Compile Include="Truths\Goal.cs" />
+    <Compile Include="Truths\Agent.cs" />
+    <Compile Include="Truths\Agents\PlayerAgent.cs" />
+    <Compile Include="Truths\Agents\ProtocolAgent.cs" />
+    <Compile Include="Truths\Agents\ServerAgent.cs" />
+    <Compile Include="Truths\Flow.cs" />
+    <Compile Include="Truths\Streams\KnowsWhenFlow.cs" />
+    <Compile Include="Truths\Goals\ChatGoal.cs" />
+    <Compile Include="Truths\Goals\KillGoal.cs" />
+    <Compile Include="Truths\ITruth.cs" />
+    <Compile Include="Truths\Streams\ToFlow.cs" />
+    <Compile Include="Truths\Tree.cs" />
+    <Compile Include="Truths\Truth.cs" />
+    <Compile Include="Truths\BranchBuilder.cs" />
     <Compile Include="Utils\BCrypt.cs" />
     <Compile Include="Utils\HTTP\Mime.cs" />
     <Compile Include="Utils\MD5.cs" />
@@ -126,6 +142,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

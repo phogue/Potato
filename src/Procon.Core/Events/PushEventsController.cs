@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Xml.Serialization;
 using Newtonsoft.Json;
 using Procon.Core.Shared;
 using Procon.Core.Shared.Events;
 using Procon.Core.Shared.Models;
-using Procon.Core.Shared.Scheduler;
 using Procon.Core.Variables;
 using Procon.Net.Shared.Utils.HTTP;
 
@@ -23,8 +23,8 @@ namespace Procon.Core.Events {
         /// <summary>
         /// Our own task controller since various sources can set their own interval to be pushed.
         /// </summary>
-        public TaskController Tasks { get; set; }
-        
+        public List<Timer> Tasks { get; set; }
+
         /// <summary>
         /// Manages the grouped variable names, listening for grouped changes.
         /// </summary>
@@ -39,8 +39,8 @@ namespace Procon.Core.Events {
         public PushEventsController() : base() {
             this.Shared = new SharedReferences();
             this.EndPoints = new Dictionary<String, PushEventsEndPoint>();
-            this.Tasks = new TaskController();
-
+            this.Tasks = new List<Timer>();
+            
             this.GroupedVariableListener = new GroupedVariableListener() {
                 GroupsVariableName = CommonVariableNames.EventsPushConfigGroups.ToString(),
                 ListeningVariablesNames = new List<String>() {
@@ -64,10 +64,6 @@ namespace Procon.Core.Events {
             this.GroupedVariableListener.AssignEvents();
             this.GroupedVariableListener.VariablesModified += GroupedVariableListenerOnVariablesModified;
             
-            foreach (Task task in this.Tasks) {
-                task.Tick += OnTick;
-            }
-
             this.Shared.Events.EventLogged += new EventsController.EventLoggedHandler(MasterEvents_EventLogged);
         }
 
@@ -79,10 +75,6 @@ namespace Procon.Core.Events {
             this.GroupedVariableListener.UnassignEvents();
 
             this.Shared.Events.EventLogged -= new EventsController.EventLoggedHandler(MasterEvents_EventLogged);
-
-            foreach (Task task in this.Tasks) {
-                task.Tick -= OnTick;
-            }
         }
 
         /// <summary>
@@ -131,26 +123,13 @@ namespace Procon.Core.Events {
 
             // Clear all tasks. We'll reestablish them again. Just easier than juggling what
             // has been added or not.
+            this.Tasks.ForEach(task => task.Dispose());
             this.Tasks.Clear();
 
             foreach (KeyValuePair<String, PushEventsEndPoint> endPoint in this.EndPoints) {
-                this.Tasks.Add(new Task() {
-                    Tag = endPoint.Value,
-                    Name = endPoint.Key,
-                    Condition = new Temporal() {
-                        (date, task) => {
-                            bool passes = false;
-
-                            PushEventsEndPoint taskEndPoint  = task.Tag as PushEventsEndPoint;
-
-                            if (taskEndPoint != null && taskEndPoint.Interval > 0) {
-                                passes = (date.Ticks / TimeSpan.TicksPerSecond) % taskEndPoint.Interval == 0;
-                            }
-
-                            return passes;
-                        }
-                    }
-                }).Tick += OnTick;
+                this.Tasks.Add(
+                    new Timer(OnTick, endPoint.Value, TimeSpan.FromMilliseconds(0), TimeSpan.FromSeconds(endPoint.Value.Interval))
+                );
             }
         }
 
@@ -158,16 +137,11 @@ namespace Procon.Core.Events {
         /// Fired whenever an endpoint is ready to be pushed.
         /// </summary>
         /// <param name="sender"></param>
-        /// <param name="tickEventArgs"></param>
-        private static void OnTick(object sender, TickEventArgs tickEventArgs) {
-            Task task = sender as Task;
+        private static void OnTick(object sender) {
+            PushEventsEndPoint endPoint = sender as PushEventsEndPoint;
 
-            if (task != null) {
-                PushEventsEndPoint endPoint = task.Tag as PushEventsEndPoint;
-
-                if (endPoint != null) {
-                    endPoint.Push();
-                }
+            if (endPoint != null) {
+                endPoint.Push();
             }
         }
 
@@ -176,8 +150,6 @@ namespace Procon.Core.Events {
 
             this.AssignEvents();
             
-            this.Tasks.Start();
-
             return base.Execute();
         }
 
@@ -195,8 +167,9 @@ namespace Procon.Core.Events {
             }
             this.EndPoints.Clear();
             this.EndPoints = null;
-            
-            this.Tasks.Dispose();
+
+            this.Tasks.ForEach(task => task.Dispose());
+            this.Tasks.Clear();
             this.Tasks = null;
 
             base.Dispose();

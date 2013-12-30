@@ -6,7 +6,6 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using Procon.Core.Shared.Events;
-using Procon.Core.Shared.Scheduler;
 using Procon.Net.Shared;
 using Procon.Net.Shared.Actions;
 using Procon.Net.Shared.Actions.Deferred;
@@ -28,11 +27,6 @@ namespace Procon.Core.Shared.Plugins {
         /// The connection that owns this plugin instance.
         /// </summary>
         public Guid ConnectionGuid { get; set; }
-
-        /// <summary>
-        /// Tasks running on a seperate thread for this instance of the plugin.
-        /// </summary>
-        public TaskController Tasks { get; protected set; }
 
         /// <summary>
         /// Path to the log-file directory of the plugin
@@ -60,8 +54,6 @@ namespace Procon.Core.Shared.Plugins {
         protected ConcurrentDictionary<Guid, IDeferredAction> DeferredActions { get; set; } 
 
         protected PluginController() : base() {
-            this.Tasks = new TaskController().Start();
-
             this.PluginGuid = this.GetAssemblyGuid();
 
             this.DeferredActions = new ConcurrentDictionary<Guid, IDeferredAction>();
@@ -360,13 +352,6 @@ namespace Procon.Core.Shared.Plugins {
             else if (e.GenericEventType == GenericEventType.TextCommandExecuted) {
                 this.GenericEventTypeTextCommandExecuted(e);
             }
-        }
-
-        public override void Dispose() {
-            base.Dispose();
-
-            if (this.Tasks != null) this.Tasks.Dispose();
-            this.Tasks = null;
         }
     }
 }

@@ -107,10 +107,6 @@
     <Compile Include="Plugins\PluginController.cs" />
     <Compile Include="Plugins\SandboxPluginController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Scheduler\Task.cs" />
-    <Compile Include="Scheduler\TaskController.cs" />
-    <Compile Include="Scheduler\Temporal.cs" />
-    <Compile Include="Scheduler\TickEventArgs.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Procon.Database.Shared\Procon.Database.Shared.csproj">

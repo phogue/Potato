@@ -37,5 +37,37 @@ namespace Procon.Net.Shared.Test.Truths {
 
             Assert.IsTrue(tree.Test(BranchBuilder.ProtocolCanKillPlayer()));
         }
+
+        /// <summary>
+        /// Tests with two different root nodes will merge correctly
+        /// </summary>
+        [Test]
+        public void TestMergeTwoBranchesWithDifferentRootNode() {
+            Tree tree = Tree.Union(
+                BranchBuilder.ProtocolCanKillPlayer(),
+                BranchBuilder.ProtocolKnowsWhenPlayerKillPlayer(),
+                BranchBuilder.ProtocolKnowsWhenPlayerChatToEveryone(),
+                BranchBuilder.ProtocolKnowsWhenPlayerChatToGroup()
+            );
+
+            Assert.IsTrue(tree.Test(BranchBuilder.ProtocolCanKillPlayer()));
+            Assert.IsTrue(tree.Test(BranchBuilder.ProtocolKnowsWhenPlayerChatToEveryone()));
+        }
+
+        /// <summary>
+        /// Tests with two different root nodes will merge and test correctly
+        /// </summary>
+        [Test]
+        public void TestMergeTwoBranchesWithDifferentRootNodeMissingNode() {
+            Tree tree = Tree.Union(
+                BranchBuilder.ProtocolCanKillPlayer(),
+                BranchBuilder.ProtocolKnowsWhenPlayerKillPlayer(),
+                // BranchBuilder.ProtocolKnowsWhenPlayerChatToEveryone(),
+                BranchBuilder.ProtocolKnowsWhenPlayerChatToGroup()
+            );
+
+            Assert.IsTrue(tree.Test(BranchBuilder.ProtocolCanKillPlayer()));
+            Assert.IsFalse(tree.Test(BranchBuilder.ProtocolKnowsWhenPlayerChatToEveryone()));
+        }
     }
 }

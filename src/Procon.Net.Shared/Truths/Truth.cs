@@ -9,7 +9,15 @@ namespace Procon.Net.Shared.Truths {
     [Serializable]
     public abstract class Truth : List<ITruth>, ITruth {
         public bool BuildAndTest(params ITruth[] branches) {
-            return this.Test(branches.ToList());
+            List<ITruth> branch = new List<ITruth>() {
+                branches.FirstOrDefault()
+            };
+
+            for (var offset = branches.Length - 1; offset >= 1; offset--) {
+                branches[offset - 1].Add(branches[offset]);
+            }
+
+            return this.Test(branch);
         }
 
         public bool Test(List<ITruth> branches) {
@@ -18,7 +26,7 @@ namespace Procon.Net.Shared.Truths {
             
             if (node != null) {
                 foreach (ITruth t in this.Where(t => t.GetType().IsInstanceOfType(node) == true)) {
-                    truth = t.Test(branches.Skip(1).ToList());
+                    truth = t.Test(new List<ITruth>(node));
                 }
             }
             else {

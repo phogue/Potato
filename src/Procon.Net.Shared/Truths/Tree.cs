@@ -1,9 +1,11 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 
 namespace Procon.Net.Shared.Truths {
     /// <summary>
     /// The root element of the truth tree
     /// </summary>
+    [Serializable]
     public class Tree : Truth {
 
         /// <summary>

@@ -15,8 +15,6 @@ using Procon.Net.Shared.Utils;
 namespace Procon.Tools.RepositoryManager {
     using Procon.Tools.RepositoryManager.Models;
     using Procon.Core.Repositories;
-    using Procon.Net.Utils;
-    using Ionic.Zip;
 
     /// <summary>
     /// Interaction logic for MainWindow.xaml

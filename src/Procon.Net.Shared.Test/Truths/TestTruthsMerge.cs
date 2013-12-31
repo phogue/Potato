@@ -21,8 +21,21 @@ namespace Procon.Net.Shared.Test.Truths {
             );
 
             Assert.AreEqual(1, tree.Count);
-            Assert.IsTrue(tree.Exists(new ProtocolAgent(), new CanFlow(), new KillGoal(), new PlayerAgent()));
-            Assert.IsTrue(tree.Exists(new ProtocolAgent(), new KnowsWhenFlow(), new PlayerAgent(), new KillGoal(), new PlayerAgent()));
+            Assert.IsTrue(tree.BuildAndTest(new ProtocolAgent(), new CanFlow(), new KillGoal(), new PlayerAgent()));
+            Assert.IsTrue(tree.BuildAndTest(new ProtocolAgent(), new KnowsWhenFlow(), new PlayerAgent(), new KillGoal(), new PlayerAgent()));
+        }
+
+        /// <summary>
+        /// Tests that two trees can be combined, then tested with the the built branch.
+        /// </summary>
+        [Test]
+        public void TestMergeTwoBranchesWithIdenticalRootNodeTestWithBuiltBranch() {
+            Tree tree = Tree.Union(
+                BranchBuilder.ProtocolCanKillPlayer(),
+                BranchBuilder.ProtocolKnowsWhenPlayerKillPlayer()
+            );
+
+            Assert.IsTrue(tree.Test(BranchBuilder.ProtocolCanKillPlayer()));
         }
     }
 }

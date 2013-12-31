@@ -64,7 +64,7 @@ namespace Procon.Net.Shared.Test.Truths {
         public void TestEmptyBranches() {
             ITruth truth = this.CreateTree();
 
-            Assert.IsTrue(truth.Exists());
+            Assert.IsTrue(truth.BuildAndTest());
         }
 
         /// <summary>
@@ -74,7 +74,7 @@ namespace Procon.Net.Shared.Test.Truths {
         public void TestTwoDepthTruth() {
             ITruth truth = this.CreateTree();
 
-            Assert.IsTrue(truth.Exists(new ProtocolAgent(), new CanFlow()));
+            Assert.IsTrue(truth.BuildAndTest(new ProtocolAgent(), new CanFlow()));
         }
 
         /// <summary>
@@ -85,7 +85,7 @@ namespace Procon.Net.Shared.Test.Truths {
         public void TestTwoDepthFalse() {
             ITruth truth = this.CreateTree();
 
-            Assert.IsFalse(truth.Exists(new ProtocolAgent(), new ProtocolAgent()));
+            Assert.IsFalse(truth.BuildAndTest(new ProtocolAgent(), new ProtocolAgent()));
         }
 
         /// <summary>
@@ -95,7 +95,7 @@ namespace Procon.Net.Shared.Test.Truths {
         public void TestProconCanDoChatsToGroupTruth() {
             ITruth truth = this.CreateTree();
 
-            Assert.IsTrue(truth.Exists(new ProtocolAgent(), new CanFlow(), new ChatGoal(), new ToFlow(), new GroupAgent()));
+            Assert.IsTrue(truth.BuildAndTest(new ProtocolAgent(), new CanFlow(), new ChatGoal(), new ToFlow(), new GroupAgent()));
         }
 
         /// <summary>
@@ -106,7 +106,7 @@ namespace Procon.Net.Shared.Test.Truths {
         public void TestProconCanDoChatsToGroupPartialTruth() {
             ITruth truth = this.CreateTree();
 
-            Assert.IsTrue(truth.Exists(new ProtocolAgent(), new CanFlow(), new ChatGoal()));
+            Assert.IsTrue(truth.BuildAndTest(new ProtocolAgent(), new CanFlow(), new ChatGoal()));
         }
 
         /// <summary>
@@ -116,7 +116,7 @@ namespace Procon.Net.Shared.Test.Truths {
         public void TestProconCanDoChatsToGroupSubstitutedFalse() {
             ITruth truth = this.CreateTree();
 
-            Assert.IsFalse(truth.Exists(new ProtocolAgent(), new KnowsWhenFlow(), new ChatGoal(), new ToFlow(), new GroupAgent()));
+            Assert.IsFalse(truth.BuildAndTest(new ProtocolAgent(), new KnowsWhenFlow(), new ChatGoal(), new ToFlow(), new GroupAgent()));
         }
     }
 }

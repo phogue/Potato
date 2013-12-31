@@ -113,7 +113,10 @@
     <Compile Include="Protocols\CommandServer\CommandServerPacket.cs" />
     <Compile Include="Protocols\CommonGameType.cs" />
     <Compile Include="Protocols\SupportedGameTypes.cs" />
+    <Compile Include="Truths\Agents\EveryoneAgent.cs" />
     <Compile Include="Truths\Agents\GroupAgent.cs" />
+    <Compile Include="Truths\Agents\ObjectiveAgent.cs" />
+    <Compile Include="Truths\Goals\CaptureGoal.cs" />
     <Compile Include="Truths\Streams\CanFlow.cs" />
     <Compile Include="Truths\Goal.cs" />
     <Compile Include="Truths\Agent.cs" />

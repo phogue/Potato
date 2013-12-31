@@ -69,5 +69,21 @@ namespace Procon.Net.Shared.Test.Truths {
             Assert.IsTrue(tree.Test(BranchBuilder.ProtocolCanKillPlayer()));
             Assert.IsFalse(tree.Test(BranchBuilder.ProtocolKnowsWhenPlayerChatToEveryone()));
         }
+
+        /// <summary>
+        /// Tests with two different root nodes will merge and test correctly
+        /// </summary>
+        [Test]
+        public void TestMergeTwoBranchesWithDifferentRootNodeMissingRootNode() {
+            Tree tree = Tree.Union(
+                // BranchBuilder.ProtocolCanKillPlayer(),
+                BranchBuilder.ProtocolKnowsWhenPlayerKillPlayer(),
+                BranchBuilder.ProtocolKnowsWhenPlayerChatToEveryone(),
+                BranchBuilder.ProtocolKnowsWhenPlayerChatToGroup()
+            );
+
+            Assert.IsFalse(tree.Test(BranchBuilder.ProtocolCanKillPlayer()));
+            Assert.IsTrue(tree.Test(BranchBuilder.ProtocolKnowsWhenPlayerChatToEveryone()));
+        }
     }
 }

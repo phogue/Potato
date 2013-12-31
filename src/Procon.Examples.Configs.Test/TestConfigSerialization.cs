@@ -5,7 +5,6 @@ using NUnit.Framework;
 using Procon.Core.Connections;
 using Procon.Core.Connections.Plugins;
 using Procon.Net.Shared.Utils;
-using Procon.Net.Utils;
 
 namespace Procon.Examples.Configs.Test {
     /// <summary>

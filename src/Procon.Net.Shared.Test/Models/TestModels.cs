@@ -4,11 +4,12 @@ using System.Linq;
 using NUnit.Framework;
 using Procon.Net.Shared.Truths;
 
-namespace Procon.Net.Shared.Test.Truths {
+namespace Procon.Net.Shared.Test.Models {
     [TestFixture]
-    public class TestTruths {
+    public class TestModels {
+
         /// <summary>
-        /// Test that all non-static classes within the Procon.Net.Shared.Truths namespace
+        /// Test that all non-static classes within the Procon.Net.Shared.Models namespace
         /// are marked as serializable.
         /// </summary>
         [Test]
@@ -20,7 +21,7 @@ namespace Procon.Net.Shared.Test.Truths {
                 // Where it's not static (both are true when static)
                 .Where(type => type.IsAbstract == false || type.IsSealed == false)
                 // Where the type exists in our namespace
-                .Where(type => type.Namespace != null && type.Namespace.StartsWith("Procon.Net.Shared.Truths"))
+                .Where(type => type.Namespace != null && type.Namespace.Equals("Procon.Net.Shared.Models"))
                 // The class is not generated for an anonymous delegate (I assume this is what it is?)
                 .Where(type => type.IsNested == false)
                 // Where they are not serializable

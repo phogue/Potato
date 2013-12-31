@@ -1,7 +1,9 @@
 ﻿using System;
 
 namespace Procon.Net.Shared.Geolocation {
-
+    /// <summary>
+    /// A physical location with as much or as little information that is available.
+    /// </summary>
     [Serializable]
     public sealed class Location {
         /// <summary>
@@ -25,6 +27,9 @@ namespace Procon.Net.Shared.Geolocation {
         /// </summary>
         public String CountryCode { get; set; }
 
+        /// <summary>
+        /// Initializes with the default values
+        /// </summary>
         public Location() {
             this.CountryName = String.Empty;
             this.CountryCode = String.Empty;

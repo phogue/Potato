@@ -5,6 +5,7 @@ namespace Procon.Net.Shared.Actions {
     /// <summary>
     /// Send a list of packets to the server. 
     /// </summary>
+    [Serializable]
     public sealed class Raw : NetworkAction {
 
         public Raw() : base() {

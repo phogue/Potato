@@ -4,11 +4,19 @@ using System.Linq;
 using Procon.Net.Shared.Geolocation.Maxmind;
 
 namespace Procon.Net.Shared.Geolocation {
+    /// <summary>
+    /// Geolocation with an IP using Maxmind's library and database.
+    /// </summary>
     public class GeolocateIp : IGeolocate {
         
-        // Used when determining a player's Country Name and Code.
-        public static CountryLookup CountryLookup = null;
+        /// <summary>
+        /// Used when determining a player's Country Name and Code.
+        /// </summary>
+        protected static CountryLookup CountryLookup = null;
 
+        /// <summary>
+        /// Loads the Maxmind GeoIP database, if available.
+        /// </summary>
         public GeolocateIp() {
             if (File.Exists("GeoIP.dat") == true) {
                 GeolocateIp.CountryLookup = new CountryLookup("GeoIP.dat");

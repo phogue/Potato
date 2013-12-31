@@ -2,7 +2,7 @@ using System.Linq;
 using NUnit.Framework;
 using Procon.Net.Shared.Models;
 
-namespace Procon.Net.Shared.Test.Data {
+namespace Procon.Net.Shared.Test.Models {
     [TestFixture]
     public class PlayerTest {
 

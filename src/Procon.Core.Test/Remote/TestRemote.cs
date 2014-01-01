@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading;
@@ -144,25 +145,41 @@ namespace Procon.Core.Test.Remote {
 
             SetupCommandServer(listeningPort);
 
-            var request = new Request(String.Format("https://127.0.0.1:{0}/", listeningPort)) {
-                Method = "POST",
-                RequestContent = "Lulz, whats up?"
-            };
+            WebRequest request = WebRequest.Create(String.Format("https://127.0.0.1:{0}/", listeningPort));
+            HttpWebResponse response = null;
 
-            request.Complete += sender => {
-                isSuccess = true;
-                requestWait.Set();
-            };
+            request.Method = WebRequestMethods.Http.Post;
+            request.ContentType = Mime.ApplicationJson;
+            request.Proxy = null;
 
-            request.Error += sender => {
-                isSuccess = false;
-                requestWait.Set();
-            };
+            request.BeginGetRequestStream(streamAsyncResult => {
+                try {
+                    using (TextWriter writer = new StreamWriter(request.EndGetRequestStream(streamAsyncResult))) {
+                        writer.Write("Lulz, whats up?");
+                    }
 
-            request.BeginRequest();
+                    request.BeginGetResponse(responseAsyncResult => {
+                        try {
+                            response = (HttpWebResponse)request.EndGetResponse(responseAsyncResult);
+
+                            isSuccess = true;
+                            requestWait.Set();
+                        }
+                        catch (WebException e) {
+                            response = (HttpWebResponse) e.Response;
+                            isSuccess = false;
+                            requestWait.Set();
+                        }
+                    }, null);
+                }
+                catch {
+                    isSuccess = false;
+                    requestWait.Set();
+                }
+            }, null);
 
             Assert.IsTrue(requestWait.WaitOne(60000));
-            Assert.AreEqual(HttpStatusCode.BadRequest, request.WebResponse.StatusCode);
+            Assert.AreEqual(HttpStatusCode.BadRequest, response.StatusCode);
             Assert.IsFalse(isSuccess);
         }
 
@@ -201,35 +218,52 @@ namespace Procon.Core.Test.Remote {
 
             SetupCommandServer(listeningPort);
 
-            var request = new Request(String.Format("https://127.0.0.1:{0}/", listeningPort)) {
-                Method = "POST",
-                RequestContent = new Command() {
-                    Scope = new CommandScope(),
-                    Origin = CommandOrigin.Remote,
-                    Parameters = new List<CommandParameter>(),
-                    Username = "Phogue",
-                    PasswordPlainText = "wrongPassword"
-                }.ToXElement().ToString()
-            };
-
+            WebRequest request = WebRequest.Create(String.Format("https://127.0.0.1:{0}/", listeningPort));
+            HttpWebResponse response = null;
             CommandResultArgs result = null;
 
-            request.Complete += sender => {
-                isSuccess = true;
-                result = XDocument.Parse(sender.GetResponseContent()).Root.FromXElement<CommandResultArgs>();
-                requestWait.Set();
-            };
+            request.Method = WebRequestMethods.Http.Post;
+            request.ContentType = Mime.ApplicationXml;
+            request.Proxy = null;
 
-            request.Error += sender => {
-                isSuccess = false;
-                requestWait.Set();
-            };
+            request.BeginGetRequestStream(streamAsyncResult => {
+                try {
+                    using (TextWriter writer = new StreamWriter(request.EndGetRequestStream(streamAsyncResult))) {
+                        writer.Write(new Command() {
+                            Scope = new CommandScope(),
+                            Origin = CommandOrigin.Remote,
+                            Parameters = new List<CommandParameter>(),
+                            Username = "Phogue",
+                            PasswordPlainText = "wrongPassword"
+                        }.ToXElement().ToString());
+                    }
 
-            request.BeginRequest();
+                    request.BeginGetResponse(responseAsyncResult => {
+                        try {
+                            response = (HttpWebResponse)request.EndGetResponse(responseAsyncResult);
+                            
+                            using (TextReader reader = new StreamReader(response.GetResponseStream())) {
+                                isSuccess = true;
+                                result = XDocument.Parse(reader.ReadToEnd()).Root.FromXElement<CommandResultArgs>();
+                                requestWait.Set();
+                            }
+                        }
+                        catch (WebException e) {
+                            response = (HttpWebResponse)e.Response;
+                            isSuccess = false;
+                            requestWait.Set();
+                        }
+                    }, null);
+                }
+                catch {
+                    isSuccess = false;
+                    requestWait.Set();
+                }
+            }, null);
 
             Assert.IsTrue(requestWait.WaitOne(60000));
             Assert.IsNotNull(result);
-            Assert.AreEqual(HttpStatusCode.OK, request.WebResponse.StatusCode);
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
             Assert.AreEqual(CommandResultType.InsufficientPermissions, result.Status);
             Assert.IsFalse(result.Success);
             Assert.IsTrue(isSuccess);
@@ -247,31 +281,51 @@ namespace Procon.Core.Test.Remote {
 
             SetupCommandServer(listeningPort);
 
-            var request = new Request(String.Format("https://127.0.0.1:{0}/", listeningPort)) {
-                Method = "POST",
-                RequestContent = new Command() {
-                    Scope = new CommandScope(),
-                    Origin = CommandOrigin.Remote,
-                    Parameters = new List<CommandParameter>(),
-                    Username = "Phogue",
-                    PasswordPlainText = "password"
-                }.ToXElement().ToString()
-            };
+            WebRequest request = WebRequest.Create(String.Format("https://127.0.0.1:{0}/", listeningPort));
+            HttpWebResponse response = null;
+            CommandResultArgs result = null;
 
-            request.Complete += sender => {
-                isSuccess = true;
-                requestWait.Set();
-            };
+            request.Method = WebRequestMethods.Http.Post;
+            request.ContentType = Mime.ApplicationXml;
+            request.Proxy = null;
 
-            request.Error += sender => {
-                isSuccess = false;
-                requestWait.Set();
-            };
+            request.BeginGetRequestStream(streamAsyncResult => {
+                try {
+                    using (TextWriter writer = new StreamWriter(request.EndGetRequestStream(streamAsyncResult))) {
+                        writer.Write(new Command() {
+                            Scope = new CommandScope(),
+                            Origin = CommandOrigin.Remote,
+                            Parameters = new List<CommandParameter>(),
+                            Username = "Phogue",
+                            PasswordPlainText = "password"
+                        }.ToXElement().ToString());
+                    }
 
-            request.BeginRequest();
+                    request.BeginGetResponse(responseAsyncResult => {
+                        try {
+                            response = (HttpWebResponse)request.EndGetResponse(responseAsyncResult);
+
+                            using (TextReader reader = new StreamReader(response.GetResponseStream())) {
+                                isSuccess = true;
+                                result = XDocument.Parse(reader.ReadToEnd()).Root.FromXElement<CommandResultArgs>();
+                                requestWait.Set();
+                            }
+                        }
+                        catch (WebException e) {
+                            response = (HttpWebResponse)e.Response;
+                            isSuccess = false;
+                            requestWait.Set();
+                        }
+                    }, null);
+                }
+                catch {
+                    isSuccess = false;
+                    requestWait.Set();
+                }
+            }, null);
 
             Assert.IsTrue(requestWait.WaitOne(60000));
-            Assert.AreEqual(HttpStatusCode.OK, request.WebResponse.StatusCode);
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
             Assert.IsTrue(isSuccess);
         }
 
@@ -287,38 +341,61 @@ namespace Procon.Core.Test.Remote {
 
             SetupCommandServer(listeningPort);
 
-            var request = new Request(String.Format("https://127.0.0.1:{0}/", listeningPort)) {
-                Method = "POST",
-                RequestContent = new Command() {
-                    Name = "/test/parameters",
-                    Scope = new CommandScope(),
-                    Origin = CommandOrigin.Remote,
-                    Username = "Phogue",
-                    PasswordPlainText = "password",
-                    Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
-                        "Phogue",
-                        50
-                    })
-                }.ToXElement().ToString()
-            };
+            WebRequest request = WebRequest.Create(String.Format("https://127.0.0.1:{0}/", listeningPort));
+            HttpWebResponse response = null;
+            String result = null;
 
-            request.Complete += sender => {
-                isSuccess = true;
-                requestWait.Set();
-            };
+            request.Method = WebRequestMethods.Http.Post;
+            request.ContentType = Mime.ApplicationXml;
+            request.Proxy = null;
 
-            request.Error += sender => {
-                isSuccess = false;
-                requestWait.Set();
-            };
+            request.BeginGetRequestStream(streamAsyncResult => {
+                try {
+                    using (TextWriter writer = new StreamWriter(request.EndGetRequestStream(streamAsyncResult))) {
+                        writer.Write(
+                            new Command() {
+                                Name = "/test/parameters",
+                                Scope = new CommandScope(),
+                                Origin = CommandOrigin.Remote,
+                                Username = "Phogue",
+                                PasswordPlainText = "password",
+                                Parameters = TestHelpers.ObjectListToContentList(
+                                    new List<Object>() {
+                                    "Phogue",
+                                    50
+                                })
+                            }.ToXElement().ToString()
+                        );
+                    }
 
-            request.BeginRequest();
+                    request.BeginGetResponse(responseAsyncResult => {
+                        try {
+                            response = (HttpWebResponse)request.EndGetResponse(responseAsyncResult);
+
+                            using (TextReader reader = new StreamReader(response.GetResponseStream())) {
+                                isSuccess = true;
+                                result = reader.ReadToEnd();
+                                requestWait.Set();
+                            }
+                        }
+                        catch (WebException e) {
+                            response = (HttpWebResponse)e.Response;
+                            isSuccess = false;
+                            requestWait.Set();
+                        }
+                    }, null);
+                }
+                catch {
+                    isSuccess = false;
+                    requestWait.Set();
+                }
+            }, null);
 
             Assert.IsTrue(requestWait.WaitOne(60000));
-            Assert.AreEqual(HttpStatusCode.OK, request.WebResponse.StatusCode);
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
             Assert.IsTrue(isSuccess);
 
-            Assert.AreEqual("Welcome <b>Phogue</b> to the parameter test of this plugin. Your score is: 50", request.GetResponseContent());
+            Assert.AreEqual("Welcome <b>Phogue</b> to the parameter test of this plugin. Your score is: 50", result);
         }
 
         /// <summary>
@@ -333,39 +410,61 @@ namespace Procon.Core.Test.Remote {
 
             SetupCommandServer(listeningPort);
 
-            var request = new Request(String.Format("https://127.0.0.1:{0}/", listeningPort)) {
-                Method = "POST",
-                RequestContentType = Mime.ApplicationJson,
-                RequestContent = JsonConvert.SerializeObject(new Command() {
-                    Name = "/test/parameters",
-                    Scope = new CommandScope(),
-                    Origin = CommandOrigin.Remote,
-                    Username = "Phogue",
-                    PasswordPlainText = "password",
-                    Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
-                        "Phogue",
-                        50
-                    })
-                })
-            };
+            WebRequest request = WebRequest.Create(String.Format("https://127.0.0.1:{0}/", listeningPort));
+            HttpWebResponse response = null;
+            String result = null;
 
-            request.Complete += sender => {
-                isSuccess = true;
-                requestWait.Set();
-            };
+            request.Method = WebRequestMethods.Http.Post;
+            request.ContentType = Mime.ApplicationXml;
+            request.Proxy = null;
 
-            request.Error += sender => {
-                isSuccess = false;
-                requestWait.Set();
-            };
+            request.BeginGetRequestStream(streamAsyncResult => {
+                try {
+                    using (TextWriter writer = new StreamWriter(request.EndGetRequestStream(streamAsyncResult))) {
+                        writer.Write(
+                            new Command() {
+                                Name = "/test/parameters",
+                                Scope = new CommandScope(),
+                                Origin = CommandOrigin.Remote,
+                                Username = "Phogue",
+                                PasswordPlainText = "password",
+                                Parameters = TestHelpers.ObjectListToContentList(
+                                    new List<Object>() {
+                                    "Phogue",
+                                    50
+                                })
+                            }.ToXElement().ToString()
+                        );
+                    }
 
-            request.BeginRequest();
+                    request.BeginGetResponse(responseAsyncResult => {
+                        try {
+                            response = (HttpWebResponse)request.EndGetResponse(responseAsyncResult);
+
+                            using (TextReader reader = new StreamReader(response.GetResponseStream())) {
+                                isSuccess = true;
+                                result = reader.ReadToEnd();
+                                requestWait.Set();
+                            }
+                        }
+                        catch (WebException e) {
+                            response = (HttpWebResponse)e.Response;
+                            isSuccess = false;
+                            requestWait.Set();
+                        }
+                    }, null);
+                }
+                catch {
+                    isSuccess = false;
+                    requestWait.Set();
+                }
+            }, null);
 
             Assert.IsTrue(requestWait.WaitOne(60000));
-            Assert.AreEqual(HttpStatusCode.OK, request.WebResponse.StatusCode);
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
             Assert.IsTrue(isSuccess);
 
-            Assert.AreEqual("Welcome <b>Phogue</b> to the parameter test of this plugin. Your score is: 50", request.GetResponseContent());
+            Assert.AreEqual("Welcome <b>Phogue</b> to the parameter test of this plugin. Your score is: 50", result);
         }
 
         /// <summary>
@@ -380,35 +479,54 @@ namespace Procon.Core.Test.Remote {
 
             SetupCommandServer(listeningPort);
 
-            var request = new Request(String.Format("https://127.0.0.1:{0}/", listeningPort)) {
-                Method = "POST",
-                RequestContentType = Mime.ApplicationJson,
-                RequestContent = JsonConvert.SerializeObject(new Command() {
-                    Name = "TestPluginsCommandsZeroParameters",
-                    Scope = new CommandScope(),
-                    Origin = CommandOrigin.Remote,
-                    Username = "Phogue",
-                    PasswordPlainText = "password"
-                })
-            };
+            WebRequest request = WebRequest.Create(String.Format("https://127.0.0.1:{0}/", listeningPort));
+            HttpWebResponse response = null;
+            CommandResultArgs result = null;
 
-            request.Complete += sender => {
-                isSuccess = true;
-                requestWait.Set();
-            };
+            request.Method = WebRequestMethods.Http.Post;
+            request.ContentType = Mime.ApplicationJson;
+            request.Proxy = null;
 
-            request.Error += sender => {
-                isSuccess = false;
-                requestWait.Set();
-            };
+            request.BeginGetRequestStream(streamAsyncResult => {
+                try {
+                    using (TextWriter writer = new StreamWriter(request.EndGetRequestStream(streamAsyncResult))) {
+                        writer.Write(
+                            JsonConvert.SerializeObject(new Command() {
+                                Name = "TestPluginsCommandsZeroParameters",
+                                Scope = new CommandScope(),
+                                Origin = CommandOrigin.Remote,
+                                Username = "Phogue",
+                                PasswordPlainText = "password"
+                            })    
+                        );
+                    }
 
-            request.BeginRequest();
+                    request.BeginGetResponse(responseAsyncResult => {
+                        try {
+                            response = (HttpWebResponse)request.EndGetResponse(responseAsyncResult);
+
+                            using (TextReader reader = new StreamReader(response.GetResponseStream())) {
+                                isSuccess = true;
+                                result = JsonConvert.DeserializeObject<CommandResultArgs>(reader.ReadToEnd());
+                                requestWait.Set();
+                            }
+                        }
+                        catch (WebException e) {
+                            response = (HttpWebResponse)e.Response;
+                            isSuccess = false;
+                            requestWait.Set();
+                        }
+                    }, null);
+                }
+                catch {
+                    isSuccess = false;
+                    requestWait.Set();
+                }
+            }, null);
 
             Assert.IsTrue(requestWait.WaitOne(60000));
-            Assert.AreEqual(HttpStatusCode.OK, request.WebResponse.StatusCode);
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
             Assert.IsTrue(isSuccess);
-
-            var result = JsonConvert.DeserializeObject<CommandResultArgs>(request.GetResponseContent());
 
             Assert.AreEqual("TestPluginsCommandsZeroParameters", result.Message);
         }

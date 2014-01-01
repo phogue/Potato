@@ -1,22 +1,31 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Generic;
-using System.IO;
 using System.Diagnostics;
+using System.IO;
+using System.Linq;
 using Ionic.Zip;
 using Procon.Service.Shared;
 
 namespace Procon.Service {
+    /// <summary>
+    /// Logs and moves files from the /Updates directory to the base directory.
+    /// </summary>
     public class Updater {
 
         private TextWriter Writer { get; set; }
 
+        /// <summary>
+        /// Initializes the updater with the default values
+        /// </summary>
         public Updater() {
             this.Writer = new StreamWriter(Defines.UpdateLog);
         }
 
+        /// <summary>
+        /// Starts the update process
+        /// </summary>
+        /// <returns></returns>
         public Updater Execute() {
-
             this.Writer.WriteLine("Updater initialized");
 
             // #1
@@ -41,6 +50,10 @@ namespace Procon.Service {
             return this;
         }
 
+        /// <summary>
+        /// Writes and closes the update log
+        /// </summary>
+        /// <returns>this</returns>
         public Updater Shutdown() {
             this.Writer.WriteLine("Closing Updater");
             this.Writer.Flush();

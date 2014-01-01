@@ -1,4 +1,7 @@
 ﻿namespace Procon.Service {
+    /// <summary>
+    /// The current state of the procon server running.
+    /// </summary>
     public enum ServiceStatusType {
         /// <summary>
         /// Service is currently stopped

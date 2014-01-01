@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
-using System.Timers;
-using Timer = System.Timers.Timer;
+using Procon.Service.Shared;
 
 namespace Procon.Service {
-    using Procon.Service.Shared;
-
+    /// <summary>
+    /// Manages an instance of Procon in a seperate AppDomain.
+    /// </summary>
     public sealed class ServiceController : IDisposable {
 
         /// <summary>
@@ -32,21 +32,22 @@ namespace Procon.Service {
         /// <summary>
         /// Polling handler to ensure the appdomain is still functional.
         /// </summary>
-        public Timer PollingTimer { get; set; }
+        public Timer PollingTask { get; set; }
 
+        /// <summary>
+        /// Initiates the service controller with the default values
+        /// </summary>
         public ServiceController() {
             this.Status = ServiceStatusType.Stopped;
 
-            this.PollingTimer = new Timer(10000);
-            this.PollingTimer.Elapsed += new ElapsedEventHandler(OnPollingTimerElapsed);
-            this.PollingTimer.Start();
+            this.PollingTask = new Timer(PollingTask_Tick, this, TimeSpan.FromMilliseconds(0), TimeSpan.FromSeconds(10));
         }
 
         /// <summary>
         /// Fired every ten seconds to ensure the appdomain is still responding and does not have
         /// any additional messages for us to process.
         /// </summary>
-        private void OnPollingTimerElapsed(object sender, ElapsedEventArgs e) {
+        private void PollingTask_Tick(object state) {
             if (this.Status == ServiceStatusType.Started && this.ServiceLoaderProxy != null) {
                 AutoResetEvent pollingTimeoutEvent = new AutoResetEvent(false);
                 ServiceMessage message = null;
@@ -64,6 +65,11 @@ namespace Procon.Service {
             }
         }
 
+        /// <summary>
+        /// Parse a basic message to the service controller
+        /// </summary>
+        /// <param name="message">The message to dispatch</param>
+        /// <returns>True if the message was processed correctly, false otherwise</returns>
         public bool SignalMessage(ServiceMessage message) {
             bool processed = true;
 
@@ -258,8 +264,7 @@ namespace Procon.Service {
         public void Dispose() {
             this.Stop();
 
-            this.PollingTimer.Stop();
-            this.PollingTimer.Elapsed -= new ElapsedEventHandler(OnPollingTimerElapsed);
+            this.PollingTask.Dispose();
         }
     }
 }

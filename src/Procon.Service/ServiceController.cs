@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading;
 using Procon.Service.Shared;
 
@@ -120,6 +121,20 @@ namespace Procon.Service {
         }
 
         /// <summary>
+        /// Self enclosed exception log, opens a file, writes the exception and flushes/closes the file.
+        /// </summary>
+        /// <param name="hint">A hint for where the exception occured</param>
+        /// <param name="e">The exception to log</param>
+        private static void LogUnhandledException(String hint, Exception e) {
+            Directory.CreateDirectory(Defines.ErrorsLogsDirectory);
+
+            File.WriteAllLines(Path.Combine(Defines.ErrorsLogsDirectory, DateTime.UtcNow.ToString("yyyy-MM-ddTHH-mm-ss-fffffff")), new List<String>() {
+                String.Format("Hint: {0}", hint),
+                String.Format("Exception: {0}", e)
+            });
+        }
+
+        /// <summary>
         /// Updates Procon if it is not currently running, then attempts to start up the appdomain
         /// </summary>
         private void Start() {
@@ -141,7 +156,9 @@ namespace Procon.Service {
 
                     this.Status = ServiceStatusType.Started;
                 }
-                catch {
+                catch (Exception e) {
+                    ServiceController.LogUnhandledException("ServiceController.Start", e);
+
                     this.Stop();
                 }
             }
@@ -228,13 +245,23 @@ namespace Procon.Service {
                 System.Console.WriteLine("Shutting down instance..");
 
                 if (this.ServiceLoaderProxy != null) {
-                    System.Console.Write("Writing config..");
-                    this.ServiceLoaderProxy.WriteConfig();
-                    System.Console.WriteLine(" Complete");
+                    try {
+                        System.Console.Write("Writing config..");
+                        this.ServiceLoaderProxy.WriteConfig();
+                        System.Console.WriteLine(" Complete");
+                    }
+                    catch (Exception e) {
+                        ServiceController.LogUnhandledException("ServiceController.Stop.WriteConfig", e);
+                    }
 
-                    System.Console.Write("Cleaning up..");
-                    this.ServiceLoaderProxy.Dispose();
-                    System.Console.WriteLine(" Complete");
+                    try {
+                        System.Console.Write("Cleaning up..");
+                        this.ServiceLoaderProxy.Dispose();
+                        System.Console.WriteLine(" Complete");
+                    }
+                    catch (Exception e) {
+                        ServiceController.LogUnhandledException("ServiceController.Stop.ServiceLoaderProxy.Dispose", e);
+                    }
 
                     this.ServiceLoaderProxy = null;
                 }
@@ -248,7 +275,9 @@ namespace Procon.Service {
 
                         System.Console.WriteLine(" Complete");
                     }
-                    catch {
+                    catch (Exception e) {
+                        ServiceController.LogUnhandledException("ServiceController.Stop.ServiceDomain.Unload", e);
+
                         System.Console.WriteLine(" Error");
                         Console.WriteLine("\tUnable to unload domain.");
                     }

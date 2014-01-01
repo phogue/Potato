@@ -27,6 +27,7 @@ namespace Procon.Service.Shared {
         public static readonly String PluginsDirectory = Path.Combine(Defines.BaseDirectory, "Plugins");
         public static readonly String LocalizationDirectory = Path.Combine(Defines.BaseDirectory, "Localization");
         public static readonly String LogsDirectory = Path.Combine(Defines.BaseDirectory, "Logs");
+        public static readonly String ErrorsLogsDirectory = Path.Combine(LogsDirectory, "Errors");
         public static readonly String ConfigsDirectory = Path.Combine(Defines.BaseDirectory, "Configs");
         public static readonly String ConfigsBackupDirectory = Path.Combine(ConfigsDirectory, "Backups");
         public static readonly String ConfigsGamesDirectory = Path.Combine(ConfigsDirectory, "Games");

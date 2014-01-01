@@ -230,13 +230,6 @@ namespace Procon.Core.Connections.Plugins {
                 setup.PrivateBinPath = AppDomain.CurrentDomain.BaseDirectory;
             }
 
-            // TODO: - The previous two lines used to use the constant: Defines.PLUGINS_DIRECTORY.
-            // However, when I (Imisnew2) was doing core changes, I fubared up the config loading, causing
-            // the plugins to load "Debug\Plugins\Localization" instead of "Debug\Localizations" due to the
-            // directory being a compilation of CurrentDomain + BaseDirectory.  To counter this, we set the
-            // app domains directory to this app domains directory.  Must set permissions or get phogue to
-            // remember stuff later.
-            
             return setup;
         }
 

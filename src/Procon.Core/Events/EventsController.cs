@@ -15,13 +15,11 @@ using Procon.Net.Shared.Utils;
 using Procon.Service.Shared;
 
 namespace Procon.Core.Events {
-
     /// <summary>
     /// Logs events, keeping them in memory until a specific time occurs that will write all
     /// events older than a time period to disk.
     /// </summary>
     public class EventsController : CoreController, ISharedReferenceAccess {
-
         /// <summary>
         /// List of events for history
         /// </summary>

@@ -8,7 +8,9 @@ using Procon.Core.Shared.Events;
 using Procon.Core.Shared.Models;
 
 namespace Procon.Core.Variables {
-
+    /// <summary>
+    /// Stores variables and handles commands to edit/fetch a variable
+    /// </summary>
     public class VariableController : CoreController, ISharedReferenceAccess {
 
         /// <summary>
@@ -25,6 +27,9 @@ namespace Procon.Core.Variables {
         [XmlIgnore, JsonIgnore]
         public SharedReferences Shared { get; private set; }
 
+        /// <summary>
+        /// Initializes the variable controller with default values and sets up command handlers.
+        /// </summary>
         public VariableController() : base() {
             this.Shared = new SharedReferences();
             this.VolatileVariables = new List<VariableModel>();
@@ -444,16 +449,6 @@ namespace Procon.Core.Variables {
         /// <returns>The converted value of the variable with the specified kenamey</returns>
         public T Get<T>(CommonVariableNames name, T defaultValue = default(T)) {
             return this.Get(name.ToString(), defaultValue);
-        }
-
-        /// <summary>
-        /// Proxy for the Get command that uses a blank defaultValue
-        /// </summary>
-        /// <param name="command"></param>
-        /// <param name="name"></param>
-        /// <returns></returns>
-        public CommandResultArgs Get(Command command, String name) {
-            return this.Get(command, name, null);
         }
 
         /// <summary>

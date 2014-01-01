@@ -8,7 +8,6 @@ namespace Procon.Core.Connections.TextCommands.Parsers.Fuzzy {
     /// A reference for Procon.Fuzzy to use for geo location information
     /// </summary>
     public class LocationThingReference : IThingReference {
-
         /// <summary>
         /// The location attached to this thing.
         /// </summary>

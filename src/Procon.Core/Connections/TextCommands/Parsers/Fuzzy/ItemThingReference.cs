@@ -8,7 +8,6 @@ namespace Procon.Core.Connections.TextCommands.Parsers.Fuzzy {
     /// A reference for Procon.Fuzzy to use for item information (weapons etc)
     /// </summary>
     public class ItemThingReference : IThingReference {
-
         /// <summary>
         /// The items attached to this thing.
         /// </summary>

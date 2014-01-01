@@ -21,7 +21,6 @@ namespace Procon.Core.Connections.Plugins {
     /// a plugin back to Procon.
     /// </summary>
     public class CorePluginController : AsynchronousCoreController, ISharedReferenceAccess, IRenewableLease {
-
         /// <summary>
         /// The appdomain all of the plugins are loaded into.
         /// </summary>

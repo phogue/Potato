@@ -8,7 +8,6 @@ namespace Procon.Core.Connections.TextCommands.Parsers.Fuzzy {
     /// A reference for Procon.Fuzzy to use for player information
     /// </summary>
     public class PlayerThingReference : IThingReference {
-
         /// <summary>
         /// The player attached to this thing.
         /// </summary>

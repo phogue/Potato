@@ -11,12 +11,10 @@ using Procon.Core.Shared.Models;
 using Procon.Net.Shared.Models;
 
 namespace Procon.Core.Connections.TextCommands {
-
     /// <summary>
     /// Manages registering, dispatching text commands
     /// </summary>
     public class TextCommandController : CoreController, ISharedReferenceAccess {
-
         /// <summary>
         /// Full list of text commands to check against.
         /// </summary>

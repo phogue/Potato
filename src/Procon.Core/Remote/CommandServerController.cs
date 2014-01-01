@@ -23,7 +23,6 @@ namespace Procon.Core.Remote {
     /// Listens for incoming connections, authenticates and dispatches commands
     /// </summary>
     public class CommandServerController : CoreController, ISharedReferenceAccess {
-
         /// <summary>
         /// The client to send/recv remote commands.
         /// </summary>
@@ -32,6 +31,9 @@ namespace Procon.Core.Remote {
         [XmlIgnore, JsonIgnore]
         public SharedReferences Shared { get; private set; }
 
+        /// <summary>
+        /// Initalizes the command server controller with default values
+        /// </summary>
         public CommandServerController() : base() {
             this.Shared = new SharedReferences();
         }

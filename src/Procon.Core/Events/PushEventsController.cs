@@ -14,7 +14,6 @@ namespace Procon.Core.Events {
     /// Pushes events at a set interval to various servers.
     /// </summary>
     public class PushEventsController : CoreController, ISharedReferenceAccess {
-
         /// <summary>
         /// The end points to push new events to.
         /// </summary>

@@ -12,7 +12,6 @@ namespace Procon.Core.Security {
     /// Manages user accounts, groups and players attached to accounts.
     /// </summary>
     public class SecurityController : CoreController, ISharedReferenceAccess {
-
         /// <summary>
         /// List of group models within this security controller
         /// </summary>

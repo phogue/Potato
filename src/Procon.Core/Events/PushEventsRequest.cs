@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using Procon.Core.Shared.Events;
 
 namespace Procon.Core.Events {
+    /// <summary>
+    /// A single volatile request sent to the push end point.
+    /// </summary>
     public class PushEventsRequest {
-
         /// <summary>
         /// The identifier of this stream
         /// </summary>

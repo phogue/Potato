@@ -11,12 +11,10 @@ using Procon.Database.Drivers;
 using Procon.Database.Shared;
 
 namespace Procon.Core.Database {
-
     /// <summary>
     /// Handles opening, managing and dispatching queries in databases
     /// </summary>
     public class DatabaseController : CoreController, ISharedReferenceAccess {
-
         /// <summary>
         /// The currently opened database drivers.
         /// </summary>

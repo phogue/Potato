@@ -7,26 +7,16 @@ using Procon.Core.Shared.Events;
 using Procon.Core.Shared.Models;
 
 namespace Procon.Core.Events {
-
     /// <summary>
     /// Captures events from a procon instance, checking if they are relevent for output
     /// to the console. If they are, then the data is formatted for output if a message is
     /// missing from the event.
-    /// 
+    /// <remarks>
+    /// <para>
     /// This will be expanded upon in the future, but for now I just needed a way to see what
     /// was happening within Procon.
-    /// 
-    /// todo:
-    ///     - Implement a check in the variables for a "output level".
-    ///         - 0: none
-    ///         - 1: notice
-    ///         - 2: warning
-    ///         - 3: error
-    ///         - 4: debug
-    ///     - Assign events an output level, only output them if the output level is sufficient.
-    ///     - Format this much, much better. Standardize it even, so the connection guid is always 80 chars in or something.
-    ///       This is to be used for debugging mostly, so output level 0 = nothing output, but then it should be human readable
-    ///       at a glance to quickly debug.
+    /// </para>
+    /// </remarks>
     /// </summary>
     public class EventsConsoleController : CoreController, ISharedReferenceAccess {
 

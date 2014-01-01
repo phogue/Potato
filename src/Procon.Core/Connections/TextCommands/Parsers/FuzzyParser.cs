@@ -17,12 +17,10 @@ using Procon.Net.Shared.Geolocation;
 using Procon.Net.Shared.Models;
 
 namespace Procon.Core.Connections.TextCommands.Parsers {
-
     /// <summary>
     /// Finds matches agaisnt text with no structure. Extracts various information from the text
     /// </summary>
     public class FuzzyParser : Parser, IFuzzyState {
-
         /// <summary>
         /// The document to use for localization purposes. This is a raw format to be used
         /// by Procon.Fuzzy

@@ -6,17 +6,17 @@ using System.Linq;
 using System.Threading;
 using System.Xml.Serialization;
 using Newtonsoft.Json;
+using Procon.Core.Connections;
 using Procon.Core.Connections.Plugins;
 using Procon.Core.Events;
 using Procon.Core.Remote;
+using Procon.Core.Repositories;
 using Procon.Core.Shared;
 using Procon.Core.Shared.Events;
 using Procon.Core.Shared.Models;
+using Procon.Net;
 using Procon.Net.Shared;
 using Procon.Net.Shared.Protocols;
-using Procon.Core.Connections;
-using Procon.Core.Repositories;
-using Procon.Net;
 using Procon.Service.Shared;
 
 namespace Procon.Core {
@@ -24,7 +24,6 @@ namespace Procon.Core {
     /// The core controller of Procon, an instance of Procon.
     /// </summary>
     public class Instance : CoreController, ISharedReferenceAccess, IService {
-
         /// <summary>
         /// List of game connections
         /// </summary>
@@ -194,7 +193,7 @@ namespace Procon.Core {
                     Name = "ok"
                 };
             }
-
+            
             return message;
         }
 
@@ -264,7 +263,7 @@ namespace Procon.Core {
             this.Execute(new Command() {
                 Origin = CommandOrigin.Local
             }, new Config().Load(new DirectoryInfo(Defines.ConfigsDirectory)));
-
+            
             return base.Execute();
         }
 

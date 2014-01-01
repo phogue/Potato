@@ -8,7 +8,6 @@ namespace Procon.Core.Connections.TextCommands.Parsers.Fuzzy {
     /// A reference for Procon.Fuzzy to use for map information
     /// </summary>
     public class MapThingReference : IThingReference {
-
         /// <summary>
         /// The map attached to this thing.
         /// </summary>

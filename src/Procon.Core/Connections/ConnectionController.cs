@@ -15,7 +15,6 @@ using Procon.Net.Shared.Models;
 using Procon.Net.Shared.Utils;
 
 namespace Procon.Core.Connections {
-
     /// <summary>
     /// Handles connections, plugins and text commands for a single game server.
     /// </summary>

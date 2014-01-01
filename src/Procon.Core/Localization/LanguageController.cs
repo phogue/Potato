@@ -10,9 +10,10 @@ using Procon.Core.Shared.Models;
 using Procon.Service.Shared;
 
 namespace Procon.Core.Localization {
-
+    /// <summary>
+    /// Handles loading localization files and fetching localization by common key
+    /// </summary>
     public class LanguageController : CoreController, ISharedReferenceAccess {
-        
         /// <summary>
         /// The default language to fall back on
         /// </summary>
@@ -26,7 +27,9 @@ namespace Procon.Core.Localization {
         [XmlIgnore, JsonIgnore]
         public SharedReferences Shared { get; private set; }
 
-        // Default Initialization
+        /// <summary>
+        /// Initializes the language controller with the default values.
+        /// </summary>
         public LanguageController() : base() {
             this.Shared = new SharedReferences();
             this.Default = null;
@@ -233,6 +236,12 @@ namespace Procon.Core.Localization {
             return result;
         }
 
+        /// <summary>
+        /// Localizes on a key that requires a single parameter localization.
+        /// </summary>
+        /// <param name="command"></param>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
         public CommandResultArgs SingleParameterLocalize(Command command, Dictionary<String, CommandParameter> parameters) {
             String languageCode = parameters["languageCode"].First<String>();
             String @namespace = parameters["namespace"].First<String>();

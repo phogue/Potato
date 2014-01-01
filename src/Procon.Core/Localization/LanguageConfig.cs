@@ -6,7 +6,6 @@ using Procon.Core.Shared;
 using Procon.Core.Shared.Models;
 
 namespace Procon.Core.Localization {
-
     /// <summary>
     /// A language config file, loaded and combined from various xml sources in the localization folder
     /// </summary>

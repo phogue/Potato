@@ -5,7 +5,6 @@ namespace Procon.Core.Connections.TextCommands {
     /// A parser for text commands
     /// </summary>
     public interface ITextCommandParser {
-
         /// <summary>
         /// Parses text and a prefix, creating a command result with the containing matches
         /// </summary>

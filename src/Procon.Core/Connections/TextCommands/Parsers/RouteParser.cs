@@ -14,7 +14,6 @@ namespace Procon.Core.Connections.TextCommands.Parsers {
     /// Parses a route-like text string against text supplied and matches where applicable.
     /// </summary>
     public class RouteParser : Parser {
-
         /// <summary>
         /// A list of a compiled text commands to find matches against.
         /// </summary>

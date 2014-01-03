@@ -17,15 +17,15 @@ namespace Procon.Core.Packages {
 
         public PackagesController() {
             this.Repositories = new List<RepositoryModel>();
-            /*
-            var manager = new PackageManager(PackageRepositoryFactory.Default.CreateRepository("http://localhost:30505/nuget"), Defines.PackagesUpdatesDirectory);
+
+            var repository = PackageRepositoryFactory.Default.CreateRepository("http://localhost:30505/nuget");
+            
+            var manager = new PackageManager(repository, Defines.PluginsDirectory);
 
             var packages = manager.SourceRepository.GetPackages();
+            // manager.InstallPackage("Myrcon.Procon");
+            // manager.InstallPackage("Procon.Core");
             
-            var array = packages.ToArray();
-
-            manager.InstallPackage(packages.FirstOrDefault(), true, true);
-            */
             var x = 0;
         }
     }

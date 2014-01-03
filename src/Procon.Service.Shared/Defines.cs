@@ -39,8 +39,8 @@ namespace Procon.Service.Shared {
         public static readonly String TemporaryUpdatesDirectory = Path.Combine(UpdatesDirectory, "Temporary");
 
         // Uid's
-        public static readonly String PackageProconCore = "Procon.Core";
-        public static readonly String PackageProconCoreShared = "Procon.Core.Shared";
+        public static readonly String PackageMyrconProcon = "Myrcon.Procon";
+        public static readonly String PackageMyrconProconShared = "Myrcon.Procon.Shared";
 
         /// <summary>
         /// Paths to files
@@ -58,6 +58,9 @@ namespace Procon.Service.Shared {
         public static readonly String UpdatesDirectoryProconExe = Path.Combine(Defines.UpdatesDirectory, ProconExe);
         public static readonly string UpdatesDirectoryProconCoreDll = Path.Combine(Defines.UpdatesDirectory, Defines.ProconCoreDll);
 
+        public static readonly String PackageMyrconProconLibNet40 = Path.Combine(Defines.PackageVersionDirectory(Defines.PackagesDirectory, Defines.PackageMyrconProcon), "lib", "net40");
+        public static readonly String PackageMyrconProconSharedLibNet40 = Path.Combine(Defines.PackageVersionDirectory(Defines.PackagesDirectory, Defines.PackageMyrconProconShared), "lib", "net40");
+
         /// <summary>
         /// Searches the packages folder given this AppDomain's relative path to find the fullname
         /// of the binary file.
@@ -72,7 +75,7 @@ namespace Procon.Service.Shared {
             return paths.Where(path => File.Exists(Path.Combine(path, file)) == true).Select(path => Path.Combine(path, file)).ToList();
         }
 
-        public static String LatestPackageVersionDirectory(String search, String uid) {
+        public static String PackageVersionDirectory(String search, String uid) {
             return Directory.GetDirectories(search, String.Format("{0}*", uid), SearchOption.TopDirectoryOnly).FirstOrDefault();
         }
 

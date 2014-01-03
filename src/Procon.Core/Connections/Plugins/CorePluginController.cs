@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Runtime.Remoting.Lifetime;
 using System.Security;
 using System.Security.Permissions;
@@ -209,8 +208,8 @@ namespace Procon.Core.Connections.Plugins {
                 ApplicationBase = AppDomain.CurrentDomain.BaseDirectory,
                 PrivateBinPath = String.Join(";", new[] {
                     AppDomain.CurrentDomain.BaseDirectory,
-                    Defines.LatestPackageVersionDirectory(Defines.PackagesDirectory, Defines.PackageProconCore),
-                    Defines.LatestPackageVersionDirectory(Defines.PackagesDirectory, Defines.PackageProconCoreShared)
+                    Defines.PackageMyrconProconLibNet40,
+                    Defines.PackageMyrconProconSharedLibNet40
                 })
             };
 
@@ -325,7 +324,7 @@ namespace Procon.Core.Connections.Plugins {
         /// </summary>
         /// <returns></returns>
         protected List<FileInfo> GetPluginAssemblies() {
-            return Directory.GetFiles(Defines.PackagesDirectory, "*.dll", SearchOption.AllDirectories)
+            return Directory.GetFiles(Defines.PackagesDirectory, @"*.dll", SearchOption.AllDirectories)
                 .Select(path => new FileInfo(path))
                 .Where(file =>
                     file.Name != Defines.ProconCoreDll &&

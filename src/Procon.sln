@@ -99,6 +99,11 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procon.Examples.Support.Test", "Procon.Examples.Support.Test\Procon.Examples.Support.Test.csproj", "{8EA223D2-22FA-47A0-8DEF-44512AA23F62}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Packages", "Packages", "{FB17AE81-600C-4867-85D5-A37EDC9789CF}"
+	ProjectSection(SolutionItems) = preProject
+		Build\all.bat = Build\all.bat
+		Build\Myrcon.Procon.nuspec = Build\Myrcon.Procon.nuspec
+		Build\Myrcon.Procon.Shared.nuspec = Build\Myrcon.Procon.Shared.nuspec
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Service", "Service", "{9ECE0809-26D3-4444-9385-C09E17B4F71A}"
 EndProject

@@ -147,8 +147,8 @@ namespace Procon.Service {
 
                     this.ServiceDomain = AppDomain.CreateDomain("Procon.Instance", null, new AppDomainSetup() {
                         PrivateBinPath = String.Join(";", new[] {
-                            Defines.LatestPackageVersionDirectory(Defines.PackagesDirectory, Defines.PackageProconCore),
-                            Defines.LatestPackageVersionDirectory(Defines.PackagesDirectory, Defines.PackageProconCoreShared)
+                            Defines.PackageMyrconProconLibNet40,
+                            Defines.PackageMyrconProconSharedLibNet40
                         })
                     });
 

@@ -9,6 +9,7 @@ using Newtonsoft.Json;
 using Procon.Core.Connections;
 using Procon.Core.Connections.Plugins;
 using Procon.Core.Events;
+using Procon.Core.Packages;
 using Procon.Core.Remote;
 using Procon.Core.Repositories;
 using Procon.Core.Shared;
@@ -67,6 +68,8 @@ namespace Procon.Core {
         /// Creates a new instance of Procon, setting up command server, packages and tasks
         /// </summary>
         public Instance() : base() {
+            new PackagesController();
+
             this.Shared = new SharedReferences();
 
             this.Connections = new List<ConnectionController>();

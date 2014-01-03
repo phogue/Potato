@@ -50,9 +50,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procon.Examples.EmptyPlugin", "Procon.Examples.EmptyPlugin\Procon.Examples.EmptyPlugin.csproj", "{120BE52C-3523-4370-9617-C1383E9A3427}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{935D7761-29F0-4E94-B668-E2EFE06405FA}"
-	ProjectSection(SolutionItems) = preProject
-		README.md = README.md
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procon.Examples.Commands.Test", "Procon.Examples.Commands.Test\Procon.Examples.Commands.Test.csproj", "{5AC644F4-035A-49F7-A80A-3C842E05A8FD}"
 EndProject

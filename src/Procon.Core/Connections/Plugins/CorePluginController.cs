@@ -208,7 +208,7 @@ namespace Procon.Core.Connections.Plugins {
                 ApplicationBase = AppDomain.CurrentDomain.BaseDirectory,
                 PrivateBinPath = String.Join(";", new[] {
                     AppDomain.CurrentDomain.BaseDirectory,
-                    Defines.PackageMyrconProconLibNet40,
+                    Defines.PackageMyrconProconCoreLibNet40,
                     Defines.PackageMyrconProconSharedLibNet40
                 })
             };

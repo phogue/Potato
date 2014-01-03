@@ -39,7 +39,7 @@ namespace Procon.Service.Shared {
         public static readonly String TemporaryUpdatesDirectory = Path.Combine(UpdatesDirectory, "Temporary");
 
         // Uid's
-        public static readonly String PackageMyrconProcon = "Myrcon.Procon";
+        public static readonly String PackageMyrconProconCore = "Myrcon.Procon.Core";
         public static readonly String PackageMyrconProconShared = "Myrcon.Procon.Shared";
 
         /// <summary>
@@ -58,7 +58,7 @@ namespace Procon.Service.Shared {
         public static readonly String UpdatesDirectoryProconExe = Path.Combine(Defines.UpdatesDirectory, ProconExe);
         public static readonly string UpdatesDirectoryProconCoreDll = Path.Combine(Defines.UpdatesDirectory, Defines.ProconCoreDll);
 
-        public static readonly String PackageMyrconProconLibNet40 = Path.Combine(Defines.PackageVersionDirectory(Defines.PackagesDirectory, Defines.PackageMyrconProcon) ?? "", "lib", "net40");
+        public static readonly String PackageMyrconProconCoreLibNet40 = Path.Combine(Defines.PackageVersionDirectory(Defines.PackagesDirectory, Defines.PackageMyrconProconCore) ?? "", "lib", "net40");
         public static readonly String PackageMyrconProconSharedLibNet40 = Path.Combine(Defines.PackageVersionDirectory(Defines.PackagesDirectory, Defines.PackageMyrconProconShared) ?? "", "lib", "net40");
 
         /// <summary>

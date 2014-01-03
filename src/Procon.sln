@@ -96,13 +96,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procon.Examples.Support.Test", "Procon.Examples.Support.Test\Procon.Examples.Support.Test.csproj", "{8EA223D2-22FA-47A0-8DEF-44512AA23F62}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Packages", "Packages", "{FB17AE81-600C-4867-85D5-A37EDC9789CF}"
-	ProjectSection(SolutionItems) = preProject
-		Build\all.bat = Build\all.bat
-		Build\Myrcon.Procon.Core.nuspec = Build\Myrcon.Procon.Core.nuspec
-		Build\Myrcon.Procon.nuspec = Build\Myrcon.Procon.nuspec
-		Build\Myrcon.Procon.Shared.nuspec = Build\Myrcon.Procon.Shared.nuspec
-		Build\Myrcon.Procon.Tools.nuspec = Build\Myrcon.Procon.Tools.nuspec
-	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Service", "Service", "{9ECE0809-26D3-4444-9385-C09E17B4F71A}"
 EndProject
@@ -111,6 +104,15 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{2481C90A-D58F-4F4B-8E0D-F709E05C63F9}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{51787ECF-A5F6-4EF2-B508-0CAF9AA3035B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{514F9052-8BDC-4D45-B97D-B05C51546633}"
+	ProjectSection(SolutionItems) = preProject
+		Procon.Build\all.bat = Procon.Build\all.bat
+		Procon.Build\Myrcon.Procon.Core.nuspec = Procon.Build\Myrcon.Procon.Core.nuspec
+		Procon.Build\Myrcon.Procon.nuspec = Procon.Build\Myrcon.Procon.nuspec
+		Procon.Build\Myrcon.Procon.Shared.nuspec = Procon.Build\Myrcon.Procon.Shared.nuspec
+		Procon.Build\Myrcon.Procon.Tools.nuspec = Procon.Build\Myrcon.Procon.Tools.nuspec
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
@@ -548,6 +550,7 @@ Global
 		{51787ECF-A5F6-4EF2-B508-0CAF9AA3035B} = {FB17AE81-600C-4867-85D5-A37EDC9789CF}
 		{9ECE0809-26D3-4444-9385-C09E17B4F71A} = {FB17AE81-600C-4867-85D5-A37EDC9789CF}
 		{2481C90A-D58F-4F4B-8E0D-F709E05C63F9} = {FB17AE81-600C-4867-85D5-A37EDC9789CF}
+		{514F9052-8BDC-4D45-B97D-B05C51546633} = {FB17AE81-600C-4867-85D5-A37EDC9789CF}
 		{4B55557F-C2AA-4047-9ED9-3E4BBF9CF670} = {46B2B10E-4439-4613-A654-940B939CDC79}
 		{7703A41E-41E1-4D58-B686-07FD497D15F7} = {46B2B10E-4439-4613-A654-940B939CDC79}
 		{153B5418-C6B3-43A5-A432-BAFFA8EFAA16} = {46B2B10E-4439-4613-A654-940B939CDC79}

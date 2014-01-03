@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<package >
+	<metadata>
+		<id>Myrcon.Procon.Core</id>
+		<version>$version$</version>
+		<title>Myrcon Procon Core</title>
+		<authors>Myrcon Pty. Ltd.</authors>
+		<owners>Myrcon Pty. Ltd.</owners>
+		<licenseUrl>http://LICENSE_URL_HERE_OR_DELETE_THIS_LINE</licenseUrl>
+		<projectUrl>http://PROJECT_URL_HERE_OR_DELETE_THIS_LINE</projectUrl>
+		<iconUrl>http://ICON_URL_HERE_OR_DELETE_THIS_LINE</iconUrl>
+		<requireLicenseAcceptance>false</requireLicenseAcceptance>
+		<description>Procon. More Pro than con. Professional Connection. Pro-Connection. Professional Con.</description>
+		<releaseNotes>Summary of changes made in this release of the package.</releaseNotes>
+		<copyright>Copyright 2014</copyright>
+		<tags>Tag1 Tag2</tags>
+	</metadata>
+	<files>
+		<file src="..\..\builds\Debug\Packages\Myrcon.Procon.Core.2.0.0\lib\net40\*.dll" target="lib\net40\" />
+		<file src="..\..\builds\Debug\Packages\Myrcon.Procon.Core.2.0.0\lib\net40\*.xml" target="lib\net40\" />
+		<file src="..\..\builds\Debug\Packages\Myrcon.Procon.Core.2.0.0\lib\net40\*.pdb" target="lib\net40\" />
+	</files>
+</package>

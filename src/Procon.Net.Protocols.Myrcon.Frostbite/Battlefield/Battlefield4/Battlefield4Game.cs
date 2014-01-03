@@ -36,9 +36,7 @@ namespace Procon.Net.Protocols.Myrcon.Frostbite.Battlefield.Battlefield4 {
 
         //[DispatchPacket(MatchText = "admin.listPlayers", PacketOrigin = PacketOrigin.Client)]
         public override void AdminListPlayersResponseDispatchHandler(IPacketWrapper request, IPacketWrapper response) {
-            Battlefield4Players players = new Battlefield4Players() {
-                Subset = new FrostbiteGroupingList().Parse(request.Packet.Words.GetRange(1, request.Packet.Words.Count - 1))
-            }.Parse(response.Packet.Words.GetRange(1, response.Packet.Words.Count - 1));
+            List<Player> players = Battlefield4Players.Parse(response.Packet.Words.GetRange(1, response.Packet.Words.Count - 1));
 
             this.AdminListPlayersFinalize(players);
         }
@@ -46,7 +44,7 @@ namespace Procon.Net.Protocols.Myrcon.Frostbite.Battlefield.Battlefield4 {
         public override void MapListListDispatchHandler(IPacketWrapper request, IPacketWrapper response) {
             if (request.Packet.Words.Count >= 1) {
 
-                FrostbiteMapList maps = new Battlefield4FrostbiteMapList().Parse(response.Packet.Words.GetRange(1, response.Packet.Words.Count - 1));
+                List<Map> maps = Battlefield4FrostbiteMapList.Parse(response.Packet.Words.GetRange(1, response.Packet.Words.Count - 1));
 
                 foreach (Map map in maps) {
                     Map mapInfo = this.State.MapPool.Find(x => String.Compare(x.Name, map.Name, StringComparison.OrdinalIgnoreCase) == 0);
@@ -80,7 +78,7 @@ namespace Procon.Net.Protocols.Myrcon.Frostbite.Battlefield.Battlefield4 {
                     this.State.Bans.Clear();
                 }
 
-                FrostbiteBanList banList = new Battlefield4BanList().Parse(response.Packet.Words.GetRange(1, response.Packet.Words.Count - 1));
+                List<Ban> banList = Battlefield4BanList.Parse(response.Packet.Words.GetRange(1, response.Packet.Words.Count - 1));
 
                 if (banList.Count > 0) {
                     foreach (Ban ban in banList)

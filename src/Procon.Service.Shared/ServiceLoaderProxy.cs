@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Reflection;
 
 namespace Procon.Service.Shared {
@@ -16,7 +18,7 @@ namespace Procon.Service.Shared {
 
         public void Create() {
             this.Service = (IService)Activator.CreateInstanceFrom(
-                Defines.ProconCoreDll, 
+                Defines.SearchRelativeSearchPath(Defines.ProconCoreDll).First(), 
                 "Procon.Core.Instance",
                 false,
                 BindingFlags.Instance | BindingFlags.Public | BindingFlags.CreateInstance,

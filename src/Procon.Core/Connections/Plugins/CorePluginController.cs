@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.Remoting.Lifetime;
 using System.Security;
 using System.Security.Permissions;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Xml.Serialization;
 using Newtonsoft.Json;
@@ -198,30 +200,18 @@ namespace Procon.Core.Connections.Plugins {
         }
 
         /// <summary>
-        /// Copies the necessary files to execute a plugin to the specified directory.
-        /// </summary>
-        protected void CreatePluginDirectory(FileSystemInfo pluginDirectory) {
-            List<String> files = new List<String>() {
-                Defines.ProconCoreSharedDll,
-                Defines.ProconNetSharedDll,
-                Defines.ProconDatabaseSharedDll,
-                Defines.NewtonsoftJsonDll
-            };
-
-            try {
-                files.ForEach(file => File.Copy(Path.Combine(Defines.BaseDirectory, file), Path.Combine(pluginDirectory.FullName, file), true));
-            }
-            catch (Exception) { }
-        }
-
-        /// <summary>
         /// Create the app domain setup options required to create the app domain.
         /// </summary>
         /// <returns></returns>
         protected AppDomainSetup CreateAppDomainSetup() {
             AppDomainSetup setup = new AppDomainSetup {
                 LoaderOptimization = LoaderOptimization.MultiDomainHost,
-                ApplicationBase = AppDomain.CurrentDomain.BaseDirectory
+                ApplicationBase = AppDomain.CurrentDomain.BaseDirectory,
+                PrivateBinPath = String.Join(";", new[] {
+                    AppDomain.CurrentDomain.BaseDirectory,
+                    Defines.LatestPackageVersionDirectory(Defines.PackagesDirectory, Defines.PackageProconCore),
+                    Defines.LatestPackageVersionDirectory(Defines.PackagesDirectory, Defines.PackageProconCoreShared)
+                })
             };
 
             // [XpKiller] - Mono workaround.
@@ -247,7 +237,20 @@ namespace Procon.Core.Connections.Plugins {
             permissions.AddPermission(new FileIOPermission(FileIOPermissionAccess.Read | FileIOPermissionAccess.PathDiscovery, Defines.LocalizationDirectory));
             permissions.AddPermission(new FileIOPermission(FileIOPermissionAccess.Read | FileIOPermissionAccess.PathDiscovery, Defines.ConfigsDirectory));
             permissions.AddPermission(new FileIOPermission(FileIOPermissionAccess.AllAccess, Path.Combine(Defines.ConfigsDirectory, this.Connection != null ? this.Connection.ConnectionModel.ConnectionGuid.ToString() : Guid.Empty.ToString())));
-            
+
+            foreach (var file in this.GetPluginAssemblies()) {
+                DirectoryInfo directory = file.Directory;
+
+                while (directory != null && directory.Parent != null && directory.Parent.FullName != Defines.PackagesDirectory) {
+                    directory = directory.Parent;
+                }
+
+                // If we didn't just go up to the root directory.
+                if (directory != null) {
+                    permissions.AddPermission(new FileIOPermission(FileIOPermissionAccess.AllAccess, directory.FullName));
+                }
+            }
+
             return permissions;
         }
 
@@ -303,8 +306,6 @@ namespace Procon.Core.Connections.Plugins {
             // Make sure the plugins directory exists and set it up.
             Directory.CreateDirectory(Defines.PluginsDirectory);
 
-            this.CreatePluginDirectory(new DirectoryInfo(Defines.PluginsDirectory));
-
             AppDomainSetup setup = this.CreateAppDomainSetup();
 
             PermissionSet permissions = this.CreatePermissionSet();
@@ -320,22 +321,31 @@ namespace Procon.Core.Connections.Plugins {
         }
 
         /// <summary>
+        /// Fetches a list of assembly files to load.
+        /// </summary>
+        /// <returns></returns>
+        protected List<FileInfo> GetPluginAssemblies() {
+            return Directory.GetFiles(Defines.PackagesDirectory, "*.dll", SearchOption.AllDirectories)
+                .Select(path => new FileInfo(path))
+                .Where(file =>
+                    file.Name != Defines.ProconCoreDll &&
+                    file.Name != Defines.ProconNetDll &&
+                    file.Name != Defines.ProconFuzzyDll &&
+                    file.Name != Defines.NewtonsoftJsonDll &&
+                    file.Name != Defines.ProconCoreSharedDll &&
+                    file.Name != Defines.ProconDatabaseSharedDll &&
+                    file.Name != Defines.ProconDatabaseSerializationDll &&
+                    file.Name != Defines.ProconNetSharedDll)
+                .Where(file => Regex.Matches(file.FullName, file.Name.Replace(file.Extension, String.Empty)).Cast<Match>().Count() >= 2)
+                .ToList();
+        } 
+
+        /// <summary>
         /// Setup the plugins located in or in sub-folders of this directory.
         /// </summary>
         protected void LoadPlugins(DirectoryInfo pluginDirectory) {
-            // Find all the dll files recursively within the folder and folders within the specified directory.
-            var files = pluginDirectory.GetFiles("*.dll", SearchOption.AllDirectories).Where(file =>
-                                                                  file.Name != Defines.ProconCoreDll &&
-                                                                  file.Name != Defines.ProconNetDll &&
-                                                                  file.Name != Defines.ProconFuzzyDll &&
-                                                                  file.Name != Defines.NewtonsoftJsonDll &&
-                                                                  file.Name != Defines.ProconCoreSharedDll &&
-                                                                  file.Name != Defines.ProconDatabaseSharedDll &&
-                                                                  file.Name != Defines.ProconDatabaseSerializationDll &&
-                                                                  file.Name != Defines.ProconNetSharedDll);
-
             // If there are dll files in this directory, setup the plugins.
-            foreach (String path in files.Select(file => file.FullName)) {
+            foreach (String path in this.GetPluginAssemblies().Select(file => file.FullName)) {
                 PluginModel plugin = new PluginModel() {
                     Name = new FileInfo(path).Name.Replace(".dll", "")
                 };

@@ -1,6 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
-using Procon.Net.Shared.Collections;
 using Procon.Net.Shared.Geolocation;
 using Procon.Net.Shared.Utils;
 
@@ -53,7 +53,7 @@ namespace Procon.Net.Shared.Models {
         /// <summary>
         /// This players grouping on this server
         /// </summary>
-        public Groupings Groups { get; set; }
+        public List<Grouping> Groups { get; set; }
 
         /// <summary>
         /// This player's Score.
@@ -133,7 +133,7 @@ namespace Procon.Net.Shared.Models {
             this.Uid = String.Empty;
             this.ClanTag = String.Empty;
             this.Name = String.Empty;
-            this.Groups = new Groupings();
+            this.Groups = new List<Grouping>();
             this.Location = new Location();
             this.Inventory = new Inventory();
         }

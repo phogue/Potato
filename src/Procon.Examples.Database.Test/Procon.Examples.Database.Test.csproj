@@ -65,8 +65,8 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>mkdir "$(TargetDir)plugins\"
-copy /Y "$(TargetDir)Procon.Examples.Database.dll" "$(TargetDir)plugins\Procon.Examples.Database.dll"</PostBuildEvent>
+    <PostBuildEvent>mkdir "$(TargetDir)Packages\Procon.Examples.Database.2.0.25.25\lib\"
+copy /Y "$(TargetDir)Procon.Examples.Database.dll" "$(TargetDir)Packages\Procon.Examples.Database.2.0.25.25\lib\Procon.Examples.Database.dll"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

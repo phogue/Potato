@@ -21,7 +21,7 @@ namespace Procon.Net.Shared.Protocols {
                 Assembly.GetAssembly(typeof(IGame))
             };
 
-            foreach (String protocol in Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, "Procon.Net.Protocols.*.dll")) {
+            foreach (String protocol in Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, "Procon.Net.Protocols.*.dll", SearchOption.AllDirectories)) {
                 try {
                     assemblies.Add(Assembly.LoadFile(protocol));
                 }

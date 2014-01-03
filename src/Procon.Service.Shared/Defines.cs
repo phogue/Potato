@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace Procon.Service.Shared {
     public static class Defines {
@@ -36,6 +38,10 @@ namespace Procon.Service.Shared {
         public static readonly String PackagesUpdatesDirectory = Path.Combine(UpdatesDirectory, "Packages");
         public static readonly String TemporaryUpdatesDirectory = Path.Combine(UpdatesDirectory, "Temporary");
 
+        // Uid's
+        public static readonly String PackageProconCore = "Procon.Core";
+        public static readonly String PackageProconCoreShared = "Procon.Core.Shared";
+
         /// <summary>
         /// Paths to files
         /// </summary>
@@ -51,5 +57,32 @@ namespace Procon.Service.Shared {
         /// </summary>
         public static readonly String UpdatesDirectoryProconExe = Path.Combine(Defines.UpdatesDirectory, ProconExe);
         public static readonly string UpdatesDirectoryProconCoreDll = Path.Combine(Defines.UpdatesDirectory, Defines.ProconCoreDll);
+
+        /// <summary>
+        /// Searches the packages folder given this AppDomain's relative path to find the fullname
+        /// of the binary file.
+        /// </summary>
+        /// <param name="file">The file name or directory to search for</param>
+        /// <returns>A list of file paths found</returns>
+        public static List<String> SearchRelativeSearchPath(String file) {
+            IEnumerable<String> paths = new List<String>() {
+                Defines.BaseDirectory
+            }.Union(AppDomain.CurrentDomain.RelativeSearchPath.Split(';').Select(p => Path.Combine(Defines.BaseDirectory, p)));
+
+            return paths.Where(path => File.Exists(Path.Combine(path, file)) == true).Select(path => Path.Combine(path, file)).ToList();
+        }
+
+        public static String LatestPackageVersionDirectory(String search, String uid) {
+            return Directory.GetDirectories(search, String.Format("{0}*", uid), SearchOption.TopDirectoryOnly).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Ensure the entire directory structure has been created.
+        /// </summary>
+        static Defines() {
+            Directory.CreateDirectory(Defines.PluginsDirectory);
+            Directory.CreateDirectory(Defines.LogsDirectory);
+            Directory.CreateDirectory(Defines.LocalizationDirectory);
+        }
     }
 }

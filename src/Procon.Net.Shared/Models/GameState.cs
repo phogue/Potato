@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Procon.Net.Shared.Actions;
-using Procon.Net.Shared.Collections;
 using Procon.Net.Shared.Truths;
 
 namespace Procon.Net.Shared.Models {
@@ -9,21 +8,21 @@ namespace Procon.Net.Shared.Models {
     /// The current snapshot of the server with all details Procon has captured or inferred.
     /// </summary>
     [Serializable]
-    public class GameState {
+    public sealed class GameState {
         /// <summary>
         /// All current information about each player in the server
         /// </summary>
-        public Players Players { get; set; }
+        public List<Player> Players { get; set; }
 
         /// <summary>
         /// The current maplist
         /// </summary>
-        public Maps Maps { get; set; }
+        public List<Map> Maps { get; set; }
 
         /// <summary>
         /// The current banlist
         /// </summary>
-        public Bans Bans { get; set; }
+        public List<Ban> Bans { get; set; }
 
         /// <summary>
         /// List of available maps for this game
@@ -59,9 +58,9 @@ namespace Procon.Net.Shared.Models {
         /// Initializes the gamestate with the default values.
         /// </summary>
         public GameState() {
-            this.Players = new Players();
-            this.Maps = new Maps();
-            this.Bans = new Bans();
+            this.Players = new List<Player>();
+            this.Maps = new List<Map>();
+            this.Bans = new List<Ban>();
 
             this.MapPool = new List<Map>();
             this.GameModePool = new List<GameMode>();

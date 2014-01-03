@@ -256,7 +256,7 @@ namespace Procon.Core {
         /// <returns></returns>
         public override ICoreController Execute() {
             this.EventsConsole.Execute();
-            this.Packages.Execute();
+            //this.Packages.Execute();
             this.CommandServer.Execute();
             this.PushEvents.Execute();
 

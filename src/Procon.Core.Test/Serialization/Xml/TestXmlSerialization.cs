@@ -12,7 +12,6 @@ using Procon.Core.Shared;
 using Procon.Core.Shared.Models;
 using Procon.Net.Protocols;
 using Procon.Net.Shared.Actions;
-using Procon.Net.Shared.Collections;
 using Procon.Net.Shared.Models;
 using Procon.Net.Shared.Protocols;
 using Procon.Net.Shared.Utils;
@@ -133,7 +132,7 @@ namespace Procon.Core.Test.Serialization.Xml {
                 },
                 Score = 1000,
                 SlotId = 22,
-                Groups = new Groupings() {
+                Groups = new List<Grouping>() {
                     new Grouping() {
                         Type = Grouping.Team,
                         Uid = "1"

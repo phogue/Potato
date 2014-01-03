@@ -145,7 +145,12 @@ namespace Procon.Service {
                 try {
                     this.Status = ServiceStatusType.Starting;
 
-                    this.ServiceDomain = AppDomain.CreateDomain("Procon.Instance");
+                    this.ServiceDomain = AppDomain.CreateDomain("Procon.Instance", null, new AppDomainSetup() {
+                        PrivateBinPath = String.Join(";", new[] {
+                            Defines.LatestPackageVersionDirectory(Defines.PackagesDirectory, Defines.PackageProconCore),
+                            Defines.LatestPackageVersionDirectory(Defines.PackagesDirectory, Defines.PackageProconCoreShared)
+                        })
+                    });
 
                     this.ServiceLoaderProxy = (ServiceLoaderProxy)this.ServiceDomain.CreateInstanceAndUnwrap(typeof(ServiceLoaderProxy).Assembly.FullName, typeof(ServiceLoaderProxy).FullName);
                     this.ServiceLoaderProxy.Create();

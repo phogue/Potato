@@ -5,7 +5,7 @@ namespace Procon.Net.Shared.Models {
     /// A group identifier to group players by
     /// </summary>
     [Serializable]
-    public class Grouping : NetworkModel {
+    public sealed class Grouping : NetworkModel {
 
         /// <summary>
         /// A majority of games have teams, teams have squads. So we have these variables

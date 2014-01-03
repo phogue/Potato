@@ -12,7 +12,6 @@ using Procon.Core.Shared.Models;
 using Procon.Fuzzy.Tokens.Primitive.Temporal;
 using Procon.Net.Protocols.Myrcon.Frostbite.Battlefield.Battlefield3;
 using Procon.Net.Shared.Actions;
-using Procon.Net.Shared.Collections;
 using Procon.Net.Shared.Models;
 using Procon.Net.Shared.Protocols;
 
@@ -364,7 +363,7 @@ namespace Procon.Core.Test.TextCommands {
                 TextCommandTest
             });
 
-            textCommandController.Connection.GameState.Players.AddRange(new Players() {
+            textCommandController.Connection.GameState.Players.AddRange(new List<Player>() {
                 PlayerPhogue,
                 PlayerImisnew2,
                 PlayerPhilK,

@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using Procon.Net.Protocols.Myrcon.Frostbite.Objects;
+using Procon.Net.Shared.Models;
 
 namespace Procon.Net.Protocols.Myrcon.Frostbite.Battlefield.Battlefield3.Objects {
     [Serializable]
-    public class Battlefield3Players : FrostbitePlayers {
+    public static class Battlefield3Players {
 
-        public new Battlefield3Players Parse(List<string> words) {
+        public static List<Player> Parse(List<string> words) {
+            List<Player> players = new List<Player>();
 
             int currentOffset = 0;
             int parameterCount = 0;
@@ -36,12 +38,13 @@ namespace Procon.Net.Protocols.Myrcon.Frostbite.Battlefield.Battlefield3.Objects
                 if (words.Count > currentOffset && int.TryParse(words[currentOffset++], out playerCount) == true) {
                     for (int i = 0; i < playerCount; i++) {
                         if (words.Count > currentOffset + (i * parameterCount)) {
-                            this.Add(FrostbitePlayer.Parse(lstParameters, words.GetRange(currentOffset + i * parameterCount, parameterCount)));
+                            players.Add(FrostbitePlayer.Parse(lstParameters, words.GetRange(currentOffset + i * parameterCount, parameterCount)));
                         }
                     }
                 }
             }
-            return this;
+
+            return players;
         }
     }
 }

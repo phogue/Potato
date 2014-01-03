@@ -1,20 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using Procon.Net.Shared.Actions;
-using Procon.Net.Shared.Collections;
 
 namespace Procon.Net.Protocols.Myrcon.Frostbite.Objects {
     [Serializable]
-    public class FrostbiteMapList : Maps {
+    public static class FrostbiteMapList {
 
-        public virtual FrostbiteMapList Parse(List<string> words) {
+        public static List<Map> Parse(List<string> words) {
+            List<Map> maps = new List<Map>();
 
-            this.Clear();
+            maps.Clear();
 
             for (int i = 0; i + 1 < words.Count; i = i + 2) {
                 int rounds = 0;
                 if (int.TryParse(words[i + 1], out rounds) == true) {
-                    this.Add(
+                    maps.Add(
                         new Map() {
                             Index = i > 0 ? i / 2 : 0,
                             Rounds = rounds == 0 ? 2 : rounds,
@@ -25,7 +25,7 @@ namespace Procon.Net.Protocols.Myrcon.Frostbite.Objects {
                 }
             }
 
-            return this;
+            return maps;
         }
 
     }

@@ -10,7 +10,6 @@ using Procon.Net.Shared;
 using Procon.Net.Shared.Actions;
 using Procon.Net.Shared.Models;
 using Procon.Net.Shared.Utils;
-using Procon.Net.Utils;
 
 namespace Procon.Net.Protocols.Myrcon.Frostbite {
     public abstract class FrostbiteGame : Game {
@@ -399,44 +398,39 @@ namespace Procon.Net.Protocols.Myrcon.Frostbite {
             }
         }
         
-        protected virtual void AdminListPlayersFinalize(FrostbitePlayers players) {
-            // If no limits on the subset we just fetched.
-            if (players.Subset.Count == 0) {
+        protected virtual void AdminListPlayersFinalize(List<Player> players) {
 
-                // 1. Remove all names in the state list that are not found in the new list (players that have left)
-                this.State.Players.RemoveAll(x => players.Select(y => y.Name).Contains(x.Name) == false);
+            // 1. Remove all names in the state list that are not found in the new list (players that have left)
+            this.State.Players.RemoveAll(x => players.Select(y => y.Name).Contains(x.Name) == false);
 
-                // 2. Add or update any new players
-                foreach (Player player in players) {
-                    Player statePlayer = this.State.Players.Find(x => x.Name == player.Name);
+            // 2. Add or update any new players
+            foreach (Player player in players) {
+                Player statePlayer = this.State.Players.Find(x => x.Name == player.Name);
 
-                    if (statePlayer == null) {
-                        this.State.Players.Add(player);
-                    }
-                    else {
-                        // Already exists, update with any new information we have.
-                        statePlayer.Kills = player.Kills;
-                        statePlayer.Score = player.Score;
-                        statePlayer.Deaths = player.Deaths;
-                        statePlayer.ClanTag = player.ClanTag;
-                        statePlayer.Ping = Math.Min(player.Ping, 1000);
-                        statePlayer.Uid = player.Uid;
-
-                        statePlayer.ModifyGroup(player.Groups.FirstOrDefault(group => group.Type == Grouping.Team));
-                        statePlayer.ModifyGroup(player.Groups.FirstOrDefault(group => group.Type == Grouping.Squad));
-                    }
+                if (statePlayer == null) {
+                    this.State.Players.Add(player);
                 }
-
-                this.OnGameEvent(GameEventType.GamePlayerlistUpdated, new GameEventData() {
-                    Players = new List<Player>(this.State.Players)
-                });
+                else {
+                    // Already exists, update with any new information we have.
+                    statePlayer.Kills = player.Kills;
+                    statePlayer.Score = player.Score;
+                    statePlayer.Deaths = player.Deaths;
+                    statePlayer.ClanTag = player.ClanTag;
+                    statePlayer.Ping = Math.Min(player.Ping, 1000);
+                    statePlayer.Uid = player.Uid;
+                    
+                    statePlayer.ModifyGroup(player.Groups.FirstOrDefault(group => group.Type == Grouping.Team));
+                    statePlayer.ModifyGroup(player.Groups.FirstOrDefault(group => group.Type == Grouping.Squad));
+                }
             }
+
+            this.OnGameEvent(GameEventType.GamePlayerlistUpdated, new GameEventData() {
+                Players = new List<Player>(this.State.Players)
+            });
         }
 
         public virtual void AdminListPlayersResponseDispatchHandler(IPacketWrapper request, IPacketWrapper response) {
-            FrostbitePlayers players = new FrostbitePlayers() {
-                Subset = new FrostbiteGroupingList().Parse(request.Packet.Words.GetRange(1, request.Packet.Words.Count - 1))
-            }.Parse(response.Packet.Words.GetRange(1, response.Packet.Words.Count - 1));
+            List<Player> players = FrostbitePlayers.Parse(response.Packet.Words.GetRange(1, response.Packet.Words.Count - 1));
 
             this.AdminListPlayersFinalize(players);
         }
@@ -462,7 +456,7 @@ namespace Procon.Net.Protocols.Myrcon.Frostbite {
         public virtual void MapListListDispatchHandler(IPacketWrapper request, IPacketWrapper response) {
             if (request.Packet.Words.Count >= 1) {
 
-                FrostbiteMapList maps = new FrostbiteMapList().Parse(response.Packet.Words.GetRange(1, response.Packet.Words.Count - 1));
+                List<Map> maps = FrostbiteMapList.Parse(response.Packet.Words.GetRange(1, response.Packet.Words.Count - 1));
 
                 foreach (Map map in maps) {
                     Map mapInfo = this.State.MapPool.Find(x => String.Compare(x.Name, map.Name, System.StringComparison.OrdinalIgnoreCase) == 0);
@@ -497,7 +491,7 @@ namespace Procon.Net.Protocols.Myrcon.Frostbite {
                     this.State.Bans.Clear();
                 }
 
-                FrostbiteBanList banList = new FrostbiteBanList().Parse(response.Packet.Words.GetRange(1, response.Packet.Words.Count - 1));
+                List<Ban> banList = FrostbiteBanList.Parse(response.Packet.Words.GetRange(1, response.Packet.Words.Count - 1));
 
                 if (banList.Count > 0) {
                     foreach (Ban ban in banList)
@@ -758,7 +752,7 @@ namespace Procon.Net.Protocols.Myrcon.Frostbite {
             if (request.Packet.Words.Count >= 2) {
                 //request.Packet.Words.RemoveAt(1);
 
-                Player player = new FrostbitePlayers().Parse(request.Packet.Words.GetRange(2, request.Packet.Words.Count - 2)).FirstOrDefault();
+                Player player = FrostbitePlayers.Parse(request.Packet.Words.GetRange(2, request.Packet.Words.Count - 2)).FirstOrDefault();
 
                 if (player != null) {
                     Player statePlayer = this.State.Players.Find(x => x.Name == player.Name);

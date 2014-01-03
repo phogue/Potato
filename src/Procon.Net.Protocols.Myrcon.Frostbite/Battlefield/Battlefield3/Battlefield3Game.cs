@@ -52,43 +52,37 @@ namespace Procon.Net.Protocols.Myrcon.Frostbite.Battlefield.Battlefield3 {
             }
         }
 
-        protected override void AdminListPlayersFinalize(FrostbitePlayers players) {
-            // If no limits on the subset we just fetched.
-            if (players.Subset.Count == 0) {
+        protected override void AdminListPlayersFinalize(List<Player> players) {
+            // 1. Remove all names in the state list that are not found in the new list (players that have left)
+            this.State.Players.RemoveAll(x => players.Select(y => y.Name).Contains(x.Name) == false);
 
-                // 1. Remove all names in the state list that are not found in the new list (players that have left)
-                this.State.Players.RemoveAll(x => players.Select(y => y.Name).Contains(x.Name) == false);
+            // 2. Add or update any new players
+            foreach (Player player in players) {
+                Player statePlayer = this.State.Players.Find(x => x.Name == player.Name);
 
-                // 2. Add or update any new players
-                foreach (Player player in players) {
-                    Player statePlayer = this.State.Players.Find(x => x.Name == player.Name);
-
-                    if (statePlayer == null) {
-                        this.State.Players.Add(player);
-                    }
-                    else {
-                        // Already exists, update with any new information we have.
-                        statePlayer.Kills = player.Kills;
-                        statePlayer.Score = player.Score;
-                        statePlayer.Deaths = player.Deaths;
-                        statePlayer.ClanTag = player.ClanTag;
-                        statePlayer.Uid = player.Uid;
-
-                        statePlayer.ModifyGroup(player.Groups.FirstOrDefault(group => group.Type == Grouping.Team));
-                        statePlayer.ModifyGroup(player.Groups.FirstOrDefault(group => group.Type == Grouping.Squad));
-                    }
+                if (statePlayer == null) {
+                    this.State.Players.Add(player);
                 }
+                else {
+                    // Already exists, update with any new information we have.
+                    statePlayer.Kills = player.Kills;
+                    statePlayer.Score = player.Score;
+                    statePlayer.Deaths = player.Deaths;
+                    statePlayer.ClanTag = player.ClanTag;
+                    statePlayer.Uid = player.Uid;
 
-                this.OnGameEvent(GameEventType.GamePlayerlistUpdated, new GameEventData() {
-                    Players = new List<Player>(this.State.Players)
-                });
+                    statePlayer.ModifyGroup(player.Groups.FirstOrDefault(group => group.Type == Grouping.Team));
+                    statePlayer.ModifyGroup(player.Groups.FirstOrDefault(group => group.Type == Grouping.Squad));
+                }
             }
+
+            this.OnGameEvent(GameEventType.GamePlayerlistUpdated, new GameEventData() {
+                Players = new List<Player>(this.State.Players)
+            });
         }
 
         public override void AdminListPlayersResponseDispatchHandler(IPacketWrapper request, IPacketWrapper response) {
-            Battlefield3Players players = new Battlefield3Players() {
-                Subset = new FrostbiteGroupingList().Parse(request.Packet.Words.GetRange(1, request.Packet.Words.Count - 1))
-            }.Parse(response.Packet.Words.GetRange(1, response.Packet.Words.Count - 1));
+            List<Player> players = Battlefield3Players.Parse(response.Packet.Words.GetRange(1, response.Packet.Words.Count - 1));
 
             this.AdminListPlayersFinalize(players);
         }
@@ -96,7 +90,7 @@ namespace Procon.Net.Protocols.Myrcon.Frostbite.Battlefield.Battlefield3 {
         public override void MapListListDispatchHandler(IPacketWrapper request, IPacketWrapper response) {
             if (request.Packet.Words.Count >= 1) {
 
-                FrostbiteMapList maps = new Battlefield3FrostbiteMapList().Parse(response.Packet.Words.GetRange(1, response.Packet.Words.Count - 1));
+                List<Map> maps = Battlefield3FrostbiteMapList.Parse(response.Packet.Words.GetRange(1, response.Packet.Words.Count - 1));
 
                 foreach (Map map in maps) {
                     Map mapInfo = this.State.MapPool.Find(x => String.Compare(x.Name, map.Name, StringComparison.OrdinalIgnoreCase) == 0);
@@ -130,7 +124,7 @@ namespace Procon.Net.Protocols.Myrcon.Frostbite.Battlefield.Battlefield3 {
                     this.State.Bans.Clear();
                 }
 
-                FrostbiteBanList banList = new Battlefield3BanList().Parse(response.Packet.Words.GetRange(1, response.Packet.Words.Count - 1));
+                List<Ban> banList = Battlefield3BanList.Parse(response.Packet.Words.GetRange(1, response.Packet.Words.Count - 1));
 
                 if (banList.Count > 0) {
                     foreach (Ban ban in banList)

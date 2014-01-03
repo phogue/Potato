@@ -1,5 +1,5 @@
 ﻿using System;
-using Procon.Net.Shared.Collections;
+using System.Collections.Generic;
 
 namespace Procon.Net.Shared.Models {
 
@@ -24,7 +24,7 @@ namespace Procon.Net.Shared.Models {
         /// <summary>
         /// List of groups to default a player to when moving them and such.
         /// </summary>
-        public Groupings DefaultGroups { get; set; }
+        public List<Grouping> DefaultGroups { get; set; }
 
         public GameMode() {
             this.Name = String.Empty;

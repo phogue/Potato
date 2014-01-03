@@ -22,7 +22,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\builds\Debug\Packages\Myrcon.Procon.Tools.2.0.25.25\</OutputPath>
+    <OutputPath>..\..\builds\Debug\Packages\Myrcon.Procon.Tools.2.0.0\lib\net40\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>

@@ -73,8 +73,8 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>mkdir "$(TargetDir)Packages\Procon.Examples.Events.2.0.25.25\lib\"
-move /Y "$(TargetDir)Procon.Examples.Events.dll" "$(TargetDir)Packages\Procon.Examples.Events.2.0.25.25\lib\Procon.Examples.Events.dll"</PostBuildEvent>
+    <PostBuildEvent>mkdir "$(TargetDir)Packages\Procon.Examples.Events.2.0.0\lib\net40\"
+move /Y "$(TargetDir)Procon.Examples.Events.dll" "$(TargetDir)Packages\Procon.Examples.Events.2.0.0\lib\net40\Procon.Examples.Events.dll"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

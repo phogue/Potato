@@ -55,6 +55,10 @@
       <Project>{F6F1BD6C-1743-492A-A18C-810E2C5601F2}</Project>
       <Name>Procon.Database.Shared</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Procon.Database\Procon.Database.csproj">
+      <Project>{7703A41E-41E1-4D58-B686-07FD497D15F7}</Project>
+      <Name>Procon.Database</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Procon.Examples.Database\Procon.Examples.Database.csproj">
       <Project>{30A34B9C-0760-40E4-92C5-81EB58C06311}</Project>
       <Name>Procon.Examples.Database</Name>
@@ -65,8 +69,8 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>mkdir "$(TargetDir)Packages\Procon.Examples.Database.2.0.25.25\lib\"
-copy /Y "$(TargetDir)Procon.Examples.Database.dll" "$(TargetDir)Packages\Procon.Examples.Database.2.0.25.25\lib\Procon.Examples.Database.dll"</PostBuildEvent>
+    <PostBuildEvent>mkdir "$(TargetDir)Packages\Procon.Examples.Database.2.0.0\lib\net40\"
+copy /Y "$(TargetDir)Procon.Examples.Database.dll" "$(TargetDir)Packages\Procon.Examples.Database.2.0.0\lib\net40\Procon.Examples.Database.dll"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

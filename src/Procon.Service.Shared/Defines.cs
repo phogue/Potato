@@ -58,8 +58,8 @@ namespace Procon.Service.Shared {
         public static readonly String UpdatesDirectoryProconExe = Path.Combine(Defines.UpdatesDirectory, ProconExe);
         public static readonly string UpdatesDirectoryProconCoreDll = Path.Combine(Defines.UpdatesDirectory, Defines.ProconCoreDll);
 
-        public static readonly String PackageMyrconProconLibNet40 = Path.Combine(Defines.PackageVersionDirectory(Defines.PackagesDirectory, Defines.PackageMyrconProcon), "lib", "net40");
-        public static readonly String PackageMyrconProconSharedLibNet40 = Path.Combine(Defines.PackageVersionDirectory(Defines.PackagesDirectory, Defines.PackageMyrconProconShared), "lib", "net40");
+        public static readonly String PackageMyrconProconLibNet40 = Path.Combine(Defines.PackageVersionDirectory(Defines.PackagesDirectory, Defines.PackageMyrconProcon) ?? "", "lib", "net40");
+        public static readonly String PackageMyrconProconSharedLibNet40 = Path.Combine(Defines.PackageVersionDirectory(Defines.PackagesDirectory, Defines.PackageMyrconProconShared) ?? "", "lib", "net40");
 
         /// <summary>
         /// Searches the packages folder given this AppDomain's relative path to find the fullname
@@ -76,6 +76,9 @@ namespace Procon.Service.Shared {
         }
 
         public static String PackageVersionDirectory(String search, String uid) {
+            // Create the directory if it isn't there yet.
+            Directory.CreateDirectory(search);
+
             return Directory.GetDirectories(search, String.Format("{0}*", uid), SearchOption.TopDirectoryOnly).FirstOrDefault();
         }
 

@@ -51,8 +51,10 @@
     <Compile Include="Defines.cs" />
     <Compile Include="IService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ServiceController.cs" />
     <Compile Include="ServiceLoaderProxy.cs" />
     <Compile Include="ServiceMessage.cs" />
+    <Compile Include="ServiceStatusType.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

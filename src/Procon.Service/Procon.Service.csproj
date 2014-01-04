@@ -78,9 +78,6 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ServiceController.cs" />
-    <Compile Include="ServiceStatusType.cs" />
-    <Compile Include="Updater.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Procon.Service.Shared\Procon.Service.Shared.csproj">

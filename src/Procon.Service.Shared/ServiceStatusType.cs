@@ -1,4 +1,4 @@
-﻿namespace Procon.Service {
+﻿namespace Procon.Service.Shared {
     /// <summary>
     /// The current state of the procon server running.
     /// </summary>

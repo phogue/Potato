@@ -8,7 +8,7 @@ namespace Procon.Service {
         /// <summary>
         /// The currently loaded instance of Procon.
         /// </summary>
-        public ServiceController Instance { get; set; }
+        public Shared.ServiceController Instance { get; set; }
 
         public ProconService() {
             InitializeComponent();

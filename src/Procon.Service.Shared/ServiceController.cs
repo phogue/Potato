@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Threading;
-using Procon.Service.Shared;
 
-namespace Procon.Service {
+namespace Procon.Service.Shared {
     /// <summary>
     /// Manages an instance of Procon in a seperate AppDomain.
     /// </summary>
@@ -235,7 +234,7 @@ namespace Procon.Service {
         /// </summary>
         private void Update() {
             if (this.Status == ServiceStatusType.Stopped) {
-                new Updater().Execute().Shutdown();
+                // void.
             }
         }
 

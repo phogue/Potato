@@ -157,12 +157,11 @@ namespace Procon.Core.Test.Repositories {
 
             Assert.IsTrue(successful);
         }
-
+        /*
         /// <summary>
         ///     Tests that a file will be published
         /// </summary>
         [Test, Ignore]
-        
         public void TestBeginPublishSuccess() {
             String repositoryPublishValidPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Repositories\Publish\Valid");
             String randomlyGeneratedContentPath = Path.Combine(repositoryPublishValidPath, "RandomlyGeneratedContent.txt");
@@ -221,7 +220,7 @@ namespace Procon.Core.Test.Repositories {
             Assert.AreEqual(version, queriedPackage.LatestVersion.Version.SystemVersion);
             Assert.AreEqual(randomlyGeneratedContentMd5, queriedPackage.LatestVersion.Files.First().Md5);
         }
-
+        */
         /// <summary>
         ///     Tests that the repository can be queried.
         /// </summary>

@@ -208,12 +208,14 @@ namespace Procon.Tools.RepositoryManager {
 
                 Version version = new Version(String.Format("{0:0}.{1:0}.{2:0}.{3:0}", this.txtPackageVersionMajor.Text, this.txtPackageVersionMinor.Text, this.txtPackageVersionBuild.Text, this.txtPackageVersionRevision.Text));
 
+                /*
                 MemoryStream stream = new DirectoryInfo(this.txtPackageDirectory.Text).Zip();
 
                 if (stream != null) {
                     this.LogEntries.Add(new LogEntry("Starting publish.."));
                     this.Repository.BeginPublish(package, version, stream);
                 }
+                */
             }
             else {
                 this.LogEntries.Add(new LogEntry("Directory \"{0}\" does not exist", this.txtPackageDirectory.Text));

@@ -3,15 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.IO;
 using System.Xml.Serialization;
-using Ionic.Zip;
 using Newtonsoft.Json;
 using Procon.Net.Shared.Utils;
 using Procon.Service.Shared;
+using Procon.Net.Utils.HTTP;
 
 namespace Procon.Core.Repositories {
-    using Procon.Core.Utils;
-    using Procon.Net.Utils;
-    using Procon.Net.Utils.HTTP;
 
     /// <summary>
     /// Nice flat packed object to use as an amalgamation of the three
@@ -243,7 +240,7 @@ namespace Procon.Core.Repositories {
                 File.Move(Path.Combine(fileSourceLocation, packageFile.RelativePath), targetPath);
             }
         }
-
+        /*
         /// <summary>
         /// Extracts, validates and migrates all files in the zip
         /// that are included in the meta information for the package.
@@ -273,7 +270,7 @@ namespace Procon.Core.Repositories {
 
             return valid;
         }
-
+        */
         /// <summary>
         /// Deletes the temporary updates directory provided it is empty.
         /// </summary>
@@ -300,7 +297,7 @@ namespace Procon.Core.Repositories {
 
             try {
                 Directory.CreateDirectory(this.UpdatesPath);
-
+                /*
                 using (ZipFile zip = ZipFile.Read(new MemoryStream(sender.Data))) {
                     if (this.ValidateExtractionToTemporary(zip) == true) {
                         this.PostInstallCleanup();
@@ -310,6 +307,7 @@ namespace Procon.Core.Repositories {
                         this.State = PackageState.UpdateInstalled;
                     }
                 }
+                */
             }
             finally {
                 this.CloseInstallRequest();

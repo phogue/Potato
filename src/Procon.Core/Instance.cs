@@ -11,7 +11,6 @@ using Procon.Core.Connections.Plugins;
 using Procon.Core.Events;
 using Procon.Core.Packages;
 using Procon.Core.Remote;
-using Procon.Core.Repositories;
 using Procon.Core.Shared;
 using Procon.Core.Shared.Events;
 using Procon.Core.Shared.Models;
@@ -33,7 +32,7 @@ namespace Procon.Core {
         /// <summary>
         /// The packages that are intalled or can be installed.
         /// </summary>
-        public RepositoryController Packages { get; protected set; }
+        public PackagesController Packages { get; protected set; }
 
         /// <summary>
         /// The command server controller, if active.
@@ -68,13 +67,11 @@ namespace Procon.Core {
         /// Creates a new instance of Procon, setting up command server, packages and tasks
         /// </summary>
         public Instance() : base() {
-            new PackagesController();
-
             this.Shared = new SharedReferences();
 
             this.Connections = new List<ConnectionController>();
 
-            this.Packages = new RepositoryController();
+            this.Packages = new PackagesController();
 
             this.CommandServer = new CommandServerController() {
                 TunnelObjects = new List<ICoreController>() {

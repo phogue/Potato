@@ -116,6 +116,9 @@ namespace Procon.Core.Localization {
         public override ICoreController Execute() {
             var languageDirectories = new DirectoryInfo(Defines.PackagesDirectory)
                 .GetDirectories(Defines.LocalizationDirectoryName, SearchOption.AllDirectories)
+                .Union(new [] {
+                    new DirectoryInfo(Defines.LocalizationDirectory), 
+                })
                 .SelectMany(localizationDirectory => localizationDirectory.GetDirectories());
 
             // Loop over each grouped language

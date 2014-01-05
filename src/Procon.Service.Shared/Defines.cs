@@ -48,6 +48,12 @@ namespace Procon.Service.Shared {
         /// The full path to the configs directory
         /// </summary>
         public static readonly String ConfigsDirectory = Path.Combine(Defines.BaseDirectory, "Configs");
+        
+        /// <summary>
+        /// The full path to the base localization folder (an custom localization files)
+        /// </summary>
+        public static readonly String LocalizationDirectory = Path.Combine(Defines.BaseDirectory, Defines.LocalizationDirectoryName);
+
         public static readonly String CertificatesDirectory = Path.Combine(Defines.BaseDirectory, "Certificates");
         public static readonly String PackagesDirectory = Path.Combine(Defines.BaseDirectory, "Packages");
 
@@ -127,6 +133,7 @@ namespace Procon.Service.Shared {
         static Defines() {
             Directory.CreateDirectory(Defines.PackagesDirectory);
             Directory.CreateDirectory(Defines.LogsDirectory);
+            Directory.CreateDirectory(Defines.LocalizationDirectory);
         }
     }
 }

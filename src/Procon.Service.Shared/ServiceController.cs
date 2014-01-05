@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Threading;
 
 namespace Procon.Service.Shared {
@@ -92,10 +91,29 @@ namespace Procon.Service.Shared {
                     this.Restart();
                     Console.WriteLine("Signal: Restart completed in {0} seconds", (DateTime.Now - begin).TotalMilliseconds / 1000);
                 }
-                else if (String.Compare(message.Name, "update", StringComparison.OrdinalIgnoreCase) == 0) {
-                    Console.WriteLine("Signal: Update");
-                    this.Update();
-                    Console.WriteLine("Signal: Update completed in {0} seconds", (DateTime.Now - begin).TotalMilliseconds / 1000);
+                else if (String.Compare(message.Name, "merge-package", StringComparison.OrdinalIgnoreCase) == 0) {
+                    Console.WriteLine("Signal: Merge Package");
+
+                    if (message.Arguments.ContainsKey("uri") == true && message.Arguments.ContainsKey("packageid") == true) {
+                        this.MergePackage(message.Arguments["uri"], message.Arguments["packageid"]);
+                    }
+                    else {
+                        Console.WriteLine("Missing argument uri or packageId");
+                    }
+
+                    Console.WriteLine("Signal: Merge Package completed in {0} seconds", (DateTime.Now - begin).TotalMilliseconds / 1000);
+                }
+                else if (String.Compare(message.Name, "uninstall-package", StringComparison.OrdinalIgnoreCase) == 0) {
+                    Console.WriteLine("Signal: Uninstall Package");
+
+                    if (message.Arguments.ContainsKey("packageid") == true) {
+                        this.UninstallPackage(message.Arguments["packageid"]);
+                    }
+                    else {
+                        Console.WriteLine("Missing argument packageId");
+                    }
+
+                    Console.WriteLine("Signal: Uninstall Package completed in {0} seconds", (DateTime.Now - begin).TotalMilliseconds / 1000);
                 }
                 else if (String.Compare(message.Name, "statistics", StringComparison.OrdinalIgnoreCase) == 0 || String.Compare(message.Name, "stats", StringComparison.OrdinalIgnoreCase) == 0) {
                     this.Statistics();
@@ -120,25 +138,11 @@ namespace Procon.Service.Shared {
         }
 
         /// <summary>
-        /// Self enclosed exception log, opens a file, writes the exception and flushes/closes the file.
-        /// </summary>
-        /// <param name="hint">A hint for where the exception occured</param>
-        /// <param name="e">The exception to log</param>
-        private static void LogUnhandledException(String hint, Exception e) {
-            Directory.CreateDirectory(Defines.ErrorsLogsDirectory);
-
-            File.WriteAllLines(Path.Combine(Defines.ErrorsLogsDirectory, DateTime.UtcNow.ToString("yyyy-MM-ddTHH-mm-ss-fffffff")), new List<String>() {
-                String.Format("Hint: {0}", hint),
-                String.Format("Exception: {0}", e)
-            });
-        }
-
-        /// <summary>
         /// Updates Procon if it is not currently running, then attempts to start up the appdomain
         /// </summary>
         private void Start() {
             // Update the server if it is currently stopped
-            this.Update();
+            this.UpdateCore();
 
             if (this.Status == ServiceStatusType.Stopped) {
                 try {
@@ -161,7 +165,7 @@ namespace Procon.Service.Shared {
                     this.Status = ServiceStatusType.Started;
                 }
                 catch (Exception e) {
-                    ServiceController.LogUnhandledException("ServiceController.Start", e);
+                    ServiceControllerHelpers.LogUnhandledException("ServiceController.Start", e);
 
                     this.Stop();
                 }
@@ -203,7 +207,6 @@ namespace Procon.Service.Shared {
             Console.WriteLine("| Command | Save | Shutdown | Update | Start | Terminate |");
             Console.WriteLine("+---------+------+----------+--------+-------+-----------+");
             Console.WriteLine("| start   |  -   |    -     |   x    |   x   |     -     |");
-            Console.WriteLine("| update  |  x   |    x     |   x    |   -   |     -     |");
             Console.WriteLine("| restart |  x   |    x     |   x    |   x   |     -     |");
             Console.WriteLine("| stop    |  x   |    x     |   -    |   -   |     -     |");
             Console.WriteLine("| exit    |  x   |    x     |   -    |   -   |     x     |");
@@ -224,7 +227,7 @@ namespace Procon.Service.Shared {
         private void Restart() {
             this.Stop();
             
-            this.Update();
+            this.UpdateCore();
 
             this.Start();
         }
@@ -232,10 +235,39 @@ namespace Procon.Service.Shared {
         /// <summary>
         /// Updates the procon instance, provided it is currently stopped.
         /// </summary>
-        private void Update() {
+        private void UpdateCore() {
             if (this.Status == ServiceStatusType.Stopped) {
-                // void.
+                ServiceControllerHelpers.InstallOrUpdatePackage("http://localhost:30505/nuget", Defines.PackageMyrconProconCore);
             }
+        }
+
+        /// <summary>
+        /// Installs or updates a specific package with id from a repository
+        /// </summary>
+        /// <param name="uri">The source repository of the package</param>
+        /// <param name="packageId">The package id to search for and install/update</param>
+        private void MergePackage(String uri, String packageId) {
+            this.Stop();
+
+            if (this.Status == ServiceStatusType.Stopped) {
+                ServiceControllerHelpers.InstallOrUpdatePackage(uri, packageId);
+            }
+
+            this.Start();
+        }
+
+        /// <summary>
+        /// Uninstalls a package from the local repository
+        /// </summary>
+        /// <param name="packageId">The package id to search for and install/update</param>
+        private void UninstallPackage(String packageId) {
+            this.Stop();
+
+            if (this.Status == ServiceStatusType.Stopped) {
+                ServiceControllerHelpers.UninstallPackage(packageId);
+            }
+
+            this.Start();
         }
 
         /// <summary>
@@ -255,7 +287,7 @@ namespace Procon.Service.Shared {
                         System.Console.WriteLine(" Complete");
                     }
                     catch (Exception e) {
-                        ServiceController.LogUnhandledException("ServiceController.Stop.WriteConfig", e);
+                        ServiceControllerHelpers.LogUnhandledException("ServiceController.Stop.WriteConfig", e);
                     }
 
                     try {
@@ -264,7 +296,7 @@ namespace Procon.Service.Shared {
                         System.Console.WriteLine(" Complete");
                     }
                     catch (Exception e) {
-                        ServiceController.LogUnhandledException("ServiceController.Stop.ServiceLoaderProxy.Dispose", e);
+                        ServiceControllerHelpers.LogUnhandledException("ServiceController.Stop.ServiceLoaderProxy.Dispose", e);
                     }
 
                     this.ServiceLoaderProxy = null;
@@ -280,7 +312,7 @@ namespace Procon.Service.Shared {
                         System.Console.WriteLine(" Complete");
                     }
                     catch (Exception e) {
-                        ServiceController.LogUnhandledException("ServiceController.Stop.ServiceDomain.Unload", e);
+                        ServiceControllerHelpers.LogUnhandledException("ServiceController.Stop.ServiceDomain.Unload", e);
 
                         System.Console.WriteLine(" Error");
                         Console.WriteLine("\tUnable to unload domain.");

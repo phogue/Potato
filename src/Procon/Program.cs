@@ -1,13 +1,35 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using Procon.Properties;
 using Procon.Service.Shared;
 
 namespace Procon {
-    using Procon.Service;
-
     internal class Program {
+
+        private static Dictionary<String, String> Arguments(IList<String> input) {
+            Dictionary<String, String> arguments = new Dictionary<String, String>();
+
+            if (input.Count() % 2 == 0) {
+                IEnumerator<String> pair = input.GetEnumerator();
+
+                while (pair.MoveNext() == true) {
+                    String key = pair.Current.Trim('-', ' ').ToLower();
+                    pair.MoveNext();
+                    String value = pair.Current;
+
+                    if (arguments.ContainsKey(key) == false) arguments.Add(key.ToLower(), value);
+                    // Ignore it if it's already added.
+                }
+            }
+            else {
+                Console.WriteLine(@"Invalid argument input. Must be in key-value-pair syntax e.g ""--key value""");
+                arguments = null;
+            }
+
+            return arguments;
+        }
 
         [STAThread, LoaderOptimization(LoaderOptimization.MultiDomainHost)]
         private static void Main(string[] args) {
@@ -17,7 +39,7 @@ namespace Procon {
             if (args.Length > 0) {
                 // Support for --help command?
 
-                System.Console.WriteLine("Starting with arguments: {0}", String.Join(" ", args));
+                System.Console.WriteLine(@"Starting with arguments: {0}", String.Join(" ", args));
             }
 
             ServiceController service = new ServiceController {
@@ -32,14 +54,23 @@ namespace Procon {
                 Name = "start"
             });
 
-            String input = String.Empty;
+            var input = String.Empty;
 
             do {
                 input = Console.ReadLine();
 
-                service.SignalMessage(new ServiceMessage() {
-                    Name = input
-                });
+                if (input != null) {
+                    var words = new List<String>(input.Split(' '));
+                    var command = words.FirstOrDefault();
+                    var arguments = Program.Arguments(words.Skip(1).ToList());
+
+                    if (command != null && arguments != null) {
+                        service.SignalMessage(new ServiceMessage() {
+                            Name = command,
+                            Arguments = arguments
+                        });
+                    }
+                }
 
             } while (String.Compare(input, "exit", StringComparison.OrdinalIgnoreCase) != 0);
 
@@ -49,7 +80,7 @@ namespace Procon {
 
             service.Dispose();
 
-            System.Console.WriteLine("Closing..");
+            System.Console.WriteLine(@"Closing..");
             Thread.Sleep(1000);
         }
     }

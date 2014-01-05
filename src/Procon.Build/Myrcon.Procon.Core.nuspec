@@ -14,10 +14,13 @@
 		<releaseNotes>Summary of changes made in this release of the package.</releaseNotes>
 		<copyright>Copyright 2014</copyright>
 		<tags>Tag1 Tag2</tags>
-	</metadata>
-	<files>
-		<file src="..\..\builds\Debug\Packages\Myrcon.Procon.Core.2.0.0\lib\net40\*.dll" target="lib\net40\" />
-		<file src="..\..\builds\Debug\Packages\Myrcon.Procon.Core.2.0.0\lib\net40\*.xml" target="lib\net40\" />
-		<file src="..\..\builds\Debug\Packages\Myrcon.Procon.Core.2.0.0\lib\net40\*.pdb" target="lib\net40\" />
-	</files>
+    <dependencies>
+      <dependency id="Myrcon.Procon.Shared" version="$version$" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="..\..\builds\Debug\Packages\Myrcon.Procon.Core.2.0.0\lib\net40\*.dll" target="lib\net40\" />
+    <file src="..\..\builds\Debug\Packages\Myrcon.Procon.Core.2.0.0\lib\net40\*.xml" target="lib\net40\" />
+    <file src="..\..\builds\Debug\Packages\Myrcon.Procon.Core.2.0.0\lib\net40\*.pdb" target="lib\net40\" />
+  </files>
 </package>

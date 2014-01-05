@@ -32,7 +32,5 @@
                @procon
                http://au.linkedin.com/in/phogue/
 
-   Programmer: Cameron "Imisnew2" Gunnin
-
    Copyright © Myrcon Pty. Ltd. 2013
 

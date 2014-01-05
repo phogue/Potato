@@ -17,7 +17,7 @@ namespace Procon.Tools.NetworkConsole.Controls {
 
         public bool IsTestRunning { get; set; }
 
-        public Game ActiveGame {
+        public Protocol ActiveGame {
             get {
                 return this._activeGame;
             }
@@ -26,12 +26,12 @@ namespace Procon.Tools.NetworkConsole.Controls {
 
                 // Assign events.
                 if (this._activeGame != null) {
-                    this._activeGame.GameEvent += m_activeGame_GameEvent;
+                    this._activeGame.ProtocolEvent += m_activeGame_GameEvent;
                     this._activeGame.ClientEvent += m_activeGame_ClientEvent;
                 }
             }
         }
-        private Game _activeGame;
+        private Protocol _activeGame;
 
         /// <summary>
         /// 
@@ -43,9 +43,9 @@ namespace Procon.Tools.NetworkConsole.Controls {
         }
 
 
-        private void m_activeGame_ClientEvent(IGame sender, ClientEventArgs e) {
+        private void m_activeGame_ClientEvent(IProtocol sender, ClientEventArgs e) {
             if (this.InvokeRequired == true) {
-                this.Invoke(new Action<Game, ClientEventArgs>(this.m_activeGame_ClientEvent), sender, e);
+                this.Invoke(new Action<Protocol, ClientEventArgs>(this.m_activeGame_ClientEvent), sender, e);
                 return;
             }
 
@@ -54,13 +54,13 @@ namespace Procon.Tools.NetworkConsole.Controls {
             }
         }
 
-        private void m_activeGame_GameEvent(IGame sender, GameEventArgs e) {
+        private void m_activeGame_GameEvent(IProtocol sender, ProtocolEventArgs e) {
             if (this.InvokeRequired == true) {
-                this.Invoke(new Action<Game, GameEventArgs>(this.m_activeGame_GameEvent), sender, e);
+                this.Invoke(new Action<Protocol, ProtocolEventArgs>(this.m_activeGame_GameEvent), sender, e);
                 return;
             }
 
-            if (e.GameEventType == GameEventType.GamePlayerlistUpdated) {
+            if (e.ProtocolEventType == ProtocolEventType.ProtocolPlayerlistUpdated) {
 
             }
 
@@ -227,9 +227,9 @@ namespace Procon.Tools.NetworkConsole.Controls {
             this.ActiveGame.ClientEvent += ActiveGame_ClientEvent;
         }
 
-        protected void ActiveGame_ClientEvent(IGame sender, ClientEventArgs e) {
+        protected void ActiveGame_ClientEvent(IProtocol sender, ClientEventArgs e) {
             if (this.InvokeRequired == true) {
-                this.Invoke(new Action<Game, ClientEventArgs>(this.ActiveGame_ClientEvent), sender, e);
+                this.Invoke(new Action<Protocol, ClientEventArgs>(this.ActiveGame_ClientEvent), sender, e);
                 return;
             }
 

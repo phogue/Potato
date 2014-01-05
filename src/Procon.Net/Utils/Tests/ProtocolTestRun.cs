@@ -117,7 +117,7 @@ namespace Procon.Net.Utils.Tests {
         /// </summary>
         /// <param name="game"></param>
         /// <param name="tests"></param>
-        public void Execute(Game game, List<ProtocolUnitTest> tests) {
+        public void Execute(Protocol game, List<ProtocolUnitTest> tests) {
             this.Start = DateTime.Now;
 
             this.ReplaceText();
@@ -149,7 +149,7 @@ namespace Procon.Net.Utils.Tests {
         /// Executes all of the tests.
         /// </summary>
         /// <param name="game"></param>
-        public void Execute(Game game) {
+        public void Execute(Protocol game) {
             this.Execute(game, this.Tests);
         }
 

@@ -13,8 +13,8 @@ namespace Procon.Tools.NetworkConsole.Controls {
 
     public partial class PlayerPanel : UserControl {
 
-        private Game m_activeGame;
-        public Game ActiveGame {
+        private Protocol m_activeGame;
+        public Protocol ActiveGame {
             get {
                 return this.m_activeGame;
             }
@@ -23,7 +23,7 @@ namespace Procon.Tools.NetworkConsole.Controls {
 
                 // Assign events.
                 if (this.m_activeGame != null) {
-                    this.m_activeGame.GameEvent += m_activeGame_GameEvent;
+                    this.m_activeGame.ProtocolEvent += m_activeGame_GameEvent;
                     this.m_activeGame.ClientEvent += m_activeGame_ClientEvent;
                 }
             }
@@ -118,9 +118,9 @@ namespace Procon.Tools.NetworkConsole.Controls {
             this.lsvPlayerlist.EndUpdate();
         }
 
-        private void m_activeGame_ClientEvent(IGame sender, ClientEventArgs e) {
+        private void m_activeGame_ClientEvent(IProtocol sender, ClientEventArgs e) {
             if (this.InvokeRequired == true) {
-                this.Invoke(new Action<Game, ClientEventArgs>(this.m_activeGame_ClientEvent), sender, e);
+                this.Invoke(new Action<Protocol, ClientEventArgs>(this.m_activeGame_ClientEvent), sender, e);
                 return;
             }
 
@@ -129,15 +129,15 @@ namespace Procon.Tools.NetworkConsole.Controls {
             }
         }
 
-        private void m_activeGame_GameEvent(IGame sender, GameEventArgs e) {
+        private void m_activeGame_GameEvent(IProtocol sender, ProtocolEventArgs e) {
             if (this.InvokeRequired == true) {
-                this.Invoke(new Action<Game, GameEventArgs>(this.m_activeGame_GameEvent), sender, e);
+                this.Invoke(new Action<Protocol, ProtocolEventArgs>(this.m_activeGame_GameEvent), sender, e);
                 return;
             }
 
-            if (e.GameEventType == GameEventType.GamePlayerlistUpdated) {
+            if (e.ProtocolEventType == ProtocolEventType.ProtocolPlayerlistUpdated) {
 
-                foreach (Player player in e.GameState.Players) {
+                foreach (Player player in e.ProtocolState.Players) {
 
                     ListViewItem currentPlayer = this.lsvPlayerlist
                                                      .Items
@@ -156,7 +156,7 @@ namespace Procon.Tools.NetworkConsole.Controls {
 
                 this.RefreshPlayerlist();
             }
-            else if (e.GameEventType == GameEventType.GamePlayerJoin) {
+            else if (e.ProtocolEventType == ProtocolEventType.ProtocolPlayerJoin) {
                 this.lsvPlayerlist.Items.Add(
                     new ListViewItem() {
                         Tag = e.Now.Players.First()
@@ -165,7 +165,7 @@ namespace Procon.Tools.NetworkConsole.Controls {
 
                 this.RefreshPlayerlist();
             }
-            else if (e.GameEventType == GameEventType.GamePlayerLeave) {
+            else if (e.ProtocolEventType == ProtocolEventType.ProtocolPlayerLeave) {
                 ListViewItem player = this.lsvPlayerlist
                                           .Items
                                           .Cast<ListViewItem>()
@@ -176,7 +176,7 @@ namespace Procon.Tools.NetworkConsole.Controls {
                     this.lsvPlayerlist.Items.Remove(player);
                 }
             }
-            else if (e.GameEventType == GameEventType.GamePlayerMoved) {
+            else if (e.ProtocolEventType == ProtocolEventType.ProtocolPlayerMoved) {
                 this.RefreshPlayerlist();
             }
         }

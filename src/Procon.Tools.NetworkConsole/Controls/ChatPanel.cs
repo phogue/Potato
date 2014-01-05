@@ -35,8 +35,8 @@ namespace Procon.Tools.NetworkConsole.Controls {
         private LinkedList<string> m_chatHistory;
         private LinkedListNode<string> m_chatHistoryCurrentNode;
 
-        private Game m_activeGame;
-        public Game ActiveGame {
+        private Protocol m_activeGame;
+        public Protocol ActiveGame {
             get {
                 return this.m_activeGame;
             }
@@ -45,7 +45,7 @@ namespace Procon.Tools.NetworkConsole.Controls {
 
                 // Assign events.
                 if (this.m_activeGame != null) {
-                    this.m_activeGame.GameEvent += m_activeGame_GameEvent;
+                    this.m_activeGame.ProtocolEvent += m_activeGame_GameEvent;
                 }
             }
         }
@@ -86,13 +86,13 @@ namespace Procon.Tools.NetworkConsole.Controls {
             this.lsvChatObjects.EndUpdate();
         }
 
-        private void m_activeGame_GameEvent(IGame sender, GameEventArgs e) {
+        private void m_activeGame_GameEvent(IProtocol sender, ProtocolEventArgs e) {
             if (this.InvokeRequired == true) {
-                this.Invoke(new Action<Game, GameEventArgs>(this.m_activeGame_GameEvent), sender, e);
+                this.Invoke(new Action<Protocol, ProtocolEventArgs>(this.m_activeGame_GameEvent), sender, e);
                 return;
             }
 
-            if (e.GameEventType == GameEventType.GameChat) {
+            if (e.ProtocolEventType == ProtocolEventType.ProtocolChat) {
                 Chat chat = e.Now.Chats.First();
 
                 if (chat != null) {

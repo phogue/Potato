@@ -58,8 +58,8 @@ namespace Procon.Core.Events {
         public SharedReferences Shared { get; private set; }
 
         protected List<String> DefaultEventsLogIgnoredNames = new List<String>() {
-            GameEventType.GamePlayerlistUpdated.ToString(),
-            GameEventType.GameSettingsUpdated.ToString()
+            ProtocolEventType.ProtocolPlayerlistUpdated.ToString(),
+            ProtocolEventType.ProtocolSettingsUpdated.ToString()
         };
 
         /// <summary>

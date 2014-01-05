@@ -19,7 +19,7 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
         public void TestKickEveryoneWithExclusionOnPhoguePhilImpliedJoin() {
             TextCommandController textCommandController = CreateTextCommandController();
 
-            AssertCommandPlayerListMapList(textCommandController, "kick everyone but not phogue phil", TextCommandKick, textCommandController.Connection.GameState.Players.Except(new List<Player>() {
+            AssertCommandPlayerListMapList(textCommandController, "kick everyone but not phogue phil", TextCommandKick, textCommandController.Connection.ProtocolState.Players.Except(new List<Player>() {
                 PlayerPhogue,
                 PlayerPhilK
             }).ToList(), new List<Map>());

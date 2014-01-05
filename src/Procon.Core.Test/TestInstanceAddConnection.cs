@@ -81,7 +81,7 @@ namespace Procon.Core.Test {
             // Lower the maximum connections to nothing
             variables.Set(new Command() {
                 Origin = CommandOrigin.Local
-            }, CommonVariableNames.MaximumGameConnections, 0);
+            }, CommonVariableNames.MaximumProtocolConnections, 0);
 
             CommandResultArgs result = instance.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,

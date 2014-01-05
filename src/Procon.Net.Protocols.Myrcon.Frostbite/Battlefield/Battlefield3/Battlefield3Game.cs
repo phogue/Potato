@@ -10,7 +10,7 @@ using Procon.Net.Shared.Models;
 using Procon.Net.Shared.Protocols;
 
 namespace Procon.Net.Protocols.Myrcon.Frostbite.Battlefield.Battlefield3 {
-    [GameDeclaration(Type = CommonGameType.BF_3, Name = "Battlefield 3", Provider = "Myrcon")]
+    [ProtocolDeclaration(Type = CommonGameType.BF_3, Name = "Battlefield 3", Provider = "Myrcon")]
     public class Battlefield3Game : BattlefieldGame {
 
         public Battlefield3Game(string hostName, ushort port)
@@ -76,7 +76,7 @@ namespace Procon.Net.Protocols.Myrcon.Frostbite.Battlefield.Battlefield3 {
                 }
             }
 
-            this.OnGameEvent(GameEventType.GamePlayerlistUpdated, new GameEventData() {
+            this.OnGameEvent(ProtocolEventType.ProtocolPlayerlistUpdated, new ProtocolEventData() {
                 Players = new List<Player>(this.State.Players)
             });
         }
@@ -102,7 +102,7 @@ namespace Procon.Net.Protocols.Myrcon.Frostbite.Battlefield.Battlefield3 {
                 this.State.Maps = maps;
 
                 this.OnGameEvent(
-                    GameEventType.GameMaplistUpdated
+                    ProtocolEventType.ProtocolMaplistUpdated
                 );
             }
         }
@@ -135,7 +135,7 @@ namespace Procon.Net.Protocols.Myrcon.Frostbite.Battlefield.Battlefield3 {
                 else {
                     // We have recieved the whole banlist in 100 ban increments.. throw event.
                     this.OnGameEvent(
-                        GameEventType.GameBanlistUpdated
+                        ProtocolEventType.ProtocolBanlistUpdated
                     );
                 }
             }
@@ -181,7 +181,7 @@ namespace Procon.Net.Protocols.Myrcon.Frostbite.Battlefield.Battlefield3 {
                     this.State.Players.Add(player);
                 }
 
-                this.OnGameEvent(GameEventType.GamePlayerJoin, new GameEventData() { Players = new List<Player>() { player } });
+                this.OnGameEvent(ProtocolEventType.ProtocolPlayerJoin, new ProtocolEventData() { Players = new List<Player>() { player } });
             }
         }
 
@@ -205,7 +205,7 @@ namespace Procon.Net.Protocols.Myrcon.Frostbite.Battlefield.Battlefield3 {
                         target.Deaths++;
                     }
 
-                    this.OnGameEvent(GameEventType.GamePlayerKill, new GameEventData() {
+                    this.OnGameEvent(ProtocolEventType.ProtocolPlayerKill, new ProtocolEventData() {
                         Kills = new List<Kill>() {
                             new Kill() {
                                 HumanHitLocation = headshot == true ? FrostbiteGame.Headshot : FrostbiteGame.Bodyshot,

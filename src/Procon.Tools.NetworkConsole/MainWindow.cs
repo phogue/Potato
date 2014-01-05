@@ -18,13 +18,13 @@ namespace Procon.Tools.NetworkConsole {
 
     public partial class MainWindow : Form {
 
-        private Dictionary<IGameType, Type> Games { get; set; }
+        private Dictionary<IProtocolType, Type> Games { get; set; }
 
         // Console
         private LinkedList<string> CommandHistory { get; set; }
         private LinkedListNode<string> CommandHistoryCurrentNode { get; set; }
 
-        private Game ActiveGame { get; set; }
+        private Protocol ActiveGame { get; set; }
 
         private System.Timers.Timer Timer { get; set; }
 
@@ -94,7 +94,7 @@ namespace Procon.Tools.NetworkConsole {
 
                     Type gameType = this.Games.First(game => game.Key.Type == (string)this.cboGames.SelectedItem).Value;
 
-                    this.ActiveGame = (Game)Activator.CreateInstance(gameType, this.txtHostname.Text, port);
+                    this.ActiveGame = (Protocol)Activator.CreateInstance(gameType, this.txtHostname.Text, port);
                     this.ActiveGame.Password = this.txtPassword.Text;
 
                     DirectoryInfo packagePath = Procon.Service.Shared.Defines.PackageContainingPath(gameType.Assembly.Location);
@@ -118,7 +118,7 @@ namespace Procon.Tools.NetworkConsole {
 
                     this.gameStatePropertyGrid.SelectedObject = this.ActiveGame;
 
-                    this.ActiveGame.GameEvent += ActiveGame_GameEvent;
+                    this.ActiveGame.ProtocolEvent += ActiveGame_GameEvent;
                     this.ActiveGame.ClientEvent += ActiveGame_ClientEvent;
 
                     this.ActiveGame.AttemptConnection();
@@ -132,18 +132,18 @@ namespace Procon.Tools.NetworkConsole {
             }
         }
 
-        void ActiveGame_GameEvent(IGame sender, GameEventArgs e) {
+        void ActiveGame_GameEvent(IProtocol sender, ProtocolEventArgs e) {
             if (this.InvokeRequired == true) {
-                this.Invoke(new Action<Game, GameEventArgs>(this.ActiveGame_GameEvent), sender, e);
+                this.Invoke(new Action<Protocol, ProtocolEventArgs>(this.ActiveGame_GameEvent), sender, e);
                 return;
             }
 
             this.gameStatePropertyGrid.Refresh();
         }
 
-        void ActiveGame_ClientEvent(IGame sender, ClientEventArgs e) {
+        void ActiveGame_ClientEvent(IProtocol sender, ClientEventArgs e) {
             if (this.InvokeRequired == true) {
-                this.Invoke(new Action<Game, ClientEventArgs>(this.ActiveGame_ClientEvent), sender, e);
+                this.Invoke(new Action<Protocol, ClientEventArgs>(this.ActiveGame_ClientEvent), sender, e);
                 return;
             }
 

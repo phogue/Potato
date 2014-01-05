@@ -154,7 +154,7 @@ namespace Procon.Core.Test.Variables {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.VariablesSetA,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
-                    CommonVariableNames.MaximumGameConnections,
+                    CommonVariableNames.MaximumProtocolConnections,
                     10
                 })
             });
@@ -213,7 +213,7 @@ namespace Procon.Core.Test.Variables {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.VariablesSetA,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
-                    CommonVariableNames.MaximumGameConnections,
+                    CommonVariableNames.MaximumProtocolConnections,
                     10
                 })
             });

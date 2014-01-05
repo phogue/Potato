@@ -10,7 +10,7 @@ using Procon.Net.Shared.Models;
 using Procon.Net.Shared.Protocols;
 
 namespace Procon.Net.Protocols.Myrcon.Frostbite.Battlefield.Battlefield4 {
-    [GameDeclaration(Type = CommonGameType.BF_4, Name = "Battlefield 4", Provider = "Myrcon")]
+    [ProtocolDeclaration(Type = CommonGameType.BF_4, Name = "Battlefield 4", Provider = "Myrcon")]
     public class Battlefield4Game : BattlefieldGame {
 
         public Battlefield4Game(string hostName, ushort port)
@@ -56,7 +56,7 @@ namespace Procon.Net.Protocols.Myrcon.Frostbite.Battlefield.Battlefield4 {
                 this.State.Maps = maps;
 
                 this.OnGameEvent(
-                    GameEventType.GameMaplistUpdated
+                    ProtocolEventType.ProtocolMaplistUpdated
                 );
             }
         }
@@ -89,7 +89,7 @@ namespace Procon.Net.Protocols.Myrcon.Frostbite.Battlefield.Battlefield4 {
                 else {
                     // We have recieved the whole banlist in 100 ban increments.. throw event.
                     this.OnGameEvent(
-                        GameEventType.GameBanlistUpdated
+                        ProtocolEventType.ProtocolBanlistUpdated
                     );
                 }
             }
@@ -116,7 +116,7 @@ namespace Procon.Net.Protocols.Myrcon.Frostbite.Battlefield.Battlefield4 {
                     this.State.Players.Add(player);
                 }
 
-                this.OnGameEvent(GameEventType.GamePlayerJoin, new GameEventData() { Players = new List<Player>() { player } });
+                this.OnGameEvent(ProtocolEventType.ProtocolPlayerJoin, new ProtocolEventData() { Players = new List<Player>() { player } });
             }
         }
 
@@ -139,7 +139,7 @@ namespace Procon.Net.Protocols.Myrcon.Frostbite.Battlefield.Battlefield4 {
                         killer.Inventory.Items.Add(item);
                     }
 
-                    this.OnGameEvent(GameEventType.GamePlayerKill, new GameEventData() {
+                    this.OnGameEvent(ProtocolEventType.ProtocolPlayerKill, new ProtocolEventData() {
                         Kills = new List<Kill>() {
                             new Kill() {
                                 HumanHitLocation = headshot == true ? FrostbiteGame.Headshot : FrostbiteGame.Bodyshot,

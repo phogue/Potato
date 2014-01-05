@@ -30,10 +30,10 @@ namespace Procon.Examples.Support.Test {
             });
 
             // Every game event will update the gamestate within the plugin.
-            plugins.PluginFactory.GameEvent(new GameEventArgs() {
-                GameEventType = GameEventType.GameSettingsUpdated,
+            plugins.PluginFactory.GameEvent(new ProtocolEventArgs() {
+                ProtocolEventType = ProtocolEventType.ProtocolSettingsUpdated,
                 // This would generally be a persistant object that Procon updates with all known information.
-                GameState = new GameState() {
+                ProtocolState = new ProtocolState() {
                     Support = Tree.Union(
                         BranchBuilder.ProtocolCanKillPlayer(),
                         BranchBuilder.ProtocolKnowsWhenPlayerKillPlayer(),
@@ -73,10 +73,10 @@ namespace Procon.Examples.Support.Test {
             });
 
             // Every game event will update the gamestate within the plugin.
-            plugins.PluginFactory.GameEvent(new GameEventArgs() {
-                GameEventType = GameEventType.GameSettingsUpdated,
+            plugins.PluginFactory.GameEvent(new ProtocolEventArgs() {
+                ProtocolEventType = ProtocolEventType.ProtocolSettingsUpdated,
                 // This would generally be a persistant object that Procon updates with all known information.
-                GameState = new GameState() {
+                ProtocolState = new ProtocolState() {
                     Support = Tree.Union(
                         // BranchBuilder.ProtocolCanKillPlayer(),
                         BranchBuilder.ProtocolKnowsWhenPlayerKillPlayer(),
@@ -116,10 +116,10 @@ namespace Procon.Examples.Support.Test {
             });
 
             // Every game event will update the gamestate within the plugin.
-            plugins.PluginFactory.GameEvent(new GameEventArgs() {
-                GameEventType = GameEventType.GameSettingsUpdated,
+            plugins.PluginFactory.GameEvent(new ProtocolEventArgs() {
+                ProtocolEventType = ProtocolEventType.ProtocolSettingsUpdated,
                 // This would generally be a persistant object that Procon updates with all known information.
-                GameState = new GameState() {
+                ProtocolState = new ProtocolState() {
                     Support = Tree.Union(
                         BranchBuilder.ProtocolCanKillPlayer(),
                         BranchBuilder.ProtocolKnowsWhenPlayerKillPlayer(),

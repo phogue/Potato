@@ -18,10 +18,10 @@ namespace Procon.Net.Test {
         public void TestGameTypeAttributeConversion() {
             MockGame game = new MockGame("localhost", 5000);
 
-            Assert.AreEqual("MOCK_3", game.GameType.Type);
-            Assert.AreEqual("MockGame 3", game.GameType.Name);
-            Assert.AreEqual("Myrcon", game.GameType.Provider);
-            Assert.IsInstanceOf<GameType>(game.GameType);
+            Assert.AreEqual("MOCK_3", game.ProtocolType.Type);
+            Assert.AreEqual("MockGame 3", game.ProtocolType.Name);
+            Assert.AreEqual("Myrcon", game.ProtocolType.Provider);
+            Assert.IsInstanceOf<ProtocolType>(game.ProtocolType);
         }
 
         /// <summary>

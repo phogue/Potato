@@ -71,13 +71,13 @@ namespace Procon.Net.Utils.Tests {
         /// </summary>
         /// <param name="game"></param>
         /// <returns></returns>
-        protected bool Disconnect(Game game) {
+        protected bool Disconnect(Protocol game) {
             bool disconnected = true;
 
             if (game.Client.ConnectionState != ConnectionState.ConnectionDisconnected) {
                 AutoResetEvent disconnectEvent = new AutoResetEvent(false);
 
-                Action<IGame, ClientEventArgs> handler = (sender, args) => {
+                Action<IProtocol, ClientEventArgs> handler = (sender, args) => {
                     if (args.EventType == ClientEventType.ClientConnectionStateChange) {
                         if (args.ConnectionState == ConnectionState.ConnectionDisconnected) {
                             disconnectEvent.Set();
@@ -104,13 +104,13 @@ namespace Procon.Net.Utils.Tests {
         /// </summary>
         /// <param name="game"></param>
         /// <returns></returns>
-        protected bool LoggedIn(Game game) {
+        protected bool LoggedIn(Protocol game) {
             bool loggedIn = true;
 
             if (game.Client.ConnectionState != ConnectionState.ConnectionLoggedIn) {
                 AutoResetEvent loginEvent = new AutoResetEvent(false);
 
-                Action<IGame, ClientEventArgs> handler = (sender, args) => {
+                Action<IProtocol, ClientEventArgs> handler = (sender, args) => {
                     if (args.EventType == ClientEventType.ClientConnectionStateChange) {
                         if (args.ConnectionState == ConnectionState.ConnectionLoggedIn) {
                             loginEvent.Set();
@@ -132,7 +132,7 @@ namespace Procon.Net.Utils.Tests {
             return loggedIn;
         }
 
-        public bool Execute(Game game, bool connectionIsolation) {
+        public bool Execute(Protocol game, bool connectionIsolation) {
             bool success = true;
 
             if (connectionIsolation == true) {
@@ -160,7 +160,7 @@ namespace Procon.Net.Utils.Tests {
 
                     ProtocolUnitTestCommand localCommand = command;
 
-                    Action<IGame, ClientEventArgs> handler = (sender, args) => {
+                    Action<IProtocol, ClientEventArgs> handler = (sender, args) => {
                         if (args.EventType == ClientEventType.ClientPacketReceived) {
                             ProtocolUnitTestPacket matchedPacket = args.Now.Packets.First().Type == PacketType.Response ? localCommand.Responses.FirstOrDefault(response => response.Matches(args.Now.Packets.First().ToString())) : localCommand.Requests.FirstOrDefault(request => request.Matches(args.Now.Packets.First().ToString()));
 

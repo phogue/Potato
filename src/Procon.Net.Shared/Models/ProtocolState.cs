@@ -8,7 +8,7 @@ namespace Procon.Net.Shared.Models {
     /// The current snapshot of the server with all details Procon has captured or inferred.
     /// </summary>
     [Serializable]
-    public sealed class GameState {
+    public sealed class ProtocolState {
         /// <summary>
         /// All current information about each player in the server
         /// </summary>
@@ -57,7 +57,7 @@ namespace Procon.Net.Shared.Models {
         /// <summary>
         /// Initializes the gamestate with the default values.
         /// </summary>
-        public GameState() {
+        public ProtocolState() {
             this.Players = new List<Player>();
             this.Maps = new List<Map>();
             this.Bans = new List<Ban>();

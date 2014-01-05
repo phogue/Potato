@@ -8,7 +8,7 @@ namespace Procon.Net.Shared {
     /// <summary>
     /// The basic interface of communication between Core and Net
     /// </summary>
-    public interface IGame {
+    public interface IProtocol {
         /// <summary>
         /// The client to handle all communications with the game server
         /// </summary>
@@ -18,7 +18,7 @@ namespace Procon.Net.Shared {
         /// Everything the connection currently knows about the game. This is updated
         /// with all of the information we receive from the server.
         /// </summary>
-        GameState State { get; }
+        ProtocolState State { get; }
 
         /// <summary>
         /// The password used to authenticate with the server.
@@ -33,7 +33,7 @@ namespace Procon.Net.Shared {
         /// <summary>
         /// Describing attribute of this game.
         /// </summary>
-        IGameType GameType { get; }
+        IProtocolType ProtocolType { get; }
 
         /// <summary>
         /// The directories to look for game configs in
@@ -43,13 +43,13 @@ namespace Procon.Net.Shared {
         /// <summary>
         /// Fired when ever a dispatched game event occurs.
         /// </summary>
-        event Action<IGame, GameEventArgs> GameEvent;
+        event Action<IProtocol, ProtocolEventArgs> ProtocolEvent;
 
         /// <summary>
         /// Fired when something occurs with the underlying client. This can
         /// be connections, disconnections, logins or raw packets being recieved.
         /// </summary>
-        event Action<IGame, ClientEventArgs> ClientEvent;
+        event Action<IProtocol, ClientEventArgs> ClientEvent;
 
         /// <summary>
         /// Process a generic network action. All packets generated and sent to the server should be returned here.

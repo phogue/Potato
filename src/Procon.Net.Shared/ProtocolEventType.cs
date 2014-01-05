@@ -3,70 +3,70 @@
 namespace Procon.Net.Shared {
 
     [Serializable]
-    public enum GameEventType {
+    public enum ProtocolEventType {
         /// <summary>
         /// The game has had its definitions for gamemodes, maps etc. loaded.
         /// </summary>
-        GameConfigExecuted,
+        ProtocolConfigExecuted,
         /// <summary>
         /// Any server info/server settings have been updated.
         /// </summary>
-        GameSettingsUpdated,
+        ProtocolSettingsUpdated,
         /// <summary>
         /// Playerlist information has been updated (scores/pings etc might have changed)
         /// </summary>
-        GamePlayerlistUpdated,
+        ProtocolPlayerlistUpdated,
         /// <summary>
         /// The maplist has been updated - synched with server or new maplist, added maps etc.
         /// </summary>
-        GameMaplistUpdated,
+        ProtocolMaplistUpdated,
         /// <summary>
         /// The banlist has been updated - synched with server or new banlist, added/removed bans
         /// </summary>
-        GameBanlistUpdated,
+        ProtocolBanlistUpdated,
         /// <summary>
         /// A player has joined the game
         /// </summary>
-        GamePlayerJoin,
+        ProtocolPlayerJoin,
         /// <summary>
         /// A player has left the game
         /// </summary>
-        GamePlayerLeave,
+        ProtocolPlayerLeave,
         /// <summary>
         /// A player has been killed
         /// </summary>
-        GamePlayerKill,
+        ProtocolPlayerKill,
         /// <summary>
         /// Chat has occured on the server (by procon, the server or a player)
         /// </summary>
-        GameChat,
+        ProtocolChat,
         /// <summary>
         /// A player has spawned in
         /// </summary>
-        GamePlayerSpawn,
+        ProtocolPlayerSpawn,
         /// <summary>
         /// A player has  been kicked
         /// </summary>
-        GamePlayerKicked,
+        ProtocolPlayerKicked,
         /// <summary>
         /// A player has moved to another team or has been moved to another team
         /// </summary>
-        GamePlayerMoved,
+        ProtocolPlayerMoved,
         /// <summary>
         /// A player has been banned
         /// </summary>
-        GamePlayerBanned,
+        ProtocolPlayerBanned,
         /// <summary>
         /// A player has been unbanned
         /// </summary>
-        GamePlayerUnbanned,
+        ProtocolPlayerUnbanned,
         /// <summary>
         /// The map has changed
         /// </summary>
-        GameMapChanged,
+        ProtocolMapChanged,
         /// <summary>
         /// The round has changed
         /// </summary>
-        GameRoundChanged,
+        ProtocolRoundChanged,
     }
 }

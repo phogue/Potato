@@ -26,7 +26,7 @@ namespace Procon.Core.Shared.Models {
         /// <summary>
         /// (int) Maximum number of connections to game servers allowed
         /// </summary>
-        MaximumGameConnections,
+        MaximumProtocolConnections,
         /// <summary>
         /// (int) The maximum amount of time an event should be held in memory before being flushed to a log.
         /// </summary>
@@ -55,7 +55,7 @@ namespace Procon.Core.Shared.Models {
         /// <summary>
         /// List[String] list of strings to ignore if they match
         /// </summary>
-        GameEventsIgnoreList,
+        ProtocolEventsIgnoreList,
         /// <summary>
         /// List[String] list of configuration options for the database.
         /// </summary>

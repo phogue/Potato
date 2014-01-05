@@ -2,7 +2,7 @@
 using Procon.Net.Shared;
 
 namespace Procon.Net {
-    public class GameDeclarationAttribute : Attribute, IGameType {
+    public class ProtocolDeclarationAttribute : Attribute, IProtocolType {
         /// <summary>
         /// The name of the author or organization that provides this protocol implementation
         /// </summary>

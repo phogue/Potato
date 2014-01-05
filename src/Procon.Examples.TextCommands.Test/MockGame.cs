@@ -6,7 +6,7 @@ using Procon.Net.Shared.Actions;
 using Procon.Net.Shared.Models;
 
 namespace Procon.Examples.TextCommands.Test {
-    public class MockGame : Game {
+    public class MockGame : Protocol {
         public MockGame(string hostName, ushort port) : base(hostName, port) {
             
             this.State.Players.AddRange(new List<Player>() {

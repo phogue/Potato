@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<GameConfig>
+<ProtocolConfig>
   <Groupings>
     <Grouping>
       <Uid>1</Uid>
@@ -3097,4 +3097,4 @@
       </Tags>
     </Item>
   </Items>
-</GameConfig>
+</ProtocolConfig>

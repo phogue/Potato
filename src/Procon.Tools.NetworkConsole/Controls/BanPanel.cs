@@ -12,8 +12,8 @@ namespace Procon.Tools.NetworkConsole.Controls {
 
     public partial class BanPanel : UserControl {
 
-        private Game activeGame;
-        public Game ActiveGame {
+        private Protocol activeGame;
+        public Protocol ActiveGame {
             get {
                 return this.activeGame;
             }
@@ -22,7 +22,7 @@ namespace Procon.Tools.NetworkConsole.Controls {
 
                 // Assign events.
                 if (this.activeGame != null) {
-                    this.activeGame.GameEvent += m_activeGame_GameEvent;
+                    this.activeGame.ProtocolEvent += m_activeGame_GameEvent;
                     this.activeGame.ClientEvent += m_activeGame_ClientEvent;
                 }
             }
@@ -94,9 +94,9 @@ namespace Procon.Tools.NetworkConsole.Controls {
             this.lsvBanList.EndUpdate();
         }
 
-        private void m_activeGame_ClientEvent(IGame sender, ClientEventArgs e) {
+        private void m_activeGame_ClientEvent(IProtocol sender, ClientEventArgs e) {
             if (this.InvokeRequired == true) {
-                this.Invoke(new Action<Game, ClientEventArgs>(this.m_activeGame_ClientEvent), sender, e);
+                this.Invoke(new Action<Protocol, ClientEventArgs>(this.m_activeGame_ClientEvent), sender, e);
                 return;
             }
 
@@ -106,15 +106,15 @@ namespace Procon.Tools.NetworkConsole.Controls {
         }
 
 
-        private void m_activeGame_GameEvent(IGame sender, GameEventArgs e) {
+        private void m_activeGame_GameEvent(IProtocol sender, ProtocolEventArgs e) {
             if (this.InvokeRequired == true) {
-                this.Invoke(new Action<Game, GameEventArgs>(this.m_activeGame_GameEvent), sender, e);
+                this.Invoke(new Action<Protocol, ProtocolEventArgs>(this.m_activeGame_GameEvent), sender, e);
                 return;
             }
 
-            if (e.GameEventType == GameEventType.GameBanlistUpdated) {
+            if (e.ProtocolEventType == ProtocolEventType.ProtocolBanlistUpdated) {
 
-                foreach (Ban ban in e.GameState.Bans) {
+                foreach (Ban ban in e.ProtocolState.Bans) {
 
                     ListViewItem listBan = this.lsvBanList
                                                .Items
@@ -133,7 +133,7 @@ namespace Procon.Tools.NetworkConsole.Controls {
 
                 this.RefreshBanList();
             }
-            else if (e.GameEventType == GameEventType.GamePlayerUnbanned) {
+            else if (e.ProtocolEventType == ProtocolEventType.ProtocolPlayerUnbanned) {
 
                 ListViewItem listBan = (
                     from x in this.lsvBanList.Items.Cast<ListViewItem>()
@@ -148,7 +148,7 @@ namespace Procon.Tools.NetworkConsole.Controls {
 
                 this.RefreshBanList();
             }
-            else if (e.GameEventType == GameEventType.GamePlayerBanned) {
+            else if (e.ProtocolEventType == ProtocolEventType.ProtocolPlayerBanned) {
 
                 this.lsvBanList.Items.Add(
                     new ListViewItem() {

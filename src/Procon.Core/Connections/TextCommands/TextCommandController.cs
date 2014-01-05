@@ -177,13 +177,13 @@ namespace Procon.Core.Connections.TextCommands {
         /// <param name="speaker"></param>
         /// <returns></returns>
         protected Player GetAccountNetworkPlayer(Command command, AccountModel speaker) {
-            Player player = this.Connection.GameState.Players.FirstOrDefault(x => x.Uid == command.Uid);
+            Player player = this.Connection.ProtocolState.Players.FirstOrDefault(x => x.Uid == command.Uid);
 
             if (speaker != null) {
-                AccountPlayerModel accountPlayer = speaker.Players.FirstOrDefault(p => p.GameType == this.Connection.ConnectionModel.GameType.Type);
+                AccountPlayerModel accountPlayer = speaker.Players.FirstOrDefault(p => p.GameType == this.Connection.ConnectionModel.ProtocolType.Type);
 
                 if (accountPlayer != null) {
-                    player = this.Connection.GameState.Players.FirstOrDefault(x => x.Uid == accountPlayer.Uid);
+                    player = this.Connection.ProtocolState.Players.FirstOrDefault(x => x.Uid == accountPlayer.Uid);
                 }
             }
 

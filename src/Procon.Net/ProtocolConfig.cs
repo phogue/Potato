@@ -10,7 +10,7 @@ using Procon.Net.Utils;
 
 namespace Procon.Net {
     [Serializable]
-    public class GameConfig {
+    public class ProtocolConfig {
 
         /// <summary>
         /// List of available maps for this game
@@ -36,7 +36,7 @@ namespace Procon.Net {
         /// Parses this config into a game object.
         /// </summary>
         /// <param name="game">The game to load this config into</param>
-        public virtual void Parse(IGame game) {
+        public virtual void Parse(IProtocol game) {
             game.State.MapPool = this.MapPool;
             game.State.GameModePool = this.GameModes;
             game.State.Groupings = this.Groupings;
@@ -52,8 +52,8 @@ namespace Procon.Net {
         /// <param name="gameConfigPath"></param>
         /// <param name="type"></param>
         /// <returns></returns>
-        public static T Load<T>(String gameConfigPath, IGameType type) where T : GameConfig {
-            return GameConfig.Load<T>(GameConfig.Path(gameConfigPath, type.Provider, type.Type));
+        public static T Load<T>(String gameConfigPath, IProtocolType type) where T : ProtocolConfig {
+            return ProtocolConfig.Load<T>(ProtocolConfig.Path(gameConfigPath, type.Provider, type.Type));
         }
 
         /// <summary>
@@ -62,7 +62,7 @@ namespace Procon.Net {
         /// <typeparam name="T"></typeparam>
         /// <param name="configPath"></param>
         /// <returns></returns>
-        public static T Load<T>(String configPath) where T : GameConfig {
+        public static T Load<T>(String configPath) where T : ProtocolConfig {
             T config = default(T);
 
             try {

@@ -205,12 +205,12 @@ namespace Procon.Core {
         private void Connection_Tick(Object state) {
             if (this.Connections != null) {
                 lock (this.Connections) {
-                    foreach (ConnectionController connection in this.Connections.Where(connection => connection.Game != null)) {
-                        if (connection.Game.State != null && connection.Game.State.Settings.Current.ConnectionState == ConnectionState.ConnectionDisconnected) {
+                    foreach (ConnectionController connection in this.Connections.Where(connection => connection.Protocol != null)) {
+                        if (connection.Protocol.State != null && connection.Protocol.State.Settings.Current.ConnectionState == ConnectionState.ConnectionDisconnected) {
                             connection.AttemptConnection();
                         }
                         else {
-                            connection.Game.Synchronize();
+                            connection.Protocol.Synchronize();
                         }
                     }
                 }
@@ -322,14 +322,14 @@ namespace Procon.Core {
                             new CommandParameter() {
                                 Data = {
                                     Content = new List<String>() {
-                                        connection.ConnectionModel.GameType.Provider
+                                        connection.ConnectionModel.ProtocolType.Provider
                                     }
                                 }
                             },
                             new CommandParameter() {
                                 Data = {
                                     Content = new List<String>() {
-                                        connection.ConnectionModel.GameType.Type
+                                        connection.ConnectionModel.ProtocolType.Type
                                     }
                                 }
                             },
@@ -501,16 +501,16 @@ namespace Procon.Core {
             // As long as the current account is allowed to execute this command...
             if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
                 // As long as we have less than the maximum amount of connections...
-                if (this.Connections.Count < this.Shared.Variables.Get(CommonVariableNames.MaximumGameConnections, 9000)) {
+                if (this.Connections.Count < this.Shared.Variables.Get(CommonVariableNames.MaximumProtocolConnections, 9000)) {
                     // As long as the connection for that specific game, hostname, and port does not exist...
-                    if (this.Connections.FirstOrDefault(c => c.ConnectionModel.GameType.Type == gameTypeType && c.ConnectionModel.Hostname == hostName && c.ConnectionModel.Port == port) == null) {
+                    if (this.Connections.FirstOrDefault(c => c.ConnectionModel.ProtocolType.Type == gameTypeType && c.ConnectionModel.Hostname == hostName && c.ConnectionModel.Port == port) == null) {
                         // As long as the game type is defined...
 
                         Type gameType = SupportedGameTypes.GetSupportedGames().Where(g => g.Key.Provider == gameTypeProvider && g.Key.Type == gameTypeType).Select(g => g.Value).FirstOrDefault();
 
                         // As long as the game type selected is supported...
                         if (gameType != null) {
-                            Game game = (Game) Activator.CreateInstance(gameType, hostName, port);
+                            Protocol game = (Protocol) Activator.CreateInstance(gameType, hostName, port);
                             game.Additional = additional;
                             game.Password = password;
 
@@ -521,7 +521,7 @@ namespace Procon.Core {
                             }
 
                             ConnectionController connection = new ConnectionController() {
-                                Game = game,
+                                Protocol = game,
                                 Instance = this
                             };
 
@@ -644,8 +644,8 @@ namespace Procon.Core {
             UInt16 port = parameters["port"].First<UInt16>();
 
             ConnectionController connection = this.Connections.FirstOrDefault(c =>
-                c.ConnectionModel.GameType.Provider == gameTypeProvider &&
-                c.ConnectionModel.GameType.Type == gameTypeType &&
+                c.ConnectionModel.ProtocolType.Provider == gameTypeProvider &&
+                c.ConnectionModel.ProtocolType.Type == gameTypeType &&
                 c.ConnectionModel.Hostname == hostName &&
                 c.ConnectionModel.Port == port
             );
@@ -668,7 +668,7 @@ namespace Procon.Core {
                     Status = CommandResultType.Success,
                     Now = new CommandData() {
                         Connections = this.Connections.Select(connection => connection.ConnectionModel).ToList(),
-                        GameTypes = new List<GameType>(SupportedGameTypes.GetSupportedGames().Select(k => k.Key as GameType)),
+                        GameTypes = new List<ProtocolType>(SupportedGameTypes.GetSupportedGames().Select(k => k.Key as ProtocolType)),
                         //Repositories = new List<RepositoryModel>(this.Packages.RemoteRepositories),
                         //Packages = new List<PackageModel>(this.Packages.Packages),
                         Groups = new List<GroupModel>(this.Shared.Security.Groups),

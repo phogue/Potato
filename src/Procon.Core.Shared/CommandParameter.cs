@@ -20,7 +20,7 @@ namespace Procon.Core.Shared {
         private static readonly List<Type> KnownTypes = new List<Type>() {
             typeof (String),
             typeof (ConnectionModel),
-            typeof (GameType),
+            typeof (ProtocolType),
             typeof (GroupModel),
             typeof (AccountModel),
             typeof (PermissionModel),
@@ -71,7 +71,7 @@ namespace Procon.Core.Shared {
             else if (t == typeof(ConnectionModel) && this.Data.Connections != null) {
                 all = this.Data.Connections.Cast<Object>().ToList();
             }
-            else if (t == typeof(GameType) && this.Data.GameTypes != null) {
+            else if (t == typeof(ProtocolType) && this.Data.GameTypes != null) {
                 all = this.Data.GameTypes.Cast<Object>().ToList();
             }
             else if (t == typeof(GroupModel) && this.Data.Groups != null) {

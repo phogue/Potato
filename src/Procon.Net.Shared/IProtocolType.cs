@@ -1,7 +1,7 @@
 ﻿using System;
 
 namespace Procon.Net.Shared {
-    public interface IGameType {
+    public interface IProtocolType {
         /// <summary>
         /// The name of the author or organization that provides this protocol implementation
         /// </summary>

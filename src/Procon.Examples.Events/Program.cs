@@ -32,13 +32,13 @@ namespace Procon.Examples.Events {
             // else more!
         }
 
-        public override void GameEvent(GameEventArgs e) {
+        public override void GameEvent(ProtocolEventArgs e) {
             // Unless you specifically want to override some of the plugins default
             // functionality, you should always call the base method.
             base.GameEvent(e);
 
             // See Procon.Net.GameEventType enum for descriptions of each possible event.
-            if (e.GameEventType == GameEventType.GameChat) {
+            if (e.ProtocolEventType == ProtocolEventType.ProtocolChat) {
                 Chat chat = e.Now.Chats.First();
 
                 String text = chat.Now.Content.First();

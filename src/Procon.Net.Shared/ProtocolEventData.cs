@@ -5,7 +5,7 @@ using Procon.Net.Shared.Models;
 
 namespace Procon.Net.Shared {
     [Serializable]
-    public class GameEventData {
+    public class ProtocolEventData {
         /// <summary>
         /// The chats attached to this event, if any.
         /// </summary>

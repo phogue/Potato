@@ -38,7 +38,7 @@ namespace Procon.Core.Shared.Plugins {
         /// then processed with as an event from the game server. (OnChat, OnKill etc.)
         /// </summary>
         /// <param name="e">Description of the game event</param>
-        void GameEvent(GameEventArgs e);
+        void GameEvent(ProtocolEventArgs e);
 
         /// <summary>
         /// Fired whenever an event is fired from the networking layer (packet sent/recv,

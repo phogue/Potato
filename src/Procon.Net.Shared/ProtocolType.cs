@@ -2,7 +2,7 @@
 
 namespace Procon.Net.Shared {
     [Serializable]
-    public class GameType : IGameType {
+    public class ProtocolType : IProtocolType {
         /// <summary>
         /// The name of the author or organization that provides this protocol implementation
         /// </summary>
@@ -18,13 +18,13 @@ namespace Procon.Net.Shared {
         /// </summary>
         public String Name { get; set; }
         
-        public GameType() {
+        public ProtocolType() {
             this.Provider = String.Empty;
             this.Type = String.Empty;
             this.Name = String.Empty;
         }
 
-        public GameType(IGameType from) {
+        public ProtocolType(IProtocolType from) {
             this.Provider = from.Provider;
             this.Type = from.Type;
             this.Name = from.Name;

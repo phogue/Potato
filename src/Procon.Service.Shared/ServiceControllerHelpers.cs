@@ -40,7 +40,7 @@ namespace Procon.Service.Shared {
             try {
                 var repository = PackageRepositoryFactory.Default.CreateRepository(uri);
 
-                var manager = new PackageManager(repository, Defines.PluginsDirectory);
+                var manager = new PackageManager(repository, Defines.PackagesDirectory);
 
                 manager.PackageInstalling += (sender, args) => Console.WriteLine("Installing {0} version {1}..", args.Package.Id, args.Package.Version);
                 manager.PackageInstalled += (sender, args) => Console.WriteLine("Installed {0} version {1}", args.Package.Id, args.Package.Version);
@@ -110,9 +110,9 @@ namespace Procon.Service.Shared {
         public static void UninstallPackage(String packageId) {
             Console.WriteLine("Initializing package repository..");
 
-            var repository = PackageRepositoryFactory.Default.CreateRepository(Defines.PluginsDirectory);
+            var repository = PackageRepositoryFactory.Default.CreateRepository(Defines.PackagesDirectory);
 
-            var manager = new PackageManager(repository, Defines.PluginsDirectory);
+            var manager = new PackageManager(repository, Defines.PackagesDirectory);
 
             manager.PackageUninstalling += (sender, args) => Console.WriteLine("Uninstalling {0} version {1}..", args.Package.Id, args.Package.Version);
             manager.PackageUninstalled += (sender, args) => Console.WriteLine("Uninstalled {0} version {1}..", args.Package.Id, args.Package.Version);

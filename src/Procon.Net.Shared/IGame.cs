@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using Procon.Net.Shared.Actions;
 using Procon.Net.Shared.Models;
 
 namespace Procon.Net.Shared {
+    /// <summary>
+    /// The basic interface of communication between Core and Net
+    /// </summary>
     public interface IGame {
-
         /// <summary>
         /// The client to handle all communications with the game server
         /// </summary>
@@ -33,9 +36,9 @@ namespace Procon.Net.Shared {
         IGameType GameType { get; }
 
         /// <summary>
-        /// The base path to look for game configs.
+        /// The directories to look for game configs in
         /// </summary>
-        String GameConfigPath { get; set; }
+        String ProtocolsConfigDirectory { get; set; }
 
         /// <summary>
         /// Fired when ever a dispatched game event occurs.

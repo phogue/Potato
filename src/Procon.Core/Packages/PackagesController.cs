@@ -20,7 +20,7 @@ namespace Procon.Core.Packages {
 
             var repository = PackageRepositoryFactory.Default.CreateRepository("http://localhost:30505/nuget");
             
-            var manager = new PackageManager(repository, Defines.PluginsDirectory);
+            var manager = new PackageManager(repository, Defines.PackagesDirectory);
 
             var packages = manager.SourceRepository.GetPackages();
             // manager.InstallPackage("Myrcon.Procon");

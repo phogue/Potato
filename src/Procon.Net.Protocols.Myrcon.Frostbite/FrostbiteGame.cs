@@ -338,10 +338,10 @@ namespace Procon.Net.Protocols.Myrcon.Frostbite {
 
                 if (this.State.MapPool.Count == 0) {
                     if (info.GameMod == GameMods.None) {
-                        GameConfig.Load<GameConfig>(this.GameConfigPath, this.GameType).Parse(this);
+                        GameConfig.Load<GameConfig>(this.ProtocolsConfigDirectory, this.GameType).Parse(this);
                     }
                     else {
-                        GameConfig.Load<GameConfig>(this.GameConfigPath, new GameType(this.GameType) {
+                        GameConfig.Load<GameConfig>(this.ProtocolsConfigDirectory, new GameType(this.GameType) {
                             Type = String.Format("{0}_{1}", this.GameType, info.GameMod)
                         }).Parse(this);
                     }

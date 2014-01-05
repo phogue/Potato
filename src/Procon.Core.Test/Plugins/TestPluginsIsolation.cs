@@ -50,7 +50,7 @@ namespace Procon.Core.Test.Plugins {
         public void TestPluginsIsolationAllowedWriteAccessToLogsDirectory() {
             TestPluginsIsolationWriteToDirectory(Defines.LogsDirectory, true, CommandResultType.Success);
         }
-
+        /*
         /// <summary>
         ///     Tests that a plugin can write to the plugins directory.
         /// </summary>
@@ -58,7 +58,7 @@ namespace Procon.Core.Test.Plugins {
         public void TestPluginsIsolationAllowedWriteAccessToPluginsDirectory() {
             TestPluginsIsolationWriteToDirectory(Defines.PluginsDirectory, true, CommandResultType.Success);
         }
-
+        */
         /// <summary>
         ///     Makes sure the plugin is not loaded into the current appdomain.
         /// </summary>
@@ -95,7 +95,7 @@ namespace Procon.Core.Test.Plugins {
                 Assert.IsFalse(assembly.FullName.Contains("TestPlugin"));
             }
         }
-
+        /*
         /// <summary>
         ///     Tests that a plugin can write to the plugins directory.
         /// </summary>
@@ -103,7 +103,7 @@ namespace Procon.Core.Test.Plugins {
         public void TestPluginsIsolationProhibitedWriteAccessToLocalizationDirectory() {
             TestPluginsIsolationWriteToDirectory(Defines.LocalizationDirectory, false, CommandResultType.Failed);
         }
-
+        */
         /// <summary>
         ///     Tests that a plugin in the AppDomain cannot write to the root directory of Procon
         /// </summary>

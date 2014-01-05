@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using System.Reflection;
@@ -77,7 +78,7 @@ namespace Procon.Tools.NetworkConsole {
             }
 
             if (cd.IsLoaded == false) {
-                MessageBox.Show("This tool is designed to aid developers with expanding procon's protocol repertoire, but can also be used for basic administration.  It's not pretty and it's not supposed to be." + Environment.NewLine + Environment.NewLine + "This message will not appear after you have sucessfully connected to a server.", "Procon 2 - Protocol Test Console", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show(@"This tool is designed to aid developers with expanding procon's protocol repertoire, but can also be used for basic administration.  It's not pretty and it's not supposed to be." + Environment.NewLine + Environment.NewLine + "This message will not appear after you have sucessfully connected to a server.", "Procon 2 - Protocol Test Console", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
 
@@ -91,9 +92,17 @@ namespace Procon.Tools.NetworkConsole {
                 if (ushort.TryParse(this.txtPort.Text, out port) == true && this.Games.Any(game => game.Key.Type == (string)this.cboGames.SelectedItem) == true) {
                     this.txtPort.BackColor = SystemColors.Window;
 
-                    this.ActiveGame = (Game)Activator.CreateInstance(this.Games.First(game => game.Key.Type == (string)this.cboGames.SelectedItem).Value, this.txtHostname.Text, port);
+                    Type gameType = this.Games.First(game => game.Key.Type == (string)this.cboGames.SelectedItem).Value;
+
+                    this.ActiveGame = (Game)Activator.CreateInstance(gameType, this.txtHostname.Text, port);
                     this.ActiveGame.Password = this.txtPassword.Text;
-                    this.ActiveGame.GameConfigPath = System.IO.Path.Combine(System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Configs"), "Games");
+
+                    DirectoryInfo packagePath = Procon.Service.Shared.Defines.PackageContainingPath(gameType.Assembly.Location);
+
+                    if (packagePath != null) {
+                        this.ActiveGame.ProtocolsConfigDirectory = packagePath.GetDirectories(Procon.Service.Shared.Defines.ProtocolsDirectoryName, SearchOption.AllDirectories).Select(directory => directory.FullName).FirstOrDefault();
+                    }
+
                     this.ActiveGame.Additional = this.txtAdditional.Text;
                     this.chat1.ActiveGame = this.ActiveGame;
                     this.playerPanel1.ActiveGame = this.ActiveGame;

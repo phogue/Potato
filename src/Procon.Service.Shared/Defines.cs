@@ -4,60 +4,85 @@ using System.IO;
 using System.Linq;
 
 namespace Procon.Service.Shared {
+    /// <summary>
+    /// A list of simple definitions used throughout Procon.
+    /// </summary>
     public static class Defines {
         /// <summary>
         /// Files
         /// </summary>
-        public static readonly String ProconExe = "Procon.exe";
-        public static readonly String ProconXml = "Procon.xml";
         public static readonly String ProconCoreDll = "Procon.Core.dll";
         public static readonly String ProconCoreSharedDll = "Procon.Core.Shared.dll";
         public static readonly String ProconDatabaseSharedDll = "Procon.Database.Shared.dll";
-        public static readonly String ProconDatabaseSerializationDll = "Procon.Database.Serialization.dll";
         public static readonly String ProconNetDll = "Procon.Net.dll";
         public static readonly String ProconNetSharedDll = "Procon.Net.Shared.dll";
         public static readonly String ProconFuzzyDll = "Procon.Fuzzy.dll";
         public static readonly String NewtonsoftJsonDll = "Newtonsoft.Json.dll";
+
+        /// <summary>
+        /// The name of the localization folder
+        /// </summary>
+        public static readonly String LocalizationDirectoryName = "Localization";
+
+        /// <summary>
+        /// The name of the protocols folder
+        /// </summary>
+        public static readonly String ProtocolsDirectoryName = "Protocols";
+
+        /// <summary>
+        /// The base directory, given from the current AppDomain.
+        /// </summary>
+        public static readonly String BaseDirectory = AppDomain.CurrentDomain.BaseDirectory;
+
+        /// <summary>
+        /// The full path to the logs directory
+        /// </summary>
+        public static readonly String LogsDirectory = Path.Combine(Defines.BaseDirectory, "Logs");
+
+        /// <summary>
+        /// The full path to the errors log directory
+        /// </summary>
+        public static readonly String ErrorsLogsDirectory = Path.Combine(LogsDirectory, "Errors");
+
+        /// <summary>
+        /// The full path to the configs directory
+        /// </summary>
+        public static readonly String ConfigsDirectory = Path.Combine(Defines.BaseDirectory, "Configs");
+        public static readonly String CertificatesDirectory = Path.Combine(Defines.BaseDirectory, "Certificates");
+        public static readonly String PackagesDirectory = Path.Combine(Defines.BaseDirectory, "Packages");
+
+        // Command server
+
+        /// <summary>
+        /// The name of the certificate file to use for the command server
+        /// </summary>
         public static readonly String CommandServerPfx = "CommandServer.pfx";
 
         /// <summary>
-        /// Directories
+        /// The certificate used by Procon core command server
         /// </summary>
-        public static readonly String BaseDirectory = AppDomain.CurrentDomain.BaseDirectory;
-        public static readonly String UpdatesDirectory = Path.Combine(Defines.BaseDirectory, "Updates");
-        public static readonly String PluginsDirectory = Path.Combine(Defines.BaseDirectory, "Plugins");
-        public static readonly String LocalizationDirectory = Path.Combine(Defines.BaseDirectory, "Localization");
-        public static readonly String LogsDirectory = Path.Combine(Defines.BaseDirectory, "Logs");
-        public static readonly String ErrorsLogsDirectory = Path.Combine(LogsDirectory, "Errors");
-        public static readonly String ConfigsDirectory = Path.Combine(Defines.BaseDirectory, "Configs");
-        public static readonly String ConfigsBackupDirectory = Path.Combine(ConfigsDirectory, "Backups");
-        public static readonly String ConfigsGamesDirectory = Path.Combine(ConfigsDirectory, "Games");
-        public static readonly String CertificatesDirectory = Path.Combine(Defines.BaseDirectory, "Certificates");
-        public static readonly String PackagesDirectory = Path.Combine(Defines.BaseDirectory, "Packages");
-        public static readonly String PackagesUpdatesDirectory = Path.Combine(UpdatesDirectory, "Packages");
-        public static readonly String TemporaryUpdatesDirectory = Path.Combine(UpdatesDirectory, "Temporary");
+        public static readonly String CertificatesDirectoryCommandServerPfx = Path.Combine(Defines.CertificatesDirectory, Defines.CommandServerPfx);
 
-        // Uid's
+        // Nuget
+
+        /// <summary>
+        /// Package id for the core of Procon
+        /// </summary>
         public static readonly String PackageMyrconProconCore = "Myrcon.Procon.Core";
+
+        /// <summary>
+        /// Package id for the shared dll's used by Procon and plugins
+        /// </summary>
         public static readonly String PackageMyrconProconShared = "Myrcon.Procon.Shared";
 
         /// <summary>
-        /// Paths to files
+        /// The full install path of latest procon core library
         /// </summary>
-        public static readonly String ProconDirectoryProconExe = Path.Combine(Defines.BaseDirectory, ProconExe);
-        public static readonly String ProconDirectoryProconCoreDll = Path.Combine(Defines.BaseDirectory, ProconCoreDll);
-        public static readonly String ProconDirectoryProconNetDll = Path.Combine(Defines.BaseDirectory, ProconNetDll);
-        public static readonly String ProconDirectoryProconFuzzyDll = Path.Combine(Defines.BaseDirectory, ProconFuzzyDll);
-        public static readonly String ProconDirectoryNewtonsoftJsonNet35Dll = Path.Combine(Defines.BaseDirectory, NewtonsoftJsonDll);
-        public static readonly String CertificatesDirectoryCommandServerPfx = Path.Combine(Defines.CertificatesDirectory, CommandServerPfx);
+        public static readonly String PackageMyrconProconCoreLibNet40 = Path.Combine(Defines.PackageVersionDirectory(Defines.PackagesDirectory, Defines.PackageMyrconProconCore) ?? "", "lib", "net40");
 
         /// <summary>
-        /// Path to files awaiting updates
+        /// The full install path for the latest procon shared library
         /// </summary>
-        public static readonly String UpdatesDirectoryProconExe = Path.Combine(Defines.UpdatesDirectory, ProconExe);
-        public static readonly string UpdatesDirectoryProconCoreDll = Path.Combine(Defines.UpdatesDirectory, Defines.ProconCoreDll);
-
-        public static readonly String PackageMyrconProconCoreLibNet40 = Path.Combine(Defines.PackageVersionDirectory(Defines.PackagesDirectory, Defines.PackageMyrconProconCore) ?? "", "lib", "net40");
         public static readonly String PackageMyrconProconSharedLibNet40 = Path.Combine(Defines.PackageVersionDirectory(Defines.PackagesDirectory, Defines.PackageMyrconProconShared) ?? "", "lib", "net40");
 
         /// <summary>
@@ -82,12 +107,26 @@ namespace Procon.Service.Shared {
         }
 
         /// <summary>
+        /// Gets the containing package of a file
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns>The directory info of the package</returns>
+        public static DirectoryInfo PackageContainingPath(String path) {
+            DirectoryInfo directory = File.Exists(path) == true ? new FileInfo(path).Directory : new DirectoryInfo(path);
+
+            while (directory != null && directory.Parent != null && directory.Parent.FullName != Defines.PackagesDirectory) {
+                directory = directory.Parent;
+            }
+
+            return directory;
+        }
+
+        /// <summary>
         /// Ensure the entire directory structure has been created.
         /// </summary>
         static Defines() {
-            Directory.CreateDirectory(Defines.PluginsDirectory);
+            Directory.CreateDirectory(Defines.PackagesDirectory);
             Directory.CreateDirectory(Defines.LogsDirectory);
-            Directory.CreateDirectory(Defines.LocalizationDirectory);
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using Procon.Net.Protocols;
 using Procon.Net.Shared;
 using Procon.Net.Shared.Actions;
 using Procon.Net.Shared.Actions.Deferred;
@@ -9,8 +9,10 @@ using Procon.Net.Shared.Models;
 using Procon.Net.Shared.Protocols;
 
 namespace Procon.Net {
+    /// <summary>
+    /// The base implementation of a game to be used by more specialized protocols
+    /// </summary>
     public abstract class Game : IGame {
-
         /// <summary>
         /// The client to handle all communications with the game server
         /// </summary>
@@ -53,7 +55,7 @@ namespace Procon.Net {
         /// <summary>
         /// The base path to look for game configs.
         /// </summary>
-        public String GameConfigPath { get; set; }
+        public String ProtocolsConfigDirectory { get; set; }
 
         [Obsolete]
         public string Additional { get; set; }

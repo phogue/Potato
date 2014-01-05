@@ -513,7 +513,12 @@ namespace Procon.Core {
                             Game game = (Game) Activator.CreateInstance(gameType, hostName, port);
                             game.Additional = additional;
                             game.Password = password;
-                            game.GameConfigPath = Defines.ConfigsGamesDirectory;
+
+                            DirectoryInfo packagePath = Defines.PackageContainingPath(gameType.Assembly.Location);
+
+                            if (packagePath != null) {
+                                game.ProtocolsConfigDirectory = packagePath.GetDirectories(Defines.ProtocolsDirectoryName, SearchOption.AllDirectories).Select(directory => directory.FullName).FirstOrDefault();
+                            }
 
                             ConnectionController connection = new ConnectionController() {
                                 Game = game,

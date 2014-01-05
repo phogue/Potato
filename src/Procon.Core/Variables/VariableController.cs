@@ -131,10 +131,6 @@ namespace Procon.Core.Variables {
             this.Set(new Command() {
                 Origin = CommandOrigin.Local
             }, CommonVariableNames.DatabaseMaximumSelectedRows, 20);
-
-            VariableModel variable = this.Variable(CommonVariableNames.PackagesProcon2RepositoryUrl);
-            variable.Value = "https://repo.myrcon.com/procon2/";
-            variable.Readonly = true;
         }
 
         /// <summary>

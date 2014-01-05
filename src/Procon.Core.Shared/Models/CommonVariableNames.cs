@@ -117,10 +117,12 @@ namespace Procon.Core.Shared.Models {
         /// </summary>
         EventsLogIgnoredNames,
         /// <summary>
-        /// (string) Url to download the procon repository. This repository is automatically
-        /// added to procon. While it is also a define in the Procon.Core.dll we use it as
-        /// variable that can be set for consistency and unit testing.
+        /// List[String] list of configuration options for the packages.
         /// </summary>
-        PackagesProcon2RepositoryUrl
+        PackagesConfigGroups,
+        /// <summary>
+        /// The full uri of the respository
+        /// </summary>
+        PackagesRepositoryUri
     }
 }

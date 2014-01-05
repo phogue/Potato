@@ -81,11 +81,9 @@
     <Compile Include="Models\ConnectionModel.cs" />
     <Compile Include="Models\GroupModel.cs" />
     <Compile Include="Models\LanguageModel.cs" />
-    <Compile Include="Models\PackageFileModel.cs" />
     <Compile Include="Models\PackageModel.cs" />
+    <Compile Include="Models\PackageWrapperModel.cs" />
     <Compile Include="Models\PackageState.cs" />
-    <Compile Include="Models\PackageType.cs" />
-    <Compile Include="Models\PackageVersionModel.cs" />
     <Compile Include="Models\TextCommandParserType.cs" />
     <Compile Include="Models\PermissionModel.cs" />
     <Compile Include="Models\PluginModel.cs" />

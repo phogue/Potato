@@ -33,6 +33,8 @@ namespace Procon.Core.Packages {
         public SharedReferences Shared { get; private set; }
 
         public PackagesController() {
+            this.Shared = new SharedReferences();
+
             this.Repositories = new List<RepositoryModel>();
 
             this.GroupedVariableListener = new GroupedVariableListener() {

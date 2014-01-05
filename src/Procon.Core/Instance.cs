@@ -71,7 +71,11 @@ namespace Procon.Core {
 
             this.Connections = new List<ConnectionController>();
 
-            this.Packages = new PackagesController();
+            this.Packages = new PackagesController() {
+                BubbleObjects = new List<ICoreController>() {
+                    this
+                }
+            };
 
             this.CommandServer = new CommandServerController() {
                 TunnelObjects = new List<ICoreController>() {

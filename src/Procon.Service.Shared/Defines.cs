@@ -119,8 +119,8 @@ namespace Procon.Service.Shared {
         /// <returns>The directory info of the package</returns>
         public static DirectoryInfo PackageContainingPath(String path) {
             DirectoryInfo directory = File.Exists(path) == true ? new FileInfo(path).Directory : new DirectoryInfo(path);
-
-            while (directory != null && directory.Parent != null && directory.Parent.FullName != Defines.PackagesDirectory) {
+            
+            while (directory != null && directory.Parent != null && directory.Parent.FullName != Defines.PackagesDirectory && directory.FullName != Defines.BaseDirectory) {
                 directory = directory.Parent;
             }
 

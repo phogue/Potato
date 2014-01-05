@@ -74,11 +74,6 @@
     <Compile Include="ProtocolConfig.cs" />
     <Compile Include="TcpClient.cs" />
     <Compile Include="UdpClient.cs" />
-    <Compile Include="Utils\HTTP\PostContent.cs" />
-    <Compile Include="Utils\HTTP\PostParameter.cs" />
-    <Compile Include="Utils\HTTP\PostParameterType.cs" />
-    <Compile Include="Utils\HTTP\QueryStringBuilder.cs" />
-    <Compile Include="Utils\HTTP\Request.cs" />
     <Compile Include="Protocols\PunkBuster\PunkBusterSerializer.cs" />
     <Compile Include="Protocols\PunkBuster\Packets\PunkBusterBeginPlayerList.cs" />
     <Compile Include="Protocols\PunkBuster\Packets\PunkBusterEndPlayerList.cs" />

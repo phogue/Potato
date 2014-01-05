@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading;
 using Procon.Properties;
 using Procon.Service.Shared;
@@ -11,21 +12,25 @@ namespace Procon {
         private static Dictionary<String, String> Arguments(IList<String> input) {
             Dictionary<String, String> arguments = new Dictionary<String, String>();
 
-            if (input.Count() % 2 == 0) {
-                IEnumerator<String> pair = input.GetEnumerator();
+            for (int offset = 0; offset < input.Count; offset++) {
+                String key = input[offset];
 
-                while (pair.MoveNext() == true) {
-                    String key = pair.Current.Trim('-', ' ').ToLower();
-                    pair.MoveNext();
-                    String value = pair.Current;
-
-                    if (arguments.ContainsKey(key) == false) arguments.Add(key.ToLower(), value);
-                    // Ignore it if it's already added.
+                // if the argument is a switch.
+                if (key[0] == '-') {
+                    // Trims any hyphens from the start of the argument. Allows for "-argument" and "--argument"
+                    key = key.TrimStart('-');
+                    
+                    // Does another argument exist?
+                    if (offset + 1 < arguments.Count && input[offset + 1][0] != '-') {
+                        // No, the next string is not an argument switch. It's the value of the
+                        // argument.
+                        if (arguments.ContainsKey(key) == false) arguments.Add(key.ToLower(), input[offset + 1]);
+                    }
+                    else {
+                        // Set to "true"
+                        if (arguments.ContainsKey(key) == false) arguments.Add(key.ToLower(), "1");
+                    }
                 }
-            }
-            else {
-                Console.WriteLine(@"Invalid argument input. Must be in key-value-pair syntax e.g ""--key value""");
-                arguments = null;
             }
 
             return arguments;
@@ -43,7 +48,8 @@ namespace Procon {
             }
 
             ServiceController service = new ServiceController {
-                Arguments = new List<String>(args)
+                Arguments = new List<String>(args),
+                Settings = Program.Arguments(new List<String>(args))
             };
 
             service.SignalMessage(new ServiceMessage() {
@@ -58,18 +64,17 @@ namespace Procon {
 
             do {
                 input = Console.ReadLine();
-
+                
                 if (input != null) {
-                    var words = new List<String>(input.Split(' '));
-                    var command = words.FirstOrDefault();
-                    var arguments = Program.Arguments(words.Skip(1).ToList());
+                    var words = Regex.Matches(input, @"([^\s]*""[^""]+""[^\s]*)|[^""]?\w+[^""]?")
+                        .Cast<Match>()
+                        .Select(match => match.Captures[0].Value.Trim('"', ' '))
+                        .ToList();
 
-                    if (command != null && arguments != null) {
-                        service.SignalMessage(new ServiceMessage() {
-                            Name = command,
-                            Arguments = arguments
-                        });
-                    }
+                    service.SignalMessage(new ServiceMessage() {
+                        Name = words.FirstOrDefault(),
+                        Arguments = Program.Arguments(words.Skip(1).ToList())
+                    });
                 }
 
             } while (String.Compare(input, "exit", StringComparison.OrdinalIgnoreCase) != 0);

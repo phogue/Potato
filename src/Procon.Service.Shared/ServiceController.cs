@@ -29,6 +29,11 @@ namespace Procon.Service.Shared {
         public List<String> Arguments { get; set; }
 
         /// <summary>
+        /// The processed arguments to check/use any service side conditions
+        /// </summary>
+        public Dictionary<String, String> Settings { get; set; } 
+
+        /// <summary>
         /// Polling handler to ensure the appdomain is still functional.
         /// </summary>
         public Timer PollingTask { get; set; }
@@ -40,6 +45,9 @@ namespace Procon.Service.Shared {
             this.Status = ServiceStatusType.Stopped;
 
             this.PollingTask = new Timer(PollingTask_Tick, this, TimeSpan.FromMilliseconds(0), TimeSpan.FromSeconds(10));
+
+            this.Arguments = new List<String>();
+            this.Settings = new Dictionary<String, String>();
         }
 
         /// <summary>
@@ -203,22 +211,29 @@ namespace Procon.Service.Shared {
         private void Help() {
 
             Console.WriteLine("Instance Control");
-            Console.WriteLine("+---------+------+----------+--------+-------+-----------+");
-            Console.WriteLine("| Command | Save | Shutdown | Update | Start | Terminate |");
-            Console.WriteLine("+---------+------+----------+--------+-------+-----------+");
-            Console.WriteLine("| start   |  -   |    -     |   x    |   x   |     -     |");
-            Console.WriteLine("| restart |  x   |    x     |   x    |   x   |     -     |");
-            Console.WriteLine("| stop    |  x   |    x     |   -    |   -   |     -     |");
-            Console.WriteLine("| exit    |  x   |    x     |   -    |   -   |     x     |");
-            Console.WriteLine("+---------+------+----------+--------+-------+-----------+");
+            Console.WriteLine("+-------------------+------+----------+--------+-------+-----------+");
+            Console.WriteLine("| Command           | Save | Shutdown | Update | Start | Terminate |");
+            Console.WriteLine("+-------------------+------+----------+--------+-------+-----------+");
+            Console.WriteLine("| start             |  -   |    -     |   x    |   x   |     -     |");
+            Console.WriteLine("| restart           |  x   |    x     |   x    |   x   |     -     |");
+            Console.WriteLine("| merge-package     |  x   |    x     |   x    |   x   |     -     |");
+            Console.WriteLine("| uninstall-package |  x   |    x     |   x    |   x   |     -     |");
+            Console.WriteLine("| stop              |  x   |    x     |   -    |   -   |     -     |");
+            Console.WriteLine("| exit              |  x   |    x     |   -    |   -   |     x     |");
+            Console.WriteLine("+-------------------+------+----------+--------+-------+-----------+");
             Console.WriteLine("");
             Console.WriteLine("Information");
-            Console.WriteLine("+---------+----------------------------------------------+");
-            Console.WriteLine("| Command | Description                                  |");
-            Console.WriteLine("+---------+----------------------------------------------+");
-            Console.WriteLine("| stats   | Statistics running on the current instance.  |");
-            Console.WriteLine("| help    | This display.                                |");
-            Console.WriteLine("+---------+----------------------------------------------+");
+            Console.WriteLine("+-------------------+----------------------------------------------+");
+            Console.WriteLine("| Command           | Description                                  |");
+            Console.WriteLine("+-------------------+----------------------------------------------+");
+            Console.WriteLine("| stats             | Statistics running on the current instance.  |");
+            Console.WriteLine("| help              | This display.                                |");
+            Console.WriteLine("| merge-package     | Installs/Updates a package to latest version.|");
+            Console.WriteLine("| uninstall-package | Removes the package and unused dependencies. |");
+            Console.WriteLine("+-------------------+----------------------------------------------+");
+            Console.WriteLine("");
+            Console.WriteLine("merge-package -uri [repository-uri] -packageid [package-id]");
+            Console.WriteLine("uninstall-package -packageid [package-id]");
         }
 
         /// <summary>
@@ -236,8 +251,14 @@ namespace Procon.Service.Shared {
         /// Updates the procon instance, provided it is currently stopped.
         /// </summary>
         private void UpdateCore() {
-            if (this.Status == ServiceStatusType.Stopped) {
-                ServiceControllerHelpers.InstallOrUpdatePackage("http://localhost:30505/nuget", Defines.PackageMyrconProconCore);
+            bool serviceUpdateCore = true;
+
+            // If we have not been told anything update updating core OR the update has been explictely set to true
+            // default: check for update, unless "-updatecore false" is passed in.
+            if (this.Settings.ContainsKey("serviceupdatecore") == false || (bool.TryParse(this.Settings["serviceupdatecore"], out serviceUpdateCore) == true && serviceUpdateCore == true)) {
+                if (this.Status == ServiceStatusType.Stopped) {
+                    ServiceControllerHelpers.InstallOrUpdatePackage("http://localhost:30505/nuget", Defines.PackageMyrconProconCore);
+                }
             }
         }
 

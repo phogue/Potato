@@ -9,14 +9,38 @@ namespace Procon.Service.Shared {
     /// </summary>
     public static class Defines {
         /// <summary>
-        /// Files
+        /// The compiled Procon.Core.dll name
         /// </summary>
         public static readonly String ProconCoreDll = "Procon.Core.dll";
+
+        /// <summary>
+        /// The compiled Procon.Core.Shared.dll name
+        /// </summary>
         public static readonly String ProconCoreSharedDll = "Procon.Core.Shared.dll";
+
+        /// <summary>
+        /// The compiled Procon.Database.Shared.dll name
+        /// </summary>
         public static readonly String ProconDatabaseSharedDll = "Procon.Database.Shared.dll";
+
+        /// <summary>
+        /// The compiled Procon.Net.dll name
+        /// </summary>
         public static readonly String ProconNetDll = "Procon.Net.dll";
+
+        /// <summary>
+        /// The compiled Procon.Net.Shared.dll name
+        /// </summary>
         public static readonly String ProconNetSharedDll = "Procon.Net.Shared.dll";
+
+        /// <summary>
+        /// The compiled Procon.Fuzzy.dll name
+        /// </summary>
         public static readonly String ProconFuzzyDll = "Procon.Fuzzy.dll";
+
+        /// <summary>
+        /// The compiled Newtonsoft.Json.dll name
+        /// </summary>
         public static readonly String NewtonsoftJsonDll = "Newtonsoft.Json.dll";
 
         /// <summary>
@@ -54,7 +78,14 @@ namespace Procon.Service.Shared {
         /// </summary>
         public static readonly String LocalizationDirectory = Path.Combine(Defines.BaseDirectory, Defines.LocalizationDirectoryName);
 
+        /// <summary>
+        /// The full path to known/trusted/used certificates.
+        /// </summary>
         public static readonly String CertificatesDirectory = Path.Combine(Defines.BaseDirectory, "Certificates");
+        
+        /// <summary>
+        /// The full path to download/install packages to. The local package repository.
+        /// </summary>
         public static readonly String PackagesDirectory = Path.Combine(Defines.BaseDirectory, "Packages");
 
         // Command server
@@ -110,11 +141,17 @@ namespace Procon.Service.Shared {
             return paths.Where(path => File.Exists(Path.Combine(path, file)) == true).Select(path => Path.Combine(path, file)).ToList();
         }
 
-        public static String PackageVersionDirectory(String search, String uid) {
+        /// <summary>
+        /// Finds a "[PackageId][Version]" directory with a specific package id
+        /// </summary>
+        /// <param name="path">The directory to search in (the local repository)</param>
+        /// <param name="packageId">The package id to search for</param>
+        /// <returns>The path to the package directory</returns>
+        public static String PackageVersionDirectory(String path, String packageId) {
             // Create the directory if it isn't there yet.
-            Directory.CreateDirectory(search);
+            Directory.CreateDirectory(path);
 
-            return Directory.GetDirectories(search, String.Format("{0}*", uid), SearchOption.TopDirectoryOnly).FirstOrDefault();
+            return Directory.GetDirectories(path, String.Format("{0}*", packageId), SearchOption.TopDirectoryOnly).FirstOrDefault();
         }
 
         /// <summary>

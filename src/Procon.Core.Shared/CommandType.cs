@@ -79,21 +79,20 @@ namespace Procon.Core.Shared {
         TextCommandsRegister,
         TextCommandsUnregister,
 
-        // Packages
-        PackagesInstallPackage,
-        PackagesAddRemoteRepository,
-        PackagesRemoveRemoteRepository,
         /// <summary>
-        /// Tells Procon to not update a particular package. By default every installed
-        /// package will be automatically updated.
+        /// Installs or updates a package to the latest version available.
         /// </summary>
-        PackagesIngoreAutomaticUpdateOnPackage,
+        PackagesMergePackage,
         /// <summary>
-        /// Tells Procon to automatically update a package. By default every installed package
-        /// will be automatically updated, but this will remove an ignore request if it has
-        /// previously been added.
+        /// Uninstalls a package.
         /// </summary>
-        PackagesAutomaticUpdateOnPackage,
+        PackagesUninstallPackage,
+        /// <summary>
+        /// Checks for the latest versions of all packages from source repositories. This
+        /// command is dispatched asynchronously, so a later even will then need to
+        /// be listened for when the packages list finally updates itself.
+        /// </summary>
+        PackagesFetchPackages,
 
         VariablesSet,
         VariablesGet,

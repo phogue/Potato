@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Procon.Core.Shared.Models {
+    /// <summary>
+    /// A nuget repository source known to Procon.core
+    /// </summary>
     [Serializable]
     public class RepositoryModel : CoreModel {
         /// <summary>
-        /// The base url of the repository with trailing slash '/'
+        /// The base url of the repository
         /// </summary>
         public String Uri { get; set; }
 
@@ -15,11 +16,6 @@ namespace Procon.Core.Shared.Models {
         /// Short directory safe url
         /// </summary>
         public String Slug { get; set; }
-
-        /// <summary>
-        /// When the repository was last checked for updates
-        /// </summary>
-        public DateTime LastQueryCompleted { get; set; }
 
         /// <summary>
         /// The name of this repository
@@ -31,6 +27,9 @@ namespace Procon.Core.Shared.Models {
         /// </summary>
         public List<PackageWrapperModel> Packages { get; set; }
 
+        /// <summary>
+        /// Initializes a repository model with the default values.
+        /// </summary>
         public RepositoryModel() : base() {
             this.Packages = new List<PackageWrapperModel>();
         }

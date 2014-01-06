@@ -67,23 +67,7 @@ namespace Procon.Core.Shared.Events {
         /// <summary>
         /// The repository controller has rebuilt what it knows about the packages (local, remote, updated etc.)
         /// </summary>
-        RepositoriesPackagesRebuilt,
-        /// <summary>
-        /// A package has been loaded (as in, Procon recognizes a new package from a repository)
-        /// </summary>
-        RepositoriesPackageLoaded,
-        /// <summary>
-        /// A package has change state (installed, updated etc.)
-        /// </summary>
-        RepositoriesPackageStateChanged,
-        /// <summary>
-        /// A remote repository has been added
-        /// </summary>
-        RepositoriesRepositoryAdded,
-        /// <summary>
-        /// A remote repository has been removed
-        /// </summary>
-        RepositoriesRepositoryRemoved,
+        PackagesCacheRebuilt,
 
         /// <summary>
         /// A variable has been set

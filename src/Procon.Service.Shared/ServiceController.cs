@@ -31,7 +31,7 @@ namespace Procon.Service.Shared {
         /// <summary>
         /// The processed arguments to check/use any service side conditions
         /// </summary>
-        public Dictionary<String, String> Settings { get; set; } 
+        public IServiceSettings Settings { get; set; } 
 
         /// <summary>
         /// Polling handler to ensure the appdomain is still functional.
@@ -47,7 +47,7 @@ namespace Procon.Service.Shared {
             this.PollingTask = new Timer(PollingTask_Tick, this, TimeSpan.FromMilliseconds(0), TimeSpan.FromSeconds(10));
 
             this.Arguments = new List<String>();
-            this.Settings = new Dictionary<String, String>();
+            this.Settings = new ServiceSettings();
         }
 
         /// <summary>
@@ -251,11 +251,9 @@ namespace Procon.Service.Shared {
         /// Updates the procon instance, provided it is currently stopped.
         /// </summary>
         private void UpdateCore() {
-            bool serviceUpdateCore = true;
-
             // If we have not been told anything update updating core OR the update has been explictely set to true
             // default: check for update, unless "-updatecore false" is passed in.
-            if (this.Settings.ContainsKey("serviceupdatecore") == false || (bool.TryParse(this.Settings["serviceupdatecore"], out serviceUpdateCore) == true && serviceUpdateCore == true)) {
+            if (this.Settings.ServiceUpdateCore == true) {
                 if (this.Status == ServiceStatusType.Stopped) {
                     ServiceControllerHelpers.InstallOrUpdatePackage("http://localhost:30505/nuget", Defines.PackageMyrconProconCore);
                 }

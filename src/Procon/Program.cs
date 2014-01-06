@@ -9,33 +9,6 @@ using Procon.Service.Shared;
 namespace Procon {
     internal class Program {
 
-        private static Dictionary<String, String> Arguments(IList<String> input) {
-            Dictionary<String, String> arguments = new Dictionary<String, String>();
-
-            for (int offset = 0; offset < input.Count; offset++) {
-                String key = input[offset];
-
-                // if the argument is a switch.
-                if (key[0] == '-') {
-                    // Trims any hyphens from the start of the argument. Allows for "-argument" and "--argument"
-                    key = key.TrimStart('-');
-                    
-                    // Does another argument exist?
-                    if (offset + 1 < arguments.Count && input[offset + 1][0] != '-') {
-                        // No, the next string is not an argument switch. It's the value of the
-                        // argument.
-                        if (arguments.ContainsKey(key) == false) arguments.Add(key.ToLower(), input[offset + 1]);
-                    }
-                    else {
-                        // Set to "true"
-                        if (arguments.ContainsKey(key) == false) arguments.Add(key.ToLower(), "1");
-                    }
-                }
-            }
-
-            return arguments;
-        }
-
         [STAThread, LoaderOptimization(LoaderOptimization.MultiDomainHost)]
         private static void Main(string[] args) {
 
@@ -49,7 +22,7 @@ namespace Procon {
 
             ServiceController service = new ServiceController {
                 Arguments = new List<String>(args),
-                Settings = Program.Arguments(new List<String>(args))
+                Settings = new ServiceSettings(new List<String>(args))
             };
 
             service.SignalMessage(new ServiceMessage() {
@@ -73,7 +46,7 @@ namespace Procon {
 
                     service.SignalMessage(new ServiceMessage() {
                         Name = words.FirstOrDefault(),
-                        Arguments = Program.Arguments(words.Skip(1).ToList())
+                        Arguments = ArgumentHelper.ToArguments(words.Skip(1).ToList())
                     });
                 }
 

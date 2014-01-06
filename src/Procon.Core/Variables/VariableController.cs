@@ -4,6 +4,7 @@ using System.Linq;
 using Procon.Core.Shared;
 using Procon.Core.Shared.Events;
 using Procon.Core.Shared.Models;
+using Procon.Service.Shared;
 
 namespace Procon.Core.Variables {
     /// <summary>
@@ -128,6 +129,10 @@ namespace Procon.Core.Variables {
             this.Set(new Command() {
                 Origin = CommandOrigin.Local
             }, CommonVariableNames.DatabaseMaximumSelectedRows, 20);
+
+            var sourceRepositoryUri = this.Variable(CommonVariableNames.PackagesDefaultSourceRepositoryUri);
+            sourceRepositoryUri.Value = Defines.PackagesDefaultSourceRepositoryUri;
+            sourceRepositoryUri.Readonly = true;
         }
 
         /// <summary>

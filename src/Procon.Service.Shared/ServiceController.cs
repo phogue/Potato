@@ -255,7 +255,7 @@ namespace Procon.Service.Shared {
             // default: check for update, unless "-updatecore false" is passed in.
             if (this.Settings.ServiceUpdateCore == true) {
                 if (this.Status == ServiceStatusType.Stopped) {
-                    ServiceControllerHelpers.InstallOrUpdatePackage("http://localhost:30505/nuget", Defines.PackageMyrconProconCore);
+                    ServiceControllerHelpers.InstallOrUpdatePackage(this.Settings.PackagesDefaultSourceRepositoryUri, Defines.PackageMyrconProconCore);
                 }
             }
         }

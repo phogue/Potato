@@ -121,8 +121,12 @@ namespace Procon.Core.Shared.Models {
         /// </summary>
         PackagesConfigGroups,
         /// <summary>
-        /// The full uri of the respository
+        /// (String) The uri of the respository in the group
         /// </summary>
-        PackagesRepositoryUri
+        PackagesRepositoryUri,
+        /// <summary>
+        /// (String) The full default uri of the source respository to download core procon updates from.
+        /// </summary>
+        PackagesDefaultSourceRepositoryUri
     }
 }

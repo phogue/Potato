@@ -6,7 +6,6 @@ using System.Net;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Xml.Linq;
-using System.Xml.Serialization;
 using Newtonsoft.Json;
 using Procon.Core.Shared;
 using Procon.Core.Shared.Events;
@@ -28,7 +27,6 @@ namespace Procon.Core.Remote {
         /// </summary>
         public CommandServerListener CommandServerListener { get; set; }
 
-        [XmlIgnore, JsonIgnore]
         public SharedReferences Shared { get; private set; }
 
         /// <summary>

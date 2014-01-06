@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Xml.Serialization;
-using Newtonsoft.Json;
 using NuGet;
 using Procon.Core.Shared;
 using Procon.Core.Shared.Models;
@@ -29,7 +26,6 @@ namespace Procon.Core.Packages {
         /// </summary>
         public GroupedVariableListener GroupedVariableListener { get; set; }
 
-        [XmlIgnore, JsonIgnore]
         public SharedReferences Shared { get; private set; }
 
         public PackagesController() {

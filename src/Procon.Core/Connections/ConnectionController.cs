@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Xml.Serialization;
-using Newtonsoft.Json;
 using Procon.Core.Connections.Plugins;
 using Procon.Core.Connections.TextCommands;
 using Procon.Core.Shared;
@@ -23,7 +21,6 @@ namespace Procon.Core.Connections {
 
         public ConnectionModel ConnectionModel { get; set; }
 
-        [XmlIgnore, JsonIgnore]
         public String Password {
             get { return this.Protocol != null ? this.Protocol.Password : String.Empty; }
         }
@@ -36,33 +33,27 @@ namespace Procon.Core.Connections {
         /// <summary>
         /// The controller to load up and manage plugins
         /// </summary>
-        [XmlIgnore, JsonIgnore]
         public CorePluginController Plugins { get; set; }
 
         /// <summary>
         /// Text command controller to pipe all text chats through for analysis of text commands.
         /// </summary>
-        [XmlIgnore, JsonIgnore]
         public TextCommandController TextCommands { get; protected set; }
 
         /// <summary>
         ///  The actual game object
         /// </summary>
-        [XmlIgnore, JsonIgnore]
         public IProtocol Protocol { get; set; }
 
         /// <summary>
         /// The instance of procon that owns this connection.
         /// </summary>
-        [XmlIgnore, JsonIgnore]
         public Instance Instance { get; set; }
 
-        [XmlIgnore, JsonIgnore]
         public ProtocolState ProtocolState {
             get { return this.Protocol != null ? this.Protocol.State : null; }
         }
 
-        [XmlIgnore, JsonIgnore]
         public SharedReferences Shared { get; private set; }
 
         public ConnectionController() : base() {

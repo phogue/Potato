@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Xml.Serialization;
-using Newtonsoft.Json;
 using Procon.Core.Connections.TextCommands.Parsers;
 using Procon.Core.Localization;
 using Procon.Core.Shared;
@@ -18,16 +16,13 @@ namespace Procon.Core.Connections.TextCommands {
         /// <summary>
         /// Full list of text commands to check against.
         /// </summary>
-        [XmlIgnore, JsonIgnore]
         public List<TextCommandModel> TextCommands { get; protected set; }
 
         /// <summary>
         /// The owner of this controller, used to lookup the game with all the player data and such in it.
         /// </summary>
-        [XmlIgnore, JsonIgnore]
         public ConnectionController Connection { get; set; }
 
-        [XmlIgnore, JsonIgnore]
         public SharedReferences Shared { get; private set; }
 
         /// <summary>

@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
-using System.Xml.Serialization;
-using Newtonsoft.Json;
 using Procon.Core.Shared;
 using Procon.Core.Shared.Models;
 using Procon.Service.Shared;
@@ -24,7 +22,6 @@ namespace Procon.Core.Localization {
         /// </summary>
         public List<LanguageConfig> LoadedLanguageFiles { get; protected set; }
 
-        [XmlIgnore, JsonIgnore]
         public SharedReferences Shared { get; private set; }
 
         /// <summary>

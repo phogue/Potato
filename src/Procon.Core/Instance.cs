@@ -4,8 +4,6 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading;
-using System.Xml.Serialization;
-using Newtonsoft.Json;
 using Procon.Core.Connections;
 using Procon.Core.Connections.Plugins;
 using Procon.Core.Events;
@@ -60,7 +58,6 @@ namespace Procon.Core {
         /// </summary>
         protected ServiceMessage ServiceMessage { get; set; }
 
-        [XmlIgnore, JsonIgnore]
         public SharedReferences Shared { get; private set; }
 
         /// <summary>

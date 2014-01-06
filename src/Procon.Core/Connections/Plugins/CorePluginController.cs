@@ -7,8 +7,6 @@ using System.Security;
 using System.Security.Permissions;
 using System.Text.RegularExpressions;
 using System.Threading;
-using System.Xml.Serialization;
-using Newtonsoft.Json;
 using Procon.Core.Shared;
 using Procon.Core.Shared.Events;
 using Procon.Core.Shared.Models;
@@ -25,35 +23,29 @@ namespace Procon.Core.Connections.Plugins {
         /// <summary>
         /// The appdomain all of the plugins are loaded into.
         /// </summary>
-        [XmlIgnore, JsonIgnore]
         public AppDomain AppDomainSandbox { get; protected set; }
 
         /// <summary>
         /// Simple plugin factory reference to load classes into the app domain.
         /// </summary>
-        [XmlIgnore, JsonIgnore]
         public IRemotePluginController PluginFactory { get; protected set; }
 
         /// <summary>
         /// List of plugins loaded in the app domain.
         /// </summary>
-        [XmlIgnore, JsonIgnore]
         public List<PluginModel> LoadedPlugins { get; protected set; }
 
         /// <summary>
         /// The connection which owns this plugin app domain and the connection which the plugins control.
         /// </summary>
-        [XmlIgnore, JsonIgnore]
         public ConnectionController Connection { get; set; }
 
         /// <summary>
         /// Works between PluginController and RemotePluginController as a known type by a plugin
         /// assembly and Core, just bubbling (not tunneling) commands.
         /// </summary>
-        [XmlIgnore, JsonIgnore]
         public CorePluginControllerCallbackProxy CorePluginControllerCallbackProxy { get; set; }
 
-        [XmlIgnore, JsonIgnore]
         public SharedReferences Shared { get; private set; }
 
         /// <summary>

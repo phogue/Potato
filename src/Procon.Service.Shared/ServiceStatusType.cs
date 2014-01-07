@@ -4,6 +4,10 @@
     /// </summary>
     public enum ServiceStatusType {
         /// <summary>
+        /// Default value, nothing has been said about the status yet.
+        /// </summary>
+        None,
+        /// <summary>
         /// Service is currently stopped
         /// </summary>
         Stopped,

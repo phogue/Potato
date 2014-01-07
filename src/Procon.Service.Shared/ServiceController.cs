@@ -11,27 +11,27 @@ namespace Procon.Service.Shared {
         /// <summary>
         /// The domain to load Procon.Core into.
         /// </summary>
-        private AppDomain ServiceDomain { get; set; }
+        public AppDomain ServiceDomain { get; set; }
 
         /// <summary>
         /// The loader proxy to then load the procon core instance.
         /// </summary>
-        private ServiceLoaderProxy ServiceLoaderProxy { get; set; }
+        public ServiceLoaderProxy ServiceLoaderProxy { get; set; }
 
         /// <summary>
         /// The current status of the service.
         /// </summary>
-        public ServiceStatusType Status { get; set; }
+        public IServiceObserver Observer { get; set; }
 
         /// <summary>
-        /// The arguments to start any instances with.
+        /// The arguments to start any instances with. This is passed on to Procon, not actually used by the service.
         /// </summary>
         public List<String> Arguments { get; set; }
 
         /// <summary>
         /// The processed arguments to check/use any service side conditions
         /// </summary>
-        public IServiceSettings Settings { get; set; } 
+        public IServiceSettings Settings { get; set; }
 
         /// <summary>
         /// Polling handler to ensure the appdomain is still functional.
@@ -42,7 +42,9 @@ namespace Procon.Service.Shared {
         /// Initiates the service controller with the default values
         /// </summary>
         public ServiceController() {
-            this.Status = ServiceStatusType.Stopped;
+            this.Observer = new ServiceObserver() {
+                Panic = this.Panic
+            };
 
             this.PollingTask = new Timer(PollingTask_Tick, this, TimeSpan.FromMilliseconds(0), TimeSpan.FromSeconds(10));
 
@@ -51,11 +53,32 @@ namespace Procon.Service.Shared {
         }
 
         /// <summary>
+        /// Called when the observer enters a panic (Procon has been stopped for 15 minutes)
+        /// </summary>
+        private void Panic() {
+            // Set to full stop. A panic can be called if we are currently "stopping" or "starting"
+            this.Observer.Status = ServiceStatusType.Stopped;
+            
+            // Attempt to start Procon
+            this.Start();
+
+            // If we didn't start AND core updates are turned off
+            if (this.Observer.Status != ServiceStatusType.Started && this.Settings.ServiceUpdateCore == false) {
+                // Force a core update check. Something is obviously very wrong with Procon at the moment
+                // and no doubt the forums are flooded with people telling me about it :)
+                ServiceControllerHelpers.InstallOrUpdatePackage(this.Settings.PackagesDefaultSourceRepositoryUri, Defines.PackageMyrconProconCore);
+
+                // Try starting Procon again.. if not we'll do this again in 20 minutes.
+                this.Start();
+            }
+        }
+
+        /// <summary>
         /// Fired every ten seconds to ensure the appdomain is still responding and does not have
         /// any additional messages for us to process.
         /// </summary>
         private void PollingTask_Tick(object state) {
-            if (this.Status == ServiceStatusType.Started && this.ServiceLoaderProxy != null) {
+            if (this.Observer.Status == ServiceStatusType.Started && this.ServiceLoaderProxy != null) {
                 AutoResetEvent pollingTimeoutEvent = new AutoResetEvent(false);
                 ServiceMessage message = null;
 
@@ -148,13 +171,13 @@ namespace Procon.Service.Shared {
         /// <summary>
         /// Updates Procon if it is not currently running, then attempts to start up the appdomain
         /// </summary>
-        private void Start() {
+        public void Start() {
             // Update the server if it is currently stopped
             this.UpdateCore();
 
-            if (this.Status == ServiceStatusType.Stopped) {
+            if (this.Observer.Status == ServiceStatusType.Stopped) {
                 try {
-                    this.Status = ServiceStatusType.Starting;
+                    this.Observer.Status = ServiceStatusType.Starting;
 
                     this.ServiceDomain = AppDomain.CreateDomain("Procon.Instance", null, new AppDomainSetup() {
                         PrivateBinPath = String.Join(";", new[] {
@@ -170,7 +193,7 @@ namespace Procon.Service.Shared {
 
                     this.ServiceLoaderProxy.Start();
 
-                    this.Status = ServiceStatusType.Started;
+                    this.Observer.Status = ServiceStatusType.Started;
                 }
                 catch (Exception e) {
                     ServiceControllerHelpers.LogUnhandledException("ServiceController.Start", e);
@@ -183,8 +206,8 @@ namespace Procon.Service.Shared {
         /// <summary>
         /// Outputs some usage statistics on the appdomain
         /// </summary>
-        private void Statistics() {
-            if (this.Status == ServiceStatusType.Started) {
+        public void Statistics() {
+            if (this.Observer.Status == ServiceStatusType.Started) {
 
                 // todo - does this suck up the cpu/memory?
                 AppDomain.MonitoringIsEnabled = true;
@@ -208,7 +231,7 @@ namespace Procon.Service.Shared {
         /// <summary>
         /// Outputs some useful commands to enter.
         /// </summary>
-        private void Help() {
+        public void Help() {
 
             Console.WriteLine("Instance Control");
             Console.WriteLine("+-------------------+------+----------+--------+-------+-----------+");
@@ -239,7 +262,7 @@ namespace Procon.Service.Shared {
         /// <summary>
         /// Stops the service, updates it then starts it again.
         /// </summary>
-        private void Restart() {
+        public void Restart() {
             this.Stop();
             
             this.UpdateCore();
@@ -250,11 +273,11 @@ namespace Procon.Service.Shared {
         /// <summary>
         /// Updates the procon instance, provided it is currently stopped.
         /// </summary>
-        private void UpdateCore() {
+        public void UpdateCore() {
             // If we have not been told anything update updating core OR the update has been explictely set to true
             // default: check for update, unless "-updatecore false" is passed in.
             if (this.Settings.ServiceUpdateCore == true) {
-                if (this.Status == ServiceStatusType.Stopped) {
+                if (this.Observer.Status == ServiceStatusType.Stopped) {
                     ServiceControllerHelpers.InstallOrUpdatePackage(this.Settings.PackagesDefaultSourceRepositoryUri, Defines.PackageMyrconProconCore);
                 }
             }
@@ -265,10 +288,10 @@ namespace Procon.Service.Shared {
         /// </summary>
         /// <param name="uri">The source repository of the package</param>
         /// <param name="packageId">The package id to search for and install/update</param>
-        private void MergePackage(String uri, String packageId) {
+        public void MergePackage(String uri, String packageId) {
             this.Stop();
 
-            if (this.Status == ServiceStatusType.Stopped) {
+            if (this.Observer.Status == ServiceStatusType.Stopped) {
                 ServiceControllerHelpers.InstallOrUpdatePackage(uri, packageId);
             }
 
@@ -279,10 +302,10 @@ namespace Procon.Service.Shared {
         /// Uninstalls a package from the local repository
         /// </summary>
         /// <param name="packageId">The package id to search for and install/update</param>
-        private void UninstallPackage(String packageId) {
+        public void UninstallPackage(String packageId) {
             this.Stop();
 
-            if (this.Status == ServiceStatusType.Stopped) {
+            if (this.Observer.Status == ServiceStatusType.Stopped) {
                 ServiceControllerHelpers.UninstallPackage(packageId);
             }
 
@@ -292,10 +315,10 @@ namespace Procon.Service.Shared {
         /// <summary>
         /// Saves the config, shuts down the instance and finally collapses the app domain.
         /// </summary>
-        private void Stop() {
+        public void Stop() {
 
             if (this.ServiceLoaderProxy != null || this.ServiceDomain != null) {
-                this.Status = ServiceStatusType.Stopping;
+                this.Observer.Status = ServiceStatusType.Stopping;
 
                 System.Console.WriteLine("Shutting down instance..");
 
@@ -341,7 +364,7 @@ namespace Procon.Service.Shared {
 
             // After running through the above, provided both are set to null then shutting down was successful.
             if (this.ServiceLoaderProxy == null && this.ServiceDomain == null) {
-                this.Status = ServiceStatusType.Stopped;
+                this.Observer.Status = ServiceStatusType.Stopped;
             }
         }
 

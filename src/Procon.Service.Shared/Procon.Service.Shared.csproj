@@ -57,12 +57,14 @@
     <Compile Include="ArgumentHelper.cs" />
     <Compile Include="Defines.cs" />
     <Compile Include="IService.cs" />
+    <Compile Include="IServiceObserver.cs" />
     <Compile Include="IServiceSettings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServiceController.cs" />
     <Compile Include="ServiceControllerHelpers.cs" />
     <Compile Include="ServiceLoaderProxy.cs" />
     <Compile Include="ServiceMessage.cs" />
+    <Compile Include="ServiceObserver.cs" />
     <Compile Include="ServiceSettings.cs" />
     <Compile Include="ServiceStatusType.cs" />
   </ItemGroup>

@@ -84,7 +84,12 @@
     <Compile Include="Connections\TextCommands\TextCommandController.cs" />
     <Compile Include="Connections\TextCommands\Parsers\FuzzyParser.cs" />
     <Compile Include="Connections\TextCommands\Parsers\Parser.cs" />
+    <Compile Include="Packages\OrphanedCacheBuilder.cs" />
+    <Compile Include="Packages\AvailableCacheBuilder.cs" />
+    <Compile Include="Packages\ICacheBuilder.cs" />
     <Compile Include="Packages\PackagesController.cs" />
+    <Compile Include="Packages\InstalledCacheBuilder.cs" />
+    <Compile Include="Packages\PackageFactory.cs" />
     <Compile Include="SharedReferences.cs" />
     <Compile Include="Database\DatabaseController.cs" />
     <Compile Include="Events\EventsConsoleController.cs" />
@@ -169,6 +174,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

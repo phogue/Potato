@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,11 +22,6 @@ namespace Procon.Core.Packages {
         /// A list of repositories we are connected to
         /// </summary>
         public ConcurrentBag<RepositoryModel> Repositories { get; set; }
-
-        /// <summary>
-        /// A list of repositories used in the package manager.
-        /// </summary>
-        public ConcurrentBag<IPackageRepository> SourceRepositories { get; set; } 
 
         /// <summary>
         /// The manager for local and source repositories.
@@ -51,8 +47,6 @@ namespace Procon.Core.Packages {
             this.Shared = new SharedReferences();
 
             this.Repositories = new ConcurrentBag<RepositoryModel>();
-
-            this.SourceRepositories = new ConcurrentBag<IPackageRepository>();
 
             this.LocalRepository = PackageRepositoryFactory.Default.CreateRepository(Defines.PackagesDirectory);
 
@@ -252,11 +246,6 @@ namespace Procon.Core.Packages {
                 RepositoryModel result;
                 this.Repositories.TryTake(out result);
             }
-
-            while (this.SourceRepositories.IsEmpty == false) {
-                IPackageRepository result;
-                this.SourceRepositories.TryTake(out result);
-            }
         }
 
         /// <summary>
@@ -271,97 +260,57 @@ namespace Procon.Core.Packages {
         }
 
         /// <summary>
-        /// Takes a NuGet package and creates a new PackageModel with similar data
-        /// </summary>
-        /// <remarks>IPackage isn't used outside of Procon.Core and Procon.Service, plugins do not know the type.</remarks>
-        /// <param name="source">The source package to extract information</param>
-        /// <returns>A new PackageModel with the details taken from the source.</returns>
-        protected PackageModel CreatePackageModelFromNugetPackage(IPackage source) {
-            return new PackageModel() {
-                Authors = new List<String>(source.Authors),
-                Copyright = source.Copyright,
-                Description = source.Description,
-                IconUrl = source.IconUrl.OriginalString,
-                Id = source.Id,
-                Language = source.Language,
-                LicenseUrl = source.LicenseUrl.OriginalString,
-                Owners = new List<String>(source.Owners),
-                ProjectUrl = source.ProjectUrl.OriginalString,
-                ReleaseNotes = source.ReleaseNotes,
-                RequireLicenseAcceptance = source.RequireLicenseAcceptance,
-                Summary = source.Summary,
-                Tags = source.Tags,
-                Title = source.Title,
-                Version = source.Version.ToString(),
-                Listed = source.Listed,
-                Published = source.Published
-            };
-        }
-
-        /// <summary>
         /// Fetches all of the packages from the source, essentially rebuilding the Repositories.Packages
         /// with what is known locally and remotely about the packages.
         /// </summary>
         public void BuildRepositoryCache() {
-
             // Non configurable anti-repository-spam. We will only rebuild the cache if we have not
             // done so in the last 20 seconds.
             if (DateTime.Now.AddSeconds(-20) > this.LastCacheRebuild) {
-                lock (this.LocalRepository) {
-                    // Empty out all known packages.
-                    this.ClearRepositoryPackagesCache();
+                // Empty out all known packages.
+                this.ClearRepositoryPackagesCache();
 
-                    // Fetch all source repositories
-                    foreach (var sourceRepository in this.SourceRepositories) {
-                        var repository = this.Repositories.FirstOrDefault(repo => repo.Uri == sourceRepository.Source);
+                foreach (RepositoryModel repository in this.Repositories) {
+                    // Append all available packages for this repository.
+                    new AvailableCacheBuilder() {
+                        Repository = repository,
+                        Packages = PackageRepositoryFactory.Default.CreateRepository(repository.Uri)
+                            .GetPackages()
+                            .ToList()
+                            .OrderByDescending(pack => pack.Version)
+                            .Distinct(PackageEqualityComparer.Id)
+                            .ToList()
+                    }.Build();
 
-                        // This should never be null since Repositories is used to build SourceRepositories, but ReSharper.
-                        if (repository != null) {
-                            // I'd rather not have to download the entire repository to do this
-                            foreach (var availablePackage in sourceRepository.GetPackages().ToList().OrderByDescending(pack => pack.Version).Distinct(PackageEqualityComparer.Id).ToList()) {
-                                // Since the packages were cleared and availablePackages has distinct id's this should never be true. Sanity though.
-                                if (repository.Packages.Any(pack => pack.Id == availablePackage.Id) == false) {
-                                    repository.Packages.Add(new PackageWrapperModel() {
-                                        State = PackageState.NotInstalled,
-                                        Available = this.CreatePackageModelFromNugetPackage(availablePackage)
-                                    });
-                                }
-                                // else we already know about it somehow? Use whatever came first.
-                            }
-                        }
-                    }
-
-                    // Now update with any installed packages.
-                    foreach (var installedPackage in this.LocalRepository.GetPackages().OrderByDescending(pack => pack.Version).Distinct(PackageEqualityComparer.Id).ToList()) {
-                        var packageWrapper = this.Repositories.SelectMany(repo => repo.Packages).FirstOrDefault(pack => pack.Id == installedPackage.Id);
-
-                        // If we know this package and have found an available version online.
-                        if (packageWrapper != null) {
-                            packageWrapper.Installed = this.CreatePackageModelFromNugetPackage(installedPackage);
-                            packageWrapper.State = installedPackage.Version.CompareTo(new SemanticVersion(packageWrapper.Available.Version)) < 0 ? PackageState.UpdateAvailable : PackageState.Installed;
-                        }
-                        else {
-                            // We have an orphaned package installed in an unknown repository
-                            // Likely we had a package installed and the user removed the repository url
-                            // We still need to show these packages so they can uninstall them.
-                            var repositoryOrphanage = this.Repositories.First(model => String.IsNullOrEmpty(model.Uri) == true);
-
-                            repositoryOrphanage.Packages.Add(new PackageWrapperModel() {
-                                State = PackageState.Installed,
-                                Installed = this.CreatePackageModelFromNugetPackage(installedPackage)
-                            });
-                        }
-                    }
-
-                    this.LastCacheRebuild = DateTime.Now;
-
-                    this.Shared.Events.Log(new GenericEventArgs() {
-                        GenericEventType = GenericEventType.PackagesCacheRebuilt,
-                        Now = {
-                            Repositories = new List<RepositoryModel>(this.Repositories)
-                        }
-                    });
+                    // Update all available packages with those that are installed.
+                    new InstalledCacheBuilder() {
+                        Repository = repository,
+                        Packages = this.LocalRepository
+                            .GetPackages()
+                            .ToList()
+                    }.Build();
                 }
+
+                // A list of package id's that we know the source of
+                IEnumerable<String> availablePackageIds = this.Repositories.SelectMany(repository => repository.Packages).Select(packageWrapper => packageWrapper.Id);
+
+                // Now orphan all remaining packages that are installed but do not belong to any repository.
+                new OrphanedCacheBuilder() {
+                    Repository = this.Repositories.First(model => String.IsNullOrEmpty(model.Uri) == true),
+                    Packages = this.LocalRepository
+                        .GetPackages()
+                        .Where(package => availablePackageIds.Contains(package.Id) == false)
+                        .ToList()
+                }.Build();
+
+                this.LastCacheRebuild = DateTime.Now;
+
+                this.Shared.Events.Log(new GenericEventArgs() {
+                    GenericEventType = GenericEventType.PackagesCacheRebuilt,
+                    Now = {
+                        Repositories = new List<RepositoryModel>(this.Repositories)
+                    }
+                });
             }
         }
 
@@ -390,32 +339,27 @@ namespace Procon.Core.Packages {
         /// <param name="sender"></param>
         /// <param name="repositoryGroupNames"></param>
         private void GroupedVariableListenerOnVariablesModified(GroupedVariableListener sender, List<String> repositoryGroupNames) {
-            // Lock it in case a repository is added while we're currently rebuilding our cache.
-            lock (this.LocalRepository) {
-                this.ClearRepositoryCache();
-                this.LocalRepository = null;
+            this.ClearRepositoryCache();
+            this.LocalRepository = null;
 
-                foreach (String repositoryGroupName in repositoryGroupNames) {
-                    String uri = this.Shared.Variables.Get(VariableModel.NamespaceVariableName(repositoryGroupName, CommonVariableNames.PackagesRepositoryUri), String.Empty);
+            foreach (String repositoryGroupName in repositoryGroupNames) {
+                String uri = this.Shared.Variables.Get(VariableModel.NamespaceVariableName(repositoryGroupName, CommonVariableNames.PackagesRepositoryUri), String.Empty);
 
-                    if (String.IsNullOrEmpty(uri) == false && this.Repositories.Any(repository => repository.Slug == uri.Slug()) == false) {
-                        this.Repositories.Add(new RepositoryModel() {
-                            Name = uri,
-                            Uri = uri,
-                            Slug = uri.Slug()
-                        });
-                    }
+                if (String.IsNullOrEmpty(uri) == false && this.Repositories.Any(repository => repository.Slug == uri.Slug()) == false) {
+                    this.Repositories.Add(new RepositoryModel() {
+                        Name = uri,
+                        Uri = uri,
+                        Slug = uri.Slug()
+                    });
                 }
-                
-                this.Repositories.Select(repository => PackageRepositoryFactory.Default.CreateRepository(repository.Uri)).ToList().ForEach(this.SourceRepositories.Add);
-
-                // Append a location for orphaned packages to go to.
-                this.Repositories.Add(new RepositoryModel() {
-                    Name = "Package Orphanage",
-                });
-
-                this.AssignEvents();
             }
+            
+            // Append a location for orphaned packages to go to.
+            this.Repositories.Add(new RepositoryModel() {
+                Name = "Package Orphanage",
+            });
+
+            this.AssignEvents();
         }
 
         public override ICoreController Execute() {

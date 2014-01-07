@@ -1369,8 +1369,17 @@
       </Tags>
     </Item>
     <Item>
-      <Name>U_AMR2</Name>
-      <FriendlyName>AMR2-2</FriendlyName>
+      <Name>U_AMR2_CBQ</Name>
+      <FriendlyName>AMR2-2 MID</FriendlyName>
+      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
+        <string>None</string>
+        <string>Primary</string>
+        <string>SniperRifle</string>
+      </Tags>
+    </Item>
+	<Item>
+      <Name>U_AMR2_MED</Name>
+      <FriendlyName>AMR2-2 CQB</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>None</string>
         <string>Primary</string>
@@ -1729,43 +1738,7 @@
       </Tags>
     </Item>
     <Item>
-      <Name>U_L85A2_M26_Buck</Name>
-      <FriendlyName>M26 Mass under L85A2</FriendlyName>
-      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
-        <string>Assault</string>
-        <string>Secondary</string>
-        <string>Shotgun</string>
-      </Tags>
-    </Item>
-    <Item>
-      <Name>U_L85A2_M26_Flechette</Name>
-      <FriendlyName>M26 Mass Dart under L85A2</FriendlyName>
-      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
-        <string>Assault</string>
-        <string>Secondary</string>
-        <string>Shotgun</string>
-      </Tags>
-    </Item>
-    <Item>
-      <Name>U_L85A2_M26_Frag</Name>
-      <FriendlyName>M26 Mass Frag under L85A2</FriendlyName>
-      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
-        <string>Assault</string>
-        <string>Secondary</string>
-        <string>Shotgun</string>
-      </Tags>
-    </Item>
-    <Item>
-      <Name>U_L85A2_M26_Slug</Name>
-      <FriendlyName>M26 Mass Slug under L85A2</FriendlyName>
-      <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
-        <string>Assault</string>
-        <string>Secondary</string>
-        <string>Shotgun</string>
-      </Tags>
-    </Item>
-    <Item>
-      <Name>U_L85A2_M320_FLASH</Name>
+      <Name>U_L85A2_M320_FLASH_V2</Name>
       <FriendlyName>M320 FB under L85A2</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
@@ -1774,7 +1747,7 @@
       </Tags>
     </Item>
     <Item>
-      <Name>U_L85A2_M320_HE</Name>
+      <Name>U_L85A2_M320_HE_V2</Name>
       <FriendlyName>M320 HE under L85A2</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
@@ -1783,7 +1756,7 @@
       </Tags>
     </Item>
     <Item>
-      <Name>U_L85A2_M320_LVG</Name>
+      <Name>U_L85A2_M320_LVG_V2</Name>
       <FriendlyName>M320 LVG under L85A2</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
@@ -1792,7 +1765,7 @@
       </Tags>
     </Item>
     <Item>
-      <Name>U_L85A2_M320_SHG</Name>
+      <Name>U_L85A2_M320_SHG_V2</Name>
       <FriendlyName>M320 Dart under L85A2</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
@@ -1801,7 +1774,7 @@
       </Tags>
     </Item>
     <Item>
-      <Name>U_L85A2_M320_SMK</Name>
+      <Name>U_L85A2_M320_SMK_V2</Name>
       <FriendlyName>M320 SMK under L85A2</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
@@ -1991,7 +1964,7 @@
     </Item>
     <Item>
       <Name>U_M26Mass_Frag</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>M26 Mass Frag</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
         <string>Secondary</string>
@@ -2000,7 +1973,7 @@
     </Item>
     <Item>
       <Name>U_M26Mass_Slug</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>M26 Mass Slug</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
         <string>Secondary</string>
@@ -2009,7 +1982,7 @@
     </Item>
     <Item>
       <Name>U_M320_FLASH</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>M320 Flash</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
         <string>Secondary</string>
@@ -2018,7 +1991,7 @@
     </Item>
     <Item>
       <Name>U_M320_HE</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>M320 HE</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
         <string>Secondary</string>
@@ -2027,7 +2000,7 @@
     </Item>
     <Item>
       <Name>U_M320_LVG</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>M320 LVG</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
         <string>Secondary</string>
@@ -2036,7 +2009,7 @@
     </Item>
     <Item>
       <Name>U_M320_SHG</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>M320 Dart</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
         <string>Secondary</string>
@@ -2045,7 +2018,7 @@
     </Item>
     <Item>
       <Name>U_M320_SMK</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>M320 SMK</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
         <string>Secondary</string>
@@ -2054,7 +2027,7 @@
     </Item>
     <Item>
       <Name>U_M34</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>M34 Incendiary</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>None</string>
         <string>Auxiliary</string>
@@ -2063,7 +2036,7 @@
     </Item>
     <Item>
       <Name>U_M39EBR</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>M39 EMR</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>None</string>
         <string>Primary</string>
@@ -2072,7 +2045,7 @@
     </Item>
     <Item>
       <Name>U_M40A5</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>M40A5</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Recon</string>
         <string>Primary</string>
@@ -2081,7 +2054,7 @@
     </Item>
     <Item>
       <Name>U_M416</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>M416</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
         <string>Primary</string>
@@ -2090,7 +2063,7 @@
     </Item>
     <Item>
       <Name>U_M416_M26_Buck</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>M26 Mass under M416</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
         <string>Secondary</string>
@@ -2099,7 +2072,7 @@
     </Item>
     <Item>
       <Name>U_M416_M26_Flechette</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>M26 Dart under M416</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
         <string>Secondary</string>
@@ -2108,7 +2081,7 @@
     </Item>
     <Item>
       <Name>U_M416_M26_Frag</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>M26 Frag under M416</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
         <string>Secondary</string>
@@ -2117,7 +2090,7 @@
     </Item>
     <Item>
       <Name>U_M416_M26_Slug</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>M26 Slug under M416</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
         <string>Secondary</string>
@@ -2126,7 +2099,7 @@
     </Item>
     <Item>
       <Name>U_M416_M320_FLASH</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>M320 FB under M416</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
         <string>Secondary</string>
@@ -2135,7 +2108,7 @@
     </Item>
     <Item>
       <Name>U_M416_M320_HE</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>M320 HE under M416</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
         <string>Secondary</string>
@@ -2144,7 +2117,7 @@
     </Item>
     <Item>
       <Name>U_M416_M320_LVG</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>M320 LVG under M416</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
         <string>Secondary</string>
@@ -2153,7 +2126,7 @@
     </Item>
     <Item>
       <Name>U_M416_M320_SHG</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>M320 Dart under M416</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
         <string>Secondary</string>
@@ -2162,7 +2135,7 @@
     </Item>
     <Item>
       <Name>U_M416_M320_SMK</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>M320 SMK under M416</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
         <string>Secondary</string>
@@ -2171,7 +2144,7 @@
     </Item>
     <Item>
       <Name>U_M4A1</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>M4A1</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>None</string>
         <string>Primary</string>
@@ -2180,7 +2153,7 @@
     </Item>
     <Item>
       <Name>U_M67</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>M67 Frag</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>None</string>
         <string>Auxiliary</string>
@@ -2189,7 +2162,7 @@
     </Item>
     <Item>
       <Name>U_M82A3</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>M82A3</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>None</string>
         <string>Primary</string>
@@ -2198,7 +2171,7 @@
     </Item>
     <Item>
       <Name>U_M82A3_CQB</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>M82A3 CQB</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>None</string>
         <string>Primary</string>
@@ -2207,7 +2180,7 @@
     </Item>
     <Item>
       <Name>U_M82A3_MED</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>M82A3 MID</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>None</string>
         <string>Primary</string>
@@ -2216,7 +2189,7 @@
     </Item>
     <Item>
       <Name>U_M9</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>M9</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>None</string>
         <string>Auxiliary</string>
@@ -2225,7 +2198,7 @@
     </Item>
     <Item>
       <Name>U_M93R</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>93R</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>None</string>
         <string>Auxiliary</string>
@@ -2234,7 +2207,7 @@
     </Item>
     <Item>
       <Name>U_M98B</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>M98B</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Recon</string>
         <string>Primary</string>
@@ -2243,7 +2216,7 @@
     </Item>
     <Item>
       <Name>U_MagpulPDR</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>PDW-R</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Demolition</string>
         <string>Primary</string>
@@ -2252,7 +2225,7 @@
     </Item>
     <Item>
       <Name>U_Medkit</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>Medkit</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
         <string>Auxiliary</string>
@@ -2261,7 +2234,7 @@
     </Item>
     <Item>
       <Name>U_MG4</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>MG4</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Support</string>
         <string>Primary</string>
@@ -2270,7 +2243,7 @@
     </Item>
     <Item>
       <Name>U_MGL</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>M32 MGL</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>None</string>
         <string>Primary</string>
@@ -2279,7 +2252,7 @@
     </Item>
     <Item>
       <Name>U_MK11</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>MK11 Mod 0</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>None</string>
         <string>Primary</string>
@@ -2288,7 +2261,7 @@
     </Item>
     <Item>
       <Name>U_MP7</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>MP7</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Demolition</string>
         <string>Primary</string>
@@ -2297,7 +2270,7 @@
     </Item>
     <Item>
       <Name>U_MP412Rex</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>M412 Rex</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>None</string>
         <string>Auxiliary</string>
@@ -2306,7 +2279,7 @@
     </Item>
     <Item>
       <Name>U_MP443</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>MP443</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>None</string>
         <string>Auxiliary</string>
@@ -2315,7 +2288,7 @@
     </Item>
     <Item>
       <Name>U_MTAR21</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>MTAR-21</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>None</string>
         <string>Primary</string>
@@ -2324,7 +2297,7 @@
     </Item>
     <Item>
       <Name>U_MX4</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>MX4</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Demolition</string>
         <string>Primary</string>
@@ -2333,7 +2306,7 @@
     </Item>
     <Item>
       <Name>U_NLAW</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>MBT NLAW</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Demolition</string>
         <string>Secondary</string>
@@ -2342,7 +2315,7 @@
     </Item>
     <Item>
       <Name>U_P226</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>P226</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>None</string>
         <string>Auxiliary</string>
@@ -2351,7 +2324,7 @@
     </Item>
     <Item>
       <Name>U_P90</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>P90</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Demolition</string>
         <string>Primary</string>
@@ -2360,7 +2333,7 @@
     </Item>
     <Item>
       <Name>U_Pecheneg</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>PKP Pechneg</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Support</string>
         <string>Primary</string>
@@ -2369,7 +2342,7 @@
     </Item>
     <Item>
       <Name>U_PortableMedicpack</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>Portable Medkit</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
         <string>Auxiliary</string>
@@ -2378,7 +2351,7 @@
     </Item>
     <Item>
       <Name>U_PP2000</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>PP-2000</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Demolition</string>
         <string>Primary</string>
@@ -2387,7 +2360,7 @@
     </Item>
     <Item>
       <Name>U_QBB95</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>QBB-95-1</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Support</string>
         <string>Primary</string>
@@ -2396,7 +2369,7 @@
     </Item>
     <Item>
       <Name>U_QBS09</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>QBS-09</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>None</string>
         <string>Primary</string>
@@ -2405,7 +2378,7 @@
     </Item>
     <Item>
       <Name>U_QBU88</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>QBU-88</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>None</string>
         <string>Primary</string>
@@ -2414,7 +2387,7 @@
     </Item>
     <Item>
       <Name>U_QBZ951</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>QBZ-95-1</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
         <string>Primary</string>
@@ -2423,7 +2396,7 @@
     </Item>
     <Item>
       <Name>U_QBZ951_M26_Buck</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>M26 Mass under QBZ-95-1</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
         <string>Secondary</string>
@@ -2432,7 +2405,7 @@
     </Item>
     <Item>
       <Name>U_QBZ951_M26_Flechette</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>M26 Dart under QBZ-95-1</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
         <string>Secondary</string>
@@ -2441,7 +2414,7 @@
     </Item>
     <Item>
       <Name>U_QBZ951_M26_Frag</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>M26 Frag under QBZ-95-1</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
         <string>Secondary</string>
@@ -2450,7 +2423,7 @@
     </Item>
     <Item>
       <Name>U_QBZ951_M26_Slug</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>M26 Slug under QBZ-95-1</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
         <string>Secondary</string>
@@ -2459,7 +2432,7 @@
     </Item>
     <Item>
       <Name>U_QBZ951_M320_FLASH</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>M320 FB under QBZ-95-1</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
         <string>Secondary</string>
@@ -2468,7 +2441,7 @@
     </Item>
     <Item>
       <Name>U_QBZ951_M320_HE</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>M320 HE under QBZ-95-1</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
         <string>Secondary</string>
@@ -2477,7 +2450,7 @@
     </Item>
     <Item>
       <Name>U_QBZ951_M320_LVG</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>M320 LVG under QBZ-95-1</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
         <string>Secondary</string>
@@ -2486,7 +2459,7 @@
     </Item>
     <Item>
       <Name>U_QBZ951_M320_SHG</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>M320 Dart under QBZ-95-1</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
         <string>Secondary</string>
@@ -2495,7 +2468,7 @@
     </Item>
     <Item>
       <Name>U_QBZ951_M320_SMK</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>M320 SMK under QBZ-95-1</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
         <string>Secondary</string>
@@ -2504,7 +2477,7 @@
     </Item>
     <Item>
       <Name>U_QSZ92</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>QSZ-92</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>None</string>
         <string>Auxiliary</string>
@@ -2513,7 +2486,7 @@
     </Item>
     <Item>
       <Name>U_Repairtool</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>Repair Tool</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Demolition</string>
         <string>Secondary</string>
@@ -2522,7 +2495,7 @@
     </Item>
     <Item>
       <Name>U_RFB</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>RFB</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>None</string>
         <string>Primary</string>
@@ -2531,7 +2504,7 @@
     </Item>
     <Item>
       <Name>U_RPG7</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>RPG-7V2</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Demolition</string>
         <string>Secondary</string>
@@ -2540,7 +2513,7 @@
     </Item>
     <Item>
       <Name>U_RPK12</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>RPK-12</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Support</string>
         <string>Primary</string>
@@ -2549,7 +2522,7 @@
     </Item>
     <Item>
       <Name>U_RPK-74</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>RPK-74</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Support</string>
         <string>Primary</string>
@@ -2558,7 +2531,7 @@
     </Item>
     <Item>
       <Name>U_Sa18IGLA</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>SA-18 IGLA</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Demolition</string>
         <string>Secondary</string>
@@ -2567,7 +2540,7 @@
     </Item>
     <Item>
       <Name>U_SAIGA_20K</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>Saiga 12K</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>None</string>
         <string>Primary</string>
@@ -2576,7 +2549,7 @@
     </Item>
     <Item>
       <Name>U_SAR21</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>SAR-21</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
         <string>Primary</string>
@@ -2585,7 +2558,7 @@
     </Item>
     <Item>
       <Name>U_SAR21_M26_Buck</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>M26 Mass under SAR-21</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
         <string>Secondary</string>
@@ -2594,7 +2567,7 @@
     </Item>
     <Item>
       <Name>U_SAR21_M26_Flechette</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>M26 Dart under SAR-21</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
         <string>Secondary</string>
@@ -2603,7 +2576,7 @@
     </Item>
     <Item>
       <Name>U_SAR21_M26_Frag</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>M26 Frag under SAR-21</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
         <string>Secondary</string>
@@ -2612,7 +2585,7 @@
     </Item>
     <Item>
       <Name>U_SAR21_M26_Slug</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>M26 Slug under SAR-21</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
         <string>Secondary</string>
@@ -2621,7 +2594,7 @@
     </Item>
     <Item>
       <Name>U_SAR21_M320_FLASH</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>M320 FB under SAR-21</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
         <string>Secondary</string>
@@ -2630,7 +2603,7 @@
     </Item>
     <Item>
       <Name>U_SAR21_M320_HE</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>M320 HE under SAR-21</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
         <string>Secondary</string>
@@ -2639,7 +2612,7 @@
     </Item>
     <Item>
       <Name>U_SAR21_M320_LVG</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>M320 LVG under SAR-21</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
         <string>Secondary</string>
@@ -2648,7 +2621,7 @@
     </Item>
     <Item>
       <Name>U_SAR21_M320_SHG</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>M320 Dart under SAR-21</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
         <string>Secondary</string>
@@ -2657,7 +2630,7 @@
     </Item>
     <Item>
       <Name>U_SAR21_M320_SMK</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>M320 SMK under SAR-21</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
         <string>Secondary</string>
@@ -2666,7 +2639,7 @@
     </Item>
     <Item>
       <Name>U_SCAR-H</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>SCAR-H</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
         <string>Primary</string>
@@ -2675,7 +2648,7 @@
     </Item>
     <Item>
       <Name>U_SCAR-H_M26_Buck</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>M26 Mass under SCAR-H</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
         <string>Secondary</string>
@@ -2684,7 +2657,7 @@
     </Item>
     <Item>
       <Name>U_SCAR-H_M26_Flechette</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>M26 Dart under SCAR-H</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
         <string>Secondary</string>
@@ -2693,7 +2666,7 @@
     </Item>
     <Item>
       <Name>U_SCAR-H_M26_Frag</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>M26 Frag under SCAR-H</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
         <string>Secondary</string>
@@ -2702,7 +2675,7 @@
     </Item>
     <Item>
       <Name>U_SCAR-H_M26_Slug</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>M26 Slug under SCAR-H</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
         <string>Secondary</string>
@@ -2711,7 +2684,7 @@
     </Item>
     <Item>
       <Name>U_SCAR-H_M320_FLASH</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>M320 FB under SCAR-H</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
         <string>Secondary</string>
@@ -2720,7 +2693,7 @@
     </Item>
     <Item>
       <Name>U_SCAR-H_M320_HE</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>M320 HE under SCAR-H</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
         <string>Secondary</string>
@@ -2729,7 +2702,7 @@
     </Item>
     <Item>
       <Name>U_SCAR-H_M320_LVG</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>M320 LVG under SCAR-H</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
         <string>Secondary</string>
@@ -2738,7 +2711,7 @@
     </Item>
     <Item>
       <Name>U_SCAR-H_M320_SHG</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>M320 Dart under SCAR-H</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
         <string>Secondary</string>
@@ -2747,7 +2720,7 @@
     </Item>
     <Item>
       <Name>U_SCAR-H_M320_SMK</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>M320 SMK under SCAR-H</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
         <string>Secondary</string>
@@ -2756,7 +2729,7 @@
     </Item>
     <Item>
       <Name>U_SCAR-HSV</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>SCAR-H SV</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>None</string>
         <string>Primary</string>
@@ -2765,7 +2738,7 @@
     </Item>
     <Item>
       <Name>U_Scorpion</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>Skorpion Evo 3 A1</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Demolition</string>
         <string>Primary</string>
@@ -2774,7 +2747,7 @@
     </Item>
     <Item>
       <Name>U_Scout</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>Scout</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Recon</string>
         <string>Primary</string>
@@ -2783,7 +2756,7 @@
     </Item>
     <Item>
       <Name>U_SerbuShorty</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>Shorty 12G</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>None</string>
         <string>Auxiliary</string>
@@ -2792,7 +2765,7 @@
     </Item>
     <Item>
       <Name>U_SG553LB</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>SG553</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>None</string>
         <string>Primary</string>
@@ -2801,7 +2774,7 @@
     </Item>
     <Item>
       <Name>U_SKS</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>SKS</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>None</string>
         <string>Primary</string>
@@ -2810,7 +2783,7 @@
     </Item>
     <Item>
       <Name>U_SLAM</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>M2 SLAM</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>None</string>
         <string>Auxiliary</string>
@@ -2819,7 +2792,7 @@
     </Item>
     <Item>
       <Name>U_SMAW</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>MK153 SMAW</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Demolition</string>
         <string>Secondary</string>
@@ -2828,7 +2801,7 @@
     </Item>
     <Item>
       <Name>U_SPAS12</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>SPAS-12</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>None</string>
         <string>Primary</string>
@@ -2837,7 +2810,7 @@
     </Item>
     <Item>
       <Name>U_SRAW</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>FGM-172 SRAW</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Demolition</string>
         <string>Secondary</string>
@@ -2846,7 +2819,7 @@
     </Item>
     <Item>
       <Name>U_SRS</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>338-Recon</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Recon</string>
         <string>Primary</string>
@@ -2855,7 +2828,7 @@
     </Item>
     <Item>
       <Name>U_Starstreak</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>Starstreak AA Missile</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Demolition</string>
         <string>Secondary</string>
@@ -2864,7 +2837,7 @@
     </Item>
     <Item>
       <Name>U_SteyrAug</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>AUG A3</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
         <string>Primary</string>
@@ -2873,7 +2846,7 @@
     </Item>
     <Item>
       <Name>U_SteyrAug_M26_Buck</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>M26 Mass under AUG A3</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
         <string>Secondary</string>
@@ -2882,7 +2855,7 @@
     </Item>
     <Item>
       <Name>U_SteyrAug_M26_Flechette</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>M26 Dart under AUG A3</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
         <string>Secondary</string>
@@ -2891,7 +2864,7 @@
     </Item>
     <Item>
       <Name>U_SteyrAug_M26_Frag</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>M26 Frag under AUG A3</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
         <string>Secondary</string>
@@ -2900,7 +2873,7 @@
     </Item>
     <Item>
       <Name>U_SteyrAug_M26_Slug</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>M26 Slug under AUG A3</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
         <string>Secondary</string>
@@ -2909,7 +2882,7 @@
     </Item>
     <Item>
       <Name>U_SteyrAug_M320_FLASH</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>M320 FB under AUG A3</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
         <string>Secondary</string>
@@ -2918,7 +2891,7 @@
     </Item>
     <Item>
       <Name>U_SteyrAug_M320_HE</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>M320 HE under AUG A3</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
         <string>Secondary</string>
@@ -2927,7 +2900,7 @@
     </Item>
     <Item>
       <Name>U_SteyrAug_M320_LVG</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>M320 LVG under AUG A3</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
         <string>Secondary</string>
@@ -2936,7 +2909,7 @@
     </Item>
     <Item>
       <Name>U_SteyrAug_M320_SHG</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>M320 Dart under AUG A3</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
         <string>Secondary</string>
@@ -2945,7 +2918,7 @@
     </Item>
     <Item>
       <Name>U_SteyrAug_M320_SMK</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>M320 SMK under AUG A3</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
         <string>Secondary</string>
@@ -2954,7 +2927,7 @@
     </Item>
     <Item>
       <Name>U_SV98</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>SV-98</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Recon</string>
         <string>Primary</string>
@@ -2963,7 +2936,7 @@
     </Item>
     <Item>
       <Name>U_SVD12</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>SVD-12</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>None</string>
         <string>Primary</string>
@@ -2972,7 +2945,7 @@
     </Item>
     <Item>
       <Name>U_Taurus44</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>.44 Magnum</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>None</string>
         <string>Auxiliary</string>
@@ -2981,7 +2954,7 @@
     </Item>
     <Item>
       <Name>U_Tomahawk</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>Tomahawk</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>None</string>
         <string>Primary</string>
@@ -2990,7 +2963,7 @@
     </Item>
     <Item>
       <Name>U_Type88</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>Type 88 LMG</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Support</string>
         <string>Primary</string>
@@ -2999,7 +2972,7 @@
     </Item>
     <Item>
       <Name>U_Type95B</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>Type-95B-1</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>None</string>
         <string>Primary</string>
@@ -3008,7 +2981,7 @@
     </Item>
     <Item>
       <Name>U_Ultimax</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>Ultimax-100 MK5</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Support</string>
         <string>Primary</string>
@@ -3017,7 +2990,7 @@
     </Item>
     <Item>
       <Name>U_UMP9</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>UMP-9</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Demolition</string>
         <string>Primary</string>
@@ -3026,7 +2999,7 @@
     </Item>
     <Item>
       <Name>U_UMP45</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>UMP-45</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Demolition</string>
         <string>Primary</string>
@@ -3035,7 +3008,7 @@
     </Item>
     <Item>
       <Name>U_USAS-12</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>USAS-12</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>None</string>
         <string>Primary</string>
@@ -3044,7 +3017,7 @@
     </Item>
     <Item>
       <Name>U_USAS-12_Nightvision</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>USAS-12 FLIR</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>None</string>
         <string>Primary</string>
@@ -3053,7 +3026,7 @@
     </Item>
     <Item>
       <Name>U_UTAS</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>UTS 15</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>None</string>
         <string>Primary</string>
@@ -3071,7 +3044,7 @@
     </Item>
     <Item>
       <Name>U_XM25</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>XM25 Airburst</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Support</string>
         <string>Secondary</string>
@@ -3080,7 +3053,7 @@
     </Item>
     <Item>
       <Name>U_XM25_Flechette</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>XM25 Airburst Dart</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Support</string>
         <string>Secondary</string>
@@ -3089,7 +3062,7 @@
     </Item>
     <Item>
       <Name>U_XM25_Smoke</Name>
-      <FriendlyName></FriendlyName>
+      <FriendlyName>XM25 Airburst SMK</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Support</string>
         <string>Secondary</string>

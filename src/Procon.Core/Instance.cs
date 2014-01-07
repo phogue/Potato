@@ -485,6 +485,96 @@ namespace Procon.Core {
         }
 
         /// <summary>
+        /// Posts a merge-package signal for the service controller to poll.
+        /// </summary>
+        /// <param name="command"></param>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
+        public CommandResultArgs InstanceServiceMergePackage(Command command, Dictionary<String, CommandParameter> parameters) {
+            CommandResultArgs result = null;
+
+            String uri = parameters["uri"].First<String>();
+            String packageId = parameters["packageId"].First<String>();
+
+            // As long as the current account is allowed to execute this command...
+            if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
+                if (uri != null && packageId != null) {
+                    this.ServiceMessage = new ServiceMessage() {
+                        Name = "merge-package",
+                        Arguments = new Dictionary<String, String>() {
+                            { "uri", uri },
+                            { "packageid", packageId }
+                        }
+                    };
+
+                    result = new CommandResultArgs() {
+                        Message = String.Format("Successfully posted merge-package signal."),
+                        Status = CommandResultType.Success,
+                        Success = true
+                    };
+
+                    this.Shared.Events.Log(GenericEventArgs.ConvertToGenericEvent(result, GenericEventType.InstanceServiceRestarting));
+                }
+                else {
+                    result = new CommandResultArgs() {
+                        Message = String.Format(@"Invalid or missing parameter ""uri"" or ""packageId""."),
+                        Status = CommandResultType.InvalidParameter,
+                        Success = false
+                    };
+                }
+            }
+            else {
+                result = CommandResultArgs.InsufficientPermissions;
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Posts a uninstall-package signal for the service controller to poll.
+        /// </summary>
+        /// <param name="command"></param>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
+        public CommandResultArgs InstanceServiceUninstallPackage(Command command, Dictionary<String, CommandParameter> parameters) {
+            CommandResultArgs result = null;
+
+            String packageId = parameters["packageId"].First<String>();
+
+            // As long as the current account is allowed to execute this command...
+            if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
+                if (packageId != null) {
+                    this.ServiceMessage = new ServiceMessage() {
+                        Name = "uninstall-package",
+                        Arguments = new Dictionary<String, String>() {
+                            { "packageid", packageId }
+                        }
+                    };
+
+                    result = new CommandResultArgs() {
+                        Message = String.Format("Successfully posted uninstall-package signal."),
+                        Status = CommandResultType.Success,
+                        Success = true
+                    };
+
+                    this.Shared.Events.Log(GenericEventArgs.ConvertToGenericEvent(result, GenericEventType.InstanceServiceRestarting));
+                }
+                else {
+                    result = new CommandResultArgs() {
+                        Message = String.Format(@"Invalid or missing parameter ""packageId""."),
+                        Status = CommandResultType.InvalidParameter,
+                        Success = false
+                    };
+                }
+            }
+            else {
+                result = CommandResultArgs.InsufficientPermissions;
+            }
+
+            return result;
+        }
+
+        /// <summary>
         /// Add a connection to this instance.
         /// </summary>
         /// <param name="command"></param>

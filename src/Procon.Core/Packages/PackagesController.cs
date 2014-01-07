@@ -114,7 +114,10 @@ namespace Procon.Core.Packages {
                 if (repository != null && package != null) {
 
                     if (package.State == PackageState.NotInstalled || package.State == PackageState.UpdateAvailable) {
-                        // todo Dispatch merge signal repository.Uri, packageId
+                        // Send command as local. Users may be granted permission to install a package
+                        // from a known package repository (this method) but not have permission to install from an
+                        // arbitrary source (InstanceServiceMergePackage)
+                        this.Bubble(CommandBuilder.InstanceServiceMergePackage(repository.Uri, package.Id).SetOrigin(CommandOrigin.Local));
 
                         result = new CommandResultArgs() {
                             Message = String.Format("Dispatched merge signal on package id {0}.", packageId),
@@ -170,7 +173,10 @@ namespace Procon.Core.Packages {
 
                 if (repository != null && package != null) {
                     if (package.State == PackageState.Installed || package.State == PackageState.UpdateAvailable) {
-                        // todo Dispatch merge signal packageId
+                        // Send command as local. Users may be granted permission to install a package
+                        // from a known package repository (this method) but not have permission to uninstall from an
+                        // arbitrary source (InstanceServiceMergePackage)
+                        this.Bubble(CommandBuilder.InstanceServiceUninstallPackage(package.Id).SetOrigin(CommandOrigin.Local));
 
                         result = new CommandResultArgs() {
                             Message = String.Format("Dispatched uninstall signal on package id {0}.", packageId),

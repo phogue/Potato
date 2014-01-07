@@ -19,6 +19,16 @@ namespace Procon.Core.Shared {
         /// Sends a signal to the service controller to restart Procon, applying any updates.
         /// </summary>
         InstanceServiceRestart,
+        /// <summary>
+        /// Sends a signal to the service controller to stop Procon, install/update a package to
+        /// the latest version and then start Procon.
+        /// </summary>
+        InstanceServiceMergePackage,
+        /// <summary>
+        /// Sends a signal to the service controller to stop Procon, uninstall a package if it is installed
+        /// and then start Procon.
+        /// </summary>
+        InstanceServiceUninstallPackage,
 
         /// <summary>
         /// Queries information related specificy to a connection. Note that this will essentially query all

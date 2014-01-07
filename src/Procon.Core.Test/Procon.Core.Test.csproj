@@ -78,8 +78,10 @@
     <Compile Include="Database\Helpers\TestMigrationTrackerHelper.cs" />
     <Compile Include="Database\TestDatabaseController.cs" />
     <Compile Include="Database\TestDatabaseMigrationController.cs" />
-    <Compile Include="Packages\TestCacheBuilders.cs" />
+    <Compile Include="Packages\Mocks\MockPackageRepository.cs" />
+    <Compile Include="Packages\TestPackageCacheBuilders.cs" />
     <Compile Include="Packages\TestPackagesController.cs" />
+    <Compile Include="Packages\TestRepositoryCache.cs" />
     <Compile Include="Plugins\TestPluginsDisabled.cs" />
     <Compile Include="Plugins\TestPluginsEnabled.cs" />
     <Compile Include="TestHelpers.cs" />

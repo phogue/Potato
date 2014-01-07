@@ -7,7 +7,7 @@ using Procon.Core.Shared.Models;
 
 namespace Procon.Core.Test.Packages {
     [TestFixture]
-    public class TestCacheBuilders {
+    public class TestPackageCacheBuilders {
 
         /// <summary>
         /// Tests that the available builder will add packages marking them as NotInstalled.

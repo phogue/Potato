@@ -28,6 +28,11 @@ namespace Procon.Core.Shared.Models {
         public List<PackageWrapperModel> Packages { get; set; }
 
         /// <summary>
+        /// If this is the location orphaned packages should be added if we cannot find a source for them.
+        /// </summary>
+        public bool IsOrphanage { get; set; }
+
+        /// <summary>
         /// Initializes a repository model with the default values.
         /// </summary>
         public RepositoryModel() : base() {

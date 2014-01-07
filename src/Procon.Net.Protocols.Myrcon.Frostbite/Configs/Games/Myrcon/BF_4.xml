@@ -1093,8 +1093,7 @@
       <Name>DamageArea</Name>
       <FriendlyName>Damagearea</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
-        <string>None</string>
-        <string>Primary</string>
+        <string>General</string>
         <string>Suicide</string>
       </Tags>
     </Item>
@@ -1102,17 +1101,15 @@
       <Name>Death</Name>
       <FriendlyName>Death</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
-        <string>None</string>
-        <string>Primary</string>
-        <string>None</string>
+        <string>General</string>
+		<string>None</string>
       </Tags>
     </Item>
     <Item>
       <Name>Melee</Name>
       <FriendlyName>Melee</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
-        <string>None</string>
-        <string>Secondary</string>
+        <string>General</string>
         <string>Melee</string>
       </Tags>
     </Item>
@@ -1120,17 +1117,15 @@
       <Name>RoadKill</Name>
       <FriendlyName>RoadKill</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
-        <string>None</string>
-        <string>Primary</string>
-        <string>None</string>
+        <string>General</string>
+        <string>Vehicle</string>
       </Tags>
     </Item>
     <Item>
       <Name>SoldierCollision</Name>
       <FriendlyName>Soldier collision</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
-        <string>None</string>
-        <string>Primary</string>
+        <string>General</string>
         <string>Suicide</string>
       </Tags>
     </Item>
@@ -1138,8 +1133,7 @@
       <Name>Suicide</Name>
       <FriendlyName>Suicide</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
-        <string>None</string>
-        <string>Primary</string>
+        <string>General</string>
         <string>Suicide</string>
       </Tags>
     </Item>
@@ -1147,7 +1141,7 @@
       <Name>U_870</Name>
       <FriendlyName>870 MCS</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
-        <string>None</string>
+        <string>General</string>
         <string>Primary</string>
         <string>Shotgun</string>
       </Tags>
@@ -1156,7 +1150,7 @@
       <Name>U_A91</Name>
       <FriendlyName>A-91</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
-        <string>None</string>
+        <string>General</string>
         <string>Primary</string>
         <string>Carbine</string>
       </Tags>
@@ -1165,7 +1159,7 @@
       <Name>U_ACR</Name>
       <FriendlyName>ACW-R</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
-        <string>None</string>
+        <string>General</string>
         <string>Primary</string>
         <string>Carbine</string>
       </Tags>
@@ -1184,7 +1178,7 @@
       <FriendlyName>M26 Mass under AEK-971</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
-        <string>Secondary</string>
+        <string>Attachment</string>
         <string>Shotgun</string>
       </Tags>
     </Item>
@@ -1193,7 +1187,7 @@
       <FriendlyName>M26 Mass Dart under AEK-971</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
-        <string>Secondary</string>
+        <string>Attachment</string>
         <string>Shotgun</string>
       </Tags>
     </Item>
@@ -1202,7 +1196,7 @@
       <FriendlyName>M26 Mass Frag under AEK-971</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
-        <string>Secondary</string>
+        <string>Attachment</string>
         <string>Shotgun</string>
       </Tags>
     </Item>
@@ -1211,7 +1205,7 @@
       <FriendlyName>M26 Mass Slug under AEK-971</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
-        <string>Secondary</string>
+        <string>Attachment</string>
         <string>Shotgun</string>
       </Tags>
     </Item>
@@ -1220,8 +1214,9 @@
       <FriendlyName>M320 FB under AEK-971</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
-        <string>Secondary</string>
+        <string>Attachment</string>
         <string>Impact</string>
+		<string>Grenade</string>
       </Tags>
     </Item>
     <Item>
@@ -1229,8 +1224,9 @@
       <FriendlyName>M320 HE under AEK-971</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
-        <string>Secondary</string>
+        <string>Attachment</string>
         <string>ProjectileExplosive</string>
+		<string>Grenade</string>
       </Tags>
     </Item>
     <Item>
@@ -1238,8 +1234,9 @@
       <FriendlyName>M320 LVG under AEK-971</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
-        <string>Secondary</string>
+        <string>Attachment</string>
         <string>ProjectileExplosive</string>
+		<string>Grenade</string>
       </Tags>
     </Item>
     <Item>
@@ -1247,7 +1244,7 @@
       <FriendlyName>M320 Dart under AEK-971</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
-        <string>Secondary</string>
+        <string>Attachment</string>
         <string>Shotgun</string>
       </Tags>
     </Item>
@@ -1256,8 +1253,9 @@
       <FriendlyName>M320 SMK under AEK-971</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
-        <string>Secondary</string>
+        <string>Attachment</string>
         <string>Impact</string>
+		<string>Grenade</string>
       </Tags>
     </Item>
     <Item>
@@ -1274,7 +1272,7 @@
       <FriendlyName>M26 Mass under AK-12</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
-        <string>Secondary</string>
+        <string>Attachment</string>
         <string>Shotgun</string>
       </Tags>
     </Item>
@@ -1283,7 +1281,7 @@
       <FriendlyName>M26 Mass Dart under AK-12</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
-        <string>Secondary</string>
+        <string>Attachment</string>
         <string>Shotgun</string>
       </Tags>
     </Item>
@@ -1292,8 +1290,9 @@
       <FriendlyName>M26 Mass Frag under AK-12</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
-        <string>Secondary</string>
+        <string>Attachment</string>
         <string>Shotgun</string>
+		<string>ProjectileExplosive</string>
       </Tags>
     </Item>
     <Item>
@@ -1301,7 +1300,7 @@
       <FriendlyName>M26 Mass Slug under AK-12</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
-        <string>Secondary</string>
+        <string>Attachment</string>
         <string>Shotgun</string>
       </Tags>
     </Item>
@@ -1310,8 +1309,9 @@
       <FriendlyName>M320 FB under AK-12</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
-        <string>Secondary</string>
+        <string>Attachment</string>
         <string>Impact</string>
+		<string>Grenade</string>
       </Tags>
     </Item>
     <Item>
@@ -1319,8 +1319,9 @@
       <FriendlyName>M320 HE under AK-12</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
-        <string>Secondary</string>
+        <string>Attachment</string>
         <string>ProjectileExplosive</string>
+		<string>Grenade</string>
       </Tags>
     </Item>
     <Item>
@@ -1328,8 +1329,9 @@
       <FriendlyName>M320 LVG under AK-12</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
-        <string>Secondary</string>
+        <string>Attachment</string>
         <string>ProjectileExplosive</string>
+		<string>Grenade</string>
       </Tags>
     </Item>
     <Item>
@@ -1337,7 +1339,7 @@
       <FriendlyName>M320 Dart under AK-12</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
-        <string>Secondary</string>
+        <string>Attachment</string>
         <string>Shotgun</string>
       </Tags>
     </Item>
@@ -1346,15 +1348,16 @@
       <FriendlyName>M320 SMK under AK-12</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
-        <string>Secondary</string>
+        <string>Attachment</string>
         <string>Impact</string>
+		<string>Grenade</string>
       </Tags>
     </Item>
     <Item>
       <Name>U_AK5C</Name>
       <FriendlyName>AK 5C</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
-        <string>None</string>
+        <string>General</string>
         <string>Primary</string>
         <string>Carbine</string>
       </Tags>
@@ -1363,7 +1366,7 @@
       <Name>U_AKU12</Name>
       <FriendlyName>AKU-12</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
-        <string>None</string>
+        <string>General</string>
         <string>Primary</string>
         <string>Carbine</string>
       </Tags>
@@ -1372,36 +1375,40 @@
       <Name>U_AMR2_CBQ</Name>
       <FriendlyName>AMR2-2 MID</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
-        <string>None</string>
+        <string>General</string>
         <string>Primary</string>
         <string>SniperRifle</string>
+		<string>BattlePickup</string>
       </Tags>
     </Item>
 	<Item>
       <Name>U_AMR2_MED</Name>
       <FriendlyName>AMR2-2 CQB</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
-        <string>None</string>
+        <string>General</string>
         <string>Primary</string>
         <string>SniperRifle</string>
+		<string>BattlePickup</string>
       </Tags>
     </Item>
     <Item>
       <Name>U_AMR2_MED</Name>
       <FriendlyName>AMR2-2 CQB</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
-        <string>None</string>
+        <string>General</string>
         <string>Primary</string>
         <string>SniperRifle</string>
+		<string>BattlePickup</string>
       </Tags>
     </Item>
     <Item>
       <Name>U_AT4</Name>
       <FriendlyName>AT-4</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
-        <string>Demolition</string>
-        <string>Secondary</string>
+        <string>General</string>
+        <string>RocketLauncher</string>
         <string>ProjectileExplosive</string>
+		<string>BattlePickup</string>
       </Tags>
     </Item>
     <Item>
@@ -1409,7 +1416,7 @@
       <FriendlyName>C4</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Recon</string>
-        <string>Secondary</string>
+        <string>Gadget</string>
         <string>Explosive</string>
       </Tags>
     </Item>
@@ -1418,7 +1425,7 @@
       <FriendlyName>C4</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Support</string>
-        <string>Secondary</string>
+        <string>Gadget</string>
         <string>Explosive</string>
       </Tags>
     </Item>
@@ -1426,7 +1433,7 @@
       <Name>U_CBJ-MS</Name>
       <FriendlyName>CBJ-MS</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
-        <string>Demolition</string>
+        <string>Engineer</string>
         <string>Primary</string>
         <string>SMG</string>
       </Tags>
@@ -1436,7 +1443,7 @@
       <FriendlyName>Claymore</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Support</string>
-        <string>Secondary</string>
+        <string>Gadget</string>
         <string>Explosive</string>
       </Tags>
     </Item>
@@ -1445,7 +1452,7 @@
       <FriendlyName>Claymore</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Recon</string>
-        <string>Secondary</string>
+        <string>Gadget</string>
         <string>Explosive</string>
       </Tags>
     </Item>
@@ -1472,7 +1479,7 @@
       <FriendlyName>M26 Mass under CZ-805</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
-        <string>Secondary</string>
+        <string>Attachment</string>
         <string>Shotgun</string>
       </Tags>
     </Item>
@@ -1481,7 +1488,7 @@
       <FriendlyName>M26 Mass Dart under CZ-805</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
-        <string>Secondary</string>
+        <string>Attachment</string>
         <string>Shotgun</string>
       </Tags>
     </Item>
@@ -1490,8 +1497,9 @@
       <FriendlyName>M26 Mass Frag under CZ-805</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
-        <string>Secondary</string>
+        <string>Attachment</string>
         <string>Shotgun</string>
+		<string>ProjectileExplosive</string>
       </Tags>
     </Item>
     <Item>
@@ -1499,7 +1507,7 @@
       <FriendlyName>M26 Mass Slug under CZ-805</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
-        <string>Secondary</string>
+        <string>Attachment</string>
         <string>Shotgun</string>
       </Tags>
     </Item>
@@ -1508,8 +1516,9 @@
       <FriendlyName>M320 FB under CZ-805</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
-        <string>Secondary</string>
+        <string>Attachment</string>
         <string>Impact</string>
+		<string>Grenade</string>
       </Tags>
     </Item>
     <Item>
@@ -1517,8 +1526,9 @@
       <FriendlyName>M320 HE under CZ-805</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
-        <string>Secondary</string>
+        <string>Attachment</string>
         <string>ProjectileExplosive</string>
+		<string>Grenade</string>
       </Tags>
     </Item>
     <Item>
@@ -1526,8 +1536,9 @@
       <FriendlyName>M320 LVG under CZ-805</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
-        <string>Secondary</string>
+        <string>Attachment</string>
         <string>ProjectileExplosive</string>
+		<string>Grenade</string>
       </Tags>
     </Item>
     <Item>
@@ -1535,7 +1546,7 @@
       <FriendlyName>M320 Dart under CZ-805</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
-        <string>Secondary</string>
+        <string>Attachment</string>
         <string>Shotgun</string>
       </Tags>
     </Item>
@@ -1544,16 +1555,16 @@
       <FriendlyName>M320 SMK under CZ-805</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
-        <string>Secondary</string>
+        <string>Attachment</string>
         <string>Impact</string>
+		<string>Grenade</string>
       </Tags>
     </Item>
     <Item>
       <Name>U_CZ75</Name>
       <FriendlyName>CZ-75</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
-        <string>None</string>
-        <string>Auxiliary</string>
+        <string>General</string>
         <string>Handgun</string>
       </Tags>
     </Item>
@@ -1561,7 +1572,7 @@
       <Name>U_DBV12</Name>
       <FriendlyName>DBV-12</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
-        <string>None</string>
+        <string>General</string>
         <string>Primary</string>
         <string>Shotgun</string>
       </Tags>
@@ -1571,8 +1582,8 @@
       <FriendlyName>Defibrilator</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
-        <string>Secondary</string>
-        <string>Melee</string>
+        <string>Gadget</string>
+        <string>None</string>
       </Tags>
     </Item>
     <Item>
@@ -1588,8 +1599,9 @@
       <Name>U_FGM148</Name>
       <FriendlyName>FGM-148 Javelin</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
-        <string>Demolition</string>
-        <string>Secondary</string>
+        <string>Engineer</string>
+		<string>Gadget</string>
+        <string>RocketLauncher</string>
         <string>ProjectileExplosive</string>
       </Tags>
     </Item>
@@ -1597,8 +1609,9 @@
       <Name>U_FIM92</Name>
       <FriendlyName>FIM-92 Stinger</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
-        <string>Demolition</string>
-        <string>Secondary</string>
+        <string>Engineer</string>
+		<string>Gadget</string>
+        <string>RocketLauncher</string>
         <string>ProjectileExplosive</string>
       </Tags>
     </Item>
@@ -1606,17 +1619,16 @@
       <Name>U_Flashbang</Name>
       <FriendlyName>Flashbang</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
-        <string>None</string>
-        <string>Auxiliary</string>
+        <string>General</string>
         <string>Explosive</string>
+		<string>Grenade</string>
       </Tags>
     </Item>
     <Item>
       <Name>U_FN57</Name>
       <FriendlyName>FN57</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
-        <string>None</string>
-        <string>Auxiliary</string>
+        <string>General</string>
         <string>Handgun</string>
       </Tags>
     </Item>
@@ -1633,7 +1645,7 @@
       <Name>U_G36C</Name>
       <FriendlyName>G36C</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
-        <string>None</string>
+        <string>General</string>
         <string>Primary</string>
         <string>Carbine</string>
       </Tags>
@@ -1642,7 +1654,7 @@
       <Name>U_GalilACE</Name>
       <FriendlyName>ACE 21 CQB</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
-        <string>None</string>
+        <string>General</string>
         <string>Primary</string>
         <string>Carbine</string>
       </Tags>
@@ -1660,7 +1672,7 @@
       <Name>U_GalilACE52</Name>
       <FriendlyName>ACE 52 CQB</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
-        <string>None</string>
+        <string>General</string>
         <string>Primary</string>
         <string>Carbine</string>
       </Tags>
@@ -1669,7 +1681,7 @@
       <Name>U_GalilACE53</Name>
       <FriendlyName>ACE 53 SV</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
-        <string>None</string>
+        <string>General</string>
         <string>Primary</string>
         <string>DMR</string>
       </Tags>
@@ -1678,8 +1690,7 @@
       <Name>U_Glock18</Name>
       <FriendlyName>G18</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
-        <string>None</string>
-        <string>Auxiliary</string>
+        <string>General</string>
         <string>Handgun</string>
       </Tags>
     </Item>
@@ -1687,16 +1698,16 @@
       <Name>U_Grenade_RGO</Name>
       <FriendlyName>RGO Impact</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
-        <string>None</string>
-        <string>Auxiliary</string>
+        <string>General</string>
         <string>Explosive</string>
+		<string>Grenade</string>
       </Tags>
     </Item>
     <Item>
       <Name>U_HAWK</Name>
       <FriendlyName>Hawk 12G</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
-        <string>None</string>
+        <string>General</string>
         <string>Primary</string>
         <string>Shotgun</string>
       </Tags>
@@ -1705,8 +1716,7 @@
       <Name>U_HK45C</Name>
       <FriendlyName>Compact 45</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
-        <string>None</string>
-        <string>Auxiliary</string>
+        <string>General</string>
         <string>Handgun</string>
       </Tags>
     </Item>
@@ -1723,7 +1733,7 @@
       <Name>U_JS2</Name>
       <FriendlyName>JS2</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
-        <string>Demolition</string>
+        <string>Engineer</string>
         <string>Primary</string>
         <string>SMG</string>
       </Tags>
@@ -1742,8 +1752,9 @@
       <FriendlyName>M320 FB under L85A2</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
-        <string>Secondary</string>
+        <string>Attachment</string>
         <string>Impact</string>
+		<string>Grenade</string>
       </Tags>
     </Item>
     <Item>
@@ -1751,8 +1762,9 @@
       <FriendlyName>M320 HE under L85A2</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
-        <string>Secondary</string>
+        <string>Attachment</string>
         <string>ProjectileExplosive</string>
+		<string>Grenade</string>
       </Tags>
     </Item>
     <Item>
@@ -1760,8 +1772,9 @@
       <FriendlyName>M320 LVG under L85A2</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
-        <string>Secondary</string>
+        <string>Attachment</string>
         <string>ProjectileExplosive</string>
+		<string>Grenade</string>
       </Tags>
     </Item>
     <Item>
@@ -1769,7 +1782,7 @@
       <FriendlyName>M320 Dart under L85A2</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
-        <string>Secondary</string>
+        <string>Attachment</string>
         <string>Shotgun</string>
       </Tags>
     </Item>
@@ -1778,8 +1791,9 @@
       <FriendlyName>M320 SMK under L85A2</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
-        <string>Secondary</string>
+        <string>Attachment</string>
         <string>Impact</string>
+		<string>Grenade</string>
       </Tags>
     </Item>
     <Item>
@@ -1804,7 +1818,7 @@
       <Name>U_M1014</Name>
       <FriendlyName>M1014</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
-        <string>None</string>
+        <string>General</string>
         <string>Primary</string>
         <string>Shotgun</string>
       </Tags>
@@ -1813,8 +1827,8 @@
       <Name>U_M15</Name>
       <FriendlyName>M15 AT Mine</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
-        <string>Demolition</string>
-        <string>Secondary</string>
+        <string>Engineer</string>
+        <string>Gadget</string>
         <string>Explosive</string>
       </Tags>
     </Item>
@@ -1832,7 +1846,7 @@
       <FriendlyName>M26 Mass under M16A4</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
-        <string>Secondary</string>
+        <string>Attachment</string>
         <string>Shotgun</string>
       </Tags>
     </Item>
@@ -1841,7 +1855,7 @@
       <FriendlyName>M26 Mass Dart under M16A4</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
-        <string>Secondary</string>
+        <string>Attachment</string>
         <string>Shotgun</string>
       </Tags>
     </Item>
@@ -1850,8 +1864,9 @@
       <FriendlyName>M26 Mass Frag under M16A4</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
-        <string>Secondary</string>
+        <string>Attachment</string>
         <string>Shotgun</string>
+		<string>ProjectileExplosive</string>
       </Tags>
     </Item>
     <Item>
@@ -1859,7 +1874,7 @@
       <FriendlyName>M26 Mass Slug under M16A4</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
-        <string>Secondary</string>
+        <string>Attachment</string>
         <string>Shotgun</string>
       </Tags>
     </Item>
@@ -1868,8 +1883,9 @@
       <FriendlyName>M320 FB under M16A4</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
-        <string>Secondary</string>
+        <string>Attachment</string>
         <string>Impact</string>
+		<string>Grenade</string>
       </Tags>
     </Item>
     <Item>
@@ -1877,8 +1893,9 @@
       <FriendlyName>M320 HE under M16A4</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
-        <string>Secondary</string>
+        <string>Attachment</string>
         <string>ProjectileExplosive</string>
+		<string>Grenade</string>
       </Tags>
     </Item>
     <Item>
@@ -1886,8 +1903,9 @@
       <FriendlyName>M320 LVG under M16A4</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
-        <string>Secondary</string>
+        <string>Attachment</string>
         <string>ProjectileExplosive</string>
+		<string>Grenade</string>
       </Tags>
     </Item>
     <Item>
@@ -1895,7 +1913,7 @@
       <FriendlyName>M320 Dart under M16A4</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
-        <string>Secondary</string>
+        <string>Attachment</string>
         <string>Shotgun</string>
       </Tags>
     </Item>
@@ -1904,16 +1922,16 @@
       <FriendlyName>M320 SMK under M16A4</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
-        <string>Secondary</string>
+        <string>Attachment</string>
         <string>Impact</string>
+		<string>Grenade</string>
       </Tags>
     </Item>
     <Item>
       <Name>U_M1911</Name>
       <FriendlyName>M1911</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
-        <string>None</string>
-        <string>Auxiliary</string>
+        <string>General</string>
         <string>Handgun</string>
       </Tags>
     </Item>
@@ -1949,7 +1967,7 @@
       <FriendlyName>M26 Mass</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
-        <string>Secondary</string>
+		<string>Gadget</string>
         <string>Shotgun</string>
       </Tags>
     </Item>
@@ -1958,7 +1976,7 @@
       <FriendlyName>M26 Mass Dart</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
-        <string>Secondary</string>
+		<string>Gadget</string>
         <string>Shotgun</string>
       </Tags>
     </Item>
@@ -1967,8 +1985,9 @@
       <FriendlyName>M26 Mass Frag</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
-        <string>Secondary</string>
+		<string>Gadget</string>
         <string>Shotgun</string>
+		<string>ProjectileExplosive</string>
       </Tags>
     </Item>
     <Item>
@@ -1976,7 +1995,7 @@
       <FriendlyName>M26 Mass Slug</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
-        <string>Secondary</string>
+		<string>Gadget</string>
         <string>Shotgun</string>
       </Tags>
     </Item>
@@ -1985,8 +2004,9 @@
       <FriendlyName>M320 Flash</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
-        <string>Secondary</string>
+        <string>Gadget</string>
         <string>Impact</string>
+		<string>Grenade</string>
       </Tags>
     </Item>
     <Item>
@@ -1994,8 +2014,9 @@
       <FriendlyName>M320 HE</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
-        <string>Secondary</string>
+        <string>Gadget</string>
         <string>ProjectileExplosive</string>
+		<string>Grenade</string>
       </Tags>
     </Item>
     <Item>
@@ -2003,8 +2024,9 @@
       <FriendlyName>M320 LVG</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
-        <string>Secondary</string>
+        <string>Gadget</string>
         <string>ProjectileExplosive</string>
+		<string>Grenade</string>
       </Tags>
     </Item>
     <Item>
@@ -2012,7 +2034,7 @@
       <FriendlyName>M320 Dart</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
-        <string>Secondary</string>
+        <string>Gadget</string>
         <string>Shotgun</string>
       </Tags>
     </Item>
@@ -2021,24 +2043,25 @@
       <FriendlyName>M320 SMK</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
-        <string>Secondary</string>
+        <string>Gadget</string>
         <string>Impact</string>
+		<string>Grenade</string>
       </Tags>
     </Item>
     <Item>
       <Name>U_M34</Name>
       <FriendlyName>M34 Incendiary</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
-        <string>None</string>
-        <string>Auxiliary</string>
+        <string>General</string>
         <string>Explosive</string>
+		<string>Grenade</string>
       </Tags>
     </Item>
     <Item>
       <Name>U_M39EBR</Name>
       <FriendlyName>M39 EMR</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
-        <string>None</string>
+        <string>General</string>
         <string>Primary</string>
         <string>DMR</string>
       </Tags>
@@ -2066,7 +2089,7 @@
       <FriendlyName>M26 Mass under M416</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
-        <string>Secondary</string>
+        <string>Attachment</string>
         <string>Shotgun</string>
       </Tags>
     </Item>
@@ -2075,7 +2098,7 @@
       <FriendlyName>M26 Dart under M416</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
-        <string>Secondary</string>
+        <string>Attachment</string>
         <string>Shotgun</string>
       </Tags>
     </Item>
@@ -2084,8 +2107,9 @@
       <FriendlyName>M26 Frag under M416</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
-        <string>Secondary</string>
+        <string>Attachment</string>
         <string>Shotgun</string>
+		<string>ProjectileExplosive</string>
       </Tags>
     </Item>
     <Item>
@@ -2093,7 +2117,7 @@
       <FriendlyName>M26 Slug under M416</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
-        <string>Secondary</string>
+        <string>Attachment</string>
         <string>Shotgun</string>
       </Tags>
     </Item>
@@ -2102,8 +2126,9 @@
       <FriendlyName>M320 FB under M416</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
-        <string>Secondary</string>
+        <string>Attachment</string>
         <string>Impact</string>
+		<string>Grenade</string>
       </Tags>
     </Item>
     <Item>
@@ -2111,8 +2136,9 @@
       <FriendlyName>M320 HE under M416</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
-        <string>Secondary</string>
+        <string>Attachment</string>
         <string>ProjectileExplosive</string>
+		<string>Grenade</string>
       </Tags>
     </Item>
     <Item>
@@ -2120,8 +2146,9 @@
       <FriendlyName>M320 LVG under M416</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
-        <string>Secondary</string>
+        <string>Attachment</string>
         <string>ProjectileExplosive</string>
+		<string>Grenade</string>
       </Tags>
     </Item>
     <Item>
@@ -2129,7 +2156,7 @@
       <FriendlyName>M320 Dart under M416</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
-        <string>Secondary</string>
+        <string>Attachment</string>
         <string>Shotgun</string>
       </Tags>
     </Item>
@@ -2138,15 +2165,16 @@
       <FriendlyName>M320 SMK under M416</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
-        <string>Secondary</string>
+        <string>Attachment</string>
         <string>Impact</string>
+		<string>Grenade</string>
       </Tags>
     </Item>
     <Item>
       <Name>U_M4A1</Name>
       <FriendlyName>M4A1</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
-        <string>None</string>
+        <string>General</string>
         <string>Primary</string>
         <string>Carbine</string>
       </Tags>
@@ -2155,8 +2183,8 @@
       <Name>U_M67</Name>
       <FriendlyName>M67 Frag</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
-        <string>None</string>
-        <string>Auxiliary</string>
+        <string>General</string>
+        <string>Grenade</string>
         <string>Explosive</string>
       </Tags>
     </Item>
@@ -2164,35 +2192,37 @@
       <Name>U_M82A3</Name>
       <FriendlyName>M82A3</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
-        <string>None</string>
+        <string>General</string>
         <string>Primary</string>
         <string>SniperRifle</string>
+		<string>BattlePickup</string>
       </Tags>
     </Item>
     <Item>
       <Name>U_M82A3_CQB</Name>
       <FriendlyName>M82A3 CQB</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
-        <string>None</string>
+        <string>General</string>
         <string>Primary</string>
         <string>SniperRifle</string>
+		<string>BattlePickup</string>
       </Tags>
     </Item>
     <Item>
       <Name>U_M82A3_MED</Name>
       <FriendlyName>M82A3 MID</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
-        <string>None</string>
+        <string>General</string>
         <string>Primary</string>
         <string>SniperRifle</string>
+		<string>BattlePickup</string>
       </Tags>
     </Item>
     <Item>
       <Name>U_M9</Name>
       <FriendlyName>M9</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
-        <string>None</string>
-        <string>Auxiliary</string>
+        <string>General</string>
         <string>Handgun</string>
       </Tags>
     </Item>
@@ -2200,8 +2230,7 @@
       <Name>U_M93R</Name>
       <FriendlyName>93R</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
-        <string>None</string>
-        <string>Auxiliary</string>
+        <string>General</string>
         <string>Handgun</string>
       </Tags>
     </Item>
@@ -2218,7 +2247,7 @@
       <Name>U_MagpulPDR</Name>
       <FriendlyName>PDW-R</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
-        <string>Demolition</string>
+        <string>Engineer</string>
         <string>Primary</string>
         <string>SMG</string>
       </Tags>
@@ -2228,8 +2257,8 @@
       <FriendlyName>Medkit</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
-        <string>Auxiliary</string>
-        <string>Nonlethal</string>
+        <string>Gadget</string>
+        <string>None</string>
       </Tags>
     </Item>
     <Item>
@@ -2245,16 +2274,18 @@
       <Name>U_MGL</Name>
       <FriendlyName>M32 MGL</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
-        <string>None</string>
+        <string>General</string>
         <string>Primary</string>
         <string>ProjectileExplosive</string>
+		<string>Grenade</string>
+		<string>BattlePickup</string>
       </Tags>
     </Item>
     <Item>
       <Name>U_MK11</Name>
       <FriendlyName>MK11 Mod 0</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
-        <string>None</string>
+        <string>General</string>
         <string>Primary</string>
         <string>DMR</string>
       </Tags>
@@ -2263,7 +2294,7 @@
       <Name>U_MP7</Name>
       <FriendlyName>MP7</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
-        <string>Demolition</string>
+        <string>Engineer</string>
         <string>Primary</string>
         <string>SMG</string>
       </Tags>
@@ -2272,8 +2303,7 @@
       <Name>U_MP412Rex</Name>
       <FriendlyName>M412 Rex</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
-        <string>None</string>
-        <string>Auxiliary</string>
+        <string>General</string>
         <string>Handgun</string>
       </Tags>
     </Item>
@@ -2281,8 +2311,7 @@
       <Name>U_MP443</Name>
       <FriendlyName>MP443</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
-        <string>None</string>
-        <string>Auxiliary</string>
+        <string>General</string>
         <string>Handgun</string>
       </Tags>
     </Item>
@@ -2290,7 +2319,7 @@
       <Name>U_MTAR21</Name>
       <FriendlyName>MTAR-21</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
-        <string>None</string>
+        <string>General</string>
         <string>Primary</string>
         <string>Carbine</string>
       </Tags>
@@ -2299,7 +2328,7 @@
       <Name>U_MX4</Name>
       <FriendlyName>MX4</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
-        <string>Demolition</string>
+        <string>Engineer</string>
         <string>Primary</string>
         <string>SMG</string>
       </Tags>
@@ -2308,8 +2337,8 @@
       <Name>U_NLAW</Name>
       <FriendlyName>MBT NLAW</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
-        <string>Demolition</string>
-        <string>Secondary</string>
+        <string>Engineer</string>
+        <string>RocketLauncher</string>
         <string>ProjectileExplosive</string>
       </Tags>
     </Item>
@@ -2317,8 +2346,7 @@
       <Name>U_P226</Name>
       <FriendlyName>P226</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
-        <string>None</string>
-        <string>Auxiliary</string>
+        <string>General</string>
         <string>Handgun</string>
       </Tags>
     </Item>
@@ -2326,7 +2354,7 @@
       <Name>U_P90</Name>
       <FriendlyName>P90</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
-        <string>Demolition</string>
+        <string>Engineer</string>
         <string>Primary</string>
         <string>SMG</string>
       </Tags>
@@ -2345,15 +2373,15 @@
       <FriendlyName>Portable Medkit</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
-        <string>Auxiliary</string>
-        <string>Nonlethal</string>
+        <string>Gadget</string>
+        <string>None</string>
       </Tags>
     </Item>
     <Item>
       <Name>U_PP2000</Name>
       <FriendlyName>PP-2000</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
-        <string>Demolition</string>
+        <string>Engineer</string>
         <string>Primary</string>
         <string>SMG</string>
       </Tags>
@@ -2371,7 +2399,7 @@
       <Name>U_QBS09</Name>
       <FriendlyName>QBS-09</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
-        <string>None</string>
+        <string>General</string>
         <string>Primary</string>
         <string>Shotgun</string>
       </Tags>
@@ -2380,7 +2408,7 @@
       <Name>U_QBU88</Name>
       <FriendlyName>QBU-88</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
-        <string>None</string>
+        <string>General</string>
         <string>Primary</string>
         <string>DMR</string>
       </Tags>
@@ -2399,7 +2427,7 @@
       <FriendlyName>M26 Mass under QBZ-95-1</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
-        <string>Secondary</string>
+        <string>Attachment</string>
         <string>Shotgun</string>
       </Tags>
     </Item>
@@ -2408,7 +2436,7 @@
       <FriendlyName>M26 Dart under QBZ-95-1</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
-        <string>Secondary</string>
+        <string>Attachment</string>
         <string>Shotgun</string>
       </Tags>
     </Item>
@@ -2417,8 +2445,9 @@
       <FriendlyName>M26 Frag under QBZ-95-1</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
-        <string>Secondary</string>
+        <string>Attachment</string>
         <string>Shotgun</string>
+		<string>ProjectileExplosive</string>
       </Tags>
     </Item>
     <Item>
@@ -2426,7 +2455,7 @@
       <FriendlyName>M26 Slug under QBZ-95-1</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
-        <string>Secondary</string>
+        <string>Attachment</string>
         <string>Shotgun</string>
       </Tags>
     </Item>
@@ -2435,8 +2464,9 @@
       <FriendlyName>M320 FB under QBZ-95-1</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
-        <string>Secondary</string>
+        <string>Attachment</string>
         <string>Impact</string>
+		<string>Grenade</string>
       </Tags>
     </Item>
     <Item>
@@ -2444,8 +2474,9 @@
       <FriendlyName>M320 HE under QBZ-95-1</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
-        <string>Secondary</string>
+        <string>Attachment</string>
         <string>ProjectileExplosive</string>
+		<string>Grenade</string>
       </Tags>
     </Item>
     <Item>
@@ -2453,8 +2484,9 @@
       <FriendlyName>M320 LVG under QBZ-95-1</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
-        <string>Secondary</string>
+        <string>Attachment</string>
         <string>ProjectileExplosive</string>
+		<string>Grenade</string>
       </Tags>
     </Item>
     <Item>
@@ -2462,7 +2494,7 @@
       <FriendlyName>M320 Dart under QBZ-95-1</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
-        <string>Secondary</string>
+        <string>Attachment</string>
         <string>Shotgun</string>
       </Tags>
     </Item>
@@ -2471,16 +2503,16 @@
       <FriendlyName>M320 SMK under QBZ-95-1</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
-        <string>Secondary</string>
+        <string>Attachment</string>
         <string>Impact</string>
+		<string>Grenade</string>
       </Tags>
     </Item>
     <Item>
       <Name>U_QSZ92</Name>
       <FriendlyName>QSZ-92</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
-        <string>None</string>
-        <string>Auxiliary</string>
+        <string>General</string>
         <string>Handgun</string>
       </Tags>
     </Item>
@@ -2488,16 +2520,16 @@
       <Name>U_Repairtool</Name>
       <FriendlyName>Repair Tool</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
-        <string>Demolition</string>
-        <string>Secondary</string>
-        <string>Melee</string>
+        <string>Engineer</string>
+        <string>Gadget</string>
+        <string>None</string>
       </Tags>
     </Item>
     <Item>
       <Name>U_RFB</Name>
       <FriendlyName>RFB</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
-        <string>None</string>
+        <string>General</string>
         <string>Primary</string>
         <string>DMR</string>
       </Tags>
@@ -2506,8 +2538,9 @@
       <Name>U_RPG7</Name>
       <FriendlyName>RPG-7V2</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
-        <string>Demolition</string>
-        <string>Secondary</string>
+        <string>Engineer</string>
+        <string>Gadget</string>
+		<string>RocketLauncher</string>
         <string>ProjectileExplosive</string>
       </Tags>
     </Item>
@@ -2533,8 +2566,9 @@
       <Name>U_Sa18IGLA</Name>
       <FriendlyName>SA-18 IGLA</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
-        <string>Demolition</string>
-        <string>Secondary</string>
+        <string>Engineer</string>
+        <string>Gadget</string>
+		<string>RocketLauncher</string>
         <string>ProjectileExplosive</string>
       </Tags>
     </Item>
@@ -2542,7 +2576,7 @@
       <Name>U_SAIGA_20K</Name>
       <FriendlyName>Saiga 12K</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
-        <string>None</string>
+        <string>General</string>
         <string>Primary</string>
         <string>Shotgun</string>
       </Tags>
@@ -2561,7 +2595,7 @@
       <FriendlyName>M26 Mass under SAR-21</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
-        <string>Secondary</string>
+        <string>Attachment</string>
         <string>Shotgun</string>
       </Tags>
     </Item>
@@ -2570,7 +2604,7 @@
       <FriendlyName>M26 Dart under SAR-21</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
-        <string>Secondary</string>
+        <string>Attachment</string>
         <string>Shotgun</string>
       </Tags>
     </Item>
@@ -2579,8 +2613,9 @@
       <FriendlyName>M26 Frag under SAR-21</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
-        <string>Secondary</string>
+        <string>Attachment</string>
         <string>Shotgun</string>
+		<string>ProjectileExplosive</string>
       </Tags>
     </Item>
     <Item>
@@ -2588,7 +2623,7 @@
       <FriendlyName>M26 Slug under SAR-21</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
-        <string>Secondary</string>
+        <string>Attachment</string>
         <string>Shotgun</string>
       </Tags>
     </Item>
@@ -2597,8 +2632,9 @@
       <FriendlyName>M320 FB under SAR-21</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
-        <string>Secondary</string>
+        <string>Attachment</string>
         <string>Impact</string>
+		<string>Grenade</string>
       </Tags>
     </Item>
     <Item>
@@ -2606,8 +2642,9 @@
       <FriendlyName>M320 HE under SAR-21</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
-        <string>Secondary</string>
+        <string>Attachment</string>
         <string>ProjectileExplosive</string>
+		<string>Grenade</string>
       </Tags>
     </Item>
     <Item>
@@ -2615,8 +2652,9 @@
       <FriendlyName>M320 LVG under SAR-21</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
-        <string>Secondary</string>
+        <string>Attachment</string>
         <string>ProjectileExplosive</string>
+		<string>Grenade</string>
       </Tags>
     </Item>
     <Item>
@@ -2624,7 +2662,7 @@
       <FriendlyName>M320 Dart under SAR-21</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
-        <string>Secondary</string>
+        <string>Attachment</string>
         <string>Shotgun</string>
       </Tags>
     </Item>
@@ -2633,8 +2671,9 @@
       <FriendlyName>M320 SMK under SAR-21</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
-        <string>Secondary</string>
+        <string>Attachment</string>
         <string>Impact</string>
+		<string>Grenade</string>
       </Tags>
     </Item>
     <Item>
@@ -2651,7 +2690,7 @@
       <FriendlyName>M26 Mass under SCAR-H</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
-        <string>Secondary</string>
+        <string>Attachment</string>
         <string>Shotgun</string>
       </Tags>
     </Item>
@@ -2660,7 +2699,7 @@
       <FriendlyName>M26 Dart under SCAR-H</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
-        <string>Secondary</string>
+        <string>Attachment</string>
         <string>Shotgun</string>
       </Tags>
     </Item>
@@ -2669,8 +2708,9 @@
       <FriendlyName>M26 Frag under SCAR-H</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
-        <string>Secondary</string>
+        <string>Attachment</string>
         <string>Shotgun</string>
+		<string>ProjectileExplosive</string>
       </Tags>
     </Item>
     <Item>
@@ -2678,7 +2718,7 @@
       <FriendlyName>M26 Slug under SCAR-H</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
-        <string>Secondary</string>
+        <string>Attachment</string>
         <string>Shotgun</string>
       </Tags>
     </Item>
@@ -2687,8 +2727,9 @@
       <FriendlyName>M320 FB under SCAR-H</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
-        <string>Secondary</string>
+        <string>Attachment</string>
         <string>Impact</string>
+		<string>Grenade</string>
       </Tags>
     </Item>
     <Item>
@@ -2696,8 +2737,9 @@
       <FriendlyName>M320 HE under SCAR-H</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
-        <string>Secondary</string>
+        <string>Attachment</string>
         <string>ProjectileExplosive</string>
+		<string>Grenade</string>
       </Tags>
     </Item>
     <Item>
@@ -2705,8 +2747,9 @@
       <FriendlyName>M320 LVG under SCAR-H</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
-        <string>Secondary</string>
+        <string>Attachment</string>
         <string>ProjectileExplosive</string>
+		<string>Grenade</string>
       </Tags>
     </Item>
     <Item>
@@ -2714,7 +2757,7 @@
       <FriendlyName>M320 Dart under SCAR-H</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
-        <string>Secondary</string>
+        <string>Attachment</string>
         <string>Shotgun</string>
       </Tags>
     </Item>
@@ -2723,15 +2766,16 @@
       <FriendlyName>M320 SMK under SCAR-H</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
-        <string>Secondary</string>
+        <string>Attachment</string>
         <string>Impact</string>
+		<string>Grenade</string>
       </Tags>
     </Item>
     <Item>
       <Name>U_SCAR-HSV</Name>
       <FriendlyName>SCAR-H SV</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
-        <string>None</string>
+        <string>General</string>
         <string>Primary</string>
         <string>DMR</string>
       </Tags>
@@ -2740,7 +2784,7 @@
       <Name>U_Scorpion</Name>
       <FriendlyName>Skorpion Evo 3 A1</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
-        <string>Demolition</string>
+        <string>Engineer</string>
         <string>Primary</string>
         <string>SMG</string>
       </Tags>
@@ -2758,8 +2802,8 @@
       <Name>U_SerbuShorty</Name>
       <FriendlyName>Shorty 12G</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
-        <string>None</string>
-        <string>Auxiliary</string>
+        <string>General</string>
+        <string>Handgun</string>
         <string>Shotgun</string>
       </Tags>
     </Item>
@@ -2767,7 +2811,7 @@
       <Name>U_SG553LB</Name>
       <FriendlyName>SG553</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
-        <string>None</string>
+        <string>General</string>
         <string>Primary</string>
         <string>Carbine</string>
       </Tags>
@@ -2776,7 +2820,7 @@
       <Name>U_SKS</Name>
       <FriendlyName>SKS</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
-        <string>None</string>
+        <string>General</string>
         <string>Primary</string>
         <string>DMR</string>
       </Tags>
@@ -2785,8 +2829,8 @@
       <Name>U_SLAM</Name>
       <FriendlyName>M2 SLAM</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
-        <string>None</string>
-        <string>Auxiliary</string>
+        <string>Engineer</string>
+        <string>Gadget</string>
         <string>Explosive</string>
       </Tags>
     </Item>
@@ -2794,8 +2838,9 @@
       <Name>U_SMAW</Name>
       <FriendlyName>MK153 SMAW</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
-        <string>Demolition</string>
-        <string>Secondary</string>
+        <string>Engineer</string>
+        <string>Gadget</string>
+		<string>RocketLauncher</string>
         <string>ProjectileExplosive</string>
       </Tags>
     </Item>
@@ -2803,7 +2848,7 @@
       <Name>U_SPAS12</Name>
       <FriendlyName>SPAS-12</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
-        <string>None</string>
+        <string>General</string>
         <string>Primary</string>
         <string>Shotgun</string>
       </Tags>
@@ -2812,8 +2857,9 @@
       <Name>U_SRAW</Name>
       <FriendlyName>FGM-172 SRAW</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
-        <string>Demolition</string>
-        <string>Secondary</string>
+        <string>Engineer</string>
+        <string>Gadget</string>
+		<string>RocketLauncher</string>
         <string>ProjectileExplosive</string>
       </Tags>
     </Item>
@@ -2830,8 +2876,9 @@
       <Name>U_Starstreak</Name>
       <FriendlyName>Starstreak AA Missile</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
-        <string>Demolition</string>
-        <string>Secondary</string>
+        <string>Engineer</string>
+        <string>Gadget</string>
+		<string>RocketLauncher</string>
         <string>ProjectileExplosive</string>
       </Tags>
     </Item>
@@ -2849,7 +2896,7 @@
       <FriendlyName>M26 Mass under AUG A3</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
-        <string>Secondary</string>
+        <string>Attachment</string>
         <string>Shotgun</string>
       </Tags>
     </Item>
@@ -2858,7 +2905,7 @@
       <FriendlyName>M26 Dart under AUG A3</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
-        <string>Secondary</string>
+        <string>Attachment</string>
         <string>Shotgun</string>
       </Tags>
     </Item>
@@ -2867,8 +2914,9 @@
       <FriendlyName>M26 Frag under AUG A3</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
-        <string>Secondary</string>
+        <string>Attachment</string>
         <string>Shotgun</string>
+		<string>ProjectileExplosive</string>
       </Tags>
     </Item>
     <Item>
@@ -2876,7 +2924,7 @@
       <FriendlyName>M26 Slug under AUG A3</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
-        <string>Secondary</string>
+        <string>Attachment</string>
         <string>Shotgun</string>
       </Tags>
     </Item>
@@ -2885,8 +2933,9 @@
       <FriendlyName>M320 FB under AUG A3</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
-        <string>Secondary</string>
+        <string>Attachment</string>
         <string>Impact</string>
+		<string>Grenade</string>
       </Tags>
     </Item>
     <Item>
@@ -2894,8 +2943,9 @@
       <FriendlyName>M320 HE under AUG A3</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
-        <string>Secondary</string>
+        <string>Attachment</string>
         <string>ProjectileExplosive</string>
+		<string>Grenade</string>
       </Tags>
     </Item>
     <Item>
@@ -2903,8 +2953,9 @@
       <FriendlyName>M320 LVG under AUG A3</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
-        <string>Secondary</string>
+        <string>Attachment</string>
         <string>ProjectileExplosive</string>
+		<string>Grenade</string>
       </Tags>
     </Item>
     <Item>
@@ -2912,7 +2963,7 @@
       <FriendlyName>M320 Dart under AUG A3</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
-        <string>Secondary</string>
+        <string>Attachment</string>
         <string>Shotgun</string>
       </Tags>
     </Item>
@@ -2921,8 +2972,9 @@
       <FriendlyName>M320 SMK under AUG A3</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Assault</string>
-        <string>Secondary</string>
+        <string>Attachment</string>
         <string>Impact</string>
+		<string>Grenade</string>
       </Tags>
     </Item>
     <Item>
@@ -2947,7 +2999,7 @@
       <Name>U_Taurus44</Name>
       <FriendlyName>.44 Magnum</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
-        <string>None</string>
+        <string>General</string>
         <string>Auxiliary</string>
         <string>Handgun</string>
       </Tags>
@@ -2956,9 +3008,9 @@
       <Name>U_Tomahawk</Name>
       <FriendlyName>Tomahawk</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
-        <string>None</string>
-        <string>Primary</string>
-        <string>VehicleLight</string>
+        <string>General</string>
+        <string>Commander</string>
+        <string>ProjectileExplosive</string>
       </Tags>
     </Item>
     <Item>
@@ -2974,7 +3026,7 @@
       <Name>U_Type95B</Name>
       <FriendlyName>Type-95B-1</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
-        <string>None</string>
+        <string>General</string>
         <string>Primary</string>
         <string>Carbine</string>
       </Tags>
@@ -2992,7 +3044,7 @@
       <Name>U_UMP9</Name>
       <FriendlyName>UMP-9</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
-        <string>Demolition</string>
+        <string>Engineer</string>
         <string>Primary</string>
         <string>SMG</string>
       </Tags>
@@ -3001,7 +3053,7 @@
       <Name>U_UMP45</Name>
       <FriendlyName>UMP-45</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
-        <string>Demolition</string>
+        <string>Engineer</string>
         <string>Primary</string>
         <string>SMG</string>
       </Tags>
@@ -3010,7 +3062,7 @@
       <Name>U_USAS-12</Name>
       <FriendlyName>USAS-12</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
-        <string>None</string>
+        <string>General</string>
         <string>Primary</string>
         <string>Shotgun</string>
       </Tags>
@@ -3019,7 +3071,7 @@
       <Name>U_USAS-12_Nightvision</Name>
       <FriendlyName>USAS-12 FLIR</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
-        <string>None</string>
+        <string>General</string>
         <string>Primary</string>
         <string>Shotgun</string>
       </Tags>
@@ -3028,7 +3080,7 @@
       <Name>U_UTAS</Name>
       <FriendlyName>UTS 15</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
-        <string>None</string>
+        <string>General</string>
         <string>Primary</string>
         <string>Shotgun</string>
       </Tags>
@@ -3037,8 +3089,8 @@
       <Name>U_V40</Name>
       <FriendlyName>V40 Mini</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
-        <string>None</string>
-        <string>Auxiliary</string>
+        <string>General</string>
+        <string>Grenade</string>
         <string>Explosive</string>
       </Tags>
     </Item>
@@ -3047,7 +3099,7 @@
       <FriendlyName>XM25 Airburst</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Support</string>
-        <string>Secondary</string>
+        <string>Gadget</string>
         <string>ProjectileExplosive</string>
       </Tags>
     </Item>
@@ -3056,7 +3108,7 @@
       <FriendlyName>XM25 Airburst Dart</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Support</string>
-        <string>Secondary</string>
+        <string>Gadget</string>
         <string>Shotgun</string>
       </Tags>
     </Item>
@@ -3065,8 +3117,9 @@
       <FriendlyName>XM25 Airburst SMK</FriendlyName>
       <Tags xmlns:p6="http://www.w3.org/2001/XMLSchema-instance" p6:type="ArrayOfString">
         <string>Support</string>
-        <string>Secondary</string>
+        <string>Gadget</string>
         <string>Impact</string>
+		<string>Grenade</string>
       </Tags>
     </Item>
   </Items>

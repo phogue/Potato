@@ -28,7 +28,7 @@ namespace Procon.Core.Test.CoreInstance {
         /// </summary>
         [Test]
         public void TestInstanceRemoveConnectionByGuidSuccess() {
-            var instance = new Instance().Execute() as Instance;
+            var instance = new InstanceController().Execute() as InstanceController;
 
             instance.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
@@ -65,7 +65,7 @@ namespace Procon.Core.Test.CoreInstance {
         /// </summary>
         [Test]
         public void TestInstanceRemoveConnectionDoesNotExist() {
-            var instance = new Instance().Execute() as Instance;
+            var instance = new InstanceController().Execute() as InstanceController;
 
             // Now readd the same connection we just added.
             CommandResultArgs result = instance.Tunnel(new Command() {
@@ -89,7 +89,7 @@ namespace Procon.Core.Test.CoreInstance {
         /// </summary>
         [Test]
         public void TestInstanceRemoveConnectionInsufficientPermissions() {
-            var instance = new Instance().Execute() as Instance;
+            var instance = new InstanceController().Execute() as InstanceController;
 
             CommandResultArgs result = instance.Tunnel(new Command() {
                 Origin = CommandOrigin.Remote,
@@ -113,7 +113,7 @@ namespace Procon.Core.Test.CoreInstance {
         /// </summary>
         [Test]
         public void TestInstanceRemoveConnectionSuccess() {
-            var instance = new Instance().Execute() as Instance;
+            var instance = new InstanceController().Execute() as InstanceController;
 
             instance.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,

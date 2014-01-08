@@ -21,7 +21,7 @@ namespace Procon.Core {
     /// <summary>
     /// The core controller of Procon, an instance of Procon.
     /// </summary>
-    public class Instance : CoreController, ISharedReferenceAccess, IService {
+    public class InstanceController : CoreController, ISharedReferenceAccess, IService {
         /// <summary>
         /// List of game connections
         /// </summary>
@@ -63,7 +63,7 @@ namespace Procon.Core {
         /// <summary>
         /// Creates a new instance of Procon, setting up command server, packages and tasks
         /// </summary>
-        public Instance() : base() {
+        public InstanceController() : base() {
             this.Shared = new SharedReferences();
 
             this.Connections = new List<ConnectionController>();

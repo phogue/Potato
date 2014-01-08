@@ -48,7 +48,7 @@ namespace Procon.Core.Connections {
         /// <summary>
         /// The instance of procon that owns this connection.
         /// </summary>
-        public Instance Instance { get; set; }
+        public InstanceController Instance { get; set; }
 
         public ProtocolState ProtocolState {
             get { return this.Protocol != null ? this.Protocol.State : null; }

@@ -38,14 +38,14 @@ namespace Procon.Core.Test.CoreInstance {
         public void TestInstanceCommandScopeNoScope() {
             var variables = new VariableController();
 
-            var instance = new Instance() {
+            var instance = new InstanceController() {
                 Shared = {
                     Variables = variables,
                     Security = new SecurityController(),
                     Events = new EventsController(),
                     Languages = new LanguageController()
                 }
-            }.Execute() as Instance;
+            }.Execute() as InstanceController;
 
             instance.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
@@ -85,14 +85,14 @@ namespace Procon.Core.Test.CoreInstance {
         public void TestInstanceCommandScopeWithConnectionScope() {
             var variables = new VariableController();
 
-            var instance = new Instance() {
+            var instance = new InstanceController() {
                 Shared = {
                     Variables = variables,
                     Security = new SecurityController(),
                     Events = new EventsController(),
                     Languages = new LanguageController()
                 }
-            }.Execute() as Instance;
+            }.Execute() as InstanceController;
 
             instance.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
@@ -133,14 +133,14 @@ namespace Procon.Core.Test.CoreInstance {
         /// <remarks>We test individual controllers configs in other unit tests.</remarks>
         [Test]
         public void TestInstanceConfigWritten() {
-            var instance = new Instance() {
+            var instance = new InstanceController() {
                 Shared = {
                     Variables = new VariableController().Execute() as VariableController,
                     Security = new SecurityController().Execute() as SecurityController,
                     Events = new EventsController().Execute() as EventsController,
                     Languages = new LanguageController().Execute() as LanguageController
                 }
-            }.Execute() as Instance;
+            }.Execute() as InstanceController;
 
             // Add a single connection, just so we can validate that it has been removed.
             instance.Tunnel(new Command() {
@@ -161,7 +161,7 @@ namespace Procon.Core.Test.CoreInstance {
             var loadConfig = new Config();
             loadConfig.Load(ConfigFileInfo);
 
-            var commands = loadConfig.Root.Descendants("Instance").Elements("Command").Where(e => e.Element("Name") != null && e.Element("Name").Value == "InstanceAddConnection").Select(xCommand => xCommand.FromXElement<Command>()).ToList();
+            var commands = loadConfig.Root.Descendants("InstanceController").Elements("Command").Where(e => e.Element("Name") != null && e.Element("Name").Value == "InstanceAddConnection").Select(xCommand => xCommand.FromXElement<Command>()).ToList();
 
             Assert.AreEqual("InstanceAddConnection", commands[0].Name);
             Assert.AreEqual("Myrcon", commands[0].Parameters[0].First<String>());
@@ -180,14 +180,14 @@ namespace Procon.Core.Test.CoreInstance {
         public void TestInstanceDispose() {
             var requestWait = new AutoResetEvent(false);
 
-            var instance = new Instance() {
+            var instance = new InstanceController() {
                 Shared = {
                     Variables = new VariableController(),
                     Security = new SecurityController(),
                     Events = new EventsController(),
                     Languages = new LanguageController()
                 }
-            }.Execute() as Instance;
+            }.Execute() as InstanceController;
 
             // Add a single connection, just so we can validate that it has been removed.
             instance.Tunnel(new Command() {

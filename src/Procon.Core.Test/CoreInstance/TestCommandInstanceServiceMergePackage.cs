@@ -12,7 +12,7 @@ namespace Procon.Core.Test.CoreInstance {
         /// </summary>
         [Test]
         public void TestResultInsufficientPermissions() {
-            Instance instance = new Instance();
+            InstanceController instance = new InstanceController();
 
             CommandResultArgs result = instance.Tunnel(CommandBuilder.InstanceServiceMergePackage("localhost", "id").SetOrigin(CommandOrigin.Remote).SetUsername("Phogue"));
 
@@ -25,7 +25,7 @@ namespace Procon.Core.Test.CoreInstance {
         /// </summary>
         [Test]
         public void TestResultInvalidParameterUri() {
-            Instance instance = new Instance();
+            InstanceController instance = new InstanceController();
 
             CommandResultArgs result = instance.Tunnel(CommandBuilder.InstanceServiceMergePackage("", "id").SetOrigin(CommandOrigin.Local));
 
@@ -38,7 +38,7 @@ namespace Procon.Core.Test.CoreInstance {
         /// </summary>
         [Test]
         public void TestResultInvalidParameterPackageId() {
-            Instance instance = new Instance();
+            InstanceController instance = new InstanceController();
 
             CommandResultArgs result = instance.Tunnel(CommandBuilder.InstanceServiceMergePackage("localhost", "").SetOrigin(CommandOrigin.Local));
 
@@ -51,7 +51,7 @@ namespace Procon.Core.Test.CoreInstance {
         /// </summary>
         [Test]
         public void TestResultSuccess() {
-            Instance instance = new Instance();
+            InstanceController instance = new InstanceController();
 
             CommandResultArgs result = instance.Tunnel(CommandBuilder.InstanceServiceMergePackage("localhost", "id").SetOrigin(CommandOrigin.Local));
 
@@ -64,7 +64,7 @@ namespace Procon.Core.Test.CoreInstance {
         /// </summary>
         [Test]
         public void TestMessageLogged() {
-            Instance instance = new Instance();
+            InstanceController instance = new InstanceController();
 
             instance.Tunnel(CommandBuilder.InstanceServiceMergePackage("localhost", "id").SetOrigin(CommandOrigin.Local));
 
@@ -80,7 +80,7 @@ namespace Procon.Core.Test.CoreInstance {
         [Test]
         public void TestEventLogged() {
             EventsController events = new EventsController();
-            Instance instance = new Instance {
+            InstanceController instance = new InstanceController {
                 Shared = {
                     Events = events
                 }

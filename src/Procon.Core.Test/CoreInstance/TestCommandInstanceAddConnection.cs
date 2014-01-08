@@ -29,7 +29,7 @@ namespace Procon.Core.Test.CoreInstance {
         /// </summary>
         [Test]
         public void TestInstanceAddConnectionDuplicate() {
-            var instance = new Instance().Execute() as Instance;
+            var instance = new InstanceController().Execute() as InstanceController;
 
             instance.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
@@ -72,11 +72,11 @@ namespace Procon.Core.Test.CoreInstance {
         [Test]
         public void TestInstanceAddConnectionExceedMaximumConnectionLimit() {
             var variables = new VariableController();
-            var instance = new Instance() {
+            var instance = new InstanceController() {
                 Shared = {
                     Variables = variables
                 }
-            }.Execute() as Instance;
+            }.Execute() as InstanceController;
 
             // Lower the maximum connections to nothing
             variables.Set(new Command() {
@@ -106,7 +106,7 @@ namespace Procon.Core.Test.CoreInstance {
         /// </summary>
         [Test]
         public void TestInstanceAddConnectionGameTypeDoesNotExist() {
-            var instance = new Instance().Execute() as Instance;
+            var instance = new InstanceController().Execute() as InstanceController;
 
             CommandResultArgs result = instance.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
@@ -131,7 +131,7 @@ namespace Procon.Core.Test.CoreInstance {
         /// </summary>
         [Test]
         public void TestInstanceAddConnectionInsufficientPermissions() {
-            var instance = new Instance().Execute() as Instance;
+            var instance = new InstanceController().Execute() as InstanceController;
 
             CommandResultArgs result = instance.Tunnel(new Command() {
                 Origin = CommandOrigin.Remote,
@@ -157,7 +157,7 @@ namespace Procon.Core.Test.CoreInstance {
         /// </summary>
         [Test]
         public void TestInstanceAddConnectionSuccess() {
-            var instance = new Instance().Execute() as Instance;
+            var instance = new InstanceController().Execute() as InstanceController;
 
             CommandResultArgs result = instance.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,

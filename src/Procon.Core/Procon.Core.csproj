@@ -102,7 +102,7 @@
     <Compile Include="Events\PushEventsController.cs" />
     <Compile Include="Events\PushEventsEndPoint.cs" />
     <Compile Include="Connections\Plugins\CorePluginController.cs" />
-    <Compile Include="Instance.cs" />
+    <Compile Include="InstanceController.cs" />
     <Compile Include="Utils\XElementValidator.cs" />
     <Compile Include="Utils\DirectoryInfoExtensions.cs" />
     <Compile Include="Variables\GroupedVariableListener.cs" />

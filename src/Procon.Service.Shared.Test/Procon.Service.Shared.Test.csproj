@@ -45,6 +45,9 @@
   <ItemGroup>
     <Compile Include="TestArgumentHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestDefines\TestPackageContainingPath.cs" />
+    <Compile Include="TestDefines\TestPackageVersionDirectory.cs" />
+    <Compile Include="TestDefines\TestSearchRelativeSearchPath.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -64,7 +64,7 @@ namespace Procon.Service.Shared {
         /// <summary>
         /// Fired every twenty minutes to ensure Procon has not been down stopped for 15 minutes
         /// </summary>
-        private void PanicTask_Tick(object state) {
+        public void PanicTask_Tick(object state) {
             TimeSpan? downtime = this.Downtime();
             var handler = this.Panic;
 

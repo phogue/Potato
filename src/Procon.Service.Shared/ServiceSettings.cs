@@ -24,9 +24,7 @@ namespace Procon.Service.Shared {
         /// <summary>
         /// Initializes the settings with the default values.
         /// </summary>
-        public ServiceSettings() {
-            this.ServiceUpdateCore = true;
-        }
+        public ServiceSettings() : this(new List<String>()) { }
 
         /// <summary>
         /// Initializes the settings with the default values and processes input as arguments

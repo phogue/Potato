@@ -48,6 +48,10 @@
     <Compile Include="TestDefines\TestPackageContainingPath.cs" />
     <Compile Include="TestDefines\TestPackageVersionDirectory.cs" />
     <Compile Include="TestDefines\TestSearchRelativeSearchPath.cs" />
+    <Compile Include="TestServiceControllerHelpers\TestLogUnhandledException.cs" />
+    <Compile Include="TestServiceMessage.cs" />
+    <Compile Include="TestServiceObserver.cs" />
+    <Compile Include="TestServiceSettings.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

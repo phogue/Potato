@@ -44,7 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TestDefines.cs" />
+    <Compile Include="TestProconCoreInstanceController.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Procon.Core.Shared\Procon.Core.Shared.csproj">

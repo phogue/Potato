@@ -10,7 +10,6 @@ namespace Procon.Service.Shared {
     /// neatens the code up a little having some of the functionality here.
     /// </summary>
     public static class ServiceControllerHelpers {
-
         /// <summary>
         /// Self enclosed exception log, opens a file, writes the exception and flushes/closes the file.
         /// </summary>

@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using NUnit.Framework;
 
 namespace Procon.Service.Shared.Test.TestDefines {
@@ -16,7 +13,7 @@ namespace Procon.Service.Shared.Test.TestDefines {
         /// </summary>
         [SetUp]
         public void CleanPackagesDirectory() {
-            Directory.Delete(Defines.PackagesDirectory, true);
+            if (Directory.Exists(Defines.PackagesDirectory) == true) Directory.Delete(Defines.PackagesDirectory, true);
             Directory.CreateDirectory(Defines.PackagesDirectory);
             Directory.CreateDirectory(PackagesExists100Path);
         }

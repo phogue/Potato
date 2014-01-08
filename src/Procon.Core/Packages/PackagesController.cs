@@ -80,7 +80,7 @@ namespace Procon.Core.Packages {
                 }
             });
         }
-
+        
         /// <summary>
         /// Sends a signal to the service to install or update a given package.
         /// </summary>
@@ -93,43 +93,52 @@ namespace Procon.Core.Packages {
             String packageId = parameters["packageId"].First<String>();
 
             if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
-                var repository = this.Cache.Repositories.FirstOrDefault(repo => repo.Packages.Any(pack => pack.Id == packageId) == true);
-                var package = this.Cache.Repositories.SelectMany(repo => repo.Packages).FirstOrDefault(pack => pack.Id == packageId);
+                if (String.IsNullOrEmpty(packageId) == false) {
+                    var repository = this.Cache.Repositories.FirstOrDefault(repo => repo.Packages.Any(pack => pack.Id == packageId) == true);
+                    var package = this.Cache.Repositories.SelectMany(repo => repo.Packages).FirstOrDefault(pack => pack.Id == packageId);
 
-                if (repository != null && package != null) {
+                    if (repository != null && package != null) {
 
-                    if (package.State == PackageState.NotInstalled || package.State == PackageState.UpdateAvailable) {
-                        // Send command as local. Users may be granted permission to install a package
-                        // from a known package repository (this method) but not have permission to install from an
-                        // arbitrary source (InstanceServiceMergePackage)
-                        this.Bubble(CommandBuilder.InstanceServiceMergePackage(repository.Uri, package.Id).SetOrigin(CommandOrigin.Local));
+                        if (package.State == PackageState.NotInstalled || package.State == PackageState.UpdateAvailable) {
+                            // Send command as local. Users may be granted permission to install a package
+                            // from a known package repository (this method) but not have permission to install from an
+                            // arbitrary source (InstanceServiceMergePackage)
+                            this.Bubble(CommandBuilder.InstanceServiceMergePackage(repository.Uri, package.Id).SetOrigin(CommandOrigin.Local));
 
-                        result = new CommandResultArgs() {
-                            Message = String.Format("Dispatched merge signal on package id {0}.", packageId),
-                            Status = CommandResultType.Success,
-                            Success = true,
-                            Now = {
-                                Repositories = new List<RepositoryModel>() {
-                                    repository
-                                },
-                                Packages = new List<PackageWrapperModel>() {
-                                    package
+                            result = new CommandResultArgs() {
+                                Message = String.Format("Dispatched merge signal on package id {0}.", packageId),
+                                Status = CommandResultType.Success,
+                                Success = true,
+                                Now = {
+                                    Repositories = new List<RepositoryModel>() {
+                                        repository
+                                    },
+                                    Packages = new List<PackageWrapperModel>() {
+                                        package
+                                    }
                                 }
-                            }
-                        };
+                            };
+                        }
+                        else {
+                            result = new CommandResultArgs() {
+                                Message = String.Format(@"Package with id ""{0}"" is already installed and up to date.", packageId),
+                                Status = CommandResultType.AlreadyExists,
+                                Success = false
+                            };
+                        }
                     }
                     else {
                         result = new CommandResultArgs() {
-                            Message = String.Format(@"Package with id ""{0}"" is already installed and up to date.", packageId),
-                            Status = CommandResultType.AlreadyExists,
+                            Message = String.Format(@"Repository with package id ""{0}"" is not known or the package does not exist.", packageId),
+                            Status = CommandResultType.DoesNotExists,
                             Success = false
                         };
                     }
                 }
                 else {
                     result = new CommandResultArgs() {
-                        Message = String.Format(@"Repository with package id ""{0}"" is not known or the package does not exist.", packageId),
-                        Status = CommandResultType.DoesNotExists,
+                        Message = String.Format(@"Invalid or missing parameter ""packageId""."),
+                        Status = CommandResultType.InvalidParameter,
                         Success = false
                     };
                 }
@@ -140,7 +149,7 @@ namespace Procon.Core.Packages {
 
             return result;
         }
-
+        
         /// <summary>
         /// Sends a signal to the service to uninstall a package.
         /// </summary>
@@ -153,42 +162,51 @@ namespace Procon.Core.Packages {
             String packageId = parameters["packageId"].First<String>();
 
             if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
-                var repository = this.Cache.Repositories.FirstOrDefault(repo => repo.Packages.Any(pack => pack.Id == packageId) == true);
-                var package = this.Cache.Repositories.SelectMany(repo => repo.Packages).FirstOrDefault(pack => pack.Id == packageId);
+                if (String.IsNullOrEmpty(packageId) == false) {
+                    var repository = this.Cache.Repositories.FirstOrDefault(repo => repo.Packages.Any(pack => pack.Id == packageId) == true);
+                    var package = this.Cache.Repositories.SelectMany(repo => repo.Packages).FirstOrDefault(pack => pack.Id == packageId);
 
-                if (repository != null && package != null) {
-                    if (package.State == PackageState.Installed || package.State == PackageState.UpdateAvailable) {
-                        // Send command as local. Users may be granted permission to install a package
-                        // from a known package repository (this method) but not have permission to uninstall from an
-                        // arbitrary source (InstanceServiceMergePackage)
-                        this.Bubble(CommandBuilder.InstanceServiceUninstallPackage(package.Id).SetOrigin(CommandOrigin.Local));
+                    if (repository != null && package != null) {
+                        if (package.State == PackageState.Installed || package.State == PackageState.UpdateAvailable) {
+                            // Send command as local. Users may be granted permission to install a package
+                            // from a known package repository (this method) but not have permission to uninstall from an
+                            // arbitrary source (InstanceServiceMergePackage)
+                            this.Bubble(CommandBuilder.InstanceServiceUninstallPackage(package.Id).SetOrigin(CommandOrigin.Local));
 
-                        result = new CommandResultArgs() {
-                            Message = String.Format("Dispatched uninstall signal on package id {0}.", packageId),
-                            Status = CommandResultType.Success,
-                            Success = true,
-                            Now = {
-                                Repositories = new List<RepositoryModel>() {
-                                repository
-                            },
-                                Packages = new List<PackageWrapperModel>() {
-                                package
-                            }
-                            }
-                        };
+                            result = new CommandResultArgs() {
+                                Message = String.Format("Dispatched uninstall signal on package id {0}.", packageId),
+                                Status = CommandResultType.Success,
+                                Success = true,
+                                Now = {
+                                    Repositories = new List<RepositoryModel>() {
+                                        repository
+                                    },
+                                    Packages = new List<PackageWrapperModel>() {
+                                        package
+                                    }
+                                }
+                            };
+                        }
+                        else {
+                            result = new CommandResultArgs() {
+                                Message = String.Format(@"Package with id ""{0}"" is not installed.", packageId),
+                                Status = CommandResultType.AlreadyExists,
+                                Success = false
+                            };
+                        }
                     }
                     else {
                         result = new CommandResultArgs() {
-                            Message = String.Format(@"Package with id ""{0}"" is not installed.", packageId),
-                            Status = CommandResultType.AlreadyExists,
+                            Message = String.Format(@"Repository with package id ""{0}"" is not known or the package does not exist.", packageId),
+                            Status = CommandResultType.DoesNotExists,
                             Success = false
                         };
                     }
                 }
                 else {
                     result = new CommandResultArgs() {
-                        Message = String.Format(@"Repository with package id ""{0}"" is not known or the package does not exist.", packageId),
-                        Status = CommandResultType.DoesNotExists,
+                        Message = String.Format(@"Invalid or missing parameter ""packageId""."),
+                        Status = CommandResultType.InvalidParameter,
                         Success = false
                     };
                 }
@@ -228,7 +246,7 @@ namespace Procon.Core.Packages {
 
             return result;
         }
-
+        
         /// <summary>
         /// Fetches all of the packages from the source, essentially rebuilding the Repositories.Packages
         /// with what is known locally and remotely about the packages.
@@ -296,6 +314,11 @@ namespace Procon.Core.Packages {
         public override void Dispose() {
             this.UnassignEvents();
             this.GroupedVariableListener = null;
+
+            this.Cache.Clear();
+            this.Cache = null;
+
+            this.LocalRepository = null;
 
             base.Dispose();
         }

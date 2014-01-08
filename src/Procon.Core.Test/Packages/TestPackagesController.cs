@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using NUnit.Framework;
 using Procon.Core.Packages;
 using Procon.Core.Shared;
@@ -17,13 +16,15 @@ namespace Procon.Core.Test.Packages {
     /// </remarks>
     [TestFixture]
     public class TestPackagesController {
+
         /// <summary>
-        /// Opens a repository (local one) as source.
+        /// Tests the grouped repository setting can be setup via variables.
         /// </summary>
-        /// <param name="namespace"></param>
-        /// <returns></returns>
-        public static PackagesController OpenMockSourceRepository(String @namespace = "") {
+        [Test]
+        public void TestPackageGroupSetup() {
             var variables = new VariableController();
+
+            var @namespace = "";
 
             var packages = new PackagesController() {
                 Shared = {
@@ -34,7 +35,7 @@ namespace Procon.Core.Test.Packages {
             variables.Set(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.VariablesSet
-            }, VariableModel.NamespaceVariableName(@namespace, CommonVariableNames.PackagesRepositoryUri), "path to repository fake remote stuff");
+            }, VariableModel.NamespaceVariableName(@namespace, CommonVariableNames.PackagesRepositoryUri), "path-to-repository");
 
             variables.Set(new Command() {
                 Origin = CommandOrigin.Local,
@@ -43,14 +44,54 @@ namespace Procon.Core.Test.Packages {
                 @namespace
             });
 
-            return packages;
+            Assert.IsNotEmpty(packages.Cache.Repositories);
+            Assert.AreEqual("path-to-repository", packages.Cache.Repositories.FirstOrDefault().Uri);
         }
 
+        /// <summary>
+        /// Tests the grouped repository setting can be setup via variables, with the group being
+        /// set first then the group name added to the known group spaces
+        /// </summary>
         [Test]
-        public void TestUninstalledPackage() {
-            PackagesController packages = TestPackagesController.OpenMockSourceRepository();
+        public void TestPackageGroupSetupOrderReversed() {
+            var variables = new VariableController();
 
+            var @namespace = "";
 
+            var packages = new PackagesController() {
+                Shared = {
+                    Variables = variables
+                }
+            }.Execute() as PackagesController;
+
+            variables.Set(new Command() {
+                Origin = CommandOrigin.Local,
+                CommandType = CommandType.VariablesSet
+            }, CommonVariableNames.PackagesConfigGroups, new List<String>() {
+                @namespace
+            });
+
+            variables.Set(new Command() {
+                Origin = CommandOrigin.Local,
+                CommandType = CommandType.VariablesSet
+            }, VariableModel.NamespaceVariableName(@namespace, CommonVariableNames.PackagesRepositoryUri), "path-to-repository");
+
+            Assert.IsNotEmpty(packages.Cache.Repositories);
+            Assert.AreEqual("path-to-repository", packages.Cache.Repositories.FirstOrDefault().Uri);
+        }
+
+        /// <summary>
+        /// Tests variables are nulled during a dispose.
+        /// </summary>
+        [Test]
+        public void TestDispose() {
+            PackagesController packages = new PackagesController();
+
+            packages.Dispose();
+
+            Assert.IsNull(packages.GroupedVariableListener);
+            Assert.IsNull(packages.LocalRepository);
+            Assert.IsNull(packages.Cache);
         }
     }
 }

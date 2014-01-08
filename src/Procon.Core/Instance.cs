@@ -498,7 +498,7 @@ namespace Procon.Core {
 
             // As long as the current account is allowed to execute this command...
             if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
-                if (uri != null && packageId != null) {
+                if (String.IsNullOrEmpty(uri) == false && String.IsNullOrEmpty(packageId) == false) {
                     this.ServiceMessage = new ServiceMessage() {
                         Name = "merge-package",
                         Arguments = new Dictionary<String, String>() {
@@ -543,7 +543,7 @@ namespace Procon.Core {
 
             // As long as the current account is allowed to execute this command...
             if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
-                if (packageId != null) {
+                if (String.IsNullOrEmpty(packageId) == false) {
                     this.ServiceMessage = new ServiceMessage() {
                         Name = "uninstall-package",
                         Arguments = new Dictionary<String, String>() {

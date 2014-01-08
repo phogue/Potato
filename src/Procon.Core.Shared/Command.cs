@@ -96,6 +96,17 @@ namespace Procon.Core.Shared {
         }
 
         /// <summary>
+        /// Sets the username of the command, then returns the command. Allows for method chaining.
+        /// </summary>
+        /// <param name="username">The username to assign</param>
+        /// <returns>this</returns>
+        public Command SetUsername(String username) {
+            this.Username = username;
+
+            return this;
+        }
+
+        /// <summary>
         /// Allows for essentially cloning a command, but then allows inline overrides of the 
         /// attributes.
         /// </summary>

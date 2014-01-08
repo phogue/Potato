@@ -102,6 +102,55 @@ namespace Procon.Core.Shared {
                 }
             };
         }
-        
+
+        /// <summary>
+        /// Builds a command to send a PackagesMergePackage
+        /// </summary>
+        /// <param name="packageId">The package id to install</param>
+        /// <returns>The built command to the dispatch</returns>
+        public static Command PackagesMergePackage(String packageId) {
+            return new Command() {
+                CommandType = CommandType.PackagesMergePackage,
+                Parameters = new List<CommandParameter>() {
+                    new CommandParameter() {
+                        Data = {
+                            Content = new List<String>() {
+                                packageId
+                            }
+                        }
+                    }
+                }
+            };
+        }
+
+        /// <summary>
+        /// Builds a command to send a PackagesUninstallPackage
+        /// </summary>
+        /// <param name="packageId">The package id to install</param>
+        /// <returns>The built command to the dispatch</returns>
+        public static Command PackagesUninstallPackage(String packageId) {
+            return new Command() {
+                CommandType = CommandType.PackagesUninstallPackage,
+                Parameters = new List<CommandParameter>() {
+                    new CommandParameter() {
+                        Data = {
+                            Content = new List<String>() {
+                                packageId
+                            }
+                        }
+                    }
+                }
+            };
+        }
+
+        /// <summary>
+        /// Builds a command to send a PackagesFetchPackages
+        /// </summary>
+        /// <returns>The built command to the dispatch</returns>
+        public static Command PackagesFetchPackages() {
+            return new Command() {
+                CommandType = CommandType.PackagesFetchPackages
+            };
+        }
     }
 }

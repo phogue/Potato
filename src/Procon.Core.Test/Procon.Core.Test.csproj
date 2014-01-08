@@ -79,6 +79,10 @@
     <Compile Include="Database\TestDatabaseController.cs" />
     <Compile Include="Database\TestDatabaseMigrationController.cs" />
     <Compile Include="Packages\Mocks\MockPackageRepository.cs" />
+    <Compile Include="Packages\TestBuildRepositoryCache.cs" />
+    <Compile Include="Packages\TestCommandPackagesFetchPackages.cs" />
+    <Compile Include="Packages\TestCommandPackagesMergePackage.cs" />
+    <Compile Include="Packages\TestCommandPackagesUninstallPackage.cs" />
     <Compile Include="Packages\TestPackageCacheBuilders.cs" />
     <Compile Include="Packages\TestPackagesController.cs" />
     <Compile Include="Packages\TestRepositoryCache.cs" />

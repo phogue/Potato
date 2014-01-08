@@ -26,11 +26,21 @@ namespace Procon.Service.Shared {
                     if (offset + 1 < input.Count && input[offset + 1][0] != '-') {
                         // No, the next string is not an argument switch. It's the value of the
                         // argument.
-                        if (arguments.ContainsKey(key) == false) arguments.Add(key.ToLower(), input[offset + 1]);
+                        if (arguments.ContainsKey(key) == false) {
+                            arguments.Add(key.ToLower(), input[offset + 1]);
+                        }
+                        else {
+                            arguments[key.ToLower()] = input[offset + 1];
+                        }
                     }
                     else {
                         // Set to "true"
-                        if (arguments.ContainsKey(key) == false) arguments.Add(key.ToLower(), "1");
+                        if (arguments.ContainsKey(key) == false) {
+                            arguments.Add(key.ToLower(), "1");
+                        }
+                        else {
+                            arguments[key.ToLower()] = "1";
+                        }
                     }
                 }
             }

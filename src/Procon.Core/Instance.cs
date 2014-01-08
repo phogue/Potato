@@ -56,7 +56,7 @@ namespace Procon.Core {
         /// <summary>
         /// The latest service message to post back to the service controller. If no message exists then a "ok" response will be sent.
         /// </summary>
-        protected ServiceMessage ServiceMessage { get; set; }
+        public ServiceMessage ServiceMessage { get; set; }
 
         public SharedReferences Shared { get; private set; }
 
@@ -92,6 +92,34 @@ namespace Procon.Core {
             this.EventsConsole = new EventsConsoleController();
 
             this.AppendDispatchHandlers(new Dictionary<CommandAttribute, CommandDispatchHandler>() {
+                {
+                    new CommandAttribute() {
+                        CommandType = CommandType.InstanceServiceMergePackage,
+                        ParameterTypes = new List<CommandParameterType>() {
+                            new CommandParameterType() {
+                                Name = "uri",
+                                Type = typeof(String)
+                            },
+                            new CommandParameterType() {
+                                Name = "packageId",
+                                Type = typeof(String)
+                            }
+                        }
+                    },
+                    new CommandDispatchHandler(this.InstanceServiceMergePackage)
+                },
+                {
+                    new CommandAttribute() {
+                        CommandType = CommandType.InstanceServiceUninstallPackage,
+                        ParameterTypes = new List<CommandParameterType>() {
+                            new CommandParameterType() {
+                                Name = "packageId",
+                                Type = typeof(String)
+                            }
+                        }
+                    },
+                    new CommandDispatchHandler(this.InstanceServiceUninstallPackage)
+                },
                 {
                     new CommandAttribute() {
                         CommandType = CommandType.InstanceServiceRestart
@@ -513,7 +541,7 @@ namespace Procon.Core {
                         Success = true
                     };
 
-                    this.Shared.Events.Log(GenericEventArgs.ConvertToGenericEvent(result, GenericEventType.InstanceServiceRestarting));
+                    this.Shared.Events.Log(GenericEventArgs.ConvertToGenericEvent(result, GenericEventType.InstanceServiceMergePackage));
                 }
                 else {
                     result = new CommandResultArgs() {
@@ -557,7 +585,7 @@ namespace Procon.Core {
                         Success = true
                     };
 
-                    this.Shared.Events.Log(GenericEventArgs.ConvertToGenericEvent(result, GenericEventType.InstanceServiceRestarting));
+                    this.Shared.Events.Log(GenericEventArgs.ConvertToGenericEvent(result, GenericEventType.InstanceServiceUninstallPackage));
                 }
                 else {
                     result = new CommandResultArgs() {

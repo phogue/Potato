@@ -3,18 +3,17 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using NUnit.Framework;
 using Procon.Core.Shared;
-using Procon.Core.Shared.Models;
-using Procon.Core.Variables;
 using Procon.Net.Shared.Protocols;
 using Procon.Service.Shared;
 
 #endregion
 
-namespace Procon.Core.Test {
+namespace Procon.Core.Test.CoreInstance {
     [TestFixture]
-    public class TestInstanceAddConnection {
+    public class TestCommandInstanceRemoveConnection {
         [SetUp]
         public void Initialize() {
             if (File.Exists(ConfigFileInfo.FullName)) {
@@ -25,10 +24,10 @@ namespace Procon.Core.Test {
         protected static FileInfo ConfigFileInfo = new FileInfo(Path.Combine(Defines.ConfigsDirectory, "Procon.Core.xml"));
 
         /// <summary>
-        ///     Tests that we cannot add the same connection twice.
+        ///     Tests that a connection can be removed.
         /// </summary>
         [Test]
-        public void TestInstanceAddConnectionDuplicate() {
+        public void TestInstanceRemoveConnectionByGuidSuccess() {
             var instance = new Instance().Execute() as Instance;
 
             instance.Tunnel(new Command() {
@@ -44,80 +43,39 @@ namespace Procon.Core.Test {
                 })
             });
 
-            // Make sure the initial connection was added successfully.
+            // Make sure we have at least one connection added.
             Assert.AreEqual(1, instance.Connections.Count);
 
-            // Now readd the same connection we just added.
             CommandResultArgs result = instance.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
-                CommandType = CommandType.InstanceAddConnection,
+                CommandType = CommandType.InstanceRemoveConnection,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
-                    "Myrcon",
-                    CommonGameType.BF_3,
-                    "93.186.198.11",
-                    27516,
-                    "phogueisabutterfly",
-                    ""
+                    instance.Connections.First().ConnectionModel.ConnectionGuid.ToString()
                 })
             });
 
-            Assert.IsFalse(result.Success);
-            Assert.AreEqual(CommandResultType.AlreadyExists, result.Status);
-        }
-
-        /// <summary>
-        ///     Tests that a connection cannot be added if would go over the maximum connection limit
-        ///     imposed by a VariableModel.
-        /// </summary>
-        [Test]
-        public void TestInstanceAddConnectionExceedMaximumConnectionLimit() {
-            var variables = new VariableController();
-            var instance = new Instance() {
-                Shared = {
-                    Variables = variables
-                }
-            }.Execute() as Instance;
-
-            // Lower the maximum connections to nothing
-            variables.Set(new Command() {
-                Origin = CommandOrigin.Local
-            }, CommonVariableNames.MaximumProtocolConnections, 0);
-
-            CommandResultArgs result = instance.Tunnel(new Command() {
-                Origin = CommandOrigin.Local,
-                CommandType = CommandType.InstanceAddConnection,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
-                    "Myrcon",
-                    CommonGameType.BF_3,
-                    "93.186.198.11",
-                    27516,
-                    "phogueisabutterfly",
-                    ""
-                })
-            });
-
-            Assert.IsFalse(result.Success);
-            Assert.AreEqual(CommandResultType.LimitExceeded, result.Status);
+            Assert.IsTrue(result.Success);
+            Assert.AreEqual(CommandResultType.Success, result.Status);
             Assert.AreEqual(0, instance.Connections.Count);
         }
 
         /// <summary>
-        ///     Tests we receive a DoesNotExist status when a game type is not supported (or exist..)
+        ///     Tests that a DoesNotExist error is returned when trying to remove
+        ///     a connection on an empty instance object.
         /// </summary>
         [Test]
-        public void TestInstanceAddConnectionGameTypeDoesNotExist() {
+        public void TestInstanceRemoveConnectionDoesNotExist() {
             var instance = new Instance().Execute() as Instance;
 
+            // Now readd the same connection we just added.
             CommandResultArgs result = instance.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
-                CommandType = CommandType.InstanceAddConnection,
+                CommandType = CommandType.InstanceRemoveConnection,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     "Myrcon",
-                    "la la la",
+                    CommonGameType.BF_3,
                     "93.186.198.11",
-                    27516,
-                    "phogueisabutterfly",
-                    ""
+                    27516
                 })
             });
 
@@ -126,24 +84,22 @@ namespace Procon.Core.Test {
         }
 
         /// <summary>
-        ///     Tests a remote command to add a connection will fail if the username
+        ///     Tests a remote command to remove a connection will fail if the username
         ///     supplied does not have permissions to add the connection.
         /// </summary>
         [Test]
-        public void TestInstanceAddConnectionInsufficientPermissions() {
+        public void TestInstanceRemoveConnectionInsufficientPermissions() {
             var instance = new Instance().Execute() as Instance;
 
             CommandResultArgs result = instance.Tunnel(new Command() {
                 Origin = CommandOrigin.Remote,
                 Username = "Phogue",
-                CommandType = CommandType.InstanceAddConnection,
+                CommandType = CommandType.InstanceRemoveConnection,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     "Myrcon",
                     CommonGameType.BF_3,
                     "93.186.198.11",
-                    27516,
-                    "phogueisabutterfly",
-                    ""
+                    27516
                 })
             });
 
@@ -153,13 +109,13 @@ namespace Procon.Core.Test {
         }
 
         /// <summary>
-        ///     Tests that a connection can be added.
+        ///     Tests that a connection can be removed.
         /// </summary>
         [Test]
-        public void TestInstanceAddConnectionSuccess() {
+        public void TestInstanceRemoveConnectionSuccess() {
             var instance = new Instance().Execute() as Instance;
 
-            CommandResultArgs result = instance.Tunnel(new Command() {
+            instance.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.InstanceAddConnection,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -172,9 +128,23 @@ namespace Procon.Core.Test {
                 })
             });
 
+            // Make sure we have at least one connection added.
+            Assert.AreEqual(1, instance.Connections.Count);
+
+            CommandResultArgs result = instance.Tunnel(new Command() {
+                Origin = CommandOrigin.Local,
+                CommandType = CommandType.InstanceRemoveConnection,
+                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                    "Myrcon",
+                    CommonGameType.BF_3,
+                    "93.186.198.11",
+                    27516
+                })
+            });
+
             Assert.IsTrue(result.Success);
             Assert.AreEqual(CommandResultType.Success, result.Status);
-            Assert.AreEqual(1, instance.Connections.Count);
+            Assert.AreEqual(0, instance.Connections.Count);
         }
     }
 }

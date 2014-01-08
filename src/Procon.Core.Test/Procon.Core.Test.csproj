@@ -78,6 +78,9 @@
     <Compile Include="Database\Helpers\TestMigrationTrackerHelper.cs" />
     <Compile Include="Database\TestDatabaseController.cs" />
     <Compile Include="Database\TestDatabaseMigrationController.cs" />
+    <Compile Include="CoreInstance\TestCommandInstanceServiceMergePackage.cs" />
+    <Compile Include="CoreInstance\TestCommandInstanceServiceRestart.cs" />
+    <Compile Include="CoreInstance\TestCommandInstanceServiceUninstallPackage.cs" />
     <Compile Include="Packages\Mocks\MockPackageRepository.cs" />
     <Compile Include="Packages\TestBuildRepositoryCache.cs" />
     <Compile Include="Packages\TestCommandPackagesFetchPackages.cs" />
@@ -89,7 +92,7 @@
     <Compile Include="Plugins\TestPluginsDisabled.cs" />
     <Compile Include="Plugins\TestPluginsEnabled.cs" />
     <Compile Include="TestHelpers.cs" />
-    <Compile Include="TestInstanceRemoveConnection.cs" />
+    <Compile Include="CoreInstance\TestCommandInstanceRemoveConnection.cs" />
     <Compile Include="Events\TestEvents.cs" />
     <Compile Include="Events\TestEventsCommands.cs" />
     <Compile Include="Events\TestEventsPushController.cs" />
@@ -99,8 +102,8 @@
     <Compile Include="Remote\TestRemote.cs" />
     <Compile Include="Serialization\Xml\TestXmlSerialization.cs" />
     <Compile Include="Serialization\Xml\TestXmlSerializationCommand.cs" />
-    <Compile Include="TestInstance.cs" />
-    <Compile Include="TestInstanceAddConnection.cs" />
+    <Compile Include="CoreInstance\TestInstance.cs" />
+    <Compile Include="CoreInstance\TestCommandInstanceAddConnection.cs" />
     <Compile Include="TextCommands\Fuzzy\TestFuzzyBasicMonthTemporal.cs" />
     <Compile Include="TextCommands\Fuzzy\TestFuzzyBasicTemporal.cs" />
     <Compile Include="TextCommands\Fuzzy\TestFuzzySetsObjectMatching.cs" />

@@ -21,6 +21,14 @@ namespace Procon.Core.Shared.Events {
         /// The instance has posted a restart signal.
         /// </summary>
         InstanceServiceRestarting,
+        /// <summary>
+        /// The instance has posted a merge package signal.
+        /// </summary>
+        InstanceServiceMergePackage,
+        /// <summary>
+        /// The instance has posted an uninstall package signal.
+        /// </summary>
+        InstanceServiceUninstallPackage,
 
         /// <summary>
         /// A new group has been added.

@@ -12,15 +12,13 @@ using Procon.Core.Localization;
 using Procon.Core.Security;
 using Procon.Core.Shared;
 using Procon.Core.Variables;
-using Procon.Net.Protocols;
 using Procon.Net.Shared.Protocols;
 using Procon.Net.Shared.Utils;
-using Procon.Net.Utils;
 using Procon.Service.Shared;
 
 #endregion
 
-namespace Procon.Core.Test {
+namespace Procon.Core.Test.CoreInstance {
     [TestFixture]
     public class TestInstance {
         [SetUp]

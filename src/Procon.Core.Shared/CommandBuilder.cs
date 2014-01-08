@@ -56,6 +56,16 @@ namespace Procon.Core.Shared {
         }
 
         /// <summary>
+        /// Builds a command to send a InstanceServiceRestart signal
+        /// </summary>
+        /// <returns>The built command to the dispatch</returns>
+        public static Command InstanceServiceRestart() {
+            return new Command() {
+                CommandType = CommandType.InstanceServiceRestart
+            };
+        }
+
+        /// <summary>
         /// Builds a command to send a InstanceServiceMergePackage signal
         /// </summary>
         /// <param name="uri">The uri of the repository to find the package source in</param>

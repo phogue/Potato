@@ -8,6 +8,14 @@ namespace Procon.Service.Shared {
     /// A list of simple definitions used throughout Procon.
     /// </summary>
     public static class Defines {
+
+        /// <summary>
+        /// The typename of the instance controller in the Procon.Core assembly.
+        /// </summary>
+        public static readonly String TypeProconCoreInstanceController = "Procon.Core.InstanceController";
+
+        // Filenames
+
         /// <summary>
         /// The compiled Procon.Core.dll name
         /// </summary>

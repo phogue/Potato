@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
+using NuGet;
+using Procon.Service.Shared.Packages;
 
 namespace Procon.Service.Shared {
     /// <summary>
     /// Manages an instance of Procon in a seperate AppDomain.
     /// </summary>
     public sealed class ServiceController : IDisposable {
-
         /// <summary>
         /// The domain to load Procon.Core into.
         /// </summary>
@@ -22,6 +23,11 @@ namespace Procon.Service.Shared {
         /// The current status of the service.
         /// </summary>
         public IServiceObserver Observer { get; set; }
+
+        /// <summary>
+        /// The current status of the service.
+        /// </summary>
+        public IServicePackageManager Packages { get; set; }
 
         /// <summary>
         /// The arguments to start any instances with. This is passed on to Procon, not actually used by the service.
@@ -50,6 +56,27 @@ namespace Procon.Service.Shared {
 
             this.Arguments = new List<String>();
             this.Settings = new ServiceSettings();
+
+            this.Packages = new ServicePackageManager() {
+                LocalRepository = PackageRepositoryFactory.Default.CreateRepository(Defines.PackagesDirectory),
+                BeforeRepositoryInitialize = () => Console.WriteLine("Initializing package repository.."),
+                BeforeSourcePackageFetch = () => Console.WriteLine("Checking source repositories.."),
+                BeforeLocalPackageFetch = () => Console.WriteLine("Checking local repository.."),
+                PackageInstalling = (sender, args) => Console.WriteLine("Installing {0} version {1}..", args.Package.Id, args.Package.Version),
+                PackageInstalled = (sender, args) => Console.WriteLine("Installed {0} version {1}", args.Package.Id, args.Package.Version),
+                PackageUninstalling = (sender, args) => Console.WriteLine("Uninstalling {0} version {1}..", args.Package.Id, args.Package.Version),
+                PackageUninstalled = (sender, args) => Console.WriteLine("Uninstalled {0} version {1}..", args.Package.Id, args.Package.Version),
+                PackageMissing = packageId => Console.WriteLine("Couldn't find package {0}.", packageId),
+                PackageActionCanceled = packageId => Console.WriteLine("Package {0} is up to date.", packageId),
+                RepositoryException = (hint, exception) => {
+                    if (exception is UnauthorizedAccessException) {
+                        Console.WriteLine("Unable to access path {0}", Defines.PackagesDirectory);
+                        Console.WriteLine("Ensure all applications and open folders using the packages folder are closed and try again.");
+                    }
+
+                    ServiceControllerHelpers.LogUnhandledException(hint, exception);
+                }
+            };
         }
 
         /// <summary>
@@ -66,7 +93,7 @@ namespace Procon.Service.Shared {
             if (this.Observer.Status != ServiceStatusType.Started && this.Settings.ServiceUpdateCore == false) {
                 // Force a core update check. Something is obviously very wrong with Procon at the moment
                 // and no doubt the forums are flooded with people telling me about it :)
-                ServiceControllerHelpers.InstallOrUpdatePackage(this.Settings.PackagesDefaultSourceRepositoryUri, Defines.PackageMyrconProconCore);
+                this.Packages.MergePackage(this.Settings.PackagesDefaultSourceRepositoryUri, Defines.PackageMyrconProconCore);
 
                 // Try starting Procon again.. if not we'll do this again in 20 minutes.
                 this.Start();
@@ -278,7 +305,7 @@ namespace Procon.Service.Shared {
             // default: check for update, unless "-updatecore false" is passed in.
             if (this.Settings.ServiceUpdateCore == true) {
                 if (this.Observer.Status == ServiceStatusType.Stopped) {
-                    ServiceControllerHelpers.InstallOrUpdatePackage(this.Settings.PackagesDefaultSourceRepositoryUri, Defines.PackageMyrconProconCore);
+                    this.Packages.MergePackage(this.Settings.PackagesDefaultSourceRepositoryUri, Defines.PackageMyrconProconCore);
                 }
             }
         }
@@ -292,7 +319,7 @@ namespace Procon.Service.Shared {
             this.Stop();
 
             if (this.Observer.Status == ServiceStatusType.Stopped) {
-                ServiceControllerHelpers.InstallOrUpdatePackage(uri, packageId);
+                this.Packages.MergePackage(uri, packageId);
             }
 
             this.Start();
@@ -306,7 +333,7 @@ namespace Procon.Service.Shared {
             this.Stop();
 
             if (this.Observer.Status == ServiceStatusType.Stopped) {
-                ServiceControllerHelpers.UninstallPackage(packageId);
+                this.Packages.UninstallPackage(packageId);
             }
 
             this.Start();

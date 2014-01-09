@@ -31,6 +31,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Web.XmlTransform, Version=1.2.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Web.Xdt.1.0.0\lib\net40\Microsoft.Web.XmlTransform.dll</HintPath>
+    </Reference>
+    <Reference Include="NuGet.Core, Version=2.7.41101.299, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\NuGet.Core.2.7.2\lib\net40-Client\NuGet.Core.dll</HintPath>
+    </Reference>
     <Reference Include="nunit.framework">
       <HintPath>..\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
     </Reference>
@@ -51,6 +57,10 @@
     <Compile Include="TestServiceControllerHelpers\TestLogUnhandledException.cs" />
     <Compile Include="TestServiceMessage.cs" />
     <Compile Include="TestServiceObserver.cs" />
+    <Compile Include="TestServicePackages\TestUninstallPackage.cs" />
+    <Compile Include="TestServicePackages\Mocks\MockPackageManagerDispatch.cs" />
+    <Compile Include="TestServicePackages\Mocks\MockPackageRepository.cs" />
+    <Compile Include="TestServicePackages\TestMergePackage.cs" />
     <Compile Include="TestServiceSettings.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -62,6 +72,7 @@
       <Name>Procon.Service.Shared</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

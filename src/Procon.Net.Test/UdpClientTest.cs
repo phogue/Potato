@@ -40,7 +40,7 @@ namespace Procon.Net.Test {
                 connectionWait.Set();
             }
 
-            connectionWait.WaitOne(1000);
+            Assert.IsTrue(connectionWait.WaitOne(1000));
 
             client.ConnectionState = ConnectionState.ConnectionLoggedIn;
 
@@ -60,9 +60,7 @@ namespace Procon.Net.Test {
 
             this.CreateAndConnect(36000, out listener, out client);
 
-            listener.PacketReceived += (sender, request) => {
-                packetWait.Set();
-            };
+            listener.PacketReceived += (sender, request) => packetWait.Set();
 
             client.Send(new MockPacket() {
                 Packet = {

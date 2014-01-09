@@ -9,7 +9,7 @@ using Procon.Net.Shared.Models;
 using Procon.Net.Shared.Protocols;
 
 namespace Procon.Net.Protocols.Myrcon.Frostbite.MedalOfHonor {
-    [GameDeclaration(Type = CommonGameType.MOH_2010, Name = "Medal of Honor 2010", Provider = "Myrcon")]
+    [ProtocolDeclaration(Type = CommonGameType.MOH_2010, Name = "Medal of Honor 2010", Provider = "Myrcon")]
     public class MohGame : FrostbiteGame {
 
         public MohGame(string hostName, ushort port) : base(hostName, port) {

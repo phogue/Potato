@@ -92,7 +92,7 @@ namespace Procon.Core.Test.Variables {
             var variables = new VariableController() {
                 VolatileVariables = new List<VariableModel>() {
                     new VariableModel() {
-                        Name = CommonVariableNames.MaximumGameConnections.ToString(),
+                        Name = CommonVariableNames.MaximumProtocolConnections.ToString(),
                         Value = "value"
                     }
                 }
@@ -100,7 +100,7 @@ namespace Procon.Core.Test.Variables {
 
             Assert.AreEqual("value", variables.Get(new Command() {
                 Origin = CommandOrigin.Local
-            }, CommonVariableNames.MaximumGameConnections).Now.Variables.First().ToType<String>());
+            }, CommonVariableNames.MaximumProtocolConnections).Now.Variables.First().ToType<String>());
         }
 
         /// <summary>

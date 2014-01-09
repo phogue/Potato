@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 
 namespace Procon.Service.Shared {
+    /// <summary>
+    /// Interface for communication between the service and procon appdomain.
+    /// </summary>
     public interface IService {
-
         /// <summary>
         /// A method to signify the instance should begin, loading it's configs and setting up connections & what not.
         /// </summary>

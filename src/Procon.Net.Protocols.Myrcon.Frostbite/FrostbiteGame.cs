@@ -10,10 +10,9 @@ using Procon.Net.Shared;
 using Procon.Net.Shared.Actions;
 using Procon.Net.Shared.Models;
 using Procon.Net.Shared.Utils;
-using Procon.Net.Utils;
 
 namespace Procon.Net.Protocols.Myrcon.Frostbite {
-    public abstract class FrostbiteGame : Game {
+    public abstract class FrostbiteGame : Protocol {
 
         protected const HumanHitLocation Headshot = HumanHitLocation.Head | HumanHitLocation.Neck;
 
@@ -339,18 +338,18 @@ namespace Procon.Net.Protocols.Myrcon.Frostbite {
 
                 if (this.State.MapPool.Count == 0) {
                     if (info.GameMod == GameMods.None) {
-                        GameConfig.Load<GameConfig>(this.GameConfigPath, this.GameType).Parse(this);
+                        ProtocolConfig.Load<ProtocolConfig>(this.ProtocolsConfigDirectory, this.ProtocolType).Parse(this);
                     }
                     else {
-                        GameConfig.Load<GameConfig>(this.GameConfigPath, new GameType(this.GameType) {
-                            Type = String.Format("{0}_{1}", this.GameType, info.GameMod)
+                        ProtocolConfig.Load<ProtocolConfig>(this.ProtocolsConfigDirectory, new ProtocolType(this.ProtocolType) {
+                            Type = String.Format("{0}_{1}", this.ProtocolType, info.GameMod)
                         }).Parse(this);
                     }
 
-                    this.OnGameEvent(GameEventType.GameConfigExecuted);
+                    this.OnGameEvent(ProtocolEventType.ProtocolConfigExecuted);
                 }
 
-                this.OnGameEvent(GameEventType.GameSettingsUpdated, new GameEventData() {
+                this.OnGameEvent(ProtocolEventType.ProtocolSettingsUpdated, new ProtocolEventData() {
                     Settings = new List<Settings>() {
                         this.State.Settings
                     }
@@ -399,44 +398,39 @@ namespace Procon.Net.Protocols.Myrcon.Frostbite {
             }
         }
         
-        protected virtual void AdminListPlayersFinalize(FrostbitePlayers players) {
-            // If no limits on the subset we just fetched.
-            if (players.Subset.Count == 0) {
+        protected virtual void AdminListPlayersFinalize(List<Player> players) {
 
-                // 1. Remove all names in the state list that are not found in the new list (players that have left)
-                this.State.Players.RemoveAll(x => players.Select(y => y.Name).Contains(x.Name) == false);
+            // 1. Remove all names in the state list that are not found in the new list (players that have left)
+            this.State.Players.RemoveAll(x => players.Select(y => y.Name).Contains(x.Name) == false);
 
-                // 2. Add or update any new players
-                foreach (Player player in players) {
-                    Player statePlayer = this.State.Players.Find(x => x.Name == player.Name);
+            // 2. Add or update any new players
+            foreach (Player player in players) {
+                Player statePlayer = this.State.Players.Find(x => x.Name == player.Name);
 
-                    if (statePlayer == null) {
-                        this.State.Players.Add(player);
-                    }
-                    else {
-                        // Already exists, update with any new information we have.
-                        statePlayer.Kills = player.Kills;
-                        statePlayer.Score = player.Score;
-                        statePlayer.Deaths = player.Deaths;
-                        statePlayer.ClanTag = player.ClanTag;
-                        statePlayer.Ping = Math.Min(player.Ping, 1000);
-                        statePlayer.Uid = player.Uid;
-
-                        statePlayer.ModifyGroup(player.Groups.FirstOrDefault(group => group.Type == Grouping.Team));
-                        statePlayer.ModifyGroup(player.Groups.FirstOrDefault(group => group.Type == Grouping.Squad));
-                    }
+                if (statePlayer == null) {
+                    this.State.Players.Add(player);
                 }
-
-                this.OnGameEvent(GameEventType.GamePlayerlistUpdated, new GameEventData() {
-                    Players = new List<Player>(this.State.Players)
-                });
+                else {
+                    // Already exists, update with any new information we have.
+                    statePlayer.Kills = player.Kills;
+                    statePlayer.Score = player.Score;
+                    statePlayer.Deaths = player.Deaths;
+                    statePlayer.ClanTag = player.ClanTag;
+                    statePlayer.Ping = Math.Min(player.Ping, 1000);
+                    statePlayer.Uid = player.Uid;
+                    
+                    statePlayer.ModifyGroup(player.Groups.FirstOrDefault(group => group.Type == Grouping.Team));
+                    statePlayer.ModifyGroup(player.Groups.FirstOrDefault(group => group.Type == Grouping.Squad));
+                }
             }
+
+            this.OnGameEvent(ProtocolEventType.ProtocolPlayerlistUpdated, new ProtocolEventData() {
+                Players = new List<Player>(this.State.Players)
+            });
         }
 
         public virtual void AdminListPlayersResponseDispatchHandler(IPacketWrapper request, IPacketWrapper response) {
-            FrostbitePlayers players = new FrostbitePlayers() {
-                Subset = new FrostbiteGroupingList().Parse(request.Packet.Words.GetRange(1, request.Packet.Words.Count - 1))
-            }.Parse(response.Packet.Words.GetRange(1, response.Packet.Words.Count - 1));
+            List<Player> players = FrostbitePlayers.Parse(response.Packet.Words.GetRange(1, response.Packet.Words.Count - 1));
 
             this.AdminListPlayersFinalize(players);
         }
@@ -444,7 +438,7 @@ namespace Procon.Net.Protocols.Myrcon.Frostbite {
         public void AdminSayDispatchHandler(IPacketWrapper request, IPacketWrapper response) {
 
             if (request.Packet.Words.Count >= 3) {
-                this.OnGameEvent(GameEventType.GameChat, new GameEventData() {
+                this.OnGameEvent(ProtocolEventType.ProtocolChat, new ProtocolEventData() {
                     Chats = new List<Chat>() {
                         FrostbiteChat.ParseAdminSay(request.Packet.Words.GetRange(1, request.Packet.Words.Count - 1))
                     }
@@ -462,7 +456,7 @@ namespace Procon.Net.Protocols.Myrcon.Frostbite {
         public virtual void MapListListDispatchHandler(IPacketWrapper request, IPacketWrapper response) {
             if (request.Packet.Words.Count >= 1) {
 
-                FrostbiteMapList maps = new FrostbiteMapList().Parse(response.Packet.Words.GetRange(1, response.Packet.Words.Count - 1));
+                List<Map> maps = FrostbiteMapList.Parse(response.Packet.Words.GetRange(1, response.Packet.Words.Count - 1));
 
                 foreach (Map map in maps) {
                     Map mapInfo = this.State.MapPool.Find(x => String.Compare(x.Name, map.Name, System.StringComparison.OrdinalIgnoreCase) == 0);
@@ -475,7 +469,7 @@ namespace Procon.Net.Protocols.Myrcon.Frostbite {
                 this.State.Maps = maps;
 
                 this.OnGameEvent(
-                    GameEventType.GameMaplistUpdated
+                    ProtocolEventType.ProtocolMaplistUpdated
                 );
             }
         }
@@ -497,7 +491,7 @@ namespace Procon.Net.Protocols.Myrcon.Frostbite {
                     this.State.Bans.Clear();
                 }
 
-                FrostbiteBanList banList = new FrostbiteBanList().Parse(response.Packet.Words.GetRange(1, response.Packet.Words.Count - 1));
+                List<Ban> banList = FrostbiteBanList.Parse(response.Packet.Words.GetRange(1, response.Packet.Words.Count - 1));
 
                 if (banList.Count > 0) {
                     foreach (Ban ban in banList)
@@ -508,7 +502,7 @@ namespace Procon.Net.Protocols.Myrcon.Frostbite {
                 else {
                     // We have recieved the whole banlist in 100 ban increments.. throw event.
                     this.OnGameEvent(
-                        GameEventType.GameBanlistUpdated
+                        ProtocolEventType.ProtocolBanlistUpdated
                     );
                 }
             }
@@ -520,7 +514,7 @@ namespace Procon.Net.Protocols.Myrcon.Frostbite {
 
                 this.State.Bans.Add(ban);
 
-                this.OnGameEvent(GameEventType.GamePlayerBanned, new GameEventData() { Bans = new List<Ban>() { ban } });
+                this.OnGameEvent(ProtocolEventType.ProtocolPlayerBanned, new ProtocolEventData() { Bans = new List<Ban>() { ban } });
             }
         }
 
@@ -532,7 +526,7 @@ namespace Procon.Net.Protocols.Myrcon.Frostbite {
                                                          || (x.Scope.Players.First().Uid != null && x.Scope.Players.First().Uid == ban.Scope.Players.First().Uid));
                 this.State.Bans.Remove(stateBan);
 
-                this.OnGameEvent(GameEventType.GamePlayerUnbanned, new GameEventData() { Bans = new List<Ban>() { ban } });
+                this.OnGameEvent(ProtocolEventType.ProtocolPlayerUnbanned, new ProtocolEventData() { Bans = new List<Ban>() { ban } });
             }
         }
 
@@ -663,7 +657,7 @@ namespace Procon.Net.Protocols.Myrcon.Frostbite {
                     
                 }
                 else if (pbObject is PunkBusterEndPlayerList) {
-                    this.OnGameEvent(GameEventType.GamePlayerlistUpdated);
+                    this.OnGameEvent(ProtocolEventType.ProtocolPlayerlistUpdated);
                 }
             }
         }
@@ -676,7 +670,7 @@ namespace Procon.Net.Protocols.Myrcon.Frostbite {
 
                 if (bool.TryParse(request.Packet.Words[4], out headshot) == true) {
 
-                    this.OnGameEvent(GameEventType.GamePlayerKill, new GameEventData() {
+                    this.OnGameEvent(ProtocolEventType.ProtocolPlayerKill, new ProtocolEventData() {
                         Kills = new List<Kill>() {
                             new Kill() {
                                 HumanHitLocation = headshot == true ? FrostbiteGame.Headshot : FrostbiteGame.Bodyshot,
@@ -721,14 +715,14 @@ namespace Procon.Net.Protocols.Myrcon.Frostbite {
 
                     // Maps are the same, only a round change
                     if (String.Compare(this.State.Settings.Current.MapNameText, request.Packet.Words[1], StringComparison.OrdinalIgnoreCase) == 0)
-                        this.OnGameEvent(GameEventType.GameRoundChanged);
+                        this.OnGameEvent(ProtocolEventType.ProtocolRoundChanged);
                     else {
                         Map selectedMap = this.State.MapPool.Find(x => String.Compare(x.Name, request.Packet.Words[1], StringComparison.OrdinalIgnoreCase) == 0);
 
                         if (selectedMap != null)
                             this.State.Settings.Current.GameModeNameText = selectedMap.GameMode.Name;
                         this.State.Settings.Current.MapNameText = request.Packet.Words[1];
-                        this.OnGameEvent(GameEventType.GameMapChanged);
+                        this.OnGameEvent(ProtocolEventType.ProtocolMapChanged);
                     }
                 }
             }
@@ -758,7 +752,7 @@ namespace Procon.Net.Protocols.Myrcon.Frostbite {
             if (request.Packet.Words.Count >= 2) {
                 //request.Packet.Words.RemoveAt(1);
 
-                Player player = new FrostbitePlayers().Parse(request.Packet.Words.GetRange(2, request.Packet.Words.Count - 2)).FirstOrDefault();
+                Player player = FrostbitePlayers.Parse(request.Packet.Words.GetRange(2, request.Packet.Words.Count - 2)).FirstOrDefault();
 
                 if (player != null) {
                     Player statePlayer = this.State.Players.Find(x => x.Name == player.Name);
@@ -781,7 +775,7 @@ namespace Procon.Net.Protocols.Myrcon.Frostbite {
 
                     this.State.Players.RemoveAll(x => x.Name == player.Name);
 
-                    this.OnGameEvent(GameEventType.GamePlayerLeave, new GameEventData() {
+                    this.OnGameEvent(ProtocolEventType.ProtocolPlayerLeave, new ProtocolEventData() {
                         Players = new List<Player>() {
                             player
                         }
@@ -813,7 +807,7 @@ namespace Procon.Net.Protocols.Myrcon.Frostbite {
                     chat.Origin = ChatOrigin.Server;
                 }
 
-                this.OnGameEvent(GameEventType.GameChat, new GameEventData() { Chats = new List<Chat>() { chat } });
+                this.OnGameEvent(ProtocolEventType.ProtocolChat, new ProtocolEventData() { Chats = new List<Chat>() { chat } });
             }
         }
 
@@ -834,7 +828,7 @@ namespace Procon.Net.Protocols.Myrcon.Frostbite {
                     this.State.Players.Add(statePlayer);
                 }
 
-                this.OnGameEvent(GameEventType.GamePlayerJoin, new GameEventData() { Players = new List<Player>() { statePlayer } });
+                this.OnGameEvent(ProtocolEventType.ProtocolPlayerJoin, new ProtocolEventData() { Players = new List<Player>() { statePlayer } });
             }
         }
 
@@ -848,7 +842,7 @@ namespace Procon.Net.Protocols.Myrcon.Frostbite {
                 player.Role = spawn.Role;
                 player.Inventory = spawn.Inventory;
 
-                this.OnGameEvent(GameEventType.GamePlayerSpawn, new GameEventData() { Spawns = new List<Spawn>() { spawn } });
+                this.OnGameEvent(ProtocolEventType.ProtocolPlayerSpawn, new ProtocolEventData() { Spawns = new List<Spawn>() { spawn } });
             }
         }
 
@@ -860,7 +854,7 @@ namespace Procon.Net.Protocols.Myrcon.Frostbite {
                 // Note that this is removed when the player.OnLeave event is fired.
                 //this.State.PlayerList.RemoveAll(x => x.Name == request.Packet.Words[1]);
 
-                this.OnGameEvent(GameEventType.GamePlayerKicked, new GameEventData() {
+                this.OnGameEvent(ProtocolEventType.ProtocolPlayerKicked, new ProtocolEventData() {
                     Kicks = new List<Kick>() {
                         new Kick() {
                             Now = {
@@ -889,7 +883,7 @@ namespace Procon.Net.Protocols.Myrcon.Frostbite {
                     Uid = squadId.ToString(CultureInfo.InvariantCulture)
                 });
 
-                this.OnGameEvent(GameEventType.GamePlayerMoved, new GameEventData() {
+                this.OnGameEvent(ProtocolEventType.ProtocolPlayerMoved, new ProtocolEventData() {
                     Players = new List<Player>() {
                         player
                     }
@@ -912,7 +906,7 @@ namespace Procon.Net.Protocols.Myrcon.Frostbite {
                     Uid = squadId.ToString(CultureInfo.InvariantCulture)
                 });
 
-                this.OnGameEvent(GameEventType.GamePlayerMoved, new GameEventData() {
+                this.OnGameEvent(ProtocolEventType.ProtocolPlayerMoved, new ProtocolEventData() {
                     Players = new List<Player>() {
                         player
                     }

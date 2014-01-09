@@ -37,7 +37,7 @@ namespace Procon.Core.Connections.TextCommands.Parsers {
         }
 
         protected void ParseMapNames(Phrase phrase) {
-            var mapNames = this.Connection.GameState.MapPool.Select(map => new {
+            var mapNames = this.Connection.ProtocolState.MapPool.Select(map => new {
                 map,
                 Similarity = Math.Max(map.FriendlyName.DePluralStringSimularity(phrase.Text), map.Name.DePluralStringSimularity(phrase.Text))
             })
@@ -62,9 +62,9 @@ namespace Procon.Core.Connections.TextCommands.Parsers {
         protected void ParsePlayerNames(Phrase phrase) {
 
             // We should cache this some where.
-            int maximumNameLength = this.Connection.GameState.Players.Count > 0 ? this.Connection.GameState.Players.Max(player => player.Name.Length) : 0;
+            int maximumNameLength = this.Connection.ProtocolState.Players.Count > 0 ? this.Connection.ProtocolState.Players.Max(player => player.Name.Length) : 0;
 
-            var playerNames = this.Connection.GameState.Players.Select(player => new {
+            var playerNames = this.Connection.ProtocolState.Players.Select(player => new {
                 player,
                 Similarity = Math.Max(player.NameStripped.DePluralStringSimularity(phrase.Text), player.Name.DePluralStringSimularity(phrase.Text))
             })
@@ -87,7 +87,7 @@ namespace Procon.Core.Connections.TextCommands.Parsers {
         }
 
         protected void ParseCountryNames(Phrase phrase) {
-            var playerCountries = this.Connection.GameState.Players.Select(player => new {
+            var playerCountries = this.Connection.ProtocolState.Players.Select(player => new {
                 player,
                 Similarity = player.Location.CountryName.StringSimularitySubsetBonusRatio(phrase.Text)
             })
@@ -113,7 +113,7 @@ namespace Procon.Core.Connections.TextCommands.Parsers {
             // Select all items that match our phrase. We don't deal with
             // items individually as many items share many tags, so you'll always need to deal
             // with them as sets.
-            var items = this.Connection.GameState.Items.Select(item => new {
+            var items = this.Connection.ProtocolState.Items.Select(item => new {
                 item,
                 Similarity = Math.Max(item.FriendlyName.StringSimularitySubsetBonusRatio(phrase.Text), item.Tags.Select(tag => tag.StringSimularitySubsetBonusRatio(phrase.Text)).Max())
             }).Where(@t => @t.Similarity >= 60)
@@ -142,12 +142,12 @@ namespace Procon.Core.Connections.TextCommands.Parsers {
                 if (thing != null) {
                     if (thing.Name == "Players") {
                         thing.Reference = new PlayerThingReference() {
-                            Players = new List<Player>(this.Connection.GameState.Players)
+                            Players = new List<Player>(this.Connection.ProtocolState.Players)
                         };
                     }
                     else if (thing.Name == "Maps") {
                         thing.Reference = new MapThingReference() {
-                            Maps = new List<Map>(this.Connection.GameState.MapPool)
+                            Maps = new List<Map>(this.Connection.ProtocolState.MapPool)
                         };
                     }
                 }

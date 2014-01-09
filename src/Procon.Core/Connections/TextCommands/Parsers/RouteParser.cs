@@ -48,14 +48,14 @@ namespace Procon.Core.Connections.TextCommands.Parsers {
         /// <returns>True if matching was successful, false if no data was found.</returns>
         protected bool TryMatchPlayers(Match match, TextCommandMatchModel result) {
             bool matching = true;
-            int maximumNameLength = this.Connection.GameState.Players.Count > 0 ? this.Connection.GameState.Players.Max(player => player.Name.Length) : 0;
+            int maximumNameLength = this.Connection.ProtocolState.Players.Count > 0 ? this.Connection.ProtocolState.Players.Max(player => player.Name.Length) : 0;
 
             result.Players = new List<Player>();
 
             for (var offset = 0; match.Groups["player" + offset].Success == true && matching == true; offset++) {
                 var text = match.Groups["player" + offset].Value;
 
-                Player player = this.Connection.GameState.Players.FirstOrDefault(p => Math.Max(p.NameStripped.DePluralStringSimularity(text), p.Name.DePluralStringSimularity(text)) >= this.MinimumSimilarity(55, 70, maximumNameLength, p.Name.Length));
+                Player player = this.Connection.ProtocolState.Players.FirstOrDefault(p => Math.Max(p.NameStripped.DePluralStringSimularity(text), p.Name.DePluralStringSimularity(text)) >= this.MinimumSimilarity(55, 70, maximumNameLength, p.Name.Length));
 
                 if (player != null) {
                     result.Players.Add(player);
@@ -82,7 +82,7 @@ namespace Procon.Core.Connections.TextCommands.Parsers {
             for (var offset = 0; match.Groups["map" + offset].Success == true && matching == true; offset++) {
                 var text = match.Groups["map" + offset].Value;
 
-                Map map = this.Connection.GameState.MapPool.FirstOrDefault(m => Math.Max(m.FriendlyName.DePluralStringSimularity(text), m.Name.DePluralStringSimularity(text)) >= 60);
+                Map map = this.Connection.ProtocolState.MapPool.FirstOrDefault(m => Math.Max(m.FriendlyName.DePluralStringSimularity(text), m.Name.DePluralStringSimularity(text)) >= 60);
 
                 if (map != null) {
                     result.Maps.Add(map);

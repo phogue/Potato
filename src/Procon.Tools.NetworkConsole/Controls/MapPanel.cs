@@ -9,8 +9,8 @@ namespace Procon.Tools.NetworkConsole.Controls {
 
     public partial class MapPanel : UserControl {
 
-        private Game _activeGame;
-        public Game ActiveGame {
+        private Protocol _activeGame;
+        public Protocol ActiveGame {
             get {
                 return this._activeGame;
             }
@@ -19,7 +19,7 @@ namespace Procon.Tools.NetworkConsole.Controls {
 
                 // Assign events.
                 if (this._activeGame != null) {
-                    this._activeGame.GameEvent += m_activeGame_GameEvent;
+                    this._activeGame.ProtocolEvent += m_activeGame_GameEvent;
                     this._activeGame.ClientEvent += m_activeGame_ClientEvent;
                 }
             }
@@ -90,9 +90,9 @@ namespace Procon.Tools.NetworkConsole.Controls {
             this.lsvMapList.EndUpdate();
         }
 
-        private void m_activeGame_ClientEvent(IGame sender, ClientEventArgs e) {
+        private void m_activeGame_ClientEvent(IProtocol sender, ClientEventArgs e) {
             if (this.InvokeRequired == true) {
-                this.Invoke(new Action<Game, ClientEventArgs>(this.m_activeGame_ClientEvent), sender, e);
+                this.Invoke(new Action<Protocol, ClientEventArgs>(this.m_activeGame_ClientEvent), sender, e);
                 return;
             }
 
@@ -101,13 +101,13 @@ namespace Procon.Tools.NetworkConsole.Controls {
             }
         }
 
-        private void m_activeGame_GameEvent(IGame sender, GameEventArgs e) {
+        private void m_activeGame_GameEvent(IProtocol sender, ProtocolEventArgs e) {
             if (this.InvokeRequired == true) {
-                this.Invoke(new Action<Game, GameEventArgs>(this.m_activeGame_GameEvent), sender, e);
+                this.Invoke(new Action<Protocol, ProtocolEventArgs>(this.m_activeGame_GameEvent), sender, e);
                 return;
             }
 
-            if (e.GameEventType == GameEventType.GameMaplistUpdated) {
+            if (e.ProtocolEventType == ProtocolEventType.ProtocolMaplistUpdated) {
                 this.lsvMapList.Items.Clear();
 
                 foreach (Map map in this.ActiveGame.State.Maps) {

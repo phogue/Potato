@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Xml.Serialization;
-using Newtonsoft.Json;
 using Procon.Core.Connections.TextCommands.Parsers;
 using Procon.Core.Localization;
 using Procon.Core.Shared;
@@ -18,16 +16,13 @@ namespace Procon.Core.Connections.TextCommands {
         /// <summary>
         /// Full list of text commands to check against.
         /// </summary>
-        [XmlIgnore, JsonIgnore]
         public List<TextCommandModel> TextCommands { get; protected set; }
 
         /// <summary>
         /// The owner of this controller, used to lookup the game with all the player data and such in it.
         /// </summary>
-        [XmlIgnore, JsonIgnore]
         public ConnectionController Connection { get; set; }
 
-        [XmlIgnore, JsonIgnore]
         public SharedReferences Shared { get; private set; }
 
         /// <summary>
@@ -177,13 +172,13 @@ namespace Procon.Core.Connections.TextCommands {
         /// <param name="speaker"></param>
         /// <returns></returns>
         protected Player GetAccountNetworkPlayer(Command command, AccountModel speaker) {
-            Player player = this.Connection.GameState.Players.FirstOrDefault(x => x.Uid == command.Uid);
+            Player player = this.Connection.ProtocolState.Players.FirstOrDefault(x => x.Uid == command.Uid);
 
             if (speaker != null) {
-                AccountPlayerModel accountPlayer = speaker.Players.FirstOrDefault(p => p.GameType == this.Connection.ConnectionModel.GameType.Type);
+                AccountPlayerModel accountPlayer = speaker.Players.FirstOrDefault(p => p.GameType == this.Connection.ConnectionModel.ProtocolType.Type);
 
                 if (accountPlayer != null) {
-                    player = this.Connection.GameState.Players.FirstOrDefault(x => x.Uid == accountPlayer.Uid);
+                    player = this.Connection.ProtocolState.Players.FirstOrDefault(x => x.Uid == accountPlayer.Uid);
                 }
             }
 

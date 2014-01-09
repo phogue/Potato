@@ -76,8 +76,8 @@ namespace Procon.Examples.Events.Test {
                 }
             });
 
-            plugins.PluginFactory.GameEvent(new GameEventArgs() {
-                GameEventType = GameEventType.GameChat,
+            plugins.PluginFactory.GameEvent(new ProtocolEventArgs() {
+                ProtocolEventType = ProtocolEventType.ProtocolChat,
                 Now = {
                     Chats = new List<Chat>() {
                         new Chat() {

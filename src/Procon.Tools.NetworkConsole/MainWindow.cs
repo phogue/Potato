@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using System.Reflection;
@@ -17,13 +18,13 @@ namespace Procon.Tools.NetworkConsole {
 
     public partial class MainWindow : Form {
 
-        private Dictionary<IGameType, Type> Games { get; set; }
+        private Dictionary<IProtocolType, Type> Games { get; set; }
 
         // Console
         private LinkedList<string> CommandHistory { get; set; }
         private LinkedListNode<string> CommandHistoryCurrentNode { get; set; }
 
-        private Game ActiveGame { get; set; }
+        private Protocol ActiveGame { get; set; }
 
         private System.Timers.Timer Timer { get; set; }
 
@@ -77,7 +78,7 @@ namespace Procon.Tools.NetworkConsole {
             }
 
             if (cd.IsLoaded == false) {
-                MessageBox.Show("This tool is designed to aid developers with expanding procon's protocol repertoire, but can also be used for basic administration.  It's not pretty and it's not supposed to be." + Environment.NewLine + Environment.NewLine + "This message will not appear after you have sucessfully connected to a server.", "Procon 2 - Protocol Test Console", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show(@"This tool is designed to aid developers with expanding procon's protocol repertoire, but can also be used for basic administration.  It's not pretty and it's not supposed to be." + Environment.NewLine + Environment.NewLine + "This message will not appear after you have sucessfully connected to a server.", "Procon 2 - Protocol Test Console", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
 
@@ -91,9 +92,17 @@ namespace Procon.Tools.NetworkConsole {
                 if (ushort.TryParse(this.txtPort.Text, out port) == true && this.Games.Any(game => game.Key.Type == (string)this.cboGames.SelectedItem) == true) {
                     this.txtPort.BackColor = SystemColors.Window;
 
-                    this.ActiveGame = (Game)Activator.CreateInstance(this.Games.First(game => game.Key.Type == (string)this.cboGames.SelectedItem).Value, this.txtHostname.Text, port);
+                    Type gameType = this.Games.First(game => game.Key.Type == (string)this.cboGames.SelectedItem).Value;
+
+                    this.ActiveGame = (Protocol)Activator.CreateInstance(gameType, this.txtHostname.Text, port);
                     this.ActiveGame.Password = this.txtPassword.Text;
-                    this.ActiveGame.GameConfigPath = System.IO.Path.Combine(System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Configs"), "Games");
+
+                    DirectoryInfo packagePath = Procon.Service.Shared.Defines.PackageContainingPath(gameType.Assembly.Location);
+
+                    if (packagePath != null) {
+                        this.ActiveGame.ProtocolsConfigDirectory = packagePath.GetDirectories(Procon.Service.Shared.Defines.ProtocolsDirectoryName, SearchOption.AllDirectories).Select(directory => directory.FullName).FirstOrDefault();
+                    }
+
                     this.ActiveGame.Additional = this.txtAdditional.Text;
                     this.chat1.ActiveGame = this.ActiveGame;
                     this.playerPanel1.ActiveGame = this.ActiveGame;
@@ -109,7 +118,7 @@ namespace Procon.Tools.NetworkConsole {
 
                     this.gameStatePropertyGrid.SelectedObject = this.ActiveGame;
 
-                    this.ActiveGame.GameEvent += ActiveGame_GameEvent;
+                    this.ActiveGame.ProtocolEvent += ActiveGame_GameEvent;
                     this.ActiveGame.ClientEvent += ActiveGame_ClientEvent;
 
                     this.ActiveGame.AttemptConnection();
@@ -123,18 +132,18 @@ namespace Procon.Tools.NetworkConsole {
             }
         }
 
-        void ActiveGame_GameEvent(IGame sender, GameEventArgs e) {
+        void ActiveGame_GameEvent(IProtocol sender, ProtocolEventArgs e) {
             if (this.InvokeRequired == true) {
-                this.Invoke(new Action<Game, GameEventArgs>(this.ActiveGame_GameEvent), sender, e);
+                this.Invoke(new Action<Protocol, ProtocolEventArgs>(this.ActiveGame_GameEvent), sender, e);
                 return;
             }
 
             this.gameStatePropertyGrid.Refresh();
         }
 
-        void ActiveGame_ClientEvent(IGame sender, ClientEventArgs e) {
+        void ActiveGame_ClientEvent(IProtocol sender, ClientEventArgs e) {
             if (this.InvokeRequired == true) {
-                this.Invoke(new Action<Game, ClientEventArgs>(this.ActiveGame_ClientEvent), sender, e);
+                this.Invoke(new Action<Protocol, ClientEventArgs>(this.ActiveGame_ClientEvent), sender, e);
                 return;
             }
 

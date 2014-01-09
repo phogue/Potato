@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using Procon.Net.Shared.Collections;
 using Procon.Net.Shared.Models;
 
 namespace Procon.Net.Protocols.Myrcon.Frostbite.Objects {
     [Serializable]
-    public class FrostbiteGroupingList : Groupings {
+    public static class FrostbiteGroupingList {
 
         private static FrostbitePlayerSubsetContext GetSubsetContext(String context) {
             FrostbitePlayerSubsetContext result = FrostbitePlayerSubsetContext.All;
@@ -22,8 +21,9 @@ namespace Procon.Net.Protocols.Myrcon.Frostbite.Objects {
             return result;
         }
 
-        public FrostbiteGroupingList Parse(List<String> words) {
-            
+        public static List<Grouping> Parse(List<String> words) {
+            List<Grouping> groupings = new List<Grouping>();
+
             if (words.Count >= 1) {
 
                 FrostbitePlayerSubsetContext context = FrostbiteGroupingList.GetSubsetContext(words[0]);
@@ -32,13 +32,13 @@ namespace Procon.Net.Protocols.Myrcon.Frostbite.Objects {
                     int parsedTeamId = 0;
 
                     if (context == FrostbitePlayerSubsetContext.Player) {
-                        this.Add(new Grouping() {
+                        groupings.Add(new Grouping() {
                             Type = Grouping.Player,
                             Uid = words[1]
                         });
                     }
                     else if (context == FrostbitePlayerSubsetContext.Team && int.TryParse(words[1], out parsedTeamId) == true) {
-                        this.Add(new Grouping() {
+                        groupings.Add(new Grouping() {
                             Type = Grouping.Team,
                             Uid = parsedTeamId.ToString(CultureInfo.InvariantCulture)
                         });
@@ -47,11 +47,11 @@ namespace Procon.Net.Protocols.Myrcon.Frostbite.Objects {
                         int parsedSquadId = 0;
 
                         if (context == FrostbitePlayerSubsetContext.Squad && int.TryParse(words[1], out parsedTeamId) == true && int.TryParse(words[2], out parsedSquadId) == true) {
-                            this.Add(new Grouping() {
+                            groupings.Add(new Grouping() {
                                 Type = Grouping.Team,
                                 Uid = parsedTeamId.ToString(CultureInfo.InvariantCulture)
                             });
-                            this.Add(new Grouping() {
+                            groupings.Add(new Grouping() {
                                 Type = Grouping.Squad,
                                 Uid = parsedSquadId.ToString(CultureInfo.InvariantCulture)
                             });
@@ -60,7 +60,7 @@ namespace Procon.Net.Protocols.Myrcon.Frostbite.Objects {
                 }
             }
 
-            return this;
+            return groupings;
         }
 
     }

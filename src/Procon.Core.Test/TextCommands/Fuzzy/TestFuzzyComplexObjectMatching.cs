@@ -25,28 +25,28 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
         public void TestComplexKickAllPlayers() {
             TextCommandController textCommandController = CreateTextCommandController();
 
-            AssertCommandPlayerListMapList(textCommandController, "kick all players", TextCommandKick, textCommandController.Connection.GameState.Players, new List<Map>());
+            AssertCommandPlayerListMapList(textCommandController, "kick all players", TextCommandKick, textCommandController.Connection.ProtocolState.Players, new List<Map>());
         }
 
         [Test]
         public void TestComplexKickEveryoneExceptMe() {
             TextCommandController textCommandController = CreateTextCommandController();
 
-            AssertCommandPlayerListMapList(textCommandController, "kick everyone except me", TextCommandKick, textCommandController.Connection.GameState.Players.Where(player => player != PlayerPhogue).ToList(), new List<Map>());
+            AssertCommandPlayerListMapList(textCommandController, "kick everyone except me", TextCommandKick, textCommandController.Connection.ProtocolState.Players.Where(player => player != PlayerPhogue).ToList(), new List<Map>());
         }
 
         [Test]
         public void TestComplexKickEveryoneExceptPhogue() {
             TextCommandController textCommandController = CreateTextCommandController();
 
-            AssertCommandPlayerListMapList(textCommandController, "kick everyone except phogue", TextCommandKick, textCommandController.Connection.GameState.Players.Where(player => player != PlayerPhogue).ToList(), new List<Map>());
+            AssertCommandPlayerListMapList(textCommandController, "kick everyone except phogue", TextCommandKick, textCommandController.Connection.ProtocolState.Players.Where(player => player != PlayerPhogue).ToList(), new List<Map>());
         }
 
         [Test]
         public void TestComplexKickEveryoneExceptPhogueOnAllMapsButPortValdez() {
             TextCommandController textCommandController = CreateTextCommandController();
 
-            AssertCommandPlayerListMapList(textCommandController, "kick everyone except phogue on all maps but port valdez", TextCommandKick, textCommandController.Connection.GameState.Players.Where(player => player != PlayerPhogue).ToList(), new List<Map>() {
+            AssertCommandPlayerListMapList(textCommandController, "kick everyone except phogue on all maps but port valdez", TextCommandKick, textCommandController.Connection.ProtocolState.Players.Where(player => player != PlayerPhogue).ToList(), new List<Map>() {
                 MapValparaiso,
                 MapPanamaCanal
             });
@@ -56,7 +56,7 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
         public void TestComplexKickEveryoneNotUsingC4() {
             TextCommandController textCommandController = CreateTextCommandController();
 
-            AssertCommandPlayerListMapList(textCommandController, "kick everyone not using C4", TextCommandKick, textCommandController.Connection.GameState.Players.Where(player => player != PlayerImisnew2).ToList(), new List<Map>());
+            AssertCommandPlayerListMapList(textCommandController, "kick everyone not using C4", TextCommandKick, textCommandController.Connection.ProtocolState.Players.Where(player => player != PlayerImisnew2).ToList(), new List<Map>());
         }
 
         [Test]
@@ -180,7 +180,7 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
         public void TestComplexKickPlayersNotFromAustralia() {
             TextCommandController textCommandController = CreateTextCommandController();
 
-            AssertCommandPlayerListMapList(textCommandController, "kick everyone not from australia", TextCommandKick, textCommandController.Connection.GameState.Players.Except(new List<Player>() {
+            AssertCommandPlayerListMapList(textCommandController, "kick everyone not from australia", TextCommandKick, textCommandController.Connection.ProtocolState.Players.Except(new List<Player>() {
                 PlayerPhogue,
                 PlayerZaeed,
                 PlayerPhogueIsAButterfly

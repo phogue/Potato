@@ -154,7 +154,7 @@ namespace Procon.Core.Test.Variables {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.VariablesSetA,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
-                    CommonVariableNames.MaximumGameConnections,
+                    CommonVariableNames.MaximumProtocolConnections,
                     10
                 })
             });
@@ -173,7 +173,7 @@ namespace Procon.Core.Test.Variables {
 
             Assert.AreEqual("this is a string", loadVariables.GetA<String>("KeyToWriteString"));
             Assert.AreEqual(1, loadVariables.GetA<int>("KeyToWriteInteger"));
-            Assert.AreEqual(10, loadVariables.GetA<int>("MaximumGameConnections"));
+            Assert.AreEqual(10, loadVariables.GetA<int>("MaximumProtocolConnections"));
         }
 
         /// <summary>
@@ -213,7 +213,7 @@ namespace Procon.Core.Test.Variables {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.VariablesSetA,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
-                    CommonVariableNames.MaximumGameConnections,
+                    CommonVariableNames.MaximumProtocolConnections,
                     10
                 })
             });
@@ -239,7 +239,7 @@ namespace Procon.Core.Test.Variables {
             Assert.AreEqual("1", commands[1].Parameters[1].First<String>());
 
             Assert.AreEqual("VariablesSetA", commands[2].Name);
-            Assert.AreEqual("MaximumGameConnections", commands[2].Parameters[0].First<String>());
+            Assert.AreEqual("MaximumProtocolConnections", commands[2].Parameters[0].First<String>());
             Assert.AreEqual("10", commands[2].Parameters[1].First<String>());
         }
     }

@@ -15,7 +15,7 @@ namespace Procon.Setup {
         /// <summary>
         /// The Procon instance for this directory.
         /// </summary>
-        protected Instance Instance { get; set; }
+        protected InstanceController Instance { get; set; }
 
         /// <summary>
         /// List of cloned languages from Procon.
@@ -105,7 +105,7 @@ namespace Procon.Setup {
         public bool CreateInstance() {
             bool created = false;
 
-            this.Instance = new Instance().Execute() as Instance;
+            this.Instance = new InstanceController().Execute() as InstanceController;
 
             if (this.Instance != null) {
                 this.Instance.Shared.Variables.Variable(CommonVariableNames.LocalizationDefaultLanguageCode).PropertyChanged += new PropertyChangedEventHandler(LocalizationDefaultLanguageCode_PropertyChanged);

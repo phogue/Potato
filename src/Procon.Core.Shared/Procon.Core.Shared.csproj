@@ -17,7 +17,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\builds\Debug\</OutputPath>
+    <OutputPath>..\..\builds\Debug\Packages\Myrcon.Procon.Shared.2.0.0\lib\net40\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -81,11 +81,9 @@
     <Compile Include="Models\ConnectionModel.cs" />
     <Compile Include="Models\GroupModel.cs" />
     <Compile Include="Models\LanguageModel.cs" />
-    <Compile Include="Models\PackageFileModel.cs" />
     <Compile Include="Models\PackageModel.cs" />
+    <Compile Include="Models\PackageWrapperModel.cs" />
     <Compile Include="Models\PackageState.cs" />
-    <Compile Include="Models\PackageType.cs" />
-    <Compile Include="Models\PackageVersionModel.cs" />
     <Compile Include="Models\TextCommandParserType.cs" />
     <Compile Include="Models\PermissionModel.cs" />
     <Compile Include="Models\PluginModel.cs" />

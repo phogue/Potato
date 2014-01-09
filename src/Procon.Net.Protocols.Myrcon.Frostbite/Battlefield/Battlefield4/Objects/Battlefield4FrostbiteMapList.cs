@@ -1,16 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using Procon.Net.Protocols.Myrcon.Frostbite.Objects;
 using Procon.Net.Shared.Actions;
 using Procon.Net.Shared.Models;
 
 namespace Procon.Net.Protocols.Myrcon.Frostbite.Battlefield.Battlefield4.Objects {
     [Serializable]
-    public class Battlefield4FrostbiteMapList : FrostbiteMapList {
+    public class Battlefield4FrostbiteMapList {
 
-        public override FrostbiteMapList Parse(List<string> words) {
-
-            this.Clear();
+        public static List<Map> Parse(List<string> words) {
+            List<Map> maps = new List<Map>();
 
             if (words.Count >= 2) {
                 int mapsCount = 0, wordsPerMap = 0;
@@ -20,7 +18,7 @@ namespace Procon.Net.Protocols.Myrcon.Frostbite.Battlefield.Battlefield4.Objects
                     for (int mapOffset = 0, wordIndex = 2; mapOffset < mapsCount && wordIndex < words.Count; mapOffset++, wordIndex += wordsPerMap) {
                         int rounds = 0;
                         if (int.TryParse(words[wordIndex + 2], out rounds) == true) {
-                            this.Add(
+                            maps.Add(
                                 new Map() {
                                     Index = mapOffset,
                                     Rounds = rounds == 0 ? 2 : rounds,
@@ -36,7 +34,7 @@ namespace Procon.Net.Protocols.Myrcon.Frostbite.Battlefield.Battlefield4.Objects
                 }
             }
 
-            return this;
+            return maps;
         }
 
     }

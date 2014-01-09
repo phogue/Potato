@@ -16,7 +16,7 @@ namespace Procon.Core.Shared {
         /// </summary>
         /// <param name="group">The name of the database group to use</param>
         /// <param name="queries">The queries to send </param>
-        /// <returns>The build command to dispatch</returns>
+        /// <returns>The built command to dispatch</returns>
         public static Command DatabaseQuery(String group, params IDatabaseObject[] queries) {
             return new Command() {
                 CommandType = CommandType.DatabaseQuery,
@@ -41,7 +41,7 @@ namespace Procon.Core.Shared {
         /// Builds a command to send a DatabaseQuery.
         /// </summary>
         /// <param name="queries">The queries to send </param>
-        /// <returns>The build command to dispatch</returns>
+        /// <returns>The built command to dispatch</returns>
         public static Command DatabaseQuery(params IDatabaseObject[] queries) {
             return new Command() {
                 CommandType = CommandType.DatabaseQuery,
@@ -52,6 +52,114 @@ namespace Procon.Core.Shared {
                         }
                     }
                 }
+            };
+        }
+
+        /// <summary>
+        /// Builds a command to send a InstanceServiceRestart signal
+        /// </summary>
+        /// <returns>The built command to the dispatch</returns>
+        public static Command InstanceServiceRestart() {
+            return new Command() {
+                CommandType = CommandType.InstanceServiceRestart
+            };
+        }
+
+        /// <summary>
+        /// Builds a command to send a InstanceServiceMergePackage signal
+        /// </summary>
+        /// <param name="uri">The uri of the repository to find the package source in</param>
+        /// <param name="packageId">The package id to install</param>
+        /// <returns>The built command to the dispatch</returns>
+        public static Command InstanceServiceMergePackage(String uri, String packageId) {
+            return new Command() {
+                CommandType = CommandType.InstanceServiceMergePackage,
+                Parameters = new List<CommandParameter>() {
+                    new CommandParameter() {
+                        Data = {
+                            Content = new List<String>() {
+                                uri
+                            }
+                        }
+                    },
+                    new CommandParameter() {
+                        Data = {
+                            Content = new List<String>() {
+                                packageId
+                            }
+                        }
+                    }
+                }
+            };
+        }
+
+        /// <summary>
+        /// Builds a command to send a InstanceServiceUninstallPackage signal
+        /// </summary>
+        /// <param name="packageId">The package id to uninstall</param>
+        /// <returns>The built command to the dispatch</returns>
+        public static Command InstanceServiceUninstallPackage(String packageId) {
+            return new Command() {
+                CommandType = CommandType.InstanceServiceUninstallPackage,
+                Parameters = new List<CommandParameter>() {
+                    new CommandParameter() {
+                        Data = {
+                            Content = new List<String>() {
+                                packageId
+                            }
+                        }
+                    }
+                }
+            };
+        }
+
+        /// <summary>
+        /// Builds a command to send a PackagesMergePackage
+        /// </summary>
+        /// <param name="packageId">The package id to install</param>
+        /// <returns>The built command to the dispatch</returns>
+        public static Command PackagesMergePackage(String packageId) {
+            return new Command() {
+                CommandType = CommandType.PackagesMergePackage,
+                Parameters = new List<CommandParameter>() {
+                    new CommandParameter() {
+                        Data = {
+                            Content = new List<String>() {
+                                packageId
+                            }
+                        }
+                    }
+                }
+            };
+        }
+
+        /// <summary>
+        /// Builds a command to send a PackagesUninstallPackage
+        /// </summary>
+        /// <param name="packageId">The package id to install</param>
+        /// <returns>The built command to the dispatch</returns>
+        public static Command PackagesUninstallPackage(String packageId) {
+            return new Command() {
+                CommandType = CommandType.PackagesUninstallPackage,
+                Parameters = new List<CommandParameter>() {
+                    new CommandParameter() {
+                        Data = {
+                            Content = new List<String>() {
+                                packageId
+                            }
+                        }
+                    }
+                }
+            };
+        }
+
+        /// <summary>
+        /// Builds a command to send a PackagesFetchPackages
+        /// </summary>
+        /// <returns>The built command to the dispatch</returns>
+        public static Command PackagesFetchPackages() {
+            return new Command() {
+                CommandType = CommandType.PackagesFetchPackages
             };
         }
     }

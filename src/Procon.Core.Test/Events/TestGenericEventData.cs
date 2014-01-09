@@ -17,7 +17,7 @@ namespace Procon.Core.Test.Events {
     public class TestGenericEventData {
         [Test]
         public void TestGameEventObjectConversion() {
-            var gameEventData = new GameEventData() {
+            var gameEventData = new ProtocolEventData() {
                 Bans = new List<Ban>() {
                     new Ban() {
                         ActionType = NetworkActionType.NetworkYell,

@@ -5,8 +5,6 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 using System.Xml.Linq;
-using System.Xml.Serialization;
-using Newtonsoft.Json;
 using Procon.Core.Shared;
 using Procon.Core.Shared.Events;
 using Procon.Core.Shared.Models;
@@ -54,12 +52,11 @@ namespace Procon.Core.Events {
         /// <param name="e">The event that has been logged</param>
         public delegate void EventLoggedHandler(Object sender, GenericEventArgs e);
 
-        [XmlIgnore, JsonIgnore]
         public SharedReferences Shared { get; private set; }
 
         protected List<String> DefaultEventsLogIgnoredNames = new List<String>() {
-            GameEventType.GamePlayerlistUpdated.ToString(),
-            GameEventType.GameSettingsUpdated.ToString()
+            ProtocolEventType.ProtocolPlayerlistUpdated.ToString(),
+            ProtocolEventType.ProtocolSettingsUpdated.ToString()
         };
 
         /// <summary>

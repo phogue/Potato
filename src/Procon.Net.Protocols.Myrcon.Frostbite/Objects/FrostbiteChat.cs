@@ -39,7 +39,7 @@ namespace Procon.Net.Protocols.Myrcon.Frostbite.Objects {
                         break;
                     case "Subset":
 
-                        chat.Scope.Groups = new FrostbiteGroupingList().Parse(words.GetRange(varCount, words.Count - varCount));
+                        chat.Scope.Groups = FrostbiteGroupingList.Parse(words.GetRange(varCount, words.Count - varCount));
 
                         //this.Subset = new FrostbitePlayerSubset().Parse(words.GetRange(varCount, words.Count - varCount));
 

@@ -23,7 +23,7 @@ namespace Procon.Examples.TextCommands.Test {
                 // This won't actually connect to anything.
                 // It's just a mock so the GameState is available to be modified.
                 // See MockGame for all the mock data we create.
-                Game = new MockGame("localhost", 9000)
+                Protocol = new MockGame("localhost", 9000)
             };
 
             // 1. When this is called you will see the constructor in the plugin executed.

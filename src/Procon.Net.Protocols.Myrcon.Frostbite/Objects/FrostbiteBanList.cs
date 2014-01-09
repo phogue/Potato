@@ -1,23 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
-using Procon.Net.Shared.Collections;
+using Procon.Net.Shared.Actions;
 
 namespace Procon.Net.Protocols.Myrcon.Frostbite.Objects {
     [Serializable]
-    public class FrostbiteBanList : Bans {
+    public static class FrostbiteBanList {
 
-        public virtual FrostbiteBanList Parse(List<string> words) {
+        public static List<Ban> Parse(List<string> words) {
+            List<Ban> bans = new List<Ban>();
 
-            int bans = 0;
+            int count = 0;
 
-            if (words.Count >= 1 && int.TryParse(words[0], out bans) == true) {
+            if (words.Count >= 1 && int.TryParse(words[0], out count) == true) {
                 words.RemoveAt(0);
-                for (int i = 0; i < bans; i++) {
-                    this.Add(FrostbiteBan.ParseBanListItem(words.GetRange(i * 5, 5)));
+                for (int i = 0; i < count; i++) {
+                    bans.Add(FrostbiteBan.ParseBanListItem(words.GetRange(i * 5, 5)));
                 }
             }
 
-            return this;
+            return bans;
         }
     }
 }

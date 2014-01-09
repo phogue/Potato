@@ -10,7 +10,7 @@ namespace Procon.Core.Shared.Models {
         /// </summary>
         public Guid ConnectionGuid { get; set; }
 
-        public GameType GameType { get; set; }
+        public ProtocolType ProtocolType { get; set; }
 
         public String Hostname { get; set; }
 

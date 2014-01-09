@@ -11,17 +11,17 @@ namespace Procon.Net.Shared.Protocols {
         /// <summary>
         /// List of cached supported game type attributes attached to their actual type.
         /// </summary>
-        private static Dictionary<IGameType, Type> _supportedGames;
+        private static Dictionary<IProtocolType, Type> _supportedGames;
 
         /// <summary>
         /// Late loads Procon.Net.Protocols.*.dll's 
         /// </summary>
         private static IEnumerable<Assembly> LateBindGames() {
             List<Assembly> assemblies = new List<Assembly>() {
-                Assembly.GetAssembly(typeof(IGame))
+                Assembly.GetAssembly(typeof(IProtocol))
             };
 
-            foreach (String protocol in Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, "Procon.Net.Protocols.*.dll")) {
+            foreach (String protocol in Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, "Procon.Net.Protocols.*.dll", SearchOption.AllDirectories)) {
                 try {
                     assemblies.Add(Assembly.LoadFile(protocol));
                 }
@@ -31,9 +31,9 @@ namespace Procon.Net.Shared.Protocols {
             return assemblies;
         }
 
-        public static Dictionary<IGameType, Type> GetSupportedGames() {
+        public static Dictionary<IProtocolType, Type> GetSupportedGames() {
 
-            Dictionary<IGameType, Type> games = SupportedGameTypes._supportedGames;
+            Dictionary<IProtocolType, Type> games = SupportedGameTypes._supportedGames;
 
             if (games == null) {
 
@@ -44,18 +44,18 @@ namespace Procon.Net.Shared.Protocols {
 
                 // Cache the results 
                 SupportedGameTypes._supportedGames = games = (from gameClassType in assemblies.SelectMany(assembly => assembly.GetTypes())
-                                                              let gameType = (gameClassType.GetCustomAttributes(typeof(IGameType), false) as IEnumerable<IGameType>).FirstOrDefault()
+                                                              let gameType = (gameClassType.GetCustomAttributes(typeof(IProtocolType), false) as IEnumerable<IProtocolType>).FirstOrDefault()
                                                 where gameType != null &&
                                                       gameClassType != null &&
                                                       gameClassType.IsClass == true &&
                                                       gameClassType.IsAbstract == false &&
                                                       gameClassType.Namespace != null &&
                                                       supportedGamesNamespame.IsMatch(gameClassType.Namespace) == true &&
-                                                      typeof(IGame).IsAssignableFrom(gameClassType)
+                                                      typeof(IProtocol).IsAssignableFrom(gameClassType)
                                                 select new {
                                                     Name = gameType,
                                                     Type = gameClassType
-                                                }).ToDictionary(w => new GameType(w.Name) as IGameType, w => w.Type);
+                                                }).ToDictionary(w => new ProtocolType(w.Name) as IProtocolType, w => w.Type);
             }
 
             return games;

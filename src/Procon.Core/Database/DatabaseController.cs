@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Xml.Serialization;
-using Newtonsoft.Json;
 using Procon.Core.Shared;
 using Procon.Core.Shared.Models;
 using Procon.Core.Variables;
@@ -34,7 +32,6 @@ namespace Procon.Core.Database {
             new SqLiteDriver()
         };
 
-        [XmlIgnore, JsonIgnore]
         public SharedReferences Shared { get; private set; }
 
         /// <summary>

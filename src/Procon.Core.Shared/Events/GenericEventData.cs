@@ -10,7 +10,7 @@ namespace Procon.Core.Shared.Events {
         /// </summary>
         /// <param name="gameEventData"></param>
         /// <returns>A new GenericEventData object with the gameEventData included.</returns>
-        public static CommandData Parse(GameEventData gameEventData) {
+        public static CommandData Parse(ProtocolEventData gameEventData) {
             return new CommandData() {
                 Chats = gameEventData.Chats,
                 Players = gameEventData.Players,

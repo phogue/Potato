@@ -70,11 +70,11 @@ namespace Procon.Core.Test.Variables {
             // Set an archive variable
             variables.SetA(new Command() {
                 Origin = CommandOrigin.Local
-            }, CommonVariableNames.MaximumGameConnections, "value");
+            }, CommonVariableNames.MaximumProtocolConnections, "value");
 
             // Validate that the command was successful and the key was set to the passed value.
-            Assert.AreEqual("value", variables.Get(CommonVariableNames.MaximumGameConnections, String.Empty));
-            Assert.AreEqual("value", variables.GetA(CommonVariableNames.MaximumGameConnections, String.Empty));
+            Assert.AreEqual("value", variables.Get(CommonVariableNames.MaximumProtocolConnections, String.Empty));
+            Assert.AreEqual("value", variables.GetA(CommonVariableNames.MaximumProtocolConnections, String.Empty));
         }
 
         [Test]

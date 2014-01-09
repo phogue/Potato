@@ -5,9 +5,8 @@ using System.Linq;
 using System.Runtime.Remoting.Lifetime;
 using System.Security;
 using System.Security.Permissions;
+using System.Text.RegularExpressions;
 using System.Threading;
-using System.Xml.Serialization;
-using Newtonsoft.Json;
 using Procon.Core.Shared;
 using Procon.Core.Shared.Events;
 using Procon.Core.Shared.Models;
@@ -24,35 +23,29 @@ namespace Procon.Core.Connections.Plugins {
         /// <summary>
         /// The appdomain all of the plugins are loaded into.
         /// </summary>
-        [XmlIgnore, JsonIgnore]
         public AppDomain AppDomainSandbox { get; protected set; }
 
         /// <summary>
         /// Simple plugin factory reference to load classes into the app domain.
         /// </summary>
-        [XmlIgnore, JsonIgnore]
         public IRemotePluginController PluginFactory { get; protected set; }
 
         /// <summary>
         /// List of plugins loaded in the app domain.
         /// </summary>
-        [XmlIgnore, JsonIgnore]
         public List<PluginModel> LoadedPlugins { get; protected set; }
 
         /// <summary>
         /// The connection which owns this plugin app domain and the connection which the plugins control.
         /// </summary>
-        [XmlIgnore, JsonIgnore]
         public ConnectionController Connection { get; set; }
 
         /// <summary>
         /// Works between PluginController and RemotePluginController as a known type by a plugin
         /// assembly and Core, just bubbling (not tunneling) commands.
         /// </summary>
-        [XmlIgnore, JsonIgnore]
         public CorePluginControllerCallbackProxy CorePluginControllerCallbackProxy { get; set; }
 
-        [XmlIgnore, JsonIgnore]
         public SharedReferences Shared { get; private set; }
 
         /// <summary>
@@ -198,30 +191,18 @@ namespace Procon.Core.Connections.Plugins {
         }
 
         /// <summary>
-        /// Copies the necessary files to execute a plugin to the specified directory.
-        /// </summary>
-        protected void CreatePluginDirectory(FileSystemInfo pluginDirectory) {
-            List<String> files = new List<String>() {
-                Defines.ProconCoreSharedDll,
-                Defines.ProconNetSharedDll,
-                Defines.ProconDatabaseSharedDll,
-                Defines.NewtonsoftJsonDll
-            };
-
-            try {
-                files.ForEach(file => File.Copy(Path.Combine(Defines.BaseDirectory, file), Path.Combine(pluginDirectory.FullName, file), true));
-            }
-            catch (Exception) { }
-        }
-
-        /// <summary>
         /// Create the app domain setup options required to create the app domain.
         /// </summary>
         /// <returns></returns>
         protected AppDomainSetup CreateAppDomainSetup() {
             AppDomainSetup setup = new AppDomainSetup {
                 LoaderOptimization = LoaderOptimization.MultiDomainHost,
-                ApplicationBase = AppDomain.CurrentDomain.BaseDirectory
+                ApplicationBase = AppDomain.CurrentDomain.BaseDirectory,
+                PrivateBinPath = String.Join(";", new[] {
+                    AppDomain.CurrentDomain.BaseDirectory,
+                    Defines.PackageMyrconProconCoreLibNet40,
+                    Defines.PackageMyrconProconSharedLibNet40
+                })
             };
 
             // [XpKiller] - Mono workaround.
@@ -242,12 +223,19 @@ namespace Procon.Core.Connections.Plugins {
             permissions.AddPermission(new SecurityPermission(SecurityPermissionFlag.Execution));
 
             permissions.AddPermission(new FileIOPermission(FileIOPermissionAccess.PathDiscovery, AppDomain.CurrentDomain.BaseDirectory));
-            permissions.AddPermission(new FileIOPermission(FileIOPermissionAccess.AllAccess, Defines.PluginsDirectory));
             permissions.AddPermission(new FileIOPermission(FileIOPermissionAccess.AllAccess, Defines.LogsDirectory));
-            permissions.AddPermission(new FileIOPermission(FileIOPermissionAccess.Read | FileIOPermissionAccess.PathDiscovery, Defines.LocalizationDirectory));
             permissions.AddPermission(new FileIOPermission(FileIOPermissionAccess.Read | FileIOPermissionAccess.PathDiscovery, Defines.ConfigsDirectory));
             permissions.AddPermission(new FileIOPermission(FileIOPermissionAccess.AllAccess, Path.Combine(Defines.ConfigsDirectory, this.Connection != null ? this.Connection.ConnectionModel.ConnectionGuid.ToString() : Guid.Empty.ToString())));
-            
+
+            foreach (var file in this.GetPluginAssemblies()) {
+                DirectoryInfo directory = Defines.PackageContainingPath(file.Directory != null ? file.Directory.FullName : "");
+
+                // If we didn't just go up to the root directory.
+                if (directory != null) {
+                    permissions.AddPermission(new FileIOPermission(FileIOPermissionAccess.AllAccess, directory.FullName));
+                }
+            }
+
             return permissions;
         }
 
@@ -273,24 +261,24 @@ namespace Procon.Core.Connections.Plugins {
             this.BubbleObjects.Add(this.Connection);
 
             // Load all the plugins.
-            this.LoadPlugins(new DirectoryInfo(Defines.PluginsDirectory));
+            this.LoadPlugins();
 
-            if (this.Connection != null && this.Connection.Game != null) {
-                this.Connection.Game.ClientEvent += Connection_ClientEvent;
-                this.Connection.Game.GameEvent += Connection_GameEvent;
+            if (this.Connection != null && this.Connection.Protocol != null) {
+                this.Connection.Protocol.ClientEvent += Connection_ClientEvent;
+                this.Connection.Protocol.ProtocolEvent += Connection_GameEvent;
             }
 
             // Return the base execution.
             return base.Execute();
         }
 
-        private void Connection_ClientEvent(IGame sender, ClientEventArgs e) {
+        private void Connection_ClientEvent(IProtocol sender, ClientEventArgs e) {
             if (this.PluginFactory != null) {
                 this.PluginFactory.ClientEvent(e);
             }
         }
 
-        private void Connection_GameEvent(IGame sender, GameEventArgs e) {
+        private void Connection_GameEvent(IProtocol sender, ProtocolEventArgs e) {
             if (this.PluginFactory != null) {
                 this.PluginFactory.GameEvent(e);
             }
@@ -300,11 +288,6 @@ namespace Procon.Core.Connections.Plugins {
         /// Sets everything up to load the plugins, creating the seperate appdomin and permission requirements
         /// </summary>
         protected void SetupPluginFactory() {
-            // Make sure the plugins directory exists and set it up.
-            Directory.CreateDirectory(Defines.PluginsDirectory);
-
-            this.CreatePluginDirectory(new DirectoryInfo(Defines.PluginsDirectory));
-
             AppDomainSetup setup = this.CreateAppDomainSetup();
 
             PermissionSet permissions = this.CreatePermissionSet();
@@ -320,22 +303,30 @@ namespace Procon.Core.Connections.Plugins {
         }
 
         /// <summary>
+        /// Fetches a list of assembly files to load.
+        /// </summary>
+        /// <returns></returns>
+        protected List<FileInfo> GetPluginAssemblies() {
+            return Directory.GetFiles(Defines.PackagesDirectory, @"*.dll", SearchOption.AllDirectories)
+                .Select(path => new FileInfo(path))
+                .Where(file =>
+                    file.Name != Defines.ProconCoreDll &&
+                    file.Name != Defines.ProconNetDll &&
+                    file.Name != Defines.ProconFuzzyDll &&
+                    file.Name != Defines.NewtonsoftJsonDll &&
+                    file.Name != Defines.ProconCoreSharedDll &&
+                    file.Name != Defines.ProconDatabaseSharedDll &&
+                    file.Name != Defines.ProconNetSharedDll)
+                .Where(file => Regex.Matches(file.FullName, file.Name.Replace(file.Extension, String.Empty)).Cast<Match>().Count() >= 2)
+                .ToList();
+        } 
+
+        /// <summary>
         /// Setup the plugins located in or in sub-folders of this directory.
         /// </summary>
-        protected void LoadPlugins(DirectoryInfo pluginDirectory) {
-            // Find all the dll files recursively within the folder and folders within the specified directory.
-            var files = pluginDirectory.GetFiles("*.dll", SearchOption.AllDirectories).Where(file =>
-                                                                  file.Name != Defines.ProconCoreDll &&
-                                                                  file.Name != Defines.ProconNetDll &&
-                                                                  file.Name != Defines.ProconFuzzyDll &&
-                                                                  file.Name != Defines.NewtonsoftJsonDll &&
-                                                                  file.Name != Defines.ProconCoreSharedDll &&
-                                                                  file.Name != Defines.ProconDatabaseSharedDll &&
-                                                                  file.Name != Defines.ProconDatabaseSerializationDll &&
-                                                                  file.Name != Defines.ProconNetSharedDll);
-
+        protected void LoadPlugins() {
             // If there are dll files in this directory, setup the plugins.
-            foreach (String path in files.Select(file => file.FullName)) {
+            foreach (String path in this.GetPluginAssemblies().Select(file => file.FullName)) {
                 PluginModel plugin = new PluginModel() {
                     Name = new FileInfo(path).Name.Replace(".dll", "")
                 };

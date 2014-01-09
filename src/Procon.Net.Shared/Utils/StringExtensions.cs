@@ -187,13 +187,13 @@ namespace Procon.Net.Shared.Utils {
         }
 
         public static String SanitizeDirectory(this String s) {
-            s = Regex.Replace(s, "[/\\\\]+", "_").Trim('_');
-            s = Regex.Replace(s, "[^\\w]+", "");
+            //s = Regex.Replace(s, "[/\\\\]+", "-").Trim('-');
+            s = Regex.Replace(s, "[^\\w]+", "-").Trim('-');
 
             return s;
         }
 
-        public static String UrlSlug(this String s) {
+        public static String Slug(this String s) {
             String combined = s;
             Uri uri;
 

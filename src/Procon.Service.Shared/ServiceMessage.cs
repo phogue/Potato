@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 
 namespace Procon.Service.Shared {
+    /// <summary>
+    /// A simple messaging system for bilateral communication with Procon Core
+    /// </summary>
     [Serializable]
     public sealed class ServiceMessage : IDisposable {
         
@@ -20,6 +23,9 @@ namespace Procon.Service.Shared {
         /// </summary>
         public DateTime Stamp { get; set; }
 
+        /// <summary>
+        /// Initializes the service message with the default values.
+        /// </summary>
         public ServiceMessage() {
             this.Arguments = new Dictionary<String, String>();
             this.Stamp = DateTime.Now;

@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
-using System.Xml.Serialization;
-using Newtonsoft.Json;
 using Procon.Core.Shared;
 using Procon.Core.Shared.Models;
 using Procon.Service.Shared;
@@ -24,7 +22,6 @@ namespace Procon.Core.Localization {
         /// </summary>
         public List<LanguageConfig> LoadedLanguageFiles { get; protected set; }
 
-        [XmlIgnore, JsonIgnore]
         public SharedReferences Shared { get; private set; }
 
         /// <summary>
@@ -114,10 +111,26 @@ namespace Procon.Core.Localization {
         /// Returns a reference back to this object.
         /// </summary>
         public override ICoreController Execute() {
-            DirectoryInfo localizationDirectory = new DirectoryInfo(Defines.LocalizationDirectory);
+            var languageDirectories = new DirectoryInfo(Defines.PackagesDirectory)
+                .GetDirectories(Defines.LocalizationDirectoryName, SearchOption.AllDirectories)
+                .Union(new [] {
+                    new DirectoryInfo(Defines.LocalizationDirectory), 
+                })
+                .SelectMany(localizationDirectory => localizationDirectory.GetDirectories());
 
-            foreach (DirectoryInfo languageDirectory in localizationDirectory.GetDirectories()) {
-                LanguageConfig language = new LanguageConfig().Load(languageDirectory) as LanguageConfig;
+            // Loop over each grouped language
+            foreach (var groupedLanguageDirectories in languageDirectories.GroupBy(directory => directory.Name)) {
+                // Loop over each directory for this language, appending to the build language file.
+                LanguageConfig language = null;
+
+                foreach (var languageDirectory in groupedLanguageDirectories) {
+                    if (language == null) {
+                        language = new LanguageConfig().Load(languageDirectory) as LanguageConfig;
+                    }
+                    else {
+                        language.Combine(new LanguageConfig().Load(languageDirectory) as LanguageConfig);
+                    }
+                }
 
                 if (language != null && language.LanguageModel.LanguageCode != null) {
                     this.LoadedLanguageFiles.Add(language);

@@ -76,7 +76,7 @@ namespace Procon.Net.Shared.Test.Utils.StringExtensions {
         public void TestSanitizeDirectoryForwardSlashes() {
             String sanitized = @"c:/projects/something/test/".SanitizeDirectory();
 
-            Assert.AreEqual("c_projects_something_test", sanitized);
+            Assert.AreEqual("c-projects-something-test", sanitized);
         }
 
         /// <summary>
@@ -86,7 +86,7 @@ namespace Procon.Net.Shared.Test.Utils.StringExtensions {
         public void TestSanitizeDirectoryBackSlashes() {
             String sanitized = @"c:\projects\something\test\".SanitizeDirectory();
 
-            Assert.AreEqual("c_projects_something_test", sanitized);
+            Assert.AreEqual("c-projects-something-test", sanitized);
         }
 
         /// <summary>
@@ -95,9 +95,9 @@ namespace Procon.Net.Shared.Test.Utils.StringExtensions {
         /// </summary>
         [Test]
         public void TestUrlSlug() {
-            String slugged = "http://forum.myrcon.com".UrlSlug();
+            String slugged = "http://forum.myrcon.com".Slug();
 
-            Assert.AreEqual("forummyrconcom", slugged);
+            Assert.AreEqual("forum-myrcon-com", slugged);
         }
     }
 }

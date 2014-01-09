@@ -1,6 +1,4 @@
-﻿using System.Xml.Serialization;
-using Newtonsoft.Json;
-using Procon.Core.Events;
+﻿using Procon.Core.Events;
 using Procon.Core.Localization;
 using Procon.Core.Security;
 using Procon.Core.Variables;
@@ -35,28 +33,24 @@ namespace Procon.Core {
         /// Stores a reference to the static variables controller by default, but can
         /// be overridden for unit testing.
         /// </summary>
-        [XmlIgnore, JsonIgnore]
         public VariableController Variables { get; set; }
 
         /// <summary>
         /// Stores a reference to the static language controller by default, but can
         /// be overridden for unit testing.
         /// </summary>
-        [XmlIgnore, JsonIgnore]
         public LanguageController Languages { get; set; }
 
         /// <summary>
         /// Stores a reference to the static security controller by default, but can
         /// be overridden for unit testing.
         /// </summary>
-        [XmlIgnore, JsonIgnore]
         public SecurityController Security { get; set; }
 
         /// <summary>
         /// Stores a reference to the static events controller by default, but can
         /// be overridden for unit testing.
         /// </summary>
-        [XmlIgnore, JsonIgnore]
         public EventsController Events { get; set; }
 
         /// <summary>

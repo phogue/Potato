@@ -41,7 +41,7 @@ namespace Procon.Core.Shared.Plugins {
         /// <summary>
         /// The latest GameState that was passed across the AppDomain.
         /// </summary>
-        public GameState GameState { get; set; }
+        public ProtocolState GameState { get; set; }
 
         /// <summary>
         /// The interface to callback from the plugin side to Procon.
@@ -234,8 +234,8 @@ namespace Procon.Core.Shared.Plugins {
             });
         }
 
-        public virtual void GameEvent(GameEventArgs e) {
-            this.GameState = e.GameState;
+        public virtual void GameEvent(ProtocolEventArgs e) {
+            this.GameState = e.ProtocolState;
         }
 
         public virtual void ClientEvent(ClientEventArgs e) {

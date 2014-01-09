@@ -1,31 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Procon.Core.Shared.Models {
+    /// <summary>
+    /// A nuget repository source known to Procon.core
+    /// </summary>
     [Serializable]
     public class RepositoryModel : CoreModel {
-
         /// <summary>
-        /// List of packages available in the repository
+        /// The base url of the repository
         /// </summary>
-        public List<PackageModel> Packages { get; set; }
-
-        /// <summary>
-        /// The base url of the repository with trailing slash '/'
-        /// </summary>
-        public String Url { get; set; }
+        public String Uri { get; set; }
 
         /// <summary>
         /// Short directory safe url
         /// </summary>
-        public String UrlSlug { get; set; }
-
-        /// <summary>
-        /// When the repository was last checked for updates
-        /// </summary>
-        public DateTime LastQueryCompleted { get; set; }
+        public String Slug { get; set; }
 
         /// <summary>
         /// The name of this repository
@@ -33,17 +23,20 @@ namespace Procon.Core.Shared.Models {
         public String Name { get; set; }
 
         /// <summary>
-        /// Username is only used for methods that require authentication
+        /// List of packages available in the repository
         /// </summary>
-        public String Username { get; set; }
+        public List<PackageWrapperModel> Packages { get; set; }
 
         /// <summary>
-        /// Password is only used for methods that require authentication
+        /// If this is the location orphaned packages should be added if we cannot find a source for them.
         /// </summary>
-        public String Password { get; set; }
+        public bool IsOrphanage { get; set; }
 
+        /// <summary>
+        /// Initializes a repository model with the default values.
+        /// </summary>
         public RepositoryModel() : base() {
-            this.Packages = new List<PackageModel>();
+            this.Packages = new List<PackageWrapperModel>();
         }
     }
 }

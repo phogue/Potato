@@ -92,10 +92,6 @@
       <Project>{3F9E6801-A015-4F7E-9B67-7015F1F58B18}</Project>
       <Name>Procon.Service.Shared</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Procon.Service\Procon.Service.csproj">
-      <Project>{C9DA2AB8-ED31-4E20-9420-5597FCBAE284}</Project>
-      <Name>Procon.Service</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

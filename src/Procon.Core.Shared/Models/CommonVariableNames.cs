@@ -26,7 +26,7 @@ namespace Procon.Core.Shared.Models {
         /// <summary>
         /// (int) Maximum number of connections to game servers allowed
         /// </summary>
-        MaximumGameConnections,
+        MaximumProtocolConnections,
         /// <summary>
         /// (int) The maximum amount of time an event should be held in memory before being flushed to a log.
         /// </summary>
@@ -55,7 +55,7 @@ namespace Procon.Core.Shared.Models {
         /// <summary>
         /// List[String] list of strings to ignore if they match
         /// </summary>
-        GameEventsIgnoreList,
+        ProtocolEventsIgnoreList,
         /// <summary>
         /// List[String] list of configuration options for the database.
         /// </summary>
@@ -117,10 +117,16 @@ namespace Procon.Core.Shared.Models {
         /// </summary>
         EventsLogIgnoredNames,
         /// <summary>
-        /// (string) Url to download the procon repository. This repository is automatically
-        /// added to procon. While it is also a define in the Procon.Core.dll we use it as
-        /// variable that can be set for consistency and unit testing.
+        /// List[String] list of configuration options for the packages.
         /// </summary>
-        PackagesProcon2RepositoryUrl
+        PackagesConfigGroups,
+        /// <summary>
+        /// (String) The uri of the respository in the group
+        /// </summary>
+        PackagesRepositoryUri,
+        /// <summary>
+        /// (String) The full default uri of the source respository to download core procon updates from.
+        /// </summary>
+        PackagesDefaultSourceRepositoryUri
     }
 }

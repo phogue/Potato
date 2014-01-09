@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 
 namespace Procon.Service.Shared {
+    /// <summary>
+    /// The proxy to be loaded in the service appdomain
+    /// </summary>
     public sealed class ServiceLoaderProxy : MarshalByRefObject, IService {
-
         /// <summary>
         /// The proxy to the Procon.Core.Instance object.
         /// </summary>
@@ -14,10 +17,13 @@ namespace Procon.Service.Shared {
             return null;
         }
 
+        /// <summary>
+        /// Creates the procon instance in the procon instance appdomain
+        /// </summary>
         public void Create() {
             this.Service = (IService)Activator.CreateInstanceFrom(
-                Defines.ProconCoreDll, 
-                "Procon.Core.Instance",
+                Defines.SearchRelativeSearchPath(Defines.ProconCoreDll).First(),
+                Defines.TypeProconCoreInstanceController,
                 false,
                 BindingFlags.Instance | BindingFlags.Public | BindingFlags.CreateInstance,
                 null,

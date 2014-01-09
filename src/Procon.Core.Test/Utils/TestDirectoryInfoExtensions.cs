@@ -2,8 +2,6 @@
 
 using System;
 using System.IO;
-using System.Linq;
-using Ionic.Zip;
 using NUnit.Framework;
 using Procon.Core.Utils;
 
@@ -45,7 +43,7 @@ namespace Procon.Core.Test.Utils {
             // The root directory should still exist.
             Assert.IsTrue(fileA.Directory.Exists);
         }
-
+        /*
         /// <summary>
         ///     Checks that a directory can be zipped up. Validates the files are in the resulting zip file in memory.
         /// </summary>
@@ -70,5 +68,6 @@ namespace Procon.Core.Test.Utils {
             Assert.IsTrue(zip.Select(entry => entry.FileName == "a.txt").Any());
             Assert.IsTrue(zip.Select(entry => entry.FileName == "b.txt").Any());
         }
+        */
     }
 }

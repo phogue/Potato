@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ServiceProcess;
 using Procon.Service.Shared;
+using ServiceController = Procon.Service.Shared.ServiceController;
 
 namespace Procon.Service {
     public partial class ProconService : ServiceBase {
@@ -15,7 +17,10 @@ namespace Procon.Service {
         }
 
         protected override void OnStart(string[] args) {
-            this.Instance.Arguments = new List<string>(args);
+            this.Instance = new ServiceController() {
+                Arguments = new List<String>(args),
+                Settings = new ServiceSettings(new List<String>(args))
+            };
 
             this.Instance.SignalMessage(new ServiceMessage() {
                 Name = "start"

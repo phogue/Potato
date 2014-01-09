@@ -28,7 +28,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\builds\Debug\</OutputPath>
+    <OutputPath>..\..\builds\Debug\Packages\Myrcon.Procon.Tools.2.0.0\lib\net40\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -162,6 +162,10 @@
     <ProjectReference Include="..\Procon.Net\Procon.Net.csproj">
       <Project>{65C1DB17-18E0-4AC5-8709-3F7E04B88CA1}</Project>
       <Name>Procon.Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Procon.Service.Shared\Procon.Service.Shared.csproj">
+      <Project>{3F9E6801-A015-4F7E-9B67-7015F1F58B18}</Project>
+      <Name>Procon.Service.Shared</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

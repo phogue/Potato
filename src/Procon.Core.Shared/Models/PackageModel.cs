@@ -1,47 +1,98 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Procon.Core.Shared.Models {
+    /// <summary>
+    /// A Core understanding of a NuGet package
+    /// </summary>
     [Serializable]
     public class PackageModel : CoreModel {
 
-        /// <summary>
-        /// The path to save xml packages to
-        /// </summary>
-        public String PackagesUpdatesPath { get; set; }
+        // Select properties copied from NuGet.IPackageMetadata and NuGet.IPackage
 
         /// <summary>
-        /// What repository this package belongs to
+        /// A list of authors who have contributed to this project.
         /// </summary>
-        public RepositoryModel Repository { get; set; }
+        public List<String> Authors { get; set; }
 
         /// <summary>
-        /// What state this package is in. Is it installed or not,
-        /// updateable or has the update been downloaded and is pending
-        /// an install on restart?
+        /// The copyright notice of this package
         /// </summary>
-        public PackageState State { get; set; }
+        public String Copyright { get; set; }
 
         /// <summary>
-        /// The currently installed (or awaiting restart for update)
-        /// version of the package.
-        /// 
-        /// See this.State for more information about which it is,
-        /// but for the most part I see this variable as "What
-        /// have we got right now?"
+        /// A short sweet description of the package
         /// </summary>
-        public PackageVersionModel InstalledVersion { get; set; }
+        public String Description { get; set; }
 
         /// <summary>
-        /// The updated version of the package.
-        /// 
-        /// This is null if the the package is at its latest version
-        /// (meaning there is no other available version, unless you
-        /// wanted to go backwards, which is just silly... stop it.)
+        /// A public url of an icon to use for this package
         /// </summary>
-        public PackageVersionModel AvailableVersion { get; set; }
+        public String IconUrl { get; set; }
 
+        /// <summary>
+        /// The unique identifier of the package
+        /// </summary>
+        public String Id { get; set; }
+
+        /// <summary>
+        /// The primary language of the package
+        /// </summary>
+        public String Language { get; set; }
+
+        /// <summary>
+        /// A link to the license the user must accept
+        /// </summary>
+        public String LicenseUrl { get; set; }
+
+        /// <summary>
+        /// A list of owners for the project
+        /// </summary>
+        public List<String> Owners { get; set; }
+
+        /// <summary>
+        /// A link to the project (website, github etc)
+        /// </summary>
+        public String ProjectUrl { get; set; }
+
+        /// <summary>
+        /// The release notes for this specific version of the package
+        /// </summary>
+        public String ReleaseNotes { get; set; }
+
+        /// <summary>
+        /// If the user is required to accept a license before installing this package
+        /// </summary>
+        public bool RequireLicenseAcceptance { get; set; }
+
+        /// <summary>
+        /// A short summary about what this package does
+        /// </summary>
+        public String Summary { get; set; }
+
+        /// <summary>
+        /// A comma delimited list of tags to search the repository with
+        /// </summary>
+        public String Tags { get; set; }
+
+        /// <summary>
+        /// The name of this package
+        /// </summary>
+        public String Title { get; set; }
+
+        /// <summary>
+        /// The semantic version (converted to string) of this package
+        /// </summary>
+        public String Version { get; set; }
+
+        /// <summary>
+        /// If the package is publicly listed
+        /// </summary>
+        public bool Listed { get; set; }
+
+        /// <summary>
+        /// When this package was published
+        /// </summary>
+        public DateTimeOffset? Published { get; set; }
     }
 }

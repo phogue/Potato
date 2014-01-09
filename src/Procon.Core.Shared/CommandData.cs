@@ -30,7 +30,7 @@ namespace Procon.Core.Shared {
         /// <summary>
         /// Game types attached to this event.
         /// </summary>
-        public List<GameType> GameTypes { get; set; }
+        public List<ProtocolType> GameTypes { get; set; }
 
         /// <summary>
         /// Groups effected by this event.
@@ -85,7 +85,7 @@ namespace Procon.Core.Shared {
         /// <summary>
         /// Packages effected by this event.
         /// </summary>
-        public List<PackageModel> Packages { get; set; }
+        public List<PackageWrapperModel> Packages { get; set; }
 
         /// <summary>
         /// The plugins attached to this event

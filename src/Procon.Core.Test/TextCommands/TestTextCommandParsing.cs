@@ -26,7 +26,7 @@ namespace Procon.Core.Test.TextCommands {
             var textCommands = new TextCommandController() {
                 //Languages = languages,
                 Connection = new ConnectionController() {
-                    Game = new Battlefield3Game(String.Empty, 25200) {
+                    Protocol = new Battlefield3Game(String.Empty, 25200) {
                         Additional = "",
                         Password = ""
                     }
@@ -149,7 +149,7 @@ namespace Procon.Core.Test.TextCommands {
                 },
                 //Languages = languages,
                 Connection = new ConnectionController() {
-                    Game = new Battlefield3Game(String.Empty, 25200) {
+                    Protocol = new Battlefield3Game(String.Empty, 25200) {
                         Additional = "",
                         Password = ""
                     }
@@ -202,7 +202,7 @@ namespace Procon.Core.Test.TextCommands {
             var textCommands = new TextCommandController() {
                 //Languages = languages,
                 Connection = new ConnectionController() {
-                    Game = new Battlefield3Game(String.Empty, 25200) {
+                    Protocol = new Battlefield3Game(String.Empty, 25200) {
                         Additional = "",
                         Password = ""
                     }

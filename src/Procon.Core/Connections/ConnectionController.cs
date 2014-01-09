@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Xml.Serialization;
-using Newtonsoft.Json;
 using Procon.Core.Connections.Plugins;
 using Procon.Core.Connections.TextCommands;
 using Procon.Core.Shared;
@@ -23,46 +21,39 @@ namespace Procon.Core.Connections {
 
         public ConnectionModel ConnectionModel { get; set; }
 
-        [XmlIgnore, JsonIgnore]
         public String Password {
-            get { return this.Game != null ? this.Game.Password : String.Empty; }
+            get { return this.Protocol != null ? this.Protocol.Password : String.Empty; }
         }
 
         [Obsolete]
         public String Additional {
-            get { return this.Game != null ? this.Game.Additional : String.Empty; }
+            get { return this.Protocol != null ? this.Protocol.Additional : String.Empty; }
         }
 
         /// <summary>
         /// The controller to load up and manage plugins
         /// </summary>
-        [XmlIgnore, JsonIgnore]
         public CorePluginController Plugins { get; set; }
 
         /// <summary>
         /// Text command controller to pipe all text chats through for analysis of text commands.
         /// </summary>
-        [XmlIgnore, JsonIgnore]
         public TextCommandController TextCommands { get; protected set; }
 
         /// <summary>
         ///  The actual game object
         /// </summary>
-        [XmlIgnore, JsonIgnore]
-        public IGame Game { get; set; }
+        public IProtocol Protocol { get; set; }
 
         /// <summary>
         /// The instance of procon that owns this connection.
         /// </summary>
-        [XmlIgnore, JsonIgnore]
-        public Instance Instance { get; set; }
+        public InstanceController Instance { get; set; }
 
-        [XmlIgnore, JsonIgnore]
-        public GameState GameState {
-            get { return this.Game != null ? this.Game.State : null; }
+        public ProtocolState ProtocolState {
+            get { return this.Protocol != null ? this.Protocol.State : null; }
         }
 
-        [XmlIgnore, JsonIgnore]
         public SharedReferences Shared { get; private set; }
 
         public ConnectionController() : base() {
@@ -165,13 +156,13 @@ namespace Procon.Core.Connections {
         }
 
         public override ICoreController Execute() {
-            if (this.Game != null) {
-                this.ConnectionModel.GameType = this.Game.GameType as GameType;
-                this.ConnectionModel.Hostname = this.Game.Client.Hostname;
-                this.ConnectionModel.Port = this.Game.Client.Port;
+            if (this.Protocol != null) {
+                this.ConnectionModel.ProtocolType = this.Protocol.ProtocolType as ProtocolType;
+                this.ConnectionModel.Hostname = this.Protocol.Client.Hostname;
+                this.ConnectionModel.Port = this.Protocol.Client.Port;
             }
 
-            this.ConnectionModel.ConnectionGuid = MD5.Guid(String.Format("{0}:{1}:{2}", this.ConnectionModel.GameType, this.ConnectionModel.Hostname, this.ConnectionModel.Port));
+            this.ConnectionModel.ConnectionGuid = MD5.Guid(String.Format("{0}:{1}:{2}", this.ConnectionModel.ProtocolType, this.ConnectionModel.Hostname, this.ConnectionModel.Port));
 
             this.AssignEvents();
 
@@ -197,11 +188,11 @@ namespace Procon.Core.Connections {
             // Set the default ignore list.
             this.Shared.Variables.Set(new Command() {
                 Origin = CommandOrigin.Local
-            }, CommonVariableNames.GameEventsIgnoreList, new List<String>() {
-                GameEventType.GameBanlistUpdated.ToString(), 
+            }, CommonVariableNames.ProtocolEventsIgnoreList, new List<String>() {
+                ProtocolEventType.ProtocolBanlistUpdated.ToString(), 
                 //GameEventType.GamePlayerlistUpdated.ToString(), 
                 //GameEventType.GameSettingsUpdated.ToString(), 
-                GameEventType.GameMaplistUpdated.ToString(), 
+                ProtocolEventType.ProtocolMaplistUpdated.ToString(), 
             });
 
             return base.Execute();
@@ -213,9 +204,9 @@ namespace Procon.Core.Connections {
         protected void AssignEvents() {
             this.UnassignEvents();
 
-            if (this.Game != null) {
-                this.Game.ClientEvent += Game_ClientEvent;
-                this.Game.GameEvent += Game_GameEvent;
+            if (this.Protocol != null) {
+                this.Protocol.ClientEvent += Protocol_ClientEvent;
+                this.Protocol.ProtocolEvent += Protocol_ProtocolEvent;
             }
         }
 
@@ -223,9 +214,9 @@ namespace Procon.Core.Connections {
         /// Removes all current event handlers.
         /// </summary>
         protected void UnassignEvents() {
-            if (this.Game != null) {
-                this.Game.ClientEvent -= Game_ClientEvent;
-                this.Game.GameEvent -= Game_GameEvent;
+            if (this.Protocol != null) {
+                this.Protocol.ClientEvent -= Protocol_ClientEvent;
+                this.Protocol.ProtocolEvent -= Protocol_ProtocolEvent;
             }
         }
 
@@ -260,8 +251,8 @@ namespace Procon.Core.Connections {
         /// Attempts communication with the game server.
         /// </summary>
         public void AttemptConnection() {
-            if (this.Game != null) {
-                this.Game.AttemptConnection();
+            if (this.Protocol != null) {
+                this.Protocol.AttemptConnection();
             }
         }
 
@@ -323,7 +314,7 @@ namespace Procon.Core.Connections {
                         }
                     },
                     Now = new CommandData() {
-                        Players = new List<Player>(this.Game.State.Players)
+                        Players = new List<Player>(this.Protocol.State.Players)
                     }
                 };
             }
@@ -348,7 +339,7 @@ namespace Procon.Core.Connections {
                     },
                     Now = new CommandData() {
                         Settings = new List<Settings>() {
-                            this.Game.State.Settings
+                            this.Protocol.State.Settings
                         }
                     }
                 };
@@ -373,7 +364,7 @@ namespace Procon.Core.Connections {
                         }
                     },
                     Now = new CommandData() {
-                        Bans = new List<Ban>(this.Game.State.Bans)
+                        Bans = new List<Ban>(this.Protocol.State.Bans)
                     }
                 };
             }
@@ -397,7 +388,7 @@ namespace Procon.Core.Connections {
                         }
                     },
                     Now = new CommandData() {
-                        Maps = new List<Map>(this.Game.State.Maps)
+                        Maps = new List<Map>(this.Protocol.State.Maps)
                     }
                 };
             }
@@ -421,7 +412,7 @@ namespace Procon.Core.Connections {
                         }
                     },
                     Now = new CommandData() {
-                        Maps = new List<Map>(this.Game.State.MapPool)
+                        Maps = new List<Map>(this.Protocol.State.MapPool)
                     }
                 };
             }
@@ -442,7 +433,7 @@ namespace Procon.Core.Connections {
                     Success = true,
                     Status = CommandResultType.Success,
                     Now = new CommandData() {
-                        Packets = this.Game.Action(raw)
+                        Packets = this.Protocol.Action(raw)
                     }
                 };
             }
@@ -466,7 +457,7 @@ namespace Procon.Core.Connections {
                         Chats = new List<Chat>() {
                             chat
                         },
-                        Packets = this.Game.Action(chat)
+                        Packets = this.Protocol.Action(chat)
                     }
                 };
             }
@@ -490,7 +481,7 @@ namespace Procon.Core.Connections {
                         Kills = new List<Kill>() {
                             kill
                         },
-                        Packets = this.Game.Action(kill)
+                        Packets = this.Protocol.Action(kill)
                     }
                 };
             }
@@ -514,7 +505,7 @@ namespace Procon.Core.Connections {
                         Moves = new List<Move>() {
                             move
                         },
-                        Packets = this.Game.Action(move)
+                        Packets = this.Protocol.Action(move)
                     }
                 };
             }
@@ -538,7 +529,7 @@ namespace Procon.Core.Connections {
                         Kicks = new List<Kick>() {
                             kick
                         },
-                        Packets = this.Game.Action(kick)
+                        Packets = this.Protocol.Action(kick)
                     }
                 };
             }
@@ -549,16 +540,16 @@ namespace Procon.Core.Connections {
             return result;
         }
 
-        private void Game_ClientEvent(IGame sender, ClientEventArgs e) {
+        private void Protocol_ClientEvent(IProtocol sender, ClientEventArgs e) {
             if (e.EventType == ClientEventType.ClientConnectionStateChange) {
-                if (this.Game != null) {
-                    this.ConnectionModel.GameType = this.Game.GameType as GameType;
-                    this.ConnectionModel.Hostname = this.Game.Client.Hostname;
-                    this.ConnectionModel.Port = this.Game.Client.Port;
+                if (this.Protocol != null) {
+                    this.ConnectionModel.ProtocolType = this.Protocol.ProtocolType as ProtocolType;
+                    this.ConnectionModel.Hostname = this.Protocol.Client.Hostname;
+                    this.ConnectionModel.Port = this.Protocol.Client.Port;
 
                     // Once connected, sync the connection.
                     if (e.ConnectionState == ConnectionState.ConnectionLoggedIn) {
-                        this.Game.Synchronize();
+                        this.Protocol.Synchronize();
                     }
                 }
 
@@ -595,10 +586,10 @@ namespace Procon.Core.Connections {
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Game_GameEvent(IGame sender, GameEventArgs e) {
-            if (this.Shared.Variables.Get<List<String>>(CommonVariableNames.GameEventsIgnoreList).Contains(e.GameEventType.ToString()) == false) {
+        private void Protocol_ProtocolEvent(IProtocol sender, ProtocolEventArgs e) {
+            if (this.Shared.Variables.Get<List<String>>(CommonVariableNames.ProtocolEventsIgnoreList).Contains(e.ProtocolEventType.ToString()) == false) {
                 this.Shared.Events.Log(new GenericEventArgs() {
-                    Name = e.GameEventType.ToString(),
+                    Name = e.ProtocolEventType.ToString(),
                     Then = GenericEventData.Parse(e.Then),
                     Now = GenericEventData.Parse(e.Now),
                     Scope = new CommandData() {
@@ -610,7 +601,7 @@ namespace Procon.Core.Connections {
                 });
             }
 
-            if (e.GameEventType == GameEventType.GameChat) {
+            if (e.ProtocolEventType == ProtocolEventType.ProtocolChat) {
                 Chat chat = e.Now.Chats.First();
 
                 // At least has the first prefix character 
@@ -622,7 +613,7 @@ namespace Procon.Core.Connections {
 
                     if ((prefix = this.TextCommands.GetValidTextCommandPrefix(prefix)) != null) {
                         this.Tunnel(new Command() {
-                            GameType = this.ConnectionModel.GameType.Type,
+                            GameType = this.ConnectionModel.ProtocolType.Type,
                             Origin = CommandOrigin.Plugin,
                             Uid = chat.Now.Players.First().Uid,
                             CommandType = CommandType.TextCommandsExecute,
@@ -643,19 +634,19 @@ namespace Procon.Core.Connections {
 
         public override void Dispose() {
 
-            this.ConnectionModel.GameType = null;
+            this.ConnectionModel.ProtocolType = null;
             this.ConnectionModel.Hostname = null;
             this.ConnectionModel.Port = 0;
 
             // Now shutdown and null out the game. Note that we want to capture and report
             // events during the shutdown, but then we want to unassign events to the game
             // object before we null it out. We only null it so we dont suppress errors.
-            this.Game.Shutdown();
+            this.Protocol.Shutdown();
 
             this.UnassignEvents();
 
             // this.Game.Dispose();
-            this.Game = null;
+            this.Protocol = null;
 
             this.TextCommands.Dispose();
 

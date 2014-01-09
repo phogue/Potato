@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Xml.Serialization;
-using Newtonsoft.Json;
 using Procon.Core.Shared;
 using Procon.Core.Shared.Events;
 using Procon.Core.Shared.Models;
@@ -20,7 +18,6 @@ namespace Procon.Core.Events {
     /// </summary>
     public class EventsConsoleController : CoreController, ISharedReferenceAccess {
 
-        [XmlIgnore, JsonIgnore]
         public SharedReferences Shared { get; private set; }
 
         /// <summary>

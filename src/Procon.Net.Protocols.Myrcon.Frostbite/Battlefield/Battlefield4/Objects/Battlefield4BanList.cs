@@ -1,20 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 using Procon.Net.Protocols.Myrcon.Frostbite.Objects;
+using Procon.Net.Shared.Actions;
 
 namespace Procon.Net.Protocols.Myrcon.Frostbite.Battlefield.Battlefield4.Objects {
     [Serializable]
-    public class Battlefield4BanList : FrostbiteBanList {
+    public class Battlefield4BanList {
 
-        public override FrostbiteBanList Parse(List<string> words) {
+        public static List<Ban> Parse(List<string> words) {
+            List<Ban> bans = new List<Ban>();
 
             for (int i = 0; i < words.Count; i += 6) {
                 List<string> banWords = words.GetRange(i, 6);
                 banWords.RemoveAt(4);
-                this.Add(FrostbiteBan.ParseBanListItem(banWords));
+                bans.Add(FrostbiteBan.ParseBanListItem(banWords));
             }
 
-            return this as FrostbiteBanList;
+            return bans;
         }
     }
 }

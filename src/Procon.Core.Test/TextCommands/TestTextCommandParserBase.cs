@@ -12,7 +12,6 @@ using Procon.Core.Shared.Models;
 using Procon.Fuzzy.Tokens.Primitive.Temporal;
 using Procon.Net.Protocols.Myrcon.Frostbite.Battlefield.Battlefield3;
 using Procon.Net.Shared.Actions;
-using Procon.Net.Shared.Collections;
 using Procon.Net.Shared.Models;
 using Procon.Net.Shared.Protocols;
 
@@ -348,7 +347,7 @@ namespace Procon.Core.Test.TextCommands {
                 },
                 //Languages = languages,
                 Connection = new ConnectionController() {
-                    Game = new Battlefield3Game(String.Empty, 25200) {
+                    Protocol = new Battlefield3Game(String.Empty, 25200) {
                         Additional = "",
                         Password = ""
                     }
@@ -364,7 +363,7 @@ namespace Procon.Core.Test.TextCommands {
                 TextCommandTest
             });
 
-            textCommandController.Connection.GameState.Players.AddRange(new Players() {
+            textCommandController.Connection.ProtocolState.Players.AddRange(new List<Player>() {
                 PlayerPhogue,
                 PlayerImisnew2,
                 PlayerPhilK,
@@ -378,9 +377,9 @@ namespace Procon.Core.Test.TextCommands {
                 PlayerMrDiacritic
             });
 
-            textCommandController.Connection.GameState.Items = textCommandController.Connection.GameState.Players.SelectMany(player => player.Inventory.Items).ToList();
+            textCommandController.Connection.ProtocolState.Items = textCommandController.Connection.ProtocolState.Players.SelectMany(player => player.Inventory.Items).ToList();
 
-            textCommandController.Connection.GameState.MapPool.AddRange(new List<Map>() {
+            textCommandController.Connection.ProtocolState.MapPool.AddRange(new List<Map>() {
                 MapPortValdez,
                 MapValparaiso,
                 MapPanamaCanal

@@ -26,7 +26,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\builds\Debug\Plugins\</OutputPath>
+    <OutputPath>..\..\builds\Debug\Packages\TestPlugin.2.0.0\lib\net40\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>

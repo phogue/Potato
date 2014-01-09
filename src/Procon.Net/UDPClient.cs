@@ -37,7 +37,7 @@ namespace Procon.Net {
                         DontFragment = true
                     };
 
-                    this.RemoteIpEndPoint = new IPEndPoint(IPAddress.Any, 0);
+                    this.RemoteIpEndPoint = new IPEndPoint(IPAddress.IPv6Any, 0);
                     this.Client.BeginReceive(this.ReadCallback, null);
 
                     this.ConnectionState = ConnectionState.ConnectionReady;

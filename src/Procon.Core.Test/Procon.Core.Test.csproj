@@ -123,7 +123,6 @@
     <Compile Include="Security\TestSecurityAccount.cs" />
     <Compile Include="Security\TestSecurityGroup.cs" />
     <Compile Include="Security\TestSecurityPlayer.cs" />
-    <Compile Include="Serialization\TestAppDomainSerialization.cs" />
     <Compile Include="TextCommands\Route\TestRoute.cs" />
     <Compile Include="TextCommands\TestTextCommandParsing.cs" />
     <Compile Include="TextCommands\TestTextCommandRegistration.cs" />

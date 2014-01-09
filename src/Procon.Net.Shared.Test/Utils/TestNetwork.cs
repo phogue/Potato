@@ -9,7 +9,7 @@ namespace Procon.Net.Shared.Test.Utils {
         public void TestGetExternalIpAddressPingLocalhost() {
             IPAddress ip = Network.GetExternalIpAddress("localhost");
 
-            Assert.AreEqual("127.0.0.1", ip.ToString());
+            Assert.IsTrue(ip.ToString().Equals("127.0.0.1") || ip.ToString().Equals("::1"));
         }
     }
 }

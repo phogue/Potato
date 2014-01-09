@@ -68,7 +68,7 @@ namespace Procon.Service.Shared.Test.TestDefines {
         public void TestFileExistsOneDeep() {
             var file = new FileInfo(Path.Combine(PackagesExists100Path, "SubDirectoryA", "A.txt"));
 
-            file.Directory.Create();
+            if (file.Directory != null) file.Directory.Create();
             file.Create().Close();
 
             var path = Defines.PackageContainingPath(file.FullName);
@@ -83,7 +83,7 @@ namespace Procon.Service.Shared.Test.TestDefines {
         public void TestFileExistsTwoDeep() {
             var file = new FileInfo(Path.Combine(PackagesExists100Path, "SubDirectoryA", "SubDirectoryB", "A.txt"));
 
-            file.Directory.Create();
+            if (file.Directory != null) file.Directory.Create();
             file.Create().Close();
 
             var path = Defines.PackageContainingPath(file.FullName);

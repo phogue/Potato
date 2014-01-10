@@ -153,29 +153,23 @@ namespace Procon.Core.Test.Remote {
             request.Proxy = null;
 
             request.BeginGetRequestStream(streamAsyncResult => {
-                try {
-                    using (TextWriter writer = new StreamWriter(request.EndGetRequestStream(streamAsyncResult))) {
-                        writer.Write("Lulz, whats up?");
+                using (TextWriter writer = new StreamWriter(request.EndGetRequestStream(streamAsyncResult))) {
+                    writer.Write("Lulz, whats up?");
+                }
+
+                request.BeginGetResponse(responseAsyncResult => {
+                    try {
+                        response = (HttpWebResponse)request.EndGetResponse(responseAsyncResult);
+
+                        isSuccess = true;
+                        requestWait.Set();
                     }
-
-                    request.BeginGetResponse(responseAsyncResult => {
-                        try {
-                            response = (HttpWebResponse)request.EndGetResponse(responseAsyncResult);
-
-                            isSuccess = true;
-                            requestWait.Set();
-                        }
-                        catch (WebException e) {
-                            response = (HttpWebResponse) e.Response;
-                            isSuccess = false;
-                            requestWait.Set();
-                        }
-                    }, null);
-                }
-                catch {
-                    isSuccess = false;
-                    requestWait.Set();
-                }
+                    catch (WebException e) {
+                        response = (HttpWebResponse) e.Response;
+                        isSuccess = false;
+                        requestWait.Set();
+                    }
+                }, null);
             }, null);
 
             Assert.IsTrue(requestWait.WaitOne(60000));
@@ -227,38 +221,25 @@ namespace Procon.Core.Test.Remote {
             request.Proxy = null;
 
             request.BeginGetRequestStream(streamAsyncResult => {
-                try {
-                    using (TextWriter writer = new StreamWriter(request.EndGetRequestStream(streamAsyncResult))) {
-                        writer.Write(new Command() {
-                            Scope = new CommandScope(),
-                            Origin = CommandOrigin.Remote,
-                            Parameters = new List<CommandParameter>(),
-                            Username = "Phogue",
-                            PasswordPlainText = "wrongPassword"
-                        }.ToXElement().ToString());
-                    }
+                using (TextWriter writer = new StreamWriter(request.EndGetRequestStream(streamAsyncResult))) {
+                    writer.Write(new Command() {
+                        Scope = new CommandScope(),
+                        Origin = CommandOrigin.Remote,
+                        Parameters = new List<CommandParameter>(),
+                        Username = "Phogue",
+                        PasswordPlainText = "wrongPassword"
+                    }.ToXElement().ToString());
+                }
 
-                    request.BeginGetResponse(responseAsyncResult => {
-                        try {
-                            response = (HttpWebResponse)request.EndGetResponse(responseAsyncResult);
+                request.BeginGetResponse(responseAsyncResult => {
+                    response = (HttpWebResponse)request.EndGetResponse(responseAsyncResult);
                             
-                            using (TextReader reader = new StreamReader(response.GetResponseStream())) {
-                                isSuccess = true;
-                                result = XDocument.Parse(reader.ReadToEnd()).Root.FromXElement<CommandResultArgs>();
-                                requestWait.Set();
-                            }
-                        }
-                        catch (WebException e) {
-                            response = (HttpWebResponse)e.Response;
-                            isSuccess = false;
-                            requestWait.Set();
-                        }
-                    }, null);
-                }
-                catch {
-                    isSuccess = false;
-                    requestWait.Set();
-                }
+                    using (TextReader reader = new StreamReader(response.GetResponseStream())) {
+                        isSuccess = true;
+                        result = XDocument.Parse(reader.ReadToEnd()).Root.FromXElement<CommandResultArgs>();
+                        requestWait.Set();
+                    }
+                }, null);
             }, null);
 
             Assert.IsTrue(requestWait.WaitOne(60000));
@@ -290,38 +271,25 @@ namespace Procon.Core.Test.Remote {
             request.Proxy = null;
 
             request.BeginGetRequestStream(streamAsyncResult => {
-                try {
-                    using (TextWriter writer = new StreamWriter(request.EndGetRequestStream(streamAsyncResult))) {
-                        writer.Write(new Command() {
-                            Scope = new CommandScope(),
-                            Origin = CommandOrigin.Remote,
-                            Parameters = new List<CommandParameter>(),
-                            Username = "Phogue",
-                            PasswordPlainText = "password"
-                        }.ToXElement().ToString());
+                using (TextWriter writer = new StreamWriter(request.EndGetRequestStream(streamAsyncResult))) {
+                    writer.Write(new Command() {
+                        Scope = new CommandScope(),
+                        Origin = CommandOrigin.Remote,
+                        Parameters = new List<CommandParameter>(),
+                        Username = "Phogue",
+                        PasswordPlainText = "password"
+                    }.ToXElement().ToString());
+                }
+
+                request.BeginGetResponse(responseAsyncResult => {
+                    response = (HttpWebResponse)request.EndGetResponse(responseAsyncResult);
+
+                    using (TextReader reader = new StreamReader(response.GetResponseStream())) {
+                        isSuccess = true;
+                        result = XDocument.Parse(reader.ReadToEnd()).Root.FromXElement<CommandResultArgs>();
+                        requestWait.Set();
                     }
-
-                    request.BeginGetResponse(responseAsyncResult => {
-                        try {
-                            response = (HttpWebResponse)request.EndGetResponse(responseAsyncResult);
-
-                            using (TextReader reader = new StreamReader(response.GetResponseStream())) {
-                                isSuccess = true;
-                                result = XDocument.Parse(reader.ReadToEnd()).Root.FromXElement<CommandResultArgs>();
-                                requestWait.Set();
-                            }
-                        }
-                        catch (WebException e) {
-                            response = (HttpWebResponse)e.Response;
-                            isSuccess = false;
-                            requestWait.Set();
-                        }
-                    }, null);
-                }
-                catch {
-                    isSuccess = false;
-                    requestWait.Set();
-                }
+                }, null);
             }, null);
 
             Assert.IsTrue(requestWait.WaitOne(60000));
@@ -350,45 +318,32 @@ namespace Procon.Core.Test.Remote {
             request.Proxy = null;
 
             request.BeginGetRequestStream(streamAsyncResult => {
-                try {
-                    using (TextWriter writer = new StreamWriter(request.EndGetRequestStream(streamAsyncResult))) {
-                        writer.Write(
-                            new Command() {
-                                Name = "/test/parameters",
-                                Scope = new CommandScope(),
-                                Origin = CommandOrigin.Remote,
-                                Username = "Phogue",
-                                PasswordPlainText = "password",
-                                Parameters = TestHelpers.ObjectListToContentList(
-                                    new List<Object>() {
-                                    "Phogue",
-                                    50
-                                })
-                            }.ToXElement().ToString()
-                        );
+                using (TextWriter writer = new StreamWriter(request.EndGetRequestStream(streamAsyncResult))) {
+                    writer.Write(
+                        new Command() {
+                            Name = "/test/parameters",
+                            Scope = new CommandScope(),
+                            Origin = CommandOrigin.Remote,
+                            Username = "Phogue",
+                            PasswordPlainText = "password",
+                            Parameters = TestHelpers.ObjectListToContentList(
+                                new List<Object>() {
+                                "Phogue",
+                                50
+                            })
+                        }.ToXElement().ToString()
+                    );
+                }
+
+                request.BeginGetResponse(responseAsyncResult => {
+                    response = (HttpWebResponse)request.EndGetResponse(responseAsyncResult);
+
+                    using (TextReader reader = new StreamReader(response.GetResponseStream())) {
+                        isSuccess = true;
+                        result = reader.ReadToEnd();
+                        requestWait.Set();
                     }
-
-                    request.BeginGetResponse(responseAsyncResult => {
-                        try {
-                            response = (HttpWebResponse)request.EndGetResponse(responseAsyncResult);
-
-                            using (TextReader reader = new StreamReader(response.GetResponseStream())) {
-                                isSuccess = true;
-                                result = reader.ReadToEnd();
-                                requestWait.Set();
-                            }
-                        }
-                        catch (WebException e) {
-                            response = (HttpWebResponse)e.Response;
-                            isSuccess = false;
-                            requestWait.Set();
-                        }
-                    }, null);
-                }
-                catch {
-                    isSuccess = false;
-                    requestWait.Set();
-                }
+                }, null);
             }, null);
 
             Assert.IsTrue(requestWait.WaitOne(60000));
@@ -419,45 +374,32 @@ namespace Procon.Core.Test.Remote {
             request.Proxy = null;
 
             request.BeginGetRequestStream(streamAsyncResult => {
-                try {
-                    using (TextWriter writer = new StreamWriter(request.EndGetRequestStream(streamAsyncResult))) {
-                        writer.Write(
-                            new Command() {
-                                Name = "/test/parameters",
-                                Scope = new CommandScope(),
-                                Origin = CommandOrigin.Remote,
-                                Username = "Phogue",
-                                PasswordPlainText = "password",
-                                Parameters = TestHelpers.ObjectListToContentList(
-                                    new List<Object>() {
-                                    "Phogue",
-                                    50
-                                })
-                            }.ToXElement().ToString()
-                        );
+                using (TextWriter writer = new StreamWriter(request.EndGetRequestStream(streamAsyncResult))) {
+                    writer.Write(
+                        new Command() {
+                            Name = "/test/parameters",
+                            Scope = new CommandScope(),
+                            Origin = CommandOrigin.Remote,
+                            Username = "Phogue",
+                            PasswordPlainText = "password",
+                            Parameters = TestHelpers.ObjectListToContentList(
+                                new List<Object>() {
+                                "Phogue",
+                                50
+                            })
+                        }.ToXElement().ToString()
+                    );
+                }
+
+                request.BeginGetResponse(responseAsyncResult => {
+                    response = (HttpWebResponse)request.EndGetResponse(responseAsyncResult);
+
+                    using (TextReader reader = new StreamReader(response.GetResponseStream())) {
+                        isSuccess = true;
+                        result = reader.ReadToEnd();
+                        requestWait.Set();
                     }
-
-                    request.BeginGetResponse(responseAsyncResult => {
-                        try {
-                            response = (HttpWebResponse)request.EndGetResponse(responseAsyncResult);
-
-                            using (TextReader reader = new StreamReader(response.GetResponseStream())) {
-                                isSuccess = true;
-                                result = reader.ReadToEnd();
-                                requestWait.Set();
-                            }
-                        }
-                        catch (WebException e) {
-                            response = (HttpWebResponse)e.Response;
-                            isSuccess = false;
-                            requestWait.Set();
-                        }
-                    }, null);
-                }
-                catch {
-                    isSuccess = false;
-                    requestWait.Set();
-                }
+                }, null);
             }, null);
 
             Assert.IsTrue(requestWait.WaitOne(60000));
@@ -488,40 +430,27 @@ namespace Procon.Core.Test.Remote {
             request.Proxy = null;
 
             request.BeginGetRequestStream(streamAsyncResult => {
-                try {
-                    using (TextWriter writer = new StreamWriter(request.EndGetRequestStream(streamAsyncResult))) {
-                        writer.Write(
-                            JsonConvert.SerializeObject(new Command() {
-                                Name = "TestPluginsCommandsZeroParameters",
-                                Scope = new CommandScope(),
-                                Origin = CommandOrigin.Remote,
-                                Username = "Phogue",
-                                PasswordPlainText = "password"
-                            })    
-                        );
+                using (TextWriter writer = new StreamWriter(request.EndGetRequestStream(streamAsyncResult))) {
+                    writer.Write(
+                        JsonConvert.SerializeObject(new Command() {
+                            Name = "TestPluginsCommandsZeroParameters",
+                            Scope = new CommandScope(),
+                            Origin = CommandOrigin.Remote,
+                            Username = "Phogue",
+                            PasswordPlainText = "password"
+                        })    
+                    );
+                }
+
+                request.BeginGetResponse(responseAsyncResult => {
+                    response = (HttpWebResponse)request.EndGetResponse(responseAsyncResult);
+
+                    using (TextReader reader = new StreamReader(response.GetResponseStream())) {
+                        isSuccess = true;
+                        result = JsonConvert.DeserializeObject<CommandResultArgs>(reader.ReadToEnd());
+                        requestWait.Set();
                     }
-
-                    request.BeginGetResponse(responseAsyncResult => {
-                        try {
-                            response = (HttpWebResponse)request.EndGetResponse(responseAsyncResult);
-
-                            using (TextReader reader = new StreamReader(response.GetResponseStream())) {
-                                isSuccess = true;
-                                result = JsonConvert.DeserializeObject<CommandResultArgs>(reader.ReadToEnd());
-                                requestWait.Set();
-                            }
-                        }
-                        catch (WebException e) {
-                            response = (HttpWebResponse)e.Response;
-                            isSuccess = false;
-                            requestWait.Set();
-                        }
-                    }, null);
-                }
-                catch {
-                    isSuccess = false;
-                    requestWait.Set();
-                }
+                }, null);
             }, null);
 
             Assert.IsTrue(requestWait.WaitOne(60000));

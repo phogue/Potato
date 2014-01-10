@@ -6,7 +6,7 @@ namespace Procon.Service.Shared.Packages {
     /// </summary>
     public class PackageManagerDispatch : IPackageManagerDispatch {
         public void InstallPackage(IPackageManager manager, IPackage package) {
-            manager.InstallPackage(package, true, false);
+            manager.InstallPackage(package, false, false);
         }
 
         public void UpdatePackage(IPackageManager manager, IPackage package) {

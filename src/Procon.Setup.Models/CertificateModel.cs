@@ -57,9 +57,9 @@ namespace Procon.Setup.Models {
 
         protected void Watch() {
             // Create the directory if it does not exist.
-            Directory.CreateDirectory(Defines.CertificatesDirectory);
-
-            this._watcher = new FileSystemWatcher(Defines.CertificatesDirectory) {
+            Defines.CertificatesDirectory.Create();
+            
+            this._watcher = new FileSystemWatcher(Defines.CertificatesDirectory.FullName) {
                 NotifyFilter = NotifyFilters.LastAccess | NotifyFilters.LastWrite | NotifyFilters.FileName | NotifyFilters.DirectoryName,
                 Filter = "*.pfx"
             };
@@ -71,11 +71,11 @@ namespace Procon.Setup.Models {
 
             this._watcher.EnableRaisingEvents = true;
 
-            this.Exists = File.Exists(Defines.CertificatesDirectoryCommandServerPfx);
+            this.Exists = Defines.CertificatesDirectoryCommandServerPfx.Exists;
         }
 
         private void WatcherOnChanged(object sender, FileSystemEventArgs fileSystemEventArgs) {
-            this.Exists = File.Exists(Defines.CertificatesDirectoryCommandServerPfx);
+            this.Exists = Defines.CertificatesDirectoryCommandServerPfx.Exists;
         }
 
         /// <summary>
@@ -140,7 +140,7 @@ namespace Procon.Setup.Models {
             });
 
             // Save to the file system
-            using (var filestream = new FileStream(Defines.CertificatesDirectoryCommandServerPfx, FileMode.Create, FileAccess.ReadWrite)) {
+            using (var filestream = new FileStream(Defines.CertificatesDirectoryCommandServerPfx.FullName, FileMode.Create, FileAccess.ReadWrite)) {
                 store.Save(filestream, this.Password.ToCharArray(), new SecureRandom());
             }
         }
@@ -151,9 +151,9 @@ namespace Procon.Setup.Models {
         /// <returns>True if the file no longer exists, false if an error occured</returns>
         public bool Delete() {
             bool deleted = true;
-            if (File.Exists(Defines.CertificatesDirectoryCommandServerPfx)) {
+            if (Defines.CertificatesDirectoryCommandServerPfx.Exists) {
                 try {
-                    File.Delete(Defines.CertificatesDirectoryCommandServerPfx);
+                    Defines.CertificatesDirectoryCommandServerPfx.Delete();
                 }
                 catch {
                     deleted = false;

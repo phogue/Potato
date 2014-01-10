@@ -10,8 +10,8 @@ namespace Procon.Service.Shared.Test.TestDefines {
         /// </summary>
         [SetUp]
         public void CleanPackagesDirectory() {
-            Directory.Delete(Defines.PackagesDirectory, true);
-            Directory.CreateDirectory(Defines.PackagesDirectory);
+            Defines.PackagesDirectory.Delete(true);
+            Defines.PackagesDirectory.Create();
         }
 
         /// <summary>
@@ -19,7 +19,7 @@ namespace Procon.Service.Shared.Test.TestDefines {
         /// </summary>
         [Test]
         public void PackageDirectoryDoesNotExist() {
-            String path = Defines.PackageVersionDirectory(Defines.PackagesDirectory, "does-not-exist");
+            String path = Defines.PackageVersionDirectory(Defines.PackagesDirectory.FullName, "does-not-exist");
 
             Assert.IsNull(path);
         }
@@ -29,11 +29,11 @@ namespace Procon.Service.Shared.Test.TestDefines {
         /// </summary>
         [Test]
         public void PackageDirectoryExists() {
-            String packagePath = Path.Combine(Defines.PackagesDirectory, "Exists.1.0.0");
+            String packagePath = Path.Combine(Defines.PackagesDirectory.FullName, "Exists.1.0.0");
 
             Directory.CreateDirectory(packagePath);
 
-            String path = Defines.PackageVersionDirectory(Defines.PackagesDirectory, "Exists");
+            String path = Defines.PackageVersionDirectory(Defines.PackagesDirectory.FullName, "Exists");
 
             Assert.AreEqual(packagePath, path);
         }

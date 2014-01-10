@@ -19,12 +19,13 @@ namespace Procon.Core.Test.CoreInstance {
         public void Initialize() {
             SharedReferences.Setup();
 
+            ConfigFileInfo.Refresh();
             if (File.Exists(ConfigFileInfo.FullName)) {
                 File.Delete(ConfigFileInfo.FullName);
             }
         }
 
-        protected static FileInfo ConfigFileInfo = new FileInfo(Path.Combine(Defines.ConfigsDirectory, "Procon.Core.xml"));
+        protected static FileInfo ConfigFileInfo = new FileInfo(Path.Combine(Defines.ConfigsDirectory.FullName, "Procon.Core.xml"));
 
         /// <summary>
         ///     Tests that we cannot add the same connection twice.

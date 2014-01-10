@@ -6,15 +6,15 @@ namespace Procon.Service.Shared.Test.TestDefines {
     [TestFixture]
     public class TestPackageContainingPath {
 
-        public readonly String PackagesExists100Path = Path.Combine(Defines.PackagesDirectory, "Exists.1.0.0");
+        public readonly String PackagesExists100Path = Path.Combine(Defines.PackagesDirectory.FullName, "Exists.1.0.0");
 
         /// <summary>
         /// Clears out all files in the packages directory and ensures the packages directory is created.
         /// </summary>
         [SetUp]
         public void CleanPackagesDirectory() {
-            if (Directory.Exists(Defines.PackagesDirectory) == true) Directory.Delete(Defines.PackagesDirectory, true);
-            Directory.CreateDirectory(Defines.PackagesDirectory);
+            if (Defines.PackagesDirectory.Exists == true) Defines.PackagesDirectory.Delete(true);
+            Defines.PackagesDirectory.Create();
             Directory.CreateDirectory(PackagesExists100Path);
         }
 
@@ -98,7 +98,7 @@ namespace Procon.Service.Shared.Test.TestDefines {
         public void TestDoesNotExistStopAtBaseDirectory() {
             var path = Defines.PackageContainingPath("does-not-exist");
 
-            Assert.AreEqual(Defines.BaseDirectory, path.FullName);
+            Assert.AreEqual(Defines.BaseDirectory.FullName, path.FullName);
         }
     }
 }

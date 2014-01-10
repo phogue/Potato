@@ -39,7 +39,7 @@ namespace Procon.Core.Packages {
 
             this.Cache = new RepositoryCache();
 
-            this.LocalRepository = PackageRepositoryFactory.Default.CreateRepository(Defines.PackagesDirectory);
+            this.LocalRepository = PackageRepositoryFactory.Default.CreateRepository(Defines.PackagesDirectory.FullName);
 
             this.GroupedVariableListener = new GroupedVariableListener() {
                 Variables = this.Shared.Variables,

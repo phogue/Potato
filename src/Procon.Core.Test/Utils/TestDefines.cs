@@ -14,7 +14,7 @@ namespace Procon.Core.Test.Utils {
         /// </summary>
         [Test]
         public void TestDefinesBaseDirectory() {
-            Assert.AreEqual(AppDomain.CurrentDomain.BaseDirectory, Defines.BaseDirectory);
+            Assert.AreEqual(AppDomain.CurrentDomain.BaseDirectory, Defines.BaseDirectory.FullName);
         }
     }
 }

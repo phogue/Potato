@@ -291,7 +291,7 @@ namespace Procon.Core {
 
             this.Execute(new Command() {
                 Origin = CommandOrigin.Local
-            }, new Config().Load(new DirectoryInfo(Defines.ConfigsDirectory)));
+            }, new Config().Load(new DirectoryInfo(Defines.ConfigsDirectory.FullName)));
             
             return base.Execute();
         }
@@ -319,7 +319,7 @@ namespace Procon.Core {
             config.Create(this.GetType());
             this.WriteConfig(config);
 
-            config.Save(new FileInfo(Path.Combine(Defines.ConfigsDirectory, this.GetType().Namespace + ".xml")));
+            config.Save(new FileInfo(Path.Combine(Defines.ConfigsDirectory.FullName, this.GetType().Namespace + ".xml")));
         }
 
         /// <summary>

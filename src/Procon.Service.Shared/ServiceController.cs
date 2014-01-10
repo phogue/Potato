@@ -58,7 +58,7 @@ namespace Procon.Service.Shared {
             this.Settings = new ServiceSettings();
 
             this.Packages = new ServicePackageManager() {
-                LocalRepository = PackageRepositoryFactory.Default.CreateRepository(Defines.PackagesDirectory),
+                LocalRepository = PackageRepositoryFactory.Default.CreateRepository(Defines.PackagesDirectory.FullName),
                 BeforeRepositoryInitialize = () => Console.WriteLine("Initializing package repository.."),
                 BeforeSourcePackageFetch = () => Console.WriteLine("Checking source repositories.."),
                 BeforeLocalPackageFetch = () => Console.WriteLine("Checking local repository.."),
@@ -208,8 +208,8 @@ namespace Procon.Service.Shared {
 
                     this.ServiceDomain = AppDomain.CreateDomain("Procon.Instance", null, new AppDomainSetup() {
                         PrivateBinPath = String.Join(";", new[] {
-                            Defines.PackageMyrconProconCoreLibNet40,
-                            Defines.PackageMyrconProconSharedLibNet40
+                            Defines.PackageMyrconProconCoreLibNet40.FullName,
+                            Defines.PackageMyrconProconSharedLibNet40.FullName
                         })
                     });
 

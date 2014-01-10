@@ -111,10 +111,10 @@ namespace Procon.Core.Localization {
         /// Returns a reference back to this object.
         /// </summary>
         public override ICoreController Execute() {
-            var languageDirectories = new DirectoryInfo(Defines.PackagesDirectory)
+            var languageDirectories = new DirectoryInfo(Defines.PackagesDirectory.FullName)
                 .GetDirectories(Defines.LocalizationDirectoryName, SearchOption.AllDirectories)
                 .Union(new [] {
-                    new DirectoryInfo(Defines.LocalizationDirectory), 
+                    new DirectoryInfo(Defines.LocalizationDirectory.FullName), 
                 })
                 .SelectMany(localizationDirectory => localizationDirectory.GetDirectories());
 

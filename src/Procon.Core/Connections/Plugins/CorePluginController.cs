@@ -200,8 +200,8 @@ namespace Procon.Core.Connections.Plugins {
                 ApplicationBase = AppDomain.CurrentDomain.BaseDirectory,
                 PrivateBinPath = String.Join(";", new[] {
                     AppDomain.CurrentDomain.BaseDirectory,
-                    Defines.PackageMyrconProconCoreLibNet40,
-                    Defines.PackageMyrconProconSharedLibNet40
+                    Defines.PackageMyrconProconCoreLibNet40.FullName,
+                    Defines.PackageMyrconProconSharedLibNet40.FullName
                 })
             };
 
@@ -223,9 +223,9 @@ namespace Procon.Core.Connections.Plugins {
             permissions.AddPermission(new SecurityPermission(SecurityPermissionFlag.Execution));
 
             permissions.AddPermission(new FileIOPermission(FileIOPermissionAccess.PathDiscovery, AppDomain.CurrentDomain.BaseDirectory));
-            permissions.AddPermission(new FileIOPermission(FileIOPermissionAccess.AllAccess, Defines.LogsDirectory));
-            permissions.AddPermission(new FileIOPermission(FileIOPermissionAccess.Read | FileIOPermissionAccess.PathDiscovery, Defines.ConfigsDirectory));
-            permissions.AddPermission(new FileIOPermission(FileIOPermissionAccess.AllAccess, Path.Combine(Defines.ConfigsDirectory, this.Connection != null ? this.Connection.ConnectionModel.ConnectionGuid.ToString() : Guid.Empty.ToString())));
+            permissions.AddPermission(new FileIOPermission(FileIOPermissionAccess.AllAccess, Defines.LogsDirectory.FullName));
+            permissions.AddPermission(new FileIOPermission(FileIOPermissionAccess.Read | FileIOPermissionAccess.PathDiscovery, Defines.ConfigsDirectory.FullName));
+            permissions.AddPermission(new FileIOPermission(FileIOPermissionAccess.AllAccess, Path.Combine(Defines.ConfigsDirectory.FullName, this.Connection != null ? this.Connection.ConnectionModel.ConnectionGuid.ToString() : Guid.Empty.ToString())));
 
             foreach (var file in this.GetPluginAssemblies()) {
                 DirectoryInfo directory = Defines.PackageContainingPath(file.Directory != null ? file.Directory.FullName : "");
@@ -307,7 +307,7 @@ namespace Procon.Core.Connections.Plugins {
         /// </summary>
         /// <returns></returns>
         protected List<FileInfo> GetPluginAssemblies() {
-            return Directory.GetFiles(Defines.PackagesDirectory, @"*.dll", SearchOption.AllDirectories)
+            return Directory.GetFiles(Defines.PackagesDirectory.FullName, @"*.dll", SearchOption.AllDirectories)
                 .Select(path => new FileInfo(path))
                 .Where(file =>
                     file.Name != Defines.ProconCoreDll &&
@@ -340,11 +340,11 @@ namespace Procon.Core.Connections.Plugins {
                     proxy.ConnectionGuid = this.Connection != null ? this.Connection.ConnectionModel.ConnectionGuid : Guid.Empty;
 
                     // check the plugin's config directory
-                    proxy.ConfigDirectoryInfo = new DirectoryInfo(System.IO.Path.Combine(Defines.ConfigsDirectory, proxy.ConnectionGuid.ToString(), plugin.PluginGuid.ToString()));
+                    proxy.ConfigDirectoryInfo = new DirectoryInfo(System.IO.Path.Combine(Defines.ConfigsDirectory.FullName, proxy.ConnectionGuid.ToString(), plugin.PluginGuid.ToString()));
                     proxy.ConfigDirectoryInfo.Create();
 
                     // check the plugin's log directory
-                    proxy.LogDirectoryInfo = new DirectoryInfo(System.IO.Path.Combine(Defines.LogsDirectory, proxy.ConnectionGuid.ToString(), plugin.PluginGuid.ToString()));
+                    proxy.LogDirectoryInfo = new DirectoryInfo(System.IO.Path.Combine(Defines.LogsDirectory.FullName, proxy.ConnectionGuid.ToString(), plugin.PluginGuid.ToString()));
                     proxy.LogDirectoryInfo.Create();
 
                     // Tell the plugin it's ready to begin, everything is setup and ready 

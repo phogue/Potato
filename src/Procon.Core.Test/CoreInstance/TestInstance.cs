@@ -30,7 +30,7 @@ namespace Procon.Core.Test.CoreInstance {
             }
         }
 
-        protected static FileInfo ConfigFileInfo = new FileInfo(Path.Combine(Defines.ConfigsDirectory, "Procon.Core.xml"));
+        protected static FileInfo ConfigFileInfo = new FileInfo(Path.Combine(Defines.ConfigsDirectory.FullName, "Procon.Core.xml"));
 
         /// <summary>
         ///     Tests that providing no connection scope will tunnel the command over all

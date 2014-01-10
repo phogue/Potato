@@ -23,9 +23,10 @@ namespace Procon.Core.Test.Events {
         public void Initialize() {
             SharedReferences.Setup();
 
-            if (Directory.Exists(Defines.LogsDirectory) == true) {
+            Defines.LogsDirectory.Refresh();
+            if (Defines.LogsDirectory.Exists == true) {
                 try {
-                    Directory.Delete(Defines.LogsDirectory, true);
+                    Defines.LogsDirectory.Delete(true);
                 }
                 catch {
                     Assert.Fail("Logs Directory has outside lock, possibly explorer window open?");

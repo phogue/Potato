@@ -53,7 +53,7 @@ namespace Procon.Core.Test.Plugins {
         /// </summary>
         [Test]
         public void TestPluginsIsolationAllowedWriteAccessToLogsDirectory() {
-            TestPluginsIsolationWriteToDirectory(Defines.LogsDirectory, true, CommandResultType.Success);
+            TestPluginsIsolationWriteToDirectory(Defines.LogsDirectory.FullName, true, CommandResultType.Success);
         }
         /*
         /// <summary>

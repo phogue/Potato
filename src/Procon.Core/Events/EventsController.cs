@@ -123,7 +123,7 @@ namespace Procon.Core.Events {
         /// <param name="stamp">The date time to build the directory from. Will ignore the minutes and seconds.</param>
         /// <returns>The path to the file to log events</returns>
         public String EventsLogFileName(DateTime stamp) {
-            String directory = Path.Combine(Defines.LogsDirectory, stamp.ToString("yyyy-MM-dd"));
+            String directory = Path.Combine(Defines.LogsDirectory.FullName, stamp.ToString("yyyy-MM-dd"));
 
             if (Directory.Exists(directory) == false) {
                 Directory.CreateDirectory(directory);

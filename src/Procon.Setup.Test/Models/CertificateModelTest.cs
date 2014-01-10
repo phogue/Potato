@@ -1,5 +1,4 @@
-﻿using System.IO;
-using System.Security.Cryptography.X509Certificates;
+﻿using System.Security.Cryptography.X509Certificates;
 using NUnit.Framework;
 using Procon.Service.Shared;
 using Procon.Setup.Models;
@@ -15,16 +14,16 @@ namespace Procon.Setup.Test.Models {
             CertificateModel model = new CertificateModel();
 
             // Delete the certificate if it exists.
-            File.Delete(Defines.CertificatesDirectoryCommandServerPfx);
+            Defines.CertificatesDirectoryCommandServerPfx.Delete();
 
             // Create a new certificate
             model.Generate();
 
             // Certificate exists
-            Assert.IsTrue(File.Exists(Defines.CertificatesDirectoryCommandServerPfx));
+            Assert.IsTrue(Defines.CertificatesDirectoryCommandServerPfx.Exists);
 
             // Loads the certificates
-            var loadedCertificate = new X509Certificate2(Defines.CertificatesDirectoryCommandServerPfx, model.Password);
+            var loadedCertificate = new X509Certificate2(Defines.CertificatesDirectoryCommandServerPfx.FullName, model.Password);
             
             // Certificate can be loaded.
             Assert.IsNotNull(loadedCertificate);

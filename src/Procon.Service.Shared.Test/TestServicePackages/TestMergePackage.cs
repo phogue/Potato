@@ -28,7 +28,7 @@ namespace Procon.Service.Shared.Test.TestServicePackages {
 
             var packages = new ServicePackageManager() {
                 LocalRepository = new MockPackageRepository() {
-                    Uri = Defines.PackagesDirectory
+                    Uri = Defines.PackagesDirectory.FullName
                 },
                 PackageManagerDispatch = dispatcher,
                 SourceRepositories = sources
@@ -62,7 +62,7 @@ namespace Procon.Service.Shared.Test.TestServicePackages {
                         Version = "1.0.0"
                     }
                 }) {
-                    Uri = Defines.PackagesDirectory
+                    Uri = Defines.PackagesDirectory.FullName
                 },
                 PackageManagerDispatch = dispatcher,
                 SourceRepositories = sources
@@ -96,7 +96,7 @@ namespace Procon.Service.Shared.Test.TestServicePackages {
                         Version = "1.0.0"
                     }
                 }) {
-                    Uri = Defines.PackagesDirectory
+                    Uri = Defines.PackagesDirectory.FullName
                 },
                 SourceRepositories = sources,
                 PackageActionCanceled = packageId => canceled = true,
@@ -126,7 +126,7 @@ namespace Procon.Service.Shared.Test.TestServicePackages {
 
             var packages = new ServicePackageManager() {
                 LocalRepository = new MockPackageRepository() {
-                    Uri = Defines.PackagesDirectory
+                    Uri = Defines.PackagesDirectory.FullName
                 },
                 SourceRepositories = sources,
                 PackageMissing = packageId => missing = true,
@@ -191,7 +191,7 @@ namespace Procon.Service.Shared.Test.TestServicePackages {
 
             var packages = new ServicePackageManager() {
                 LocalRepository = new MockPackageRepository() {
-                    Uri = Defines.PackagesDirectory
+                    Uri = Defines.PackagesDirectory.FullName
                 },
                 SourceRepositories = sources,
                 RepositoryException = (h, exception) => hint = h
@@ -226,7 +226,7 @@ namespace Procon.Service.Shared.Test.TestServicePackages {
                         Version = "1.0.0"
                     }
                 }) {
-                    Uri = Defines.PackagesDirectory
+                    Uri = Defines.PackagesDirectory.FullName
                 },
                 SourceRepositories = sources,
                 RepositoryException = (h, exception) => hint = h
@@ -255,7 +255,7 @@ namespace Procon.Service.Shared.Test.TestServicePackages {
 
             var packages = new ServicePackageManager() {
                 LocalRepository = new MockPackageRepository() {
-                    Uri = Defines.PackagesDirectory
+                    Uri = Defines.PackagesDirectory.FullName
                 },
                 SourceRepositories = sources,
                 BeforeSourcePackageFetch = () => before = true,
@@ -285,7 +285,7 @@ namespace Procon.Service.Shared.Test.TestServicePackages {
 
             var packages = new ServicePackageManager() {
                 LocalRepository = new MockPackageRepository() {
-                    Uri = Defines.PackagesDirectory
+                    Uri = Defines.PackagesDirectory.FullName
                 },
                 SourceRepositories = sources,
                 BeforeLocalPackageFetch = () => before = true,

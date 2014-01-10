@@ -64,37 +64,37 @@ namespace Procon.Service.Shared {
         /// <summary>
         /// The base directory, given from the current AppDomain.
         /// </summary>
-        public static readonly String BaseDirectory = AppDomain.CurrentDomain.BaseDirectory;
+        public static readonly DirectoryInfo BaseDirectory = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);
 
         /// <summary>
         /// The full path to the logs directory
         /// </summary>
-        public static readonly String LogsDirectory = Path.Combine(Defines.BaseDirectory, "Logs");
+        public static readonly DirectoryInfo LogsDirectory = new DirectoryInfo(Path.Combine(Defines.BaseDirectory.FullName, "Logs"));
 
         /// <summary>
         /// The full path to the errors log directory
         /// </summary>
-        public static readonly String ErrorsLogsDirectory = Path.Combine(LogsDirectory, "Errors");
+        public static readonly DirectoryInfo ErrorsLogsDirectory = new DirectoryInfo(Path.Combine(LogsDirectory.FullName, "Errors"));
 
         /// <summary>
         /// The full path to the configs directory
         /// </summary>
-        public static readonly String ConfigsDirectory = Path.Combine(Defines.BaseDirectory, "Configs");
+        public static readonly DirectoryInfo ConfigsDirectory = new DirectoryInfo(Path.Combine(Defines.BaseDirectory.FullName, "Configs"));
         
         /// <summary>
         /// The full path to the base localization folder (an custom localization files)
         /// </summary>
-        public static readonly String LocalizationDirectory = Path.Combine(Defines.BaseDirectory, Defines.LocalizationDirectoryName);
+        public static readonly DirectoryInfo LocalizationDirectory = new DirectoryInfo(Path.Combine(Defines.BaseDirectory.FullName, Defines.LocalizationDirectoryName));
 
         /// <summary>
         /// The full path to known/trusted/used certificates.
         /// </summary>
-        public static readonly String CertificatesDirectory = Path.Combine(Defines.BaseDirectory, "Certificates");
+        public static readonly DirectoryInfo CertificatesDirectory = new DirectoryInfo(Path.Combine(Defines.BaseDirectory.FullName, "Certificates"));
         
         /// <summary>
         /// The full path to download/install packages to. The local package repository.
         /// </summary>
-        public static readonly String PackagesDirectory = Path.Combine(Defines.BaseDirectory, "Packages");
+        public static readonly DirectoryInfo PackagesDirectory = new DirectoryInfo(Path.Combine(Defines.BaseDirectory.FullName, "Packages"));
 
         // Command server
 
@@ -106,7 +106,7 @@ namespace Procon.Service.Shared {
         /// <summary>
         /// The certificate used by Procon core command server
         /// </summary>
-        public static readonly String CertificatesDirectoryCommandServerPfx = Path.Combine(Defines.CertificatesDirectory, Defines.CommandServerPfx);
+        public static readonly FileInfo CertificatesDirectoryCommandServerPfx = new FileInfo(Path.Combine(Defines.CertificatesDirectory.FullName, Defines.CommandServerPfx));
 
         // Nuget
 
@@ -128,12 +128,12 @@ namespace Procon.Service.Shared {
         /// <summary>
         /// The full install path of latest procon core library
         /// </summary>
-        public static readonly String PackageMyrconProconCoreLibNet40 = Path.Combine(Defines.PackageVersionDirectory(Defines.PackagesDirectory, Defines.PackageMyrconProconCore) ?? "", "lib", "net40");
+        public static readonly DirectoryInfo PackageMyrconProconCoreLibNet40 = new DirectoryInfo(Path.Combine(Defines.PackageVersionDirectory(Defines.PackagesDirectory.FullName, Defines.PackageMyrconProconCore) ?? "", "lib", "net40"));
 
         /// <summary>
         /// The full install path for the latest procon shared library
         /// </summary>
-        public static readonly String PackageMyrconProconSharedLibNet40 = Path.Combine(Defines.PackageVersionDirectory(Defines.PackagesDirectory, Defines.PackageMyrconProconShared) ?? "", "lib", "net40");
+        public static readonly DirectoryInfo PackageMyrconProconSharedLibNet40 = new DirectoryInfo(Path.Combine(Defines.PackageVersionDirectory(Defines.PackagesDirectory.FullName, Defines.PackageMyrconProconShared) ?? "", "lib", "net40"));
 
         /// <summary>
         /// Searches the packages folder given this AppDomain's relative path to find the fullname
@@ -149,8 +149,8 @@ namespace Procon.Service.Shared {
 // ReSharper restore ConstantNullCoalescingCondition
 
             IEnumerable<String> paths = new List<String>() {
-                Defines.BaseDirectory
-            }.Union(relativePath.Split(';').Select(p => Path.Combine(Defines.BaseDirectory, p)));
+                Defines.BaseDirectory.FullName
+            }.Union(relativePath.Split(';').Select(p => Path.Combine(Defines.BaseDirectory.FullName, p)));
 
             return paths.Where(path => File.Exists(Path.Combine(path, file)) == true).Select(path => Path.Combine(path, file)).ToList();
         }
@@ -175,8 +175,8 @@ namespace Procon.Service.Shared {
         /// <returns>The directory info of the package</returns>
         public static DirectoryInfo PackageContainingPath(String path) {
             DirectoryInfo directory = File.Exists(path) == true ? new FileInfo(path).Directory : new DirectoryInfo(path);
-            
-            while (directory != null && directory.Parent != null && directory.Parent.FullName != Defines.PackagesDirectory && directory.FullName != Defines.BaseDirectory) {
+
+            while (directory != null && directory.Parent != null && Defines.PackagesDirectory.FullName != directory.Parent.FullName && Defines.BaseDirectory.FullName != directory.FullName) {
                 directory = directory.Parent;
             }
 
@@ -187,9 +187,10 @@ namespace Procon.Service.Shared {
         /// Ensure the entire directory structure has been created.
         /// </summary>
         static Defines() {
-            Directory.CreateDirectory(Defines.PackagesDirectory);
-            Directory.CreateDirectory(Defines.LogsDirectory);
-            Directory.CreateDirectory(Defines.LocalizationDirectory);
+            Defines.PackagesDirectory.Create();
+            Defines.LogsDirectory.Create();
+            Defines.ErrorsLogsDirectory.Create();
+            Defines.LocalizationDirectory.Create();
         }
     }
 }

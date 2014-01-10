@@ -103,7 +103,7 @@ namespace Procon.Core.Remote {
         /// </summary>
         protected void Configure() {
             if (this.Shared.Variables.Get<bool>(CommonVariableNames.CommandServerEnabled) == true) {
-                String certificatePath = this.Shared.Variables.Get(CommonVariableNames.CommandServerCertificatePath, Defines.CertificatesDirectoryCommandServerPfx);
+                String certificatePath = this.Shared.Variables.Get(CommonVariableNames.CommandServerCertificatePath, Defines.CertificatesDirectoryCommandServerPfx.FullName);
 
                 if (File.Exists(certificatePath) == true) {
                     X509Certificate2 certificate = this.LoadCertificate(certificatePath);

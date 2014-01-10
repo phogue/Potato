@@ -14,14 +14,14 @@ namespace Procon.Service.Shared {
         /// <param name="hint">A hint for where the exception occured</param>
         /// <param name="e">The exception to log</param>
         public static void LogUnhandledException(String hint, Exception e) {
-            Directory.CreateDirectory(Defines.ErrorsLogsDirectory);
+            Defines.ErrorsLogsDirectory.Create();
 
             var lines = new List<String>() {
                 String.Format("Hint: {0}", hint),
                 String.Format("Exception: {0}", e)
             };
 
-            File.WriteAllLines(Path.Combine(Defines.ErrorsLogsDirectory, DateTime.UtcNow.ToString("yyyy-MM-ddTHH-mm-ss-fffffff")), lines);
+            File.WriteAllLines(Path.Combine(Defines.ErrorsLogsDirectory.FullName, DateTime.UtcNow.ToString("yyyy-MM-ddTHH-mm-ss-fffffff")), lines);
 
             lines.ForEach(line => Console.WriteLine("Error: {0}", line));
         }

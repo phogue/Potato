@@ -11,7 +11,7 @@ namespace Procon.Service.Shared.Test.TestServiceControllerHelpers {
         /// </summary>
         [SetUp]
         public void DeleteErrorsLogsDirectory() {
-            if (Directory.Exists(Defines.ErrorsLogsDirectory) == true) Directory.Delete(Defines.ErrorsLogsDirectory, true);
+            if (Defines.ErrorsLogsDirectory.Exists == true) Defines.ErrorsLogsDirectory.Delete(true);
         }
 
         /// <summary>
@@ -21,9 +21,9 @@ namespace Procon.Service.Shared.Test.TestServiceControllerHelpers {
         [Test]
         public void TestLogErrorSuccess() {
             ServiceControllerHelpers.LogUnhandledException("None", new Exception("Nothing"));
-            
-            Assert.IsNotEmpty(Directory.GetFiles(Defines.ErrorsLogsDirectory));
-            Assert.Greater(new FileInfo(Directory.GetFiles(Defines.ErrorsLogsDirectory).First()).Length, 0);
+
+            Assert.IsNotEmpty(Defines.ErrorsLogsDirectory.GetFiles());
+            Assert.Greater(Defines.ErrorsLogsDirectory.GetFiles().First().Length, 0);
         }
     }
 }

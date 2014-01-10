@@ -5,7 +5,7 @@ using Procon.Net.Shared;
 using Procon.Net.Test.Mocks;
 
 namespace Procon.Net.Test {
-    [TestFixture]
+    [TestFixture, Ignore]
     public class UdpClientTest {
 
         /// <summary>

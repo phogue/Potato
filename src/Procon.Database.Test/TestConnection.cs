@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Text;
 using System.Collections.Generic;
 using System.Linq;
-using NUnit.Framework;
 using Newtonsoft.Json.Linq;
 using Procon.Database.Drivers;
 using Procon.Database.Shared;
@@ -12,10 +10,11 @@ using Procon.Database.Shared.Builders.Modifiers;
 using Procon.Database.Shared.Builders.Values;
 
 namespace Procon.Database.Test {
-    [TestFixture]
+    /// <summary>
+    /// I keep this class around to perform local tests on real databases. It was helpful
+    /// just to test on a real database when the Procon.Database project was first created.
+    /// </summary>
     public class TestConnection {
-        [Test]
-        [Ignore]
         public void TestMethod1() {
             IDriver driver = new MySqlDriver() {
                 Settings = new DriverSettings() {
@@ -44,8 +43,6 @@ namespace Procon.Database.Test {
             driver.Close();
         }
 
-        [Test]
-        [Ignore]
         public void TestMethod2() {
             IDriver driver = new MySqlDriver() {
                 Settings = new DriverSettings() {
@@ -80,8 +77,6 @@ namespace Procon.Database.Test {
             driver.Close();
         }
 
-        [Test]
-        [Ignore]
         public void TestMethod3() {
             IDriver driver = new MongoDbDriver() {
                 Settings = new DriverSettings() {
@@ -105,8 +100,6 @@ namespace Procon.Database.Test {
             driver.Close();
         }
 
-        [Test]
-        [Ignore]
         public void TestMethod4() {
             IDriver driver = new SqLiteDriver() {
                 Settings = new DriverSettings() {

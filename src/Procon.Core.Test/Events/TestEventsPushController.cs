@@ -17,6 +17,11 @@ using Procon.Net.Shared.Utils;
 namespace Procon.Core.Test.Events {
     [TestFixture]
     public class TestEventsPushController {
+        [SetUp]
+        public void Initialize() {
+            SharedReferences.Setup();
+        }
+
         /// <summary>
         ///     Tests that setting the variables in a random order will still setup the push end points correctly.
         /// </summary>

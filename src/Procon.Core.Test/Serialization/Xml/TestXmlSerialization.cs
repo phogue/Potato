@@ -10,18 +10,21 @@ using Procon.Core.Localization;
 using Procon.Core.Security;
 using Procon.Core.Shared;
 using Procon.Core.Shared.Models;
-using Procon.Net.Protocols;
 using Procon.Net.Shared.Actions;
 using Procon.Net.Shared.Models;
 using Procon.Net.Shared.Protocols;
 using Procon.Net.Shared.Utils;
-using Procon.Net.Utils;
 
 #endregion
 
 namespace Procon.Core.Test.Serialization.Xml {
     [TestFixture]
     public class TestXmlSerialization {
+        [SetUp]
+        public void Initialize() {
+            SharedReferences.Setup();
+        }
+
         /// <summary>
         ///     Testing the xml serialization for the TextCommandMatchModel object.
         /// </summary>

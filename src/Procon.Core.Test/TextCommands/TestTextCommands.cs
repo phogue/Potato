@@ -12,6 +12,11 @@ using Procon.Core.Shared.Models;
 namespace Procon.Core.Test.TextCommands {
     [TestFixture]
     public class TestTextCommands {
+        [SetUp]
+        public void Initialize() {
+            SharedReferences.Setup();
+        }
+
         /// <summary>
         ///     Tests that the text command controller will clean itself up.
         /// </summary>

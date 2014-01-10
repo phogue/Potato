@@ -14,6 +14,11 @@ using Procon.Core.Variables;
 namespace Procon.Core.Test.Variables {
     [TestFixture]
     public class TestVariablesGet {
+        [SetUp]
+        public void Initialize() {
+            SharedReferences.Setup();
+        }
+
         internal class VariableComplexValue {
             public int PropertyOne { get; set; }
             public String PropertyTwo { get; set; }

@@ -13,6 +13,11 @@ using Procon.Core.Shared;
 namespace Procon.Core.Test.Plugins {
     [TestFixture]
     public class TestPluginsEnabled {
+        [SetUp]
+        public void Initialize() {
+            SharedReferences.Setup();
+        }
+
         /// <summary>
         ///     Tests that a plugin can be enabled if the parameter matches up to an existing plugin
         ///     and the user has permission

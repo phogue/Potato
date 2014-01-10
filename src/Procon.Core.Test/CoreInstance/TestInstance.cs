@@ -23,6 +23,8 @@ namespace Procon.Core.Test.CoreInstance {
     public class TestInstance {
         [SetUp]
         public void Initialize() {
+            SharedReferences.Setup();
+
             if (File.Exists(ConfigFileInfo.FullName)) {
                 File.Delete(ConfigFileInfo.FullName);
             }
@@ -75,6 +77,8 @@ namespace Procon.Core.Test.CoreInstance {
             Assert.IsTrue(result.Success);
             Assert.AreEqual(CommandResultType.Success, result.Status);
             Assert.AreEqual("value", variables.Get("key", "default value"));
+
+            instance.Dispose();
         }
 
         /// <summary>
@@ -125,6 +129,8 @@ namespace Procon.Core.Test.CoreInstance {
             Assert.IsTrue(result.Success);
             Assert.AreEqual(CommandResultType.Continue, result.Status);
             Assert.AreEqual("default value", variables.Get("key", "default value"));
+
+            instance.Dispose();
         }
 
         /// <summary>
@@ -170,6 +176,8 @@ namespace Procon.Core.Test.CoreInstance {
             Assert.AreEqual("27516", commands[0].Parameters[3].First<String>());
             Assert.AreEqual("phogueisabutterfly", commands[0].Parameters[4].First<String>());
             Assert.AreEqual("", commands[0].Parameters[5].First<String>());
+
+            instance.Dispose();
         }
 
         /// <summary>

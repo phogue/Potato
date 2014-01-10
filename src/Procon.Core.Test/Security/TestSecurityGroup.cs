@@ -12,6 +12,11 @@ using Procon.Core.Shared;
 namespace Procon.Core.Test.Security {
     [TestFixture]
     public class TestSecurityGroup {
+        [SetUp]
+        public void Initialize() {
+            SharedReferences.Setup();
+        }
+
         /// <summary>
         ///     Testing that we can add a simple group.
         /// </summary>

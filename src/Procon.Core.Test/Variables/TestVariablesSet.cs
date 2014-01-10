@@ -14,6 +14,11 @@ using Procon.Core.Variables;
 namespace Procon.Core.Test.Variables {
     [TestFixture]
     public class TestVariablesSet {
+        [SetUp]
+        public void Initialize() {
+            SharedReferences.Setup();
+        }
+
         /// <summary>
         ///     Tests that we can set a value, getting the successful flag back from the command.
         /// </summary>

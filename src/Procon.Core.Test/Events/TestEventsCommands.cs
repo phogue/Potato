@@ -14,6 +14,11 @@ using Procon.Core.Shared.Models;
 namespace Procon.Core.Test.Events {
     [TestFixture]
     public class TestEventsCommands {
+        [SetUp]
+        public void Initialize() {
+            SharedReferences.Setup();
+        }
+
         /// <summary>
         ///     Tests that an event will be returned if it is after a specific ID but
         ///     not if it has expired.

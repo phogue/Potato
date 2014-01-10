@@ -14,6 +14,11 @@ using Procon.Net.Utils;
 namespace Procon.Core.Test.Security {
     [TestFixture]
     public class TestSecurityAccount {
+        [SetUp]
+        public void Initialize() {
+            SharedReferences.Setup();
+        }
+
         /// <summary>
         ///     Tests that authentication returns nothing if an account does not exist.
         /// </summary>

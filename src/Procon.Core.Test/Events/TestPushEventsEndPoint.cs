@@ -17,6 +17,11 @@ using Procon.Net.Shared.Utils.HTTP;
 namespace Procon.Core.Test.Events {
     [TestFixture]
     public class TestPushEventsEndPoint {
+        [SetUp]
+        public void Initialize() {
+            SharedReferences.Setup();
+        }
+
         /// <summary>
         ///     Tests that an event can be pushed onot the stream.
         /// </summary>

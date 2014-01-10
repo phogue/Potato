@@ -16,6 +16,10 @@ namespace Procon.Core.Test.Packages {
     /// </remarks>
     [TestFixture]
     public class TestPackagesController {
+        [SetUp]
+        public void Initialize() {
+            SharedReferences.Setup();
+        }
 
         /// <summary>
         /// Tests the grouped repository setting can be setup via variables.

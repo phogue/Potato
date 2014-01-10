@@ -14,6 +14,11 @@ using Procon.Service.Shared;
 namespace Procon.Core.Test.Plugins {
     [TestFixture]
     public class TestPluginsIsolation {
+        [SetUp]
+        public void Initialize() {
+            SharedReferences.Setup();
+        }
+
         /// <summary>
         ///     Helper to test writing files to various directories and testing the output.
         /// </summary>

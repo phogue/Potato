@@ -18,6 +18,11 @@ using Procon.Net.Shared.Protocols;
 namespace Procon.Core.Test.TextCommands {
     [TestFixture]
     public class TestTextCommandParsing {
+        [SetUp]
+        public void Initialize() {
+            SharedReferences.Setup();
+        }
+
         /// <summary>
         ///     Tests that a text command can be executed
         /// </summary>

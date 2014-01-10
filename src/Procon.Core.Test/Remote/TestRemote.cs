@@ -25,6 +25,8 @@ namespace Procon.Core.Test.Remote {
     public class TestRemote {
         [SetUp]
         protected void Setup() {
+            SharedReferences.Setup();
+
             // We could actually validate the certificate in /Certificates directory
             // but for unit testing I find this acceptable enough.
 

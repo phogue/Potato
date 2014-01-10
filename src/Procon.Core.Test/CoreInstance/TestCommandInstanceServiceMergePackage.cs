@@ -6,6 +6,11 @@ using Procon.Core.Shared;
 namespace Procon.Core.Test.CoreInstance {
     [TestFixture]
     public class TestCommandInstanceServiceMergePackage {
+        [SetUp]
+        public void Initialize() {
+            SharedReferences.Setup();
+        }
+
         /// <summary>
         /// Tests that attempting the command without any users in the security controller will
         /// result in insufficient permissions
@@ -18,6 +23,8 @@ namespace Procon.Core.Test.CoreInstance {
 
             Assert.IsFalse(result.Success);
             Assert.AreEqual(CommandResultType.InsufficientPermissions, result.Status);
+
+            instance.Dispose();
         }
 
         /// <summary>
@@ -31,6 +38,8 @@ namespace Procon.Core.Test.CoreInstance {
 
             Assert.IsFalse(result.Success);
             Assert.AreEqual(CommandResultType.InvalidParameter, result.Status);
+
+            instance.Dispose();
         }
 
         /// <summary>
@@ -44,6 +53,8 @@ namespace Procon.Core.Test.CoreInstance {
 
             Assert.IsFalse(result.Success);
             Assert.AreEqual(CommandResultType.InvalidParameter, result.Status);
+
+            instance.Dispose();
         }
 
         /// <summary>
@@ -57,6 +68,8 @@ namespace Procon.Core.Test.CoreInstance {
 
             Assert.IsTrue(result.Success);
             Assert.AreEqual(CommandResultType.Success, result.Status);
+
+            instance.Dispose();
         }
 
         /// <summary>
@@ -72,6 +85,8 @@ namespace Procon.Core.Test.CoreInstance {
             Assert.AreEqual("merge-package", instance.ServiceMessage.Name);
             Assert.AreEqual("localhost", instance.ServiceMessage.Arguments["uri"]);
             Assert.AreEqual("id", instance.ServiceMessage.Arguments["packageid"]);
+
+            instance.Dispose();
         }
 
         /// <summary>
@@ -90,6 +105,8 @@ namespace Procon.Core.Test.CoreInstance {
 
             Assert.IsNotEmpty(events.LoggedEvents);
             Assert.AreEqual("InstanceServiceMergePackage", events.LoggedEvents.First().Name);
+
+            instance.Dispose();
         }
     }
 }

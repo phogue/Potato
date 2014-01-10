@@ -8,6 +8,10 @@ using Procon.Core.Shared.Models;
 namespace Procon.Core.Test.Packages {
     [TestFixture]
     public class TestPackageCacheBuilders {
+        [SetUp]
+        public void Initialize() {
+            SharedReferences.Setup();
+        }
 
         /// <summary>
         /// Tests that the available builder will add packages marking them as NotInstalled.

@@ -21,6 +21,8 @@ namespace Procon.Core.Test.Security {
     public class TestSecurity {
         [SetUp]
         public void Initialize() {
+            SharedReferences.Setup();
+
             if (File.Exists(ConfigFileInfo.FullName)) {
                 File.Delete(ConfigFileInfo.FullName);
             }

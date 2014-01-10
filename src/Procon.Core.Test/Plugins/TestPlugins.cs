@@ -9,6 +9,11 @@ using Procon.Core.Connections.Plugins;
 namespace Procon.Core.Test.Plugins {
     [TestFixture]
     public class TestPlugins {
+        [SetUp]
+        public void Initialize() {
+            SharedReferences.Setup();
+        }
+
         [Test]
         public void TestPluginsDisposed() {
             var plugins = new CorePluginController().Execute() as CorePluginController;

@@ -15,6 +15,11 @@ using Procon.Net.Utils;
 namespace Procon.Core.Test.Serialization.Xml {
     [TestFixture]
     public class TestXmlSerializationCommand {
+        [SetUp]
+        public void Initialize() {
+            SharedReferences.Setup();
+        }
+
         /// <summary>
         ///     Tests that a derived type will be serialized as the known base type.
         /// </summary>

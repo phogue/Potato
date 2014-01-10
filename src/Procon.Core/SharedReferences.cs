@@ -12,22 +12,22 @@ namespace Procon.Core {
         /// <summary>
         /// Master list of variables.
         /// </summary>
-        private readonly static VariableController MasterVariables;
+        private static VariableController _masterVariables;
 
         /// <summary>
         /// Full list of all available languages.
         /// </summary>
-        private readonly static LanguageController MasterLanguages;
+        private static LanguageController _masterLanguages;
 
         /// <summary>
         /// The main security controller
         /// </summary>
-        private readonly static SecurityController MasterSecurity;
+        private static SecurityController _masterSecurity;
 
         /// <summary>
         /// The main events logging and handling
         /// </summary>
-        private readonly static EventsController MasterEvents;
+        private static EventsController _masterEvents;
 
         /// <summary>
         /// Stores a reference to the static variables controller by default, but can
@@ -57,10 +57,14 @@ namespace Procon.Core {
         /// Initializes the default references from the static controllers.
         /// </summary>
         public SharedReferences() : base() {
-            this.Variables = SharedReferences.MasterVariables;
-            this.Languages = SharedReferences.MasterLanguages;
-            this.Security = SharedReferences.MasterSecurity;
-            this.Events = SharedReferences.MasterEvents;
+            this.Variables = SharedReferences._masterVariables;
+            this.Languages = SharedReferences._masterLanguages;
+            this.Security = SharedReferences._masterSecurity;
+            this.Events = SharedReferences._masterEvents;
+        }
+
+        static SharedReferences() {
+            SharedReferences.Setup();
         }
 
         /// <summary>
@@ -72,23 +76,22 @@ namespace Procon.Core {
         /// object (useful for unit testing!). The alternative is to not have the static objects at all, but the
         /// code does get very messy on some of the controllers that go a few levels deep (Procon.Core.Security or ..Plugins)
         /// </summary>
-        static SharedReferences() {
+        public static void Setup() {
+            SharedReferences._masterVariables = new VariableController();
+            SharedReferences._masterLanguages = new LanguageController();
+            SharedReferences._masterSecurity = new SecurityController();
+            SharedReferences._masterEvents = new EventsController();
 
-            MasterVariables = new VariableController();
-            MasterLanguages = new LanguageController();
-            MasterSecurity = new SecurityController();
-            MasterEvents = new EventsController();
+            if (SharedReferences._masterVariables != null && SharedReferences._masterLanguages != null && SharedReferences._masterSecurity != null && SharedReferences._masterEvents != null) {
+                SharedReferences._masterVariables.Shared.Variables = SharedReferences._masterLanguages.Shared.Variables = SharedReferences._masterSecurity.Shared.Variables = SharedReferences._masterEvents.Shared.Variables = SharedReferences._masterVariables;
+                SharedReferences._masterVariables.Shared.Languages = SharedReferences._masterLanguages.Shared.Languages = SharedReferences._masterSecurity.Shared.Languages = SharedReferences._masterEvents.Shared.Languages = SharedReferences._masterLanguages;
+                SharedReferences._masterVariables.Shared.Security = SharedReferences._masterLanguages.Shared.Security = SharedReferences._masterSecurity.Shared.Security = SharedReferences._masterEvents.Shared.Security = SharedReferences._masterSecurity;
+                SharedReferences._masterVariables.Shared.Events = SharedReferences._masterLanguages.Shared.Events = SharedReferences._masterSecurity.Shared.Events = SharedReferences._masterEvents.Shared.Events = SharedReferences._masterEvents;
 
-            if (SharedReferences.MasterVariables != null && SharedReferences.MasterLanguages != null && SharedReferences.MasterSecurity != null && SharedReferences.MasterEvents != null) {
-                SharedReferences.MasterVariables.Shared.Variables = SharedReferences.MasterLanguages.Shared.Variables = SharedReferences.MasterSecurity.Shared.Variables = SharedReferences.MasterEvents.Shared.Variables = SharedReferences.MasterVariables;
-                SharedReferences.MasterVariables.Shared.Languages = SharedReferences.MasterLanguages.Shared.Languages = SharedReferences.MasterSecurity.Shared.Languages = SharedReferences.MasterEvents.Shared.Languages = SharedReferences.MasterLanguages;
-                SharedReferences.MasterVariables.Shared.Security = SharedReferences.MasterLanguages.Shared.Security = SharedReferences.MasterSecurity.Shared.Security = SharedReferences.MasterEvents.Shared.Security = SharedReferences.MasterSecurity;
-                SharedReferences.MasterVariables.Shared.Events = SharedReferences.MasterLanguages.Shared.Events = SharedReferences.MasterSecurity.Shared.Events = SharedReferences.MasterEvents.Shared.Events = SharedReferences.MasterEvents;
-
-                MasterVariables.Execute();
-                MasterLanguages.Execute();
-                MasterSecurity.Execute();
-                MasterEvents.Execute();
+                _masterVariables.Execute();
+                _masterLanguages.Execute();
+                _masterSecurity.Execute();
+                _masterEvents.Execute();
             }
         }
     }

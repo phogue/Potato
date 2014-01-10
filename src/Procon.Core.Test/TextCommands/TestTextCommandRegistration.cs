@@ -13,6 +13,11 @@ using Procon.Core.Shared.Models;
 namespace Procon.Core.Test.TextCommands {
     [TestFixture]
     public class TestTextCommandRegistration {
+        [SetUp]
+        public void Initialize() {
+            SharedReferences.Setup();
+        }
+
         /// <summary>
         ///     Tests that we can register a command via the command interface.
         /// </summary>

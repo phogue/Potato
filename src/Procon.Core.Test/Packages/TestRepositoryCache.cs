@@ -9,6 +9,11 @@ using Procon.Core.Test.Packages.Mocks;
 namespace Procon.Core.Test.Packages {
     [TestFixture]
     public class TestRepositoryCache {
+        [SetUp]
+        public void Initialize() {
+            SharedReferences.Setup();
+        }
+
         /// <summary>
         /// Tests that building with no repository and an empty local repository will result
         /// in zero package wrappers.

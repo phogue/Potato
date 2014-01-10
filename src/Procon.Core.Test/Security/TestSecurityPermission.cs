@@ -14,6 +14,11 @@ using Procon.Net.Shared.Protocols;
 namespace Procon.Core.Test.Security {
     [TestFixture]
     public class TestSecurityPermission {
+        [SetUp]
+        public void Initialize() {
+            SharedReferences.Setup();
+        }
+
         [Test]
         public void TestSecurityGetAccountByCommandInitiatorWithPlayerDetails() {
             var security = new SecurityController();

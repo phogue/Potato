@@ -16,6 +16,8 @@ namespace Procon.Core.Test.CoreInstance {
     public class TestCommandInstanceRemoveConnection {
         [SetUp]
         public void Initialize() {
+            SharedReferences.Setup();
+
             if (File.Exists(ConfigFileInfo.FullName)) {
                 File.Delete(ConfigFileInfo.FullName);
             }
@@ -57,6 +59,8 @@ namespace Procon.Core.Test.CoreInstance {
             Assert.IsTrue(result.Success);
             Assert.AreEqual(CommandResultType.Success, result.Status);
             Assert.AreEqual(0, instance.Connections.Count);
+
+            instance.Dispose();
         }
 
         /// <summary>
@@ -81,6 +85,8 @@ namespace Procon.Core.Test.CoreInstance {
 
             Assert.IsFalse(result.Success);
             Assert.AreEqual(CommandResultType.DoesNotExists, result.Status);
+
+            instance.Dispose();
         }
 
         /// <summary>
@@ -106,6 +112,8 @@ namespace Procon.Core.Test.CoreInstance {
             Assert.IsFalse(result.Success);
             Assert.AreEqual(CommandResultType.InsufficientPermissions, result.Status);
             Assert.AreEqual(0, instance.Connections.Count);
+
+            instance.Dispose();
         }
 
         /// <summary>
@@ -145,6 +153,8 @@ namespace Procon.Core.Test.CoreInstance {
             Assert.IsTrue(result.Success);
             Assert.AreEqual(CommandResultType.Success, result.Status);
             Assert.AreEqual(0, instance.Connections.Count);
+
+            instance.Dispose();
         }
     }
 }

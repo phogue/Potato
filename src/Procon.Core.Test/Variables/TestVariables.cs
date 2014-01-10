@@ -19,6 +19,8 @@ namespace Procon.Core.Test.Variables {
     public class TestVariables {
         [SetUp]
         public void Initialize() {
+            SharedReferences.Setup();
+
             if (File.Exists(ConfigFileInfo.FullName)) {
                 File.Delete(ConfigFileInfo.FullName);
             }

@@ -12,6 +12,11 @@ using Procon.Net.Shared.Utils;
 namespace Procon.Core.Test.Database {
     [TestFixture]
     public class TestDatabaseMigrationController {
+        [SetUp]
+        public void Initialize() {
+            SharedReferences.Setup();
+        }
+
         /// <summary>
         ///     Tests that all down migrations are called when on the latest migration,
         ///     essentially this would be used to "uninstall"

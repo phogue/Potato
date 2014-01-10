@@ -479,6 +479,9 @@ namespace Procon.Core {
             this.Shared.Variables.Dispose();
             this.Shared.Variables = null;
 
+            this.EventsConsole.Dispose();
+            this.EventsConsole = null;
+
             base.Dispose();
         }
 

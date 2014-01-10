@@ -15,6 +15,11 @@ using Procon.Net.Shared.Models;
 namespace Procon.Core.Test.Events {
     [TestFixture]
     public class TestGenericEventData {
+        [SetUp]
+        public void Initialize() {
+            SharedReferences.Setup();
+        }
+
         [Test]
         public void TestGameEventObjectConversion() {
             var gameEventData = new ProtocolEventData() {

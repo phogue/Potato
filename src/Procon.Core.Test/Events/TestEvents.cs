@@ -21,6 +21,8 @@ namespace Procon.Core.Test.Events {
     public class TestEvents {
         [SetUp]
         public void Initialize() {
+            SharedReferences.Setup();
+
             if (Directory.Exists(Defines.LogsDirectory) == true) {
                 try {
                     Directory.Delete(Defines.LogsDirectory, true);

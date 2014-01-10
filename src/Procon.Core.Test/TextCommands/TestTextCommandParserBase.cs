@@ -19,6 +19,11 @@ using Procon.Net.Shared.Protocols;
 
 namespace Procon.Core.Test.TextCommands {
     public abstract class TestTextCommandParserBase {
+        [SetUp]
+        public void Initialize() {
+            SharedReferences.Setup();
+        }
+
         //protected TextCommandController TextCommandController { get; set; }
 
         protected static TextCommandModel TextCommandKick = new TextCommandModel() {

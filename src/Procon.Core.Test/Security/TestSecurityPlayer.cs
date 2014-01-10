@@ -14,6 +14,11 @@ using Procon.Net.Shared.Protocols;
 namespace Procon.Core.Test.Security {
     [TestFixture]
     public class TestSecurityPlayer {
+        [SetUp]
+        public void Initialize() {
+            SharedReferences.Setup();
+        }
+
         /// <summary>
         ///     Tests that a player can be added to an account.
         /// </summary>

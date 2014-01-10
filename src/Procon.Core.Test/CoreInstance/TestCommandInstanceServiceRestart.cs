@@ -6,6 +6,11 @@ using Procon.Core.Shared;
 namespace Procon.Core.Test.CoreInstance {
     [TestFixture]
     public class TestCommandInstanceServiceRestart {
+        [SetUp]
+        public void Initialize() {
+            SharedReferences.Setup();
+        }
+
         /// <summary>
         /// Tests that attempting the command without any users in the security controller will
         /// result in insufficient permissions
@@ -18,6 +23,8 @@ namespace Procon.Core.Test.CoreInstance {
 
             Assert.IsFalse(result.Success);
             Assert.AreEqual(CommandResultType.InsufficientPermissions, result.Status);
+
+            instance.Dispose();
         }
 
         /// <summary>
@@ -31,6 +38,8 @@ namespace Procon.Core.Test.CoreInstance {
 
             Assert.IsTrue(result.Success);
             Assert.AreEqual(CommandResultType.Success, result.Status);
+
+            instance.Dispose();
         }
 
         /// <summary>
@@ -44,6 +53,8 @@ namespace Procon.Core.Test.CoreInstance {
 
             Assert.IsNotNull(instance.ServiceMessage);
             Assert.AreEqual("restart", instance.ServiceMessage.Name);
+
+            instance.Dispose();
         }
 
         /// <summary>
@@ -62,6 +73,8 @@ namespace Procon.Core.Test.CoreInstance {
 
             Assert.IsNotEmpty(events.LoggedEvents);
             Assert.AreEqual("InstanceServiceRestarting", events.LoggedEvents.First().Name);
+
+            instance.Dispose();
         }
     }
 }

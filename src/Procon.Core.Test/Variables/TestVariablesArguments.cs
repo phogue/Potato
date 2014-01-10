@@ -15,6 +15,11 @@ using Procon.Net.Utils;
 namespace Procon.Core.Test.Variables {
     [TestFixture]
     public class TestVariablesArguments {
+        [SetUp]
+        public void Initialize() {
+            SharedReferences.Setup();
+        }
+
         /// <summary>
         ///     Tests that parsing no arguments results in no variables.
         /// </summary>

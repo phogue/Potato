@@ -23,6 +23,11 @@ using Procon.Net.Utils;
 namespace Procon.Core.Test.Database {
     [TestFixture]
     public class TestDatabaseController {
+        [SetUp]
+        public void Initialize() {
+            SharedReferences.Setup();
+        }
+
         public static DatabaseController OpenSqLiteDriver(String @namespace = "") {
             var variables = new VariableController();
 

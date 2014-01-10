@@ -8,6 +8,11 @@ using Procon.Core.Test.Packages.Mocks;
 namespace Procon.Core.Test.Packages {
     [TestFixture]
     public class TestCommandPackagesUninstallPackage {
+        [SetUp]
+        public void Initialize() {
+            SharedReferences.Setup();
+        }
+
         /// <summary>
         /// Tests that attempting the command without any users in the security controller will
         /// result in insufficient permissions

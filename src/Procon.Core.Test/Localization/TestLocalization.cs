@@ -14,6 +14,11 @@ using Procon.Core.Shared.Models;
 namespace Procon.Core.Test.Localization {
     [TestFixture]
     public class TestLocalization {
+        [SetUp]
+        public void Initialize() {
+            SharedReferences.Setup();
+        }
+
         /// <summary>
         ///     Tests that the non-default language can still be searched.
         /// </summary>

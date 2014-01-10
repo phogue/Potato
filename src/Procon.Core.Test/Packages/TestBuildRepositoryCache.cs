@@ -10,6 +10,11 @@ using Procon.Core.Test.Packages.Mocks;
 namespace Procon.Core.Test.Packages {
     [TestFixture]
     public class TestBuildRepositoryCache {
+        [SetUp]
+        public void Initialize() {
+            SharedReferences.Setup();
+        }
+
         /// <summary>
         /// Tests building the cache will be completed successfully
         /// </summary>

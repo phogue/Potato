@@ -12,6 +12,11 @@ using Procon.Core.Shared;
 namespace Procon.Core.Test.Plugins {
     [TestFixture]
     public class TestPluginsSerialization {
+        [SetUp]
+        public void Initialize() {
+            SharedReferences.Setup();
+        }
+
         /// <summary>
         ///     Makes sure executing a command across the appdomain will serialize
         ///     the basic command result across the app domain.

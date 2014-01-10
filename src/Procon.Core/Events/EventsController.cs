@@ -136,16 +136,24 @@ namespace Procon.Core.Events {
         /// Writes the selected events to a file.
         /// </summary>
         /// <param name="events">The events to write.</param>
-        protected void WriteEventsList(List<GenericEventArgs> events) {
+        protected bool WriteEventsList(List<GenericEventArgs> events) {
+            // Assume everything was successful
+            bool saved = true;
+
             if (this.Shared.Variables.Get(CommonVariableNames.WriteLogEventsToFile, true) == true) {
                 foreach (var eventHourlyGroup in events.GroupBy(e => new DateTime(e.Stamp.Year, e.Stamp.Month, e.Stamp.Day, e.Stamp.Hour, 0, 0))) {
                     String logFileName = this.EventsLogFileName(eventHourlyGroup.Key);
 
                     if (File.Exists(logFileName) == false) {
-                        using (XmlTextWriter writer = new XmlTextWriter(logFileName, Encoding.UTF8)) {
-                            writer.WriteStartElement("Events");
-                            writer.WriteEndElement();
-                            writer.Close();
+                        try {
+                            using (XmlTextWriter writer = new XmlTextWriter(logFileName, Encoding.UTF8)) {
+                                writer.WriteStartElement("Events");
+                                writer.WriteEndElement();
+                                writer.Close();
+                            }
+                        }
+                        catch {
+                            saved = false;
                         }
                     }
 
@@ -157,9 +165,16 @@ namespace Procon.Core.Events {
                         xml.Add(xmlLogEvent);
                     }
 
-                    xml.Save(logFileName);
+                    try {
+                        xml.Save(logFileName);
+                    }
+                    catch {
+                        saved = false;
+                    }
                 }
             }
+
+            return saved;
         }
 
         /// <summary>

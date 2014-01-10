@@ -83,10 +83,10 @@ namespace Procon.Core {
             this.PushEvents = new PushEventsController();
 
             this.Tasks = new List<Timer>() {
-                new Timer(Connection_Tick, this, TimeSpan.FromSeconds(0), TimeSpan.FromSeconds(15)),
-                new Timer(Events_Tick, this, TimeSpan.FromSeconds(0), TimeSpan.FromSeconds(60)),
-                new Timer(CommandServer_Tick, this, TimeSpan.FromSeconds(0), TimeSpan.FromSeconds(60)),
-                new Timer(Plugin_Tick, this, TimeSpan.FromSeconds(0), TimeSpan.FromSeconds(60))
+                new Timer(Connection_Tick, this, TimeSpan.FromSeconds(15), TimeSpan.FromSeconds(15)),
+                new Timer(Events_Tick, this, TimeSpan.FromSeconds(60), TimeSpan.FromSeconds(60)),
+                new Timer(CommandServer_Tick, this, TimeSpan.FromSeconds(60), TimeSpan.FromSeconds(60)),
+                new Timer(Plugin_Tick, this, TimeSpan.FromSeconds(60), TimeSpan.FromSeconds(60))
             };
 
             this.EventsConsole = new EventsConsoleController();

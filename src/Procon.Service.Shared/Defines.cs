@@ -113,7 +113,7 @@ namespace Procon.Service.Shared {
         /// <summary>
         /// The default source repository uri to download core updates to Procon.
         /// </summary>
-        public static readonly String PackagesDefaultSourceRepositoryUri = "http://localhost:30505/nuget";
+        public static readonly String PackagesDefaultSourceRepositoryUri = "https://repo.myrcon.com/procon";
 
         /// <summary>
         /// Package id for the core of Procon

@@ -142,9 +142,15 @@ namespace Procon.Service.Shared {
         /// <param name="file">The file name or directory to search for</param>
         /// <returns>A list of file paths found</returns>
         public static List<String> SearchRelativeSearchPath(String file) {
+// ReSharper disable ConstantNullCoalescingCondition
+            // Despite resharper assuring me this cannot be null, it does return null when running unit tests in TeamCity,
+            // therefore it could be possible for it to be null elsewhere as well.
+            String relativePath = AppDomain.CurrentDomain.RelativeSearchPath ?? "";
+// ReSharper restore ConstantNullCoalescingCondition
+
             IEnumerable<String> paths = new List<String>() {
                 Defines.BaseDirectory
-            }.Union(AppDomain.CurrentDomain.RelativeSearchPath.Split(';').Select(p => Path.Combine(Defines.BaseDirectory, p)));
+            }.Union(relativePath.Split(';').Select(p => Path.Combine(Defines.BaseDirectory, p)));
 
             return paths.Where(path => File.Exists(Path.Combine(path, file)) == true).Select(path => Path.Combine(path, file)).ToList();
         }

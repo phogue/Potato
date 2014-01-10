@@ -15,32 +15,26 @@ namespace Procon.Database.Shared.Test.MongoDb {
             Assert.AreEqual(@"Procon", serialized.Databases.First());
         }
 
-        [Test, Ignore]
         public override void TestCreatePlayerWithFieldStringName() {
             
         }
 
-        [Test, Ignore]
         public override void TestCreatePlayerWithFieldStringSpecifiedLengthName() {
             
         }
 
-        [Test, Ignore]
         public override void TestCreatePlayerWithFieldStringSpecifiedLengthNameAndFieldIntegerScore() {
             
         }
 
-        [Test, Ignore]
         public override void TestCreatePlayerWithFieldStringSpecifiedLengthNameNotNullAndFieldIntegerScore() {
             
         }
 
-        [Test, Ignore]
         public override void TestCreatePlayerWithFieldIntegerScoreUnsigned() {
             
         }
 
-        [Test, Ignore]
         public override void TestCreatePlayerWithFieldIntegerScoreUnsignedAutoIncrement() {
             
         }
@@ -109,12 +103,10 @@ namespace Procon.Database.Shared.Test.MongoDb {
             Assert.AreEqual(@"[{""Name"":1},{""unique"":true}]", serialized.Children.First().Indices.First());
         }
 
-        [Test, Ignore]
         public override void TestCreatePlayerWithFieldStringNameIfNotExists() {
             
         }
 
-        [Test, Ignore]
         public override void TestCreatePlayerWithFieldDateTimeStamp() {
             
         }

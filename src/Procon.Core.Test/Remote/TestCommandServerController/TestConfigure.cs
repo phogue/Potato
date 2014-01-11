@@ -27,7 +27,7 @@ namespace Procon.Core.Test.Remote.TestCommandServerController {
                 CommandType = CommandType.VariablesSet,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     CommonVariableNames.CommandServerPort,
-                    3222
+                    3100
                 })
             });
 
@@ -69,7 +69,7 @@ namespace Procon.Core.Test.Remote.TestCommandServerController {
                 CommandType = CommandType.VariablesSet,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     CommonVariableNames.CommandServerPort,
-                    3222
+                    3200
                 })
             });
 
@@ -94,7 +94,7 @@ namespace Procon.Core.Test.Remote.TestCommandServerController {
                 CommandType = CommandType.VariablesSet,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     CommonVariableNames.CommandServerPort,
-                    3222
+                    3300
                 })
             });
 
@@ -136,7 +136,7 @@ namespace Procon.Core.Test.Remote.TestCommandServerController {
                 CommandType = CommandType.VariablesSet,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     CommonVariableNames.CommandServerPort,
-                    3222
+                    3400
                 })
             });
 
@@ -171,7 +171,7 @@ namespace Procon.Core.Test.Remote.TestCommandServerController {
                 CommandType = CommandType.VariablesSet,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     CommonVariableNames.CommandServerPort,
-                    3222
+                    3500
                 })
             });
 

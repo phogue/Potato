@@ -128,13 +128,27 @@ namespace Procon.Service.Shared {
         /// <summary>
         /// The full install path of latest procon core library
         /// </summary>
-        public static readonly DirectoryInfo PackageMyrconProconCoreLibNet40 = new DirectoryInfo(Path.Combine(Defines.PackageVersionDirectory(Defines.PackagesDirectory.FullName, Defines.PackageMyrconProconCore) ?? "", "lib", "net40"));
+        /// <remarks>
+        ///     <para>This is not a readonly property as the packages may be redownloaded/updated during the execution</para>
+        /// </remarks>
+        public static DirectoryInfo PackageMyrconProconCoreLibNet40 {
+            get {
+                return new DirectoryInfo(Path.Combine(Defines.PackageVersionDirectory(Defines.PackagesDirectory.FullName, Defines.PackageMyrconProconCore) ?? "", "lib", "net40"));
+            }
+        }
 
         /// <summary>
         /// The full install path for the latest procon shared library
         /// </summary>
-        public static readonly DirectoryInfo PackageMyrconProconSharedLibNet40 = new DirectoryInfo(Path.Combine(Defines.PackageVersionDirectory(Defines.PackagesDirectory.FullName, Defines.PackageMyrconProconShared) ?? "", "lib", "net40"));
-        
+        /// <remarks>
+        ///     <para>This is not a readonly property as the packages may be redownloaded/updated during the execution</para>
+        /// </remarks>
+        public static DirectoryInfo PackageMyrconProconSharedLibNet40 {
+            get {
+                return new DirectoryInfo(Path.Combine(Defines.PackageVersionDirectory(Defines.PackagesDirectory.FullName, Defines.PackageMyrconProconShared) ?? "", "lib", "net40"));
+            }
+        }
+
         /// <summary>
         /// Searches for a file in some given paths.
         /// </summary>

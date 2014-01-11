@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Net;
-using System.Security.Cryptography;
-using System.Security.Cryptography.X509Certificates;
 using System.Xml.Linq;
 using Newtonsoft.Json;
 using Procon.Core.Shared;
@@ -15,7 +12,6 @@ using Procon.Net.Shared;
 using Procon.Net.Shared.Protocols.CommandServer;
 using Procon.Net.Shared.Utils;
 using Procon.Net.Shared.Utils.HTTP;
-using Procon.Service.Shared;
 
 namespace Procon.Core.Remote {
     /// <summary>
@@ -27,6 +23,11 @@ namespace Procon.Core.Remote {
         /// </summary>
         public CommandServerListener CommandServerListener { get; set; }
 
+        /// <summary>
+        /// The certificate controller for managing the command server certificate.
+        /// </summary>
+        public ICertificateController Certificate { get; set; }
+
         public SharedReferences Shared { get; private set; }
 
         /// <summary>
@@ -34,12 +35,15 @@ namespace Procon.Core.Remote {
         /// </summary>
         public CommandServerController() : base() {
             this.Shared = new SharedReferences();
+            this.Certificate = new CertificateController();
         }
 
         public override ICoreController Execute() {
             this.Shared.Variables.Variable(CommonVariableNames.CommandServerEnabled).PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(CommandServerController_PropertyChanged);
             this.Shared.Variables.Variable(CommonVariableNames.CommandServerPort).PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(CommandServerController_PropertyChanged);
             this.Shared.Variables.Variable(CommonVariableNames.CommandServerCertificatePath).PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(CommandServerController_PropertyChanged);
+
+            this.Certificate.Execute();
 
             this.Configure();
 
@@ -74,27 +78,6 @@ namespace Procon.Core.Remote {
             }
         }
 
-        protected X509Certificate2 LoadCertificate(String certificatePath) {
-            X509Certificate2 certificate;
-            String certificatePassword = this.Shared.Variables.Get<String>(CommonVariableNames.CommandServerCertificatePassword);
-
-            try {
-                certificate = certificatePassword != null ? new X509Certificate2(certificatePath, certificatePassword) : new X509Certificate2(certificatePath);
-            }
-            catch (CryptographicException e) {
-                certificate = null;
-
-                this.Shared.Events.Log(new GenericEventArgs() {
-                    Message = String.Format("Error loading certificate @ path \"{0}\" \"{1}\".", certificatePath, e.Message),
-                    GenericEventType = GenericEventType.CommandServerStarted,
-                    Success = false,
-                    Status = CommandResultType.Failed
-                });
-            }
-
-            return certificate;
-        }
-
         /// <summary>
         /// Configures the command server, listening for any changes to the configuration and altering
         /// accordingly.
@@ -103,38 +86,22 @@ namespace Procon.Core.Remote {
         /// </summary>
         protected void Configure() {
             if (this.Shared.Variables.Get<bool>(CommonVariableNames.CommandServerEnabled) == true) {
-                String certificatePath = this.Shared.Variables.Get(CommonVariableNames.CommandServerCertificatePath, Defines.CertificatesDirectoryCommandServerPfx.FullName);
+                if (this.Certificate.Certificate != null) {
+                    this.CommandServerListener = new CommandServerListener() {
+                        Certificate = this.Certificate.Certificate,
+                        Port = this.Shared.Variables.Get<int>(CommonVariableNames.CommandServerPort)
+                    };
 
-                if (File.Exists(certificatePath) == true) {
-                    X509Certificate2 certificate = this.LoadCertificate(certificatePath);
+                    // Assign events.
+                    this.CommandServerListener.PacketReceived += CommandServerListener_PacketReceived;
 
-                    if (certificate != null) {
-                        this.CommandServerListener = new CommandServerListener() {
-                            Certificate = certificate,
-                            Port = this.Shared.Variables.Get<int>(CommonVariableNames.CommandServerPort)
-                        };
+                    // Start accepting connections.
+                    this.CommandServerListener.BeginListener();
 
-                        // Assign events.
-                        this.CommandServerListener.PacketReceived += CommandServerListener_PacketReceived;
-
-                        // Start accepting connections.
-                        this.CommandServerListener.BeginListener();
-
-                        this.Shared.Events.Log(new GenericEventArgs() {
-                            GenericEventType = GenericEventType.CommandServerStarted,
-                            Success = true,
-                            Status = CommandResultType.Success
-                        });
-                    }
-                    // Error will have been logged during load.
-                }
-                else {
-                    // Panic, no certificate exists. Cannot start server.
                     this.Shared.Events.Log(new GenericEventArgs() {
-                        Message = String.Format("Command server certificate @ path \"{0}\" does not exists.", certificatePath),
                         GenericEventType = GenericEventType.CommandServerStarted,
-                        Success = false,
-                        Status = CommandResultType.Failed
+                        Success = true,
+                        Status = CommandResultType.Success
                     });
                 }
             }

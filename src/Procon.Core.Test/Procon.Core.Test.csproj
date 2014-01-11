@@ -91,6 +91,8 @@
     <Compile Include="Packages\TestRepositoryCache.cs" />
     <Compile Include="Plugins\TestPluginsDisabled.cs" />
     <Compile Include="Plugins\TestPluginsEnabled.cs" />
+    <Compile Include="Remote\TestCertificateController\TestVariableLoad.cs" />
+    <Compile Include="Remote\TestCertificateController\TestExplicitLoad.cs" />
     <Compile Include="TestHelpers.cs" />
     <Compile Include="CoreInstance\TestCommandInstanceRemoveConnection.cs" />
     <Compile Include="Events\TestEvents.cs" />
@@ -200,6 +202,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <Content Include="Remote\Certificates\NoPassword.pfx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Remote\Certificates\Password.pfx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

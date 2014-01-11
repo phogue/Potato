@@ -92,6 +92,8 @@
     <Compile Include="Packages\InstalledCacheBuilder.cs" />
     <Compile Include="Packages\PackageFactory.cs" />
     <Compile Include="Packages\RepositoryCache.cs" />
+    <Compile Include="Remote\CertificateController.cs" />
+    <Compile Include="Remote\ICertificateController.cs" />
     <Compile Include="SharedReferences.cs" />
     <Compile Include="Database\DatabaseController.cs" />
     <Compile Include="Events\EventsConsoleController.cs" />

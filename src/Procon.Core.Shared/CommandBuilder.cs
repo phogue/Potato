@@ -162,5 +162,34 @@ namespace Procon.Core.Shared {
                 CommandType = CommandType.PackagesFetchPackages
             };
         }
+
+        /// <summary>
+        /// Builds a command to send a SecurityAccountAuthenticate
+        /// </summary>
+        /// <param name="username">The username to attach to the command and parameter</param>
+        /// <param name="passwordPlainText">The plain text password to add as a parameter</param>
+        /// <returns>The build command to dispatch</returns>
+        public static Command SecurityAccountAuthenticate(String username, String passwordPlainText) {
+            return new Command() {
+                Username = username,
+                CommandType = CommandType.SecurityAccountAuthenticate,
+                Parameters = new List<CommandParameter>() {
+                    new CommandParameter() {
+                        Data = {
+                            Content = new List<String>() {
+                                username
+                            }
+                        }
+                    },
+                    new CommandParameter() {
+                        Data = {
+                            Content = new List<String>() {
+                                passwordPlainText
+                            }
+                        }
+                    }
+                }
+            };
+        }
     }
 }

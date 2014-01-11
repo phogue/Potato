@@ -5,7 +5,7 @@ namespace Procon.Core.Remote {
     /// <summary>
     /// Manages loading and holding the X509Certificate object
     /// </summary>
-    public interface ICertificateController {
+    public interface ICertificateController : ISharedReferenceAccess {
         /// <summary>
         /// The loaded X509Certificate object
         /// </summary>

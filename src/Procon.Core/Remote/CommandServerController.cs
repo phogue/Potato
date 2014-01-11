@@ -36,6 +36,8 @@ namespace Procon.Core.Remote {
             this.Shared.Variables.Variable(CommonVariableNames.CommandServerPort).PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(OnPropertyChanged);
             this.Shared.Variables.Variable(CommonVariableNames.CommandServerCertificatePath).PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(OnPropertyChanged);
 
+            // Copy for unit testing purposes if variables is modified.
+            this.Certificate.Shared.Variables = this.Shared.Variables;
             this.Certificate.Execute();
 
             this.Configure();
@@ -132,22 +134,19 @@ namespace Procon.Core.Remote {
             Command command = CommandServerSerializer.DeserializeCommand(request);
 
             if (command != null) {
-                // If the command was generated successfully with no parsing errors.
-                if (response.StatusCode == HttpStatusCode.NotFound) {
-                    if (this.Shared.Security.Tunnel(CommandBuilder.SecurityAccountAuthenticate(command.Username, command.PasswordPlainText).SetOrigin(CommandOrigin.Remote)).Success == true) {
-                        // Now dispatch the command
-                        CommandResultArgs result = this.Tunnel(command);
+                if (this.Shared.Security.Tunnel(CommandBuilder.SecurityAccountAuthenticate(command.Username, command.PasswordPlainText).SetOrigin(CommandOrigin.Remote)).Success == true) {
+                    // Now dispatch the command
+                    CommandResultArgs result = this.Tunnel(command);
 
-                        response = CommandServerSerializer.CompleteResponsePacket(CommandServerSerializer.ResponseContentType(command), response, result);
-                    }
-                    else {
-                        // They are not authorized to login or issue this command.
-                        response = CommandServerSerializer.CompleteResponsePacket(CommandServerSerializer.ResponseContentType(command), response, new CommandResultArgs() {
-                            Success = false,
-                            Status = CommandResultType.InsufficientPermissions,
-                            Message = "Invalid username or password"
-                        });
-                    }
+                    response = CommandServerSerializer.CompleteResponsePacket(CommandServerSerializer.ResponseContentType(command), response, result);
+                }
+                else {
+                    // They are not authorized to login or issue this command.
+                    response = CommandServerSerializer.CompleteResponsePacket(CommandServerSerializer.ResponseContentType(command), response, new CommandResultArgs() {
+                        Success = false,
+                        Status = CommandResultType.InsufficientPermissions,
+                        Message = "Invalid username or password"
+                    });
                 }
             }
             else {

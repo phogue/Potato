@@ -93,7 +93,12 @@
     <Compile Include="Plugins\TestPluginsEnabled.cs" />
     <Compile Include="Remote\TestCertificateController\TestVariableLoad.cs" />
     <Compile Include="Remote\TestCertificateController\TestExplicitLoad.cs" />
-    <Compile Include="Remote\TestCommandServerSerializer\TestCommand.cs" />
+    <Compile Include="Remote\TestCommandServerController\Mocks\MockCommandHandler.cs" />
+    <Compile Include="Remote\TestCommandServerController\Mocks\MockCommandServerClient.cs" />
+    <Compile Include="Remote\TestCommandServerController\TestConfigure.cs" />
+    <Compile Include="Remote\TestCommandServerController\TestDispose.cs" />
+    <Compile Include="Remote\TestCommandServerController\TestOnPacketReceived.cs" />
+    <Compile Include="Remote\TestCommandServerSerializer\TestDeserializeCommand.cs" />
     <Compile Include="Remote\TestCommandServerSerializer\TestCompleteResponsePacket.cs" />
     <Compile Include="Remote\TestCommandServerSerializer\TestResponseContentType.cs" />
     <Compile Include="TestHelpers.cs" />

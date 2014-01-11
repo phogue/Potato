@@ -11,7 +11,7 @@ using Procon.Net.Shared.Utils.HTTP;
 
 namespace Procon.Core.Test.Remote.TestCommandServerSerializer {
     [TestFixture]
-    public class TestCommand {
+    public class TestDeserializeCommand {
         /// <summary>
         /// Tests that a command deserialization can occur with xml
         /// </summary>
@@ -52,7 +52,6 @@ namespace Procon.Core.Test.Remote.TestCommandServerSerializer {
             Assert.IsNotEmpty(deserialized.Parameters);
         }
 
-
         /// <summary>
         /// Tests that a command deserialization can occur with json
         /// </summary>
@@ -91,6 +90,54 @@ namespace Procon.Core.Test.Remote.TestCommandServerSerializer {
             Assert.AreEqual(original.Username, deserialized.Username);
             Assert.AreEqual(original.PasswordPlainText, deserialized.PasswordPlainText);
             Assert.IsNotEmpty(deserialized.Parameters);
+        }
+
+        /// <summary>
+        /// Tests that a command deserialization can occur with xml and no parameters
+        /// </summary>
+        [Test]
+        public void TestXmlDeserializationEmptyParameterList() {
+            Command original = new Command() {
+                CommandType = CommandType.VariablesSet,
+                Username = "username",
+                PasswordPlainText = "password"
+            };
+
+            Command deserialized = CommandServerSerializer.DeserializeCommand(new CommandServerPacket() {
+                Content = original.ToXElement().ToString(),
+                Headers = new WebHeaderCollection() {
+                    { HttpRequestHeader.ContentType, Mime.ApplicationXml }
+                }
+            });
+
+            Assert.AreEqual(original.CommandType.ToString(), deserialized.Name);
+            Assert.AreEqual(original.Username, deserialized.Username);
+            Assert.AreEqual(original.PasswordPlainText, deserialized.PasswordPlainText);
+            Assert.IsEmpty(deserialized.Parameters);
+        }
+
+        /// <summary>
+        /// Tests that a command deserialization can occur with json and no parameters
+        /// </summary>
+        [Test]
+        public void TestJsonDeserializationEmptyParameterList() {
+            Command original = new Command() {
+                CommandType = CommandType.VariablesSet,
+                Username = "username",
+                PasswordPlainText = "password"
+            };
+
+            Command deserialized = CommandServerSerializer.DeserializeCommand(new CommandServerPacket() {
+                Content = JsonConvert.SerializeObject(original),
+                Headers = new WebHeaderCollection() {
+                    { HttpRequestHeader.ContentType, Mime.ApplicationJson }
+                }
+            });
+
+            Assert.AreEqual(original.CommandType.ToString(), deserialized.Name);
+            Assert.AreEqual(original.Username, deserialized.Username);
+            Assert.AreEqual(original.PasswordPlainText, deserialized.PasswordPlainText);
+            Assert.IsNull(deserialized.Parameters);
         }
 
         /// <summary>

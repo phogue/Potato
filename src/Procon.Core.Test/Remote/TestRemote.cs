@@ -23,8 +23,13 @@ using Procon.Net.Shared.Utils.HTTP;
 namespace Procon.Core.Test.Remote {
     [TestFixture]
     public class TestRemote {
+        private VariableController _variables;
+        private SecurityController _security;
+        private CorePluginController _plugins;
+        private CommandServerController _commandServer;
+
         [SetUp]
-        protected void Setup() {
+        protected void SetUp() {
             SharedReferences.Setup();
 
             // We could actually validate the certificate in /Certificates directory
@@ -32,15 +37,32 @@ namespace Procon.Core.Test.Remote {
 
             // If you're reading this, never put this into production (anywhere.)
             ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
+
+            this._variables = new VariableController();
+            this._security = new SecurityController();
+            this._plugins = new CorePluginController();
+            this._commandServer = TestRemote.SetupCommandServer(3222, this._variables, this._security, this._plugins);
+        }
+
+        [TearDown]
+        protected void TearDown() {
+            this._commandServer.Dispose();
+            this._commandServer = null;
+
+            this._plugins.Dispose();
+            this._plugins = null;
+
+            this._security.Dispose();
+            this._security = null;
+
+            this._variables.Dispose();
+            this._variables = null;
         }
 
         /// <summary>
         ///     Sets up a command server for us to poke at.
         /// </summary>
-        protected CommandServerController SetupCommandServer(int listeningPort = 3222) {
-            var variables = new VariableController();
-            var security = new SecurityController();
-
+        protected static CommandServerController SetupCommandServer(int listeningPort, VariableController variables, SecurityController security, CorePluginController plugins) {
             security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityAddGroup,
@@ -75,7 +97,7 @@ namespace Procon.Core.Test.Remote {
             });
 
             // We use the TestPlugin to validate various commands can be executed
-            var plugins = new CorePluginController().Execute() as CorePluginController;
+            plugins.Execute();
 
             plugins.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
@@ -123,14 +145,10 @@ namespace Procon.Core.Test.Remote {
         /// </summary>
         [Test]
         public void TestRemoteCommandServerDispose() {
-            const int listeningPort = 3224;
+            _commandServer.Dispose();
 
-            CommandServerController commandServer = SetupCommandServer(listeningPort);
-
-            commandServer.Dispose();
-
-            Assert.IsNull(commandServer.CommandServerListener);
-            Assert.IsNull(commandServer.TunnelObjects);
+            Assert.IsNull(_commandServer.CommandServerListener);
+            Assert.IsNull(_commandServer.TunnelObjects);
         }
 
         /// <summary>
@@ -138,14 +156,10 @@ namespace Procon.Core.Test.Remote {
         /// </summary>
         [Test]
         public void TestRemoteCommandServerMalformedCommandRequest() {
-            const int listeningPort = 3226;
-
             var requestWait = new AutoResetEvent(false);
             bool isSuccess = false;
 
-            SetupCommandServer(listeningPort);
-
-            WebRequest request = WebRequest.Create(String.Format("https://127.0.0.1:{0}/", listeningPort));
+            WebRequest request = WebRequest.Create("https://127.0.0.1:3222/");
             HttpWebResponse response = null;
 
             request.Method = WebRequestMethods.Http.Post;
@@ -183,11 +197,7 @@ namespace Procon.Core.Test.Remote {
         /// </summary>
         [Test]
         public void TestRemoteCommandServerVariableDisabled() {
-            const int listeningPort = 3225;
-
-            CommandServerController commandServer = SetupCommandServer(listeningPort);
-
-            commandServer.Shared.Variables.Tunnel(new Command() {
+            _commandServer.Shared.Variables.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.VariablesSet,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -196,8 +206,8 @@ namespace Procon.Core.Test.Remote {
                 })
             });
 
-            Assert.IsNull(commandServer.CommandServerListener);
-            Assert.IsNotNull(commandServer.TunnelObjects);
+            Assert.IsNull(_commandServer.CommandServerListener);
+            Assert.IsNotNull(_commandServer.TunnelObjects);
         }
 
         /// <summary>
@@ -205,17 +215,14 @@ namespace Procon.Core.Test.Remote {
         /// </summary>
         [Test]
         public void TestRemoteSandboxAuthenticationFailed() {
-            const int listeningPort = 3222;
-
             var requestWait = new AutoResetEvent(false);
             bool isSuccess = false;
 
-            SetupCommandServer(listeningPort);
-
-            WebRequest request = WebRequest.Create(String.Format("https://127.0.0.1:{0}/", listeningPort));
+            WebRequest request = WebRequest.Create("https://127.0.0.1:3222/");
             HttpWebResponse response = null;
             CommandResultArgs result = null;
 
+            request.Timeout = 60000;
             request.Method = WebRequestMethods.Http.Post;
             request.ContentType = Mime.ApplicationXml;
             request.Proxy = null;
@@ -233,7 +240,7 @@ namespace Procon.Core.Test.Remote {
 
                 request.BeginGetResponse(responseAsyncResult => {
                     response = (HttpWebResponse)request.EndGetResponse(responseAsyncResult);
-                            
+                    
                     using (TextReader reader = new StreamReader(response.GetResponseStream())) {
                         isSuccess = true;
                         result = XDocument.Parse(reader.ReadToEnd()).Root.FromXElement<CommandResultArgs>();
@@ -255,14 +262,10 @@ namespace Procon.Core.Test.Remote {
         /// </summary>
         [Test]
         public void TestRemoteSandboxAuthenticationSuccess() {
-            const int listeningPort = 3221;
-
             var requestWait = new AutoResetEvent(false);
             bool isSuccess = false;
 
-            SetupCommandServer(listeningPort);
-
-            WebRequest request = WebRequest.Create(String.Format("https://127.0.0.1:{0}/", listeningPort));
+            WebRequest request = WebRequest.Create("https://127.0.0.1:3222/");
             HttpWebResponse response = null;
             CommandResultArgs result = null;
 
@@ -302,14 +305,10 @@ namespace Procon.Core.Test.Remote {
         /// </summary>
         [Test]
         public void TestRemoteSandboxIndexHtml() {
-            const int listeningPort = 3223;
-
             var requestWait = new AutoResetEvent(false);
             bool isSuccess = false;
 
-            SetupCommandServer(listeningPort);
-
-            WebRequest request = WebRequest.Create(String.Format("https://127.0.0.1:{0}/", listeningPort));
+            WebRequest request = WebRequest.Create("https://127.0.0.1:3222/");
             HttpWebResponse response = null;
             String result = null;
 
@@ -358,14 +357,10 @@ namespace Procon.Core.Test.Remote {
         /// </summary>
         [Test]
         public void TestRemoteSandboxJsonRequestIndexHtml() {
-            const int listeningPort = 3227;
-
             var requestWait = new AutoResetEvent(false);
             bool isSuccess = false;
 
-            SetupCommandServer(listeningPort);
-
-            WebRequest request = WebRequest.Create(String.Format("https://127.0.0.1:{0}/", listeningPort));
+            WebRequest request = WebRequest.Create("https://127.0.0.1:3222/");
             HttpWebResponse response = null;
             String result = null;
 
@@ -414,14 +409,10 @@ namespace Procon.Core.Test.Remote {
         /// </summary>
         [Test]
         public void TestRemoteSandboxJsonRequestNoParameters() {
-            const int listeningPort = 3228;
-
             var requestWait = new AutoResetEvent(false);
             bool isSuccess = false;
 
-            SetupCommandServer(listeningPort);
-
-            WebRequest request = WebRequest.Create(String.Format("https://127.0.0.1:{0}/", listeningPort));
+            WebRequest request = WebRequest.Create("https://127.0.0.1:3222/");
             HttpWebResponse response = null;
             CommandResultArgs result = null;
 

@@ -134,24 +134,14 @@ namespace Procon.Service.Shared {
         /// The full install path for the latest procon shared library
         /// </summary>
         public static readonly DirectoryInfo PackageMyrconProconSharedLibNet40 = new DirectoryInfo(Path.Combine(Defines.PackageVersionDirectory(Defines.PackagesDirectory.FullName, Defines.PackageMyrconProconShared) ?? "", "lib", "net40"));
-
+        
         /// <summary>
-        /// Searches the packages folder given this AppDomain's relative path to find the fullname
-        /// of the binary file.
+        /// Searches for a file in some given paths.
         /// </summary>
-        /// <param name="file">The file name or directory to search for</param>
-        /// <returns>A list of file paths found</returns>
-        public static List<String> SearchRelativeSearchPath(String file) {
-// ReSharper disable ConstantNullCoalescingCondition
-            // Despite resharper assuring me this cannot be null, it does return null when running unit tests in TeamCity,
-            // therefore it could be possible for it to be null elsewhere as well.
-            String relativePath = AppDomain.CurrentDomain.RelativeSearchPath ?? "";
-// ReSharper restore ConstantNullCoalescingCondition
-
-            IEnumerable<String> paths = new List<String>() {
-                Defines.BaseDirectory.FullName
-            }.Union(relativePath.Split(';').Select(p => Path.Combine(Defines.BaseDirectory.FullName, p)));
-
+        /// <param name="file">The file to search for</param>
+        /// <param name="paths">THe paths to search for the file in</param>
+        /// <returns>A list of found files</returns>
+        public static List<String> SearchPaths(String file, IEnumerable<String> paths) {
             return paths.Where(path => File.Exists(Path.Combine(path, file)) == true).Select(path => Path.Combine(path, file)).ToList();
         }
 

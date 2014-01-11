@@ -45,7 +45,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestDefines\TestPackageContainingPath.cs" />
     <Compile Include="TestDefines\TestPackageVersionDirectory.cs" />
-    <Compile Include="TestDefines\TestSearchRelativeSearchPath.cs" />
+    <Compile Include="TestDefines\TestSearchPaths.cs" />
     <Compile Include="TestServiceControllerHelpers\TestLogUnhandledException.cs" />
     <Compile Include="TestServiceMessage.cs" />
     <Compile Include="TestServiceObserver.cs" />

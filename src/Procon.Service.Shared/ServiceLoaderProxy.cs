@@ -22,7 +22,11 @@ namespace Procon.Service.Shared {
         /// </summary>
         public void Create() {
             this.Service = (IService)Activator.CreateInstanceFrom(
-                Defines.SearchRelativeSearchPath(Defines.ProconCoreDll).First(),
+                Defines.SearchPaths(Defines.ProconCoreDll, new List<String> {
+                    Defines.BaseDirectory.FullName,
+                    Defines.PackageMyrconProconCoreLibNet40.FullName,
+                    Defines.PackageMyrconProconSharedLibNet40.FullName
+                }).First(),
                 Defines.TypeProconCoreInstanceController,
                 false,
                 BindingFlags.Instance | BindingFlags.Public | BindingFlags.CreateInstance,

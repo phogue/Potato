@@ -10,7 +10,7 @@ namespace Procon.Core.Remote {
     /// <summary>
     /// Listens for incoming connections, authenticates and dispatches commands
     /// </summary>
-    public class CommandServerController : CoreController, ISharedReferenceAccess {
+    public class CommandServerController : CoreController, ISharedReferenceAccess, ICommandServerController {
         /// <summary>
         /// The client to send/recv remote commands.
         /// </summary>
@@ -32,9 +32,9 @@ namespace Procon.Core.Remote {
         }
 
         public override ICoreController Execute() {
-            this.Shared.Variables.Variable(CommonVariableNames.CommandServerEnabled).PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(CommandServerController_PropertyChanged);
-            this.Shared.Variables.Variable(CommonVariableNames.CommandServerPort).PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(CommandServerController_PropertyChanged);
-            this.Shared.Variables.Variable(CommonVariableNames.CommandServerCertificatePath).PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(CommandServerController_PropertyChanged);
+            this.Shared.Variables.Variable(CommonVariableNames.CommandServerEnabled).PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(OnPropertyChanged);
+            this.Shared.Variables.Variable(CommonVariableNames.CommandServerPort).PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(OnPropertyChanged);
+            this.Shared.Variables.Variable(CommonVariableNames.CommandServerCertificatePath).PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(OnPropertyChanged);
 
             this.Certificate.Execute();
 
@@ -46,15 +46,15 @@ namespace Procon.Core.Remote {
         public override void Dispose() {
             base.Dispose();
 
-            this.Shared.Variables.Variable(CommonVariableNames.CommandServerEnabled).PropertyChanged -= new System.ComponentModel.PropertyChangedEventHandler(CommandServerController_PropertyChanged);
-            this.Shared.Variables.Variable(CommonVariableNames.CommandServerPort).PropertyChanged -= new System.ComponentModel.PropertyChangedEventHandler(CommandServerController_PropertyChanged);
-            this.Shared.Variables.Variable(CommonVariableNames.CommandServerCertificatePath).PropertyChanged -= new System.ComponentModel.PropertyChangedEventHandler(CommandServerController_PropertyChanged);
+            this.Shared.Variables.Variable(CommonVariableNames.CommandServerEnabled).PropertyChanged -= new System.ComponentModel.PropertyChangedEventHandler(OnPropertyChanged);
+            this.Shared.Variables.Variable(CommonVariableNames.CommandServerPort).PropertyChanged -= new System.ComponentModel.PropertyChangedEventHandler(OnPropertyChanged);
+            this.Shared.Variables.Variable(CommonVariableNames.CommandServerCertificatePath).PropertyChanged -= new System.ComponentModel.PropertyChangedEventHandler(OnPropertyChanged);
             
             if (this.CommandServerListener != null) this.CommandServerListener.Dispose();
             this.CommandServerListener = null;
         }
 
-        private void CommandServerController_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e) {
+        private void OnPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e) {
             this.Configure();
         }
 
@@ -77,7 +77,7 @@ namespace Procon.Core.Remote {
         /// 
         /// We should fetch and listen for changes to the CommandServer* variables
         /// </summary>
-        protected void Configure() {
+        public void Configure() {
             if (this.Shared.Variables.Get<bool>(CommonVariableNames.CommandServerEnabled) == true) {
                 if (this.Certificate.Certificate != null) {
                     this.CommandServerListener = new CommandServerListener() {
@@ -86,7 +86,7 @@ namespace Procon.Core.Remote {
                     };
 
                     // Assign events.
-                    this.CommandServerListener.PacketReceived += CommandServerListener_PacketReceived;
+                    this.CommandServerListener.PacketReceived += OnPacketReceived;
 
                     // Start accepting connections.
                     this.CommandServerListener.BeginListener();
@@ -110,7 +110,12 @@ namespace Procon.Core.Remote {
             }
         }
 
-        protected void CommandServerListener_PacketReceived(IClient client, CommandServerPacket request) {
+        /// <summary>
+        /// Called when a packet is recieved from the listening command server.
+        /// </summary>
+        /// <param name="client">The client to send back the response</param>
+        /// <param name="request">The request packet recieved</param>
+        public void OnPacketReceived(IClient client, CommandServerPacket request) {
             CommandServerPacket response = new CommandServerPacket() {
                 Packet = {
                     Type = PacketType.Response,

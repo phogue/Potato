@@ -95,6 +95,7 @@
     <Compile Include="Remote\CertificateController.cs" />
     <Compile Include="Remote\CommandServerSerializer.cs" />
     <Compile Include="Remote\ICertificateController.cs" />
+    <Compile Include="Remote\ICommandServerController.cs" />
     <Compile Include="SharedReferences.cs" />
     <Compile Include="Database\DatabaseController.cs" />
     <Compile Include="Events\EventsConsoleController.cs" />

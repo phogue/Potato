@@ -35,7 +35,7 @@ namespace Procon.Core {
         /// <summary>
         /// The command server controller, if active.
         /// </summary>
-        public CommandServerController CommandServer { get; protected set; }
+        public ICommandServerController CommandServer { get; protected set; }
 
         /// <summary>
         /// Controller to push events to various sources.
@@ -65,7 +65,7 @@ namespace Procon.Core {
         /// </summary>
         public InstanceController() : base() {
             this.Shared = new SharedReferences();
-
+            
             this.Connections = new List<ConnectionController>();
 
             this.Packages = new PackagesController() {

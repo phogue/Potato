@@ -70,6 +70,36 @@ namespace Procon.Service.Shared {
         public Action<ServiceController> SignalHelp { get; set; }
 
         /// <summary>
+        /// Called before requesting the service domain write it's config.
+        /// </summary>
+        public Action<ServiceController> WriteServiceConfigBegin { get; set; }
+
+        /// <summary>
+        /// Called when the config in the service domain has been written successfully
+        /// </summary>
+        public Action<ServiceController> WriteServiceConfigEnd { get; set; }
+
+        /// <summary>
+        /// Called before requesting the service domain dispose/shutdown.
+        /// </summary>
+        public Action<ServiceController> DisposeServiceBegin { get; set; }
+
+        /// <summary>
+        /// Called when the service domain has successfully been disposed/shutdown.
+        /// </summary>
+        public Action<ServiceController> DisposeServiceEnd { get; set; }
+
+        /// <summary>
+        /// Called before unloading the service domain
+        /// </summary>
+        public Action<ServiceController> UnloadServiceBegin { get; set; }
+
+        /// <summary>
+        /// Called when the service domain has been successfully unloaded
+        /// </summary>
+        public Action<ServiceController> UnloadServiceEnd { get; set; }
+
+        /// <summary>
         /// Initiates the service controller with the default values
         /// </summary>
         public ServiceController() {
@@ -142,6 +172,72 @@ namespace Procon.Service.Shared {
         /// </summary>
         private void OnHelp() {
             var handler = this.SignalHelp;
+
+            if (handler != null) {
+                handler(this);
+            }
+        }
+
+        /// <summary>
+        /// Called just before requestin the service to write its configs
+        /// </summary>
+        private void OnWriteServiceConfigBegin() {
+            var handler = this.WriteServiceConfigBegin;
+
+            if (handler != null) {
+                handler(this);
+            }
+        }
+
+        /// <summary>
+        /// Called after the service config has been successfully written.
+        /// </summary>
+        private void OnWriteServiceConfigEnd() {
+            var handler = this.WriteServiceConfigEnd;
+
+            if (handler != null) {
+                handler(this);
+            }
+        }
+
+        /// <summary>
+        /// Called just before requesting the service to dispose and cleanup after itself
+        /// </summary>
+        private void OnDisposeServiceBegin() {
+            var handler = this.DisposeServiceBegin;
+
+            if (handler != null) {
+                handler(this);
+            }
+        }
+
+        /// <summary>
+        /// Called after the service has disposed itself.
+        /// </summary>
+        private void OnDisposeServiceEnd() {
+            var handler = this.DisposeServiceEnd;
+
+            if (handler != null) {
+                handler(this);
+            }
+        }
+
+        /// <summary>
+        /// Called before collapsing/unloading the service domain.
+        /// </summary>
+        private void OnUnloadServiceBegin() {
+            var handler = this.UnloadServiceBegin;
+
+            if (handler != null) {
+                handler(this);
+            }
+        }
+
+        /// <summary>
+        /// Called when the service domain has been successfully unloaded.
+        /// </summary>
+        private void OnUnloadServiceEnd() {
+            var handler = this.UnloadServiceEnd;
 
             if (handler != null) {
                 handler(this);
@@ -347,53 +443,75 @@ namespace Procon.Service.Shared {
         }
 
         /// <summary>
+        /// Writes the service config
+        /// </summary>
+        public void WriteServiceConfig() {
+            if (this.ServiceLoaderProxy != null) {
+                try {
+                    this.OnWriteServiceConfigBegin();
+
+                    this.ServiceLoaderProxy.WriteConfig();
+
+                    this.OnWriteServiceConfigEnd();
+                }
+                catch (Exception e) {
+                    ServiceControllerHelpers.LogUnhandledException("ServiceController.WriteServiceConfig", e);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Disposes the service
+        /// </summary>
+        public void DisposeService() {
+            try {
+                this.OnDisposeServiceBegin();
+
+                this.ServiceLoaderProxy.Dispose();
+
+                this.OnDisposeServiceEnd();
+            }
+            catch (Exception e) {
+                ServiceControllerHelpers.LogUnhandledException("ServiceController.DisposeService", e);
+            }
+            finally {
+                this.ServiceLoaderProxy = null;
+            }
+        }
+
+        /// <summary>
+        /// Unloads the service domain
+        /// </summary>
+        public void UnloadService() {
+            if (this.ServiceDomain != null) {
+                try {
+                    this.OnUnloadServiceBegin();
+
+                    AppDomain.Unload(this.ServiceDomain);
+
+                    this.OnUnloadServiceEnd();
+                }
+                catch (Exception e) {
+                    ServiceControllerHelpers.LogUnhandledException("ServiceController.UnloadService", e);
+                }
+                finally {
+                    this.ServiceDomain = null;
+                }
+            }
+        }
+
+        /// <summary>
         /// Saves the config, shuts down the instance and finally collapses the app domain.
         /// </summary>
         public void Stop() {
-
             if (this.ServiceLoaderProxy != null || this.ServiceDomain != null) {
                 this.Observer.Status = ServiceStatusType.Stopping;
 
-                System.Console.WriteLine("Shutting down instance..");
+                this.WriteServiceConfig();
 
-                if (this.ServiceLoaderProxy != null) {
-                    try {
-                        System.Console.Write("Writing config..");
-                        this.ServiceLoaderProxy.WriteConfig();
-                        System.Console.WriteLine(" Complete");
-                    }
-                    catch (Exception e) {
-                        ServiceControllerHelpers.LogUnhandledException("ServiceController.Stop.WriteConfig", e);
-                    }
+                this.DisposeService();
 
-                    try {
-                        System.Console.Write("Cleaning up..");
-                        this.ServiceLoaderProxy.Dispose();
-                        System.Console.WriteLine(" Complete");
-                    }
-                    catch (Exception e) {
-                        ServiceControllerHelpers.LogUnhandledException("ServiceController.Stop.ServiceLoaderProxy.Dispose", e);
-                    }
-
-                    this.ServiceLoaderProxy = null;
-                }
-
-                if (this.ServiceDomain != null) {
-                    System.Console.Write("Collapsing domain..");
-
-                    try {
-                        AppDomain.Unload(this.ServiceDomain);
-                        this.ServiceDomain = null;
-
-                        System.Console.WriteLine(" Complete");
-                    }
-                    catch (Exception e) {
-                        ServiceControllerHelpers.LogUnhandledException("ServiceController.Stop.ServiceDomain.Unload", e);
-
-                        System.Console.WriteLine(" Error");
-                        Console.WriteLine("\tUnable to unload domain.");
-                    }
-                }
+                this.UnloadService();
             }
 
             // After running through the above, provided both are set to null then shutting down was successful.

@@ -60,7 +60,13 @@ namespace Procon {
                     Console.WriteLine(@"MonitoringTotalAllocatedMemorySize: {0:N0} K", domain.MonitoringTotalAllocatedMemorySize / 1024);
                     Console.WriteLine(@"MonitoringTotalProcessorTime: {0}", domain.MonitoringTotalProcessorTime);
                 },
-                SignalHelp = controller => Console.WriteLine(Resources.ConsoleHelp)
+                SignalHelp = controller => Console.WriteLine(Resources.ConsoleHelp),
+                WriteServiceConfigBegin = controller => Console.Write(@"Writing config.. "),
+                WriteServiceConfigEnd = controller => Console.WriteLine(@"Complete"),
+                DisposeServiceBegin = controller => Console.Write(@"Disposing service.. "),
+                DisposeServiceEnd = controller => Console.WriteLine(@"Complete"),
+                UnloadServiceBegin = controller => Console.Write(@"Unloading service domain.. "),
+                UnloadServiceEnd = controller => Console.WriteLine(@"Complete"),
             };
 
             service.SignalMessage(new ServiceMessage() {

@@ -53,6 +53,7 @@
     <Compile Include="TestServiceController\TestConstructor.cs" />
     <Compile Include="TestServiceController\TestSignalRestart.cs" />
     <Compile Include="TestServiceController\TestSignalStart.cs" />
+    <Compile Include="TestServiceController\TestUpdateCore.cs" />
     <Compile Include="TestServiceMessage.cs" />
     <Compile Include="TestServiceObserver.cs" />
     <Compile Include="TestServicePackages\TestGetCachedSourceRepository.cs" />

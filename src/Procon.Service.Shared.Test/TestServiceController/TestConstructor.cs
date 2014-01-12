@@ -43,5 +43,17 @@ namespace Procon.Service.Shared.Test.TestServiceController {
 
             service.Dispose();
         }
+
+        /// <summary>
+        /// Ensures the initial service state is stopped
+        /// </summary>
+        [Test]
+        public void TestInitalServiceStateIsStopped() {
+            var service = new ServiceController();
+
+            Assert.AreEqual(ServiceStatusType.Stopped, service.Observer.Status);
+
+            service.Dispose();
+        }
     }
 }

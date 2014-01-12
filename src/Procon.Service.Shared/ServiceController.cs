@@ -42,7 +42,7 @@ namespace Procon.Service.Shared {
         /// <summary>
         /// Polling handler to ensure the appdomain is still functional.
         /// </summary>
-        public Timer PollingTask { get; set; }
+        public Timer Polling { get; set; }
 
         /// <summary>
         /// The type to load as a service proxy (must implement IServiceLoaderProxy)
@@ -114,7 +114,7 @@ namespace Procon.Service.Shared {
                 Panic = this.Panic
             };
 
-            this.PollingTask = new Timer(PollingTask_Tick, this, TimeSpan.FromSeconds(10), TimeSpan.FromSeconds(10));
+            this.Polling = new Timer(Polling_Tick, this, TimeSpan.FromSeconds(10), TimeSpan.FromSeconds(10));
 
             this.ServiceLoaderProxyType = typeof(ServiceLoaderProxy);
 
@@ -276,7 +276,7 @@ namespace Procon.Service.Shared {
         /// Fired every ten seconds to ensure the appdomain is still responding and does not have
         /// any additional messages for us to process.
         /// </summary>
-        public void PollingTask_Tick(object state) {
+        public void Polling_Tick(object state) {
             if (this.Observer.Status == ServiceStatusType.Started && this.ServiceLoaderProxy != null) {
                 AutoResetEvent pollingTimeoutEvent = new AutoResetEvent(false);
                 ServiceMessage message = null;
@@ -531,7 +531,7 @@ namespace Procon.Service.Shared {
         public void Dispose() {
             this.Stop();
 
-            this.PollingTask.Dispose();
+            this.Polling.Dispose();
         }
     }
 }

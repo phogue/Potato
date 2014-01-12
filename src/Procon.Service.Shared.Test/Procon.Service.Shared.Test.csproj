@@ -47,7 +47,7 @@
     <Compile Include="TestDefines\TestPackageVersionDirectory.cs" />
     <Compile Include="TestDefines\TestSearchPaths.cs" />
     <Compile Include="TestServiceControllerHelpers\TestLogUnhandledException.cs" />
-    <Compile Include="TestServiceController\TestDisposeService.cs" />
+    <Compile Include="TestServiceController\TestWriteServiceConfig.cs" />
     <Compile Include="TestServiceController\TestUninstallPackage.cs" />
     <Compile Include="TestServiceController\Mocks\MockNonSerializableServiceLoaderProxy.cs" />
     <Compile Include="TestServiceController\Mocks\MockServiceLoaderProxy.cs" />
@@ -56,8 +56,9 @@
     <Compile Include="TestServiceController\TestMergePackage.cs" />
     <Compile Include="TestServiceController\TestSignalRestart.cs" />
     <Compile Include="TestServiceController\TestSignalStart.cs" />
+    <Compile Include="TestServiceController\TestUnloadService.cs" />
     <Compile Include="TestServiceController\TestUpdateCore.cs" />
-    <Compile Include="TestServiceController\TestWriteServiceConfig.cs" />
+    <Compile Include="TestServiceController\TestDisposeService.cs" />
     <Compile Include="TestServiceMessage.cs" />
     <Compile Include="TestServiceObserver.cs" />
     <Compile Include="TestServicePackages\TestGetCachedSourceRepository.cs" />

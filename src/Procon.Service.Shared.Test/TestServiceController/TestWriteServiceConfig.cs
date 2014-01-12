@@ -4,7 +4,7 @@ using Procon.Service.Shared.Test.TestServiceController.Mocks;
 
 namespace Procon.Service.Shared.Test.TestServiceController {
     [TestFixture]
-    public class TestDisposeService {
+    public class TestWriteServiceConfig {
         /// <summary>
         /// Deletes the errors logs directory if it exists.
         /// </summary>
@@ -18,34 +18,14 @@ namespace Procon.Service.Shared.Test.TestServiceController {
         /// Tests the writeconfig method is called on the service loader proxy
         /// </summary>
         [Test]
-        public void TestDisposeServiceDispatchedSuccess() {
-            var disposed = false;
-
-            var service = new ServiceController() {
-                ServiceLoaderProxy = new MockServiceLoaderProxy() {
-                    OnDisposeHandler = () => disposed = true
-                }
-            };
-
-            service.DisposeService();
-
-            Assert.IsTrue(disposed);
-
-            service.Dispose();
-        }
-
-        /// <summary>
-        /// Tests the loader proxy is nulled after disposed
-        /// </summary>
-        [Test]
-        public void TestServiceLoaderProxyNulled() {
+        public void TestConfigWriteDispatchedSuccess() {
             var service = new ServiceController() {
                 ServiceLoaderProxy = new MockServiceLoaderProxy()
             };
 
-            service.DisposeService();
+            service.WriteServiceConfig();
 
-            Assert.IsNull(service.ServiceLoaderProxy);
+            Assert.IsTrue(((MockServiceLoaderProxy)service.ServiceLoaderProxy).OnWriteConfig);
 
             service.Dispose();
         }
@@ -55,15 +35,15 @@ namespace Procon.Service.Shared.Test.TestServiceController {
         /// writing the config.
         /// </summary>
         [Test]
-        public void TestDisposeServiceDispatchedBeginDelegateCalled() {
+        public void TestConfigWriteDispatchedBeginDelegateCalled() {
             var begin = false;
 
             var service = new ServiceController() {
                 ServiceLoaderProxy = new MockServiceLoaderProxy(),
-                DisposeServiceBegin = controller => begin = true
+                WriteServiceConfigBegin = controller => begin = true
             };
 
-            service.DisposeService();
+            service.WriteServiceConfig();
 
             Assert.IsTrue(begin);
 
@@ -75,15 +55,15 @@ namespace Procon.Service.Shared.Test.TestServiceController {
         /// writing the config.
         /// </summary>
         [Test]
-        public void TestDisposeServiceDispatchedEndDelegateCalled() {
+        public void TestConfigWriteDispatchedEndDelegateCalled() {
             var end = false;
 
             var service = new ServiceController() {
                 ServiceLoaderProxy = new MockServiceLoaderProxy(),
-                DisposeServiceEnd = controller => end = true
+                WriteServiceConfigEnd = controller => end = true
             };
 
-            service.DisposeService();
+            service.WriteServiceConfig();
 
             Assert.IsTrue(end);
 
@@ -99,7 +79,7 @@ namespace Procon.Service.Shared.Test.TestServiceController {
                 ServiceLoaderProxy = new MockNonSerializableServiceLoaderProxy()
             };
 
-            service.DisposeService();
+            service.WriteServiceConfig();
 
             Assert.IsNotEmpty(Defines.ErrorsLogsDirectory.GetFiles());
             Assert.Greater(Defines.ErrorsLogsDirectory.GetFiles().First().Length, 0);

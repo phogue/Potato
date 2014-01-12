@@ -368,13 +368,14 @@ namespace Procon.Service.Shared {
                     this.Observer.Status = ServiceStatusType.Starting;
 
                     this.ServiceDomain = AppDomain.CreateDomain("Procon.Instance", null, new AppDomainSetup() {
+                        ApplicationBase = Defines.BaseDirectory.FullName,
                         PrivateBinPath = String.Join(";", new[] {
                             Defines.PackageMyrconProconCoreLibNet40.FullName,
                             Defines.PackageMyrconProconSharedLibNet40.FullName
                         })
                     });
-
-                    this.ServiceLoaderProxy = (ServiceLoaderProxy)this.ServiceDomain.CreateInstanceAndUnwrap(typeof(ServiceLoaderProxy).Assembly.FullName, typeof(ServiceLoaderProxy).FullName);
+                    
+                    this.ServiceLoaderProxy = (IServiceLoaderProxy)this.ServiceDomain.CreateInstanceAndUnwrap(typeof(ServiceLoaderProxy).Assembly.FullName, typeof(ServiceLoaderProxy).FullName);
                     this.ServiceLoaderProxy.Create();
 
                     this.ServiceLoaderProxy.ParseCommandLineArguments(this.Arguments);

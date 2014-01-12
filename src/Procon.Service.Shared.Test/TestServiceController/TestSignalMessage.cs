@@ -118,36 +118,6 @@ namespace Procon.Service.Shared.Test.TestServiceController {
         }
 
         /// <summary>
-        /// Tests that passing in a merge message with the correct parameters will 
-        /// call the packages merge
-        /// </summary>
-        [Test]
-        public void TestMergeMessageWithParametersCallsMerge() {
-            var merged = false;
-
-            var service = new ServiceController() {
-                Settings = {
-                    ServiceUpdateCore = false
-                },
-                Packages = new MockServicePackageManager() {
-                    PackageInstalled = (sender, uri, packageId) => { merged = true; }
-                }
-            };
-
-            service.SignalMessage(new ServiceMessage() {
-                Name = "merge",
-                Arguments = new Dictionary<string, string>() {
-                    { "uri", "localhost" },
-                    { "packageid", "id" }
-                }
-            });
-
-            Assert.IsTrue(merged);
-
-            service.Dispose();
-        }
-
-        /// <summary>
         /// Tests that passing in a uninstall message will return true
         /// </summary>
         [Test]
@@ -161,35 +131,6 @@ namespace Procon.Service.Shared.Test.TestServiceController {
             Assert.IsTrue(service.SignalMessage(new ServiceMessage() {
                 Name = "uninstall"
             }));
-
-            service.Dispose();
-        }
-
-        /// <summary>
-        /// Tests that passing in a merge message with the correct parameters will 
-        /// call the packages merge
-        /// </summary>
-        [Test]
-        public void TestUninstallMessageWithParametersCallsMerge() {
-            var uninstall = false;
-
-            var service = new ServiceController() {
-                Settings = {
-                    ServiceUpdateCore = false
-                },
-                Packages = new MockServicePackageManager() {
-                    PackageUninstalled = (sender, uri, packageId) => { uninstall = true; }
-                }
-            };
-
-            service.SignalMessage(new ServiceMessage() {
-                Name = "uninstall",
-                Arguments = new Dictionary<string, string>() {
-                    { "packageid", "id" }
-                }
-            });
-
-            Assert.IsTrue(uninstall);
 
             service.Dispose();
         }

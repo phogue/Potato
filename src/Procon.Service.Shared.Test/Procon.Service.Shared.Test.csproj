@@ -47,10 +47,12 @@
     <Compile Include="TestDefines\TestPackageVersionDirectory.cs" />
     <Compile Include="TestDefines\TestSearchPaths.cs" />
     <Compile Include="TestServiceControllerHelpers\TestLogUnhandledException.cs" />
+    <Compile Include="TestServiceController\TestUninstallPackage.cs" />
     <Compile Include="TestServiceController\Mocks\MockNonSerializableServiceLoaderProxy.cs" />
     <Compile Include="TestServiceController\Mocks\MockServiceLoaderProxy.cs" />
     <Compile Include="TestServiceController\Mocks\MockServicePackageManager.cs" />
     <Compile Include="TestServiceController\TestConstructor.cs" />
+    <Compile Include="TestServiceController\TestMergePackage.cs" />
     <Compile Include="TestServiceController\TestSignalRestart.cs" />
     <Compile Include="TestServiceController\TestSignalStart.cs" />
     <Compile Include="TestServiceController\TestUpdateCore.cs" />

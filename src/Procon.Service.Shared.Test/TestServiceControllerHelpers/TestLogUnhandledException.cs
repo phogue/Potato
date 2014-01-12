@@ -11,6 +11,7 @@ namespace Procon.Service.Shared.Test.TestServiceControllerHelpers {
         /// </summary>
         [SetUp]
         public void DeleteErrorsLogsDirectory() {
+            Defines.ErrorsLogsDirectory.Refresh();
             if (Defines.ErrorsLogsDirectory.Exists == true) Defines.ErrorsLogsDirectory.Delete(true);
         }
 

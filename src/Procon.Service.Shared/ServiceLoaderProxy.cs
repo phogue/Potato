@@ -7,7 +7,7 @@ namespace Procon.Service.Shared {
     /// <summary>
     /// The proxy to be loaded in the service appdomain
     /// </summary>
-    public sealed class ServiceLoaderProxy : MarshalByRefObject, IService {
+    public sealed class ServiceLoaderProxy : MarshalByRefObject, IServiceLoaderProxy {
         /// <summary>
         /// The proxy to the Procon.Core.Instance object.
         /// </summary>

@@ -17,7 +17,7 @@ namespace Procon.Service.Shared {
         /// <summary>
         /// The loader proxy to then load the procon core instance.
         /// </summary>
-        public ServiceLoaderProxy ServiceLoaderProxy { get; set; }
+        public IServiceLoaderProxy ServiceLoaderProxy { get; set; }
 
         /// <summary>
         /// The current status of the service.

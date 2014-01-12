@@ -288,7 +288,7 @@ namespace Procon.Service.Shared {
                 });
 
                 // If we don't get a response or the response wasn't processed properly.
-                if (pollingTimeoutEvent.WaitOne(5000) == false || this.SignalMessage(message) == false) {
+                if (pollingTimeoutEvent.WaitOne(this.Settings.ServicePollingTimeout) == false || this.SignalMessage(message) == false) {
                     this.Restart();
                 }
             }

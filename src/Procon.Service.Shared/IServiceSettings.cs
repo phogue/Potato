@@ -12,6 +12,11 @@ namespace Procon.Service.Shared {
         bool ServiceUpdateCore { get; set; }
 
         /// <summary>
+        /// How long the service should wait for a message from the instance before restarting
+        /// </summary>
+        int ServicePollingTimeout { get; set; }
+
+        /// <summary>
         /// The main source repository uri to download core updates from.
         /// </summary>
         String PackagesDefaultSourceRepositoryUri { get; set; }

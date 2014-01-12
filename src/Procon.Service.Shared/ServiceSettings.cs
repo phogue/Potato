@@ -7,6 +7,7 @@ namespace Procon.Service.Shared {
     /// </summary>
     public class ServiceSettings : IServiceSettings {
         public bool ServiceUpdateCore { get; set; }
+        public int ServicePollingTimeout { get; set; }
         public string PackagesDefaultSourceRepositoryUri { get; set; }
 
         public void ParseArguments(Dictionary<String, String> arguments) {
@@ -14,6 +15,11 @@ namespace Procon.Service.Shared {
             // default: check for update, unless "-updatecore false" is passed in.
             if (arguments.ContainsKey("serviceupdatecore") == true) {
                 this.ServiceUpdateCore = ArgumentHelper.IsFalsey(arguments["serviceupdatecore"]) == false;
+            }
+
+            if (arguments.ContainsKey("servicepollingtimeout") == true) {
+                // Attempt to parse the value or maintain existing value if an error occurs.
+                this.ServicePollingTimeout = (int)ArgumentHelper.ParseNumeric(arguments["servicepollingtimeout"], this.ServicePollingTimeout);
             }
 
             if (arguments.ContainsKey("packagesdefaultsourcerepositoryuri") == true) {
@@ -31,6 +37,7 @@ namespace Procon.Service.Shared {
         /// </summary>
         public ServiceSettings(IList<string> input) {
             this.ServiceUpdateCore = true;
+            this.ServicePollingTimeout = 5000;
             this.PackagesDefaultSourceRepositoryUri = Defines.PackagesDefaultSourceRepositoryUri;
 
             this.ParseArguments(ArgumentHelper.ToArguments(input));

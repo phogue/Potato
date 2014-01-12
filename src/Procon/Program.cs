@@ -25,6 +25,24 @@ namespace Procon {
                 Settings = new ServiceSettings(new List<String>(args))
             };
 
+            service.Packages.BeforeRepositoryInitialize = () => Console.WriteLine(@"Initializing package repository..");
+            service.Packages.BeforeSourcePackageFetch = () => Console.WriteLine(@"Checking source repositories..");
+            service.Packages.BeforeLocalPackageFetch = () => Console.WriteLine(@"Checking local repository..");
+            service.Packages.PackageInstalling = (sender, packageId, version) => Console.WriteLine(@"Installing {0} version {1}..", packageId, version);
+            service.Packages.PackageInstalled = (sender, packageId, version) => Console.WriteLine(@"Installed {0} version {1}", packageId, version);
+            service.Packages.PackageUninstalling = (sender, packageId, version) => Console.WriteLine(@"Uninstalling {0} version {1}..", packageId, version);
+            service.Packages.PackageUninstalled = (sender, packageId, version) => Console.WriteLine(@"Uninstalled {0} version {1}..", packageId, version);
+            service.Packages.PackageMissing = packageId => Console.WriteLine(@"Couldn't find package {0}.", packageId);
+            service.Packages.PackageActionCanceled = packageId => Console.WriteLine(@"Package {0} is up to date.", packageId);
+            service.Packages.RepositoryException = (hint, exception) => {
+                if (exception is UnauthorizedAccessException) {
+                    Console.WriteLine(@"Unable to access path {0}", Defines.PackagesDirectory);
+                    Console.WriteLine(@"Ensure all applications and open folders using the packages folder are closed and try again.");
+                }
+
+                ServiceControllerHelpers.LogUnhandledException(hint, exception);
+            };
+
             service.SignalMessage(new ServiceMessage() {
                 Name = "help"
             });

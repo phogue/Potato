@@ -57,22 +57,22 @@ namespace Procon.Service.Shared.Packages {
         /// <summary>
         /// Called when a package is being installed by a package manager
         /// </summary>
-        public Action<Object, PackageOperationEventArgs> PackageInstalling { get; set; }
+        public Action<Object, String, String> PackageInstalling { get; set; }
 
         /// <summary>
         /// Called when a package has been installed by a package manager
         /// </summary>
-        public Action<Object, PackageOperationEventArgs> PackageInstalled { get; set; }
+        public Action<Object, String, String> PackageInstalled { get; set; }
 
         /// <summary>
         /// Called when a package is being uninstalled by a package manager
         /// </summary>
-        public Action<Object, PackageOperationEventArgs> PackageUninstalling { get; set; }
+        public Action<Object, String, String> PackageUninstalling { get; set; }
 
         /// <summary>
         /// Called when a package has been uninstalled by a package manager
         /// </summary>
-        public Action<Object, PackageOperationEventArgs> PackageUninstalled { get; set; }
+        public Action<Object, String, String> PackageUninstalled { get; set; }
 
         /// <summary>
         /// Initializes the service package manager with the default values.
@@ -146,8 +146,9 @@ namespace Procon.Service.Shared.Packages {
         /// <param name="e"></param>
         protected void OnPackageInstalling(object sender, PackageOperationEventArgs e) {
             var handler = this.PackageInstalling;
+            
             if (handler != null) {
-                handler(this, e);
+                handler(this, e.Package.Id, e.Package.Version.ToString());
             }
         }
 
@@ -159,7 +160,7 @@ namespace Procon.Service.Shared.Packages {
         protected void OnPackageInstalled(object sender, PackageOperationEventArgs e) {
             var handler = this.PackageInstalled;
             if (handler != null) {
-                handler(this, e);
+                handler(this, e.Package.Id, e.Package.Version.ToString());
             }
         }
 
@@ -171,7 +172,7 @@ namespace Procon.Service.Shared.Packages {
         protected void OnPackageUninstalling(object sender, PackageOperationEventArgs e) {
             var handler = this.PackageUninstalling;
             if (handler != null) {
-                handler(this, e);
+                handler(this, e.Package.Id, e.Package.Version.ToString());
             }
         }
 
@@ -183,7 +184,7 @@ namespace Procon.Service.Shared.Packages {
         protected void OnPackageUninstalled(object sender, PackageOperationEventArgs e) {
             var handler = this.PackageUninstalled;
             if (handler != null) {
-                handler(this, e);
+                handler(this, e.Package.Id, e.Package.Version.ToString());
             }
         }
 

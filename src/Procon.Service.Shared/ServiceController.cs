@@ -56,26 +56,9 @@ namespace Procon.Service.Shared {
 
             this.Arguments = new List<String>();
             this.Settings = new ServiceSettings();
-
+            
             this.Packages = new ServicePackageManager() {
-                LocalRepository = PackageRepositoryFactory.Default.CreateRepository(Defines.PackagesDirectory.FullName),
-                BeforeRepositoryInitialize = () => Console.WriteLine("Initializing package repository.."),
-                BeforeSourcePackageFetch = () => Console.WriteLine("Checking source repositories.."),
-                BeforeLocalPackageFetch = () => Console.WriteLine("Checking local repository.."),
-                PackageInstalling = (sender, args) => Console.WriteLine("Installing {0} version {1}..", args.Package.Id, args.Package.Version),
-                PackageInstalled = (sender, args) => Console.WriteLine("Installed {0} version {1}", args.Package.Id, args.Package.Version),
-                PackageUninstalling = (sender, args) => Console.WriteLine("Uninstalling {0} version {1}..", args.Package.Id, args.Package.Version),
-                PackageUninstalled = (sender, args) => Console.WriteLine("Uninstalled {0} version {1}..", args.Package.Id, args.Package.Version),
-                PackageMissing = packageId => Console.WriteLine("Couldn't find package {0}.", packageId),
-                PackageActionCanceled = packageId => Console.WriteLine("Package {0} is up to date.", packageId),
-                RepositoryException = (hint, exception) => {
-                    if (exception is UnauthorizedAccessException) {
-                        Console.WriteLine("Unable to access path {0}", Defines.PackagesDirectory);
-                        Console.WriteLine("Ensure all applications and open folders using the packages folder are closed and try again.");
-                    }
-
-                    ServiceControllerHelpers.LogUnhandledException(hint, exception);
-                }
+                LocalRepository = PackageRepositoryFactory.Default.CreateRepository(Defines.PackagesDirectory.FullName)
             };
         }
 

@@ -45,22 +45,22 @@ namespace Procon.Service.Shared.Packages {
         /// <summary>
         /// Called when a package is being installed by a package manager
         /// </summary>
-        Action<Object, PackageOperationEventArgs> PackageInstalling { get; set; }
+        Action<Object, String, String> PackageInstalling { get; set; }
 
         /// <summary>
         /// Called when a package has been installed by a package manager
         /// </summary>
-        Action<Object, PackageOperationEventArgs> PackageInstalled { get; set; }
+        Action<Object, String, String> PackageInstalled { get; set; }
 
         /// <summary>
         /// Called when a package is being uninstalled by a package manager
         /// </summary>
-        Action<Object, PackageOperationEventArgs> PackageUninstalling { get; set; }
+        Action<Object, String, String> PackageUninstalling { get; set; }
 
         /// <summary>
         /// Called when a package has been uninstalled by a package manager
         /// </summary>
-        Action<Object, PackageOperationEventArgs> PackageUninstalled { get; set; }
+        Action<Object, String, String> PackageUninstalled { get; set; }
 
         /// <summary>
         /// Installs or updates a package given a repository

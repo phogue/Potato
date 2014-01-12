@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
+using System.Threading.Tasks;
 using NuGet;
 using Procon.Service.Shared.Packages;
 
@@ -281,10 +282,18 @@ namespace Procon.Service.Shared {
                 AutoResetEvent pollingTimeoutEvent = new AutoResetEvent(false);
                 ServiceMessage message = null;
 
-                ThreadPool.QueueUserWorkItem(delegate {
-                    message = this.ServiceLoaderProxy.PollService();
+                Task.Factory.StartNew(() => {
+                    try {
+                        message = this.ServiceLoaderProxy.PollService();
+                    }
+                    catch (Exception e) {
+                        ServiceControllerHelpers.LogUnhandledException("ServiceController.Polling_Tick", e);
 
-                    pollingTimeoutEvent.Set();
+                        message = null;
+                    }
+                    finally {
+                        pollingTimeoutEvent.Set();
+                    }
                 });
 
                 // If we don't get a response or the response wasn't processed properly.

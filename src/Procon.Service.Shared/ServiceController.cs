@@ -30,14 +30,14 @@ namespace Procon.Service.Shared {
         public IServicePackageManager Packages { get; set; }
 
         /// <summary>
-        /// The arguments to start any instances with. This is passed on to Procon, not actually used by the service.
-        /// </summary>
-        public List<String> Arguments { get; set; }
-
-        /// <summary>
         /// The processed arguments to check/use any service side conditions
         /// </summary>
         public IServiceSettings Settings { get; set; }
+
+        /// <summary>
+        /// The arguments to start any instances with. This is passed on to Procon, not actually used by the service.
+        /// </summary>
+        public List<String> Arguments { get; set; }
 
         /// <summary>
         /// Polling handler to ensure the appdomain is still functional.

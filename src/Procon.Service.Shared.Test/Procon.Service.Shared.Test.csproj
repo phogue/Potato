@@ -49,6 +49,7 @@
     <Compile Include="TestServiceControllerHelpers\TestLogUnhandledException.cs" />
     <Compile Include="TestServiceMessage.cs" />
     <Compile Include="TestServiceObserver.cs" />
+    <Compile Include="TestServicePackages\TestGetCachedSourceRepository.cs" />
     <Compile Include="TestServicePackages\TestUninstallPackage.cs" />
     <Compile Include="TestServicePackages\Mocks\MockPackageManagerDispatch.cs" />
     <Compile Include="TestServicePackages\Mocks\MockPackageRepository.cs" />

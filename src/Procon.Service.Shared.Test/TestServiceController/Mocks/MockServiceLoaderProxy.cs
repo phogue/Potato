@@ -7,6 +7,8 @@ namespace Procon.Service.Shared.Test.TestServiceController.Mocks {
 
         public ServiceMessage WaitingMessage { get; set; }
 
+        public Action OnDisposeHandler { get; set; }
+
         public bool OnStart { get; set; }
         public bool OnWriteConfig { get; set; }
         public bool OnDispose { get; set; }
@@ -24,6 +26,8 @@ namespace Procon.Service.Shared.Test.TestServiceController.Mocks {
 
         public void Dispose() {
             this.OnDispose = true;
+
+            if (this.OnDisposeHandler != null) this.OnDisposeHandler();
         }
 
         public void ParseCommandLineArguments(List<String> arguments) {

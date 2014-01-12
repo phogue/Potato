@@ -204,7 +204,7 @@ namespace Procon.Core {
         /// a callback has been setup.
         /// </summary>
         /// <remarks>
-        /// If the main thread is tied up then "ok" won't be sent back and the service 
+        /// If the main thread is tied up then "nop" won't be sent back and the service 
         /// will be shut down. We may expand on this in the future to check extra threads, 
         /// polling all the plugin appdomains and such.
         /// </remarks>
@@ -219,7 +219,7 @@ namespace Procon.Core {
             }
             else {
                 message = new ServiceMessage() {
-                    Name = "ok"
+                    Name = "nop"
                 };
             }
             

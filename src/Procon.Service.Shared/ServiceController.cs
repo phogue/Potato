@@ -45,6 +45,21 @@ namespace Procon.Service.Shared {
         public Timer PollingTask { get; set; }
 
         /// <summary>
+        /// Called when a signal message is starting
+        /// </summary>
+        public Action<ServiceMessage> SignalBegin { get; set; }
+
+        /// <summary>
+        /// Called when a signal message has completed
+        /// </summary>
+        public Action<ServiceMessage, Double> SignalEnd { get; set; }
+
+        /// <summary>
+        /// Called when a signal demands parameters but the parameters are in an incorrect format or missing.
+        /// </summary>
+        public Action<List<String>> SignalParameterError { get; set; }
+
+        /// <summary>
         /// Initiates the service controller with the default values
         /// </summary>
         public ServiceController() {
@@ -60,6 +75,43 @@ namespace Procon.Service.Shared {
             this.Packages = new ServicePackageManager() {
                 LocalRepository = PackageRepositoryFactory.Default.CreateRepository(Defines.PackagesDirectory.FullName)
             };
+        }
+
+        /// <summary>
+        /// Called before processing a signal begins
+        /// </summary>
+        /// <param name="message">The message being processed</param>
+        private void OnSignalBegin(ServiceMessage message) {
+            var handler = this.SignalBegin;
+
+            if (handler != null) {
+                handler(message);
+            }
+        }
+
+        /// <summary>
+        /// Called when a message processing is completed.
+        /// </summary>
+        /// <param name="message">The message being processed</param>
+        /// <param name="seconds">The time in seconds it took to process the signal</param>
+        private void OnSignalEnd(ServiceMessage message, Double seconds) {
+            var handler = this.SignalEnd;
+
+            if (handler != null) {
+                handler(message, seconds);
+            }
+        }
+
+        /// <summary>
+        /// Called when a signal requires parameters, but the parameters are missing or invalid.
+        /// </summary>
+        /// <param name="parameters">The list of parameters that are missing or invalid.</param>
+        private void OnSignalParameterError(List<String> parameters) {
+            var handler = this.SignalParameterError;
+
+            if (handler != null) {
+                handler(parameters);
+            }
         }
 
         /// <summary>
@@ -117,57 +169,53 @@ namespace Procon.Service.Shared {
                 // Record the current time for statistics output.
                 DateTime begin = DateTime.Now;
 
-                if (String.Compare(message.Name, "start", StringComparison.OrdinalIgnoreCase) == 0) {
-                    Console.WriteLine("Signal: Start");
-                    this.Start();
-                    Console.WriteLine("Signal: Start completed in {0} seconds", (DateTime.Now - begin).TotalMilliseconds / 1000);
-                }
-                else if (String.Compare(message.Name, "stop", StringComparison.OrdinalIgnoreCase) == 0) {
-                    Console.WriteLine("Signal: Stop");
-                    this.Stop();
-                    Console.WriteLine("Signal: Stop completed in {0} seconds", (DateTime.Now - begin).TotalMilliseconds / 1000);
-                }
-                else if (String.Compare(message.Name, "restart", StringComparison.OrdinalIgnoreCase) == 0) {
-                    Console.WriteLine("Signal: Restart");
-                    this.Restart();
-                    Console.WriteLine("Signal: Restart completed in {0} seconds", (DateTime.Now - begin).TotalMilliseconds / 1000);
-                }
-                else if (String.Compare(message.Name, "merge-package", StringComparison.OrdinalIgnoreCase) == 0) {
-                    Console.WriteLine("Signal: Merge Package");
+                // Ignore "nop" messages
+                if (String.Compare(message.Name, "nop", StringComparison.OrdinalIgnoreCase) != 0) {
+                    this.OnSignalBegin(message);
 
-                    if (message.Arguments.ContainsKey("uri") == true && message.Arguments.ContainsKey("packageid") == true) {
-                        this.MergePackage(message.Arguments["uri"], message.Arguments["packageid"]);
+                    if (String.Compare(message.Name, "start", StringComparison.OrdinalIgnoreCase) == 0) {
+                        this.Start();
+                    }
+                    else if (String.Compare(message.Name, "stop", StringComparison.OrdinalIgnoreCase) == 0) {
+                        this.Stop();
+                    }
+                    else if (String.Compare(message.Name, "restart", StringComparison.OrdinalIgnoreCase) == 0) {
+                        this.Restart();
+                    }
+                    else if (String.Compare(message.Name, "merge", StringComparison.OrdinalIgnoreCase) == 0) {
+                        if (message.Arguments.ContainsKey("uri") == true && message.Arguments.ContainsKey("packageid") == true) {
+                            this.MergePackage(message.Arguments["uri"], message.Arguments["packageid"]);
+                        }
+                        else {
+                            this.OnSignalParameterError(new List<String>() {
+                                "uri",
+                                "packageId"
+                            });
+                        }
+                    }
+                    else if (String.Compare(message.Name, "uninstall", StringComparison.OrdinalIgnoreCase) == 0) {
+                        if (message.Arguments.ContainsKey("packageid") == true) {
+                            this.UninstallPackage(message.Arguments["packageid"]);
+                        }
+                        else {
+                            this.OnSignalParameterError(new List<String>() {
+                                "packageId"
+                            });
+                        }
+                    }
+                    else if (String.Compare(message.Name, "statistics", StringComparison.OrdinalIgnoreCase) == 0 || String.Compare(message.Name, "stats", StringComparison.OrdinalIgnoreCase) == 0) {
+                        this.Statistics();
+                    }
+                    else if (String.Compare(message.Name, "help", StringComparison.OrdinalIgnoreCase) == 0) {
+                        this.Help();
                     }
                     else {
-                        Console.WriteLine("Missing argument uri or packageId");
+                        processed = false;
                     }
 
-                    Console.WriteLine("Signal: Merge Package completed in {0} seconds", (DateTime.Now - begin).TotalMilliseconds / 1000);
+                    this.OnSignalEnd(message, (DateTime.Now - begin).TotalMilliseconds / 1000);
                 }
-                else if (String.Compare(message.Name, "uninstall-package", StringComparison.OrdinalIgnoreCase) == 0) {
-                    Console.WriteLine("Signal: Uninstall Package");
-
-                    if (message.Arguments.ContainsKey("packageid") == true) {
-                        this.UninstallPackage(message.Arguments["packageid"]);
-                    }
-                    else {
-                        Console.WriteLine("Missing argument packageId");
-                    }
-
-                    Console.WriteLine("Signal: Uninstall Package completed in {0} seconds", (DateTime.Now - begin).TotalMilliseconds / 1000);
-                }
-                else if (String.Compare(message.Name, "statistics", StringComparison.OrdinalIgnoreCase) == 0 || String.Compare(message.Name, "stats", StringComparison.OrdinalIgnoreCase) == 0) {
-                    this.Statistics();
-                }
-                else if (String.Compare(message.Name, "help", StringComparison.OrdinalIgnoreCase) == 0) {
-                    this.Help();
-                }
-                else if (String.Compare(message.Name, "ok", StringComparison.OrdinalIgnoreCase) == 0) {
-                    // Do nothing, all is good.
-                }
-                else {
-                    processed = false;
-                }
+                // else do nothing for nop messages, the message was to do nothing.
 
                 message.Dispose();
             }
@@ -249,8 +297,8 @@ namespace Procon.Service.Shared {
             Console.WriteLine("+-------------------+------+----------+--------+-------+-----------+");
             Console.WriteLine("| start             |  -   |    -     |   x    |   x   |     -     |");
             Console.WriteLine("| restart           |  x   |    x     |   x    |   x   |     -     |");
-            Console.WriteLine("| merge-package     |  x   |    x     |   x    |   x   |     -     |");
-            Console.WriteLine("| uninstall-package |  x   |    x     |   x    |   x   |     -     |");
+            Console.WriteLine("| merge             |  x   |    x     |   x    |   x   |     -     |");
+            Console.WriteLine("| uninstall         |  x   |    x     |   x    |   x   |     -     |");
             Console.WriteLine("| stop              |  x   |    x     |   -    |   -   |     -     |");
             Console.WriteLine("| exit              |  x   |    x     |   -    |   -   |     x     |");
             Console.WriteLine("+-------------------+------+----------+--------+-------+-----------+");
@@ -261,8 +309,8 @@ namespace Procon.Service.Shared {
             Console.WriteLine("+-------------------+----------------------------------------------+");
             Console.WriteLine("| stats             | Statistics running on the current instance.  |");
             Console.WriteLine("| help              | This display.                                |");
-            Console.WriteLine("| merge-package     | Installs/Updates a package to latest version.|");
-            Console.WriteLine("| uninstall-package | Removes the package and unused dependencies. |");
+            Console.WriteLine("| merge             | Installs/Updates a package to latest version.|");
+            Console.WriteLine("| uninstall         | Removes the package and unused dependencies. |");
             Console.WriteLine("+-------------------+----------------------------------------------+");
             Console.WriteLine("");
             Console.WriteLine("merge-package -uri [repository-uri] -packageid [package-id]");

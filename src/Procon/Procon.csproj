@@ -86,6 +86,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Content Include="Resources\ConsoleHelp.txt" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Procon.Service.Shared\Procon.Service.Shared.csproj">

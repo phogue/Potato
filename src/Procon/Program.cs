@@ -59,7 +59,8 @@ namespace Procon {
                     Console.WriteLine(@"MonitoringSurvivedMemorySize: {0:N0} K", domain.MonitoringSurvivedMemorySize / 1024);
                     Console.WriteLine(@"MonitoringTotalAllocatedMemorySize: {0:N0} K", domain.MonitoringTotalAllocatedMemorySize / 1024);
                     Console.WriteLine(@"MonitoringTotalProcessorTime: {0}", domain.MonitoringTotalProcessorTime);
-                }
+                },
+                SignalHelp = controller => Console.WriteLine(Resources.ConsoleHelp)
             };
 
             service.SignalMessage(new ServiceMessage() {

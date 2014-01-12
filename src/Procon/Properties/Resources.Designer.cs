@@ -77,5 +77,22 @@ namespace Procon.Properties {
                 return ResourceManager.GetString("ConsoleHeader", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Instance Control
+        ///+-------------------+------+----------+--------+-------+-----------+
+        ///| Command           | Save | Shutdown | Update | Start | Terminate |
+        ///+-------------------+------+----------+--------+-------+-----------+
+        ///| start             |  -   |    -     |   x    |   x   |     -     |
+        ///| restart           |  x   |    x     |   x    |   x   |     -     |
+        ///| merge             |  x   |    x     |   x    |   x   |     -     |
+        ///| uninstall         |  x   |    x     |   x    |   x   |     -     |
+        ///| st [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string ConsoleHelp {
+            get {
+                return ResourceManager.GetString("ConsoleHelp", resourceCulture);
+            }
+        }
     }
 }

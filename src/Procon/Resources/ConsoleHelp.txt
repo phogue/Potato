@@ -1,0 +1,24 @@
+﻿Instance Control
++-------------------+------+----------+--------+-------+-----------+
+| Command           | Save | Shutdown | Update | Start | Terminate |
++-------------------+------+----------+--------+-------+-----------+
+| start             |  -   |    -     |   x    |   x   |     -     |
+| restart           |  x   |    x     |   x    |   x   |     -     |
+| merge             |  x   |    x     |   x    |   x   |     -     |
+| uninstall         |  x   |    x     |   x    |   x   |     -     |
+| stop              |  x   |    x     |   -    |   -   |     -     |
+| exit              |  x   |    x     |   -    |   -   |     x     |
++-------------------+------+----------+--------+-------+-----------+
+
+Information
++-------------------+----------------------------------------------+
+| Command           | Description                                  |
++-------------------+----------------------------------------------+
+| stats             | Statistics running on the current instance.  |
+| help              | This display.                                |
+| merge             | Installs/Updates a package to latest version.|
+| uninstall         | Removes the package and unused dependencies. |
++-------------------+----------------------------------------------+
+
+merge-package -uri [repository-uri] -packageid [package-id]
+uninstall-package -packageid [package-id]

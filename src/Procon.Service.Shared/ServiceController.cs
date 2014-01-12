@@ -65,6 +65,11 @@ namespace Procon.Service.Shared {
         public Action<ServiceController, AppDomain> SignalStatistics { get; set; }
 
         /// <summary>
+        /// Called when a help signal comes through.
+        /// </summary>
+        public Action<ServiceController> SignalHelp { get; set; }
+
+        /// <summary>
         /// Initiates the service controller with the default values
         /// </summary>
         public ServiceController() {
@@ -129,6 +134,17 @@ namespace Procon.Service.Shared {
 
             if (handler != null) {
                 handler(this, this.ServiceDomain);
+            }
+        }
+
+        /// <summary>
+        /// Called when a help signal comes through
+        /// </summary>
+        private void OnHelp() {
+            var handler = this.SignalHelp;
+
+            if (handler != null) {
+                handler(this);
             }
         }
 
@@ -225,7 +241,7 @@ namespace Procon.Service.Shared {
                         this.OnStatistics();
                     }
                     else if (String.Compare(message.Name, "help", StringComparison.OrdinalIgnoreCase) == 0) {
-                        this.Help();
+                        this.OnHelp();
                     }
                     else {
                         processed = false;
@@ -277,37 +293,6 @@ namespace Procon.Service.Shared {
                     this.Stop();
                 }
             }
-        }
-
-        /// <summary>
-        /// Outputs some useful commands to enter.
-        /// </summary>
-        public void Help() {
-
-            Console.WriteLine("Instance Control");
-            Console.WriteLine("+-------------------+------+----------+--------+-------+-----------+");
-            Console.WriteLine("| Command           | Save | Shutdown | Update | Start | Terminate |");
-            Console.WriteLine("+-------------------+------+----------+--------+-------+-----------+");
-            Console.WriteLine("| start             |  -   |    -     |   x    |   x   |     -     |");
-            Console.WriteLine("| restart           |  x   |    x     |   x    |   x   |     -     |");
-            Console.WriteLine("| merge             |  x   |    x     |   x    |   x   |     -     |");
-            Console.WriteLine("| uninstall         |  x   |    x     |   x    |   x   |     -     |");
-            Console.WriteLine("| stop              |  x   |    x     |   -    |   -   |     -     |");
-            Console.WriteLine("| exit              |  x   |    x     |   -    |   -   |     x     |");
-            Console.WriteLine("+-------------------+------+----------+--------+-------+-----------+");
-            Console.WriteLine("");
-            Console.WriteLine("Information");
-            Console.WriteLine("+-------------------+----------------------------------------------+");
-            Console.WriteLine("| Command           | Description                                  |");
-            Console.WriteLine("+-------------------+----------------------------------------------+");
-            Console.WriteLine("| stats             | Statistics running on the current instance.  |");
-            Console.WriteLine("| help              | This display.                                |");
-            Console.WriteLine("| merge             | Installs/Updates a package to latest version.|");
-            Console.WriteLine("| uninstall         | Removes the package and unused dependencies. |");
-            Console.WriteLine("+-------------------+----------------------------------------------+");
-            Console.WriteLine("");
-            Console.WriteLine("merge-package -uri [repository-uri] -packageid [package-id]");
-            Console.WriteLine("uninstall-package -packageid [package-id]");
         }
 
         /// <summary>

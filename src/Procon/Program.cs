@@ -42,9 +42,24 @@ namespace Procon {
                         ServiceControllerHelpers.LogUnhandledException(hint, exception);
                     }
                 },
-                SignalBegin = message => Console.WriteLine(@"Signal: {0}", message.Name),
-                SignalEnd = (message, seconds) => Console.WriteLine(@"Signal: {0} completed in {1} seconds", message.Name, seconds),
-                SignalParameterError = list => Console.WriteLine(@"Missing or valid parameters: {0}", String.Join(", ", list))
+                SignalBegin = (controller, message) => Console.WriteLine(@"Signal: {0}", message.Name),
+                SignalEnd = (controller, message, seconds) => Console.WriteLine(@"Signal: {0} completed in {1} seconds", message.Name, seconds),
+                SignalParameterError = (controller, list) => Console.WriteLine(@"Missing or valid parameters: {0}", String.Join(", ", list)),
+                SignalStatistics = (controller, domain) => {
+                    Console.WriteLine(@"Service Controller");
+                    Console.WriteLine(@"+--------------------------------------------------------+");
+                    Console.WriteLine(@"MonitoringSurvivedMemorySize: {0:N0} K", AppDomain.CurrentDomain.MonitoringSurvivedMemorySize / 1024);
+                    Console.WriteLine(@"MonitoringTotalAllocatedMemorySize: {0:N0} K", AppDomain.CurrentDomain.MonitoringTotalAllocatedMemorySize / 1024);
+                    Console.WriteLine(@"MonitoringTotalProcessorTime: {0}", AppDomain.CurrentDomain.MonitoringTotalProcessorTime);
+
+                    Console.WriteLine("");
+
+                    Console.WriteLine(@"Service Domain");
+                    Console.WriteLine(@"+--------------------------------------------------------+");
+                    Console.WriteLine(@"MonitoringSurvivedMemorySize: {0:N0} K", domain.MonitoringSurvivedMemorySize / 1024);
+                    Console.WriteLine(@"MonitoringTotalAllocatedMemorySize: {0:N0} K", domain.MonitoringTotalAllocatedMemorySize / 1024);
+                    Console.WriteLine(@"MonitoringTotalProcessorTime: {0}", domain.MonitoringTotalProcessorTime);
+                }
             };
 
             service.SignalMessage(new ServiceMessage() {

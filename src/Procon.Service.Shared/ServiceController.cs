@@ -47,22 +47,29 @@ namespace Procon.Service.Shared {
         /// <summary>
         /// Called when a signal message is starting
         /// </summary>
-        public Action<ServiceMessage> SignalBegin { get; set; }
+        public Action<ServiceController, ServiceMessage> SignalBegin { get; set; }
 
         /// <summary>
         /// Called when a signal message has completed
         /// </summary>
-        public Action<ServiceMessage, Double> SignalEnd { get; set; }
+        public Action<ServiceController, ServiceMessage, Double> SignalEnd { get; set; }
 
         /// <summary>
         /// Called when a signal demands parameters but the parameters are in an incorrect format or missing.
         /// </summary>
-        public Action<List<String>> SignalParameterError { get; set; }
+        public Action<ServiceController, List<String>> SignalParameterError { get; set; }
+
+        /// <summary>
+        /// Called when a statistics signal comes through
+        /// </summary>
+        public Action<ServiceController, AppDomain> SignalStatistics { get; set; }
 
         /// <summary>
         /// Initiates the service controller with the default values
         /// </summary>
         public ServiceController() {
+            AppDomain.MonitoringIsEnabled = true;
+
             this.Observer = new ServiceObserver() {
                 Panic = this.Panic
             };
@@ -85,7 +92,7 @@ namespace Procon.Service.Shared {
             var handler = this.SignalBegin;
 
             if (handler != null) {
-                handler(message);
+                handler(this, message);
             }
         }
 
@@ -98,7 +105,7 @@ namespace Procon.Service.Shared {
             var handler = this.SignalEnd;
 
             if (handler != null) {
-                handler(message, seconds);
+                handler(this, message, seconds);
             }
         }
 
@@ -110,7 +117,18 @@ namespace Procon.Service.Shared {
             var handler = this.SignalParameterError;
 
             if (handler != null) {
-                handler(parameters);
+                handler(this, parameters);
+            }
+        }
+
+        /// <summary>
+        /// Called when a statistics signal comes through
+        /// </summary>
+        private void OnStatistics() {
+            var handler = this.SignalStatistics;
+
+            if (handler != null) {
+                handler(this, this.ServiceDomain);
             }
         }
 
@@ -204,7 +222,7 @@ namespace Procon.Service.Shared {
                         }
                     }
                     else if (String.Compare(message.Name, "statistics", StringComparison.OrdinalIgnoreCase) == 0 || String.Compare(message.Name, "stats", StringComparison.OrdinalIgnoreCase) == 0) {
-                        this.Statistics();
+                        this.OnStatistics();
                     }
                     else if (String.Compare(message.Name, "help", StringComparison.OrdinalIgnoreCase) == 0) {
                         this.Help();
@@ -258,31 +276,6 @@ namespace Procon.Service.Shared {
 
                     this.Stop();
                 }
-            }
-        }
-
-        /// <summary>
-        /// Outputs some usage statistics on the appdomain
-        /// </summary>
-        public void Statistics() {
-            if (this.Observer.Status == ServiceStatusType.Started) {
-
-                // todo - does this suck up the cpu/memory?
-                AppDomain.MonitoringIsEnabled = true;
-
-                Console.WriteLine("Service Controller");
-                Console.WriteLine("+--------------------------------------------------------+");
-                Console.WriteLine("MonitoringSurvivedMemorySize: {0:N0} K", AppDomain.CurrentDomain.MonitoringSurvivedMemorySize / 1024);
-                Console.WriteLine("MonitoringTotalAllocatedMemorySize: {0:N0} K", AppDomain.CurrentDomain.MonitoringTotalAllocatedMemorySize / 1024);
-                Console.WriteLine("MonitoringTotalProcessorTime: {0}", AppDomain.CurrentDomain.MonitoringTotalProcessorTime);
-
-                Console.WriteLine("");
-
-                Console.WriteLine("Service Domain");
-                Console.WriteLine("+--------------------------------------------------------+");
-                Console.WriteLine("MonitoringSurvivedMemorySize: {0:N0} K", this.ServiceDomain.MonitoringSurvivedMemorySize / 1024);
-                Console.WriteLine("MonitoringTotalAllocatedMemorySize: {0:N0} K", this.ServiceDomain.MonitoringTotalAllocatedMemorySize / 1024);
-                Console.WriteLine("MonitoringTotalProcessorTime: {0}", this.ServiceDomain.MonitoringTotalProcessorTime);
             }
         }
 

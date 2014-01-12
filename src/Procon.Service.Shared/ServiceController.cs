@@ -45,6 +45,11 @@ namespace Procon.Service.Shared {
         public Timer PollingTask { get; set; }
 
         /// <summary>
+        /// The type to load as a service proxy (must implement IServiceLoaderProxy)
+        /// </summary>
+        public Type ServiceLoaderProxyType { get; set; }
+
+        /// <summary>
         /// Called when a signal message is starting
         /// </summary>
         public Action<ServiceController, ServiceMessage> SignalBegin { get; set; }
@@ -110,6 +115,8 @@ namespace Procon.Service.Shared {
             };
 
             this.PollingTask = new Timer(PollingTask_Tick, this, TimeSpan.FromMilliseconds(0), TimeSpan.FromSeconds(10));
+
+            this.ServiceLoaderProxyType = typeof(ServiceLoaderProxy);
 
             this.Arguments = new List<String>();
             this.Settings = new ServiceSettings();
@@ -374,8 +381,8 @@ namespace Procon.Service.Shared {
                             Defines.PackageMyrconProconSharedLibNet40.FullName
                         })
                     });
-                    
-                    this.ServiceLoaderProxy = (IServiceLoaderProxy)this.ServiceDomain.CreateInstanceAndUnwrap(typeof(ServiceLoaderProxy).Assembly.FullName, typeof(ServiceLoaderProxy).FullName);
+
+                    this.ServiceLoaderProxy = (IServiceLoaderProxy)this.ServiceDomain.CreateInstanceAndUnwrap(this.ServiceLoaderProxyType.Assembly.FullName, this.ServiceLoaderProxyType.FullName);
                     this.ServiceLoaderProxy.Create();
 
                     this.ServiceLoaderProxy.ParseCommandLineArguments(this.Arguments);

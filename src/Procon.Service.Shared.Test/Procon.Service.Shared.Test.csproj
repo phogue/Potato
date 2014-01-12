@@ -47,6 +47,7 @@
     <Compile Include="TestDefines\TestPackageVersionDirectory.cs" />
     <Compile Include="TestDefines\TestSearchPaths.cs" />
     <Compile Include="TestServiceControllerHelpers\TestLogUnhandledException.cs" />
+    <Compile Include="TestServiceController\TestPanic.cs" />
     <Compile Include="TestServiceController\TestUnloadService.cs" />
     <Compile Include="TestServiceController\TestWriteServiceConfig.cs" />
     <Compile Include="TestServiceController\TestUninstallPackage.cs" />

@@ -67,6 +67,9 @@ namespace Procon {
                 DisposeServiceEnd = controller => Console.WriteLine(@"Complete"),
                 UnloadServiceBegin = controller => Console.Write(@"Unloading service domain.. "),
                 UnloadServiceEnd = controller => Console.WriteLine(@"Complete"),
+                Observer = {
+                    StatusChange = (observer, type) => Console.WriteLine(@"Status: {0}", type.ToString())
+                }
             };
 
             service.SignalMessage(new ServiceMessage() {

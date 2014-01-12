@@ -292,8 +292,6 @@ namespace Procon.Service.Shared {
         public void Restart() {
             this.Stop();
             
-            this.UpdateCore();
-
             this.Start();
         }
 

@@ -114,7 +114,7 @@ namespace Procon.Service.Shared {
                 Panic = this.Panic
             };
 
-            this.PollingTask = new Timer(PollingTask_Tick, this, TimeSpan.FromMilliseconds(0), TimeSpan.FromSeconds(10));
+            this.PollingTask = new Timer(PollingTask_Tick, this, TimeSpan.FromSeconds(10), TimeSpan.FromSeconds(10));
 
             this.ServiceLoaderProxyType = typeof(ServiceLoaderProxy);
 

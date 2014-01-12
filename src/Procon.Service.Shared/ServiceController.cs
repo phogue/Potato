@@ -259,7 +259,7 @@ namespace Procon.Service.Shared {
             this.Observer.Status = ServiceStatusType.Stopped;
             
             // Attempt to start Procon
-            this.Start();
+            this.Restart();
 
             // If we didn't start AND core updates are turned off
             if (this.Observer.Status != ServiceStatusType.Started && this.Settings.ServiceUpdateCore == false) {
@@ -268,7 +268,7 @@ namespace Procon.Service.Shared {
                 this.Packages.MergePackage(this.Settings.PackagesDefaultSourceRepositoryUri, Defines.PackageMyrconProconCore);
 
                 // Try starting Procon again.. if not we'll do this again in 20 minutes.
-                this.Start();
+                this.Restart();
             }
         }
 

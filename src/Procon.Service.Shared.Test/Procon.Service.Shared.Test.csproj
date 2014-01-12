@@ -51,6 +51,7 @@
     <Compile Include="TestServiceController\Mocks\MockServiceLoaderProxy.cs" />
     <Compile Include="TestServiceController\Mocks\MockServicePackageManager.cs" />
     <Compile Include="TestServiceController\TestConstructor.cs" />
+    <Compile Include="TestServiceController\TestSignalRestart.cs" />
     <Compile Include="TestServiceController\TestSignalStart.cs" />
     <Compile Include="TestServiceMessage.cs" />
     <Compile Include="TestServiceObserver.cs" />

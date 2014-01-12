@@ -55,5 +55,21 @@ namespace Procon.Service.Shared {
         public static bool IsFalsey(String input) {
             return input.Equals(bool.FalseString) || input.Equals(bool.FalseString.ToLower()) || input.Equals("0");
         }
+
+        /// <summary>
+        /// Parses a numeric value or returns the passed in default value if a conversion fails.
+        /// </summary>
+        /// <param name="input">The text representation of hte number.</param>
+        /// <param name="default">The default value to use if parsing should fail</param>
+        /// <returns>The converted value as an integer</returns>
+        public static float ParseNumeric(String input, float @default = default(int)) {
+            float value = @default;
+
+            if (float.TryParse(input, out value) == false) {
+                value = @default;
+            }
+
+            return value;
+        }
     }
 }

@@ -19,6 +19,22 @@ namespace Procon.Service.Shared.Test {
         }
 
         /// <summary>
+        /// Tests that a value is numeric and is returned.
+        /// </summary>
+        [Test]
+        public void TestNumericSuccess() {
+            Assert.AreEqual(50.01F, ArgumentHelper.ParseNumeric("50.01"));
+        }
+
+        /// <summary>
+        /// Tests that if the input string isn't numeric then the default value will be returned.
+        /// </summary>
+        [Test]
+        public void TestNumericFailureReturnDefault() {
+            Assert.AreEqual(49.99F, ArgumentHelper.ParseNumeric("gg", 49.99F));
+        }
+
+        /// <summary>
         /// Tests an empty list will produce an empty arguments dictionary
         /// </summary>
         [Test]

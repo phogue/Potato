@@ -6,6 +6,11 @@ namespace Procon.Service.Shared {
     /// </summary>
     public interface IServiceObserver {
         /// <summary>
+        /// Delegate called when the status is modified
+        /// </summary>
+        Action<IServiceObserver, ServiceStatusType> StatusChange { get; set; }
+
+        /// <summary>
         /// The current status of the service.
         /// </summary>
         ServiceStatusType Status { get; set; }

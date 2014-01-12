@@ -9,6 +9,11 @@ namespace Procon.Service.Shared {
         private ServiceStatusType _status;
 
         /// <summary>
+        /// Delegate called when the status is modified
+        /// </summary>
+        public Action<IServiceObserver, ServiceStatusType> StatusChange { get; set; }
+
+        /// <summary>
         /// The current status of the service.
         /// </summary>
         public ServiceStatusType Status {
@@ -27,6 +32,8 @@ namespace Procon.Service.Shared {
                             this.StartTime = DateTime.Now;
                             break;
                     }
+
+                    this.OnStatusChange(this._status);
                 }
             }
         }
@@ -102,6 +109,18 @@ namespace Procon.Service.Shared {
             }
 
             return time;
+        }
+
+        /// <summary>
+        /// Called when the status is modified
+        /// </summary>
+        /// <param name="status">The new status</param>
+        protected void OnStatusChange(ServiceStatusType status) {
+            var handler = this.StatusChange;
+
+            if (handler != null) {
+                handler(this, status);
+            }
         }
     }
 }

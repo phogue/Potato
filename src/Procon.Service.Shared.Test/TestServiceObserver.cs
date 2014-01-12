@@ -74,5 +74,37 @@ namespace Procon.Service.Shared.Test {
 
             Assert.IsTrue(paniced);
         }
+
+        /// <summary>
+        /// Test that setting the status to started will show correct uptime/downtime.
+        /// </summary>
+        [Test]
+        public void TestStatusModifiedCallback() {
+            var modified = false;
+
+            var observer = new ServiceObserver {
+                StatusChange = (sender, type) => { modified = true; },
+                Status = ServiceStatusType.Started
+            };
+
+            Assert.IsTrue(modified);
+            Assert.AreEqual(ServiceStatusType.Started, observer.Status);
+        }
+
+        /// <summary>
+        /// Test that the callback will not be called when the status is unmodified
+        /// </summary>
+        [Test]
+        public void TestStatusUnmodifiedNoCallback() {
+            var modified = false;
+
+            var observer = new ServiceObserver {
+                StatusChange = (sender, type) => { modified = true; },
+                Status = ServiceStatusType.Stopped
+            };
+
+            Assert.IsFalse(modified);
+            Assert.AreEqual(ServiceStatusType.Stopped, observer.Status);
+        }
     }
 }

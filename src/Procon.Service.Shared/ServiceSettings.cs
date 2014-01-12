@@ -37,7 +37,7 @@ namespace Procon.Service.Shared {
         /// </summary>
         public ServiceSettings(IList<string> input) {
             this.ServiceUpdateCore = true;
-            this.ServicePollingTimeout = 5000;
+            this.ServicePollingTimeout = Defines.DefaultServicePollingTimeout;
             this.PackagesDefaultSourceRepositoryUri = Defines.PackagesDefaultSourceRepositoryUri;
 
             this.ParseArguments(ArgumentHelper.ToArguments(input));

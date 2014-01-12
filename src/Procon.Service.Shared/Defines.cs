@@ -150,6 +150,12 @@ namespace Procon.Service.Shared {
         }
 
         /// <summary>
+        /// The default number of milliseconds to wait for a response from the instance when polling
+        /// for messages.
+        /// </summary>
+        public static readonly int DefaultServicePollingTimeout = 5000;
+
+        /// <summary>
         /// Searches for a file in some given paths.
         /// </summary>
         /// <param name="file">The file to search for</param>

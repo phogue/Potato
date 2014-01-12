@@ -27,6 +27,22 @@ namespace Procon.Service.Shared.Test {
             });
 
             Assert.IsFalse(settings.ServiceUpdateCore);
+            Assert.AreEqual(Defines.DefaultServicePollingTimeout, settings.ServicePollingTimeout);
+            Assert.AreEqual(Defines.PackagesDefaultSourceRepositoryUri, settings.PackagesDefaultSourceRepositoryUri);
+        }
+
+        /// <summary>
+        /// Tests that passing in a ServicePollingTimeout attribute will override the settings value.
+        /// </summary>
+        [Test]
+        public void TestServiceSettingsOverrideServicePollingTimeout() {
+            var settings = new ServiceSettings(new List<String>() {
+                "-ServicePollingTimeout",
+                "10"
+            });
+
+            Assert.IsTrue(settings.ServiceUpdateCore);
+            Assert.AreEqual(10, settings.ServicePollingTimeout);
             Assert.AreEqual(Defines.PackagesDefaultSourceRepositoryUri, settings.PackagesDefaultSourceRepositoryUri);
         }
 
@@ -41,6 +57,7 @@ namespace Procon.Service.Shared.Test {
             });
 
             Assert.IsTrue(settings.ServiceUpdateCore);
+            Assert.AreEqual(Defines.DefaultServicePollingTimeout, settings.ServicePollingTimeout);
             Assert.AreEqual("localhost", settings.PackagesDefaultSourceRepositoryUri);
         }
     }

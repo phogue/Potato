@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using NUnit.Framework;
-using Procon.Service.Shared.Test.TestServiceController.Mocks;
+﻿using NUnit.Framework;
 
 namespace Procon.Service.Shared.Test.TestServiceController {
     [TestFixture]

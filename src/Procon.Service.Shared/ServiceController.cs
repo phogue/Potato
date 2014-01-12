@@ -254,7 +254,7 @@ namespace Procon.Service.Shared {
         /// <summary>
         /// Called when the observer enters a panic (Procon has been stopped for 15 minutes)
         /// </summary>
-        private void Panic() {
+        public void Panic() {
             // Set to full stop. A panic can be called if we are currently "stopping" or "starting"
             this.Observer.Status = ServiceStatusType.Stopped;
             
@@ -276,7 +276,7 @@ namespace Procon.Service.Shared {
         /// Fired every ten seconds to ensure the appdomain is still responding and does not have
         /// any additional messages for us to process.
         /// </summary>
-        private void PollingTask_Tick(object state) {
+        public void PollingTask_Tick(object state) {
             if (this.Observer.Status == ServiceStatusType.Started && this.ServiceLoaderProxy != null) {
                 AutoResetEvent pollingTimeoutEvent = new AutoResetEvent(false);
                 ServiceMessage message = null;

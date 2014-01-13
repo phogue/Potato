@@ -66,7 +66,8 @@ namespace Procon.Core.Test.Packages {
             cache.SourceRepositories.TryAdd("localhost", new MockPackageRepository(new List<IPackage>() {
                 new DataServicePackage() {
                     Id = "A",
-                    Version = "1.0.0"
+                    Version = "1.0.0",
+                    Tags = "Procon Tag2"
                 }
             }));
 
@@ -91,7 +92,8 @@ namespace Procon.Core.Test.Packages {
             var localRepository = new MockPackageRepository(new List<IPackage>() {
                 new DataServicePackage() {
                     Id = "A",
-                    Version = "1.0.0"
+                    Version = "1.0.0",
+                    Tags = "Procon Tag2"
                 }
             });
 
@@ -100,7 +102,8 @@ namespace Procon.Core.Test.Packages {
             cache.SourceRepositories.TryAdd("localhost", new MockPackageRepository(new List<IPackage>() {
                 new DataServicePackage() {
                     Id = "A",
-                    Version = "1.0.0"
+                    Version = "1.0.0",
+                    Tags = "Procon Tag2"
                 }
             }));
 
@@ -125,7 +128,8 @@ namespace Procon.Core.Test.Packages {
             var localRepository = new MockPackageRepository(new List<IPackage>() {
                 new DataServicePackage() {
                     Id = "A",
-                    Version = "1.0.0"
+                    Version = "1.0.0",
+                    Tags = "Procon Tag2"
                 }
             });
 
@@ -134,7 +138,8 @@ namespace Procon.Core.Test.Packages {
             cache.SourceRepositories.TryAdd("localhost", new MockPackageRepository(new List<IPackage>() {
                 new DataServicePackage() {
                     Id = "A",
-                    Version = "2.0.0"
+                    Version = "2.0.0",
+                    Tags = "Procon Tag2"
                 }
             }));
 

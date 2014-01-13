@@ -39,7 +39,8 @@ namespace Procon.Core.Test.Packages {
                 new List<IPackage>() {
                     new DataServicePackage() {
                         Id = "A",
-                        Version = "1.0.0"
+                        Version = "1.0.0",
+                        Tags = "Procon Tag2"
                     }
                 }
             );
@@ -65,7 +66,8 @@ namespace Procon.Core.Test.Packages {
             cache.SourceRepositories.TryAdd("localhost", new MockPackageRepository(new List<IPackage>() {
                 new DataServicePackage() {
                     Id = "A",
-                    Version = "1.0.0"
+                    Version = "1.0.0",
+                    Tags = "Procon Tag2"
                 }
             }));
 
@@ -74,6 +76,40 @@ namespace Procon.Core.Test.Packages {
             Assert.IsNotEmpty(cache.Repositories.SelectMany(repository => repository.Packages));
             Assert.AreEqual("A", cache.Repositories.SelectMany(repository => repository.Packages).First().Id);
             Assert.AreEqual(PackageState.NotInstalled, cache.Repositories.SelectMany(repository => repository.Packages).First().State);
+        }
+
+        /// <summary>
+        /// Tests that we ignore packages that do not have a Procon tag.
+        /// </summary>
+        [Test]
+        public void TestIgnoreMissingProconTag() {
+            var cache = new RepositoryCache();
+            var localRepository = new MockPackageRepository();
+
+            cache.Add("localhost");
+
+            cache.SourceRepositories.TryAdd("localhost", new MockPackageRepository(new List<IPackage>() {
+                new DataServicePackage() {
+                    Id = "A",
+                    Version = "1.0.0",
+                    Tags = "Tag1 Tag2"
+                },
+                new DataServicePackage() {
+                    Id = "B",
+                    Version = "1.0.0",
+                    Tags = "Procon Tag2"
+                },
+                new DataServicePackage() {
+                    Id = "C",
+                    Version = "1.0.0",
+                    Tags = "Tag1 Tag2"
+                }
+            }));
+
+            cache.Build(localRepository);
+
+            Assert.AreEqual(1, cache.Repositories.SelectMany(repository => repository.Packages).Count());
+            Assert.AreEqual("B", cache.Repositories.SelectMany(repository => repository.Packages).First().Id);
         }
 
         /// <summary>
@@ -86,7 +122,8 @@ namespace Procon.Core.Test.Packages {
             var localRepository = new MockPackageRepository(new List<IPackage>() {
                 new DataServicePackage() {
                     Id = "A",
-                    Version = "1.0.0"
+                    Version = "1.0.0",
+                    Tags = "Procon Tag2"
                 }
             });
 
@@ -95,7 +132,8 @@ namespace Procon.Core.Test.Packages {
             cache.SourceRepositories.TryAdd("localhost", new MockPackageRepository(new List<IPackage>() {
                 new DataServicePackage() {
                     Id = "A",
-                    Version = "1.0.0"
+                    Version = "1.0.0",
+                    Tags = "Procon Tag2"
                 }
             }));
 
@@ -116,7 +154,8 @@ namespace Procon.Core.Test.Packages {
             var localRepository = new MockPackageRepository(new List<IPackage>() {
                 new DataServicePackage() {
                     Id = "A",
-                    Version = "1.0.0"
+                    Version = "1.0.0",
+                    Tags = "Procon Tag2"
                 }
             });
 
@@ -125,7 +164,8 @@ namespace Procon.Core.Test.Packages {
             cache.SourceRepositories.TryAdd("localhost", new MockPackageRepository(new List<IPackage>() {
                 new DataServicePackage() {
                     Id = "A",
-                    Version = "2.0.0"
+                    Version = "2.0.0",
+                    Tags = "Procon Tag2"
                 }
             }));
 

@@ -5,6 +5,7 @@ using System.Linq;
 using NuGet;
 using Procon.Core.Shared.Models;
 using Procon.Net.Shared.Utils;
+using Procon.Service.Shared;
 
 namespace Procon.Core.Packages {
     /// <summary>
@@ -90,6 +91,7 @@ namespace Procon.Core.Packages {
                             Repository = repository,
                             Packages = this.GetCachedSourceRepository(repository.Uri)
                                 .GetPackages()
+                                .Where(package => package.Tags != null && package.Tags.Contains(Defines.PackageRequiredTag))
                                 .ToList()
                                 .OrderByDescending(pack => pack.Version)
                                 .Distinct(PackageEqualityComparer.Id)

@@ -116,6 +116,14 @@ namespace Procon.Service.Shared {
         public static readonly String PackagesDefaultSourceRepositoryUri = "https://repo.myrcon.com/procon";
 
         /// <summary>
+        /// The tag required by Procon to cache on. If the package does not have this tag then it won't
+        /// be fetched in the repository cache we build. It can still be installed if it does not have this tag
+        /// though, so a dependency can still be downloaded. Only tags with "Procon" will appear to the user
+        /// to download though.
+        /// </summary>
+        public static readonly String PackageRequiredTag = "Procon";
+
+        /// <summary>
         /// Package id for the core of Procon
         /// </summary>
         public static readonly String PackageMyrconProconCore = "Myrcon.Procon.Core";

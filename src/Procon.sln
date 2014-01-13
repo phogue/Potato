@@ -43,37 +43,37 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procon.Resources", "Procon.
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{0274CCAA-A949-4071-AEC6-387CA6FC9FC2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procon.Examples.Commands", "Procon.Examples.Commands\Procon.Examples.Commands.csproj", "{71644198-7311-4407-AF61-57119EB61240}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procon.Examples.Plugins.Commands", "Procon.Examples.Plugins.Commands\Procon.Examples.Plugins.Commands.csproj", "{71644198-7311-4407-AF61-57119EB61240}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procon.Examples.EmptyPlugin", "Procon.Examples.EmptyPlugin\Procon.Examples.EmptyPlugin.csproj", "{120BE52C-3523-4370-9617-C1383E9A3427}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procon.Examples.Plugins.EmptyPlugin", "Procon.Examples.Plugins.EmptyPlugin\Procon.Examples.Plugins.EmptyPlugin.csproj", "{120BE52C-3523-4370-9617-C1383E9A3427}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{935D7761-29F0-4E94-B668-E2EFE06405FA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procon.Examples.Commands.Test", "Procon.Examples.Commands.Test\Procon.Examples.Commands.Test.csproj", "{5AC644F4-035A-49F7-A80A-3C842E05A8FD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procon.Examples.Plugins.Commands.Test", "Procon.Examples.Plugins.Commands.Test\Procon.Examples.Plugins.Commands.Test.csproj", "{5AC644F4-035A-49F7-A80A-3C842E05A8FD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procon.Examples.UserInterface", "Procon.Examples.UserInterface\Procon.Examples.UserInterface.csproj", "{BEE3496C-93E4-4ABD-A29E-3D5705804754}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procon.Examples.Plugins.UserInterface", "Procon.Examples.Plugins.UserInterface\Procon.Examples.Plugins.UserInterface.csproj", "{BEE3496C-93E4-4ABD-A29E-3D5705804754}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procon.Examples.UserInterface.Test", "Procon.Examples.UserInterface.Test\Procon.Examples.UserInterface.Test.csproj", "{AE8F622A-FE84-48DE-86DC-E8BD9589787E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procon.Examples.Plugins.UserInterface.Test", "Procon.Examples.Plugins.UserInterface.Test\Procon.Examples.Plugins.UserInterface.Test.csproj", "{AE8F622A-FE84-48DE-86DC-E8BD9589787E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procon.Examples.Actions", "Procon.Examples.Actions\Procon.Examples.Actions.csproj", "{7CE19CAE-FA86-4FEF-873A-20C5C2F0C7B6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procon.Examples.Plugins.Actions", "Procon.Examples.Plugins.Actions\Procon.Examples.Plugins.Actions.csproj", "{7CE19CAE-FA86-4FEF-873A-20C5C2F0C7B6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procon.Examples.Events", "Procon.Examples.Events\Procon.Examples.Events.csproj", "{AEB5AE42-32B2-4964-9918-1E86CC209869}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procon.Examples.Plugins.Events", "Procon.Examples.Plugins.Events\Procon.Examples.Plugins.Events.csproj", "{AEB5AE42-32B2-4964-9918-1E86CC209869}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procon.Examples.Configs", "Procon.Examples.Configs\Procon.Examples.Configs.csproj", "{9BD2735E-A370-4730-B892-FA2EE2C228FB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procon.Examples.Plugins.Configs", "Procon.Examples.Plugins.Configs\Procon.Examples.Plugins.Configs.csproj", "{9BD2735E-A370-4730-B892-FA2EE2C228FB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procon.Examples.Configs.Test", "Procon.Examples.Configs.Test\Procon.Examples.Configs.Test.csproj", "{8B996192-68B9-4EA3-B797-FABF871AC815}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procon.Examples.Plugins.Configs.Test", "Procon.Examples.Plugins.Configs.Test\Procon.Examples.Plugins.Configs.Test.csproj", "{8B996192-68B9-4EA3-B797-FABF871AC815}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procon.Examples.TextCommands", "Procon.Examples.TextCommands\Procon.Examples.TextCommands.csproj", "{A7889BCC-D9F2-404D-B787-AAC15E366A86}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procon.Examples.Plugins.TextCommands", "Procon.Examples.Plugins.TextCommands\Procon.Examples.Plugins.TextCommands.csproj", "{A7889BCC-D9F2-404D-B787-AAC15E366A86}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procon.Examples.Actions.Test", "Procon.Examples.Actions.Test\Procon.Examples.Actions.Test.csproj", "{377E6BF8-25FF-45B3-B1D8-2796C3ED2345}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procon.Examples.Plugins.Actions.Test", "Procon.Examples.Plugins.Actions.Test\Procon.Examples.Plugins.Actions.Test.csproj", "{377E6BF8-25FF-45B3-B1D8-2796C3ED2345}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procon.Examples.Events.Test", "Procon.Examples.Events.Test\Procon.Examples.Events.Test.csproj", "{CAE741F7-1594-48F3-AAFE-ED3DCA06B29D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procon.Examples.Plugins.Events.Test", "Procon.Examples.Plugins.Events.Test\Procon.Examples.Plugins.Events.Test.csproj", "{CAE741F7-1594-48F3-AAFE-ED3DCA06B29D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procon.Examples.TextCommands.Test", "Procon.Examples.TextCommands.Test\Procon.Examples.TextCommands.Test.csproj", "{4DB002AF-916E-46B1-A74C-BDD883DCC4C0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procon.Examples.Plugins.TextCommands.Test", "Procon.Examples.Plugins.TextCommands.Test\Procon.Examples.Plugins.TextCommands.Test.csproj", "{4DB002AF-916E-46B1-A74C-BDD883DCC4C0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procon.Examples.Database", "Procon.Examples.Database\Procon.Examples.Database.csproj", "{30A34B9C-0760-40E4-92C5-81EB58C06311}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procon.Examples.Plugins.Database", "Procon.Examples.Plugins.Database\Procon.Examples.Plugins.Database.csproj", "{30A34B9C-0760-40E4-92C5-81EB58C06311}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procon.Examples.Database.Test", "Procon.Examples.Database.Test\Procon.Examples.Database.Test.csproj", "{8B919F30-AA02-44DD-8223-285D6B8FDB2D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procon.Examples.Plugins.Database.Test", "Procon.Examples.Plugins.Database.Test\Procon.Examples.Plugins.Database.Test.csproj", "{8B919F30-AA02-44DD-8223-285D6B8FDB2D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procon.Core.Shared", "Procon.Core.Shared\Procon.Core.Shared.csproj", "{1B4351C6-BAAD-4075-A322-CAF4FE582392}"
 EndProject
@@ -89,9 +89,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procon.Setup.Models", "Proc
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procon.Net.Shared.Test", "Procon.Net.Shared.Test\Procon.Net.Shared.Test.csproj", "{E728C014-9DC9-4C27-8719-F16551727D58}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procon.Examples.Support", "Procon.Examples.Support\Procon.Examples.Support.csproj", "{385F4312-6482-4A3A-9EE4-5B20018746B6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procon.Examples.Plugins.Support", "Procon.Examples.Plugins.Support\Procon.Examples.Plugins.Support.csproj", "{385F4312-6482-4A3A-9EE4-5B20018746B6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procon.Examples.Support.Test", "Procon.Examples.Support.Test\Procon.Examples.Support.Test.csproj", "{8EA223D2-22FA-47A0-8DEF-44512AA23F62}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procon.Examples.Plugins.Support.Test", "Procon.Examples.Plugins.Support.Test\Procon.Examples.Plugins.Support.Test.csproj", "{8EA223D2-22FA-47A0-8DEF-44512AA23F62}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Packages", "Packages", "{FB17AE81-600C-4867-85D5-A37EDC9789CF}"
 EndProject

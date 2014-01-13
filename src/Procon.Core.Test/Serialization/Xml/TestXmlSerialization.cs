@@ -271,7 +271,7 @@ namespace Procon.Core.Test.Serialization.Xml {
 
             XElement element = security.Groups.First().Accounts.First().Players.First().ToXElement();
 
-            Assert.AreEqual("BF_3", element.Element("GameType").Value);
+            Assert.AreEqual(CommonGameType.DiceBattlefield3, element.Element("GameType").Value);
             Assert.AreEqual("ABCDEF", element.Element("Uid").Value);
             Assert.IsNull(element.Element("Account"));
         }

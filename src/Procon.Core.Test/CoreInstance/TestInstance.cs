@@ -171,7 +171,7 @@ namespace Procon.Core.Test.CoreInstance {
 
             Assert.AreEqual("InstanceAddConnection", commands[0].Name);
             Assert.AreEqual("Myrcon", commands[0].Parameters[0].First<String>());
-            Assert.AreEqual("BF_3", commands[0].Parameters[1].First<String>());
+            Assert.AreEqual(CommonGameType.DiceBattlefield3, commands[0].Parameters[1].First<String>());
             Assert.AreEqual("93.186.198.11", commands[0].Parameters[2].First<String>());
             Assert.AreEqual("27516", commands[0].Parameters[3].First<String>());
             Assert.AreEqual("phogueisabutterfly", commands[0].Parameters[4].First<String>());

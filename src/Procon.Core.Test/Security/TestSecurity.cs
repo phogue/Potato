@@ -344,7 +344,7 @@ namespace Procon.Core.Test.Security {
 
             Assert.AreEqual("SecurityAccountAddPlayer", commands[7].Name);
             Assert.AreEqual("Phogue", commands[7].Parameters[0].First<String>());
-            Assert.AreEqual("BF_3", commands[7].Parameters[1].First<String>());
+            Assert.AreEqual(CommonGameType.DiceBattlefield3, commands[7].Parameters[1].First<String>());
             Assert.AreEqual("ABCDEF", commands[7].Parameters[2].First<String>());
         }
     }

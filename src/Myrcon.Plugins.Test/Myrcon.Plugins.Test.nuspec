@@ -10,9 +10,9 @@
     <projectUrl>https://myrcon.com</projectUrl>
     <iconUrl>https://myrcon.com/assets/images/logo.ico</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>A basic plugin to test the plugin architecture at runtime</description>
+    <description>Basic plugin to test the plugin architecture at runtime</description>
     <releaseNotes>Summary of changes made in this release of the package.</releaseNotes>
     <copyright>Copyright 2014</copyright>
-    <title>Myrcon Plugins Test</title>
+    <tags>Procon Plugins Test</tags>
   </metadata>
 </package>

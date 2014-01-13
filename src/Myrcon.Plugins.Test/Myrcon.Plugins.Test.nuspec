@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Myrcon.Plugins.Test</id>
+    <version>$version$</version>
+    <title>Myrcon Plugins Test</title>
+    <authors>Myrcon Pty. Ltd.</authors>
+    <owners>Myrcon Pty. Ltd.</owners>
+    <licenseUrl>http://LICENSE_URL_HERE_OR_DELETE_THIS_LINE</licenseUrl>
+    <projectUrl>https://myrcon.com</projectUrl>
+    <iconUrl>https://myrcon.com/assets/images/logo.ico</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>A basic plugin to test the plugin architecture at runtime</description>
+    <releaseNotes>Summary of changes made in this release of the package.</releaseNotes>
+    <copyright>Copyright 2014</copyright>
+    <title>Myrcon Plugins Test</title>
+  </metadata>
+</package>

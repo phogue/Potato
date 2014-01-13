@@ -20,6 +20,7 @@ namespace Procon.Setup.Test.Models {
             model.Generate();
 
             // Certificate exists
+            Defines.CertificatesDirectoryCommandServerPfx.Refresh();
             Assert.IsTrue(Defines.CertificatesDirectoryCommandServerPfx.Exists);
 
             // Loads the certificates

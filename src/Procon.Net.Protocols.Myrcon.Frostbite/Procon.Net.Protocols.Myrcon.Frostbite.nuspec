@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Myrcon.Protocols.Frostbite</id>
+    <version>$version$</version>
+    <title>Myrcon Protocols Frostbite</title>
+		<authors>Myrcon Pty. Ltd.</authors>
+		<owners>Myrcon Pty. Ltd.</owners>
+    <licenseUrl>http://LICENSE_URL_HERE_OR_DELETE_THIS_LINE</licenseUrl>
+    <projectUrl>https://myrcon.com</projectUrl>
+    <iconUrl>https://myrcon.com/assets/images/logo.ico</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Protocol implementation for Frostbite based games</description>
+    <releaseNotes>Summary of changes made in this release of the package.</releaseNotes>
+    <copyright>Copyright 2014</copyright>
+    <tags>Procon Protocol Frostbite</tags>
+  </metadata>
+</package>

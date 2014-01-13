@@ -52,9 +52,6 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\CommonAssemblyInfo.cs">
-      <Link>Properties\CommonAssemblyInfo.cs</Link>
-    </Compile>
     <Compile Include="Battlefield\Battlefield3\Battlefield3Game.cs" />
     <Compile Include="Battlefield\Battlefield3\Objects\Battlefield3FrostbiteMapList.cs" />
     <Compile Include="Battlefield\Battlefield3\Objects\Battlefield3PlayerList.cs" />
@@ -105,8 +102,11 @@
     <Content Include="Configs\Protocols\Myrcon\DiceBattlefield4.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="README.txt" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Procon.Net.Protocols.Myrcon.Frostbite.nuspec" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

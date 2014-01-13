@@ -55,7 +55,7 @@ namespace Procon.Core.Test.Security {
                 CommandType = CommandType.SecurityAccountAddPlayer,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     "Phogue",
-                    CommonGameType.BF_3,
+                    CommonGameType.DiceBattlefield3,
                     "ABCDEF"
                 })
             });
@@ -63,7 +63,7 @@ namespace Procon.Core.Test.Security {
             // Validate the player was added successfully.
             Assert.IsTrue(result.Success);
             Assert.AreEqual(result.Status, CommandResultType.Success);
-            Assert.AreEqual(security.Groups.SelectMany(group => group.Accounts).SelectMany(account => account.Players).First().GameType, CommonGameType.BF_3);
+            Assert.AreEqual(security.Groups.SelectMany(group => group.Accounts).SelectMany(account => account.Players).First().GameType, CommonGameType.DiceBattlefield3);
             Assert.AreEqual(security.Groups.SelectMany(group => group.Accounts).SelectMany(account => account.Players).First().Uid, "ABCDEF");
         }
 
@@ -103,7 +103,7 @@ namespace Procon.Core.Test.Security {
                 CommandType = CommandType.SecurityAccountAddPlayer,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     "Phogue",
-                    CommonGameType.BF_3,
+                    CommonGameType.DiceBattlefield3,
                     String.Empty
                 })
             });
@@ -158,7 +158,7 @@ namespace Procon.Core.Test.Security {
                 CommandType = CommandType.SecurityAccountAddPlayer,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     "Phogue",
-                    CommonGameType.BF_3,
+                    CommonGameType.DiceBattlefield3,
                     "ABCDEF"
                 })
             });
@@ -166,7 +166,7 @@ namespace Procon.Core.Test.Security {
 
             // Validate the player was added successfully to the Phogue account.
             // and the PapaCharlie9 account still has no players.
-            Assert.AreEqual(security.Groups.SelectMany(group => group.Accounts).Where(account => account.Username == "Phogue").SelectMany(account => account.Players).First().GameType, CommonGameType.BF_3);
+            Assert.AreEqual(security.Groups.SelectMany(group => group.Accounts).Where(account => account.Username == "Phogue").SelectMany(account => account.Players).First().GameType, CommonGameType.DiceBattlefield3);
             Assert.AreEqual(security.Groups.SelectMany(group => group.Accounts).Where(account => account.Username == "Phogue").SelectMany(account => account.Players).First().Uid, "ABCDEF");
             Assert.IsNull(security.Groups.SelectMany(group => group.Accounts).Where(account => account.Username == "PapaCharlie9").SelectMany(account => account.Players).FirstOrDefault());
 
@@ -176,7 +176,7 @@ namespace Procon.Core.Test.Security {
                 CommandType = CommandType.SecurityAccountAddPlayer,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     "PapaCharlie9",
-                    CommonGameType.BF_3,
+                    CommonGameType.DiceBattlefield3,
                     "ABCDEF"
                 })
             });
@@ -186,7 +186,7 @@ namespace Procon.Core.Test.Security {
             Assert.IsTrue(result.Success);
             Assert.AreEqual(result.Status, CommandResultType.Success);
             Assert.IsNull(security.Groups.SelectMany(group => group.Accounts).Where(account => account.Username == "Phogue").SelectMany(account => account.Players).FirstOrDefault());
-            Assert.AreEqual(security.Groups.SelectMany(group => group.Accounts).Where(account => account.Username == "PapaCharlie9").SelectMany(account => account.Players).First().GameType, CommonGameType.BF_3);
+            Assert.AreEqual(security.Groups.SelectMany(group => group.Accounts).Where(account => account.Username == "PapaCharlie9").SelectMany(account => account.Players).First().GameType, CommonGameType.DiceBattlefield3);
             Assert.AreEqual(security.Groups.SelectMany(group => group.Accounts).Where(account => account.Username == "PapaCharlie9").SelectMany(account => account.Players).First().Uid, "ABCDEF");
         }
 
@@ -218,7 +218,7 @@ namespace Procon.Core.Test.Security {
                 Origin = CommandOrigin.Remote,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     "Phogue",
-                    CommonGameType.BF_3,
+                    CommonGameType.DiceBattlefield3,
                     "ABCDEF"
                 })
             });
@@ -263,14 +263,14 @@ namespace Procon.Core.Test.Security {
                 CommandType = CommandType.SecurityAccountAddPlayer,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     "Phogue",
-                    CommonGameType.BF_3,
+                    CommonGameType.DiceBattlefield3,
                     "ABCDEF"
                 })
             });
 
             // Validate the player was added successfully to the Phogue account.
             // and the PapaCharlie9 account still has no players.
-            Assert.AreEqual(security.Groups.SelectMany(group => group.Accounts).Where(account => account.Username == "Phogue").SelectMany(account => account.Players).First().GameType, CommonGameType.BF_3);
+            Assert.AreEqual(security.Groups.SelectMany(group => group.Accounts).Where(account => account.Username == "Phogue").SelectMany(account => account.Players).First().GameType, CommonGameType.DiceBattlefield3);
             Assert.AreEqual(security.Groups.SelectMany(group => group.Accounts).Where(account => account.Username == "Phogue").SelectMany(account => account.Players).First().Uid, "ABCDEF");
 
             // Now remove the player.
@@ -278,7 +278,7 @@ namespace Procon.Core.Test.Security {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityRemovePlayer,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
-                    CommonGameType.BF_3,
+                    CommonGameType.DiceBattlefield3,
                     "ABCDEF"
                 })
             });
@@ -302,7 +302,7 @@ namespace Procon.Core.Test.Security {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityRemovePlayer,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
-                    CommonGameType.BF_3,
+                    CommonGameType.DiceBattlefield3,
                     "ABCDEF"
                 })
             });
@@ -325,7 +325,7 @@ namespace Procon.Core.Test.Security {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityRemovePlayer,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
-                    CommonGameType.BF_3,
+                    CommonGameType.DiceBattlefield3,
                     String.Empty
                 })
             });
@@ -362,7 +362,7 @@ namespace Procon.Core.Test.Security {
                 CommandType = CommandType.SecurityAccountAddPlayer,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     "Phogue",
-                    CommonGameType.BF_3,
+                    CommonGameType.DiceBattlefield3,
                     "ABCDEF"
                 })
             });
@@ -373,7 +373,7 @@ namespace Procon.Core.Test.Security {
                 Username = "Phogue",
                 Origin = CommandOrigin.Remote,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
-                    CommonGameType.BF_3,
+                    CommonGameType.DiceBattlefield3,
                     "ABCDEF"
                 })
             });

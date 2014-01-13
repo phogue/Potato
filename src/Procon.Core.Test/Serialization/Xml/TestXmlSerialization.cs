@@ -199,7 +199,7 @@ namespace Procon.Core.Test.Serialization.Xml {
                 CommandType = CommandType.SecurityAccountAddPlayer,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     "Phogue",
-                    CommonGameType.BF_3,
+                    CommonGameType.DiceBattlefield3,
                     "ABCDEF"
                 })
             });
@@ -256,7 +256,7 @@ namespace Procon.Core.Test.Serialization.Xml {
                 CommandType = CommandType.SecurityAccountAddPlayer,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     "Phogue",
-                    CommonGameType.BF_3,
+                    CommonGameType.DiceBattlefield3,
                     "ABCDEF"
                 })
             });
@@ -311,7 +311,7 @@ namespace Procon.Core.Test.Serialization.Xml {
                 CommandType = CommandType.SecurityAccountAddPlayer,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     "Phogue",
-                    CommonGameType.BF_3,
+                    CommonGameType.DiceBattlefield3,
                     "ABCDEF"
                 })
             });
@@ -365,7 +365,7 @@ namespace Procon.Core.Test.Serialization.Xml {
                 CommandType = CommandType.SecurityAccountAddPlayer,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     "Phogue",
-                    CommonGameType.BF_3,
+                    CommonGameType.DiceBattlefield3,
                     "ABCDEF"
                 })
             });

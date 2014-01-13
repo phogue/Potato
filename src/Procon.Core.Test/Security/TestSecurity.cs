@@ -81,7 +81,7 @@ namespace Procon.Core.Test.Security {
                 CommandType = CommandType.SecurityAccountAddPlayer,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     "Phogue",
-                    CommonGameType.BF_3,
+                    CommonGameType.DiceBattlefield3,
                     "ABCDEF"
                 })
             });
@@ -184,7 +184,7 @@ namespace Procon.Core.Test.Security {
                 CommandType = CommandType.SecurityAccountAddPlayer,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     "Phogue",
-                    CommonGameType.BF_3,
+                    CommonGameType.DiceBattlefield3,
                     "ABCDEF"
                 })
             });
@@ -207,7 +207,7 @@ namespace Procon.Core.Test.Security {
             Assert.AreEqual(88, loadSecurity.Groups.FirstOrDefault(group => group.Name == "GroupName").Permissions.Where(permission => permission.Name == CommandType.NetworkProtocolActionBan.ToString()).First().Authority);
             Assert.AreEqual("Phogue", loadSecurity.Groups.SelectMany(group => group.Accounts).First().Username);
             Assert.AreEqual("de-DE", loadSecurity.Groups.First().Accounts.First().PreferredLanguageCode);
-            Assert.AreEqual(CommonGameType.BF_3, loadSecurity.Groups.SelectMany(group => group.Accounts).SelectMany(account => account.Players).First().GameType);
+            Assert.AreEqual(CommonGameType.DiceBattlefield3, loadSecurity.Groups.SelectMany(group => group.Accounts).SelectMany(account => account.Players).First().GameType);
             Assert.AreEqual("ABCDEF", loadSecurity.Groups.SelectMany(group => group.Accounts).SelectMany(account => account.Players).First().Uid);
 
             // Now validate that we can authenticate against the loaded in password
@@ -294,7 +294,7 @@ namespace Procon.Core.Test.Security {
                 CommandType = CommandType.SecurityAccountAddPlayer,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     "Phogue",
-                    CommonGameType.BF_3,
+                    CommonGameType.DiceBattlefield3,
                     "ABCDEF"
                 })
             });

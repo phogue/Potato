@@ -42,13 +42,13 @@ namespace Procon.Core.Test.Security {
                 CommandType = CommandType.SecurityAccountAddPlayer,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     "Phogue",
-                    CommonGameType.BF_3,
+                    CommonGameType.DiceBattlefield3,
                     "ABCDEF"
                 })
             });
 
             AccountModel account = security.GetAccount(new Command() {
-                GameType = CommonGameType.BF_3,
+                GameType = CommonGameType.DiceBattlefield3,
                 Uid = "ABCDEF"
             });
 
@@ -80,7 +80,7 @@ namespace Procon.Core.Test.Security {
                 CommandType = CommandType.SecurityAccountAddPlayer,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     "Phogue",
-                    CommonGameType.BF_3,
+                    CommonGameType.DiceBattlefield3,
                     "ABCDEF"
                 })
             });
@@ -117,12 +117,12 @@ namespace Procon.Core.Test.Security {
                 CommandType = CommandType.SecurityAccountAddPlayer,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     "Phogue",
-                    CommonGameType.BF_3,
+                    CommonGameType.DiceBattlefield3,
                     "ABCDEF"
                 })
             });
 
-            AccountModel account = security.GetAccount(CommonGameType.BF_3, "ABCDEF");
+            AccountModel account = security.GetAccount(CommonGameType.DiceBattlefield3, "ABCDEF");
 
             // Validate the account was fetched successfully
             Assert.IsNotNull(account);
@@ -152,7 +152,7 @@ namespace Procon.Core.Test.Security {
                 CommandType = CommandType.SecurityAccountAddPlayer,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     "Phogue",
-                    CommonGameType.BF_3,
+                    CommonGameType.DiceBattlefield3,
                     "ABCDEF"
                 })
             });
@@ -196,7 +196,7 @@ namespace Procon.Core.Test.Security {
                 CommandType = CommandType.SecurityAccountAddPlayer,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     "Phogue",
-                    CommonGameType.BF_3,
+                    CommonGameType.DiceBattlefield3,
                     "ABCDEF"
                 })
             });
@@ -230,7 +230,7 @@ namespace Procon.Core.Test.Security {
                 CommandType = CommandType.SecurityAccountAddPlayer,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     "Zaeed",
-                    CommonGameType.BF_3,
+                    CommonGameType.DiceBattlefield3,
                     "0123456789"
                 })
             });
@@ -281,7 +281,7 @@ namespace Procon.Core.Test.Security {
                 CommandType = CommandType.SecurityAccountAddPlayer,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     "Phogue",
-                    CommonGameType.BF_3,
+                    CommonGameType.DiceBattlefield3,
                     "ABCDEF"
                 })
             });
@@ -315,7 +315,7 @@ namespace Procon.Core.Test.Security {
                 CommandType = CommandType.SecurityAccountAddPlayer,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     "Zaeed",
-                    CommonGameType.BF_3,
+                    CommonGameType.DiceBattlefield3,
                     "0123456789"
                 })
             });
@@ -326,7 +326,7 @@ namespace Procon.Core.Test.Security {
                 Origin = CommandOrigin.Remote,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     CommandType.NetworkProtocolActionKick,
-                    CommonGameType.BF_3,
+                    CommonGameType.DiceBattlefield3,
                     "ABCDEF"
                 })
             });
@@ -367,7 +367,7 @@ namespace Procon.Core.Test.Security {
                 CommandType = CommandType.SecurityAccountAddPlayer,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     "Phogue",
-                    CommonGameType.BF_3,
+                    CommonGameType.DiceBattlefield3,
                     "ABCDEF"
                 })
             });
@@ -401,7 +401,7 @@ namespace Procon.Core.Test.Security {
                 CommandType = CommandType.SecurityAccountAddPlayer,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     "Zaeed",
-                    CommonGameType.BF_3,
+                    CommonGameType.DiceBattlefield3,
                     "0123456789"
                 })
             });
@@ -452,7 +452,7 @@ namespace Procon.Core.Test.Security {
                 CommandType = CommandType.SecurityAccountAddPlayer,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     "Phogue",
-                    CommonGameType.BF_3,
+                    CommonGameType.DiceBattlefield3,
                     "ABCDEF"
                 })
             });
@@ -486,7 +486,7 @@ namespace Procon.Core.Test.Security {
                 CommandType = CommandType.SecurityAccountAddPlayer,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     "Zaeed",
-                    CommonGameType.BF_3,
+                    CommonGameType.DiceBattlefield3,
                     "0123456789"
                 })
             });
@@ -497,7 +497,7 @@ namespace Procon.Core.Test.Security {
                 Origin = CommandOrigin.Remote,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     CommandType.NetworkProtocolActionKick,
-                    CommonGameType.BF_3,
+                    CommonGameType.DiceBattlefield3,
                     "0123456789"
                 })
             });
@@ -538,7 +538,7 @@ namespace Procon.Core.Test.Security {
                 CommandType = CommandType.SecurityAccountAddPlayer,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     "Phogue",
-                    CommonGameType.BF_3,
+                    CommonGameType.DiceBattlefield3,
                     "ABCDEF"
                 })
             });
@@ -572,7 +572,7 @@ namespace Procon.Core.Test.Security {
                 CommandType = CommandType.SecurityAccountAddPlayer,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     "Zaeed",
-                    CommonGameType.BF_3,
+                    CommonGameType.DiceBattlefield3,
                     "0123456789"
                 })
             });
@@ -623,7 +623,7 @@ namespace Procon.Core.Test.Security {
                 CommandType = CommandType.SecurityAccountAddPlayer,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     "Phogue",
-                    CommonGameType.BF_3,
+                    CommonGameType.DiceBattlefield3,
                     "ABCDEF"
                 })
             });
@@ -657,7 +657,7 @@ namespace Procon.Core.Test.Security {
                 CommandType = CommandType.SecurityAccountAddPlayer,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     "Zaeed",
-                    CommonGameType.BF_3,
+                    CommonGameType.DiceBattlefield3,
                     "0123456789"
                 })
             });
@@ -668,7 +668,7 @@ namespace Procon.Core.Test.Security {
                 Origin = CommandOrigin.Remote,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     CommandType.NetworkProtocolActionKick,
-                    CommonGameType.BF_3,
+                    CommonGameType.DiceBattlefield3,
                     "DoesNotExist"
                 })
             });
@@ -713,7 +713,7 @@ namespace Procon.Core.Test.Security {
                 CommandType = CommandType.SecurityAccountAddPlayer,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     "Phogue",
-                    CommonGameType.BF_3,
+                    CommonGameType.DiceBattlefield3,
                     "ABCDEF"
                 })
             });
@@ -723,7 +723,7 @@ namespace Procon.Core.Test.Security {
                 Origin = CommandOrigin.Plugin,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     CommandType.NetworkProtocolActionKick,
-                    CommonGameType.BF_3,
+                    CommonGameType.DiceBattlefield3,
                     "DoesNotExist"
                 })
             });
@@ -764,7 +764,7 @@ namespace Procon.Core.Test.Security {
                 CommandType = CommandType.SecurityAccountAddPlayer,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     "Phogue",
-                    CommonGameType.BF_3,
+                    CommonGameType.DiceBattlefield3,
                     "ABCDEF"
                 })
             });
@@ -798,7 +798,7 @@ namespace Procon.Core.Test.Security {
                 CommandType = CommandType.SecurityAccountAddPlayer,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     "Zaeed",
-                    CommonGameType.BF_3,
+                    CommonGameType.DiceBattlefield3,
                     "0123456789"
                 })
             });
@@ -809,7 +809,7 @@ namespace Procon.Core.Test.Security {
                 Origin = CommandOrigin.None,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     CommandType.NetworkProtocolActionKick,
-                    CommonGameType.BF_3,
+                    CommonGameType.DiceBattlefield3,
                     "DoesNotExist"
                 })
             });

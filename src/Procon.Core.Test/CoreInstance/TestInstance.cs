@@ -54,7 +54,7 @@ namespace Procon.Core.Test.CoreInstance {
                 CommandType = CommandType.InstanceAddConnection,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     "Myrcon",
-                    CommonGameType.BF_3,
+                    CommonGameType.DiceBattlefield3,
                     "93.186.198.11",
                     27516,
                     "phogueisabutterfly",
@@ -103,7 +103,7 @@ namespace Procon.Core.Test.CoreInstance {
                 CommandType = CommandType.InstanceAddConnection,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     "Myrcon",
-                    CommonGameType.BF_3,
+                    CommonGameType.DiceBattlefield3,
                     "93.186.198.11",
                     27516,
                     "phogueisabutterfly",
@@ -154,7 +154,7 @@ namespace Procon.Core.Test.CoreInstance {
                 CommandType = CommandType.InstanceAddConnection,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     "Myrcon",
-                    CommonGameType.BF_3,
+                    CommonGameType.DiceBattlefield3,
                     "93.186.198.11",
                     27516,
                     "phogueisabutterfly",
@@ -202,7 +202,7 @@ namespace Procon.Core.Test.CoreInstance {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.InstanceAddConnection,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
-                    CommonGameType.BF_3,
+                    CommonGameType.DiceBattlefield3,
                     "93.186.198.11",
                     27516,
                     "phogueisabutterfly",

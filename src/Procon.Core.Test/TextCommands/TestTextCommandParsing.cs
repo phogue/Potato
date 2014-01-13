@@ -126,7 +126,7 @@ namespace Procon.Core.Test.TextCommands {
                 CommandType = CommandType.SecurityAccountAddPlayer,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     "Phogue",
-                    CommonGameType.BF_3,
+                    CommonGameType.DiceBattlefield3,
                     "EA_63A9F96745B22DFB509C558FC8B5C50F"
                 })
             });

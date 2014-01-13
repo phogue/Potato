@@ -3,14 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Procon.Net.Protocols.Myrcon.Frostbite.Battlefield.Battlefield3.Objects;
-using Procon.Net.Protocols.Myrcon.Frostbite.Objects;
 using Procon.Net.Shared;
 using Procon.Net.Shared.Actions;
 using Procon.Net.Shared.Models;
 using Procon.Net.Shared.Protocols;
 
 namespace Procon.Net.Protocols.Myrcon.Frostbite.Battlefield.Battlefield3 {
-    [ProtocolDeclaration(Type = CommonGameType.BF_3, Name = "Battlefield 3", Provider = "Myrcon")]
+    [ProtocolDeclaration(Type = CommonGameType.DiceBattlefield3, Name = "Battlefield 3", Provider = "Myrcon")]
     public class Battlefield3Game : BattlefieldGame {
 
         public Battlefield3Game(string hostName, ushort port)

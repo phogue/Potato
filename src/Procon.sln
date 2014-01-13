@@ -6,7 +6,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procon.Net", "Procon.Net\Pr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procon.Fuzzy", "Procon.Fuzzy\Procon.Fuzzy.csproj", "{4B55557F-C2AA-4047-9ED9-3E4BBF9CF670}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procon.Net.Protocols.Myrcon.Frostbite", "Procon.Net.Protocols.Myrcon.Frostbite\Procon.Net.Protocols.Myrcon.Frostbite.csproj", "{299A4619-928D-4D7F-8857-644B5F57F6FC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Myrcon.Protocols.Frostbite", "Myrcon.Protocols.Frostbite\Myrcon.Protocols.Frostbite.csproj", "{299A4619-928D-4D7F-8857-644B5F57F6FC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procon.Tools.NetworkConsole", "Procon.Tools.NetworkConsole\Procon.Tools.NetworkConsole.csproj", "{7769C77A-8479-4149-8364-65B49D5836FB}"
 EndProject

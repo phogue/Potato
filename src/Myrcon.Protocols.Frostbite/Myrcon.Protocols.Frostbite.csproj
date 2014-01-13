@@ -1,0 +1,118 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{299A4619-928D-4D7F-8857-644B5F57F6FC}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Myrcon.Protocols.Frostbite</RootNamespace>
+    <AssemblyName>Myrcon.Protocols.Frostbite</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\builds\Debug\Packages\Myrcon.Protocols.Frostbite.2.0.0\lib\net40\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>..\..\builds\Documentation\Myrcon.Protocols.Frostbite.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\builds\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Battlefield\Battlefield3\Battlefield3Game.cs" />
+    <Compile Include="Battlefield\Battlefield3\Objects\Battlefield3FrostbiteMapList.cs" />
+    <Compile Include="Battlefield\Battlefield3\Objects\Battlefield3PlayerList.cs" />
+    <Compile Include="Battlefield\Battlefield3\Objects\Battlefield3BanList.cs" />
+    <Compile Include="Battlefield\Battlefield4\Battlefield4Game.cs" />
+    <Compile Include="Battlefield\Battlefield4\Objects\Battlefield4BanList.cs" />
+    <Compile Include="Battlefield\Battlefield4\Objects\Battlefield4FrostbiteMapList.cs" />
+    <Compile Include="Battlefield\Battlefield4\Objects\Battlefield4PlayerList.cs" />
+    <Compile Include="Battlefield\BattlefieldBadCompany2\BattlefieldBadCompany2Game.cs" />
+    <Compile Include="Battlefield\BattlefieldGame.cs" />
+    <Compile Include="FrostbiteClient.cs" />
+    <Compile Include="FrostbiteGame.cs" />
+    <Compile Include="FrostbitePacket.cs" />
+    <Compile Include="FrostbitePacketDispatcher.cs" />
+    <Compile Include="FrostbitePacketSerializer.cs" />
+    <Compile Include="MedalOfHonor\MedalOfHonorGame.cs" />
+    <Compile Include="Objects\FrostbiteBan.cs" />
+    <Compile Include="Objects\FrostbiteBanList.cs" />
+    <Compile Include="Objects\FrostbiteChat.cs" />
+    <Compile Include="Objects\FrostbiteConverter.cs" />
+    <Compile Include="Objects\FrostbiteMapList.cs" />
+    <Compile Include="Objects\FrostbitePlayer.cs" />
+    <Compile Include="Objects\FrostbitePlayerList.cs" />
+    <Compile Include="Objects\FrostbiteGroupingList.cs" />
+    <Compile Include="Objects\FrostbiteServerInfo.cs" />
+    <Compile Include="Objects\FrostbiteSpawn.cs" />
+    <Compile Include="Objects\FrostbiteTimeSubset.cs" />
+    <Compile Include="Objects\GameMods.cs" />
+    <Compile Include="Objects\FrostbitePlayerSubsetContext.cs" />
+    <Compile Include="Objects\IFrostbiteObject.cs" />
+    <Compile Include="Objects\TeamScore.cs" />
+    <Compile Include="Objects\TeamScoreList.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Procon.Net.Shared\Procon.Net.Shared.csproj">
+      <Project>{4FDF48B5-790A-4717-A798-D18D76032DF7}</Project>
+      <Name>Procon.Net.Shared</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\Procon.Net\Procon.Net.csproj">
+      <Project>{65C1DB17-18E0-4AC5-8709-3F7E04B88CA1}</Project>
+      <Name>Procon.Net</Name>
+      <Private>False</Private>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Configs\Protocols\Myrcon\DiceBattlefield4.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="README.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Myrcon.Protocols.Frostbite.nuspec" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

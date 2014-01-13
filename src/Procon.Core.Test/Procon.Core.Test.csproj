@@ -89,8 +89,12 @@
     <Compile Include="Packages\TestPackageCacheBuilders.cs" />
     <Compile Include="Packages\TestPackagesController.cs" />
     <Compile Include="Packages\TestRepositoryCache.cs" />
+    <Compile Include="Plugins\TestPlugins.cs" />
     <Compile Include="Plugins\TestPluginsDisabled.cs" />
     <Compile Include="Plugins\TestPluginsEnabled.cs" />
+    <Compile Include="Plugins\TestPluginsIsolation.cs" />
+    <Compile Include="Plugins\TestPluginsSecurity.cs" />
+    <Compile Include="Plugins\TestPluginsSerialization.cs" />
     <Compile Include="Remote\TestCertificateController\TestVariableLoad.cs" />
     <Compile Include="Remote\TestCertificateController\TestExplicitLoad.cs" />
     <Compile Include="Remote\TestCommandServerController\Mocks\MockCommandHandler.cs" />
@@ -122,10 +126,6 @@
     <Compile Include="TextCommands\Fuzzy\TestFuzzyBasicObjectMatching.cs" />
     <Compile Include="TextCommands\Fuzzy\TestFuzzySentences.cs" />
     <Compile Include="TextCommands\Fuzzy\TestFuzzyComplexTemporal.cs" />
-    <Compile Include="Plugins\TestPlugins.cs" />
-    <Compile Include="Plugins\TestPluginsIsolation.cs" />
-    <Compile Include="Plugins\TestPluginsSecurity.cs" />
-    <Compile Include="Plugins\TestPluginsSerialization.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TextCommands\TestTextCommandParserBase.cs" />
     <Compile Include="Security\TestSecurityPermission.cs" />
@@ -184,9 +184,9 @@
       <Project>{3F9E6801-A015-4F7E-9B67-7015F1F58B18}</Project>
       <Name>Procon.Service.Shared</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TestPlugin\TestPlugin.csproj">
+    <ProjectReference Include="..\Myrcon.Plugins.Test\Myrcon.Plugins.Test.csproj">
       <Project>{8C6893B8-8273-487C-8A44-2C25917F40BA}</Project>
-      <Name>TestPlugin</Name>
+      <Name>Myrcon.Plugins.Test</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -223,8 +223,8 @@
     </PreBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PostBuildEvent>mkdir "$(TargetDir)Packages\TestPlugin.2.0.25.25\lib\"
-move /Y "$(TargetDir)TestPlugin.dll" "$(TargetDir)Packages\TestPlugin.2.0.25.25\lib\TestPlugin.dll"</PostBuildEvent>
+    <PostBuildEvent>mkdir "$(TargetDir)Packages\Myrcon.Plugins.Test.2.0.0\lib\net40\"
+move /Y "$(TargetDir)Myrcon.Plugins.Test.dll" "$(TargetDir)Packages\Myrcon.Plugins.Test.2.0.0\lib\net40\Myrcon.Plugins.Test.dll"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

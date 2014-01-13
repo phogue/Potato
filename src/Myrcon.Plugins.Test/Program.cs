@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Myrcon.Plugins.Test.Tests;
 using Procon.Core.Shared;
 using Procon.Core.Shared.Events;
 using Procon.Core.Shared.Models;
@@ -10,9 +11,8 @@ using Procon.Net.Shared.Actions;
 using Procon.Net.Shared.Actions.Deferred;
 using Procon.Net.Shared.Models;
 using Procon.Net.Shared.Utils;
-using TestPlugin.Tests;
 
-namespace TestPlugin {
+namespace Myrcon.Plugins.Test {
 
     public class Program : PluginController {
         //Ignore this: - Actually, depending on how you wanna save info for plugins, the actually plugin could save it here.

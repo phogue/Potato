@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using Myrcon.Plugins.Test.Pages;
 using Procon.Core.Shared;
 using Procon.Net.Shared.Models;
 using Procon.Net.Shared.Utils.HTTP;
-using TestPlugin.Pages;
 
-namespace TestPlugin.Tests {
+namespace Myrcon.Plugins.Test.Tests {
 
     public class TestPluginsWebUi : CoreController {
 

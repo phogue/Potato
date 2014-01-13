@@ -4,7 +4,7 @@ using System.IO;
 using System.Security;
 using Procon.Core.Shared;
 
-namespace TestPlugin.Tests {
+namespace Myrcon.Plugins.Test.Tests {
     public class TestPluginsIsolation : CoreController {
 
         public TestPluginsIsolation() : base() {

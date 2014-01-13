@@ -8,8 +8,8 @@
     <ProjectGuid>{8C6893B8-8273-487C-8A44-2C25917F40BA}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TestPlugin</RootNamespace>
-    <AssemblyName>TestPlugin</AssemblyName>
+    <RootNamespace>Myrcon.Plugins.Test</RootNamespace>
+    <AssemblyName>Myrcon.Plugins.Test</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -26,7 +26,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\builds\Debug\Packages\TestPlugin.2.0.0\lib\net40\</OutputPath>
+    <OutputPath>..\..\builds\Debug\Packages\Myrcon.Plugins.Test.2.0.0\lib\net40\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -69,16 +69,16 @@
     <Compile Include="Pages\IndexPageModel.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Tests\TestPluginsEnabled.cs" />
-    <Compile Include="Tests\TestPluginsCommands.cs" />
-    <Compile Include="Tests\TestPluginsIsolation.cs" />
-    <Compile Include="Tests\TestPluginsSerialization.cs" />
-    <Compile Include="Tests\TestPluginsWebUi.cs" />
     <Compile Include="Pages\IndexPageView.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>IndexPageView.tt</DependentUpon>
     </Compile>
+    <Compile Include="Tests\TestPluginsCommands.cs" />
+    <Compile Include="Tests\TestPluginsEnabled.cs" />
+    <Compile Include="Tests\TestPluginsIsolation.cs" />
+    <Compile Include="Tests\TestPluginsSerialization.cs" />
+    <Compile Include="Tests\TestPluginsWebUi.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Procon.Core.Shared\Procon.Core.Shared.csproj">

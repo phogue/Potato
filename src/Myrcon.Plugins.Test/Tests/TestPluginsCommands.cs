@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Procon.Core.Shared;
 
-namespace TestPlugin.Tests {
+namespace Myrcon.Plugins.Test.Tests {
     public class TestPluginsCommands : CoreController {
 
         public TestPluginsCommands() : base() {

@@ -19,7 +19,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Procon.vsmdi = Procon.vsmdi
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestPlugin", "TestPlugin\TestPlugin.csproj", "{8C6893B8-8273-487C-8A44-2C25917F40BA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Myrcon.Plugins.Test", "Myrcon.Plugins.Test\Myrcon.Plugins.Test.csproj", "{8C6893B8-8273-487C-8A44-2C25917F40BA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procon", "Procon\Procon.csproj", "{A84339B3-9F3F-4519-BD8E-832B7723AC1E}"
 EndProject

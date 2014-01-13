@@ -7,45 +7,55 @@
 //     the code is regenerated.
 // </auto-generated>
 // ------------------------------------------------------------------------------
-namespace TestPlugin.Pages
+
+namespace Myrcon.Plugins.Test.Pages
 {
-    using System;
-    
-    
-    #line 1 "C:\Users\P\Documents\Projects\clients\myrcon\procon\Procon-2\src\TestPlugin\Pages\SettingsPageView.tt"
+#line 1 "C:\Users\P\Documents\Projects\clients\myrcon\procon\Procon-2\src\TestPlugin\Pages\TestParameterPageView.tt"
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "10.0.0.0")]
-    public partial class SettingsPageView : SettingsPageViewBase
+    public partial class TestParameterPageView : TestParameterPageViewBase
     {
         public virtual string TransformText()
         {
-            this.Write("\r\n\r\n<html>\r\n\t<head>\r\n\t\t<title>This is my title</title>\r\n\t</head>\r\n\t<body>\r\n\t\t<div" +
-                    " id=\"content\">\r\n\t\t\t<h1>Settings</h1>\r\n\t\t\tThis is the settings page for this plug" +
-                    "in. Check out the <a href=\"/\">Index</a>.\r\n\r\n\t\t\t<button id=\"javascript-navigation" +
-                    "-test\">Javascript Navigation to Index</button>\r\n\r\n\t\t\t<button id=\"javascript-data" +
-                    "-test\">Javascript Command with JSON response</button>\r\n\t\t</div>\r\n\r\n\t\t<script typ" +
-                    "e=\"application/javascript\">\r\n\r\n\t\t\tdefine(\'settings_view\', [\r\n\t\t\t\t\'jquery\',\r\n\t\t\t\t" +
-                    "\'lodash\',\r\n\t\t\t\t\'backbone\',\r\n\t\t\t\t\'proxy\'\r\n\t\t\t], function($, _, Backbone, proxy) {" +
-                    "\r\n\t\t\t\treturn Backbone.View.extend({\r\n\t\t\t\t\tel: null,\r\n\t\t\t\t\tmodel: proxy.model,\r\n\t" +
-                    "\t\t\t\tevents: {\r\n\t\t\t\t\t\t\'click #javascript-navigation-test\': \'_on_javascript_naviga" +
-                    "tion_test_click\',\r\n\t\t\t\t\t\t\'click #javascript-data-test\': \'_on_javascript_data_tes" +
-                    "t_click\'\r\n\t\t\t\t\t},\r\n\t\t\t\t\tinitialize: function() {\r\n\t\t\t\t\t\tconsole.log(\"Settings ->" +
-                    " view -> initialize\");\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tthis.listenTo(this.model, \'response\', this" +
-                    "._on_response);\r\n\t\t\t\t\t\tthis.listenTo(this.model, \'destructing\', this._on_destruc" +
-                    "ting);\r\n\t\t\t\t\t},\r\n\t\t\t\t\t_on_javascript_navigation_test_click: function() {\r\n\t\t\t\t\t\t" +
-                    "console.log(\"Settings -> view -> _on_javascript_navigation_test_click\");\r\n\r\n\t\t\t\t" +
-                    "\t\tthis.model.request({\r\n\t\t\t\t\t\t\tcommand: \'/\'\r\n\t\t\t\t\t\t});\r\n\t\t\t\t\t},\r\n\t\t\t\t\t_on_javasc" +
-                    "ript_data_test_click: function() {\r\n\t\t\t\t\t\tconsole.log(\"Settings -> view -> _on_j" +
-                    "avascript_data_test_click\");\r\n\r\n\t\t\t\t\t\tthis.model.request({\r\n\t\t\t\t\t\t\tcommand: \'Tes" +
-                    "tPluginsCommandsZeroParameters\'\r\n\t\t\t\t\t\t});\r\n\t\t\t\t\t},\r\n\t\t\t\t\t_on_response: function" +
-                    "(request, response) {\r\n\t\t\t\t\t\tconsole.log(\"Settings -> view -> _on_response\");\r\n\t" +
-                    "\t\t\t\t\t\r\n\t\t\t\t\t\tconsole.log(request);\r\n\t\t\t\t\t\tconsole.log(response);\r\n\t\t\t\t\t},\r\n\t\t\t\t\t" +
-                    "_on_destructing: function() {\r\n\t\t\t\t\t\tconsole.log(\"Settings -> destructing\");\r\n\r\n" +
-                    "\t\t\t\t\t\tthis.remove();\r\n\t\t\t\t\t}\r\n\t\t\t\t});\r\n\t\t\t});\r\n\r\n\t\t\trequire([\r\n\t\t\t\t\'jquery\',\r\n\t\t" +
-                    "\t\t\'lodash\',\r\n\t\t\t\t\'backbone\',\r\n\t\t\t\t\'proxy\',\r\n\t\t\t\t\'settings_view\'\r\n\t\t\t], function(" +
-                    "$, _, Backbone, proxy, Settings_view) {\r\n\t\t\t\tconsole.log(\"Settings -> Loaded\");\r" +
-                    "\n\r\n\t\t\t\tvar view = new Settings_view({\r\n\t\t\t\t\t// Rebind as the original element ma" +
-                    "y not exist when this view is instantiated twice.\r\n\t\t\t\t\tel: $(\'#content\')\r\n\t\t\t\t}" +
-                    ");\r\n\t\t\t});\r\n\t\t</script>\r\n\t</body>\r\n</html>");
+            this.Write("Welcome <b>");
+            
+            #line 2 "C:\Users\P\Documents\Projects\clients\myrcon\procon\Procon-2\src\TestPlugin\Pages\TestParameterPageView.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(this.Player.Name));
+            
+            #line default
+            #line hidden
+            this.Write("</b> to the parameter test of this plugin. Your score is: ");
+            
+            #line 2 "C:\Users\P\Documents\Projects\clients\myrcon\procon\Procon-2\src\TestPlugin\Pages\TestParameterPageView.tt"
+ if (this.Player.Score >= 100) { 
+            
+            #line default
+            #line hidden
+            this.Write("<b>");
+            
+            #line 2 "C:\Users\P\Documents\Projects\clients\myrcon\procon\Procon-2\src\TestPlugin\Pages\TestParameterPageView.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(this.Player.Score));
+            
+            #line default
+            #line hidden
+            this.Write("</b>");
+            
+            #line 2 "C:\Users\P\Documents\Projects\clients\myrcon\procon\Procon-2\src\TestPlugin\Pages\TestParameterPageView.tt"
+ } else { 
+            
+            #line default
+            #line hidden
+            
+            #line 2 "C:\Users\P\Documents\Projects\clients\myrcon\procon\Procon-2\src\TestPlugin\Pages\TestParameterPageView.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(this.Player.Score));
+            
+            #line default
+            #line hidden
+            
+            #line 2 "C:\Users\P\Documents\Projects\clients\myrcon\procon\Procon-2\src\TestPlugin\Pages\TestParameterPageView.tt"
+ } 
+            
+            #line default
+            #line hidden
             return this.GenerationEnvironment.ToString();
         }
     }
@@ -57,7 +67,7 @@ namespace TestPlugin.Pages
     /// Base class for this transformation
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "10.0.0.0")]
-    public class SettingsPageViewBase
+    public class TestParameterPageViewBase
     {
         #region Fields
         private global::System.Text.StringBuilder generationEnvironmentField;

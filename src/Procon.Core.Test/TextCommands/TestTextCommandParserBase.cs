@@ -11,6 +11,7 @@ using Procon.Core.Shared;
 using Procon.Core.Shared.Models;
 using Procon.Fuzzy.Tokens.Primitive.Temporal;
 using Procon.Net.Protocols.Myrcon.Frostbite.Battlefield.Battlefield3;
+using Procon.Net.Shared;
 using Procon.Net.Shared.Actions;
 using Procon.Net.Shared.Models;
 using Procon.Net.Shared.Protocols;
@@ -355,8 +356,15 @@ namespace Procon.Core.Test.TextCommands {
                     Protocol = new Battlefield3Game(String.Empty, 25200) {
                         Additional = "",
                         Password = ""
+                    },
+                    ConnectionModel = {
+                        ProtocolType = new ProtocolType() {
+                            Name = CommonGameType.DiceBattlefield3,
+                            Provider = "Myrcon",
+                            Type = CommonGameType.DiceBattlefield3
+                        }
                     }
-                }.Execute() as ConnectionController
+                }
             };
 
             textCommandController.Execute();

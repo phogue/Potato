@@ -1,13 +1,75 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Threading;
 using Procon.Properties;
 using Procon.Service.Shared;
 
 namespace Procon {
     internal class Program {
+
+        public static List<String> Wordify(String data) {
+            List<String> list = new List<String>();
+
+            String word = String.Empty;
+            int stack = 0;
+            bool escaped = false;
+
+            foreach (char input in data) {
+
+                if (input == ' ') {
+                    if (stack == 0) {
+                        list.Add(word);
+                        word = String.Empty;
+                    }
+                    else {
+                        word += ' ';
+                    }
+                }
+                else if (input == 'n' && escaped == true) {
+                    word += '\n';
+                    escaped = false;
+                }
+                else if (input == 'r' && escaped == true) {
+                    word += '\r';
+                    escaped = false;
+                }
+                else if (input == 't' && escaped == true) {
+                    word += '\t';
+                    escaped = false;
+                }
+                else if (input == '"') {
+                    if (escaped == false) {
+                        if (stack == 0) {
+                            stack++;
+                        }
+                        else {
+                            stack--;
+                        }
+                    }
+                    else {
+                        word += '"';
+                    }
+                }
+                else if (input == '\\') {
+                    if (escaped == true) {
+                        word += '\\';
+                        escaped = false;
+                    }
+                    else {
+                        escaped = true;
+                    }
+                }
+                else {
+                    word += input;
+                    escaped = false;
+                }
+            }
+
+            list.Add(word);
+
+            return list;
+        }
 
         [STAThread, LoaderOptimization(LoaderOptimization.MultiDomainHost)]
         private static void Main(string[] args) {
@@ -86,10 +148,7 @@ namespace Procon {
                 input = Console.ReadLine();
                 
                 if (input != null) {
-                    var words = Regex.Matches(input, @"([^\s]*""[^""]+""[^\s]*)|[^""]?\w+[^""]?")
-                        .Cast<Match>()
-                        .Select(match => match.Captures[0].Value.Trim('"', ' '))
-                        .ToList();
+                    var words = Program.Wordify(input);
 
                     service.SignalMessage(new ServiceMessage() {
                         Name = words.FirstOrDefault(),

@@ -21,7 +21,7 @@ namespace Procon.Net.Shared.Protocols {
                 Assembly.GetAssembly(typeof(IProtocol))
             };
 
-            foreach (String protocol in Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, "Procon.Net.Protocols.*.dll", SearchOption.AllDirectories)) {
+            foreach (String protocol in Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, "*.Protocols.*.dll", SearchOption.AllDirectories)) {
                 try {
                     assemblies.Add(Assembly.LoadFile(protocol));
                 }
@@ -40,7 +40,7 @@ namespace Procon.Net.Shared.Protocols {
                 // Load the supported games
                 IEnumerable<Assembly> assemblies = SupportedGameTypes.LateBindGames();
 
-                Regex supportedGamesNamespame = new Regex(@"^Procon\.Net\.Protocols.*");
+                Regex supportedGamesNamespame = new Regex(@"^.*\.Protocols.*");
 
                 // Cache the results 
                 SupportedGameTypes._supportedGames = games = (from gameClassType in assemblies.SelectMany(assembly => assembly.GetTypes())

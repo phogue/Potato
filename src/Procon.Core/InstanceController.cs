@@ -791,8 +791,7 @@ namespace Procon.Core {
                     Now = new CommandData() {
                         Connections = this.Connections.Select(connection => connection.ConnectionModel).ToList(),
                         GameTypes = new List<ProtocolType>(SupportedGameTypes.GetSupportedGames().Select(k => k.Key as ProtocolType)),
-                        //Repositories = new List<RepositoryModel>(this.Packages.RemoteRepositories),
-                        //Packages = new List<PackageModel>(this.Packages.Packages),
+                        Repositories = new List<RepositoryModel>(this.Packages.Cache.Repositories),
                         Groups = new List<GroupModel>(this.Shared.Security.Groups),
                         Languages = this.Shared.Languages.LoadedLanguageFiles.Select(language => language.LanguageModel).ToList(),
                         Variables = new List<VariableModel>(this.Shared.Variables.VolatileVariables)

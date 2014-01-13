@@ -293,7 +293,7 @@ namespace Procon.Core.Connections.Plugins {
             PermissionSet permissions = this.CreatePermissionSet();
 
             // Create the app domain and the plugin factory in the new domain.
-            this.AppDomainSandbox = AppDomain.CreateDomain(String.Format("Procon.{0}.Plugin", this.Connection != null ? this.Connection.ConnectionModel.ConnectionGuid.ToString() : String.Empty), null, setup, permissions);
+            this.AppDomainSandbox = AppDomain.CreateDomain(String.Format("Procon.Plugins.{0}", this.Connection != null ? this.Connection.ConnectionModel.ConnectionGuid.ToString() : String.Empty), null, setup, permissions);
 
             this.PluginFactory = (IRemotePluginController)this.AppDomainSandbox.CreateInstanceAndUnwrap(typeof(SandboxPluginController).Assembly.FullName, typeof(SandboxPluginController).FullName);
 
@@ -307,7 +307,7 @@ namespace Procon.Core.Connections.Plugins {
         /// </summary>
         /// <returns></returns>
         protected List<FileInfo> GetPluginAssemblies() {
-            return Directory.GetFiles(Defines.PackagesDirectory.FullName, @"*.dll", SearchOption.AllDirectories)
+            return Directory.GetFiles(Defines.PackagesDirectory.FullName, @"*.Plugins.*.dll", SearchOption.AllDirectories)
                 .Select(path => new FileInfo(path))
                 .Where(file =>
                     file.Name != Defines.ProconCoreDll &&

@@ -86,7 +86,8 @@ namespace Procon.Core {
                 new Timer(Connection_Tick, this, TimeSpan.FromSeconds(15), TimeSpan.FromSeconds(15)),
                 new Timer(Events_Tick, this, TimeSpan.FromSeconds(60), TimeSpan.FromSeconds(60)),
                 new Timer(CommandServer_Tick, this, TimeSpan.FromSeconds(60), TimeSpan.FromSeconds(60)),
-                new Timer(Plugin_Tick, this, TimeSpan.FromSeconds(60), TimeSpan.FromSeconds(60))
+                new Timer(Plugin_Tick, this, TimeSpan.FromSeconds(60), TimeSpan.FromSeconds(60)),
+                new Timer(Packages_Tick, this, TimeSpan.FromSeconds(5), TimeSpan.FromMinutes(60))
             };
 
             this.EventsConsole = new EventsConsoleController();
@@ -278,6 +279,20 @@ namespace Procon.Core {
         }
 
         /// <summary>
+        /// Rebuilds the current repositories cache every 60 minutes
+        /// </summary>
+        /// <param name="state"></param>
+        protected void Packages_Tick(Object state) {
+            if (this.Packages != null) {
+                // Set the root (non-grouped) repository to Myrcon's official repository, or whatever
+                // repository the host has setup.
+                this.Shared.Variables.Variable(CommonVariableNames.PackagesRepositoryUri).Value = this.Shared.Variables.Get(CommonVariableNames.PackagesDefaultSourceRepositoryUri, Defines.PackagesDefaultSourceRepositoryUri);
+
+                this.Packages.BuildRepositoryCache();
+            }
+        }
+
+        /// <summary>
         /// Assigns event handlers to deal with changes within the class.
         /// Starts the execution of this object's security, packages, and variables.
         /// Loads the configuration file.
@@ -285,7 +300,7 @@ namespace Procon.Core {
         /// <returns></returns>
         public override ICoreController Execute() {
             this.EventsConsole.Execute();
-            //this.Packages.Execute();
+            this.Packages.Execute();
             this.CommandServer.Execute();
             this.PushEvents.Execute();
 

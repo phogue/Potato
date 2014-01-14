@@ -205,6 +205,8 @@ namespace Procon.Core.Connections.Plugins {
                 })
             };
 
+            // todo provide access to all non-core lib package paths.
+
             // [XpKiller] - Mono workaround.
             if (Type.GetType("Mono.Runtime") != null) {
                 setup.PrivateBinPath = AppDomain.CurrentDomain.BaseDirectory;
@@ -363,12 +365,6 @@ namespace Procon.Core.Connections.Plugins {
         /// </summary>
         public void RenewLease() {
             ILease lease = ((MarshalByRefObject)this.PluginFactory).GetLifetimeService() as ILease;
-
-            if (lease != null) {
-                lease.Renew(lease.InitialLeaseTime);
-            }
-
-            lease = this.GetLifetimeService() as ILease;
 
             if (lease != null) {
                 lease.Renew(lease.InitialLeaseTime);

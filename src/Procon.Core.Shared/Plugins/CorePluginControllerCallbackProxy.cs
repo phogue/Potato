@@ -4,5 +4,8 @@
     /// from a plugin to the core.
     /// </summary>
     public class CorePluginControllerCallbackProxy : CoreController {
+        public override object InitializeLifetimeService() {
+            return null;
+        }
     }
 }

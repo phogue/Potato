@@ -89,7 +89,7 @@ namespace Procon.Core.Shared.Plugins {
             IPluginController plugin;
 
             if (this.EnabledPlugins.TryRemove(pluginGuid, out plugin) == true) {
-                plugin.BubbleObjects = null;
+                plugin.BubbleObjects.Clear();
 
                 plugin.GenericEvent(new GenericEventArgs() {
                     GenericEventType = GenericEventType.PluginsDisabled

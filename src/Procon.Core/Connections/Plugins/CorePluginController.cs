@@ -109,7 +109,7 @@ namespace Procon.Core.Connections.Plugins {
                         };
 
                         if (this.Shared.Events != null) {
-                            this.Shared.Events.Log(GenericEventArgs.ConvertToGenericEvent(result, GenericEventType.PluginsPluginEnabled));
+                            this.Shared.Events.Log(GenericEventArgs.ConvertToGenericEvent(result, GenericEventType.PluginsEnabled));
                         }
                     }
                     else {
@@ -166,7 +166,7 @@ namespace Procon.Core.Connections.Plugins {
                         };
 
                         if (this.Shared.Events != null) {
-                            this.Shared.Events.Log(GenericEventArgs.ConvertToGenericEvent(result, GenericEventType.PluginsPluginDisabled));
+                            this.Shared.Events.Log(GenericEventArgs.ConvertToGenericEvent(result, GenericEventType.PluginsDisabled));
                         }
                     }
                     else {
@@ -352,7 +352,7 @@ namespace Procon.Core.Connections.Plugins {
                     // Tell the plugin it's ready to begin, everything is setup and ready 
                     // for it to start loading its config.
                     proxy.GenericEvent(new GenericEventArgs() {
-                        GenericEventType = GenericEventType.PluginsPluginLoaded
+                        GenericEventType = GenericEventType.PluginsLoaded
                     });
                 }
 

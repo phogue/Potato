@@ -69,7 +69,7 @@ namespace Procon.Core.Shared.Plugins {
                 //};
 
                 plugin.GenericEvent(new GenericEventArgs() {
-                    GenericEventType = GenericEventType.PluginsPluginEnabled
+                    GenericEventType = GenericEventType.PluginsEnabled
                 });
 
                 wasEnabled = true;
@@ -92,7 +92,7 @@ namespace Procon.Core.Shared.Plugins {
                 plugin.BubbleObjects = null;
 
                 plugin.GenericEvent(new GenericEventArgs() {
-                    GenericEventType = GenericEventType.PluginsPluginDisabled
+                    GenericEventType = GenericEventType.PluginsDisabled
                 });
 
                 wasDisabled = true;
@@ -136,7 +136,7 @@ namespace Procon.Core.Shared.Plugins {
         public void Shutdown() {
             foreach (var plugin in this.LoadedPlugins) {
                 plugin.Value.GenericEvent(new GenericEventArgs() {
-                    GenericEventType = GenericEventType.PluginsPluginUnloading
+                    GenericEventType = GenericEventType.PluginsUnloading
                 });
 
                 plugin.Value.Dispose();

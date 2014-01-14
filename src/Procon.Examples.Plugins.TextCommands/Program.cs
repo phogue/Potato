@@ -49,7 +49,7 @@ namespace Procon.Examples.Plugins.TextCommands {
         public override void GenericEvent(GenericEventArgs e) {
             base.GenericEvent(e);
 
-            if (e.GenericEventType == GenericEventType.PluginsPluginEnabled) {
+            if (e.GenericEventType == GenericEventType.PluginsEnabled) {
 
                 // Plugin is enabled and Procon will now accept our commands/actions.
 

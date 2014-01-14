@@ -102,19 +102,19 @@ namespace Procon.Core.Shared.Events {
         /// <summary>
         /// A plugin has been enabled
         /// </summary>
-        PluginsPluginEnabled,
+        PluginsEnabled,
         /// <summary>
         /// A plugin has been disabled.
         /// </summary>
-        PluginsPluginDisabled,
+        PluginsDisabled,
         /// <summary>
         /// A plugin has completed it's load.
         /// </summary>
-        PluginsPluginLoaded,
+        PluginsLoaded,
         /// <summary>
         /// A plugin is being unloaded. Think of this as a destructor for the plugin.
         /// </summary>
-        PluginsPluginUnloading,
+        PluginsUnloading,
         
         /// <summary>
         /// The config for is being loaded

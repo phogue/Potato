@@ -61,7 +61,7 @@ namespace Procon.Examples.Plugins.Events {
             // Now we just use it for internal plugin events.
 
             // See Procon.Net.GameEventType enum for descriptions of each possible event.
-            if (e.GenericEventType == GenericEventType.PluginsPluginEnabled) {
+            if (e.GenericEventType == GenericEventType.PluginsEnabled) {
                 
                 // Consider this event here to be the start of your plugin.  It's live, will 
                 // get commands and events from now on.

@@ -263,7 +263,7 @@ namespace Myrcon.Plugins.Test {
             else if (e.GenericEventType == GenericEventType.TextCommandUnregistered) {
                 this.Commands.Remove(e.Now.TextCommands.First());
             }
-            else if (e.GenericEventType == GenericEventType.PluginsPluginEnabled) {
+            else if (e.GenericEventType == GenericEventType.PluginsEnabled) {
 
                 this.Bubble(new Command() {
                     CommandType = CommandType.TextCommandsRegister,

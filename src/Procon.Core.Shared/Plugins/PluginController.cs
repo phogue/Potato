@@ -343,10 +343,10 @@ namespace Procon.Core.Shared.Plugins {
         /// </summary>
         /// <param name="e"></param>
         public virtual void GenericEvent(GenericEventArgs e) {
-            if (e.GenericEventType == GenericEventType.PluginsPluginLoaded) {
+            if (e.GenericEventType == GenericEventType.PluginsLoaded) {
                 this.GenericEventTypePluginLoaded(e);
             }
-            else if (e.GenericEventType == GenericEventType.PluginsPluginUnloading) {
+            else if (e.GenericEventType == GenericEventType.PluginsUnloading) {
                 this.GenericEventTypePluginUnloading(e);
             }
             else if (e.GenericEventType == GenericEventType.TextCommandExecuted) {

@@ -81,6 +81,7 @@
     <Compile Include="CoreInstance\TestCommandInstanceServiceMergePackage.cs" />
     <Compile Include="CoreInstance\TestCommandInstanceServiceRestart.cs" />
     <Compile Include="CoreInstance\TestCommandInstanceServiceUninstallPackage.cs" />
+    <Compile Include="Packages\Mocks\MockExceptionPackageRepository.cs" />
     <Compile Include="Packages\Mocks\MockPackageRepository.cs" />
     <Compile Include="Packages\TestBuildRepositoryCache.cs" />
     <Compile Include="Packages\TestCommandPackagesFetchPackages.cs" />

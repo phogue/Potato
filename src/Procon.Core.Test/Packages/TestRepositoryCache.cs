@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using NuGet;
 using NUnit.Framework;
@@ -50,6 +51,74 @@ namespace Procon.Core.Test.Packages {
             Assert.IsNotEmpty(cache.Repositories.First(repository => repository.IsOrphanage == true).Packages);
             Assert.AreEqual("A", cache.Repositories.First(repository => repository.IsOrphanage == true).Packages.First().Id);
             Assert.AreEqual(PackageState.Installed, cache.Repositories.First(repository => repository.IsOrphanage == true).Packages.First().State);
+        }
+
+        /// <summary>
+        /// Tests that an exception thrown during the cache rebuild source repository fetch will be attached to the model
+        /// </summary>
+        [Test]
+        public void TestExceptionOnCacheBuildAttachedToRepositoryModel() {
+            var cache = new RepositoryCache();
+            var localRepository = new MockPackageRepository();
+
+            cache.Add("localhost");
+
+            cache.SourceRepositories.TryAdd("localhost", new MockExceptionPackageRepository());
+
+            // Now successfully build the repository..
+            cache.Build(localRepository);
+
+            Assert.AreEqual("GetPackages Exception", cache.Repositories.First(repository => repository.IsOrphanage == false).CacheError);
+        }
+
+        /// <summary>
+        /// Tests the last cache build error is nulled when the repository is successfully built.
+        /// </summary>
+        [Test]
+        public void TestLastCacheBuildErrorNulled() {
+            var cache = new RepositoryCache();
+            var localRepository = new MockPackageRepository();
+
+            cache.Add("localhost");
+
+            cache.SourceRepositories.TryAdd("localhost", new MockPackageRepository(new List<IPackage>() {
+                new DataServicePackage() {
+                    Id = "A",
+                    Version = "1.0.0",
+                    Tags = "Procon Tag2"
+                }
+            }));
+
+            cache.Repositories.First(repository => repository.IsOrphanage == false).CacheError = "Error!!";
+
+            // Now successfully build the repository..
+            cache.Build(localRepository);
+
+            Assert.IsNull(cache.Repositories.First(repository => repository.IsOrphanage == false).CacheError);
+        }
+
+        /// <summary>
+        /// Tests the stamp on the repository model is set on building the cache.
+        /// </summary>
+        [Test]
+        public void TestLastCacheBuildStampSet() {
+            var cache = new RepositoryCache();
+            var localRepository = new MockPackageRepository();
+
+            cache.Add("localhost");
+
+            cache.SourceRepositories.TryAdd("localhost", new MockPackageRepository(new List<IPackage>() {
+                new DataServicePackage() {
+                    Id = "A",
+                    Version = "1.0.0",
+                    Tags = "Procon Tag2"
+                }
+            }));
+
+            // Now successfully build the repository..
+            cache.Build(localRepository);
+
+            Assert.Greater(cache.Repositories.First(repository => repository.IsOrphanage == false).CacheStamp, DateTime.Now.AddSeconds(-5));
         }
 
         /// <summary>

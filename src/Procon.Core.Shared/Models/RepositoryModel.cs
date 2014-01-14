@@ -33,6 +33,16 @@ namespace Procon.Core.Shared.Models {
         public bool IsOrphanage { get; set; }
 
         /// <summary>
+        /// Stores the last error that occured during a cache rebuild.
+        /// </summary>
+        public String CacheError { get; set; }
+
+        /// <summary>
+        /// When the repository was last cached.
+        /// </summary>
+        public DateTime CacheStamp { get; set; }
+
+        /// <summary>
         /// Initializes a repository model with the default values.
         /// </summary>
         public RepositoryModel() : base() {

@@ -86,25 +86,36 @@ namespace Procon.Core.Packages {
 
                     // If we have a valid uri to query against.
                     if (String.IsNullOrEmpty(repository.Uri) == false) {
-                        // Append all available packages for this repository.
-                        new AvailableCacheBuilder() {
-                            Repository = repository,
-                            Packages = this.GetCachedSourceRepository(repository.Uri)
-                                .GetPackages()
-                                .Where(package => package.Tags != null && package.Tags.Contains(Defines.PackageRequiredTag))
-                                .ToList()
-                                .OrderByDescending(pack => pack.Version)
-                                .Distinct(PackageEqualityComparer.Id)
-                                .ToList()
-                        }.Build();
+                        repository.CacheStamp = DateTime.Now;
 
-                        // Update all available packages with those that are installed.
-                        new InstalledCacheBuilder() {
-                            Repository = repository,
-                            Packages = localRepository
-                                .GetPackages()
-                                .ToList()
-                        }.Build();
+                        try {
+                            // Append all available packages for this repository.
+                            new AvailableCacheBuilder() {
+                                Repository = repository,
+                                Packages = this.GetCachedSourceRepository(repository.Uri)
+                                    .GetPackages()
+                                    .Where(package => package.Tags != null && package.Tags.Contains(Defines.PackageRequiredTag))
+                                    .ToList()
+                                    .OrderByDescending(pack => pack.Version)
+                                    .Distinct(PackageEqualityComparer.Id)
+                                    .ToList()
+                            }.Build();
+
+                            // Update all available packages with those that are installed.
+                            new InstalledCacheBuilder() {
+                                Repository = repository,
+                                Packages = localRepository
+                                    .GetPackages()
+                                    .ToList()
+                            }.Build();
+
+                            // No errors occured during fetch, null it out.
+                            repository.CacheError = null;
+                        }
+                        catch (Exception e) {
+                            // Record the error that occured while fetching the packages.
+                            repository.CacheError = e.Message;
+                        }
                     }
                 }
 

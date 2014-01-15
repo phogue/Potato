@@ -164,6 +164,17 @@ namespace Procon.Service.Shared {
         public static readonly int DefaultServicePollingTimeout = 5000;
 
         /// <summary>
+        /// The default number of milliseconds to wait after we have issued a write config on the service. We
+        /// allow longer for this process to give every opportunity to maintain settings.
+        /// </summary>
+        public static readonly int DefaultWriteServiceConfigTimeout = 30000;
+
+        /// <summary>
+        /// The default number of milliseconds to wait when gracefully shutting down the service. 
+        /// </summary>
+        public static readonly int DefaultDisposeServiceTimeout = 10000;
+
+        /// <summary>
         /// Searches for a file in some given paths.
         /// </summary>
         /// <param name="file">The file to search for</param>

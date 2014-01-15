@@ -17,6 +17,16 @@ namespace Procon.Service.Shared {
         int ServicePollingTimeout { get; set; }
 
         /// <summary>
+        /// The maximum time to wait when saving the config for Procon.
+        /// </summary>
+        int WriteServiceConfigTimeout { get; set; }
+
+        /// <summary>
+        /// The maximum time to wait when disposing objects before collapsing the AppDomain.
+        /// </summary>
+        int DisposeServiceTimeout { get; set; }
+
+        /// <summary>
         /// The main source repository uri to download core updates from.
         /// </summary>
         String PackagesDefaultSourceRepositoryUri { get; set; }

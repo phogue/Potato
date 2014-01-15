@@ -8,6 +8,8 @@ namespace Procon.Service.Shared {
     public class ServiceSettings : IServiceSettings {
         public bool ServiceUpdateCore { get; set; }
         public int ServicePollingTimeout { get; set; }
+        public int WriteServiceConfigTimeout { get; set; }
+        public int DisposeServiceTimeout { get; set; }
         public string PackagesDefaultSourceRepositoryUri { get; set; }
 
         public void ParseArguments(Dictionary<String, String> arguments) {
@@ -38,6 +40,8 @@ namespace Procon.Service.Shared {
         public ServiceSettings(IList<string> input) {
             this.ServiceUpdateCore = true;
             this.ServicePollingTimeout = Defines.DefaultServicePollingTimeout;
+            this.WriteServiceConfigTimeout = Defines.DefaultWriteServiceConfigTimeout;
+            this.DisposeServiceTimeout = Defines.DefaultDisposeServiceTimeout;
             this.PackagesDefaultSourceRepositoryUri = Defines.PackagesDefaultSourceRepositoryUri;
 
             this.ParseArguments(ArgumentHelper.ToArguments(input));

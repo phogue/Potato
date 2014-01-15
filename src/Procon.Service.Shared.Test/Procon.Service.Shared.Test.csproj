@@ -47,6 +47,7 @@
     <Compile Include="TestDefines\TestPackageVersionDirectory.cs" />
     <Compile Include="TestDefines\TestSearchPaths.cs" />
     <Compile Include="TestServiceControllerHelpers\TestLogUnhandledException.cs" />
+    <Compile Include="TestServiceController\Mocks\MockSlowServiceLoaderProxy.cs" />
     <Compile Include="TestServiceController\TestPanic.cs" />
     <Compile Include="TestServiceController\TestPollingTick.cs" />
     <Compile Include="TestServiceController\TestSignalMessage.cs" />

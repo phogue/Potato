@@ -464,15 +464,26 @@ namespace Procon.Service.Shared {
         /// </summary>
         public void WriteServiceConfig() {
             if (this.ServiceLoaderProxy != null) {
-                try {
-                    this.OnWriteServiceConfigBegin();
+                AutoResetEvent writeServiceConfigWait = new AutoResetEvent(false);
 
-                    this.ServiceLoaderProxy.WriteConfig();
+                this.OnWriteServiceConfigBegin();
 
-                    this.OnWriteServiceConfigEnd();
-                }
-                catch (Exception e) {
-                    ServiceControllerHelpers.LogUnhandledException("ServiceController.WriteServiceConfig", e);
+                Task.Factory.StartNew(() => {
+                    try {
+                        this.ServiceLoaderProxy.WriteConfig();
+
+                        this.OnWriteServiceConfigEnd();
+                    }
+                    catch (Exception e) {
+                        ServiceControllerHelpers.LogUnhandledException("ServiceController.WriteServiceConfig", e);
+                    }
+                    finally {
+                        writeServiceConfigWait.Set();
+                    }
+                });
+
+                if (writeServiceConfigWait.WaitOne(this.Settings.WriteServiceConfigTimeout) == false) {
+                    ServiceControllerHelpers.LogUnhandledException("ServiceController.WriteServiceConfig", new Exception("Timeout waiting for service to write config."));
                 }
             }
         }
@@ -481,17 +492,29 @@ namespace Procon.Service.Shared {
         /// Disposes the service
         /// </summary>
         public void DisposeService() {
-            try {
+            if (this.ServiceLoaderProxy != null) {
+                AutoResetEvent disposeServerWait = new AutoResetEvent(false);
+
                 this.OnDisposeServiceBegin();
 
-                this.ServiceLoaderProxy.Dispose();
+                Task.Factory.StartNew(() => {
+                    try {
+                        this.ServiceLoaderProxy.Dispose();
 
-                this.OnDisposeServiceEnd();
-            }
-            catch (Exception e) {
-                ServiceControllerHelpers.LogUnhandledException("ServiceController.DisposeService", e);
-            }
-            finally {
+                        this.OnDisposeServiceEnd();
+                    }
+                    catch (Exception e) {
+                        ServiceControllerHelpers.LogUnhandledException("ServiceController.DisposeService", e);
+                    }
+                    finally {
+                        disposeServerWait.Set();
+                    }
+                });
+
+                if (disposeServerWait.WaitOne(this.Settings.DisposeServiceTimeout) == false) {
+                    ServiceControllerHelpers.LogUnhandledException("ServiceController.DisposeService", new Exception("Timeout waiting for service to dispose."));
+                }
+
                 this.ServiceLoaderProxy = null;
             }
         }
@@ -499,6 +522,8 @@ namespace Procon.Service.Shared {
         /// <summary>
         /// Unloads the service domain
         /// </summary>
+        /// <remarks>We have no time out for this process. If this fails then when we start it will behave strangely anyway. We'll
+        /// be binding to identical ports, unable to perform updates etc.</remarks>
         public void UnloadService() {
             if (this.ServiceDomain != null) {
                 try {

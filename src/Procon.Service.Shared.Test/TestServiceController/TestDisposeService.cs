@@ -106,5 +106,28 @@ namespace Procon.Service.Shared.Test.TestServiceController {
 
             service.Dispose();
         }
+
+        /// <summary>
+        /// Tests that an exception will be logged when the maxmimum number of milliseconds 
+        /// for the task has exceeded.
+        /// </summary>
+        [Test]
+        public void TestExceptionLoggedOnTimeout() {
+            var service = new ServiceController() {
+                ServiceLoaderProxy = new MockSlowServiceLoaderProxy() {
+                    DisposeSleep = 500
+                },
+                Settings = {
+                    DisposeServiceTimeout = 10
+                }
+            };
+
+            service.DisposeService();
+
+            Assert.IsNotEmpty(Defines.ErrorsLogsDirectory.GetFiles());
+            Assert.Greater(Defines.ErrorsLogsDirectory.GetFiles().First().Length, 0);
+
+            service.Dispose();
+        }
     }
 }

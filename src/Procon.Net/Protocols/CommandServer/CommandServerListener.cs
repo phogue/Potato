@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
@@ -21,17 +22,12 @@ namespace Procon.Net.Protocols.CommandServer {
         /// <summary>
         /// A list of active clients with open connections
         /// </summary>
-        protected List<CommandServerClient> Clients = new List<CommandServerClient>();
+        protected ConcurrentDictionary<String, CommandServerClient> Clients = new ConcurrentDictionary<String, CommandServerClient>();
 
         /// <summary>
         /// The listener 
         /// </summary>
         public TcpListener Listener { get; set; }
-
-        /// <summary>
-        /// Lock used when altering the Clients collection
-        /// </summary>
-        protected readonly Object ClientsLock = new Object();
 
         /// <summary>
         /// Lock used during disposal
@@ -80,11 +76,8 @@ namespace Procon.Net.Protocols.CommandServer {
                 try {
                     // End the operation and display the received data on the console.
                     CommandServerClient client = new CommandServerClient(commandServerListener.Listener.EndAcceptTcpClient(ar), commandServerListener.Certificate);
-
-                    // Make sure we have a reference to our client.
-                    lock (commandServerListener.ClientsLock) {
-                        commandServerListener.Clients.Add(client);
-                    }
+                    
+                    commandServerListener.Clients.TryAdd(client.RemoteEndPoint.ToString(), client);
 
                     // Listen for events on our new client
                     client.PacketReceived += commandServerListener.client_PacketReceived;
@@ -134,13 +127,7 @@ namespace Procon.Net.Protocols.CommandServer {
         /// </summary>
         public void Poke() {
             if (this.Clients != null) {
-                List<CommandServerClient> poked;
-
-                // Note we modify the Clients list in events fired from the client
-                // so we take a copy to poke in case this results in a dead lock.
-                lock (this.ClientsLock) {
-                    poked = new List<CommandServerClient>(this.Clients);
-                }
+                List<CommandServerClient> poked = new List<CommandServerClient>(this.Clients.Values);
 
                 poked.ForEach(client => client.Poke());
             }
@@ -158,12 +145,11 @@ namespace Procon.Net.Protocols.CommandServer {
         /// <param name="newState"></param>
         protected void client_ConnectionStateChanged(IClient sender, ConnectionState newState) {
             if (newState == ConnectionState.ConnectionDisconnected) {
-                lock (this.ClientsLock) {
-                    sender.PacketReceived -= this.client_PacketReceived;
-                    sender.ConnectionStateChanged -= this.client_ConnectionStateChanged;
+                sender.PacketReceived -= this.client_PacketReceived;
+                sender.ConnectionStateChanged -= this.client_ConnectionStateChanged;
 
-                    this.Clients.Remove(sender as CommandServerClient);
-                }
+                CommandServerClient removed = null;
+                this.Clients.TryRemove(((CommandServerClient)sender).RemoteEndPoint.ToString(), out removed);
             }
         }
 
@@ -189,16 +175,14 @@ namespace Procon.Net.Protocols.CommandServer {
                     this.Listener.Stop();
                     this.Listener = null;
 
-                    lock (this.ClientsLock) {
-                        foreach (CommandServerClient client in this.Clients) {
-                            client.Shutdown();
-                            client.PacketReceived -= this.client_PacketReceived;
-                            client.ConnectionStateChanged -= this.client_ConnectionStateChanged;
-                        }
-
-                        this.Clients.Clear();
-                        this.Clients = null;
+                    foreach (var client in this.Clients) {
+                        client.Value.Shutdown();
+                        client.Value.PacketReceived -= this.client_PacketReceived;
+                        client.Value.ConnectionStateChanged -= this.client_ConnectionStateChanged;
                     }
+
+                    this.Clients.Clear();
+                    this.Clients = null;
                 }
             }
         }

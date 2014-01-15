@@ -82,7 +82,7 @@ namespace Procon.Core.Test.CoreInstance {
             instance.Tunnel(CommandBuilder.InstanceServiceMergePackage("localhost", "id").SetOrigin(CommandOrigin.Local));
 
             Assert.IsNotNull(instance.ServiceMessage);
-            Assert.AreEqual("merge-package", instance.ServiceMessage.Name);
+            Assert.AreEqual("merge", instance.ServiceMessage.Name);
             Assert.AreEqual("localhost", instance.ServiceMessage.Arguments["uri"]);
             Assert.AreEqual("id", instance.ServiceMessage.Arguments["packageid"]);
 

@@ -67,7 +67,7 @@ namespace Procon.Core.Test.CoreInstance {
             instance.Tunnel(CommandBuilder.InstanceServiceUninstallPackage("id").SetOrigin(CommandOrigin.Local));
 
             Assert.IsNotNull(instance.ServiceMessage);
-            Assert.AreEqual("uninstall-package", instance.ServiceMessage.Name);
+            Assert.AreEqual("uninstall", instance.ServiceMessage.Name);
             Assert.AreEqual("id", instance.ServiceMessage.Arguments["packageid"]);
 
             instance.Dispose();

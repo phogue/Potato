@@ -103,10 +103,23 @@ namespace Procon.Core.Shared {
         /// be listened for when the packages list finally updates itself.
         /// </summary>
         PackagesFetchPackages,
-
+        
+        /// <summary>
+        /// Sets a volatile variable that will not be saved to the config.
+        /// </summary>
         VariablesSet,
-        VariablesGet,
+        /// <summary>
+        /// Sets a variable which will be saved to a config
+        /// </summary>
         VariablesSetA,
+        /// <summary>
+        /// Sets a variable which will be saved to the config, but only loaded as a volatile variable.
+        /// </summary>
+        VariablesSetF,
+        /// <summary>
+        /// Fetches a variable value
+        /// </summary>
+        VariablesGet,
 
         EventsFetchAfterEventId,
 

@@ -40,48 +40,6 @@ namespace Procon.Core.Test.Variables {
             Assert.AreEqual("value", variables.Get("key", String.Empty));
         }
 
-        /// <summary>
-        ///     Sets a value for the archive, follows same code path as Set, but sets
-        ///     the same VariableModel in VariablesArchive.
-        /// </summary>
-        [Test]
-        public void TestVariablesSetValueA() {
-            var variables = new VariableController();
-
-            // Set an archive variable
-            CommandResultArgs result = variables.Tunnel(new Command() {
-                Origin = CommandOrigin.Local,
-                CommandType = CommandType.VariablesSetA,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
-                    "key",
-                    "value"
-                })
-            });
-
-            // Validate that the command was successful and the key was set to the passed value.
-            Assert.IsTrue(result.Success);
-            Assert.AreEqual(CommandResultType.Success, result.Status);
-            Assert.AreEqual("value", variables.Get("key", String.Empty));
-            Assert.AreEqual("value", variables.GetA("key", String.Empty));
-        }
-
-        /// <summary>
-        ///     Sets a value for the archive using the common name enum.
-        /// </summary>
-        [Test]
-        public void TestVariablesSetValueACommonName() {
-            var variables = new VariableController();
-
-            // Set an archive variable
-            variables.SetA(new Command() {
-                Origin = CommandOrigin.Local
-            }, CommonVariableNames.MaximumProtocolConnections, "value");
-
-            // Validate that the command was successful and the key was set to the passed value.
-            Assert.AreEqual("value", variables.Get(CommonVariableNames.MaximumProtocolConnections, String.Empty));
-            Assert.AreEqual("value", variables.GetA(CommonVariableNames.MaximumProtocolConnections, String.Empty));
-        }
-
         [Test]
         public void TestVariablesSetValueAEmptyKey() {
             var variables = new VariableController();
@@ -121,45 +79,6 @@ namespace Procon.Core.Test.Variables {
             // Validate the command failed because we don't have permissions to execute it.
             Assert.IsFalse(result.Success);
             Assert.AreEqual(CommandResultType.InsufficientPermissions, result.Status);
-        }
-
-        /// <summary>
-        ///     Checks that we can override the value of an existing key in the VariableModel archive.
-        /// </summary>
-        [Test]
-        public void TestVariablesSetValueAOverrideExisting() {
-            var variables = new VariableController();
-
-            // Set an archive variable
-            CommandResultArgs result = variables.Tunnel(new Command() {
-                Origin = CommandOrigin.Local,
-                CommandType = CommandType.VariablesSetA,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
-                    "key",
-                    "value"
-                })
-            });
-
-            // Validate that initially setting the VariableModel is successful.
-            Assert.IsTrue(result.Success);
-            Assert.AreEqual(CommandResultType.Success, result.Status);
-            Assert.AreEqual("value", variables.Get("key", String.Empty));
-            Assert.AreEqual("value", variables.GetA("key", String.Empty));
-
-            result = variables.Tunnel(new Command() {
-                Origin = CommandOrigin.Local,
-                CommandType = CommandType.VariablesSetA,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
-                    "key",
-                    "changed value"
-                })
-            });
-
-            // Validate that we changed changed an existing VariableModel value.
-            Assert.IsTrue(result.Success);
-            Assert.AreEqual(CommandResultType.Success, result.Status);
-            Assert.AreEqual("changed value", variables.Get("key", String.Empty));
-            Assert.AreEqual("changed value", variables.GetA("key", String.Empty));
         }
 
         /// <summary>

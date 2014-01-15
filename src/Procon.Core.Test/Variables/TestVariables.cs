@@ -10,7 +10,6 @@ using Procon.Core.Shared;
 using Procon.Core.Shared.Models;
 using Procon.Core.Variables;
 using Procon.Net.Shared.Utils;
-using Procon.Net.Utils;
 
 #endregion
 
@@ -93,7 +92,7 @@ namespace Procon.Core.Test.Variables {
             Assert.IsNull(variables.VolatileVariables.Find(v => v.Name == CommonVariableNames.TextCommandPrivatePrefix.ToString()));
 
             // Fetch the VariableModel. This should create and add the VariableModel.
-            VariableModel VariableModel = variables.Variable(CommonVariableNames.TextCommandPrivatePrefix);
+            variables.Variable(CommonVariableNames.TextCommandPrivatePrefix);
 
             // Now validate that the VariableModel has been added.
             Assert.IsNotNull(variables.VolatileVariables.Find(v => v.Name == CommonVariableNames.TextCommandPrivatePrefix.ToString()));
@@ -113,7 +112,7 @@ namespace Procon.Core.Test.Variables {
             Assert.IsNull(variables.VolatileVariables.Find(v => v.Name == key));
 
             // Fetch the VariableModel. This should create and add the VariableModel.
-            VariableModel VariableModel = variables.Variable(key);
+            variables.Variable(key);
 
             // Now validate that the VariableModel has been added.
             Assert.IsNotNull(variables.VolatileVariables.Find(v => v.Name == key));
@@ -124,7 +123,7 @@ namespace Procon.Core.Test.Variables {
         /// </summary>
         [Test]
         public void TestVariablesLoadConfig() {
-            var saveVariables = new VariableController().Execute() as VariableController;
+            var saveVariables = (VariableController)new VariableController().Execute();
             saveVariables.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.VariablesSetA,
@@ -168,14 +167,14 @@ namespace Procon.Core.Test.Variables {
             saveConfig.Save(ConfigFileInfo);
 
             // Load the config in a new config.
-            var loadVariables = new VariableController().Execute() as VariableController;
+            var loadVariables = (VariableController)new VariableController().Execute();
             var loadConfig = new Config();
             loadConfig.Load(ConfigFileInfo);
             loadVariables.Execute(loadConfig);
 
-            Assert.AreEqual("this is a string", loadVariables.GetA<String>("KeyToWriteString"));
-            Assert.AreEqual(1, loadVariables.GetA<int>("KeyToWriteInteger"));
-            Assert.AreEqual(10, loadVariables.GetA<int>("MaximumProtocolConnections"));
+            Assert.AreEqual("this is a string", loadVariables.ArchiveVariables.First(v => v.Name == "KeyToWriteString").ToType<String>());
+            Assert.AreEqual(1, loadVariables.ArchiveVariables.First(v => v.Name == "KeyToWriteInteger").ToType<int>());
+            Assert.AreEqual(10, loadVariables.ArchiveVariables.First(v => v.Name == "MaximumProtocolConnections").ToType<int>());
         }
 
         /// <summary>
@@ -183,7 +182,7 @@ namespace Procon.Core.Test.Variables {
         /// </summary>
         [Test]
         public void TestVariablesWriteConfig() {
-            var variables = new VariableController().Execute() as VariableController;
+            var variables = (VariableController)new VariableController().Execute();
             variables.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.VariablesSetA,

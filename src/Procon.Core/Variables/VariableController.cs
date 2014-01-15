@@ -21,7 +21,13 @@ namespace Procon.Core.Variables {
         /// <summary>
         /// Anything in this list will be saved to the config
         /// </summary>
-        protected List<VariableModel> ArchiveVariables { get; set; }
+        public List<VariableModel> ArchiveVariables { get; set; }
+
+        /// <summary>
+        /// Anything in this list will be saved to the config, but saved as a volatile set. The variable
+        /// value will only last until the instance is restarted and the config consumed.
+        /// </summary>
+        public List<VariableModel> FlashVariables { get; set; }
 
         public SharedReferences Shared { get; private set; }
 
@@ -32,6 +38,7 @@ namespace Procon.Core.Variables {
             this.Shared = new SharedReferences();
             this.VolatileVariables = new List<VariableModel>();
             this.ArchiveVariables = new List<VariableModel>();
+            this.FlashVariables = new List<VariableModel>();
 
             this.AppendDispatchHandlers(new Dictionary<CommandAttribute, CommandDispatchHandler>() {
                 {
@@ -96,6 +103,37 @@ namespace Procon.Core.Variables {
                         }
                     },
                     new CommandDispatchHandler(this.CommandSetASingular)
+                }, {
+                    new CommandAttribute() {
+                        CommandType = CommandType.VariablesSetF,
+                        ParameterTypes = new List<CommandParameterType>() {
+                            new CommandParameterType() {
+                                Name = "name",
+                                Type = typeof(String)
+                            },
+                            new CommandParameterType() {
+                                Name = "value",
+                                Type = typeof(String),
+                                IsList = true
+                            }
+                        }
+                    },
+                    new CommandDispatchHandler(this.CommandSetFCollection)
+                }, {
+                    new CommandAttribute() {
+                        CommandType = CommandType.VariablesSetF,
+                        ParameterTypes = new List<CommandParameterType>() {
+                            new CommandParameterType() {
+                                Name = "name",
+                                Type = typeof(String)
+                            },
+                            new CommandParameterType() {
+                                Name = "value",
+                                Type = typeof(String)
+                            }
+                        }
+                    },
+                    new CommandDispatchHandler(this.CommandSetFSingular)
                 }, {
                     new CommandAttribute() {
                         CommandType = CommandType.VariablesGet,
@@ -171,25 +209,11 @@ namespace Procon.Core.Variables {
         /// </summary>
         public override void WriteConfig(Config config) {
             foreach (VariableModel archiveVariable in this.ArchiveVariables) {
-                config.Root.Add(new Command() {
-                    CommandType = CommandType.VariablesSetA,
-                    Parameters = new List<CommandParameter>() {
-                        new CommandParameter() {
-                            Data = {
-                                Content = new List<String>() {
-                                    archiveVariable.Name
-                                }
-                            }
-                        },
-                        new CommandParameter() {
-                            Data = {
-                                Content = new List<String>() {
-                                    archiveVariable.ToString()
-                                }
-                            }
-                        }
-                    }
-                }.ToConfigCommand());
+                config.Root.Add(CommandBuilder.VariablesSetA(archiveVariable.Name, archiveVariable.Value.ToString()).ToConfigCommand());
+            }
+
+            foreach (VariableModel flashVariable in this.FlashVariables) {
+                config.Root.Add(CommandBuilder.VariablesSetF(flashVariable.Name, flashVariable.Value.ToString()).ToConfigCommand());
             }
         }
 
@@ -284,6 +308,20 @@ namespace Procon.Core.Variables {
             String value = parameters["value"].First<String>();
 
             return this.SetA(command, name, value);
+        }
+
+        protected CommandResultArgs CommandSetFCollection(Command command, Dictionary<String, CommandParameter> parameters) {
+            String name = parameters["name"].First<String>();
+            List<String> value = parameters["value"].All<String>();
+
+            return this.SetF(command, name, value);
+        }
+
+        protected CommandResultArgs CommandSetFSingular(Command command, Dictionary<String, CommandParameter> parameters) {
+            String name = parameters["name"].First<String>();
+            String value = parameters["value"].First<String>();
+
+            return this.SetF(command, name, value);
         }
 
         protected CommandResultArgs CommandGet(Command command, Dictionary<String, CommandParameter> parameters) {
@@ -386,6 +424,9 @@ namespace Procon.Core.Variables {
                         this.ArchiveVariables.Find(x => x.Name == variable.Name).Value = variable.Value;
                     }
 
+                    // Remove the archived value
+                    this.FlashVariables.RemoveAll(v => v.Name == variable.Name);
+
                     result = new CommandResultArgs() {
                         Success = true,
                         Status = CommandResultType.Success,
@@ -410,15 +451,54 @@ namespace Procon.Core.Variables {
         }
 
         /// <summary>
-        /// This will first set the value, then set the value in the archived list
+        /// This will first set the value, then set the value in the flash list
         /// which will be saved to the config
         /// </summary>
         /// <param name="command">Details of the commands origin</param>
-        /// <param name="name">The unique key of the variable to set</param>
+        /// <param name="name">The unique name of the variable to set</param>
         /// <param name="value">The value of the variable</param>
         /// <returns></returns>
-        public CommandResultArgs SetA(Command command, CommonVariableNames name, Object value) {
-            return this.SetA(command, name.ToString(), value);
+        public CommandResultArgs SetF(Command command, String name, Object value) {
+            CommandResultArgs result = null;
+
+            if (command.Origin == CommandOrigin.Local || this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
+                CommandResultArgs volatileSetResult = this.Set(command, name, value);
+
+                if (volatileSetResult.Success == true) {
+                    // All good.
+                    VariableModel variable = this.Set(command, name, value).Now.Variables.First();
+
+                    if (this.FlashVariables.Find(v => v.Name == variable.Name) == null) {
+                        this.FlashVariables.Add(variable);
+                    }
+                    else {
+                        this.FlashVariables.Find(v => v.Name == variable.Name).Value = variable.Value;
+                    }
+
+                    // Remove the archived value
+                    this.ArchiveVariables.RemoveAll(v => v.Name == variable.Name);
+
+                    result = new CommandResultArgs() {
+                        Success = true,
+                        Status = CommandResultType.Success,
+                        Message = String.Format(@"Successfully set value of variable name ""{0}"" to ""{1}"".", variable.Name, variable.Value),
+                        Now = new CommandData() {
+                            Variables = new List<VariableModel>() {
+                                variable
+                            }
+                        }
+                    };
+                }
+                else {
+                    // Bubble the error.
+                    result = volatileSetResult;
+                }
+            }
+            else {
+                result = CommandResultArgs.InsufficientPermissions;
+            }
+
+            return result;
         }
 
         /// <summary>
@@ -487,48 +567,6 @@ namespace Procon.Core.Variables {
             }
 
             return result;
-        }
-
-        /// <summary>
-        /// Gets a raw value given a name, returned as a Object
-        /// </summary>
-        /// <param name="command">Details of the commands origin</param>
-        /// <param name="name">The unique name of the variable to fetch</param>
-        /// <param name="defaultValue"></param>
-        /// <returns>The raw object with no conversion</returns>
-        public CommandResultArgs Get(Command command, CommonVariableNames name, Object defaultValue = null) {
-            return this.Get(command, name.ToString());
-        }
-
-        /// <summary>
-        /// Fetches and converts a value from the variables archive. This is only exposed in VariableController
-        /// because it's only use is for unit testing.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="name"></param>
-        /// <param name="defaultValue"></param>
-        /// <returns></returns>
-        public T GetA<T>(String name, T defaultValue = default(T)) {
-
-            T result = defaultValue;
-            VariableModel variable = null;
-
-            if ((variable = this.ArchiveVariables.Find(x => x.Name == name)) != null) {
-                result = variable.ToType<T>();
-            }
-
-            return result;
-        }
-
-        /// <summary>
-        /// Proxy for GetA(string, T)
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="name"></param>
-        /// <param name="defaultValue"></param>
-        /// <returns></returns>
-        public T GetA<T>(CommonVariableNames name, T defaultValue = default(T)) {
-            return this.GetA(name.ToString(), defaultValue);
         }
     }
 }

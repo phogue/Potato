@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Procon.Core.Shared.Models;
 using Procon.Database.Shared;
 
 namespace Procon.Core.Shared {
@@ -190,6 +191,149 @@ namespace Procon.Core.Shared {
                     }
                 }
             };
+        }
+
+        /// <summary>
+        /// Builds a command to send a VariablesSet
+        /// </summary>
+        /// <param name="name">The name of the variable to set</param>
+        /// <param name="value">The value to assign to the variable</param>
+        /// <returns>The built command to dispatch</returns>
+        public static Command VariablesSet(String name, String value) {
+            return new Command() {
+                CommandType = CommandType.VariablesSet,
+                Parameters = new List<CommandParameter>() {
+                    new CommandParameter() {
+                        Data = {
+                            Content = new List<String>() {
+                                name
+                            }
+                        }
+                    },
+                    new CommandParameter() {
+                        Data = {
+                            Content = new List<String>() {
+                                value
+                            }
+                        }
+                    }
+                }
+            };
+        }
+
+        /// <summary>
+        /// Builds a command to send a VariablesSet
+        /// </summary>
+        /// <param name="name">The name of the variable to set</param>
+        /// <param name="value">The value to assign to the variable</param>
+        /// <returns>The built command to dispatch</returns>
+        public static Command VariablesSet(CommonVariableNames name, String value) {
+            return VariablesSet(name.ToString(), value);
+        }
+
+        /// <summary>
+        /// Builds a command to send a VariablesSetA
+        /// </summary>
+        /// <param name="name">The name of the variable to set</param>
+        /// <param name="value">The value to assign to the variable</param>
+        /// <returns>The built command to dispatch</returns>
+        public static Command VariablesSetA(String name, String value) {
+            return new Command() {
+                CommandType = CommandType.VariablesSetA,
+                Parameters = new List<CommandParameter>() {
+                    new CommandParameter() {
+                        Data = {
+                            Content = new List<String>() {
+                                name
+                            }
+                        }
+                    },
+                    new CommandParameter() {
+                        Data = {
+                            Content = new List<String>() {
+                                value
+                            }
+                        }
+                    }
+                }
+            };
+        }
+
+        /// <summary>
+        /// Builds a command to send a VariablesSetA
+        /// </summary>
+        /// <param name="name">The name of the variable to set</param>
+        /// <param name="value">The value to assign to the variable</param>
+        /// <returns>The built command to dispatch</returns>
+        public static Command VariablesSetA(CommonVariableNames name, String value) {
+            return VariablesSetA(name.ToString(), value);
+        }
+
+        /// <summary>
+        /// Builds a command to send a VariablesSetF
+        /// </summary>
+        /// <param name="name">The name of the variable to set</param>
+        /// <param name="value">The value to assign to the variable</param>
+        /// <returns>The built command to dispatch</returns>
+        public static Command VariablesSetF(String name, String value) {
+            return new Command() {
+                CommandType = CommandType.VariablesSetF,
+                Parameters = new List<CommandParameter>() {
+                    new CommandParameter() {
+                        Data = {
+                            Content = new List<String>() {
+                                name
+                            }
+                        }
+                    },
+                    new CommandParameter() {
+                        Data = {
+                            Content = new List<String>() {
+                                value
+                            }
+                        }
+                    }
+                }
+            };
+        }
+
+        /// <summary>
+        /// Builds a command to send a VariablesSetF
+        /// </summary>
+        /// <param name="name">The name of the variable to set</param>
+        /// <param name="value">The value to assign to the variable</param>
+        /// <returns>The built command to dispatch</returns>
+        public static Command VariablesSetF(CommonVariableNames name, String value) {
+            return VariablesSetF(name.ToString(), value);
+        }
+
+        /// <summary>
+        /// Builds a command to send a VariablesGet
+        /// </summary>
+        /// <param name="name">The name of the variable to set</param>
+        /// <returns>The built command to dispatch</returns>
+        public static Command VariablesGet(String name) {
+            return new Command() {
+                CommandType = CommandType.VariablesGet,
+                Parameters = new List<CommandParameter>() {
+                    new CommandParameter() {
+                        Data = {
+                            Content = new List<String>() {
+                                name
+                            }
+                        }
+                    }
+                }
+            };
+        }
+
+        /// <summary>
+        /// Builds a command to send a VariablesGet
+        /// </summary>
+        /// <param name="name">The name of the variable to set</param>
+        /// <returns>The built command to dispatch</returns>
+        public static Command VariablesGet(CommonVariableNames name) {
+            return VariablesGet(name.ToString());
         }
     }
 }

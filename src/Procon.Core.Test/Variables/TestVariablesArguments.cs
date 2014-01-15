@@ -8,7 +8,6 @@ using Procon.Core.Shared;
 using Procon.Core.Shared.Models;
 using Procon.Core.Variables;
 using Procon.Net.Shared.Utils;
-using Procon.Net.Utils;
 
 #endregion
 
@@ -95,12 +94,12 @@ namespace Procon.Core.Test.Variables {
             var variables = new VariableController();
             variables.ParseArguments(@"-key ""value""".Wordify());
 
-            VariableModel VariableModel = variables.Get(new Command() {
+            VariableModel variableModel = variables.Get(new Command() {
                 Origin = CommandOrigin.Local
             }, "key").Now.Variables.First();
 
-            Assert.AreEqual("value", VariableModel.ToType(String.Empty));
-            Assert.IsTrue(VariableModel.Readonly);
+            Assert.AreEqual("value", variableModel.ToType(String.Empty));
+            Assert.IsTrue(variableModel.Readonly);
         }
 
         /// <summary>
@@ -112,12 +111,12 @@ namespace Procon.Core.Test.Variables {
             var variables = new VariableController();
             variables.ParseArguments(@"-key".Wordify());
 
-            VariableModel VariableModel = variables.Get(new Command() {
+            VariableModel variableModel = variables.Get(new Command() {
                 Origin = CommandOrigin.Local
             }, "key").Now.Variables.First();
 
-            Assert.IsTrue(VariableModel.ToType(false));
-            Assert.IsTrue(VariableModel.Readonly);
+            Assert.IsTrue(variableModel.ToType(false));
+            Assert.IsTrue(variableModel.Readonly);
         }
     }
 }

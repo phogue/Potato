@@ -165,12 +165,10 @@ namespace Procon.Setup {
         /// <summary>
         /// Fired when a user selects another language
         /// </summary>
-        /// <param name="value">THe value is the language code of the selected language</param>
+        /// <param name="value">The value is the language code of the selected language</param>
         public void SelectLanguage(Object value) {
             if (this.Instance != null) {
-                this.Instance.Shared.Variables.SetA(new Command() {
-                    Origin = CommandOrigin.Local
-                }, CommonVariableNames.LocalizationDefaultLanguageCode, value);
+                this.Instance.Shared.Variables.Tunnel(CommandBuilder.VariablesSetA(CommonVariableNames.LocalizationDefaultLanguageCode, value.ToString()).SetOrigin(CommandOrigin.Local));
             }
         }
 

@@ -70,26 +70,6 @@ namespace Procon.Core.Test.Variables {
         }
 
         /// <summary>
-        ///     Fetches the complex value from the archive.
-        /// </summary>
-        [Test]
-        public void TestVariablesGetValueAComplexValue() {
-            var variables = new VariableController();
-
-            variables.SetA(new Command() {
-                Origin = CommandOrigin.Local
-            }, "key", new VariableComplexValue() {
-                PropertyOne = 1,
-                PropertyTwo = "two"
-            });
-
-            var value = variables.GetA<VariableComplexValue>("key");
-
-            Assert.AreEqual(1, value.PropertyOne);
-            Assert.AreEqual("two", value.PropertyTwo);
-        }
-
-        /// <summary>
         ///     Tests fetching a VariableModel by a common name
         /// </summary>
         [Test]
@@ -103,9 +83,9 @@ namespace Procon.Core.Test.Variables {
                 }
             };
 
-            Assert.AreEqual("value", variables.Get(new Command() {
-                Origin = CommandOrigin.Local
-            }, CommonVariableNames.MaximumProtocolConnections).Now.Variables.First().ToType<String>());
+            var value = variables.Tunnel(CommandBuilder.VariablesGet(CommonVariableNames.MaximumProtocolConnections).SetOrigin(CommandOrigin.Local)).Now.Variables.First().ToType<String>();
+
+            Assert.AreEqual("value", value);
         }
 
         /// <summary>

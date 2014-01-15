@@ -554,7 +554,7 @@ namespace Procon.Core {
                     };
 
                     result = new CommandResultArgs() {
-                        Message = String.Format("Successfully posted merge-package signal."),
+                        Message = String.Format("Successfully posted merge signal."),
                         Status = CommandResultType.Success,
                         Success = true
                     };
@@ -598,7 +598,7 @@ namespace Procon.Core {
                     };
 
                     result = new CommandResultArgs() {
-                        Message = String.Format("Successfully posted uninstall-package signal."),
+                        Message = String.Format("Successfully posted uninstall signal."),
                         Status = CommandResultType.Success,
                         Success = true
                     };

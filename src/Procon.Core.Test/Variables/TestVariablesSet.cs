@@ -1,6 +1,4 @@
-﻿#region
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
@@ -8,8 +6,6 @@ using Procon.Core.Security;
 using Procon.Core.Shared;
 using Procon.Core.Shared.Models;
 using Procon.Core.Variables;
-
-#endregion
 
 namespace Procon.Core.Test.Variables {
     [TestFixture]
@@ -23,69 +19,21 @@ namespace Procon.Core.Test.Variables {
         ///     Tests that we can set a value, getting the successful flag back from the command.
         /// </summary>
         [Test]
-        public void TestVariablesSetValue() {
+        public void TestValue() {
             var variables = new VariableController();
 
-            CommandResultArgs result = variables.Tunnel(new Command() {
-                Origin = CommandOrigin.Local,
-                CommandType = CommandType.VariablesSet,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
-                    "key",
-                    "value"
-                })
-            });
+            CommandResultArgs result = variables.Tunnel(CommandBuilder.VariablesSet("key", "value").SetOrigin(CommandOrigin.Local));
 
             Assert.IsTrue(result.Success);
             Assert.AreEqual(CommandResultType.Success, result.Status);
             Assert.AreEqual("value", variables.Get("key", String.Empty));
         }
 
-        [Test]
-        public void TestVariablesSetValueAEmptyKey() {
-            var variables = new VariableController();
-
-            // Set an archive variable
-            CommandResultArgs result = variables.Tunnel(new Command() {
-                Origin = CommandOrigin.Local,
-                CommandType = CommandType.VariablesSetA,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
-                    String.Empty,
-                    "value"
-                })
-            });
-
-            // Validate that the command failed
-            Assert.IsFalse(result.Success);
-            Assert.AreEqual(CommandResultType.InvalidParameter, result.Status);
-        }
-
-        /// <summary>
-        ///     Checks that a user must have permission to set a archive VariableModel.
-        /// </summary>
-        [Test]
-        public void TestVariablesSetValueAInsufficientPermission() {
-            var variables = new VariableController();
-
-            CommandResultArgs result = variables.Tunnel(new Command() {
-                Username = "Phogue",
-                Origin = CommandOrigin.Remote,
-                CommandType = CommandType.VariablesSetA,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
-                    "key",
-                    "value"
-                })
-            });
-
-            // Validate the command failed because we don't have permissions to execute it.
-            Assert.IsFalse(result.Success);
-            Assert.AreEqual(CommandResultType.InsufficientPermissions, result.Status);
-        }
-
         /// <summary>
         ///     Tests that setting a VariableModel will fetch/set as case insensitive
         /// </summary>
         [Test]
-        public void TestVariablesSetValueCaseInsensitive() {
+        public void TestCaseInsensitive() {
             var variables = new VariableController();
 
             CommandResultArgs result = variables.Tunnel(new Command() {
@@ -109,7 +57,7 @@ namespace Procon.Core.Test.Variables {
         ///     Tests that an empty key will result in a invalid parameter.
         /// </summary>
         [Test]
-        public void TestVariablesSetValueEmptyKey() {
+        public void TestEmptyKeyValue() {
             var variables = new VariableController();
 
             // Set the value of a empty key
@@ -132,7 +80,7 @@ namespace Procon.Core.Test.Variables {
         ///     Tests that setting a VariableModel will fail if the user does not have permission.
         /// </summary>
         [Test]
-        public void TestVariablesSetValueInsufficientPermission() {
+        public void TestInsufficientPermission() {
             var variables = new VariableController() {
                 Shared = {
                     Security = new SecurityController().Execute() as SecurityController
@@ -157,7 +105,7 @@ namespace Procon.Core.Test.Variables {
         ///     Tests that setting an existing VariableModel will succeed (different code branch because it does not need to be added first)
         /// </summary>
         [Test]
-        public void TestVariablesSetValueOverrideExisting() {
+        public void TestOverrideExisting() {
             var variables = new VariableController() {
                 VolatileVariables = new List<VariableModel>() {
                     new VariableModel() {
@@ -187,7 +135,7 @@ namespace Procon.Core.Test.Variables {
         ///     Tests setting a read only VariableModel returns an error and the VariableModel remains unchanged.
         /// </summary>
         [Test]
-        public void TestVariablesSetValueReadOnly() {
+        public void TestReadOnly() {
             var variables = new VariableController() {
                 VolatileVariables = new List<VariableModel>() {
                     new VariableModel() {
@@ -218,7 +166,7 @@ namespace Procon.Core.Test.Variables {
         ///     Tests that we can set a VariableModel to a list of strings via a command.
         /// </summary>
         [Test]
-        public void TestVariablesSetValueStringList() {
+        public void TestValueStringList() {
             var variables = new VariableController();
 
             // Set the value of a empty key

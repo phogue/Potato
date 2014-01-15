@@ -29,7 +29,7 @@ namespace Procon.Core.Test.Variables {
         ///     will fallback to the default value.
         /// </summary>
         [Test]
-        public void TestVariablesDirectVariableEmptyValueWithDefault() {
+        public void TestEmptyValueWithDefault() {
             var variables = new VariableController() {
                 VolatileVariables = new List<VariableModel>() {
                     new VariableModel() {
@@ -46,7 +46,7 @@ namespace Procon.Core.Test.Variables {
         ///     Fetches a simple VariableModel from the VariableModel controller.
         /// </summary>
         [Test]
-        public void TestVariablesGetValue() {
+        public void TestValue() {
             var variables = new VariableController() {
                 VolatileVariables = new List<VariableModel>() {
                     new VariableModel() {
@@ -73,7 +73,7 @@ namespace Procon.Core.Test.Variables {
         ///     Tests fetching a VariableModel by a common name
         /// </summary>
         [Test]
-        public void TestVariablesGetValueCommonName() {
+        public void TestValueCommonName() {
             var variables = new VariableController() {
                 VolatileVariables = new List<VariableModel>() {
                     new VariableModel() {
@@ -92,7 +92,7 @@ namespace Procon.Core.Test.Variables {
         ///     Fetches the complex value from
         /// </summary>
         [Test]
-        public void TestVariablesGetValueComplexValue() {
+        public void TestValueComplexValue() {
             var variables = new VariableController() {
                 VolatileVariables = new List<VariableModel>() {
                     new VariableModel() {
@@ -117,7 +117,7 @@ namespace Procon.Core.Test.Variables {
         ///     Tests that passing an empty key to the Get parameter will return an error.
         /// </summary>
         [Test]
-        public void TestVariablesGetValueEmptyKey() {
+        public void TestValueEmptyKey() {
             var variables = new VariableController() {
                 VolatileVariables = new List<VariableModel>() {
                     new VariableModel() {
@@ -143,7 +143,7 @@ namespace Procon.Core.Test.Variables {
         ///     Tests that a user without correct permissions to fetch a VariableModel will get an error.
         /// </summary>
         [Test]
-        public void TestVariablesGetValueInsufficientPermission() {
+        public void TestInsufficientPermission() {
             var variables = new VariableController() {
                 Shared = {
                     Security = new SecurityController().Execute() as SecurityController,
@@ -174,7 +174,7 @@ namespace Procon.Core.Test.Variables {
         ///     not equal what we expect.
         /// </summary>
         [Test]
-        public void TestVariablesGetValueInvalidTypeCastNoDefault() {
+        public void TestInvalidTypeCastNoDefault() {
             var variables = new VariableController() {
                 VolatileVariables = new List<VariableModel>() {
                     new VariableModel() {
@@ -191,7 +191,7 @@ namespace Procon.Core.Test.Variables {
         ///     Validates that the default value will be used if no cast is possible.
         /// </summary>
         [Test]
-        public void TestVariablesGetValueInvalidTypeCastWithDefault() {
+        public void TestInvalidTypeCastWithDefault() {
             var variables = new VariableController() {
                 VolatileVariables = new List<VariableModel>() {
                     new VariableModel() {
@@ -208,7 +208,7 @@ namespace Procon.Core.Test.Variables {
         ///     Validates that if a valid cast exists then then the VariableModel will be cast to that type.
         /// </summary>
         [Test]
-        public void TestVariablesGetValueValidTypeCast() {
+        public void TesValueValidTypeCast() {
             var variables = new VariableController() {
                 VolatileVariables = new List<VariableModel>() {
                     new VariableModel() {

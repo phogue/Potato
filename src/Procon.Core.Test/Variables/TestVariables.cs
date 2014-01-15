@@ -15,7 +15,7 @@ using Procon.Net.Shared.Utils;
 
 namespace Procon.Core.Test.Variables {
     [TestFixture]
-    public class TestVariables {
+    public class Test {
         [SetUp]
         public void Initialize() {
             SharedReferences.Setup();
@@ -31,7 +31,7 @@ namespace Procon.Core.Test.Variables {
         ///     Tests that an empty namespace will result in the common VariableModel name being returned.
         /// </summary>
         [Test]
-        public void TestVariablesBuildNamespaceVariableKeyEmptyNamespace() {
+        public void TestBuildNamespaceVariableKeyEmptyNamespace() {
             Assert.AreEqual("CommandServerEnabled", VariableModel.NamespaceVariableName("", CommonVariableNames.CommandServerEnabled));
         }
 
@@ -40,7 +40,7 @@ namespace Procon.Core.Test.Variables {
         ///     namespace is passed in.
         /// </summary>
         [Test]
-        public void TestVariablesBuildNamespaceVariableKeyWithNamespace() {
+        public void TestBuildNamespaceVariableKeyWithNamespace() {
             Assert.AreEqual("my.namespace.CommandServerEnabled", VariableModel.NamespaceVariableName("my.namespace", CommonVariableNames.CommandServerEnabled));
         }
 
@@ -48,7 +48,7 @@ namespace Procon.Core.Test.Variables {
         ///     Tests that when disposing of the variables object, all other items are cleaned up.
         /// </summary>
         [Test]
-        public void TestVariablesDispose() {
+        public void TestDispose() {
             var variables = new VariableController();
 
             variables.Tunnel(new Command() {
@@ -85,7 +85,7 @@ namespace Procon.Core.Test.Variables {
         ///     to begin with.
         /// </summary>
         [Test]
-        public void TestVariablesDynamicCreationCommonVariableKey() {
+        public void TestDynamicCreationCommonVariableKey() {
             var variables = new VariableController();
 
             // Validate the VariableModel does not exist first.
@@ -103,8 +103,8 @@ namespace Procon.Core.Test.Variables {
         ///     to begin with.
         /// </summary>
         [Test]
-        public void TestVariablesDynamicCreationStringKey() {
-            String key = "TestVariablesDynamicCreation" + StringExtensions.RandomString(20);
+        public void TestDynamicCreationStringKey() {
+            String key = "TestDynamicCreation" + StringExtensions.RandomString(20);
 
             var variables = new VariableController();
 
@@ -122,7 +122,7 @@ namespace Procon.Core.Test.Variables {
         ///     Tests that a config can be successfully loaded
         /// </summary>
         [Test]
-        public void TestVariablesLoadConfig() {
+        public void TestLoadConfig() {
             var saveVariables = (VariableController)new VariableController().Execute();
             saveVariables.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
@@ -181,7 +181,7 @@ namespace Procon.Core.Test.Variables {
         ///     Tests that a config can be written in a specific format.
         /// </summary>
         [Test]
-        public void TestVariablesWriteConfig() {
+        public void TestWriteConfig() {
             var variables = (VariableController)new VariableController().Execute();
             variables.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,

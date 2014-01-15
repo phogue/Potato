@@ -23,7 +23,7 @@ namespace Procon.Core.Test.Variables {
         ///     Tests that parsing no arguments results in no variables.
         /// </summary>
         [Test]
-        public void TestVariablesArgumentsBlank() {
+        public void TestBlank() {
             var variables = new VariableController();
             variables.ParseArguments(new List<String>());
 
@@ -37,7 +37,7 @@ namespace Procon.Core.Test.Variables {
         ///     Expects: key3: 2, readonly
         /// </summary>
         [Test]
-        public void TestVariablesArgumentsParseMixedMultiple() {
+        public void TestParseMixedMultiple() {
             var variables = new VariableController();
             variables.ParseArguments(@"-key1 ""value1"" -key2 -key3 2".Wordify());
 
@@ -67,7 +67,7 @@ namespace Procon.Core.Test.Variables {
         ///     Expects: key2: 2, readonly
         /// </summary>
         [Test]
-        public void TestVariablesArgumentsParseMultiple() {
+        public void TestParseMultiple() {
             var variables = new VariableController();
             variables.ParseArguments(@"-key1 ""value1"" -key2 2".Wordify());
 
@@ -90,7 +90,7 @@ namespace Procon.Core.Test.Variables {
         ///     Expects: key: "value", readonly
         /// </summary>
         [Test]
-        public void TestVariablesArgumentsParseSingle() {
+        public void TestParseSingle() {
             var variables = new VariableController();
             variables.ParseArguments(@"-key ""value""".Wordify());
 
@@ -107,7 +107,7 @@ namespace Procon.Core.Test.Variables {
         ///     Expects: key: true, readonly
         /// </summary>
         [Test]
-        public void TestVariablesArgumentsParseSingleFlag() {
+        public void TestParseSingleFlag() {
             var variables = new VariableController();
             variables.ParseArguments(@"-key".Wordify());
 

@@ -25,7 +25,7 @@ namespace Procon.Core.Test.Variables {
         ///     Fetches the complex value from the archive.
         /// </summary>
         [Test]
-        public void TestVariablesGetValueAComplexValue() {
+        public void TestComplexValue() {
             var variables = new VariableController();
 
             variables.SetA(new Command() {

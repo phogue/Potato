@@ -437,6 +437,10 @@ namespace Procon.Core.Variables {
                             }
                         }
                     };
+
+                    if (this.Shared.Events != null) {
+                        this.Shared.Events.Log(GenericEventArgs.ConvertToGenericEvent(result, GenericEventType.VariablesSetA));
+                    }
                 }
                 else {
                     // Bubble the error.
@@ -488,6 +492,10 @@ namespace Procon.Core.Variables {
                             }
                         }
                     };
+
+                    if (this.Shared.Events != null) {
+                        this.Shared.Events.Log(GenericEventArgs.ConvertToGenericEvent(result, GenericEventType.VariablesSetF));
+                    }
                 }
                 else {
                     // Bubble the error.

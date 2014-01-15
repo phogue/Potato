@@ -81,6 +81,14 @@ namespace Procon.Core.Shared.Events {
         /// A variable has been set
         /// </summary>
         VariablesSet,
+        /// <summary>
+        /// A variable has been set and will be archived.
+        /// </summary>
+        VariablesSetA,
+        /// <summary>
+        /// A variable has been set and will be saved to the config, but will be volatile thereafter.
+        /// </summary>
+        VariablesSetF,
 
         /// <summary>
         /// A text command has been registered with the text controller

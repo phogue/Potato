@@ -531,7 +531,7 @@ namespace Procon.Core {
         }
 
         /// <summary>
-        /// Posts a merge-package signal for the service controller to poll.
+        /// Posts a merge signal for the service controller to poll.
         /// </summary>
         /// <param name="command"></param>
         /// <param name="parameters"></param>
@@ -546,7 +546,7 @@ namespace Procon.Core {
             if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
                 if (String.IsNullOrEmpty(uri) == false && String.IsNullOrEmpty(packageId) == false) {
                     this.ServiceMessage = new ServiceMessage() {
-                        Name = "merge-package",
+                        Name = "merge",
                         Arguments = new Dictionary<String, String>() {
                             { "uri", uri },
                             { "packageid", packageId }
@@ -577,7 +577,7 @@ namespace Procon.Core {
         }
 
         /// <summary>
-        /// Posts a uninstall-package signal for the service controller to poll.
+        /// Posts a uninstall signal for the service controller to poll.
         /// </summary>
         /// <param name="command"></param>
         /// <param name="parameters"></param>
@@ -591,7 +591,7 @@ namespace Procon.Core {
             if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
                 if (String.IsNullOrEmpty(packageId) == false) {
                     this.ServiceMessage = new ServiceMessage() {
-                        Name = "uninstall-package",
+                        Name = "uninstall",
                         Arguments = new Dictionary<String, String>() {
                             { "packageid", packageId }
                         }

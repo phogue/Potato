@@ -95,10 +95,12 @@
     <Compile Include="Models\TextCommandMatchModel.cs" />
     <Compile Include="Models\VariableModel.cs" />
     <Compile Include="Plugins\IPluginController.cs" />
+    <Compile Include="Plugins\IPluginSetup.cs" />
     <Compile Include="Plugins\IRemotePluginController.cs" />
     <Compile Include="Plugins\IRenewableLease.cs" />
     <Compile Include="Plugins\CorePluginControllerCallbackProxy.cs" />
     <Compile Include="Plugins\PluginController.cs" />
+    <Compile Include="Plugins\PluginSetup.cs" />
     <Compile Include="Plugins\SandboxPluginController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -12,7 +12,6 @@ using Procon.Net.Shared.Actions.Deferred;
 using Procon.Net.Shared.Models;
 
 namespace Procon.Core.Shared.Plugins {
-
     /// <summary>
     /// The class in which all plugins should inherit from. This class handles all remoting
     /// to Procon and other standard tasks 
@@ -42,11 +41,6 @@ namespace Procon.Core.Shared.Plugins {
         /// The latest GameState that was passed across the AppDomain.
         /// </summary>
         public ProtocolState GameState { get; set; }
-
-        /// <summary>
-        /// The interface to callback from the plugin side to Procon.
-        /// </summary>
-        //public IList<IExecutableBase> PluginCallback { private get; set; }
 
         /// <summary>
         /// All actions awaiting responses from the game networking layer
@@ -232,6 +226,22 @@ namespace Procon.Core.Shared.Plugins {
             this.GenericEvent(new GenericEventArgs() {
                 GenericEventType = GenericEventType.ConfigLoaded
             });
+        }
+
+        public void Setup(IPluginSetup setup) {
+            if (setup.ConnectionGuid != null) {
+                this.ConnectionGuid = Guid.Parse(setup.ConnectionGuid);
+            }
+
+            if (setup.ConfigDirectoryPath != null) {
+                this.ConfigDirectoryInfo = new DirectoryInfo(setup.ConfigDirectoryPath);
+                this.ConfigDirectoryInfo.Create();
+            }
+
+            if (setup.ConfigDirectoryPath != null) {
+                this.ConfigDirectoryInfo = new DirectoryInfo(setup.ConfigDirectoryPath);
+                this.ConfigDirectoryInfo.Create();
+            }
         }
 
         public virtual void GameEvent(ProtocolEventArgs e) {

@@ -14,24 +14,15 @@ namespace Procon.Core.Shared.Plugins {
         Guid PluginGuid { get; }
 
         /// <summary>
-        /// The connection that owns this plugin instance.
-        /// </summary>
-        Guid ConnectionGuid { get; set; }
-
-        /// <summary>
-        /// Path to the default config-file of the plugin
-        /// </summary>
-        DirectoryInfo ConfigDirectoryInfo { get; set; }
-
-        /// <summary>
-        /// Path to the log-file directory of the plugin
-        /// </summary>
-        DirectoryInfo LogDirectoryInfo { get; set; }
-
-        /// <summary>
         /// Execute the controller
         /// </summary>
         ICoreController Execute();
+
+        /// <summary>
+        /// Creates and sets the more complex properties of this plugin.
+        /// </summary>
+        /// <param name="setup">The parameters to copy to the plugin app domain.</param>
+        void Setup(IPluginSetup setup);
 
         /// <summary>
         /// Fired whenever an event is passed from the client, to the game layer

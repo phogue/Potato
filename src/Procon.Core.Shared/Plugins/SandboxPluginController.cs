@@ -10,7 +10,6 @@ namespace Procon.Core.Shared.Plugins {
     /// Controller to run on the plugin side of the AppDomain
     /// </summary>
     public class SandboxPluginController : CoreController, IRemotePluginController {
-
         /// <summary>
         /// A list of loaded plugins. This can be considered a pool of plugins that
         /// exist, but not necessarily plugins that should recieve events and commands.

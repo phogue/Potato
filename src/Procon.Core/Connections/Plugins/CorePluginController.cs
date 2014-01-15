@@ -338,16 +338,13 @@ namespace Procon.Core.Connections.Plugins {
                 if (proxy != null) {
                     plugin.PluginGuid = proxy.PluginGuid;
 
-                    // register game specific call backs.
-                    proxy.ConnectionGuid = this.Connection != null ? this.Connection.ConnectionModel.ConnectionGuid : Guid.Empty;
+                    Guid connectionGuid = this.Connection != null ? this.Connection.ConnectionModel.ConnectionGuid : Guid.Empty;
 
-                    // check the plugin's config directory
-                    proxy.ConfigDirectoryInfo = new DirectoryInfo(System.IO.Path.Combine(Defines.ConfigsDirectory.FullName, proxy.ConnectionGuid.ToString(), plugin.PluginGuid.ToString()));
-                    proxy.ConfigDirectoryInfo.Create();
-
-                    // check the plugin's log directory
-                    proxy.LogDirectoryInfo = new DirectoryInfo(System.IO.Path.Combine(Defines.LogsDirectory.FullName, proxy.ConnectionGuid.ToString(), plugin.PluginGuid.ToString()));
-                    proxy.LogDirectoryInfo.Create();
+                    proxy.Setup(new PluginSetup() {
+                        ConnectionGuid = connectionGuid.ToString(),
+                        ConfigDirectoryPath = Path.Combine(Defines.ConfigsDirectory.FullName, connectionGuid.ToString(), plugin.PluginGuid.ToString()),
+                        LogDirectoryPath = Path.Combine(Defines.LogsDirectory.FullName, connectionGuid.ToString(), plugin.PluginGuid.ToString())
+                    });
 
                     // Tell the plugin it's ready to begin, everything is setup and ready 
                     // for it to start loading its config.

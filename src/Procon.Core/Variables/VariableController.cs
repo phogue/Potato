@@ -213,7 +213,7 @@ namespace Procon.Core.Variables {
             }
 
             foreach (VariableModel flashVariable in this.FlashVariables) {
-                config.Root.Add(CommandBuilder.VariablesSetF(flashVariable.Name, flashVariable.Value.ToString()).ToConfigCommand());
+                config.Root.Add(CommandBuilder.VariablesSet(flashVariable.Name, flashVariable.Value.ToString()).ToConfigCommand());
             }
         }
 

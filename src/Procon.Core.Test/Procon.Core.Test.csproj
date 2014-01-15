@@ -143,6 +143,7 @@
     <Compile Include="Utils\TestDirectoryInfoExtensions.cs" />
     <Compile Include="Utils\TestXElementExtensions.cs" />
     <Compile Include="Utils\TestXElementValidator.cs" />
+    <Compile Include="Variables\TestVariablesSetF.cs" />
     <Compile Include="Variables\TestVariablesGetA.cs" />
     <Compile Include="Variables\TestVariablesSetA.cs" />
     <Compile Include="Variables\TestVariableController.cs" />

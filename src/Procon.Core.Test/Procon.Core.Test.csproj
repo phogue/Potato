@@ -145,7 +145,7 @@
     <Compile Include="Utils\TestXElementValidator.cs" />
     <Compile Include="Variables\TestVariablesGetA.cs" />
     <Compile Include="Variables\TestVariablesSetA.cs" />
-    <Compile Include="Variables\TestVariables.cs" />
+    <Compile Include="Variables\TestVariableController.cs" />
     <Compile Include="Variables\TestVariablesArguments.cs" />
     <Compile Include="Variables\TestVariablesGet.cs" />
     <Compile Include="Variables\TestVariablesSet.cs" />

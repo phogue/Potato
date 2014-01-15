@@ -15,7 +15,7 @@ using Procon.Net.Shared.Utils;
 
 namespace Procon.Core.Test.Variables {
     [TestFixture]
-    public class Test {
+    public class TestVariableController {
         [SetUp]
         public void Initialize() {
             SharedReferences.Setup();

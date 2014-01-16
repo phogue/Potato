@@ -83,6 +83,14 @@ namespace Procon.Core.Variables {
         }
 
         /// <summary>
+        /// Fires off a change immediately, so any existing grouped variables are included in an
+        /// event to set themselves up.
+        /// </summary>
+        public void Execute() {
+            this.OnOpenGroupedControllerList(this.GetGroupedNames());
+        }
+
+        /// <summary>
         /// Fired whenever the group name list is altered for the database config.
         /// </summary>
         /// <param name="sender"></param>

@@ -145,6 +145,8 @@ namespace Procon.Core.Events {
             this.GroupedVariableListener.Variables = this.Shared.Variables;
 
             this.AssignEvents();
+
+            this.GroupedVariableListener.Execute();
             
             return base.Execute();
         }

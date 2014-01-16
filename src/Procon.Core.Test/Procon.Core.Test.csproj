@@ -110,7 +110,7 @@
     <Compile Include="CoreInstance\TestCommandInstanceRemoveConnection.cs" />
     <Compile Include="Events\TestEvents.cs" />
     <Compile Include="Events\TestEventsCommands.cs" />
-    <Compile Include="Events\TestEventsPushController.cs" />
+    <Compile Include="Events\TestPushEventsController.cs" />
     <Compile Include="Events\TestGenericEventData.cs" />
     <Compile Include="Events\TestPushEventsEndPoint.cs" />
     <Compile Include="Localization\TestLocalization.cs" />

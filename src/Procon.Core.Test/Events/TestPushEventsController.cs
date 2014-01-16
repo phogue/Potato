@@ -16,7 +16,7 @@ using Procon.Net.Shared.Utils;
 
 namespace Procon.Core.Test.Events {
     [TestFixture]
-    public class TestEventsPushController {
+    public class TestPushEventsController {
         [SetUp]
         public void Initialize() {
             SharedReferences.Setup();
@@ -264,6 +264,33 @@ namespace Procon.Core.Test.Events {
             }, CommonVariableNames.EventsPushConfigGroups, new List<String>() {
                 pushConfigGroupName
             });
+
+            Assert.IsTrue(pushEvents.EndPoints.ContainsKey(pushConfigGroupName));
+            Assert.AreEqual("http://localhost/pushme.php", pushEvents.EndPoints[pushConfigGroupName].Uri.ToString());
+            Assert.AreEqual(20, pushEvents.EndPoints[pushConfigGroupName].Interval);
+        }
+
+        /// <summary>
+        /// Tests that variables can be set prior to executing the push events controller,
+        /// which will still setup the controller correctly.
+        /// </summary>
+        [Test]
+        public void TestVariablesSetPriorToPushEventsControllerExecution() {
+            String pushConfigGroupName = StringExtensions.RandomString(10);
+
+            var variables = new VariableController();
+            variables.Tunnel(CommandBuilder.VariablesSet(VariableModel.NamespaceVariableName(pushConfigGroupName, CommonVariableNames.EventsPushUri), "http://localhost/pushme.php").SetOrigin(CommandOrigin.Local));
+            variables.Tunnel(CommandBuilder.VariablesSet(VariableModel.NamespaceVariableName(pushConfigGroupName, CommonVariableNames.EventPushIntervalSeconds), "20").SetOrigin(CommandOrigin.Local));
+            variables.Tunnel(CommandBuilder.VariablesSet(CommonVariableNames.EventsPushConfigGroups, pushConfigGroupName).SetOrigin(CommandOrigin.Local));
+
+            var events = new EventsController();
+
+            var pushEvents = (PushEventsController)new PushEventsController() {
+                Shared = {
+                    Variables = variables,
+                    Events = events
+                }
+            }.Execute();
 
             Assert.IsTrue(pushEvents.EndPoints.ContainsKey(pushConfigGroupName));
             Assert.AreEqual("http://localhost/pushme.php", pushEvents.EndPoints[pushConfigGroupName].Uri.ToString());

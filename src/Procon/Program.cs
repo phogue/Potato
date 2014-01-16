@@ -71,7 +71,7 @@ namespace Procon {
             return list;
         }
 
-        [STAThread, LoaderOptimization(LoaderOptimization.MultiDomainHost)]
+        [STAThread, LoaderOptimization(LoaderOptimization.MultiDomain)]
         private static void Main(string[] args) {
 
             Console.WriteLine(Resources.ConsoleHeader);

@@ -196,7 +196,7 @@ namespace Procon.Core.Connections.Plugins {
         /// <returns></returns>
         protected AppDomainSetup CreateAppDomainSetup() {
             AppDomainSetup setup = new AppDomainSetup {
-                LoaderOptimization = LoaderOptimization.MultiDomainHost,
+                LoaderOptimization = LoaderOptimization.MultiDomain,
                 ApplicationBase = AppDomain.CurrentDomain.BaseDirectory,
                 PrivateBinPath = String.Join(";", new[] {
                     AppDomain.CurrentDomain.BaseDirectory,

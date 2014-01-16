@@ -22,8 +22,6 @@ namespace Procon.Core.Test.Plugins {
             plugins.Dispose();
 
             Assert.IsNull(plugins.LoadedPlugins);
-            Assert.IsNull(plugins.AppDomainSandbox);
-            Assert.IsNull(plugins.PluginFactory);
         }
     }
 }

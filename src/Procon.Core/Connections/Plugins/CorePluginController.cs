@@ -7,6 +7,7 @@ using System.Security;
 using System.Security.Permissions;
 using System.Text.RegularExpressions;
 using System.Threading;
+using System.Threading.Tasks;
 using Procon.Core.Shared;
 using Procon.Core.Shared.Events;
 using Procon.Core.Shared.Models;
@@ -400,10 +401,13 @@ namespace Procon.Core.Connections.Plugins {
             this.LoadedPlugins.Clear();
             this.LoadedPlugins = null;
 
-            AppDomain.Unload(this.AppDomainSandbox);
-            this.AppDomainSandbox = null;
-            this.PluginFactory = null;
+            Task.Factory.StartNew(() => {
+                AppDomain.Unload(this.AppDomainSandbox);
 
+                this.AppDomainSandbox = null;
+                this.PluginFactory = null;
+            });
+            
             base.Dispose();
         }
     }

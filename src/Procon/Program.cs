@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using Procon.Properties;
 using Procon.Service.Shared;
 
@@ -142,21 +143,30 @@ namespace Procon {
                 Name = "start"
             });
 
-            var input = String.Empty;
+            AutoResetEvent exitWait = new AutoResetEvent(false);
 
-            do {
-                input = Console.ReadLine();
-                
-                if (input != null) {
-                    var words = Program.Wordify(input);
+            Task.Factory.StartNew(() => {
+                var input = String.Empty;
 
-                    service.SignalMessage(new ServiceMessage() {
-                        Name = words.FirstOrDefault(),
-                        Arguments = ArgumentHelper.ToArguments(words.Skip(1).ToList())
-                    });
-                }
+                do {
+                    input = Console.ReadLine();
 
-            } while (String.Compare(input, "exit", StringComparison.OrdinalIgnoreCase) != 0);
+                    if (input != null) {
+                        var words = Program.Wordify(input);
+
+                        service.SignalMessage(new ServiceMessage() {
+                            Name = words.FirstOrDefault(),
+                            Arguments = ArgumentHelper.ToArguments(words.Skip(1).ToList())
+                        });
+                    }
+
+                } while (String.Compare(input, "exit", StringComparison.OrdinalIgnoreCase) != 0);
+
+                exitWait.Set();
+            });
+
+            // Wait until exit() is called.
+            exitWait.WaitOne();
 
             service.SignalMessage(new ServiceMessage() {
                 Name = "stop"

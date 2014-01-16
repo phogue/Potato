@@ -56,7 +56,16 @@ namespace Procon.Service.Shared {
         public ServiceMessage PollService() {
             ServiceMessage message = null;
 
-            if (this.Service != null) message = this.Service.PollService();
+            if (this.Service != null) {
+                var polled = this.Service.PollService();
+
+                // Clone the message so we have no proxy to the other side.
+                message = new ServiceMessage() {
+                    Name = polled.Name,
+                    Arguments = polled.Arguments,
+                    Stamp = polled.Stamp
+                };
+            }
 
             return message;
         }

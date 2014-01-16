@@ -87,8 +87,8 @@ namespace Procon.Core.Packages {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public CommandResultArgs PackagesMergePackage(Command command, Dictionary<String, CommandParameter> parameters) {
-            CommandResultArgs result = null;
+        public CommandResult PackagesMergePackage(Command command, Dictionary<String, CommandParameter> parameters) {
+            CommandResult result = null;
 
             String packageId = parameters["packageId"].First<String>();
 
@@ -105,7 +105,7 @@ namespace Procon.Core.Packages {
                             // arbitrary source (InstanceServiceMergePackage)
                             this.Bubble(CommandBuilder.InstanceServiceMergePackage(repository.Uri, package.Id).SetOrigin(CommandOrigin.Local));
 
-                            result = new CommandResultArgs() {
+                            result = new CommandResult() {
                                 Message = String.Format("Dispatched merge signal on package id {0}.", packageId),
                                 Status = CommandResultType.Success,
                                 Success = true,
@@ -120,7 +120,7 @@ namespace Procon.Core.Packages {
                             };
                         }
                         else {
-                            result = new CommandResultArgs() {
+                            result = new CommandResult() {
                                 Message = String.Format(@"Package with id ""{0}"" is already installed and up to date.", packageId),
                                 Status = CommandResultType.AlreadyExists,
                                 Success = false
@@ -128,7 +128,7 @@ namespace Procon.Core.Packages {
                         }
                     }
                     else {
-                        result = new CommandResultArgs() {
+                        result = new CommandResult() {
                             Message = String.Format(@"Repository with package id ""{0}"" is not known or the package does not exist.", packageId),
                             Status = CommandResultType.DoesNotExists,
                             Success = false
@@ -136,7 +136,7 @@ namespace Procon.Core.Packages {
                     }
                 }
                 else {
-                    result = new CommandResultArgs() {
+                    result = new CommandResult() {
                         Message = String.Format(@"Invalid or missing parameter ""packageId""."),
                         Status = CommandResultType.InvalidParameter,
                         Success = false
@@ -144,7 +144,7 @@ namespace Procon.Core.Packages {
                 }
             }
             else {
-                result = CommandResultArgs.InsufficientPermissions;
+                result = CommandResult.InsufficientPermissions;
             }
 
             return result;
@@ -156,8 +156,8 @@ namespace Procon.Core.Packages {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public CommandResultArgs PackagesUninstallPackage(Command command, Dictionary<String, CommandParameter> parameters) {
-            CommandResultArgs result = null;
+        public CommandResult PackagesUninstallPackage(Command command, Dictionary<String, CommandParameter> parameters) {
+            CommandResult result = null;
 
             String packageId = parameters["packageId"].First<String>();
 
@@ -173,7 +173,7 @@ namespace Procon.Core.Packages {
                             // arbitrary source (InstanceServiceMergePackage)
                             this.Bubble(CommandBuilder.InstanceServiceUninstallPackage(package.Id).SetOrigin(CommandOrigin.Local));
 
-                            result = new CommandResultArgs() {
+                            result = new CommandResult() {
                                 Message = String.Format("Dispatched uninstall signal on package id {0}.", packageId),
                                 Status = CommandResultType.Success,
                                 Success = true,
@@ -188,7 +188,7 @@ namespace Procon.Core.Packages {
                             };
                         }
                         else {
-                            result = new CommandResultArgs() {
+                            result = new CommandResult() {
                                 Message = String.Format(@"Package with id ""{0}"" is not installed.", packageId),
                                 Status = CommandResultType.AlreadyExists,
                                 Success = false
@@ -196,7 +196,7 @@ namespace Procon.Core.Packages {
                         }
                     }
                     else {
-                        result = new CommandResultArgs() {
+                        result = new CommandResult() {
                             Message = String.Format(@"Repository with package id ""{0}"" is not known or the package does not exist.", packageId),
                             Status = CommandResultType.DoesNotExists,
                             Success = false
@@ -204,7 +204,7 @@ namespace Procon.Core.Packages {
                     }
                 }
                 else {
-                    result = new CommandResultArgs() {
+                    result = new CommandResult() {
                         Message = String.Format(@"Invalid or missing parameter ""packageId""."),
                         Status = CommandResultType.InvalidParameter,
                         Success = false
@@ -212,7 +212,7 @@ namespace Procon.Core.Packages {
                 }
             }
             else {
-                result = CommandResultArgs.InsufficientPermissions;
+                result = CommandResult.InsufficientPermissions;
             }
 
             return result;
@@ -225,13 +225,13 @@ namespace Procon.Core.Packages {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public CommandResultArgs PackagesFetchPackages(Command command, Dictionary<String, CommandParameter> parameters) {
-            CommandResultArgs result = null;
+        public CommandResult PackagesFetchPackages(Command command, Dictionary<String, CommandParameter> parameters) {
+            CommandResult result = null;
 
             if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
                 Task.Factory.StartNew(this.BuildRepositoryCache);
 
-                result = new CommandResultArgs() {
+                result = new CommandResult() {
                     Message = String.Format("Dispatched packages fetch signal."),
                     Status = CommandResultType.Success,
                     Success = true,
@@ -241,7 +241,7 @@ namespace Procon.Core.Packages {
                 };
             }
             else {
-                result = CommandResultArgs.InsufficientPermissions;
+                result = CommandResult.InsufficientPermissions;
             }
 
             return result;
@@ -257,7 +257,7 @@ namespace Procon.Core.Packages {
         public void BuildRepositoryCache() {
             this.Cache.Build(this.LocalRepository);
 
-            this.Shared.Events.Log(new GenericEventArgs() {
+            this.Shared.Events.Log(new GenericEvent() {
                 GenericEventType = GenericEventType.PackagesCacheRebuilt,
                 Now = {
                     Repositories = new List<RepositoryModel>(this.Cache.Repositories)

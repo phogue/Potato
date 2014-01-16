@@ -18,6 +18,10 @@ namespace Procon.Core.Shared.Events {
         /// </summary>
         InstanceConnectionRemoved,
         /// <summary>
+        /// The instance has started up.
+        /// </summary>
+        InstanceServiceStarted,
+        /// <summary>
         /// The instance has posted a restart signal.
         /// </summary>
         InstanceServiceRestarting,

@@ -56,7 +56,7 @@ namespace Procon.Core.Test.Variables {
                 }
             };
 
-            CommandResultArgs result = variables.Tunnel(new Command() {
+            CommandResult result = variables.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.VariablesGet,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -127,7 +127,7 @@ namespace Procon.Core.Test.Variables {
                 }
             };
 
-            CommandResultArgs result = variables.Tunnel(new Command() {
+            CommandResult result = variables.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.VariablesGet,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -156,7 +156,7 @@ namespace Procon.Core.Test.Variables {
                 }
             };
 
-            CommandResultArgs result = variables.Tunnel(new Command() {
+            CommandResult result = variables.Tunnel(new Command() {
                 CommandType = CommandType.VariablesGet,
                 Username = "Phogue",
                 Origin = CommandOrigin.Remote,

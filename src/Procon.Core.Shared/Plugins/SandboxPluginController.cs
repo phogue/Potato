@@ -67,7 +67,7 @@ namespace Procon.Core.Shared.Plugins {
                 //    this
                 //};
 
-                plugin.GenericEvent(new GenericEventArgs() {
+                plugin.GenericEvent(new GenericEvent() {
                     GenericEventType = GenericEventType.PluginsEnabled
                 });
 
@@ -90,7 +90,7 @@ namespace Procon.Core.Shared.Plugins {
             if (this.EnabledPlugins.TryRemove(pluginGuid, out plugin) == true) {
                 plugin.BubbleObjects.Clear();
 
-                plugin.GenericEvent(new GenericEventArgs() {
+                plugin.GenericEvent(new GenericEvent() {
                     GenericEventType = GenericEventType.PluginsDisabled
                 });
 
@@ -134,7 +134,7 @@ namespace Procon.Core.Shared.Plugins {
         /// </summary>
         public void Shutdown() {
             foreach (var plugin in this.LoadedPlugins) {
-                plugin.Value.GenericEvent(new GenericEventArgs() {
+                plugin.Value.GenericEvent(new GenericEvent() {
                     GenericEventType = GenericEventType.PluginsUnloading
                 });
 

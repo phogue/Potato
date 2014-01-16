@@ -19,7 +19,7 @@ namespace Procon.Core.Test.Remote.TestCommandServerSerializer {
         /// </summary>
         [Test]
         public void TestSerializeJson() {
-            var packet = CommandServerSerializer.CompleteResponsePacket(Mime.ApplicationJson, new CommandServerPacket(), new CommandResultArgs() {
+            var packet = CommandServerSerializer.CompleteResponsePacket(Mime.ApplicationJson, new CommandServerPacket(), new CommandResult() {
                 Now = {
                     Content = new List<String>() {
                         "A"
@@ -39,7 +39,7 @@ namespace Procon.Core.Test.Remote.TestCommandServerSerializer {
         /// </summary>
         [Test]
         public void TestSerializeXml() {
-            var packet = CommandServerSerializer.CompleteResponsePacket(Mime.ApplicationXml, new CommandServerPacket(), new CommandResultArgs() {
+            var packet = CommandServerSerializer.CompleteResponsePacket(Mime.ApplicationXml, new CommandServerPacket(), new CommandResult() {
                 Now = {
                     Content = new List<String>() {
                         "A"
@@ -59,7 +59,7 @@ namespace Procon.Core.Test.Remote.TestCommandServerSerializer {
         /// </summary>
         [Test]
         public void TestSerializeTextHtml() {
-            var packet = CommandServerSerializer.CompleteResponsePacket(Mime.TextHtml, new CommandServerPacket(), new CommandResultArgs() {
+            var packet = CommandServerSerializer.CompleteResponsePacket(Mime.TextHtml, new CommandServerPacket(), new CommandResult() {
                 Now = {
                     Content = new List<String>() {
                         "A"

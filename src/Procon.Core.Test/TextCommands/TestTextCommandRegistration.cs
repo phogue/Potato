@@ -25,7 +25,7 @@ namespace Procon.Core.Test.TextCommands {
         public void TestTextCommandRegister() {
             var textCommands = new TextCommandController();
 
-            CommandResultArgs result = textCommands.Tunnel(new Command() {
+            CommandResult result = textCommands.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.TextCommandsRegister,
                 Parameters = new List<CommandParameter>() {
@@ -79,7 +79,7 @@ namespace Procon.Core.Test.TextCommands {
                 }
             });
 
-            CommandResultArgs result = textCommands.Tunnel(new Command() {
+            CommandResult result = textCommands.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.TextCommandsRegister,
                 Parameters = new List<CommandParameter>() {
@@ -111,7 +111,7 @@ namespace Procon.Core.Test.TextCommands {
         public void TestTextCommandRegisterInsufficientPermission() {
             var textCommands = new TextCommandController();
 
-            CommandResultArgs result = textCommands.Tunnel(new Command() {
+            CommandResult result = textCommands.Tunnel(new Command() {
                 Username = "Phogue",
                 Origin = CommandOrigin.Remote,
                 CommandType = CommandType.TextCommandsRegister,
@@ -167,7 +167,7 @@ namespace Procon.Core.Test.TextCommands {
             Assert.AreEqual(1, textCommands.TextCommands.Count);
             Assert.AreEqual("RegisterTest", textCommands.TextCommands.First().Commands.First());
 
-            CommandResultArgs result = textCommands.Tunnel(new Command() {
+            CommandResult result = textCommands.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.TextCommandsUnregister,
                 Parameters = new List<CommandParameter>() {
@@ -196,7 +196,7 @@ namespace Procon.Core.Test.TextCommands {
         public void TestTextCommandUnregisterDoesNotExist() {
             var textCommands = new TextCommandController();
 
-            CommandResultArgs result = textCommands.Tunnel(new Command() {
+            CommandResult result = textCommands.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.TextCommandsUnregister,
                 Parameters = new List<CommandParameter>() {
@@ -248,7 +248,7 @@ namespace Procon.Core.Test.TextCommands {
             Assert.AreEqual(1, textCommands.TextCommands.Count);
             Assert.AreEqual("RegisterTest", textCommands.TextCommands.First().Commands.First());
 
-            CommandResultArgs result = textCommands.Tunnel(new Command() {
+            CommandResult result = textCommands.Tunnel(new Command() {
                 Username = "Phogue",
                 Origin = CommandOrigin.Remote,
                 CommandType = CommandType.TextCommandsUnregister,

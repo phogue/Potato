@@ -22,7 +22,7 @@ namespace Procon.Core.Test.Variables {
             var variables = new VariableController();
 
             // Set an archive variable
-            CommandResultArgs result = variables.Tunnel(CommandBuilder.VariablesSetA("key", "value").SetOrigin(CommandOrigin.Local));
+            CommandResult result = variables.Tunnel(CommandBuilder.VariablesSetA("key", "value").SetOrigin(CommandOrigin.Local));
 
             // Validate that the command was successful and the key was set to the passed value.
             Assert.IsTrue(result.Success);
@@ -37,7 +37,7 @@ namespace Procon.Core.Test.Variables {
             var variables = new VariableController();
 
             // Set an archive variable
-            CommandResultArgs result = variables.Tunnel(CommandBuilder.VariablesSetA(String.Empty, "value").SetOrigin(CommandOrigin.Local));
+            CommandResult result = variables.Tunnel(CommandBuilder.VariablesSetA(String.Empty, "value").SetOrigin(CommandOrigin.Local));
 
             // Validate that the command failed
             Assert.IsFalse(result.Success);
@@ -51,7 +51,7 @@ namespace Procon.Core.Test.Variables {
         public void TestInsufficientPermission() {
             var variables = new VariableController();
 
-            CommandResultArgs result = variables.Tunnel(CommandBuilder.VariablesSetA("key", "value").SetUsername("Phogue").SetOrigin(CommandOrigin.Remote));
+            CommandResult result = variables.Tunnel(CommandBuilder.VariablesSetA("key", "value").SetUsername("Phogue").SetOrigin(CommandOrigin.Remote));
 
             // Validate the command failed because we don't have permissions to execute it.
             Assert.IsFalse(result.Success);
@@ -81,7 +81,7 @@ namespace Procon.Core.Test.Variables {
             var variables = new VariableController();
 
             // Set an archive variable
-            CommandResultArgs result = variables.Tunnel(CommandBuilder.VariablesSetA("key", "value").SetOrigin(CommandOrigin.Local));
+            CommandResult result = variables.Tunnel(CommandBuilder.VariablesSetA("key", "value").SetOrigin(CommandOrigin.Local));
 
             // Validate that initially setting the VariableModel is successful.
             Assert.IsTrue(result.Success);

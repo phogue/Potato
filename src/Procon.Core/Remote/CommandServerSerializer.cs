@@ -67,7 +67,7 @@ namespace Procon.Core.Remote {
         /// <param name="response">The existing response packet to be modified with additional data/changes</param>
         /// <param name="result">The result of the command issued in the request</param>
         /// <returns>The existing response packet, modified with the result of the command execution.</returns>
-        public static CommandServerPacket CompleteResponsePacket(String contentType, CommandServerPacket response, CommandResultArgs result) {
+        public static CommandServerPacket CompleteResponsePacket(String contentType, CommandServerPacket response, CommandResult result) {
             switch (contentType) {
                 case Mime.TextHtml:
                     response.Headers.Add(HttpRequestHeader.ContentType, Mime.TextHtml);

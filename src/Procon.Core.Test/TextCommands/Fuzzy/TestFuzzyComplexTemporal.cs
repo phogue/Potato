@@ -15,7 +15,7 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
     public class TestFuzzyComplexTemporal : TestTextCommandParserBase {
         [Test]
         public void TestTemporalKickPhogueInTwoMinutesOnPortValdezForAMinute() {
-            CommandResultArgs args = ExecuteTextCommand(CreateTextCommandController(), "kick phogue in two minutes on port valdez for a minute");
+            CommandResult args = ExecuteTextCommand(CreateTextCommandController(), "kick phogue in two minutes on port valdez for a minute");
 
             AssertExecutedCommandAgainstPlayerListMapList(args, TextCommandKick, new List<Player>() {
                 PlayerPhogue
@@ -28,7 +28,7 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
 
         [Test]
         public void TestTemporalKickPhogueInTwoMinutesOnPortValdezForAMinuteEveryHour() {
-            CommandResultArgs args = ExecuteTextCommand(CreateTextCommandController(), "kick phogue in two minutes on port valdez for a minute every hour");
+            CommandResult args = ExecuteTextCommand(CreateTextCommandController(), "kick phogue in two minutes on port valdez for a minute every hour");
 
             AssertExecutedCommandAgainstPlayerListMapList(args, TextCommandKick, new List<Player>() {
                 PlayerPhogue
@@ -44,7 +44,7 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
 
         [Test]
         public void TestTemporalKickPhogueOnPortValdezEveryMinute() {
-            CommandResultArgs args = ExecuteTextCommand(CreateTextCommandController(), "kick phogue on port valdez every minute");
+            CommandResult args = ExecuteTextCommand(CreateTextCommandController(), "kick phogue on port valdez every minute");
 
             AssertExecutedCommandAgainstPlayerListMapList(args, TextCommandKick, new List<Player>() {
                 PlayerPhogue
@@ -60,7 +60,7 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
 
         [Test]
         public void TestTemporalKickPhogueOnPortValdezForAMinute() {
-            CommandResultArgs args = ExecuteTextCommand(CreateTextCommandController(), "kick phogue on port valdez for a minute");
+            CommandResult args = ExecuteTextCommand(CreateTextCommandController(), "kick phogue on port valdez for a minute");
 
             AssertExecutedCommandAgainstPlayerListMapList(args, TextCommandKick, new List<Player>() {
                 PlayerPhogue

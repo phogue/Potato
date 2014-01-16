@@ -75,7 +75,7 @@ namespace Procon.Core.Shared {
         /// <summary>
         /// Variables effected by this event.
         /// </summary>
-        public List<GenericEventArgs> Events { get; set; }
+        public List<GenericEvent> Events { get; set; }
 
         /// <summary>
         /// Repositories effected by this event.
@@ -140,7 +140,7 @@ namespace Procon.Core.Shared {
         /// <summary>
         /// The command results attached to this event, if any.
         /// </summary>
-        public List<CommandResultArgs> CommandResults { get; set; }
+        public List<CommandResult> CommandResults { get; set; }
 
         /// <summary>
         /// Raw packets (in plain or completed format) 

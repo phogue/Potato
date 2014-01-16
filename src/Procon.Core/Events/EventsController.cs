@@ -21,7 +21,7 @@ namespace Procon.Core.Events {
         /// <summary>
         /// List of events for history
         /// </summary>
-        public List<GenericEventArgs> LoggedEvents { get; protected set; }
+        public List<GenericEvent> LoggedEvents { get; protected set; }
 
         /// <summary>
         /// Lock used when fetching a new event Id. I hate that this was originally copied from Procon.Net without looking =\
@@ -50,7 +50,7 @@ namespace Procon.Core.Events {
         /// </summary>
         /// <param name="sender">The sender</param>
         /// <param name="e">The event that has been logged</param>
-        public delegate void EventLoggedHandler(Object sender, GenericEventArgs e);
+        public delegate void EventLoggedHandler(Object sender, GenericEvent e);
 
         public SharedReferences Shared { get; private set; }
 
@@ -64,7 +64,7 @@ namespace Procon.Core.Events {
         /// </summary>
         public EventsController() : base() {
             this.Shared = new SharedReferences();
-            this.LoggedEvents = new List<GenericEventArgs>();
+            this.LoggedEvents = new List<GenericEvent>();
 
             this.AppendDispatchHandlers(new Dictionary<CommandAttribute, CommandDispatchHandler>() {
                 {
@@ -82,7 +82,7 @@ namespace Procon.Core.Events {
             });
         }
 
-        protected virtual void OnEventLogged(GenericEventArgs e) {
+        protected virtual void OnEventLogged(GenericEvent e) {
             EventLoggedHandler handler = this.EventLogged;
 
             if (handler != null) {
@@ -104,7 +104,7 @@ namespace Procon.Core.Events {
         /// Log an item to the events list
         /// </summary>
         /// <param name="item"></param>
-        public void Log(GenericEventArgs item) {
+        public void Log(GenericEvent item) {
             // Can be null after disposal.
             if (this.LoggedEvents != null) {
                 item.Id = this.AcquireEventId;
@@ -136,7 +136,7 @@ namespace Procon.Core.Events {
         /// Writes the selected events to a file.
         /// </summary>
         /// <param name="events">The events to write.</param>
-        protected bool WriteEventsList(List<GenericEventArgs> events) {
+        protected bool WriteEventsList(List<GenericEvent> events) {
             // Assume everything was successful
             bool saved = true;
 
@@ -195,7 +195,7 @@ namespace Procon.Core.Events {
             // Events can be null after disposal.
             if (this.LoggedEvents != null) {
 
-                List<GenericEventArgs> flushEvents = null;
+                List<GenericEvent> flushEvents = null;
 
                 lock (this.LoggedEvents) {
                     DateTime before = now - TimeSpan.FromSeconds(this.Shared.Variables.Get(CommonVariableNames.MaximumEventsTimeSeconds, 30));
@@ -210,7 +210,7 @@ namespace Procon.Core.Events {
 
                 // Now remove all of the events we just wrote to disk.
                 lock (this.LoggedEvents) {
-                    foreach (GenericEventArgs removeEvent in flushEvents) {
+                    foreach (GenericEvent removeEvent in flushEvents) {
                         this.LoggedEvents.Remove(removeEvent);
 
                         // Dispose each event we just wrote to disk and removed from the Events list.
@@ -226,13 +226,13 @@ namespace Procon.Core.Events {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public CommandResultArgs FetchEventsSince(Command command, Dictionary<String, CommandParameter> parameters) {
-            CommandResultArgs result = null;
+        public CommandResult FetchEventsSince(Command command, Dictionary<String, CommandParameter> parameters) {
+            CommandResult result = null;
 
             ulong eventId = parameters["eventId"].First<ulong>();
 
             if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
-                List<GenericEventArgs> events = null;
+                List<GenericEvent> events = null;
 
                 lock (this.LoggedEvents) {
                     events = this.LoggedEvents.Where(e => e.Stamp > DateTime.Now - TimeSpan.FromSeconds(this.Shared.Variables.Get(CommonVariableNames.MaximumEventsTimeSeconds, 300)))
@@ -241,7 +241,7 @@ namespace Procon.Core.Events {
                                               .ToList();
                 }
 
-                result = new CommandResultArgs() {
+                result = new CommandResult() {
                     Success = true,
                     Status = CommandResultType.Success,
                     Message = String.Format(@"Fetched {0} event(s)", events.Count),
@@ -251,7 +251,7 @@ namespace Procon.Core.Events {
                 };
             }
             else {
-                result = CommandResultArgs.InsufficientPermissions;
+                result = CommandResult.InsufficientPermissions;
             }
 
             return result;

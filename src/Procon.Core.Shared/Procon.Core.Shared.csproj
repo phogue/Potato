@@ -56,7 +56,7 @@
     <Compile Include="CommandOrigin.cs" />
     <Compile Include="CommandParameter.cs" />
     <Compile Include="CommandParameterType.cs" />
-    <Compile Include="CommandResultArgs.cs" />
+    <Compile Include="CommandResult.cs" />
     <Compile Include="CommandResultType.cs" />
     <Compile Include="CommandScope.cs" />
     <Compile Include="CommandType.cs" />
@@ -69,7 +69,7 @@
     <Compile Include="Database\Migrations\MigrationModel.cs" />
     <Compile Include="Database\Migrations\MigrationOrigin.cs" />
     <Compile Include="Database\Migrations\MigrationSettings.cs" />
-    <Compile Include="Events\GenericEventArgs.cs" />
+    <Compile Include="Events\GenericEvent.cs" />
     <Compile Include="Events\GenericEventData.cs" />
     <Compile Include="Events\GenericEventType.cs" />
     <Compile Include="CoreController.cs" />

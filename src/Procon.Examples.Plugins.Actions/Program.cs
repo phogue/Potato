@@ -34,9 +34,9 @@ namespace Procon.Examples.Plugins.Actions {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        protected CommandResultArgs KickPlayer(Command command, Dictionary<String, CommandParameter> parameters) {
+        protected CommandResult KickPlayer(Command command, Dictionary<String, CommandParameter> parameters) {
             // You would usually pull the player object from this.GameState but we mock together a player here.
-            CommandResultArgs result = this.Action(new Kick() {
+            CommandResult result = this.Action(new Kick() {
                 Scope = {
                     Players = new List<Player>() {
                         new Player() {
@@ -68,8 +68,8 @@ namespace Procon.Examples.Plugins.Actions {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        protected CommandResultArgs DeferredKickPlayer(Command command, Dictionary<String, CommandParameter> parameters) {
-            command.Result = new CommandResultArgs {
+        protected CommandResult DeferredKickPlayer(Command command, Dictionary<String, CommandParameter> parameters) {
+            command.Result = new CommandResult {
                 Now = {
                     Content = new List<String>()
                 }

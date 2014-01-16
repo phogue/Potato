@@ -41,7 +41,7 @@ namespace Procon.Examples.Plugins.Database {
             });
         }
 
-        protected CommandResultArgs SaveOneUser(Command command, Dictionary<String, CommandParameter> parameters) {
+        protected CommandResult SaveOneUser(Command command, Dictionary<String, CommandParameter> parameters) {
             command.Result.Status = CommandResultType.Success;
             command.Result.Success = true;
 
@@ -65,9 +65,9 @@ namespace Procon.Examples.Plugins.Database {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        protected CommandResultArgs FindOneUser(Command command, Dictionary<String, CommandParameter> parameters) {
+        protected CommandResult FindOneUser(Command command, Dictionary<String, CommandParameter> parameters) {
             // Grab the first result from the table.
-            CommandResultArgs fetchResult = this.Bubble(
+            CommandResult fetchResult = this.Bubble(
                 CommandBuilder.DatabaseQuery(
                     new Find()
                     .Collection("Procon_Example_Database_Users")
@@ -90,7 +90,7 @@ namespace Procon.Examples.Plugins.Database {
         /// See the Procon.Examples.Events project for details on why this event handler exists.
         /// </summary>
         /// <param name="e"></param>
-        public override void GenericEvent(GenericEventArgs e) {
+        public override void GenericEvent(GenericEvent e) {
             base.GenericEvent(e);
 
             if (e.GenericEventType == GenericEventType.PluginsEnabled) {

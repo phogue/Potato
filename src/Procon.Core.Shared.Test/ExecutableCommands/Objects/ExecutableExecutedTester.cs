@@ -28,10 +28,10 @@ namespace Procon.Core.Shared.Test.ExecutableCommands.Objects {
         /// <summary>
         ///     Sets the value of the test flag.
         /// </summary>
-        public CommandResultArgs SetTestFlagPreview(Command command, Dictionary<String, CommandParameter> parameters) {
+        public CommandResult SetTestFlagPreview(Command command, Dictionary<String, CommandParameter> parameters) {
             int value = parameters["value"].First<int>();
 
-            CommandResultArgs result = command.Result;
+            CommandResult result = command.Result;
 
             ExecutedTestValue = TestNumber * 2;
 

@@ -63,7 +63,7 @@ namespace Procon.Core.Test.TextCommands {
             Assert.AreEqual(1, textCommands.TextCommands.Count);
             Assert.AreEqual("ExecuteTest", textCommands.TextCommands.First().Commands.First());
 
-            CommandResultArgs result = textCommands.Tunnel(new Command() {
+            CommandResult result = textCommands.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.TextCommandsExecute,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -86,7 +86,7 @@ namespace Procon.Core.Test.TextCommands {
                 }
             };
 
-            CommandResultArgs result = textCommands.Tunnel(new Command() {
+            CommandResult result = textCommands.Tunnel(new Command() {
                 Origin = CommandOrigin.Remote,
                 Username = "Phogue",
                 CommandType = CommandType.TextCommandsExecute,
@@ -186,7 +186,7 @@ namespace Procon.Core.Test.TextCommands {
             Assert.AreEqual(1, textCommands.TextCommands.Count);
             Assert.AreEqual("ExecuteTest", textCommands.TextCommands.First().Commands.First());
 
-            CommandResultArgs result = textCommands.Tunnel(new Command() {
+            CommandResult result = textCommands.Tunnel(new Command() {
                 Origin = CommandOrigin.Plugin,
                 Username = "Phogue",
                 CommandType = CommandType.TextCommandsExecute,
@@ -239,7 +239,7 @@ namespace Procon.Core.Test.TextCommands {
             Assert.AreEqual(1, textCommands.TextCommands.Count);
             Assert.AreEqual("ExecuteTest", textCommands.TextCommands.First().Commands.First());
 
-            CommandResultArgs result = textCommands.Tunnel(new Command() {
+            CommandResult result = textCommands.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.TextCommandsPreview,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -262,7 +262,7 @@ namespace Procon.Core.Test.TextCommands {
                 }
             };
 
-            CommandResultArgs result = textCommands.Tunnel(new Command() {
+            CommandResult result = textCommands.Tunnel(new Command() {
                 CommandType = CommandType.TextCommandsPreview,
                 Username = "Phogue",
                 Origin = CommandOrigin.Remote,

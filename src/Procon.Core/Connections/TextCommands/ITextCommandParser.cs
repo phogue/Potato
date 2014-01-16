@@ -11,6 +11,6 @@ namespace Procon.Core.Connections.TextCommands {
         /// <param name="prefix">The text prefix that was used at the start of the text (!, @, #) "!hello world" -> "!"</param>
         /// <param name="text">The rest of the text "!hello world" -> "hello world"</param>
         /// <returns></returns>
-        CommandResultArgs Parse(string prefix, string text);
+        CommandResult Parse(string prefix, string text);
     }
 }

@@ -27,7 +27,7 @@ namespace Procon.Core.Test.Serialization.Xml {
         public void TestXmlSerializationCommandResultDerivedType() {
             DateTime now = DateTime.Now;
 
-            var result = new CommandResultArgs() {
+            var result = new CommandResult() {
                 Message = "Serialization Message",
                 Now = null,
                 Then = null,
@@ -63,7 +63,7 @@ namespace Procon.Core.Test.Serialization.Xml {
         public void TestXmlSerializationCommandResultNoData() {
             DateTime now = DateTime.Now;
 
-            var result = new CommandResultArgs() {
+            var result = new CommandResult() {
                 Message = "Serialization Message",
                 Now = null,
                 Then = null,

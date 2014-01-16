@@ -85,7 +85,7 @@ namespace Procon.Core.Shared.Plugins {
             return guid;
         }
 
-        public override void BeginBubble(Command command, Action<CommandResultArgs> completed = null) {
+        public override void BeginBubble(Command command, Action<CommandResult> completed = null) {
             // There isn't much point in bubbling up if we just need to come back down here.
             if (command.Scope != null && command.Scope.PluginGuid == this.PluginGuid) {
                 base.BeginTunnel(command, completed);
@@ -95,7 +95,7 @@ namespace Procon.Core.Shared.Plugins {
             }
         }
 
-        public override CommandResultArgs Bubble(Command command) {
+        public override CommandResult Bubble(Command command) {
             // There isn't much point in bubbling up if we just need to come back down here.
             if (command.Scope != null && command.Scope.PluginGuid == this.PluginGuid) {
                 command.Result = this.Tunnel(command);
@@ -115,12 +115,12 @@ namespace Procon.Core.Shared.Plugins {
         /// </remarks>
         /// <param name="action">The action to send to the server.</param>
         /// <returns>The result of the command, check the status for a success message.</returns>
-        public virtual CommandResultArgs Action(NetworkAction action) {
+        public virtual CommandResult Action(NetworkAction action) {
             // Splitting the commands up is very deliberate, used to divide the permissions a user
             // requires to initiate a particular command. We do this here instead of later for.. well..
             // I don't know. A plugin might have a use to ignore this action at some point?
 
-            CommandResultArgs result = null;
+            CommandResult result = null;
             CommandType command = CommandType.None;
             CommandParameter parameter = new CommandParameter();
 
@@ -174,8 +174,8 @@ namespace Procon.Core.Shared.Plugins {
         /// </summary>
         /// <param name="action"></param>
         /// <returns></returns>
-        public virtual CommandResultArgs Action(IDeferredAction action) {
-            CommandResultArgs result = null;
+        public virtual CommandResult Action(IDeferredAction action) {
+            CommandResult result = null;
 
             if (action.GetAction() != null) {
                 // Wait for responses from this action
@@ -217,13 +217,13 @@ namespace Procon.Core.Shared.Plugins {
         /// </summary>
         /// <remarks>Configs are simply saved commands</remarks>
         public virtual void LoadConfig() {
-            this.GenericEvent(new GenericEventArgs() {
+            this.GenericEvent(new GenericEvent() {
                 GenericEventType = GenericEventType.ConfigLoading
             });
 
             this.Execute(new Config().Load(ConfigDirectoryInfo));
 
-            this.GenericEvent(new GenericEventArgs() {
+            this.GenericEvent(new GenericEvent() {
                 GenericEventType = GenericEventType.ConfigLoaded
             });
         }
@@ -283,7 +283,7 @@ namespace Procon.Core.Shared.Plugins {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public virtual CommandResultArgs TextCommandExecuted(Command command, Dictionary<String, CommandParameter> parameters) {
+        public virtual CommandResult TextCommandExecuted(Command command, Dictionary<String, CommandParameter> parameters) {
 
             // Not used.
             // String text = parameters["text"].First<String>();
@@ -295,7 +295,7 @@ namespace Procon.Core.Shared.Plugins {
                     Parameters = new List<CommandParameter>() {
                         new CommandParameter() {
                             Data = {
-                                CommandResults = new List<CommandResultArgs>() {
+                                CommandResults = new List<CommandResult>() {
                                     command.Result
                                 }
                             }
@@ -311,7 +311,7 @@ namespace Procon.Core.Shared.Plugins {
         /// Consider this your constructor.
         /// </summary>
         /// <param name="e"></param>
-        protected virtual void GenericEventTypePluginLoaded(GenericEventArgs e) {
+        protected virtual void GenericEventTypePluginLoaded(GenericEvent e) {
             this.LoadConfig();
         }
 
@@ -319,7 +319,7 @@ namespace Procon.Core.Shared.Plugins {
         /// Consider this the plugin destructor
         /// </summary>
         /// <param name="e"></param>
-        protected virtual void GenericEventTypePluginUnloading(GenericEventArgs e) {
+        protected virtual void GenericEventTypePluginUnloading(GenericEvent e) {
             this.WriteConfig();
         }
 
@@ -330,14 +330,14 @@ namespace Procon.Core.Shared.Plugins {
         /// which just cleans up the plugin implementation a little bit but converting
         /// a plugin executed command to a local command. Snazzified.</remarks>
         /// <param name="e"></param>
-        protected virtual void GenericEventTypeTextCommandExecuted(GenericEventArgs e) {
+        protected virtual void GenericEventTypeTextCommandExecuted(GenericEvent e) {
             this.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 Name = e.Now.TextCommands.First().PluginCommand,
                 Parameters = new List<CommandParameter>() {
                     new CommandParameter() {
                         Data = {
-                            Events = new List<GenericEventArgs>() {
+                            Events = new List<GenericEvent>() {
                                 e
                             }
                         }
@@ -352,7 +352,7 @@ namespace Procon.Core.Shared.Plugins {
         /// your plugin if you just want to prevent/alter some default functionality.
         /// </summary>
         /// <param name="e"></param>
-        public virtual void GenericEvent(GenericEventArgs e) {
+        public virtual void GenericEvent(GenericEvent e) {
             if (e.GenericEventType == GenericEventType.PluginsLoaded) {
                 this.GenericEventTypePluginLoaded(e);
             }

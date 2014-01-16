@@ -150,7 +150,7 @@ namespace Procon.Core.Connections.TextCommands {
         /// <param name="prefix"></param>
         /// <param name="text"></param>
         /// <returns>The generated event, if any.</returns>
-        protected CommandResultArgs Parse(Player speakerNetworkPlayer, AccountModel speakerAccount, String prefix, String text) {
+        protected CommandResult Parse(Player speakerNetworkPlayer, AccountModel speakerAccount, String prefix, String text) {
             List<ITextCommandParser> parsers = new List<ITextCommandParser>() {
                 this.BuildFuzzyParser(speakerNetworkPlayer, speakerAccount),
                 this.BuildRouteParser(speakerNetworkPlayer, speakerAccount)
@@ -191,8 +191,8 @@ namespace Procon.Core.Connections.TextCommands {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns>The generated event, if any.</returns>
-        public CommandResultArgs ExecuteTextCommand(Command command, Dictionary<String, CommandParameter> parameters) {
-            CommandResultArgs result = null;
+        public CommandResult ExecuteTextCommand(Command command, Dictionary<String, CommandParameter> parameters) {
+            CommandResult result = null;
 
             String text = parameters["text"].First<String>();
 
@@ -208,7 +208,7 @@ namespace Procon.Core.Connections.TextCommands {
                 // todo fire event? GenericEventType.TextCommandExecuted
             }
             else {
-                result = CommandResultArgs.InsufficientPermissions;
+                result = CommandResult.InsufficientPermissions;
             }
 
             return result;
@@ -222,8 +222,8 @@ namespace Procon.Core.Connections.TextCommands {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns>The generated event, if any.</returns>
-        public CommandResultArgs PreviewTextCommand(Command command, Dictionary<String, CommandParameter> parameters) {
-            CommandResultArgs result = null;
+        public CommandResult PreviewTextCommand(Command command, Dictionary<String, CommandParameter> parameters) {
+            CommandResult result = null;
 
             String text = parameters["text"].First<String>();
 
@@ -239,7 +239,7 @@ namespace Procon.Core.Connections.TextCommands {
                 // todo fire event? GenericEventType.TextCommandPreviewed
             }
             else {
-                result = CommandResultArgs.InsufficientPermissions;
+                result = CommandResult.InsufficientPermissions;
             }
 
             return result;
@@ -251,8 +251,8 @@ namespace Procon.Core.Connections.TextCommands {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public CommandResultArgs RegisterTextCommand(Command command, Dictionary<String, CommandParameter> parameters) {
-            CommandResultArgs result = null;
+        public CommandResult RegisterTextCommand(Command command, Dictionary<String, CommandParameter> parameters) {
+            CommandResult result = null;
 
             TextCommandModel textCommand = parameters["textCommand"].First<TextCommandModel>();
 
@@ -262,7 +262,7 @@ namespace Procon.Core.Connections.TextCommands {
                 if (existingRegisteredCommand == null) {
                     this.TextCommands.Add(textCommand);
 
-                    result = new CommandResultArgs() {
+                    result = new CommandResult() {
                         Success = true,
                         Status = CommandResultType.Success,
                         Scope = {
@@ -278,18 +278,18 @@ namespace Procon.Core.Connections.TextCommands {
                     };
 
                     if (this.Shared.Events != null) {
-                        this.Shared.Events.Log(GenericEventArgs.ConvertToGenericEvent(result, GenericEventType.TextCommandRegistered));
+                        this.Shared.Events.Log(GenericEvent.ConvertToGenericEvent(result, GenericEventType.TextCommandRegistered));
                     }
                 }
                 else {
-                    result = new CommandResultArgs() {
+                    result = new CommandResult() {
                         Success = false,
                         Status = CommandResultType.AlreadyExists
                     };
                 }
             }
             else {
-                result = CommandResultArgs.InsufficientPermissions;
+                result = CommandResult.InsufficientPermissions;
             }
 
             return result;
@@ -301,8 +301,8 @@ namespace Procon.Core.Connections.TextCommands {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public CommandResultArgs UnregisterTextCommand(Command command, Dictionary<String, CommandParameter> parameters) {
-            CommandResultArgs result = null;
+        public CommandResult UnregisterTextCommand(Command command, Dictionary<String, CommandParameter> parameters) {
+            CommandResult result = null;
 
             TextCommandModel textCommand = parameters["textCommand"].First<TextCommandModel>();
 
@@ -312,7 +312,7 @@ namespace Procon.Core.Connections.TextCommands {
                 if (existingRegisteredCommand != null) {
                     this.TextCommands.Remove(existingRegisteredCommand);
 
-                    result = new CommandResultArgs() {
+                    result = new CommandResult() {
                         Success = true,
                         Status = CommandResultType.Success,
                         Scope = {
@@ -328,18 +328,18 @@ namespace Procon.Core.Connections.TextCommands {
                     };
 
                     if (this.Shared.Events != null) {
-                        this.Shared.Events.Log(GenericEventArgs.ConvertToGenericEvent(result, GenericEventType.TextCommandUnregistered));
+                        this.Shared.Events.Log(GenericEvent.ConvertToGenericEvent(result, GenericEventType.TextCommandUnregistered));
                     }
                 }
                 else {
-                    result = new CommandResultArgs() {
+                    result = new CommandResult() {
                         Success = false,
                         Status = CommandResultType.DoesNotExists
                     };
                 }
             }
             else {
-                result = CommandResultArgs.InsufficientPermissions;
+                result = CommandResult.InsufficientPermissions;
             }
 
             return result;

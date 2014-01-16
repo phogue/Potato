@@ -157,14 +157,14 @@ namespace Procon.Core.Connections.TextCommands.Parsers {
         /// <param name="match">The result of a regular expression match against a compiled command</param>
         /// <param name="compiledTextCommand">The compiled text command to pull for additional meta data about the command being built</param>
         /// <returns>A command result if the matching was successful, or null if matching was not successful</returns>
-        protected CommandResultArgs BuildCommandResult(Match match, CompiledTextCommand compiledTextCommand) {
-            CommandResultArgs result = null;
+        protected CommandResult BuildCommandResult(Match match, CompiledTextCommand compiledTextCommand) {
+            CommandResult result = null;
 
             if (match.Success == true) {
                 TextCommandMatchModel textCommandMatchModel = this.BuildTextCommandMatch(match);
 
                 if (textCommandMatchModel != null) {
-                    result = new CommandResultArgs() {
+                    result = new CommandResult() {
                         Success = true,
                         Status = CommandResultType.Success,
                         Now = new CommandData() {
@@ -185,7 +185,7 @@ namespace Procon.Core.Connections.TextCommands.Parsers {
             return result;
         }
 
-        public override CommandResultArgs Parse(String prefix, String text) {
+        public override CommandResult Parse(String prefix, String text) {
             return this.CompileTextCommands()
                 .Select(compiledTextCommand => this.BuildCommandResult(compiledTextCommand.Match(text), compiledTextCommand))
                 .FirstOrDefault(result => result != null);

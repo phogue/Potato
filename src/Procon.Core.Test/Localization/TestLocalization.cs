@@ -26,7 +26,7 @@ namespace Procon.Core.Test.Localization {
         public void TestDeutschLocalizationControllerGetFirstDepthSearch() {
             var language = new LanguageController().Execute() as LanguageController;
 
-            CommandResultArgs result = language.Tunnel(new Command() {
+            CommandResult result = language.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.LanguageLocalize,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -48,7 +48,7 @@ namespace Procon.Core.Test.Localization {
         public void TestEnglishLocalizationControllerGet() {
             var language = new LanguageController().Execute() as LanguageController;
 
-            CommandResultArgs result = language.Tunnel(new Command() {
+            CommandResult result = language.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.LanguageLocalize,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -70,7 +70,7 @@ namespace Procon.Core.Test.Localization {
         public void TestEnglishLocalizationControllerGetCorrectFormat() {
             var language = new LanguageController().Execute() as LanguageController;
 
-            CommandResultArgs result = language.Tunnel(new Command() {
+            CommandResult result = language.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.LanguageLocalize,
                 Parameters = new List<CommandParameter>() {
@@ -119,7 +119,7 @@ namespace Procon.Core.Test.Localization {
         public void TestEnglishLocalizationControllerGetDoesNotExist() {
             var language = new LanguageController().Execute() as LanguageController;
 
-            CommandResultArgs result = language.Tunnel(new Command() {
+            CommandResult result = language.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.LanguageLocalize,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -140,7 +140,7 @@ namespace Procon.Core.Test.Localization {
         public void TestEnglishLocalizationControllerGetFirstDepthSearch() {
             var language = new LanguageController().Execute() as LanguageController;
 
-            CommandResultArgs result = language.Tunnel(new Command() {
+            CommandResult result = language.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.LanguageLocalize,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -162,7 +162,7 @@ namespace Procon.Core.Test.Localization {
         public void TestEnglishLocalizationControllerGetIncorrectFormat() {
             var language = new LanguageController().Execute() as LanguageController;
 
-            CommandResultArgs result = language.Tunnel(new Command() {
+            CommandResult result = language.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.LanguageLocalize,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -188,7 +188,7 @@ namespace Procon.Core.Test.Localization {
                 }
             }.Execute() as LanguageController;
 
-            CommandResultArgs result = language.Tunnel(new Command() {
+            CommandResult result = language.Tunnel(new Command() {
                 CommandType = CommandType.LanguageLocalize,
                 Username = "Phogue",
                 Origin = CommandOrigin.Remote,

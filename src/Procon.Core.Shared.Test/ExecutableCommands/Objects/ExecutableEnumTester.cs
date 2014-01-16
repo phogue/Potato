@@ -41,10 +41,10 @@ namespace Procon.Core.Shared.Test.ExecutableCommands.Objects {
         /// <summary>
         ///     Tests that a flags enumerator will be passed through
         /// </summary>
-        public CommandResultArgs SetTestFlagsEnum(Command command, Dictionary<String, CommandParameter> parameters) {
+        public CommandResult SetTestFlagsEnum(Command command, Dictionary<String, CommandParameter> parameters) {
             ExecutableFlagsEnum value = parameters["value"].First<ExecutableFlagsEnum>();
 
-            CommandResultArgs result = command.Result;
+            CommandResult result = command.Result;
 
             TestExecutableFlagsEnum = value;
 
@@ -54,10 +54,10 @@ namespace Procon.Core.Shared.Test.ExecutableCommands.Objects {
         /// <summary>
         ///     Tests that a enumerator will be passed through
         /// </summary>
-        public CommandResultArgs SetTestEnum(Command command, Dictionary<String, CommandParameter> parameters) {
+        public CommandResult SetTestEnum(Command command, Dictionary<String, CommandParameter> parameters) {
             ExecutableEnum value = parameters["value"].First<ExecutableEnum>();
 
-            CommandResultArgs result = command.Result;
+            CommandResult result = command.Result;
 
             TestExecutableEnum = value;
 

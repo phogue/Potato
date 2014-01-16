@@ -191,7 +191,7 @@ namespace Procon.Core.Localization {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public CommandResultArgs Localize(Command command, Dictionary<String, CommandParameter> parameters) {
+        public CommandResult Localize(Command command, Dictionary<String, CommandParameter> parameters) {
 
             // <param name="languageCode">The ietf language tag.</param>
             // <param name="namespace">The namespace to limit the search for the name to.</param>
@@ -217,14 +217,14 @@ namespace Procon.Core.Localization {
         /// <param name="name">The name representing the localized string.</param>
         /// <param name="args">Arguments to use in String.Format() for the value obtained by name.</param>
         /// <returns></returns>
-        public CommandResultArgs Localize(Command command, String languageCode, String @namespace, String name, Object[] args) {
-            CommandResultArgs result = null;
+        public CommandResult Localize(Command command, String languageCode, String @namespace, String name, Object[] args) {
+            CommandResult result = null;
 
             if (command.Origin == CommandOrigin.Local || this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
                 LanguageConfig language = this.LoadedLanguageFiles.FirstOrDefault(lang => lang.LanguageModel.LanguageCode == languageCode);
 
                 if (language != null) {
-                    result = new CommandResultArgs() {
+                    result = new CommandResult() {
                         Success = true,
                         Status = CommandResultType.Success,
                         Now = new CommandData() {
@@ -235,7 +235,7 @@ namespace Procon.Core.Localization {
                     };
                 }
                 else {
-                    result = new CommandResultArgs() {
+                    result = new CommandResult() {
                         Success = false,
                         Status = CommandResultType.DoesNotExists,
                         Message = String.Format(@"Language with the code ""{0}"" does not exist.", languageCode)
@@ -243,7 +243,7 @@ namespace Procon.Core.Localization {
                 }
             }
             else {
-                result = CommandResultArgs.InsufficientPermissions;
+                result = CommandResult.InsufficientPermissions;
             }
 
             return result;
@@ -255,7 +255,7 @@ namespace Procon.Core.Localization {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public CommandResultArgs SingleParameterLocalize(Command command, Dictionary<String, CommandParameter> parameters) {
+        public CommandResult SingleParameterLocalize(Command command, Dictionary<String, CommandParameter> parameters) {
             String languageCode = parameters["languageCode"].First<String>();
             String @namespace = parameters["namespace"].First<String>();
             String name = parameters["name"].First<String>();
@@ -270,7 +270,7 @@ namespace Procon.Core.Localization {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public CommandResultArgs ParameterlessLocalize(Command command, Dictionary<String, CommandParameter> parameters) {
+        public CommandResult ParameterlessLocalize(Command command, Dictionary<String, CommandParameter> parameters) {
 
             // <param name="languageCode">The ietf language tag.</param>
             // <param name="namespace">The namespace to limit the search for the name to.</param>

@@ -11,7 +11,7 @@ namespace Procon.Core.Shared.Events {
     ///     <pre>This is done in a very non-clever way deliberately. Think of it as an Interface that should never change, but instead be added to.</pre>
     /// </remarks>
     [Serializable, XmlType(TypeName = "Event")]
-    public sealed class GenericEventArgs : CommandResultArgs {
+    public sealed class GenericEvent : CommandResult {
 
         /// <summary>
         /// The event ID for this execution. These event ids are volatile, only used to track
@@ -46,8 +46,8 @@ namespace Procon.Core.Shared.Events {
         /// <param name="result"></param>
         /// <param name="eventType"></param>
         /// <returns></returns>
-        public static GenericEventArgs ConvertToGenericEvent(CommandResultArgs result, GenericEventType eventType) {
-            return new GenericEventArgs() {
+        public static GenericEvent ConvertToGenericEvent(CommandResult result, GenericEventType eventType) {
+            return new GenericEvent() {
                 GenericEventType = eventType,
                 Message = result.Message,
                 Stamp = result.Stamp,

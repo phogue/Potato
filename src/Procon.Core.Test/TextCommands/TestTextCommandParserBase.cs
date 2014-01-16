@@ -408,8 +408,8 @@ namespace Procon.Core.Test.TextCommands {
         /// <param name="command">The text based command to execute.</param>
         /// <param name="username">A username to execute the command as.</param>
         /// <returns>The event generated when executing the text command.</returns>
-        protected static CommandResultArgs ExecuteTextCommand(TextCommandController textCommandController, String command, String username = "Phogue") {
-            CommandResultArgs result = textCommandController.ExecuteTextCommand(new Command() {
+        protected static CommandResult ExecuteTextCommand(TextCommandController textCommandController, String command, String username = "Phogue") {
+            CommandResult result = textCommandController.ExecuteTextCommand(new Command() {
                 Username = username,
                 Origin = CommandOrigin.Local
             }, new Dictionary<string, CommandParameter>() {
@@ -425,11 +425,11 @@ namespace Procon.Core.Test.TextCommands {
             return result;
         }
 
-        protected static void AssertExecutedCommand(CommandResultArgs args, TextCommandModel primaryCommand) {
+        protected static void AssertExecutedCommand(CommandResult args, TextCommandModel primaryCommand) {
             Assert.AreEqual(primaryCommand, args.Now.TextCommands.First(), String.Format("Has not used the '{0}' command", primaryCommand.PluginCommand));
         }
 
-        protected static void AssertExecutedCommandAgainstSentencesList(CommandResultArgs args, TextCommandModel primaryCommand, List<String> sentences) {
+        protected static void AssertExecutedCommandAgainstSentencesList(CommandResult args, TextCommandModel primaryCommand, List<String> sentences) {
             Assert.AreEqual(primaryCommand, args.Now.TextCommands.First(), String.Format("Has not used the '{0}' command", primaryCommand.PluginCommand));
             Assert.AreEqual(sentences.Count, args.Now.TextCommandMatches.First().Quotes != null ? args.Now.TextCommandMatches.First().Quotes.Count : 0, "Incorrect numbers of sentences returned");
 
@@ -439,7 +439,7 @@ namespace Procon.Core.Test.TextCommands {
         }
 
         protected static void AssertCommandSentencesList(TextCommandController textCommandController, String command, TextCommandModel primaryCommand, List<String> sentences) {
-            CommandResultArgs args = ExecuteTextCommand(textCommandController, command);
+            CommandResult args = ExecuteTextCommand(textCommandController, command);
 
             AssertExecutedCommandAgainstSentencesList(args, primaryCommand, sentences);
         }
@@ -451,7 +451,7 @@ namespace Procon.Core.Test.TextCommands {
         /// <param name="primaryCommand">The command to check against - the returning primary command must be this</param>
         /// <param name="players">The list of players that must be in the resulting matched players (nothing more, nothing less)</param>
         /// <param name="maps">The list of maps that must be in the resulting matched maps (nothing more, nothing less)</param>
-        protected static void AssertExecutedCommandAgainstPlayerListMapList(CommandResultArgs args, TextCommandModel primaryCommand, List<Player> players, List<Map> maps) {
+        protected static void AssertExecutedCommandAgainstPlayerListMapList(CommandResult args, TextCommandModel primaryCommand, List<Player> players, List<Map> maps) {
             Assert.AreEqual(primaryCommand, args.Now.TextCommands.First(), String.Format("Has not used the '{0}' command", primaryCommand.PluginCommand));
             Assert.AreEqual(players.Count, args.Now.TextCommandMatches.First().Players != null ? args.Now.TextCommandMatches.First().Players.Count : 0, "Incorrect numbers of players returned");
             Assert.AreEqual(maps.Count, args.Now.TextCommandMatches.First().Maps != null ? args.Now.TextCommandMatches.First().Maps.Count : 0, "Incorrect numbers of maps returned");
@@ -474,7 +474,7 @@ namespace Procon.Core.Test.TextCommands {
         /// <param name="players">The list of players that must be in the resulting matched players (nothing more, nothing less)</param>
         /// <param name="maps">The list of maps that must be in the resulting matched maps (nothing more, nothing less)</param>
         protected static void AssertCommandPlayerListMapList(TextCommandController textCommandController, String command, TextCommandModel primaryCommand, List<Player> players, List<Map> maps) {
-            CommandResultArgs args = ExecuteTextCommand(textCommandController, command);
+            CommandResult args = ExecuteTextCommand(textCommandController, command);
 
             AssertExecutedCommandAgainstPlayerListMapList(args, primaryCommand, players, maps);
         }
@@ -485,7 +485,7 @@ namespace Procon.Core.Test.TextCommands {
         /// <param name="args">The generated event from the already executed command.</param>
         /// <param name="primaryCommand">The command to check against - the returning primary command must be this</param>
         /// <param name="value">The value of the arithmetic return. There must be only one value returned.</param>
-        protected static void AssertExecutedCommandAgainstNumericValue(CommandResultArgs args, TextCommandModel primaryCommand, float value) {
+        protected static void AssertExecutedCommandAgainstNumericValue(CommandResult args, TextCommandModel primaryCommand, float value) {
             Assert.AreEqual(primaryCommand, args.Now.TextCommands.First(), String.Format("Has not used the '{0}' command", primaryCommand.PluginCommand));
             Assert.AreEqual(1, args.Now.TextCommandMatches.First().Numeric.Count, "Not exactly one numeric value returned");
             Assert.AreEqual(value, args.Now.TextCommandMatches.First().Numeric.FirstOrDefault());
@@ -499,12 +499,12 @@ namespace Procon.Core.Test.TextCommands {
         /// <param name="primaryCommand">The command to check against - the returning primary command must be this</param>
         /// <param name="value">The value of the arithmetic return. There must be only one value returned.</param>
         protected static void AssertNumericCommand(TextCommandController textCommandController, String command, TextCommandModel primaryCommand, float value) {
-            CommandResultArgs args = ExecuteTextCommand(textCommandController, command);
+            CommandResult args = ExecuteTextCommand(textCommandController, command);
 
             AssertExecutedCommandAgainstNumericValue(args, primaryCommand, value);
         }
 
-        protected static void AssertExecutedCommandAgainstTemporalValue(CommandResultArgs args, TextCommandModel primaryCommand, TimeSpan? period = null, DateTime? delay = null, FuzzyDateTimePattern interval = null) {
+        protected static void AssertExecutedCommandAgainstTemporalValue(CommandResult args, TextCommandModel primaryCommand, TimeSpan? period = null, DateTime? delay = null, FuzzyDateTimePattern interval = null) {
             Assert.AreEqual(primaryCommand, args.Now.TextCommands.First(), String.Format("Has not used the '{0}' command", primaryCommand.PluginCommand));
 
             TextCommandMatchModel match = args.Now.TextCommandMatches.First();
@@ -547,7 +547,7 @@ namespace Procon.Core.Test.TextCommands {
         }
 
         protected static void AssertTemporalCommand(TextCommandController textCommandController, String command, TextCommandModel primaryCommand, TimeSpan? period = null, DateTime? delay = null, FuzzyDateTimePattern interval = null) {
-            CommandResultArgs args = ExecuteTextCommand(textCommandController, command);
+            CommandResult args = ExecuteTextCommand(textCommandController, command);
 
             AssertExecutedCommandAgainstTemporalValue(args, primaryCommand, period, delay, interval);
         }

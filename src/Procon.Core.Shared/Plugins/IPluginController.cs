@@ -42,6 +42,6 @@ namespace Procon.Core.Shared.Plugins {
         /// Fired whenever an event occurs from Procon, but isolated to this particular plugin.
         /// </summary>
         /// <param name="e">Description of the generic event</param>
-        void GenericEvent(GenericEventArgs e);
+        void GenericEvent(GenericEvent e);
     }
 }

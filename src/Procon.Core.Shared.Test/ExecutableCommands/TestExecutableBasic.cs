@@ -103,7 +103,7 @@ namespace Procon.Core.Shared.Test.ExecutableCommands {
                 TestNumber = 33
             };
 
-            CommandResultArgs result = tester.Tunnel(new Command() {
+            CommandResult result = tester.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.VariablesGet
             });

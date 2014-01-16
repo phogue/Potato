@@ -27,10 +27,10 @@ namespace Procon.Core.Shared.Test.AsynchronousExecutableCommands.Mocks {
         /// <summary>
         ///     Sets the value of the test flag.
         /// </summary>
-        public CommandResultArgs AppendMessage(Command command, Dictionary<String, CommandParameter> parameters) {
+        public CommandResult AppendMessage(Command command, Dictionary<String, CommandParameter> parameters) {
             String value = parameters["value"].First<String>();
 
-            return new CommandResultArgs() {
+            return new CommandResult() {
                 Success = true,
                 Status = CommandResultType.Success,
                 Message = "SetMessage: " + value

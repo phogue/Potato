@@ -296,10 +296,10 @@ namespace Procon.Core.Connections.TextCommands.Parsers {
             return interval;
         }
 
-        public override CommandResultArgs Parse(string prefix, string text) {
+        public override CommandResult Parse(string prefix, string text) {
             Sentence sentence = new Sentence().Parse(this, text).Reduce(this);
 
-            CommandResultArgs result = null;
+            CommandResult result = null;
 
             List<TextCommandModel> commands = this.ExtractCommandList(sentence);
             TextCommandModel priorityCommand = commands.FirstOrDefault();
@@ -319,7 +319,7 @@ namespace Procon.Core.Connections.TextCommands.Parsers {
             if (priorityCommand != null) {
                 commands.Remove(priorityCommand);
 
-                result = new CommandResultArgs() {
+                result = new CommandResult() {
                     Success = true,
                     Status = CommandResultType.Success,
                     Now = new CommandData() {

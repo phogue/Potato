@@ -65,7 +65,7 @@ namespace Procon.Core.Test.CoreInstance {
             // Tests that there is at least one connection.
             Assert.AreEqual(1, instance.Connections.Count);
 
-            CommandResultArgs result = instance.Tunnel(new Command() {
+            CommandResult result = instance.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.VariablesSet,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -114,7 +114,7 @@ namespace Procon.Core.Test.CoreInstance {
             // Tests that there is at least one connection.
             Assert.AreEqual(1, instance.Connections.Count);
 
-            CommandResultArgs result = instance.Tunnel(new Command() {
+            CommandResult result = instance.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.VariablesSet,
                 Scope = {

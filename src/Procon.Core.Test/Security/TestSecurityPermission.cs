@@ -235,7 +235,7 @@ namespace Procon.Core.Test.Security {
                 })
             });
 
-            CommandResultArgs result = security.Tunnel(new Command() {
+            CommandResult result = security.Tunnel(new Command() {
                 CommandType = CommandType.SecurityQueryPermission,
                 Username = "Zaeed",
                 Origin = CommandOrigin.Remote,
@@ -320,7 +320,7 @@ namespace Procon.Core.Test.Security {
                 })
             });
 
-            CommandResultArgs result = security.Tunnel(new Command() {
+            CommandResult result = security.Tunnel(new Command() {
                 CommandType = CommandType.SecurityQueryPermission,
                 Username = "Zaeed",
                 Origin = CommandOrigin.Remote,
@@ -406,7 +406,7 @@ namespace Procon.Core.Test.Security {
                 })
             });
 
-            CommandResultArgs result = security.Tunnel(new Command() {
+            CommandResult result = security.Tunnel(new Command() {
                 CommandType = CommandType.SecurityQueryPermission,
                 Username = "Phogue",
                 Origin = CommandOrigin.Remote,
@@ -491,7 +491,7 @@ namespace Procon.Core.Test.Security {
                 })
             });
 
-            CommandResultArgs result = security.Tunnel(new Command() {
+            CommandResult result = security.Tunnel(new Command() {
                 CommandType = CommandType.SecurityQueryPermission,
                 Username = "Phogue",
                 Origin = CommandOrigin.Remote,
@@ -577,7 +577,7 @@ namespace Procon.Core.Test.Security {
                 })
             });
 
-            CommandResultArgs result = security.Tunnel(new Command() {
+            CommandResult result = security.Tunnel(new Command() {
                 CommandType = CommandType.SecurityQueryPermission,
                 Username = "Phogue",
                 Origin = CommandOrigin.Remote,
@@ -662,7 +662,7 @@ namespace Procon.Core.Test.Security {
                 })
             });
 
-            CommandResultArgs result = security.Tunnel(new Command() {
+            CommandResult result = security.Tunnel(new Command() {
                 CommandType = CommandType.SecurityQueryPermission,
                 Username = "Phogue",
                 Origin = CommandOrigin.Remote,
@@ -718,7 +718,7 @@ namespace Procon.Core.Test.Security {
                 })
             });
 
-            CommandResultArgs result = security.Tunnel(new Command() {
+            CommandResult result = security.Tunnel(new Command() {
                 CommandType = CommandType.SecurityQueryPermission,
                 Origin = CommandOrigin.Plugin,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -803,7 +803,7 @@ namespace Procon.Core.Test.Security {
                 })
             });
 
-            CommandResultArgs result = security.Tunnel(new Command() {
+            CommandResult result = security.Tunnel(new Command() {
                 CommandType = CommandType.SecurityQueryPermission,
                 Username = "Phogue",
                 Origin = CommandOrigin.None,

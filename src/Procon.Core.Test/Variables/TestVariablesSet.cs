@@ -22,7 +22,7 @@ namespace Procon.Core.Test.Variables {
         public void TestValue() {
             var variables = new VariableController();
 
-            CommandResultArgs result = variables.Tunnel(CommandBuilder.VariablesSet("key", "value").SetOrigin(CommandOrigin.Local));
+            CommandResult result = variables.Tunnel(CommandBuilder.VariablesSet("key", "value").SetOrigin(CommandOrigin.Local));
 
             Assert.IsTrue(result.Success);
             Assert.AreEqual(CommandResultType.Success, result.Status);
@@ -36,7 +36,7 @@ namespace Procon.Core.Test.Variables {
         public void TestCaseInsensitive() {
             var variables = new VariableController();
 
-            CommandResultArgs result = variables.Tunnel(new Command() {
+            CommandResult result = variables.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.VariablesSet,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -61,7 +61,7 @@ namespace Procon.Core.Test.Variables {
             var variables = new VariableController();
 
             // Set the value of a empty key
-            CommandResultArgs result = variables.Tunnel(new Command() {
+            CommandResult result = variables.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.VariablesSet,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -87,7 +87,7 @@ namespace Procon.Core.Test.Variables {
                 }
             };
 
-            CommandResultArgs result = variables.Tunnel(new Command() {
+            CommandResult result = variables.Tunnel(new Command() {
                 Username = "Phogue",
                 Origin = CommandOrigin.Remote,
                 CommandType = CommandType.VariablesSet,
@@ -116,7 +116,7 @@ namespace Procon.Core.Test.Variables {
             };
 
             // Set the value of a empty key
-            CommandResultArgs result = variables.Tunnel(new Command() {
+            CommandResult result = variables.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.VariablesSet,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -147,7 +147,7 @@ namespace Procon.Core.Test.Variables {
             };
 
             // Set the value of a empty key
-            CommandResultArgs result = variables.Tunnel(new Command() {
+            CommandResult result = variables.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.VariablesSet,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -170,7 +170,7 @@ namespace Procon.Core.Test.Variables {
             var variables = new VariableController();
 
             // Set the value of a empty key
-            CommandResultArgs result = variables.Tunnel(new Command() {
+            CommandResult result = variables.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.VariablesSet,
                 Parameters = new List<CommandParameter>() {

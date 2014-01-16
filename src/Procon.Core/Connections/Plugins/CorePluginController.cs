@@ -82,8 +82,8 @@ namespace Procon.Core.Connections.Plugins {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public CommandResultArgs EnablePlugin(Command command, Dictionary<String, CommandParameter> parameters) {
-            CommandResultArgs result = null;
+        public CommandResult EnablePlugin(Command command, Dictionary<String, CommandParameter> parameters) {
+            CommandResult result = null;
 
             if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
                 Guid pluginGuid = command.Scope.PluginGuid;
@@ -94,7 +94,7 @@ namespace Procon.Core.Connections.Plugins {
 
                         plugin.IsEnabled = true;
 
-                        result = new CommandResultArgs() {
+                        result = new CommandResult() {
                             Status = CommandResultType.Success,
                             Success = true,
                             Message = String.Format("Plugin {0} has been enabled", pluginGuid),
@@ -109,25 +109,25 @@ namespace Procon.Core.Connections.Plugins {
                         };
 
                         if (this.Shared.Events != null) {
-                            this.Shared.Events.Log(GenericEventArgs.ConvertToGenericEvent(result, GenericEventType.PluginsEnabled));
+                            this.Shared.Events.Log(GenericEvent.ConvertToGenericEvent(result, GenericEventType.PluginsEnabled));
                         }
                     }
                     else {
-                        result = new CommandResultArgs() {
+                        result = new CommandResult() {
                             Status = CommandResultType.Failed,
                             Success = false
                         };
                     }
                 }
                 else {
-                    result = new CommandResultArgs() {
+                    result = new CommandResult() {
                         Status = CommandResultType.DoesNotExists,
                         Success = false
                     };
                 }
             }
             else {
-                result = CommandResultArgs.InsufficientPermissions;
+                result = CommandResult.InsufficientPermissions;
             }
 
             return result;
@@ -139,8 +139,8 @@ namespace Procon.Core.Connections.Plugins {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public CommandResultArgs DisablePlugin(Command command, Dictionary<String, CommandParameter> parameters) {
-            CommandResultArgs result = null;
+        public CommandResult DisablePlugin(Command command, Dictionary<String, CommandParameter> parameters) {
+            CommandResult result = null;
 
             if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
                 Guid pluginGuid = command.Scope.PluginGuid;
@@ -151,7 +151,7 @@ namespace Procon.Core.Connections.Plugins {
 
                         plugin.IsEnabled = false;
 
-                        result = new CommandResultArgs() {
+                        result = new CommandResult() {
                             Status = CommandResultType.Success,
                             Success = true,
                             Message = String.Format("Plugin {0} has been disabled", pluginGuid),
@@ -166,25 +166,25 @@ namespace Procon.Core.Connections.Plugins {
                         };
 
                         if (this.Shared.Events != null) {
-                            this.Shared.Events.Log(GenericEventArgs.ConvertToGenericEvent(result, GenericEventType.PluginsDisabled));
+                            this.Shared.Events.Log(GenericEvent.ConvertToGenericEvent(result, GenericEventType.PluginsDisabled));
                         }
                     }
                     else {
-                        result = new CommandResultArgs() {
+                        result = new CommandResult() {
                             Status = CommandResultType.Failed,
                             Success = false
                         };
                     }
                 }
                 else {
-                    result = new CommandResultArgs() {
+                    result = new CommandResult() {
                         Status = CommandResultType.DoesNotExists,
                         Success = false
                     };
                 }
             }
             else {
-                result = CommandResultArgs.InsufficientPermissions;
+                result = CommandResult.InsufficientPermissions;
             }
 
             return result;
@@ -348,7 +348,7 @@ namespace Procon.Core.Connections.Plugins {
 
                     // Tell the plugin it's ready to begin, everything is setup and ready 
                     // for it to start loading its config.
-                    proxy.GenericEvent(new GenericEventArgs() {
+                    proxy.GenericEvent(new GenericEvent() {
                         GenericEventType = GenericEventType.PluginsLoaded
                     });
                 }
@@ -368,8 +368,8 @@ namespace Procon.Core.Connections.Plugins {
             }
         }
 
-        public override CommandResultArgs PropogatePreview(Command command, CommandDirection direction) {
-            CommandResultArgs synchronousResult = null;
+        public override CommandResult PropogatePreview(Command command, CommandDirection direction) {
+            CommandResult synchronousResult = null;
 
             // If we're bubbling and we have not seen this command yet
             if (direction == CommandDirection.Bubble && this.AsyncStateModel.IsKnown(command.CommandGuid) == false) {

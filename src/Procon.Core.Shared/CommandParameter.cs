@@ -29,7 +29,7 @@ namespace Procon.Core.Shared {
             typeof (LanguageModel),
             typeof (TextCommandModel),
             typeof (TextCommandMatchModel),
-            typeof (GenericEventArgs),
+            typeof (GenericEvent),
             typeof (RepositoryModel),
             typeof (PackageWrapperModel),
             typeof (PluginModel),
@@ -43,7 +43,7 @@ namespace Procon.Core.Shared {
             typeof (Ban),
             typeof (Settings),
             typeof (Map),
-            typeof (CommandResultArgs),
+            typeof (CommandResult),
             typeof (IDatabaseObject),
             typeof (IPacket)
         };
@@ -98,7 +98,7 @@ namespace Procon.Core.Shared {
             else if (t == typeof(TextCommandMatchModel) && this.Data.TextCommandMatches != null) {
                 all = this.Data.TextCommandMatches.Cast<Object>().ToList();
             }
-            else if (t == typeof(GenericEventArgs) && this.Data.Events != null) {
+            else if (t == typeof(GenericEvent) && this.Data.Events != null) {
                 all = this.Data.Events.Cast<Object>().ToList();
             }
             else if (t == typeof(RepositoryModel) && this.Data.Repositories != null) {
@@ -140,7 +140,7 @@ namespace Procon.Core.Shared {
             else if (t == typeof(Map) && this.Data.Maps != null) {
                 all = this.Data.Maps.Cast<Object>().ToList();
             }
-            else if (t == typeof(CommandResultArgs) && this.Data.CommandResults != null) {
+            else if (t == typeof(CommandResult) && this.Data.CommandResults != null) {
                 all = this.Data.CommandResults.Cast<Object>().ToList();
             }
             else if (t == typeof(IPacket) && this.Data.CommandResults != null) {

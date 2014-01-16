@@ -192,10 +192,10 @@ namespace Procon.Core.Database {
         /// <param name="driver">The driver to execute the query on</param>
         /// <param name="queries">The queries to execute</param>
         /// <returns>The result of the commands containing the results of each query.</returns>
-        protected CommandResultArgs ExecuteQueriesOnDriver(IDriver driver, List<IDatabaseObject> queries) {
-            CommandResultArgs result = null;
+        protected CommandResult ExecuteQueriesOnDriver(IDriver driver, List<IDatabaseObject> queries) {
+            CommandResult result = null;
 
-            result = new CommandResultArgs() {
+            result = new CommandResult() {
                 Success = true,
                 Status = CommandResultType.Success,
                 Then = {
@@ -220,14 +220,14 @@ namespace Procon.Core.Database {
         /// <param name="databaseGroupName">The name of the database group to use</param>
         /// <param name="queries">The queries to execute on the matching driver</param>
         /// <returns>The result of the commands containing the results of each query.</returns>
-        protected CommandResultArgs ExecuteQueriesOnGroupName(String databaseGroupName, List<IDatabaseObject> queries) {
-            CommandResultArgs result = null;
+        protected CommandResult ExecuteQueriesOnGroupName(String databaseGroupName, List<IDatabaseObject> queries) {
+            CommandResult result = null;
 
             if (this.OpenDrivers.ContainsKey(databaseGroupName) == true) {
                 result = this.ExecuteQueriesOnDriver(this.OpenDrivers[databaseGroupName], queries);
             }
             else {
-                result = new CommandResultArgs() {
+                result = new CommandResult() {
                     Message = String.Format(@"Database driver ""{0}"" is not supported.", databaseGroupName),
                     Status = CommandResultType.DoesNotExists,
                     Success = false
@@ -237,8 +237,8 @@ namespace Procon.Core.Database {
             return result;
         }
 
-        protected CommandResultArgs ExecuteQueriesOnAllDrivers(List<IDatabaseObject> queries) {
-            CommandResultArgs result = null;
+        protected CommandResult ExecuteQueriesOnAllDrivers(List<IDatabaseObject> queries) {
+            CommandResult result = null;
 
             foreach (var databaseGroup in this.OpenDrivers) {
                 result = this.ExecuteQueriesOnDriver(databaseGroup.Value, queries);
@@ -247,12 +247,12 @@ namespace Procon.Core.Database {
             return result;
         }
 
-        protected CommandResultArgs Query(Command command, Dictionary<String, CommandParameter> parameters) {
-            return this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true ? this.ExecuteQueriesOnAllDrivers(parameters["query"].All<IDatabaseObject>()) : CommandResultArgs.InsufficientPermissions;
+        protected CommandResult Query(Command command, Dictionary<String, CommandParameter> parameters) {
+            return this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true ? this.ExecuteQueriesOnAllDrivers(parameters["query"].All<IDatabaseObject>()) : CommandResult.InsufficientPermissions;
         }
 
-        protected CommandResultArgs QueryDriver(Command command, Dictionary<String, CommandParameter> parameters) {
-            return this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true ? this.ExecuteQueriesOnGroupName(parameters["driver"].First<String>(), parameters["query"].All<IDatabaseObject>()) : CommandResultArgs.InsufficientPermissions;
+        protected CommandResult QueryDriver(Command command, Dictionary<String, CommandParameter> parameters) {
+            return this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true ? this.ExecuteQueriesOnGroupName(parameters["driver"].First<String>(), parameters["query"].All<IDatabaseObject>()) : CommandResult.InsufficientPermissions;
         }
 
         public override void Dispose() {

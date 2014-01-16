@@ -39,7 +39,7 @@ namespace Procon.Core.Test.Plugins {
                 }
             });
 
-            CommandResultArgs result = plugins.Tunnel(new Command() {
+            CommandResult result = plugins.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.PluginsDisable,
                 Scope = {
@@ -63,7 +63,7 @@ namespace Procon.Core.Test.Plugins {
                 }
             }.Execute() as CorePluginController;
 
-            CommandResultArgs result = plugins.Tunnel(new Command() {
+            CommandResult result = plugins.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.PluginsDisable,
                 Scope = {
@@ -88,7 +88,7 @@ namespace Procon.Core.Test.Plugins {
             }.Execute() as CorePluginController;
 
             // The plugin will be disabled right now.
-            CommandResultArgs result = plugins.Tunnel(new Command() {
+            CommandResult result = plugins.Tunnel(new Command() {
                 Name = "TestPluginsDisabledCommandResult",
                 Username = "Phogue",
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -114,7 +114,7 @@ namespace Procon.Core.Test.Plugins {
                 }
             }.Execute() as CorePluginController;
 
-            CommandResultArgs result = plugins.Tunnel(new Command() {
+            CommandResult result = plugins.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.PluginsDisable,
                 Scope = {
@@ -138,7 +138,7 @@ namespace Procon.Core.Test.Plugins {
                 }
             }.Execute() as CorePluginController;
 
-            CommandResultArgs result = plugins.Tunnel(new Command() {
+            CommandResult result = plugins.Tunnel(new Command() {
                 Origin = CommandOrigin.Remote,
                 Username = "Phogue",
                 CommandType = CommandType.PluginsDisable,

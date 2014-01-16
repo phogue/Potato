@@ -14,7 +14,7 @@ namespace Procon.Core.Test.Remote.TestCommandServerSerializer {
         [Test]
         public void TestUseCommandResultContentType() {
             var contentType = CommandServerSerializer.ResponseContentType(new Command() {
-                Result = new CommandResultArgs() {
+                Result = new CommandResult() {
                     ContentType = Mime.ApplicationJson
                 }
             });
@@ -28,7 +28,7 @@ namespace Procon.Core.Test.Remote.TestCommandServerSerializer {
         [Test]
         public void TestNulledCommandResultContentType() {
             var contentType = CommandServerSerializer.ResponseContentType(new Command() {
-                Result = new CommandResultArgs() {
+                Result = new CommandResult() {
                     ContentType = null
                 },
                 RemoteRequest = new CommandServerPacket() {

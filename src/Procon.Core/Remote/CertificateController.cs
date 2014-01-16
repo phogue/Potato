@@ -52,7 +52,7 @@ namespace Procon.Core.Remote {
                 catch (CryptographicException e) {
                     this.Certificate = null;
 
-                    this.Shared.Events.Log(new GenericEventArgs() {
+                    this.Shared.Events.Log(new GenericEvent() {
                         Message = String.Format("Error loading certificate @ path \"{0}\" \"{1}\".", path, e.Message),
                         GenericEventType = GenericEventType.CommandServerStarted,
                         Success = false,
@@ -62,7 +62,7 @@ namespace Procon.Core.Remote {
             }
             else {
                 // Panic, no certificate exists. Cannot start server.
-                this.Shared.Events.Log(new GenericEventArgs() {
+                this.Shared.Events.Log(new GenericEvent() {
                     Message = String.Format("Command server certificate @ path \"{0}\" does not exists.", path),
                     GenericEventType = GenericEventType.CommandServerStarted,
                     Success = false,

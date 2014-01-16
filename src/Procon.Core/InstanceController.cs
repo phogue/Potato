@@ -308,6 +308,11 @@ namespace Procon.Core {
                 Origin = CommandOrigin.Local
             }, new Config().Load(new DirectoryInfo(Defines.ConfigsDirectory.FullName)));
             
+            this.Shared.Events.Log(new GenericEvent() {
+                GenericEventType = GenericEventType.InstanceServiceStarted,
+                Message = @"The service has started successfully."
+            });
+
             return base.Execute();
         }
 
@@ -420,7 +425,7 @@ namespace Procon.Core {
         /// </summary>
         /// <param name="command"></param>
         /// <returns></returns>
-        public override CommandResultArgs Bubble(Command command) {
+        public override CommandResult Bubble(Command command) {
             return this.Tunnel(command);
         }
 
@@ -506,8 +511,8 @@ namespace Procon.Core {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public CommandResultArgs InstanceServiceRestart(Command command, Dictionary<String, CommandParameter> parameters) {
-            CommandResultArgs result = null;
+        public CommandResult InstanceServiceRestart(Command command, Dictionary<String, CommandParameter> parameters) {
+            CommandResult result = null;
 
             // As long as the current account is allowed to execute this command...
             if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
@@ -515,16 +520,16 @@ namespace Procon.Core {
                     Name = "restart"
                 };
 
-                result = new CommandResultArgs() {
+                result = new CommandResult() {
                     Message = String.Format("Successfully posted restart signal."),
                     Status = CommandResultType.Success,
                     Success = true
                 };
 
-                this.Shared.Events.Log(GenericEventArgs.ConvertToGenericEvent(result, GenericEventType.InstanceServiceRestarting));
+                this.Shared.Events.Log(GenericEvent.ConvertToGenericEvent(result, GenericEventType.InstanceServiceRestarting));
             }
             else {
-                result = CommandResultArgs.InsufficientPermissions;
+                result = CommandResult.InsufficientPermissions;
             }
 
             return result;
@@ -536,8 +541,8 @@ namespace Procon.Core {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public CommandResultArgs InstanceServiceMergePackage(Command command, Dictionary<String, CommandParameter> parameters) {
-            CommandResultArgs result = null;
+        public CommandResult InstanceServiceMergePackage(Command command, Dictionary<String, CommandParameter> parameters) {
+            CommandResult result = null;
 
             String uri = parameters["uri"].First<String>();
             String packageId = parameters["packageId"].First<String>();
@@ -553,16 +558,16 @@ namespace Procon.Core {
                         }
                     };
 
-                    result = new CommandResultArgs() {
+                    result = new CommandResult() {
                         Message = String.Format("Successfully posted merge signal."),
                         Status = CommandResultType.Success,
                         Success = true
                     };
 
-                    this.Shared.Events.Log(GenericEventArgs.ConvertToGenericEvent(result, GenericEventType.InstanceServiceMergePackage));
+                    this.Shared.Events.Log(GenericEvent.ConvertToGenericEvent(result, GenericEventType.InstanceServiceMergePackage));
                 }
                 else {
-                    result = new CommandResultArgs() {
+                    result = new CommandResult() {
                         Message = String.Format(@"Invalid or missing parameter ""uri"" or ""packageId""."),
                         Status = CommandResultType.InvalidParameter,
                         Success = false
@@ -570,7 +575,7 @@ namespace Procon.Core {
                 }
             }
             else {
-                result = CommandResultArgs.InsufficientPermissions;
+                result = CommandResult.InsufficientPermissions;
             }
 
             return result;
@@ -582,8 +587,8 @@ namespace Procon.Core {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public CommandResultArgs InstanceServiceUninstallPackage(Command command, Dictionary<String, CommandParameter> parameters) {
-            CommandResultArgs result = null;
+        public CommandResult InstanceServiceUninstallPackage(Command command, Dictionary<String, CommandParameter> parameters) {
+            CommandResult result = null;
 
             String packageId = parameters["packageId"].First<String>();
 
@@ -597,16 +602,16 @@ namespace Procon.Core {
                         }
                     };
 
-                    result = new CommandResultArgs() {
+                    result = new CommandResult() {
                         Message = String.Format("Successfully posted uninstall signal."),
                         Status = CommandResultType.Success,
                         Success = true
                     };
 
-                    this.Shared.Events.Log(GenericEventArgs.ConvertToGenericEvent(result, GenericEventType.InstanceServiceUninstallPackage));
+                    this.Shared.Events.Log(GenericEvent.ConvertToGenericEvent(result, GenericEventType.InstanceServiceUninstallPackage));
                 }
                 else {
-                    result = new CommandResultArgs() {
+                    result = new CommandResult() {
                         Message = String.Format(@"Invalid or missing parameter ""packageId""."),
                         Status = CommandResultType.InvalidParameter,
                         Success = false
@@ -614,7 +619,7 @@ namespace Procon.Core {
                 }
             }
             else {
-                result = CommandResultArgs.InsufficientPermissions;
+                result = CommandResult.InsufficientPermissions;
             }
 
             return result;
@@ -625,8 +630,8 @@ namespace Procon.Core {
         /// </summary>
         /// <param name="command"></param>
         /// <param name="parameters"></param>
-        public CommandResultArgs InstanceAddConnection(Command command, Dictionary<String, CommandParameter> parameters) {
-            CommandResultArgs result = null;
+        public CommandResult InstanceAddConnection(Command command, Dictionary<String, CommandParameter> parameters) {
+            CommandResult result = null;
 
             String gameTypeProvider = parameters["gameTypeProvider"].First<String>();
             String gameTypeType = parameters["gameTypeType"].First<String>();
@@ -669,7 +674,7 @@ namespace Procon.Core {
                             connection.Execute();
                             connection.AttemptConnection();
 
-                            result = new CommandResultArgs() {
+                            result = new CommandResult() {
                                 Message = String.Format("Successfully added {0} connection.", gameTypeType),
                                 Status = CommandResultType.Success,
                                 Success = true,
@@ -680,10 +685,10 @@ namespace Procon.Core {
                                 }
                             };
 
-                            this.Shared.Events.Log(GenericEventArgs.ConvertToGenericEvent(result, GenericEventType.InstanceConnectionAdded));
+                            this.Shared.Events.Log(GenericEvent.ConvertToGenericEvent(result, GenericEventType.InstanceConnectionAdded));
                         }
                         else {
-                            result = new CommandResultArgs() {
+                            result = new CommandResult() {
                                 Message = String.Format(@"Game type ""{0}"" is not supported.", gameTypeType),
                                 Status = CommandResultType.DoesNotExists,
                                 Success = false
@@ -691,7 +696,7 @@ namespace Procon.Core {
                         }
                     }
                     else {
-                        result = new CommandResultArgs() {
+                        result = new CommandResult() {
                             Message = String.Format(@"Game type ""{0}"" with connection to {1}:{2} has already been added.", gameTypeType, hostName, port),
                             Status = CommandResultType.AlreadyExists,
                             Success = false
@@ -699,7 +704,7 @@ namespace Procon.Core {
                     }
                 }
                 else {
-                    result = new CommandResultArgs() {
+                    result = new CommandResult() {
                         Message = String.Format(@"Maximum number of game connections exceeded."),
                         Status = CommandResultType.LimitExceeded,
                         Success = false
@@ -707,14 +712,14 @@ namespace Procon.Core {
                 }
             }
             else {
-                result = CommandResultArgs.InsufficientPermissions;
+                result = CommandResult.InsufficientPermissions;
             }
 
             return result;
         }
 
-        protected CommandResultArgs InstanceRemoveConnection(Command command, ConnectionController connection) {
-            CommandResultArgs result = null;
+        protected CommandResult InstanceRemoveConnection(Command command, ConnectionController connection) {
+            CommandResult result = null;
 
             // As long as the current account is allowed to execute this command...
             if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
@@ -725,7 +730,7 @@ namespace Procon.Core {
                         this.Connections.Remove(connection);
                     }
 
-                    result = new CommandResultArgs() {
+                    result = new CommandResult() {
                         Message = String.Format(@"Successfully removed connection with connection to {0}:{1} and game type ""{2}"".", connection.ConnectionModel.Hostname, connection.ConnectionModel.Port, connection),
                         Status = CommandResultType.Success,
                         Success = true,
@@ -736,12 +741,12 @@ namespace Procon.Core {
                         }
                     };
 
-                    this.Shared.Events.Log(GenericEventArgs.ConvertToGenericEvent(result, GenericEventType.InstanceConnectionRemoved));
+                    this.Shared.Events.Log(GenericEvent.ConvertToGenericEvent(result, GenericEventType.InstanceConnectionRemoved));
 
                     connection.Dispose();
                 }
                 else {
-                    result = new CommandResultArgs() {
+                    result = new CommandResult() {
                         Message = String.Format(@"Connection does not exist."),
                         Status = CommandResultType.DoesNotExists,
                         Success = false
@@ -749,7 +754,7 @@ namespace Procon.Core {
                 }
             }
             else {
-                result = CommandResultArgs.InsufficientPermissions;
+                result = CommandResult.InsufficientPermissions;
             }
 
             return result;
@@ -761,7 +766,7 @@ namespace Procon.Core {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public CommandResultArgs InstanceRemoveConnectionByGuid(Command command, Dictionary<String, CommandParameter> parameters) {
+        public CommandResult InstanceRemoveConnectionByGuid(Command command, Dictionary<String, CommandParameter> parameters) {
             String connectionGuid = parameters["connectionGuid"].First<String>();
 
             ConnectionController connection = this.Connections.FirstOrDefault(x => String.Compare(x.ConnectionModel.ConnectionGuid.ToString(), connectionGuid, StringComparison.OrdinalIgnoreCase) == 0);
@@ -774,7 +779,7 @@ namespace Procon.Core {
         /// </summary>
         /// <param name="command"></param>
         /// <param name="parameters"></param>
-        public CommandResultArgs InstanceRemoveConnectionByDetails(Command command, Dictionary<String, CommandParameter> parameters) {
+        public CommandResult InstanceRemoveConnectionByDetails(Command command, Dictionary<String, CommandParameter> parameters) {
             String gameTypeProvider = parameters["gameTypeProvider"].First<String>();
             String gameTypeType = parameters["gameTypeType"].First<String>();
             String hostName = parameters["hostName"].First<String>();
@@ -796,11 +801,11 @@ namespace Procon.Core {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public CommandResultArgs InstanceQuery(Command command, Dictionary<String, CommandParameter> parameters) {
-            CommandResultArgs result = null;
+        public CommandResult InstanceQuery(Command command, Dictionary<String, CommandParameter> parameters) {
+            CommandResult result = null;
 
             if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
-                result = new CommandResultArgs() {
+                result = new CommandResult() {
                     Success = true,
                     Status = CommandResultType.Success,
                     Now = new CommandData() {
@@ -814,7 +819,7 @@ namespace Procon.Core {
                 };
             }
             else {
-                result = CommandResultArgs.InsufficientPermissions;
+                result = CommandResult.InsufficientPermissions;
             }
 
             return result;

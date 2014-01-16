@@ -18,7 +18,7 @@ namespace Procon.Core.Test.Packages {
         public void TestResultInsufficientPermissions() {
             PackagesController packages = new PackagesController();
 
-            CommandResultArgs result = packages.Tunnel(CommandBuilder.PackagesFetchPackages().SetOrigin(CommandOrigin.Remote).SetUsername("Phogue"));
+            CommandResult result = packages.Tunnel(CommandBuilder.PackagesFetchPackages().SetOrigin(CommandOrigin.Remote).SetUsername("Phogue"));
 
             Assert.IsFalse(result.Success);
             Assert.AreEqual(CommandResultType.InsufficientPermissions, result.Status);
@@ -31,7 +31,7 @@ namespace Procon.Core.Test.Packages {
         public void TestResultSuccess() {
             PackagesController packages = new PackagesController();
 
-            CommandResultArgs result = packages.Tunnel(CommandBuilder.PackagesFetchPackages().SetOrigin(CommandOrigin.Local));
+            CommandResult result = packages.Tunnel(CommandBuilder.PackagesFetchPackages().SetOrigin(CommandOrigin.Local));
 
             Assert.IsTrue(result.Success);
             Assert.AreEqual(CommandResultType.Success, result.Status);

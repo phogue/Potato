@@ -39,7 +39,7 @@ namespace Procon.Examples.Plugins.Configs {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        protected CommandResultArgs ThisIsJustACommand(Command command, Dictionary<String, CommandParameter> parameters) {
+        protected CommandResult ThisIsJustACommand(Command command, Dictionary<String, CommandParameter> parameters) {
             String param1 = parameters["param1"].First<String>();
             String param2 = parameters["param2"].First<String>();
 

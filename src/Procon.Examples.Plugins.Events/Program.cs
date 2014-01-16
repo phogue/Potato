@@ -48,7 +48,7 @@ namespace Procon.Examples.Plugins.Events {
             // else more!
         }
 
-        public override void GenericEvent(GenericEventArgs e) {
+        public override void GenericEvent(GenericEvent e) {
             // Unless you specifically want to override some of the plugins default
             // functionality, you should always call the base method.
             base.GenericEvent(e);

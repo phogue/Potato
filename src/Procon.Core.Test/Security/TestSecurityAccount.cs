@@ -44,7 +44,7 @@ namespace Procon.Core.Test.Security {
             });
 
             // Now authenticate against an empty security object which has no accounts.
-            CommandResultArgs result = security.Tunnel(new Command() {
+            CommandResult result = security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityAccountAuthenticate,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -92,7 +92,7 @@ namespace Procon.Core.Test.Security {
             Assert.AreEqual(security.Groups.SelectMany(group => group.Accounts).First().Username, "Phogue");
 
             // Now change the password of the account.
-            CommandResultArgs result = security.Tunnel(new Command() {
+            CommandResult result = security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityAccountSetPassword,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -151,7 +151,7 @@ namespace Procon.Core.Test.Security {
                 })
             });
 
-            CommandResultArgs result = security.Tunnel(new Command() {
+            CommandResult result = security.Tunnel(new Command() {
                 CommandType = CommandType.SecurityAccountAuthenticate,
                 Username = "Phogue",
                 Origin = CommandOrigin.Remote,
@@ -196,7 +196,7 @@ namespace Procon.Core.Test.Security {
             Assert.AreEqual(security.Groups.SelectMany(group => group.Accounts).First().Username, "Phogue");
 
             // Now send an empty password through to authenticate against.
-            CommandResultArgs result = security.Tunnel(new Command() {
+            CommandResult result = security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityAccountAuthenticate,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -243,7 +243,7 @@ namespace Procon.Core.Test.Security {
             Assert.AreEqual(security.Groups.SelectMany(group => group.Accounts).First().Username, "Phogue");
 
             // Now change the password of the account.
-            CommandResultArgs result = security.Tunnel(new Command() {
+            CommandResult result = security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityAccountSetPassword,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -295,7 +295,7 @@ namespace Procon.Core.Test.Security {
             });
 
             // Now change the password of the account.
-            CommandResultArgs result = security.Tunnel(new Command() {
+            CommandResult result = security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityAccountSetPassword,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -333,7 +333,7 @@ namespace Procon.Core.Test.Security {
                 })
             });
 
-            CommandResultArgs result = security.Tunnel(new Command() {
+            CommandResult result = security.Tunnel(new Command() {
                 CommandType = CommandType.SecurityAccountSetPasswordHash,
                 Username = "Phogue",
                 Origin = CommandOrigin.Remote,
@@ -371,7 +371,7 @@ namespace Procon.Core.Test.Security {
                 })
             });
 
-            CommandResultArgs result = security.Tunnel(new Command() {
+            CommandResult result = security.Tunnel(new Command() {
                 CommandType = CommandType.SecurityAccountSetPassword,
                 Username = "Phogue",
                 Origin = CommandOrigin.Remote,
@@ -416,7 +416,7 @@ namespace Procon.Core.Test.Security {
             Assert.AreEqual(security.Groups.SelectMany(group => group.Accounts).First().Username, "Phogue");
 
             // Now change the password of the account.
-            CommandResultArgs result = security.Tunnel(new Command() {
+            CommandResult result = security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityAccountSetPassword,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -464,7 +464,7 @@ namespace Procon.Core.Test.Security {
             Assert.AreEqual(security.Groups.SelectMany(group => group.Accounts).First().Username, "Phogue");
 
             // Now change the password of the account.
-            CommandResultArgs result = security.Tunnel(new Command() {
+            CommandResult result = security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityAccountSetPasswordHash,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -517,7 +517,7 @@ namespace Procon.Core.Test.Security {
             });
 
             // Now change the password of the account.
-            CommandResultArgs result = security.Tunnel(new Command() {
+            CommandResult result = security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityAccountSetPasswordHash,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -562,7 +562,7 @@ namespace Procon.Core.Test.Security {
             Assert.AreEqual(security.Groups.SelectMany(group => group.Accounts).First().Username, "Phogue");
 
             // Now change the password of the account.
-            CommandResultArgs result = security.Tunnel(new Command() {
+            CommandResult result = security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityAccountSetPasswordHash,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -596,7 +596,7 @@ namespace Procon.Core.Test.Security {
             });
 
             // Now change the language of the account.
-            CommandResultArgs result = security.Tunnel(new Command() {
+            CommandResult result = security.Tunnel(new Command() {
                 CommandType = CommandType.SecurityAccountSetPreferredLanguageCode,
                 Username = "Phogue",
                 Origin = CommandOrigin.Remote,
@@ -641,7 +641,7 @@ namespace Procon.Core.Test.Security {
             Assert.AreEqual(security.Groups.SelectMany(group => group.Accounts).First().Username, "Phogue");
 
             // Now change the language of the account.
-            CommandResultArgs result = security.Tunnel(new Command() {
+            CommandResult result = security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityAccountSetPreferredLanguageCode,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -680,7 +680,7 @@ namespace Procon.Core.Test.Security {
             });
 
             // Now change the language of the account.
-            CommandResultArgs result = security.Tunnel(new Command() {
+            CommandResult result = security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityAccountSetPreferredLanguageCode,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -726,7 +726,7 @@ namespace Procon.Core.Test.Security {
             Assert.AreEqual(security.Groups.SelectMany(group => group.Accounts).First().Username, "Phogue");
 
             // Now change the language of the account.
-            CommandResultArgs result = security.Tunnel(new Command() {
+            CommandResult result = security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityAccountSetPreferredLanguageCode,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -759,7 +759,7 @@ namespace Procon.Core.Test.Security {
             Assert.AreEqual(security.Groups.First().Name, "GroupName");
 
             // Now add the user.
-            CommandResultArgs result = security.Tunnel(new Command() {
+            CommandResult result = security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityGroupAddAccount,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -792,7 +792,7 @@ namespace Procon.Core.Test.Security {
             Assert.AreEqual(security.Groups.First().Name, "GroupName");
 
             // Now add the user.
-            CommandResultArgs result = security.Tunnel(new Command() {
+            CommandResult result = security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityGroupAddAccount,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -833,7 +833,7 @@ namespace Procon.Core.Test.Security {
             Assert.IsNotNull(security.Groups.Where(group => group.Name == "SecondGroupName").FirstOrDefault());
 
             // Now add the user.
-            CommandResultArgs result = security.Tunnel(new Command() {
+            CommandResult result = security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityGroupAddAccount,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -873,7 +873,7 @@ namespace Procon.Core.Test.Security {
             var security = new SecurityController();
 
             // Add the user.
-            CommandResultArgs result = security.Tunnel(new Command() {
+            CommandResult result = security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityGroupAddAccount,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -901,7 +901,7 @@ namespace Procon.Core.Test.Security {
                 })
             });
 
-            CommandResultArgs result = security.Tunnel(new Command() {
+            CommandResult result = security.Tunnel(new Command() {
                 CommandType = CommandType.SecurityGroupAddAccount,
                 Username = "Phogue",
                 Origin = CommandOrigin.Remote,
@@ -940,7 +940,7 @@ namespace Procon.Core.Test.Security {
             // Test that the group was initially added.
             Assert.AreEqual(security.Groups.First().Accounts.First().Username, "Phogue");
 
-            CommandResultArgs result = security.Tunnel(new Command() {
+            CommandResult result = security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityRemoveAccount,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -961,7 +961,7 @@ namespace Procon.Core.Test.Security {
             var security = new SecurityController();
 
             // Add a group with an empty name.
-            CommandResultArgs result = security.Tunnel(new Command() {
+            CommandResult result = security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityRemoveAccount,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -999,7 +999,7 @@ namespace Procon.Core.Test.Security {
             // Test that the group was initially added.
             Assert.AreEqual(security.Groups.First().Accounts.First().Username, "Phogue");
 
-            CommandResultArgs result = security.Tunnel(new Command() {
+            CommandResult result = security.Tunnel(new Command() {
                 CommandType = CommandType.SecurityRemoveAccount,
                 Username = "Phogue",
                 Origin = CommandOrigin.Remote,
@@ -1019,7 +1019,7 @@ namespace Procon.Core.Test.Security {
         [Test]
         public void TestSecurityRemoveAccountNotExists() {
             var security = new SecurityController();
-            CommandResultArgs result = security.Tunnel(new Command() {
+            CommandResult result = security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityRemoveAccount,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {

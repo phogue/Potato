@@ -40,12 +40,12 @@ namespace Procon.Core.Shared.Test.ExecutableCommands.Objects {
         /// <summary>
         ///     Sets the value of the test flag.
         /// </summary>
-        public CommandResultArgs SetTestFlagInteger(Command command, Dictionary<String, CommandParameter> parameters) {
+        public CommandResult SetTestFlagInteger(Command command, Dictionary<String, CommandParameter> parameters) {
             int value = parameters["value"].First<int>();
 
             TestNumber = value;
 
-            return new CommandResultArgs() {
+            return new CommandResult() {
                 Success = true,
                 Status = CommandResultType.Success,
                 Message = "Set Number",
@@ -63,12 +63,12 @@ namespace Procon.Core.Shared.Test.ExecutableCommands.Objects {
         /// <summary>
         ///     Sets the value of the test flag.
         /// </summary>
-        public CommandResultArgs SetTestFlagFloat(Command command, Dictionary<String, CommandParameter> parameters) {
+        public CommandResult SetTestFlagFloat(Command command, Dictionary<String, CommandParameter> parameters) {
             float value = parameters["value"].First<float>();
 
             TestNumber = (int) value;
 
-            return new CommandResultArgs() {
+            return new CommandResult() {
                 Success = true,
                 Status = CommandResultType.Success,
                 Message = "Set Number",

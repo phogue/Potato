@@ -25,7 +25,7 @@ namespace Procon.Examples.Plugins.TextCommands {
                         ParameterTypes = new List<CommandParameterType>() {
                             new CommandParameterType() {
                                 Name = "e",
-                                Type = typeof(CommandResultArgs)
+                                Type = typeof(CommandResult)
                             }
                         }
                     },
@@ -37,7 +37,7 @@ namespace Procon.Examples.Plugins.TextCommands {
                         ParameterTypes = new List<CommandParameterType>() {
                             new CommandParameterType() {
                                 Name = "e",
-                                Type = typeof(CommandResultArgs)
+                                Type = typeof(CommandResult)
                             }
                         }
                     },
@@ -46,7 +46,7 @@ namespace Procon.Examples.Plugins.TextCommands {
             });
         }
         
-        public override void GenericEvent(GenericEventArgs e) {
+        public override void GenericEvent(GenericEvent e) {
             base.GenericEvent(e);
 
             if (e.GenericEventType == GenericEventType.PluginsEnabled) {
@@ -117,8 +117,8 @@ namespace Procon.Examples.Plugins.TextCommands {
         }
 
         // 3. Handle the test fuzzy command.
-        protected CommandResultArgs FuzzyCommand(Command command, Dictionary<String, CommandParameter> parameters) {
-            CommandResultArgs e = parameters["e"].First<CommandResultArgs>();
+        protected CommandResult FuzzyCommand(Command command, Dictionary<String, CommandParameter> parameters) {
+            CommandResult e = parameters["e"].First<CommandResult>();
 
             TextCommandMatchModel match = e.Now.TextCommandMatches.First();
 
@@ -158,8 +158,8 @@ namespace Procon.Examples.Plugins.TextCommands {
         }
 
         // 3. Handle the test route command.
-        protected CommandResultArgs RouteCommand(Command command, Dictionary<String, CommandParameter> parameters) {
-            CommandResultArgs e = parameters["e"].First<CommandResultArgs>();
+        protected CommandResult RouteCommand(Command command, Dictionary<String, CommandParameter> parameters) {
+            CommandResult e = parameters["e"].First<CommandResult>();
 
             TextCommandMatchModel match = e.Now.TextCommandMatches.First();
 

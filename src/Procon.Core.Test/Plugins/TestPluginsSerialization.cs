@@ -33,7 +33,7 @@ namespace Procon.Core.Test.Plugins {
                 }
             });
 
-            CommandResultArgs result = plugins.Tunnel(new Command() {
+            CommandResult result = plugins.Tunnel(new Command() {
                 Name = "TestPluginsSerializationCommandResult",
                 Username = "Phogue",
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {

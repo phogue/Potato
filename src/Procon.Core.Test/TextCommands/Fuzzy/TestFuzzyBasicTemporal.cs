@@ -157,7 +157,7 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
         [Test]
         public void TestTemporalKickEveryoneUntil12Pm() {
             // Couldn't use the helper since the delay in executing the command can some times throw out the time for the delay. 
-            CommandResultArgs args = ExecuteTextCommand(CreateTextCommandController(), "kick everyone until 12 pm");
+            CommandResult args = ExecuteTextCommand(CreateTextCommandController(), "kick everyone until 12 pm");
 
             DateTime midnight = DateTime.Now.AddDays(1);
 

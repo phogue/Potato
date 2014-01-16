@@ -418,8 +418,8 @@ namespace Procon.Core.Security {
         /// <summary>
         /// Creates a new group if the specified name is unique.
         /// </summary>
-        public CommandResultArgs SecurityAddGroup(Command command, Dictionary<String, CommandParameter> parameters) {
-            CommandResultArgs result = null;
+        public CommandResult SecurityAddGroup(Command command, Dictionary<String, CommandParameter> parameters) {
+            CommandResult result = null;
 
             String groupName = parameters["groupName"].First<String>();
 
@@ -432,7 +432,7 @@ namespace Procon.Core.Security {
 
                         this.Groups.Add(group);
 
-                        result = new CommandResultArgs() {
+                        result = new CommandResult() {
                             Success = true,
                             Status = CommandResultType.Success,
                             Message = String.Format(@"Group ""{0}"" created successfully.", groupName),
@@ -444,11 +444,11 @@ namespace Procon.Core.Security {
                         };
 
                         if (this.Shared.Events != null) {
-                            this.Shared.Events.Log(GenericEventArgs.ConvertToGenericEvent(result, GenericEventType.SecurityGroupAdded));
+                            this.Shared.Events.Log(GenericEvent.ConvertToGenericEvent(result, GenericEventType.SecurityGroupAdded));
                         }
                     }
                     else {
-                        result = new CommandResultArgs() {
+                        result = new CommandResult() {
                             Success = false,
                             Status = CommandResultType.AlreadyExists,
                             Message = String.Format(@"Group ""{0}"" already exists.", groupName)
@@ -456,7 +456,7 @@ namespace Procon.Core.Security {
                     }
                 }
                 else {
-                    result = new CommandResultArgs() {
+                    result = new CommandResult() {
                         Success = false,
                         Status = CommandResultType.InvalidParameter,
                         Message = "A group name must not be zero length"
@@ -464,7 +464,7 @@ namespace Procon.Core.Security {
                 }
             }
             else {
-                result = CommandResultArgs.InsufficientPermissions;
+                result = CommandResult.InsufficientPermissions;
             }
 
             return result;
@@ -476,8 +476,8 @@ namespace Procon.Core.Security {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public CommandResultArgs SecurityRemoveGroup(Command command, Dictionary<String, CommandParameter> parameters) {
-            CommandResultArgs result = null;
+        public CommandResult SecurityRemoveGroup(Command command, Dictionary<String, CommandParameter> parameters) {
+            CommandResult result = null;
 
             String groupName = parameters["groupName"].First<String>();
 
@@ -488,7 +488,7 @@ namespace Procon.Core.Security {
                     if (group != null) {
                         Groups.Remove(group);
 
-                        result = new CommandResultArgs() {
+                        result = new CommandResult() {
                             Success = true,
                             Status = CommandResultType.Success,
                             Message = String.Format(@"Group ""{0}"" successfully removed.", groupName),
@@ -500,14 +500,14 @@ namespace Procon.Core.Security {
                         };
 
                         if (this.Shared.Events != null) {
-                            this.Shared.Events.Log(GenericEventArgs.ConvertToGenericEvent(result, GenericEventType.SecurityGroupRemoved));
+                            this.Shared.Events.Log(GenericEvent.ConvertToGenericEvent(result, GenericEventType.SecurityGroupRemoved));
                         }
 
                         // Now cleanup our stored account
                         group.Dispose();
                     }
                     else {
-                        result = new CommandResultArgs() {
+                        result = new CommandResult() {
                             Success = false,
                             Status = CommandResultType.DoesNotExists,
                             Message = String.Format(@"Group ""{0}"" does not exist.", groupName)
@@ -515,7 +515,7 @@ namespace Procon.Core.Security {
                     }
                 }
                 else {
-                    result = new CommandResultArgs() {
+                    result = new CommandResult() {
                         Success = false,
                         Status = CommandResultType.InvalidParameter,
                         Message = "A group name must not be zero length"
@@ -523,7 +523,7 @@ namespace Procon.Core.Security {
                 }
             }
             else {
-                result = CommandResultArgs.InsufficientPermissions;
+                result = CommandResult.InsufficientPermissions;
             }
 
             return result;
@@ -532,8 +532,8 @@ namespace Procon.Core.Security {
         /// <summary>
         /// Removes an account, whatever group it is assigned to.
         /// </summary>
-        public CommandResultArgs SecurityRemoveAccount(Command command, Dictionary<String, CommandParameter> parameters) {
-            CommandResultArgs result = null;
+        public CommandResult SecurityRemoveAccount(Command command, Dictionary<String, CommandParameter> parameters) {
+            CommandResult result = null;
 
             String username = parameters["username"].First<String>();
 
@@ -545,7 +545,7 @@ namespace Procon.Core.Security {
                     if (account != null) {
                         account.Group.Accounts.Remove(account);
 
-                        result = new CommandResultArgs() {
+                        result = new CommandResult() {
                             Success = true,
                             Status = CommandResultType.Success,
                             Message = String.Format(@"Account ""{0}"" successfully removed.", account.Username),
@@ -560,14 +560,14 @@ namespace Procon.Core.Security {
                         };
 
                         if (this.Shared.Events != null) {
-                            this.Shared.Events.Log(GenericEventArgs.ConvertToGenericEvent(result, GenericEventType.SecurityAccountRemoved));
+                            this.Shared.Events.Log(GenericEvent.ConvertToGenericEvent(result, GenericEventType.SecurityAccountRemoved));
                         }
 
                         // Now cleanup our stored account
                         account.Dispose();
                     }
                     else {
-                        result = new CommandResultArgs() {
+                        result = new CommandResult() {
                             Success = false,
                             Status = CommandResultType.DoesNotExists,
                             Message = String.Format(@"Account ""{0}"" does not exist.", username)
@@ -575,7 +575,7 @@ namespace Procon.Core.Security {
                     }
                 }
                 else {
-                    result = new CommandResultArgs() {
+                    result = new CommandResult() {
                         Success = false,
                         Status = CommandResultType.InvalidParameter,
                         Message = "An account name must not be zero length"
@@ -583,7 +583,7 @@ namespace Procon.Core.Security {
                 }
             }
             else {
-                result = CommandResultArgs.InsufficientPermissions;
+                result = CommandResult.InsufficientPermissions;
             }
 
             return result;
@@ -596,8 +596,8 @@ namespace Procon.Core.Security {
         /// </summary>
         /// <param name="command"></param>
         /// <param name="parameters"></param>
-        public CommandResultArgs SecurityRemovePlayer(Command command, Dictionary<String, CommandParameter> parameters) { // (Command command, String gameType, String uid) {
-            CommandResultArgs result = null;
+        public CommandResult SecurityRemovePlayer(Command command, Dictionary<String, CommandParameter> parameters) { // (Command command, String gameType, String uid) {
+            CommandResult result = null;
 
             String gameType = parameters["gameType"].First<String>();
             String uid = parameters["uid"].First<String>();
@@ -613,7 +613,7 @@ namespace Procon.Core.Security {
                         // Remove the player from its account.
                         player.Account.Players.Remove(player);
 
-                        result = new CommandResultArgs() {
+                        result = new CommandResult() {
                             Success = true,
                             Status = CommandResultType.Success,
                             Message = String.Format(@"Player with UID of ""{0}"" in game type ""{1}"" successfully removed from account ""{2}"".", player.Uid, player.GameType, player.Account.Username),
@@ -628,14 +628,14 @@ namespace Procon.Core.Security {
                         };
 
                         if (this.Shared.Events != null) {
-                            this.Shared.Events.Log(GenericEventArgs.ConvertToGenericEvent(result, GenericEventType.SecurityPlayerRemoved));
+                            this.Shared.Events.Log(GenericEvent.ConvertToGenericEvent(result, GenericEventType.SecurityPlayerRemoved));
                         }
 
                         // Now cleanup our stored player
                         player.Dispose();
                     }
                     else {
-                        result = new CommandResultArgs() {
+                        result = new CommandResult() {
                             Success = false,
                             Status = CommandResultType.DoesNotExists,
                             Message = String.Format(@"Player with UID of ""{0}"" in game type ""{1}"" does not exist.", uid, gameType)
@@ -643,7 +643,7 @@ namespace Procon.Core.Security {
                     }
                 }
                 else {
-                    result = new CommandResultArgs() {
+                    result = new CommandResult() {
                         Success = false,
                         Status = CommandResultType.InvalidParameter,
                         Message = "A player uid must not be zero length"
@@ -651,14 +651,14 @@ namespace Procon.Core.Security {
                 }
             }
             else {
-                result = CommandResultArgs.InsufficientPermissions;
+                result = CommandResult.InsufficientPermissions;
             }
 
             return result;
         }
 
-        private static CommandResultArgs CheckPermissions(AccountModel initiatorAccount, String commandName, AccountModel targetAccount = null) {
-            CommandResultArgs result = null;
+        private static CommandResult CheckPermissions(AccountModel initiatorAccount, String commandName, AccountModel targetAccount = null) {
+            CommandResult result = null;
 
             int? initiatorAuthority = SecurityController.HighestAuthority(initiatorAccount, commandName);
             int? targetAuthority = SecurityController.HighestAuthority(targetAccount, commandName);
@@ -667,7 +667,7 @@ namespace Procon.Core.Security {
                 if (targetAuthority.HasValue == true) {
                     if (initiatorAuthority.Value > targetAuthority.Value) {
                         // The initiator "out ranks" the target. Good to go.
-                        result = new CommandResultArgs() {
+                        result = new CommandResult() {
                             Success = true,
                             Status = CommandResultType.Success
                         };
@@ -675,7 +675,7 @@ namespace Procon.Core.Security {
                     else {
                         // The initiator has some permission, but not more than the target.
                         // The cannot execute the command, but we give some further details about it here.
-                        result = new CommandResultArgs() {
+                        result = new CommandResult() {
                             Success = false,
                             Status = CommandResultType.InsufficientAuthority
                         };
@@ -683,7 +683,7 @@ namespace Procon.Core.Security {
                 }
                 else {
                     // The target does not have any permission, so we're good to go.
-                    result = new CommandResultArgs() {
+                    result = new CommandResult() {
                         Success = true,
                         Status = CommandResultType.Success
                     };
@@ -691,7 +691,7 @@ namespace Procon.Core.Security {
             }
             else {
                 // The account has zero authority.
-                result = new CommandResultArgs() {
+                result = new CommandResult() {
                     Success = false,
                     Status = CommandResultType.InsufficientPermissions
                 };
@@ -708,12 +708,12 @@ namespace Procon.Core.Security {
         /// <param name="commandName"></param>
         /// <param name="targetAccount"></param>
         /// <returns></returns>
-        protected CommandResultArgs DispatchPermissionsCheck(Command command, AccountModel initiatorAccount, String commandName, AccountModel targetAccount = null) {
-            CommandResultArgs result = null;
+        protected CommandResult DispatchPermissionsCheck(Command command, AccountModel initiatorAccount, String commandName, AccountModel targetAccount = null) {
+            CommandResult result = null;
 
             if (command.Origin == CommandOrigin.Local) {
                 // All good.
-                result = new CommandResultArgs() {
+                result = new CommandResult() {
                     Success = true,
                     Status = CommandResultType.Success
                 };
@@ -721,7 +721,7 @@ namespace Procon.Core.Security {
             else if (command.Origin == CommandOrigin.Plugin) {
                 if (command.Username == null && command.Uid == null && command.GameType == CommonGameType.None) {
                     // The plugin has not provided additional details on who has executed it.
-                    result = new CommandResultArgs() {
+                    result = new CommandResult() {
                         Success = true,
                         Status = CommandResultType.Success
                     };
@@ -735,7 +735,7 @@ namespace Procon.Core.Security {
                 result = SecurityController.CheckPermissions(initiatorAccount, commandName, targetAccount);
             }
             else {
-                result = new CommandResultArgs() {
+                result = new CommandResult() {
                     Success = false,
                     Status = CommandResultType.InsufficientPermissions
                 };
@@ -750,7 +750,7 @@ namespace Procon.Core.Security {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public CommandResultArgs DispatchPermissionsCheckByAccountPlayerDetails(Command command, Dictionary<String, CommandParameter> parameters) {
+        public CommandResult DispatchPermissionsCheckByAccountPlayerDetails(Command command, Dictionary<String, CommandParameter> parameters) {
             String commandName = parameters["commandName"].First<String>();
             String targetGameType = parameters["targetGameType"].First<String>();
             String targetUid = parameters["targetUid"].First<String>();
@@ -764,7 +764,7 @@ namespace Procon.Core.Security {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public CommandResultArgs DispatchPermissionsCheckByAccountDetails(Command command, Dictionary<String, CommandParameter> parameters) {
+        public CommandResult DispatchPermissionsCheckByAccountDetails(Command command, Dictionary<String, CommandParameter> parameters) {
             String commandName = parameters["commandName"].First<String>();
             String targetAccountName = parameters["targetAccountName"].First<String>();
 
@@ -777,7 +777,7 @@ namespace Procon.Core.Security {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public CommandResultArgs DispatchPermissionsCheckByCommand(Command command, Dictionary<String, CommandParameter> parameters) {
+        public CommandResult DispatchPermissionsCheckByCommand(Command command, Dictionary<String, CommandParameter> parameters) {
             String commandName = parameters["commandName"].First<String>();
             return this.DispatchPermissionsCheck(command, this.GetAccount(command), commandName);
         }
@@ -788,7 +788,7 @@ namespace Procon.Core.Security {
         /// <param name="command"></param>
         /// <param name="commandName"></param>
         /// <returns></returns>
-        public CommandResultArgs DispatchPermissionsCheck(Command command, String commandName) {
+        public CommandResult DispatchPermissionsCheck(Command command, String commandName) {
             return this.DispatchPermissionsCheck(command, this.GetAccount(command), commandName);
         }
 
@@ -833,8 +833,8 @@ namespace Procon.Core.Security {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public CommandResultArgs SecurityGroupSetPermission(Command command, Dictionary<String, CommandParameter> parameters) {
-            CommandResultArgs result = null;
+        public CommandResult SecurityGroupSetPermission(Command command, Dictionary<String, CommandParameter> parameters) {
+            CommandResult result = null;
 
             String groupName = parameters["groupName"].First<String>();
             String permissionName = parameters["permissionName"].First<String>();
@@ -861,7 +861,7 @@ namespace Procon.Core.Security {
                         permission.Authority = authority;
                     }
 
-                    result = new CommandResultArgs() {
+                    result = new CommandResult() {
                         Success = true,
                         Status = CommandResultType.Success,
                         Message = String.Format(@"Permission ""{0}"" successfully set to {1}.", permission.Name, permission.Authority),
@@ -878,11 +878,11 @@ namespace Procon.Core.Security {
                     };
 
                     if (this.Shared.Events != null) {
-                        this.Shared.Events.Log(GenericEventArgs.ConvertToGenericEvent(result, GenericEventType.SecurityGroupPermissionAuthorityChanged));
+                        this.Shared.Events.Log(GenericEvent.ConvertToGenericEvent(result, GenericEventType.SecurityGroupPermissionAuthorityChanged));
                     }
                 }
                 else {
-                    result = new CommandResultArgs() {
+                    result = new CommandResult() {
                         Message = String.Format(@"Group with name ""{0}"" does not exists.", groupName),
                         Success = false,
                         Status = CommandResultType.DoesNotExists
@@ -890,7 +890,7 @@ namespace Procon.Core.Security {
                 }
             }
             else {
-                result = CommandResultArgs.InsufficientPermissions;
+                result = CommandResult.InsufficientPermissions;
             }
 
             return result;
@@ -902,8 +902,8 @@ namespace Procon.Core.Security {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public CommandResultArgs SecurityGroupCopyPermissions(Command command, Dictionary<String, CommandParameter> parameters) {
-            CommandResultArgs result = null;
+        public CommandResult SecurityGroupCopyPermissions(Command command, Dictionary<String, CommandParameter> parameters) {
+            CommandResult result = null;
 
             String sourceGroupName = parameters["sourceGroupName"].First<String>();
             String destinationGroupName = parameters["destinationGroupName"].First<String>();
@@ -924,7 +924,7 @@ namespace Procon.Core.Security {
                             }
                         }
 
-                        result = new CommandResultArgs() {
+                        result = new CommandResult() {
                             Success = true,
                             Status = CommandResultType.Success,
                             Message = String.Format(@"Successfully copied permissions from group ""{0}"" to {1}.", sourceGroup.Name, destinationGroup.Name),
@@ -939,11 +939,11 @@ namespace Procon.Core.Security {
                         };
 
                         if (this.Shared.Events != null) {
-                            this.Shared.Events.Log(GenericEventArgs.ConvertToGenericEvent(result, GenericEventType.SecurityGroupPermissionsCopied));
+                            this.Shared.Events.Log(GenericEvent.ConvertToGenericEvent(result, GenericEventType.SecurityGroupPermissionsCopied));
                         }
                     }
                     else {
-                        result = new CommandResultArgs() {
+                        result = new CommandResult() {
                             Success = false,
                             Status = CommandResultType.DoesNotExists,
                             Message = String.Format(@"Source group ""{0}"" does not exist.", sourceGroupName)
@@ -951,7 +951,7 @@ namespace Procon.Core.Security {
                     }
                 }
                 else {
-                    result = new CommandResultArgs() {
+                    result = new CommandResult() {
                         Success = false,
                         Status = CommandResultType.DoesNotExists,
                         Message = String.Format(@"Destination group ""{0}"" does not exist.", sourceGroupName)
@@ -959,7 +959,7 @@ namespace Procon.Core.Security {
                 }
             }
             else {
-                result = CommandResultArgs.InsufficientPermissions;
+                result = CommandResult.InsufficientPermissions;
             }
 
             return result;
@@ -968,8 +968,8 @@ namespace Procon.Core.Security {
         /// <summary>
         /// Creates a new account if the specified name is unique.
         /// </summary>
-        public CommandResultArgs SecurityGroupAddAccount(Command command, Dictionary<String, CommandParameter> parameters) { // , String groupName, String username) {
-            CommandResultArgs result = null;
+        public CommandResult SecurityGroupAddAccount(Command command, Dictionary<String, CommandParameter> parameters) { // , String groupName, String username) {
+            CommandResult result = null;
 
             String groupName = parameters["groupName"].First<String>();
             String username = parameters["username"].First<String>();
@@ -990,7 +990,7 @@ namespace Procon.Core.Security {
 
                             group.Accounts.Add(account);
 
-                            result = new CommandResultArgs() {
+                            result = new CommandResult() {
                                 Success = true,
                                 Status = CommandResultType.Success,
                                 Message = String.Format(@"Account ""{0}"" successfully added to group ""{1}"".", account.Username, group.Name),
@@ -1007,7 +1007,7 @@ namespace Procon.Core.Security {
                             };
 
                             if (this.Shared.Events != null) {
-                                this.Shared.Events.Log(GenericEventArgs.ConvertToGenericEvent(result, GenericEventType.SecurityAccountAdded));
+                                this.Shared.Events.Log(GenericEvent.ConvertToGenericEvent(result, GenericEventType.SecurityAccountAdded));
                             }
                         }
                         // Else the account exists already, relocate it.
@@ -1021,7 +1021,7 @@ namespace Procon.Core.Security {
                             account.Group = group;
                             group.Accounts.Add(account);
 
-                            result = new CommandResultArgs() {
+                            result = new CommandResult() {
                                 Success = true,
                                 Status = CommandResultType.Success,
                                 Message = String.Format(@"Account ""{0}"" successfully added to group ""{1}"".", account.Username, group.Name),
@@ -1043,12 +1043,12 @@ namespace Procon.Core.Security {
                             };
 
                             if (this.Shared.Events != null) {
-                                this.Shared.Events.Log(GenericEventArgs.ConvertToGenericEvent(result, GenericEventType.SecurityAccountAdded));
+                                this.Shared.Events.Log(GenericEvent.ConvertToGenericEvent(result, GenericEventType.SecurityAccountAdded));
                             }
                         }
                     }
                     else {
-                        result = new CommandResultArgs() {
+                        result = new CommandResult() {
                             Success = false,
                             Status = CommandResultType.InvalidParameter,
                             Message = "An account username must not be zero length"
@@ -1056,7 +1056,7 @@ namespace Procon.Core.Security {
                     }
                 }
                 else {
-                    result = new CommandResultArgs() {
+                    result = new CommandResult() {
                         Message = String.Format(@"Group with name ""{0}"" does not exists.", groupName),
                         Success = false,
                         Status = CommandResultType.DoesNotExists
@@ -1064,7 +1064,7 @@ namespace Procon.Core.Security {
                 }
             }
             else {
-                result = CommandResultArgs.InsufficientPermissions;
+                result = CommandResult.InsufficientPermissions;
             }
 
             return result;
@@ -1080,8 +1080,8 @@ namespace Procon.Core.Security {
         /// </summary>
         /// <param name="command"></param>
         /// <param name="parameters"></param>
-        public CommandResultArgs SecurityAccountAddPlayer(Command command, Dictionary<String, CommandParameter> parameters) {
-            CommandResultArgs result = null;
+        public CommandResult SecurityAccountAddPlayer(Command command, Dictionary<String, CommandParameter> parameters) {
+            CommandResult result = null;
 
             // <param name="username">The unique name of the account.  Account.Name</param>
             // <param name="gameType">The name of the game, found in Procon.Core.Connections.Support</param>
@@ -1109,7 +1109,7 @@ namespace Procon.Core.Security {
 
                             account.Players.Add(player);
 
-                            result = new CommandResultArgs() {
+                            result = new CommandResult() {
                                 Success = true,
                                 Status = CommandResultType.Success,
                                 Message = String.Format(@"Player with UID of ""{0}"" in game type ""{1}"" successfully added to account ""{2}"".", player.Uid, player.GameType, account.Username),
@@ -1129,7 +1129,7 @@ namespace Procon.Core.Security {
                             };
 
                             if (this.Shared.Events != null) {
-                                this.Shared.Events.Log(GenericEventArgs.ConvertToGenericEvent(result, GenericEventType.SecurityPlayerAdded));
+                                this.Shared.Events.Log(GenericEvent.ConvertToGenericEvent(result, GenericEventType.SecurityPlayerAdded));
                             }
                         }
                         // Else the player already exists and is attached to another account. Reassign it.
@@ -1143,7 +1143,7 @@ namespace Procon.Core.Security {
                             player.Account = account;
                             account.Players.Add(player);
 
-                            result = new CommandResultArgs() {
+                            result = new CommandResult() {
                                 Success = true,
                                 Status = CommandResultType.Success,
                                 Message = String.Format(@"Player with UID of ""{0}"" in game type ""{1}"" successfully added to account ""{2}"".", player.Uid, player.GameType, account.Username),
@@ -1165,12 +1165,12 @@ namespace Procon.Core.Security {
                             };
 
                             if (this.Shared.Events != null) {
-                                this.Shared.Events.Log(GenericEventArgs.ConvertToGenericEvent(result, GenericEventType.SecurityPlayerAdded));
+                                this.Shared.Events.Log(GenericEvent.ConvertToGenericEvent(result, GenericEventType.SecurityPlayerAdded));
                             }
                         }
                     }
                     else {
-                        result = new CommandResultArgs() {
+                        result = new CommandResult() {
                             Success = false,
                             Status = CommandResultType.InvalidParameter,
                             Message = "A player uid must not be zero length"
@@ -1178,7 +1178,7 @@ namespace Procon.Core.Security {
                     }
                 }
                 else {
-                    result = new CommandResultArgs() {
+                    result = new CommandResult() {
                         Message = String.Format(@"Account with username ""{0}"" does not exists.", username),
                         Success = false,
                         Status = CommandResultType.DoesNotExists
@@ -1186,7 +1186,7 @@ namespace Procon.Core.Security {
                 }
             }
             else {
-                result = CommandResultArgs.InsufficientPermissions;
+                result = CommandResult.InsufficientPermissions;
             }
 
             return result;
@@ -1198,8 +1198,8 @@ namespace Procon.Core.Security {
         /// </summary>
         /// <param name="command"></param>
         /// <param name="parameters"></param>
-        public CommandResultArgs SecurityAccountSetPassword(Command command, Dictionary<String, CommandParameter> parameters) {
-            CommandResultArgs result = null;
+        public CommandResult SecurityAccountSetPassword(Command command, Dictionary<String, CommandParameter> parameters) {
+            CommandResult result = null;
 
             // <param name="username">The unique name of the account.  Account.Name</param>
             // <param name="password">The person password to login to the layer.  Account.Password</param>
@@ -1213,14 +1213,14 @@ namespace Procon.Core.Security {
                     if (password.Length > 0) {
                         account.PasswordHash = BCrypt.HashPassword(password, BCrypt.GenerateSalt());
 
-                        result = new CommandResultArgs() {
+                        result = new CommandResult() {
                             Success = true,
                             Status = CommandResultType.Success,
                             Message = String.Format(@"Successfully changed password for account with username ""{0}"".", account.Username)
                         };
                     }
                     else {
-                        result = new CommandResultArgs() {
+                        result = new CommandResult() {
                             Success = false,
                             Status = CommandResultType.InvalidParameter,
                             Message = "A password must not be zero length"
@@ -1228,7 +1228,7 @@ namespace Procon.Core.Security {
                     }
                 }
                 else {
-                    result = new CommandResultArgs() {
+                    result = new CommandResult() {
                         Message = String.Format(@"Account with username ""{0}"" does not exists.", username),
                         Success = false,
                         Status = CommandResultType.DoesNotExists
@@ -1236,7 +1236,7 @@ namespace Procon.Core.Security {
                 }
             }
             else {
-                result = CommandResultArgs.InsufficientPermissions;
+                result = CommandResult.InsufficientPermissions;
             }
 
             return result;
@@ -1248,8 +1248,8 @@ namespace Procon.Core.Security {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public CommandResultArgs SecurityAccountSetPasswordHash(Command command, Dictionary<String, CommandParameter> parameters) {
-            CommandResultArgs result = null;
+        public CommandResult SecurityAccountSetPasswordHash(Command command, Dictionary<String, CommandParameter> parameters) {
+            CommandResult result = null;
 
             String username = parameters["username"].First<String>();
             String passwordHash = parameters["passwordHash"].First<String>();
@@ -1261,14 +1261,14 @@ namespace Procon.Core.Security {
                     if (passwordHash.Length > 0) {
                         account.PasswordHash = passwordHash;
 
-                        result = new CommandResultArgs() {
+                        result = new CommandResult() {
                             Success = true,
                             Status = CommandResultType.Success,
                             Message = String.Format(@"Successfully set password for account with username ""{0}"".", account.Username)
                         };
                     }
                     else {
-                        result = new CommandResultArgs() {
+                        result = new CommandResult() {
                             Success = false,
                             Status = CommandResultType.InvalidParameter,
                             Message = "A password hash must not be zero length"
@@ -1276,7 +1276,7 @@ namespace Procon.Core.Security {
                     }
                 }
                 else {
-                    result = new CommandResultArgs() {
+                    result = new CommandResult() {
                         Message = String.Format(@"Account with username ""{0}"" does not exists.", username),
                         Success = false,
                         Status = CommandResultType.DoesNotExists
@@ -1284,7 +1284,7 @@ namespace Procon.Core.Security {
                 }
             }
             else {
-                result = CommandResultArgs.InsufficientPermissions;
+                result = CommandResult.InsufficientPermissions;
             }
 
             return result;
@@ -1296,8 +1296,8 @@ namespace Procon.Core.Security {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public CommandResultArgs SecurityAccountAuthenticate(Command command, Dictionary<String, CommandParameter> parameters) {
-            CommandResultArgs result = null;
+        public CommandResult SecurityAccountAuthenticate(Command command, Dictionary<String, CommandParameter> parameters) {
+            CommandResult result = null;
 
             String username = parameters["username"].First<String>();
             String passwordPlainText = parameters["passwordPlainText"].First<String>();
@@ -1308,14 +1308,14 @@ namespace Procon.Core.Security {
                 if (account != null) {
                     if (account.PasswordHash.Length > 0) {
                         if (BCrypt.CheckPassword(passwordPlainText, account.PasswordHash) == true) {
-                            result = new CommandResultArgs() {
+                            result = new CommandResult() {
                                 Success = true,
                                 Status = CommandResultType.Success,
                                 Message = String.Format(@"Successfully authenticated against account with username ""{0}"".", account.Username)
                             };
                         }
                         else {
-                            result = new CommandResultArgs() {
+                            result = new CommandResult() {
                                 Success = false,
                                 Status = CommandResultType.Failed,
                                 Message = "Invalid username or password."
@@ -1323,7 +1323,7 @@ namespace Procon.Core.Security {
                         }
                     }
                     else {
-                        result = new CommandResultArgs() {
+                        result = new CommandResult() {
                             Success = false,
                             Status = CommandResultType.DoesNotExists,
                             Message = String.Format(@"A password has not been setup for account with username ""{0}"".", account.Username)
@@ -1331,7 +1331,7 @@ namespace Procon.Core.Security {
                     }
                 }
                 else {
-                    result = new CommandResultArgs() {
+                    result = new CommandResult() {
                         Message = String.Format(@"Account with username ""{0}"" does not exists.", username),
                         Success = false,
                         Status = CommandResultType.DoesNotExists
@@ -1339,7 +1339,7 @@ namespace Procon.Core.Security {
                 }
             }
             else {
-                result = CommandResultArgs.InsufficientPermissions;
+                result = CommandResult.InsufficientPermissions;
             }
 
             return result;
@@ -1350,8 +1350,8 @@ namespace Procon.Core.Security {
         /// </summary>
         /// <param name="command"></param>
         /// <param name="parameters"></param>
-        public CommandResultArgs SecurityAccountSetPreferredLanguageCode(Command command, Dictionary<String, CommandParameter> parameters) {
-            CommandResultArgs result = null;
+        public CommandResult SecurityAccountSetPreferredLanguageCode(Command command, Dictionary<String, CommandParameter> parameters) {
+            CommandResult result = null;
 
             // <param name="username">The unique name of the account.  Account.Name</param>
             // <param name="languageCode">ISO 639-1 preferred language code</param>
@@ -1367,14 +1367,14 @@ namespace Procon.Core.Security {
                     if (language != null) {
                         account.PreferredLanguageCode = language.LanguageCode;
 
-                        result = new CommandResultArgs() {
+                        result = new CommandResult() {
                             Success = true,
                             Status = CommandResultType.Success,
                             Message = String.Format(@"Account with username ""{0}"" successfully set preferred language to ""{1}"".", account.Username, language.LanguageCode)
                         };
                     }
                     else {
-                        result = new CommandResultArgs() {
+                        result = new CommandResult() {
                             Success = false,
                             Status = CommandResultType.DoesNotExists,
                             Message = String.Format(@"Language with code ""{0}"" does not exist.", languageCode)
@@ -1382,7 +1382,7 @@ namespace Procon.Core.Security {
                     }
                 }
                 else {
-                    result = new CommandResultArgs() {
+                    result = new CommandResult() {
                         Message = String.Format(@"Account with username ""{0}"" does not exists.", username),
                         Success = false,
                         Status = CommandResultType.DoesNotExists
@@ -1390,7 +1390,7 @@ namespace Procon.Core.Security {
                 }
             }
             else {
-                result = CommandResultArgs.InsufficientPermissions;
+                result = CommandResult.InsufficientPermissions;
             }
 
             return result;

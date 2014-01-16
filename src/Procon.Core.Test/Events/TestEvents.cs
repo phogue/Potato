@@ -41,7 +41,7 @@ namespace Procon.Core.Test.Events {
         public void TestEventsLogged() {
             var events = new EventsController();
 
-            events.Log(new GenericEventArgs() {
+            events.Log(new GenericEvent() {
                 Success = true,
                 GenericEventType = GenericEventType.SecurityGroupAdded
             });
@@ -56,7 +56,7 @@ namespace Procon.Core.Test.Events {
         public void TestEventsLoggedDisposed() {
             var events = new EventsController();
 
-            events.Log(new GenericEventArgs() {
+            events.Log(new GenericEvent() {
                 Success = true,
                 GenericEventType = GenericEventType.SecurityGroupAdded
             });
@@ -76,7 +76,7 @@ namespace Procon.Core.Test.Events {
 
             events.EventLogged += (sender, args) => requestWait.Set();
 
-            events.Log(new GenericEventArgs() {
+            events.Log(new GenericEvent() {
                 Success = true,
                 GenericEventType = GenericEventType.SecurityGroupAdded
             });
@@ -101,7 +101,7 @@ namespace Procon.Core.Test.Events {
 
             var events = new EventsController();
 
-            events.Log(new GenericEventArgs() {
+            events.Log(new GenericEvent() {
                 Success = true,
                 GenericEventType = GenericEventType.SecurityGroupAdded,
                 Scope = new CommandData() {
@@ -144,7 +144,7 @@ namespace Procon.Core.Test.Events {
 
             var events = new EventsController();
 
-            events.Log(new GenericEventArgs() {
+            events.Log(new GenericEvent() {
                 Success = true,
                 GenericEventType = GenericEventType.SecurityGroupAdded,
                 Scope = new CommandData() {
@@ -187,7 +187,7 @@ namespace Procon.Core.Test.Events {
 
             var events = new EventsController();
 
-            events.Log(new GenericEventArgs() {
+            events.Log(new GenericEvent() {
                 Success = true,
                 GenericEventType = GenericEventType.SecurityGroupAdded,
                 Scope = new CommandData() {
@@ -200,7 +200,7 @@ namespace Procon.Core.Test.Events {
                 Stamp = now
             });
 
-            events.Log(new GenericEventArgs() {
+            events.Log(new GenericEvent() {
                 Success = true,
                 GenericEventType = GenericEventType.SecurityGroupAdded,
                 Scope = new CommandData() {

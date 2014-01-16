@@ -93,7 +93,7 @@ namespace Procon.Core.Remote {
                     // Start accepting connections.
                     this.CommandServerListener.BeginListener();
 
-                    this.Shared.Events.Log(new GenericEventArgs() {
+                    this.Shared.Events.Log(new GenericEvent() {
                         GenericEventType = GenericEventType.CommandServerStarted,
                         Success = true,
                         Status = CommandResultType.Success
@@ -104,7 +104,7 @@ namespace Procon.Core.Remote {
                 this.CommandServerListener.Dispose();
                 this.CommandServerListener = null;
 
-                this.Shared.Events.Log(new GenericEventArgs() {
+                this.Shared.Events.Log(new GenericEvent() {
                     GenericEventType = GenericEventType.CommandServerStopped,
                     Success = true,
                     Status = CommandResultType.Success
@@ -136,13 +136,13 @@ namespace Procon.Core.Remote {
             if (command != null) {
                 if (this.Shared.Security.Tunnel(CommandBuilder.SecurityAccountAuthenticate(command.Username, command.PasswordPlainText).SetOrigin(CommandOrigin.Remote)).Success == true) {
                     // Now dispatch the command
-                    CommandResultArgs result = this.Tunnel(command);
+                    CommandResult result = this.Tunnel(command);
 
                     response = CommandServerSerializer.CompleteResponsePacket(CommandServerSerializer.ResponseContentType(command), response, result);
                 }
                 else {
                     // They are not authorized to login or issue this command.
-                    response = CommandServerSerializer.CompleteResponsePacket(CommandServerSerializer.ResponseContentType(command), response, new CommandResultArgs() {
+                    response = CommandServerSerializer.CompleteResponsePacket(CommandServerSerializer.ResponseContentType(command), response, new CommandResult() {
                         Success = false,
                         Status = CommandResultType.InsufficientPermissions,
                         Message = "Invalid username or password"

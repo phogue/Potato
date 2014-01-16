@@ -13,7 +13,7 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
     public class TestFuzzyBasicObjectMatching : TestTextCommandParserBase {
         [Test]
         public void TestBasicAlternateKickPhogueCommandSevereTypo() {
-            CommandResultArgs result = CreateTextCommandController().ExecuteTextCommand(new Command() {
+            CommandResult result = CreateTextCommandController().ExecuteTextCommand(new Command() {
                 Username = "Phogue",
                 Origin = CommandOrigin.Local
             }, new Dictionary<string, CommandParameter>() {
@@ -53,7 +53,7 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
 
         [Test]
         public void TestBasicKickPhogueCommandSevereTypo() {
-            CommandResultArgs result = CreateTextCommandController().ExecuteTextCommand(new Command() {
+            CommandResult result = CreateTextCommandController().ExecuteTextCommand(new Command() {
                 Username = "Phogue",
                 Origin = CommandOrigin.Local
             }, new Dictionary<string, CommandParameter>() {
@@ -72,7 +72,7 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
 
         [Test]
         public void TestBasicKickPhogueCommandSmallTypo() {
-            CommandResultArgs result = CreateTextCommandController().ExecuteTextCommand(new Command() {
+            CommandResult result = CreateTextCommandController().ExecuteTextCommand(new Command() {
                 Username = "Phogue",
                 Origin = CommandOrigin.Local
             }, new Dictionary<string, CommandParameter>() {

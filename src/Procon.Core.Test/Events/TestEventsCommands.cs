@@ -27,7 +27,7 @@ namespace Procon.Core.Test.Events {
         public void TestEventsAfterEventIdExcludingExpired() {
             var events = new EventsController();
 
-            events.Log(new GenericEventArgs() {
+            events.Log(new GenericEvent() {
                 Success = true,
                 GenericEventType = GenericEventType.SecurityGroupAdded,
                 Scope = new CommandData() {
@@ -39,7 +39,7 @@ namespace Procon.Core.Test.Events {
                 }
             });
 
-            events.Log(new GenericEventArgs() {
+            events.Log(new GenericEvent() {
                 Success = true,
                 GenericEventType = GenericEventType.SecurityGroupAdded,
                 Scope = new CommandData() {
@@ -52,7 +52,7 @@ namespace Procon.Core.Test.Events {
                 Stamp = DateTime.Now.AddHours(-1)
             });
 
-            CommandResultArgs result = events.Tunnel(new Command() {
+            CommandResult result = events.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.EventsFetchAfterEventId,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -74,7 +74,7 @@ namespace Procon.Core.Test.Events {
         public void TestEventsAfterEventIdInsufficientPermission() {
             var events = new EventsController();
 
-            events.Log(new GenericEventArgs() {
+            events.Log(new GenericEvent() {
                 Success = true,
                 GenericEventType = GenericEventType.SecurityGroupAdded,
                 Scope = new CommandData() {
@@ -86,7 +86,7 @@ namespace Procon.Core.Test.Events {
                 }
             });
 
-            CommandResultArgs result = events.Tunnel(new Command() {
+            CommandResult result = events.Tunnel(new Command() {
                 Username = "Phogue",
                 Origin = CommandOrigin.Remote,
                 CommandType = CommandType.EventsFetchAfterEventId,
@@ -106,7 +106,7 @@ namespace Procon.Core.Test.Events {
         public void TestEventsAfterEventIdSuccess() {
             var events = new EventsController();
 
-            events.Log(new GenericEventArgs() {
+            events.Log(new GenericEvent() {
                 Success = true,
                 GenericEventType = GenericEventType.SecurityGroupAdded,
                 Scope = new CommandData() {
@@ -118,7 +118,7 @@ namespace Procon.Core.Test.Events {
                 }
             });
 
-            CommandResultArgs result = events.Tunnel(new Command() {
+            CommandResult result = events.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.EventsFetchAfterEventId,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {

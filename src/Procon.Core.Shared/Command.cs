@@ -33,7 +33,7 @@ namespace Procon.Core.Shared {
         /// <summary>
         /// The final result of this command.
         /// </summary>
-        public CommandResultArgs Result { get; set; }
+        public CommandResult Result { get; set; }
 
         /// <summary>
         /// The original request from a remote source.

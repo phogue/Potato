@@ -29,7 +29,7 @@ namespace Procon.Core.Test.Events {
         public void TestPushEventsAppendSuccess() {
             var pushEndPoint = new PushEventsEndPoint();
 
-            pushEndPoint.Append(new GenericEventArgs() {
+            pushEndPoint.Append(new GenericEvent() {
                 Message = "What up?"
             });
 
@@ -44,7 +44,7 @@ namespace Procon.Core.Test.Events {
         public void TestPushEventsDisposedEventIsRemoved() {
             var pushEndPoint = new PushEventsEndPoint();
 
-            var genericEventArgs = new GenericEventArgs() {
+            var genericEventArgs = new GenericEvent() {
                 Message = "What up?"
             };
 
@@ -66,7 +66,7 @@ namespace Procon.Core.Test.Events {
             var requestWait = new AutoResetEvent(false);
             var pushEndPoint = new PushEventsEndPoint();
 
-            pushEndPoint.Append(new GenericEventArgs() {
+            pushEndPoint.Append(new GenericEvent() {
                 Message = "What up?"
             });
 
@@ -87,8 +87,8 @@ namespace Procon.Core.Test.Events {
             TextWriter writer = new StringWriter(builder);
 
             PushEventsEndPoint.WriteSerializedEventsRequest(writer, Mime.ApplicationJson, new PushEventsRequest() {
-                Events = new List<GenericEventArgs>() {
-                    new GenericEventArgs() {
+                Events = new List<GenericEvent>() {
+                    new GenericEvent() {
                         Message = "What up?"
                     }
                 }
@@ -108,8 +108,8 @@ namespace Procon.Core.Test.Events {
             TextWriter writer = new StringWriter(builder);
 
             PushEventsEndPoint.WriteSerializedEventsRequest(writer, Mime.ApplicationXml, new PushEventsRequest() {
-                Events = new List<GenericEventArgs>() {
-                    new GenericEventArgs() {
+                Events = new List<GenericEvent>() {
+                    new GenericEvent() {
                         Message = "What up?"
                     }
                 }

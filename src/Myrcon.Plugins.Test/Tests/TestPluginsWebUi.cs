@@ -48,10 +48,10 @@ namespace Myrcon.Plugins.Test.Tests {
             });
         }
 
-        protected CommandResultArgs TestPluginIndex(Command command, Dictionary<String, CommandParameter> parameters) {
+        protected CommandResult TestPluginIndex(Command command, Dictionary<String, CommandParameter> parameters) {
             IndexPageView index = new IndexPageView();
 
-            command.Result = new CommandResultArgs() {
+            command.Result = new CommandResult() {
                 Now = new CommandData() {
                     Content = new List<string>() {
                         index.TransformText()
@@ -65,10 +65,10 @@ namespace Myrcon.Plugins.Test.Tests {
             return command.Result;
         }
 
-        protected CommandResultArgs TestPluginSettings(Command command, Dictionary<String, CommandParameter> parameters) {
+        protected CommandResult TestPluginSettings(Command command, Dictionary<String, CommandParameter> parameters) {
             SettingsPageView index = new SettingsPageView();
 
-            command.Result = new CommandResultArgs() {
+            command.Result = new CommandResult() {
                 Now = new CommandData() {
                     Content = new List<string>() {
                         index.TransformText()
@@ -82,7 +82,7 @@ namespace Myrcon.Plugins.Test.Tests {
             return command.Result;
         }
 
-        protected CommandResultArgs TestPluginParameters(Command command, Dictionary<String, CommandParameter> parameters) {
+        protected CommandResult TestPluginParameters(Command command, Dictionary<String, CommandParameter> parameters) {
             String name = parameters["name"].First<String>();
             int score = parameters["score"].First<int>();
 
@@ -95,7 +95,7 @@ namespace Myrcon.Plugins.Test.Tests {
                 Player = player
             };
 
-            command.Result = new CommandResultArgs() {
+            command.Result = new CommandResult() {
                 Now = new CommandData() {
                     Content = new List<string>() {
                         index.TransformText()

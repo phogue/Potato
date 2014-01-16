@@ -19,7 +19,7 @@ namespace Procon.Core.Test.CoreInstance {
         public void TestResultInsufficientPermissions() {
             InstanceController instance = new InstanceController();
 
-            CommandResultArgs result = instance.Tunnel(CommandBuilder.InstanceServiceUninstallPackage("id").SetOrigin(CommandOrigin.Remote).SetUsername("Phogue"));
+            CommandResult result = instance.Tunnel(CommandBuilder.InstanceServiceUninstallPackage("id").SetOrigin(CommandOrigin.Remote).SetUsername("Phogue"));
 
             Assert.IsFalse(result.Success);
             Assert.AreEqual(CommandResultType.InsufficientPermissions, result.Status);
@@ -34,7 +34,7 @@ namespace Procon.Core.Test.CoreInstance {
         public void TestResultInvalidParameterPackageId() {
             InstanceController instance = new InstanceController();
 
-            CommandResultArgs result = instance.Tunnel(CommandBuilder.InstanceServiceUninstallPackage("").SetOrigin(CommandOrigin.Local));
+            CommandResult result = instance.Tunnel(CommandBuilder.InstanceServiceUninstallPackage("").SetOrigin(CommandOrigin.Local));
 
             Assert.IsFalse(result.Success);
             Assert.AreEqual(CommandResultType.InvalidParameter, result.Status);
@@ -49,7 +49,7 @@ namespace Procon.Core.Test.CoreInstance {
         public void TestResultSuccess() {
             InstanceController instance = new InstanceController();
 
-            CommandResultArgs result = instance.Tunnel(CommandBuilder.InstanceServiceUninstallPackage("id").SetOrigin(CommandOrigin.Local));
+            CommandResult result = instance.Tunnel(CommandBuilder.InstanceServiceUninstallPackage("id").SetOrigin(CommandOrigin.Local));
 
             Assert.IsTrue(result.Success);
             Assert.AreEqual(CommandResultType.Success, result.Status);

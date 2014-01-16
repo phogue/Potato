@@ -107,7 +107,7 @@ namespace Procon.Core.Test.Events {
             Assert.AreEqual("http://localhost/pushme.php", pushEvents.EndPoints[String.Empty].Uri.ToString());
             Assert.AreEqual(10, pushEvents.EndPoints[String.Empty].Interval);
 
-            events.Log(new GenericEventArgs() {
+            events.Log(new GenericEvent() {
                 Message = "Yo."
             });
 
@@ -148,7 +148,7 @@ namespace Procon.Core.Test.Events {
             Assert.AreEqual("http://localhost/pushme.php", pushEvents.EndPoints[String.Empty].Uri.ToString());
             Assert.AreEqual(1, pushEvents.EndPoints[String.Empty].Interval);
 
-            events.Log(new GenericEventArgs() {
+            events.Log(new GenericEvent() {
                 Message = "Yo."
             });
 

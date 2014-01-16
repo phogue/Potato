@@ -10,9 +10,9 @@ namespace Procon.Core.Shared {
     /// cause the xml serializer to encounter a type it didn't expect.
     /// </summary>
     [Serializable]
-    public class CommandResultArgs : EventArgs, IDisposable {
+    public class CommandResult : IDisposable {
 
-        public static CommandResultArgs InsufficientPermissions = new CommandResultArgs() {
+        public static CommandResult InsufficientPermissions = new CommandResult() {
             Success = false,
             Status = CommandResultType.InsufficientPermissions,
             Message = "You have Insufficient Permissions to execute this command."
@@ -64,7 +64,7 @@ namespace Procon.Core.Shared {
         [field: NonSerialized, XmlIgnore, JsonIgnore]
         public event EventHandler Disposed;
 
-        public CommandResultArgs() {
+        public CommandResult() {
             this.Stamp = DateTime.Now;
             this.Message = String.Empty;
 

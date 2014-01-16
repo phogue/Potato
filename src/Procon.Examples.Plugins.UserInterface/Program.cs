@@ -38,8 +38,8 @@ namespace Procon.Examples.Plugins.UserInterface {
 
         }
 
-        protected CommandResultArgs PageIndex(Command command, Dictionary<String, CommandParameter> parameters) {
-            return new CommandResultArgs() {
+        protected CommandResult PageIndex(Command command, Dictionary<String, CommandParameter> parameters) {
+            return new CommandResult() {
                 Now = new CommandData() {
                     Content = new List<string>() {
                         new IndexPageView().TransformText()
@@ -51,8 +51,8 @@ namespace Procon.Examples.Plugins.UserInterface {
             };
         }
 
-        protected CommandResultArgs PageSettings(Command command, Dictionary<String, CommandParameter> parameters) {
-            return new CommandResultArgs() {
+        protected CommandResult PageSettings(Command command, Dictionary<String, CommandParameter> parameters) {
+            return new CommandResult() {
                 Now = new CommandData() {
                     Content = new List<string>() {
                         new SettingsPageView() {

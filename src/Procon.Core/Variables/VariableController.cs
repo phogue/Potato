@@ -282,49 +282,49 @@ namespace Procon.Core.Variables {
             }
         }
 
-        protected CommandResultArgs CommandSetCollection(Command command, Dictionary<String, CommandParameter> parameters) {
+        protected CommandResult CommandSetCollection(Command command, Dictionary<String, CommandParameter> parameters) {
             String name = parameters["name"].First<String>();
             List<String> value = parameters["value"].All<String>();
 
             return this.Set(command, name, value);
         }
 
-        protected CommandResultArgs CommandSetSingular(Command command, Dictionary<String, CommandParameter> parameters) {
+        protected CommandResult CommandSetSingular(Command command, Dictionary<String, CommandParameter> parameters) {
             String name = parameters["name"].First<String>();
             String value = parameters["value"].First<String>();
 
             return this.Set(command, name, value);
         }
 
-        protected CommandResultArgs CommandSetACollection(Command command, Dictionary<String, CommandParameter> parameters) {
+        protected CommandResult CommandSetACollection(Command command, Dictionary<String, CommandParameter> parameters) {
             String name = parameters["name"].First<String>();
             List<String> value = parameters["value"].All<String>();
 
             return this.SetA(command, name, value);
         }
 
-        protected CommandResultArgs CommandSetASingular(Command command, Dictionary<String, CommandParameter> parameters) {
+        protected CommandResult CommandSetASingular(Command command, Dictionary<String, CommandParameter> parameters) {
             String name = parameters["name"].First<String>();
             String value = parameters["value"].First<String>();
 
             return this.SetA(command, name, value);
         }
 
-        protected CommandResultArgs CommandSetFCollection(Command command, Dictionary<String, CommandParameter> parameters) {
+        protected CommandResult CommandSetFCollection(Command command, Dictionary<String, CommandParameter> parameters) {
             String name = parameters["name"].First<String>();
             List<String> value = parameters["value"].All<String>();
 
             return this.SetF(command, name, value);
         }
 
-        protected CommandResultArgs CommandSetFSingular(Command command, Dictionary<String, CommandParameter> parameters) {
+        protected CommandResult CommandSetFSingular(Command command, Dictionary<String, CommandParameter> parameters) {
             String name = parameters["name"].First<String>();
             String value = parameters["value"].First<String>();
 
             return this.SetF(command, name, value);
         }
 
-        protected CommandResultArgs CommandGet(Command command, Dictionary<String, CommandParameter> parameters) {
+        protected CommandResult CommandGet(Command command, Dictionary<String, CommandParameter> parameters) {
             String name = parameters["name"].First<String>();
 
             return this.Get(command, name);
@@ -338,8 +338,8 @@ namespace Procon.Core.Variables {
         /// <param name="name">The unique name of the variable to set</param>
         /// <param name="value">The value of the variable</param>
         /// <returns></returns>
-        public CommandResultArgs Set(Command command, String name, Object value) {
-            CommandResultArgs result = null;
+        public CommandResult Set(Command command, String name, Object value) {
+            CommandResult result = null;
 
             if (command.Origin == CommandOrigin.Local || this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
                 if (name.Length > 0) {
@@ -348,7 +348,7 @@ namespace Procon.Core.Variables {
                     if (variable.Readonly == false) {
                         variable.Value = value;
 
-                        result = new CommandResultArgs() {
+                        result = new CommandResult() {
                             Success = true,
                             Status = CommandResultType.Success,
                             Message = String.Format(@"Successfully set value of variable name ""{0}"" to ""{1}"".", variable.Name, variable.Value),
@@ -360,12 +360,12 @@ namespace Procon.Core.Variables {
                         };
 
                         if (this.Shared.Events != null) {
-                            this.Shared.Events.Log(GenericEventArgs.ConvertToGenericEvent(result, GenericEventType.VariablesSet));
+                            this.Shared.Events.Log(GenericEvent.ConvertToGenericEvent(result, GenericEventType.VariablesSet));
                         }
                     }
                     else {
                         // Variable set to read only and cannot be modified.
-                        result = new CommandResultArgs() {
+                        result = new CommandResult() {
                             Success = false,
                             Status = CommandResultType.Failed,
                             Message = String.Format(@"Variable name ""{0}"" is set to read-only.", variable.Name)
@@ -373,7 +373,7 @@ namespace Procon.Core.Variables {
                     }
                 }
                 else {
-                    result = new CommandResultArgs() {
+                    result = new CommandResult() {
                         Success = false,
                         Status = CommandResultType.InvalidParameter,
                         Message = "A variable name must not be zero length"
@@ -381,7 +381,7 @@ namespace Procon.Core.Variables {
                 }
             }
             else {
-                result = CommandResultArgs.InsufficientPermissions;
+                result = CommandResult.InsufficientPermissions;
             }
 
             return result;
@@ -395,7 +395,7 @@ namespace Procon.Core.Variables {
         /// <param name="name">The unique name of the variable to set</param>
         /// <param name="value">The value of the variable</param>
         /// <returns></returns>
-        public CommandResultArgs Set(Command command, CommonVariableNames name, Object value) {
+        public CommandResult Set(Command command, CommonVariableNames name, Object value) {
             return this.Set(command, name.ToString(), value);
         }
 
@@ -407,11 +407,11 @@ namespace Procon.Core.Variables {
         /// <param name="name">The unique name of the variable to set</param>
         /// <param name="value">The value of the variable</param>
         /// <returns></returns>
-        public CommandResultArgs SetA(Command command, String name, Object value) {
-            CommandResultArgs result = null;
+        public CommandResult SetA(Command command, String name, Object value) {
+            CommandResult result = null;
 
             if (command.Origin == CommandOrigin.Local || this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
-                CommandResultArgs volatileSetResult = this.Set(command, name, value);
+                CommandResult volatileSetResult = this.Set(command, name, value);
 
                 if (volatileSetResult.Success == true) {
                     // All good.
@@ -427,7 +427,7 @@ namespace Procon.Core.Variables {
                     // Remove the archived value
                     this.FlashVariables.RemoveAll(v => v.Name == variable.Name);
 
-                    result = new CommandResultArgs() {
+                    result = new CommandResult() {
                         Success = true,
                         Status = CommandResultType.Success,
                         Message = String.Format(@"Successfully set value of variable name ""{0}"" to ""{1}"".", variable.Name, variable.Value),
@@ -439,7 +439,7 @@ namespace Procon.Core.Variables {
                     };
 
                     if (this.Shared.Events != null) {
-                        this.Shared.Events.Log(GenericEventArgs.ConvertToGenericEvent(result, GenericEventType.VariablesSetA));
+                        this.Shared.Events.Log(GenericEvent.ConvertToGenericEvent(result, GenericEventType.VariablesSetA));
                     }
                 }
                 else {
@@ -448,7 +448,7 @@ namespace Procon.Core.Variables {
                 }
             }
             else {
-                result = CommandResultArgs.InsufficientPermissions;
+                result = CommandResult.InsufficientPermissions;
             }
 
             return result;
@@ -462,11 +462,11 @@ namespace Procon.Core.Variables {
         /// <param name="name">The unique name of the variable to set</param>
         /// <param name="value">The value of the variable</param>
         /// <returns></returns>
-        public CommandResultArgs SetF(Command command, String name, Object value) {
-            CommandResultArgs result = null;
+        public CommandResult SetF(Command command, String name, Object value) {
+            CommandResult result = null;
 
             if (command.Origin == CommandOrigin.Local || this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
-                CommandResultArgs volatileSetResult = this.Set(command, name, value);
+                CommandResult volatileSetResult = this.Set(command, name, value);
 
                 if (volatileSetResult.Success == true) {
                     // All good.
@@ -482,7 +482,7 @@ namespace Procon.Core.Variables {
                     // Remove the archived value
                     this.ArchiveVariables.RemoveAll(v => v.Name == variable.Name);
 
-                    result = new CommandResultArgs() {
+                    result = new CommandResult() {
                         Success = true,
                         Status = CommandResultType.Success,
                         Message = String.Format(@"Successfully set value of variable name ""{0}"" to ""{1}"".", variable.Name, variable.Value),
@@ -494,7 +494,7 @@ namespace Procon.Core.Variables {
                     };
 
                     if (this.Shared.Events != null) {
-                        this.Shared.Events.Log(GenericEventArgs.ConvertToGenericEvent(result, GenericEventType.VariablesSetF));
+                        this.Shared.Events.Log(GenericEvent.ConvertToGenericEvent(result, GenericEventType.VariablesSetF));
                     }
                 }
                 else {
@@ -503,7 +503,7 @@ namespace Procon.Core.Variables {
                 }
             }
             else {
-                result = CommandResultArgs.InsufficientPermissions;
+                result = CommandResult.InsufficientPermissions;
             }
 
             return result;
@@ -544,14 +544,14 @@ namespace Procon.Core.Variables {
         /// <param name="name">The unique name of the variable to fetch</param>
         /// <param name="defaultValue"></param>
         /// <returns>The raw object with no conversion</returns>
-        public CommandResultArgs Get(Command command, String name, Object defaultValue = null) {
-            CommandResultArgs result = null;
+        public CommandResult Get(Command command, String name, Object defaultValue = null) {
+            CommandResult result = null;
 
             if (command.Origin == CommandOrigin.Local || this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
                 if (name.Length > 0) {
                     VariableModel variable = this.Variable(name);
 
-                    result = new CommandResultArgs() {
+                    result = new CommandResult() {
                         Success = true,
                         Status = CommandResultType.Success,
                         Message = String.Format(@"Value of variable with name ""{0}"" is ""{1}"".", variable.Name, variable.Value),
@@ -563,7 +563,7 @@ namespace Procon.Core.Variables {
                     };
                 }
                 else {
-                    result = new CommandResultArgs() {
+                    result = new CommandResult() {
                         Success = false,
                         Status = CommandResultType.InvalidParameter,
                         Message = "A variable name must not be zero length"
@@ -571,7 +571,7 @@ namespace Procon.Core.Variables {
                 }
             }
             else {
-                result = CommandResultArgs.InsufficientPermissions;
+                result = CommandResult.InsufficientPermissions;
             }
 
             return result;

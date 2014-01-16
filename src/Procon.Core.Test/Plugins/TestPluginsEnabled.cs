@@ -31,7 +31,7 @@ namespace Procon.Core.Test.Plugins {
                 }
             }.Execute() as CorePluginController;
 
-            CommandResultArgs result = plugins.Tunnel(new Command() {
+            CommandResult result = plugins.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.PluginsEnable,
                 Scope = {
@@ -65,7 +65,7 @@ namespace Procon.Core.Test.Plugins {
                 }
             });
 
-            CommandResultArgs result = plugins.Tunnel(new Command() {
+            CommandResult result = plugins.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.PluginsEnable,
                 Scope = {
@@ -89,7 +89,7 @@ namespace Procon.Core.Test.Plugins {
                 }
             }.Execute() as CorePluginController;
 
-            CommandResultArgs result = plugins.Tunnel(new Command() {
+            CommandResult result = plugins.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.PluginsEnable,
                 Scope = {
@@ -126,7 +126,7 @@ namespace Procon.Core.Test.Plugins {
                 }
             }.Execute() as CorePluginController;
 
-            CommandResultArgs result = plugins.Tunnel(new Command() {
+            CommandResult result = plugins.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.PluginsEnable,
                 Scope = {
@@ -150,7 +150,7 @@ namespace Procon.Core.Test.Plugins {
                 }
             }.Execute() as CorePluginController;
 
-            CommandResultArgs result = plugins.Tunnel(new Command() {
+            CommandResult result = plugins.Tunnel(new Command() {
                 Origin = CommandOrigin.Remote,
                 Username = "Phogue",
                 CommandType = CommandType.PluginsEnable,

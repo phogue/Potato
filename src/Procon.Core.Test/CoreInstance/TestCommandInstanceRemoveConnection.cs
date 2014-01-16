@@ -48,7 +48,7 @@ namespace Procon.Core.Test.CoreInstance {
             // Make sure we have at least one connection added.
             Assert.AreEqual(1, instance.Connections.Count);
 
-            CommandResultArgs result = instance.Tunnel(new Command() {
+            CommandResult result = instance.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.InstanceRemoveConnection,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -72,7 +72,7 @@ namespace Procon.Core.Test.CoreInstance {
             var instance = new InstanceController().Execute() as InstanceController;
 
             // Now readd the same connection we just added.
-            CommandResultArgs result = instance.Tunnel(new Command() {
+            CommandResult result = instance.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.InstanceRemoveConnection,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -97,7 +97,7 @@ namespace Procon.Core.Test.CoreInstance {
         public void TestInstanceRemoveConnectionInsufficientPermissions() {
             var instance = new InstanceController().Execute() as InstanceController;
 
-            CommandResultArgs result = instance.Tunnel(new Command() {
+            CommandResult result = instance.Tunnel(new Command() {
                 Origin = CommandOrigin.Remote,
                 Username = "Phogue",
                 CommandType = CommandType.InstanceRemoveConnection,
@@ -139,7 +139,7 @@ namespace Procon.Core.Test.CoreInstance {
             // Make sure we have at least one connection added.
             Assert.AreEqual(1, instance.Connections.Count);
 
-            CommandResultArgs result = instance.Tunnel(new Command() {
+            CommandResult result = instance.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.InstanceRemoveConnection,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {

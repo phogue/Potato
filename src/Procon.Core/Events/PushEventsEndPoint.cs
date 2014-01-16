@@ -46,7 +46,7 @@ namespace Procon.Core.Events {
         /// <summary>
         /// List of objects to serialize to xml passing through as content as POST.
         /// </summary>
-        public List<GenericEventArgs> EventsStream { get; set; }
+        public List<GenericEvent> EventsStream { get; set; }
 
         /// <summary>
         /// Event fired whenever a push has completed successfully or with an error.
@@ -59,7 +59,7 @@ namespace Procon.Core.Events {
         public PushEventsEndPoint() {
             this.Id = String.Empty;
             this.StreamKey = String.Empty;
-            this.EventsStream = new List<GenericEventArgs>();
+            this.EventsStream = new List<GenericEvent>();
             this.Pushing = false;
             this.Interval = 1;
             this.ContentType = Mime.ApplicationXml;
@@ -70,7 +70,7 @@ namespace Procon.Core.Events {
         /// Appends an event onto the end of the objects to stream next sync
         /// </summary>
         /// <param name="item">The event to append</param>
-        public void Append(GenericEventArgs item) {
+        public void Append(GenericEvent item) {
             if (this.EventsStream != null) {
                 lock (this.EventsStream) {
                     item.Disposed += new EventHandler(GenericEventArgs_Disposed);
@@ -88,7 +88,7 @@ namespace Procon.Core.Events {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void GenericEventArgs_Disposed(object sender, EventArgs e) {
-            GenericEventArgs item = sender as GenericEventArgs;
+            GenericEvent item = sender as GenericEvent;
 
             if (item != null) {
                 item.Disposed -= new EventHandler(GenericEventArgs_Disposed);
@@ -131,11 +131,11 @@ namespace Procon.Core.Events {
             if (this.EventsStream != null && this.Pushing == false) {
                 this.Pushing = true;
 
-                List<GenericEventArgs> data;
+                List<GenericEvent> data;
 
                 // Clone the list of events we're pushing out.
                 lock (this.EventsStream) {
-                    data = new List<GenericEventArgs>(this.EventsStream);
+                    data = new List<GenericEvent>(this.EventsStream);
                 }
 
                 // Only transfer if we have something new to report.
@@ -186,10 +186,10 @@ namespace Procon.Core.Events {
         /// of it being an error, treating it like a udp stream. The server gets the data or it gets
         /// left behind. We're just pushing updated data.
         /// </summary>
-        private void RequestCompleted(IEnumerable<GenericEventArgs> pushedDataList) {
+        private void RequestCompleted(IEnumerable<GenericEvent> pushedDataList) {
             if (this.EventsStream != null && pushedDataList != null) {
                 lock (this.EventsStream) {
-                    foreach (GenericEventArgs pushedData in pushedDataList) {
+                    foreach (GenericEvent pushedData in pushedDataList) {
                         pushedData.Disposed -= new EventHandler(GenericEventArgs_Disposed);
 
                         this.EventsStream.Remove(pushedData);

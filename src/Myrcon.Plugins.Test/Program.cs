@@ -45,7 +45,7 @@ namespace Myrcon.Plugins.Test {
                         ParameterTypes = new List<CommandParameterType>() {
                             new CommandParameterType() {
                                 Name = "e",
-                                Type = typeof(CommandResultArgs)
+                                Type = typeof(CommandResult)
                             }
                         }
                     },
@@ -56,7 +56,7 @@ namespace Myrcon.Plugins.Test {
                         ParameterTypes = new List<CommandParameterType>() {
                             new CommandParameterType() {
                                 Name = "e",
-                                Type = typeof(CommandResultArgs)
+                                Type = typeof(CommandResult)
                             }
                         }
                     },
@@ -67,7 +67,7 @@ namespace Myrcon.Plugins.Test {
                         ParameterTypes = new List<CommandParameterType>() {
                             new CommandParameterType() {
                                 Name = "e",
-                                Type = typeof(CommandResultArgs)
+                                Type = typeof(CommandResult)
                             }
                         }
                     },
@@ -104,12 +104,12 @@ namespace Myrcon.Plugins.Test {
             return this.Tests;
         }
 
-        protected List<string> ShortCommandList(CommandResultArgs e) {
+        protected List<string> ShortCommandList(CommandResult e) {
             return this.Commands.Select(x => x.Commands.FirstOrDefault()).ToList();
         }
 
-        protected CommandResultArgs HelpCommand(Command command, Dictionary<String, CommandParameter> parameters) {
-            CommandResultArgs e = parameters["e"].First<CommandResultArgs>();
+        protected CommandResult HelpCommand(Command command, Dictionary<String, CommandParameter> parameters) {
+            CommandResult e = parameters["e"].First<CommandResult>();
 
             Chat output = new Chat() {
                 Now = new NetworkActionData() {
@@ -152,8 +152,8 @@ namespace Myrcon.Plugins.Test {
             return command.Result;
         }
 
-        protected CommandResultArgs KillCommand(Command command, Dictionary<String, CommandParameter> parameters) {
-            CommandResultArgs e = parameters["e"].First<CommandResultArgs>();
+        protected CommandResult KillCommand(Command command, Dictionary<String, CommandParameter> parameters) {
+            CommandResult e = parameters["e"].First<CommandResult>();
 
             TextCommandMatchModel match = e.Now.TextCommandMatches.First();
 
@@ -192,8 +192,8 @@ namespace Myrcon.Plugins.Test {
             return command.Result;
         }
 
-        protected CommandResultArgs TestCommand(Command command, Dictionary<String, CommandParameter> parameters) {
-            CommandResultArgs e = parameters["e"].First<CommandResultArgs>();
+        protected CommandResult TestCommand(Command command, Dictionary<String, CommandParameter> parameters) {
+            CommandResult e = parameters["e"].First<CommandResult>();
 
             Chat output = new Chat() {
                 Now = new NetworkActionData() {
@@ -242,19 +242,19 @@ namespace Myrcon.Plugins.Test {
             return command.Result;
         }
 
-        public CommandResultArgs RegisterTextCommandPreview(Command command, Dictionary<String, CommandParameter> parameters) {
+        public CommandResult RegisterTextCommandPreview(Command command, Dictionary<String, CommandParameter> parameters) {
             //TextCommand textCommand = parameters["textCommand"].First<TextCommand>();
 
             return command.Result;
         }
 
-        public CommandResultArgs RegisterTextCommandExecuted(Command command, Dictionary<String, CommandParameter> parameters) {
+        public CommandResult RegisterTextCommandExecuted(Command command, Dictionary<String, CommandParameter> parameters) {
             //TextCommand textCommand = parameters["textCommand"].First<TextCommand>();
 
             return command.Result;
         }
 
-        public override void GenericEvent(GenericEventArgs e) {
+        public override void GenericEvent(GenericEvent e) {
             Console.WriteLine("Test Plugin ({0}) Event: {1}", this.PluginGuid, e.Name);
 
             if (e.GenericEventType == GenericEventType.TextCommandRegistered) {

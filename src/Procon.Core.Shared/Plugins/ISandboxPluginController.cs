@@ -5,7 +5,7 @@ namespace Procon.Core.Shared.Plugins {
     /// <summary>
     /// Remoting interface for Procon.Core to communicate with remote Plugin.
     /// </summary>
-    public interface IRemotePluginController : ICoreController {
+    public interface ISandboxPluginController : ICoreController {
         /// <summary>
         /// Creates an instance of a type in an assembly.
         /// </summary>

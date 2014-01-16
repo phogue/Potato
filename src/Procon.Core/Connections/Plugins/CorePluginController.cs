@@ -28,7 +28,7 @@ namespace Procon.Core.Connections.Plugins {
         /// <summary>
         /// Simple plugin factory reference to load classes into the app domain.
         /// </summary>
-        public IRemotePluginController PluginFactory { get; protected set; }
+        public ISandboxPluginController PluginFactory { get; protected set; }
 
         /// <summary>
         /// List of plugins loaded in the app domain.
@@ -297,7 +297,7 @@ namespace Procon.Core.Connections.Plugins {
             // Create the app domain and the plugin factory in the new domain.
             this.AppDomainSandbox = AppDomain.CreateDomain(String.Format("Procon.Plugins.{0}", this.Connection != null ? this.Connection.ConnectionModel.ConnectionGuid.ToString() : String.Empty), null, setup, permissions);
 
-            this.PluginFactory = (IRemotePluginController)this.AppDomainSandbox.CreateInstanceAndUnwrap(typeof(SandboxPluginController).Assembly.FullName, typeof(SandboxPluginController).FullName);
+            this.PluginFactory = (ISandboxPluginController)this.AppDomainSandbox.CreateInstanceAndUnwrap(typeof(SandboxPluginController).Assembly.FullName, typeof(SandboxPluginController).FullName);
 
             this.PluginFactory.BubbleObjects = new List<ICoreController>() {
                 this.CorePluginControllerCallbackProxy

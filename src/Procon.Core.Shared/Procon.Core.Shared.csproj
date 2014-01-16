@@ -96,7 +96,7 @@
     <Compile Include="Models\VariableModel.cs" />
     <Compile Include="Plugins\IPluginController.cs" />
     <Compile Include="Plugins\IPluginSetup.cs" />
-    <Compile Include="Plugins\IRemotePluginController.cs" />
+    <Compile Include="Plugins\ISandboxPluginController.cs" />
     <Compile Include="Plugins\IRenewableLease.cs" />
     <Compile Include="Plugins\CorePluginControllerCallbackProxy.cs" />
     <Compile Include="Plugins\PluginController.cs" />

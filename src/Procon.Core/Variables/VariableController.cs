@@ -209,11 +209,11 @@ namespace Procon.Core.Variables {
         /// </summary>
         public override void WriteConfig(Config config) {
             foreach (VariableModel archiveVariable in this.ArchiveVariables) {
-                config.Root.Add(CommandBuilder.VariablesSetA(archiveVariable.Name, archiveVariable.Value.ToString()).ToConfigCommand());
+                config.Root.Add(CommandBuilder.VariablesSetA(archiveVariable.Name, archiveVariable.ToList<String>()).ToConfigCommand());
             }
 
             foreach (VariableModel flashVariable in this.FlashVariables) {
-                config.Root.Add(CommandBuilder.VariablesSet(flashVariable.Name, flashVariable.Value.ToString()).ToConfigCommand());
+                config.Root.Add(CommandBuilder.VariablesSet(flashVariable.Name, flashVariable.ToList<String>()).ToConfigCommand());
             }
         }
 
@@ -415,7 +415,7 @@ namespace Procon.Core.Variables {
 
                 if (volatileSetResult.Success == true) {
                     // All good.
-                    VariableModel variable = this.Set(command, name, value).Now.Variables.First();
+                    var variable = volatileSetResult.Now.Variables.First();
 
                     if (this.ArchiveVariables.Find(x => x.Name == variable.Name) == null) {
                         this.ArchiveVariables.Add(variable);
@@ -470,7 +470,7 @@ namespace Procon.Core.Variables {
 
                 if (volatileSetResult.Success == true) {
                     // All good.
-                    VariableModel variable = this.Set(command, name, value).Now.Variables.First();
+                    var variable = volatileSetResult.Now.Variables.First();
 
                     if (this.FlashVariables.Find(v => v.Name == variable.Name) == null) {
                         this.FlashVariables.Add(variable);

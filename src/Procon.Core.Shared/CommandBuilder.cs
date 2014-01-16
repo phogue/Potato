@@ -227,7 +227,43 @@ namespace Procon.Core.Shared {
         /// <param name="name">The name of the variable to set</param>
         /// <param name="value">The value to assign to the variable</param>
         /// <returns>The built command to dispatch</returns>
+        public static Command VariablesSet(String name, List<String> value) {
+            return new Command() {
+                CommandType = CommandType.VariablesSet,
+                Parameters = new List<CommandParameter>() {
+                    new CommandParameter() {
+                        Data = {
+                            Content = new List<String>() {
+                                name
+                            }
+                        }
+                    },
+                    new CommandParameter() {
+                        Data = {
+                            Content = value
+                        }
+                    }
+                }
+            };
+        }
+
+        /// <summary>
+        /// Builds a command to send a VariablesSet
+        /// </summary>
+        /// <param name="name">The name of the variable to set</param>
+        /// <param name="value">The value to assign to the variable</param>
+        /// <returns>The built command to dispatch</returns>
         public static Command VariablesSet(CommonVariableNames name, String value) {
+            return VariablesSet(name.ToString(), value);
+        }
+
+        /// <summary>
+        /// Builds a command to send a VariablesSet
+        /// </summary>
+        /// <param name="name">The name of the variable to set</param>
+        /// <param name="value">The value to assign to the variable</param>
+        /// <returns>The built command to dispatch</returns>
+        public static Command VariablesSet(CommonVariableNames name, List<String> value) {
             return VariablesSet(name.ToString(), value);
         }
 
@@ -265,7 +301,43 @@ namespace Procon.Core.Shared {
         /// <param name="name">The name of the variable to set</param>
         /// <param name="value">The value to assign to the variable</param>
         /// <returns>The built command to dispatch</returns>
+        public static Command VariablesSetA(String name, List<String> value) {
+            return new Command() {
+                CommandType = CommandType.VariablesSetA,
+                Parameters = new List<CommandParameter>() {
+                    new CommandParameter() {
+                        Data = {
+                            Content = new List<String>() {
+                                name
+                            }
+                        }
+                    },
+                    new CommandParameter() {
+                        Data = {
+                            Content = value
+                        }
+                    }
+                }
+            };
+        }
+
+        /// <summary>
+        /// Builds a command to send a VariablesSetA
+        /// </summary>
+        /// <param name="name">The name of the variable to set</param>
+        /// <param name="value">The value to assign to the variable</param>
+        /// <returns>The built command to dispatch</returns>
         public static Command VariablesSetA(CommonVariableNames name, String value) {
+            return VariablesSetA(name.ToString(), value);
+        }
+
+        /// <summary>
+        /// Builds a command to send a VariablesSetA
+        /// </summary>
+        /// <param name="name">The name of the variable to set</param>
+        /// <param name="value">The value to assign to the variable</param>
+        /// <returns>The built command to dispatch</returns>
+        public static Command VariablesSetA(CommonVariableNames name, List<String> value) {
             return VariablesSetA(name.ToString(), value);
         }
 

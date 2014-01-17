@@ -226,8 +226,8 @@ namespace Procon.Core.Connections.Plugins {
 
             permissions.AddPermission(new FileIOPermission(FileIOPermissionAccess.PathDiscovery, AppDomain.CurrentDomain.BaseDirectory));
             permissions.AddPermission(new FileIOPermission(FileIOPermissionAccess.AllAccess, Defines.LogsDirectory.FullName));
-            permissions.AddPermission(new FileIOPermission(FileIOPermissionAccess.Read | FileIOPermissionAccess.PathDiscovery, Defines.ConfigsDirectory.FullName));
             permissions.AddPermission(new FileIOPermission(FileIOPermissionAccess.AllAccess, Path.Combine(Defines.ConfigsDirectory.FullName, this.Connection != null ? this.Connection.ConnectionModel.ConnectionGuid.ToString() : Guid.Empty.ToString())));
+            permissions.AddPermission(new FileIOPermission(FileIOPermissionAccess.Read | FileIOPermissionAccess.PathDiscovery, Defines.ConfigsDirectory.FullName));
 
             foreach (var file in this.GetPluginAssemblies()) {
                 DirectoryInfo directory = Defines.PackageContainingPath(file.Directory != null ? file.Directory.FullName : "");
@@ -239,6 +239,13 @@ namespace Procon.Core.Connections.Plugins {
             }
 
             return permissions;
+        }
+
+        /// <summary>
+        /// Creates all of the directories required by plugins
+        /// </summary>
+        protected void CreateDirectories() {
+            Directory.CreateDirectory(Path.Combine(Defines.ConfigsDirectory.FullName, this.Connection != null ? this.Connection.ConnectionModel.ConnectionGuid.ToString() : Guid.Empty.ToString()));
         }
 
         public override void WriteConfig(Config config) {
@@ -293,6 +300,8 @@ namespace Procon.Core.Connections.Plugins {
             AppDomainSetup setup = this.CreateAppDomainSetup();
 
             PermissionSet permissions = this.CreatePermissionSet();
+
+            this.CreateDirectories();
 
             // Create the app domain and the plugin factory in the new domain.
             this.AppDomainSandbox = AppDomain.CreateDomain(String.Format("Procon.Plugins.{0}", this.Connection != null ? this.Connection.ConnectionModel.ConnectionGuid.ToString() : String.Empty), null, setup, permissions);

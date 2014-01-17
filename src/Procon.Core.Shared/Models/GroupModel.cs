@@ -34,7 +34,7 @@ namespace Procon.Core.Shared.Models {
                 }
             }
 
-            foreach (NetworkActionType name in Enum.GetValues(typeof(CommandType)).Cast<NetworkActionType>()) {
+            foreach (NetworkActionType name in Enum.GetValues(typeof(NetworkActionType)).Cast<NetworkActionType>()) {
                 if (name != NetworkActionType.None) {
                     this.Permissions.Add(new PermissionModel() { Name = name.ToString() });
                 }

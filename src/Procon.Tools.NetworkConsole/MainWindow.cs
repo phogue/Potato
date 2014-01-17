@@ -7,10 +7,8 @@ using System.Linq;
 using System.Windows.Forms;
 using System.Reflection;
 using System.Timers;
-using Procon.Net.Protocols;
 using Procon.Net.Shared;
 using Procon.Net.Shared.Actions;
-using Procon.Net.Shared.Models;
 using Procon.Net.Shared.Protocols;
 
 namespace Procon.Tools.NetworkConsole {
@@ -105,21 +103,8 @@ namespace Procon.Tools.NetworkConsole {
                     }
 
                     this.ActiveGame.Additional = this.txtAdditional.Text;
-                    this.chat1.ActiveGame = this.ActiveGame;
-                    this.playerPanel1.ActiveGame = this.ActiveGame;
-                    this.banPanel1.ActiveGame = this.ActiveGame;
-                    this.mapPanel1.ActiveGame = this.ActiveGame;
-                    this.eventPanel1.ActiveGame = this.ActiveGame;
-                    this.protocolTest1.ActiveGame = this.ActiveGame;
+                    this.protocolTestControl1.ActiveGame = this.ActiveGame;
 
-                    //this.ActiveGame.ConnectionStateChanged += new Game.ConnectionStateChangedHandler(ActiveGame_ConnectionStateChanged);
-                    //this.ActiveGame.ConnectionFailure += new Game.FailureHandler(ActiveGame_ConnectionFailure);
-                    //this.ActiveGame.PacketReceived += new Game.PacketDispatchHandler(ActiveGame_PacketReceived);
-                    //this.ActiveGame.PacketSent += new Game.PacketDispatchHandler(ActiveGame_PacketSent);
-
-                    this.gameStatePropertyGrid.SelectedObject = this.ActiveGame;
-
-                    this.ActiveGame.ProtocolEvent += ActiveGame_GameEvent;
                     this.ActiveGame.ClientEvent += ActiveGame_ClientEvent;
 
                     this.ActiveGame.AttemptConnection();
@@ -131,15 +116,6 @@ namespace Procon.Tools.NetworkConsole {
             else if (this.ActiveGame != null) {
                 this.ActiveGame.Shutdown();
             }
-        }
-
-        void ActiveGame_GameEvent(IProtocol sender, ProtocolEventArgs e) {
-            if (this.InvokeRequired == true) {
-                this.Invoke(new Action<Protocol, ProtocolEventArgs>(this.ActiveGame_GameEvent), sender, e);
-                return;
-            }
-
-            this.gameStatePropertyGrid.Refresh();
         }
 
         void ActiveGame_ClientEvent(IProtocol sender, ClientEventArgs e) {
@@ -171,8 +147,6 @@ namespace Procon.Tools.NetworkConsole {
                     this.ConsoleAppendLine("^5RECV: {0}", e.Now.Packets.FirstOrDefault().DebugText);
                 }
             }
-
-            this.gameStatePropertyGrid.Refresh();
         }
 
         public void ConsoleAppendLine(string format, params object[] parameters) {
@@ -212,7 +186,7 @@ namespace Procon.Tools.NetworkConsole {
         private void Execute(string commandText) {
 
             if (this.ActiveGame != null) {
-                this.ActiveGame.Action(new Raw() {
+                this.ActiveGame.Action(new NetworkAction() {
                     ActionType = NetworkActionType.NetworkSend,
                     Now = {
                         Content = {

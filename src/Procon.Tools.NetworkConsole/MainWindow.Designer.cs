@@ -44,31 +44,13 @@
             this.chkAnchorScrollbar = new System.Windows.Forms.CheckBox();
             this.btnSend = new System.Windows.Forms.Button();
             this.txtConsoleText = new System.Windows.Forms.TextBox();
-            this.tabGameState = new System.Windows.Forms.TabPage();
-            this.gameStatePropertyGrid = new System.Windows.Forms.PropertyGrid();
-            this.tabEvents = new System.Windows.Forms.TabPage();
-            this.tabChat = new System.Windows.Forms.TabPage();
-            this.tabPlayers = new System.Windows.Forms.TabPage();
-            this.tabMaplist = new System.Windows.Forms.TabPage();
-            this.tabBanlist = new System.Windows.Forms.TabPage();
             this.tabProtocolTest = new System.Windows.Forms.TabPage();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.rtbConsole = new Procon.Tools.NetworkConsole.Controls.CodRichTextBox();
-            this.eventPanel1 = new Procon.Tools.NetworkConsole.Controls.EventPanel();
-            this.chat1 = new Procon.Tools.NetworkConsole.Controls.ChatPanel();
-            this.playerPanel1 = new Procon.Tools.NetworkConsole.Controls.PlayerPanel();
-            this.mapPanel1 = new Procon.Tools.NetworkConsole.Controls.MapPanel();
-            this.banPanel1 = new Procon.Tools.NetworkConsole.Controls.BanPanel();
-            this.protocolTest1 = new Procon.Tools.NetworkConsole.Controls.ProtocolTestControl();
+            this.protocolTestControl1 = new Procon.Tools.NetworkConsole.Controls.ProtocolTestControl();
             this.pnlConnection.SuspendLayout();
             this.tbcPanels.SuspendLayout();
             this.tabConsole.SuspendLayout();
-            this.tabGameState.SuspendLayout();
-            this.tabEvents.SuspendLayout();
-            this.tabChat.SuspendLayout();
-            this.tabPlayers.SuspendLayout();
-            this.tabMaplist.SuspendLayout();
-            this.tabBanlist.SuspendLayout();
             this.tabProtocolTest.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -204,12 +186,6 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tbcPanels.Controls.Add(this.tabConsole);
-            this.tbcPanels.Controls.Add(this.tabGameState);
-            this.tbcPanels.Controls.Add(this.tabEvents);
-            this.tbcPanels.Controls.Add(this.tabChat);
-            this.tbcPanels.Controls.Add(this.tabPlayers);
-            this.tbcPanels.Controls.Add(this.tabMaplist);
-            this.tbcPanels.Controls.Add(this.tabBanlist);
             this.tbcPanels.Controls.Add(this.tabProtocolTest);
             this.tbcPanels.Location = new System.Drawing.Point(12, 68);
             this.tbcPanels.Name = "tbcPanels";
@@ -278,83 +254,9 @@
             this.txtConsoleText.TabIndex = 1;
             this.txtConsoleText.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtConsoleText_KeyDown);
             // 
-            // tabGameState
-            // 
-            this.tabGameState.Controls.Add(this.gameStatePropertyGrid);
-            this.tabGameState.Location = new System.Drawing.Point(4, 22);
-            this.tabGameState.Name = "tabGameState";
-            this.tabGameState.Padding = new System.Windows.Forms.Padding(3);
-            this.tabGameState.Size = new System.Drawing.Size(820, 601);
-            this.tabGameState.TabIndex = 2;
-            this.tabGameState.Text = "Game State";
-            this.tabGameState.UseVisualStyleBackColor = true;
-            // 
-            // gameStatePropertyGrid
-            // 
-            this.gameStatePropertyGrid.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gameStatePropertyGrid.Location = new System.Drawing.Point(3, 3);
-            this.gameStatePropertyGrid.Name = "gameStatePropertyGrid";
-            this.gameStatePropertyGrid.Size = new System.Drawing.Size(814, 595);
-            this.gameStatePropertyGrid.TabIndex = 0;
-            // 
-            // tabEvents
-            // 
-            this.tabEvents.Controls.Add(this.eventPanel1);
-            this.tabEvents.Location = new System.Drawing.Point(4, 22);
-            this.tabEvents.Name = "tabEvents";
-            this.tabEvents.Padding = new System.Windows.Forms.Padding(3);
-            this.tabEvents.Size = new System.Drawing.Size(820, 601);
-            this.tabEvents.TabIndex = 7;
-            this.tabEvents.Text = "Events";
-            this.tabEvents.UseVisualStyleBackColor = true;
-            // 
-            // tabChat
-            // 
-            this.tabChat.Controls.Add(this.chat1);
-            this.tabChat.Location = new System.Drawing.Point(4, 22);
-            this.tabChat.Name = "tabChat";
-            this.tabChat.Padding = new System.Windows.Forms.Padding(3);
-            this.tabChat.Size = new System.Drawing.Size(820, 601);
-            this.tabChat.TabIndex = 3;
-            this.tabChat.Text = "Chat";
-            this.tabChat.UseVisualStyleBackColor = true;
-            // 
-            // tabPlayers
-            // 
-            this.tabPlayers.Controls.Add(this.playerPanel1);
-            this.tabPlayers.Location = new System.Drawing.Point(4, 22);
-            this.tabPlayers.Name = "tabPlayers";
-            this.tabPlayers.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPlayers.Size = new System.Drawing.Size(820, 601);
-            this.tabPlayers.TabIndex = 4;
-            this.tabPlayers.Text = "Players";
-            this.tabPlayers.UseVisualStyleBackColor = true;
-            // 
-            // tabMaplist
-            // 
-            this.tabMaplist.Controls.Add(this.mapPanel1);
-            this.tabMaplist.Location = new System.Drawing.Point(4, 22);
-            this.tabMaplist.Name = "tabMaplist";
-            this.tabMaplist.Padding = new System.Windows.Forms.Padding(3);
-            this.tabMaplist.Size = new System.Drawing.Size(820, 601);
-            this.tabMaplist.TabIndex = 5;
-            this.tabMaplist.Text = "Maplist";
-            this.tabMaplist.UseVisualStyleBackColor = true;
-            // 
-            // tabBanlist
-            // 
-            this.tabBanlist.Controls.Add(this.banPanel1);
-            this.tabBanlist.Location = new System.Drawing.Point(4, 22);
-            this.tabBanlist.Name = "tabBanlist";
-            this.tabBanlist.Padding = new System.Windows.Forms.Padding(3);
-            this.tabBanlist.Size = new System.Drawing.Size(820, 601);
-            this.tabBanlist.TabIndex = 6;
-            this.tabBanlist.Text = "Banlist";
-            this.tabBanlist.UseVisualStyleBackColor = true;
-            // 
             // tabProtocolTest
             // 
-            this.tabProtocolTest.Controls.Add(this.protocolTest1);
+            this.tabProtocolTest.Controls.Add(this.protocolTestControl1);
             this.tabProtocolTest.Location = new System.Drawing.Point(4, 22);
             this.tabProtocolTest.Name = "tabProtocolTest";
             this.tabProtocolTest.Size = new System.Drawing.Size(820, 601);
@@ -377,59 +279,15 @@
             this.rtbConsole.Text = "";
             this.rtbConsole.WordWrap = false;
             // 
-            // eventPanel1
+            // protocolTestControl1
             // 
-            this.eventPanel1.ActiveGame = null;
-            this.eventPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.eventPanel1.Location = new System.Drawing.Point(3, 3);
-            this.eventPanel1.Name = "eventPanel1";
-            this.eventPanel1.Size = new System.Drawing.Size(814, 595);
-            this.eventPanel1.TabIndex = 0;
-            // 
-            // chat1
-            // 
-            this.chat1.ActiveGame = null;
-            this.chat1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.chat1.Location = new System.Drawing.Point(3, 3);
-            this.chat1.Name = "chat1";
-            this.chat1.Size = new System.Drawing.Size(814, 595);
-            this.chat1.TabIndex = 0;
-            // 
-            // playerPanel1
-            // 
-            this.playerPanel1.ActiveGame = null;
-            this.playerPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.playerPanel1.Location = new System.Drawing.Point(3, 3);
-            this.playerPanel1.Name = "playerPanel1";
-            this.playerPanel1.Size = new System.Drawing.Size(814, 595);
-            this.playerPanel1.TabIndex = 0;
-            // 
-            // mapPanel1
-            // 
-            this.mapPanel1.ActiveGame = null;
-            this.mapPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.mapPanel1.Location = new System.Drawing.Point(3, 3);
-            this.mapPanel1.Name = "mapPanel1";
-            this.mapPanel1.Size = new System.Drawing.Size(814, 595);
-            this.mapPanel1.TabIndex = 0;
-            // 
-            // banPanel1
-            // 
-            this.banPanel1.ActiveGame = null;
-            this.banPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.banPanel1.Location = new System.Drawing.Point(3, 3);
-            this.banPanel1.Name = "banPanel1";
-            this.banPanel1.Size = new System.Drawing.Size(814, 595);
-            this.banPanel1.TabIndex = 0;
-            // 
-            // protocolTest1
-            // 
-            this.protocolTest1.ActiveGame = null;
-            this.protocolTest1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.protocolTest1.Location = new System.Drawing.Point(0, 0);
-            this.protocolTest1.Name = "protocolTest1";
-            this.protocolTest1.Size = new System.Drawing.Size(820, 601);
-            this.protocolTest1.TabIndex = 0;
+            this.protocolTestControl1.ActiveGame = null;
+            this.protocolTestControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.protocolTestControl1.IsTestRunning = false;
+            this.protocolTestControl1.Location = new System.Drawing.Point(0, 0);
+            this.protocolTestControl1.Name = "protocolTestControl1";
+            this.protocolTestControl1.Size = new System.Drawing.Size(820, 601);
+            this.protocolTestControl1.TabIndex = 0;
             // 
             // MainWindow
             // 
@@ -450,12 +308,6 @@
             this.tbcPanels.ResumeLayout(false);
             this.tabConsole.ResumeLayout(false);
             this.tabConsole.PerformLayout();
-            this.tabGameState.ResumeLayout(false);
-            this.tabEvents.ResumeLayout(false);
-            this.tabChat.ResumeLayout(false);
-            this.tabPlayers.ResumeLayout(false);
-            this.tabMaplist.ResumeLayout(false);
-            this.tabBanlist.ResumeLayout(false);
             this.tabProtocolTest.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -479,25 +331,14 @@
         private System.Windows.Forms.ComboBox cboGames;
         private System.Windows.Forms.Label lblGameType;
         private Controls.CodRichTextBox rtbConsole;
-        private System.Windows.Forms.TabPage tabGameState;
-        private System.Windows.Forms.PropertyGrid gameStatePropertyGrid;
         private System.Windows.Forms.TextBox txtAdditional;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TabPage tabChat;
-        private System.Windows.Forms.TabPage tabPlayers;
-        private System.Windows.Forms.TabPage tabMaplist;
-        private System.Windows.Forms.TabPage tabBanlist;
-        private Controls.ChatPanel chat1;
-        private Controls.PlayerPanel playerPanel1;
-        private Controls.BanPanel banPanel1;
-        private Controls.MapPanel mapPanel1;
-        private System.Windows.Forms.TabPage tabEvents;
-        private Controls.EventPanel eventPanel1;
         private System.Windows.Forms.CheckBox chkAnchorScrollbar;
         private System.Windows.Forms.CheckBox chkVerboseLogging;
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.TabPage tabProtocolTest;
         private Controls.ProtocolTestControl protocolTest1;
+        private Controls.ProtocolTestControl protocolTestControl1;
     }
 }
 

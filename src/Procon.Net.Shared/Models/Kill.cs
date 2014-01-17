@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using Procon.Net.Shared.Models;
 
-namespace Procon.Net.Shared.Actions {
+namespace Procon.Net.Shared.Models {
     [Serializable]
-    public sealed class Kill : NetworkAction {
+    public sealed class Kill : NetworkModel {
 
         /// <summary>
         /// The location of the target 

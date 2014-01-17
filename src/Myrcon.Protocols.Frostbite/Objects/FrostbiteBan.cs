@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Procon.Net.Shared.Actions;
 using Procon.Net.Shared.Models;
 
@@ -12,7 +13,7 @@ namespace Myrcon.Protocols.Frostbite.Objects {
 
             if (words.Count == 5) {
 
-                ban.Time = FrostbiteTimeSubset.Parse(words.GetRange(2, 2));
+                ban.Scope.Times.Add(FrostbiteTimeSubset.Parse(words.GetRange(2, 2)));
 
                 if (String.CompareOrdinal(words[0], "name") == 0) {
                     ban.Scope.Players.Add(new Player() {
@@ -28,8 +29,6 @@ namespace Myrcon.Protocols.Frostbite.Objects {
                         Uid = words[1]
                     });
                 }
-
-                ban.ActionType = NetworkActionType.NetworkMapListed;
 
                 ban.Scope.Content = new List<String>() {
                     words[4]
@@ -71,20 +70,20 @@ namespace Myrcon.Protocols.Frostbite.Objects {
             }
 
             if (words.Count == 3) {
-                ban.Time = FrostbiteTimeSubset.Parse(words.GetRange(2, 1));
+                ban.Scope.Times.Add(FrostbiteTimeSubset.Parse(words.GetRange(2, 1)));
             }
             else if (words.Count == 4) {
-                ban.Time = FrostbiteTimeSubset.Parse(words.GetRange(2, 2));
+                ban.Scope.Times.Add(FrostbiteTimeSubset.Parse(words.GetRange(2, 2)));
 
                 // Time has a seconds parameter
-                if (ban.Time.Context != TimeSubsetContext.Time) {
+                if (ban.Scope.Times.First().Context != TimeSubsetContext.Time) {
                     ban.Scope.Content = new List<String>() {
                         words[3]
                     };
                 }
             }
             else if (words.Count == 5) {
-                ban.Time = FrostbiteTimeSubset.Parse(words.GetRange(2, 2));
+                ban.Scope.Times.Add(FrostbiteTimeSubset.Parse(words.GetRange(2, 2)));
 
                 ban.Scope.Content = new List<String>() {
                     words[4]

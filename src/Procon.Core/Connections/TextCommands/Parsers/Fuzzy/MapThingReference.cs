@@ -2,6 +2,7 @@
 using System.Linq;
 using Procon.Fuzzy.Tokens.Object;
 using Procon.Net.Shared.Actions;
+using Procon.Net.Shared.Models;
 
 namespace Procon.Core.Connections.TextCommands.Parsers.Fuzzy {
     /// <summary>

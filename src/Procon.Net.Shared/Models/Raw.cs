@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Procon.Net.Shared.Actions {
+namespace Procon.Net.Shared.Models {
     /// <summary>
     /// Send a list of packets to the server. 
     /// </summary>
     [Serializable]
-    public sealed class Raw : NetworkAction {
+    public sealed class Raw : NetworkModel {
 
         public Raw() : base() {
             this.Now.Content = new List<String>();

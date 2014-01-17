@@ -4,6 +4,7 @@ using System.Threading;
 using NUnit.Framework;
 using Procon.Net.Shared;
 using Procon.Net.Shared.Actions;
+using Procon.Net.Shared.Models;
 using Procon.Net.Test.Mocks;
 using Procon.Net.Test.Mocks.Game;
 
@@ -33,13 +34,13 @@ namespace Procon.Net.Test {
 
             MockActionDispatchGame game = new MockActionDispatchGame("localhost", 5000);
 
-            packets.AddRange(game.Action(new Chat()));
-            packets.AddRange(game.Action(new Kick()));
-            packets.AddRange(game.Action(new Ban()));
-            packets.AddRange(game.Action(new Map()));
-            packets.AddRange(game.Action(new Kill()));
-            packets.AddRange(game.Action(new Move()));
-            packets.AddRange(game.Action(new Raw()));
+            packets.AddRange(game.Action(new NetworkAction() { ActionType = NetworkActionType.NetworkSay }));
+            packets.AddRange(game.Action(new NetworkAction() { ActionType = NetworkActionType.NetworkKick }));
+            packets.AddRange(game.Action(new NetworkAction() { ActionType = NetworkActionType.NetworkBan }));
+            packets.AddRange(game.Action(new NetworkAction() { ActionType = NetworkActionType.NetworkMapAppend }));
+            packets.AddRange(game.Action(new NetworkAction() { ActionType = NetworkActionType.NetworkKill }));
+            packets.AddRange(game.Action(new NetworkAction() { ActionType = NetworkActionType.NetworkPlayerMove }));
+            packets.AddRange(game.Action(new NetworkAction() { ActionType = NetworkActionType.NetworkSend }));
 
             Assert.IsTrue(packets.Any(packet => packet.Text == "Chat"));
             Assert.IsTrue(packets.Any(packet => packet.Text == "Kick"));
@@ -57,7 +58,9 @@ namespace Procon.Net.Test {
         public void TestGameActionDispatchNullsRemoved() {
             MockActionChatNullResultGame game = new MockActionChatNullResultGame("localhost", 5000);
 
-            List<IPacket> packets = game.Action(new Chat());
+            List<IPacket> packets = game.Action(new NetworkAction() {
+                ActionType = NetworkActionType.NetworkSay
+            });
 
             Assert.AreEqual(0, packets.Count);
         }

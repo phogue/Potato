@@ -203,29 +203,7 @@ namespace Procon.Net {
         /// <param name="action"></param>
         public virtual List<IPacket> Action(NetworkAction action) {
             List<IPacket> packets = null;
-            List<IPacketWrapper> wrappers = null;
-
-            if (action is Chat) {
-                wrappers = this.Action(action as Chat);
-            }
-            else if (action is Kick) {
-                wrappers = this.Action(action as Kick);
-            }
-            else if (action is Ban) {
-                wrappers = this.Action(action as Ban);
-            }
-            else if (action is Map) {
-                wrappers = this.Action(action as Map);
-            }
-            else if (action is Kill) {
-                wrappers = this.Action(action as Kill);
-            }
-            else if (action is Move) {
-                wrappers = this.Action(action as Move);
-            }
-            else if (action is Raw) {
-                wrappers = this.Action(action as Raw);
-            }
+            List<IPacketWrapper> wrappers = this.DispatchAction(action);
 
             if (wrappers != null) {
                 // Fetch all of the packets that are not null
@@ -243,31 +221,76 @@ namespace Procon.Net {
             return packets;
         }
 
-        protected abstract List<IPacketWrapper> Action(Chat chat);
-
-        protected abstract List<IPacketWrapper> Action(Kick kick);
-
-        protected abstract List<IPacketWrapper> Action(Ban ban);
-
-        protected abstract List<IPacketWrapper> Action(Map map);
-
-        protected abstract List<IPacketWrapper> Action(Kill kill);
-
-        protected abstract List<IPacketWrapper> Action(Move move);
-
-        /// <summary>
-        /// Send a raw packet to the sever, creating or wrapping it first.
-        /// </summary>
-        /// <param name="raw"></param>
-        /// <returns></returns>
-        protected virtual List<IPacketWrapper> Action(Raw raw) {
+        protected virtual List<IPacketWrapper> DispatchAction(NetworkAction action) {
             List<IPacketWrapper> wrappers = new List<IPacketWrapper>();
 
-            if (raw.ActionType == NetworkActionType.NetworkSend) {
-                wrappers.AddRange(raw.Now.Content.Select(text => this.CreatePacket(text)));
+            switch (action.ActionType) {
+                case NetworkActionType.NetworkSay:
+                case NetworkActionType.NetworkYell:
+                case NetworkActionType.NetworkYellOnly:
+                    wrappers = this.ActionChat(action);
+                    break;
 
-                wrappers.AddRange(raw.Now.Packets.Select(this.WrapPacket));
+                case NetworkActionType.NetworkKill:
+                    wrappers = this.ActionKill(action);
+                    break;
+
+                case NetworkActionType.NetworkKick:
+                    wrappers = this.ActionKick(action);
+                    break;
+
+                case NetworkActionType.NetworkBan:
+                case NetworkActionType.NetworkUnban:
+                    wrappers = this.ActionBan(action);
+                    break;
+
+                case NetworkActionType.NetworkMapAppend:
+                case NetworkActionType.NetworkMapChangeMode:
+                case NetworkActionType.NetworkMapClear:
+                case NetworkActionType.NetworkMapInsert:
+                case NetworkActionType.NetworkMapNext:
+                case NetworkActionType.NetworkMapNextIndex:
+                case NetworkActionType.NetworkMapRemove:
+                case NetworkActionType.NetworkMapRemoveIndex:
+                case NetworkActionType.NetworkMapRestart:
+                case NetworkActionType.NetworkMapRoundNext:
+                case NetworkActionType.NetworkMapRoundRestart:
+                    wrappers = this.ActionMap(action);
+                    break;
+
+                case NetworkActionType.NetworkPlayerRotate:
+                case NetworkActionType.NetworkPlayerForceRotate:
+                case NetworkActionType.NetworkPlayerMove:
+                    wrappers = this.ActionMove(action);
+                    break;
+                case NetworkActionType.NetworkSend:
+                    wrappers.AddRange(action.Now.Content.Select(text => this.CreatePacket(text)));
+
+                    wrappers.AddRange(action.Now.Packets.Select(this.WrapPacket));
+                    break;
             }
+
+            return wrappers;
+        }
+
+        protected abstract List<IPacketWrapper> ActionChat(NetworkAction action);
+
+        protected abstract List<IPacketWrapper> ActionKill(NetworkAction action);
+
+        protected abstract List<IPacketWrapper> ActionKick(NetworkAction action);
+
+        protected abstract List<IPacketWrapper> ActionBan(NetworkAction action);
+
+        protected abstract List<IPacketWrapper> ActionMove(NetworkAction action);
+
+        protected abstract List<IPacketWrapper> ActionMap(NetworkAction action);
+
+        protected virtual List<IPacketWrapper> ActionRaw(NetworkAction action) {
+            List<IPacketWrapper> wrappers = new List<IPacketWrapper>();
+
+            wrappers.AddRange(action.Now.Content.Select(text => this.CreatePacket(text)));
+
+            wrappers.AddRange(action.Now.Packets.Select(this.WrapPacket));
 
             return wrappers;
         }

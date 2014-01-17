@@ -8,7 +8,7 @@ namespace Procon.Net.Shared.Models {
     /// The current snapshot of the server with all details Procon has captured or inferred.
     /// </summary>
     [Serializable]
-    public sealed class ProtocolState {
+    public sealed class ProtocolState : NetworkModel {
         /// <summary>
         /// All current information about each player in the server
         /// </summary>

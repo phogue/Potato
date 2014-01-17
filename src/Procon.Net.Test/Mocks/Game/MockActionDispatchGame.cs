@@ -12,60 +12,62 @@ namespace Procon.Net.Test.Mocks.Game {
             : base(hostName, port) {
         }
 
-        protected override List<IPacketWrapper> Action(Chat chat) {
-            return new List<IPacketWrapper>() {
-                this.WrapPacket(new Packet() {
-                    Text = "Chat"
-                })
-            };
-        }
+        protected override List<IPacketWrapper> DispatchAction(NetworkAction action) {
+            List<IPacketWrapper> wrappers = base.DispatchAction(action);
 
-        protected override List<IPacketWrapper> Action(Kick kick) {
-            return new List<IPacketWrapper>() {
-                this.WrapPacket(new Packet() {
-                    Text = "Kick"
-                })
-            };
-        }
+            switch (action.ActionType) {
+                case NetworkActionType.NetworkSay:
+                    wrappers.Add(
+                        this.WrapPacket(new Packet() {
+                            Text = "Chat"
+                        })
+                    );
+                    break;
+                case NetworkActionType.NetworkKick:
+                    wrappers.Add(
+                        this.WrapPacket(new Packet() {
+                            Text = "Kick"
+                        })
+                    );
+                    break;
+                case NetworkActionType.NetworkBan:
+                    wrappers.Add(
+                        this.WrapPacket(new Packet() {
+                            Text = "Ban"
+                        })
+                    );
+                    break;
+                case NetworkActionType.NetworkMapAppend:
+                    wrappers.Add(
+                        this.WrapPacket(new Packet() {
+                            Text = "Map"
+                        })
+                    );
+                    break;
+                case NetworkActionType.NetworkKill:
+                    wrappers.Add(
+                        this.WrapPacket(new Packet() {
+                            Text = "Kill"
+                        })
+                    );
+                    break;
+                case NetworkActionType.NetworkPlayerMove:
+                    wrappers.Add(
+                        this.WrapPacket(new Packet() {
+                            Text = "Move"
+                        })
+                    );
+                    break;
+                case NetworkActionType.NetworkSend:
+                    wrappers.Add(
+                        this.WrapPacket(new Packet() {
+                            Text = "Raw"
+                        })
+                    );
+                    break;
+            }
 
-        protected override List<IPacketWrapper> Action(Ban ban) {
-            return new List<IPacketWrapper>() {
-                this.WrapPacket(new Packet() {
-                    Text = "Ban"
-                })
-            };
-        }
-
-        protected override List<IPacketWrapper> Action(Map map) {
-            return new List<IPacketWrapper>() {
-                this.WrapPacket(new Packet() {
-                    Text = "Map"
-                })
-            };
-        }
-
-        protected override List<IPacketWrapper> Action(Kill kill) {
-            return new List<IPacketWrapper>() {
-                this.WrapPacket(new Packet() {
-                    Text = "Kill"
-                })
-            };
-        }
-
-        protected override List<IPacketWrapper> Action(Move move) {
-            return new List<IPacketWrapper>() {
-                this.WrapPacket(new Packet() {
-                    Text = "Move"
-                })
-            };
-        }
-
-        protected override List<IPacketWrapper> Action(Raw raw) {
-            return new List<IPacketWrapper>() {
-                this.WrapPacket(new Packet() {
-                    Text = "Raw"
-                })
-            };
+            return wrappers;
         }
     }
 }

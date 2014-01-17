@@ -27,27 +27,31 @@ namespace Procon.Examples.Plugins.TextCommands.Test {
             throw new NotImplementedException();
         }
 
-        protected override List<IPacketWrapper> Action(Chat chat) {
+        protected override List<IPacketWrapper> DispatchAction(NetworkAction action) {
             throw new NotImplementedException();
         }
 
-        protected override List<IPacketWrapper> Action(Kick kick) {
+        protected override List<IPacketWrapper> ActionChat(NetworkAction action) {
             throw new NotImplementedException();
         }
 
-        protected override List<IPacketWrapper> Action(Ban ban) {
+        protected override List<IPacketWrapper> ActionKill(NetworkAction action) {
             throw new NotImplementedException();
         }
 
-        protected override List<IPacketWrapper> Action(Map map) {
+        protected override List<IPacketWrapper> ActionKick(NetworkAction action) {
             throw new NotImplementedException();
         }
 
-        protected override List<IPacketWrapper> Action(Kill kill) {
+        protected override List<IPacketWrapper> ActionBan(NetworkAction action) {
             throw new NotImplementedException();
         }
 
-        protected override List<IPacketWrapper> Action(Move move) {
+        protected override List<IPacketWrapper> ActionMove(NetworkAction action) {
+            throw new NotImplementedException();
+        }
+
+        protected override List<IPacketWrapper> ActionMap(NetworkAction action) {
             throw new NotImplementedException();
         }
 

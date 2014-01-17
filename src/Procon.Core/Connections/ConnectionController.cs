@@ -92,63 +92,19 @@ namespace Procon.Core.Connections {
                         CommandType = CommandType.NetworkProtocolQueryMapPool
                     },
                     new CommandDispatchHandler(this.NetworkProtocolQueryMapPool)
-                }, {
-                    new CommandAttribute() {
-                        CommandType = CommandType.NetworkProtocolActionRaw,
-                        ParameterTypes = new List<CommandParameterType>() {
-                            new CommandParameterType() {
-                                Name = "raw",
-                                Type = typeof(Raw)
-                            }
-                        }
-                    },
-                    new CommandDispatchHandler(this.NetworkProtocolActionRaw)
-                }, {
-                    new CommandAttribute() {
-                        CommandType = CommandType.NetworkProtocolActionChat,
-                        ParameterTypes = new List<CommandParameterType>() {
-                            new CommandParameterType() {
-                                Name = "chat",
-                                Type = typeof(Chat)
-                            }
-                        }
-                    },
-                    new CommandDispatchHandler(this.NetworkProtocolActionChat)
-                }, {
-                    new CommandAttribute() {
-                        CommandType = CommandType.NetworkProtocolActionKill,
-                        ParameterTypes = new List<CommandParameterType>() {
-                            new CommandParameterType() {
-                                Name = "kill",
-                                Type = typeof(Kill)
-                            }
-                        }
-                    },
-                    new CommandDispatchHandler(this.NetworkProtocolActionKill)
-                }, {
-                    new CommandAttribute() {
-                        CommandType = CommandType.NetworkProtocolActionMove,
-                        ParameterTypes = new List<CommandParameterType>() {
-                            new CommandParameterType() {
-                                Name = "move",
-                                Type = typeof(Move)
-                            }
-                        }
-                    },
-                    new CommandDispatchHandler(this.NetworkProtocolActionMove)
-                }, {
-                    new CommandAttribute() {
-                        CommandType = CommandType.NetworkProtocolActionKick,
-                        ParameterTypes = new List<CommandParameterType>() {
-                            new CommandParameterType() {
-                                Name = "kick",
-                                Type = typeof(Kick)
-                            }
-                        }
-                    },
-                    new CommandDispatchHandler(this.NetworkProtocolActionKick)
                 }
             });
+
+            // Add all network actions, dispatching them to NetworkProtocolAction
+            this.AppendDispatchHandlers(Enum.GetValues(typeof(NetworkActionType)).Cast<NetworkActionType>().ToDictionary(actionType => new CommandAttribute() {
+                Name = actionType.ToString(),
+                ParameterTypes = new List<CommandParameterType>() {
+                    new CommandParameterType() {
+                        Name = "action",
+                        Type = typeof(NetworkAction)
+                    }
+                }
+            }, actionType => new CommandDispatchHandler(this.NetworkProtocolAction)));
         }
 
         public override void WriteConfig(Config config) {
@@ -423,10 +379,10 @@ namespace Procon.Core.Connections {
             return result;
         }
 
-        public CommandResult NetworkProtocolActionRaw(Command command, Dictionary<String, CommandParameter> parameters) {
+        public CommandResult NetworkProtocolAction(Command command, Dictionary<String, CommandParameter> parameters) {
             CommandResult result = null;
 
-            Raw raw = parameters["raw"].First<Raw>();
+            NetworkAction raw = parameters["action"].First<NetworkAction>();
 
             if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
                 result = new CommandResult() {
@@ -434,102 +390,6 @@ namespace Procon.Core.Connections {
                     Status = CommandResultType.Success,
                     Now = new CommandData() {
                         Packets = this.Protocol.Action(raw)
-                    }
-                };
-            }
-            else {
-                result = CommandResult.InsufficientPermissions;
-            }
-
-            return result;
-        }
-
-        public CommandResult NetworkProtocolActionChat(Command command, Dictionary<String, CommandParameter> parameters) {
-            CommandResult result = null;
-
-            Chat chat = parameters["chat"].First<Chat>();
-
-            if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
-                result = new CommandResult() {
-                    Success = true,
-                    Status = CommandResultType.Success,
-                    Now = new CommandData() {
-                        Chats = new List<Chat>() {
-                            chat
-                        },
-                        Packets = this.Protocol.Action(chat)
-                    }
-                };
-            }
-            else {
-                result = CommandResult.InsufficientPermissions;
-            }
-
-            return result;
-        }
-
-        public CommandResult NetworkProtocolActionKill(Command command, Dictionary<String, CommandParameter> parameters) {
-            CommandResult result = null;
-
-            Kill kill = parameters["kill"].First<Kill>();
-            
-            if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
-                result = new CommandResult() {
-                    Success = true,
-                    Status = CommandResultType.Success,
-                    Now = new CommandData() {
-                        Kills = new List<Kill>() {
-                            kill
-                        },
-                        Packets = this.Protocol.Action(kill)
-                    }
-                };
-            }
-            else {
-                result = CommandResult.InsufficientPermissions;
-            }
-
-            return result;
-        }
-
-        public CommandResult NetworkProtocolActionMove(Command command, Dictionary<String, CommandParameter> parameters) {
-            CommandResult result = null;
-
-            Move move = parameters["move"].First<Move>();
-
-            if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
-                result = new CommandResult() {
-                    Success = true,
-                    Status = CommandResultType.Success,
-                    Now = new CommandData() {
-                        Moves = new List<Move>() {
-                            move
-                        },
-                        Packets = this.Protocol.Action(move)
-                    }
-                };
-            }
-            else {
-                result = CommandResult.InsufficientPermissions;
-            }
-
-            return result;
-        }
-
-        public CommandResult NetworkProtocolActionKick(Command command, Dictionary<String, CommandParameter> parameters) {
-            CommandResult result = null;
-
-            Kick kick = parameters["kick"].First<Kick>();
-
-            if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
-                result = new CommandResult() {
-                    Success = true,
-                    Status = CommandResultType.Success,
-                    Now = new CommandData() {
-                        Kicks = new List<Kick>() {
-                            kick
-                        },
-                        Packets = this.Protocol.Action(kick)
                     }
                 };
             }

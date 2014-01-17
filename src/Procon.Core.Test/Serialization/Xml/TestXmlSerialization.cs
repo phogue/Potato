@@ -98,7 +98,6 @@ namespace Procon.Core.Test.Serialization.Xml {
                     TeamCount = 2
                 },
                 Index = 1,
-                ActionType = NetworkActionType.NetworkMapClear,
                 Name = "MapName",
                 Rounds = 3
             };
@@ -113,7 +112,6 @@ namespace Procon.Core.Test.Serialization.Xml {
             Assert.IsNull(element.Element("GameMode").Element("Variables"));
 
             Assert.AreEqual("1", element.Element("Index").Value);
-            Assert.AreEqual("NetworkMapClear", element.Element("ActionType").Value);
             Assert.AreEqual("MapName", element.Element("Name").Value);
             Assert.AreEqual("3", element.Element("Rounds").Value);
             Assert.IsNull(element.Element("Variables"));

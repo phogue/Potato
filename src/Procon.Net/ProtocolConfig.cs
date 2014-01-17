@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using System.IO;
 using System.Xml.Linq;
 using Procon.Net.Shared;
-using Procon.Net.Shared.Actions;
 using Procon.Net.Shared.Models;
 using Procon.Net.Shared.Utils;
-using Procon.Net.Utils;
 
 namespace Procon.Net {
+    /// <summary>
+    /// A config used by a protocol to descibe additional meta data.
+    /// </summary>
     [Serializable]
     public class ProtocolConfig {
-
         /// <summary>
         /// List of available maps for this game
         /// </summary>
@@ -41,8 +41,6 @@ namespace Procon.Net {
             game.State.GameModePool = this.GameModes;
             game.State.Groupings = this.Groupings;
             game.State.Items = this.Items;
-
-            game.State.MapPool.ForEach(map => map.ActionType = NetworkActionType.NetworkMapPooled);
         }
 
         /// <summary>

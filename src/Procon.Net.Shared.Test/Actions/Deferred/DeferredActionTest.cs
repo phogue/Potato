@@ -12,9 +12,11 @@ namespace Procon.Net.Shared.Test.Actions.Deferred {
         /// </summary>
         [Test]
         public void TestDeferredActionGetAction() {
-            Chat chat = new Chat();
+            NetworkAction chat = new NetworkAction() {
+                ActionType = NetworkActionType.NetworkSay
+            };
 
-            DeferredAction<Chat> deferredAction = new DeferredAction<Chat>() {
+            DeferredAction<NetworkAction> deferredAction = new DeferredAction<NetworkAction>() {
                 Action = chat
             };
             
@@ -27,9 +29,9 @@ namespace Procon.Net.Shared.Test.Actions.Deferred {
         [Test]
         public void TestDeferredActionEach() {
             bool eachFlag = false;
-            Chat chat = new Chat();
+            NetworkAction chat = new NetworkAction();
 
-            DeferredAction<Chat> deferredAction = new DeferredAction<Chat>() {
+            DeferredAction<NetworkAction> deferredAction = new DeferredAction<NetworkAction>() {
                 Action = chat,
                 Each = (action, request, response) => {
                     eachFlag = true;
@@ -59,9 +61,9 @@ namespace Procon.Net.Shared.Test.Actions.Deferred {
         [Test]
         public void TestDeferredActionDone() {
             bool doneFlag = false;
-            Chat chat = new Chat();
+            NetworkAction chat = new NetworkAction();
 
-            DeferredAction<Chat> deferredAction = new DeferredAction<Chat>() {
+            DeferredAction<NetworkAction> deferredAction = new DeferredAction<NetworkAction>() {
                 Action = chat,
                 Done = (action, requests, responses) => {
                     doneFlag = true;
@@ -90,9 +92,9 @@ namespace Procon.Net.Shared.Test.Actions.Deferred {
         [Test]
         public void TestDeferredActionSent() {
             bool sentFlag = false;
-            Chat chat = new Chat();
+            NetworkAction chat = new NetworkAction();
 
-            DeferredAction<Chat> deferredAction = new DeferredAction<Chat>() {
+            DeferredAction<NetworkAction> deferredAction = new DeferredAction<NetworkAction>() {
                 Action = chat,
                 Sent = (action, requests) => {
                     sentFlag = true;
@@ -115,9 +117,9 @@ namespace Procon.Net.Shared.Test.Actions.Deferred {
         [Test]
         public void TestDeferredActionExpired() {
             bool expiredFlag = false;
-            Chat chat = new Chat();
+            NetworkAction chat = new NetworkAction();
 
-            DeferredAction<Chat> deferredAction = new DeferredAction<Chat>() {
+            DeferredAction<NetworkAction> deferredAction = new DeferredAction<NetworkAction>() {
                 Action = chat,
                 Expired = (action, requests, responses) => {
                     expiredFlag = true;
@@ -147,9 +149,9 @@ namespace Procon.Net.Shared.Test.Actions.Deferred {
         [Test]
         public void TestDeferredActionAlways() {
             bool alwaysFlag = false;
-            Chat chat = new Chat();
+            NetworkAction chat = new NetworkAction();
 
-            DeferredAction<Chat> deferredAction = new DeferredAction<Chat>() {
+            DeferredAction<NetworkAction> deferredAction = new DeferredAction<NetworkAction>() {
                 Action = chat,
                 Always = action => {
                     alwaysFlag = true;
@@ -166,9 +168,9 @@ namespace Procon.Net.Shared.Test.Actions.Deferred {
         /// </summary>
         [Test]
         public void TestDeferredActionRelease() {
-            Chat chat = new Chat();
+            NetworkAction chat = new NetworkAction();
 
-            DeferredAction<Chat> deferredAction = new DeferredAction<Chat>() {
+            DeferredAction<NetworkAction> deferredAction = new DeferredAction<NetworkAction>() {
                 Action = chat,
                 Sent = (action, requests) => {
 

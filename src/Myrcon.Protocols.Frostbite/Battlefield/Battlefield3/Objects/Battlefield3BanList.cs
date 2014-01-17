@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Myrcon.Protocols.Frostbite.Objects;
 using Procon.Net.Shared.Actions;
+using Procon.Net.Shared.Models;
 
 namespace Myrcon.Protocols.Frostbite.Battlefield.Battlefield3.Objects {
     [Serializable]

@@ -5,6 +5,7 @@ using System.Threading;
 using System.Xml.Serialization;
 using Procon.Net.Shared;
 using Procon.Net.Shared.Actions;
+using Procon.Net.Shared.Models;
 
 namespace Procon.Net.Utils.Tests {
 
@@ -182,7 +183,7 @@ namespace Procon.Net.Utils.Tests {
                     game.ClientEvent += handler;
 
                     // 3 b. Send our packet to initiate this command test
-                    game.Action(new Raw() {
+                    game.Action(new NetworkAction() {
                         ActionType = NetworkActionType.NetworkSend,
                         Now = {
                             Content = {

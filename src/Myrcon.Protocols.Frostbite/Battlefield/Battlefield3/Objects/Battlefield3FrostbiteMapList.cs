@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Procon.Net.Shared.Actions;
 using Procon.Net.Shared.Models;
 
 namespace Myrcon.Protocols.Frostbite.Battlefield.Battlefield3.Objects {
@@ -25,8 +24,7 @@ namespace Myrcon.Protocols.Frostbite.Battlefield.Battlefield3.Objects {
                                     Name = words[wordIndex],
                                     GameMode = new GameMode() {
                                         Name = words[wordIndex + 1]
-                                    },
-                                    ActionType = NetworkActionType.NetworkMapListed
+                                    }
                                 }
                             );
                         }

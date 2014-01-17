@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using Procon.Net.Shared.Models;
 
-namespace Procon.Net.Shared.Actions {
+namespace Procon.Net.Shared.Models {
     [Serializable]
-    public sealed class Move : NetworkAction {
+    public sealed class Move : NetworkModel {
 
         public Move() {
             this.Scope.Players = new List<Player>();

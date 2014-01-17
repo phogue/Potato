@@ -25,8 +25,7 @@ namespace Myrcon.Protocols.Frostbite.Battlefield.Battlefield4.Objects {
                                     Name = words[wordIndex],
                                     GameMode = new GameMode() {
                                         Name = words[wordIndex + 1]
-                                    },
-                                    ActionType = NetworkActionType.NetworkMapListed
+                                    }
                                 }
                             );
                         }

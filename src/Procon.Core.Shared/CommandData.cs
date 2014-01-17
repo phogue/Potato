@@ -93,6 +93,11 @@ namespace Procon.Core.Shared {
         public List<PluginModel> Plugins { get; set; }
 
         /// <summary>
+        /// The network actions attached to this event, if any.
+        /// </summary>
+        public List<NetworkAction> NetworkActions { get; set; } 
+
+        /// <summary>
         /// The chats attached to this event, if any.
         /// </summary>
         public List<Chat> Chats { get; set; }

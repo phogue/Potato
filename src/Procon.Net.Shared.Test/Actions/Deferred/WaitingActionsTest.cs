@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using NUnit.Framework;
 using Procon.Net.Shared.Actions;
 using Procon.Net.Shared.Actions.Deferred;
+using Procon.Net.Shared.Models;
 
 namespace Procon.Net.Shared.Test.Actions.Deferred {
     [TestFixture]
@@ -18,7 +19,7 @@ namespace Procon.Net.Shared.Test.Actions.Deferred {
 
             waitingActions.Done = (action, requests, responses) => { doneFlag = true; };
 
-            waitingActions.Wait(new Chat(), new List<IPacket>() {
+            waitingActions.Wait(new NetworkAction(), new List<IPacket>() {
                 new Packet() {
                     Origin = PacketOrigin.Client,
                     Type = PacketType.Request,
@@ -46,7 +47,7 @@ namespace Procon.Net.Shared.Test.Actions.Deferred {
 
             waitingActions.Done = (action, requests, responses) => { doneFlag = true; };
 
-            waitingActions.Wait(new Chat(), new List<IPacket>() {
+            waitingActions.Wait(new NetworkAction(), new List<IPacket>() {
                 new Packet() {
                     Origin = PacketOrigin.Client,
                     Type = PacketType.Request,
@@ -73,7 +74,7 @@ namespace Procon.Net.Shared.Test.Actions.Deferred {
 
             waitingActions.Done = (action, requests, responses) => { doneFlag = true; };
 
-            waitingActions.Wait(new Chat(), new List<IPacket>() {
+            waitingActions.Wait(new NetworkAction(), new List<IPacket>() {
                 new Packet() {
                     Origin = PacketOrigin.Client,
                     Type = PacketType.Request,
@@ -112,7 +113,7 @@ namespace Procon.Net.Shared.Test.Actions.Deferred {
 
             waitingActions.Done = (action, requests, responses) => { doneFlag = true; };
 
-            waitingActions.Wait(new Chat(), new List<IPacket>() {
+            waitingActions.Wait(new NetworkAction(), new List<IPacket>() {
                 new Packet() {
                     Origin = PacketOrigin.Client,
                     Type = PacketType.Request,
@@ -151,7 +152,7 @@ namespace Procon.Net.Shared.Test.Actions.Deferred {
 
             waitingActions.Expired = (action, requests, responses) => { expiredFlag = true; };
 
-            waitingActions.Wait(new Chat(), new List<IPacket>() {
+            waitingActions.Wait(new NetworkAction(), new List<IPacket>() {
                 new Packet() {
                     Origin = PacketOrigin.Client,
                     Type = PacketType.Request,

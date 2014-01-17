@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using Procon.Net.Shared.Models;
 
-namespace Procon.Net.Shared.Actions {
+namespace Procon.Net.Shared.Models {
     [Serializable]
-    public sealed class Kick : NetworkAction {
+    public sealed class Ban : NetworkModel {
 
-        public Kick() : base() {
-            // Target
+        public Ban() : base() {
             this.Scope.Content = new List<String>();
             this.Scope.Players = new List<Player>();
+            this.Scope.Times = new List<TimeSubset>();
         }
     }
 }

@@ -34,7 +34,7 @@ namespace Myrcon.Protocols.Frostbite.Objects {
 
                         //this.Author = new FrostbitePlayer() { Name = words[varCount] };
 
-                        chat.Origin = String.CompareOrdinal(words[varCount], "Server") == 0 ? ChatOrigin.Server : ChatOrigin.Player;
+                        chat.Origin = String.CompareOrdinal(words[varCount], "Server") == 0 ? NetworkOrigin.Server : NetworkOrigin.Player;
 
                         break;
                     case "Subset":
@@ -77,7 +77,7 @@ namespace Myrcon.Protocols.Frostbite.Objects {
         public static Chat ParsePlayerChat(List<string> words) {
             Chat chat = FrostbiteChat.Parse(words, FrostbiteChat.PlayerChatParameters);
 
-            chat.Origin = ChatOrigin.Player;
+            chat.Origin = NetworkOrigin.Player;
 
             return chat;
         }
@@ -85,7 +85,7 @@ namespace Myrcon.Protocols.Frostbite.Objects {
         public static Chat ParseAdminSay(List<string> words) {
             Chat chat = FrostbiteChat.Parse(words, FrostbiteChat.AdminSayParameters);
 
-            chat.Origin = ChatOrigin.Reflected;
+            chat.Origin = NetworkOrigin.Reflected;
             chat.Now.Players = new List<Player>() {
                 new Player() {
                     Name = "Procon"

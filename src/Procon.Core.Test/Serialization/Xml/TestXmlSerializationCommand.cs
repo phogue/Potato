@@ -7,6 +7,7 @@ using System.Xml.Linq;
 using NUnit.Framework;
 using Procon.Core.Shared;
 using Procon.Net.Shared.Actions;
+using Procon.Net.Shared.Models;
 using Procon.Net.Shared.Utils;
 using Procon.Net.Utils;
 
@@ -34,7 +35,7 @@ namespace Procon.Core.Test.Serialization.Xml {
                 Scope = new CommandData() {
                     Chats = new List<Chat>() {
                         new Chat() {
-                            Now = new NetworkActionData() {
+                            Now = new NetworkModelData() {
                                 Content = new List<String>() {
                                     "Hello"
                                 }

@@ -18,10 +18,6 @@ namespace Procon.Net.Shared.Actions {
         /// The player is unbanned or is going to be unbanned
         /// </summary>
         NetworkUnban,
-        /// <summary>
-        /// The ban is in the banlist
-        /// </summary>
-        NetworkBanListed,
 
 
         /// <summary>
@@ -58,14 +54,6 @@ namespace Procon.Net.Shared.Actions {
         /// Inserts the map at a given index
         /// </summary>
         NetworkMapInsert,
-        /// <summary>
-        /// The map is in the maplist
-        /// </summary>
-        NetworkMapListed,
-        /// <summary>
-        /// The map is in the local maplist pool
-        /// </summary>
-        NetworkMapPooled,
         /// <summary>
         /// Restarts the map
         /// </summary>
@@ -110,5 +98,15 @@ namespace Procon.Net.Shared.Actions {
         /// The destination team will not include any neutral/spectator teams.
         /// </summary>
         NetworkPlayerForceRotate,
+
+        /// <summary>
+        /// Kicks a player out of the server
+        /// </summary>
+        NetworkKick,
+
+        /// <summary>
+        /// Kills a player
+        /// </summary>
+        NetworkKill,
     }
 }

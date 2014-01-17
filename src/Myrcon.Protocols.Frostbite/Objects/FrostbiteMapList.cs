@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Procon.Net.Shared.Actions;
+using Procon.Net.Shared.Models;
 
 namespace Myrcon.Protocols.Frostbite.Objects {
     [Serializable]
@@ -18,8 +19,7 @@ namespace Myrcon.Protocols.Frostbite.Objects {
                         new Map() {
                             Index = i > 0 ? i / 2 : 0,
                             Rounds = rounds == 0 ? 2 : rounds,
-                            Name = words[i],
-                            ActionType = NetworkActionType.NetworkMapListed
+                            Name = words[i]
                         }
                     );
                 }

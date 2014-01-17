@@ -36,7 +36,8 @@ namespace Procon.Examples.Plugins.Actions {
         /// <returns></returns>
         protected CommandResult KickPlayer(Command command, Dictionary<String, CommandParameter> parameters) {
             // You would usually pull the player object from this.GameState but we mock together a player here.
-            CommandResult result = this.Action(new Kick() {
+            CommandResult result = this.Action(new NetworkAction() {
+                ActionType = NetworkActionType.NetworkKick,
                 Scope = {
                     Players = new List<Player>() {
                         new Player() {
@@ -75,12 +76,13 @@ namespace Procon.Examples.Plugins.Actions {
                 }
             };
 
-            this.Action(new DeferredAction<Kick>() {
+            this.Action(new DeferredAction<NetworkAction>() {
 
                 // The action to send to the networking layer. 
                 // Ideal execution order: [ "Sent", "Each", "Done", "Always" ]
                 // Timeout execution order: [ "Sent", "Expired", "Always" ]
-                Action = new Kick() {
+                Action = new NetworkAction() {
+                    ActionType = NetworkActionType.NetworkKick,
                     Scope = {
                         Players = new List<Player>() {
                             new Player() {

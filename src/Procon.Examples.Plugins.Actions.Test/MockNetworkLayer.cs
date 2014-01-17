@@ -23,12 +23,12 @@ namespace Procon.Examples.Plugins.Actions.Test {
             this.AppendDispatchHandlers(new Dictionary<CommandAttribute, CommandDispatchHandler>() {
                 {
                     new CommandAttribute() {
-                        CommandType = CommandType.NetworkProtocolActionKick,
+                        Name = NetworkActionType.NetworkKick.ToString(),
                         CommandAttributeType = CommandAttributeType.Handler,
                         ParameterTypes = new List<CommandParameterType>() {
                             new CommandParameterType() {
-                                Name = "kick",
-                                Type = typeof(Kick)
+                                Name = "action",
+                                Type = typeof(NetworkAction)
                             }
                         }
                     },
@@ -76,7 +76,7 @@ namespace Procon.Examples.Plugins.Actions.Test {
 
             // You can ignore this. This is a mock of Procon's internal process, but looks nothing like it really
 
-            Kick kick = parameters["kick"].First<Kick>();
+            NetworkAction kick = parameters["action"].First<NetworkAction>();
 
             List<IPacket> requests = new List<IPacket>() {
                 new Packet() {
@@ -103,7 +103,12 @@ namespace Procon.Examples.Plugins.Actions.Test {
                 }
             };
 
-            this.Waiting.Wait(kick, requests);
+            this.Waiting.Wait(new NetworkAction() {
+                ActionType = NetworkActionType.NetworkKick,
+                Scope = kick.Scope,
+                Now = kick.Now,
+                Then = kick.Then
+            }, requests);
 
             result.Now.Packets = requests;
 

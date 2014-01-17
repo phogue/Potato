@@ -1,13 +1,12 @@
 ﻿#region
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
 using Procon.Core.Shared;
 using Procon.Core.Shared.Events;
-using Procon.Net;
 using Procon.Net.Shared;
-using Procon.Net.Shared.Actions;
 using Procon.Net.Shared.Models;
 
 #endregion
@@ -25,9 +24,8 @@ namespace Procon.Core.Test.Events {
             var gameEventData = new ProtocolEventData() {
                 Bans = new List<Ban>() {
                     new Ban() {
-                        ActionType = NetworkActionType.NetworkYell,
-                        Scope = {
-                            Content = {
+                        Now = {
+                            Content = new List<String>() {
                                 "I should remove this property"
                             }
                         }
@@ -35,9 +33,8 @@ namespace Procon.Core.Test.Events {
                 },
                 Chats = new List<Chat>() {
                     new Chat() {
-                        ActionType = NetworkActionType.NetworkYell,
                         Now = {
-                            Content = {
+                            Content = new List<String>() {
                                 "I should remove this property"
                             }
                         }
@@ -45,9 +42,8 @@ namespace Procon.Core.Test.Events {
                 },
                 Kicks = new List<Kick>() {
                     new Kick() {
-                        ActionType = NetworkActionType.NetworkYell,
                         Scope = {
-                            Content = {
+                            Content = new List<String>() {
                                 "I should remove this property"
                             }
                         }
@@ -55,9 +51,8 @@ namespace Procon.Core.Test.Events {
                 },
                 Kills = new List<Kill>() {
                     new Kill() {
-                        ActionType = NetworkActionType.NetworkYell,
                         Scope = {
-                            Content = {
+                            Content = new List<String>() {
                                 "I should remove this property"
                             }
                         }
@@ -81,17 +76,13 @@ namespace Procon.Core.Test.Events {
 
             CommandData genericEventData = GenericEventData.Parse(gameEventData);
 
-            Assert.AreEqual("I should remove this property", genericEventData.Bans.First().Scope.Content.First());
-            Assert.AreEqual(NetworkActionType.NetworkYell, genericEventData.Bans.First().ActionType);
+            Assert.AreEqual("I should remove this property", genericEventData.Bans.First().Now.Content.First());
 
             Assert.AreEqual("I should remove this property", genericEventData.Chats.First().Now.Content.First());
-            Assert.AreEqual(NetworkActionType.NetworkYell, genericEventData.Chats.First().ActionType);
 
             Assert.AreEqual("I should remove this property", genericEventData.Kicks.First().Scope.Content.First());
-            Assert.AreEqual(NetworkActionType.NetworkYell, genericEventData.Kicks.First().ActionType);
 
             Assert.AreEqual("I should remove this property", genericEventData.Kills.First().Scope.Content.First());
-            Assert.AreEqual(NetworkActionType.NetworkYell, genericEventData.Kills.First().ActionType);
 
             Assert.AreEqual("Phogue", genericEventData.Players.First().Name);
             Assert.AreEqual(100, genericEventData.Players.First().Ping);

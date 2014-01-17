@@ -111,10 +111,8 @@ namespace Myrcon.Plugins.Test {
         protected CommandResult HelpCommand(Command command, Dictionary<String, CommandParameter> parameters) {
             CommandResult e = parameters["e"].First<CommandResult>();
 
-            Chat output = new Chat() {
-                Now = new NetworkActionData() {
-                    Content = new List<String>()
-                }
+            NetworkAction output = new NetworkAction() {
+                ActionType = NetworkActionType.NetworkSay
             };
 
             if (e.Now.TextCommands.Count > 1) {
@@ -158,8 +156,9 @@ namespace Myrcon.Plugins.Test {
             TextCommandMatchModel match = e.Now.TextCommandMatches.First();
 
             if (match.Players != null && match.Players.Count > 0) {
-                this.Action(new DeferredAction<Kill>() {
-                    Action = new Kill() {
+                this.Action(new DeferredAction<NetworkAction>() {
+                    Action = new NetworkAction() {
+                        ActionType = NetworkActionType.NetworkKill,
                         Scope = {
                             Players = new List<Player>(match.Players),
                                 Content = new List<String>() {
@@ -195,10 +194,8 @@ namespace Myrcon.Plugins.Test {
         protected CommandResult TestCommand(Command command, Dictionary<String, CommandParameter> parameters) {
             CommandResult e = parameters["e"].First<CommandResult>();
 
-            Chat output = new Chat() {
-                Now = new NetworkActionData() {
-                    Content = new List<String>()
-                }
+            NetworkAction output = new NetworkAction() {
+                ActionType = NetworkActionType.NetworkSay
             };
 
             Console.WriteLine(e.Now.TextCommands.First().DescriptionKey);

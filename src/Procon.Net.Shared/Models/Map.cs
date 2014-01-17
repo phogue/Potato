@@ -1,10 +1,11 @@
 ﻿using System;
-using Procon.Net.Shared.Models;
 
-namespace Procon.Net.Shared.Actions {
-
+namespace Procon.Net.Shared.Models {
+    /// <summary>
+    /// A map within the protocol/game
+    /// </summary>
     [Serializable]
-    public sealed class Map : NetworkAction {
+    public sealed class Map : NetworkModel {
 
         /// <summary>
         /// This map's order as represented by a 0-based index.

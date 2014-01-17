@@ -22,19 +22,19 @@ namespace Myrcon.Protocols.Frostbite.MedalOfHonor {
             };
         }
 
-        protected override List<IPacketWrapper> Action(Move move) {
+        protected override List<IPacketWrapper> ActionMove(NetworkAction action) {
             List<IPacketWrapper> wrappers = new List<IPacketWrapper>();
 
             // admin.movePlayer <name: player name> <teamId: Team ID> <squadId: Squad ID> <forceKill: boolean>
-            bool forceMove = (move.ActionType == NetworkActionType.NetworkPlayerForceMove || move.ActionType == NetworkActionType.NetworkPlayerForceRotate);
+            bool forceMove = (action.ActionType == NetworkActionType.NetworkPlayerForceMove || action.ActionType == NetworkActionType.NetworkPlayerForceRotate);
 
             Map selectedMap = this.State.MapPool.Find(x => String.Compare(x.Name, this.State.Settings.Current.MapNameText, StringComparison.OrdinalIgnoreCase) == 0);
 
-            Player movePlayer = this.State.Players.First(player => player.Uid == move.Scope.Players.First().Uid);
+            Player movePlayer = this.State.Players.First(player => player.Uid == action.Scope.Players.First().Uid);
 
             if (selectedMap != null) {
                 // If they are just looking to rotate the player through the teams
-                if (move.ActionType == NetworkActionType.NetworkPlayerRotate || move.ActionType == NetworkActionType.NetworkPlayerForceRotate) {
+                if (action.ActionType == NetworkActionType.NetworkPlayerRotate || action.ActionType == NetworkActionType.NetworkPlayerForceRotate) {
 
                     int currentTeamId = -1;
 
@@ -44,7 +44,7 @@ namespace Myrcon.Protocols.Frostbite.MedalOfHonor {
                     if (selectedMap.GameMode.TeamCount > 0) {
                         int newTeamId = (currentTeamId + 1) % (selectedMap.GameMode.TeamCount + 1);
 
-                        move.Now.Groups.Add(new Grouping() {
+                        action.Now.Groups.Add(new Grouping() {
                             Type = Grouping.Team,
                             Uid = newTeamId == 0 ? "1" : newTeamId.ToString(CultureInfo.InvariantCulture)
                         });
@@ -56,7 +56,7 @@ namespace Myrcon.Protocols.Frostbite.MedalOfHonor {
                 this.CreatePacket(
                     "admin.movePlayer \"{0}\" {1} {2}",
                     movePlayer.Name,
-                    move.Now.Groups.First(group => group.Type == Grouping.Team).Uid,
+                    action.Now.Groups.First(group => group.Type == Grouping.Team).Uid,
                     FrostbiteConverter.BoolToString(forceMove)
                 )
             );

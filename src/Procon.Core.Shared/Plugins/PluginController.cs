@@ -116,57 +116,21 @@ namespace Procon.Core.Shared.Plugins {
         /// <param name="action">The action to send to the server.</param>
         /// <returns>The result of the command, check the status for a success message.</returns>
         public virtual CommandResult Action(NetworkAction action) {
-            // Splitting the commands up is very deliberate, used to divide the permissions a user
-            // requires to initiate a particular command. We do this here instead of later for.. well..
-            // I don't know. A plugin might have a use to ignore this action at some point?
-
-            CommandResult result = null;
-            CommandType command = CommandType.None;
-            CommandParameter parameter = new CommandParameter();
-
-            if (action is Chat) {
-                command = CommandType.NetworkProtocolActionChat;
-                parameter.Data.Chats = new List<Chat>() { action as Chat };
-            }
-            else if (action is Kill) {
-                command = CommandType.NetworkProtocolActionKill;
-                parameter.Data.Kills = new List<Kill>() { action as Kill };
-            }
-            else if (action is Kick) {
-                command = CommandType.NetworkProtocolActionKick;
-                parameter.Data.Kicks = new List<Kick>() { action as Kick };
-            }
-            else if (action is Ban) {
-                command = CommandType.NetworkProtocolActionBan;
-                parameter.Data.Bans = new List<Ban>() { action as Ban };
-            }
-            else if (action is Move) {
-                command = CommandType.NetworkProtocolActionMove;
-                parameter.Data.Moves = new List<Move>() { action as Move };
-            }
-            else if (action is Map) {
-                command = CommandType.NetworkProtocolActionMap;
-                parameter.Data.Maps = new List<Map>() { action as Map };
-            }
-            else if (action is Raw) {
-                command = CommandType.NetworkProtocolActionRaw;
-                parameter.Data.Raws = new List<Raw>() { action as Raw };
-            }
-
-            // Provided we have worked out what they wanted to send..
-            if (command != CommandType.None) {
-                result = this.Bubble(new Command() {
-                    CommandType = command,
-                    Scope = new CommandScope() {
-                        ConnectionGuid = this.ConnectionGuid
-                    },
-                    Parameters = new List<CommandParameter>() {
-                        parameter
+            return this.Bubble(new Command() {
+                Name = action.ActionType.ToString(),
+                Scope = new CommandScope() {
+                    ConnectionGuid = this.ConnectionGuid
+                },
+                Parameters = new List<CommandParameter>() {
+                    new CommandParameter() {
+                        Data = {
+                            NetworkActions = new List<NetworkAction>() {
+                                action
+                            }
+                        }
                     }
-                });
-            }
-
-            return result;
+                }
+            });
         }
 
         /// <summary>

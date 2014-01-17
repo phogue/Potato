@@ -523,8 +523,8 @@ namespace Myrcon.Protocols.Frostbite {
             if (request.Packet.Words.Count >= 1) {
                 Ban ban = FrostbiteBan.ParseBanRemove(request.Packet.Words.GetRange(1, request.Packet.Words.Count - 1));
 
-                Ban stateBan = this.State.Bans.Find(x => (x.Scope.Players.First().Name != null && x.Scope.Players.First().Name == ban.Scope.Players.First().Name)
-                                                         || (x.Scope.Players.First().Uid != null && x.Scope.Players.First().Uid == ban.Scope.Players.First().Uid));
+                Ban stateBan = this.State.Bans.Find(b => (b.Scope.Players.First().Name != null && b.Scope.Players.First().Name == ban.Scope.Players.First().Name)
+                                                         || (b.Scope.Players.First().Uid != null && b.Scope.Players.First().Uid == ban.Scope.Players.First().Uid));
                 this.State.Bans.Remove(stateBan);
 
                 this.OnGameEvent(ProtocolEventType.ProtocolPlayerUnbanned, new ProtocolEventData() { Bans = new List<Ban>() { ban } });
@@ -805,7 +805,7 @@ namespace Myrcon.Protocols.Frostbite {
                 }
                 else {
                     // Couldn't find the player, must be from the server.
-                    chat.Origin = ChatOrigin.Server;
+                    chat.Origin = NetworkOrigin.Server;
                 }
 
                 this.OnGameEvent(ProtocolEventType.ProtocolChat, new ProtocolEventData() { Chats = new List<Chat>() { chat } });
@@ -991,30 +991,30 @@ namespace Myrcon.Protocols.Frostbite {
             };
         }
 
-        protected override List<IPacketWrapper> Action(Chat chat) {
+        protected override List<IPacketWrapper> ActionChat(NetworkAction action) {
             List<IPacketWrapper> wrappers = new List<IPacketWrapper>();
 
-            if (chat.Now.Content != null) {
-                foreach (String chatMessage in chat.Now.Content) {
+            if (action.Now.Content != null) {
+                foreach (String chatMessage in action.Now.Content) {
                     String subset = String.Empty;
 
-                    if (chat.Scope.Groups == null && chat.Scope.Players == null) {
+                    if (action.Scope.Groups == null && action.Scope.Players == null) {
                         subset = "all";
                     }
-                    else if (chat.Scope.Players != null && chat.Scope.Players.Count > 0) {
-                        subset = String.Format(@"player ""{0}""", chat.Scope.Players.First().Name);
+                    else if (action.Scope.Players != null && action.Scope.Players.Count > 0) {
+                        subset = String.Format(@"player ""{0}""", action.Scope.Players.First().Name);
                     }
-                    else if (chat.Scope.Groups != null && chat.Scope.Groups.Any(group => @group.Type == Grouping.Team) == true) {
-                        subset = String.Format("team {0}", chat.Scope.Groups.First(group => @group.Type == Grouping.Team).Uid);
+                    else if (action.Scope.Groups != null && action.Scope.Groups.Any(group => @group.Type == Grouping.Team) == true) {
+                        subset = String.Format("team {0}", action.Scope.Groups.First(group => @group.Type == Grouping.Team).Uid);
                     }
-                    else if (chat.Scope.Groups != null && chat.Scope.Groups.Any(group => @group.Type == Grouping.Team) == true && chat.Scope.Groups.Any(group => @group.Type == Grouping.Squad) == true) {
-                        subset = String.Format("squad {0} {1}", chat.Scope.Groups.First(group => @group.Type == Grouping.Team).Uid, chat.Scope.Groups.First(group => @group.Type == Grouping.Squad).Uid);
+                    else if (action.Scope.Groups != null && action.Scope.Groups.Any(group => @group.Type == Grouping.Team) == true && action.Scope.Groups.Any(group => @group.Type == Grouping.Squad) == true) {
+                        subset = String.Format("squad {0} {1}", action.Scope.Groups.First(group => @group.Type == Grouping.Team).Uid, action.Scope.Groups.First(group => @group.Type == Grouping.Squad).Uid);
                     }
 
-                    if (chat.ActionType == NetworkActionType.NetworkSay) {
+                    if (action.ActionType == NetworkActionType.NetworkSay) {
                         wrappers.Add(this.CreatePacket("admin.say \"{0}\" {1}", chatMessage, subset));
                     }
-                    else if (chat.ActionType == NetworkActionType.NetworkYell || chat.ActionType == NetworkActionType.NetworkYellOnly) {
+                    else if (action.ActionType == NetworkActionType.NetworkYell || action.ActionType == NetworkActionType.NetworkYellOnly) {
                         wrappers.Add(this.CreatePacket("admin.yell \"{0}\" 8000 {1}", chatMessage, subset));
                     }
                 }
@@ -1023,13 +1023,13 @@ namespace Myrcon.Protocols.Frostbite {
             return wrappers;
         }
 
-        protected override List<IPacketWrapper> Action(Kill kill) {
+        protected override List<IPacketWrapper> ActionKill(NetworkAction action) {
             List<IPacketWrapper> wrappers = new List<IPacketWrapper>();
 
-            String reason = kill.Scope.Content != null ? kill.Scope.Content.FirstOrDefault() : String.Empty;
+            String reason = action.Scope.Content != null ? action.Scope.Content.FirstOrDefault() : String.Empty;
 
-            if (kill.Scope.Players != null) {
-                foreach (Player target in kill.Scope.Players) {
+            if (action.Scope.Players != null) {
+                foreach (Player target in action.Scope.Players) {
                     wrappers.Add(this.CreatePacket("admin.killPlayer \"{0}\"", target.Name));
 
                     if (string.IsNullOrEmpty(reason) == false) {
@@ -1041,43 +1041,44 @@ namespace Myrcon.Protocols.Frostbite {
             return wrappers;
         }
 
-        protected override List<IPacketWrapper> Action(Kick kick) {
+        protected override List<IPacketWrapper> ActionKick(NetworkAction action) {
             List<IPacketWrapper> wrappers = new List<IPacketWrapper>();
 
-            String reason = kick.Scope.Content != null ? kick.Scope.Content.FirstOrDefault() : String.Empty;
+            String reason = action.Scope.Content != null ? action.Scope.Content.FirstOrDefault() : String.Empty;
 
-            foreach (Player player in kick.Scope.Players) {
+            foreach (Player player in action.Scope.Players) {
                 wrappers.Add(string.IsNullOrEmpty(reason) == false ? this.CreatePacket("admin.kickPlayer \"{0}\" \"{1}\"", player.Name, reason) : this.CreatePacket("admin.kickPlayer \"{0}\"", player.Name));
             }
 
             return wrappers;
         }
 
-        protected override List<IPacketWrapper> Action(Ban ban) {
+        protected override List<IPacketWrapper> ActionBan(NetworkAction action) {
             List<IPacketWrapper> wrappers = new List<IPacketWrapper>();
 
-            String reason = ban.Scope.Content != null ? ban.Scope.Content.FirstOrDefault() : String.Empty;
+            String reason = action.Scope.Content != null ? action.Scope.Content.FirstOrDefault() : String.Empty;
+            TimeSubset time = action.Scope.Times != null ? action.Scope.Times.FirstOrDefault() ?? new TimeSubset() : new TimeSubset();
 
-            if (ban.ActionType == NetworkActionType.NetworkBan) {
-                if (ban.Time.Context == TimeSubsetContext.Permanent) {
+            if (action.ActionType == NetworkActionType.NetworkBan) {
+                if (time.Context == TimeSubsetContext.Permanent) {
                     if (String.IsNullOrEmpty(reason) == true) {
-                        wrappers.Add(this.CreatePacket("banList.add guid \"{0}\" perm", ban.Scope.Players.First().Uid));
+                        wrappers.Add(this.CreatePacket("banList.add guid \"{0}\" perm", action.Scope.Players.First().Uid));
                     }
                     else {
-                        wrappers.Add(this.CreatePacket("banList.add guid \"{0}\" perm \"{1}\"", ban.Scope.Players.First().Uid, reason));
+                        wrappers.Add(this.CreatePacket("banList.add guid \"{0}\" perm \"{1}\"", action.Scope.Players.First().Uid, reason));
                     }
                 }
-                else if (ban.Time.Context == TimeSubsetContext.Time && ban.Time.Length.HasValue == true) {
+                else if (time.Context == TimeSubsetContext.Time && time.Length.HasValue == true) {
                     if (String.IsNullOrEmpty(reason) == true) {
-                        wrappers.Add(this.CreatePacket("banList.add guid \"{0}\" seconds {1}", ban.Scope.Players.First().Uid, ban.Time.Length.Value.TotalSeconds));
+                        wrappers.Add(this.CreatePacket("banList.add guid \"{0}\" seconds {1}", action.Scope.Players.First().Uid, time.Length.Value.TotalSeconds));
                     }
                     else {
-                        wrappers.Add(this.CreatePacket("banList.add guid \"{0}\" seconds {1} \"{2}\"", ban.Scope.Players.First().Uid, ban.Time.Length.Value.TotalSeconds, reason));
+                        wrappers.Add(this.CreatePacket("banList.add guid \"{0}\" seconds {1} \"{2}\"", action.Scope.Players.First().Uid, time.Length.Value.TotalSeconds, reason));
                     }
                 }
             }
-            else if (ban.ActionType == NetworkActionType.NetworkUnban) {
-                wrappers.Add(this.CreatePacket("banList.remove guid \"{0}\"", ban.Scope.Players.First().Uid));
+            else if (action.ActionType == NetworkActionType.NetworkUnban) {
+                wrappers.Add(this.CreatePacket("banList.remove guid \"{0}\"", action.Scope.Players.First().Uid));
             }
 
             wrappers.Add(this.CreatePacket("banList.save"));
@@ -1085,56 +1086,107 @@ namespace Myrcon.Protocols.Frostbite {
             return wrappers;
         }
 
-        protected override List<IPacketWrapper> Action(Map map) {
+        protected override List<IPacketWrapper> ActionMove(NetworkAction action) {
             List<IPacketWrapper> wrappers = new List<IPacketWrapper>();
 
-            if (map.ActionType == NetworkActionType.NetworkMapAppend) {
-                wrappers.Add(this.CreatePacket("mapList.append \"{0}\" {1}", map.Name, map.Rounds));
+            if (action.Scope.Players != null) {
+                // admin.movePlayer <name: player name> <teamId: Team ID> <squadId: Squad ID> <forceKill: boolean>
+                bool forceMove = (action.ActionType == NetworkActionType.NetworkPlayerForceMove || action.ActionType == NetworkActionType.NetworkPlayerForceRotate);
 
-                wrappers.Add(this.CreatePacket("mapList.save"));
+                Map selectedMap = this.State.MapPool.Find(x => String.Compare(x.Name, this.State.Settings.Current.MapNameText, StringComparison.OrdinalIgnoreCase) == 0);
 
-                wrappers.Add(this.CreatePacket("mapList.list rounds"));
-            }
-            // Added by Imisnew2 - You should check this phogue!
-            else if (map.ActionType == NetworkActionType.NetworkMapChangeMode) {
-                if (map.GameMode != null) {
-                    wrappers.Add(this.CreatePacket("admin.setPlaylist \"{0}\"", map.GameMode.Name));
+                foreach (Player movePlayer in action.Scope.Players.Select(scopePlayer => this.State.Players.First(player => player.Uid == scopePlayer.Uid)).Where(movePlayer => movePlayer != null)) {
+                    if (selectedMap != null) {
+                        // If they are just looking to rotate the player through the teams
+                        if (action.ActionType == NetworkActionType.NetworkPlayerRotate || action.ActionType == NetworkActionType.NetworkPlayerForceRotate) {
+
+                            int currentTeamId = -1;
+
+                            int.TryParse(movePlayer.Groups.First(group => @group.Type == Grouping.Team).Uid, out currentTeamId);
+
+                            // Avoid divide by 0 error - shouldn't ever be encountered though.
+                            if (selectedMap.GameMode != null && selectedMap.GameMode.TeamCount > 0) {
+                                int newTeamId = (currentTeamId + 1) % (selectedMap.GameMode.TeamCount + 1);
+
+                                action.Now.Groups.Add(new Grouping() {
+                                    Type = Grouping.Team,
+                                    Uid = newTeamId == 0 ? "1" : newTeamId.ToString(CultureInfo.InvariantCulture)
+                                });
+                            }
+                        }
+
+                        // Now check if the destination squad is supported.
+                        if (selectedMap.GameMode != null && (selectedMap.GameMode.Name == "SQDM" || selectedMap.GameMode.Name == "SQRUSH")) {
+                            if (selectedMap.GameMode.DefaultGroups.Find(group => @group.Type == Grouping.Squad) != null) {
+                                action.Now.Groups.Add(selectedMap.GameMode.DefaultGroups.Find(group => @group.Type == Grouping.Squad));
+                            }
+                        }
+                    }
+
+                    wrappers.Add(this.CreatePacket(
+                        "admin.movePlayer \"{0}\" {1} {2} {3}",
+                        movePlayer.Name,
+                        action.Now.Groups.First(group => @group.Type == Grouping.Team).Uid,
+                        action.Now.Groups.First(group => @group.Type == Grouping.Squad).Uid,
+                        FrostbiteConverter.BoolToString(forceMove)
+                    ));
                 }
             }
-            else if (map.ActionType == NetworkActionType.NetworkMapInsert) {
-                wrappers.Add(this.CreatePacket("mapList.insert {0} \"{1}\" {2}", map.Index, map.Name, map.Rounds));
 
-                wrappers.Add(this.CreatePacket("mapList.save"));
+            return wrappers;
+        }
 
-                wrappers.Add(this.CreatePacket("mapList.list rounds"));
-            }
-            else if (map.ActionType == NetworkActionType.NetworkMapRemove) {
-                var matchingMaps = this.State.Maps.Where(x => x.Name == map.Name).OrderByDescending(x => x.Index);
+        protected override List<IPacketWrapper> ActionMap(NetworkAction action) {
+            List<IPacketWrapper> wrappers = new List<IPacketWrapper>();
 
-                wrappers.AddRange(matchingMaps.Select(match => this.CreatePacket("mapList.remove {0}", match.Index)));
+            foreach (Map map in action.Now.Maps) {
+                if (action.ActionType == NetworkActionType.NetworkMapAppend) {
+                    wrappers.Add(this.CreatePacket("mapList.append \"{0}\" {1}", map.Name, map.Rounds));
 
-                wrappers.Add(this.CreatePacket("mapList.save"));
+                    wrappers.Add(this.CreatePacket("mapList.save"));
 
-                wrappers.Add(this.CreatePacket("mapList.list rounds"));
-            }
-            else if (map.ActionType == NetworkActionType.NetworkMapRemoveIndex) {
-                wrappers.Add(this.CreatePacket("mapList.remove {0}", map.Index));
+                    wrappers.Add(this.CreatePacket("mapList.list rounds"));
+                }
+                else if (action.ActionType == NetworkActionType.NetworkMapChangeMode) {
+                    if (map.GameMode != null) {
+                        wrappers.Add(this.CreatePacket("admin.setPlaylist \"{0}\"", map.GameMode.Name));
+                    }
+                }
+                else if (action.ActionType == NetworkActionType.NetworkMapInsert) {
+                    wrappers.Add(this.CreatePacket("mapList.insert {0} \"{1}\" {2}", map.Index, map.Name, map.Rounds));
 
-                wrappers.Add(this.CreatePacket("mapList.list rounds"));
-            }
-            else if (map.ActionType == NetworkActionType.NetworkMapNextIndex) {
-                wrappers.Add(this.CreatePacket("mapList.nextLevelIndex {0}", map.Index));
-            }
-            else if (map.ActionType == NetworkActionType.NetworkMapRestart || map.ActionType == NetworkActionType.NetworkMapRoundRestart) {
-                wrappers.Add(this.CreatePacket("admin.restartRound"));
-            }
-            else if (map.ActionType == NetworkActionType.NetworkMapNext || map.ActionType == NetworkActionType.NetworkMapRoundNext) {
-                wrappers.Add(this.CreatePacket("admin.runNextRound"));
-            }
-            else if (map.ActionType == NetworkActionType.NetworkMapClear) {
-                wrappers.Add(this.CreatePacket("mapList.clear"));
+                    wrappers.Add(this.CreatePacket("mapList.save"));
 
-                wrappers.Add(this.CreatePacket("mapList.save"));
+                    wrappers.Add(this.CreatePacket("mapList.list rounds"));
+                }
+                else if (action.ActionType == NetworkActionType.NetworkMapRemove) {
+                    var matchingMaps = this.State.Maps.Where(x => x.Name == map.Name).OrderByDescending(x => x.Index);
+
+                    wrappers.AddRange(matchingMaps.Select(match => this.CreatePacket("mapList.remove {0}", match.Index)));
+
+                    wrappers.Add(this.CreatePacket("mapList.save"));
+
+                    wrappers.Add(this.CreatePacket("mapList.list rounds"));
+                }
+                else if (action.ActionType == NetworkActionType.NetworkMapRemoveIndex) {
+                    wrappers.Add(this.CreatePacket("mapList.remove {0}", map.Index));
+
+                    wrappers.Add(this.CreatePacket("mapList.list rounds"));
+                }
+                else if (action.ActionType == NetworkActionType.NetworkMapNextIndex) {
+                    wrappers.Add(this.CreatePacket("mapList.nextLevelIndex {0}", map.Index));
+                }
+                else if (action.ActionType == NetworkActionType.NetworkMapRestart || action.ActionType == NetworkActionType.NetworkMapRoundRestart) {
+                    wrappers.Add(this.CreatePacket("admin.restartRound"));
+                }
+                else if (action.ActionType == NetworkActionType.NetworkMapNext || action.ActionType == NetworkActionType.NetworkMapRoundNext) {
+                    wrappers.Add(this.CreatePacket("admin.runNextRound"));
+                }
+                else if (action.ActionType == NetworkActionType.NetworkMapClear) {
+                    wrappers.Add(this.CreatePacket("mapList.clear"));
+
+                    wrappers.Add(this.CreatePacket("mapList.save"));
+                }
             }
 
             return wrappers;

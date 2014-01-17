@@ -2,17 +2,14 @@
 using System.Collections.Generic;
 using System.Xml.Serialization;
 using Newtonsoft.Json;
-using Procon.Net.Shared.Models;
 
-namespace Procon.Net.Shared.Actions {
-
+namespace Procon.Net.Shared.Models {
     [Serializable]
-    public class NetworkActionData {
-
+    public class NetworkModelData {
         /// <summary>
         /// List of players that have an effect with this action.
         /// </summary>
-        public List<Player> Players { get; set; } 
+        public List<Player> Players { get; set; }
 
         /// <summary>
         /// A list of strings attached to this network action. A reason associated with the action.
@@ -36,9 +33,20 @@ namespace Procon.Net.Shared.Actions {
         public List<Item> Items { get; set; }
 
         /// <summary>
+        /// List of maps attached to this action, if any.
+        /// </summary>
+        public List<Map> Maps { get; set; }
+
+        /// <summary>
+        /// List of time subsets attached to this action, if any.
+        /// </summary>
+        public List<TimeSubset> Times { get; set; }
+
+        /// <summary>
         /// List of packets attached to this action, if any.
         /// </summary>
-        [XmlIgnore,JsonIgnore]
+        [XmlIgnore, JsonIgnore]
         public List<IPacket> Packets { get; set; }
+
     }
 }

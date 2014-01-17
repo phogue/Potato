@@ -5,7 +5,6 @@ using NUnit.Framework;
 using Procon.Core.Connections.Plugins;
 using Procon.Core.Shared;
 using Procon.Net.Shared;
-using Procon.Net.Shared.Actions;
 using Procon.Net.Shared.Models;
 
 namespace Procon.Examples.Plugins.Events.Test {
@@ -23,7 +22,7 @@ namespace Procon.Examples.Plugins.Events.Test {
         [Test]
         public void TestClientEventClientPacketReceived() {
             // Create a new plugin controller to load up the test plugin
-            CorePluginController plugins = new CorePluginController().Execute() as CorePluginController;
+            CorePluginController plugins = (CorePluginController)new CorePluginController().Execute();
 
             // Enable the single plugin that was loaded, otherwise it won't recieve any tunneled
             // commands or events.
@@ -63,7 +62,7 @@ namespace Procon.Examples.Plugins.Events.Test {
         [Test]
         public void TestGameEventGameChat() {
             // Create a new plugin controller to load up the test plugin
-            CorePluginController plugins = new CorePluginController().Execute() as CorePluginController;
+            CorePluginController plugins = (CorePluginController)new CorePluginController().Execute();
 
             // Enable the single plugin that was loaded, otherwise it won't recieve any tunneled
             // commands or events.
@@ -80,8 +79,7 @@ namespace Procon.Examples.Plugins.Events.Test {
                 Now = {
                     Chats = new List<Chat>() {
                         new Chat() {
-                            ActionType = NetworkActionType.NetworkSay,
-                            Origin = ChatOrigin.Player,
+                            Origin = NetworkOrigin.Player,
                             Scope = {
                                 Groups = new List<Grouping>() {
                                     new Grouping() {
@@ -116,7 +114,7 @@ namespace Procon.Examples.Plugins.Events.Test {
         [Test]
         public void TestGenericEventPluginsPluginEnabled() {
             // Create a new plugin controller to load up the test plugin
-            CorePluginController plugins = new CorePluginController().Execute() as CorePluginController;
+            CorePluginController plugins = (CorePluginController)new CorePluginController().Execute();
 
             // Enable the single plugin that was loaded, otherwise it won't recieve any tunneled
             // commands or events.

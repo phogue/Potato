@@ -1,8 +1,11 @@
 ﻿using System.Collections.Generic;
 
 namespace Procon.Net.Shared.Actions.Deferred {
+    /// <summary>
+    /// A deferred action that will dispatch on the network layer and later call
+    /// the associated delegate
+    /// </summary>
     public interface IDeferredAction {
-
         /// <summary>
         /// Fetches the action attached to this object, without concern to the exact type.
         /// </summary>

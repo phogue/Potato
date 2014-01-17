@@ -4,8 +4,10 @@ using System.Collections.Generic;
 using System.Linq;
 
 namespace Procon.Net.Shared.Actions.Deferred {
+    /// <summary>
+    /// A controller for waiting actions
+    /// </summary>
     public class WaitingActions : IWaitingActions {
-
         /// <summary>
         /// List of deferred actions we are waiting for responses on.
         /// </summary>
@@ -21,6 +23,9 @@ namespace Procon.Net.Shared.Actions.Deferred {
         /// </summary>
         public Action<NetworkAction, List<IPacket>, List<IPacket>> Expired { get; set; }
 
+        /// <summary>
+        /// Initializes the controller with the default values.
+        /// </summary>
         public WaitingActions() {
             this.Waiting = new ConcurrentDictionary<Guid, IWaitingAction>();
         }

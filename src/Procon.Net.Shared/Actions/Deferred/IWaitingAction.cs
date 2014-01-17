@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 
 namespace Procon.Net.Shared.Actions.Deferred {
+    /// <summary>
+    /// An action currently pending completion
+    /// </summary>
     public interface IWaitingAction {
-
         /// <summary>
         /// When we should stop waiting for actions and accept the action has timed out.
         /// </summary>

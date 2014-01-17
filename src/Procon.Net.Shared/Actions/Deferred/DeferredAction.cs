@@ -3,6 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 
 namespace Procon.Net.Shared.Actions.Deferred {
+    /// <summary>
+    /// A deferred action that will dispatch on the network layer and later call
+    /// the associated delegate
+    /// </summary>
+    /// <typeparam name="T">The type of network action (Which will usually always be NetworkAction)</typeparam>
     public class DeferredAction<T> : IDeferredAction where T : NetworkAction {
 
         /// <summary>

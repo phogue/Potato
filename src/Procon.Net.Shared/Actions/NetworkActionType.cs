@@ -1,9 +1,14 @@
 ﻿using System;
 
 namespace Procon.Net.Shared.Actions {
-
+    /// <summary>
+    /// Common action types
+    /// </summary>
     [Serializable]
     public enum NetworkActionType {
+        /// <summary>
+        /// No action
+        /// </summary>
         None,
 
         /// <summary>

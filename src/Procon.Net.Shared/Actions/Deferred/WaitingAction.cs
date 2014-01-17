@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 
 namespace Procon.Net.Shared.Actions.Deferred {
+    /// <summary>
+    /// An action currently pending completion
+    /// </summary>
     public class WaitingAction : IWaitingAction {
         /// <summary>
         /// When we should stop waiting for actions and accept the action has timed out.
@@ -23,6 +26,9 @@ namespace Procon.Net.Shared.Actions.Deferred {
         /// </summary>
         public List<IPacket> Responses { get; set; }
 
+        /// <summary>
+        /// Initializes the waiting action with the default values.
+        /// </summary>
         public WaitingAction() {
             this.Expiration = DateTime.Now.AddSeconds(10);
             this.Responses = new List<IPacket>();

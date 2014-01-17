@@ -6,7 +6,6 @@ namespace Procon.Net.Shared.Models {
     /// </summary>
     [Serializable]
     public sealed class Map : NetworkModel {
-
         /// <summary>
         /// This map's order as represented by a 0-based index.
         /// </summary>

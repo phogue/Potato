@@ -209,6 +209,12 @@ namespace Procon.Service.Shared {
                 directory = directory.Parent;
             }
 
+            // Make sure we didn't escape the base directory and find our selves at the root of the drive.
+            // This only occurs during unit tests
+            if (directory != null && directory.Parent == null) {
+                directory = null;
+            }
+
             return directory;
         }
 

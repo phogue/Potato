@@ -31,14 +31,13 @@ namespace Procon.Net.Shared.Protocols {
             return assemblies;
         }
 
-        public static Dictionary<IProtocolType, Type> GetSupportedGames() {
-
+        public static Dictionary<IProtocolType, Type> GetSupportedGames(List<Assembly> additional = null) {
             Dictionary<IProtocolType, Type> games = SupportedGameTypes._supportedGames;
 
             if (games == null) {
 
                 // Load the supported games
-                IEnumerable<Assembly> assemblies = SupportedGameTypes.LateBindGames();
+                IEnumerable<Assembly> assemblies = SupportedGameTypes.LateBindGames().Union(additional ?? new List<Assembly>());
 
                 Regex supportedGamesNamespame = new Regex(@"^.*\.Protocols.*");
 

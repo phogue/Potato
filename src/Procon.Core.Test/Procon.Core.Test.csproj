@@ -128,8 +128,8 @@
     <Compile Include="TextCommands\Fuzzy\TestFuzzySentences.cs" />
     <Compile Include="TextCommands\Fuzzy\TestFuzzyComplexTemporal.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TextCommands\Mocks\MockClient.cs" />
-    <Compile Include="TextCommands\Mocks\MockProtocol.cs" />
+    <Compile Include="Mocks\Protocols\MockClient.cs" />
+    <Compile Include="Mocks\Protocols\MockProtocol.cs" />
     <Compile Include="TextCommands\TestTextCommandParserBase.cs" />
     <Compile Include="Security\TestSecurityPermission.cs" />
     <Compile Include="Security\TestSecurity.cs" />

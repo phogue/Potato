@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading;
 using System.Xml.Linq;
 using NUnit.Framework;
@@ -11,6 +12,7 @@ using Procon.Core.Events;
 using Procon.Core.Localization;
 using Procon.Core.Security;
 using Procon.Core.Shared;
+using Procon.Core.Test.Mocks.Protocols;
 using Procon.Core.Variables;
 using Procon.Net.Shared.Protocols;
 using Procon.Net.Shared.Utils;
@@ -24,6 +26,8 @@ namespace Procon.Core.Test.CoreInstance {
         [SetUp]
         public void Initialize() {
             SharedReferences.Setup();
+
+            SupportedGameTypes.GetSupportedGames(new List<Assembly>() { typeof(MockProtocol).Assembly });
 
             if (File.Exists(ConfigFileInfo.FullName)) {
                 File.Delete(ConfigFileInfo.FullName);
@@ -54,7 +58,7 @@ namespace Procon.Core.Test.CoreInstance {
                 CommandType = CommandType.InstanceAddConnection,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     "Myrcon",
-                    CommonGameType.DiceBattlefield3,
+                    "MockProtocol",
                     "93.186.198.11",
                     27516,
                     "phogueisabutterfly",
@@ -103,7 +107,7 @@ namespace Procon.Core.Test.CoreInstance {
                 CommandType = CommandType.InstanceAddConnection,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     "Myrcon",
-                    CommonGameType.DiceBattlefield3,
+                    "MockProtocol",
                     "93.186.198.11",
                     27516,
                     "phogueisabutterfly",
@@ -154,7 +158,7 @@ namespace Procon.Core.Test.CoreInstance {
                 CommandType = CommandType.InstanceAddConnection,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     "Myrcon",
-                    CommonGameType.DiceBattlefield3,
+                    "MockProtocol",
                     "93.186.198.11",
                     27516,
                     "phogueisabutterfly",
@@ -171,7 +175,7 @@ namespace Procon.Core.Test.CoreInstance {
 
             Assert.AreEqual("InstanceAddConnection", commands[0].Name);
             Assert.AreEqual("Myrcon", commands[0].Parameters[0].First<String>());
-            Assert.AreEqual(CommonGameType.DiceBattlefield3, commands[0].Parameters[1].First<String>());
+            Assert.AreEqual("MockProtocol", commands[0].Parameters[1].First<String>());
             Assert.AreEqual("93.186.198.11", commands[0].Parameters[2].First<String>());
             Assert.AreEqual("27516", commands[0].Parameters[3].First<String>());
             Assert.AreEqual("phogueisabutterfly", commands[0].Parameters[4].First<String>());
@@ -202,7 +206,7 @@ namespace Procon.Core.Test.CoreInstance {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.InstanceAddConnection,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
-                    CommonGameType.DiceBattlefield3,
+                    "MockProtocol",
                     "93.186.198.11",
                     27516,
                     "phogueisabutterfly",

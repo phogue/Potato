@@ -12,7 +12,6 @@ using Procon.Core.Remote;
 using Procon.Core.Shared;
 using Procon.Core.Shared.Events;
 using Procon.Core.Shared.Models;
-using Procon.Net;
 using Procon.Net.Shared;
 using Procon.Net.Shared.Protocols;
 using Procon.Service.Shared;
@@ -652,7 +651,7 @@ namespace Procon.Core {
 
                         // As long as the game type selected is supported...
                         if (gameType != null) {
-                            Protocol game = (Protocol) Activator.CreateInstance(gameType, hostName, port);
+                            IProtocol game = (IProtocol) Activator.CreateInstance(gameType, hostName, port);
                             game.Additional = additional;
                             game.Password = password;
 

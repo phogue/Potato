@@ -4,6 +4,12 @@ using Procon.Net.Shared;
 
 namespace Procon.Core.Test.Mocks.Protocols {
     public class MockClient : IClient {
+
+        public MockClient(string hostName, ushort port) {
+            this.Hostname = hostName;
+            this.Port = port;
+        }
+
         public string Hostname { get; private set; }
         public ushort Port { get; private set; }
         public ConnectionState ConnectionState { get; set; }

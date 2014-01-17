@@ -11,12 +11,16 @@ namespace Procon.Core.Test.Mocks.Protocols {
 
         public MockProtocol() {
             this.State = new ProtocolState();
-            this.Client = new MockClient();
+            this.Client = new MockClient(String.Empty, 0);
             this.ProtocolType = new ProtocolType() {
-                Name = String.Empty,
-                Type = String.Empty,
-                Provider = String.Empty
+                Name = "Mock Protocol 3",
+                Type = "MockProtocol",
+                Provider = "Myrcon"
             };
+        }
+
+        public MockProtocol(string hostName, ushort port) : this() {
+            this.Client = new MockClient(hostName, port);
         }
 
         public IClient Client { get; private set; }

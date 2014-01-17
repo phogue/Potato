@@ -4,8 +4,10 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using NUnit.Framework;
 using Procon.Core.Shared;
+using Procon.Core.Test.Mocks.Protocols;
 using Procon.Net.Shared.Protocols;
 using Procon.Service.Shared;
 
@@ -17,6 +19,8 @@ namespace Procon.Core.Test.CoreInstance {
         [SetUp]
         public void Initialize() {
             SharedReferences.Setup();
+
+            SupportedGameTypes.GetSupportedGames(new List<Assembly>() { typeof(MockProtocol).Assembly });
 
             if (File.Exists(ConfigFileInfo.FullName)) {
                 File.Delete(ConfigFileInfo.FullName);
@@ -30,14 +34,14 @@ namespace Procon.Core.Test.CoreInstance {
         /// </summary>
         [Test]
         public void TestInstanceRemoveConnectionByGuidSuccess() {
-            var instance = new InstanceController().Execute() as InstanceController;
+            var instance = (InstanceController)new InstanceController().Execute();
 
             instance.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.InstanceAddConnection,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     "Myrcon",
-                    CommonGameType.DiceBattlefield3,
+                    "MockProtocol",
                     "93.186.198.11",
                     27516,
                     "phogueisabutterfly",
@@ -69,7 +73,7 @@ namespace Procon.Core.Test.CoreInstance {
         /// </summary>
         [Test]
         public void TestInstanceRemoveConnectionDoesNotExist() {
-            var instance = new InstanceController().Execute() as InstanceController;
+            var instance = (InstanceController)new InstanceController().Execute();
 
             // Now readd the same connection we just added.
             CommandResult result = instance.Tunnel(new Command() {
@@ -77,7 +81,7 @@ namespace Procon.Core.Test.CoreInstance {
                 CommandType = CommandType.InstanceRemoveConnection,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     "Myrcon",
-                    CommonGameType.DiceBattlefield3,
+                    "MockProtocol",
                     "93.186.198.11",
                     27516
                 })
@@ -95,7 +99,7 @@ namespace Procon.Core.Test.CoreInstance {
         /// </summary>
         [Test]
         public void TestInstanceRemoveConnectionInsufficientPermissions() {
-            var instance = new InstanceController().Execute() as InstanceController;
+            var instance = (InstanceController)new InstanceController().Execute();
 
             CommandResult result = instance.Tunnel(new Command() {
                 Origin = CommandOrigin.Remote,
@@ -103,7 +107,7 @@ namespace Procon.Core.Test.CoreInstance {
                 CommandType = CommandType.InstanceRemoveConnection,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     "Myrcon",
-                    CommonGameType.DiceBattlefield3,
+                    "MockProtocol",
                     "93.186.198.11",
                     27516
                 })
@@ -121,14 +125,14 @@ namespace Procon.Core.Test.CoreInstance {
         /// </summary>
         [Test]
         public void TestInstanceRemoveConnectionSuccess() {
-            var instance = new InstanceController().Execute() as InstanceController;
+            var instance = (InstanceController)new InstanceController().Execute();
 
             instance.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.InstanceAddConnection,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     "Myrcon",
-                    CommonGameType.DiceBattlefield3,
+                    "MockProtocol",
                     "93.186.198.11",
                     27516,
                     "phogueisabutterfly",
@@ -137,14 +141,14 @@ namespace Procon.Core.Test.CoreInstance {
             });
 
             // Make sure we have at least one connection added.
-            Assert.AreEqual(1, instance.Connections.Count);
+            Assert.IsNotEmpty(instance.Connections);
 
             CommandResult result = instance.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.InstanceRemoveConnection,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     "Myrcon",
-                    CommonGameType.DiceBattlefield3,
+                    "MockProtocol",
                     "93.186.198.11",
                     27516
                 })
@@ -152,7 +156,7 @@ namespace Procon.Core.Test.CoreInstance {
 
             Assert.IsTrue(result.Success);
             Assert.AreEqual(CommandResultType.Success, result.Status);
-            Assert.AreEqual(0, instance.Connections.Count);
+            Assert.IsEmpty(instance.Connections);
 
             instance.Dispose();
         }

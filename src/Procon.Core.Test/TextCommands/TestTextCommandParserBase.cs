@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Myrcon.Protocols.Frostbite.Battlefield.Battlefield3;
 using NUnit.Framework;
 using Procon.Core.Connections;
 using Procon.Core.Connections.TextCommands;

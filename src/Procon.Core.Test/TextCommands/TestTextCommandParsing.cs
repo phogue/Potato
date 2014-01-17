@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Myrcon.Protocols.Frostbite.Battlefield.Battlefield3;
 using NUnit.Framework;
 using Procon.Core.Connections;
 using Procon.Core.Connections.TextCommands;
@@ -11,7 +10,6 @@ using Procon.Core.Security;
 using Procon.Core.Shared;
 using Procon.Core.Shared.Models;
 using Procon.Core.Test.TextCommands.Mocks;
-using Procon.Net.Protocols;
 using Procon.Net.Shared.Protocols;
 
 #endregion

@@ -10,6 +10,7 @@ using Procon.Core.Connections.TextCommands;
 using Procon.Core.Security;
 using Procon.Core.Shared;
 using Procon.Core.Shared.Models;
+using Procon.Core.Test.TextCommands.Mocks;
 using Procon.Fuzzy.Tokens.Primitive.Temporal;
 using Procon.Net.Shared;
 using Procon.Net.Shared.Models;
@@ -370,7 +371,7 @@ namespace Procon.Core.Test.TextCommands {
                 },
                 //Languages = languages,
                 Connection = new ConnectionController() {
-                    Protocol = new Battlefield3Game(String.Empty, 25200) {
+                    Protocol = new MockProtocol() {
                         Additional = "",
                         Password = ""
                     },

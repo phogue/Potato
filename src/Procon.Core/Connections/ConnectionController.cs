@@ -105,6 +105,18 @@ namespace Procon.Core.Connections {
                     }
                 }
             }, actionType => new CommandDispatchHandler(this.NetworkProtocolAction)));
+
+
+            this.AppendDispatchHandlers(Enum.GetValues(typeof(NetworkActionType)).Cast<NetworkActionType>().ToDictionary(actionType => new CommandAttribute() {
+                Name = actionType.ToString(),
+                ParameterTypes = new List<CommandParameterType>() {
+                    new CommandParameterType() {
+                        Name = "actions",
+                        Type = typeof(NetworkAction),
+                        IsList = true
+                    }
+                }
+            }, actionType => new CommandDispatchHandler(this.NetworkProtocolActions)));
         }
 
         public override void WriteConfig(Config config) {
@@ -382,14 +394,45 @@ namespace Procon.Core.Connections {
         public CommandResult NetworkProtocolAction(Command command, Dictionary<String, CommandParameter> parameters) {
             CommandResult result = null;
 
-            NetworkAction raw = parameters["action"].First<NetworkAction>();
+            NetworkAction action = parameters["action"].First<NetworkAction>();
 
             if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
+                action.Name = command.Name;
+
                 result = new CommandResult() {
                     Success = true,
                     Status = CommandResultType.Success,
                     Now = new CommandData() {
-                        Packets = this.Protocol.Action(raw)
+                        Packets = this.Protocol.Action(action)
+                    }
+                };
+            }
+            else {
+                result = CommandResult.InsufficientPermissions;
+            }
+
+            return result;
+        }
+
+        public CommandResult NetworkProtocolActions(Command command, Dictionary<String, CommandParameter> parameters) {
+            CommandResult result = null;
+
+            List<NetworkAction> actions = parameters["actions"].All<NetworkAction>();
+
+            if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
+                List<IPacket> packets = new List<IPacket>();
+
+                foreach (NetworkAction action in actions) {
+                    action.Name = command.Name;
+
+                    packets.AddRange(this.Protocol.Action(action));
+                }
+
+                result = new CommandResult() {
+                    Success = true,
+                    Status = CommandResultType.Success,
+                    Now = new CommandData() {
+                        Packets = packets
                     }
                 };
             }

@@ -10,7 +10,21 @@ namespace Procon.Net.Shared.Actions {
         /// <summary>
         /// The name of the action to take.
         /// </summary>
-        public String Name { get; set; }
+        public String Name {
+            get { return this._name; }
+            set {
+                if (this._name != value) {
+                    this._name = value;
+
+                    NetworkActionType parsed = NetworkActionType.None;
+                    
+                    if (Enum.TryParse(this._name, true, out parsed) == true) {
+                        this.ActionType = parsed;
+                    }
+                }
+            }
+        }
+        private String _name;
 
         /// <summary>
         /// The specific type of action taken with this object.
@@ -18,8 +32,10 @@ namespace Procon.Net.Shared.Actions {
         public NetworkActionType ActionType {
             get { return this._actionType; }
             set {
-                this._actionType = value;
-                this.Name = this._actionType.ToString();
+                if (this._actionType != value) {
+                    this._actionType = value;
+                    this.Name = this._actionType.ToString();
+                }
             }
         }
         private NetworkActionType _actionType;

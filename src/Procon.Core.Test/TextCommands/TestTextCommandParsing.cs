@@ -9,7 +9,7 @@ using Procon.Core.Connections.TextCommands;
 using Procon.Core.Security;
 using Procon.Core.Shared;
 using Procon.Core.Shared.Models;
-using Procon.Core.Test.TextCommands.Mocks;
+using Procon.Core.Test.Mocks.Protocols;
 using Procon.Net.Shared.Protocols;
 
 #endregion

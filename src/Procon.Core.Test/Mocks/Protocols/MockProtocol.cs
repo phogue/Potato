@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using Procon.Net;
 using Procon.Net.Shared;
 using Procon.Net.Shared.Actions;
 using Procon.Net.Shared.Models;
 
-namespace Procon.Core.Test.TextCommands.Mocks {
+namespace Procon.Core.Test.Mocks.Protocols {
+    [ProtocolDeclaration(Type = "MockProtocol", Name = "Mock Protocol 3", Provider = "Myrcon")]
     public class MockProtocol : IProtocol {
 
         public MockProtocol() {

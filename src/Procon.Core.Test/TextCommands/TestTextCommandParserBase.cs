@@ -9,7 +9,7 @@ using Procon.Core.Connections.TextCommands;
 using Procon.Core.Security;
 using Procon.Core.Shared;
 using Procon.Core.Shared.Models;
-using Procon.Core.Test.TextCommands.Mocks;
+using Procon.Core.Test.Mocks.Protocols;
 using Procon.Fuzzy.Tokens.Primitive.Temporal;
 using Procon.Net.Shared;
 using Procon.Net.Shared.Models;

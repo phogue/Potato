@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Sockets;
-using System.Text;
 using Procon.Net.Shared;
 
-namespace Procon.Core.Test.TextCommands.Mocks {
+namespace Procon.Core.Test.Mocks.Protocols {
     public class MockClient : IClient {
         public string Hostname { get; private set; }
         public ushort Port { get; private set; }

@@ -180,7 +180,7 @@ namespace Procon.Core.Test.Serialization.Xml {
                 CommandType = CommandType.SecurityGroupSetPermission,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     "GroupName",
-                    CommandType.NetworkProtocolActionKick,
+                    CommandType.VariablesSet,
                     50
                 })
             });
@@ -237,7 +237,7 @@ namespace Procon.Core.Test.Serialization.Xml {
                 CommandType = CommandType.SecurityGroupSetPermission,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     "GroupName",
-                    CommandType.NetworkProtocolActionKick,
+                    CommandType.VariablesSet,
                     50
                 })
             });
@@ -292,7 +292,7 @@ namespace Procon.Core.Test.Serialization.Xml {
                 CommandType = CommandType.SecurityGroupSetPermission,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     "GroupName",
-                    CommandType.NetworkProtocolActionKick,
+                    CommandType.VariablesSet,
                     50
                 })
             });
@@ -346,7 +346,7 @@ namespace Procon.Core.Test.Serialization.Xml {
                 CommandType = CommandType.SecurityGroupSetPermission,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     "GroupName",
-                    CommandType.NetworkProtocolActionKick,
+                    CommandType.VariablesSet,
                     50
                 })
             });
@@ -376,9 +376,9 @@ namespace Procon.Core.Test.Serialization.Xml {
                 })
             });
 
-            XElement element = security.Groups.First().Permissions.First(permission => permission.Name == CommandType.NetworkProtocolActionKick.ToString()).ToXElement();
+            XElement element = security.Groups.First().Permissions.First(permission => permission.Name == CommandType.VariablesSet.ToString()).ToXElement();
 
-            Assert.AreEqual("NetworkProtocolActionKick", element.Element("Name").Value);
+            Assert.AreEqual("VariablesSet", element.Element("Name").Value);
             Assert.AreEqual("50", element.Element("Authority").Value);
         }
 

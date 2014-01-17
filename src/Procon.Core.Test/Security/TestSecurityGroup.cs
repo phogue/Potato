@@ -143,7 +143,7 @@ namespace Procon.Core.Test.Security {
                 CommandType = CommandType.SecurityGroupSetPermission,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     "FirstGroupName",
-                    CommandType.NetworkProtocolActionKick,
+                    CommandType.VariablesSet,
                     77
                 })
             });
@@ -152,16 +152,16 @@ namespace Procon.Core.Test.Security {
                 CommandType = CommandType.SecurityGroupSetPermission,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     "FirstGroupName",
-                    CommandType.NetworkProtocolActionBan,
+                    CommandType.VariablesSetA,
                     88
                 })
             });
 
             // Validate original permissions were added.
-            Assert.AreEqual(security.Groups.Where(group => group.Name == "FirstGroupName").FirstOrDefault().Permissions.Where(permission => permission.Name == CommandType.NetworkProtocolActionKick.ToString()).First().Authority, 77);
-            Assert.AreEqual(security.Groups.Where(group => group.Name == "FirstGroupName").FirstOrDefault().Permissions.Where(permission => permission.Name == CommandType.NetworkProtocolActionBan.ToString()).First().Authority, 88);
-            Assert.IsNull(security.Groups.Where(group => group.Name == "SecondGroupName").FirstOrDefault().Permissions.Where(permission => permission.Name == CommandType.NetworkProtocolActionKick.ToString()).First().Authority);
-            Assert.IsNull(security.Groups.Where(group => group.Name == "SecondGroupName").FirstOrDefault().Permissions.Where(permission => permission.Name == CommandType.NetworkProtocolActionBan.ToString()).First().Authority);
+            Assert.AreEqual(security.Groups.Where(group => group.Name == "FirstGroupName").FirstOrDefault().Permissions.Where(permission => permission.Name == CommandType.VariablesSet.ToString()).First().Authority, 77);
+            Assert.AreEqual(security.Groups.Where(group => group.Name == "FirstGroupName").FirstOrDefault().Permissions.Where(permission => permission.Name == CommandType.VariablesSetA.ToString()).First().Authority, 88);
+            Assert.IsNull(security.Groups.Where(group => group.Name == "SecondGroupName").FirstOrDefault().Permissions.Where(permission => permission.Name == CommandType.VariablesSet.ToString()).First().Authority);
+            Assert.IsNull(security.Groups.Where(group => group.Name == "SecondGroupName").FirstOrDefault().Permissions.Where(permission => permission.Name == CommandType.VariablesSetA.ToString()).First().Authority);
 
             // Now copy the permissions from the first group, to the other group.
             CommandResult result = security.Tunnel(new Command() {
@@ -176,8 +176,8 @@ namespace Procon.Core.Test.Security {
             // Now make sure the user was initially added.
             Assert.IsTrue(result.Success);
             Assert.AreEqual(result.Status, CommandResultType.Success);
-            Assert.AreEqual(security.Groups.Where(group => group.Name == "SecondGroupName").FirstOrDefault().Permissions.Where(permission => permission.Name == CommandType.NetworkProtocolActionKick.ToString()).First().Authority, 77);
-            Assert.AreEqual(security.Groups.Where(group => group.Name == "SecondGroupName").FirstOrDefault().Permissions.Where(permission => permission.Name == CommandType.NetworkProtocolActionBan.ToString()).First().Authority, 88);
+            Assert.AreEqual(security.Groups.Where(group => group.Name == "SecondGroupName").FirstOrDefault().Permissions.Where(permission => permission.Name == CommandType.VariablesSet.ToString()).First().Authority, 77);
+            Assert.AreEqual(security.Groups.Where(group => group.Name == "SecondGroupName").FirstOrDefault().Permissions.Where(permission => permission.Name == CommandType.VariablesSetA.ToString()).First().Authority, 88);
         }
 
         /// <summary>
@@ -300,7 +300,7 @@ namespace Procon.Core.Test.Security {
                 CommandType = CommandType.SecurityGroupSetPermission,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     "GroupName",
-                    CommandType.NetworkProtocolActionKick,
+                    CommandType.VariablesSet,
                     50
                 })
             });
@@ -308,7 +308,7 @@ namespace Procon.Core.Test.Security {
             // Make sure setting the kick permission was successfull.
             Assert.IsTrue(result.Success);
             Assert.AreEqual(result.Status, CommandResultType.Success);
-            Assert.AreEqual(security.Groups.First().Permissions.Where(permission => permission.Name == CommandType.NetworkProtocolActionKick.ToString()).First().Authority, 50);
+            Assert.AreEqual(security.Groups.First().Permissions.Where(permission => permission.Name == CommandType.VariablesSet.ToString()).First().Authority, 50);
         }
 
         /// <summary>
@@ -330,10 +330,10 @@ namespace Procon.Core.Test.Security {
             Assert.AreEqual(security.Groups.First().Name, "GroupName");
 
             // Remove the kick permission.
-            security.Groups.First().Permissions.RemoveAll(permission => permission.Name == CommandType.NetworkProtocolActionKick.ToString());
+            security.Groups.First().Permissions.RemoveAll(permission => permission.Name == CommandType.VariablesSet.ToString());
 
             // Validate the kick permission does not exist.
-            Assert.IsNull(security.Groups.First().Permissions.FirstOrDefault(permission => permission.Name == CommandType.NetworkProtocolActionKick.ToString()));
+            Assert.IsNull(security.Groups.First().Permissions.FirstOrDefault(permission => permission.Name == CommandType.VariablesSet.ToString()));
 
             // Now set the kick permission
             CommandResult result = security.Tunnel(new Command() {
@@ -341,7 +341,7 @@ namespace Procon.Core.Test.Security {
                 CommandType = CommandType.SecurityGroupSetPermission,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     "GroupName",
-                    CommandType.NetworkProtocolActionKick,
+                    CommandType.VariablesSet,
                     50
                 })
             });
@@ -349,7 +349,7 @@ namespace Procon.Core.Test.Security {
             // Make sure setting the kick permission was successfull.
             Assert.IsTrue(result.Success);
             Assert.AreEqual(result.Status, CommandResultType.Success);
-            Assert.AreEqual(security.Groups.First().Permissions.Where(permission => permission.Name == CommandType.NetworkProtocolActionKick.ToString()).First().Authority, 50);
+            Assert.AreEqual(security.Groups.First().Permissions.Where(permission => permission.Name == CommandType.VariablesSet.ToString()).First().Authority, 50);
         }
 
 
@@ -370,7 +370,7 @@ namespace Procon.Core.Test.Security {
                 CommandType = CommandType.SecurityGroupSetPermission,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     "ThisIsNotValid",
-                    CommandType.NetworkProtocolActionKick,
+                    CommandType.VariablesSet,
                     50
                 })
             });
@@ -400,7 +400,7 @@ namespace Procon.Core.Test.Security {
                 Origin = CommandOrigin.Remote,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     "GroupName",
-                    CommandType.NetworkProtocolActionKick,
+                    CommandType.VariablesSet,
                     50
                 })
             });
@@ -432,7 +432,7 @@ namespace Procon.Core.Test.Security {
                 CommandType = CommandType.SecurityGroupSetPermission,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     "GroupName",
-                    "NetworkProtocolActionKick",
+                    CommandType.VariablesSet.ToString(),
                     60
                 })
             });
@@ -440,7 +440,7 @@ namespace Procon.Core.Test.Security {
             // Make sure setting the kick permission was successfull.
             Assert.IsTrue(result.Success);
             Assert.AreEqual(result.Status, CommandResultType.Success);
-            Assert.AreEqual(security.Groups.First().Permissions.First(permission => permission.Name == CommandType.NetworkProtocolActionKick.ToString()).Authority, 60);
+            Assert.AreEqual(security.Groups.First().Permissions.First(permission => permission.Name == CommandType.VariablesSet.ToString()).Authority, 60);
         }
 
         /// <summary>

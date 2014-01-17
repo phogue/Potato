@@ -9,10 +9,8 @@ using NUnit.Framework;
 using Procon.Core.Security;
 using Procon.Core.Shared;
 using Procon.Core.Shared.Models;
-using Procon.Net.Protocols;
 using Procon.Net.Shared.Protocols;
 using Procon.Net.Shared.Utils;
-using Procon.Net.Utils;
 
 #endregion
 
@@ -48,7 +46,7 @@ namespace Procon.Core.Test.Security {
                 CommandType = CommandType.SecurityGroupSetPermission,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     "GroupName",
-                    CommandType.NetworkProtocolActionKick,
+                    CommandType.VariablesSet,
                     77
                 })
             });
@@ -88,7 +86,7 @@ namespace Procon.Core.Test.Security {
 
             GroupModel group = security.Groups.First();
             AccountModel account = group.Accounts.First();
-            PermissionModel permission = group.Permissions.First(p => p.Name == CommandType.NetworkProtocolActionKick.ToString());
+            PermissionModel permission = group.Permissions.First(p => p.Name == CommandType.VariablesSet.ToString());
             AccountPlayerModel accountPlayer = account.Players.First();
 
             security.Dispose();
@@ -142,7 +140,7 @@ namespace Procon.Core.Test.Security {
                 CommandType = CommandType.SecurityGroupSetPermission,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     "GroupName",
-                    CommandType.NetworkProtocolActionKick,
+                    CommandType.VariablesSet,
                     77
                 })
             });
@@ -151,7 +149,7 @@ namespace Procon.Core.Test.Security {
                 CommandType = CommandType.SecurityGroupSetPermission,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     "GroupName",
-                    CommandType.NetworkProtocolActionBan,
+                    CommandType.VariablesSetA,
                     88
                 })
             });
@@ -196,15 +194,15 @@ namespace Procon.Core.Test.Security {
             saveConfig.Save(ConfigFileInfo);
 
             // Load the config in a new config.
-            var loadSecurity = new SecurityController().Execute() as SecurityController;
+            var loadSecurity = (SecurityController)new SecurityController().Execute();
             var loadConfig = new Config();
             loadConfig.Load(ConfigFileInfo);
             loadSecurity.Execute(loadConfig);
 
             Assert.AreEqual("GroupName", loadSecurity.Groups.First().Name);
             Assert.AreEqual(22, loadSecurity.Groups.FirstOrDefault(group => group.Name == "GroupName").Permissions.Where(permission => permission.Name == "CustomPermission").First().Authority);
-            Assert.AreEqual(77, loadSecurity.Groups.FirstOrDefault(group => group.Name == "GroupName").Permissions.Where(permission => permission.Name == CommandType.NetworkProtocolActionKick.ToString()).First().Authority);
-            Assert.AreEqual(88, loadSecurity.Groups.FirstOrDefault(group => group.Name == "GroupName").Permissions.Where(permission => permission.Name == CommandType.NetworkProtocolActionBan.ToString()).First().Authority);
+            Assert.AreEqual(77, loadSecurity.Groups.FirstOrDefault(group => group.Name == "GroupName").Permissions.Where(permission => permission.Name == CommandType.VariablesSet.ToString()).First().Authority);
+            Assert.AreEqual(88, loadSecurity.Groups.FirstOrDefault(group => group.Name == "GroupName").Permissions.Where(permission => permission.Name == CommandType.VariablesSetA.ToString()).First().Authority);
             Assert.AreEqual("Phogue", loadSecurity.Groups.SelectMany(group => group.Accounts).First().Username);
             Assert.AreEqual("de-DE", loadSecurity.Groups.First().Accounts.First().PreferredLanguageCode);
             Assert.AreEqual(CommonGameType.DiceBattlefield3, loadSecurity.Groups.SelectMany(group => group.Accounts).SelectMany(account => account.Players).First().GameType);
@@ -252,7 +250,7 @@ namespace Procon.Core.Test.Security {
                 CommandType = CommandType.SecurityGroupSetPermission,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     "GroupName",
-                    CommandType.NetworkProtocolActionKick,
+                    CommandType.VariablesSet,
                     77
                 })
             });
@@ -261,7 +259,7 @@ namespace Procon.Core.Test.Security {
                 CommandType = CommandType.SecurityGroupSetPermission,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     "GroupName",
-                    CommandType.NetworkProtocolActionBan,
+                    CommandType.VariablesSetA,
                     88
                 })
             });
@@ -316,12 +314,12 @@ namespace Procon.Core.Test.Security {
 
             Assert.AreEqual("SecurityGroupSetPermission", commands[1].Name);
             Assert.AreEqual("GroupName", commands[1].Parameters[0].First<String>());
-            Assert.AreEqual("NetworkProtocolActionKick", commands[1].Parameters[1].First<String>());
+            Assert.AreEqual(CommandType.VariablesSet.ToString(), commands[1].Parameters[1].First<String>());
             Assert.AreEqual("77", commands[1].Parameters[2].First<String>());
 
             Assert.AreEqual("SecurityGroupSetPermission", commands[2].Name);
             Assert.AreEqual("GroupName", commands[2].Parameters[0].First<String>());
-            Assert.AreEqual("NetworkProtocolActionBan", commands[2].Parameters[1].First<String>());
+            Assert.AreEqual(CommandType.VariablesSetA.ToString(), commands[2].Parameters[1].First<String>());
             Assert.AreEqual("88", commands[2].Parameters[2].First<String>());
 
             Assert.AreEqual("SecurityGroupSetPermission", commands[3].Name);

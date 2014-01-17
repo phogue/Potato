@@ -187,7 +187,7 @@ namespace Procon.Core.Test.Security {
                 CommandType = CommandType.SecurityGroupSetPermission,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     "FirstGroupName",
-                    CommandType.NetworkProtocolActionKick,
+                    CommandType.VariablesSet,
                     100
                 })
             });
@@ -221,7 +221,7 @@ namespace Procon.Core.Test.Security {
                 CommandType = CommandType.SecurityGroupSetPermission,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     "SecondGroupName",
-                    CommandType.NetworkProtocolActionKick,
+                    CommandType.VariablesSet,
                     50
                 })
             });
@@ -240,7 +240,7 @@ namespace Procon.Core.Test.Security {
                 Username = "Zaeed",
                 Origin = CommandOrigin.Remote,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
-                    CommandType.NetworkProtocolActionKick,
+                    CommandType.VariablesSet,
                     "Phogue"
                 })
             });
@@ -272,7 +272,7 @@ namespace Procon.Core.Test.Security {
                 CommandType = CommandType.SecurityGroupSetPermission,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     "FirstGroupName",
-                    CommandType.NetworkProtocolActionKick,
+                    CommandType.VariablesSet,
                     100
                 })
             });
@@ -306,7 +306,7 @@ namespace Procon.Core.Test.Security {
                 CommandType = CommandType.SecurityGroupSetPermission,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     "SecondGroupName",
-                    CommandType.NetworkProtocolActionKick,
+                    CommandType.VariablesSet,
                     50
                 })
             });
@@ -325,7 +325,7 @@ namespace Procon.Core.Test.Security {
                 Username = "Zaeed",
                 Origin = CommandOrigin.Remote,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
-                    CommandType.NetworkProtocolActionKick,
+                    CommandType.VariablesSet,
                     CommonGameType.DiceBattlefield3,
                     "ABCDEF"
                 })
@@ -358,7 +358,7 @@ namespace Procon.Core.Test.Security {
                 CommandType = CommandType.SecurityGroupSetPermission,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     "FirstGroupName",
-                    CommandType.NetworkProtocolActionKick,
+                    CommandType.VariablesSet,
                     100
                 })
             });
@@ -392,7 +392,7 @@ namespace Procon.Core.Test.Security {
                 CommandType = CommandType.SecurityGroupSetPermission,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     "SecondGroupName",
-                    CommandType.NetworkProtocolActionKick,
+                    CommandType.VariablesSet,
                     50
                 })
             });
@@ -411,7 +411,7 @@ namespace Procon.Core.Test.Security {
                 Username = "Phogue",
                 Origin = CommandOrigin.Remote,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
-                    CommandType.NetworkProtocolActionKick,
+                    CommandType.VariablesSet,
                     "Zaeed"
                 })
             });
@@ -443,7 +443,7 @@ namespace Procon.Core.Test.Security {
                 CommandType = CommandType.SecurityGroupSetPermission,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     "FirstGroupName",
-                    CommandType.NetworkProtocolActionKick,
+                    CommandType.VariablesSet,
                     100
                 })
             });
@@ -477,7 +477,7 @@ namespace Procon.Core.Test.Security {
                 CommandType = CommandType.SecurityGroupSetPermission,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     "SecondGroupName",
-                    CommandType.NetworkProtocolActionKick,
+                    CommandType.VariablesSet,
                     50
                 })
             });
@@ -496,7 +496,7 @@ namespace Procon.Core.Test.Security {
                 Username = "Phogue",
                 Origin = CommandOrigin.Remote,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
-                    CommandType.NetworkProtocolActionKick,
+                    CommandType.VariablesSet,
                     CommonGameType.DiceBattlefield3,
                     "0123456789"
                 })
@@ -529,7 +529,7 @@ namespace Procon.Core.Test.Security {
                 CommandType = CommandType.SecurityGroupSetPermission,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     "FirstGroupName",
-                    CommandType.NetworkProtocolActionKick,
+                    CommandType.VariablesSet,
                     100
                 })
             });
@@ -563,7 +563,7 @@ namespace Procon.Core.Test.Security {
                 CommandType = CommandType.SecurityGroupSetPermission,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     "SecondGroupName",
-                    CommandType.NetworkProtocolActionKick,
+                    CommandType.VariablesSet,
                     50
                 })
             });
@@ -582,7 +582,7 @@ namespace Procon.Core.Test.Security {
                 Username = "Phogue",
                 Origin = CommandOrigin.Remote,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
-                    CommandType.NetworkProtocolActionKick,
+                    CommandType.VariablesSet,
                     "DoesNotExist"
                 })
             });
@@ -614,7 +614,7 @@ namespace Procon.Core.Test.Security {
                 CommandType = CommandType.SecurityGroupSetPermission,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     "FirstGroupName",
-                    CommandType.NetworkProtocolActionKick,
+                    CommandType.VariablesSet,
                     100
                 })
             });
@@ -648,7 +648,7 @@ namespace Procon.Core.Test.Security {
                 CommandType = CommandType.SecurityGroupSetPermission,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     "SecondGroupName",
-                    CommandType.NetworkProtocolActionKick,
+                    CommandType.VariablesSet,
                     50
                 })
             });
@@ -667,7 +667,7 @@ namespace Procon.Core.Test.Security {
                 Username = "Phogue",
                 Origin = CommandOrigin.Remote,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
-                    CommandType.NetworkProtocolActionKick,
+                    CommandType.VariablesSet,
                     CommonGameType.DiceBattlefield3,
                     "DoesNotExist"
                 })
@@ -704,7 +704,7 @@ namespace Procon.Core.Test.Security {
                 CommandType = CommandType.SecurityGroupSetPermission,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     "FirstGroupName",
-                    CommandType.NetworkProtocolActionKick,
+                    CommandType.VariablesSet,
                     100
                 })
             });
@@ -722,7 +722,7 @@ namespace Procon.Core.Test.Security {
                 CommandType = CommandType.SecurityQueryPermission,
                 Origin = CommandOrigin.Plugin,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
-                    CommandType.NetworkProtocolActionKick,
+                    CommandType.VariablesSet,
                     CommonGameType.DiceBattlefield3,
                     "DoesNotExist"
                 })
@@ -755,7 +755,7 @@ namespace Procon.Core.Test.Security {
                 CommandType = CommandType.SecurityGroupSetPermission,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     "FirstGroupName",
-                    CommandType.NetworkProtocolActionKick,
+                    CommandType.VariablesSet,
                     100
                 })
             });
@@ -789,7 +789,7 @@ namespace Procon.Core.Test.Security {
                 CommandType = CommandType.SecurityGroupSetPermission,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     "SecondGroupName",
-                    CommandType.NetworkProtocolActionKick,
+                    CommandType.VariablesSet,
                     50
                 })
             });
@@ -808,7 +808,7 @@ namespace Procon.Core.Test.Security {
                 Username = "Phogue",
                 Origin = CommandOrigin.None,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
-                    CommandType.NetworkProtocolActionKick,
+                    CommandType.VariablesSet,
                     CommonGameType.DiceBattlefield3,
                     "DoesNotExist"
                 })

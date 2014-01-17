@@ -202,9 +202,9 @@ namespace Procon.Core.Shared.Plugins {
                 this.ConfigDirectoryInfo.Create();
             }
 
-            if (setup.ConfigDirectoryPath != null) {
-                this.ConfigDirectoryInfo = new DirectoryInfo(setup.ConfigDirectoryPath);
-                this.ConfigDirectoryInfo.Create();
+            if (setup.LogDirectoryPath != null) {
+                this.LogDirectoryInfo = new DirectoryInfo(setup.LogDirectoryPath);
+                this.LogDirectoryInfo.Create();
             }
         }
 

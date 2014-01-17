@@ -674,7 +674,6 @@ namespace Myrcon.Protocols.Frostbite {
                     this.OnGameEvent(ProtocolEventType.ProtocolPlayerKill, new ProtocolEventData() {
                         Kills = new List<Kill>() {
                             new Kill() {
-                                HumanHitLocation = headshot == true ? FrostbiteGame.Headshot : FrostbiteGame.Bodyshot,
                                 Scope = {
                                     Players = new List<Player>() {
                                         this.State.Players.Find(x => x.Name == request.Packet.Words[2])
@@ -686,6 +685,9 @@ namespace Myrcon.Protocols.Frostbite {
                                     },
                                     Points = new List<Point3D>() {
                                         new Point3D(request.Packet.Words[8], request.Packet.Words[10], request.Packet.Words[9])
+                                    },
+                                    HumanHitLocations = new List<HumanHitLocation>() {
+                                        headshot == true ? FrostbiteGame.Headshot : FrostbiteGame.Bodyshot
                                     }
                                 },
                                 Now = {

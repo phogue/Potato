@@ -43,6 +43,11 @@ namespace Procon.Net.Shared.Models {
         public List<TimeSubset> Times { get; set; }
 
         /// <summary>
+        /// List of human hit location attached to this data, if any.
+        /// </summary>
+        public List<HumanHitLocation> HumanHitLocations { get; set; }
+
+        /// <summary>
         /// List of packets attached to this action, if any.
         /// </summary>
         [XmlIgnore, JsonIgnore]

@@ -142,13 +142,15 @@ namespace Myrcon.Protocols.Frostbite.Battlefield.Battlefield4 {
                     this.OnGameEvent(ProtocolEventType.ProtocolPlayerKill, new ProtocolEventData() {
                         Kills = new List<Kill>() {
                             new Kill() {
-                                HumanHitLocation = headshot == true ? FrostbiteGame.Headshot : FrostbiteGame.Bodyshot,
                                 Scope = {
                                     Players = new List<Player>() {
                                         victim
                                     },
                                     Items = new List<Item>() {
                                         item
+                                    },
+                                    HumanHitLocations = new List<HumanHitLocation>() {
+                                        headshot == true ? FrostbiteGame.Headshot : FrostbiteGame.Bodyshot
                                     }
                                 },
                                 Now = {

@@ -208,7 +208,6 @@ namespace Myrcon.Protocols.Frostbite.Battlefield.Battlefield3 {
                     this.OnGameEvent(ProtocolEventType.ProtocolPlayerKill, new ProtocolEventData() {
                         Kills = new List<Kill>() {
                             new Kill() {
-                                HumanHitLocation = headshot == true ? FrostbiteGame.Headshot : FrostbiteGame.Bodyshot,
                                 Scope = {
                                     Players = new List<Player>() {
                                         target
@@ -218,6 +217,9 @@ namespace Myrcon.Protocols.Frostbite.Battlefield.Battlefield3 {
                                             // Servers sends garbage at the end of the round?
                                             Name = Regex.Replace(request.Packet.Words[3], @"[^\\w\\/_-]+", "")
                                         }
+                                    },
+                                    HumanHitLocations = new List<HumanHitLocation>() {
+                                        headshot == true ? FrostbiteGame.Headshot : FrostbiteGame.Bodyshot
                                     }
                                 },
                                 Now = {

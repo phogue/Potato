@@ -4,6 +4,7 @@ namespace Procon.Net.Shared.Actions {
 
     [Serializable]
     public enum NetworkActionType {
+        None,
 
         /// <summary>
         /// Packet is to be sent

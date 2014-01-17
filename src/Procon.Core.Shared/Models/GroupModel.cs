@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Procon.Net.Shared.Actions;
 
 namespace Procon.Core.Shared.Models {
     [Serializable]
@@ -27,9 +28,15 @@ namespace Procon.Core.Shared.Models {
             this.Permissions = new List<PermissionModel>();
 
             // Setup the default permissions.
-            foreach (CommandType name in Enum.GetValues(typeof(CommandType))) {
+            foreach (CommandType name in Enum.GetValues(typeof(CommandType)).Cast<CommandType>()) {
                 if (name != CommandType.None) {
                     this.Permissions.Add(new PermissionModel() { CommandType = name });
+                }
+            }
+
+            foreach (NetworkActionType name in Enum.GetValues(typeof(CommandType)).Cast<NetworkActionType>()) {
+                if (name != NetworkActionType.None) {
+                    this.Permissions.Add(new PermissionModel() { Name = name.ToString() });
                 }
             }
         }

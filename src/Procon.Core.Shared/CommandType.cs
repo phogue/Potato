@@ -146,18 +146,5 @@ namespace Procon.Core.Shared {
         /// </summary>
         NetworkProtocolQuerySettings,
 
-
-        // Game actions
-
-        /// <summary>
-        /// Raw packet to send to the server.
-        /// </summary>
-        NetworkProtocolActionRaw,
-        NetworkProtocolActionChat,
-        NetworkProtocolActionKill,
-        NetworkProtocolActionMap,
-        NetworkProtocolActionMove,
-        NetworkProtocolActionKick,
-        NetworkProtocolActionBan
     }
 }

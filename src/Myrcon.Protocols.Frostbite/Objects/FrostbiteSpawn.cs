@@ -17,9 +17,11 @@ namespace Myrcon.Protocols.Frostbite.Objects {
                     Name = words[1]
                 },
                 Inventory = new Inventory() {
-                    Items = new List<Item>(words.GetRange(2, words.Count - 2).Select(x => new Item() {
-                        Name = x
-                    }))
+                    Now = {
+                        Items = new List<Item>(words.GetRange(2, words.Count - 2).Select(x => new Item() {
+                            Name = x
+                        }))
+                    }
                 }
             };
         }

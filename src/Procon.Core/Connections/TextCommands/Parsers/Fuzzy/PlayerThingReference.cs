@@ -32,7 +32,7 @@ namespace Procon.Core.Connections.TextCommands.Parsers.Fuzzy {
             }
             else if (itemThingReference != null) {
                 // All players using sniper rifle
-                this.Players.RemoveAll(player => itemThingReference.Items.Any(item => player.Inventory.Items.Any(playerItem => item.Name == playerItem.Name)) == false);
+                this.Players.RemoveAll(player => itemThingReference.Items.Any(item => player.Inventory.Now.Items.Any(playerItem => item.Name == playerItem.Name)) == false);
             }
 
             return this;
@@ -53,7 +53,7 @@ namespace Procon.Core.Connections.TextCommands.Parsers.Fuzzy {
             }
             else if (itemThingReference != null) {
                 // All players not using sniper rifle
-                this.Players.RemoveAll(player => itemThingReference.Items.Any(item => player.Inventory.Items.Any(playerItem => item.Name == playerItem.Name)));
+                this.Players.RemoveAll(player => itemThingReference.Items.Any(item => player.Inventory.Now.Items.Any(playerItem => item.Name == playerItem.Name)));
             }
 
             return this;

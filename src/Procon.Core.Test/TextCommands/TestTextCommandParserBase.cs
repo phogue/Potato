@@ -12,7 +12,6 @@ using Procon.Core.Shared;
 using Procon.Core.Shared.Models;
 using Procon.Fuzzy.Tokens.Primitive.Temporal;
 using Procon.Net.Shared;
-using Procon.Net.Shared.Actions;
 using Procon.Net.Shared.Models;
 using Procon.Net.Shared.Protocols;
 
@@ -74,14 +73,16 @@ namespace Procon.Core.Test.TextCommands {
                 CountryName = "Australia"
             },
             Inventory = {
-                Items = {
-                    new Item() {
-                        Name = "U_CZ805",
-                        FriendlyName = "CZ-805",
-                        Tags = {
-                            "Assault",
-                            "Primary",
-                            "AssaultRifle"
+                Now = {
+                    Items = {
+                        new Item() {
+                            Name = "U_CZ805",
+                            FriendlyName = "CZ-805",
+                            Tags = {
+                                "Assault",
+                                "Primary",
+                                "AssaultRifle"
+                            }
                         }
                     }
                 }
@@ -97,14 +98,16 @@ namespace Procon.Core.Test.TextCommands {
                 CountryName = "United States"
             },
             Inventory = {
-                Items = {
-                    new Item() {
-                        Name = "U_C4",
-                        FriendlyName = "C4",
-                        Tags = {
-                            "Recon",
-                            "Secondary",
-                            "Explosive"
+                Now = {
+                    Items = {
+                        new Item() {
+                            Name = "U_C4",
+                            FriendlyName = "C4",
+                            Tags = {
+                                "Recon",
+                                "Secondary",
+                                "Explosive"
+                            }
                         }
                     }
                 }
@@ -120,14 +123,16 @@ namespace Procon.Core.Test.TextCommands {
                 CountryName = "Germany"
             },
             Inventory = {
-                Items = {
-                    new Item() {
-                        Name = "U_CZ75",
-                        FriendlyName = "CZ-75",
-                        Tags = {
-                            "None",
-                            "Auxiliary",
-                            "Handgun"
+                Now = {
+                    Items = {
+                        new Item() {
+                            Name = "U_CZ75",
+                            FriendlyName = "CZ-75",
+                            Tags = {
+                                "None",
+                                "Auxiliary",
+                                "Handgun"
+                            }
                         }
                     }
                 }
@@ -143,14 +148,16 @@ namespace Procon.Core.Test.TextCommands {
                 CountryName = "Austria"
             },
             Inventory = {
-                Items = {
-                    new Item() {
-                        Name = "U_DBV12",
-                        FriendlyName = "DBV-12",
-                        Tags = {
-                            "None",
-                            "Primary",
-                            "Shotgun"
+                Now = {
+                    Items = {
+                        new Item() {
+                            Name = "U_DBV12",
+                            FriendlyName = "DBV-12",
+                            Tags = {
+                                "None",
+                                "Primary",
+                                "Shotgun"
+                            }
                         }
                     }
                 }
@@ -166,14 +173,16 @@ namespace Procon.Core.Test.TextCommands {
                 CountryName = "Great Britain"
             },
             Inventory = {
-                Items = {
-                    new Item() {
-                        Name = "U_Defib",
-                        FriendlyName = "Defibrilator",
-                        Tags = {
-                            "Assault",
-                            "Secondary",
-                            "Melee"
+                Now = {
+                    Items = {
+                        new Item() {
+                            Name = "U_Defib",
+                            FriendlyName = "Defibrilator",
+                            Tags = {
+                                "Assault",
+                                "Secondary",
+                                "Melee"
+                            }
                         }
                     }
                 }
@@ -189,14 +198,16 @@ namespace Procon.Core.Test.TextCommands {
                 CountryName = "United States"
             },
             Inventory = {
-                Items = {
-                    new Item() {
-                        Name = "U_FGM148",
-                        FriendlyName = "FGM-148 Javelin",
-                        Tags = {
-                            "Demolition",
-                            "Secondary",
-                            "ProjectileExplosive"
+                Now = {
+                    Items = {
+                        new Item() {
+                            Name = "U_FGM148",
+                            FriendlyName = "FGM-148 Javelin",
+                            Tags = {
+                                "Demolition",
+                                "Secondary",
+                                "ProjectileExplosive"
+                            }
                         }
                     }
                 }
@@ -212,14 +223,16 @@ namespace Procon.Core.Test.TextCommands {
                 CountryName = "Netherlands"
             },
             Inventory = {
-                Items = {
-                    new Item() {
-                        Name = "U_Flashbang",
-                        FriendlyName = "Flashbang",
-                        Tags = {
-                            "None",
-                            "Auxiliary",
-                            "Explosive"
+                Now = {
+                    Items = {
+                        new Item() {
+                            Name = "U_Flashbang",
+                            FriendlyName = "Flashbang",
+                            Tags = {
+                                "None",
+                                "Auxiliary",
+                                "Explosive"
+                            }
                         }
                     }
                 }
@@ -235,14 +248,16 @@ namespace Procon.Core.Test.TextCommands {
                 CountryName = "Australia"
             },
             Inventory = {
-                Items = {
-                    new Item() {
-                        Name = "U_AMR2",
-                        FriendlyName = "AMR2-2",
-                        Tags = {
-                            "None",
-                            "Primary",
-                            "SniperRifle"
+                Now = {
+                    Items = {
+                        new Item() {
+                            Name = "U_AMR2",
+                            FriendlyName = "AMR2-2",
+                            Tags = {
+                                "None",
+                                "Primary",
+                                "SniperRifle"
+                            }
                         }
                     }
                 }
@@ -258,14 +273,16 @@ namespace Procon.Core.Test.TextCommands {
                 CountryName = "Australia"
             },
             Inventory = {
-                Items = {
-                    new Item() {
-                        Name = "U_AMR2_MED",
-                        FriendlyName = "AMR2-2 CQB",
-                        Tags = {
-                            "None",
-                            "Primary",
-                            "SniperRifle"
+                Now = {
+                    Items = {
+                        new Item() {
+                            Name = "U_AMR2_MED",
+                            FriendlyName = "AMR2-2 CQB",
+                            Tags = {
+                                "None",
+                                "Primary",
+                                "SniperRifle"
+                            }
                         }
                     }
                 }
@@ -390,7 +407,7 @@ namespace Procon.Core.Test.TextCommands {
                 PlayerMrDiacritic
             });
 
-            textCommandController.Connection.ProtocolState.Items = textCommandController.Connection.ProtocolState.Players.SelectMany(player => player.Inventory.Items).ToList();
+            textCommandController.Connection.ProtocolState.Items = textCommandController.Connection.ProtocolState.Players.SelectMany(player => player.Inventory.Now.Items).ToList();
 
             textCommandController.Connection.ProtocolState.MapPool.AddRange(new List<Map>() {
                 MapPortValdez,

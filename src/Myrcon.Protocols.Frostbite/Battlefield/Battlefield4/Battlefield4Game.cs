@@ -135,8 +135,8 @@ namespace Myrcon.Protocols.Frostbite.Battlefield.Battlefield4 {
 
                     // Assign the item to the player, overwriting everything else attached to this killer.
                     if (killer != null) {
-                        killer.Inventory.Items.Clear();
-                        killer.Inventory.Items.Add(item);
+                        killer.Inventory.Now.Items.Clear();
+                        killer.Inventory.Now.Items.Add(item);
                     }
 
                     this.OnGameEvent(ProtocolEventType.ProtocolPlayerKill, new ProtocolEventData() {

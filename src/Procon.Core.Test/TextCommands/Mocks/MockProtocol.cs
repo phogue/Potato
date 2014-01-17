@@ -9,6 +9,12 @@ namespace Procon.Core.Test.TextCommands.Mocks {
 
         public MockProtocol() {
             this.State = new ProtocolState();
+            this.Client = new MockClient();
+            this.ProtocolType = new ProtocolType() {
+                Name = String.Empty,
+                Type = String.Empty,
+                Provider = String.Empty
+            };
         }
 
         public IClient Client { get; private set; }

@@ -225,22 +225,22 @@ namespace Procon.Net {
             List<IPacketWrapper> wrappers = new List<IPacketWrapper>();
 
             switch (action.ActionType) {
-                case NetworkActionType.NetworkSay:
-                case NetworkActionType.NetworkYell:
-                case NetworkActionType.NetworkYellOnly:
+                case NetworkActionType.NetworkTextSay:
+                case NetworkActionType.NetworkTextYell:
+                case NetworkActionType.NetworkTextYellOnly:
                     wrappers = this.ActionChat(action);
                     break;
 
-                case NetworkActionType.NetworkKill:
+                case NetworkActionType.NetworkPlayerKill:
                     wrappers = this.ActionKill(action);
                     break;
 
-                case NetworkActionType.NetworkKick:
+                case NetworkActionType.NetworkPlayerKick:
                     wrappers = this.ActionKick(action);
                     break;
 
-                case NetworkActionType.NetworkBan:
-                case NetworkActionType.NetworkUnban:
+                case NetworkActionType.NetworkPlayerBan:
+                case NetworkActionType.NetworkPlayerUnban:
                     wrappers = this.ActionBan(action);
                     break;
 
@@ -258,12 +258,12 @@ namespace Procon.Net {
                     wrappers = this.ActionMap(action);
                     break;
 
-                case NetworkActionType.NetworkPlayerRotate:
-                case NetworkActionType.NetworkPlayerForceRotate:
+                case NetworkActionType.NetworkPlayerMoveRotate:
+                case NetworkActionType.NetworkPlayerMoveRotateForce:
                 case NetworkActionType.NetworkPlayerMove:
                     wrappers = this.ActionMove(action);
                     break;
-                case NetworkActionType.NetworkSend:
+                case NetworkActionType.NetworkPacketSend:
                     wrappers.AddRange(action.Now.Content.Select(text => this.CreatePacket(text)));
 
                     wrappers.AddRange(action.Now.Packets.Select(this.WrapPacket));

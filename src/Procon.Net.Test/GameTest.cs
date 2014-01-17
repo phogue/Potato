@@ -34,13 +34,13 @@ namespace Procon.Net.Test {
 
             MockActionDispatchGame game = new MockActionDispatchGame("localhost", 5000);
 
-            packets.AddRange(game.Action(new NetworkAction() { ActionType = NetworkActionType.NetworkSay }));
-            packets.AddRange(game.Action(new NetworkAction() { ActionType = NetworkActionType.NetworkKick }));
-            packets.AddRange(game.Action(new NetworkAction() { ActionType = NetworkActionType.NetworkBan }));
+            packets.AddRange(game.Action(new NetworkAction() { ActionType = NetworkActionType.NetworkTextSay }));
+            packets.AddRange(game.Action(new NetworkAction() { ActionType = NetworkActionType.NetworkPlayerKick }));
+            packets.AddRange(game.Action(new NetworkAction() { ActionType = NetworkActionType.NetworkPlayerBan }));
             packets.AddRange(game.Action(new NetworkAction() { ActionType = NetworkActionType.NetworkMapAppend }));
-            packets.AddRange(game.Action(new NetworkAction() { ActionType = NetworkActionType.NetworkKill }));
+            packets.AddRange(game.Action(new NetworkAction() { ActionType = NetworkActionType.NetworkPlayerKill }));
             packets.AddRange(game.Action(new NetworkAction() { ActionType = NetworkActionType.NetworkPlayerMove }));
-            packets.AddRange(game.Action(new NetworkAction() { ActionType = NetworkActionType.NetworkSend }));
+            packets.AddRange(game.Action(new NetworkAction() { ActionType = NetworkActionType.NetworkPacketSend }));
 
             Assert.IsTrue(packets.Any(packet => packet.Text == "Chat"));
             Assert.IsTrue(packets.Any(packet => packet.Text == "Kick"));
@@ -59,7 +59,7 @@ namespace Procon.Net.Test {
             MockActionChatNullResultGame game = new MockActionChatNullResultGame("localhost", 5000);
 
             List<IPacket> packets = game.Action(new NetworkAction() {
-                ActionType = NetworkActionType.NetworkSay
+                ActionType = NetworkActionType.NetworkTextSay
             });
 
             Assert.AreEqual(0, packets.Count);

@@ -13,7 +13,7 @@ namespace Procon.Net.Shared.Test.Actions.Deferred {
         [Test]
         public void TestDeferredActionGetAction() {
             NetworkAction chat = new NetworkAction() {
-                ActionType = NetworkActionType.NetworkSay
+                ActionType = NetworkActionType.NetworkTextSay
             };
 
             DeferredAction<NetworkAction> deferredAction = new DeferredAction<NetworkAction>() {

@@ -184,7 +184,7 @@ namespace Procon.Net.Utils.Tests {
 
                     // 3 b. Send our packet to initiate this command test
                     game.Action(new NetworkAction() {
-                        ActionType = NetworkActionType.NetworkSend,
+                        ActionType = NetworkActionType.NetworkPacketSend,
                         Now = {
                             Content = {
                                 command.Send.Text

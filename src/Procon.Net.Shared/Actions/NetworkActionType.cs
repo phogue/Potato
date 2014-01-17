@@ -14,31 +14,20 @@ namespace Procon.Net.Shared.Actions {
         /// <summary>
         /// Packet is to be sent
         /// </summary>
-        NetworkSend,
-
-        /// <summary>
-        /// The player is banned or is going to be banned
-        /// </summary>
-        NetworkBan,
-        /// <summary>
-        /// The player is unbanned or is going to be unbanned
-        /// </summary>
-        NetworkUnban,
-
+        NetworkPacketSend,
 
         /// <summary>
         /// Outputs to the normal chat window that players use
         /// </summary>
-        NetworkSay,
+        NetworkTextSay,
         /// <summary>
         /// Outputs a bigger text if available in the game, otherwise it will fallback to a say.
         /// </summary>
-        NetworkYell,
+        NetworkTextYell,
         /// <summary>
         /// Outputs a bigger text if available in the game.  Will not fallback to 'say' if it is not available in the game.
         /// </summary>
-        NetworkYellOnly,
-
+        NetworkTextYellOnly,
 
         /// <summary>
         /// Adds the map to the end of the maplist
@@ -85,7 +74,6 @@ namespace Procon.Net.Shared.Actions {
         /// </summary>
         NetworkMapClear,
 
-
         /// <summary>
         /// Moves the player to the specified location
         /// </summary>
@@ -93,26 +81,35 @@ namespace Procon.Net.Shared.Actions {
         /// <summary>
         /// Kills (if available) and moves the player to the specified location
         /// </summary>
-        NetworkPlayerForceMove,
+        NetworkPlayerMoveForce,
         /// <summary>
         /// Rotates a player to another team.
         /// The destination team will not include any neutral/spectator teams.
         /// </summary>
-        NetworkPlayerRotate,
+        NetworkPlayerMoveRotate,
         /// <summary>
         /// Kills (if available) and rotates a player to another team
         /// The destination team will not include any neutral/spectator teams.
         /// </summary>
-        NetworkPlayerForceRotate,
+        NetworkPlayerMoveRotateForce,
+
+        /// <summary>
+        /// The player is banned or is going to be banned
+        /// </summary>
+        NetworkPlayerBan,
+        /// <summary>
+        /// The player is unbanned or is going to be unbanned
+        /// </summary>
+        NetworkPlayerUnban,
 
         /// <summary>
         /// Kicks a player out of the server
         /// </summary>
-        NetworkKick,
+        NetworkPlayerKick,
 
         /// <summary>
         /// Kills a player
         /// </summary>
-        NetworkKill,
+        NetworkPlayerKill,
     }
 }

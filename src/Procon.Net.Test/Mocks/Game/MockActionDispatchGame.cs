@@ -16,21 +16,21 @@ namespace Procon.Net.Test.Mocks.Game {
             List<IPacketWrapper> wrappers = base.DispatchAction(action);
 
             switch (action.ActionType) {
-                case NetworkActionType.NetworkSay:
+                case NetworkActionType.NetworkTextSay:
                     wrappers.Add(
                         this.WrapPacket(new Packet() {
                             Text = "Chat"
                         })
                     );
                     break;
-                case NetworkActionType.NetworkKick:
+                case NetworkActionType.NetworkPlayerKick:
                     wrappers.Add(
                         this.WrapPacket(new Packet() {
                             Text = "Kick"
                         })
                     );
                     break;
-                case NetworkActionType.NetworkBan:
+                case NetworkActionType.NetworkPlayerBan:
                     wrappers.Add(
                         this.WrapPacket(new Packet() {
                             Text = "Ban"
@@ -44,7 +44,7 @@ namespace Procon.Net.Test.Mocks.Game {
                         })
                     );
                     break;
-                case NetworkActionType.NetworkKill:
+                case NetworkActionType.NetworkPlayerKill:
                     wrappers.Add(
                         this.WrapPacket(new Packet() {
                             Text = "Kill"
@@ -58,7 +58,7 @@ namespace Procon.Net.Test.Mocks.Game {
                         })
                     );
                     break;
-                case NetworkActionType.NetworkSend:
+                case NetworkActionType.NetworkPacketSend:
                     wrappers.Add(
                         this.WrapPacket(new Packet() {
                             Text = "Raw"

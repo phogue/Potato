@@ -23,7 +23,7 @@ namespace Procon.Examples.Plugins.Actions.Test {
             this.AppendDispatchHandlers(new Dictionary<CommandAttribute, CommandDispatchHandler>() {
                 {
                     new CommandAttribute() {
-                        Name = NetworkActionType.NetworkKick.ToString(),
+                        Name = NetworkActionType.NetworkPlayerKick.ToString(),
                         CommandAttributeType = CommandAttributeType.Handler,
                         ParameterTypes = new List<CommandParameterType>() {
                             new CommandParameterType() {
@@ -104,7 +104,7 @@ namespace Procon.Examples.Plugins.Actions.Test {
             };
 
             this.Waiting.Wait(new NetworkAction() {
-                ActionType = NetworkActionType.NetworkKick,
+                ActionType = NetworkActionType.NetworkPlayerKick,
                 Scope = kick.Scope,
                 Now = kick.Now,
                 Then = kick.Then

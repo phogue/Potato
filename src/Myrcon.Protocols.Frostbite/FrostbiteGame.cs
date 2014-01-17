@@ -1013,10 +1013,10 @@ namespace Myrcon.Protocols.Frostbite {
                         subset = String.Format("squad {0} {1}", action.Scope.Groups.First(group => @group.Type == Grouping.Team).Uid, action.Scope.Groups.First(group => @group.Type == Grouping.Squad).Uid);
                     }
 
-                    if (action.ActionType == NetworkActionType.NetworkSay) {
+                    if (action.ActionType == NetworkActionType.NetworkTextSay) {
                         wrappers.Add(this.CreatePacket("admin.say \"{0}\" {1}", chatMessage, subset));
                     }
-                    else if (action.ActionType == NetworkActionType.NetworkYell || action.ActionType == NetworkActionType.NetworkYellOnly) {
+                    else if (action.ActionType == NetworkActionType.NetworkTextYell || action.ActionType == NetworkActionType.NetworkTextYellOnly) {
                         wrappers.Add(this.CreatePacket("admin.yell \"{0}\" 8000 {1}", chatMessage, subset));
                     }
                 }
@@ -1061,7 +1061,7 @@ namespace Myrcon.Protocols.Frostbite {
             String reason = action.Scope.Content != null ? action.Scope.Content.FirstOrDefault() : String.Empty;
             TimeSubset time = action.Scope.Times != null ? action.Scope.Times.FirstOrDefault() ?? new TimeSubset() : new TimeSubset();
 
-            if (action.ActionType == NetworkActionType.NetworkBan) {
+            if (action.ActionType == NetworkActionType.NetworkPlayerBan) {
                 if (time.Context == TimeSubsetContext.Permanent) {
                     if (String.IsNullOrEmpty(reason) == true) {
                         wrappers.Add(this.CreatePacket("banList.add guid \"{0}\" perm", action.Scope.Players.First().Uid));
@@ -1079,7 +1079,7 @@ namespace Myrcon.Protocols.Frostbite {
                     }
                 }
             }
-            else if (action.ActionType == NetworkActionType.NetworkUnban) {
+            else if (action.ActionType == NetworkActionType.NetworkPlayerUnban) {
                 wrappers.Add(this.CreatePacket("banList.remove guid \"{0}\"", action.Scope.Players.First().Uid));
             }
 
@@ -1093,14 +1093,14 @@ namespace Myrcon.Protocols.Frostbite {
 
             if (action.Scope.Players != null) {
                 // admin.movePlayer <name: player name> <teamId: Team ID> <squadId: Squad ID> <forceKill: boolean>
-                bool forceMove = (action.ActionType == NetworkActionType.NetworkPlayerForceMove || action.ActionType == NetworkActionType.NetworkPlayerForceRotate);
+                bool forceMove = (action.ActionType == NetworkActionType.NetworkPlayerMoveForce || action.ActionType == NetworkActionType.NetworkPlayerMoveRotateForce);
 
                 Map selectedMap = this.State.MapPool.Find(x => String.Compare(x.Name, this.State.Settings.Current.MapNameText, StringComparison.OrdinalIgnoreCase) == 0);
 
                 foreach (Player movePlayer in action.Scope.Players.Select(scopePlayer => this.State.Players.First(player => player.Uid == scopePlayer.Uid)).Where(movePlayer => movePlayer != null)) {
                     if (selectedMap != null) {
                         // If they are just looking to rotate the player through the teams
-                        if (action.ActionType == NetworkActionType.NetworkPlayerRotate || action.ActionType == NetworkActionType.NetworkPlayerForceRotate) {
+                        if (action.ActionType == NetworkActionType.NetworkPlayerMoveRotate || action.ActionType == NetworkActionType.NetworkPlayerMoveRotateForce) {
 
                             int currentTeamId = -1;
 

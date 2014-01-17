@@ -37,7 +37,7 @@ namespace Procon.Examples.Plugins.Actions {
         protected CommandResult KickPlayer(Command command, Dictionary<String, CommandParameter> parameters) {
             // You would usually pull the player object from this.GameState but we mock together a player here.
             CommandResult result = this.Action(new NetworkAction() {
-                ActionType = NetworkActionType.NetworkKick,
+                ActionType = NetworkActionType.NetworkPlayerKick,
                 Scope = {
                     Players = new List<Player>() {
                         new Player() {
@@ -82,7 +82,7 @@ namespace Procon.Examples.Plugins.Actions {
                 // Ideal execution order: [ "Sent", "Each", "Done", "Always" ]
                 // Timeout execution order: [ "Sent", "Expired", "Always" ]
                 Action = new NetworkAction() {
-                    ActionType = NetworkActionType.NetworkKick,
+                    ActionType = NetworkActionType.NetworkPlayerKick,
                     Scope = {
                         Players = new List<Player>() {
                             new Player() {

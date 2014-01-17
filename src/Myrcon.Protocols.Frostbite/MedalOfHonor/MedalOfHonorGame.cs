@@ -26,7 +26,7 @@ namespace Myrcon.Protocols.Frostbite.MedalOfHonor {
             List<IPacketWrapper> wrappers = new List<IPacketWrapper>();
 
             // admin.movePlayer <name: player name> <teamId: Team ID> <squadId: Squad ID> <forceKill: boolean>
-            bool forceMove = (action.ActionType == NetworkActionType.NetworkPlayerForceMove || action.ActionType == NetworkActionType.NetworkPlayerForceRotate);
+            bool forceMove = (action.ActionType == NetworkActionType.NetworkPlayerMoveForce || action.ActionType == NetworkActionType.NetworkPlayerMoveRotateForce);
 
             Map selectedMap = this.State.MapPool.Find(x => String.Compare(x.Name, this.State.Settings.Current.MapNameText, StringComparison.OrdinalIgnoreCase) == 0);
 
@@ -34,7 +34,7 @@ namespace Myrcon.Protocols.Frostbite.MedalOfHonor {
 
             if (selectedMap != null) {
                 // If they are just looking to rotate the player through the teams
-                if (action.ActionType == NetworkActionType.NetworkPlayerRotate || action.ActionType == NetworkActionType.NetworkPlayerForceRotate) {
+                if (action.ActionType == NetworkActionType.NetworkPlayerMoveRotate || action.ActionType == NetworkActionType.NetworkPlayerMoveRotateForce) {
 
                     int currentTeamId = -1;
 

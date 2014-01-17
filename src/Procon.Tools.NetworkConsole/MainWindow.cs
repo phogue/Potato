@@ -187,7 +187,7 @@ namespace Procon.Tools.NetworkConsole {
 
             if (this.ActiveGame != null) {
                 this.ActiveGame.Action(new NetworkAction() {
-                    ActionType = NetworkActionType.NetworkSend,
+                    ActionType = NetworkActionType.NetworkPacketSend,
                     Now = {
                         Content = {
                             commandText

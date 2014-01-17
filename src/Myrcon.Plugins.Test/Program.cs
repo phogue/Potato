@@ -112,7 +112,7 @@ namespace Myrcon.Plugins.Test {
             CommandResult e = parameters["e"].First<CommandResult>();
 
             NetworkAction output = new NetworkAction() {
-                ActionType = NetworkActionType.NetworkSay
+                ActionType = NetworkActionType.NetworkTextSay
             };
 
             if (e.Now.TextCommands.Count > 1) {
@@ -158,7 +158,7 @@ namespace Myrcon.Plugins.Test {
             if (match.Players != null && match.Players.Count > 0) {
                 this.Action(new DeferredAction<NetworkAction>() {
                     Action = new NetworkAction() {
-                        ActionType = NetworkActionType.NetworkKill,
+                        ActionType = NetworkActionType.NetworkPlayerKill,
                         Scope = {
                             Players = new List<Player>(match.Players),
                                 Content = new List<String>() {
@@ -195,7 +195,7 @@ namespace Myrcon.Plugins.Test {
             CommandResult e = parameters["e"].First<CommandResult>();
 
             NetworkAction output = new NetworkAction() {
-                ActionType = NetworkActionType.NetworkSay
+                ActionType = NetworkActionType.NetworkTextSay
             };
 
             Console.WriteLine(e.Now.TextCommands.First().DescriptionKey);

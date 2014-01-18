@@ -150,23 +150,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Localization\de-DE\Procon.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Localization\en-UK\Procon.Net.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Localization\en-UK\Procon.Fuzzy.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Localization\en-UK\Procon.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <SubType>Designer</SubType>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
+    <None Include="Localization\de-DE\Procon.json" />
     <None Include="Localization\en-UK\Procon.Fuzzy.json" />
+    <None Include="Localization\en-UK\Procon.json" />
     <None Include="Localization\en-UK\Procon.Net.json" />
     <None Include="packages.config" />
   </ItemGroup>

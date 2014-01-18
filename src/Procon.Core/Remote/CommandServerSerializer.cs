@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Linq;
 using System.Net;
-using System.Xml.Linq;
 using Newtonsoft.Json;
 using Procon.Core.Shared;
 using Procon.Net.Shared.Protocols.CommandServer;
-using Procon.Net.Shared.Utils;
 using Procon.Net.Shared.Utils.HTTP;
 
 namespace Procon.Core.Remote {
@@ -23,11 +21,8 @@ namespace Procon.Core.Remote {
 
             try {
                 switch (request.Headers[HttpRequestHeader.ContentType].ToLower()) {
-                    case Mime.ApplicationJson:
-                        command = JsonConvert.DeserializeObject<Command>(request.Content);
-                        break;
                     default:
-                        command = XDocument.Parse(request.Content).Root.FromXElement<Command>();
+                        command = JsonConvert.DeserializeObject<Command>(request.Content);
                         break;
                 }
 
@@ -74,27 +69,15 @@ namespace Procon.Core.Remote {
                     response.Content = result.Now.Content != null ? result.Now.Content.FirstOrDefault() : "";
                     response.StatusCode = HttpStatusCode.OK;
                     break;
-                case Mime.ApplicationJson:
+                default:
                     response.Headers.Add(HttpRequestHeader.ContentType, Mime.ApplicationJson);
+
                     response.Content = JsonConvert.SerializeObject(result, new JsonSerializerSettings() {
                         NullValueHandling = NullValueHandling.Ignore,
                         ReferenceLoopHandling = ReferenceLoopHandling.Ignore
                     });
-                    response.StatusCode = HttpStatusCode.OK;
-                    break;
-                default: {
-                    // Nothing specified (or xml specified), return xml by default.
-                    response.Headers.Add(HttpRequestHeader.ContentType, Mime.ApplicationXml);
 
-                    XDocument document = new XDocument();
-                    document.Add(result.ToXElement());
-
-                    // Standalone = yes for now. We should remove all external dtd's
-                    // as we're using xml as a way of serialization, but not validating against
-                    // anything. Perhaps we should?
-                    response.Content = new XDeclaration("1.0", "utf-8", "yes").ToString() + document;
                     response.StatusCode = HttpStatusCode.OK;
-                }
                     break;
             }
 

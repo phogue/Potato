@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using Newtonsoft.Json.Linq;
 
 namespace Procon.Core.Shared {
@@ -21,6 +22,18 @@ namespace Procon.Core.Shared {
         /// </summary>
         /// <returns>this</returns>
         IConfig Append<T>(T data);
+
+        /// <summary>
+        /// Finds the root of a specific type.
+        /// </summary>
+        /// <returns>this</returns>
+        JArray RootOf<T>();
+
+        /// <summary>
+        /// Finds the root of a specific type.
+        /// </summary>
+        /// <returns>this</returns>
+        JArray RootOf(Type type);
 
         /// <summary>
         /// Combines this configuration file with another configuration file.

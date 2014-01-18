@@ -110,8 +110,16 @@ namespace Procon.Core.Shared.Test.TestConfig {
         /// Tests an argument null exception is raised if null is passed into RootOf.
         /// </summary>
         [Test, ExpectedException(typeof(ArgumentNullException))]
-        public void TestNullException() {
-            new JsonConfig().RootOf(null);
+        public void TestTypeNullException() {
+            new JsonConfig().RootOf((Type)null);
+        }
+
+        /// <summary>
+        /// Tests an argument null exception is raised if null is passed into RootOf.
+        /// </summary>
+        [Test, ExpectedException(typeof(ArgumentNullException))]
+        public void TestStringNullException() {
+            new JsonConfig().RootOf((String)null);
         }
     }
 }

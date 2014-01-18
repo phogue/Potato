@@ -37,6 +37,12 @@ namespace Procon.Core.Shared {
         JArray RootOf(Type type);
 
         /// <summary>
+        /// Finds the root of a specific type.
+        /// </summary>
+        /// <returns>this</returns>
+        JArray RootOf(String @namespace);
+
+        /// <summary>
         /// Combines this configuration file with another configuration file.
         /// Returns a reference back to this config.
         /// </summary>

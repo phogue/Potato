@@ -46,9 +46,13 @@ namespace Procon.Core.Shared {
         public JArray RootOf(Type type) {
             if (type == null) throw new ArgumentNullException("type");
 
-            String name = String.Format("{0}.{1}", type.Namespace, type.Name);
+            return this.RootOf(String.Format("{0}.{1}", type.Namespace, type.Name));
+        }
 
-            return this.Document[name] != null ? this.Document[name].Value<JArray>() : new JArray();
+        public JArray RootOf(string @namespace) {
+            if (@namespace == null) throw new ArgumentNullException("namespace");
+
+            return this.Document[@namespace] != null ? this.Document[@namespace].Value<JArray>() : new JArray();
         }
 
         public IConfig Union(IConfig config) {

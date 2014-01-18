@@ -115,8 +115,6 @@
     <Compile Include="Events\TestPushEventsEndPoint.cs" />
     <Compile Include="Localization\TestLocalization.cs" />
     <Compile Include="Remote\TestRemote.cs" />
-    <Compile Include="Serialization\Xml\TestXmlSerialization.cs" />
-    <Compile Include="Serialization\Xml\TestXmlSerializationCommand.cs" />
     <Compile Include="CoreInstance\TestInstance.cs" />
     <Compile Include="CoreInstance\TestCommandInstanceAddConnection.cs" />
     <Compile Include="TextCommands\Fuzzy\TestFuzzyBasicMonthTemporal.cs" />

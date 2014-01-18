@@ -2,10 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Xml.Linq;
 using System.Xml.Serialization;
 using Newtonsoft.Json;
-using Procon.Net.Shared.Utils;
+using Newtonsoft.Json.Linq;
 
 namespace Procon.Core.Shared {
     /// <summary>
@@ -85,14 +84,14 @@ namespace Procon.Core.Shared {
         /// Allows for an optional child implementation.
         /// </summary>
         /// <param name="config"></param>
-        public virtual void WriteConfig(Config config) { }
+        public virtual void WriteConfig(IConfig config) { }
 
         /// <summary>
         /// Loads the specified configuration file.
         /// </summary>
         /// <param name="config"></param>
         /// <returns></returns>
-        public virtual ICoreController Execute(Config config) {
+        public virtual ICoreController Execute(IConfig config) {
             this.TunnelObjects = this.TunnelObjects ?? new List<ICoreController>();
             this.BubbleObjects = this.BubbleObjects ?? new List<ICoreController>();
 
@@ -119,9 +118,19 @@ namespace Procon.Core.Shared {
         /// </summary>
         /// <param name="command"></param>
         /// <param name="config"></param>
-        protected void Execute(Command command, Config config) {
+        protected void Execute(Command command, IConfig config) {
             if (config != null && config.Root != null) {
 
+                foreach (var loadedCommand in config.RootOf(this.GetType()).Children<JObject>().Select(item => item.ToObject<Command>())) {
+                    if (loadedCommand != null && loadedCommand.Name != null) {
+                        command.ParseCommandType(loadedCommand.Name);
+                        command.Parameters = loadedCommand.Parameters;
+                        command.Scope = loadedCommand.Scope;
+
+                        this.Tunnel(command);
+                    }
+                }
+                /*
                 // Drill down in the config to this object's type.
                 var nodes = this.GetType().FullName.Split('`').First().Split('.').Skip(1).Aggregate(config.Root.Elements(), (current, name) => current.DescendantsAndSelf(name));
 
@@ -137,6 +146,7 @@ namespace Procon.Core.Shared {
                         this.Tunnel(command);
                     }
                 }
+                */
             }
         }
 

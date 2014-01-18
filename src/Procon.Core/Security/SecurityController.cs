@@ -273,11 +273,11 @@ namespace Procon.Core.Security {
         /// <summary>
         /// Relies on children classes to implement this.
         /// </summary>
-        public override void WriteConfig(Config config) {
+        public override void WriteConfig(IConfig config) {
             base.WriteConfig(config);
 
             foreach (GroupModel group in this.Groups) {
-                config.Root.Add(new Command() {
+                config.Append(new Command() {
                     CommandType = CommandType.SecurityAddGroup,
                     Parameters = new List<CommandParameter>() {
                         new CommandParameter() {
@@ -293,7 +293,7 @@ namespace Procon.Core.Security {
 
                 foreach (PermissionModel permission in group.Permissions) {
                     if (permission.Authority.HasValue == true) {
-                        config.Root.Add(new Command() {
+                        config.Append(new Command() {
                             CommandType = CommandType.SecurityGroupSetPermission,
                             Parameters = new List<CommandParameter>() {
                                 new CommandParameter() {
@@ -323,7 +323,7 @@ namespace Procon.Core.Security {
                 }
 
                 foreach (AccountModel account in group.Accounts) {
-                    config.Root.Add(new Command() {
+                    config.Append(new Command() {
                         CommandType = CommandType.SecurityGroupAddAccount,
                         Parameters = new List<CommandParameter>() {
                             new CommandParameter() {
@@ -343,7 +343,7 @@ namespace Procon.Core.Security {
                         }
                     }.ToConfigCommand());
 
-                    config.Root.Add(new Command() {
+                    config.Append(new Command() {
                         CommandType = CommandType.SecurityAccountSetPasswordHash,
                         Parameters = new List<CommandParameter>() {
                             new CommandParameter() {
@@ -363,7 +363,7 @@ namespace Procon.Core.Security {
                         }
                     }.ToConfigCommand());
 
-                    config.Root.Add(new Command() {
+                    config.Append(new Command() {
                         CommandType = CommandType.SecurityAccountSetPreferredLanguageCode,
                         Parameters = new List<CommandParameter>() {
                             new CommandParameter() {
@@ -384,7 +384,7 @@ namespace Procon.Core.Security {
                     }.ToConfigCommand());
 
                     foreach (AccountPlayerModel assignment in account.Players) {
-                        config.Root.Add(new Command() {
+                        config.Append(new Command() {
                             CommandType = CommandType.SecurityAccountAddPlayer,
                             Parameters = new List<CommandParameter>() {
                                 new CommandParameter() {

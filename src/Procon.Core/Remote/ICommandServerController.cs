@@ -20,7 +20,7 @@ namespace Procon.Core.Remote {
         /// Writes the config for this controller
         /// </summary>
         /// <param name="config">The config to append data to</param>
-        void WriteConfig(Config config);
+        void WriteConfig(IConfig config);
 
         /// <summary>
         /// Disposes the object.

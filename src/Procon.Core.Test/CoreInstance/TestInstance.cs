@@ -8,6 +8,7 @@ using System.Reflection;
 using System.Threading;
 using System.Xml.Linq;
 using NUnit.Framework;
+using Newtonsoft.Json.Linq;
 using Procon.Core.Events;
 using Procon.Core.Localization;
 using Procon.Core.Security;
@@ -34,7 +35,7 @@ namespace Procon.Core.Test.CoreInstance {
             }
         }
 
-        protected static FileInfo ConfigFileInfo = new FileInfo(Path.Combine(Defines.ConfigsDirectory.FullName, "Procon.Core.xml"));
+        protected static FileInfo ConfigFileInfo = new FileInfo(Path.Combine(Defines.ConfigsDirectory.FullName, "Procon.Core.json"));
 
         /// <summary>
         ///     Tests that providing no connection scope will tunnel the command over all
@@ -168,10 +169,10 @@ namespace Procon.Core.Test.CoreInstance {
 
             instance.WriteConfig();
 
-            var loadConfig = new Config();
+            var loadConfig = new JsonConfig();
             loadConfig.Load(ConfigFileInfo);
-
-            var commands = loadConfig.Root.Descendants("InstanceController").Elements("Command").Where(e => e.Element("Name") != null && e.Element("Name").Value == "InstanceAddConnection").Select(xCommand => xCommand.FromXElement<Command>()).ToList();
+            // .Where(item => item.Name == "InstanceAddConnection")
+            var commands = loadConfig.RootOf<InstanceController>().Children<JObject>().Select(item => item.ToObject<Command>()).ToList();
 
             Assert.AreEqual("InstanceAddConnection", commands[0].Name);
             Assert.AreEqual("Myrcon", commands[0].Parameters[0].First<String>());

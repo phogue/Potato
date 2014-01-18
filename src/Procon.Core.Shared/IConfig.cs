@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json.Linq;
 
@@ -62,6 +63,13 @@ namespace Procon.Core.Shared {
         /// </summary>
         /// <returns>this</returns>
         IConfig Create<T>();
+
+        /// <summary>
+        /// Initializes this configuration file for the specified object type.
+        /// Returns a reference back to this config.
+        /// </summary>
+        /// <returns>this</returns>
+        IConfig Create(Type type);
 
         /// <summary>
         /// Write this configuration file out to disk using the specified path and name.

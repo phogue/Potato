@@ -305,7 +305,7 @@ namespace Procon.Core {
 
             this.Execute(new Command() {
                 Origin = CommandOrigin.Local
-            }, new Config().Load(new DirectoryInfo(Defines.ConfigsDirectory.FullName)));
+            }, new JsonConfig().Load(new DirectoryInfo(Defines.ConfigsDirectory.FullName)));
             
             this.Shared.Events.Log(new GenericEvent() {
                 GenericEventType = GenericEventType.InstanceServiceStarted,
@@ -334,18 +334,18 @@ namespace Procon.Core {
         /// Writes the current object out to a file.
         /// </summary>
         public void WriteConfig() {
-            Config config = new Config();
-            config.Create(this.GetType());
+            IConfig config = new JsonConfig();
+            config.Create<InstanceController>();
             this.WriteConfig(config);
 
-            config.Save(new FileInfo(Path.Combine(Defines.ConfigsDirectory.FullName, this.GetType().Namespace + ".xml")));
+            config.Save(new FileInfo(Path.Combine(Defines.ConfigsDirectory.FullName, this.GetType().Namespace + ".json")));
         }
 
         /// <summary>
         /// Saves all the connections to the config file.
         /// </summary>
         /// <param name="config"></param>
-        public override void WriteConfig(Config config) {
+        public override void WriteConfig(IConfig config) {
             this.Shared.Variables.WriteConfig(config);
 
             this.Shared.Events.WriteConfig(config);
@@ -364,7 +364,7 @@ namespace Procon.Core {
                 foreach (ConnectionController connection in this.Connections) {
                     // This command is executed in the Instance object.
                     // I had to write this comment because I kept moving it to the actual connection and failing oh so hard.
-                    config.Root.Add(new Command() {
+                    config.Append(new Command() {
                         CommandType = CommandType.InstanceAddConnection,
                         Parameters = new List<CommandParameter>() {
                             new CommandParameter() {

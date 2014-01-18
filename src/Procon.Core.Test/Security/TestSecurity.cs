@@ -4,13 +4,12 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Xml.Linq;
 using NUnit.Framework;
+using Newtonsoft.Json.Linq;
 using Procon.Core.Security;
 using Procon.Core.Shared;
 using Procon.Core.Shared.Models;
 using Procon.Net.Shared.Protocols;
-using Procon.Net.Shared.Utils;
 
 #endregion
 
@@ -188,14 +187,14 @@ namespace Procon.Core.Test.Security {
             });
 
             // Save a config of the security controller
-            var saveConfig = new Config();
+            var saveConfig = new JsonConfig();
             saveConfig.Create(typeof (SecurityController));
             saveSecurity.WriteConfig(saveConfig);
             saveConfig.Save(ConfigFileInfo);
 
             // Load the config in a new config.
             var loadSecurity = (SecurityController)new SecurityController().Execute();
-            var loadConfig = new Config();
+            var loadConfig = new JsonConfig();
             loadConfig.Load(ConfigFileInfo);
             loadSecurity.Execute(loadConfig);
 
@@ -298,16 +297,16 @@ namespace Procon.Core.Test.Security {
             });
 
             // Save a config of the language controller
-            var saveConfig = new Config();
+            var saveConfig = new JsonConfig();
             saveConfig.Create(typeof (SecurityController));
             security.WriteConfig(saveConfig);
             saveConfig.Save(ConfigFileInfo);
 
             // Load the config in a new config.
-            var loadConfig = new Config();
+            var loadConfig = new JsonConfig();
             loadConfig.Load(ConfigFileInfo);
 
-            var commands = loadConfig.Root.Descendants("SecurityController").Elements("Command").Select(xCommand => xCommand.FromXElement<Command>()).ToList();
+            var commands = loadConfig.RootOf<SecurityController>().Children<JObject>().Select(item => item.ToObject<Command>()).ToList();
 
             Assert.AreEqual("SecurityAddGroup", commands[0].Name);
             Assert.AreEqual("GroupName", commands[0].Parameters[0].First<String>());

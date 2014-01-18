@@ -120,6 +120,7 @@ namespace Procon.Core.Shared {
             this.Origin = command.Origin;
             this.PasswordPlainText = command.PasswordPlainText;
             this.Scope = command.Scope;
+            this.Parameters = new List<CommandParameter>(command.Parameters ?? new List<CommandParameter>());
         }
 
         /// <summary>
@@ -128,21 +129,11 @@ namespace Procon.Core.Shared {
         /// isn't bloated with useless information.
         /// </summary>
         /// <returns></returns>
-        public XElement ToConfigCommand() {
-            XElement result = this.ToXElement();
-
-            if (result != null) {
-                XElement scope = result.Element("Scope");
-                XElement origin = result.Element("Origin");
-                XElement gameType = result.Element("GameType");
-
-                // Remove the scope attribute if it has no effect
-                if (scope != null && this.Scope.ConnectionGuid == Guid.Empty && this.Scope.PluginGuid == Guid.Empty) scope.Remove();
-                if (origin != null) origin.Remove();
-                if (gameType != null) gameType.Remove();
-            }
-            
-            return result;
+        public Command ToConfigCommand() {
+            return new Command(this) {
+                Scope = null,
+                GameType = null
+            };
         }
     }
 }

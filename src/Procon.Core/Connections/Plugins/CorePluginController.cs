@@ -248,9 +248,9 @@ namespace Procon.Core.Connections.Plugins {
             Directory.CreateDirectory(Path.Combine(Defines.ConfigsDirectory.FullName, this.Connection != null ? this.Connection.ConnectionModel.ConnectionGuid.ToString() : Guid.Empty.ToString()));
         }
 
-        public override void WriteConfig(Config config) {
+        public override void WriteConfig(IConfig config) {
             foreach (PluginModel plugin in this.LoadedPlugins.Where(plugin => plugin.IsEnabled == true)) {
-                config.Root.Add(new Command() {
+                config.Append(new Command() {
                     CommandType = CommandType.PluginsEnable,
                     Scope = {
                         ConnectionGuid = this.Connection.ConnectionModel.ConnectionGuid,

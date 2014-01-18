@@ -119,7 +119,7 @@ namespace Procon.Core.Connections {
             }, actionType => new CommandDispatchHandler(this.NetworkProtocolActions)));
         }
 
-        public override void WriteConfig(Config config) {
+        public override void WriteConfig(IConfig config) {
             this.Plugins.WriteConfig(config);
         }
 

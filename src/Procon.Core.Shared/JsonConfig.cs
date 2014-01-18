@@ -112,12 +112,16 @@ namespace Procon.Core.Shared {
         }
 
         public IConfig Create<T>() {
+            return this.Create(typeof(T));
+        }
+
+        public IConfig Create(Type type) {
             // Clear out all old data
             this.Root = new JArray();
             this.Document = new JObject() {
-                new JProperty(String.Format("{0}.{1}", typeof(T).Namespace, typeof(T).Name), this.Root)
+                new JProperty(String.Format("{0}.{1}", type.Namespace, type.Name), this.Root)
             };
-            
+
             return this;
         }
 

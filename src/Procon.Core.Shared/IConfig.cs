@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using Newtonsoft.Json.Linq;
 
 namespace Procon.Core.Shared {

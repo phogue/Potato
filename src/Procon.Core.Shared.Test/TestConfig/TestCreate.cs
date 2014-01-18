@@ -1,5 +1,4 @@
-﻿using System;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using Newtonsoft.Json.Linq;
 using Procon.Core.Shared.Test.TestConfig.Mocks;
 

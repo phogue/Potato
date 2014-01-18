@@ -117,7 +117,7 @@ namespace Procon.Core.Connections.TextCommands {
             return new FuzzyParser() {
                 Connection = this.Connection,
                 TextCommands = this.TextCommands.Where(textCommand => textCommand.Parser == TextCommandParserType.Any || textCommand.Parser == TextCommandParserType.Fuzzy).ToList(),
-                Document = new XElement("Name"), //selectedLanguage.Root,
+                Document = selectedLanguage.Config.Document,
                 SpeakerPlayer = speaker,
                 SpeakerAccount = speakerAccount
             };

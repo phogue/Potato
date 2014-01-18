@@ -150,10 +150,18 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Localization\de-DE\Procon.json" />
-    <None Include="Localization\en-UK\Procon.Fuzzy.json" />
-    <None Include="Localization\en-UK\Procon.json" />
-    <None Include="Localization\en-UK\Procon.Net.json" />
+    <Content Include="Localization\de-DE\Procon.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Localization\en-UK\Procon.Fuzzy.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Localization\en-UK\Procon.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Localization\en-UK\Procon.Net.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup />

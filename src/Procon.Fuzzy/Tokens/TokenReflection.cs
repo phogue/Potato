@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
+using Newtonsoft.Json.Linq;
+using Procon.Fuzzy.Models;
 using Procon.Fuzzy.Tokens.Object;
 using Procon.Fuzzy.Tokens.Operator.Arithmetic.FirstOrder;
 using Procon.Fuzzy.Tokens.Operator.Arithmetic.SecondOrder;
@@ -1279,59 +1281,7 @@ namespace Procon.Fuzzy.Tokens {
             { new TokenMethodMetadata() { Namespace = "Procon.Fuzzy.Tokens.Object.NumericPropertyObjectToken" }, new ParseDelegateHandler(NumericPropertyObjectToken.Parse) }
         };
 
-        private static Dictionary<XElement, Dictionary<Type, List<XElement>>> SelectedDescendants { get; set; }
-        private static Dictionary<XElement, Dictionary<Type, List<XElement>>> SelectedMatchDescendants { get; set; }
-        private static Dictionary<string, Regex> CompiledRegexes { get; set; }
-
-        private static void AddStrippedDiacriticsAttributes(XElement document) {
-
-            var replacements = document.Descendants("Fuzzy").Descendants("Tokens").Descendants("TokenReflection").Descendants("Diacritic").Select(element => element).ToLookup(element => {
-                XAttribute key = element.Attribute("key");
-
-                return key != null ? key.Value : null;
-            }, element => {
-                XAttribute value = element.Attribute("value");
-
-                return value != null ? value.Value : null;
-            });
-
-            foreach (XElement element in document.Descendants("Fuzzy").Descendants("Match")) {
-                XAttribute text = element.Attribute("text");
-                if (text != null && element.Attribute("replacedDiacritics") == null) {
-                    string replacedDiacritics = text.Value;
-
-                    replacedDiacritics = replacements.Aggregate(replacedDiacritics, (current, diacritic) => current.Replace(diacritic.Key, diacritic.First()));
-
-                    element.SetAttributeValue("replacedDiacritics", replacedDiacritics.RemoveDiacritics());
-                }
-
-                if (text != null && element.Attribute("removedDiacritics") == null) {
-                    element.SetAttributeValue("removedDiacritics", text.Value.RemoveDiacritics());
-                }
-            }
-        }
-
-        public static List<XElement> SelectDescendants(XElement document, Type type) {
-
-            if (TokenReflection.SelectedDescendants == null) {
-                TokenReflection.SelectedDescendants = new Dictionary<XElement, Dictionary<Type, List<XElement>>>();
-            }
-
-            if (TokenReflection.SelectedDescendants.ContainsKey(document) == false) {
-                TokenReflection.AddStrippedDiacriticsAttributes(document);
-
-                TokenReflection.SelectedDescendants.Add(document, new Dictionary<Type, List<XElement>>());
-            }
-
-            if (TokenReflection.SelectedDescendants[document].ContainsKey(type) == false && type.Namespace != null) {
-
-                var descendants = type.Namespace.Split('.').Skip(1).Aggregate(document.Elements(), (current, name) => current.DescendantsAndSelf(name));
-
-                TokenReflection.SelectedDescendants[document][type] = descendants.ToList();
-            }
-
-            return TokenReflection.SelectedDescendants[document][type];
-        }
+        private static Dictionary<Type, List<MatchModel>> MatchDescendants { get; set; }
 
         /// <summary>
         /// Finds and caches all "match" elements in a given types namespace.
@@ -1339,73 +1289,42 @@ namespace Procon.Fuzzy.Tokens {
         /// <param name="document"></param>
         /// <param name="type"></param>
         /// <returns></returns>
-        private static IEnumerable<XElement> SelectMatchDescendants(XElement document, Type type) {
-            if (TokenReflection.SelectedMatchDescendants == null) {
-                TokenReflection.SelectedMatchDescendants = new Dictionary<XElement, Dictionary<Type, List<XElement>>>();
+        private static IEnumerable<MatchModel> SelectMatchDescendants(JObject document, Type type) {
+            if (TokenReflection.MatchDescendants == null) {
+                TokenReflection.MatchDescendants = new Dictionary<Type, List<MatchModel>>();
             }
 
-            if (TokenReflection.SelectedMatchDescendants.ContainsKey(document) == false) {
-                TokenReflection.AddStrippedDiacriticsAttributes(document);
+            if (TokenReflection.MatchDescendants.ContainsKey(type) == false) {
+                var array = document[String.Format("{0}.{1}", type.Namespace, type.Name)];
 
-                TokenReflection.SelectedMatchDescendants.Add(document, new Dictionary<Type, List<XElement>>());
+                TokenReflection.MatchDescendants.Add(type, array != null ? array.Children<JObject>().Select(item => item.ToObject<MatchModel>()).ToList() : new List<MatchModel>());
             }
 
-            if (TokenReflection.SelectedMatchDescendants[document].ContainsKey(type) == false && type.Namespace != null) {
-
-                var descendants = type.Namespace.Split('.').Skip(1).Aggregate(document.Elements(), (current, name) => current.DescendantsAndSelf(name));
-
-                descendants = descendants.Descendants(type.Name).Descendants("Match");
-
-                TokenReflection.SelectedMatchDescendants[document][type] = descendants.ToList();
-            }
-
-            return TokenReflection.SelectedMatchDescendants[document][type];
+            return TokenReflection.MatchDescendants[type];
         }
 
-        private static T CreateToken<T>(XElement element, Phrase phrase) where T : Token, new() {
-
+        private static T CreateToken<T>(MatchModel match, Phrase phrase) where T : Token, new() {
             T token = default(T);
 
-            if (TokenReflection.CompiledRegexes == null) {
-                TokenReflection.CompiledRegexes = new Dictionary<string, Regex>();
-            }
-
-            XAttribute text = element.Attribute("text");
-            XAttribute value = element.Attribute("value");
-            XAttribute name = element.Attribute("name");
-            XAttribute regex = element.Attribute("regex");
-            XAttribute replacedDiacritics = element.Attribute("replacedDiacritics");
-            XAttribute removedDiacritics = element.Attribute("removedDiacritics");
-
-            if (text != null && replacedDiacritics != null && removedDiacritics != null) {
-                float similarity = Math.Max(
-                        Math.Max(
-                            text.Value.StringSimularityRatio(phrase.Text),
-                            replacedDiacritics.Value.StringSimularityRatio(phrase.Text)
-                        ), removedDiacritics.Value.StringSimularityRatio(phrase.Text)
-                    );
+            if (match.Text != null) {
+                float similarity = match.Text.StringSimularityRatio(phrase.Text);
 
                 if (similarity >= Token.MinimumSimilarity) {
                     token = new T {
                         Text = phrase.Text,
-                        Name = name != null ? name.Value : String.Empty,
+                        Name = match.Name ?? String.Empty,
                         Similarity = similarity,
-                        Value = value == null ? text.Value : value.Value
+                        Value = match.Value ?? match.Text
                     };
                 }
             }
-            else if (regex != null) {
-
-                if (TokenReflection.CompiledRegexes.ContainsKey(regex.Value) == false) {
-                    TokenReflection.CompiledRegexes.Add(regex.Value, new Regex(regex.Value, RegexOptions.IgnoreCase | RegexOptions.Compiled));
-                }
-
-                Match match = null;
-                if ((match = TokenReflection.CompiledRegexes[regex.Value].Match(phrase.Text)).Success == true) {
+            else if (match.CompiledRegex != null) {
+                Match regexMatch = null;
+                if ((regexMatch = match.CompiledRegex.Match(phrase.Text)).Success == true) {
                     token = new T() {
                         Text = phrase.Text,
-                        Value = match.Groups["value"].Value,
-                        Name = name != null ? name.Value : String.Empty,
+                        Value = regexMatch.Groups["value"].Value,
+                        Name = match.Name ?? String.Empty,
                         Similarity = 100.0F
                     };
                 }

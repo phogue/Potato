@@ -1,4 +1,4 @@
-﻿using System.Xml.Linq;
+﻿using Newtonsoft.Json.Linq;
 using Procon.Fuzzy.Tokens.Object;
 
 namespace Procon.Fuzzy {
@@ -10,7 +10,7 @@ namespace Procon.Fuzzy {
         /// Language file, used to lookup values to attach to each object. The xml should be structured like
         /// the namespace of the object.
         /// </summary>
-        XElement Document { get; set; }
+        JObject Document { get; set; }
 
         /// <summary>
         /// Converts a phrase into a token if the token matches an object

@@ -192,16 +192,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Localization\de-DE\Procon.Core.Test.xml">
-      <SubType>Designer</SubType>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Localization\en-UK\Procon.Core.Test.xml">
-      <SubType>Designer</SubType>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
     <Folder Include="Utils\DirectoryInfoExtensions\Clean\" />
     <Folder Include="Utils\DirectoryInfoExtensions\Zip\" />
   </ItemGroup>
@@ -211,6 +201,12 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Localization\de-DE\Procon.Core.Test.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Localization\en-UK\Procon.Core.Test.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="packages.config" />
     <Content Include="Remote\Certificates\NoPassword.pfx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

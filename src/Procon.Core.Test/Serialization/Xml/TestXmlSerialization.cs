@@ -74,18 +74,6 @@ namespace Procon.Core.Test.Serialization.Xml {
         }
 
         /// <summary>
-        ///     Testing the xml serialization for the language object.
-        /// </summary>
-        [Test]
-        public void TestXmlSerializationLanguage() {
-            var languages = new LanguageController().Execute() as LanguageController;
-
-            XElement element = languages.LoadedLanguageFiles.First(language => language.LanguageModel.LanguageCode == "en-UK").ToXElement();
-
-            Assert.AreEqual("en-UK", element.Element("LanguageModel").Element("LanguageCode").Value);
-        }
-
-        /// <summary>
         ///     Testing the xml serialization for the Map object.
         /// </summary>
         [Test]

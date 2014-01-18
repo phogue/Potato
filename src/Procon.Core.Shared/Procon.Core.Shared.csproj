@@ -62,7 +62,8 @@
     <Compile Include="CommandResultType.cs" />
     <Compile Include="CommandScope.cs" />
     <Compile Include="CommandType.cs" />
-    <Compile Include="Config.cs" />
+    <Compile Include="Models\LanguageEntryModel.cs" />
+    <Compile Include="XmlConfig.cs" />
     <Compile Include="Database\DatabaseModel.cs" />
     <Compile Include="Database\Migrations\IMigration.cs" />
     <Compile Include="Database\Migrations\IMigrationSettings.cs" />

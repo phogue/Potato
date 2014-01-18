@@ -166,6 +166,8 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Localization\en-UK\Procon.Fuzzy.json" />
+    <None Include="Localization\en-UK\Procon.Net.json" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup />

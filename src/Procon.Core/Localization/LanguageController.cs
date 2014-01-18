@@ -114,7 +114,7 @@ namespace Procon.Core.Localization {
             var languageDirectories = new DirectoryInfo(Defines.PackagesDirectory.FullName)
                 .GetDirectories(Defines.LocalizationDirectoryName, SearchOption.AllDirectories)
                 .Union(new [] {
-                    new DirectoryInfo(Defines.LocalizationDirectory.FullName), 
+                    new DirectoryInfo(Defines.LocalizationDirectory.FullName)
                 })
                 .SelectMany(localizationDirectory => localizationDirectory.GetDirectories());
 
@@ -125,10 +125,11 @@ namespace Procon.Core.Localization {
 
                 foreach (var languageDirectory in groupedLanguageDirectories) {
                     if (language == null) {
-                        language = new LanguageConfig().Load(languageDirectory) as LanguageConfig;
+                        language = new LanguageConfig();
+                        language.Load(languageDirectory);
                     }
                     else {
-                        language.Combine(new LanguageConfig().Load(languageDirectory) as LanguageConfig);
+                        language.Config.Union(new JsonConfig().Load(languageDirectory));
                     }
                 }
 
@@ -286,11 +287,7 @@ namespace Procon.Core.Localization {
         public override void Dispose() {
 
             this.UnassignEvents();
-
-            foreach (LanguageConfig language in this.LoadedLanguageFiles) {
-                language.Dispose();
-            }
-
+            
             this.LoadedLanguageFiles.Clear();
             this.LoadedLanguageFiles = null;
 

@@ -10,7 +10,7 @@ namespace Procon.Core.Localization {
     /// A language config file, loaded and combined from various xml sources in the localization folder
     /// </summary>
     [Serializable]
-    public class LanguageConfig : Config {
+    public class LanguageConfig : XmlConfig {
         /// <summary>
         /// Holds the underlying information loaded from the file used to describe the language
         /// </summary>
@@ -27,7 +27,7 @@ namespace Procon.Core.Localization {
         /// Loads the specified file into this language file using the file's contents.
         /// Returns a reference back to this config.
         /// </summary>
-        public override Config Load(FileInfo mFile) {
+        public override XmlConfig Load(FileInfo mFile) {
             base.Load(mFile);
 
             // Parse out extra instruction information used in a language config file.

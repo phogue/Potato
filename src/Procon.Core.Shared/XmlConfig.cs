@@ -10,7 +10,7 @@ namespace Procon.Core.Shared {
     /// A namespace xml config for saving serialized commands 
     /// </summary>
     [Serializable]
-    public class Config : IDisposable {
+    public class XmlConfig : IDisposable {
 
         [NonSerialized]
         private XDocument _document = new XDocument();
@@ -48,7 +48,7 @@ namespace Procon.Core.Shared {
         /// Combines this configuration file with another configuration file.
         /// Returns a reference back to this config.
         /// </summary>
-        public virtual Config Combine(Config config) {
+        public virtual XmlConfig Combine(XmlConfig config) {
             if (this.Document != null && config.Document != null) {
                 XElement thisRoot = this.Document.Root;
                 XElement thatRoot = config.Document.Root;
@@ -74,14 +74,14 @@ namespace Procon.Core.Shared {
         /// Loads all the files in the specified directory into this configuration file.
         /// Returns a reference back to this config.
         /// </summary>
-        public virtual Config Load(DirectoryInfo directory) {
+        public virtual XmlConfig Load(DirectoryInfo directory) {
             if (directory != null && directory.Exists == true) {
                 foreach (FileInfo file in directory.GetFiles("*.xml")) {
                     if (this.Root == null) {
                         this.Load(file);
                     }
                     else {
-                        this.Combine(new Config().Load(file));
+                        this.Combine(new XmlConfig().Load(file));
                     }
                 }
             }
@@ -93,7 +93,7 @@ namespace Procon.Core.Shared {
         /// Loads the specified file into this configuration file using the file's contents.
         /// Returns a reference back to this config.
         /// </summary>
-        public virtual Config Load(FileInfo file) {
+        public virtual XmlConfig Load(FileInfo file) {
             if (file.Exists == true) {
                 using (StreamReader reader = new StreamReader(file.FullName)) {
                     this.Document = XDocument.Load(reader);
@@ -108,7 +108,7 @@ namespace Procon.Core.Shared {
         /// Initializes this configuration file for the specified object type.
         /// Returns a reference back to this config.
         /// </summary>
-        public virtual Config Create(Type type) {
+        public virtual XmlConfig Create(Type type) {
             this.Document = new XDocument();
 
             foreach (String name in type.FullName.Split('`').First().Split('.')) {
@@ -134,7 +134,7 @@ namespace Procon.Core.Shared {
         /// Write this configuration file out to disk using the specified path and name.
         /// Returns a reference back to this config.
         /// </summary>
-        public virtual Config Save(FileInfo file) {
+        public virtual XmlConfig Save(FileInfo file) {
             if (File.Exists(file.FullName) == false && file.Directory != null) {
                 Directory.CreateDirectory(file.Directory.FullName);
 

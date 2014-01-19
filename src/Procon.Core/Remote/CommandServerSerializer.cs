@@ -3,6 +3,7 @@ using System.Linq;
 using System.Net;
 using Newtonsoft.Json;
 using Procon.Core.Shared;
+using Procon.Net.Shared.Serialization;
 using Procon.Net.Shared.Protocols.CommandServer;
 using Procon.Net.Shared.Utils.HTTP;
 
@@ -22,7 +23,7 @@ namespace Procon.Core.Remote {
             try {
                 switch (request.Headers[HttpRequestHeader.ContentType].ToLower()) {
                     default:
-                        command = JsonConvert.DeserializeObject<Command>(request.Content);
+                        command = Core.Shared.Serialization.JsonSerialization.Minimal.Deserialize<Command>(request.Content);
                         break;
                 }
 

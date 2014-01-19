@@ -123,7 +123,7 @@ namespace Procon.Core.Shared {
                     if (loadedCommand != null && loadedCommand.Name != null) {
                         command.ParseCommandType(loadedCommand.Name);
                         command.Parameters = loadedCommand.Parameters;
-                        command.Scope = loadedCommand.Scope;
+                        command.ScopeModel = loadedCommand.ScopeModel;
 
                         this.Tunnel(command);
                     }

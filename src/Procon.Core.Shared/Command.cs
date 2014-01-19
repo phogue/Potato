@@ -20,7 +20,7 @@ namespace Procon.Core.Shared {
         /// <summary>
         /// The scope that this commands execution should be limited to.
         /// </summary>
-        public CommandScope Scope { get; set; }
+        public CommandScopeModel ScopeModel { get; set; }
 
         /// <summary>
         /// Where the command came from
@@ -56,7 +56,7 @@ namespace Procon.Core.Shared {
 
             this.Authentication = new CommandAuthenticationModel();
 
-            this.Scope = new CommandScope();
+            this.ScopeModel = new CommandScopeModel();
         }
 
         /// <summary>
@@ -91,7 +91,7 @@ namespace Procon.Core.Shared {
             this.Name = command.Name;
             this.Authentication = command.Authentication;
             this.Origin = command.Origin;
-            this.Scope = command.Scope;
+            this.ScopeModel = command.ScopeModel;
             this.Parameters = new List<CommandParameter>(command.Parameters ?? new List<CommandParameter>());
         }
 
@@ -103,7 +103,7 @@ namespace Procon.Core.Shared {
         /// <returns></returns>
         public Command ToConfigCommand() {
             return new Command(this) {
-                Scope = null
+                ScopeModel = null
             };
         }
     }

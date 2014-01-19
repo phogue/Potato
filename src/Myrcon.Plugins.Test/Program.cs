@@ -264,7 +264,7 @@ namespace Myrcon.Plugins.Test {
 
                 this.Bubble(new Command() {
                     CommandType = CommandType.TextCommandsRegister,
-                    Scope = new CommandScope() {
+                    ScopeModel = new CommandScopeModel() {
                         ConnectionGuid = this.ConnectionGuid
                     },
                     Parameters = new List<CommandParameter>() {
@@ -287,7 +287,7 @@ namespace Myrcon.Plugins.Test {
 
                 this.Bubble(new Command() {
                     CommandType = CommandType.TextCommandsRegister,
-                    Scope = new CommandScope() {
+                    ScopeModel = new CommandScopeModel() {
                         ConnectionGuid = this.ConnectionGuid
                     },
                     Parameters = new List<CommandParameter>() {
@@ -310,7 +310,7 @@ namespace Myrcon.Plugins.Test {
 
                 this.Bubble(new Command() {
                     CommandType = CommandType.TextCommandsRegister,
-                    Scope = new CommandScope() {
+                    ScopeModel = new CommandScopeModel() {
                         ConnectionGuid = this.ConnectionGuid
                     },
                     Parameters = new List<CommandParameter>() {

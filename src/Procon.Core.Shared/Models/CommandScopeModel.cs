@@ -1,10 +1,11 @@
 using System;
 
-namespace Procon.Core.Shared {
-
+namespace Procon.Core.Shared.Models {
+    /// <summary>
+    /// The scope or focus of the command.
+    /// </summary>
     [Serializable]
-    public class CommandScope {
-
+    public class CommandScopeModel : CoreModel {
         /// <summary>
         /// The limiting connection guid
         /// </summary>
@@ -15,7 +16,10 @@ namespace Procon.Core.Shared {
         /// </summary>
         public Guid PluginGuid { get; set; }
 
-        public CommandScope() {
+        /// <summary>
+        /// Initializes the model with the default values.
+        /// </summary>
+        public CommandScopeModel() {
             this.ConnectionGuid = Guid.Empty;
             this.PluginGuid = Guid.Empty;
         }

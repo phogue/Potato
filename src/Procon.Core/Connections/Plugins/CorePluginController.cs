@@ -86,7 +86,7 @@ namespace Procon.Core.Connections.Plugins {
             CommandResult result = null;
 
             if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
-                Guid pluginGuid = command.Scope.PluginGuid;
+                Guid pluginGuid = command.ScopeModel.PluginGuid;
 
                 if (this.LoadedPlugins.Count(plugin => plugin.PluginGuid == pluginGuid) > 0) {
                     if (this.PluginFactory.TryEnablePlugin(pluginGuid) == true) {
@@ -143,7 +143,7 @@ namespace Procon.Core.Connections.Plugins {
             CommandResult result = null;
 
             if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
-                Guid pluginGuid = command.Scope.PluginGuid;
+                Guid pluginGuid = command.ScopeModel.PluginGuid;
 
                 if (this.LoadedPlugins.Count(plugin => plugin.PluginGuid == pluginGuid) > 0) {
                     if (this.PluginFactory.TryDisablePlugin(pluginGuid) == true) {
@@ -252,7 +252,7 @@ namespace Procon.Core.Connections.Plugins {
             foreach (PluginModel plugin in this.LoadedPlugins.Where(plugin => plugin.IsEnabled == true)) {
                 config.Append(new Command() {
                     CommandType = CommandType.PluginsEnable,
-                    Scope = {
+                    ScopeModel = {
                         ConnectionGuid = this.Connection.ConnectionModel.ConnectionGuid,
                         PluginGuid = plugin.PluginGuid
                     }

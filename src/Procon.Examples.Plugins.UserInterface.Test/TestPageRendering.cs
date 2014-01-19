@@ -19,7 +19,7 @@ namespace Procon.Examples.Plugins.UserInterface.Test {
             plugins.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.PluginsEnable,
-                Scope = {
+                ScopeModel = {
                     PluginGuid = plugins.LoadedPlugins.First().PluginGuid
                 }
             });
@@ -50,7 +50,7 @@ namespace Procon.Examples.Plugins.UserInterface.Test {
             plugins.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.PluginsEnable,
-                Scope = {
+                ScopeModel = {
                     PluginGuid = plugins.LoadedPlugins.First().PluginGuid
                 }
             });

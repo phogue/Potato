@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using Procon.Core.Shared.Events;
+using Procon.Core.Shared.Models;
 using Procon.Net.Shared;
 using Procon.Net.Shared.Actions;
 using Procon.Net.Shared.Actions.Deferred;
@@ -87,7 +88,7 @@ namespace Procon.Core.Shared.Plugins {
 
         public override void BeginBubble(Command command, Action<CommandResult> completed = null) {
             // There isn't much point in bubbling up if we just need to come back down here.
-            if (command.Scope != null && command.Scope.PluginGuid == this.PluginGuid) {
+            if (command.ScopeModel != null && command.ScopeModel.PluginGuid == this.PluginGuid) {
                 base.BeginTunnel(command, completed);
             }
             else if (this.BubbleObjects != null) {
@@ -97,7 +98,7 @@ namespace Procon.Core.Shared.Plugins {
 
         public override CommandResult Bubble(Command command) {
             // There isn't much point in bubbling up if we just need to come back down here.
-            if (command.Scope != null && command.Scope.PluginGuid == this.PluginGuid) {
+            if (command.ScopeModel != null && command.ScopeModel.PluginGuid == this.PluginGuid) {
                 command.Result = this.Tunnel(command);
             }
             else if (this.BubbleObjects != null) {
@@ -118,7 +119,7 @@ namespace Procon.Core.Shared.Plugins {
         public virtual CommandResult Action(INetworkAction action) {
             return this.Bubble(new Command() {
                 Name = action.ActionType.ToString(),
-                Scope = new CommandScope() {
+                ScopeModel = new CommandScopeModel() {
                     ConnectionGuid = this.ConnectionGuid
                 },
                 Parameters = new List<CommandParameter>() {

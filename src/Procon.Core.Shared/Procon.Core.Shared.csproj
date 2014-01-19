@@ -61,7 +61,7 @@
     <Compile Include="CommandParameterType.cs" />
     <Compile Include="CommandResult.cs" />
     <Compile Include="CommandResultType.cs" />
-    <Compile Include="CommandScope.cs" />
+    <Compile Include="Models\CommandScopeModel.cs" />
     <Compile Include="CommandType.cs" />
     <Compile Include="Models\LanguageEntryModel.cs" />
     <Compile Include="Database\DatabaseModel.cs" />

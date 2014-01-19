@@ -61,34 +61,34 @@ namespace Procon.Core.Connections {
 
             this.ConnectionModel = new ConnectionModel();
 
-            this.AppendDispatchHandlers(new Dictionary<CommandAttribute, CommandDispatchHandler>() {
+            this.AppendDispatchHandlers(new Dictionary<CommandDispatch, CommandDispatchHandler>() {
                 {
-                    new CommandAttribute() {
+                    new CommandDispatch() {
                         CommandType = CommandType.ConnectionQuery
                     },
                     new CommandDispatchHandler(this.ConnectionQuery)
                 }, {
-                    new CommandAttribute() {
+                    new CommandDispatch() {
                         CommandType = CommandType.NetworkProtocolQueryPlayers
                     },
                     new CommandDispatchHandler(this.NetworkProtocolQueryPlayers)
                 }, {
-                    new CommandAttribute() {
+                    new CommandDispatch() {
                         CommandType = CommandType.NetworkProtocolQuerySettings
                     },
                     new CommandDispatchHandler(this.NetworkProtocolQuerySettings)
                 }, {
-                    new CommandAttribute() {
+                    new CommandDispatch() {
                         CommandType = CommandType.NetworkProtocolQueryBans
                     },
                     new CommandDispatchHandler(this.NetworkProtocolQueryBans)
                 }, {
-                    new CommandAttribute() {
+                    new CommandDispatch() {
                         CommandType = CommandType.NetworkProtocolQueryMaps
                     },
                     new CommandDispatchHandler(this.NetworkProtocolQueryMaps)
                 }, {
-                    new CommandAttribute() {
+                    new CommandDispatch() {
                         CommandType = CommandType.NetworkProtocolQueryMapPool
                     },
                     new CommandDispatchHandler(this.NetworkProtocolQueryMapPool)
@@ -96,7 +96,7 @@ namespace Procon.Core.Connections {
             });
 
             // Add all network actions, dispatching them to NetworkProtocolAction
-            this.AppendDispatchHandlers(Enum.GetValues(typeof(NetworkActionType)).Cast<NetworkActionType>().ToDictionary(actionType => new CommandAttribute() {
+            this.AppendDispatchHandlers(Enum.GetValues(typeof(NetworkActionType)).Cast<NetworkActionType>().ToDictionary(actionType => new CommandDispatch() {
                 Name = actionType.ToString(),
                 ParameterTypes = new List<CommandParameterType>() {
                     new CommandParameterType() {
@@ -107,7 +107,7 @@ namespace Procon.Core.Connections {
             }, actionType => new CommandDispatchHandler(this.NetworkProtocolAction)));
 
 
-            this.AppendDispatchHandlers(Enum.GetValues(typeof(NetworkActionType)).Cast<NetworkActionType>().ToDictionary(actionType => new CommandAttribute() {
+            this.AppendDispatchHandlers(Enum.GetValues(typeof(NetworkActionType)).Cast<NetworkActionType>().ToDictionary(actionType => new CommandDispatch() {
                 Name = actionType.ToString(),
                 ParameterTypes = new List<CommandParameterType>() {
                     new CommandParameterType() {

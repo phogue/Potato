@@ -38,9 +38,9 @@ namespace Myrcon.Plugins.Test {
 
             this.Commands = new List<TextCommandModel>();
 
-            this.AppendDispatchHandlers(new Dictionary<CommandAttribute, CommandDispatchHandler>() {
+            this.AppendDispatchHandlers(new Dictionary<CommandDispatch, CommandDispatchHandler>() {
                 {
-                    new CommandAttribute() {
+                    new CommandDispatch() {
                         Name = "HelpCommand",
                         ParameterTypes = new List<CommandParameterType>() {
                             new CommandParameterType() {
@@ -51,7 +51,7 @@ namespace Myrcon.Plugins.Test {
                     },
                     new CommandDispatchHandler(this.HelpCommand)
                 }, {
-                    new CommandAttribute() {
+                    new CommandDispatch() {
                         Name = "KillCommand",
                         ParameterTypes = new List<CommandParameterType>() {
                             new CommandParameterType() {
@@ -62,7 +62,7 @@ namespace Myrcon.Plugins.Test {
                     },
                     new CommandDispatchHandler(this.KillCommand)
                 }, {
-                    new CommandAttribute() {
+                    new CommandDispatch() {
                         Name = "TestCommand",
                         ParameterTypes = new List<CommandParameterType>() {
                             new CommandParameterType() {
@@ -73,7 +73,7 @@ namespace Myrcon.Plugins.Test {
                     },
                     new CommandDispatchHandler(this.TestCommand)
                 }, {
-                    new CommandAttribute() {
+                    new CommandDispatch() {
                         CommandType = CommandType.TextCommandsRegister,
                         CommandAttributeType = CommandAttributeType.Preview,
                         ParameterTypes = new List<CommandParameterType>() {
@@ -85,7 +85,7 @@ namespace Myrcon.Plugins.Test {
                     },
                     new CommandDispatchHandler(this.RegisterTextCommandPreview)
                 }, {
-                    new CommandAttribute() {
+                    new CommandDispatch() {
                         CommandType = CommandType.TextCommandsRegister,
                         CommandAttributeType = CommandAttributeType.Executed,
                         ParameterTypes = new List<CommandParameterType>() {

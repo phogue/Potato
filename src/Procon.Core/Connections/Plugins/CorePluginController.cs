@@ -61,14 +61,14 @@ namespace Procon.Core.Connections.Plugins {
                 }
             };
 
-            this.AppendDispatchHandlers(new Dictionary<CommandAttribute, CommandDispatchHandler>() {
+            this.AppendDispatchHandlers(new Dictionary<CommandDispatch, CommandDispatchHandler>() {
                 {
-                    new CommandAttribute() {
+                    new CommandDispatch() {
                         CommandType = CommandType.PluginsEnable
                     },
                     new CommandDispatchHandler(this.EnablePlugin)
                 }, {
-                    new CommandAttribute() {
+                    new CommandDispatch() {
                         CommandType = CommandType.PluginsDisable
                     },
                     new CommandDispatchHandler(this.DisablePlugin)

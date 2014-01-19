@@ -26,9 +26,9 @@ namespace Procon.Core.Security {
             this.Shared = new SharedReferences();
             this.Groups = new List<GroupModel>();
 
-            this.AppendDispatchHandlers(new Dictionary<CommandAttribute, CommandDispatchHandler>() {
+            this.AppendDispatchHandlers(new Dictionary<CommandDispatch, CommandDispatchHandler>() {
                 {
-                    new CommandAttribute() {
+                    new CommandDispatch() {
                         CommandType = CommandType.SecurityAddGroup,
                         ParameterTypes = new List<CommandParameterType>() {
                             new CommandParameterType() {
@@ -39,7 +39,7 @@ namespace Procon.Core.Security {
                     },
                     new CommandDispatchHandler(this.SecurityAddGroup)
                 }, {
-                    new CommandAttribute() {
+                    new CommandDispatch() {
                         CommandType = CommandType.SecurityRemoveGroup,
                         ParameterTypes = new List<CommandParameterType>() {
                             new CommandParameterType() {
@@ -50,7 +50,7 @@ namespace Procon.Core.Security {
                     },
                     new CommandDispatchHandler(this.SecurityRemoveGroup)
                 }, {
-                    new CommandAttribute() {
+                    new CommandDispatch() {
                         CommandType = CommandType.SecurityRemoveAccount,
                         ParameterTypes = new List<CommandParameterType>() {
                             new CommandParameterType() {
@@ -61,7 +61,7 @@ namespace Procon.Core.Security {
                     },
                     new CommandDispatchHandler(this.SecurityRemoveAccount)
                 }, {
-                    new CommandAttribute() {
+                    new CommandDispatch() {
                         CommandType = CommandType.SecurityRemovePlayer,
                         ParameterTypes = new List<CommandParameterType>() {
                             new CommandParameterType() {
@@ -76,7 +76,7 @@ namespace Procon.Core.Security {
                     },
                     new CommandDispatchHandler(this.SecurityRemovePlayer)
                 }, {
-                    new CommandAttribute() {
+                    new CommandDispatch() {
                         CommandType = CommandType.SecurityQueryPermission,
                         ParameterTypes = new List<CommandParameterType>() {
                             new CommandParameterType() {
@@ -95,7 +95,7 @@ namespace Procon.Core.Security {
                     },
                     new CommandDispatchHandler(this.DispatchPermissionsCheckByAccountPlayerDetails)
                 }, {
-                    new CommandAttribute() {
+                    new CommandDispatch() {
                         CommandType = CommandType.SecurityQueryPermission,
                         ParameterTypes = new List<CommandParameterType>() {
                             new CommandParameterType() {
@@ -110,7 +110,7 @@ namespace Procon.Core.Security {
                     },
                     new CommandDispatchHandler(this.DispatchPermissionsCheckByAccountDetails)
                 }, {
-                    new CommandAttribute() {
+                    new CommandDispatch() {
                         CommandType = CommandType.SecurityQueryPermission,
                         ParameterTypes = new List<CommandParameterType>() {
                             new CommandParameterType() {
@@ -124,7 +124,7 @@ namespace Procon.Core.Security {
 
                 // Groups
                 {
-                    new CommandAttribute() {
+                    new CommandDispatch() {
                         CommandType = CommandType.SecurityGroupSetPermission,
                         ParameterTypes = new List<CommandParameterType>() {
                             new CommandParameterType() {
@@ -143,7 +143,7 @@ namespace Procon.Core.Security {
                     },
                     new CommandDispatchHandler(this.SecurityGroupSetPermission)
                 }, {
-                    new CommandAttribute() {
+                    new CommandDispatch() {
                         CommandType = CommandType.SecurityGroupCopyPermissions,
                         ParameterTypes = new List<CommandParameterType>() {
                             new CommandParameterType() {
@@ -158,7 +158,7 @@ namespace Procon.Core.Security {
                     },
                     new CommandDispatchHandler(this.SecurityGroupCopyPermissions)
                 }, {
-                    new CommandAttribute() {
+                    new CommandDispatch() {
                         CommandType = CommandType.SecurityGroupAddAccount,
                         ParameterTypes = new List<CommandParameterType>() {
                             new CommandParameterType() {
@@ -176,7 +176,7 @@ namespace Procon.Core.Security {
 
                 // Accounts
                 {
-                    new CommandAttribute() {
+                    new CommandDispatch() {
                         CommandType = CommandType.SecurityAccountAddPlayer,
                         ParameterTypes = new List<CommandParameterType>() {
                             new CommandParameterType() {
@@ -195,7 +195,7 @@ namespace Procon.Core.Security {
                     },
                     new CommandDispatchHandler(this.SecurityAccountAddPlayer)
                 }, {
-                    new CommandAttribute() {
+                    new CommandDispatch() {
                         CommandType = CommandType.SecurityAccountSetPassword,
                         ParameterTypes = new List<CommandParameterType>() {
                             new CommandParameterType() {
@@ -210,7 +210,7 @@ namespace Procon.Core.Security {
                     },
                     new CommandDispatchHandler(this.SecurityAccountSetPassword)
                 }, {
-                    new CommandAttribute() {
+                    new CommandDispatch() {
                         CommandType = CommandType.SecurityAccountSetPasswordHash,
                         ParameterTypes = new List<CommandParameterType>() {
                             new CommandParameterType() {
@@ -225,7 +225,7 @@ namespace Procon.Core.Security {
                     },
                     new CommandDispatchHandler(this.SecurityAccountSetPasswordHash)
                 }, {
-                    new CommandAttribute() {
+                    new CommandDispatch() {
                         CommandType = CommandType.SecurityAccountAuthenticate,
                         ParameterTypes = new List<CommandParameterType>() {
                             new CommandParameterType() {
@@ -240,7 +240,7 @@ namespace Procon.Core.Security {
                     },
                     new CommandDispatchHandler(this.SecurityAccountAuthenticate)
                 }, {
-                    new CommandAttribute() {
+                    new CommandDispatch() {
                         CommandType = CommandType.SecurityAccountSetPreferredLanguageCode,
                         ParameterTypes = new List<CommandParameterType>() {
                             new CommandParameterType() {

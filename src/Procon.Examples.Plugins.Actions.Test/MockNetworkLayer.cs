@@ -20,9 +20,9 @@ namespace Procon.Examples.Plugins.Actions.Test {
         public WaitingActions Waiting = new WaitingActions();
 
         public MockNetworkLayer() : base() {
-            this.AppendDispatchHandlers(new Dictionary<CommandAttribute, CommandDispatchHandler>() {
+            this.AppendDispatchHandlers(new Dictionary<CommandDispatch, CommandDispatchHandler>() {
                 {
-                    new CommandAttribute() {
+                    new CommandDispatch() {
                         Name = NetworkActionType.NetworkPlayerKick.ToString(),
                         CommandAttributeType = CommandAttributeType.Handler,
                         ParameterTypes = new List<CommandParameterType>() {

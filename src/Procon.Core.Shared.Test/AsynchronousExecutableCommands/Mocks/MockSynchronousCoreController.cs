@@ -8,9 +8,9 @@ namespace Procon.Core.Shared.Test.AsynchronousExecutableCommands.Mocks {
     public class MockSynchronousCoreController : CoreController {
 
         public MockSynchronousCoreController() : base() {
-            this.AppendDispatchHandlers(new Dictionary<CommandAttribute, CommandDispatchHandler>() {
+            this.AppendDispatchHandlers(new Dictionary<CommandDispatch, CommandDispatchHandler>() {
                 {
-                    new CommandAttribute() {
+                    new CommandDispatch() {
                         Name = "AppendMessage",
                         ParameterTypes = new List<CommandParameterType>() {
                             new CommandParameterType() {

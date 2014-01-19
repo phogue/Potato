@@ -30,9 +30,9 @@ namespace Procon.Examples.Plugins.Commands {
                 }
             };
 
-            this.AppendDispatchHandlers(new Dictionary<CommandAttribute, CommandDispatchHandler>() {
+            this.AppendDispatchHandlers(new Dictionary<CommandDispatch, CommandDispatchHandler>() {
                 {
-                    new CommandAttribute() {
+                    new CommandDispatch() {
                         Name = "SingleParameterCommand",
                         CommandAttributeType = CommandAttributeType.Handler,
                         ParameterTypes = new List<CommandParameterType>() {
@@ -48,7 +48,7 @@ namespace Procon.Examples.Plugins.Commands {
                     new CommandDispatchHandler(this.SingleParameterCommand)
                 },
                 {
-                    new CommandAttribute() {
+                    new CommandDispatch() {
                         Name = "SingleConvertedParameterCommand",
                         CommandAttributeType = CommandAttributeType.Handler,
                         ParameterTypes = new List<CommandParameterType>() {
@@ -61,7 +61,7 @@ namespace Procon.Examples.Plugins.Commands {
                     new CommandDispatchHandler(this.SingleConvertedParameterCommand)
                 },
                 {
-                    new CommandAttribute() {
+                    new CommandDispatch() {
                         Name = "NoParameterCommand",
                         CommandAttributeType = CommandAttributeType.Handler
                     },

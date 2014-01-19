@@ -49,9 +49,9 @@ namespace Procon.Core.Packages {
                 }
             };
 
-            this.AppendDispatchHandlers(new Dictionary<CommandAttribute, CommandDispatchHandler>() {
+            this.AppendDispatchHandlers(new Dictionary<CommandDispatch, CommandDispatchHandler>() {
                 {
-                    new CommandAttribute() {
+                    new CommandDispatch() {
                         CommandType = CommandType.PackagesMergePackage,
                         ParameterTypes = new List<CommandParameterType>() {
                             new CommandParameterType() {
@@ -62,7 +62,7 @@ namespace Procon.Core.Packages {
                     },
                     new CommandDispatchHandler(this.PackagesMergePackage)
                 }, {
-                    new CommandAttribute() {
+                    new CommandDispatch() {
                         CommandType = CommandType.PackagesUninstallPackage,
                         ParameterTypes = new List<CommandParameterType>() {
                             new CommandParameterType() {
@@ -73,7 +73,7 @@ namespace Procon.Core.Packages {
                     },
                     new CommandDispatchHandler(this.PackagesUninstallPackage)
                 }, {
-                    new CommandAttribute() {
+                    new CommandDispatch() {
                         CommandType = CommandType.PackagesFetchPackages
                     },
                     new CommandDispatchHandler(this.PackagesFetchPackages)

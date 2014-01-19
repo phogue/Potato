@@ -10,16 +10,16 @@ using Procon.Net.Shared.Models;
 namespace Procon.Examples.Plugins.Actions {
     public class Program : PluginController {
         public Program() : base() {
-            this.AppendDispatchHandlers(new Dictionary<CommandAttribute, CommandDispatchHandler>() {
+            this.AppendDispatchHandlers(new Dictionary<CommandDispatch, CommandDispatchHandler>() {
                 {
-                    new CommandAttribute() {
+                    new CommandDispatch() {
                         Name = "KickPlayer",
                         CommandAttributeType = CommandAttributeType.Handler
                     },
                     new CommandDispatchHandler(this.KickPlayer)
                 },
                 {
-                    new CommandAttribute() {
+                    new CommandDispatch() {
                         Name = "DeferredKickPlayer",
                         CommandAttributeType = CommandAttributeType.Handler
                     },

@@ -13,7 +13,7 @@ namespace Procon.Core.Shared {
         /// <summary>
         /// List of dispatch attributes to the method to call, provided the parameter list matches.
         /// </summary>
-        protected readonly Dictionary<CommandAttribute, CommandDispatchHandler> CommandDispatchHandlers = new Dictionary<CommandAttribute, CommandDispatchHandler>();
+        protected readonly Dictionary<CommandDispatch, CommandDispatchHandler> CommandDispatchHandlers = new Dictionary<CommandDispatch, CommandDispatchHandler>();
 
         protected delegate ICommandResult CommandDispatchHandler(ICommand command, Dictionary<String, CommandParameter> parameters);
 
@@ -36,7 +36,7 @@ namespace Procon.Core.Shared {
         /// Appends a list of dispatch handlers to the internal list, updating existing handlers if they exist.
         /// </summary>
         /// <param name="handlers"></param>
-        protected void AppendDispatchHandlers(Dictionary<CommandAttribute, CommandDispatchHandler> handlers) {
+        protected void AppendDispatchHandlers(Dictionary<CommandDispatch, CommandDispatchHandler> handlers) {
             foreach (var handler in handlers) {
                 if (this.CommandDispatchHandlers.ContainsKey(handler.Key) == false) {
                     this.CommandDispatchHandlers.Add(handler.Key, handler.Value);

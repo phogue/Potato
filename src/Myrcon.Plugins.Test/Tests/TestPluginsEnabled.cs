@@ -6,9 +6,9 @@ namespace Myrcon.Plugins.Test.Tests {
     public class TestPluginsEnabled : CoreController {
 
         public TestPluginsEnabled() : base() {
-            this.AppendDispatchHandlers(new Dictionary<CommandAttribute, CommandDispatchHandler>() {
+            this.AppendDispatchHandlers(new Dictionary<CommandDispatch, CommandDispatchHandler>() {
                 {
-                    new CommandAttribute() {
+                    new CommandDispatch() {
                         Name = "TestPluginsEnabledCommandResult",
                         ParameterTypes = new List<CommandParameterType>() {
                             new CommandParameterType() {

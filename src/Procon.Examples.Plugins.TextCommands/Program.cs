@@ -18,9 +18,9 @@ namespace Procon.Examples.Plugins.TextCommands {
 
             // 1. Setup a command dispatch to let us know when the command has been executed.
             // Commands can be executed from within game or via the daemon
-            this.AppendDispatchHandlers(new Dictionary<CommandAttribute, CommandDispatchHandler>() {
+            this.AppendDispatchHandlers(new Dictionary<CommandDispatch, CommandDispatchHandler>() {
                 {
-                    new CommandAttribute() {
+                    new CommandDispatch() {
                         Name = "FuzzyCommand",
                         ParameterTypes = new List<CommandParameterType>() {
                             new CommandParameterType() {
@@ -32,7 +32,7 @@ namespace Procon.Examples.Plugins.TextCommands {
                     new CommandDispatchHandler(this.FuzzyCommand)
                 },
                 {
-                    new CommandAttribute() {
+                    new CommandDispatch() {
                         Name = "RouteCommand",
                         ParameterTypes = new List<CommandParameterType>() {
                             new CommandParameterType() {

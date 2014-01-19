@@ -12,9 +12,9 @@ namespace Procon.Examples.Plugins.Configs {
         //           Procon uses the GUID to pipe through events/commands.
 
         public Program() : base() {
-            this.AppendDispatchHandlers(new Dictionary<CommandAttribute, CommandDispatchHandler>() {
+            this.AppendDispatchHandlers(new Dictionary<CommandDispatch, CommandDispatchHandler>() {
                 {
-                    new CommandAttribute() {
+                    new CommandDispatch() {
                         Name = "ThisIsJustACommand",
                         CommandAttributeType = CommandAttributeType.Executed,
                         ParameterTypes = new List<CommandParameterType>() {

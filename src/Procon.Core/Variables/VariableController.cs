@@ -40,9 +40,9 @@ namespace Procon.Core.Variables {
             this.ArchiveVariables = new List<VariableModel>();
             this.FlashVariables = new List<VariableModel>();
 
-            this.AppendDispatchHandlers(new Dictionary<CommandAttribute, CommandDispatchHandler>() {
+            this.AppendDispatchHandlers(new Dictionary<CommandDispatch, CommandDispatchHandler>() {
                 {
-                    new CommandAttribute() {
+                    new CommandDispatch() {
                         CommandType = CommandType.VariablesSet,
                         ParameterTypes = new List<CommandParameterType>() {
                             new CommandParameterType() {
@@ -58,7 +58,7 @@ namespace Procon.Core.Variables {
                     },
                     new CommandDispatchHandler(this.CommandSetCollection)
                 }, {
-                    new CommandAttribute() {
+                    new CommandDispatch() {
                         CommandType = CommandType.VariablesSet,
                         ParameterTypes = new List<CommandParameterType>() {
                             new CommandParameterType() {
@@ -73,7 +73,7 @@ namespace Procon.Core.Variables {
                     },
                     new CommandDispatchHandler(this.CommandSetSingular)
                 }, {
-                    new CommandAttribute() {
+                    new CommandDispatch() {
                         CommandType = CommandType.VariablesSetA,
                         ParameterTypes = new List<CommandParameterType>() {
                             new CommandParameterType() {
@@ -89,7 +89,7 @@ namespace Procon.Core.Variables {
                     },
                     new CommandDispatchHandler(this.CommandSetACollection)
                 }, {
-                    new CommandAttribute() {
+                    new CommandDispatch() {
                         CommandType = CommandType.VariablesSetA,
                         ParameterTypes = new List<CommandParameterType>() {
                             new CommandParameterType() {
@@ -104,7 +104,7 @@ namespace Procon.Core.Variables {
                     },
                     new CommandDispatchHandler(this.CommandSetASingular)
                 }, {
-                    new CommandAttribute() {
+                    new CommandDispatch() {
                         CommandType = CommandType.VariablesSetF,
                         ParameterTypes = new List<CommandParameterType>() {
                             new CommandParameterType() {
@@ -120,7 +120,7 @@ namespace Procon.Core.Variables {
                     },
                     new CommandDispatchHandler(this.CommandSetFCollection)
                 }, {
-                    new CommandAttribute() {
+                    new CommandDispatch() {
                         CommandType = CommandType.VariablesSetF,
                         ParameterTypes = new List<CommandParameterType>() {
                             new CommandParameterType() {
@@ -135,7 +135,7 @@ namespace Procon.Core.Variables {
                     },
                     new CommandDispatchHandler(this.CommandSetFSingular)
                 }, {
-                    new CommandAttribute() {
+                    new CommandDispatch() {
                         CommandType = CommandType.VariablesGet,
                         ParameterTypes = new List<CommandParameterType>() {
                             new CommandParameterType() {

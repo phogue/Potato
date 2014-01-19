@@ -11,8 +11,8 @@ namespace Procon.Core.Shared.Test.ExecutableCommands.Objects {
         private int _testNumber;
 
         public ExecutableBasicTester() : base() {
-            this.AppendDispatchHandlers(new Dictionary<CommandAttribute, CommandDispatchHandler>() {
-                {new CommandAttribute() {
+            this.AppendDispatchHandlers(new Dictionary<CommandDispatch, CommandDispatchHandler>() {
+                {new CommandDispatch() {
                     CommandType = CommandType.VariablesSet,
                     ParameterTypes = new List<CommandParameterType>() {
                         new CommandParameterType() {
@@ -22,11 +22,11 @@ namespace Procon.Core.Shared.Test.ExecutableCommands.Objects {
                     }
                 },
                     new CommandDispatchHandler(SetTestFlag)},
-                {new CommandAttribute() {
+                {new CommandDispatch() {
                     CommandType = CommandType.VariablesGet
                 },
                     new CommandDispatchHandler(GetTestFlag)},
-                {new CommandAttribute() {
+                {new CommandDispatch() {
                     Name = "CustomSet",
                     ParameterTypes = new List<CommandParameterType>() {
                         new CommandParameterType() {

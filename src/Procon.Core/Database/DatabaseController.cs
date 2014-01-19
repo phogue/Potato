@@ -54,9 +54,9 @@ namespace Procon.Core.Database {
                 }
             };
 
-            this.AppendDispatchHandlers(new Dictionary<CommandAttribute, CommandDispatchHandler>() {
+            this.AppendDispatchHandlers(new Dictionary<CommandDispatch, CommandDispatchHandler>() {
                 {
-                    new CommandAttribute() {
+                    new CommandDispatch() {
                         CommandType = CommandType.DatabaseQuery,
                         ParameterTypes = new List<CommandParameterType>() {
                             new CommandParameterType() {
@@ -68,7 +68,7 @@ namespace Procon.Core.Database {
                     new CommandDispatchHandler(this.Query)
                 },
                 {
-                    new CommandAttribute() {
+                    new CommandDispatch() {
                         CommandType = CommandType.DatabaseQuery,
                         ParameterTypes = new List<CommandParameterType>() {
                             new CommandParameterType() {
@@ -81,7 +81,7 @@ namespace Procon.Core.Database {
                     new CommandDispatchHandler(this.Query)
                 },
                 {
-                    new CommandAttribute() {
+                    new CommandDispatch() {
                         CommandType = CommandType.DatabaseQuery,
                         ParameterTypes = new List<CommandParameterType>() {
                             new CommandParameterType() {
@@ -97,7 +97,7 @@ namespace Procon.Core.Database {
                     new CommandDispatchHandler(this.QueryDriver)
                 },
                 {
-                    new CommandAttribute() {
+                    new CommandDispatch() {
                         CommandType = CommandType.DatabaseQuery,
                         ParameterTypes = new List<CommandParameterType>() {
                             new CommandParameterType() {

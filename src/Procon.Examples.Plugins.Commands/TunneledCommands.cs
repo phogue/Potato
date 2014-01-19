@@ -10,16 +10,16 @@ namespace Procon.Examples.Plugins.Commands {
     public class TunneledCommands : CoreController {
 
         public TunneledCommands() : base() {
-            this.AppendDispatchHandlers(new Dictionary<CommandAttribute, CommandDispatchHandler>() {
+            this.AppendDispatchHandlers(new Dictionary<CommandDispatch, CommandDispatchHandler>() {
                 {
-                    new CommandAttribute() {
+                    new CommandDispatch() {
                         Name = "ThisCommandIsInAChildObject",
                         CommandAttributeType = CommandAttributeType.Handler
                     },
                     new CommandDispatchHandler(this.ThisCommandIsInAChildObject)
                 },
                 {
-                    new CommandAttribute() {
+                    new CommandDispatch() {
                         Name = "NoParameterBubbleCommand",
                         CommandAttributeType = CommandAttributeType.Handler,
                         ParameterTypes = new List<CommandParameterType>() {

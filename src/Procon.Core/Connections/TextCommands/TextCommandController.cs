@@ -32,9 +32,9 @@ namespace Procon.Core.Connections.TextCommands {
             this.Shared = new SharedReferences();
             this.TextCommands = new List<TextCommandModel>();
 
-            this.AppendDispatchHandlers(new Dictionary<CommandAttribute, CommandDispatchHandler>() {
+            this.AppendDispatchHandlers(new Dictionary<CommandDispatch, CommandDispatchHandler>() {
                 {
-                    new CommandAttribute() {
+                    new CommandDispatch() {
                         CommandType = CommandType.TextCommandsExecute,
                         ParameterTypes = new List<CommandParameterType>() {
                             new CommandParameterType() {
@@ -45,7 +45,7 @@ namespace Procon.Core.Connections.TextCommands {
                     },
                     new CommandDispatchHandler(this.ExecuteTextCommand)
                 }, {
-                    new CommandAttribute() {
+                    new CommandDispatch() {
                         CommandType = CommandType.TextCommandsPreview,
                         ParameterTypes = new List<CommandParameterType>() {
                             new CommandParameterType() {
@@ -56,7 +56,7 @@ namespace Procon.Core.Connections.TextCommands {
                     },
                     new CommandDispatchHandler(this.PreviewTextCommand)
                 }, {
-                    new CommandAttribute() {
+                    new CommandDispatch() {
                         CommandType = CommandType.TextCommandsRegister,
                         ParameterTypes = new List<CommandParameterType>() {
                             new CommandParameterType() {
@@ -67,7 +67,7 @@ namespace Procon.Core.Connections.TextCommands {
                     },
                     new CommandDispatchHandler(this.RegisterTextCommand)
                 }, {
-                    new CommandAttribute() {
+                    new CommandDispatch() {
                         CommandType = CommandType.TextCommandsUnregister,
                         ParameterTypes = new List<CommandParameterType>() {
                             new CommandParameterType() {

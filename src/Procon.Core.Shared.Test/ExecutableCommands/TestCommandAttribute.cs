@@ -13,7 +13,7 @@ namespace Procon.Core.Shared.Test.ExecutableCommands {
         /// </summary>
         [Test]
         public void TestCommandAttributeDisposal() {
-            var command = new CommandAttribute() {
+            var command = new CommandDispatch() {
                 Name = "dispose"
             };
 
@@ -28,11 +28,11 @@ namespace Procon.Core.Shared.Test.ExecutableCommands {
         /// </summary>
         [Test]
         public void TestCommandAttributeEquality() {
-            var commandA = new CommandAttribute() {
+            var commandA = new CommandDispatch() {
                 Name = "equal"
             };
 
-            var commandB = new CommandAttribute() {
+            var commandB = new CommandDispatch() {
                 Name = "equal"
             };
 
@@ -44,7 +44,7 @@ namespace Procon.Core.Shared.Test.ExecutableCommands {
         /// </summary>
         [Test]
         public void TestCommandAttributeEqualityAgainstDifferenceType() {
-            var commandA = new CommandAttribute() {
+            var commandA = new CommandDispatch() {
                 Name = "equal"
             };
 
@@ -58,7 +58,7 @@ namespace Procon.Core.Shared.Test.ExecutableCommands {
         /// </summary>
         [Test]
         public void TestCommandAttributeEqualityAgainstNull() {
-            var command = new CommandAttribute() {
+            var command = new CommandDispatch() {
                 Name = "equal"
             };
 
@@ -70,11 +70,11 @@ namespace Procon.Core.Shared.Test.ExecutableCommands {
         /// </summary>
         [Test]
         public void TestCommandAttributeEqualityAgainstReferenceToSameObject() {
-            var commandA = new CommandAttribute() {
+            var commandA = new CommandDispatch() {
                 Name = "equal"
             };
 
-            CommandAttribute commandB = commandA;
+            CommandDispatch commandB = commandA;
 
             Assert.IsTrue(commandA.Equals(commandB));
         }
@@ -84,11 +84,11 @@ namespace Procon.Core.Shared.Test.ExecutableCommands {
         /// </summary>
         [Test]
         public void TestCommandAttributeEqualityHashCode() {
-            var commandA = new CommandAttribute() {
+            var commandA = new CommandDispatch() {
                 Name = "equal"
             };
 
-            var commandB = new CommandAttribute() {
+            var commandB = new CommandDispatch() {
                 Name = "equal"
             };
 
@@ -100,11 +100,11 @@ namespace Procon.Core.Shared.Test.ExecutableCommands {
         /// </summary>
         [Test]
         public void TestCommandAttributeEqualityOperator() {
-            var commandA = new CommandAttribute() {
+            var commandA = new CommandDispatch() {
                 Name = "equal"
             };
 
-            var commandB = new CommandAttribute() {
+            var commandB = new CommandDispatch() {
                 Name = "equal"
             };
 
@@ -116,7 +116,7 @@ namespace Procon.Core.Shared.Test.ExecutableCommands {
         /// </summary>
         [Test]
         public void TestCommandAttributeEqualityOperatorNull() {
-            var commandA = new CommandAttribute() {
+            var commandA = new CommandDispatch() {
                 Name = "equal"
             };
 
@@ -125,11 +125,11 @@ namespace Procon.Core.Shared.Test.ExecutableCommands {
 
         [Test]
         public void TestCommandAttributeInequalityOperator() {
-            var commandA = new CommandAttribute() {
+            var commandA = new CommandDispatch() {
                 Name = "equalA"
             };
 
-            var commandB = new CommandAttribute() {
+            var commandB = new CommandDispatch() {
                 Name = "equalB"
             };
 
@@ -141,7 +141,7 @@ namespace Procon.Core.Shared.Test.ExecutableCommands {
         /// </summary>
         [Test]
         public void TestCommandAttributeNameAliasFromCommandType() {
-            var command = new CommandAttribute() {
+            var command = new CommandDispatch() {
                 CommandType = CommandType.InstanceAddConnection
             };
 
@@ -154,11 +154,11 @@ namespace Procon.Core.Shared.Test.ExecutableCommands {
         /// </summary>
         [Test]
         public void TestCommandAttributeNotEqualHashCode() {
-            var commandA = new CommandAttribute() {
+            var commandA = new CommandDispatch() {
                 Name = "equalA"
             };
 
-            var commandB = new CommandAttribute() {
+            var commandB = new CommandDispatch() {
                 Name = "equalB"
             };
 
@@ -170,7 +170,7 @@ namespace Procon.Core.Shared.Test.ExecutableCommands {
         /// </summary>
         [Test]
         public void TestCommandAttributeParseInvalidCommandType() {
-            CommandAttribute command = new CommandAttribute().ParseCommandType("CustomCommand");
+            CommandDispatch command = new CommandDispatch().ParseCommandType("CustomCommand");
 
             Assert.AreEqual("CustomCommand", command.Name);
             Assert.AreEqual(CommandType.None, command.CommandType);
@@ -181,7 +181,7 @@ namespace Procon.Core.Shared.Test.ExecutableCommands {
         /// </summary>
         [Test]
         public void TestCommandAttributeParseValidCommandType() {
-            CommandAttribute command = new CommandAttribute().ParseCommandType("InstanceAddConnection");
+            CommandDispatch command = new CommandDispatch().ParseCommandType("InstanceAddConnection");
 
             Assert.AreEqual("InstanceAddConnection", command.Name);
             Assert.AreEqual(CommandType.InstanceAddConnection, command.CommandType);
@@ -192,11 +192,11 @@ namespace Procon.Core.Shared.Test.ExecutableCommands {
         /// </summary>
         [Test]
         public void TestCommandAttributeReferenceEqualityOperator() {
-            var commandA = new CommandAttribute() {
+            var commandA = new CommandDispatch() {
                 Name = "equal"
             };
 
-            CommandAttribute commandB = commandA;
+            CommandDispatch commandB = commandA;
 
             Assert.IsTrue(commandA == commandB);
         }

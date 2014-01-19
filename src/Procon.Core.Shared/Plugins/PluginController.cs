@@ -52,9 +52,9 @@ namespace Procon.Core.Shared.Plugins {
 
             this.DeferredActions = new ConcurrentDictionary<Guid, IDeferredAction>();
 
-            this.AppendDispatchHandlers(new Dictionary<CommandAttribute, CommandDispatchHandler>() {
+            this.AppendDispatchHandlers(new Dictionary<CommandDispatch, CommandDispatchHandler>() {
                 {
-                    new CommandAttribute() {
+                    new CommandDispatch() {
                         CommandType = CommandType.TextCommandsExecute,
                         CommandAttributeType = CommandAttributeType.Executed,
                         ParameterTypes = new List<CommandParameterType>() {

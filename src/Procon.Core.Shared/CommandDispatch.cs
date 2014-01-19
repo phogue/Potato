@@ -8,7 +8,7 @@ namespace Procon.Core.Shared {
     /// </summary>
     /// <remarks><para>Called to execute a command.</para></remarks>
     [Serializable]
-    public class CommandAttribute : IComparable<CommandAttribute>, IDisposable, IEquatable<CommandAttribute> {
+    public class CommandDispatch : IComparable<CommandDispatch>, IDisposable, IEquatable<CommandDispatch> {
 
         /// <summary>
         /// The command being executed. This is the only value used to match up a command.
@@ -43,7 +43,7 @@ namespace Procon.Core.Shared {
         [JsonIgnore]
         public List<CommandParameterType> ParameterTypes { get; set; }
 
-        public CommandAttribute() {
+        public CommandDispatch() {
             this.CommandAttributeType = CommandAttributeType.Handler;
         }
 
@@ -51,7 +51,7 @@ namespace Procon.Core.Shared {
         /// Parses a command type from an enum if it is valid.
         /// </summary>
         /// <param name="commandName"></param>
-        public CommandAttribute ParseCommandType(String commandName) {
+        public CommandDispatch ParseCommandType(String commandName) {
             if (Enum.IsDefined(typeof(CommandType), commandName)) {
                 this.CommandType = (CommandType)Enum.Parse(typeof(CommandType), commandName);
             }
@@ -68,7 +68,7 @@ namespace Procon.Core.Shared {
         /// <param name="a"></param>
         /// <param name="b"></param>
         /// <returns></returns>
-        public static bool operator ==(CommandAttribute a, CommandAttribute b) {
+        public static bool operator ==(CommandDispatch a, CommandDispatch b) {
             // If both are null, or both are same instance, return true.
             if (System.Object.ReferenceEquals(a, b)) {
                 return true;
@@ -83,7 +83,7 @@ namespace Procon.Core.Shared {
             return a.CompareTo(b) == 0;
         }
 
-        public static bool operator !=(CommandAttribute a, CommandAttribute b) {
+        public static bool operator !=(CommandDispatch a, CommandDispatch b) {
             return !(a == b);
         }
 
@@ -93,7 +93,7 @@ namespace Procon.Core.Shared {
             }
         }
 
-        public bool Equals(CommandAttribute other) {
+        public bool Equals(CommandDispatch other) {
             if (ReferenceEquals(null, other))
                 return false;
             if (ReferenceEquals(this, other))
@@ -108,10 +108,10 @@ namespace Procon.Core.Shared {
                 return true;
             if (obj.GetType() != this.GetType())
                 return false;
-            return Equals((CommandAttribute) obj);
+            return Equals((CommandDispatch) obj);
         }
 
-        public int CompareTo(CommandAttribute other) {
+        public int CompareTo(CommandDispatch other) {
             return String.CompareOrdinal(other.Name, this.Name) == 0 ? 0 : 1;
         }
         

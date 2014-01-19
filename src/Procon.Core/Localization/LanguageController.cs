@@ -32,9 +32,9 @@ namespace Procon.Core.Localization {
             this.Default = null;
             this.LoadedLanguageFiles = new List<LanguageConfig>();
 
-            this.AppendDispatchHandlers(new Dictionary<CommandAttribute, CommandDispatchHandler>() {
+            this.AppendDispatchHandlers(new Dictionary<CommandDispatch, CommandDispatchHandler>() {
                 {
-                    new CommandAttribute() {
+                    new CommandDispatch() {
                         CommandType = CommandType.LanguageLocalize,
                         ParameterTypes = new List<CommandParameterType>() {
                             new CommandParameterType() {
@@ -59,7 +59,7 @@ namespace Procon.Core.Localization {
                     },
                     new CommandDispatchHandler(this.Localize)
                 }, {
-                    new CommandAttribute() {
+                    new CommandDispatch() {
                         CommandType = CommandType.LanguageLocalize,
                         ParameterTypes = new List<CommandParameterType>() {
                             new CommandParameterType() {
@@ -82,7 +82,7 @@ namespace Procon.Core.Localization {
                     },
                     new CommandDispatchHandler(this.SingleParameterLocalize)
                 }, {
-                    new CommandAttribute() {
+                    new CommandDispatch() {
                         CommandType = CommandType.LanguageLocalize,
                         ParameterTypes = new List<CommandParameterType>() {
                             new CommandParameterType() {

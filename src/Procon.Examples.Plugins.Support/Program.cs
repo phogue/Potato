@@ -20,16 +20,16 @@ namespace Procon.Examples.Plugins.Support {
 
         public Program() : base() {
 
-            this.AppendDispatchHandlers(new Dictionary<CommandAttribute, CommandDispatchHandler>() {
+            this.AppendDispatchHandlers(new Dictionary<CommandDispatch, CommandDispatchHandler>() {
                 {
-                    new CommandAttribute() {
+                    new CommandDispatch() {
                         Name = "TestSupportToKillPlayersUsingBranchBuilder",
                         CommandAttributeType = CommandAttributeType.Handler
                     },
                     new CommandDispatchHandler(this.TestSupportToKillPlayersUsingBranchBuilder)
                 },
                 {
-                    new CommandAttribute() {
+                    new CommandDispatch() {
                         Name = "TestSupportCustomBuildAndTest",
                         CommandAttributeType = CommandAttributeType.Handler
                     },

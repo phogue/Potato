@@ -10,27 +10,27 @@ namespace Myrcon.Plugins.Test.Tests {
     public class TestPluginsWebUi : CoreController {
 
         public TestPluginsWebUi() : base() {
-            this.AppendDispatchHandlers(new Dictionary<CommandAttribute, CommandDispatchHandler>() {
+            this.AppendDispatchHandlers(new Dictionary<CommandDispatch, CommandDispatchHandler>() {
                 {
-                    new CommandAttribute() {
+                    new CommandDispatch() {
                         Name = "/"
                     },
                     new CommandDispatchHandler(this.TestPluginIndex)
                 }
             });
 
-            this.AppendDispatchHandlers(new Dictionary<CommandAttribute, CommandDispatchHandler>() {
+            this.AppendDispatchHandlers(new Dictionary<CommandDispatch, CommandDispatchHandler>() {
                 {
-                    new CommandAttribute() {
+                    new CommandDispatch() {
                         Name = "/settings"
                     },
                     new CommandDispatchHandler(this.TestPluginSettings)
                 }
             }); 
             
-            this.AppendDispatchHandlers(new Dictionary<CommandAttribute, CommandDispatchHandler>() {
+            this.AppendDispatchHandlers(new Dictionary<CommandDispatch, CommandDispatchHandler>() {
                 {
-                    new CommandAttribute() {
+                    new CommandDispatch() {
                         Name = "/test/parameters",
                         ParameterTypes = new List<CommandParameterType>() {
                             new CommandParameterType() {

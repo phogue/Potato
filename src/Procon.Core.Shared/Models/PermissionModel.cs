@@ -6,7 +6,7 @@ namespace Procon.Core.Shared.Models {
     /// Keep it familier with what people know.
     /// </summary>
     [Serializable]
-    public class PermissionModel : CommandAttribute, IDisposable {
+    public class PermissionModel : CommandDispatch, IDisposable {
         /// <summary>
         /// The power/value they have for this permission
         /// null means no value has been set for this group.

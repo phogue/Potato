@@ -63,9 +63,9 @@ namespace Procon.Core.Events {
             this.Shared = new SharedReferences();
             this.LoggedEvents = new List<IGenericEvent>();
 
-            this.AppendDispatchHandlers(new Dictionary<CommandAttribute, CommandDispatchHandler>() {
+            this.AppendDispatchHandlers(new Dictionary<CommandDispatch, CommandDispatchHandler>() {
                 {
-                    new CommandAttribute() {
+                    new CommandDispatch() {
                         CommandType = CommandType.EventsFetchAfterEventId,
                         ParameterTypes = new List<CommandParameterType>() {
                             new CommandParameterType() {

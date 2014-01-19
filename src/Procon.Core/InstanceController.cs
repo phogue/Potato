@@ -91,9 +91,9 @@ namespace Procon.Core {
 
             this.EventsConsole = new EventsConsoleController();
 
-            this.AppendDispatchHandlers(new Dictionary<CommandAttribute, CommandDispatchHandler>() {
+            this.AppendDispatchHandlers(new Dictionary<CommandDispatch, CommandDispatchHandler>() {
                 {
-                    new CommandAttribute() {
+                    new CommandDispatch() {
                         CommandType = CommandType.InstanceServiceMergePackage,
                         ParameterTypes = new List<CommandParameterType>() {
                             new CommandParameterType() {
@@ -109,7 +109,7 @@ namespace Procon.Core {
                     new CommandDispatchHandler(this.InstanceServiceMergePackage)
                 },
                 {
-                    new CommandAttribute() {
+                    new CommandDispatch() {
                         CommandType = CommandType.InstanceServiceUninstallPackage,
                         ParameterTypes = new List<CommandParameterType>() {
                             new CommandParameterType() {
@@ -121,12 +121,12 @@ namespace Procon.Core {
                     new CommandDispatchHandler(this.InstanceServiceUninstallPackage)
                 },
                 {
-                    new CommandAttribute() {
+                    new CommandDispatch() {
                         CommandType = CommandType.InstanceServiceRestart
                     },
                     new CommandDispatchHandler(this.InstanceServiceRestart)
                 }, {
-                    new CommandAttribute() {
+                    new CommandDispatch() {
                         CommandType = CommandType.InstanceAddConnection,
                         ParameterTypes = new List<CommandParameterType>() {
                             new CommandParameterType() {
@@ -157,7 +157,7 @@ namespace Procon.Core {
                     },
                     new CommandDispatchHandler(this.InstanceAddConnection)
                 }, {
-                    new CommandAttribute() {
+                    new CommandDispatch() {
                         CommandType = CommandType.InstanceRemoveConnection,
                         ParameterTypes = new List<CommandParameterType>() {
                             new CommandParameterType() {
@@ -168,7 +168,7 @@ namespace Procon.Core {
                     },
                     new CommandDispatchHandler(this.InstanceRemoveConnectionByGuid)
                 }, {
-                    new CommandAttribute() {
+                    new CommandDispatch() {
                         CommandType = CommandType.InstanceRemoveConnection,
                         ParameterTypes = new List<CommandParameterType>() {
                             new CommandParameterType() {
@@ -191,7 +191,7 @@ namespace Procon.Core {
                     },
                     new CommandDispatchHandler(this.InstanceRemoveConnectionByDetails)
                 }, {
-                    new CommandAttribute() {
+                    new CommandDispatch() {
                         CommandType = CommandType.InstanceQuery
                     },
                     new CommandDispatchHandler(this.InstanceQuery)

@@ -56,7 +56,7 @@
     <Compile Include="Models\AsynchronousCommandStateModel.cs" />
     <Compile Include="AsynchronousCoreController.cs" />
     <Compile Include="Command.cs" />
-    <Compile Include="CommandAttribute.cs" />
+    <Compile Include="CommandDispatch.cs" />
     <Compile Include="CommandAttributeType.cs" />
     <Compile Include="CommandBuilder.cs" />
     <Compile Include="CommandData.cs" />

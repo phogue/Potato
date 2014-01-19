@@ -8,8 +8,8 @@ using System.Collections.Generic;
 namespace Procon.Core.Shared.Test.ExecutableCommands.Objects {
     public class ExecutableExecutedTester : ExecutableBasicTester {
         public ExecutableExecutedTester() : base() {
-            this.AppendDispatchHandlers(new Dictionary<CommandAttribute, CommandDispatchHandler>() {
-                {new CommandAttribute() {
+            this.AppendDispatchHandlers(new Dictionary<CommandDispatch, CommandDispatchHandler>() {
+                {new CommandDispatch() {
                     CommandType = CommandType.VariablesSet,
                     CommandAttributeType = CommandAttributeType.Executed,
                     ParameterTypes = new List<CommandParameterType>() {

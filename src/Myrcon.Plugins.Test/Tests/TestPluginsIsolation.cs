@@ -8,9 +8,9 @@ namespace Myrcon.Plugins.Test.Tests {
     public class TestPluginsIsolation : CoreController {
 
         public TestPluginsIsolation() : base() {
-            this.AppendDispatchHandlers(new Dictionary<CommandAttribute, CommandDispatchHandler>() {
+            this.AppendDispatchHandlers(new Dictionary<CommandDispatch, CommandDispatchHandler>() {
                 {
-                    new CommandAttribute() {
+                    new CommandDispatch() {
                         Name = "TestPluginsIsolationCleanCurrentAppDomain",
                         ParameterTypes = new List<CommandParameterType>() {
                             new CommandParameterType() {
@@ -21,7 +21,7 @@ namespace Myrcon.Plugins.Test.Tests {
                     },
                     new CommandDispatchHandler(this.TestPluginsIsolationCleanCurrentAppDomain)
                 }, {
-                    new CommandAttribute() {
+                    new CommandDispatch() {
                         Name = "TestPluginsIsolationWriteToDirectory",
                         ParameterTypes = new List<CommandParameterType>() {
                             new CommandParameterType() {

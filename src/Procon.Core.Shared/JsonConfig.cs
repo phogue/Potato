@@ -95,19 +95,21 @@ namespace Procon.Core.Shared {
             file.Refresh();
 
             if (file.Exists == true) {
-                using (JsonReader reader = new JsonTextReader(new StreamReader(file.FullName))) {
-                    try {
-                        this.Document = JObject.Load(reader);
+                using (var stream = new StreamReader(file.FullName)) {
+                    using (JsonReader reader = new JsonTextReader(stream)) {
+                        try {
+                            this.Document = JObject.Load(reader);
 
-                        String name = file.Name.Replace(".json", "");
+                            String name = file.Name.Replace(".json", "");
 
-                        this.Root = this.Document[name] != null ? this.Document.Value<JArray>(name) : this.Document.First.First.Value<JArray>();
-                    }
-                    catch {
-                        this.Root = new JArray();
-                        this.Document = new JObject() {
+                            this.Root = this.Document[name] != null ? this.Document.Value<JArray>(name) : this.Document.First.First.Value<JArray>();
+                        }
+                        catch {
+                            this.Root = new JArray();
+                            this.Document = new JObject() {
                             new JProperty("Empty", this.Root)
                         };
+                        }
                     }
                 }
             }

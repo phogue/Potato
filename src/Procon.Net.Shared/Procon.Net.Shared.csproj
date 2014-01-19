@@ -105,6 +105,9 @@
     <Compile Include="Protocols\CommandServer\CommandServerPacket.cs" />
     <Compile Include="Protocols\CommonGameType.cs" />
     <Compile Include="Protocols\SupportedGameTypes.cs" />
+    <Compile Include="Serialization\InterfaceJsonConverter.cs" />
+    <Compile Include="Serialization\Json.cs" />
+    <Compile Include="Serialization\JsonSerializerExtensions.cs" />
     <Compile Include="Truths\Agents\EveryoneAgent.cs" />
     <Compile Include="Truths\Agents\GroupAgent.cs" />
     <Compile Include="Truths\Agents\ObjectiveAgent.cs" />

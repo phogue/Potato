@@ -683,8 +683,8 @@ namespace Myrcon.Protocols.Frostbite {
                                             Name = request.Packet.Words[3]
                                         }
                                     },
-                                    Points = new List<Point3dModel>() {
-                                        new Point3dModel(request.Packet.Words[8], request.Packet.Words[10], request.Packet.Words[9])
+                                    Points = new List<Point3DModel>() {
+                                        new Point3DModel(request.Packet.Words[8], request.Packet.Words[10], request.Packet.Words[9])
                                     },
                                     HumanHitLocations = new List<HumanHitLocation>() {
                                         headshot == true ? FrostbiteGame.Headshot : FrostbiteGame.Bodyshot
@@ -694,8 +694,8 @@ namespace Myrcon.Protocols.Frostbite {
                                     Players = new List<PlayerModel>() {
                                         this.State.Players.Find(x => x.Name == request.Packet.Words[1])
                                     },
-                                    Points = new List<Point3dModel>() {
-                                        new Point3dModel(request.Packet.Words[5], request.Packet.Words[7], request.Packet.Words[6])
+                                    Points = new List<Point3DModel>() {
+                                        new Point3DModel(request.Packet.Words[5], request.Packet.Words[7], request.Packet.Words[6])
                                     }
                                 }
                             }

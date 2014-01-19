@@ -1,13 +1,11 @@
 ﻿using System;
 
 namespace Procon.Net.Shared.Models {
-
     /// <summary>
     /// A three dimensional location of a player/object.
     /// </summary>
     [Serializable]
-    public sealed class Point3dModel : NetworkModel {
-
+    public sealed class Point3DModel : NetworkModel {
         /// <summary>
         /// X coordinate of the player or object
         /// </summary>
@@ -23,11 +21,17 @@ namespace Procon.Net.Shared.Models {
         /// </summary>
         public float Z { get; set; }
 
-        public Point3dModel() : base() {
+        /// <summary>
+        /// Initializes an empty point
+        /// </summary>
+        public Point3DModel() : base() {
 
         }
 
-        public Point3dModel(String x, String y, String z) : base() {
+        /// <summary>
+        /// Initializes a point from three strings
+        /// </summary>
+        public Point3DModel(String x, String y, String z) : base() {
             float iX = 0, iY = 0, iZ = 0;
 
             float.TryParse(x, out iX);

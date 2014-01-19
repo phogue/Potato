@@ -52,8 +52,8 @@ namespace Procon.Net.Shared.Test.TestSerialization.TestJson {
                     Players = new List<PlayerModel>() {
                         new PlayerModel()
                     },
-                    Points = new List<Point3dModel>() {
-                        new Point3dModel()
+                    Points = new List<Point3DModel>() {
+                        new Point3DModel()
                     },
                     Settings = new List<Settings>() {
                         new Settings()
@@ -84,8 +84,8 @@ namespace Procon.Net.Shared.Test.TestSerialization.TestJson {
                     Players = new List<PlayerModel>() {
                         new PlayerModel()
                     },
-                    Points = new List<Point3dModel>() {
-                        new Point3dModel()
+                    Points = new List<Point3DModel>() {
+                        new Point3DModel()
                     },
                     Settings = new List<Settings>() {
                         new Settings()

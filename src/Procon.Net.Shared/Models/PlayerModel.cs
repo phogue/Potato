@@ -10,7 +10,6 @@ namespace Procon.Net.Shared.Models {
     /// </summary>
     [Serializable]
     public sealed class PlayerModel : NetworkModel {
-
         /// <summary>
         /// Used when determining a player's Country Name and Code.
         /// </summary>

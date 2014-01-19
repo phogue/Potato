@@ -7,7 +7,6 @@ namespace Procon.Net.Shared.Models {
     /// </summary>
     [Serializable]
     public sealed class ItemModel : NetworkModel {
-
         /// <summary>
         /// The name of the item, used by the game.
         /// </summary>

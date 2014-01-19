@@ -1,9 +1,11 @@
 ﻿using System;
 
 namespace Procon.Net.Shared.Models {
+    /// <summary>
+    /// A description of a player creation
+    /// </summary>
     [Serializable]
     public sealed class SpawnModel : NetworkModel {
-
         /// <summary>
         /// The player who spawned in
         /// </summary>

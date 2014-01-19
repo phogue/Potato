@@ -6,7 +6,6 @@ namespace Procon.Net.Shared.Models {
     /// </summary>
     [Serializable]
     public sealed class GroupingModel : NetworkModel {
-
         /// <summary>
         /// A majority of games have teams, teams have squads. So we have these variables
         /// where to simply avoid debugging string issues later.

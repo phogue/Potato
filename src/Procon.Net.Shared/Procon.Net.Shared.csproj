@@ -99,7 +99,7 @@
     <Compile Include="Models\ItemModel.cs" />
     <Compile Include="Models\NetworkModel.cs" />
     <Compile Include="Models\PlayerModel.cs" />
-    <Compile Include="Models\Point3dModel.cs" />
+    <Compile Include="Models\Point3DModel.cs" />
     <Compile Include="Models\RoleModel.cs" />
     <Compile Include="Models\Settings.cs" />
     <Compile Include="Models\SettingsData.cs" />

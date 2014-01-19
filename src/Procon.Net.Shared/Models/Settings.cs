@@ -1,13 +1,11 @@
 ﻿using System;
 
 namespace Procon.Net.Shared.Models {
-
     /// <summary>
     /// The current, maximum and minimum settings 
     /// </summary>
     [Serializable]
     public sealed class Settings {
-
         /// <summary>
         /// Stores all the current information (like the player count for right now)
         /// </summary>
@@ -23,6 +21,9 @@ namespace Procon.Net.Shared.Models {
         /// </summary>
         public SettingsData Maximum { get; set; }
 
+        /// <summary>
+        /// Initializes the various groups of settings
+        /// </summary>
         public Settings() {
             this.Current = new SettingsData();
             this.Minimum = new SettingsData();

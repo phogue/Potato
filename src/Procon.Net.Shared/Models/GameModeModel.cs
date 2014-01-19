@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 
 namespace Procon.Net.Shared.Models {
-
+    /// <summary>
+    /// A description of a game mode currently being played or attached to a map
+    /// </summary>
     [Serializable]
     public sealed class GameModeModel : NetworkModel {
-
         /// <summary>
         /// This game mode's name as it is used via Rcon.
         /// </summary>
@@ -26,6 +27,9 @@ namespace Procon.Net.Shared.Models {
         /// </summary>
         public List<GroupingModel> DefaultGroups { get; set; }
 
+        /// <summary>
+        /// Initializes the game mode with the default values.
+        /// </summary>
         public GameModeModel() {
             this.Name = String.Empty;
             this.FriendlyName = String.Empty;

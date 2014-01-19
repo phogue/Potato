@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 
 namespace Procon.Net.Shared.Models {
+    /// <summary>
+    /// Underlying data group for a model
+    /// </summary>
     [Serializable]
     public class NetworkModelData {
         /// <summary>
@@ -24,7 +27,7 @@ namespace Procon.Net.Shared.Models {
         /// <summary>
         /// The list of points (3d) attached to this action, if any.
         /// </summary>
-        public List<Point3dModel> Points { get; set; }
+        public List<Point3DModel> Points { get; set; }
 
         /// <summary>
         /// List of items attached to this action, if any.

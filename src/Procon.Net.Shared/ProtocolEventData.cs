@@ -51,7 +51,7 @@ namespace Procon.Net.Shared {
         /// <summary>
         /// The list of points (3d) attached to this event, if any.
         /// </summary>
-        public List<Point3dModel> Points { get; set; }
+        public List<Point3DModel> Points { get; set; }
 
         /// <summary>
         /// List of items attached to this event, if any.

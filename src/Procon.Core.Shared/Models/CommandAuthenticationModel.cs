@@ -6,7 +6,7 @@ namespace Procon.Core.Shared.Models {
     /// Holds parameters required to authenticate a command
     /// </summary>
     [Serializable]
-    public class CommandAuthenticationModel {
+    public class CommandAuthenticationModel : CoreModel {
         /// <summary>
         /// The username of the initiator
         /// </summary>

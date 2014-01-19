@@ -1,6 +1,9 @@
 using System;
 
 namespace Procon.Core.Shared {
+    /// <summary>
+    /// Where the command originated from (within Procon, over the command server or from a plugin)
+    /// </summary>
     [Serializable]
     public enum CommandOrigin {
         /// <summary>

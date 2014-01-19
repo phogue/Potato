@@ -1,6 +1,4 @@
 using System;
-using System.Xml.Serialization;
-using Newtonsoft.Json;
 
 namespace Procon.Core.Shared {
 

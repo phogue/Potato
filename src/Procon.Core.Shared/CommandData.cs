@@ -150,19 +150,19 @@ namespace Procon.Core.Shared {
         /// <summary>
         /// Raw packets (in plain or completed format) 
         /// </summary>
-        [XmlIgnore, JsonIgnore]
+        [JsonIgnore]
         public List<Raw> Raws { get; set; }
 
         /// <summary>
         /// The raw packets attached to this command or event, if any.
         /// </summary>
-        [XmlIgnore, JsonIgnore]
+        [JsonIgnore]
         public List<IPacket> Packets { get; set; }
 
         /// <summary>
         /// A query or query result.
         /// </summary>
-        [XmlIgnore, JsonIgnore]
+        [JsonIgnore]
         public List<IDatabaseObject> Queries { get; set; }
 
         /// <summary>

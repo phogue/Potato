@@ -9,7 +9,7 @@ namespace Procon.Net.Shared.Models {
         /// <summary>
         /// When this object was created.
         /// </summary>
-        [XmlIgnore, JsonIgnore]
+        [JsonIgnore]
         public DateTime Created { get; set; }
 
         /// <summary>

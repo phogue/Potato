@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Xml.Serialization;
 using Newtonsoft.Json;
 
 namespace Procon.Core.Shared.Models {
@@ -24,7 +21,7 @@ namespace Procon.Core.Shared.Models {
         /// <remarks>
         ///     <para>We ignore the password hash, so the hash is never sent across the network or logged.</para>
         /// </remarks>
-        [XmlIgnore, JsonIgnore]
+        [JsonIgnore]
         public String PasswordHash { get; set; }
 
         /// <summary>
@@ -35,7 +32,7 @@ namespace Procon.Core.Shared.Models {
         /// <summary>
         /// Backreference to the group that owns this account.
         /// </summary>
-        [XmlIgnore, JsonIgnore]
+        [JsonIgnore]
         public GroupModel Group { get; set; }
 
         public AccountModel()

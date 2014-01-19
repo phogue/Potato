@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Xml.Serialization;
 using Newtonsoft.Json;
 
 namespace Procon.Core.Shared.Events {
@@ -10,7 +9,7 @@ namespace Procon.Core.Shared.Events {
     /// <remarks>
     ///     <pre>This is done in a very non-clever way deliberately. Think of it as an Interface that should never change, but instead be added to.</pre>
     /// </remarks>
-    [Serializable, XmlType(TypeName = "Event")]
+    [Serializable]
     public sealed class GenericEvent : CommandResult {
 
         /// <summary>
@@ -27,7 +26,7 @@ namespace Procon.Core.Shared.Events {
         /// <summary>
         /// The command to be executed, will be converted to a string in Name
         /// </summary>
-        [XmlIgnore, JsonIgnore]
+        [JsonIgnore]
         public GenericEventType GenericEventType {
             get { return this._eventType; }
             set {

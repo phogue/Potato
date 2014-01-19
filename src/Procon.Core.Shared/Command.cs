@@ -36,7 +36,7 @@ namespace Procon.Core.Shared {
         /// <summary>
         /// The original request from a remote source.
         /// </summary>
-        [XmlIgnore, JsonIgnore]
+        [JsonIgnore]
         public CommandServerPacket RemoteRequest { get; set; }
 
         /// <summary>

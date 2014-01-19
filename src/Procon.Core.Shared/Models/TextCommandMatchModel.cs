@@ -1,10 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Xml;
-using System.Xml.Serialization;
-using Newtonsoft.Json;
-using Procon.Net.Shared.Actions;
 using Procon.Net.Shared.Models;
 
 namespace Procon.Core.Shared.Models {
@@ -28,23 +23,7 @@ namespace Procon.Core.Shared.Models {
         /// How long they want the command to be in effect, if applicable.
         /// </summary>
         /// <remarks>Default if no preposition is given. "for 20 minutes", "20 minutes"</remarks>
-        [XmlIgnore]
         public TimeSpan? Period { get; set; }
-
-        /// <summary>
-        /// Xml serialization for the TimeSpan (without wrapper since Procon.Fuzzy should
-        /// not need to worry about such things.
-        /// </summary>
-        [Browsable(false), EditorBrowsable(EditorBrowsableState.Never), JsonIgnore]
-        [XmlElement(DataType = "duration", ElementName = "Period")]
-        public String PeriodString {
-            get {
-                return this.Period.HasValue == true ? XmlConvert.ToString(this.Period.Value) : String.Empty;
-            }
-            set {
-                this.Period = String.IsNullOrEmpty(value) ? TimeSpan.Zero : XmlConvert.ToTimeSpan(value);
-            }
-        }
 
         /// <summary>
         /// How long they want to wait before the command is executed, if applicable.

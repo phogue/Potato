@@ -22,13 +22,11 @@ namespace Procon.Core.Shared {
         /// <summary>
         /// All objects to tunnel downwards
         /// </summary>
-        [XmlIgnore, JsonIgnore]
         public List<ICoreController> TunnelObjects { get; set; }
 
         /// <summary>
         /// All objects to bubble upwards
         /// </summary>
-        [XmlIgnore, JsonIgnore]
         public List<ICoreController> BubbleObjects { get; set; }
 
         protected CoreController() : base() {
@@ -54,7 +52,7 @@ namespace Procon.Core.Shared {
         /// <summary>
         /// Fired after the disposal method has been executed on this object.
         /// </summary>
-        [field: NonSerialized, XmlIgnore, JsonIgnore]
+        [field: NonSerialized]
         public event EventHandler Disposed;
 
         protected virtual void OnDisposed() {

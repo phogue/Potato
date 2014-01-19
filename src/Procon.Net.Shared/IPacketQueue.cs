@@ -1,6 +1,8 @@
 ﻿namespace Procon.Net.Shared {
+    /// <summary>
+    /// Handles queing of packets, sending packets in a sequential order.
+    /// </summary>
     public interface IPacketQueue {
-
         /// <summary>
         /// Clears the current queue
         /// </summary>

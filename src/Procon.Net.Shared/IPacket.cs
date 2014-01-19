@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Net;
 
 namespace Procon.Net.Shared {
+    /// <summary>
+    /// Basic information sent/recv from the connected client.
+    /// </summary>
     public interface IPacket {
         /// <summary>
         /// When this packet was created

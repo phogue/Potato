@@ -337,7 +337,7 @@ namespace Procon.Core.Test.TextCommands {
         };
 
         protected TextCommandController CreateTextCommandController() {
-            var security = new SecurityController().Execute() as SecurityController;
+            var security = (SecurityController)new SecurityController().Execute();
 
             security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
@@ -427,7 +427,9 @@ namespace Procon.Core.Test.TextCommands {
         /// <returns>The event generated when executing the text command.</returns>
         protected static CommandResult ExecuteTextCommand(TextCommandController textCommandController, String command, String username = "Phogue") {
             CommandResult result = textCommandController.ExecuteTextCommand(new Command() {
-                Username = username,
+                Authentication = {
+                    Username = "Phogue"
+                },
                 Origin = CommandOrigin.Local
             }, new Dictionary<string, CommandParameter>() {
                 {"text", new CommandParameter() {

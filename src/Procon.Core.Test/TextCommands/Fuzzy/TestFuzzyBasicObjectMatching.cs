@@ -3,7 +3,6 @@
 using System.Collections.Generic;
 using NUnit.Framework;
 using Procon.Core.Shared;
-using Procon.Net.Shared.Actions;
 using Procon.Net.Shared.Models;
 
 #endregion
@@ -14,7 +13,9 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
         [Test]
         public void TestBasicAlternateKickPhogueCommandSevereTypo() {
             CommandResult result = CreateTextCommandController().ExecuteTextCommand(new Command() {
-                Username = "Phogue",
+                Authentication = {
+                    Username = "Phogue"
+                },
                 Origin = CommandOrigin.Local
             }, new Dictionary<string, CommandParameter>() {
                 {"text", new CommandParameter() {
@@ -54,7 +55,9 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
         [Test]
         public void TestBasicKickPhogueCommandSevereTypo() {
             CommandResult result = CreateTextCommandController().ExecuteTextCommand(new Command() {
-                Username = "Phogue",
+                Authentication = {
+                    Username = "Phogue"
+                },
                 Origin = CommandOrigin.Local
             }, new Dictionary<string, CommandParameter>() {
                 {"text", new CommandParameter() {
@@ -73,7 +76,9 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
         [Test]
         public void TestBasicKickPhogueCommandSmallTypo() {
             CommandResult result = CreateTextCommandController().ExecuteTextCommand(new Command() {
-                Username = "Phogue",
+                Authentication = {
+                    Username = "Phogue"
+                },
                 Origin = CommandOrigin.Local
             }, new Dictionary<string, CommandParameter>() {
                 {"text", new CommandParameter() {

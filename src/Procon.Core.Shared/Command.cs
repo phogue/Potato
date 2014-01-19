@@ -1,8 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Xml.Serialization;
 using Newtonsoft.Json;
-using Procon.Net.Shared.Protocols;
+using Procon.Core.Shared.Models;
 using Procon.Net.Shared.Protocols.CommandServer;
 
 namespace Procon.Core.Shared {
@@ -42,42 +41,20 @@ namespace Procon.Core.Shared {
         /// <summary>
         /// The raw parameters to be passed into the executable command.
         /// </summary>
-        public List<CommandParameter> Parameters { get; set; } 
-
-        #region Executing User - Should we move this to it's own object?
+        public List<CommandParameter> Parameters { get; set; }
 
         /// <summary>
-        /// The username of the initiator
+        /// Holds the authentication information required to execute the command.
         /// </summary>
-        public String Username { get; set; }
-
-        /// <summary>
-        /// The password of the user executing the command. Used to authenticate
-        /// remote requests.
-        /// </summary>
-        /// <remarks>Will change to much more secure password authentication</remarks>
-        public String PasswordPlainText { get; set; }
-
-        /// <summary>
-        /// The game type of the initiators player Uid
-        /// </summary>
-        public String GameType { get; set; }
-
-        /// <summary>
-        /// The uid of the player initiating the command
-        /// </summary>
-        public String Uid { get; set; }
-
-        #endregion
+        public CommandAuthenticationModel Authentication { get; set; }
 
         /// <summary>
         /// Initializes a new command with the default values.
         /// </summary>
         public Command() {
             this.CommandGuid = Guid.NewGuid();
-            this.Username = null;
-            this.GameType = CommonGameType.None;
-            this.Uid = null;
+
+            this.Authentication = new CommandAuthenticationModel();
 
             this.Scope = new CommandScope();
         }
@@ -99,7 +76,7 @@ namespace Procon.Core.Shared {
         /// <param name="username">The username to assign</param>
         /// <returns>this</returns>
         public Command SetUsername(String username) {
-            this.Username = username;
+            this.Authentication.Username = username;
 
             return this;
         }
@@ -112,11 +89,8 @@ namespace Procon.Core.Shared {
         public Command(Command command) {
             this.CommandType = command.CommandType;
             this.Name = command.Name;
-            this.Username = command.Username;
-            this.GameType = command.GameType;
-            this.Uid = command.Uid;
+            this.Authentication = command.Authentication;
             this.Origin = command.Origin;
-            this.PasswordPlainText = command.PasswordPlainText;
             this.Scope = command.Scope;
             this.Parameters = new List<CommandParameter>(command.Parameters ?? new List<CommandParameter>());
         }
@@ -129,8 +103,7 @@ namespace Procon.Core.Shared {
         /// <returns></returns>
         public Command ToConfigCommand() {
             return new Command(this) {
-                Scope = null,
-                GameType = null
+                Scope = null
             };
         }
     }

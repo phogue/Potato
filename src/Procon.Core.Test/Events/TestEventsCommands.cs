@@ -87,7 +87,9 @@ namespace Procon.Core.Test.Events {
             });
 
             CommandResult result = events.Tunnel(new Command() {
-                Username = "Phogue",
+                Authentication = {
+                    Username = "Phogue"
+                },
                 Origin = CommandOrigin.Remote,
                 CommandType = CommandType.EventsFetchAfterEventId,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {

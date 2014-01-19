@@ -514,9 +514,11 @@ namespace Procon.Core.Connections {
 
                     if ((prefix = this.TextCommands.GetValidTextCommandPrefix(prefix)) != null) {
                         this.Tunnel(new Command() {
-                            GameType = this.ConnectionModel.ProtocolType.Type,
                             Origin = CommandOrigin.Plugin,
-                            Uid = chat.Now.Players.First().Uid,
+                            Authentication = {
+                                GameType = this.ConnectionModel.ProtocolType.Type,
+                                Uid = chat.Now.Players.First().Uid
+                            },
                             CommandType = CommandType.TextCommandsExecute,
                             Parameters = new List<CommandParameter>() {
                                 new CommandParameter() {

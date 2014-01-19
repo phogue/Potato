@@ -26,7 +26,7 @@ namespace Procon.Core.Test.Plugins {
         /// <param name="expectedSuccessFlag"></param>
         /// <param name="resultType"></param>
         protected void TestPluginsIsolationWriteToDirectory(String path, bool expectedSuccessFlag, CommandResultType resultType) {
-            var plugins = new CorePluginController().Execute() as CorePluginController;
+            var plugins = (CorePluginController)new CorePluginController().Execute();
 
             plugins.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
@@ -38,7 +38,9 @@ namespace Procon.Core.Test.Plugins {
 
             CommandResult result = plugins.Tunnel(new Command() {
                 Name = "TestPluginsIsolationWriteToDirectory",
-                Username = "Phogue",
+                Authentication = {
+                    Username = "Phogue"
+                },
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     path
                 })
@@ -69,7 +71,7 @@ namespace Procon.Core.Test.Plugins {
         /// </summary>
         [Test]
         public void TestPluginsIsolationCleanCurrentAppDomain() {
-            var plugins = new CorePluginController().Execute() as CorePluginController;
+            var plugins = (CorePluginController)new CorePluginController().Execute();
 
             plugins.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
@@ -83,7 +85,9 @@ namespace Procon.Core.Test.Plugins {
             // assembly loaded.
             CommandResult result = plugins.Tunnel(new Command() {
                 Name = "TestPluginsIsolationCleanCurrentAppDomain",
-                Username = "Phogue",
+                Authentication = {
+                    Username = "Phogue"
+                },
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     "Return Message"
                 })

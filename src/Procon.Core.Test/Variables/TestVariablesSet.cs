@@ -88,7 +88,9 @@ namespace Procon.Core.Test.Variables {
             };
 
             CommandResult result = variables.Tunnel(new Command() {
-                Username = "Phogue",
+                Authentication = {
+                    Username = "Phogue"
+                },
                 Origin = CommandOrigin.Remote,
                 CommandType = CommandType.VariablesSet,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {

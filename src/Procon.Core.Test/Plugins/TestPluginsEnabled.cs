@@ -25,11 +25,11 @@ namespace Procon.Core.Test.Plugins {
         [Test]
         public void TestPluginEnable() {
             var security = new SecurityController();
-            var plugins = new CorePluginController() {
+            var plugins = (CorePluginController)new CorePluginController() {
                 Shared = {
                     Security = security
                 }
-            }.Execute() as CorePluginController;
+            }.Execute();
 
             CommandResult result = plugins.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
@@ -51,11 +51,11 @@ namespace Procon.Core.Test.Plugins {
         [Test]
         public void TestPluginEnableAlreadyEnabled() {
             var security = new SecurityController();
-            var plugins = new CorePluginController() {
+            var plugins = (CorePluginController)new CorePluginController() {
                 Shared = {
                     Security = security
                 }
-            }.Execute() as CorePluginController;
+            }.Execute();
 
             plugins.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
@@ -83,11 +83,11 @@ namespace Procon.Core.Test.Plugins {
         [Test]
         public void TestPluginEnableCommandSuccessful() {
             var security = new SecurityController();
-            var plugins = new CorePluginController() {
+            var plugins = (CorePluginController)new CorePluginController() {
                 Shared = {
                     Security = security
                 }
-            }.Execute() as CorePluginController;
+            }.Execute();
 
             CommandResult result = plugins.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
@@ -102,7 +102,9 @@ namespace Procon.Core.Test.Plugins {
 
             result = plugins.Tunnel(new Command() {
                 Name = "TestPluginsEnabledCommandResult",
-                Username = "Phogue",
+                Authentication = {
+                    Username = "Phogue"
+                },
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     "Return Message"
                 })
@@ -120,11 +122,11 @@ namespace Procon.Core.Test.Plugins {
         [Test]
         public void TestPluginEnableDoesNotExist() {
             var security = new SecurityController();
-            var plugins = new CorePluginController() {
+            var plugins = (CorePluginController)new CorePluginController() {
                 Shared = {
                     Security = security
                 }
-            }.Execute() as CorePluginController;
+            }.Execute();
 
             CommandResult result = plugins.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
@@ -144,15 +146,17 @@ namespace Procon.Core.Test.Plugins {
         [Test]
         public void TestPluginEnableInsufficientPermission() {
             var security = new SecurityController();
-            var plugins = new CorePluginController() {
+            var plugins = (CorePluginController)new CorePluginController() {
                 Shared = {
                     Security = security
                 }
-            }.Execute() as CorePluginController;
+            }.Execute();
 
             CommandResult result = plugins.Tunnel(new Command() {
                 Origin = CommandOrigin.Remote,
-                Username = "Phogue",
+                Authentication = {
+                    Username = "Phogue"
+                },
                 CommandType = CommandType.PluginsEnable,
                 Scope = {
                     PluginGuid = plugins.LoadedPlugins.First().PluginGuid

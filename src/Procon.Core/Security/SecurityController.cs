@@ -719,7 +719,7 @@ namespace Procon.Core.Security {
                 };
             }
             else if (command.Origin == CommandOrigin.Plugin) {
-                if (command.Username == null && command.Uid == null && command.GameType == CommonGameType.None) {
+                if (command.Authentication.Username == null && command.Authentication.Uid == null && command.Authentication.GameType == CommonGameType.None) {
                     // The plugin has not provided additional details on who has executed it.
                     result = new CommandResult() {
                         Success = true,
@@ -802,7 +802,7 @@ namespace Procon.Core.Security {
         /// <param name="command"></param>
         /// <returns></returns>
         public AccountModel GetAccount(Command command) {
-            return this.GetAccount(command.Username) ?? this.GetAccount(command.GameType, command.Uid);
+            return this.GetAccount(command.Authentication.Username) ?? this.GetAccount(command.Authentication.GameType, command.Authentication.Uid);
         }
 
         /// <summary>

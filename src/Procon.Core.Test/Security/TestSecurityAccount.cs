@@ -7,7 +7,6 @@ using NUnit.Framework;
 using Procon.Core.Security;
 using Procon.Core.Shared;
 using Procon.Net.Shared.Utils;
-using Procon.Net.Utils;
 
 #endregion
 
@@ -153,7 +152,9 @@ namespace Procon.Core.Test.Security {
 
             CommandResult result = security.Tunnel(new Command() {
                 CommandType = CommandType.SecurityAccountAuthenticate,
-                Username = "Phogue",
+                Authentication = {
+                    Username = "Phogue"
+                },
                 Origin = CommandOrigin.Remote,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     "Phogue",
@@ -335,7 +336,9 @@ namespace Procon.Core.Test.Security {
 
             CommandResult result = security.Tunnel(new Command() {
                 CommandType = CommandType.SecurityAccountSetPasswordHash,
-                Username = "Phogue",
+                Authentication = {
+                    Username = "Phogue"
+                },
                 Origin = CommandOrigin.Remote,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     "Phogue",
@@ -373,7 +376,9 @@ namespace Procon.Core.Test.Security {
 
             CommandResult result = security.Tunnel(new Command() {
                 CommandType = CommandType.SecurityAccountSetPassword,
-                Username = "Phogue",
+                Authentication = {
+                    Username = "Phogue"
+                },
                 Origin = CommandOrigin.Remote,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     "Phogue",
@@ -598,7 +603,9 @@ namespace Procon.Core.Test.Security {
             // Now change the language of the account.
             CommandResult result = security.Tunnel(new Command() {
                 CommandType = CommandType.SecurityAccountSetPreferredLanguageCode,
-                Username = "Phogue",
+                Authentication = {
+                    Username = "Phogue"
+                },
                 Origin = CommandOrigin.Remote,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     "Phogue",
@@ -903,7 +910,9 @@ namespace Procon.Core.Test.Security {
 
             CommandResult result = security.Tunnel(new Command() {
                 CommandType = CommandType.SecurityGroupAddAccount,
-                Username = "Phogue",
+                Authentication = {
+                    Username = "Phogue"
+                },
                 Origin = CommandOrigin.Remote,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     "GroupName",
@@ -1001,7 +1010,9 @@ namespace Procon.Core.Test.Security {
 
             CommandResult result = security.Tunnel(new Command() {
                 CommandType = CommandType.SecurityRemoveAccount,
-                Username = "Phogue",
+                Authentication = {
+                    Username = "Phogue"
+                },
                 Origin = CommandOrigin.Remote,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     "Phogue"

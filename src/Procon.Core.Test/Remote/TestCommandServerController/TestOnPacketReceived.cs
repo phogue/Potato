@@ -113,8 +113,10 @@ namespace Procon.Core.Test.Remote.TestCommandServerController {
                 },
                 Content = JsonConvert.SerializeObject(new Command() {
                     CommandType = CommandType.VariablesSet,
-                    Username = "Phogue",
-                    PasswordPlainText = "password"
+                    Authentication = {
+                        Username = "Phogue",
+                        PasswordPlainText = "password"
+                    }
                 })
             });
 
@@ -178,8 +180,10 @@ namespace Procon.Core.Test.Remote.TestCommandServerController {
                 },
                 Content = JsonConvert.SerializeObject(new Command() {
                     CommandType = CommandType.VariablesSet,
-                    Username = "Phogue",
-                    PasswordPlainText = "incorrect password"
+                    Authentication = {
+                        Username = "Phogue",
+                        PasswordPlainText = "incorrect password"
+                    }
                 })
             });
 
@@ -246,8 +250,10 @@ namespace Procon.Core.Test.Remote.TestCommandServerController {
                 },
                 Content = JsonConvert.SerializeObject(new Command() {
                     CommandType = CommandType.VariablesSet,
-                    Username = "Phogue",
-                    PasswordPlainText = "password"
+                    Authentication = {
+                        Username = "Phogue",
+                        PasswordPlainText = "password"
+                    }
                 })
             });
 

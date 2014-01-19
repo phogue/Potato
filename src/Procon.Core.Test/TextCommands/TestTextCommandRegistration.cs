@@ -112,7 +112,9 @@ namespace Procon.Core.Test.TextCommands {
             var textCommands = new TextCommandController();
 
             CommandResult result = textCommands.Tunnel(new Command() {
-                Username = "Phogue",
+                Authentication = {
+                    Username = "Phogue"
+                },
                 Origin = CommandOrigin.Remote,
                 CommandType = CommandType.TextCommandsRegister,
                 Parameters = new List<CommandParameter>() {
@@ -249,7 +251,9 @@ namespace Procon.Core.Test.TextCommands {
             Assert.AreEqual("RegisterTest", textCommands.TextCommands.First().Commands.First());
 
             CommandResult result = textCommands.Tunnel(new Command() {
-                Username = "Phogue",
+                Authentication = {
+                    Username = "Phogue"
+                },
                 Origin = CommandOrigin.Remote,
                 CommandType = CommandType.TextCommandsUnregister,
                 Parameters = new List<CommandParameter>() {

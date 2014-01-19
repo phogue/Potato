@@ -23,7 +23,7 @@ namespace Procon.Core.Test.Plugins {
         /// </summary>
         [Test]
         public void TestPluginsSerializationCommandResult() {
-            var plugins = new CorePluginController().Execute() as CorePluginController;
+            var plugins = (CorePluginController)new CorePluginController().Execute();
 
             plugins.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
@@ -35,7 +35,9 @@ namespace Procon.Core.Test.Plugins {
 
             CommandResult result = plugins.Tunnel(new Command() {
                 Name = "TestPluginsSerializationCommandResult",
-                Username = "Phogue",
+                Authentication = {
+                    Username = "Phogue"
+                },
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     "Return Message"
                 })

@@ -103,7 +103,9 @@ namespace Procon.Core.Test.CoreInstance {
 
             CommandResult result = instance.Tunnel(new Command() {
                 Origin = CommandOrigin.Remote,
-                Username = "Phogue",
+                Authentication = {
+                    Username = "Phogue"
+                },
                 CommandType = CommandType.InstanceRemoveConnection,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     "Myrcon",

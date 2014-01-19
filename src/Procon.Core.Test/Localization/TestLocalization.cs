@@ -24,7 +24,7 @@ namespace Procon.Core.Test.Localization {
         /// </summary>
         [Test]
         public void TestDeutschLocalizationControllerGetFirstDepthSearch() {
-            var language = new LanguageController().Execute() as LanguageController;
+            var language = (LanguageController)new LanguageController().Execute();
 
             CommandResult result = language.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
@@ -46,7 +46,7 @@ namespace Procon.Core.Test.Localization {
         /// </summary>
         [Test]
         public void TestEnglishLocalizationControllerGet() {
-            var language = new LanguageController().Execute() as LanguageController;
+            var language = (LanguageController)new LanguageController().Execute();
 
             CommandResult result = language.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
@@ -68,7 +68,7 @@ namespace Procon.Core.Test.Localization {
         /// </summary>
         [Test]
         public void TestEnglishLocalizationControllerGetCorrectFormat() {
-            var language = new LanguageController().Execute() as LanguageController;
+            var language = (LanguageController)new LanguageController().Execute();
 
             CommandResult result = language.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
@@ -117,7 +117,7 @@ namespace Procon.Core.Test.Localization {
         /// </summary>
         [Test]
         public void TestEnglishLocalizationControllerGetDoesNotExist() {
-            var language = new LanguageController().Execute() as LanguageController;
+            var language = (LanguageController)new LanguageController().Execute();
 
             CommandResult result = language.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
@@ -138,7 +138,7 @@ namespace Procon.Core.Test.Localization {
         /// </summary>
         [Test]
         public void TestEnglishLocalizationControllerGetFirstDepthSearch() {
-            var language = new LanguageController().Execute() as LanguageController;
+            var language = (LanguageController)new LanguageController().Execute();
 
             CommandResult result = language.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
@@ -160,7 +160,7 @@ namespace Procon.Core.Test.Localization {
         /// </summary>
         [Test]
         public void TestEnglishLocalizationControllerGetIncorrectFormat() {
-            var language = new LanguageController().Execute() as LanguageController;
+            var language = (LanguageController)new LanguageController().Execute();
 
             CommandResult result = language.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
@@ -182,15 +182,17 @@ namespace Procon.Core.Test.Localization {
         /// </summary>
         [Test]
         public void TestEnglishLocalizationControllerGetInsufficientPermission() {
-            var language = new LanguageController() {
+            var language = (LanguageController)new LanguageController() {
                 Shared = {
                     Security = new SecurityController().Execute() as SecurityController
                 }
-            }.Execute() as LanguageController;
+            }.Execute();
 
             CommandResult result = language.Tunnel(new Command() {
                 CommandType = CommandType.LanguageLocalize,
-                Username = "Phogue",
+                Authentication = {
+                    Username = "Phogue"
+                },
                 Origin = CommandOrigin.Remote,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     "en-UK",
@@ -208,7 +210,7 @@ namespace Procon.Core.Test.Localization {
         /// </summary>
         [Test]
         public void TestEnglishLocalizationDefaultEnglish() {
-            var language = new LanguageController().Execute() as LanguageController;
+            var language = (LanguageController)new LanguageController().Execute();
 
             Assert.AreEqual("ProconCoreTestEnglishTestValue", language.Default.Localize("Procon.Core.Test", "TestName"));
         }
@@ -218,7 +220,7 @@ namespace Procon.Core.Test.Localization {
         /// </summary>
         [Test]
         public void TestLanguageSetDefaultLanguage() {
-            var language = new LanguageController().Execute() as LanguageController;
+            var language = (LanguageController)new LanguageController().Execute();
 
             language.Shared.Variables.Set(new Command() {
                 Origin = CommandOrigin.Local

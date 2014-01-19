@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Xml.Linq;
 using Procon.Core.Connections.TextCommands.Parsers;
 using Procon.Core.Localization;
 using Procon.Core.Shared;
@@ -173,13 +172,13 @@ namespace Procon.Core.Connections.TextCommands {
         /// <param name="speaker"></param>
         /// <returns></returns>
         protected PlayerModel GetAccountNetworkPlayer(Command command, AccountModel speaker) {
-            PlayerModel player = this.Connection.ProtocolState.Players.FirstOrDefault(x => x.Uid == command.Uid);
+            PlayerModel player = this.Connection.ProtocolState.Players.FirstOrDefault(p => p.Uid == command.Authentication.Uid);
 
             if (speaker != null) {
                 AccountPlayerModel accountPlayer = speaker.Players.FirstOrDefault(p => p.GameType == this.Connection.ConnectionModel.ProtocolType.Type);
 
                 if (accountPlayer != null) {
-                    player = this.Connection.ProtocolState.Players.FirstOrDefault(x => x.Uid == accountPlayer.Uid);
+                    player = this.Connection.ProtocolState.Players.FirstOrDefault(p => p.Uid == accountPlayer.Uid);
                 }
             }
 

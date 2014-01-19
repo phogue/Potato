@@ -172,7 +172,9 @@ namespace Procon.Core.Shared {
         /// <returns>The build command to dispatch</returns>
         public static Command SecurityAccountAuthenticate(String username, String passwordPlainText) {
             return new Command() {
-                Username = username,
+                Authentication = {
+                    Username = username
+                },
                 CommandType = CommandType.SecurityAccountAuthenticate,
                 Parameters = new List<CommandParameter>() {
                     new CommandParameter() {

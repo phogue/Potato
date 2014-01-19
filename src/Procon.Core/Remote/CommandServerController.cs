@@ -134,7 +134,7 @@ namespace Procon.Core.Remote {
             Command command = CommandServerSerializer.DeserializeCommand(request);
 
             if (command != null) {
-                if (this.Shared.Security.Tunnel(CommandBuilder.SecurityAccountAuthenticate(command.Username, command.PasswordPlainText).SetOrigin(CommandOrigin.Remote)).Success == true) {
+                if (this.Shared.Security.Tunnel(CommandBuilder.SecurityAccountAuthenticate(command.Authentication.Username, command.Authentication.PasswordPlainText).SetOrigin(CommandOrigin.Remote)).Success == true) {
                     // Now dispatch the command
                     CommandResult result = this.Tunnel(command);
 

@@ -18,8 +18,10 @@ namespace Procon.Core.Test.Remote.TestCommandServerSerializer {
         public void TestJsonDeserialization() {
             Command original = new Command() {
                 CommandType = CommandType.VariablesSet,
-                Username = "username",
-                PasswordPlainText = "password",
+                Authentication = {
+                    Username = "username",
+                    PasswordPlainText = "password"
+                },
                 Parameters = new List<CommandParameter>() {
                     new CommandParameter() {
                         Data = {
@@ -46,8 +48,8 @@ namespace Procon.Core.Test.Remote.TestCommandServerSerializer {
             });
 
             Assert.AreEqual(original.CommandType.ToString(), deserialized.Name);
-            Assert.AreEqual(original.Username, deserialized.Username);
-            Assert.AreEqual(original.PasswordPlainText, deserialized.PasswordPlainText);
+            Assert.AreEqual(original.Authentication.Username, deserialized.Authentication.Username);
+            Assert.AreEqual(original.Authentication.PasswordPlainText, deserialized.Authentication.PasswordPlainText);
             Assert.IsNotEmpty(deserialized.Parameters);
         }
 
@@ -58,8 +60,10 @@ namespace Procon.Core.Test.Remote.TestCommandServerSerializer {
         public void TestJsonDeserializationEmptyParameterList() {
             Command original = new Command() {
                 CommandType = CommandType.VariablesSet,
-                Username = "username",
-                PasswordPlainText = "password"
+                Authentication = {
+                    Username = "username",
+                    PasswordPlainText = "password"
+                }
             };
 
             Command deserialized = CommandServerSerializer.DeserializeCommand(new CommandServerPacket() {
@@ -70,8 +74,8 @@ namespace Procon.Core.Test.Remote.TestCommandServerSerializer {
             });
 
             Assert.AreEqual(original.CommandType.ToString(), deserialized.Name);
-            Assert.AreEqual(original.Username, deserialized.Username);
-            Assert.AreEqual(original.PasswordPlainText, deserialized.PasswordPlainText);
+            Assert.AreEqual(original.Authentication.Username, deserialized.Authentication.Username);
+            Assert.AreEqual(original.Authentication.PasswordPlainText, deserialized.Authentication.PasswordPlainText);
             Assert.IsNull(deserialized.Parameters);
         }
 

@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
+using Procon.Database.Shared;
+using Procon.Net.Shared.Serialization;
 
 namespace Procon.Core.Shared.Serialization {
     /// <summary>
@@ -27,7 +29,7 @@ namespace Procon.Core.Shared.Serialization {
 
         static JsonSerialization() {
             JsonSerialization.Converters = Net.Shared.Serialization.JsonSerialization.Converters.Union(new List<JsonConverter>() {
-
+                
             }).ToList();
 
             JsonSerialization.Minimal = Net.Shared.Serialization.JsonSerialization.Minimal;

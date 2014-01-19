@@ -12,15 +12,9 @@ namespace Procon.Net.Shared.Test.TestSerialization.TestJson {
         /// </summary>
         [Test]
         public void TestDefaultSerialization() {
-            Assert.AreEqual(@"{""Exceptions"":null,""Packets"":null,""Actions"":null}", Json.Minimal.Serialize(new ClientEventData()));
-        }
-
-        /// <summary>
-        /// Tests default deserialization is successful
-        /// </summary>
-        [Test]
-        public void TestDefaultDeserialization() {
-            var deseralized = Json.Minimal.Deserialize<ClientEventData>(@"{""Exceptions"":null,""Packets"":null,""Actions"":null}");
+            var original = new ClientEventData();
+            var serialized = Json.Minimal.Serialize(original);
+            var deseralized = Json.Minimal.Deserialize<ClientEventData>(serialized);
 
             Assert.IsNull(deseralized.Exceptions);
             Assert.IsNull(deseralized.Packets);
@@ -32,7 +26,7 @@ namespace Procon.Net.Shared.Test.TestSerialization.TestJson {
         /// </summary>
         [Test]
         public void TestSingleDepthPopulationSerialization() {
-            var serialized = Json.Minimal.Serialize(new ClientEventData() {
+            var original = new ClientEventData() {
                 Actions = new List<INetworkAction>() {
                     new NetworkAction() {
                         Uid = Guid.Empty
@@ -46,22 +40,13 @@ namespace Procon.Net.Shared.Test.TestSerialization.TestJson {
                         Stamp = new DateTime(2000, 10, 10, 10, 10, 10)
                     }
                 }
-            });
-
-            Assert.AreEqual(@"{""Exceptions"":[""""],""Packets"":[{""Stamp"":""2000-10-10T10:10:10"",""Origin"":0,""Type"":0,""RequestId"":null,""Data"":null,""Text"":null,""DebugText"":null,""Words"":[],""RemoteEndPoint"":null}],""Actions"":[{""Name"":null,""ActionType"":0,""Uid"":""00000000-0000-0000-0000-000000000000"",""Origin"":0,""Scope"":{""Players"":null,""Content"":null,""Groups"":null,""Points"":null,""Items"":null,""Maps"":null,""Times"":null,""HumanHitLocations"":null},""Then"":{""Players"":null,""Content"":null,""Groups"":null,""Points"":null,""Items"":null,""Maps"":null,""Times"":null,""HumanHitLocations"":null},""Now"":{""Players"":null,""Content"":null,""Groups"":null,""Points"":null,""Items"":null,""Maps"":null,""Times"":null,""HumanHitLocations"":null}}]}", serialized);
-        }
-
-        /// <summary>
-        /// Tests a populated object with attributes immediately attached to the type will deserialize successfully.
-        /// </summary>
-        [Test]
-        public void TestSingleDepthPopulationDeserialization() {
-            var deseralized = Json.Minimal.Deserialize<ClientEventData>(@"{""Exceptions"":[""""],""Packets"":[{""Stamp"":""2000-10-10T10:10:10"",""Origin"":0,""Type"":0,""RequestId"":null,""Data"":null,""Text"":null,""DebugText"":null,""Words"":[],""RemoteEndPoint"":null}],""Actions"":[{""Name"":null,""ActionType"":0,""Uid"":""00000000-0000-0000-0000-000000000000"",""Origin"":0,""Scope"":{""Players"":null,""Content"":null,""Groups"":null,""Points"":null,""Items"":null,""Maps"":null,""Times"":null,""HumanHitLocations"":null},""Then"":{""Players"":null,""Content"":null,""Groups"":null,""Points"":null,""Items"":null,""Maps"":null,""Times"":null,""HumanHitLocations"":null},""Now"":{""Players"":null,""Content"":null,""Groups"":null,""Points"":null,""Items"":null,""Maps"":null,""Times"":null,""HumanHitLocations"":null}}]}");
+            };
+            var serialized = Json.Minimal.Serialize(original);
+            var deseralized = Json.Minimal.Deserialize<ClientEventData>(serialized);
 
             Assert.IsNotEmpty(deseralized.Exceptions);
             Assert.IsNotEmpty(deseralized.Packets);
             Assert.IsNotEmpty(deseralized.Actions);
-
         }
     }
 }

@@ -7,20 +7,11 @@ namespace Procon.Net.Shared {
     /// Data attached to a client event
     /// </summary>
     [Serializable]
-    public class ClientEventData {
-        /// <summary>
-        /// List of exceptions attached to this event, if any.
-        /// </summary>
+    public class ClientEventData : IClientEventData {
         public List<String> Exceptions { get; set; }
 
-        /// <summary>
-        /// List of packets attached to this event, if any.
-        /// </summary>
         public List<IPacket> Packets { get; set; }
 
-        /// <summary>
-        /// List of actions attached to this event, if any.
-        /// </summary>
         public List<INetworkAction> Actions { get; set; } 
     }
 }

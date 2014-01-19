@@ -1,10 +1,11 @@
 ﻿using System;
 
 namespace Procon.Net.Shared {
-
+    /// <summary>
+    /// An event originating from the networking side of the protocol implementation.
+    /// </summary>
     [Serializable]
     public class ClientEventArgs : EventArgs {
-
         /// <summary>
         /// Stores the type of event (ConnectionStateChanged, PacketSent etc)
         /// </summary>
@@ -23,13 +24,16 @@ namespace Procon.Net.Shared {
         /// <summary>
         /// Data describing the effected data before the event occured.
         /// </summary>
-        public ClientEventData Then { get; set; }
+        public IClientEventData Then { get; set; }
 
         /// <summary>
         /// Data describing how the data looked after the event.
         /// </summary>
-        public ClientEventData Now { get; set; }
+        public IClientEventData Now { get; set; }
 
+        /// <summary>
+        /// Initializes the event with the default values.
+        /// </summary>
         public ClientEventArgs() {
             this.Stamp = DateTime.Now;
 

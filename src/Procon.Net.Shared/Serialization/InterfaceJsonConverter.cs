@@ -7,7 +7,7 @@ namespace Procon.Net.Shared.Serialization {
     /// A converter of a single interface to a concrete type. Useful if only a single (or default)
     /// concrete type is used.
     /// </summary>
-    public class InterfaceJsonConverter<I,C> : JsonConverter {
+    public class InterfaceJsonConverter<I,C> : JsonConverter where C : new() {
         public override bool CanConvert(Type objectType) {
             return typeof(I).IsAssignableFrom(objectType);
         }
@@ -16,13 +16,9 @@ namespace Procon.Net.Shared.Serialization {
         /// Converts type I to type C
         /// </summary>
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer) {
-            object value = null;
+            var value = new C();
 
-            JObject token = serializer.Deserialize<JToken>(reader) as JObject;
-
-            if (token != null) {
-                value = token.ToObject<C>();
-            }
+            serializer.Populate(JObject.Load(reader).CreateReader(), value);
 
             return value;
         }

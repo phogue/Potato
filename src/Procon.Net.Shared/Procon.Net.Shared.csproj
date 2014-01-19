@@ -45,6 +45,7 @@
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Actions\INetworkAction.cs" />
+    <Compile Include="IClientEventData.cs" />
     <Compile Include="Models\Ban.cs" />
     <Compile Include="Models\Chat.cs" />
     <Compile Include="Models\INetworkModel.cs" />

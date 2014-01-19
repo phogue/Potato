@@ -179,7 +179,7 @@ namespace Procon.Net {
         /// </summary>
         public virtual event Action<IProtocol, ClientEventArgs> ClientEvent;
 
-        protected void OnClientEvent(ClientEventType eventType, ClientEventData now = null, ClientEventData then = null) {
+        protected void OnClientEvent(ClientEventType eventType, IClientEventData now = null, IClientEventData then = null) {
             var handler = this.ClientEvent;
             if (handler != null) {
                 handler(this, new ClientEventArgs() {

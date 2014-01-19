@@ -48,6 +48,7 @@
     <Compile Include="Models\Point3DTest.cs" />
     <Compile Include="Models\TestModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestSerialization\TestJson\TestClientEventArgs.cs" />
     <Compile Include="TestSerialization\TestJson\TestClientEventData.cs" />
     <Compile Include="Truths\TestTruths.cs" />
     <Compile Include="Truths\TestTruthsStaticTree.cs" />

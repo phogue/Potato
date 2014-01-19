@@ -147,13 +147,13 @@ namespace Procon.Core.Shared.Plugins {
         /// </summary>
         /// <param name="command"></param>
         /// <returns></returns>
-        protected override IList<ICoreController> BubbleExecutableObjects(Command command) {
+        protected override IList<ICoreController> BubbleExecutableObjects(ICommand command) {
             command.Origin = CommandOrigin.Plugin;
 
             return this.BubbleObjects ?? new List<ICoreController>();
         }
 
-        protected override IList<ICoreController> TunnelExecutableObjects(Command command) {
+        protected override IList<ICoreController> TunnelExecutableObjects(ICommand command) {
             List<ICoreController> list = new List<ICoreController>();
 
             if (command.ScopeModel != null && command.ScopeModel.PluginGuid != Guid.Empty) {

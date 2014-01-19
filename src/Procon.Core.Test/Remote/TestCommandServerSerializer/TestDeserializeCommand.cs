@@ -40,7 +40,7 @@ namespace Procon.Core.Test.Remote.TestCommandServerSerializer {
                 }
             };
 
-            Command deserialized = CommandServerSerializer.DeserializeCommand(new CommandServerPacket() {
+            ICommand deserialized = CommandServerSerializer.DeserializeCommand(new CommandServerPacket() {
                 Content = JsonConvert.SerializeObject(original),
                 Headers = new WebHeaderCollection() {
                     { HttpRequestHeader.ContentType, Mime.ApplicationJson }
@@ -66,7 +66,7 @@ namespace Procon.Core.Test.Remote.TestCommandServerSerializer {
                 }
             };
 
-            Command deserialized = CommandServerSerializer.DeserializeCommand(new CommandServerPacket() {
+            ICommand deserialized = CommandServerSerializer.DeserializeCommand(new CommandServerPacket() {
                 Content = JsonConvert.SerializeObject(original),
                 Headers = new WebHeaderCollection() {
                     { HttpRequestHeader.ContentType, Mime.ApplicationJson }
@@ -84,7 +84,7 @@ namespace Procon.Core.Test.Remote.TestCommandServerSerializer {
         /// </summary>
         [Test]
         public void TestIncorrectDeserialization() {
-            Command deserialized = CommandServerSerializer.DeserializeCommand(new CommandServerPacket() {
+            ICommand deserialized = CommandServerSerializer.DeserializeCommand(new CommandServerPacket() {
                 Content = "this is junk text that won't be deserialized.",
                 Headers = new WebHeaderCollection() {
                     { HttpRequestHeader.ContentType, Mime.ApplicationJson }

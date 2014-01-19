@@ -131,7 +131,7 @@ namespace Procon.Core.Remote {
                 }
             };
 
-            Command command = CommandServerSerializer.DeserializeCommand(request);
+            ICommand command = CommandServerSerializer.DeserializeCommand(request);
 
             if (command != null) {
                 if (this.Shared.Security.Tunnel(CommandBuilder.SecurityAccountAuthenticate(command.Authentication.Username, command.Authentication.PasswordPlainText).SetOrigin(CommandOrigin.Remote)).Success == true) {

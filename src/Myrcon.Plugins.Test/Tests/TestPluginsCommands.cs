@@ -16,7 +16,7 @@ namespace Myrcon.Plugins.Test.Tests {
             });
         }
 
-        protected ICommandResult TestPluginsCommandsZeroParameters(Command command, Dictionary<String, CommandParameter> parameters) {
+        protected ICommandResult TestPluginsCommandsZeroParameters(ICommand command, Dictionary<String, CommandParameter> parameters) {
             command.Result.Message = command.Name;
             command.Result.Status = CommandResultType.Success;
 

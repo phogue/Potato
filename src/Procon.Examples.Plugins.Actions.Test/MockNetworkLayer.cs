@@ -68,7 +68,7 @@ namespace Procon.Examples.Plugins.Actions.Test {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public ICommandResult NetworkProtocolActionKick(Command command, Dictionary<String, CommandParameter> parameters) {
+        public ICommandResult NetworkProtocolActionKick(ICommand command, Dictionary<String, CommandParameter> parameters) {
             ICommandResult result = new CommandResult() {
                 Status = CommandResultType.Success,
                 Success = true

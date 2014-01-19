@@ -247,11 +247,11 @@ namespace Procon.Core.Database {
             return result;
         }
 
-        protected ICommandResult Query(Command command, Dictionary<String, CommandParameter> parameters) {
+        protected ICommandResult Query(ICommand command, Dictionary<String, CommandParameter> parameters) {
             return this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true ? this.ExecuteQueriesOnAllDrivers(parameters["query"].All<IDatabaseObject>()) : CommandResult.InsufficientPermissions;
         }
 
-        protected ICommandResult QueryDriver(Command command, Dictionary<String, CommandParameter> parameters) {
+        protected ICommandResult QueryDriver(ICommand command, Dictionary<String, CommandParameter> parameters) {
             return this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true ? this.ExecuteQueriesOnGroupName(parameters["driver"].First<String>(), parameters["query"].All<IDatabaseObject>()) : CommandResult.InsufficientPermissions;
         }
 

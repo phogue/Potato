@@ -200,7 +200,7 @@ namespace Procon.Core.Test.Remote.TestCommandServerController {
         /// </summary>
         [Test]
         public void TestCommandTunnelled() {
-            Command propogatedCommand = null;
+            ICommand propogatedCommand = null;
 
             CommandServerController commandServer = new CommandServerController() {
                 CommandServerListener = new CommandServerListener(),

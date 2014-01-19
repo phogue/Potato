@@ -78,7 +78,7 @@ namespace Procon.Core.Shared {
         /// </summary>
         /// <param name="command">The command to enqueue</param>
         /// <param name="completed">The optional callback when a result is available.</param>
-        public virtual void BeginTunnel(Command command, Action<ICommandResult> completed = null) {
+        public virtual void BeginTunnel(ICommand command, Action<ICommandResult> completed = null) {
             if (this.AsyncStateModel != null && this.AsyncStateModel.TaskQueueWaitCancellationTokenSource.IsCancellationRequested == false) {
                 this.AsyncStateModel.PendingCommandsQueue.Enqueue(new AsynchronousCommandModel() {
                     Command = command,
@@ -96,7 +96,7 @@ namespace Procon.Core.Shared {
         /// </summary>
         /// <param name="command">The command to enqueue</param>
         /// <param name="completed">The optional callback when a result is available.</param>
-        public virtual void BeginBubble(Command command, Action<ICommandResult> completed = null) {
+        public virtual void BeginBubble(ICommand command, Action<ICommandResult> completed = null) {
             if (this.AsyncStateModel != null && this.AsyncStateModel.TaskQueueWaitCancellationTokenSource.IsCancellationRequested == false) {
                 this.AsyncStateModel.PendingCommandsQueue.Enqueue(new AsynchronousCommandModel() {
                     Command = command,
@@ -113,7 +113,7 @@ namespace Procon.Core.Shared {
         /// </summary>
         /// <param name="command"></param>
         /// <returns></returns>
-        public override ICommandResult Tunnel(Command command) {
+        public override ICommandResult Tunnel(ICommand command) {
             ICommandResult synchronousResult = command.Result;
             AutoResetEvent resultWait = new AutoResetEvent(false);
 
@@ -133,7 +133,7 @@ namespace Procon.Core.Shared {
         /// </summary>
         /// <param name="command"></param>
         /// <returns></returns>
-        public override ICommandResult Bubble(Command command) {
+        public override ICommandResult Bubble(ICommand command) {
             ICommandResult synchronousResult = command.Result;
             AutoResetEvent resultWait = new AutoResetEvent(false);
 
@@ -149,7 +149,7 @@ namespace Procon.Core.Shared {
         }
 
         // Captures all executed commands, seeing if this async conroller is waiting for a command to have been executed.
-        public override ICommandResult PropogateExecuted(Command command, CommandDirection direction) {
+        public override ICommandResult PropogateExecuted(ICommand command, CommandDirection direction) {
             AsynchronousCommandModel asynchronousCommandModel = null;
 
             // If we are waiting for it and we have removed the executed wrapper successfully.

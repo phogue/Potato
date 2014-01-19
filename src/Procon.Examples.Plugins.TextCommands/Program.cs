@@ -117,7 +117,7 @@ namespace Procon.Examples.Plugins.TextCommands {
         }
 
         // 3. Handle the test fuzzy command.
-        protected ICommandResult FuzzyCommand(Command command, Dictionary<String, CommandParameter> parameters) {
+        protected ICommandResult FuzzyCommand(ICommand command, Dictionary<String, CommandParameter> parameters) {
             ICommandResult e = parameters["e"].First<ICommandResult>();
 
             TextCommandMatchModel match = e.Now.TextCommandMatches.First();
@@ -158,7 +158,7 @@ namespace Procon.Examples.Plugins.TextCommands {
         }
 
         // 3. Handle the test route command.
-        protected ICommandResult RouteCommand(Command command, Dictionary<String, CommandParameter> parameters) {
+        protected ICommandResult RouteCommand(ICommand command, Dictionary<String, CommandParameter> parameters) {
             ICommandResult e = parameters["e"].First<ICommandResult>();
 
             TextCommandMatchModel match = e.Now.TextCommandMatches.First();

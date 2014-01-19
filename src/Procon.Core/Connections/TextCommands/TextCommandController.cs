@@ -171,7 +171,7 @@ namespace Procon.Core.Connections.TextCommands {
         /// <param name="command"></param>
         /// <param name="speaker"></param>
         /// <returns></returns>
-        protected PlayerModel GetAccountNetworkPlayer(Command command, AccountModel speaker) {
+        protected PlayerModel GetAccountNetworkPlayer(ICommand command, AccountModel speaker) {
             PlayerModel player = this.Connection.ProtocolState.Players.FirstOrDefault(p => p.Uid == command.Authentication.Uid);
 
             if (speaker != null) {
@@ -191,7 +191,7 @@ namespace Procon.Core.Connections.TextCommands {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns>The generated event, if any.</returns>
-        public ICommandResult ExecuteTextCommand(Command command, Dictionary<String, CommandParameter> parameters) {
+        public ICommandResult ExecuteTextCommand(ICommand command, Dictionary<String, CommandParameter> parameters) {
             ICommandResult result = null;
 
             String text = parameters["text"].First<String>();
@@ -222,7 +222,7 @@ namespace Procon.Core.Connections.TextCommands {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns>The generated event, if any.</returns>
-        public ICommandResult PreviewTextCommand(Command command, Dictionary<String, CommandParameter> parameters) {
+        public ICommandResult PreviewTextCommand(ICommand command, Dictionary<String, CommandParameter> parameters) {
             ICommandResult result = null;
 
             String text = parameters["text"].First<String>();
@@ -251,7 +251,7 @@ namespace Procon.Core.Connections.TextCommands {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public ICommandResult RegisterTextCommand(Command command, Dictionary<String, CommandParameter> parameters) {
+        public ICommandResult RegisterTextCommand(ICommand command, Dictionary<String, CommandParameter> parameters) {
             ICommandResult result = null;
 
             TextCommandModel textCommand = parameters["textCommand"].First<TextCommandModel>();
@@ -301,7 +301,7 @@ namespace Procon.Core.Connections.TextCommands {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public ICommandResult UnregisterTextCommand(Command command, Dictionary<String, CommandParameter> parameters) {
+        public ICommandResult UnregisterTextCommand(ICommand command, Dictionary<String, CommandParameter> parameters) {
             ICommandResult result = null;
 
             TextCommandModel textCommand = parameters["textCommand"].First<TextCommandModel>();

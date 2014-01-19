@@ -17,8 +17,8 @@ namespace Procon.Core.Remote {
         /// </summary>
         /// <param name="request">The http request for this command</param>
         /// <returns>The deserialized command or null if an error occured during deserialization</returns>
-        public static Command DeserializeCommand(CommandServerPacket request) {
-            Command command = null;
+        public static ICommand DeserializeCommand(CommandServerPacket request) {
+            ICommand command = null;
 
             try {
                 switch (request.Headers[HttpRequestHeader.ContentType].ToLower()) {
@@ -44,7 +44,7 @@ namespace Procon.Core.Remote {
         /// </summary>
         /// <param name="command">The command that has been dispatched for execution</param>
         /// <returns></returns>
-        public static String ResponseContentType(Command command) {
+        public static String ResponseContentType(ICommand command) {
             String contentType = command.Result != null ? command.Result.ContentType : null;
             
             // If no response type was specified elsewhere

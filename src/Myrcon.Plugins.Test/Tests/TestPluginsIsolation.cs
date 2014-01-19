@@ -35,7 +35,7 @@ namespace Myrcon.Plugins.Test.Tests {
             });
         }
 
-        protected ICommandResult TestPluginsIsolationCleanCurrentAppDomain(Command command, Dictionary<String, CommandParameter> parameters) {
+        protected ICommandResult TestPluginsIsolationCleanCurrentAppDomain(ICommand command, Dictionary<String, CommandParameter> parameters) {
             String parameterMessage = parameters["parameterMessage"].First<String>();
 
             command.Result.Message = parameterMessage;
@@ -44,7 +44,7 @@ namespace Myrcon.Plugins.Test.Tests {
             return command.Result;
         }
 
-        protected ICommandResult TestPluginsIsolationWriteToDirectory(Command command, Dictionary<String, CommandParameter> parameters) {
+        protected ICommandResult TestPluginsIsolationWriteToDirectory(ICommand command, Dictionary<String, CommandParameter> parameters) {
             String path = parameters["path"].First<String>();
 
             try {

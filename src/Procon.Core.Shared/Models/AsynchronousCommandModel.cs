@@ -7,11 +7,10 @@ namespace Procon.Core.Shared.Models {
     /// </summary>
     [Serializable]
     public class AsynchronousCommandModel : CoreModel {
-
         /// <summary>
         /// The command being passed around
         /// </summary>
-        public Command Command { get; set; }
+        public ICommand Command { get; set; }
 
         /// <summary>
         /// If the command is moving up or down the chain of objects

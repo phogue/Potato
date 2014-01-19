@@ -10,7 +10,6 @@ using Procon.Core.Shared.Models;
 using Procon.Net.Shared;
 using Procon.Net.Shared.Actions;
 using Procon.Net.Shared.Actions.Deferred;
-using Procon.Net.Shared.Models;
 
 namespace Procon.Core.Shared.Plugins {
     /// <summary>
@@ -86,7 +85,7 @@ namespace Procon.Core.Shared.Plugins {
             return guid;
         }
 
-        public override void BeginBubble(Command command, Action<ICommandResult> completed = null) {
+        public override void BeginBubble(ICommand command, Action<ICommandResult> completed = null) {
             // There isn't much point in bubbling up if we just need to come back down here.
             if (command.ScopeModel != null && command.ScopeModel.PluginGuid == this.PluginGuid) {
                 base.BeginTunnel(command, completed);
@@ -96,7 +95,7 @@ namespace Procon.Core.Shared.Plugins {
             }
         }
 
-        public override ICommandResult Bubble(Command command) {
+        public override ICommandResult Bubble(ICommand command) {
             // There isn't much point in bubbling up if we just need to come back down here.
             if (command.ScopeModel != null && command.ScopeModel.PluginGuid == this.PluginGuid) {
                 command.Result = this.Tunnel(command);
@@ -248,7 +247,7 @@ namespace Procon.Core.Shared.Plugins {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public virtual ICommandResult TextCommandExecuted(Command command, Dictionary<String, CommandParameter> parameters) {
+        public virtual ICommandResult TextCommandExecuted(ICommand command, Dictionary<String, CommandParameter> parameters) {
 
             // Not used.
             // String text = parameters["text"].First<String>();

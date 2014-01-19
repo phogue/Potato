@@ -100,7 +100,7 @@ namespace Myrcon.Plugins.Test {
             });
         }
 
-        protected override IList<ICoreController> TunnelExecutableObjects(Command command) {
+        protected override IList<ICoreController> TunnelExecutableObjects(ICommand command) {
             return this.Tests;
         }
 
@@ -108,7 +108,7 @@ namespace Myrcon.Plugins.Test {
             return this.Commands.Select(x => x.Commands.FirstOrDefault()).ToList();
         }
 
-        protected ICommandResult HelpCommand(Command command, Dictionary<String, CommandParameter> parameters) {
+        protected ICommandResult HelpCommand(ICommand command, Dictionary<String, CommandParameter> parameters) {
             ICommandResult e = parameters["e"].First<ICommandResult>();
 
             NetworkAction output = new NetworkAction() {
@@ -150,7 +150,7 @@ namespace Myrcon.Plugins.Test {
             return command.Result;
         }
 
-        protected ICommandResult KillCommand(Command command, Dictionary<String, CommandParameter> parameters) {
+        protected ICommandResult KillCommand(ICommand command, Dictionary<String, CommandParameter> parameters) {
             ICommandResult e = parameters["e"].First<ICommandResult>();
 
             TextCommandMatchModel match = e.Now.TextCommandMatches.First();
@@ -191,7 +191,7 @@ namespace Myrcon.Plugins.Test {
             return command.Result;
         }
 
-        protected ICommandResult TestCommand(Command command, Dictionary<String, CommandParameter> parameters) {
+        protected ICommandResult TestCommand(ICommand command, Dictionary<String, CommandParameter> parameters) {
             ICommandResult e = parameters["e"].First<ICommandResult>();
 
             NetworkAction output = new NetworkAction() {
@@ -239,13 +239,13 @@ namespace Myrcon.Plugins.Test {
             return command.Result;
         }
 
-        public ICommandResult RegisterTextCommandPreview(Command command, Dictionary<String, CommandParameter> parameters) {
+        public ICommandResult RegisterTextCommandPreview(ICommand command, Dictionary<String, CommandParameter> parameters) {
             //TextCommand textCommand = parameters["textCommand"].First<TextCommand>();
 
             return command.Result;
         }
 
-        public ICommandResult RegisterTextCommandExecuted(Command command, Dictionary<String, CommandParameter> parameters) {
+        public ICommandResult RegisterTextCommandExecuted(ICommand command, Dictionary<String, CommandParameter> parameters) {
             //TextCommand textCommand = parameters["textCommand"].First<TextCommand>();
 
             return command.Result;

@@ -87,7 +87,7 @@ namespace Procon.Core.Packages {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public ICommandResult PackagesMergePackage(Command command, Dictionary<String, CommandParameter> parameters) {
+        public ICommandResult PackagesMergePackage(ICommand command, Dictionary<String, CommandParameter> parameters) {
             ICommandResult result = null;
 
             String packageId = parameters["packageId"].First<String>();
@@ -156,7 +156,7 @@ namespace Procon.Core.Packages {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public ICommandResult PackagesUninstallPackage(Command command, Dictionary<String, CommandParameter> parameters) {
+        public ICommandResult PackagesUninstallPackage(ICommand command, Dictionary<String, CommandParameter> parameters) {
             ICommandResult result = null;
 
             String packageId = parameters["packageId"].First<String>();
@@ -225,7 +225,7 @@ namespace Procon.Core.Packages {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public ICommandResult PackagesFetchPackages(Command command, Dictionary<String, CommandParameter> parameters) {
+        public ICommandResult PackagesFetchPackages(ICommand command, Dictionary<String, CommandParameter> parameters) {
             ICommandResult result = null;
 
             if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {

@@ -4,6 +4,7 @@ using System.Linq;
 using Newtonsoft.Json;
 using Procon.Net.Shared;
 using Procon.Net.Shared.Models;
+using Procon.Net.Shared.Serialization;
 
 namespace Procon.Net {
     /// <summary>
@@ -55,10 +56,10 @@ namespace Procon.Net {
 
             try {
                 if (File.Exists(configPath) == true) {
-                    JsonSerializer serializer = new JsonSerializer();
-
-                    using (JsonReader reader = new JsonTextReader(new StreamReader(configPath))) {
-                        config = serializer.Deserialize<T>(reader);
+                    using (var stream = new StreamReader(configPath)) {
+                        using (JsonReader reader = new JsonTextReader(stream)) {
+                            config = JsonSerialization.Minimal.Deserialize<T>(reader);
+                        }
                     }
 
                     config = ProtocolConfigLoader.Populate(config);

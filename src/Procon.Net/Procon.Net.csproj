@@ -74,7 +74,7 @@
     <Compile Include="Protocols\CommandServer\CommandServerListener.cs" />
     <Compile Include="Protocol.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ProtocolConfig.cs" />
+    <Compile Include="ProtocolConfigLoader.cs" />
     <Compile Include="TcpClient.cs" />
     <Compile Include="UdpClient.cs" />
     <Compile Include="Protocols\PunkBuster\PunkBusterSerializer.cs" />

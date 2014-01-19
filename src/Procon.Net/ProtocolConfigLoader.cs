@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
@@ -8,41 +7,10 @@ using Procon.Net.Shared.Models;
 
 namespace Procon.Net {
     /// <summary>
-    /// A config used by a protocol to descibe additional meta data.
+    /// A config loader used by a protocol to descibe additional meta data.
     /// </summary>
     [Serializable]
-    public class ProtocolConfig {
-        /// <summary>
-        /// List of available maps for this game
-        /// </summary>
-        public List<Map> MapPool { get; set; }
-
-        /// <summary>
-        /// List of available game modes for this game.
-        /// </summary>
-        public List<GameMode> GameModes { get; set; }
-
-        /// <summary>
-        /// List of groupings for this game
-        /// </summary>
-        public List<Grouping> Groupings { get; set; }
-
-        /// <summary>
-        /// List of items for this game.
-        /// </summary>
-        public List<Item> Items { get; set; } 
-
-        /// <summary>
-        /// Parses this config into a game object.
-        /// </summary>
-        /// <param name="game">The game to load this config into</param>
-        public virtual void Parse(IProtocol game) {
-            game.State.MapPool = this.MapPool ?? new List<Map>();
-            game.State.GameModePool = this.GameModes ?? new List<GameMode>();
-            game.State.Groupings = this.Groupings ?? new List<Grouping>();
-            game.State.Items = this.Items ?? new List<Item>();
-        }
-
+    public class ProtocolConfigLoader {
         /// <summary>
         /// Proxy load config that first builds the path to the config file.
         /// </summary>
@@ -50,8 +18,8 @@ namespace Procon.Net {
         /// <param name="gameConfigPath"></param>
         /// <param name="type"></param>
         /// <returns></returns>
-        public static T Load<T>(String gameConfigPath, IProtocolType type) where T : ProtocolConfig {
-            return ProtocolConfig.Load<T>(ProtocolConfig.Path(gameConfigPath, type.Provider, type.Type));
+        public static T Load<T>(String gameConfigPath, IProtocolType type) where T : ProtocolConfigModel {
+            return ProtocolConfigLoader.Load<T>(ProtocolConfigLoader.Path(gameConfigPath, type.Provider, type.Type));
         }
 
         /// <summary>
@@ -60,7 +28,7 @@ namespace Procon.Net {
         /// <typeparam name="T"></typeparam>
         /// <param name="config"></param>
         /// <returns></returns>
-        public static T Populate<T>(T config) where T : ProtocolConfig {
+        public static T Populate<T>(T config) where T : ProtocolConfigModel {
             if (config.GameModes != null && config.Groupings != null) {
                 foreach (GameMode mode in config.GameModes) {
                     mode.DefaultGroups = config.Groupings.Where(known => mode.DefaultGroups.Any(group => group.Uid == known.Uid && group.Type == known.Type)).ToList();
@@ -82,7 +50,7 @@ namespace Procon.Net {
         /// <typeparam name="T"></typeparam>
         /// <param name="configPath"></param>
         /// <returns></returns>
-        public static T Load<T>(String configPath) where T : ProtocolConfig {
+        public static T Load<T>(String configPath) where T : ProtocolConfigModel {
             T config = default(T);
 
             try {
@@ -93,7 +61,7 @@ namespace Procon.Net {
                         config = serializer.Deserialize<T>(reader);
                     }
 
-                    config = ProtocolConfig.Populate(config);
+                    config = ProtocolConfigLoader.Populate(config);
                 }
             }
             catch {

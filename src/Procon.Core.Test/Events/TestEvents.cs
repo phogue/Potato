@@ -118,8 +118,8 @@ namespace Procon.Core.Test.Events {
             events.WriteEvents();
 
             String logFileName = events.EventsLogFileName(roundedThenHour);
-
-            var logEvent = JsonConvert.DeserializeObject<GenericEvent>(File.ReadAllText(logFileName));
+            
+            var logEvent = JsonConvert.DeserializeObject<GenericEvent>(File.ReadAllText(logFileName).Trim(',', '\r', '\n'));
 
             Assert.IsTrue(logEvent.Success);
             Assert.AreEqual("SecurityGroupAdded", logEvent.Name);
@@ -160,7 +160,7 @@ namespace Procon.Core.Test.Events {
 
             String logFileName = events.EventsLogFileName(roundedThenHour);
 
-            var logEvent = JsonConvert.DeserializeObject<GenericEvent>(File.ReadAllText(logFileName));
+            var logEvent = JsonConvert.DeserializeObject<GenericEvent>(File.ReadAllText(logFileName).Trim(',', '\r', '\n'));
 
             Assert.IsTrue(logEvent.Success);
             Assert.AreEqual("SecurityGroupAdded", logEvent.Name);
@@ -216,7 +216,7 @@ namespace Procon.Core.Test.Events {
 
 
 
-            var logEvent = JsonConvert.DeserializeObject<GenericEvent>(File.ReadAllText(logFileName));
+            var logEvent = JsonConvert.DeserializeObject<GenericEvent>(File.ReadAllText(logFileName).Trim(',', '\r', '\n'));
 
             Assert.IsTrue(logEvent.Success);
             Assert.AreEqual("SecurityGroupAdded", logEvent.Name);

@@ -113,14 +113,14 @@ namespace Procon.Net {
             });
 
             this.Client.SocketException += (sender, se) => this.OnClientEvent(ClientEventType.ClientSocketException, new ClientEventData() {
-                Exceptions = new List<Exception>() {
-                    se
+                Exceptions = new List<String>() {
+                    se.ToString()
                 }
             });
 
             this.Client.ConnectionFailure += (sender, exception) => this.OnClientEvent(ClientEventType.ClientConnectionFailure, new ClientEventData() {
-                Exceptions = new List<Exception>() {
-                    exception
+                Exceptions = new List<String>() {
+                    exception.ToString()
                 }
             });
 

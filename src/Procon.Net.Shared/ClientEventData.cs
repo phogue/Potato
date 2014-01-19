@@ -6,16 +6,10 @@ namespace Procon.Net.Shared {
 
     [Serializable]
     public class ClientEventData {
-        [NonSerialized]
-        private List<Exception> _exceptions;
-
         /// <summary>
         /// List of exceptions attached to this event, if any.
         /// </summary>
-        public List<Exception> Exceptions {
-            get { return _exceptions; }
-            set { _exceptions = value; }
-        }
+        public List<String> Exceptions { get; set; }
 
         /// <summary>
         /// List of packets attached to this event, if any.

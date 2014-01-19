@@ -236,7 +236,7 @@ namespace Procon.Tools.NetworkConsole.Controls {
                 this.ConsoleAppendLine("State: ^6{0}", e.ConnectionState.ToString());
             }
             else if (e.EventType == ClientEventType.ClientConnectionFailure || e.EventType == ClientEventType.ClientSocketException) {
-                this.ConsoleAppendLine("^1Error: {0}", e.Now.Exceptions.FirstOrDefault().Message);
+                this.ConsoleAppendLine("^1Error: {0}", e.Now.Exceptions.FirstOrDefault());
             }
             else if (e.EventType == ClientEventType.ClientPacketSent) {
                 this.ConsoleAppendLine("^2SEND: {0}", e.Now.Packets.FirstOrDefault().DebugText);

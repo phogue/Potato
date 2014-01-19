@@ -9,7 +9,10 @@ namespace Procon.Core.Shared {
     /// </summary>
     [Serializable]
     public class CommandResult : IDisposable {
-
+        /// <summary>
+        /// A static result describing insufficient permissions
+        /// </summary>
+        /// <remarks>May be moved to a "CommandResultBuilder" class at some point.</remarks>
         public static CommandResult InsufficientPermissions = new CommandResult() {
             Success = false,
             Status = CommandResultType.InsufficientPermissions,
@@ -58,9 +61,15 @@ namespace Procon.Core.Shared {
         /// </summary>
         public String ContentType { get; set; }
 
+        /// <summary>
+        /// Called when the object is being disposed.
+        /// </summary>
         [field: NonSerialized]
         public event EventHandler Disposed;
 
+        /// <summary>
+        /// Initializes the command result with the default values.
+        /// </summary>
         public CommandResult() {
             this.Stamp = DateTime.Now;
             this.Message = String.Empty;

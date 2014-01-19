@@ -77,7 +77,7 @@
     <Compile Include="Events\GenericEventType.cs" />
     <Compile Include="CoreController.cs" />
     <Compile Include="ICoreController.cs" />
-    <Compile Include="CoreModel.cs" />
+    <Compile Include="Models\CoreModel.cs" />
     <Compile Include="Models\AccountModel.cs" />
     <Compile Include="Models\AccountPlayerModel.cs" />
     <Compile Include="Models\CommonVariableNames.cs" />

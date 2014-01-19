@@ -7,6 +7,9 @@ namespace Procon.Core.Shared {
     /// </summary>
     [Serializable]
     public enum CommandType {
+        /// <summary>
+        /// No command type specified
+        /// </summary>
         None,
 
         /// <summary>

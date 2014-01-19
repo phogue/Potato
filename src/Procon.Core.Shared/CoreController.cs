@@ -2,8 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Xml.Serialization;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace Procon.Core.Shared {
@@ -128,23 +126,6 @@ namespace Procon.Core.Shared {
                         this.Tunnel(command);
                     }
                 }
-                /*
-                // Drill down in the config to this object's type.
-                var nodes = this.GetType().FullName.Split('`').First().Split('.').Skip(1).Aggregate(config.Root.Elements(), (current, name) => current.DescendantsAndSelf(name));
-
-                // For each of the commands for this object...
-                foreach (XElement xCommand in nodes.Descendants("Command")) {
-                    Command loadedCommand = xCommand.FromXElement<Command>();
-
-                    if (loadedCommand != null && loadedCommand.Name != null) {
-                        command.ParseCommandType(loadedCommand.Name);
-                        command.Parameters = loadedCommand.Parameters;
-                        command.Scope = loadedCommand.Scope;
-
-                        this.Tunnel(command);
-                    }
-                }
-                */
             }
         }
 

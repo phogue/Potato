@@ -1,9 +1,12 @@
 ﻿using System;
 using System.ComponentModel;
 
-namespace Procon.Core.Shared {
+namespace Procon.Core.Shared.Models {
+    /// <summary>
+    /// Base model of data for models located in Procon.Core.*
+    /// </summary>
     [Serializable]
-    public class CoreModel : ICloneable {
+    public abstract class CoreModel : ICloneable {
         /// <summary>
         /// Event for whenever a property is modified on this executable object
         /// </summary>

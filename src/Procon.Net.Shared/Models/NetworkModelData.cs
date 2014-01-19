@@ -52,8 +52,6 @@ namespace Procon.Net.Shared.Models {
         /// <summary>
         /// List of packets attached to this action, if any.
         /// </summary>
-        [JsonIgnore]
         public List<IPacket> Packets { get; set; }
-
     }
 }

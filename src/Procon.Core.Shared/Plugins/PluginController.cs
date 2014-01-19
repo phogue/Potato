@@ -302,7 +302,7 @@ namespace Procon.Core.Shared.Plugins {
                 Parameters = new List<CommandParameter>() {
                     new CommandParameter() {
                         Data = {
-                            Events = new List<GenericEvent>() {
+                            Events = new List<IGenericEvent>() {
                                 e
                             }
                         }

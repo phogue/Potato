@@ -4,7 +4,6 @@ using System.IO;
 using System.Net;
 using Newtonsoft.Json;
 using Procon.Core.Shared.Events;
-using Procon.Net.Shared.Utils;
 using Procon.Net.Shared.Utils.HTTP;
 
 namespace Procon.Core.Events {
@@ -128,11 +127,11 @@ namespace Procon.Core.Events {
             if (this.EventsStream != null && this.Pushing == false) {
                 this.Pushing = true;
 
-                List<GenericEvent> data;
+                List<IGenericEvent> data;
 
                 // Clone the list of events we're pushing out.
                 lock (this.EventsStream) {
-                    data = new List<GenericEvent>(this.EventsStream);
+                    data = new List<IGenericEvent>(this.EventsStream);
                 }
 
                 // Only transfer if we have something new to report.
@@ -183,7 +182,7 @@ namespace Procon.Core.Events {
         /// of it being an error, treating it like a udp stream. The server gets the data or it gets
         /// left behind. We're just pushing updated data.
         /// </summary>
-        private void RequestCompleted(IEnumerable<GenericEvent> pushedDataList) {
+        private void RequestCompleted(IEnumerable<IGenericEvent> pushedDataList) {
             if (this.EventsStream != null && pushedDataList != null) {
                 lock (this.EventsStream) {
                     foreach (GenericEvent pushedData in pushedDataList) {

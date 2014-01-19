@@ -14,7 +14,6 @@ namespace Procon.Core.Shared {
     /// </summary>
     [Serializable]
     public sealed class CommandData : IDisposable {
-
         /// <summary>
         /// List of strings to use as general content (localization(s), html etc.)
         /// </summary>
@@ -73,7 +72,7 @@ namespace Procon.Core.Shared {
         /// <summary>
         /// Variables effected by this event.
         /// </summary>
-        public List<GenericEvent> Events { get; set; }
+        public List<IGenericEvent> Events { get; set; }
 
         /// <summary>
         /// Repositories effected by this event.

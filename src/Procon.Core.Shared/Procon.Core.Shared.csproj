@@ -44,6 +44,9 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Events\IGenericEvent.cs" />
+    <Compile Include="ICommandData.cs" />
+    <Compile Include="ICommandResult.cs" />
     <Compile Include="Models\CommandAuthenticationModel.cs" />
     <Compile Include="CommandDirection.cs" />
     <Compile Include="IConfig.cs" />

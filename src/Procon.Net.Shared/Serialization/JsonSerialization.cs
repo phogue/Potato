@@ -35,8 +35,17 @@ namespace Procon.Net.Shared.Serialization {
                 new InterfaceJsonConverter<IProtocolState, ProtocolState>()
             };
 
-            JsonSerialization.Minimal = new JsonSerializer();
-            JsonSerialization.Readable = new JsonSerializer();
+            JsonSerialization.Minimal = new JsonSerializer() {
+                NullValueHandling = NullValueHandling.Ignore,
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+                Formatting = Formatting.None
+            };
+
+            JsonSerialization.Readable = new JsonSerializer() {
+                NullValueHandling = NullValueHandling.Ignore,
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+                Formatting = Formatting.Indented
+            };
 
             JsonSerialization.Converters.ForEach(converter => {
                 JsonSerialization.Minimal.Converters.Add(converter);

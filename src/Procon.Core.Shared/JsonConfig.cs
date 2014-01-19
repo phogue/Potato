@@ -3,17 +3,13 @@ using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Procon.Core.Shared.Serialization;
 
 namespace Procon.Core.Shared {
     /// <summary>
     /// Config for saving JSON data
     /// </summary>
     public class JsonConfig : IConfig {
-        /// <summary>
-        /// The serializer to use for saving/loading data to/from files.
-        /// </summary>
-        public JsonSerializer Serializer { get; set; }
-
         public JObject Document { get; set; }
 
         public JArray Root { get; set; }
@@ -22,19 +18,13 @@ namespace Procon.Core.Shared {
         /// Initializes the serializer
         /// </summary>
         public JsonConfig() {
-            this.Serializer = new JsonSerializer() {
-                NullValueHandling = NullValueHandling.Ignore,
-                ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
-                Formatting = Formatting.Indented
-            };
-
             this.Document = new JObject();
         }
 
         public IConfig Append<T>(T data) {
             if (Equals(data, default(T))) throw new ArgumentNullException("data");
 
-            this.Root.Add(JObject.FromObject(data, this.Serializer));
+            this.Root.Add(JObject.FromObject(data, JsonSerialization.Readable));
 
             return this;
         }
@@ -107,8 +97,8 @@ namespace Procon.Core.Shared {
                         catch {
                             this.Root = new JArray();
                             this.Document = new JObject() {
-                            new JProperty("Empty", this.Root)
-                        };
+                                new JProperty("Empty", this.Root)
+                            };
                         }
                     }
                 }
@@ -135,7 +125,7 @@ namespace Procon.Core.Shared {
             if (file == null) throw new ArgumentNullException("file");
 
             using (TextWriter writer = new StreamWriter(file.FullName, false)) {
-                this.Serializer.Serialize(writer, this.Document);
+                JsonSerialization.Readable.Serialize(writer, this.Document);
             }
 
             return this;

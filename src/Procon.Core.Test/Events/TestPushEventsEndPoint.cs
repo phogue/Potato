@@ -9,6 +9,7 @@ using NUnit.Framework;
 using Newtonsoft.Json;
 using Procon.Core.Events;
 using Procon.Core.Shared.Events;
+using Procon.Core.Shared.Serialization;
 using Procon.Net.Shared.Utils.HTTP;
 
 #endregion
@@ -93,7 +94,7 @@ namespace Procon.Core.Test.Events {
                 }
             });
 
-            var deserialized = JsonConvert.DeserializeObject<PushEventsRequest>(builder.ToString());
+            var deserialized = JsonSerialization.Minimal.Deserialize<PushEventsRequest>(new JsonTextReader(new StringReader(builder.ToString())));
 
             Assert.AreEqual("What up?", deserialized.Events.First().Message);
         }

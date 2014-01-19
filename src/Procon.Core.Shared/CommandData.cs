@@ -13,7 +13,7 @@ namespace Procon.Core.Shared {
     /// All data types, as lists, that can be attached to a command.
     /// </summary>
     [Serializable]
-    public sealed class CommandData : IDisposable {
+    public sealed class CommandData : ICommandData {
         /// <summary>
         /// List of strings to use as general content (localization(s), html etc.)
         /// </summary>
@@ -142,7 +142,7 @@ namespace Procon.Core.Shared {
         /// <summary>
         /// The command results attached to this event, if any.
         /// </summary>
-        public List<CommandResult> CommandResults { get; set; }
+        public List<ICommandResult> CommandResults { get; set; }
 
         /// <summary>
         /// The raw packets attached to this command or event, if any.

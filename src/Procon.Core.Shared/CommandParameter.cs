@@ -42,7 +42,7 @@ namespace Procon.Core.Shared {
             typeof (BanModel),
             typeof (Settings),
             typeof (MapModel),
-            typeof (CommandResult),
+            typeof (ICommandResult),
             typeof (IDatabaseObject),
             typeof (IPacket)
         };
@@ -139,7 +139,7 @@ namespace Procon.Core.Shared {
             else if (t == typeof(MapModel) && this.Data.Maps != null) {
                 all = this.Data.Maps.Cast<Object>().ToList();
             }
-            else if (t == typeof(CommandResult) && this.Data.CommandResults != null) {
+            else if (t == typeof(ICommandResult) && this.Data.CommandResults != null) {
                 all = this.Data.CommandResults.Cast<Object>().ToList();
             }
             else if (t == typeof(IPacket) && this.Data.CommandResults != null) {

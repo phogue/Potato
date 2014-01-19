@@ -282,49 +282,49 @@ namespace Procon.Core.Variables {
             }
         }
 
-        protected CommandResult CommandSetCollection(Command command, Dictionary<String, CommandParameter> parameters) {
+        protected ICommandResult CommandSetCollection(Command command, Dictionary<String, CommandParameter> parameters) {
             String name = parameters["name"].First<String>();
             List<String> value = parameters["value"].All<String>();
 
             return this.Set(command, name, value);
         }
 
-        protected CommandResult CommandSetSingular(Command command, Dictionary<String, CommandParameter> parameters) {
+        protected ICommandResult CommandSetSingular(Command command, Dictionary<String, CommandParameter> parameters) {
             String name = parameters["name"].First<String>();
             String value = parameters["value"].First<String>();
 
             return this.Set(command, name, value);
         }
 
-        protected CommandResult CommandSetACollection(Command command, Dictionary<String, CommandParameter> parameters) {
+        protected ICommandResult CommandSetACollection(Command command, Dictionary<String, CommandParameter> parameters) {
             String name = parameters["name"].First<String>();
             List<String> value = parameters["value"].All<String>();
 
             return this.SetA(command, name, value);
         }
 
-        protected CommandResult CommandSetASingular(Command command, Dictionary<String, CommandParameter> parameters) {
+        protected ICommandResult CommandSetASingular(Command command, Dictionary<String, CommandParameter> parameters) {
             String name = parameters["name"].First<String>();
             String value = parameters["value"].First<String>();
 
             return this.SetA(command, name, value);
         }
 
-        protected CommandResult CommandSetFCollection(Command command, Dictionary<String, CommandParameter> parameters) {
+        protected ICommandResult CommandSetFCollection(Command command, Dictionary<String, CommandParameter> parameters) {
             String name = parameters["name"].First<String>();
             List<String> value = parameters["value"].All<String>();
 
             return this.SetF(command, name, value);
         }
 
-        protected CommandResult CommandSetFSingular(Command command, Dictionary<String, CommandParameter> parameters) {
+        protected ICommandResult CommandSetFSingular(Command command, Dictionary<String, CommandParameter> parameters) {
             String name = parameters["name"].First<String>();
             String value = parameters["value"].First<String>();
 
             return this.SetF(command, name, value);
         }
 
-        protected CommandResult CommandGet(Command command, Dictionary<String, CommandParameter> parameters) {
+        protected ICommandResult CommandGet(Command command, Dictionary<String, CommandParameter> parameters) {
             String name = parameters["name"].First<String>();
 
             return this.Get(command, name);
@@ -338,8 +338,8 @@ namespace Procon.Core.Variables {
         /// <param name="name">The unique name of the variable to set</param>
         /// <param name="value">The value of the variable</param>
         /// <returns></returns>
-        public CommandResult Set(Command command, String name, Object value) {
-            CommandResult result = null;
+        public ICommandResult Set(Command command, String name, Object value) {
+            ICommandResult result = null;
 
             if (command.Origin == CommandOrigin.Local || this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
                 if (name.Length > 0) {
@@ -395,7 +395,7 @@ namespace Procon.Core.Variables {
         /// <param name="name">The unique name of the variable to set</param>
         /// <param name="value">The value of the variable</param>
         /// <returns></returns>
-        public CommandResult Set(Command command, CommonVariableNames name, Object value) {
+        public ICommandResult Set(Command command, CommonVariableNames name, Object value) {
             return this.Set(command, name.ToString(), value);
         }
 
@@ -407,11 +407,11 @@ namespace Procon.Core.Variables {
         /// <param name="name">The unique name of the variable to set</param>
         /// <param name="value">The value of the variable</param>
         /// <returns></returns>
-        public CommandResult SetA(Command command, String name, Object value) {
-            CommandResult result = null;
+        public ICommandResult SetA(Command command, String name, Object value) {
+            ICommandResult result = null;
 
             if (command.Origin == CommandOrigin.Local || this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
-                CommandResult volatileSetResult = this.Set(command, name, value);
+                ICommandResult volatileSetResult = this.Set(command, name, value);
 
                 if (volatileSetResult.Success == true) {
                     // All good.
@@ -462,11 +462,11 @@ namespace Procon.Core.Variables {
         /// <param name="name">The unique name of the variable to set</param>
         /// <param name="value">The value of the variable</param>
         /// <returns></returns>
-        public CommandResult SetF(Command command, String name, Object value) {
-            CommandResult result = null;
+        public ICommandResult SetF(Command command, String name, Object value) {
+            ICommandResult result = null;
 
             if (command.Origin == CommandOrigin.Local || this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
-                CommandResult volatileSetResult = this.Set(command, name, value);
+                ICommandResult volatileSetResult = this.Set(command, name, value);
 
                 if (volatileSetResult.Success == true) {
                     // All good.
@@ -544,8 +544,8 @@ namespace Procon.Core.Variables {
         /// <param name="name">The unique name of the variable to fetch</param>
         /// <param name="defaultValue"></param>
         /// <returns>The raw object with no conversion</returns>
-        public CommandResult Get(Command command, String name, Object defaultValue = null) {
-            CommandResult result = null;
+        public ICommandResult Get(Command command, String name, Object defaultValue = null) {
+            ICommandResult result = null;
 
             if (command.Origin == CommandOrigin.Local || this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
                 if (name.Length > 0) {

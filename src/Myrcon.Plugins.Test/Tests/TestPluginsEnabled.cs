@@ -22,7 +22,7 @@ namespace Myrcon.Plugins.Test.Tests {
             });
         }
 
-        protected CommandResult TestPluginsEnabledCommandResult(Command command, Dictionary<String, CommandParameter> parameters) {
+        protected ICommandResult TestPluginsEnabledCommandResult(Command command, Dictionary<String, CommandParameter> parameters) {
             String parameterMessage = parameters["parameterMessage"].First<String>();
 
             command.Result.Message = parameterMessage;

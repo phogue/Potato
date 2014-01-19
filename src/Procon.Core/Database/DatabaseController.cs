@@ -192,8 +192,8 @@ namespace Procon.Core.Database {
         /// <param name="driver">The driver to execute the query on</param>
         /// <param name="queries">The queries to execute</param>
         /// <returns>The result of the commands containing the results of each query.</returns>
-        protected CommandResult ExecuteQueriesOnDriver(IDriver driver, List<IDatabaseObject> queries) {
-            CommandResult result = null;
+        protected ICommandResult ExecuteQueriesOnDriver(IDriver driver, List<IDatabaseObject> queries) {
+            ICommandResult result = null;
 
             result = new CommandResult() {
                 Success = true,
@@ -220,8 +220,8 @@ namespace Procon.Core.Database {
         /// <param name="databaseGroupName">The name of the database group to use</param>
         /// <param name="queries">The queries to execute on the matching driver</param>
         /// <returns>The result of the commands containing the results of each query.</returns>
-        protected CommandResult ExecuteQueriesOnGroupName(String databaseGroupName, List<IDatabaseObject> queries) {
-            CommandResult result = null;
+        protected ICommandResult ExecuteQueriesOnGroupName(String databaseGroupName, List<IDatabaseObject> queries) {
+            ICommandResult result = null;
 
             if (this.OpenDrivers.ContainsKey(databaseGroupName) == true) {
                 result = this.ExecuteQueriesOnDriver(this.OpenDrivers[databaseGroupName], queries);
@@ -237,8 +237,8 @@ namespace Procon.Core.Database {
             return result;
         }
 
-        protected CommandResult ExecuteQueriesOnAllDrivers(List<IDatabaseObject> queries) {
-            CommandResult result = null;
+        protected ICommandResult ExecuteQueriesOnAllDrivers(List<IDatabaseObject> queries) {
+            ICommandResult result = null;
 
             foreach (var databaseGroup in this.OpenDrivers) {
                 result = this.ExecuteQueriesOnDriver(databaseGroup.Value, queries);
@@ -247,11 +247,11 @@ namespace Procon.Core.Database {
             return result;
         }
 
-        protected CommandResult Query(Command command, Dictionary<String, CommandParameter> parameters) {
+        protected ICommandResult Query(Command command, Dictionary<String, CommandParameter> parameters) {
             return this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true ? this.ExecuteQueriesOnAllDrivers(parameters["query"].All<IDatabaseObject>()) : CommandResult.InsufficientPermissions;
         }
 
-        protected CommandResult QueryDriver(Command command, Dictionary<String, CommandParameter> parameters) {
+        protected ICommandResult QueryDriver(Command command, Dictionary<String, CommandParameter> parameters) {
             return this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true ? this.ExecuteQueriesOnGroupName(parameters["driver"].First<String>(), parameters["query"].All<IDatabaseObject>()) : CommandResult.InsufficientPermissions;
         }
 

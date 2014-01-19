@@ -82,8 +82,8 @@ namespace Procon.Core.Connections.Plugins {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public CommandResult EnablePlugin(Command command, Dictionary<String, CommandParameter> parameters) {
-            CommandResult result = null;
+        public ICommandResult EnablePlugin(Command command, Dictionary<String, CommandParameter> parameters) {
+            ICommandResult result = null;
 
             if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
                 Guid pluginGuid = command.ScopeModel.PluginGuid;
@@ -139,8 +139,8 @@ namespace Procon.Core.Connections.Plugins {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public CommandResult DisablePlugin(Command command, Dictionary<String, CommandParameter> parameters) {
-            CommandResult result = null;
+        public ICommandResult DisablePlugin(Command command, Dictionary<String, CommandParameter> parameters) {
+            ICommandResult result = null;
 
             if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
                 Guid pluginGuid = command.ScopeModel.PluginGuid;
@@ -377,8 +377,8 @@ namespace Procon.Core.Connections.Plugins {
             }
         }
 
-        public override CommandResult PropogatePreview(Command command, CommandDirection direction) {
-            CommandResult synchronousResult = null;
+        public override ICommandResult PropogatePreview(Command command, CommandDirection direction) {
+            ICommandResult synchronousResult = null;
 
             // If we're bubbling and we have not seen this command yet
             if (direction == CommandDirection.Bubble && this.AsyncStateModel.IsKnown(command.CommandGuid) == false) {

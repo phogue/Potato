@@ -45,7 +45,7 @@ namespace Procon.Examples.Plugins.Database {
                     new Migration() {
                         // Up, moving upstream in changes.
                         Up = () => {
-                            CommandResult result = this.Bubble(
+                            ICommandResult result = this.Bubble(
                                 CommandBuilder.DatabaseQuery(
                                     new Create()
                                     // You should namespace/prefix your collections/tables to avoid clashes with other plugins
@@ -63,7 +63,7 @@ namespace Procon.Examples.Plugins.Database {
                             // Including Down is not critical when moving upstream, but it's good
                             // practice to include Down. We may in the future include plugin uninstalling
                             // and down migrations would allow the database to be uninstalled.
-                            CommandResult result = this.Bubble(
+                            ICommandResult result = this.Bubble(
                                 CommandBuilder.DatabaseQuery(
                                     new Drop()
                                     .Collection("Procon_Example_Database_Users")
@@ -78,7 +78,7 @@ namespace Procon.Examples.Plugins.Database {
                     new Migration() {
                         Up = () => {
                             // Add another field to our example
-                            CommandResult result = this.Bubble(
+                            ICommandResult result = this.Bubble(
                                 CommandBuilder.DatabaseQuery(
                                     new Alter()
                                     .Collection("Procon_Example_Database_Users")
@@ -94,7 +94,7 @@ namespace Procon.Examples.Plugins.Database {
                         Down = () => {
                             // Drop the field, so people can revert this migration or uninstall can go
                             // through the motions.
-                            CommandResult result = this.Bubble(
+                            ICommandResult result = this.Bubble(
                                 CommandBuilder.DatabaseQuery(
                                     new Alter()
                                     .Collection("Procon_Example_Database_Users")

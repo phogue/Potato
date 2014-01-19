@@ -4,7 +4,6 @@ using NUnit.Framework;
 using Procon.Core.Connections.TextCommands;
 using Procon.Core.Shared;
 using Procon.Core.Shared.Models;
-using Procon.Net.Shared.Actions;
 using Procon.Net.Shared.Models;
 
 namespace Procon.Core.Test.TextCommands.Route {
@@ -61,7 +60,7 @@ namespace Procon.Core.Test.TextCommands.Route {
 
             textCommandController.TextCommands.Add(command);
 
-            CommandResult result = ExecuteTextCommand(textCommandController, "command 20 for something and something");
+            ICommandResult result = ExecuteTextCommand(textCommandController, "command 20 for something and something");
 
             AssertExecutedCommandAgainstNumericValue(result, command, 20);
             AssertExecutedCommandAgainstSentencesList(result, command, new List<String>() {
@@ -185,7 +184,7 @@ namespace Procon.Core.Test.TextCommands.Route {
 
             textCommandController.TextCommands.Add(command);
 
-            CommandResult result = ExecuteTextCommand(textCommandController, "command phogue morpheus for something and something");
+            ICommandResult result = ExecuteTextCommand(textCommandController, "command phogue morpheus for something and something");
 
             AssertExecutedCommandAgainstSentencesList(result, command, new List<String>() {
                 "for something and something"
@@ -212,7 +211,7 @@ namespace Procon.Core.Test.TextCommands.Route {
 
             textCommandController.TextCommands.Add(command);
 
-            CommandResult result = ExecuteTextCommand(textCommandController, "command phogue something, something, something dark side morpheus");
+            ICommandResult result = ExecuteTextCommand(textCommandController, "command phogue something, something, something dark side morpheus");
 
             AssertExecutedCommandAgainstSentencesList(result, command, new List<String>() {
                 "something, something, something dark side"
@@ -239,7 +238,7 @@ namespace Procon.Core.Test.TextCommands.Route {
 
             textCommandController.TextCommands.Add(command);
 
-            CommandResult result = ExecuteTextCommand(textCommandController, "command phogue something, something, something dark side morpheus 25");
+            ICommandResult result = ExecuteTextCommand(textCommandController, "command phogue something, something, something dark side morpheus 25");
 
             AssertExecutedCommandAgainstSentencesList(result, command, new List<String>() {
                 "something, something, something dark side"
@@ -268,7 +267,7 @@ namespace Procon.Core.Test.TextCommands.Route {
 
             textCommandController.TextCommands.Add(command);
 
-            CommandResult result = ExecuteTextCommand(textCommandController, "command phogue for some time");
+            ICommandResult result = ExecuteTextCommand(textCommandController, "command phogue for some time");
 
             AssertExecutedCommandAgainstSentencesList(result, command, new List<String>() {
                 "some time"

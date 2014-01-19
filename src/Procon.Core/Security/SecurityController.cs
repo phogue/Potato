@@ -418,8 +418,8 @@ namespace Procon.Core.Security {
         /// <summary>
         /// Creates a new group if the specified name is unique.
         /// </summary>
-        public CommandResult SecurityAddGroup(Command command, Dictionary<String, CommandParameter> parameters) {
-            CommandResult result = null;
+        public ICommandResult SecurityAddGroup(Command command, Dictionary<String, CommandParameter> parameters) {
+            ICommandResult result = null;
 
             String groupName = parameters["groupName"].First<String>();
 
@@ -476,8 +476,8 @@ namespace Procon.Core.Security {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public CommandResult SecurityRemoveGroup(Command command, Dictionary<String, CommandParameter> parameters) {
-            CommandResult result = null;
+        public ICommandResult SecurityRemoveGroup(Command command, Dictionary<String, CommandParameter> parameters) {
+            ICommandResult result = null;
 
             String groupName = parameters["groupName"].First<String>();
 
@@ -532,8 +532,8 @@ namespace Procon.Core.Security {
         /// <summary>
         /// Removes an account, whatever group it is assigned to.
         /// </summary>
-        public CommandResult SecurityRemoveAccount(Command command, Dictionary<String, CommandParameter> parameters) {
-            CommandResult result = null;
+        public ICommandResult SecurityRemoveAccount(Command command, Dictionary<String, CommandParameter> parameters) {
+            ICommandResult result = null;
 
             String username = parameters["username"].First<String>();
 
@@ -596,8 +596,8 @@ namespace Procon.Core.Security {
         /// </summary>
         /// <param name="command"></param>
         /// <param name="parameters"></param>
-        public CommandResult SecurityRemovePlayer(Command command, Dictionary<String, CommandParameter> parameters) { // (Command command, String gameType, String uid) {
-            CommandResult result = null;
+        public ICommandResult SecurityRemovePlayer(Command command, Dictionary<String, CommandParameter> parameters) { // (Command command, String gameType, String uid) {
+            ICommandResult result = null;
 
             String gameType = parameters["gameType"].First<String>();
             String uid = parameters["uid"].First<String>();
@@ -657,8 +657,8 @@ namespace Procon.Core.Security {
             return result;
         }
 
-        private static CommandResult CheckPermissions(AccountModel initiatorAccount, String commandName, AccountModel targetAccount = null) {
-            CommandResult result = null;
+        private static ICommandResult CheckPermissions(AccountModel initiatorAccount, String commandName, AccountModel targetAccount = null) {
+            ICommandResult result = null;
 
             int? initiatorAuthority = SecurityController.HighestAuthority(initiatorAccount, commandName);
             int? targetAuthority = SecurityController.HighestAuthority(targetAccount, commandName);
@@ -708,8 +708,8 @@ namespace Procon.Core.Security {
         /// <param name="commandName"></param>
         /// <param name="targetAccount"></param>
         /// <returns></returns>
-        protected CommandResult DispatchPermissionsCheck(Command command, AccountModel initiatorAccount, String commandName, AccountModel targetAccount = null) {
-            CommandResult result = null;
+        protected ICommandResult DispatchPermissionsCheck(Command command, AccountModel initiatorAccount, String commandName, AccountModel targetAccount = null) {
+            ICommandResult result = null;
 
             if (command.Origin == CommandOrigin.Local) {
                 // All good.
@@ -750,7 +750,7 @@ namespace Procon.Core.Security {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public CommandResult DispatchPermissionsCheckByAccountPlayerDetails(Command command, Dictionary<String, CommandParameter> parameters) {
+        public ICommandResult DispatchPermissionsCheckByAccountPlayerDetails(Command command, Dictionary<String, CommandParameter> parameters) {
             String commandName = parameters["commandName"].First<String>();
             String targetGameType = parameters["targetGameType"].First<String>();
             String targetUid = parameters["targetUid"].First<String>();
@@ -764,7 +764,7 @@ namespace Procon.Core.Security {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public CommandResult DispatchPermissionsCheckByAccountDetails(Command command, Dictionary<String, CommandParameter> parameters) {
+        public ICommandResult DispatchPermissionsCheckByAccountDetails(Command command, Dictionary<String, CommandParameter> parameters) {
             String commandName = parameters["commandName"].First<String>();
             String targetAccountName = parameters["targetAccountName"].First<String>();
 
@@ -777,7 +777,7 @@ namespace Procon.Core.Security {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public CommandResult DispatchPermissionsCheckByCommand(Command command, Dictionary<String, CommandParameter> parameters) {
+        public ICommandResult DispatchPermissionsCheckByCommand(Command command, Dictionary<String, CommandParameter> parameters) {
             String commandName = parameters["commandName"].First<String>();
             return this.DispatchPermissionsCheck(command, this.GetAccount(command), commandName);
         }
@@ -788,7 +788,7 @@ namespace Procon.Core.Security {
         /// <param name="command"></param>
         /// <param name="commandName"></param>
         /// <returns></returns>
-        public CommandResult DispatchPermissionsCheck(Command command, String commandName) {
+        public ICommandResult DispatchPermissionsCheck(Command command, String commandName) {
             return this.DispatchPermissionsCheck(command, this.GetAccount(command), commandName);
         }
 
@@ -833,8 +833,8 @@ namespace Procon.Core.Security {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public CommandResult SecurityGroupSetPermission(Command command, Dictionary<String, CommandParameter> parameters) {
-            CommandResult result = null;
+        public ICommandResult SecurityGroupSetPermission(Command command, Dictionary<String, CommandParameter> parameters) {
+            ICommandResult result = null;
 
             String groupName = parameters["groupName"].First<String>();
             String permissionName = parameters["permissionName"].First<String>();
@@ -902,8 +902,8 @@ namespace Procon.Core.Security {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public CommandResult SecurityGroupCopyPermissions(Command command, Dictionary<String, CommandParameter> parameters) {
-            CommandResult result = null;
+        public ICommandResult SecurityGroupCopyPermissions(Command command, Dictionary<String, CommandParameter> parameters) {
+            ICommandResult result = null;
 
             String sourceGroupName = parameters["sourceGroupName"].First<String>();
             String destinationGroupName = parameters["destinationGroupName"].First<String>();
@@ -968,8 +968,8 @@ namespace Procon.Core.Security {
         /// <summary>
         /// Creates a new account if the specified name is unique.
         /// </summary>
-        public CommandResult SecurityGroupAddAccount(Command command, Dictionary<String, CommandParameter> parameters) { // , String groupName, String username) {
-            CommandResult result = null;
+        public ICommandResult SecurityGroupAddAccount(Command command, Dictionary<String, CommandParameter> parameters) { // , String groupName, String username) {
+            ICommandResult result = null;
 
             String groupName = parameters["groupName"].First<String>();
             String username = parameters["username"].First<String>();
@@ -1080,8 +1080,8 @@ namespace Procon.Core.Security {
         /// </summary>
         /// <param name="command"></param>
         /// <param name="parameters"></param>
-        public CommandResult SecurityAccountAddPlayer(Command command, Dictionary<String, CommandParameter> parameters) {
-            CommandResult result = null;
+        public ICommandResult SecurityAccountAddPlayer(Command command, Dictionary<String, CommandParameter> parameters) {
+            ICommandResult result = null;
 
             // <param name="username">The unique name of the account.  Account.Name</param>
             // <param name="gameType">The name of the game, found in Procon.Core.Connections.Support</param>
@@ -1198,8 +1198,8 @@ namespace Procon.Core.Security {
         /// </summary>
         /// <param name="command"></param>
         /// <param name="parameters"></param>
-        public CommandResult SecurityAccountSetPassword(Command command, Dictionary<String, CommandParameter> parameters) {
-            CommandResult result = null;
+        public ICommandResult SecurityAccountSetPassword(Command command, Dictionary<String, CommandParameter> parameters) {
+            ICommandResult result = null;
 
             // <param name="username">The unique name of the account.  Account.Name</param>
             // <param name="password">The person password to login to the layer.  Account.Password</param>
@@ -1248,8 +1248,8 @@ namespace Procon.Core.Security {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public CommandResult SecurityAccountSetPasswordHash(Command command, Dictionary<String, CommandParameter> parameters) {
-            CommandResult result = null;
+        public ICommandResult SecurityAccountSetPasswordHash(Command command, Dictionary<String, CommandParameter> parameters) {
+            ICommandResult result = null;
 
             String username = parameters["username"].First<String>();
             String passwordHash = parameters["passwordHash"].First<String>();
@@ -1296,8 +1296,8 @@ namespace Procon.Core.Security {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public CommandResult SecurityAccountAuthenticate(Command command, Dictionary<String, CommandParameter> parameters) {
-            CommandResult result = null;
+        public ICommandResult SecurityAccountAuthenticate(Command command, Dictionary<String, CommandParameter> parameters) {
+            ICommandResult result = null;
 
             String username = parameters["username"].First<String>();
             String passwordPlainText = parameters["passwordPlainText"].First<String>();
@@ -1350,8 +1350,8 @@ namespace Procon.Core.Security {
         /// </summary>
         /// <param name="command"></param>
         /// <param name="parameters"></param>
-        public CommandResult SecurityAccountSetPreferredLanguageCode(Command command, Dictionary<String, CommandParameter> parameters) {
-            CommandResult result = null;
+        public ICommandResult SecurityAccountSetPreferredLanguageCode(Command command, Dictionary<String, CommandParameter> parameters) {
+            ICommandResult result = null;
 
             // <param name="username">The unique name of the account.  Account.Name</param>
             // <param name="languageCode">ISO 639-1 preferred language code</param>

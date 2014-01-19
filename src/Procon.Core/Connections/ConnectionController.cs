@@ -188,7 +188,7 @@ namespace Procon.Core.Connections {
             }
         }
 
-        public override CommandResult PropogatePreview(Command command, CommandDirection direction) {
+        public override ICommandResult PropogatePreview(Command command, CommandDirection direction) {
             if (direction == CommandDirection.Bubble && command.ScopeModel != null && command.ScopeModel.ConnectionGuid == this.ConnectionModel.ConnectionGuid) {
                 // We've bubbled up far enough, time to tunnel down this connection to find our result.
                 return base.PropogatePreview(command, CommandDirection.Tunnel);
@@ -197,7 +197,7 @@ namespace Procon.Core.Connections {
             return base.PropogatePreview(command, direction);
         }
 
-        public override CommandResult PropogateHandler(Command command, CommandDirection direction) {
+        public override ICommandResult PropogateHandler(Command command, CommandDirection direction) {
             if (direction == CommandDirection.Bubble && command.ScopeModel != null && command.ScopeModel.ConnectionGuid == this.ConnectionModel.ConnectionGuid) {
                 // We've bubbled up far enough, time to tunnel down this connection to find our result.
                 return base.PropogateHandler(command, CommandDirection.Tunnel);
@@ -206,7 +206,7 @@ namespace Procon.Core.Connections {
             return base.PropogateHandler(command, direction);
         }
 
-        public override CommandResult PropogateExecuted(Command command, CommandDirection direction) {
+        public override ICommandResult PropogateExecuted(Command command, CommandDirection direction) {
             if (direction == CommandDirection.Bubble && command.ScopeModel != null && command.ScopeModel.ConnectionGuid == this.ConnectionModel.ConnectionGuid) {
                 // We've bubbled up far enough, time to tunnel down this connection to find our result.
                 return base.PropogateExecuted(command, CommandDirection.Tunnel);
@@ -224,23 +224,23 @@ namespace Procon.Core.Connections {
             }
         }
 
-        public CommandResult ConnectionQuery(Command command, Dictionary<String, CommandParameter> parameters) {
-            CommandResult result = null;
+        public ICommandResult ConnectionQuery(Command command, Dictionary<String, CommandParameter> parameters) {
+            ICommandResult result = null;
 
             if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
-                CommandResult players = this.Tunnel(new Command(command) {
+                ICommandResult players = this.Tunnel(new Command(command) {
                     CommandType = CommandType.NetworkProtocolQueryPlayers
                 });
 
-                CommandResult settings = this.Tunnel(new Command(command) {
+                ICommandResult settings = this.Tunnel(new Command(command) {
                     CommandType = CommandType.NetworkProtocolQuerySettings
                 });
 
-                CommandResult bans = this.Tunnel(new Command(command) {
+                ICommandResult bans = this.Tunnel(new Command(command) {
                     CommandType = CommandType.NetworkProtocolQueryBans
                 });
 
-                CommandResult maps = this.Tunnel(new Command(command) {
+                ICommandResult maps = this.Tunnel(new Command(command) {
                     CommandType = CommandType.NetworkProtocolQueryMaps
                 });
 
@@ -269,8 +269,8 @@ namespace Procon.Core.Connections {
             return result;
         }
 
-        public CommandResult NetworkProtocolQueryPlayers(Command command, Dictionary<String, CommandParameter> parameters) {
-            CommandResult result = null;
+        public ICommandResult NetworkProtocolQueryPlayers(Command command, Dictionary<String, CommandParameter> parameters) {
+            ICommandResult result = null;
 
             if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
                 result = new CommandResult() {
@@ -293,8 +293,8 @@ namespace Procon.Core.Connections {
             return result;
         }
 
-        public CommandResult NetworkProtocolQuerySettings(Command command, Dictionary<String, CommandParameter> parameters) {
-            CommandResult result = null;
+        public ICommandResult NetworkProtocolQuerySettings(Command command, Dictionary<String, CommandParameter> parameters) {
+            ICommandResult result = null;
 
             if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
                 result = new CommandResult() {
@@ -319,8 +319,8 @@ namespace Procon.Core.Connections {
             return result;
         }
 
-        public CommandResult NetworkProtocolQueryBans(Command command, Dictionary<String, CommandParameter> parameters) {
-            CommandResult result = null;
+        public ICommandResult NetworkProtocolQueryBans(Command command, Dictionary<String, CommandParameter> parameters) {
+            ICommandResult result = null;
 
             if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
                 result = new CommandResult() {
@@ -343,8 +343,8 @@ namespace Procon.Core.Connections {
             return result;
         }
 
-        public CommandResult NetworkProtocolQueryMaps(Command command, Dictionary<String, CommandParameter> parameters) {
-            CommandResult result = null;
+        public ICommandResult NetworkProtocolQueryMaps(Command command, Dictionary<String, CommandParameter> parameters) {
+            ICommandResult result = null;
 
             if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
                 result = new CommandResult() {
@@ -367,8 +367,8 @@ namespace Procon.Core.Connections {
             return result;
         }
 
-        public CommandResult NetworkProtocolQueryMapPool(Command command, Dictionary<String, CommandParameter> parameters) {
-            CommandResult result = null;
+        public ICommandResult NetworkProtocolQueryMapPool(Command command, Dictionary<String, CommandParameter> parameters) {
+            ICommandResult result = null;
 
             if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
                 result = new CommandResult() {
@@ -391,8 +391,8 @@ namespace Procon.Core.Connections {
             return result;
         }
 
-        public CommandResult NetworkProtocolAction(Command command, Dictionary<String, CommandParameter> parameters) {
-            CommandResult result = null;
+        public ICommandResult NetworkProtocolAction(Command command, Dictionary<String, CommandParameter> parameters) {
+            ICommandResult result = null;
 
             INetworkAction action = parameters["action"].First<INetworkAction>();
 
@@ -414,8 +414,8 @@ namespace Procon.Core.Connections {
             return result;
         }
 
-        public CommandResult NetworkProtocolActions(Command command, Dictionary<String, CommandParameter> parameters) {
-            CommandResult result = null;
+        public ICommandResult NetworkProtocolActions(Command command, Dictionary<String, CommandParameter> parameters) {
+            ICommandResult result = null;
 
             List<INetworkAction> actions = parameters["actions"].All<INetworkAction>();
 

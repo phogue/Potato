@@ -25,7 +25,7 @@ namespace Procon.Core.Test.Security {
             var security = new SecurityController();
 
             // Add a group.
-            CommandResult result = security.Tunnel(new Command() {
+            ICommandResult result = security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityAddGroup,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -44,7 +44,7 @@ namespace Procon.Core.Test.Security {
         [Test]
         public void TestSecurityAddGroupDuplicateGroupName() {
             var security = new SecurityController();
-            CommandResult result = security.Tunnel(new Command() {
+            ICommandResult result = security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityAddGroup,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -77,7 +77,7 @@ namespace Procon.Core.Test.Security {
             var security = new SecurityController();
 
             // Add a group with an empty name.
-            CommandResult result = security.Tunnel(new Command() {
+            ICommandResult result = security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityAddGroup,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -98,7 +98,7 @@ namespace Procon.Core.Test.Security {
             var security = new SecurityController();
 
             // Add a group.
-            CommandResult result = security.Tunnel(new Command() {
+            ICommandResult result = security.Tunnel(new Command() {
                 CommandType = CommandType.SecurityAddGroup,
                 Authentication = {
                     Username = "Phogue"
@@ -166,7 +166,7 @@ namespace Procon.Core.Test.Security {
             Assert.IsNull(security.Groups.Where(group => group.Name == "SecondGroupName").FirstOrDefault().Permissions.Where(permission => permission.Name == CommandType.VariablesSetA.ToString()).First().Authority);
 
             // Now copy the permissions from the first group, to the other group.
-            CommandResult result = security.Tunnel(new Command() {
+            ICommandResult result = security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityGroupCopyPermissions,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -203,7 +203,7 @@ namespace Procon.Core.Test.Security {
                 })
             });
 
-            CommandResult result = security.Tunnel(new Command() {
+            ICommandResult result = security.Tunnel(new Command() {
                 CommandType = CommandType.SecurityGroupCopyPermissions,
                 Authentication = {
                     Username = "Phogue"
@@ -237,7 +237,7 @@ namespace Procon.Core.Test.Security {
             Assert.IsNotNull(security.Groups.FirstOrDefault(group => @group.Name == "SecondGroupName"));
 
             // Now copy the permissions from the first group, to the other group.
-            CommandResult result = security.Tunnel(new Command() {
+            ICommandResult result = security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityGroupCopyPermissions,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -268,7 +268,7 @@ namespace Procon.Core.Test.Security {
             Assert.AreEqual(security.Groups.First().Name, "GroupName");
 
             // Now set the kick permission
-            CommandResult result = security.Tunnel(new Command() {
+            ICommandResult result = security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityGroupSetPermission,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -299,7 +299,7 @@ namespace Procon.Core.Test.Security {
             Assert.AreEqual(security.Groups.First().Name, "GroupName");
 
             // Now set the kick permission
-            CommandResult result = security.Tunnel(new Command() {
+            ICommandResult result = security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityGroupSetPermission,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -340,7 +340,7 @@ namespace Procon.Core.Test.Security {
             Assert.IsNull(security.Groups.First().Permissions.FirstOrDefault(permission => permission.Name == CommandType.VariablesSet.ToString()));
 
             // Now set the kick permission
-            CommandResult result = security.Tunnel(new Command() {
+            ICommandResult result = security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityGroupSetPermission,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -369,7 +369,7 @@ namespace Procon.Core.Test.Security {
             });
 
             // Now set the kick permission
-            CommandResult result = security.Tunnel(new Command() {
+            ICommandResult result = security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityGroupSetPermission,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -398,7 +398,7 @@ namespace Procon.Core.Test.Security {
                 })
             });
 
-            CommandResult result = security.Tunnel(new Command() {
+            ICommandResult result = security.Tunnel(new Command() {
                 CommandType = CommandType.SecurityGroupSetPermission,
                 Authentication = {
                     Username = "Phogue"
@@ -433,7 +433,7 @@ namespace Procon.Core.Test.Security {
             Assert.AreEqual(security.Groups.First().Name, "GroupName");
 
             // Now set the kick permission
-            CommandResult result = security.Tunnel(new Command() {
+            ICommandResult result = security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityGroupSetPermission,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -466,7 +466,7 @@ namespace Procon.Core.Test.Security {
             // Test that the group was initially added.
             Assert.AreEqual(security.Groups.First().Name, "GroupName");
 
-            CommandResult result = security.Tunnel(new Command() {
+            ICommandResult result = security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityRemoveGroup,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -487,7 +487,7 @@ namespace Procon.Core.Test.Security {
             var security = new SecurityController();
 
             // Add a group with an empty name.
-            CommandResult result = security.Tunnel(new Command() {
+            ICommandResult result = security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityRemoveGroup,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -511,7 +511,7 @@ namespace Procon.Core.Test.Security {
                 })
             });
 
-            CommandResult result = security.Tunnel(new Command() {
+            ICommandResult result = security.Tunnel(new Command() {
                 CommandType = CommandType.SecurityRemoveGroup,
                 Authentication = {
                     Username = "Phogue"
@@ -532,7 +532,7 @@ namespace Procon.Core.Test.Security {
         [Test]
         public void TestSecurityRemoveGroupNotExists() {
             var security = new SecurityController();
-            CommandResult result = security.Tunnel(new Command() {
+            ICommandResult result = security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityRemoveGroup,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {

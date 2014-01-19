@@ -62,7 +62,7 @@ namespace Procon.Core.Test.TextCommands {
             Assert.AreEqual(1, textCommands.TextCommands.Count);
             Assert.AreEqual("ExecuteTest", textCommands.TextCommands.First().Commands.First());
 
-            CommandResult result = textCommands.Tunnel(new Command() {
+            ICommandResult result = textCommands.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.TextCommandsExecute,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -85,7 +85,7 @@ namespace Procon.Core.Test.TextCommands {
                 }
             };
 
-            CommandResult result = textCommands.Tunnel(new Command() {
+            ICommandResult result = textCommands.Tunnel(new Command() {
                 Origin = CommandOrigin.Remote,
                 Authentication = {
                     Username = "Phogue"
@@ -187,7 +187,7 @@ namespace Procon.Core.Test.TextCommands {
             Assert.AreEqual(1, textCommands.TextCommands.Count);
             Assert.AreEqual("ExecuteTest", textCommands.TextCommands.First().Commands.First());
 
-            CommandResult result = textCommands.Tunnel(new Command() {
+            ICommandResult result = textCommands.Tunnel(new Command() {
                 Origin = CommandOrigin.Plugin,
                 Authentication = {
                     Username = "Phogue"
@@ -242,7 +242,7 @@ namespace Procon.Core.Test.TextCommands {
             Assert.AreEqual(1, textCommands.TextCommands.Count);
             Assert.AreEqual("ExecuteTest", textCommands.TextCommands.First().Commands.First());
 
-            CommandResult result = textCommands.Tunnel(new Command() {
+            ICommandResult result = textCommands.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.TextCommandsPreview,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -265,7 +265,7 @@ namespace Procon.Core.Test.TextCommands {
                 }
             };
 
-            CommandResult result = textCommands.Tunnel(new Command() {
+            ICommandResult result = textCommands.Tunnel(new Command() {
                 CommandType = CommandType.TextCommandsPreview,
                 Authentication = {
                     Username = "Phogue"

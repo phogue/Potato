@@ -48,7 +48,7 @@ namespace Myrcon.Plugins.Test.Tests {
             });
         }
 
-        protected CommandResult TestPluginIndex(Command command, Dictionary<String, CommandParameter> parameters) {
+        protected ICommandResult TestPluginIndex(Command command, Dictionary<String, CommandParameter> parameters) {
             IndexPageView index = new IndexPageView();
 
             command.Result = new CommandResult() {
@@ -65,7 +65,7 @@ namespace Myrcon.Plugins.Test.Tests {
             return command.Result;
         }
 
-        protected CommandResult TestPluginSettings(Command command, Dictionary<String, CommandParameter> parameters) {
+        protected ICommandResult TestPluginSettings(Command command, Dictionary<String, CommandParameter> parameters) {
             SettingsPageView index = new SettingsPageView();
 
             command.Result = new CommandResult() {
@@ -82,7 +82,7 @@ namespace Myrcon.Plugins.Test.Tests {
             return command.Result;
         }
 
-        protected CommandResult TestPluginParameters(Command command, Dictionary<String, CommandParameter> parameters) {
+        protected ICommandResult TestPluginParameters(Command command, Dictionary<String, CommandParameter> parameters) {
             String name = parameters["name"].First<String>();
             int score = parameters["score"].First<int>();
 

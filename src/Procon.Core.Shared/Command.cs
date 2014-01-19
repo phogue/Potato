@@ -26,11 +26,11 @@ namespace Procon.Core.Shared {
         /// Where the command came from
         /// </summary>
         public CommandOrigin Origin { get; set; }
-
+        
         /// <summary>
         /// The final result of this command.
         /// </summary>
-        public CommandResult Result { get; set; }
+        public ICommandResult Result { get; set; }
 
         /// <summary>
         /// The original request from a remote source.

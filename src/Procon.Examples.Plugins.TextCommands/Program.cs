@@ -25,7 +25,7 @@ namespace Procon.Examples.Plugins.TextCommands {
                         ParameterTypes = new List<CommandParameterType>() {
                             new CommandParameterType() {
                                 Name = "e",
-                                Type = typeof(CommandResult)
+                                Type = typeof(ICommandResult)
                             }
                         }
                     },
@@ -37,7 +37,7 @@ namespace Procon.Examples.Plugins.TextCommands {
                         ParameterTypes = new List<CommandParameterType>() {
                             new CommandParameterType() {
                                 Name = "e",
-                                Type = typeof(CommandResult)
+                                Type = typeof(ICommandResult)
                             }
                         }
                     },
@@ -117,8 +117,8 @@ namespace Procon.Examples.Plugins.TextCommands {
         }
 
         // 3. Handle the test fuzzy command.
-        protected CommandResult FuzzyCommand(Command command, Dictionary<String, CommandParameter> parameters) {
-            CommandResult e = parameters["e"].First<CommandResult>();
+        protected ICommandResult FuzzyCommand(Command command, Dictionary<String, CommandParameter> parameters) {
+            ICommandResult e = parameters["e"].First<ICommandResult>();
 
             TextCommandMatchModel match = e.Now.TextCommandMatches.First();
 
@@ -158,8 +158,8 @@ namespace Procon.Examples.Plugins.TextCommands {
         }
 
         // 3. Handle the test route command.
-        protected CommandResult RouteCommand(Command command, Dictionary<String, CommandParameter> parameters) {
-            CommandResult e = parameters["e"].First<CommandResult>();
+        protected ICommandResult RouteCommand(Command command, Dictionary<String, CommandParameter> parameters) {
+            ICommandResult e = parameters["e"].First<ICommandResult>();
 
             TextCommandMatchModel match = e.Now.TextCommandMatches.First();
 

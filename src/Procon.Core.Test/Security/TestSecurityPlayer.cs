@@ -49,7 +49,7 @@ namespace Procon.Core.Test.Security {
             Assert.AreEqual(security.Groups.SelectMany(group => group.Accounts).First().Username, "Phogue");
 
             // Now add a player to the "Phogue" account.
-            CommandResult result = security.Tunnel(new Command() {
+            ICommandResult result = security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityAccountAddPlayer,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -97,7 +97,7 @@ namespace Procon.Core.Test.Security {
             Assert.AreEqual(security.Groups.SelectMany(group => group.Accounts).First().Username, "Phogue");
 
             // Now add a player to the "Phogue" account.
-            CommandResult result = security.Tunnel(new Command() {
+            ICommandResult result = security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityAccountAddPlayer,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -170,7 +170,7 @@ namespace Procon.Core.Test.Security {
             Assert.IsNull(security.Groups.SelectMany(group => group.Accounts).Where(account => account.Username == "PapaCharlie9").SelectMany(account => account.Players).FirstOrDefault());
 
             // Now add a player to the "PapaCharlie9" account.
-            CommandResult result = security.Tunnel(new Command() {
+            ICommandResult result = security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityAccountAddPlayer,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -211,7 +211,7 @@ namespace Procon.Core.Test.Security {
                 })
             });
 
-            CommandResult result = security.Tunnel(new Command() {
+            ICommandResult result = security.Tunnel(new Command() {
                 CommandType = CommandType.SecurityAccountAddPlayer,
                 Authentication = {
                     Username = "Phogue"
@@ -275,7 +275,7 @@ namespace Procon.Core.Test.Security {
             Assert.AreEqual(security.Groups.SelectMany(group => group.Accounts).Where(account => account.Username == "Phogue").SelectMany(account => account.Players).First().Uid, "ABCDEF");
 
             // Now remove the player.
-            CommandResult result = security.Tunnel(new Command() {
+            ICommandResult result = security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityRemovePlayer,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -299,7 +299,7 @@ namespace Procon.Core.Test.Security {
             var security = new SecurityController();
 
             // Remove a player, though no accounts/players/groups exist.
-            CommandResult result = security.Tunnel(new Command() {
+            ICommandResult result = security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityRemovePlayer,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -322,7 +322,7 @@ namespace Procon.Core.Test.Security {
             var security = new SecurityController();
 
             // Remove a player, though no accounts/players/groups exist.
-            CommandResult result = security.Tunnel(new Command() {
+            ICommandResult result = security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityRemovePlayer,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -369,7 +369,7 @@ namespace Procon.Core.Test.Security {
             });
 
             // Now remove the player.
-            CommandResult result = security.Tunnel(new Command() {
+            ICommandResult result = security.Tunnel(new Command() {
                 CommandType = CommandType.SecurityRemovePlayer,
                 Authentication = {
                     Username = "Phogue"

@@ -97,7 +97,7 @@ namespace Procon.Core.Shared.Test.AsynchronousExecutableCommands {
                 }
             }.Execute();
 
-            CommandResult result = mockController.Bubble(
+            ICommandResult result = mockController.Bubble(
                 new Command() {
                     Name = "AppendMessage",
                     Origin = CommandOrigin.Local,
@@ -127,7 +127,7 @@ namespace Procon.Core.Shared.Test.AsynchronousExecutableCommands {
                 }
             }.Execute();
 
-            CommandResult result = mockController.Tunnel(
+            ICommandResult result = mockController.Tunnel(
                 new Command() {
                     Name = "AppendMessage",
                     Origin = CommandOrigin.Local,
@@ -250,7 +250,7 @@ namespace Procon.Core.Shared.Test.AsynchronousExecutableCommands {
                 }
             }.Execute();
 
-            CommandResult result = mockController.Bubble(
+            ICommandResult result = mockController.Bubble(
                 new Command() {
                     Name = "AppendMessage",
                     Origin = CommandOrigin.Local,
@@ -285,7 +285,7 @@ namespace Procon.Core.Shared.Test.AsynchronousExecutableCommands {
                 }
             }.Execute();
 
-            CommandResult result = mockController.Tunnel(
+            ICommandResult result = mockController.Tunnel(
                 new Command() {
                     Name = "AppendMessage",
                     Origin = CommandOrigin.Local,

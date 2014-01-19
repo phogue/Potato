@@ -12,7 +12,7 @@ namespace Procon.Core.Shared {
         /// A static result describing insufficient permissions
         /// </summary>
         /// <remarks>May be moved to a "CommandResultBuilder" class at some point.</remarks>
-        public static CommandResult InsufficientPermissions = new CommandResult() {
+        public static ICommandResult InsufficientPermissions = new CommandResult() {
             Success = false,
             Status = CommandResultType.InsufficientPermissions,
             Message = "You have Insufficient Permissions to execute this command."
@@ -22,11 +22,11 @@ namespace Procon.Core.Shared {
 
         public DateTime Stamp { get; set; }
 
-        public CommandData Scope { get; set; }
+        public ICommandData Scope { get; set; }
 
-        public CommandData Then { get; set; }
+        public ICommandData Then { get; set; }
 
-        public CommandData Now { get; set; }
+        public ICommandData Now { get; set; }
 
         public Boolean Success { get; set; }
 

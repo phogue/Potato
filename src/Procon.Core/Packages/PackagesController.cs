@@ -87,8 +87,8 @@ namespace Procon.Core.Packages {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public CommandResult PackagesMergePackage(Command command, Dictionary<String, CommandParameter> parameters) {
-            CommandResult result = null;
+        public ICommandResult PackagesMergePackage(Command command, Dictionary<String, CommandParameter> parameters) {
+            ICommandResult result = null;
 
             String packageId = parameters["packageId"].First<String>();
 
@@ -156,8 +156,8 @@ namespace Procon.Core.Packages {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public CommandResult PackagesUninstallPackage(Command command, Dictionary<String, CommandParameter> parameters) {
-            CommandResult result = null;
+        public ICommandResult PackagesUninstallPackage(Command command, Dictionary<String, CommandParameter> parameters) {
+            ICommandResult result = null;
 
             String packageId = parameters["packageId"].First<String>();
 
@@ -225,8 +225,8 @@ namespace Procon.Core.Packages {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public CommandResult PackagesFetchPackages(Command command, Dictionary<String, CommandParameter> parameters) {
-            CommandResult result = null;
+        public ICommandResult PackagesFetchPackages(Command command, Dictionary<String, CommandParameter> parameters) {
+            ICommandResult result = null;
 
             if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
                 Task.Factory.StartNew(this.BuildRepositoryCache);

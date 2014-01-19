@@ -208,7 +208,7 @@ namespace Procon.Core.Test.Security {
             Assert.AreEqual("ABCDEF", loadSecurity.Groups.SelectMany(group => group.Accounts).SelectMany(account => account.Players).First().Uid);
 
             // Now validate that we can authenticate against the loaded in password
-            CommandResult result = loadSecurity.Tunnel(new Command() {
+            ICommandResult result = loadSecurity.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityAccountAuthenticate,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {

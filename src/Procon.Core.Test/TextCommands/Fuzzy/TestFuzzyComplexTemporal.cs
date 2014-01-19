@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using NUnit.Framework;
 using Procon.Core.Shared;
 using Procon.Fuzzy.Tokens.Primitive.Temporal;
-using Procon.Net.Shared.Actions;
 using Procon.Net.Shared.Models;
 
 #endregion
@@ -15,7 +14,7 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
     public class TestFuzzyComplexTemporal : TestTextCommandParserBase {
         [Test]
         public void TestTemporalKickPhogueInTwoMinutesOnPortValdezForAMinute() {
-            CommandResult args = ExecuteTextCommand(CreateTextCommandController(), "kick phogue in two minutes on port valdez for a minute");
+            ICommandResult args = ExecuteTextCommand(CreateTextCommandController(), "kick phogue in two minutes on port valdez for a minute");
 
             AssertExecutedCommandAgainstPlayerListMapList(args, TextCommandKick, new List<PlayerModel>() {
                 PlayerPhogue
@@ -28,7 +27,7 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
 
         [Test]
         public void TestTemporalKickPhogueInTwoMinutesOnPortValdezForAMinuteEveryHour() {
-            CommandResult args = ExecuteTextCommand(CreateTextCommandController(), "kick phogue in two minutes on port valdez for a minute every hour");
+            ICommandResult args = ExecuteTextCommand(CreateTextCommandController(), "kick phogue in two minutes on port valdez for a minute every hour");
 
             AssertExecutedCommandAgainstPlayerListMapList(args, TextCommandKick, new List<PlayerModel>() {
                 PlayerPhogue
@@ -44,7 +43,7 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
 
         [Test]
         public void TestTemporalKickPhogueOnPortValdezEveryMinute() {
-            CommandResult args = ExecuteTextCommand(CreateTextCommandController(), "kick phogue on port valdez every minute");
+            ICommandResult args = ExecuteTextCommand(CreateTextCommandController(), "kick phogue on port valdez every minute");
 
             AssertExecutedCommandAgainstPlayerListMapList(args, TextCommandKick, new List<PlayerModel>() {
                 PlayerPhogue
@@ -60,7 +59,7 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
 
         [Test]
         public void TestTemporalKickPhogueOnPortValdezForAMinute() {
-            CommandResult args = ExecuteTextCommand(CreateTextCommandController(), "kick phogue on port valdez for a minute");
+            ICommandResult args = ExecuteTextCommand(CreateTextCommandController(), "kick phogue on port valdez for a minute");
 
             AssertExecutedCommandAgainstPlayerListMapList(args, TextCommandKick, new List<PlayerModel>() {
                 PlayerPhogue

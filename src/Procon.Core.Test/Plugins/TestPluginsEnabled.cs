@@ -31,7 +31,7 @@ namespace Procon.Core.Test.Plugins {
                 }
             }.Execute();
 
-            CommandResult result = plugins.Tunnel(new Command() {
+            ICommandResult result = plugins.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.PluginsEnable,
                 ScopeModel = {
@@ -65,7 +65,7 @@ namespace Procon.Core.Test.Plugins {
                 }
             });
 
-            CommandResult result = plugins.Tunnel(new Command() {
+            ICommandResult result = plugins.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.PluginsEnable,
                 ScopeModel = {
@@ -89,7 +89,7 @@ namespace Procon.Core.Test.Plugins {
                 }
             }.Execute();
 
-            CommandResult result = plugins.Tunnel(new Command() {
+            ICommandResult result = plugins.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.PluginsEnable,
                 ScopeModel = {
@@ -128,7 +128,7 @@ namespace Procon.Core.Test.Plugins {
                 }
             }.Execute();
 
-            CommandResult result = plugins.Tunnel(new Command() {
+            ICommandResult result = plugins.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.PluginsEnable,
                 ScopeModel = {
@@ -152,7 +152,7 @@ namespace Procon.Core.Test.Plugins {
                 }
             }.Execute();
 
-            CommandResult result = plugins.Tunnel(new Command() {
+            ICommandResult result = plugins.Tunnel(new Command() {
                 Origin = CommandOrigin.Remote,
                 Authentication = {
                     Username = "Phogue"

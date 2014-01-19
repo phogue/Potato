@@ -23,18 +23,18 @@ namespace Procon.Core.Shared {
         /// <summary>
         /// The limiting scope of the event (the connection, player etc. that this event is limited to)
         /// </summary>
-        CommandData Scope { get; set; }
+        ICommandData Scope { get; set; }
 
         /// <summary>
         /// Data that this used to be, like an account being moved from one group to another
         /// this would be the original group.
         /// </summary>
-        CommandData Then { get; set; }
+        ICommandData Then { get; set; }
 
         /// <summary>
         /// Data as it is seen "now"
         /// </summary>
-        CommandData Now { get; set; }
+        ICommandData Now { get; set; }
 
         /// <summary>
         /// Simple flag determining the success of the command being executed.

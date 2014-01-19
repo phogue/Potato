@@ -86,7 +86,7 @@ namespace Procon.Core.Shared.Plugins {
             return guid;
         }
 
-        public override void BeginBubble(Command command, Action<CommandResult> completed = null) {
+        public override void BeginBubble(Command command, Action<ICommandResult> completed = null) {
             // There isn't much point in bubbling up if we just need to come back down here.
             if (command.ScopeModel != null && command.ScopeModel.PluginGuid == this.PluginGuid) {
                 base.BeginTunnel(command, completed);
@@ -96,7 +96,7 @@ namespace Procon.Core.Shared.Plugins {
             }
         }
 
-        public override CommandResult Bubble(Command command) {
+        public override ICommandResult Bubble(Command command) {
             // There isn't much point in bubbling up if we just need to come back down here.
             if (command.ScopeModel != null && command.ScopeModel.PluginGuid == this.PluginGuid) {
                 command.Result = this.Tunnel(command);
@@ -116,7 +116,7 @@ namespace Procon.Core.Shared.Plugins {
         /// </remarks>
         /// <param name="action">The action to send to the server.</param>
         /// <returns>The result of the command, check the status for a success message.</returns>
-        public virtual CommandResult Action(INetworkAction action) {
+        public virtual ICommandResult Action(INetworkAction action) {
             return this.Bubble(new Command() {
                 Name = action.ActionType.ToString(),
                 ScopeModel = new CommandScopeModel() {
@@ -139,8 +139,8 @@ namespace Procon.Core.Shared.Plugins {
         /// </summary>
         /// <param name="action"></param>
         /// <returns></returns>
-        public virtual CommandResult Action(IDeferredAction action) {
-            CommandResult result = null;
+        public virtual ICommandResult Action(IDeferredAction action) {
+            ICommandResult result = null;
 
             if (action.GetAction() != null) {
                 // Wait for responses from this action
@@ -248,7 +248,7 @@ namespace Procon.Core.Shared.Plugins {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public virtual CommandResult TextCommandExecuted(Command command, Dictionary<String, CommandParameter> parameters) {
+        public virtual ICommandResult TextCommandExecuted(Command command, Dictionary<String, CommandParameter> parameters) {
 
             // Not used.
             // String text = parameters["text"].First<String>();
@@ -260,7 +260,7 @@ namespace Procon.Core.Shared.Plugins {
                     Parameters = new List<CommandParameter>() {
                         new CommandParameter() {
                             Data = {
-                                CommandResults = new List<CommandResult>() {
+                                CommandResults = new List<ICommandResult>() {
                                     command.Result
                                 }
                             }

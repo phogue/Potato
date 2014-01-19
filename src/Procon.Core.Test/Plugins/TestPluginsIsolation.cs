@@ -36,7 +36,7 @@ namespace Procon.Core.Test.Plugins {
                 }
             });
 
-            CommandResult result = plugins.Tunnel(new Command() {
+            ICommandResult result = plugins.Tunnel(new Command() {
                 Name = "TestPluginsIsolationWriteToDirectory",
                 Authentication = {
                     Username = "Phogue"
@@ -83,7 +83,7 @@ namespace Procon.Core.Test.Plugins {
 
             // Send a command to ensure the appdomain actually has a functional copy of the TestPlugin
             // assembly loaded.
-            CommandResult result = plugins.Tunnel(new Command() {
+            ICommandResult result = plugins.Tunnel(new Command() {
                 Name = "TestPluginsIsolationCleanCurrentAppDomain",
                 Authentication = {
                     Username = "Phogue"

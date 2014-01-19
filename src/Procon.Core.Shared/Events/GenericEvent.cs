@@ -34,7 +34,7 @@ namespace Procon.Core.Shared.Events {
         /// <param name="result"></param>
         /// <param name="eventType"></param>
         /// <returns></returns>
-        public static GenericEvent ConvertToGenericEvent(CommandResult result, GenericEventType eventType) {
+        public static GenericEvent ConvertToGenericEvent(ICommandResult result, GenericEventType eventType) {
             return new GenericEvent() {
                 GenericEventType = eventType,
                 Message = result.Message,

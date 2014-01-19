@@ -238,7 +238,7 @@ namespace Procon.Core.Test.Security {
                 })
             });
 
-            CommandResult result = security.Tunnel(new Command() {
+            ICommandResult result = security.Tunnel(new Command() {
                 CommandType = CommandType.SecurityQueryPermission,
                 Authentication = {
                     Username = "Zaeed",
@@ -325,7 +325,7 @@ namespace Procon.Core.Test.Security {
                 })
             });
 
-            CommandResult result = security.Tunnel(new Command() {
+            ICommandResult result = security.Tunnel(new Command() {
                 CommandType = CommandType.SecurityQueryPermission,
                 Authentication = {
                     Username = "Zaeed"
@@ -413,7 +413,7 @@ namespace Procon.Core.Test.Security {
                 })
             });
 
-            CommandResult result = security.Tunnel(new Command() {
+            ICommandResult result = security.Tunnel(new Command() {
                 CommandType = CommandType.SecurityQueryPermission,
                 Authentication = {
                     Username = "Phogue"
@@ -500,7 +500,7 @@ namespace Procon.Core.Test.Security {
                 })
             });
 
-            CommandResult result = security.Tunnel(new Command() {
+            ICommandResult result = security.Tunnel(new Command() {
                 CommandType = CommandType.SecurityQueryPermission,
                 Authentication = {
                     Username = "Phogue"
@@ -588,7 +588,7 @@ namespace Procon.Core.Test.Security {
                 })
             });
 
-            CommandResult result = security.Tunnel(new Command() {
+            ICommandResult result = security.Tunnel(new Command() {
                 CommandType = CommandType.SecurityQueryPermission,
                 Authentication = {
                     Username = "Phogue"
@@ -675,7 +675,7 @@ namespace Procon.Core.Test.Security {
                 })
             });
 
-            CommandResult result = security.Tunnel(new Command() {
+            ICommandResult result = security.Tunnel(new Command() {
                 CommandType = CommandType.SecurityQueryPermission,
                 Authentication = {
                     Username = "Phogue"
@@ -733,7 +733,7 @@ namespace Procon.Core.Test.Security {
                 })
             });
 
-            CommandResult result = security.Tunnel(new Command() {
+            ICommandResult result = security.Tunnel(new Command() {
                 CommandType = CommandType.SecurityQueryPermission,
                 Origin = CommandOrigin.Plugin,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -818,7 +818,7 @@ namespace Procon.Core.Test.Security {
                 })
             });
 
-            CommandResult result = security.Tunnel(new Command() {
+            ICommandResult result = security.Tunnel(new Command() {
                 CommandType = CommandType.SecurityQueryPermission,
                 Authentication = {
                     Username = "Phogue"

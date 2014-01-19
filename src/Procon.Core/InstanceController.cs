@@ -424,7 +424,7 @@ namespace Procon.Core {
         /// </summary>
         /// <param name="command"></param>
         /// <returns></returns>
-        public override CommandResult Bubble(Command command) {
+        public override ICommandResult Bubble(Command command) {
             return this.Tunnel(command);
         }
 
@@ -510,8 +510,8 @@ namespace Procon.Core {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public CommandResult InstanceServiceRestart(Command command, Dictionary<String, CommandParameter> parameters) {
-            CommandResult result = null;
+        public ICommandResult InstanceServiceRestart(Command command, Dictionary<String, CommandParameter> parameters) {
+            ICommandResult result = null;
 
             // As long as the current account is allowed to execute this command...
             if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
@@ -540,8 +540,8 @@ namespace Procon.Core {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public CommandResult InstanceServiceMergePackage(Command command, Dictionary<String, CommandParameter> parameters) {
-            CommandResult result = null;
+        public ICommandResult InstanceServiceMergePackage(Command command, Dictionary<String, CommandParameter> parameters) {
+            ICommandResult result = null;
 
             String uri = parameters["uri"].First<String>();
             String packageId = parameters["packageId"].First<String>();
@@ -586,8 +586,8 @@ namespace Procon.Core {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public CommandResult InstanceServiceUninstallPackage(Command command, Dictionary<String, CommandParameter> parameters) {
-            CommandResult result = null;
+        public ICommandResult InstanceServiceUninstallPackage(Command command, Dictionary<String, CommandParameter> parameters) {
+            ICommandResult result = null;
 
             String packageId = parameters["packageId"].First<String>();
 
@@ -629,8 +629,8 @@ namespace Procon.Core {
         /// </summary>
         /// <param name="command"></param>
         /// <param name="parameters"></param>
-        public CommandResult InstanceAddConnection(Command command, Dictionary<String, CommandParameter> parameters) {
-            CommandResult result = null;
+        public ICommandResult InstanceAddConnection(Command command, Dictionary<String, CommandParameter> parameters) {
+            ICommandResult result = null;
 
             String gameTypeProvider = parameters["gameTypeProvider"].First<String>();
             String gameTypeType = parameters["gameTypeType"].First<String>();
@@ -717,8 +717,8 @@ namespace Procon.Core {
             return result;
         }
 
-        protected CommandResult InstanceRemoveConnection(Command command, ConnectionController connection) {
-            CommandResult result = null;
+        protected ICommandResult InstanceRemoveConnection(Command command, ConnectionController connection) {
+            ICommandResult result = null;
 
             // As long as the current account is allowed to execute this command...
             if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
@@ -765,7 +765,7 @@ namespace Procon.Core {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public CommandResult InstanceRemoveConnectionByGuid(Command command, Dictionary<String, CommandParameter> parameters) {
+        public ICommandResult InstanceRemoveConnectionByGuid(Command command, Dictionary<String, CommandParameter> parameters) {
             String connectionGuid = parameters["connectionGuid"].First<String>();
 
             ConnectionController connection = this.Connections.FirstOrDefault(x => String.Compare(x.ConnectionModel.ConnectionGuid.ToString(), connectionGuid, StringComparison.OrdinalIgnoreCase) == 0);
@@ -778,7 +778,7 @@ namespace Procon.Core {
         /// </summary>
         /// <param name="command"></param>
         /// <param name="parameters"></param>
-        public CommandResult InstanceRemoveConnectionByDetails(Command command, Dictionary<String, CommandParameter> parameters) {
+        public ICommandResult InstanceRemoveConnectionByDetails(Command command, Dictionary<String, CommandParameter> parameters) {
             String gameTypeProvider = parameters["gameTypeProvider"].First<String>();
             String gameTypeType = parameters["gameTypeType"].First<String>();
             String hostName = parameters["hostName"].First<String>();
@@ -800,8 +800,8 @@ namespace Procon.Core {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public CommandResult InstanceQuery(Command command, Dictionary<String, CommandParameter> parameters) {
-            CommandResult result = null;
+        public ICommandResult InstanceQuery(Command command, Dictionary<String, CommandParameter> parameters) {
+            ICommandResult result = null;
 
             if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
                 result = new CommandResult() {

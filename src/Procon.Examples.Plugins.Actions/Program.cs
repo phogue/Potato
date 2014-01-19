@@ -34,9 +34,9 @@ namespace Procon.Examples.Plugins.Actions {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        protected CommandResult KickPlayer(Command command, Dictionary<String, CommandParameter> parameters) {
+        protected ICommandResult KickPlayer(Command command, Dictionary<String, CommandParameter> parameters) {
             // You would usually pull the player object from this.GameState but we mock together a player here.
-            CommandResult result = this.Action(new NetworkAction() {
+            ICommandResult result = this.Action(new NetworkAction() {
                 ActionType = NetworkActionType.NetworkPlayerKick,
                 Scope = {
                     Players = new List<PlayerModel>() {
@@ -69,7 +69,7 @@ namespace Procon.Examples.Plugins.Actions {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        protected CommandResult DeferredKickPlayer(Command command, Dictionary<String, CommandParameter> parameters) {
+        protected ICommandResult DeferredKickPlayer(Command command, Dictionary<String, CommandParameter> parameters) {
             command.Result = new CommandResult {
                 Now = {
                     Content = new List<String>()

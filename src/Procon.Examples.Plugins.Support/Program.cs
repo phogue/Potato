@@ -38,7 +38,7 @@ namespace Procon.Examples.Plugins.Support {
             });
         }
 
-        public CommandResult TestSupportToKillPlayersUsingBranchBuilder(Command command, Dictionary<String, CommandParameter> parameters) {
+        public ICommandResult TestSupportToKillPlayersUsingBranchBuilder(Command command, Dictionary<String, CommandParameter> parameters) {
             bool canKillPlayer = this.GameState.Support.Test(BranchBuilder.ProtocolCanKillPlayer());
 
             // If we can issue a kill action against a player
@@ -47,7 +47,7 @@ namespace Procon.Examples.Plugins.Support {
             return command.Result;
         }
 
-        public CommandResult TestSupportCustomBuildAndTest(Command command, Dictionary<String, CommandParameter> parameters) {
+        public ICommandResult TestSupportCustomBuildAndTest(Command command, Dictionary<String, CommandParameter> parameters) {
             bool canKillPlayer = this.GameState.Support.BuildAndTest(new ProtocolAgent(), new CanFlow(), new KillGoal(), new PlayerAgent());
 
             // If we can issue a kill action against a player, but we built the condition ourselves. Allows for

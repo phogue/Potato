@@ -107,7 +107,7 @@ namespace Procon.Core.Test.Database {
 
             DatabaseController database = OpenSqLiteDriver(databaseNamespace);
 
-            CommandResult result = database.Tunnel(new Command() {
+            ICommandResult result = database.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.DatabaseQuery,
                 Parameters = new List<CommandParameter>() {
@@ -161,7 +161,7 @@ namespace Procon.Core.Test.Database {
                 }
             });
 
-            CommandResult result = database.Tunnel(new Command() {
+            ICommandResult result = database.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.DatabaseQuery,
                 Parameters = new List<CommandParameter>() {
@@ -221,7 +221,7 @@ namespace Procon.Core.Test.Database {
                 }
             });
 
-            CommandResult result = database.Tunnel(new Command() {
+            ICommandResult result = database.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.DatabaseQuery,
                 Parameters = new List<CommandParameter>() {

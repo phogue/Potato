@@ -39,7 +39,7 @@ namespace Procon.Core.Test.Plugins {
                 }
             });
 
-            CommandResult result = plugins.Tunnel(new Command() {
+            ICommandResult result = plugins.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.PluginsDisable,
                 ScopeModel = {
@@ -63,7 +63,7 @@ namespace Procon.Core.Test.Plugins {
                 }
             }.Execute();
 
-            CommandResult result = plugins.Tunnel(new Command() {
+            ICommandResult result = plugins.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.PluginsDisable,
                 ScopeModel = {
@@ -88,7 +88,7 @@ namespace Procon.Core.Test.Plugins {
             }.Execute();
 
             // The plugin will be disabled right now.
-            CommandResult result = plugins.Tunnel(new Command() {
+            ICommandResult result = plugins.Tunnel(new Command() {
                 Name = "TestPluginsDisabledCommandResult",
                 Authentication = {
                     Username = "Phogue"
@@ -116,7 +116,7 @@ namespace Procon.Core.Test.Plugins {
                 }
             }.Execute();
 
-            CommandResult result = plugins.Tunnel(new Command() {
+            ICommandResult result = plugins.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.PluginsDisable,
                 ScopeModel = {
@@ -140,7 +140,7 @@ namespace Procon.Core.Test.Plugins {
                 }
             }.Execute();
 
-            CommandResult result = plugins.Tunnel(new Command() {
+            ICommandResult result = plugins.Tunnel(new Command() {
                 Origin = CommandOrigin.Remote,
                 Authentication = {
                     Username = "Phogue"

@@ -55,7 +55,7 @@ namespace Procon.Core.Test.CoreInstance {
             Assert.AreEqual(1, instance.Connections.Count);
 
             // Now readd the same connection we just added.
-            CommandResult result = instance.Tunnel(new Command() {
+            ICommandResult result = instance.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.InstanceAddConnection,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -92,7 +92,7 @@ namespace Procon.Core.Test.CoreInstance {
                 Origin = CommandOrigin.Local
             }, CommonVariableNames.MaximumProtocolConnections, 0);
 
-            CommandResult result = instance.Tunnel(new Command() {
+            ICommandResult result = instance.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.InstanceAddConnection,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -119,7 +119,7 @@ namespace Procon.Core.Test.CoreInstance {
         public void TestInstanceAddConnectionGameTypeDoesNotExist() {
             var instance = (InstanceController)new InstanceController().Execute();
 
-            CommandResult result = instance.Tunnel(new Command() {
+            ICommandResult result = instance.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.InstanceAddConnection,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -146,7 +146,7 @@ namespace Procon.Core.Test.CoreInstance {
         public void TestInstanceAddConnectionInsufficientPermissions() {
             var instance = (InstanceController)new InstanceController().Execute();
 
-            CommandResult result = instance.Tunnel(new Command() {
+            ICommandResult result = instance.Tunnel(new Command() {
                 Origin = CommandOrigin.Remote,
                 Authentication = {
                     Username = "Phogue"
@@ -176,7 +176,7 @@ namespace Procon.Core.Test.CoreInstance {
         public void TestInstanceAddConnectionSuccess() {
             var instance = (InstanceController)new InstanceController().Execute();
 
-            CommandResult result = instance.Tunnel(new Command() {
+            ICommandResult result = instance.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.InstanceAddConnection,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {

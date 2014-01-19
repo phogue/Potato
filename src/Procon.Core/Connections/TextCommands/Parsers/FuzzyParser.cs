@@ -295,10 +295,10 @@ namespace Procon.Core.Connections.TextCommands.Parsers {
             return interval;
         }
 
-        public override CommandResult Parse(string prefix, string text) {
+        public override ICommandResult Parse(string prefix, string text) {
             Sentence sentence = new Sentence().Parse(this, text).Reduce(this);
 
-            CommandResult result = null;
+            ICommandResult result = null;
 
             List<TextCommandModel> commands = this.ExtractCommandList(sentence);
             TextCommandModel priorityCommand = commands.FirstOrDefault();

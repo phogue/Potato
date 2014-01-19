@@ -45,7 +45,7 @@ namespace Myrcon.Plugins.Test {
                         ParameterTypes = new List<CommandParameterType>() {
                             new CommandParameterType() {
                                 Name = "e",
-                                Type = typeof(CommandResult)
+                                Type = typeof(ICommandResult)
                             }
                         }
                     },
@@ -56,7 +56,7 @@ namespace Myrcon.Plugins.Test {
                         ParameterTypes = new List<CommandParameterType>() {
                             new CommandParameterType() {
                                 Name = "e",
-                                Type = typeof(CommandResult)
+                                Type = typeof(ICommandResult)
                             }
                         }
                     },
@@ -67,7 +67,7 @@ namespace Myrcon.Plugins.Test {
                         ParameterTypes = new List<CommandParameterType>() {
                             new CommandParameterType() {
                                 Name = "e",
-                                Type = typeof(CommandResult)
+                                Type = typeof(ICommandResult)
                             }
                         }
                     },
@@ -104,12 +104,12 @@ namespace Myrcon.Plugins.Test {
             return this.Tests;
         }
 
-        protected List<string> ShortCommandList(CommandResult e) {
+        protected List<string> ShortCommandList(ICommandResult e) {
             return this.Commands.Select(x => x.Commands.FirstOrDefault()).ToList();
         }
 
-        protected CommandResult HelpCommand(Command command, Dictionary<String, CommandParameter> parameters) {
-            CommandResult e = parameters["e"].First<CommandResult>();
+        protected ICommandResult HelpCommand(Command command, Dictionary<String, CommandParameter> parameters) {
+            ICommandResult e = parameters["e"].First<ICommandResult>();
 
             NetworkAction output = new NetworkAction() {
                 ActionType = NetworkActionType.NetworkTextSay
@@ -150,8 +150,8 @@ namespace Myrcon.Plugins.Test {
             return command.Result;
         }
 
-        protected CommandResult KillCommand(Command command, Dictionary<String, CommandParameter> parameters) {
-            CommandResult e = parameters["e"].First<CommandResult>();
+        protected ICommandResult KillCommand(Command command, Dictionary<String, CommandParameter> parameters) {
+            ICommandResult e = parameters["e"].First<ICommandResult>();
 
             TextCommandMatchModel match = e.Now.TextCommandMatches.First();
 
@@ -191,8 +191,8 @@ namespace Myrcon.Plugins.Test {
             return command.Result;
         }
 
-        protected CommandResult TestCommand(Command command, Dictionary<String, CommandParameter> parameters) {
-            CommandResult e = parameters["e"].First<CommandResult>();
+        protected ICommandResult TestCommand(Command command, Dictionary<String, CommandParameter> parameters) {
+            ICommandResult e = parameters["e"].First<ICommandResult>();
 
             NetworkAction output = new NetworkAction() {
                 ActionType = NetworkActionType.NetworkTextSay
@@ -239,13 +239,13 @@ namespace Myrcon.Plugins.Test {
             return command.Result;
         }
 
-        public CommandResult RegisterTextCommandPreview(Command command, Dictionary<String, CommandParameter> parameters) {
+        public ICommandResult RegisterTextCommandPreview(Command command, Dictionary<String, CommandParameter> parameters) {
             //TextCommand textCommand = parameters["textCommand"].First<TextCommand>();
 
             return command.Result;
         }
 
-        public CommandResult RegisterTextCommandExecuted(Command command, Dictionary<String, CommandParameter> parameters) {
+        public ICommandResult RegisterTextCommandExecuted(Command command, Dictionary<String, CommandParameter> parameters) {
             //TextCommand textCommand = parameters["textCommand"].First<TextCommand>();
 
             return command.Result;

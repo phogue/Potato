@@ -15,7 +15,7 @@ namespace Procon.Core.Shared {
         /// </summary>
         protected readonly Dictionary<CommandAttribute, CommandDispatchHandler> CommandDispatchHandlers = new Dictionary<CommandAttribute, CommandDispatchHandler>();
 
-        protected delegate CommandResult CommandDispatchHandler(Command command, Dictionary<String, CommandParameter> parameters);
+        protected delegate ICommandResult CommandDispatchHandler(Command command, Dictionary<String, CommandParameter> parameters);
 
         /// <summary>
         /// All objects to tunnel downwards
@@ -174,7 +174,7 @@ namespace Procon.Core.Shared {
             return parameterDictionary;
         }
 
-        private CommandResult Run(CommandAttributeType attributeType, Command command, CommandResultType maintainStatus) {
+        private ICommandResult Run(CommandAttributeType attributeType, Command command, CommandResultType maintainStatus) {
 
             // Loop through all matching commands with the identical name and type
             foreach (var dispatch in this.CommandDispatchHandlers.Where(dispatch => dispatch.Key.CommandAttributeType == attributeType && dispatch.Key.Name == command.Name)) {
@@ -195,7 +195,7 @@ namespace Procon.Core.Shared {
             return command.Result;
         }
 
-        public virtual CommandResult PropogatePreview(Command command, CommandDirection direction) {
+        public virtual ICommandResult PropogatePreview(Command command, CommandDirection direction) {
             command.Result = this.Run(CommandAttributeType.Preview, command, CommandResultType.Continue);
 
             if (command.Result.Status == CommandResultType.Continue) {
@@ -211,7 +211,7 @@ namespace Procon.Core.Shared {
             return command.Result;
         }
 
-        public virtual CommandResult PropogateHandler(Command command, CommandDirection direction) {
+        public virtual ICommandResult PropogateHandler(Command command, CommandDirection direction) {
             command.Result = this.Run(CommandAttributeType.Handler, command, CommandResultType.Continue);
 
             if (command.Result.Status == CommandResultType.Continue) {
@@ -227,7 +227,7 @@ namespace Procon.Core.Shared {
             return command.Result;
         }
 
-        public virtual CommandResult PropogateExecuted(Command command, CommandDirection direction) {
+        public virtual ICommandResult PropogateExecuted(Command command, CommandDirection direction) {
             command.Result = this.Run(CommandAttributeType.Executed, command, command.Result.Status);
 
             IList<ICoreController> propogationList = direction == CommandDirection.Tunnel ? this.TunnelExecutableObjects(command) : this.BubbleExecutableObjects(command);
@@ -248,7 +248,7 @@ namespace Procon.Core.Shared {
         /// </summary>
         /// <param name="command"></param>
         /// <returns></returns>
-        public virtual CommandResult Tunnel(Command command) {
+        public virtual ICommandResult Tunnel(Command command) {
             // Setup the initial command result.
             command.Result = new CommandResult() {
                 Success = true,
@@ -275,7 +275,7 @@ namespace Procon.Core.Shared {
         /// </summary>
         /// <param name="command"></param>
         /// <returns></returns>
-        public virtual CommandResult Bubble(Command command) {
+        public virtual ICommandResult Bubble(Command command) {
             // Setup the initial command result.
             command.Result = new CommandResult() {
                 Success = true,

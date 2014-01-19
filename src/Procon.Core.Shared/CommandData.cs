@@ -95,7 +95,7 @@ namespace Procon.Core.Shared {
         /// <summary>
         /// The network actions attached to this event, if any.
         /// </summary>
-        public List<NetworkAction> NetworkActions { get; set; } 
+        public List<INetworkAction> NetworkActions { get; set; } 
 
         /// <summary>
         /// The chats attached to this event, if any.

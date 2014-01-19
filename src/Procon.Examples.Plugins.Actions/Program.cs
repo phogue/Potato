@@ -76,7 +76,7 @@ namespace Procon.Examples.Plugins.Actions {
                 }
             };
 
-            this.Action(new DeferredAction<NetworkAction>() {
+            this.Action(new DeferredAction<INetworkAction>() {
 
                 // The action to send to the networking layer. 
                 // Ideal execution order: [ "Sent", "Each", "Done", "Always" ]

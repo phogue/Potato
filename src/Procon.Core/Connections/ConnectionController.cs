@@ -101,7 +101,7 @@ namespace Procon.Core.Connections {
                 ParameterTypes = new List<CommandParameterType>() {
                     new CommandParameterType() {
                         Name = "action",
-                        Type = typeof(NetworkAction)
+                        Type = typeof(INetworkAction)
                     }
                 }
             }, actionType => new CommandDispatchHandler(this.NetworkProtocolAction)));
@@ -112,7 +112,7 @@ namespace Procon.Core.Connections {
                 ParameterTypes = new List<CommandParameterType>() {
                     new CommandParameterType() {
                         Name = "actions",
-                        Type = typeof(NetworkAction),
+                        Type = typeof(INetworkAction),
                         IsList = true
                     }
                 }
@@ -394,7 +394,7 @@ namespace Procon.Core.Connections {
         public CommandResult NetworkProtocolAction(Command command, Dictionary<String, CommandParameter> parameters) {
             CommandResult result = null;
 
-            NetworkAction action = parameters["action"].First<NetworkAction>();
+            INetworkAction action = parameters["action"].First<INetworkAction>();
 
             if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
                 action.Name = command.Name;
@@ -417,12 +417,12 @@ namespace Procon.Core.Connections {
         public CommandResult NetworkProtocolActions(Command command, Dictionary<String, CommandParameter> parameters) {
             CommandResult result = null;
 
-            List<NetworkAction> actions = parameters["actions"].All<NetworkAction>();
+            List<INetworkAction> actions = parameters["actions"].All<INetworkAction>();
 
             if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
                 List<IPacket> packets = new List<IPacket>();
 
-                foreach (NetworkAction action in actions) {
+                foreach (INetworkAction action in actions) {
                     action.Name = command.Name;
 
                     packets.AddRange(this.Protocol.Action(action));

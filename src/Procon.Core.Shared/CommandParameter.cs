@@ -33,7 +33,7 @@ namespace Procon.Core.Shared {
             typeof (RepositoryModel),
             typeof (PackageWrapperModel),
             typeof (PluginModel),
-            typeof (NetworkAction),
+            typeof (INetworkAction),
             typeof (RawModel),
             typeof (ChatModel),
             typeof (PlayerModel),
@@ -111,7 +111,7 @@ namespace Procon.Core.Shared {
             else if (t == typeof(PluginModel) && this.Data.Plugins != null) {
                 all = this.Data.Plugins.Cast<Object>().ToList();
             }
-            else if (t == typeof(NetworkAction) && this.Data.NetworkActions != null) {
+            else if (t == typeof(INetworkAction) && this.Data.NetworkActions != null) {
                 all = this.Data.NetworkActions.Cast<Object>().ToList();
             }
             else if (t == typeof(RawModel) && this.Data.Raws != null) {

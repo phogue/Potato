@@ -124,8 +124,8 @@ namespace Procon.Core.Shared.Plugins {
                 Parameters = new List<CommandParameter>() {
                     new CommandParameter() {
                         Data = {
-                            NetworkActions = new List<NetworkAction>() {
-                                action as NetworkAction
+                            NetworkActions = new List<INetworkAction>() {
+                                action
                             }
                         }
                     }

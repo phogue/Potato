@@ -12,11 +12,11 @@ namespace Procon.Net.Shared.Test.Actions.Deferred {
         /// </summary>
         [Test]
         public void TestDeferredActionGetAction() {
-            NetworkAction chat = new NetworkAction() {
+            INetworkAction chat = new NetworkAction() {
                 ActionType = NetworkActionType.NetworkTextSay
             };
 
-            DeferredAction<NetworkAction> deferredAction = new DeferredAction<NetworkAction>() {
+            DeferredAction<INetworkAction> deferredAction = new DeferredAction<INetworkAction>() {
                 Action = chat
             };
             
@@ -29,9 +29,9 @@ namespace Procon.Net.Shared.Test.Actions.Deferred {
         [Test]
         public void TestDeferredActionEach() {
             bool eachFlag = false;
-            NetworkAction chat = new NetworkAction();
+            INetworkAction chat = new NetworkAction();
 
-            DeferredAction<NetworkAction> deferredAction = new DeferredAction<NetworkAction>() {
+            DeferredAction<INetworkAction> deferredAction = new DeferredAction<INetworkAction>() {
                 Action = chat,
                 Each = (action, request, response) => {
                     eachFlag = true;
@@ -61,9 +61,9 @@ namespace Procon.Net.Shared.Test.Actions.Deferred {
         [Test]
         public void TestDeferredActionDone() {
             bool doneFlag = false;
-            NetworkAction chat = new NetworkAction();
+            INetworkAction chat = new NetworkAction();
 
-            DeferredAction<NetworkAction> deferredAction = new DeferredAction<NetworkAction>() {
+            DeferredAction<INetworkAction> deferredAction = new DeferredAction<INetworkAction>() {
                 Action = chat,
                 Done = (action, requests, responses) => {
                     doneFlag = true;
@@ -92,9 +92,9 @@ namespace Procon.Net.Shared.Test.Actions.Deferred {
         [Test]
         public void TestDeferredActionSent() {
             bool sentFlag = false;
-            NetworkAction chat = new NetworkAction();
+            INetworkAction chat = new NetworkAction();
 
-            DeferredAction<NetworkAction> deferredAction = new DeferredAction<NetworkAction>() {
+            DeferredAction<INetworkAction> deferredAction = new DeferredAction<INetworkAction>() {
                 Action = chat,
                 Sent = (action, requests) => {
                     sentFlag = true;
@@ -117,9 +117,9 @@ namespace Procon.Net.Shared.Test.Actions.Deferred {
         [Test]
         public void TestDeferredActionExpired() {
             bool expiredFlag = false;
-            NetworkAction chat = new NetworkAction();
+            INetworkAction chat = new NetworkAction();
 
-            DeferredAction<NetworkAction> deferredAction = new DeferredAction<NetworkAction>() {
+            DeferredAction<INetworkAction> deferredAction = new DeferredAction<INetworkAction>() {
                 Action = chat,
                 Expired = (action, requests, responses) => {
                     expiredFlag = true;
@@ -149,9 +149,9 @@ namespace Procon.Net.Shared.Test.Actions.Deferred {
         [Test]
         public void TestDeferredActionAlways() {
             bool alwaysFlag = false;
-            NetworkAction chat = new NetworkAction();
+            INetworkAction chat = new NetworkAction();
 
-            DeferredAction<NetworkAction> deferredAction = new DeferredAction<NetworkAction>() {
+            DeferredAction<INetworkAction> deferredAction = new DeferredAction<INetworkAction>() {
                 Action = chat,
                 Always = action => {
                     alwaysFlag = true;
@@ -168,9 +168,9 @@ namespace Procon.Net.Shared.Test.Actions.Deferred {
         /// </summary>
         [Test]
         public void TestDeferredActionRelease() {
-            NetworkAction chat = new NetworkAction();
+            INetworkAction chat = new NetworkAction();
 
-            DeferredAction<NetworkAction> deferredAction = new DeferredAction<NetworkAction>() {
+            DeferredAction<INetworkAction> deferredAction = new DeferredAction<INetworkAction>() {
                 Action = chat,
                 Sent = (action, requests) => {
 

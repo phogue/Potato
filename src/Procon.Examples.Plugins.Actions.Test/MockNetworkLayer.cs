@@ -28,7 +28,7 @@ namespace Procon.Examples.Plugins.Actions.Test {
                         ParameterTypes = new List<CommandParameterType>() {
                             new CommandParameterType() {
                                 Name = "action",
-                                Type = typeof(NetworkAction)
+                                Type = typeof(INetworkAction)
                             }
                         }
                     },
@@ -76,7 +76,7 @@ namespace Procon.Examples.Plugins.Actions.Test {
 
             // You can ignore this. This is a mock of Procon's internal process, but looks nothing like it really
 
-            NetworkAction kick = parameters["action"].First<NetworkAction>();
+            INetworkAction kick = parameters["action"].First<INetworkAction>();
 
             List<IPacket> requests = new List<IPacket>() {
                 new Packet() {

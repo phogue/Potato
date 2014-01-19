@@ -13,7 +13,7 @@ namespace Procon.Core.Shared.Test.TestConfig {
         public void TestSingleDocumentNotNull() {
             File.WriteAllText(this.ConfigFileA.FullName, @"{ ""Procon.Core.Shared.Test.TestConfig.Mocks.MockSimpleConcrete"": [ { ""Name"":""Phogue"", ""Age"": 100  } ] }");
 
-            IConfig config = new JsonConfig().Load(this.ConfigFileA.Directory);
+            IConfig config = new Config().Load(this.ConfigFileA.Directory);
 
             Assert.IsNotNull(config.Document);
         }
@@ -25,7 +25,7 @@ namespace Procon.Core.Shared.Test.TestConfig {
         public void TestSingleRootNotNull() {
             File.WriteAllText(this.ConfigFileA.FullName, @"{ ""Procon.Core.Shared.Test.TestConfig.Mocks.MockSimpleConcrete"": [ { ""Name"":""Phogue"", ""Age"": 100  } ] }");
 
-            IConfig config = new JsonConfig().Load(this.ConfigFileA.Directory);
+            IConfig config = new Config().Load(this.ConfigFileA.Directory);
 
             Assert.IsNotNull(config.Root);
         }
@@ -37,7 +37,7 @@ namespace Procon.Core.Shared.Test.TestConfig {
         public void TestSingleRootSetToFilePath() {
             File.WriteAllText(this.ConfigFileA.FullName, @"{ ""Procon.Core.Shared.Test.TestConfig.Mocks.MockSimpleConcrete"": [ { ""Name"":""Phogue"", ""Age"": 100  } ] }");
 
-            IConfig config = new JsonConfig().Load(this.ConfigFileA.Directory);
+            IConfig config = new Config().Load(this.ConfigFileA.Directory);
 
             Assert.AreEqual("Phogue", config.Root.First["Name"].Value<String>());
             Assert.AreEqual(100, config.Root.First["Age"].Value<int>());
@@ -51,7 +51,7 @@ namespace Procon.Core.Shared.Test.TestConfig {
             File.WriteAllText(this.ConfigFileA.FullName, @"{ ""Procon.Core.Shared.Test.TestConfig.Mocks.MockSimpleConcrete"": [ { ""Name"":""Phogue"", ""Age"": 100  } ] }");
             File.WriteAllText(this.ConfigFileB.FullName, @"{ ""Procon.Core.Shared.Test.TestConfig.Mocks.AlternativeName"": [ { ""Name"":""Ike"", ""Age"": 10  } ] }");
 
-            IConfig config = new JsonConfig().Load(this.ConfigFileA.Directory);
+            IConfig config = new Config().Load(this.ConfigFileA.Directory);
 
             Assert.IsNotNull(config.Document);
         }
@@ -64,7 +64,7 @@ namespace Procon.Core.Shared.Test.TestConfig {
             File.WriteAllText(this.ConfigFileA.FullName, @"{ ""Procon.Core.Shared.Test.TestConfig.Mocks.MockSimpleConcrete"": [ { ""Name"":""Phogue"", ""Age"": 100  } ] }");
             File.WriteAllText(this.ConfigFileB.FullName, @"{ ""Procon.Core.Shared.Test.TestConfig.Mocks.AlternativeName"": [ { ""Name"":""Ike"", ""Age"": 10  } ] }");
 
-            IConfig config = new JsonConfig().Load(this.ConfigFileA.Directory);
+            IConfig config = new Config().Load(this.ConfigFileA.Directory);
 
             Assert.IsNotNull(config.Root);
         }
@@ -78,7 +78,7 @@ namespace Procon.Core.Shared.Test.TestConfig {
             File.WriteAllText(this.ConfigFileA.FullName, @"{ ""Procon.Core.Shared.Test.TestConfig.Mocks.MockSimpleConcrete"": [ { ""Name"":""Phogue"", ""Age"": 100  } ] }");
             File.WriteAllText(this.ConfigFileB.FullName, @"{ ""Procon.Core.Shared.Test.TestConfig.Mocks.AlternativeName"": [ { ""Name"":""Ike"", ""Age"": 10  } ] }");
 
-            IConfig config = new JsonConfig().Load(this.ConfigFileA.Directory);
+            IConfig config = new Config().Load(this.ConfigFileA.Directory);
 
             Assert.AreEqual("Ike", config.Root.First["Name"].Value<String>());
             Assert.AreEqual(10, config.Root.First["Age"].Value<int>());
@@ -92,7 +92,7 @@ namespace Procon.Core.Shared.Test.TestConfig {
             File.WriteAllText(this.ConfigFileA.FullName, @"{ ""Procon.Core.Shared.Test.TestConfig.Mocks.MockSimpleConcrete"": [ { ""Name"":""Phogue"", ""Age"": 100  } ] }");
             File.WriteAllText(this.ConfigFileB.FullName, @"{ ""Procon.Core.Shared.Test.TestConfig.Mocks.AlternativeName"": [ { ""Name"":""Ike"", ""Age"": 10  } ] }");
 
-            IConfig config = new JsonConfig().Load(this.ConfigFileA.Directory);
+            IConfig config = new Config().Load(this.ConfigFileA.Directory);
 
             Assert.AreEqual("Phogue", config.Document["Procon.Core.Shared.Test.TestConfig.Mocks.MockSimpleConcrete"].First["Name"].Value<String>());
             Assert.AreEqual(100, config.Document["Procon.Core.Shared.Test.TestConfig.Mocks.MockSimpleConcrete"].First["Age"].Value<int>());
@@ -106,7 +106,7 @@ namespace Procon.Core.Shared.Test.TestConfig {
             File.WriteAllText(this.ConfigFileA.FullName, @"{ ""Procon.Core.Shared.Test.TestConfig.Mocks.MockSimpleConcrete"": [ { ""Name"":""Phogue"", ""Age"": 100  } ] }");
             File.WriteAllText(this.ConfigFileB.FullName, @"{ ""Procon.Core.Shared.Test.TestConfig.Mocks.MockSimpleConcrete"": [ { ""Name"":""Ike"", ""Age"": 10  } ] }");
 
-            IConfig config = new JsonConfig().Load(this.ConfigFileA.Directory);
+            IConfig config = new Config().Load(this.ConfigFileA.Directory);
 
             Assert.AreEqual("Ike", config.Root.First["Name"].Value<String>());
             Assert.AreEqual(10, config.Root.First["Age"].Value<int>());
@@ -120,7 +120,7 @@ namespace Procon.Core.Shared.Test.TestConfig {
         /// </summary>
         [Test, ExpectedException(typeof(ArgumentNullException))]
         public void TestNullException() {
-            new JsonConfig().Load((DirectoryInfo)null);
+            new Config().Load((DirectoryInfo)null);
         }
     }
 }

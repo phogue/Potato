@@ -161,14 +161,14 @@ namespace Procon.Core.Test.Variables {
             });
 
             // Save a config of the variables controller
-            var saveConfig = new JsonConfig();
+            var saveConfig = new Config();
             saveConfig.Create(typeof (VariableController));
             saveVariables.WriteConfig(saveConfig);
             saveConfig.Save(ConfigFileInfo);
 
             // Load the config in a new config.
             var loadVariables = (VariableController)new VariableController().Execute();
-            var loadConfig = new JsonConfig();
+            var loadConfig = new Config();
             loadConfig.Load(ConfigFileInfo);
             loadVariables.Execute(loadConfig);
 
@@ -220,13 +220,13 @@ namespace Procon.Core.Test.Variables {
             });
 
             // Save a config of the variables controller
-            var saveConfig = new JsonConfig();
+            var saveConfig = new Config();
             saveConfig.Create(typeof (VariableController));
             variables.WriteConfig(saveConfig);
             saveConfig.Save(ConfigFileInfo);
 
             // Load the config in a new config.
-            var loadConfig = new JsonConfig();
+            var loadConfig = new Config();
             loadConfig.Load(ConfigFileInfo);
 
             var commands = loadConfig.RootOf<VariableController>().Children<JObject>().Select(item => item.ToObject<Command>()).ToList();

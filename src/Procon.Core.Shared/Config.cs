@@ -9,7 +9,7 @@ namespace Procon.Core.Shared {
     /// <summary>
     /// Config for saving JSON data
     /// </summary>
-    public class JsonConfig : IConfig {
+    public class Config : IConfig {
         public JObject Document { get; set; }
 
         public JArray Root { get; set; }
@@ -17,7 +17,7 @@ namespace Procon.Core.Shared {
         /// <summary>
         /// Initializes the serializer
         /// </summary>
-        public JsonConfig() {
+        public Config() {
             this.Document = new JObject();
         }
 
@@ -71,7 +71,7 @@ namespace Procon.Core.Shared {
                         this.Load(file);
                     }
                     else {
-                        this.Union(new JsonConfig().Load(file));
+                        this.Union(new Config().Load(file));
                     }
                 }
             }

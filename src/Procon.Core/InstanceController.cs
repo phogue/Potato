@@ -305,7 +305,7 @@ namespace Procon.Core {
 
             this.Execute(new Command() {
                 Origin = CommandOrigin.Local
-            }, new JsonConfig().Load(new DirectoryInfo(Defines.ConfigsDirectory.FullName)));
+            }, new Config().Load(new DirectoryInfo(Defines.ConfigsDirectory.FullName)));
             
             this.Shared.Events.Log(new GenericEvent() {
                 GenericEventType = GenericEventType.InstanceServiceStarted,
@@ -334,7 +334,7 @@ namespace Procon.Core {
         /// Writes the current object out to a file.
         /// </summary>
         public void WriteConfig() {
-            IConfig config = new JsonConfig();
+            IConfig config = new Config();
             config.Create<InstanceController>();
             this.WriteConfig(config);
 

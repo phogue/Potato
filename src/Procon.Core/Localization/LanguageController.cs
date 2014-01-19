@@ -129,7 +129,7 @@ namespace Procon.Core.Localization {
                         language.Load(languageDirectory);
                     }
                     else {
-                        language.Config.Union(new JsonConfig().Load(languageDirectory));
+                        language.Config.Union(new Config().Load(languageDirectory));
                     }
                 }
 

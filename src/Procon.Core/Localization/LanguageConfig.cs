@@ -31,7 +31,7 @@ namespace Procon.Core.Localization {
         /// </summary>
         public LanguageConfig() {
             this.LanguageModel = new LanguageModel();
-            this.Config = new JsonConfig();
+            this.Config = new Config();
             this.Cached = new Dictionary<String, List<LanguageEntryModel>>();
         }
 

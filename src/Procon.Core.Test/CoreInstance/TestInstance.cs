@@ -169,7 +169,7 @@ namespace Procon.Core.Test.CoreInstance {
 
             instance.WriteConfig();
 
-            var loadConfig = new JsonConfig();
+            var loadConfig = new Config();
             loadConfig.Load(ConfigFileInfo);
             // .Where(item => item.Name == "InstanceAddConnection")
             var commands = loadConfig.RootOf<InstanceController>().Children<JObject>().Select(item => item.ToObject<Command>()).ToList();

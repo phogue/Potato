@@ -187,14 +187,14 @@ namespace Procon.Core.Test.Security {
             });
 
             // Save a config of the security controller
-            var saveConfig = new JsonConfig();
+            var saveConfig = new Config();
             saveConfig.Create(typeof (SecurityController));
             saveSecurity.WriteConfig(saveConfig);
             saveConfig.Save(ConfigFileInfo);
 
             // Load the config in a new config.
             var loadSecurity = (SecurityController)new SecurityController().Execute();
-            var loadConfig = new JsonConfig();
+            var loadConfig = new Config();
             loadConfig.Load(ConfigFileInfo);
             loadSecurity.Execute(loadConfig);
 
@@ -297,13 +297,13 @@ namespace Procon.Core.Test.Security {
             });
 
             // Save a config of the language controller
-            var saveConfig = new JsonConfig();
+            var saveConfig = new Config();
             saveConfig.Create(typeof (SecurityController));
             security.WriteConfig(saveConfig);
             saveConfig.Save(ConfigFileInfo);
 
             // Load the config in a new config.
-            var loadConfig = new JsonConfig();
+            var loadConfig = new Config();
             loadConfig.Load(ConfigFileInfo);
 
             var commands = loadConfig.RootOf<SecurityController>().Children<JObject>().Select(item => item.ToObject<Command>()).ToList();

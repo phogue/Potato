@@ -47,7 +47,7 @@
     <Compile Include="Models\CommandAuthenticationModel.cs" />
     <Compile Include="CommandDirection.cs" />
     <Compile Include="IConfig.cs" />
-    <Compile Include="JsonConfig.cs" />
+    <Compile Include="Config.cs" />
     <Compile Include="Models\AsynchronousCommandModel.cs" />
     <Compile Include="Models\AsynchronousCommandStateModel.cs" />
     <Compile Include="AsynchronousCoreController.cs" />

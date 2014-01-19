@@ -11,7 +11,7 @@ namespace Procon.Core.Shared.Test.TestConfig {
         /// </summary>
         [Test]
         public void TestRootOfSingleProperty() {
-            IConfig config = new JsonConfig().Create<MockSimpleConcrete>();
+            IConfig config = new Config().Create<MockSimpleConcrete>();
 
             var root = config.RootOf<MockSimpleConcrete>();
 
@@ -23,7 +23,7 @@ namespace Procon.Core.Shared.Test.TestConfig {
         /// </summary>
         [Test]
         public void TestRootOfMultipleProperties() {
-            IConfig config = new JsonConfig().Create<MockSimpleConcrete>();
+            IConfig config = new Config().Create<MockSimpleConcrete>();
             config.Document.Add(new JProperty("Procon.Core.Shared.Test.TestConfig.Mocks.DoesNotExist", new JArray()));
 
             var root = config.RootOf<MockSimpleConcrete>();
@@ -36,7 +36,7 @@ namespace Procon.Core.Shared.Test.TestConfig {
         /// </summary>
         [Test]
         public void TestRootOfNotCreatedForProperty() {
-            IConfig config = new JsonConfig().Create<MockSimpleConcrete>();
+            IConfig config = new Config().Create<MockSimpleConcrete>();
             config.Document.Add(new JProperty("Procon.Core.Shared.Test.TestConfig.TestRootOf", new JArray()));
 
             var root = config.RootOf<TestRootOf>();
@@ -49,7 +49,7 @@ namespace Procon.Core.Shared.Test.TestConfig {
         /// </summary>
         [Test]
         public void TestRootOfNonExistantPropertyReturnsNotNull() {
-            IConfig config = new JsonConfig().Create<MockSimpleConcrete>();
+            IConfig config = new Config().Create<MockSimpleConcrete>();
 
             var root = config.RootOf<TestRootOf>();
 
@@ -61,7 +61,7 @@ namespace Procon.Core.Shared.Test.TestConfig {
         /// </summary>
         [Test]
         public void TestExplicitTypeRootOfSingleProperty() {
-            IConfig config = new JsonConfig().Create<MockSimpleConcrete>();
+            IConfig config = new Config().Create<MockSimpleConcrete>();
 
             var root = config.RootOf(typeof(MockSimpleConcrete));
 
@@ -73,7 +73,7 @@ namespace Procon.Core.Shared.Test.TestConfig {
         /// </summary>
         [Test]
         public void TestExplicitTypeRootOfMultipleProperties() {
-            IConfig config = new JsonConfig().Create<MockSimpleConcrete>();
+            IConfig config = new Config().Create<MockSimpleConcrete>();
             config.Document.Add(new JProperty("Procon.Core.Shared.Test.TestConfig.Mocks.DoesNotExist", new JArray()));
 
             var root = config.RootOf(typeof(MockSimpleConcrete));
@@ -86,7 +86,7 @@ namespace Procon.Core.Shared.Test.TestConfig {
         /// </summary>
         [Test]
         public void TestExplicitTypeRootOfNotCreatedForProperty() {
-            IConfig config = new JsonConfig().Create<MockSimpleConcrete>();
+            IConfig config = new Config().Create<MockSimpleConcrete>();
             config.Document.Add(new JProperty("Procon.Core.Shared.Test.TestConfig.TestRootOf", new JArray()));
 
             var root = config.RootOf(typeof(TestRootOf));
@@ -99,7 +99,7 @@ namespace Procon.Core.Shared.Test.TestConfig {
         /// </summary>
         [Test]
         public void TestExplicitTypeRootOfNonExistantPropertyReturnsNotNull() {
-            IConfig config = new JsonConfig().Create<MockSimpleConcrete>();
+            IConfig config = new Config().Create<MockSimpleConcrete>();
 
             var root = config.RootOf(typeof(TestRootOf));
 
@@ -111,7 +111,7 @@ namespace Procon.Core.Shared.Test.TestConfig {
         /// </summary>
         [Test, ExpectedException(typeof(ArgumentNullException))]
         public void TestTypeNullException() {
-            new JsonConfig().RootOf((Type)null);
+            new Config().RootOf((Type)null);
         }
 
         /// <summary>
@@ -119,7 +119,7 @@ namespace Procon.Core.Shared.Test.TestConfig {
         /// </summary>
         [Test, ExpectedException(typeof(ArgumentNullException))]
         public void TestStringNullException() {
-            new JsonConfig().RootOf((String)null);
+            new Config().RootOf((String)null);
         }
     }
 }

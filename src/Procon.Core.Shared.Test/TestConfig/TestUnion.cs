@@ -11,13 +11,13 @@ namespace Procon.Core.Shared.Test.TestConfig {
         /// </summary>
         [Test]
         public void TestCombiningUniqueRootElements() {
-            IConfig a = new JsonConfig() {
+            IConfig a = new Config() {
                 Document = new JObject() {
                     new JProperty("A", new JArray())
                 }
             };
 
-            IConfig b = new JsonConfig() {
+            IConfig b = new Config() {
                 Document = new JObject() {
                     new JProperty("B", new JArray())
                 }
@@ -35,7 +35,7 @@ namespace Procon.Core.Shared.Test.TestConfig {
         /// </summary>
         [Test]
         public void TestCombiningIdenticalRootElements() {
-            IConfig a = new JsonConfig() {
+            IConfig a = new Config() {
                 Document = new JObject() {
                     new JProperty("identical", new JArray() {
                         new JObject() {
@@ -45,7 +45,7 @@ namespace Procon.Core.Shared.Test.TestConfig {
                 }
             };
 
-            IConfig b = new JsonConfig() {
+            IConfig b = new Config() {
                 Document = new JObject() {
                     new JProperty("identical", new JArray() {
                         new JObject() {
@@ -66,7 +66,7 @@ namespace Procon.Core.Shared.Test.TestConfig {
         /// </summary>
         [Test, ExpectedException(typeof(ArgumentNullException))]
         public void TestNullException() {
-            IConfig config = new JsonConfig();
+            IConfig config = new Config();
 
             config.Union(null);
         }

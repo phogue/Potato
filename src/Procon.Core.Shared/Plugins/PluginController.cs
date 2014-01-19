@@ -165,7 +165,7 @@ namespace Procon.Core.Shared.Plugins {
         /// needs to make the initial config object before writing to it.</remarks>
         public virtual void WriteConfig() {
             if (this.ConfigDirectoryInfo != null) {
-                JsonConfig config = new JsonConfig();
+                Config config = new Config();
                 config.Create(this.GetType());
                 this.WriteConfig(config);
 
@@ -186,7 +186,7 @@ namespace Procon.Core.Shared.Plugins {
                 GenericEventType = GenericEventType.ConfigLoading
             });
 
-            this.Execute(new JsonConfig().Load(ConfigDirectoryInfo));
+            this.Execute(new Config().Load(ConfigDirectoryInfo));
 
             this.GenericEvent(new GenericEvent() {
                 GenericEventType = GenericEventType.ConfigLoaded

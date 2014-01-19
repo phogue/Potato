@@ -99,12 +99,12 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Configs\Protocols\Myrcon\DiceBattlefield4.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="README.txt" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Configs\Protocols\Myrcon\DiceBattlefield4.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="Myrcon.Protocols.Frostbite.nuspec" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

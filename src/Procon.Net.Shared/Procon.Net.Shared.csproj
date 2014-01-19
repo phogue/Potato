@@ -68,7 +68,6 @@
     <Compile Include="Actions\NetworkAction.cs" />
     <Compile Include="Actions\NetworkActionType.cs" />
     <Compile Include="Models\ProtocolConfigModel.cs" />
-    <Compile Include="Models\RawModel.cs" />
     <Compile Include="ClientEventArgs.cs" />
     <Compile Include="ClientEventData.cs" />
     <Compile Include="ClientEventType.cs" />

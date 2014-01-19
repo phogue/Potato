@@ -1,11 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.Xml.Serialization;
 using Newtonsoft.Json;
 using Procon.Core.Shared.Events;
 using Procon.Core.Shared.Models;
 using Procon.Database.Shared;
-using Procon.Net;
 using Procon.Net.Shared;
 using Procon.Net.Shared.Actions;
 using Procon.Net.Shared.Models;
@@ -148,12 +146,6 @@ namespace Procon.Core.Shared {
         public List<CommandResult> CommandResults { get; set; }
 
         /// <summary>
-        /// Raw packets (in plain or completed format) 
-        /// </summary>
-        [JsonIgnore]
-        public List<RawModel> Raws { get; set; }
-
-        /// <summary>
         /// The raw packets attached to this command or event, if any.
         /// </summary>
         [JsonIgnore]
@@ -235,9 +227,6 @@ namespace Procon.Core.Shared {
 
             if (this.CommandResults != null) this.CommandResults.Clear();
             this.CommandResults = null;
-
-            if (this.Raws != null) this.Raws.Clear();
-            this.Raws = null;
 
             if (this.Packets != null) this.Packets.Clear();
             this.Packets = null;

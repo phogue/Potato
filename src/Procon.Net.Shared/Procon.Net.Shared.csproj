@@ -78,7 +78,7 @@
     <Compile Include="ProtocolType.cs" />
     <Compile Include="Geolocation\GeolocateIp.cs" />
     <Compile Include="Geolocation\IGeolocate.cs" />
-    <Compile Include="Geolocation\Location.cs" />
+    <Compile Include="Models\LocationModel.cs" />
     <Compile Include="Geolocation\Maxmind\CountryLookup.cs" />
     <Compile Include="IClient.cs" />
     <Compile Include="IProtocol.cs" />

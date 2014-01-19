@@ -1,11 +1,11 @@
 ﻿using System;
 
-namespace Procon.Net.Shared.Geolocation {
+namespace Procon.Net.Shared.Models {
     /// <summary>
     /// A physical location with as much or as little information that is available.
     /// </summary>
     [Serializable]
-    public sealed class Location {
+    public sealed class Location : NetworkModel {
         /// <summary>
         /// The latitude of the location
         /// </summary>

@@ -4,7 +4,6 @@ using System.Linq;
 using Procon.Net.Shared;
 using Procon.Net.Shared.Actions;
 using Procon.Net.Shared.Actions.Deferred;
-using Procon.Net.Shared.Models;
 using Procon.Net.Shared.Protocols;
 
 namespace Procon.Net {

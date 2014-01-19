@@ -12,7 +12,7 @@ namespace Procon.Net.Test.Mocks.Game {
             : base(hostName, port) {
         }
 
-        protected override List<IPacketWrapper> DispatchAction(NetworkAction action) {
+        protected override List<IPacketWrapper> DispatchAction(INetworkAction action) {
             List<IPacketWrapper> wrappers = base.DispatchAction(action);
 
             switch (action.ActionType) {

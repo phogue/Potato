@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Newtonsoft.Json;
+using Procon.Net.Shared.Actions;
 
 namespace Procon.Net.Shared.Serialization {
     /// <summary>
@@ -25,7 +26,8 @@ namespace Procon.Net.Shared.Serialization {
 
         static Json() {
             Json.Converters = new List<JsonConverter>() {
-                new InterfaceJsonConverter<IPacket,Packet>()
+                new InterfaceJsonConverter<IPacket,Packet>(),
+                new InterfaceJsonConverter<INetworkAction,NetworkAction>()
             };
 
             Json.Minimal = new JsonSerializer();

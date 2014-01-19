@@ -131,7 +131,7 @@ namespace Procon.Net {
                         Packets = responses
                     },
                     new ClientEventData() {
-                        Actions = new List<NetworkAction>() {
+                        Actions = new List<INetworkAction>() {
                             action
                         },
                         Packets = requests
@@ -143,7 +143,7 @@ namespace Procon.Net {
                         Packets = responses
                     },
                     new ClientEventData() {
-                        Actions = new List<NetworkAction>() {
+                        Actions = new List<INetworkAction>() {
                             action
                         },
                         Packets = requests
@@ -201,7 +201,7 @@ namespace Procon.Net {
         /// Process a generic network action
         /// </summary>
         /// <param name="action"></param>
-        public virtual List<IPacket> Action(NetworkAction action) {
+        public virtual List<IPacket> Action(INetworkAction action) {
             List<IPacket> packets = null;
             List<IPacketWrapper> wrappers = this.DispatchAction(action);
 
@@ -221,7 +221,7 @@ namespace Procon.Net {
             return packets;
         }
 
-        protected virtual List<IPacketWrapper> DispatchAction(NetworkAction action) {
+        protected virtual List<IPacketWrapper> DispatchAction(INetworkAction action) {
             List<IPacketWrapper> wrappers = new List<IPacketWrapper>();
 
             switch (action.ActionType) {
@@ -273,19 +273,19 @@ namespace Procon.Net {
             return wrappers;
         }
 
-        protected abstract List<IPacketWrapper> ActionChat(NetworkAction action);
+        protected abstract List<IPacketWrapper> ActionChat(INetworkAction action);
 
-        protected abstract List<IPacketWrapper> ActionKill(NetworkAction action);
+        protected abstract List<IPacketWrapper> ActionKill(INetworkAction action);
 
-        protected abstract List<IPacketWrapper> ActionKick(NetworkAction action);
+        protected abstract List<IPacketWrapper> ActionKick(INetworkAction action);
 
-        protected abstract List<IPacketWrapper> ActionBan(NetworkAction action);
+        protected abstract List<IPacketWrapper> ActionBan(INetworkAction action);
 
-        protected abstract List<IPacketWrapper> ActionMove(NetworkAction action);
+        protected abstract List<IPacketWrapper> ActionMove(INetworkAction action);
 
-        protected abstract List<IPacketWrapper> ActionMap(NetworkAction action);
+        protected abstract List<IPacketWrapper> ActionMap(INetworkAction action);
 
-        protected virtual List<IPacketWrapper> ActionRaw(NetworkAction action) {
+        protected virtual List<IPacketWrapper> ActionRaw(INetworkAction action) {
             List<IPacketWrapper> wrappers = new List<IPacketWrapper>();
 
             wrappers.AddRange(action.Now.Content.Select(text => this.CreatePacket(text)));

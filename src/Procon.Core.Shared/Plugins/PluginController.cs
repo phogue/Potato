@@ -115,7 +115,7 @@ namespace Procon.Core.Shared.Plugins {
         /// </remarks>
         /// <param name="action">The action to send to the server.</param>
         /// <returns>The result of the command, check the status for a success message.</returns>
-        public virtual CommandResult Action(NetworkAction action) {
+        public virtual CommandResult Action(INetworkAction action) {
             return this.Bubble(new Command() {
                 Name = action.ActionType.ToString(),
                 Scope = new CommandScope() {
@@ -125,7 +125,7 @@ namespace Procon.Core.Shared.Plugins {
                     new CommandParameter() {
                         Data = {
                             NetworkActions = new List<NetworkAction>() {
-                                action
+                                action as NetworkAction
                             }
                         }
                     }
@@ -214,7 +214,7 @@ namespace Procon.Core.Shared.Plugins {
 
         public virtual void ClientEvent(ClientEventArgs e) {
             if (e.EventType == ClientEventType.ClientActionDone) {
-                NetworkAction doneAction = e.Then.Actions.FirstOrDefault();
+                INetworkAction doneAction = e.Then.Actions.FirstOrDefault();
 
                 if (doneAction != null) {
                     IDeferredAction deferredAction;
@@ -227,7 +227,7 @@ namespace Procon.Core.Shared.Plugins {
                 }
             }
             else if (e.EventType == ClientEventType.ClientActionExpired) {
-                NetworkAction doneAction = e.Then.Actions.FirstOrDefault();
+                INetworkAction doneAction = e.Then.Actions.FirstOrDefault();
 
                 if (doneAction != null) {
                     IDeferredAction deferredAction;

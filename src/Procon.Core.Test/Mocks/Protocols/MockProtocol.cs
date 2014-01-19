@@ -31,7 +31,7 @@ namespace Procon.Core.Test.Mocks.Protocols {
         public string ProtocolsConfigDirectory { get; set; }
         public event Action<IProtocol, ProtocolEventArgs> ProtocolEvent;
         public event Action<IProtocol, ClientEventArgs> ClientEvent;
-        public List<IPacket> Action(NetworkAction action) {
+        public List<IPacket> Action(INetworkAction action) {
             return null;
         }
 

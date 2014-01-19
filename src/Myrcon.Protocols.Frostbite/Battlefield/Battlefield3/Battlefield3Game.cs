@@ -234,7 +234,7 @@ namespace Myrcon.Protocols.Frostbite.Battlefield.Battlefield3 {
             }
         }
 
-        protected override List<IPacketWrapper> ActionMap(NetworkAction action) {
+        protected override List<IPacketWrapper> ActionMap(INetworkAction action) {
             List<IPacketWrapper> wrappers = new List<IPacketWrapper>();
 
             foreach (Map map in action.Now.Maps) {

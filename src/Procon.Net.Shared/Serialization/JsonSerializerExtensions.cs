@@ -1,9 +1,11 @@
 ﻿using System;
 using System.IO;
-using System.Text;
 using Newtonsoft.Json;
 
 namespace Procon.Net.Shared.Serialization {
+    /// <summary>
+    /// Provides some easier methods for serializing/deserializing json strings
+    /// </summary>
     public static class JsonSerializerExtensions {
         /// <summary>
         /// Serializes and returns a string from a JsonSerializer class

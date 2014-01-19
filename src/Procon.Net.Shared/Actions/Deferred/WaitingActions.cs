@@ -16,12 +16,12 @@ namespace Procon.Net.Shared.Actions.Deferred {
         /// <summary>
         /// Called once all of the packets sent have had packets marked against them.
         /// </summary>
-        public Action<NetworkAction, List<IPacket>, List<IPacket>> Done { get; set; }
+        public Action<INetworkAction, List<IPacket>, List<IPacket>> Done { get; set; }
 
         /// <summary>
         /// Called when an action has expired.
         /// </summary>
-        public Action<NetworkAction, List<IPacket>, List<IPacket>> Expired { get; set; }
+        public Action<INetworkAction, List<IPacket>, List<IPacket>> Expired { get; set; }
 
         /// <summary>
         /// Initializes the controller with the default values.
@@ -36,7 +36,7 @@ namespace Procon.Net.Shared.Actions.Deferred {
         /// <param name="action">The action being taken</param>
         /// <param name="requests">A list of packets sent to the game server to complete this action</param>
         /// <param name="expiration">An optional datetime when this action should expire</param>
-        public void Wait(NetworkAction action, List<IPacket> requests, DateTime? expiration = null) {
+        public void Wait(INetworkAction action, List<IPacket> requests, DateTime? expiration = null) {
             this.Waiting.TryAdd(action.Uid, new WaitingAction() {
                 Action = action,
                 Requests = new List<IPacket>(requests),
@@ -79,15 +79,15 @@ namespace Procon.Net.Shared.Actions.Deferred {
             }
         }
 
-        protected virtual void OnDone(NetworkAction action, List<IPacket> requests, List<IPacket> responses) {
-            Action<NetworkAction, List<IPacket>, List<IPacket>> handler = Done;
+        protected virtual void OnDone(INetworkAction action, List<IPacket> requests, List<IPacket> responses) {
+            Action<INetworkAction, List<IPacket>, List<IPacket>> handler = Done;
             if (handler != null) {
                 handler(action, requests, responses);
             }
         }
 
-        protected virtual void OnExpired(NetworkAction action, List<IPacket> requests, List<IPacket> responses) {
-            Action<NetworkAction, List<IPacket>, List<IPacket>> handler = Expired;
+        protected virtual void OnExpired(INetworkAction action, List<IPacket> requests, List<IPacket> responses) {
+            Action<INetworkAction, List<IPacket>, List<IPacket>> handler = Expired;
             if (handler != null) {
                 handler(action, requests, responses);
             }

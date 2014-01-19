@@ -33,7 +33,7 @@ namespace Procon.Net.Shared.Test.TestSerialization.TestJson {
         [Test]
         public void TestSingleDepthPopulationSerialization() {
             var serialized = Json.Minimal.Serialize(new ClientEventData() {
-                Actions = new List<NetworkAction>() {
+                Actions = new List<INetworkAction>() {
                     new NetworkAction() {
                         Uid = Guid.Empty
                     }

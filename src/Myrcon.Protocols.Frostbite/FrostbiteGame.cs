@@ -993,7 +993,7 @@ namespace Myrcon.Protocols.Frostbite {
             };
         }
 
-        protected override List<IPacketWrapper> ActionChat(NetworkAction action) {
+        protected override List<IPacketWrapper> ActionChat(INetworkAction action) {
             List<IPacketWrapper> wrappers = new List<IPacketWrapper>();
 
             if (action.Now.Content != null) {
@@ -1025,7 +1025,7 @@ namespace Myrcon.Protocols.Frostbite {
             return wrappers;
         }
 
-        protected override List<IPacketWrapper> ActionKill(NetworkAction action) {
+        protected override List<IPacketWrapper> ActionKill(INetworkAction action) {
             List<IPacketWrapper> wrappers = new List<IPacketWrapper>();
 
             String reason = action.Scope.Content != null ? action.Scope.Content.FirstOrDefault() : String.Empty;
@@ -1043,7 +1043,7 @@ namespace Myrcon.Protocols.Frostbite {
             return wrappers;
         }
 
-        protected override List<IPacketWrapper> ActionKick(NetworkAction action) {
+        protected override List<IPacketWrapper> ActionKick(INetworkAction action) {
             List<IPacketWrapper> wrappers = new List<IPacketWrapper>();
 
             String reason = action.Scope.Content != null ? action.Scope.Content.FirstOrDefault() : String.Empty;
@@ -1055,7 +1055,7 @@ namespace Myrcon.Protocols.Frostbite {
             return wrappers;
         }
 
-        protected override List<IPacketWrapper> ActionBan(NetworkAction action) {
+        protected override List<IPacketWrapper> ActionBan(INetworkAction action) {
             List<IPacketWrapper> wrappers = new List<IPacketWrapper>();
 
             String reason = action.Scope.Content != null ? action.Scope.Content.FirstOrDefault() : String.Empty;
@@ -1088,7 +1088,7 @@ namespace Myrcon.Protocols.Frostbite {
             return wrappers;
         }
 
-        protected override List<IPacketWrapper> ActionMove(NetworkAction action) {
+        protected override List<IPacketWrapper> ActionMove(INetworkAction action) {
             List<IPacketWrapper> wrappers = new List<IPacketWrapper>();
 
             if (action.Scope.Players != null) {
@@ -1138,7 +1138,7 @@ namespace Myrcon.Protocols.Frostbite {
             return wrappers;
         }
 
-        protected override List<IPacketWrapper> ActionMap(NetworkAction action) {
+        protected override List<IPacketWrapper> ActionMap(INetworkAction action) {
             List<IPacketWrapper> wrappers = new List<IPacketWrapper>();
 
             foreach (Map map in action.Now.Maps) {

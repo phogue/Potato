@@ -44,8 +44,10 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Actions\INetworkAction.cs" />
     <Compile Include="Models\Ban.cs" />
     <Compile Include="Models\Chat.cs" />
+    <Compile Include="Models\INetworkModel.cs" />
     <Compile Include="Models\NetworkModelData.cs" />
     <Compile Include="Models\NetworkOrigin.cs" />
     <Compile Include="Actions\Deferred\DeferredAction.cs" />

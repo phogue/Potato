@@ -22,7 +22,7 @@ namespace Myrcon.Protocols.Frostbite.MedalOfHonor {
             };
         }
 
-        protected override List<IPacketWrapper> ActionMove(NetworkAction action) {
+        protected override List<IPacketWrapper> ActionMove(INetworkAction action) {
             List<IPacketWrapper> wrappers = new List<IPacketWrapper>();
 
             // admin.movePlayer <name: player name> <teamId: Team ID> <squadId: Squad ID> <forceKill: boolean>

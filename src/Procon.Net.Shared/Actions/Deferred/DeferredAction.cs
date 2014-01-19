@@ -7,8 +7,8 @@ namespace Procon.Net.Shared.Actions.Deferred {
     /// A deferred action that will dispatch on the network layer and later call
     /// the associated delegate
     /// </summary>
-    /// <typeparam name="T">The type of network action (Which will usually always be NetworkAction)</typeparam>
-    public class DeferredAction<T> : IDeferredAction where T : NetworkAction {
+    /// <typeparam name="T">The type of network action (Which will usually always be INetworkAction)</typeparam>
+    public class DeferredAction<T> : IDeferredAction where T : INetworkAction {
 
         /// <summary>
         /// The action attached to this object
@@ -47,7 +47,7 @@ namespace Procon.Net.Shared.Actions.Deferred {
         /// Fetches the action attached to this object, without concern to the exact type.
         /// </summary>
         /// <returns>The action attached to this object</returns>
-        public NetworkAction GetAction() {
+        public INetworkAction GetAction() {
             return this.Action;
         }
 
@@ -57,10 +57,10 @@ namespace Procon.Net.Shared.Actions.Deferred {
         /// <param name="action">The action that has completed</param>
         /// <param name="requests">The packets that were sent to complete this action</param>
         /// <returns>True if data was successfully inserted, false otherwise.</returns>
-        public bool TryInsertSent(NetworkAction action, List<IPacket> requests) {
+        public bool TryInsertSent(INetworkAction action, List<IPacket> requests) {
             bool inserted = false;
 
-            if (this.Action != null && this.Action.Uid == action.Uid) {
+            if (Equals(this.Action, default(INetworkAction)) == false && this.Action.Uid == action.Uid) {
                 var sent = this.Sent;
 
                 if (sent != null) {
@@ -80,10 +80,10 @@ namespace Procon.Net.Shared.Actions.Deferred {
         /// <param name="requests">The packets that were sent to complete this action</param>
         /// <param name="responses">The response packets received for each packet sent</param>
         /// <returns>True if data was successfully inserted, false otherwise.</returns>
-        public bool TryInsertDone(NetworkAction action, List<IPacket> requests, List<IPacket> responses) {
+        public bool TryInsertDone(INetworkAction action, List<IPacket> requests, List<IPacket> responses) {
             bool inserted = false;
 
-            if (this.Action != null && this.Action.Uid == action.Uid) {
+            if (Equals(this.Action, default(INetworkAction)) == false && this.Action.Uid == action.Uid) {
                 var each = this.Each;
 
                 if (each != null) {
@@ -111,10 +111,10 @@ namespace Procon.Net.Shared.Actions.Deferred {
         /// <param name="requests">The packets that were sent to complete this action</param>
         /// <param name="responses">Any of the responses that were received before expiring</param>
         /// <returns>True if data was successfully inserted, false otherwise.</returns>
-        public bool TryInsertExpired(NetworkAction action, List<IPacket> requests, List<IPacket> responses) {
+        public bool TryInsertExpired(INetworkAction action, List<IPacket> requests, List<IPacket> responses) {
             bool inserted = false;
 
-            if (this.Action != null && this.Action.Uid == action.Uid) {
+            if (Equals(this.Action, default(INetworkAction)) == false && this.Action.Uid == action.Uid) {
                 var expired = this.Expired;
 
                 if (expired != null) {
@@ -132,10 +132,10 @@ namespace Procon.Net.Shared.Actions.Deferred {
         /// </summary>
         /// <param name="action">The action that has expired</param>
         /// <returns>True if data was successfully inserted, false otherwise.</returns>
-        public bool TryInsertAlways(NetworkAction action) {
+        public bool TryInsertAlways(INetworkAction action) {
             bool inserted = false;
 
-            if (this.Action != null && this.Action.Uid == action.Uid) {
+            if (Equals(this.Action, default(INetworkAction)) == false && this.Action.Uid == action.Uid) {
                 var always = this.Always;
 
                 if (always != null) {
@@ -152,7 +152,6 @@ namespace Procon.Net.Shared.Actions.Deferred {
         /// Releases all handles on callbacks
         /// </summary>
         public void Release() {
-            this.Action = null;
             this.Sent = null;
             this.Each = null;
             this.Done = null;

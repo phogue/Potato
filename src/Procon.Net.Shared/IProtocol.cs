@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using Procon.Net.Shared.Actions;
 using Procon.Net.Shared.Models;
 
@@ -56,7 +55,7 @@ namespace Procon.Net.Shared {
         /// </summary>
         /// <param name="action">The action to take, which will be conerted to packets to send to the game server</param>
         /// <returns>A list of packets generated</returns>
-        List<IPacket> Action(NetworkAction action);
+        List<IPacket> Action(INetworkAction action);
 
         /// <summary>
         /// Sends a packet to the server, provided a client exists and the connection is open and ready or logged in.

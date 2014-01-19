@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using Procon.Net.Shared.Actions;
 
 namespace Procon.Net.Shared {
-
+    /// <summary>
+    /// Data attached to a client event
+    /// </summary>
     [Serializable]
     public class ClientEventData {
         /// <summary>
@@ -19,6 +21,6 @@ namespace Procon.Net.Shared {
         /// <summary>
         /// List of actions attached to this event, if any.
         /// </summary>
-        public List<NetworkAction> Actions { get; set; } 
+        public List<INetworkAction> Actions { get; set; } 
     }
 }

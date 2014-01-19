@@ -86,7 +86,7 @@ namespace Procon.Examples.Plugins.Actions.Test {
                         Packets = responses
                     },
                     Then = new ClientEventData() {
-                        Actions = new List<NetworkAction>() {
+                        Actions = new List<INetworkAction>() {
 			                action
 		                },
                         Packets = requests

@@ -6,10 +6,7 @@ namespace Procon.Net.Shared.Actions {
     /// An action for the network layer to execute
     /// </summary>
     [Serializable]
-    public class NetworkAction : NetworkModel {
-        /// <summary>
-        /// The name of the action to take.
-        /// </summary>
+    public class NetworkAction : NetworkModel, INetworkAction {
         public String Name {
             get { return this._name; }
             set {
@@ -26,9 +23,6 @@ namespace Procon.Net.Shared.Actions {
         }
         private String _name;
 
-        /// <summary>
-        /// The specific type of action taken with this object.
-        /// </summary>
         public NetworkActionType ActionType {
             get { return this._actionType; }
             set {
@@ -40,9 +34,6 @@ namespace Procon.Net.Shared.Actions {
         }
         private NetworkActionType _actionType;
 
-        /// <summary>
-        /// A unique id generated for this particular action
-        /// </summary>
         public Guid Uid { get; set; }
 
         /// <summary>

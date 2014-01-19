@@ -13,8 +13,8 @@ namespace Procon.Net.Shared.Test.TestSerialization.TestJson {
         [Test]
         public void TestDefaultSerialization() {
             var original = new ClientEventData();
-            var serialized = Json.Minimal.Serialize(original);
-            var deseralized = Json.Minimal.Deserialize<ClientEventData>(serialized);
+            var serialized = JsonSerialization.Minimal.Serialize(original);
+            var deseralized = JsonSerialization.Minimal.Deserialize<ClientEventData>(serialized);
 
             Assert.IsNull(deseralized.Exceptions);
             Assert.IsNull(deseralized.Packets);
@@ -41,8 +41,8 @@ namespace Procon.Net.Shared.Test.TestSerialization.TestJson {
                     }
                 }
             };
-            var serialized = Json.Minimal.Serialize(original);
-            var deseralized = Json.Minimal.Deserialize<ClientEventData>(serialized);
+            var serialized = JsonSerialization.Minimal.Serialize(original);
+            var deseralized = JsonSerialization.Minimal.Deserialize<ClientEventData>(serialized);
 
             Assert.IsNotEmpty(deseralized.Exceptions);
             Assert.IsNotEmpty(deseralized.Packets);

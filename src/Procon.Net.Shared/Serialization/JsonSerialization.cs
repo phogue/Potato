@@ -8,7 +8,7 @@ namespace Procon.Net.Shared.Serialization {
     /// all converters so all objects/interfaces can be serialized within this 
     /// assembly.
     /// </summary>
-    public static class Json {
+    public static class JsonSerialization {
         /// <summary>
         /// Holds a serializer for producing transportable json
         /// </summary>
@@ -24,8 +24,8 @@ namespace Procon.Net.Shared.Serialization {
         /// </summary>
         public static readonly List<JsonConverter> Converters;
 
-        static Json() {
-            Json.Converters = new List<JsonConverter>() {
+        static JsonSerialization() {
+            JsonSerialization.Converters = new List<JsonConverter>() {
                 new InterfaceJsonConverter<IPacket, Packet>(),
                 new InterfaceJsonConverter<INetworkAction, NetworkAction>(),
                 new InterfaceJsonConverter<IClientEventData, ClientEventData>(),
@@ -35,12 +35,12 @@ namespace Procon.Net.Shared.Serialization {
                 new InterfaceJsonConverter<IProtocolState, ProtocolState>()
             };
 
-            Json.Minimal = new JsonSerializer();
-            Json.Readable = new JsonSerializer();
+            JsonSerialization.Minimal = new JsonSerializer();
+            JsonSerialization.Readable = new JsonSerializer();
 
-            Json.Converters.ForEach(converter => {
-                Json.Minimal.Converters.Add(converter);
-                Json.Readable.Converters.Add(converter);
+            JsonSerialization.Converters.ForEach(converter => {
+                JsonSerialization.Minimal.Converters.Add(converter);
+                JsonSerialization.Readable.Converters.Add(converter);
             });
         }
     }

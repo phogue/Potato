@@ -13,8 +13,8 @@ namespace Procon.Net.Shared.Test.TestSerialization.TestJson {
         [Test]
         public void TestDefaultSerialization() {
             var original = new ProtocolEventArgs();
-            var serialized = Json.Minimal.Serialize(original);
-            var deseralized = Json.Minimal.Deserialize<ProtocolEventArgs>(serialized);
+            var serialized = JsonSerialization.Minimal.Serialize(original);
+            var deseralized = JsonSerialization.Minimal.Deserialize<ProtocolEventArgs>(serialized);
 
             Assert.IsNotNull(deseralized.Now);
             Assert.IsNotNull(deseralized.Then);
@@ -99,8 +99,8 @@ namespace Procon.Net.Shared.Test.TestSerialization.TestJson {
                 Stamp = new DateTime(2000, 10, 10, 10, 10, 10),
                 ProtocolState = new ProtocolState()
             };
-            var serialized = Json.Minimal.Serialize(original);
-            var deseralized = Json.Minimal.Deserialize<ProtocolEventArgs>(serialized);
+            var serialized = JsonSerialization.Minimal.Serialize(original);
+            var deseralized = JsonSerialization.Minimal.Deserialize<ProtocolEventArgs>(serialized);
 
             Assert.IsNotEmpty(deseralized.Now.Bans);
             Assert.IsNotEmpty(deseralized.Now.Chats);

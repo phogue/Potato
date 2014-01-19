@@ -12,8 +12,8 @@ namespace Procon.Net.Shared.Test.TestSerialization.TestJson {
         [Test]
         public void TestDefaultSerialization() {
             var original = new ProtocolEventData();
-            var serialized = Json.Minimal.Serialize(original);
-            var deseralized = Json.Minimal.Deserialize<ProtocolEventData>(serialized);
+            var serialized = JsonSerialization.Minimal.Serialize(original);
+            var deseralized = JsonSerialization.Minimal.Deserialize<ProtocolEventData>(serialized);
 
             Assert.IsNull(deseralized.Bans);
             Assert.IsNull(deseralized.Chats);
@@ -64,8 +64,8 @@ namespace Procon.Net.Shared.Test.TestSerialization.TestJson {
                     new Spawn()
                 }
             };
-            var serialized = Json.Minimal.Serialize(original);
-            var deseralized = Json.Minimal.Deserialize<ProtocolEventData>(serialized);
+            var serialized = JsonSerialization.Minimal.Serialize(original);
+            var deseralized = JsonSerialization.Minimal.Deserialize<ProtocolEventData>(serialized);
 
             Assert.IsNotEmpty(deseralized.Bans);
             Assert.IsNotEmpty(deseralized.Chats);

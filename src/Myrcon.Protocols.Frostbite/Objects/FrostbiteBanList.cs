@@ -7,8 +7,8 @@ namespace Myrcon.Protocols.Frostbite.Objects {
     [Serializable]
     public static class FrostbiteBanList {
 
-        public static List<Ban> Parse(List<string> words) {
-            List<Ban> bans = new List<Ban>();
+        public static List<BanModel> Parse(List<string> words) {
+            List<BanModel> bans = new List<BanModel>();
 
             int count = 0;
 

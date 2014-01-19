@@ -64,7 +64,7 @@ namespace Procon.Core.Test.TextCommands {
             DescriptionKey = "CALCULATE"
         };
 
-        protected static Player PlayerPhogue = new Player() {
+        protected static PlayerModel PlayerPhogue = new PlayerModel() {
             Name = "Phogue",
             Uid = "EA_63A9F96745B22DFB509C558FC8B5C50F",
             Ping = 50,
@@ -75,7 +75,7 @@ namespace Procon.Core.Test.TextCommands {
             Inventory = {
                 Now = {
                     Items = {
-                        new Item() {
+                        new ItemModel() {
                             Name = "U_CZ805",
                             FriendlyName = "CZ-805",
                             Tags = {
@@ -89,7 +89,7 @@ namespace Procon.Core.Test.TextCommands {
             }
         };
 
-        protected static Player PlayerImisnew2 = new Player() {
+        protected static PlayerModel PlayerImisnew2 = new PlayerModel() {
             Name = "Imisnew2",
             Uid = "2",
             Ping = 100,
@@ -100,7 +100,7 @@ namespace Procon.Core.Test.TextCommands {
             Inventory = {
                 Now = {
                     Items = {
-                        new Item() {
+                        new ItemModel() {
                             Name = "U_C4",
                             FriendlyName = "C4",
                             Tags = {
@@ -114,7 +114,7 @@ namespace Procon.Core.Test.TextCommands {
             }
         };
 
-        protected static Player PlayerPhilK = new Player() {
+        protected static PlayerModel PlayerPhilK = new PlayerModel() {
             Name = "Phil_K",
             Uid = "3",
             Ping = 150,
@@ -125,7 +125,7 @@ namespace Procon.Core.Test.TextCommands {
             Inventory = {
                 Now = {
                     Items = {
-                        new Item() {
+                        new ItemModel() {
                             Name = "U_CZ75",
                             FriendlyName = "CZ-75",
                             Tags = {
@@ -139,7 +139,7 @@ namespace Procon.Core.Test.TextCommands {
             }
         };
 
-        protected static Player PlayerMorpheus = new Player() {
+        protected static PlayerModel PlayerMorpheus = new PlayerModel() {
             Name = "Morpheus(AUT)",
             Uid = "4",
             Ping = 200,
@@ -150,7 +150,7 @@ namespace Procon.Core.Test.TextCommands {
             Inventory = {
                 Now = {
                     Items = {
-                        new Item() {
+                        new ItemModel() {
                             Name = "U_DBV12",
                             FriendlyName = "DBV-12",
                             Tags = {
@@ -164,7 +164,7 @@ namespace Procon.Core.Test.TextCommands {
             }
         };
 
-        protected static Player PlayerIke = new Player() {
+        protected static PlayerModel PlayerIke = new PlayerModel() {
             Name = "Ike",
             Uid = "5",
             Ping = 250,
@@ -175,7 +175,7 @@ namespace Procon.Core.Test.TextCommands {
             Inventory = {
                 Now = {
                     Items = {
-                        new Item() {
+                        new ItemModel() {
                             Name = "U_Defib",
                             FriendlyName = "Defibrilator",
                             Tags = {
@@ -189,7 +189,7 @@ namespace Procon.Core.Test.TextCommands {
             }
         };
 
-        protected static Player PlayerPapaCharlie9 = new Player() {
+        protected static PlayerModel PlayerPapaCharlie9 = new PlayerModel() {
             Name = "PapaCharlie9",
             Uid = "6",
             Ping = 300,
@@ -200,7 +200,7 @@ namespace Procon.Core.Test.TextCommands {
             Inventory = {
                 Now = {
                     Items = {
-                        new Item() {
+                        new ItemModel() {
                             Name = "U_FGM148",
                             FriendlyName = "FGM-148 Javelin",
                             Tags = {
@@ -214,7 +214,7 @@ namespace Procon.Core.Test.TextCommands {
             }
         };
 
-        protected static Player PlayerEBassie = new Player() {
+        protected static PlayerModel PlayerEBassie = new PlayerModel() {
             Name = "EBassie",
             Uid = "7",
             Ping = 350,
@@ -225,7 +225,7 @@ namespace Procon.Core.Test.TextCommands {
             Inventory = {
                 Now = {
                     Items = {
-                        new Item() {
+                        new ItemModel() {
                             Name = "U_Flashbang",
                             FriendlyName = "Flashbang",
                             Tags = {
@@ -239,7 +239,7 @@ namespace Procon.Core.Test.TextCommands {
             }
         };
 
-        protected static Player PlayerZaeed = new Player() {
+        protected static PlayerModel PlayerZaeed = new PlayerModel() {
             Name = "Zaeed",
             Uid = "8",
             Ping = 400,
@@ -250,7 +250,7 @@ namespace Procon.Core.Test.TextCommands {
             Inventory = {
                 Now = {
                     Items = {
-                        new Item() {
+                        new ItemModel() {
                             Name = "U_AMR2",
                             FriendlyName = "AMR2-2",
                             Tags = {
@@ -264,7 +264,7 @@ namespace Procon.Core.Test.TextCommands {
             }
         };
 
-        protected static Player PlayerPhogueIsAButterfly = new Player() {
+        protected static PlayerModel PlayerPhogueIsAButterfly = new PlayerModel() {
             Name = "Phogue is a butterfly",
             Uid = "9",
             Ping = 450,
@@ -275,7 +275,7 @@ namespace Procon.Core.Test.TextCommands {
             Inventory = {
                 Now = {
                     Items = {
-                        new Item() {
+                        new ItemModel() {
                             Name = "U_AMR2_MED",
                             FriendlyName = "AMR2-2 CQB",
                             Tags = {
@@ -289,7 +289,7 @@ namespace Procon.Core.Test.TextCommands {
             }
         };
 
-        protected static Player PlayerSayaNishino = new Player() {
+        protected static PlayerModel PlayerSayaNishino = new PlayerModel() {
             Name = "Saya-Nishino",
             Uid = "10",
             Ping = 0,
@@ -299,7 +299,7 @@ namespace Procon.Core.Test.TextCommands {
             }
         };
 
-        protected static Player PlayerMrDiacritic = new Player() {
+        protected static PlayerModel PlayerMrDiacritic = new PlayerModel() {
             Name = "MrDiäcritic",
             Uid = "11",
             Ping = 0,
@@ -309,28 +309,28 @@ namespace Procon.Core.Test.TextCommands {
             }
         };
 
-        protected static Map MapPortValdez = new Map() {
+        protected static MapModel MapPortValdez = new MapModel() {
             FriendlyName = "Port Valdez",
             Name = "port_valdez",
-            GameMode = new GameMode() {
+            GameMode = new GameModeModel() {
                 FriendlyName = "Conquest",
                 Name = "CONQUEST",
             }
         };
 
-        protected static Map MapValparaiso = new Map() {
+        protected static MapModel MapValparaiso = new MapModel() {
             FriendlyName = "Valparaiso",
             Name = "valparaiso",
-            GameMode = new GameMode() {
+            GameMode = new GameModeModel() {
                 FriendlyName = "Conquest",
                 Name = "CONQUEST",
             }
         };
 
-        protected static Map MapPanamaCanal = new Map() {
+        protected static MapModel MapPanamaCanal = new MapModel() {
             FriendlyName = "Panama Canal",
             Name = "panama_canal",
-            GameMode = new GameMode() {
+            GameMode = new GameModeModel() {
                 FriendlyName = "Rush",
                 Name = "RUSH",
             }
@@ -393,7 +393,7 @@ namespace Procon.Core.Test.TextCommands {
                 TextCommandTest
             });
 
-            textCommandController.Connection.ProtocolState.Players.AddRange(new List<Player>() {
+            textCommandController.Connection.ProtocolState.Players.AddRange(new List<PlayerModel>() {
                 PlayerPhogue,
                 PlayerImisnew2,
                 PlayerPhilK,
@@ -409,7 +409,7 @@ namespace Procon.Core.Test.TextCommands {
 
             textCommandController.Connection.ProtocolState.Items = textCommandController.Connection.ProtocolState.Players.SelectMany(player => player.Inventory.Now.Items).ToList();
 
-            textCommandController.Connection.ProtocolState.MapPool.AddRange(new List<Map>() {
+            textCommandController.Connection.ProtocolState.MapPool.AddRange(new List<MapModel>() {
                 MapPortValdez,
                 MapValparaiso,
                 MapPanamaCanal
@@ -468,16 +468,16 @@ namespace Procon.Core.Test.TextCommands {
         /// <param name="primaryCommand">The command to check against - the returning primary command must be this</param>
         /// <param name="players">The list of players that must be in the resulting matched players (nothing more, nothing less)</param>
         /// <param name="maps">The list of maps that must be in the resulting matched maps (nothing more, nothing less)</param>
-        protected static void AssertExecutedCommandAgainstPlayerListMapList(CommandResult args, TextCommandModel primaryCommand, List<Player> players, List<Map> maps) {
+        protected static void AssertExecutedCommandAgainstPlayerListMapList(CommandResult args, TextCommandModel primaryCommand, List<PlayerModel> players, List<MapModel> maps) {
             Assert.AreEqual(primaryCommand, args.Now.TextCommands.First(), String.Format("Has not used the '{0}' command", primaryCommand.PluginCommand));
             Assert.AreEqual(players.Count, args.Now.TextCommandMatches.First().Players != null ? args.Now.TextCommandMatches.First().Players.Count : 0, "Incorrect numbers of players returned");
             Assert.AreEqual(maps.Count, args.Now.TextCommandMatches.First().Maps != null ? args.Now.TextCommandMatches.First().Maps.Count : 0, "Incorrect numbers of maps returned");
 
-            foreach (Player player in players) {
+            foreach (PlayerModel player in players) {
                 Assert.IsTrue(args.Now.TextCommandMatches.First().Players.Contains(player) == true, String.Format("Could not find player '{0}'", player.Name));
             }
 
-            foreach (Map map in maps) {
+            foreach (MapModel map in maps) {
                 Assert.IsTrue(args.Now.TextCommandMatches.First().Maps.Contains(map) == true, String.Format("Could not find map '{0}'", map.Name));
             }
         }
@@ -490,7 +490,7 @@ namespace Procon.Core.Test.TextCommands {
         /// <param name="primaryCommand">The command to check against - the returning primary command must be this</param>
         /// <param name="players">The list of players that must be in the resulting matched players (nothing more, nothing less)</param>
         /// <param name="maps">The list of maps that must be in the resulting matched maps (nothing more, nothing less)</param>
-        protected static void AssertCommandPlayerListMapList(TextCommandController textCommandController, String command, TextCommandModel primaryCommand, List<Player> players, List<Map> maps) {
+        protected static void AssertCommandPlayerListMapList(TextCommandController textCommandController, String command, TextCommandModel primaryCommand, List<PlayerModel> players, List<MapModel> maps) {
             CommandResult args = ExecuteTextCommand(textCommandController, command);
 
             AssertExecutedCommandAgainstPlayerListMapList(args, primaryCommand, players, maps);

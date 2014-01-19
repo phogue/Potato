@@ -5,7 +5,7 @@ namespace Procon.Net.Shared.Models {
     /// A map within the protocol/game
     /// </summary>
     [Serializable]
-    public sealed class Map : NetworkModel {
+    public sealed class MapModel : NetworkModel {
         /// <summary>
         /// This map's order as represented by a 0-based index.
         /// </summary>
@@ -29,6 +29,6 @@ namespace Procon.Net.Shared.Models {
         /// <summary>
         /// This map's game mode.
         /// </summary>
-        public GameMode GameMode { get; set; }
+        public GameModeModel GameMode { get; set; }
     }
 }

@@ -2,21 +2,21 @@
 
 namespace Procon.Net.Shared.Models {
     [Serializable]
-    public sealed class Spawn : NetworkModel {
+    public sealed class SpawnModel : NetworkModel {
 
         /// <summary>
         /// The player who spawned in
         /// </summary>
-        public Player Player { get; set; }
+        public PlayerModel Player { get; set; }
 
         /// <summary>
         /// What role the player spawned in as.
         /// </summary>
-        public Role Role { get; set; }
+        public RoleModel Role { get; set; }
 
         /// <summary>
         /// The items the player spawned in with
         /// </summary>
-        public Inventory Inventory { get; set; }
+        public InventoryModel Inventory { get; set; }
     }
 }

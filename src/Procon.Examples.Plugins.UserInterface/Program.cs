@@ -57,12 +57,12 @@ namespace Procon.Examples.Plugins.UserInterface {
                     Content = new List<string>() {
                         new SettingsPageView() {
                             MyStringyVariable = "Output of the variable!",
-                            MyListOfPlayers = new List<Player>() {
-                                new Player() {
+                            MyListOfPlayers = new List<PlayerModel>() {
+                                new PlayerModel() {
                                     Name = "Player1",
                                     Score = 100
                                 },
-                                new Player() {
+                                new PlayerModel() {
                                     Name = "Player2",
                                     Score = 250
                                 }

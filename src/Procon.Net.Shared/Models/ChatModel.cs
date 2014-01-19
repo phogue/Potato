@@ -4,9 +4,9 @@ using System.Collections.Generic;
 namespace Procon.Net.Shared.Models {
 
     [Serializable]
-    public sealed class Chat : NetworkModel {
+    public sealed class ChatModel : NetworkModel {
 
-        public Chat() : base() {
+        public ChatModel() : base() {
             this.Now.Content = new List<String>();
         }
     }

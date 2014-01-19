@@ -77,13 +77,13 @@ namespace Procon.Examples.Plugins.Events.Test {
             plugins.PluginFactory.GameEvent(new ProtocolEventArgs() {
                 ProtocolEventType = ProtocolEventType.ProtocolChat,
                 Now = {
-                    Chats = new List<Chat>() {
-                        new Chat() {
+                    Chats = new List<ChatModel>() {
+                        new ChatModel() {
                             Origin = NetworkOrigin.Player,
                             Scope = {
-                                Groups = new List<Grouping>() {
-                                    new Grouping() {
-                                        Type = Grouping.Team,
+                                Groups = new List<GroupingModel>() {
+                                    new GroupingModel() {
+                                        Type = GroupingModel.Team,
                                         Uid = "1"
                                     }
                                 }
@@ -92,8 +92,8 @@ namespace Procon.Examples.Plugins.Events.Test {
                                 Content = new List<String>() {
                                     "Hello!"
                                 },
-                                Players = new List<Player>() {
-                                    new Player() {
+                                Players = new List<PlayerModel>() {
+                                    new PlayerModel() {
                                         Uid = "EA_1234",
                                         Name = "Phogue"
                                         // other details..

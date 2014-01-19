@@ -7,8 +7,8 @@ namespace Myrcon.Protocols.Frostbite.Objects {
     [Serializable]
     public static class FrostbiteMapList {
 
-        public static List<Map> Parse(List<string> words) {
-            List<Map> maps = new List<Map>();
+        public static List<MapModel> Parse(List<string> words) {
+            List<MapModel> maps = new List<MapModel>();
 
             maps.Clear();
 
@@ -16,7 +16,7 @@ namespace Myrcon.Protocols.Frostbite.Objects {
                 int rounds = 0;
                 if (int.TryParse(words[i + 1], out rounds) == true) {
                     maps.Add(
-                        new Map() {
+                        new MapModel() {
                             Index = i > 0 ? i / 2 : 0,
                             Rounds = rounds == 0 ? 2 : rounds,
                             Name = words[i]

@@ -6,7 +6,7 @@ namespace Procon.Net.Shared.Models {
     /// An item or weapon used by a player in game.
     /// </summary>
     [Serializable]
-    public sealed class Item : NetworkModel {
+    public sealed class ItemModel : NetworkModel {
 
         /// <summary>
         /// The name of the item, used by the game.
@@ -26,7 +26,7 @@ namespace Procon.Net.Shared.Models {
         /// <summary>
         /// Initializes default values.
         /// </summary>
-        public Item() {
+        public ItemModel() {
             this.Name = String.Empty;
             this.FriendlyName = String.Empty;
             this.Tags = new List<String>();

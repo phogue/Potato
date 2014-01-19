@@ -12,7 +12,7 @@ namespace Procon.Core.Connections.TextCommands.Parsers.Fuzzy {
         /// <summary>
         /// The map attached to this thing.
         /// </summary>
-        public List<Map> Maps { get; set; }
+        public List<MapModel> Maps { get; set; }
 
         public bool CompatibleWith(IThingReference other) {
             return other is MapThingReference;

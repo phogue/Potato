@@ -124,9 +124,9 @@ namespace Procon.Core.Test.TextCommands.Route {
 
             textCommandController.TextCommands.Add(command);
 
-            AssertCommandPlayerListMapList(textCommandController, "Command phogue", command, new List<Player>() {
+            AssertCommandPlayerListMapList(textCommandController, "Command phogue", command, new List<PlayerModel>() {
                 PlayerPhogue
-            }, new List<Map>());
+            }, new List<MapModel>());
         }
 
         [Test]
@@ -144,10 +144,10 @@ namespace Procon.Core.Test.TextCommands.Route {
 
             textCommandController.TextCommands.Add(command);
 
-            AssertCommandPlayerListMapList(textCommandController, "Command phogue morpheus", command, new List<Player>() {
+            AssertCommandPlayerListMapList(textCommandController, "Command phogue morpheus", command, new List<PlayerModel>() {
                 PlayerPhogue,
                 PlayerMorpheus
-            }, new List<Map>());
+            }, new List<MapModel>());
         }
 
         [Test]
@@ -165,7 +165,7 @@ namespace Procon.Core.Test.TextCommands.Route {
 
             textCommandController.TextCommands.Add(command);
 
-            AssertCommandPlayerListMapList(textCommandController, "Command port valdez", command, new List<Player>() , new List<Map>() {
+            AssertCommandPlayerListMapList(textCommandController, "Command port valdez", command, new List<PlayerModel>() , new List<MapModel>() {
                 MapPortValdez
             });
         }
@@ -191,10 +191,10 @@ namespace Procon.Core.Test.TextCommands.Route {
                 "for something and something"
             });
 
-            AssertExecutedCommandAgainstPlayerListMapList(result, command, new List<Player>() {
+            AssertExecutedCommandAgainstPlayerListMapList(result, command, new List<PlayerModel>() {
                 PlayerPhogue,
                 PlayerMorpheus
-            }, new List<Map>());
+            }, new List<MapModel>());
         }
 
         [Test]
@@ -218,10 +218,10 @@ namespace Procon.Core.Test.TextCommands.Route {
                 "something, something, something dark side"
             });
 
-            AssertExecutedCommandAgainstPlayerListMapList(result, command, new List<Player>() {
+            AssertExecutedCommandAgainstPlayerListMapList(result, command, new List<PlayerModel>() {
                 PlayerPhogue,
                 PlayerMorpheus
-            }, new List<Map>());
+            }, new List<MapModel>());
         }
 
         [Test]
@@ -247,10 +247,10 @@ namespace Procon.Core.Test.TextCommands.Route {
 
             AssertExecutedCommandAgainstNumericValue(result, command, 25);
 
-            AssertExecutedCommandAgainstPlayerListMapList(result, command, new List<Player>() {
+            AssertExecutedCommandAgainstPlayerListMapList(result, command, new List<PlayerModel>() {
                 PlayerPhogue,
                 PlayerMorpheus
-            }, new List<Map>());
+            }, new List<MapModel>());
         }
 
         [Test]
@@ -274,9 +274,9 @@ namespace Procon.Core.Test.TextCommands.Route {
                 "some time"
             });
 
-            AssertExecutedCommandAgainstPlayerListMapList(result, command, new List<Player>() {
+            AssertExecutedCommandAgainstPlayerListMapList(result, command, new List<PlayerModel>() {
                 PlayerPhogue
-            }, new List<Map>());
+            }, new List<MapModel>());
         }
     }
 }

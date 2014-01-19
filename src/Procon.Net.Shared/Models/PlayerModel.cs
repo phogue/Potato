@@ -9,7 +9,7 @@ namespace Procon.Net.Shared.Models {
     /// An in game player
     /// </summary>
     [Serializable]
-    public sealed class Player : NetworkModel {
+    public sealed class PlayerModel : NetworkModel {
 
         /// <summary>
         /// Used when determining a player's Country Name and Code.
@@ -53,7 +53,7 @@ namespace Procon.Net.Shared.Models {
         /// <summary>
         /// This players grouping on this server
         /// </summary>
-        public List<Grouping> Groups { get; set; }
+        public List<GroupingModel> Groups { get; set; }
 
         /// <summary>
         /// This player's Score.
@@ -81,12 +81,12 @@ namespace Procon.Net.Shared.Models {
         /// <summary>
         /// A Game-specific job/class the player assumes (e.g, Sniper, Medic).
         /// </summary>
-        public Role Role { get; set; }
+        public RoleModel Role { get; set; }
 
         /// <summary>
         /// A Game-specific collection of items the player has (e.g, Armor, AK-47, HE Grenade).
         /// </summary>
-        public Inventory Inventory { get; set; }
+        public InventoryModel Inventory { get; set; }
 
         /// <summary>
         /// This player's latency to the game server.
@@ -112,7 +112,7 @@ namespace Procon.Net.Shared.Models {
                     this.Port = value.Split(':').LastOrDefault();
                 }
 
-                Location location = Player.Geolocation.Locate(this._ip);
+                Location location = PlayerModel.Geolocation.Locate(this._ip);
 
                 if (location != null) {
                     this.Location = location;
@@ -129,25 +129,25 @@ namespace Procon.Net.Shared.Models {
         /// <summary>
         /// Initializes all defaults values for the player
         /// </summary>
-        public Player() {
+        public PlayerModel() {
             this.Uid = String.Empty;
             this.ClanTag = String.Empty;
             this.Name = String.Empty;
-            this.Groups = new List<Grouping>();
+            this.Groups = new List<GroupingModel>();
             this.Location = new Location();
-            this.Inventory = new Inventory();
+            this.Inventory = new InventoryModel();
         }
 
         /// <summary>
         /// Adds or updates an existing group with the same type.
         /// </summary>
         /// <param name="updateGroup">The group to add or modify the existing group with the same type</param>
-        public void ModifyGroup(Grouping updateGroup) {
+        public void ModifyGroup(GroupingModel updateGroup) {
             if (updateGroup != null) {
-                Grouping existingGroup = this.Groups.FirstOrDefault(group => group.Type == updateGroup.Type);
+                GroupingModel existingGroup = this.Groups.FirstOrDefault(group => group.Type == updateGroup.Type);
 
                 if (existingGroup == null) {
-                    this.Groups.Add(updateGroup.Clone() as Grouping);
+                    this.Groups.Add(updateGroup.Clone() as GroupingModel);
                 }
                 else {
                     existingGroup.Uid = updateGroup.Uid;

@@ -19,18 +19,18 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
         public void TestKickEveryoneWithExclusionOnPhoguePhilImpliedJoin() {
             TextCommandController textCommandController = CreateTextCommandController();
 
-            AssertCommandPlayerListMapList(textCommandController, "kick everyone but not phogue phil", TextCommandKick, textCommandController.Connection.ProtocolState.Players.Except(new List<Player>() {
+            AssertCommandPlayerListMapList(textCommandController, "kick everyone but not phogue phil", TextCommandKick, textCommandController.Connection.ProtocolState.Players.Except(new List<PlayerModel>() {
                 PlayerPhogue,
                 PlayerPhilK
-            }).ToList(), new List<Map>());
+            }).ToList(), new List<MapModel>());
         }
 
         [Test]
         public void TestKickPhogueOrPhilk() {
-            AssertCommandPlayerListMapList(CreateTextCommandController(), "kick phogue or phil", TextCommandKick, new List<Player>() {
+            AssertCommandPlayerListMapList(CreateTextCommandController(), "kick phogue or phil", TextCommandKick, new List<PlayerModel>() {
                 PlayerPhogue,
                 PlayerPhilK
-            }, new List<Map>());
+            }, new List<MapModel>());
         }
 
         /// <summary>
@@ -38,10 +38,10 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
         /// </summary>
         [Test]
         public void TestKickPhoguePhilkImpliedJoin() {
-            AssertCommandPlayerListMapList(CreateTextCommandController(), "kick phogue phil", TextCommandKick, new List<Player>() {
+            AssertCommandPlayerListMapList(CreateTextCommandController(), "kick phogue phil", TextCommandKick, new List<PlayerModel>() {
                 PlayerPhogue,
                 PlayerPhilK
-            }, new List<Map>());
+            }, new List<MapModel>());
         }
 
         /// <summary>
@@ -50,11 +50,11 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
         /// </summary>
         [Test]
         public void TestKickPhoguePhilkImpliedJoinGarbageIke() {
-            AssertCommandPlayerListMapList(CreateTextCommandController(), "kick phogue phil garbage ike", TextCommandKick, new List<Player>() {
+            AssertCommandPlayerListMapList(CreateTextCommandController(), "kick phogue phil garbage ike", TextCommandKick, new List<PlayerModel>() {
                 PlayerPhogue,
                 PlayerPhilK,
                 PlayerIke
-            }, new List<Map>());
+            }, new List<MapModel>());
         }
 
         /// <summary>
@@ -63,12 +63,12 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
         /// </summary>
         [Test]
         public void TestKickPhoguePhilkImpliedJoinGarbageIkeZaeedImpliedJoin() {
-            AssertCommandPlayerListMapList(CreateTextCommandController(), "kick phogue phil, zaeed ike", TextCommandKick, new List<Player>() {
+            AssertCommandPlayerListMapList(CreateTextCommandController(), "kick phogue phil, zaeed ike", TextCommandKick, new List<PlayerModel>() {
                 PlayerPhogue,
                 PlayerPhilK,
                 PlayerIke,
                 PlayerZaeed
-            }, new List<Map>());
+            }, new List<MapModel>());
         }
 
         /// <summary>
@@ -76,10 +76,10 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
         /// </summary>
         [Test]
         public void TestKickPhoguePhilkImpliedJoinWithImpliedJoinPortValdez() {
-            AssertCommandPlayerListMapList(CreateTextCommandController(), "kick phogue phil port valdez", TextCommandKick, new List<Player>() {
+            AssertCommandPlayerListMapList(CreateTextCommandController(), "kick phogue phil port valdez", TextCommandKick, new List<PlayerModel>() {
                 PlayerPhogue,
                 PlayerPhilK
-            }, new List<Map>() {
+            }, new List<MapModel>() {
                 MapPortValdez
             });
         }
@@ -89,11 +89,11 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
         /// </summary>
         [Test]
         public void TestKickPhoguePhilkImpliedJoinWithLogicalAndJoinIke() {
-            AssertCommandPlayerListMapList(CreateTextCommandController(), "kick phogue phil and ike", TextCommandKick, new List<Player>() {
+            AssertCommandPlayerListMapList(CreateTextCommandController(), "kick phogue phil and ike", TextCommandKick, new List<PlayerModel>() {
                 PlayerPhogue,
                 PlayerPhilK,
                 PlayerIke
-            }, new List<Map>());
+            }, new List<MapModel>());
         }
 
         /// <summary>
@@ -101,12 +101,12 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
         /// </summary>
         [Test]
         public void TestKickPhoguePhilkImpliedJoinWithLogicalAndJoinIkeZaeedImpliedJoin() {
-            AssertCommandPlayerListMapList(CreateTextCommandController(), "kick phogue phil and zaeed ike", TextCommandKick, new List<Player>() {
+            AssertCommandPlayerListMapList(CreateTextCommandController(), "kick phogue phil and zaeed ike", TextCommandKick, new List<PlayerModel>() {
                 PlayerPhogue,
                 PlayerPhilK,
                 PlayerIke,
                 PlayerZaeed
-            }, new List<Map>());
+            }, new List<MapModel>());
         }
 
         /// <summary>
@@ -114,10 +114,10 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
         /// </summary>
         [Test]
         public void TestKickPhoguePhilkLogicalAndJoin() {
-            AssertCommandPlayerListMapList(CreateTextCommandController(), "kick phogue and phil", TextCommandKick, new List<Player>() {
+            AssertCommandPlayerListMapList(CreateTextCommandController(), "kick phogue and phil", TextCommandKick, new List<PlayerModel>() {
                 PlayerPhogue,
                 PlayerPhilK
-            }, new List<Map>());
+            }, new List<MapModel>());
         }
     }
 }

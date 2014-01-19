@@ -6,8 +6,8 @@ namespace Myrcon.Protocols.Frostbite.Objects {
     [Serializable]
     public static class FrostbitePlayers {
 
-        public static List<Player> Parse(List<string> words) {
-            List<Player> players = new List<Player>();
+        public static List<PlayerModel> Parse(List<string> words) {
+            List<PlayerModel> players = new List<PlayerModel>();
 
             int currentOffset = 0;
             int parameterCount = 0;

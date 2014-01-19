@@ -28,12 +28,12 @@ namespace Procon.Core.Shared.Test.ExecutableCommands {
                 Languages = new List<LanguageModel>(),
                 TextCommands = new List<TextCommandModel>(),
                 TextCommandMatches = new List<TextCommandMatchModel>(),
-                Chats = new List<Chat>(),
-                Players = new List<Player>(),
-                Kills = new List<Kill>(),
-                Spawns = new List<Spawn>(),
-                Kicks = new List<Kick>(),
-                Bans = new List<Ban>()
+                Chats = new List<ChatModel>(),
+                Players = new List<PlayerModel>(),
+                Kills = new List<KillModel>(),
+                Spawns = new List<SpawnModel>(),
+                Kicks = new List<KickModel>(),
+                Bans = new List<BanModel>()
             };
 
             data.Dispose();

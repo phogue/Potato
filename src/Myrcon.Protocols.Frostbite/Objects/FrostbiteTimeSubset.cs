@@ -6,8 +6,8 @@ namespace Myrcon.Protocols.Frostbite.Objects {
     [Serializable]
     public static class FrostbiteTimeSubset {
 
-        public static TimeSubset Parse(List<string> words) {
-            TimeSubset timeSubset = new TimeSubset {
+        public static TimeSubsetModel Parse(List<string> words) {
+            TimeSubsetModel timeSubset = new TimeSubsetModel {
                 Context = TimeSubsetContext.None
             };
 

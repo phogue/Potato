@@ -7,18 +7,18 @@ namespace Myrcon.Protocols.Frostbite.Objects {
     [Serializable]
     public static class FrostbiteSpawn {
 
-        public static Spawn Parse(List<string> words) {
+        public static SpawnModel Parse(List<string> words) {
             // <soldier name: string> <kit: string> <weapons: 3 x string> <gadgets: 3 x string>
-            return new Spawn {
-                Player = new Player() {
+            return new SpawnModel {
+                Player = new PlayerModel() {
                     Name = words[0]
                 },
-                Role = new Role() {
+                Role = new RoleModel() {
                     Name = words[1]
                 },
-                Inventory = new Inventory() {
+                Inventory = new InventoryModel() {
                     Now = {
-                        Items = new List<Item>(words.GetRange(2, words.Count - 2).Select(x => new Item() {
+                        Items = new List<ItemModel>(words.GetRange(2, words.Count - 2).Select(x => new ItemModel() {
                             Name = x
                         }))
                     }

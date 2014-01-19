@@ -10,37 +10,37 @@ namespace Procon.Net.Shared {
         /// <summary>
         /// All current information about each player in the server
         /// </summary>
-        List<Player> Players { get; set; }
+        List<PlayerModel> Players { get; set; }
 
         /// <summary>
         /// The current maplist
         /// </summary>
-        List<Map> Maps { get; set; }
+        List<MapModel> Maps { get; set; }
 
         /// <summary>
         /// The current banlist
         /// </summary>
-        List<Ban> Bans { get; set; }
+        List<BanModel> Bans { get; set; }
 
         /// <summary>
         /// List of available maps for this game
         /// </summary>
-        List<Map> MapPool { get; set; }
+        List<MapModel> MapPool { get; set; }
 
         /// <summary>
         /// List of available game modes for this game.
         /// </summary>
-        List<GameMode> GameModePool { get; set; }
+        List<GameModeModel> GameModePool { get; set; }
 
         /// <summary>
         /// List of potential groups available 
         /// </summary>
-        List<Grouping> Groupings { get; set; }
+        List<GroupingModel> Groupings { get; set; }
 
         /// <summary>
         /// List of potential items available in this game.
         /// </summary>
-        List<Item> Items { get; set; }
+        List<ItemModel> Items { get; set; }
 
         /// <summary>
         /// Various settings that are sent by the server.

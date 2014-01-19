@@ -10,7 +10,7 @@ namespace Procon.Net.Shared.Test.Models {
         /// </summary>
         [Test]
         public void TestPointZeroed() {
-            Point3D point = new Point3D();
+            Point3dModel point = new Point3dModel();
 
             Assert.AreEqual(0, point.X);
             Assert.AreEqual(0, point.Y);
@@ -22,7 +22,7 @@ namespace Procon.Net.Shared.Test.Models {
         /// </summary>
         [Test]
         public void TestPointParsed() {
-            Point3D point = new Point3D("1", "2", "3");
+            Point3dModel point = new Point3dModel("1", "2", "3");
 
             Assert.AreEqual(1, point.X);
             Assert.AreEqual(2, point.Y);

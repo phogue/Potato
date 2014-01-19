@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace Procon.Net.Shared.Models {
 
     [Serializable]
-    public sealed class GameMode : NetworkModel {
+    public sealed class GameModeModel : NetworkModel {
 
         /// <summary>
         /// This game mode's name as it is used via Rcon.
@@ -24,9 +24,9 @@ namespace Procon.Net.Shared.Models {
         /// <summary>
         /// List of groups to default a player to when moving them and such.
         /// </summary>
-        public List<Grouping> DefaultGroups { get; set; }
+        public List<GroupingModel> DefaultGroups { get; set; }
 
-        public GameMode() {
+        public GameModeModel() {
             this.Name = String.Empty;
             this.FriendlyName = String.Empty;
             this.TeamCount = 0;

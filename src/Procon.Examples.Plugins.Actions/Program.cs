@@ -39,8 +39,8 @@ namespace Procon.Examples.Plugins.Actions {
             CommandResult result = this.Action(new NetworkAction() {
                 ActionType = NetworkActionType.NetworkPlayerKick,
                 Scope = {
-                    Players = new List<Player>() {
-                        new Player() {
+                    Players = new List<PlayerModel>() {
+                        new PlayerModel() {
                             Uid = "EA_12345",
                             Name = "Phogue"
                         }
@@ -84,8 +84,8 @@ namespace Procon.Examples.Plugins.Actions {
                 Action = new NetworkAction() {
                     ActionType = NetworkActionType.NetworkPlayerKick,
                     Scope = {
-                        Players = new List<Player>() {
-                            new Player() {
+                        Players = new List<PlayerModel>() {
+                            new PlayerModel() {
                                 Uid = "EA_12345",
                                 Name = "Phogue"
                             }

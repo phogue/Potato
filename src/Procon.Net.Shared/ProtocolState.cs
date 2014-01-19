@@ -9,19 +9,19 @@ namespace Procon.Net.Shared {
     /// </summary>
     [Serializable]
     public sealed class ProtocolState : IProtocolState {
-        public List<Player> Players { get; set; }
+        public List<PlayerModel> Players { get; set; }
 
-        public List<Map> Maps { get; set; }
+        public List<MapModel> Maps { get; set; }
 
-        public List<Ban> Bans { get; set; }
+        public List<BanModel> Bans { get; set; }
 
-        public List<Map> MapPool { get; set; }
+        public List<MapModel> MapPool { get; set; }
 
-        public List<GameMode> GameModePool { get; set; }
+        public List<GameModeModel> GameModePool { get; set; }
 
-        public List<Grouping> Groupings { get; set; }
+        public List<GroupingModel> Groupings { get; set; }
 
-        public List<Item> Items { get; set; } 
+        public List<ItemModel> Items { get; set; } 
 
         public Settings Settings { get; set; }
 
@@ -31,14 +31,14 @@ namespace Procon.Net.Shared {
         /// Initializes the gamestate with the default values.
         /// </summary>
         public ProtocolState() {
-            this.Players = new List<Player>();
-            this.Maps = new List<Map>();
-            this.Bans = new List<Ban>();
+            this.Players = new List<PlayerModel>();
+            this.Maps = new List<MapModel>();
+            this.Bans = new List<BanModel>();
 
-            this.MapPool = new List<Map>();
-            this.GameModePool = new List<GameMode>();
-            this.Groupings = new List<Grouping>();
-            this.Items = new List<Item>();
+            this.MapPool = new List<MapModel>();
+            this.GameModePool = new List<GameModeModel>();
+            this.Groupings = new List<GroupingModel>();
+            this.Items = new List<ItemModel>();
 
             this.Settings = new Settings();
 

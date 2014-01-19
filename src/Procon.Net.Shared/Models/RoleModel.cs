@@ -2,11 +2,11 @@
 
 namespace Procon.Net.Shared.Models {
     [Serializable]
-    public sealed class Role : NetworkModel {
+    public sealed class RoleModel : NetworkModel {
 
         public String Name { get; set; }
 
-        public Role() : base() {
+        public RoleModel() : base() {
             this.Name = String.Empty;
         }
     }

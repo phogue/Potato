@@ -9,13 +9,13 @@ namespace Procon.Examples.Plugins.TextCommands.Test {
     public class MockGame : Protocol {
         public MockGame(string hostName, ushort port) : base(hostName, port) {
             
-            this.State.Players.AddRange(new List<Player>() {
-                new Player() {
+            this.State.Players.AddRange(new List<PlayerModel>() {
+                new PlayerModel() {
                     Name = "Phogue",
                     Uid = "EA_1",
                     Score = 50
                 },
-                new Player() {
+                new PlayerModel() {
                     Name = "Zaeed",
                     Uid = "EA_2",
                     Score = 0

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Xml.Serialization;
 using Newtonsoft.Json;
 
 namespace Procon.Net.Shared.Models {
@@ -9,7 +8,7 @@ namespace Procon.Net.Shared.Models {
         /// <summary>
         /// List of players that have an effect with this action.
         /// </summary>
-        public List<Player> Players { get; set; }
+        public List<PlayerModel> Players { get; set; }
 
         /// <summary>
         /// A list of strings attached to this network action. A reason associated with the action.
@@ -20,27 +19,27 @@ namespace Procon.Net.Shared.Models {
         /// <summary>
         /// The groups attached to this action.
         /// </summary>
-        public List<Grouping> Groups { get; set; }
+        public List<GroupingModel> Groups { get; set; }
 
         /// <summary>
         /// The list of points (3d) attached to this action, if any.
         /// </summary>
-        public List<Point3D> Points { get; set; }
+        public List<Point3dModel> Points { get; set; }
 
         /// <summary>
         /// List of items attached to this action, if any.
         /// </summary>
-        public List<Item> Items { get; set; }
+        public List<ItemModel> Items { get; set; }
 
         /// <summary>
         /// List of maps attached to this action, if any.
         /// </summary>
-        public List<Map> Maps { get; set; }
+        public List<MapModel> Maps { get; set; }
 
         /// <summary>
         /// List of time subsets attached to this action, if any.
         /// </summary>
-        public List<TimeSubset> Times { get; set; }
+        public List<TimeSubsetModel> Times { get; set; }
 
         /// <summary>
         /// List of human hit location attached to this data, if any.

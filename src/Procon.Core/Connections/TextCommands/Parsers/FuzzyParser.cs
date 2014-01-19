@@ -43,7 +43,7 @@ namespace Procon.Core.Connections.TextCommands.Parsers {
             .Where(@t => @t.Similarity >= 60)
             .Select(@t => new ThingObjectToken() {
                 Reference = new MapThingReference() {
-                    Maps = new List<Map>() {
+                    Maps = new List<MapModel>() {
                         @t.map
                     }
                 },
@@ -70,7 +70,7 @@ namespace Procon.Core.Connections.TextCommands.Parsers {
             .Where(@t => @t.Similarity >= this.MinimumSimilarity(55, 70, maximumNameLength, @t.player.Name.Length))
             .Select(@t => new ThingObjectToken() {
                 Reference = new PlayerThingReference() {
-                    Players = new List<Player>() {
+                    Players = new List<PlayerModel>() {
                         @t.player
                     }
                 },
@@ -141,12 +141,12 @@ namespace Procon.Core.Connections.TextCommands.Parsers {
                 if (thing != null) {
                     if (thing.Name == "Players") {
                         thing.Reference = new PlayerThingReference() {
-                            Players = new List<Player>(this.Connection.ProtocolState.Players)
+                            Players = new List<PlayerModel>(this.Connection.ProtocolState.Players)
                         };
                     }
                     else if (thing.Name == "Maps") {
                         thing.Reference = new MapThingReference() {
-                            Maps = new List<Map>(this.Connection.ProtocolState.MapPool)
+                            Maps = new List<MapModel>(this.Connection.ProtocolState.MapPool)
                         };
                     }
                 }
@@ -220,7 +220,7 @@ namespace Procon.Core.Connections.TextCommands.Parsers {
         public SelfReflectionThingObjectToken ParseSelfReflectionThing(IFuzzyState state, SelfReflectionThingObjectToken selfThing) {
             if (this.SpeakerPlayer != null) {
                 selfThing.Reference = new PlayerThingReference() {
-                    Players = new List<Player>() {
+                    Players = new List<PlayerModel>() {
                         this.SpeakerPlayer
                     }
                 };
@@ -322,7 +322,7 @@ namespace Procon.Core.Connections.TextCommands.Parsers {
                     Success = true,
                     Status = CommandResultType.Success,
                     Now = new CommandData() {
-                        Players = new List<Player>() {
+                        Players = new List<PlayerModel>() {
                             this.SpeakerPlayer
                         },
                         TextCommands = new List<TextCommandModel>() {

@@ -6,7 +6,7 @@ namespace Procon.Net.Shared.Models {
     /// A three dimensional location of a player/object.
     /// </summary>
     [Serializable]
-    public sealed class Point3D : NetworkModel {
+    public sealed class Point3dModel : NetworkModel {
 
         /// <summary>
         /// X coordinate of the player or object
@@ -23,11 +23,11 @@ namespace Procon.Net.Shared.Models {
         /// </summary>
         public float Z { get; set; }
 
-        public Point3D() : base() {
+        public Point3dModel() : base() {
 
         }
 
-        public Point3D(String x, String y, String z) : base() {
+        public Point3dModel(String x, String y, String z) : base() {
             float iX = 0, iY = 0, iZ = 0;
 
             float.TryParse(x, out iX);

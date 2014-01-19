@@ -160,7 +160,7 @@ namespace Myrcon.Plugins.Test {
                     Action = new NetworkAction() {
                         ActionType = NetworkActionType.NetworkPlayerKill,
                         Scope = {
-                            Players = new List<Player>(match.Players),
+                            Players = new List<PlayerModel>(match.Players),
                                 Content = new List<String>() {
                                 "Testing"
                             }

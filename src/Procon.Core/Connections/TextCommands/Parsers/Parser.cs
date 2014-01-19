@@ -24,7 +24,7 @@ namespace Procon.Core.Connections.TextCommands.Parsers {
         /// The player (in game) that is currently talking or attached to the account
         /// that has initiated the action via command.
         /// </summary>
-        public Player SpeakerPlayer { get; set; }
+        public PlayerModel SpeakerPlayer { get; set; }
 
         /// <summary>
         /// The account of the player that has talked in game or initiated the action via command.

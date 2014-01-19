@@ -31,67 +31,67 @@ namespace Procon.Net.Shared.Test.TestSerialization.TestJson {
         public void TestSingleDepthPopulationSerialization() {
             var original = new ProtocolEventArgs() {
                 Now = {
-                    Bans = new List<Ban>() {
-                        new Ban()
+                    Bans = new List<BanModel>() {
+                        new BanModel()
                     },
-                    Chats = new List<Chat>() {
-                        new Chat()
+                    Chats = new List<ChatModel>() {
+                        new ChatModel()
                     },
-                    Items = new List<Item>() {
-                        new Item()
+                    Items = new List<ItemModel>() {
+                        new ItemModel()
                     },
-                    Kicks = new List<Kick>() {
-                        new Kick()
+                    Kicks = new List<KickModel>() {
+                        new KickModel()
                     },
-                    Kills = new List<Kill>() {
-                        new Kill()
+                    Kills = new List<KillModel>() {
+                        new KillModel()
                     },
-                    Moves = new List<Move>() {
-                        new Move()
+                    Moves = new List<MoveModel>() {
+                        new MoveModel()
                     },
-                    Players = new List<Player>() {
-                        new Player()
+                    Players = new List<PlayerModel>() {
+                        new PlayerModel()
                     },
-                    Points = new List<Point3D>() {
-                        new Point3D()
+                    Points = new List<Point3dModel>() {
+                        new Point3dModel()
                     },
                     Settings = new List<Settings>() {
                         new Settings()
                     },
-                    Spawns = new List<Spawn>() {
-                        new Spawn()
+                    Spawns = new List<SpawnModel>() {
+                        new SpawnModel()
                     }
                 },
                 Then = {
-                    Bans = new List<Ban>() {
-                        new Ban()
+                    Bans = new List<BanModel>() {
+                        new BanModel()
                     },
-                    Chats = new List<Chat>() {
-                        new Chat()
+                    Chats = new List<ChatModel>() {
+                        new ChatModel()
                     },
-                    Items = new List<Item>() {
-                        new Item()
+                    Items = new List<ItemModel>() {
+                        new ItemModel()
                     },
-                    Kicks = new List<Kick>() {
-                        new Kick()
+                    Kicks = new List<KickModel>() {
+                        new KickModel()
                     },
-                    Kills = new List<Kill>() {
-                        new Kill()
+                    Kills = new List<KillModel>() {
+                        new KillModel()
                     },
-                    Moves = new List<Move>() {
-                        new Move()
+                    Moves = new List<MoveModel>() {
+                        new MoveModel()
                     },
-                    Players = new List<Player>() {
-                        new Player()
+                    Players = new List<PlayerModel>() {
+                        new PlayerModel()
                     },
-                    Points = new List<Point3D>() {
-                        new Point3D()
+                    Points = new List<Point3dModel>() {
+                        new Point3dModel()
                     },
                     Settings = new List<Settings>() {
                         new Settings()
                     },
-                    Spawns = new List<Spawn>() {
-                        new Spawn()
+                    Spawns = new List<SpawnModel>() {
+                        new SpawnModel()
                     }
                 },
                 ProtocolEventType = ProtocolEventType.ProtocolBanlistUpdated,

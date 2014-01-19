@@ -37,10 +37,10 @@ namespace Procon.Examples.Plugins.Events {
 
             // See Procon.Net.GameEventType enum for descriptions of each possible event.
             if (e.ProtocolEventType == ProtocolEventType.ProtocolChat) {
-                Chat chat = e.Now.Chats.First();
+                ChatModel chat = e.Now.Chats.First();
 
                 String text = chat.Now.Content.First();
-                Player talker = chat.Now.Players.First();
+                PlayerModel talker = chat.Now.Players.First();
 
                 Console.WriteLine("Program.GameEvent.GameChat: {0} said \"{1}\"", talker.Name, text);
             }

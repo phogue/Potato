@@ -30,13 +30,13 @@ namespace Procon.Net {
         /// <returns></returns>
         public static T Populate<T>(T config) where T : ProtocolConfigModel {
             if (config.GameModes != null && config.Groupings != null) {
-                foreach (GameMode mode in config.GameModes) {
+                foreach (GameModeModel mode in config.GameModes) {
                     mode.DefaultGroups = config.Groupings.Where(known => mode.DefaultGroups.Any(group => group.Uid == known.Uid && group.Type == known.Type)).ToList();
                 }
             }
 
             if (config.MapPool != null && config.GameModes != null) {
-                foreach (Map map in config.MapPool) {
+                foreach (MapModel map in config.MapPool) {
                     map.GameMode = config.GameModes.FirstOrDefault(known => known.Name == map.GameMode.Name);
                 }
             }

@@ -34,16 +34,16 @@ namespace Procon.Core.Shared {
             typeof (PackageWrapperModel),
             typeof (PluginModel),
             typeof (NetworkAction),
-            typeof (Raw),
-            typeof (Chat),
-            typeof (Player),
-            typeof (Kill),
-            typeof (Move),
-            typeof (Spawn),
-            typeof (Kick),
-            typeof (Ban),
+            typeof (RawModel),
+            typeof (ChatModel),
+            typeof (PlayerModel),
+            typeof (KillModel),
+            typeof (MoveModel),
+            typeof (SpawnModel),
+            typeof (KickModel),
+            typeof (BanModel),
             typeof (Settings),
-            typeof (Map),
+            typeof (MapModel),
             typeof (CommandResult),
             typeof (IDatabaseObject),
             typeof (IPacket)
@@ -114,34 +114,34 @@ namespace Procon.Core.Shared {
             else if (t == typeof(NetworkAction) && this.Data.NetworkActions != null) {
                 all = this.Data.NetworkActions.Cast<Object>().ToList();
             }
-            else if (t == typeof(Raw) && this.Data.Raws != null) {
+            else if (t == typeof(RawModel) && this.Data.Raws != null) {
                 all = this.Data.Raws.Cast<Object>().ToList();
             }
-            else if (t == typeof(Chat) && this.Data.Chats != null) {
+            else if (t == typeof(ChatModel) && this.Data.Chats != null) {
                 all = this.Data.Chats.Cast<Object>().ToList();
             }
-            else if (t == typeof(Player) && this.Data.Players != null) {
+            else if (t == typeof(PlayerModel) && this.Data.Players != null) {
                 all = this.Data.Players.Cast<Object>().ToList();
             }
-            else if (t == typeof(Kill) && this.Data.Kills != null) {
+            else if (t == typeof(KillModel) && this.Data.Kills != null) {
                 all = this.Data.Kills.Cast<Object>().ToList();
             }
-            else if (t == typeof(Move) && this.Data.Moves != null) {
+            else if (t == typeof(MoveModel) && this.Data.Moves != null) {
                 all = this.Data.Moves.Cast<Object>().ToList();
             }
-            else if (t == typeof(Spawn) && this.Data.Spawns != null) {
+            else if (t == typeof(SpawnModel) && this.Data.Spawns != null) {
                 all = this.Data.Spawns.Cast<Object>().ToList();
             }
-            else if (t == typeof(Kick) && this.Data.Kicks != null) {
+            else if (t == typeof(KickModel) && this.Data.Kicks != null) {
                 all = this.Data.Kicks.Cast<Object>().ToList();
             }
-            else if (t == typeof(Ban) && this.Data.Bans != null) {
+            else if (t == typeof(BanModel) && this.Data.Bans != null) {
                 all = this.Data.Bans.Cast<Object>().ToList();
             }
             else if (t == typeof(Settings) && this.Data.Settings != null) {
                 all = this.Data.Settings.Cast<Object>().ToList();
             }
-            else if (t == typeof(Map) && this.Data.Maps != null) {
+            else if (t == typeof(MapModel) && this.Data.Maps != null) {
                 all = this.Data.Maps.Cast<Object>().ToList();
             }
             else if (t == typeof(CommandResult) && this.Data.CommandResults != null) {

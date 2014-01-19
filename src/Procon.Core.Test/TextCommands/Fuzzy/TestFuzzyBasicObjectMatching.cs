@@ -32,23 +32,23 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
 
         [Test]
         public void TestBasicAlternateKickPhogueCommandSmallTypo() {
-            AssertCommandPlayerListMapList(CreateTextCommandController(), "get rdi of phogue", TextCommandKick, new List<Player>() {
+            AssertCommandPlayerListMapList(CreateTextCommandController(), "get rdi of phogue", TextCommandKick, new List<PlayerModel>() {
                 PlayerPhogue
-            }, new List<Map>());
+            }, new List<MapModel>());
         }
 
         [Test]
         public void TestBasicKickDiacritic() {
-            AssertCommandPlayerListMapList(CreateTextCommandController(), "kick MrDiacritic", TextCommandKick, new List<Player>() {
+            AssertCommandPlayerListMapList(CreateTextCommandController(), "kick MrDiacritic", TextCommandKick, new List<PlayerModel>() {
                 PlayerMrDiacritic
-            }, new List<Map>());
+            }, new List<MapModel>());
         }
 
         [Test]
         public void TestBasicKickPhogue() {
-            AssertCommandPlayerListMapList(CreateTextCommandController(), "kick phogue", TextCommandKick, new List<Player>() {
+            AssertCommandPlayerListMapList(CreateTextCommandController(), "kick phogue", TextCommandKick, new List<PlayerModel>() {
                 PlayerPhogue
-            }, new List<Map>());
+            }, new List<MapModel>());
         }
 
         [Test]
@@ -91,23 +91,23 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
 
         [Test]
         public void TestBasicKickPhogueNameTypo() {
-            AssertCommandPlayerListMapList(CreateTextCommandController(), "kick phouge", TextCommandKick, new List<Player>() {
+            AssertCommandPlayerListMapList(CreateTextCommandController(), "kick phouge", TextCommandKick, new List<PlayerModel>() {
                 PlayerPhogue
-            }, new List<Map>());
+            }, new List<MapModel>());
         }
 
         [Test]
         public void TestBasicKickSelf() {
-            AssertCommandPlayerListMapList(CreateTextCommandController(), "kick me", TextCommandKick, new List<Player>() {
+            AssertCommandPlayerListMapList(CreateTextCommandController(), "kick me", TextCommandKick, new List<PlayerModel>() {
                 PlayerPhogue
-            }, new List<Map>());
+            }, new List<MapModel>());
         }
 
         [Test]
         public void TestKickPhogueButNotPhogueIsAButterflyWithHighSimilarity() {
-            AssertCommandPlayerListMapList(CreateTextCommandController(), "kick phogue is perhaps not a butterfly", TextCommandKick, new List<Player>() {
+            AssertCommandPlayerListMapList(CreateTextCommandController(), "kick phogue is perhaps not a butterfly", TextCommandKick, new List<PlayerModel>() {
                 PlayerPhogue
-            }, new List<Map>());
+            }, new List<MapModel>());
         }
 
         /// <summary>
@@ -115,47 +115,47 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
         /// </summary>
         [Test]
         public void TestKickPhogueCommaMorpheus() {
-            AssertCommandPlayerListMapList(CreateTextCommandController(), "kick phogue, morpheus(aut)", TextCommandKick, new List<Player>() {
+            AssertCommandPlayerListMapList(CreateTextCommandController(), "kick phogue, morpheus(aut)", TextCommandKick, new List<PlayerModel>() {
                 PlayerPhogue,
                 PlayerMorpheus
-            }, new List<Map>());
+            }, new List<MapModel>());
         }
 
         [Test]
         public void TestKickPhogueIsAButterfly() {
-            AssertCommandPlayerListMapList(CreateTextCommandController(), "kick phogue is a butterfly", TextCommandKick, new List<Player>() {
+            AssertCommandPlayerListMapList(CreateTextCommandController(), "kick phogue is a butterfly", TextCommandKick, new List<PlayerModel>() {
                 PlayerPhogueIsAButterfly
-            }, new List<Map>());
+            }, new List<MapModel>());
         }
 
         [Test]
         public void TestKickPhogueIsAButterflySmallTypo() {
-            AssertCommandPlayerListMapList(CreateTextCommandController(), "kick phogue is a buttrfly", TextCommandKick, new List<Player>() {
+            AssertCommandPlayerListMapList(CreateTextCommandController(), "kick phogue is a buttrfly", TextCommandKick, new List<PlayerModel>() {
                 PlayerPhogueIsAButterfly
-            }, new List<Map>());
+            }, new List<MapModel>());
         }
 
         [Test]
         public void TestKickPhogueMorpheusSevereTypo() {
-            AssertCommandPlayerListMapList(CreateTextCommandController(), "kick phage, marphius aut", TextCommandKick, new List<Player>() {
+            AssertCommandPlayerListMapList(CreateTextCommandController(), "kick phage, marphius aut", TextCommandKick, new List<PlayerModel>() {
                 PlayerPhogue,
                 PlayerMorpheus
-            }, new List<Map>());
+            }, new List<MapModel>());
         }
 
         [Test]
         public void TestKickPhogueMorpheusTruncated() {
-            AssertCommandPlayerListMapList(CreateTextCommandController(), "kick pho, morph", TextCommandKick, new List<Player>() {
+            AssertCommandPlayerListMapList(CreateTextCommandController(), "kick pho, morph", TextCommandKick, new List<PlayerModel>() {
                 PlayerPhogue,
                 PlayerMorpheus
-            }, new List<Map>());
+            }, new List<MapModel>());
         }
 
         [Test]
         public void TestKickSplitNameDoubleSubsetMatch() {
-            AssertCommandPlayerListMapList(CreateTextCommandController(), "kick say nish", TextCommandKick, new List<Player>() {
+            AssertCommandPlayerListMapList(CreateTextCommandController(), "kick say nish", TextCommandKick, new List<PlayerModel>() {
                 PlayerSayaNishino
-            }, new List<Map>());
+            }, new List<MapModel>());
         }
     }
 }

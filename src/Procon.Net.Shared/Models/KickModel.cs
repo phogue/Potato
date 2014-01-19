@@ -3,12 +3,12 @@ using System.Collections.Generic;
 
 namespace Procon.Net.Shared.Models {
     [Serializable]
-    public sealed class Kick : NetworkModel {
+    public sealed class KickModel : NetworkModel {
 
-        public Kick() : base() {
+        public KickModel() : base() {
             // Target
             this.Scope.Content = new List<String>();
-            this.Scope.Players = new List<Player>();
+            this.Scope.Players = new List<PlayerModel>();
         }
     }
 }

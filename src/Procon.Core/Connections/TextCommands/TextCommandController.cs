@@ -104,7 +104,7 @@ namespace Procon.Core.Connections.TextCommands {
         /// <param name="speaker">The player executing the command</param>
         /// <param name="speakerAccount">The account executing the command</param>
         /// <returns>The fuzzy parser, provided a language could be found.</returns>
-        protected ITextCommandParser BuildFuzzyParser(Player speaker, AccountModel speakerAccount) {
+        protected ITextCommandParser BuildFuzzyParser(PlayerModel speaker, AccountModel speakerAccount) {
             LanguageConfig selectedLanguage = null;
 
             if (speakerAccount != null && speakerAccount.PreferredLanguageCode != String.Empty) {
@@ -129,7 +129,7 @@ namespace Procon.Core.Connections.TextCommands {
         /// <param name="speaker">The player executing the command</param>
         /// <param name="speakerAccount">The account executing the command</param>
         /// <returns>The route parser, provided a language could be found.</returns>
-        protected ITextCommandParser BuildRouteParser(Player speaker, AccountModel speakerAccount) {
+        protected ITextCommandParser BuildRouteParser(PlayerModel speaker, AccountModel speakerAccount) {
             return new RouteParser() {
                 Connection = this.Connection,
                 TextCommands = this.TextCommands.Where(textCommand => textCommand.Parser == TextCommandParserType.Any || textCommand.Parser == TextCommandParserType.Route).ToList(),
@@ -151,7 +151,7 @@ namespace Procon.Core.Connections.TextCommands {
         /// <param name="prefix"></param>
         /// <param name="text"></param>
         /// <returns>The generated event, if any.</returns>
-        protected CommandResult Parse(Player speakerNetworkPlayer, AccountModel speakerAccount, String prefix, String text) {
+        protected CommandResult Parse(PlayerModel speakerNetworkPlayer, AccountModel speakerAccount, String prefix, String text) {
             List<ITextCommandParser> parsers = new List<ITextCommandParser>() {
                 this.BuildFuzzyParser(speakerNetworkPlayer, speakerAccount),
                 this.BuildRouteParser(speakerNetworkPlayer, speakerAccount)
@@ -172,8 +172,8 @@ namespace Procon.Core.Connections.TextCommands {
         /// <param name="command"></param>
         /// <param name="speaker"></param>
         /// <returns></returns>
-        protected Player GetAccountNetworkPlayer(Command command, AccountModel speaker) {
-            Player player = this.Connection.ProtocolState.Players.FirstOrDefault(x => x.Uid == command.Uid);
+        protected PlayerModel GetAccountNetworkPlayer(Command command, AccountModel speaker) {
+            PlayerModel player = this.Connection.ProtocolState.Players.FirstOrDefault(x => x.Uid == command.Uid);
 
             if (speaker != null) {
                 AccountPlayerModel accountPlayer = speaker.Players.FirstOrDefault(p => p.GameType == this.Connection.ConnectionModel.ProtocolType.Type);

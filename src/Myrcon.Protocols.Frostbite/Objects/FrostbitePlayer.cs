@@ -7,8 +7,8 @@ namespace Myrcon.Protocols.Frostbite.Objects {
 
     public static class FrostbitePlayer {
         
-        public static Player Parse(IList<String> parameters, IList<String> variables) {
-            Player player = new Player();
+        public static PlayerModel Parse(IList<String> parameters, IList<String> variables) {
+            PlayerModel player = new PlayerModel();
 
             // Make sure the parameter's passed in are correct.
             if (parameters.Count == variables.Count) {
@@ -27,16 +27,16 @@ namespace Myrcon.Protocols.Frostbite.Objects {
                             break;
                         case "teamid":
                             if (int.TryParse(variables[i], out intValue)) {
-                                player.Groups.Add(new Grouping() {
-                                    Type = Grouping.Team,
+                                player.Groups.Add(new GroupingModel() {
+                                    Type = GroupingModel.Team,
                                     Uid = intValue.ToString(CultureInfo.InvariantCulture)
                                 });
                             }
                             break;
                         case "squadid":
                             if (int.TryParse(variables[i], out intValue)) {
-                                player.Groups.Add(new Grouping() {
-                                    Type = Grouping.Squad,
+                                player.Groups.Add(new GroupingModel() {
+                                    Type = GroupingModel.Squad,
                                     Uid = intValue.ToString(CultureInfo.InvariantCulture)
                                 });
                             }

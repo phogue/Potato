@@ -11,37 +11,37 @@ namespace Procon.Net.Shared {
         /// <summary>
         /// The chats attached to this event, if any.
         /// </summary>
-        public List<Chat> Chats { get; set; }
+        public List<ChatModel> Chats { get; set; }
 
         /// <summary>
         /// The players attached to this event, if any.
         /// </summary>
-        public List<Player> Players { get; set; }
+        public List<PlayerModel> Players { get; set; }
 
         /// <summary>
         /// The kills attached to this event, if any.
         /// </summary>
-        public List<Kill> Kills { get; set; }
+        public List<KillModel> Kills { get; set; }
 
         /// <summary>
         /// The moves attached to this event, if any.
         /// </summary>
-        public List<Move> Moves { get; set; }
+        public List<MoveModel> Moves { get; set; }
 
         /// <summary>
         /// The spawns attached to this event, if any.
         /// </summary>
-        public List<Spawn> Spawns { get; set; }
+        public List<SpawnModel> Spawns { get; set; }
 
         /// <summary>
         /// The kicks attached to this event, if any.
         /// </summary>
-        public List<Kick> Kicks { get; set; }
+        public List<KickModel> Kicks { get; set; }
 
         /// <summary>
         /// The bans attached to this event, if any.
         /// </summary>
-        public List<Ban> Bans { get; set; }
+        public List<BanModel> Bans { get; set; }
 
         /// <summary>
         /// The settings attached to this event, if any.
@@ -51,11 +51,11 @@ namespace Procon.Net.Shared {
         /// <summary>
         /// The list of points (3d) attached to this event, if any.
         /// </summary>
-        public List<Point3D> Points { get; set; }
+        public List<Point3dModel> Points { get; set; }
 
         /// <summary>
         /// List of items attached to this event, if any.
         /// </summary>
-        public List<Item> Items { get; set; }
+        public List<ItemModel> Items { get; set; }
     }
 }

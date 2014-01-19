@@ -86,7 +86,7 @@ namespace Myrcon.Plugins.Test.Tests {
             String name = parameters["name"].First<String>();
             int score = parameters["score"].First<int>();
 
-            Player player = new Player() {
+            PlayerModel player = new PlayerModel() {
                 Name = name,
                 Score = score
             };

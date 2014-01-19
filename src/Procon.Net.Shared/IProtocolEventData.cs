@@ -9,37 +9,37 @@ namespace Procon.Net.Shared {
         /// <summary>
         /// The chats attached to this event, if any.
         /// </summary>
-        List<Chat> Chats { get; set; }
+        List<ChatModel> Chats { get; set; }
 
         /// <summary>
         /// The players attached to this event, if any.
         /// </summary>
-        List<Player> Players { get; set; }
+        List<PlayerModel> Players { get; set; }
 
         /// <summary>
         /// The kills attached to this event, if any.
         /// </summary>
-        List<Kill> Kills { get; set; }
+        List<KillModel> Kills { get; set; }
 
         /// <summary>
         /// The moves attached to this event, if any.
         /// </summary>
-        List<Move> Moves { get; set; }
+        List<MoveModel> Moves { get; set; }
 
         /// <summary>
         /// The spawns attached to this event, if any.
         /// </summary>
-        List<Spawn> Spawns { get; set; }
+        List<SpawnModel> Spawns { get; set; }
 
         /// <summary>
         /// The kicks attached to this event, if any.
         /// </summary>
-        List<Kick> Kicks { get; set; }
+        List<KickModel> Kicks { get; set; }
 
         /// <summary>
         /// The bans attached to this event, if any.
         /// </summary>
-        List<Ban> Bans { get; set; }
+        List<BanModel> Bans { get; set; }
 
         /// <summary>
         /// The settings attached to this event, if any.
@@ -49,11 +49,11 @@ namespace Procon.Net.Shared {
         /// <summary>
         /// The list of points (3d) attached to this event, if any.
         /// </summary>
-        List<Point3D> Points { get; set; }
+        List<Point3dModel> Points { get; set; }
 
         /// <summary>
         /// List of items attached to this event, if any.
         /// </summary>
-        List<Item> Items { get; set; }
+        List<ItemModel> Items { get; set; }
     }
 }

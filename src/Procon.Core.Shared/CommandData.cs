@@ -100,37 +100,37 @@ namespace Procon.Core.Shared {
         /// <summary>
         /// The chats attached to this event, if any.
         /// </summary>
-        public List<Chat> Chats { get; set; }
+        public List<ChatModel> Chats { get; set; }
 
         /// <summary>
         /// The players attached to this event, if any.
         /// </summary>
-        public List<Player> Players { get; set; }
+        public List<PlayerModel> Players { get; set; }
 
         /// <summary>
         /// The kills attached to this event, if any.
         /// </summary>
-        public List<Kill> Kills { get; set; }
+        public List<KillModel> Kills { get; set; }
 
         /// <summary>
         /// The moves attached to this event, if any.
         /// </summary>
-        public List<Move> Moves { get; set; }
+        public List<MoveModel> Moves { get; set; }
 
         /// <summary>
         /// The spawns attached to this event, if any.
         /// </summary>
-        public List<Spawn> Spawns { get; set; }
+        public List<SpawnModel> Spawns { get; set; }
 
         /// <summary>
         /// The kicks attached to this event, if any.
         /// </summary>
-        public List<Kick> Kicks { get; set; }
+        public List<KickModel> Kicks { get; set; }
 
         /// <summary>
         /// The bans attached to this event, if any.
         /// </summary>
-        public List<Ban> Bans { get; set; }
+        public List<BanModel> Bans { get; set; }
 
         /// <summary>
         /// The settings attached to this event, if any. If any, if any. If any. Hai Ike.
@@ -140,7 +140,7 @@ namespace Procon.Core.Shared {
         /// <summary>
         /// The maps attached to this event, if any.
         /// </summary>
-        public List<Map> Maps { get; set; }
+        public List<MapModel> Maps { get; set; }
 
         /// <summary>
         /// The command results attached to this event, if any.
@@ -151,7 +151,7 @@ namespace Procon.Core.Shared {
         /// Raw packets (in plain or completed format) 
         /// </summary>
         [JsonIgnore]
-        public List<Raw> Raws { get; set; }
+        public List<RawModel> Raws { get; set; }
 
         /// <summary>
         /// The raw packets attached to this command or event, if any.

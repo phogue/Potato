@@ -282,7 +282,7 @@ namespace Procon.Core.Connections {
                         }
                     },
                     Now = new CommandData() {
-                        Players = new List<Player>(this.Protocol.State.Players)
+                        Players = new List<PlayerModel>(this.Protocol.State.Players)
                     }
                 };
             }
@@ -332,7 +332,7 @@ namespace Procon.Core.Connections {
                         }
                     },
                     Now = new CommandData() {
-                        Bans = new List<Ban>(this.Protocol.State.Bans)
+                        Bans = new List<BanModel>(this.Protocol.State.Bans)
                     }
                 };
             }
@@ -356,7 +356,7 @@ namespace Procon.Core.Connections {
                         }
                     },
                     Now = new CommandData() {
-                        Maps = new List<Map>(this.Protocol.State.Maps)
+                        Maps = new List<MapModel>(this.Protocol.State.Maps)
                     }
                 };
             }
@@ -380,7 +380,7 @@ namespace Procon.Core.Connections {
                         }
                     },
                     Now = new CommandData() {
-                        Maps = new List<Map>(this.Protocol.State.MapPool)
+                        Maps = new List<MapModel>(this.Protocol.State.MapPool)
                     }
                 };
             }
@@ -503,7 +503,7 @@ namespace Procon.Core.Connections {
             }
 
             if (e.ProtocolEventType == ProtocolEventType.ProtocolChat) {
-                Chat chat = e.Now.Chats.First();
+                ChatModel chat = e.Now.Chats.First();
 
                 // At least has the first prefix character 
                 // and a little something-something to pass to

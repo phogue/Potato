@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Xml.Linq;
+using Newtonsoft.Json.Linq;
 using Procon.Core.Connections.TextCommands.Parsers.Fuzzy;
 using Procon.Core.Shared;
 using Procon.Core.Shared.Models;
@@ -12,7 +12,6 @@ using Procon.Fuzzy.Tokens.Primitive;
 using Procon.Fuzzy.Tokens.Primitive.Numeric;
 using Procon.Fuzzy.Tokens.Primitive.Temporal;
 using Procon.Fuzzy.Utils;
-using Procon.Net.Shared.Actions;
 using Procon.Net.Shared.Geolocation;
 using Procon.Net.Shared.Models;
 
@@ -25,7 +24,7 @@ namespace Procon.Core.Connections.TextCommands.Parsers {
         /// The document to use for localization purposes. This is a raw format to be used
         /// by Procon.Fuzzy
         /// </summary>
-        public XElement Document { get; set; }
+        public JObject Document { get; set; }
 
         /// <summary>
         /// Dictionary of cached property info fetches. Minor optimization.

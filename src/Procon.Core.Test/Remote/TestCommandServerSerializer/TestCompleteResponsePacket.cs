@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Xml.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
@@ -32,26 +31,6 @@ namespace Procon.Core.Test.Remote.TestCommandServerSerializer {
             Assert.AreEqual("A", array["Now"]["Content"].First().Value<String>());
             Assert.AreEqual(HttpStatusCode.OK, packet.StatusCode);
             Assert.AreEqual(Mime.ApplicationJson, packet.Headers[HttpRequestHeader.ContentType]);
-        }
-
-        /// <summary>
-        /// Tests that the completed xml serialization can be deserialized again.
-        /// </summary>
-        [Test]
-        public void TestSerializeXml() {
-            var packet = CommandServerSerializer.CompleteResponsePacket(Mime.ApplicationXml, new CommandServerPacket(), new CommandResult() {
-                Now = {
-                    Content = new List<String>() {
-                        "A"
-                    }
-                }
-            });
-
-            var array = XDocument.Parse(packet.Content);
-
-            Assert.AreEqual("A", array.Descendants("Content").First().Value);
-            Assert.AreEqual(HttpStatusCode.OK, packet.StatusCode);
-            Assert.AreEqual(Mime.ApplicationXml, packet.Headers[HttpRequestHeader.ContentType]);
         }
 
         /// <summary>

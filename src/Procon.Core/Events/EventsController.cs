@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 using System.Xml.Linq;
+using Newtonsoft.Json;
 using Procon.Core.Shared;
 using Procon.Core.Shared.Events;
 using Procon.Core.Shared.Models;
@@ -129,7 +130,7 @@ namespace Procon.Core.Events {
                 Directory.CreateDirectory(directory);
             }
 
-            return Path.Combine(directory, String.Format("events_{0}_to_{1}.xml", stamp.ToString("HH_00_00"), stamp.AddHours(1.0D).ToString("HH_00_00")));
+            return Path.Combine(directory, String.Format("events_{0}_to_{1}.json", stamp.ToString("HH_00_00"), stamp.AddHours(1.0D).ToString("HH_00_00")));
         }
 
         /// <summary>
@@ -144,29 +145,18 @@ namespace Procon.Core.Events {
                 foreach (var eventHourlyGroup in events.GroupBy(e => new DateTime(e.Stamp.Year, e.Stamp.Month, e.Stamp.Day, e.Stamp.Hour, 0, 0))) {
                     String logFileName = this.EventsLogFileName(eventHourlyGroup.Key);
 
-                    if (File.Exists(logFileName) == false) {
-                        try {
-                            using (XmlTextWriter writer = new XmlTextWriter(logFileName, Encoding.UTF8)) {
-                                writer.WriteStartElement("Events");
-                                writer.WriteEndElement();
-                                writer.Close();
+                    try {
+                        using (TextWriter writer = new StreamWriter(logFileName, true)) {
+                            var serializer = new JsonSerializer {
+                                NullValueHandling = NullValueHandling.Ignore,
+                                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                            };
+
+                            foreach (var @event in eventHourlyGroup) {
+                                serializer.Serialize(writer, @event);
+                                writer.WriteLine(",");
                             }
                         }
-                        catch {
-                            saved = false;
-                        }
-                    }
-
-                    XElement xml = XElement.Load(logFileName);
-
-                    foreach (XElement xmlLogEvent in eventHourlyGroup.Select(logEvent => logEvent.ToXElement())) {
-                        xmlLogEvent.RemoveAttributes();
-
-                        xml.Add(xmlLogEvent);
-                    }
-
-                    try {
-                        xml.Save(logFileName);
                     }
                     catch {
                         saved = false;

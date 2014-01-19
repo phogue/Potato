@@ -58,10 +58,9 @@ namespace Procon.Core.Shared {
         /// How the output of the command should be handled if it is a remote request.
         /// Defaults to application/xml where the entire result is output
         /// </summary>
-        [XmlIgnore, JsonIgnore]
         public String ContentType { get; set; }
 
-        [field: NonSerialized, XmlIgnore, JsonIgnore]
+        [field: NonSerialized]
         public event EventHandler Disposed;
 
         public CommandResult() {

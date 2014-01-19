@@ -48,14 +48,14 @@ namespace Procon.Examples.Plugins.Configs {
             return command.Result;
         }
 
-        public override void WriteConfig(Config config) {
+        public override void WriteConfig(IConfig config) {
             base.WriteConfig(config);
 
             // Writing configs may seem a little bit convoluted in Procon 2, but you should
             // think of it simply as Command serialization, which allows you to save complex
             // parameters.
 
-            config.Root.Add(new Command() {
+            config.Append(new Command() {
                 Name = "ThisIsJustACommand",
                 Parameters = new List<CommandParameter>() {
                     new CommandParameter() {

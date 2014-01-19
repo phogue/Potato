@@ -1,0 +1,16 @@
+﻿{
+	"Procon.Core.Localization.LanguageConfig": [
+		{
+			"LanguageCode": "de-DE",
+			"CountryCode": "DE",
+			"EnglishName": "German",
+			"NativeName": "Deutsch"
+		}
+	],
+	"Procon.Core.Test": [
+		{ "Name": "TestName", "Text": "ProconCoreTestDeutschTestValue" }
+	],
+	"Procon.Core.Test.Localization": [
+		{ "Name": "TestName", "Text": "ProconCoreTestLocalizationDeutschTestValue" }
+	]
+}

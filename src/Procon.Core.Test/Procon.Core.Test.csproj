@@ -115,8 +115,6 @@
     <Compile Include="Events\TestPushEventsEndPoint.cs" />
     <Compile Include="Localization\TestLocalization.cs" />
     <Compile Include="Remote\TestRemote.cs" />
-    <Compile Include="Serialization\Xml\TestXmlSerialization.cs" />
-    <Compile Include="Serialization\Xml\TestXmlSerializationCommand.cs" />
     <Compile Include="CoreInstance\TestInstance.cs" />
     <Compile Include="CoreInstance\TestCommandInstanceAddConnection.cs" />
     <Compile Include="TextCommands\Fuzzy\TestFuzzyBasicMonthTemporal.cs" />
@@ -143,8 +141,6 @@
     <Compile Include="Utils\Objects\XElementTester.cs" />
     <Compile Include="Utils\TestDefines.cs" />
     <Compile Include="Utils\TestDirectoryInfoExtensions.cs" />
-    <Compile Include="Utils\TestXElementExtensions.cs" />
-    <Compile Include="Utils\TestXElementValidator.cs" />
     <Compile Include="Variables\TestVariablesSetF.cs" />
     <Compile Include="Variables\TestVariablesGetA.cs" />
     <Compile Include="Variables\TestVariablesSetA.cs" />
@@ -192,16 +188,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Localization\de-DE\Procon.Core.Test.xml">
-      <SubType>Designer</SubType>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Localization\en-UK\Procon.Core.Test.xml">
-      <SubType>Designer</SubType>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
     <Folder Include="Utils\DirectoryInfoExtensions\Clean\" />
     <Folder Include="Utils\DirectoryInfoExtensions\Zip\" />
   </ItemGroup>
@@ -211,6 +197,12 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Localization\de-DE\Procon.Core.Test.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Localization\en-UK\Procon.Core.Test.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="packages.config" />
     <Content Include="Remote\Certificates\NoPassword.pfx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

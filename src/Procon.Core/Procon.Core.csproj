@@ -107,7 +107,6 @@
     <Compile Include="Events\PushEventsEndPoint.cs" />
     <Compile Include="Connections\Plugins\CorePluginController.cs" />
     <Compile Include="InstanceController.cs" />
-    <Compile Include="Utils\XElementValidator.cs" />
     <Compile Include="Utils\DirectoryInfoExtensions.cs" />
     <Compile Include="Variables\GroupedVariableListener.cs" />
     <Compile Include="Variables\VariableController.cs" />
@@ -150,34 +149,18 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Localization\de-DE\Procon.Net.xml">
+    <Content Include="Localization\de-DE\Procon.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Localization\de-DE\Procon.Fuzzy.xml">
+    <Content Include="Localization\en-UK\Procon.Fuzzy.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Localization\de-DE\Procon.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Localization\de-DE\BasicInGameInfo.xml">
+    <Content Include="Localization\en-UK\Procon.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Localization\en-UK\BasicInGameInfo.xml">
+    <Content Include="Localization\en-UK\Procon.Net.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Localization\en-UK\Procon.Net.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Localization\en-UK\Procon.Fuzzy.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Localization\en-UK\Procon.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <SubType>Designer</SubType>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup />

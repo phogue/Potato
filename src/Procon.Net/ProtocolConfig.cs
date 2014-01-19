@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Xml.Linq;
+using System.Linq;
+using Newtonsoft.Json;
 using Procon.Net.Shared;
 using Procon.Net.Shared.Models;
-using Procon.Net.Shared.Utils;
 
 namespace Procon.Net {
     /// <summary>
@@ -37,10 +37,10 @@ namespace Procon.Net {
         /// </summary>
         /// <param name="game">The game to load this config into</param>
         public virtual void Parse(IProtocol game) {
-            game.State.MapPool = this.MapPool;
-            game.State.GameModePool = this.GameModes;
-            game.State.Groupings = this.Groupings;
-            game.State.Items = this.Items;
+            game.State.MapPool = this.MapPool ?? new List<Map>();
+            game.State.GameModePool = this.GameModes ?? new List<GameMode>();
+            game.State.Groupings = this.Groupings ?? new List<Grouping>();
+            game.State.Items = this.Items ?? new List<Item>();
         }
 
         /// <summary>
@@ -55,6 +55,28 @@ namespace Procon.Net {
         }
 
         /// <summary>
+        /// Populates references from other smaller objects, overwriting existing objects.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="config"></param>
+        /// <returns></returns>
+        public static T Populate<T>(T config) where T : ProtocolConfig {
+            if (config.GameModes != null && config.Groupings != null) {
+                foreach (GameMode mode in config.GameModes) {
+                    mode.DefaultGroups = config.Groupings.Where(known => mode.DefaultGroups.Any(group => group.Uid == known.Uid && group.Type == known.Type)).ToList();
+                }
+            }
+
+            if (config.MapPool != null && config.GameModes != null) {
+                foreach (Map map in config.MapPool) {
+                    map.GameMode = config.GameModes.FirstOrDefault(known => known.Name == map.GameMode.Name);
+                }
+            }
+
+            return config;
+        }
+
+        /// <summary>
         /// Loads and deserializes a config file into a new object
         /// </summary>
         /// <typeparam name="T"></typeparam>
@@ -65,9 +87,13 @@ namespace Procon.Net {
 
             try {
                 if (File.Exists(configPath) == true) {
-                    XDocument document = XDocument.Load(configPath);
+                    JsonSerializer serializer = new JsonSerializer();
 
-                    config = document.Root.QuerySelectReferences().FromXElement<T>();
+                    using (JsonReader reader = new JsonTextReader(new StreamReader(configPath))) {
+                        config = serializer.Deserialize<T>(reader);
+                    }
+
+                    config = ProtocolConfig.Populate(config);
                 }
             }
             catch {
@@ -90,7 +116,7 @@ namespace Procon.Net {
             try {
                 Directory.CreateDirectory(gameConfigPath);
 
-                configPath = System.IO.Path.Combine(System.IO.Path.Combine(gameConfigPath, protocolProvider), protocolName + ".xml");
+                configPath = System.IO.Path.Combine(System.IO.Path.Combine(gameConfigPath, protocolProvider), protocolName + ".json");
             }
             catch {
                 configPath = null;

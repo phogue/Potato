@@ -45,6 +45,8 @@
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="CommandDirection.cs" />
+    <Compile Include="IConfig.cs" />
+    <Compile Include="JsonConfig.cs" />
     <Compile Include="Models\AsynchronousCommandModel.cs" />
     <Compile Include="Models\AsynchronousCommandStateModel.cs" />
     <Compile Include="AsynchronousCoreController.cs" />
@@ -60,7 +62,7 @@
     <Compile Include="CommandResultType.cs" />
     <Compile Include="CommandScope.cs" />
     <Compile Include="CommandType.cs" />
-    <Compile Include="Config.cs" />
+    <Compile Include="Models\LanguageEntryModel.cs" />
     <Compile Include="Database\DatabaseModel.cs" />
     <Compile Include="Database\Migrations\IMigration.cs" />
     <Compile Include="Database\Migrations\IMigrationSettings.cs" />
@@ -88,7 +90,6 @@
     <Compile Include="Models\PermissionModel.cs" />
     <Compile Include="Models\PluginModel.cs" />
     <Compile Include="Models\RepositoryModel.cs" />
-    <Compile Include="Models\Serialization\SerializableVersionModel.cs" />
     <Compile Include="Models\TextCommandModel.cs" />
     <Compile Include="Models\TextCommandIntervalModel.cs" />
     <Compile Include="Models\TextCommandIntervalType.cs" />

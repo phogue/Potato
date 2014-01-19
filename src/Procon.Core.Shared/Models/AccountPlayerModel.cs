@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Xml.Serialization;
 using Newtonsoft.Json;
 using Procon.Net.Shared.Protocols;
 
@@ -21,7 +20,7 @@ namespace Procon.Core.Shared.Models {
         /// <summary>
         /// Backreference to the owner of this assignment.
         /// </summary>
-        [XmlIgnore, JsonIgnore]
+        [JsonIgnore]
         public AccountModel Account { get; set; }
 
         public AccountPlayerModel() {

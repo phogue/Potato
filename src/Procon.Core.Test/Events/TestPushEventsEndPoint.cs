@@ -98,27 +98,5 @@ namespace Procon.Core.Test.Events {
 
             Assert.AreEqual("What up?", deserialized.Events.First().Message);
         }
-
-        /// <summary>
-        ///     Simply tests if the ApplicationXml mime type is passed in we will recieve xml back from the function.
-        /// </summary>
-        [Test]
-        public void TestPushEventsRequestXmlSerialization() {
-            var builder = new StringBuilder();
-            TextWriter writer = new StringWriter(builder);
-
-            PushEventsEndPoint.WriteSerializedEventsRequest(writer, Mime.ApplicationXml, new PushEventsRequest() {
-                Events = new List<GenericEvent>() {
-                    new GenericEvent() {
-                        Message = "What up?"
-                    }
-                }
-            });
-
-            // Can this in turn be parsed by xml?
-            XElement element = XElement.Parse(builder.ToString());
-
-            Assert.AreEqual("What up?", element.Descendants("Message").First().Value);
-        }
     }
 }

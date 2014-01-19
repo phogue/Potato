@@ -50,7 +50,7 @@ namespace Procon.Net.Shared.Models {
         /// <summary>
         /// List of packets attached to this action, if any.
         /// </summary>
-        [XmlIgnore, JsonIgnore]
+        [JsonIgnore]
         public List<IPacket> Packets { get; set; }
 
     }

@@ -1,0 +1,17 @@
+﻿{
+	"Procon.Core.Localization.LanguageConfig": [
+		{
+			"LanguageCode": "en-UK",
+			"CountryCode": "GB",
+			"EnglishName": "English (UK)",
+			"NativeName": "English (UK)"
+		}
+	],
+	"Procon.Core.Test": [
+		{ "Name": "TestName", "Text": "ProconCoreTestEnglishTestValue" }
+	],
+	"Procon.Core.Test.Localization": [
+		{ "Name": "TestFormat", "Text": "Hello {0}!" },
+		{ "Name": "TestName", "Text": "ProconCoreTestLocalizationEnglishTestValue" }
+	]
+}

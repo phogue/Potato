@@ -6,52 +6,11 @@ using NUnit.Framework;
 using Procon.Core.Remote;
 using Procon.Core.Shared;
 using Procon.Net.Shared.Protocols.CommandServer;
-using Procon.Net.Shared.Utils;
 using Procon.Net.Shared.Utils.HTTP;
 
 namespace Procon.Core.Test.Remote.TestCommandServerSerializer {
     [TestFixture]
     public class TestDeserializeCommand {
-        /// <summary>
-        /// Tests that a command deserialization can occur with xml
-        /// </summary>
-        [Test]
-        public void TestXmlDeserialization() {
-            Command original = new Command() {
-                CommandType = CommandType.VariablesSet,
-                Username = "username",
-                PasswordPlainText = "password",
-                Parameters = new List<CommandParameter>() {
-                    new CommandParameter() {
-                        Data = {
-                            Content = new List<String>() {
-                                "A"
-                            }
-                        }
-                    },
-                    new CommandParameter() {
-                        Data = {
-                            Content = new List<String>() {
-                                "B"
-                            }
-                        }
-                    }
-                }
-            };
-
-            Command deserialized = CommandServerSerializer.DeserializeCommand(new CommandServerPacket() {
-                Content = original.ToXElement().ToString(),
-                Headers = new WebHeaderCollection() {
-                    { HttpRequestHeader.ContentType, Mime.ApplicationXml }
-                }
-            });
-
-            Assert.AreEqual(original.CommandType.ToString(), deserialized.Name);
-            Assert.AreEqual(original.Username, deserialized.Username);
-            Assert.AreEqual(original.PasswordPlainText, deserialized.PasswordPlainText);
-            Assert.IsNotEmpty(deserialized.Parameters);
-        }
-
         /// <summary>
         /// Tests that a command deserialization can occur with json
         /// </summary>
@@ -90,30 +49,6 @@ namespace Procon.Core.Test.Remote.TestCommandServerSerializer {
             Assert.AreEqual(original.Username, deserialized.Username);
             Assert.AreEqual(original.PasswordPlainText, deserialized.PasswordPlainText);
             Assert.IsNotEmpty(deserialized.Parameters);
-        }
-
-        /// <summary>
-        /// Tests that a command deserialization can occur with xml and no parameters
-        /// </summary>
-        [Test]
-        public void TestXmlDeserializationEmptyParameterList() {
-            Command original = new Command() {
-                CommandType = CommandType.VariablesSet,
-                Username = "username",
-                PasswordPlainText = "password"
-            };
-
-            Command deserialized = CommandServerSerializer.DeserializeCommand(new CommandServerPacket() {
-                Content = original.ToXElement().ToString(),
-                Headers = new WebHeaderCollection() {
-                    { HttpRequestHeader.ContentType, Mime.ApplicationXml }
-                }
-            });
-
-            Assert.AreEqual(original.CommandType.ToString(), deserialized.Name);
-            Assert.AreEqual(original.Username, deserialized.Username);
-            Assert.AreEqual(original.PasswordPlainText, deserialized.PasswordPlainText);
-            Assert.IsEmpty(deserialized.Parameters);
         }
 
         /// <summary>

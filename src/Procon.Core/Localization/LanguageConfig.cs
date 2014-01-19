@@ -1,7 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Xml.Linq;
 using Procon.Core.Shared;
 using Procon.Core.Shared.Models;
 
@@ -10,48 +10,53 @@ namespace Procon.Core.Localization {
     /// A language config file, loaded and combined from various xml sources in the localization folder
     /// </summary>
     [Serializable]
-    public class LanguageConfig : Config {
+    public class LanguageConfig {
         /// <summary>
         /// Holds the underlying information loaded from the file used to describe the language
         /// </summary>
         public LanguageModel LanguageModel { get; set; }
 
         /// <summary>
+        /// The internal config loaded for this model.
+        /// </summary>
+        public IConfig Config { get; set; }
+
+        /// <summary>
+        /// The cached conversions from the JObject to LanguageEntryModel
+        /// </summary>
+        public Dictionary<String, List<LanguageEntryModel>> Cached { get; set; }
+
+        /// <summary>
         /// Initializes default values for the language config
         /// </summary>
         public LanguageConfig() {
             this.LanguageModel = new LanguageModel();
+            this.Config = new JsonConfig();
+            this.Cached = new Dictionary<String, List<LanguageEntryModel>>();
         }
 
         /// <summary>
         /// Loads the specified file into this language file using the file's contents.
         /// Returns a reference back to this config.
         /// </summary>
-        public override Config Load(FileInfo mFile) {
-            base.Load(mFile);
+        public void Load(FileInfo file) {
+            this.Config.Load(file);
 
-            // Parse out extra instruction information used in a language config file.
-            var instructions = this.Document.Nodes().OfType<XProcessingInstruction>();
-
-            // These instructions could be expanded to include details about the author.
-            foreach (var instruction in instructions) {
-                switch (instruction.Target) {
-                    case "ietf-language-tag":
-                        this.LanguageModel.LanguageCode = instruction.Data;
-                        break;
-                    case "iso-3166-1-alpha-2":
-                        this.LanguageModel.CountryCode = instruction.Data;
-                        break;
-                    case "country-name-english":
-                        this.LanguageModel.EnglishName = instruction.Data;
-                        break;
-                    case "country-name-native":
-                        this.LanguageModel.NativeName = instruction.Data;
-                        break;
-                }
+            if (this.Config.RootOf<LanguageConfig>().First != null) {
+                this.LanguageModel = this.Config.RootOf<LanguageConfig>().First.ToObject<LanguageModel>();
             }
+        }
 
-            return this;
+        /// <summary>
+        /// Loads the specified directory into this config object.
+        /// </summary>
+        /// <param name="directory"></param>
+        public void Load(DirectoryInfo directory) {
+            this.Config.Load(directory);
+
+            if (this.Config.RootOf<LanguageConfig>().First != null) {
+                this.LanguageModel = this.Config.RootOf<LanguageConfig>().First.ToObject<LanguageModel>();
+            }
         }
 
         /// <summary>
@@ -64,22 +69,17 @@ namespace Procon.Core.Localization {
         public String Localize(String @namespace, String name, params Object[] args) {
             String result = String.Empty;
 
-            // Drill down to namespace that was specified.
-            var children = this.Document.Elements();
+            if (this.Cached.ContainsKey(@namespace) == false) {
+                this.Cached.Add(@namespace, this.Config.RootOf(@namespace).Select(item => item.ToObject<LanguageEntryModel>()).ToList());
+            }
 
-            children = @namespace.Split('.').Skip(1).Aggregate(children, (current, n) => current.Elements(n));
+            var loc = this.Cached[@namespace].FirstOrDefault(item => item.Name == name);
 
-            // Attempt to find name.
-            var loc = children.Elements("Loc").Where(attribute => {
-                var xAttribute = attribute.Attribute("name");
-                return xAttribute != null && xAttribute.Value == name;
-            }).Select(attribute => attribute.Attribute("value"))
-            .FirstOrDefault();
 
             // Attempt to format name.
             if (loc != null) {
                 try {
-                    result = String.Format(loc.Value, args);
+                    result = String.Format(loc.Text, args);
                 }
                 catch (Exception) {
                     // We don't want to output general errors to a user, but we need to make a clear

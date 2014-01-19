@@ -108,9 +108,6 @@ namespace Procon.Core.Events {
         /// <param name="request">A request payload to send to the push end point</param>
         public static void WriteSerializedEventsRequest(TextWriter writer, String contentType, PushEventsRequest request) {
             switch (contentType) {
-                case Mime.ApplicationXml:
-                    request.WriteXElement(writer);
-                    break;
                 case Mime.ApplicationJson:
                     JsonSerializer serializer = new JsonSerializer {
                         NullValueHandling = NullValueHandling.Ignore,

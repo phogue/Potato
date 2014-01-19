@@ -29,7 +29,7 @@ namespace Procon.Core.Test.CoreInstance {
             }
         }
 
-        protected static FileInfo ConfigFileInfo = new FileInfo(Path.Combine(Defines.ConfigsDirectory.FullName, "Procon.Core.xml"));
+        protected static FileInfo ConfigFileInfo = new FileInfo(Path.Combine(Defines.ConfigsDirectory.FullName, "Procon.Core.json"));
 
         /// <summary>
         ///     Tests that we cannot add the same connection twice.

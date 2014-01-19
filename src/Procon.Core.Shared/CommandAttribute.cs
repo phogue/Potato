@@ -19,7 +19,7 @@ namespace Procon.Core.Shared {
         /// <summary>
         /// The command to be executed, will be converted to a string in Name
         /// </summary>
-        [XmlIgnore, JsonIgnore]
+        [JsonIgnore]
         public CommandType CommandType {
             get { return this._mCommandType; }
             set {
@@ -35,13 +35,13 @@ namespace Procon.Core.Shared {
         /// <summary>
         /// When in the execution we want to capture the command (before, as the handler or after)
         /// </summary>
-        [XmlIgnore, JsonIgnore]
+        [JsonIgnore]
         public CommandAttributeType CommandAttributeType { get; set; }
 
         /// <summary>
         /// A list of parameter names with the type of parameter expected.
         /// </summary>
-        [XmlIgnore, JsonIgnore]
+        [JsonIgnore]
         public List<CommandParameterType> ParameterTypes { get; set; }
 
         public CommandAttribute() {

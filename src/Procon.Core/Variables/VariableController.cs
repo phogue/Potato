@@ -207,13 +207,13 @@ namespace Procon.Core.Variables {
         /// <summary>
         /// Does nothing.  Information about this object is handled via it's parent interface.
         /// </summary>
-        public override void WriteConfig(Config config) {
+        public override void WriteConfig(IConfig config) {
             foreach (VariableModel archiveVariable in this.ArchiveVariables) {
-                config.Root.Add(CommandBuilder.VariablesSetA(archiveVariable.Name, archiveVariable.ToList<String>()).ToConfigCommand());
+                config.Append(CommandBuilder.VariablesSetA(archiveVariable.Name, archiveVariable.ToList<String>()).ToConfigCommand());
             }
 
             foreach (VariableModel flashVariable in this.FlashVariables) {
-                config.Root.Add(CommandBuilder.VariablesSet(flashVariable.Name, flashVariable.ToList<String>()).ToConfigCommand());
+                config.Append(CommandBuilder.VariablesSet(flashVariable.Name, flashVariable.ToList<String>()).ToConfigCommand());
             }
         }
 

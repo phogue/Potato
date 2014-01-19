@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml.Linq;
 using Procon.Core.Connections.TextCommands.Parsers;
 using Procon.Core.Localization;
 using Procon.Core.Shared;
@@ -116,7 +117,7 @@ namespace Procon.Core.Connections.TextCommands {
             return new FuzzyParser() {
                 Connection = this.Connection,
                 TextCommands = this.TextCommands.Where(textCommand => textCommand.Parser == TextCommandParserType.Any || textCommand.Parser == TextCommandParserType.Fuzzy).ToList(),
-                Document = selectedLanguage.Root,
+                Document = selectedLanguage.Config.Document,
                 SpeakerPlayer = speaker,
                 SpeakerAccount = speakerAccount
             };

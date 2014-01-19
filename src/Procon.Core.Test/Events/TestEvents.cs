@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading;
 using System.Xml.Linq;
 using NUnit.Framework;
+using Newtonsoft.Json;
 using Procon.Core.Events;
 using Procon.Core.Shared;
 using Procon.Core.Shared.Events;
@@ -117,14 +118,12 @@ namespace Procon.Core.Test.Events {
             events.WriteEvents();
 
             String logFileName = events.EventsLogFileName(roundedThenHour);
+            
+            var logEvent = JsonConvert.DeserializeObject<GenericEvent>(File.ReadAllText(logFileName).Trim(',', '\r', '\n'));
 
-            XElement logEventElement = XElement.Load(logFileName).Element("Event");
-
-            Assert.AreEqual("true", logEventElement.Element("Success").Value);
-            Assert.AreEqual("SecurityGroupAdded", logEventElement.Element("Name").Value);
-            Assert.AreEqual(then.ToString("s", CultureInfo.InvariantCulture), DateTime.Parse(logEventElement.Element("Stamp").Value).ToString("s", CultureInfo.InvariantCulture));
-
-            Assert.AreEqual("Phogue", logEventElement.Descendants("AccountModel").First().Element("Username").Value);
+            Assert.IsTrue(logEvent.Success);
+            Assert.AreEqual("SecurityGroupAdded", logEvent.Name);
+            Assert.AreEqual("Phogue", logEvent.Scope.Accounts.First().Username);
         }
 
         /// <summary>
@@ -161,13 +160,11 @@ namespace Procon.Core.Test.Events {
 
             String logFileName = events.EventsLogFileName(roundedThenHour);
 
-            XElement logEventElement = XElement.Load(logFileName).Element("Event");
+            var logEvent = JsonConvert.DeserializeObject<GenericEvent>(File.ReadAllText(logFileName).Trim(',', '\r', '\n'));
 
-            Assert.AreEqual("true", logEventElement.Element("Success").Value);
-            Assert.AreEqual("SecurityGroupAdded", logEventElement.Element("Name").Value);
-            Assert.AreEqual(then.ToString("s", CultureInfo.InvariantCulture), DateTime.Parse(logEventElement.Element("Stamp").Value).ToString("s", CultureInfo.InvariantCulture));
-
-            Assert.AreEqual("Phogue", logEventElement.Descendants("AccountModel").First().Element("Username").Value);
+            Assert.IsTrue(logEvent.Success);
+            Assert.AreEqual("SecurityGroupAdded", logEvent.Name);
+            Assert.AreEqual("Phogue", logEvent.Scope.Accounts.First().Username);
         }
 
         /// <summary>
@@ -217,16 +214,13 @@ namespace Procon.Core.Test.Events {
 
             String logFileName = events.EventsLogFileName(roundedThenHour);
 
-            XElement logEventsElement = XElement.Load(logFileName);
-            Assert.AreEqual(1, logEventsElement.Elements("Event").Count());
 
-            XElement logEventElement = logEventsElement.Element("Event");
 
-            Assert.AreEqual("true", logEventElement.Element("Success").Value);
-            Assert.AreEqual("SecurityGroupAdded", logEventElement.Element("Name").Value);
-            Assert.AreEqual(then.ToString("s", CultureInfo.InvariantCulture), DateTime.Parse(logEventElement.Element("Stamp").Value).ToString("s", CultureInfo.InvariantCulture));
+            var logEvent = JsonConvert.DeserializeObject<GenericEvent>(File.ReadAllText(logFileName).Trim(',', '\r', '\n'));
 
-            Assert.AreEqual("Phogue", logEventElement.Descendants("AccountModel").First().Element("Username").Value);
+            Assert.IsTrue(logEvent.Success);
+            Assert.AreEqual("SecurityGroupAdded", logEvent.Name);
+            Assert.AreEqual("Phogue", logEvent.Scope.Accounts.First().Username);
         }
     }
 }

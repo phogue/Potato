@@ -1,0 +1,10 @@
+﻿{
+	"Procon.Core.Localization.LanguageConfig": [
+		{
+			"LanguageCode": "en-UK",
+			"CountryCode": "GB",
+			"EnglishName": "English (UK)",
+			"NativeName": "English (UK)"
+		}
+	]
+}

@@ -7,8 +7,7 @@ using System.Windows.Forms;
 using System.Xml.Linq;
 using Procon.Net;
 using Procon.Net.Shared;
-using Procon.Net.Shared.Utils;
-using Procon.Net.Utils;
+using Procon.Tools.NetworkConsole.Utils;
 using ConnectionState = Procon.Net.Shared.ConnectionState;
 using Procon.Net.Utils.Tests;
 

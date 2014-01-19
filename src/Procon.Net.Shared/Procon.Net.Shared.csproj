@@ -130,7 +130,6 @@
     <Compile Include="Utils\Network.cs" />
     <Compile Include="Utils\StreamExtensions.cs" />
     <Compile Include="Utils\StringExtensions.cs" />
-    <Compile Include="Utils\XElementExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="GeoIP.dat">

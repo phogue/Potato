@@ -443,7 +443,7 @@ namespace Procon.Core.Connections {
             return result;
         }
 
-        private void Protocol_ClientEvent(IProtocol sender, ClientEventArgs e) {
+        private void Protocol_ClientEvent(IProtocol sender, IClientEventArgs e) {
             if (e.EventType == ClientEventType.ClientConnectionStateChange) {
                 if (this.Protocol != null) {
                     this.ConnectionModel.ProtocolType = this.Protocol.ProtocolType as ProtocolType;

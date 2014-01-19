@@ -177,7 +177,7 @@ namespace Procon.Net {
         /// Fired when something occurs with the underlying client. This can
         /// be connections, disconnections, logins or raw packets being recieved.
         /// </summary>
-        public virtual event Action<IProtocol, ClientEventArgs> ClientEvent;
+        public virtual event Action<IProtocol, IClientEventArgs> ClientEvent;
 
         protected void OnClientEvent(ClientEventType eventType, IClientEventData now = null, IClientEventData then = null) {
             var handler = this.ClientEvent;

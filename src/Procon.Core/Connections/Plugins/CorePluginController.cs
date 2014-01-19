@@ -281,7 +281,7 @@ namespace Procon.Core.Connections.Plugins {
             return base.Execute();
         }
 
-        private void Connection_ClientEvent(IProtocol sender, ClientEventArgs e) {
+        private void Connection_ClientEvent(IProtocol sender, IClientEventArgs e) {
             if (this.PluginFactory != null) {
                 this.PluginFactory.ClientEvent(e);
             }

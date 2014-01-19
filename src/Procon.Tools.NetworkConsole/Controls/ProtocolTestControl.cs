@@ -42,7 +42,7 @@ namespace Procon.Tools.NetworkConsole.Controls {
         }
 
 
-        private void m_activeGame_ClientEvent(IProtocol sender, ClientEventArgs e) {
+        private void m_activeGame_ClientEvent(IProtocol sender, IClientEventArgs e) {
             if (this.InvokeRequired == true) {
                 this.Invoke(new Action<Protocol, ClientEventArgs>(this.m_activeGame_ClientEvent), sender, e);
                 return;
@@ -226,7 +226,7 @@ namespace Procon.Tools.NetworkConsole.Controls {
             this.ActiveGame.ClientEvent += ActiveGame_ClientEvent;
         }
 
-        protected void ActiveGame_ClientEvent(IProtocol sender, ClientEventArgs e) {
+        protected void ActiveGame_ClientEvent(IProtocol sender, IClientEventArgs e) {
             if (this.InvokeRequired == true) {
                 this.Invoke(new Action<Protocol, ClientEventArgs>(this.ActiveGame_ClientEvent), sender, e);
                 return;

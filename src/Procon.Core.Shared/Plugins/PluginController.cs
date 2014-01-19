@@ -212,7 +212,7 @@ namespace Procon.Core.Shared.Plugins {
             this.GameState = e.ProtocolState;
         }
 
-        public virtual void ClientEvent(ClientEventArgs e) {
+        public virtual void ClientEvent(IClientEventArgs e) {
             if (e.EventType == ClientEventType.ClientActionDone) {
                 INetworkAction doneAction = e.Then.Actions.FirstOrDefault();
 

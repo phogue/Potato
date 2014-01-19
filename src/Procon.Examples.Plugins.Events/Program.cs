@@ -3,7 +3,6 @@ using System.Linq;
 using Procon.Core.Shared.Events;
 using Procon.Core.Shared.Plugins;
 using Procon.Net.Shared;
-using Procon.Net.Shared.Actions;
 using Procon.Net.Shared.Models;
 
 namespace Procon.Examples.Plugins.Events {
@@ -17,7 +16,7 @@ namespace Procon.Examples.Plugins.Events {
         //           but then remain constant over your releases.
         //           Procon uses the GUID to pipe through events/commands.
 
-        public override void ClientEvent(ClientEventArgs e) {
+        public override void ClientEvent(IClientEventArgs e) {
             // Unless you specifically want to override some of the plugins default
             // functionality, you should always call the base method.
             base.ClientEvent(e);

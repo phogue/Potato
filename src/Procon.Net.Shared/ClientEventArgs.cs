@@ -5,30 +5,15 @@ namespace Procon.Net.Shared {
     /// An event originating from the networking side of the protocol implementation.
     /// </summary>
     [Serializable]
-    public class ClientEventArgs : EventArgs {
-        /// <summary>
-        /// Stores the type of event (ConnectionStateChanged, PacketSent etc)
-        /// </summary>
+    public class ClientEventArgs : EventArgs, IClientEventArgs {
         public ClientEventType EventType { get; set; }
 
-        /// <summary>
-        /// The state of the connection (Connected/Disconnected/LoggedIn)
-        /// </summary>
         public ConnectionState ConnectionState { get; set; }
 
-        /// <summary>
-        /// When the event occured. Defaults to the current date/time.
-        /// </summary>
         public DateTime Stamp { get; set; }
 
-        /// <summary>
-        /// Data describing the effected data before the event occured.
-        /// </summary>
         public IClientEventData Then { get; set; }
 
-        /// <summary>
-        /// Data describing how the data looked after the event.
-        /// </summary>
         public IClientEventData Now { get; set; }
 
         /// <summary>

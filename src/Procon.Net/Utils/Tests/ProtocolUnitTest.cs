@@ -5,7 +5,6 @@ using System.Threading;
 using System.Xml.Serialization;
 using Procon.Net.Shared;
 using Procon.Net.Shared.Actions;
-using Procon.Net.Shared.Models;
 
 namespace Procon.Net.Utils.Tests {
 
@@ -78,7 +77,7 @@ namespace Procon.Net.Utils.Tests {
             if (game.Client.ConnectionState != ConnectionState.ConnectionDisconnected) {
                 AutoResetEvent disconnectEvent = new AutoResetEvent(false);
 
-                Action<IProtocol, ClientEventArgs> handler = (sender, args) => {
+                Action<IProtocol, IClientEventArgs> handler = (sender, args) => {
                     if (args.EventType == ClientEventType.ClientConnectionStateChange) {
                         if (args.ConnectionState == ConnectionState.ConnectionDisconnected) {
                             disconnectEvent.Set();
@@ -111,7 +110,7 @@ namespace Procon.Net.Utils.Tests {
             if (game.Client.ConnectionState != ConnectionState.ConnectionLoggedIn) {
                 AutoResetEvent loginEvent = new AutoResetEvent(false);
 
-                Action<IProtocol, ClientEventArgs> handler = (sender, args) => {
+                Action<IProtocol, IClientEventArgs> handler = (sender, args) => {
                     if (args.EventType == ClientEventType.ClientConnectionStateChange) {
                         if (args.ConnectionState == ConnectionState.ConnectionLoggedIn) {
                             loginEvent.Set();
@@ -161,7 +160,7 @@ namespace Procon.Net.Utils.Tests {
 
                     ProtocolUnitTestCommand localCommand = command;
 
-                    Action<IProtocol, ClientEventArgs> handler = (sender, args) => {
+                    Action<IProtocol, IClientEventArgs> handler = (sender, args) => {
                         if (args.EventType == ClientEventType.ClientPacketReceived) {
                             ProtocolUnitTestPacket matchedPacket = args.Now.Packets.First().Type == PacketType.Response ? localCommand.Responses.FirstOrDefault(response => response.Matches(args.Now.Packets.First().ToString())) : localCommand.Requests.FirstOrDefault(request => request.Matches(args.Now.Packets.First().ToString()));
 

@@ -48,7 +48,7 @@ namespace Procon.Net.Shared {
         /// Fired when something occurs with the underlying client. This can
         /// be connections, disconnections, logins or raw packets being recieved.
         /// </summary>
-        event Action<IProtocol, ClientEventArgs> ClientEvent;
+        event Action<IProtocol, IClientEventArgs> ClientEvent;
 
         /// <summary>
         /// Process a generic network action. All packets generated and sent to the server should be returned here.

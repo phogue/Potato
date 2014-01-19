@@ -118,7 +118,7 @@ namespace Procon.Tools.NetworkConsole {
             }
         }
 
-        void ActiveGame_ClientEvent(IProtocol sender, ClientEventArgs e) {
+        void ActiveGame_ClientEvent(IProtocol sender, IClientEventArgs e) {
             if (this.InvokeRequired == true) {
                 this.Invoke(new Action<Protocol, ClientEventArgs>(this.ActiveGame_ClientEvent), sender, e);
                 return;

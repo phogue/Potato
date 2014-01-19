@@ -38,7 +38,7 @@ namespace Procon.Core.Shared.Plugins {
         /// Remote proxy to propogate the client event across all enabled plugins and avoid multiple remoting calls.
         /// </summary>
         /// <param name="e"></param>
-        void ClientEvent(ClientEventArgs e);
+        void ClientEvent(IClientEventArgs e);
 
         /// <summary>
         /// Check if a plugin is marked as enabled or not

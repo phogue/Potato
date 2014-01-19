@@ -154,6 +154,7 @@ namespace Procon.Core.Events {
 
                             foreach (var @event in eventHourlyGroup) {
                                 serializer.Serialize(writer, @event);
+                                writer.WriteLine(",");
                             }
                         }
                     }

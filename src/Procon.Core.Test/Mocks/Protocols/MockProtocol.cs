@@ -24,7 +24,7 @@ namespace Procon.Core.Test.Mocks.Protocols {
         }
 
         public IClient Client { get; private set; }
-        public ProtocolState State { get; private set; }
+        public IProtocolState State { get; private set; }
         public string Password { get; set; }
         public string Additional { get; set; }
         public IProtocolType ProtocolType { get; private set; }

@@ -40,7 +40,7 @@ namespace Procon.Core.Shared.Plugins {
         /// <summary>
         /// The latest GameState that was passed across the AppDomain.
         /// </summary>
-        public ProtocolState GameState { get; set; }
+        public IProtocolState GameState { get; set; }
 
         /// <summary>
         /// All actions awaiting responses from the game networking layer

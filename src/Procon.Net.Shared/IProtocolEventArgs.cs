@@ -16,7 +16,7 @@ namespace Procon.Net.Shared {
         /// Stores everything about the game that we know like
         /// the current playerlist, all the server info etc.
         /// </summary>
-        ProtocolState ProtocolState { get; set; }
+        IProtocolState ProtocolState { get; set; }
 
         /// <summary>
         /// The game type itself (BlackOps, BFBC2)

@@ -50,7 +50,7 @@ namespace Procon.Core.Connections {
         /// </summary>
         public InstanceController Instance { get; set; }
 
-        public ProtocolState ProtocolState {
+        public IProtocolState ProtocolState {
             get { return this.Protocol != null ? this.Protocol.State : null; }
         }
 

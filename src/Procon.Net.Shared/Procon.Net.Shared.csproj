@@ -49,6 +49,7 @@
     <Compile Include="IClientEventData.cs" />
     <Compile Include="IProtocolEventArgs.cs" />
     <Compile Include="IProtocolEventData.cs" />
+    <Compile Include="IProtocolState.cs" />
     <Compile Include="Models\Ban.cs" />
     <Compile Include="Models\Chat.cs" />
     <Compile Include="Models\INetworkModel.cs" />
@@ -90,7 +91,7 @@
     <Compile Include="IPacketStream.cs" />
     <Compile Include="IPacketWrapper.cs" />
     <Compile Include="Models\GameMode.cs" />
-    <Compile Include="Models\ProtocolState.cs" />
+    <Compile Include="ProtocolState.cs" />
     <Compile Include="Models\Grouping.cs" />
     <Compile Include="Models\HumanHitLocation.cs" />
     <Compile Include="Models\Inventory.cs" />

@@ -10,7 +10,7 @@ namespace Procon.Net.Shared {
     public class ProtocolEventArgs : EventArgs, IProtocolEventArgs {
         public ProtocolEventType ProtocolEventType { get; set; }
 
-        public ProtocolState ProtocolState { get; set; }
+        public IProtocolState ProtocolState { get; set; }
         
         public IProtocolType ProtocolType { get; set; }
 

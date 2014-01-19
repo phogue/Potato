@@ -31,7 +31,8 @@ namespace Procon.Net.Shared.Serialization {
                 new InterfaceJsonConverter<IClientEventData, ClientEventData>(),
                 new InterfaceJsonConverter<IProtocolEventData, ProtocolEventData>(),
                 new InterfaceJsonConverter<IProtocolEventArgs, ProtocolEventArgs>(),
-                new InterfaceJsonConverter<IProtocolType, ProtocolType>()
+                new InterfaceJsonConverter<IProtocolType, ProtocolType>(),
+                new InterfaceJsonConverter<IProtocolState, ProtocolState>()
             };
 
             Json.Minimal = new JsonSerializer();

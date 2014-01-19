@@ -26,7 +26,7 @@ namespace Procon.Net {
         /// Everything the connection currently knows about the game. This is updated
         /// with all of the information we receive from the server.
         /// </summary>
-        public ProtocolState State { get; protected set; }
+        public IProtocolState State { get; protected set; }
 
         /// <summary>
         /// The password used to authenticate with the server.

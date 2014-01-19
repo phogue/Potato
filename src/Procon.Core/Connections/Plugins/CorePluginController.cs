@@ -287,7 +287,7 @@ namespace Procon.Core.Connections.Plugins {
             }
         }
 
-        private void Connection_GameEvent(IProtocol sender, ProtocolEventArgs e) {
+        private void Connection_GameEvent(IProtocol sender, IProtocolEventArgs e) {
             if (this.PluginFactory != null) {
                 this.PluginFactory.GameEvent(e);
             }

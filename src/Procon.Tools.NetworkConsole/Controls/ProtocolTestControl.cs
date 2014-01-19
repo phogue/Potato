@@ -53,9 +53,9 @@ namespace Procon.Tools.NetworkConsole.Controls {
             }
         }
 
-        private void m_activeGame_GameEvent(IProtocol sender, ProtocolEventArgs e) {
+        private void m_activeGame_GameEvent(IProtocol sender, IProtocolEventArgs e) {
             if (this.InvokeRequired == true) {
-                this.Invoke(new Action<Protocol, ProtocolEventArgs>(this.m_activeGame_GameEvent), sender, e);
+                this.Invoke(new Action<Protocol, IProtocolEventArgs>(this.m_activeGame_GameEvent), sender, e);
                 return;
             }
 

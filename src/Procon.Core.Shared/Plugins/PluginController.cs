@@ -208,7 +208,7 @@ namespace Procon.Core.Shared.Plugins {
             }
         }
 
-        public virtual void GameEvent(ProtocolEventArgs e) {
+        public virtual void GameEvent(IProtocolEventArgs e) {
             this.GameState = e.ProtocolState;
         }
 

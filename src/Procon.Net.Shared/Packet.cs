@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Net;
 
 namespace Procon.Net.Shared {
-
+    /// <summary>
+    /// Basic information sent/recv from the connected client.
+    /// </summary>
     [Serializable]
     public sealed class Packet : IPacket {
 
@@ -53,6 +55,9 @@ namespace Procon.Net.Shared {
         /// </summary>
         public IPEndPoint RemoteEndPoint { get; set; }
 
+        /// <summary>
+        /// Initializes the packet with the default values.
+        /// </summary>
         public Packet() {
             this.RequestId = null;
             this.Stamp = DateTime.Now;

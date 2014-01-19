@@ -29,7 +29,7 @@ namespace Procon.Core.Test.Mocks.Protocols {
         public string Additional { get; set; }
         public IProtocolType ProtocolType { get; private set; }
         public string ProtocolsConfigDirectory { get; set; }
-        public event Action<IProtocol, ProtocolEventArgs> ProtocolEvent;
+        public event Action<IProtocol, IProtocolEventArgs> ProtocolEvent;
         public event Action<IProtocol, IClientEventArgs> ClientEvent;
         public List<IPacket> Action(INetworkAction action) {
             return null;

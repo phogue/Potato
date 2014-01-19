@@ -47,6 +47,7 @@
     <Compile Include="Actions\INetworkAction.cs" />
     <Compile Include="IClientEventArgs.cs" />
     <Compile Include="IClientEventData.cs" />
+    <Compile Include="IProtocolEventArgs.cs" />
     <Compile Include="IProtocolEventData.cs" />
     <Compile Include="Models\Ban.cs" />
     <Compile Include="Models\Chat.cs" />

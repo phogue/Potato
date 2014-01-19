@@ -30,7 +30,7 @@ namespace Procon.Examples.Plugins.Events {
             // else more!
         }
 
-        public override void GameEvent(ProtocolEventArgs e) {
+        public override void GameEvent(IProtocolEventArgs e) {
             // Unless you specifically want to override some of the plugins default
             // functionality, you should always call the base method.
             base.GameEvent(e);

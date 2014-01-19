@@ -104,7 +104,7 @@ namespace Procon.Core.Shared.Plugins {
         /// Remote proxy to propogate the game event across all enabled plugins and avoid multiple remoting calls.
         /// </summary>
         /// <param name="e"></param>
-        public void GameEvent(ProtocolEventArgs e) {
+        public void GameEvent(IProtocolEventArgs e) {
             foreach (var enabledPlugin in this.EnabledPlugins) {
                 enabledPlugin.Value.GameEvent(e);
             }

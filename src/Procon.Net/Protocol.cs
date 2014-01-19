@@ -155,7 +155,7 @@ namespace Procon.Net {
         /// <summary>
         /// Fired when ever a dispatched game event occurs.
         /// </summary>
-        public virtual event Action<IProtocol, ProtocolEventArgs> ProtocolEvent;
+        public virtual event Action<IProtocol, IProtocolEventArgs> ProtocolEvent;
 
         protected void OnGameEvent(ProtocolEventType eventType, IProtocolEventData now = null, IProtocolEventData then = null) {
             var handler = this.ProtocolEvent;

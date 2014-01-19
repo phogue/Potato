@@ -487,7 +487,7 @@ namespace Procon.Core.Connections {
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Protocol_ProtocolEvent(IProtocol sender, ProtocolEventArgs e) {
+        private void Protocol_ProtocolEvent(IProtocol sender, IProtocolEventArgs e) {
             if (this.Shared.Variables.Get<List<String>>(CommonVariableNames.ProtocolEventsIgnoreList).Contains(e.ProtocolEventType.ToString()) == false) {
                 this.Shared.Events.Log(new GenericEvent() {
                     Name = e.ProtocolEventType.ToString(),

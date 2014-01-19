@@ -42,7 +42,7 @@ namespace Procon.Net.Shared {
         /// <summary>
         /// Fired when ever a dispatched game event occurs.
         /// </summary>
-        event Action<IProtocol, ProtocolEventArgs> ProtocolEvent;
+        event Action<IProtocol, IProtocolEventArgs> ProtocolEvent;
 
         /// <summary>
         /// Fired when something occurs with the underlying client. This can

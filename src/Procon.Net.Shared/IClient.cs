@@ -2,8 +2,10 @@
 using System.Net.Sockets;
 
 namespace Procon.Net.Shared {
+    /// <summary>
+    /// Client to handle network communication.
+    /// </summary>
     public interface IClient {
-
         /// <summary>
         /// The hostname to connect to.
         /// </summary>

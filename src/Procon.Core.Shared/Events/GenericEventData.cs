@@ -1,5 +1,4 @@
-﻿using Procon.Net;
-using Procon.Net.Shared;
+﻿using Procon.Net.Shared;
 
 namespace Procon.Core.Shared.Events {
     public static class GenericEventData {
@@ -10,7 +9,7 @@ namespace Procon.Core.Shared.Events {
         /// </summary>
         /// <param name="gameEventData"></param>
         /// <returns>A new GenericEventData object with the gameEventData included.</returns>
-        public static CommandData Parse(ProtocolEventData gameEventData) {
+        public static CommandData Parse(IProtocolEventData gameEventData) {
             return new CommandData() {
                 Chats = gameEventData.Chats,
                 Players = gameEventData.Players,

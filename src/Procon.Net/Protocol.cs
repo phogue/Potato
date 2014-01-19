@@ -157,7 +157,7 @@ namespace Procon.Net {
         /// </summary>
         public virtual event Action<IProtocol, ProtocolEventArgs> ProtocolEvent;
 
-        protected void OnGameEvent(ProtocolEventType eventType, ProtocolEventData now = null, ProtocolEventData then = null) {
+        protected void OnGameEvent(ProtocolEventType eventType, IProtocolEventData now = null, IProtocolEventData then = null) {
             var handler = this.ProtocolEvent;
             if (handler != null) {
                 handler(

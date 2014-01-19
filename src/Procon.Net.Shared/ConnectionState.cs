@@ -1,8 +1,10 @@
 ﻿using System;
 
 namespace Procon.Net.Shared {
-    // Listener Ideal: Disconnected, Listening, Ready
-    // Client Connection Ideal: Disconnected, Connecting, Connected, Ready, LoggedIn
+    /// <summary>
+    /// Listener Ideal: Disconnected, Listening, Ready
+    /// Client Connection Ideal: Disconnected, Connecting, Connected, Ready, LoggedIn
+    /// </summary>
     [Serializable]
     public enum ConnectionState {
         /// <summary>

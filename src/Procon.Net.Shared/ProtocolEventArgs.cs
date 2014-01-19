@@ -28,18 +28,21 @@ namespace Procon.Net.Shared {
         /// <summary>
         /// Data describing the effected data before the event occured.
         /// </summary>
-        public ProtocolEventData Then { get; set; }
+        public IProtocolEventData Then { get; set; }
 
         /// <summary>
         /// Data describing how the data looked after the event.
         /// </summary>
-        public ProtocolEventData Now { get; set; }
+        public IProtocolEventData Now { get; set; }
 
         /// <summary>
         /// When this event occured.
         /// </summary>
         public DateTime Stamp { get; set; }
 
+        /// <summary>
+        /// Initializes the protocol event with the default values.
+        /// </summary>
         public ProtocolEventArgs() {
             this.Stamp = DateTime.Now;
 

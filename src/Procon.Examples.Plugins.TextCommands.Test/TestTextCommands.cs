@@ -59,7 +59,7 @@ namespace Procon.Examples.Plugins.TextCommands.Test {
             connection.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.TextCommandsExecute,
-                Parameters = new List<CommandParameter>() {
+                Parameters = new List<ICommandParameter>() {
                     new CommandParameter() {
                         Data = {
                             Content = new List<string>() {
@@ -86,7 +86,7 @@ namespace Procon.Examples.Plugins.TextCommands.Test {
             connection.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.TextCommandsExecute,
-                Parameters = new List<CommandParameter>() {
+                Parameters = new List<ICommandParameter>() {
                     new CommandParameter() {
                         Data = {
                             Content = new List<string>() {
@@ -113,7 +113,7 @@ namespace Procon.Examples.Plugins.TextCommands.Test {
             connection.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.TextCommandsExecute,
-                Parameters = new List<CommandParameter>() {
+                Parameters = new List<ICommandParameter>() {
                     new CommandParameter() {
                         Data = {
                             Content = new List<string>() {
@@ -140,7 +140,7 @@ namespace Procon.Examples.Plugins.TextCommands.Test {
             connection.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.TextCommandsExecute,
-                Parameters = new List<CommandParameter>() {
+                Parameters = new List<ICommandParameter>() {
                     new CommandParameter() {
                         Data = {
                             Content = new List<string>() {
@@ -166,7 +166,7 @@ namespace Procon.Examples.Plugins.TextCommands.Test {
             connection.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.TextCommandsExecute,
-                Parameters = new List<CommandParameter>() {
+                Parameters = new List<ICommandParameter>() {
                     new CommandParameter() {
                         Data = {
                             Content = new List<string>() {

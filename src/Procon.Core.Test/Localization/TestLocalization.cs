@@ -73,7 +73,7 @@ namespace Procon.Core.Test.Localization {
             ICommandResult result = language.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.LanguageLocalize,
-                Parameters = new List<CommandParameter>() {
+                Parameters = new List<ICommandParameter>() {
                     new CommandParameter() {
                         Data = {
                             Content = new List<String>() {

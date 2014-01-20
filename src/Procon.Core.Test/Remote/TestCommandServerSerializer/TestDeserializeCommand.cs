@@ -22,7 +22,7 @@ namespace Procon.Core.Test.Remote.TestCommandServerSerializer {
                     Username = "username",
                     PasswordPlainText = "password"
                 },
-                Parameters = new List<CommandParameter>() {
+                Parameters = new List<ICommandParameter>() {
                     new CommandParameter() {
                         Data = {
                             Content = new List<String>() {

@@ -39,7 +39,7 @@ namespace Procon.Examples.Plugins.Configs {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        protected ICommandResult ThisIsJustACommand(ICommand command, Dictionary<String, CommandParameter> parameters) {
+        protected ICommandResult ThisIsJustACommand(ICommand command, Dictionary<String, ICommandParameter> parameters) {
             String param1 = parameters["param1"].First<String>();
             String param2 = parameters["param2"].First<String>();
 
@@ -55,7 +55,7 @@ namespace Procon.Examples.Plugins.Configs {
 
             config.Append(new Command() {
                 Name = "ThisIsJustACommand",
-                Parameters = new List<CommandParameter>() {
+                Parameters = new List<ICommandParameter>() {
                     new CommandParameter() {
                         Data = {
                             Content = new List<String>() {

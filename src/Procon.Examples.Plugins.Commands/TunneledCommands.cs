@@ -34,13 +34,13 @@ namespace Procon.Examples.Plugins.Commands {
             });
         }
 
-        protected ICommandResult ThisCommandIsInAChildObject(ICommand command, Dictionary<String, CommandParameter> parameters) {
+        protected ICommandResult ThisCommandIsInAChildObject(ICommand command, Dictionary<String, ICommandParameter> parameters) {
             command.Result.Message = "ThisCommandIsInAChildObjectResult";
 
             return command.Result;
         }
 
-        protected ICommandResult NoParameterBubbleCommand(ICommand command, Dictionary<String, CommandParameter> parameters) {
+        protected ICommandResult NoParameterBubbleCommand(ICommand command, Dictionary<String, ICommandParameter> parameters) {
             command.Name = "SingleConvertedParameterCommand";
 
             // Bubble the command back up to Program.cs

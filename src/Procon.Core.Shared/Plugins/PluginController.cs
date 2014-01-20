@@ -121,7 +121,7 @@ namespace Procon.Core.Shared.Plugins {
                 ScopeModel = new CommandScopeModel() {
                     ConnectionGuid = this.ConnectionGuid
                 },
-                Parameters = new List<CommandParameter>() {
+                Parameters = new List<ICommandParameter>() {
                     new CommandParameter() {
                         Data = {
                             NetworkActions = new List<INetworkAction>() {
@@ -247,7 +247,7 @@ namespace Procon.Core.Shared.Plugins {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public virtual ICommandResult TextCommandExecuted(ICommand command, Dictionary<String, CommandParameter> parameters) {
+        public virtual ICommandResult TextCommandExecuted(ICommand command, Dictionary<String, ICommandParameter> parameters) {
 
             // Not used.
             // String text = parameters["text"].First<String>();
@@ -256,7 +256,7 @@ namespace Procon.Core.Shared.Plugins {
                 this.Tunnel(new Command() {
                     Origin = CommandOrigin.Local,
                     Name = command.Result.Now.TextCommands.First().PluginCommand,
-                    Parameters = new List<CommandParameter>() {
+                    Parameters = new List<ICommandParameter>() {
                         new CommandParameter() {
                             Data = {
                                 CommandResults = new List<ICommandResult>() {
@@ -298,7 +298,7 @@ namespace Procon.Core.Shared.Plugins {
             this.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 Name = e.Now.TextCommands.First().PluginCommand,
-                Parameters = new List<CommandParameter>() {
+                Parameters = new List<ICommandParameter>() {
                     new CommandParameter() {
                         Data = {
                             Events = new List<IGenericEvent>() {

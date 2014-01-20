@@ -82,7 +82,7 @@ namespace Procon.Core.Connections.Plugins {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public ICommandResult EnablePlugin(ICommand command, Dictionary<String, CommandParameter> parameters) {
+        public ICommandResult EnablePlugin(ICommand command, Dictionary<String, ICommandParameter> parameters) {
             ICommandResult result = null;
 
             if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
@@ -139,7 +139,7 @@ namespace Procon.Core.Connections.Plugins {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public ICommandResult DisablePlugin(ICommand command, Dictionary<String, CommandParameter> parameters) {
+        public ICommandResult DisablePlugin(ICommand command, Dictionary<String, ICommandParameter> parameters) {
             ICommandResult result = null;
 
             if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {

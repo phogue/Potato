@@ -282,49 +282,49 @@ namespace Procon.Core.Variables {
             }
         }
 
-        protected ICommandResult CommandSetCollection(ICommand command, Dictionary<String, CommandParameter> parameters) {
+        protected ICommandResult CommandSetCollection(ICommand command, Dictionary<String, ICommandParameter> parameters) {
             String name = parameters["name"].First<String>();
             List<String> value = parameters["value"].All<String>();
 
             return this.Set(command, name, value);
         }
 
-        protected ICommandResult CommandSetSingular(ICommand command, Dictionary<String, CommandParameter> parameters) {
+        protected ICommandResult CommandSetSingular(ICommand command, Dictionary<String, ICommandParameter> parameters) {
             String name = parameters["name"].First<String>();
             String value = parameters["value"].First<String>();
 
             return this.Set(command, name, value);
         }
 
-        protected ICommandResult CommandSetACollection(ICommand command, Dictionary<String, CommandParameter> parameters) {
+        protected ICommandResult CommandSetACollection(ICommand command, Dictionary<String, ICommandParameter> parameters) {
             String name = parameters["name"].First<String>();
             List<String> value = parameters["value"].All<String>();
 
             return this.SetA(command, name, value);
         }
 
-        protected ICommandResult CommandSetASingular(ICommand command, Dictionary<String, CommandParameter> parameters) {
+        protected ICommandResult CommandSetASingular(ICommand command, Dictionary<String, ICommandParameter> parameters) {
             String name = parameters["name"].First<String>();
             String value = parameters["value"].First<String>();
 
             return this.SetA(command, name, value);
         }
 
-        protected ICommandResult CommandSetFCollection(ICommand command, Dictionary<String, CommandParameter> parameters) {
+        protected ICommandResult CommandSetFCollection(ICommand command, Dictionary<String, ICommandParameter> parameters) {
             String name = parameters["name"].First<String>();
             List<String> value = parameters["value"].All<String>();
 
             return this.SetF(command, name, value);
         }
 
-        protected ICommandResult CommandSetFSingular(ICommand command, Dictionary<String, CommandParameter> parameters) {
+        protected ICommandResult CommandSetFSingular(ICommand command, Dictionary<String, ICommandParameter> parameters) {
             String name = parameters["name"].First<String>();
             String value = parameters["value"].First<String>();
 
             return this.SetF(command, name, value);
         }
 
-        protected ICommandResult CommandGet(ICommand command, Dictionary<String, CommandParameter> parameters) {
+        protected ICommandResult CommandGet(ICommand command, Dictionary<String, ICommandParameter> parameters) {
             String name = parameters["name"].First<String>();
 
             return this.Get(command, name);

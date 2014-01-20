@@ -224,7 +224,7 @@ namespace Procon.Core.Connections {
             }
         }
 
-        public ICommandResult ConnectionQuery(ICommand command, Dictionary<String, CommandParameter> parameters) {
+        public ICommandResult ConnectionQuery(ICommand command, Dictionary<String, ICommandParameter> parameters) {
             ICommandResult result = null;
 
             if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
@@ -269,7 +269,7 @@ namespace Procon.Core.Connections {
             return result;
         }
 
-        public ICommandResult NetworkProtocolQueryPlayers(ICommand command, Dictionary<String, CommandParameter> parameters) {
+        public ICommandResult NetworkProtocolQueryPlayers(ICommand command, Dictionary<String, ICommandParameter> parameters) {
             ICommandResult result = null;
 
             if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
@@ -293,7 +293,7 @@ namespace Procon.Core.Connections {
             return result;
         }
 
-        public ICommandResult NetworkProtocolQuerySettings(ICommand command, Dictionary<String, CommandParameter> parameters) {
+        public ICommandResult NetworkProtocolQuerySettings(ICommand command, Dictionary<String, ICommandParameter> parameters) {
             ICommandResult result = null;
 
             if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
@@ -319,7 +319,7 @@ namespace Procon.Core.Connections {
             return result;
         }
 
-        public ICommandResult NetworkProtocolQueryBans(ICommand command, Dictionary<String, CommandParameter> parameters) {
+        public ICommandResult NetworkProtocolQueryBans(ICommand command, Dictionary<String, ICommandParameter> parameters) {
             ICommandResult result = null;
 
             if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
@@ -343,7 +343,7 @@ namespace Procon.Core.Connections {
             return result;
         }
 
-        public ICommandResult NetworkProtocolQueryMaps(ICommand command, Dictionary<String, CommandParameter> parameters) {
+        public ICommandResult NetworkProtocolQueryMaps(ICommand command, Dictionary<String, ICommandParameter> parameters) {
             ICommandResult result = null;
 
             if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
@@ -367,7 +367,7 @@ namespace Procon.Core.Connections {
             return result;
         }
 
-        public ICommandResult NetworkProtocolQueryMapPool(ICommand command, Dictionary<String, CommandParameter> parameters) {
+        public ICommandResult NetworkProtocolQueryMapPool(ICommand command, Dictionary<String, ICommandParameter> parameters) {
             ICommandResult result = null;
 
             if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
@@ -391,7 +391,7 @@ namespace Procon.Core.Connections {
             return result;
         }
 
-        public ICommandResult NetworkProtocolAction(ICommand command, Dictionary<String, CommandParameter> parameters) {
+        public ICommandResult NetworkProtocolAction(ICommand command, Dictionary<String, ICommandParameter> parameters) {
             ICommandResult result = null;
 
             INetworkAction action = parameters["action"].First<INetworkAction>();
@@ -414,7 +414,7 @@ namespace Procon.Core.Connections {
             return result;
         }
 
-        public ICommandResult NetworkProtocolActions(ICommand command, Dictionary<String, CommandParameter> parameters) {
+        public ICommandResult NetworkProtocolActions(ICommand command, Dictionary<String, ICommandParameter> parameters) {
             ICommandResult result = null;
 
             List<INetworkAction> actions = parameters["actions"].All<INetworkAction>();
@@ -520,7 +520,7 @@ namespace Procon.Core.Connections {
                                 Uid = chat.Now.Players.First().Uid
                             },
                             CommandType = CommandType.TextCommandsExecute,
-                            Parameters = new List<CommandParameter>() {
+                            Parameters = new List<ICommandParameter>() {
                                 new CommandParameter() {
                                     Data = {
                                         Content = new List<String>() {

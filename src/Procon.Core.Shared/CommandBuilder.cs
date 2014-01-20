@@ -21,7 +21,7 @@ namespace Procon.Core.Shared {
         public static ICommand DatabaseQuery(String group, params IDatabaseObject[] queries) {
             return new Command() {
                 CommandType = CommandType.DatabaseQuery,
-                Parameters = new List<CommandParameter>() {
+                Parameters = new List<ICommandParameter>() {
                     new CommandParameter() {
                         Data = {
                             Content = new List<String>() {
@@ -46,7 +46,7 @@ namespace Procon.Core.Shared {
         public static ICommand DatabaseQuery(params IDatabaseObject[] queries) {
             return new Command() {
                 CommandType = CommandType.DatabaseQuery,
-                Parameters = new List<CommandParameter>() {
+                Parameters = new List<ICommandParameter>() {
                     new CommandParameter() {
                         Data = {
                             Queries = new List<IDatabaseObject>(queries)
@@ -75,7 +75,7 @@ namespace Procon.Core.Shared {
         public static ICommand InstanceServiceMergePackage(String uri, String packageId) {
             return new Command() {
                 CommandType = CommandType.InstanceServiceMergePackage,
-                Parameters = new List<CommandParameter>() {
+                Parameters = new List<ICommandParameter>() {
                     new CommandParameter() {
                         Data = {
                             Content = new List<String>() {
@@ -102,7 +102,7 @@ namespace Procon.Core.Shared {
         public static ICommand InstanceServiceUninstallPackage(String packageId) {
             return new Command() {
                 CommandType = CommandType.InstanceServiceUninstallPackage,
-                Parameters = new List<CommandParameter>() {
+                Parameters = new List<ICommandParameter>() {
                     new CommandParameter() {
                         Data = {
                             Content = new List<String>() {
@@ -122,7 +122,7 @@ namespace Procon.Core.Shared {
         public static ICommand PackagesMergePackage(String packageId) {
             return new Command() {
                 CommandType = CommandType.PackagesMergePackage,
-                Parameters = new List<CommandParameter>() {
+                Parameters = new List<ICommandParameter>() {
                     new CommandParameter() {
                         Data = {
                             Content = new List<String>() {
@@ -142,7 +142,7 @@ namespace Procon.Core.Shared {
         public static ICommand PackagesUninstallPackage(String packageId) {
             return new Command() {
                 CommandType = CommandType.PackagesUninstallPackage,
-                Parameters = new List<CommandParameter>() {
+                Parameters = new List<ICommandParameter>() {
                     new CommandParameter() {
                         Data = {
                             Content = new List<String>() {
@@ -176,7 +176,7 @@ namespace Procon.Core.Shared {
                     Username = username
                 },
                 CommandType = CommandType.SecurityAccountAuthenticate,
-                Parameters = new List<CommandParameter>() {
+                Parameters = new List<ICommandParameter>() {
                     new CommandParameter() {
                         Data = {
                             Content = new List<String>() {
@@ -204,7 +204,7 @@ namespace Procon.Core.Shared {
         public static ICommand VariablesSet(String name, String value) {
             return new Command() {
                 CommandType = CommandType.VariablesSet,
-                Parameters = new List<CommandParameter>() {
+                Parameters = new List<ICommandParameter>() {
                     new CommandParameter() {
                         Data = {
                             Content = new List<String>() {
@@ -232,7 +232,7 @@ namespace Procon.Core.Shared {
         public static ICommand VariablesSet(String name, List<String> value) {
             return new Command() {
                 CommandType = CommandType.VariablesSet,
-                Parameters = new List<CommandParameter>() {
+                Parameters = new List<ICommandParameter>() {
                     new CommandParameter() {
                         Data = {
                             Content = new List<String>() {
@@ -278,7 +278,7 @@ namespace Procon.Core.Shared {
         public static ICommand VariablesSetA(String name, String value) {
             return new Command() {
                 CommandType = CommandType.VariablesSetA,
-                Parameters = new List<CommandParameter>() {
+                Parameters = new List<ICommandParameter>() {
                     new CommandParameter() {
                         Data = {
                             Content = new List<String>() {
@@ -306,7 +306,7 @@ namespace Procon.Core.Shared {
         public static ICommand VariablesSetA(String name, List<String> value) {
             return new Command() {
                 CommandType = CommandType.VariablesSetA,
-                Parameters = new List<CommandParameter>() {
+                Parameters = new List<ICommandParameter>() {
                     new CommandParameter() {
                         Data = {
                             Content = new List<String>() {
@@ -352,7 +352,7 @@ namespace Procon.Core.Shared {
         public static ICommand VariablesSetF(String name, String value) {
             return new Command() {
                 CommandType = CommandType.VariablesSetF,
-                Parameters = new List<CommandParameter>() {
+                Parameters = new List<ICommandParameter>() {
                     new CommandParameter() {
                         Data = {
                             Content = new List<String>() {
@@ -389,7 +389,7 @@ namespace Procon.Core.Shared {
         public static ICommand VariablesGet(String name) {
             return new Command() {
                 CommandType = CommandType.VariablesGet,
-                Parameters = new List<CommandParameter>() {
+                Parameters = new List<ICommandParameter>() {
                     new CommandParameter() {
                         Data = {
                             Content = new List<String>() {

@@ -192,7 +192,7 @@ namespace Procon.Core.Localization {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public ICommandResult Localize(ICommand command, Dictionary<String, CommandParameter> parameters) {
+        public ICommandResult Localize(ICommand command, Dictionary<String, ICommandParameter> parameters) {
 
             // <param name="languageCode">The ietf language tag.</param>
             // <param name="namespace">The namespace to limit the search for the name to.</param>
@@ -256,7 +256,7 @@ namespace Procon.Core.Localization {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public ICommandResult SingleParameterLocalize(ICommand command, Dictionary<String, CommandParameter> parameters) {
+        public ICommandResult SingleParameterLocalize(ICommand command, Dictionary<String, ICommandParameter> parameters) {
             String languageCode = parameters["languageCode"].First<String>();
             String @namespace = parameters["namespace"].First<String>();
             String name = parameters["name"].First<String>();
@@ -271,7 +271,7 @@ namespace Procon.Core.Localization {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public ICommandResult ParameterlessLocalize(ICommand command, Dictionary<String, CommandParameter> parameters) {
+        public ICommandResult ParameterlessLocalize(ICommand command, Dictionary<String, ICommandParameter> parameters) {
 
             // <param name="languageCode">The ietf language tag.</param>
             // <param name="namespace">The namespace to limit the search for the name to.</param>

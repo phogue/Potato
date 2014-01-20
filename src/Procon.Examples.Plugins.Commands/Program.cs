@@ -77,7 +77,7 @@ namespace Procon.Examples.Plugins.Commands {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        protected ICommandResult SingleParameterCommand(ICommand command, Dictionary<String, CommandParameter> parameters) {
+        protected ICommandResult SingleParameterCommand(ICommand command, Dictionary<String, ICommandParameter> parameters) {
             String text = parameters["text"].First<String>();
 
             command.Result.Message = text;
@@ -91,7 +91,7 @@ namespace Procon.Examples.Plugins.Commands {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        protected ICommandResult SingleConvertedParameterCommand(ICommand command, Dictionary<String, CommandParameter> parameters) {
+        protected ICommandResult SingleConvertedParameterCommand(ICommand command, Dictionary<String, ICommandParameter> parameters) {
             int number = parameters["number"].First<int>();
 
             command.Result.Message = (number * 2).ToString(CultureInfo.InvariantCulture);
@@ -105,7 +105,7 @@ namespace Procon.Examples.Plugins.Commands {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        protected ICommandResult NoParameterCommand(ICommand command, Dictionary<String, CommandParameter> parameters) {
+        protected ICommandResult NoParameterCommand(ICommand command, Dictionary<String, ICommandParameter> parameters) {
             command.Result.Message = "NoParameterCommandSetResult";
 
             return command.Result;

@@ -46,7 +46,7 @@ namespace Procon.Core.Shared {
         /// <summary>
         /// The raw parameters to be passed into the executable command.
         /// </summary>
-        List<CommandParameter> Parameters { get; set; }
+        List<ICommandParameter> Parameters { get; set; }
 
         /// <summary>
         /// Holds the authentication information required to execute the command.

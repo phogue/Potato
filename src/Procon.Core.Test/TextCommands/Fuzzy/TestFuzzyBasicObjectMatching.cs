@@ -1,5 +1,6 @@
 ﻿#region
 
+using System;
 using System.Collections.Generic;
 using NUnit.Framework;
 using Procon.Core.Shared;
@@ -17,7 +18,7 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
                     Username = "Phogue"
                 },
                 Origin = CommandOrigin.Local
-            }, new Dictionary<string, CommandParameter>() {
+            }, new Dictionary<String, ICommandParameter>() {
                 {"text", new CommandParameter() {
                     Data = {
                         Content = new List<string>() {
@@ -59,7 +60,7 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
                     Username = "Phogue"
                 },
                 Origin = CommandOrigin.Local
-            }, new Dictionary<string, CommandParameter>() {
+            }, new Dictionary<String, ICommandParameter>() {
                 {"text", new CommandParameter() {
                     Data = {
                         Content = new List<string>() {
@@ -80,7 +81,7 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
                     Username = "Phogue"
                 },
                 Origin = CommandOrigin.Local
-            }, new Dictionary<string, CommandParameter>() {
+            }, new Dictionary<String, ICommandParameter>() {
                 {"text", new CommandParameter() {
                     Data = {
                         Content = new List<string>() {

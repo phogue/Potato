@@ -108,7 +108,7 @@ namespace Myrcon.Plugins.Test {
             return this.Commands.Select(x => x.Commands.FirstOrDefault()).ToList();
         }
 
-        protected ICommandResult HelpCommand(ICommand command, Dictionary<String, CommandParameter> parameters) {
+        protected ICommandResult HelpCommand(ICommand command, Dictionary<String, ICommandParameter> parameters) {
             ICommandResult e = parameters["e"].First<ICommandResult>();
 
             NetworkAction output = new NetworkAction() {
@@ -150,7 +150,7 @@ namespace Myrcon.Plugins.Test {
             return command.Result;
         }
 
-        protected ICommandResult KillCommand(ICommand command, Dictionary<String, CommandParameter> parameters) {
+        protected ICommandResult KillCommand(ICommand command, Dictionary<String, ICommandParameter> parameters) {
             ICommandResult e = parameters["e"].First<ICommandResult>();
 
             TextCommandMatchModel match = e.Now.TextCommandMatches.First();
@@ -191,7 +191,7 @@ namespace Myrcon.Plugins.Test {
             return command.Result;
         }
 
-        protected ICommandResult TestCommand(ICommand command, Dictionary<String, CommandParameter> parameters) {
+        protected ICommandResult TestCommand(ICommand command, Dictionary<String, ICommandParameter> parameters) {
             ICommandResult e = parameters["e"].First<ICommandResult>();
 
             NetworkAction output = new NetworkAction() {
@@ -239,13 +239,13 @@ namespace Myrcon.Plugins.Test {
             return command.Result;
         }
 
-        public ICommandResult RegisterTextCommandPreview(ICommand command, Dictionary<String, CommandParameter> parameters) {
+        public ICommandResult RegisterTextCommandPreview(ICommand command, Dictionary<String, ICommandParameter> parameters) {
             //TextCommand textCommand = parameters["textCommand"].First<TextCommand>();
 
             return command.Result;
         }
 
-        public ICommandResult RegisterTextCommandExecuted(ICommand command, Dictionary<String, CommandParameter> parameters) {
+        public ICommandResult RegisterTextCommandExecuted(ICommand command, Dictionary<String, ICommandParameter> parameters) {
             //TextCommand textCommand = parameters["textCommand"].First<TextCommand>();
 
             return command.Result;
@@ -267,7 +267,7 @@ namespace Myrcon.Plugins.Test {
                     ScopeModel = new CommandScopeModel() {
                         ConnectionGuid = this.ConnectionGuid
                     },
-                    Parameters = new List<CommandParameter>() {
+                    Parameters = new List<ICommandParameter>() {
                         new CommandParameter() {
                             Data = {
                                 TextCommands = new List<TextCommandModel>() {
@@ -290,7 +290,7 @@ namespace Myrcon.Plugins.Test {
                     ScopeModel = new CommandScopeModel() {
                         ConnectionGuid = this.ConnectionGuid
                     },
-                    Parameters = new List<CommandParameter>() {
+                    Parameters = new List<ICommandParameter>() {
                         new CommandParameter() {
                             Data = {
                                 TextCommands = new List<TextCommandModel>() {
@@ -313,7 +313,7 @@ namespace Myrcon.Plugins.Test {
                     ScopeModel = new CommandScopeModel() {
                         ConnectionGuid = this.ConnectionGuid
                     },
-                    Parameters = new List<CommandParameter>() {
+                    Parameters = new List<ICommandParameter>() {
                         new CommandParameter() {
                             Data = {
                                 TextCommands = new List<TextCommandModel>() {

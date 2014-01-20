@@ -42,7 +42,7 @@ namespace Procon.Core.Test.TextCommands {
             textCommands.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.TextCommandsRegister,
-                Parameters = new List<CommandParameter>() {
+                Parameters = new List<ICommandParameter>() {
                     new CommandParameter() {
                         Data = {
                             TextCommands = new List<TextCommandModel>() {
@@ -167,7 +167,7 @@ namespace Procon.Core.Test.TextCommands {
             textCommands.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.TextCommandsRegister,
-                Parameters = new List<CommandParameter>() {
+                Parameters = new List<ICommandParameter>() {
                     new CommandParameter() {
                         Data = {
                             TextCommands = new List<TextCommandModel>() {
@@ -222,7 +222,7 @@ namespace Procon.Core.Test.TextCommands {
             textCommands.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.TextCommandsRegister,
-                Parameters = new List<CommandParameter>() {
+                Parameters = new List<ICommandParameter>() {
                     new CommandParameter() {
                         Data = {
                             TextCommands = new List<TextCommandModel>() {

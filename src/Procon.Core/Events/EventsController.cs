@@ -212,7 +212,7 @@ namespace Procon.Core.Events {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public ICommandResult FetchEventsSince(ICommand command, Dictionary<String, CommandParameter> parameters) {
+        public ICommandResult FetchEventsSince(ICommand command, Dictionary<String, ICommandParameter> parameters) {
             ICommandResult result = null;
 
             ulong eventId = parameters["eventId"].First<ulong>();

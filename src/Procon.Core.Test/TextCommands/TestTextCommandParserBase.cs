@@ -431,7 +431,7 @@ namespace Procon.Core.Test.TextCommands {
                     Username = "Phogue"
                 },
                 Origin = CommandOrigin.Local
-            }, new Dictionary<string, CommandParameter>() {
+            }, new Dictionary<String, ICommandParameter>() {
                 {"text", new CommandParameter() {
                     Data = {
                         Content = new List<string>() {

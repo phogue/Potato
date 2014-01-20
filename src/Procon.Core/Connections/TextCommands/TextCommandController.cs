@@ -191,7 +191,7 @@ namespace Procon.Core.Connections.TextCommands {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns>The generated event, if any.</returns>
-        public ICommandResult ExecuteTextCommand(ICommand command, Dictionary<String, CommandParameter> parameters) {
+        public ICommandResult ExecuteTextCommand(ICommand command, Dictionary<String, ICommandParameter> parameters) {
             ICommandResult result = null;
 
             String text = parameters["text"].First<String>();
@@ -222,7 +222,7 @@ namespace Procon.Core.Connections.TextCommands {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns>The generated event, if any.</returns>
-        public ICommandResult PreviewTextCommand(ICommand command, Dictionary<String, CommandParameter> parameters) {
+        public ICommandResult PreviewTextCommand(ICommand command, Dictionary<String, ICommandParameter> parameters) {
             ICommandResult result = null;
 
             String text = parameters["text"].First<String>();
@@ -251,7 +251,7 @@ namespace Procon.Core.Connections.TextCommands {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public ICommandResult RegisterTextCommand(ICommand command, Dictionary<String, CommandParameter> parameters) {
+        public ICommandResult RegisterTextCommand(ICommand command, Dictionary<String, ICommandParameter> parameters) {
             ICommandResult result = null;
 
             TextCommandModel textCommand = parameters["textCommand"].First<TextCommandModel>();
@@ -301,7 +301,7 @@ namespace Procon.Core.Connections.TextCommands {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public ICommandResult UnregisterTextCommand(ICommand command, Dictionary<String, CommandParameter> parameters) {
+        public ICommandResult UnregisterTextCommand(ICommand command, Dictionary<String, ICommandParameter> parameters) {
             ICommandResult result = null;
 
             TextCommandModel textCommand = parameters["textCommand"].First<TextCommandModel>();

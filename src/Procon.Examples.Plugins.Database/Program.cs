@@ -41,7 +41,7 @@ namespace Procon.Examples.Plugins.Database {
             });
         }
 
-        protected ICommandResult SaveOneUser(ICommand command, Dictionary<String, CommandParameter> parameters) {
+        protected ICommandResult SaveOneUser(ICommand command, Dictionary<String, ICommandParameter> parameters) {
             command.Result.Status = CommandResultType.Success;
             command.Result.Success = true;
 
@@ -65,7 +65,7 @@ namespace Procon.Examples.Plugins.Database {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        protected ICommandResult FindOneUser(ICommand command, Dictionary<String, CommandParameter> parameters) {
+        protected ICommandResult FindOneUser(ICommand command, Dictionary<String, ICommandParameter> parameters) {
             // Grab the first result from the table.
             ICommandResult fetchResult = this.Bubble(
                 CommandBuilder.DatabaseQuery(

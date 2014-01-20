@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using Newtonsoft.Json.Linq;
+using Procon.Core.Shared.Serialization;
 
 namespace Procon.Core.Shared {
     /// <summary>
@@ -15,7 +16,7 @@ namespace Procon.Core.Shared {
         /// </summary>
         protected readonly Dictionary<CommandDispatch, CommandDispatchHandler> CommandDispatchHandlers = new Dictionary<CommandDispatch, CommandDispatchHandler>();
 
-        protected delegate ICommandResult CommandDispatchHandler(ICommand command, Dictionary<String, CommandParameter> parameters);
+        protected delegate ICommandResult CommandDispatchHandler(ICommand command, Dictionary<String, ICommandParameter> parameters);
 
         /// <summary>
         /// All objects to tunnel downwards
@@ -117,7 +118,7 @@ namespace Procon.Core.Shared {
         protected void Execute(ICommand command, IConfig config) {
             if (config != null && config.Root != null) {
 
-                foreach (var loadedCommand in config.RootOf(this.GetType()).Children<JObject>().Select(item => item.ToObject<Command>())) {
+                foreach (var loadedCommand in config.RootOf(this.GetType()).Children<JObject>().Select(item => item.ToObject<Command>(JsonSerialization.Minimal))) {
                     if (loadedCommand != null && loadedCommand.Name != null) {
                         command.ParseCommandType(loadedCommand.Name);
                         command.Parameters = loadedCommand.Parameters;
@@ -137,8 +138,8 @@ namespace Procon.Core.Shared {
         /// <param name="expectedParameterTypes"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        private Dictionary<String, CommandParameter> BuildParameterDictionary(IList<CommandParameterType> expectedParameterTypes, IList<CommandParameter> parameters) {
-            Dictionary<String, CommandParameter> parameterDictionary = new Dictionary<string, CommandParameter>();
+        private Dictionary<String, ICommandParameter> BuildParameterDictionary(IList<CommandParameterType> expectedParameterTypes, IList<ICommandParameter> parameters) {
+            Dictionary<String, ICommandParameter> parameterDictionary = new Dictionary<String, ICommandParameter>();
 
             // If we're not expecting any parameters
             if (expectedParameterTypes != null) {
@@ -180,7 +181,7 @@ namespace Procon.Core.Shared {
             foreach (var dispatch in this.CommandDispatchHandlers.Where(dispatch => dispatch.Key.CommandAttributeType == attributeType && dispatch.Key.Name == command.Name)) {
                 
                 // Check if we can build a parameter list.
-                Dictionary<String, CommandParameter> parameters = this.BuildParameterDictionary(dispatch.Key.ParameterTypes, command.Parameters);
+                Dictionary<String, ICommandParameter> parameters = this.BuildParameterDictionary(dispatch.Key.ParameterTypes, command.Parameters);
 
                 if (parameters != null) {
                     command.Result = dispatch.Value(command, parameters);

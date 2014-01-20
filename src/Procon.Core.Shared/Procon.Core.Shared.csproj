@@ -47,6 +47,7 @@
     <Compile Include="Events\IGenericEvent.cs" />
     <Compile Include="ICommand.cs" />
     <Compile Include="ICommandData.cs" />
+    <Compile Include="ICommandParameter.cs" />
     <Compile Include="ICommandRequest.cs" />
     <Compile Include="ICommandResult.cs" />
     <Compile Include="Models\CommandAuthenticationModel.cs" />

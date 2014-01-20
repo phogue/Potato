@@ -9,10 +9,11 @@ using Procon.Net.Shared.Actions;
 using Procon.Net.Shared.Models;
 
 namespace Procon.Core.Shared {
-
+    /// <summary>
+    /// A single parameter to be used in a command
+    /// </summary>
     [Serializable]
-    public sealed class CommandParameter {
-
+    public sealed class CommandParameter : ICommandParameter {
         /// <summary>
         /// Quick list to check if a type is known to us or not
         /// </summary>
@@ -50,8 +51,11 @@ namespace Procon.Core.Shared {
         /// <summary>
         /// The data stored in this parameter.
         /// </summary>
-        public CommandData Data { get; set; }
+        public ICommandData Data { get; set; }
 
+        /// <summary>
+        /// Initializes the parameter with default values.
+        /// </summary>
         public CommandParameter() {
             this.Data = new CommandData();
         }
@@ -152,18 +156,10 @@ namespace Procon.Core.Shared {
             return all;
         } 
 
-        /// <summary>
-        /// Checks if this parameter has a specific data type.
-        /// </summary>
-        /// <returns></returns>
         public bool HasOne<T>(bool convert = true) {
             return this.HasOne(typeof(T), convert);
         }
 
-        /// <summary>
-        /// Checks if this parameter has a specific data type.
-        /// </summary>
-        /// <returns></returns>
         public bool HasOne(Type t, bool convert = true) {
             bool hasOne = false;
 
@@ -187,20 +183,10 @@ namespace Procon.Core.Shared {
             return hasOne;
         }
 
-        /// <summary>
-        /// Checks if more than one exists of a type, specifying that a collection of objects is currently set.
-        /// </summary>
-        /// <returns></returns>
         public bool HasMany<T>(bool convert = true) {
             return this.HasMany(typeof(T), convert);
         }
 
-        /// <summary>
-        /// Checks if more than one exists of a type, specifying that a collection of objects is currently set.
-        /// </summary>
-        /// <param name="t"></param>
-        /// <param name="convert">True if a specific value of that type cannot be found then a conversion should be looked for.</param>
-        /// <returns></returns>
         public bool HasMany(Type t, bool convert = true) {
             bool hasMany = false;
 
@@ -229,25 +215,15 @@ namespace Procon.Core.Shared {
                 }
             }
 
-
             return hasMany;
         }
 
-        /// <summary>
-        /// Fetches the first matching object
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <returns></returns>
         public T First<T>(bool convert = true) {
             Object value = this.First(typeof(T), convert);
 
             return value != null ? (T)value : default(T);
         }
 
-        /// <summary>
-        /// Fetches the first matching object
-        /// </summary>
-        /// <returns></returns>
         public Object First(Type t, bool convert = true) {
             Object result = null;
 
@@ -278,10 +254,6 @@ namespace Procon.Core.Shared {
             return result;
         }
 
-        /// <summary>
-        /// Fetches all of the objects of the specified type.
-        /// </summary>
-        /// <returns></returns>
         public Object All(Type t, bool convert = true) {
             Object result = null;
 
@@ -311,11 +283,6 @@ namespace Procon.Core.Shared {
             return result;
         }
 
-        /// <summary>
-        /// Fetches all of the objects of the specified type.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <returns></returns>
         public List<T> All<T>() {
             List<T> result = new List<T>();
 
@@ -347,19 +314,6 @@ namespace Procon.Core.Shared {
                         enumValue = Enum.Parse(type, stringValue);
                     }
                 }
-                /* This was functional, but I don't beleive we were using it (and I can't see why we would at the moment?)
-                else {
-                    int? val = (int?)System.Convert.ChangeType(value.ToString(), typeof(int));
-
-                    if (val.HasValue == true && Enum.IsDefined(type, val) == true) {
-                        String enumName = Enum.GetName(type, value);
-
-                        if (enumName != null) {
-                            enumValue = Enum.Parse(type, enumName);
-                        }
-                    }
-                }
-                */
             }
 
             return enumValue;

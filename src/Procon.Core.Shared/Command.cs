@@ -36,7 +36,7 @@ namespace Procon.Core.Shared {
         [JsonIgnore]
         public ICommandRequest Request { get; set; }
 
-        public List<CommandParameter> Parameters { get; set; }
+        public List<ICommandParameter> Parameters { get; set; }
 
         public CommandAuthenticationModel Authentication { get; set; }
 
@@ -74,7 +74,7 @@ namespace Procon.Core.Shared {
             this.Authentication = command.Authentication;
             this.Origin = command.Origin;
             this.ScopeModel = command.ScopeModel;
-            this.Parameters = new List<CommandParameter>(command.Parameters ?? new List<CommandParameter>());
+            this.Parameters = new List<ICommandParameter>(command.Parameters ?? new List<ICommandParameter>());
         }
 
         public ICommand ToConfigCommand() {

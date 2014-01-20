@@ -40,7 +40,7 @@ namespace Procon.Core.Shared.Test.ExecutableCommands.Objects {
         /// <summary>
         ///     Sets the value of the test flag.
         /// </summary>
-        public ICommandResult SetTestFlagInteger(ICommand command, Dictionary<String, CommandParameter> parameters) {
+        public ICommandResult SetTestFlagInteger(ICommand command, Dictionary<String, ICommandParameter> parameters) {
             int value = parameters["value"].First<int>();
 
             TestNumber = value;
@@ -63,7 +63,7 @@ namespace Procon.Core.Shared.Test.ExecutableCommands.Objects {
         /// <summary>
         ///     Sets the value of the test flag.
         /// </summary>
-        public ICommandResult SetTestFlagFloat(ICommand command, Dictionary<String, CommandParameter> parameters) {
+        public ICommandResult SetTestFlagFloat(ICommand command, Dictionary<String, ICommandParameter> parameters) {
             float value = parameters["value"].First<float>();
 
             TestNumber = (int) value;

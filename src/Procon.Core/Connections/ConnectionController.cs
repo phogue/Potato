@@ -34,7 +34,7 @@ namespace Procon.Core.Connections {
         /// <summary>
         /// Text command controller to pipe all text chats through for analysis of text commands.
         /// </summary>
-        public ITextCommandController TextCommands { get; protected set; }
+        public ICoreController TextCommands { get; protected set; }
 
         /// <summary>
         /// The instance of procon that owns this connection.
@@ -542,7 +542,9 @@ namespace Procon.Core.Connections {
                     String prefix = chat.Now.Content.First().First().ToString(CultureInfo.InvariantCulture);
                     String text = chat.Now.Content.First().Remove(0, 1);
 
-                    if ((prefix = this.TextCommands.GetValidTextCommandPrefix(prefix)) != null) {
+                    bool execute = prefix == this.Shared.Variables.Get<String>(CommonVariableNames.TextCommandPublicPrefix) || prefix == this.Shared.Variables.Get<String>(CommonVariableNames.TextCommandProtectedPrefix) || prefix == this.Shared.Variables.Get<String>(CommonVariableNames.TextCommandPrivatePrefix);
+
+                    if (execute == true) {
                         this.Tunnel(new Command() {
                             Origin = CommandOrigin.Plugin,
                             Authentication = {

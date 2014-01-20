@@ -12,7 +12,7 @@ namespace Procon.Core.Connections.TextCommands {
     /// <summary>
     /// Manages registering, dispatching text commands
     /// </summary>
-    public class TextCommandController : CoreController, ISharedReferenceAccess, ITextCommandController {
+    public class TextCommandController : CoreController, ISharedReferenceAccess {
         /// <summary>
         /// Full list of text commands to check against.
         /// </summary>
@@ -335,18 +335,6 @@ namespace Procon.Core.Connections.TextCommands {
             }
             else {
                 result = CommandResult.InsufficientPermissions;
-            }
-
-            return result;
-        }
-
-        public String GetValidTextCommandPrefix(String prefix) {
-            String result = null;
-
-            if (prefix == this.Shared.Variables.Get<String>(CommonVariableNames.TextCommandPublicPrefix) ||
-                prefix == this.Shared.Variables.Get<String>(CommonVariableNames.TextCommandProtectedPrefix) ||
-                prefix == this.Shared.Variables.Get<String>(CommonVariableNames.TextCommandPrivatePrefix)) {
-                result = prefix;
             }
 
             return result;

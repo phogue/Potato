@@ -44,34 +44,6 @@ namespace Procon.Core.Test.TextCommands {
             Assert.IsNull(textCommands.Connection);
         }
 
-        [Test]
-        public void TestTextCommandControllerPrefixInvalid() {
-            var textCommands = new TextCommandController();
-
-            Assert.IsNull(textCommands.GetValidTextCommandPrefix("gg"));
-        }
-
-        [Test]
-        public void TestTextCommandControllerPrefixValidPrivate() {
-            var textCommands = new TextCommandController();
-
-            Assert.AreEqual("@", textCommands.GetValidTextCommandPrefix("@"));
-        }
-
-        [Test]
-        public void TestTextCommandControllerPrefixValidProtected() {
-            var textCommands = new TextCommandController();
-
-            Assert.AreEqual("#", textCommands.GetValidTextCommandPrefix("#"));
-        }
-
-        [Test]
-        public void TestTextCommandControllerPrefixValidPublic() {
-            var textCommands = new TextCommandController();
-
-            Assert.AreEqual("!", textCommands.GetValidTextCommandPrefix("!"));
-        }
-
         /// <summary>
         ///     Tests that a text command will clean itself up correctly, at least to a point
         ///     where the command would become inert.

@@ -20,7 +20,7 @@ namespace Procon.Examples.Plugins.Support {
 
         public Program() : base() {
 
-            this.CommandDispatchers.AddRange(new List<CommandDispatch>() {
+            this.CommandDispatchers.AddRange(new List<ICommandDispatch>() {
                 new CommandDispatch() {
                     Name = "TestSupportToKillPlayersUsingBranchBuilder",
                     CommandAttributeType = CommandAttributeType.Handler,

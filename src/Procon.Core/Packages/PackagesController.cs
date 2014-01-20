@@ -49,7 +49,7 @@ namespace Procon.Core.Packages {
                 }
             };
 
-            this.CommandDispatchers.AddRange(new List<CommandDispatch>() {
+            this.CommandDispatchers.AddRange(new List<ICommandDispatch>() {
                 new CommandDispatch() {
                     CommandType = CommandType.PackagesMergePackage,
                     ParameterTypes = new List<CommandParameterType>() {

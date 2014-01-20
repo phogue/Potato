@@ -14,7 +14,7 @@ namespace Procon.Core.Shared {
         /// <summary>
         /// List of dispatch attributes to the method to call, provided the parameter list matches.
         /// </summary>
-        protected readonly List<CommandDispatch> CommandDispatchers = new List<CommandDispatch>(); 
+        protected readonly List<ICommandDispatch> CommandDispatchers = new List<ICommandDispatch>(); 
 
         /// <summary>
         /// All objects to tunnel downwards

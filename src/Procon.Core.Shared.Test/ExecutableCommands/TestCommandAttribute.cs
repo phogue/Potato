@@ -1,6 +1,5 @@
 ﻿#region
 
-using System;
 using NUnit.Framework;
 
 #endregion
@@ -8,21 +7,6 @@ using NUnit.Framework;
 namespace Procon.Core.Shared.Test.ExecutableCommands {
     [TestFixture]
     public class TestCommandAttribute {
-        /// <summary>
-        ///     Tests the command attribute can be disposed properly, making the attribute inert.
-        /// </summary>
-        [Test]
-        public void TestCommandAttributeDisposal() {
-            var command = new CommandDispatch() {
-                Name = "dispose"
-            };
-
-            command.Dispose();
-
-            Assert.IsNull(command.Name);
-            Assert.AreEqual(CommandType.None, command.CommandType);
-        }
-
         /// <summary>
         ///     Tests that a command type will pass on the value as a string to the Name attribute.
         /// </summary>
@@ -41,7 +25,7 @@ namespace Procon.Core.Shared.Test.ExecutableCommands {
         /// </summary>
         [Test]
         public void TestCommandAttributeParseInvalidCommandType() {
-            CommandDispatch command = new CommandDispatch().ParseCommandType("CustomCommand");
+            ICommandDispatch command = new CommandDispatch().ParseCommandType("CustomCommand");
 
             Assert.AreEqual("CustomCommand", command.Name);
             Assert.AreEqual(CommandType.None, command.CommandType);
@@ -52,7 +36,7 @@ namespace Procon.Core.Shared.Test.ExecutableCommands {
         /// </summary>
         [Test]
         public void TestCommandAttributeParseValidCommandType() {
-            CommandDispatch command = new CommandDispatch().ParseCommandType("InstanceAddConnection");
+            ICommandDispatch command = new CommandDispatch().ParseCommandType("InstanceAddConnection");
 
             Assert.AreEqual("InstanceAddConnection", command.Name);
             Assert.AreEqual(CommandType.InstanceAddConnection, command.CommandType);

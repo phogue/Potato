@@ -10,7 +10,7 @@ namespace Myrcon.Plugins.Test.Tests {
     public class TestPluginsWebUi : CoreController {
 
         public TestPluginsWebUi() : base() {
-            this.CommandDispatchers.AddRange(new List<CommandDispatch>() {
+            this.CommandDispatchers.AddRange(new List<ICommandDispatch>() {
                 new CommandDispatch() {
                     Name = "/",
                     Handler = this.TestPluginIndex

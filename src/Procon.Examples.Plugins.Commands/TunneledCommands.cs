@@ -10,7 +10,7 @@ namespace Procon.Examples.Plugins.Commands {
     public class TunneledCommands : CoreController {
 
         public TunneledCommands() : base() {
-            this.CommandDispatchers.AddRange(new List<CommandDispatch>() {
+            this.CommandDispatchers.AddRange(new List<ICommandDispatch>() {
                 new CommandDispatch() {
                     Name = "ThisCommandIsInAChildObject",
                     CommandAttributeType = CommandAttributeType.Handler,

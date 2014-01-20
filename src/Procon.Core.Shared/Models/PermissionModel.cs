@@ -6,7 +6,27 @@ namespace Procon.Core.Shared.Models {
     /// Keep it familier with what people know.
     /// </summary>
     [Serializable]
-    public class PermissionModel : CommandDispatch, IDisposable {
+    public class PermissionModel : IDisposable {
+        /// <summary>
+        /// The command being executed. This is the only value used to match up a command.
+        /// </summary>
+        public String Name { get; set; }
+
+        /// <summary>
+        /// The command to be executed, will be converted to a string in Name
+        /// </summary>
+        public CommandType CommandType {
+            get { return this._mCommandType; }
+            set {
+                this._mCommandType = value;
+
+                if (this._mCommandType != CommandType.None) {
+                    this.Name = value.ToString();
+                }
+            }
+        }
+        private CommandType _mCommandType;
+
         /// <summary>
         /// The power/value they have for this permission
         /// null means no value has been set for this group.
@@ -20,9 +40,9 @@ namespace Procon.Core.Shared.Models {
             this.Authority = null;
         }
 
-        public new void Dispose() {
-            base.Dispose();
-
+        public void Dispose() {
+            this.CommandType = CommandType.None;
+            this.Name = null;
             this.Authority = null;
         }
     }

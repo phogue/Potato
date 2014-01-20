@@ -40,7 +40,7 @@ namespace Procon.Core.Variables {
             this.ArchiveVariables = new List<VariableModel>();
             this.FlashVariables = new List<VariableModel>();
 
-            this.CommandDispatchers.AddRange(new List<CommandDispatch>() {
+            this.CommandDispatchers.AddRange(new List<ICommandDispatch>() {
                 new CommandDispatch() {
                     CommandType = CommandType.VariablesSet,
                     ParameterTypes = new List<CommandParameterType>() {

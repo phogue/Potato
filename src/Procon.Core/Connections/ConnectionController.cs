@@ -60,7 +60,7 @@ namespace Procon.Core.Connections {
 
             this.ConnectionModel = new ConnectionModel();
 
-            this.CommandDispatchers.AddRange(new List<CommandDispatch>() {
+            this.CommandDispatchers.AddRange(new List<ICommandDispatch>() {
                 new CommandDispatch() {
                     CommandType = CommandType.ConnectionQuery,
                     Handler = this.ConnectionQuery

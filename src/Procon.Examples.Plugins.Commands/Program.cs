@@ -30,7 +30,7 @@ namespace Procon.Examples.Plugins.Commands {
                 }
             };
 
-            this.CommandDispatchers.AddRange(new List<CommandDispatch>() {
+            this.CommandDispatchers.AddRange(new List<ICommandDispatch>() {
                 new CommandDispatch() {
                     Name = "SingleParameterCommand",
                     CommandAttributeType = CommandAttributeType.Handler,

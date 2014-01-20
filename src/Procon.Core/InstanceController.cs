@@ -91,7 +91,7 @@ namespace Procon.Core {
 
             this.EventsConsole = new EventsConsoleController();
 
-            this.CommandDispatchers.AddRange(new List<CommandDispatch>() {
+            this.CommandDispatchers.AddRange(new List<ICommandDispatch>() {
                 new CommandDispatch() {
                     CommandType = CommandType.InstanceServiceMergePackage,
                     ParameterTypes = new List<CommandParameterType>() {

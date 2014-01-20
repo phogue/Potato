@@ -10,7 +10,7 @@ using Procon.Net.Shared.Models;
 namespace Procon.Examples.Plugins.Actions {
     public class Program : PluginController {
         public Program() : base() {
-            this.CommandDispatchers.AddRange(new List<CommandDispatch>() {
+            this.CommandDispatchers.AddRange(new List<ICommandDispatch>() {
                 new CommandDispatch() {
                     Name = "KickPlayer",
                     CommandAttributeType = CommandAttributeType.Handler,

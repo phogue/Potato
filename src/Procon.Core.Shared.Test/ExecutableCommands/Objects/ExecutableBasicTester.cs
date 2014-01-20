@@ -11,7 +11,7 @@ namespace Procon.Core.Shared.Test.ExecutableCommands.Objects {
         private int _testNumber;
 
         public ExecutableBasicTester() : base() {
-            this.CommandDispatchers.AddRange(new List<CommandDispatch>() {
+            this.CommandDispatchers.AddRange(new List<ICommandDispatch>() {
                 new CommandDispatch() {
                     CommandType = CommandType.VariablesSet,
                     ParameterTypes = new List<CommandParameterType>() {

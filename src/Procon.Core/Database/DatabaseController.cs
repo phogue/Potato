@@ -54,7 +54,7 @@ namespace Procon.Core.Database {
                 }
             };
 
-            this.CommandDispatchers.AddRange(new List<CommandDispatch>() {
+            this.CommandDispatchers.AddRange(new List<ICommandDispatch>() {
                 new CommandDispatch() {
                     CommandType = CommandType.DatabaseQuery,
                     ParameterTypes = new List<CommandParameterType>() {

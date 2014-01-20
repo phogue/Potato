@@ -19,7 +19,7 @@ namespace Procon.Examples.Plugins.UserInterface {
 
         public Program() : base() {
 
-            this.CommandDispatchers.AddRange(new List<CommandDispatch>() {
+            this.CommandDispatchers.AddRange(new List<ICommandDispatch>() {
                 new CommandDispatch() {
                     Name = "/",
                     CommandAttributeType = CommandAttributeType.Handler,

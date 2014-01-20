@@ -8,7 +8,7 @@ namespace Myrcon.Plugins.Test.Tests {
     public class TestPluginsIsolation : CoreController {
 
         public TestPluginsIsolation() : base() {
-            this.CommandDispatchers.AddRange(new List<CommandDispatch>() {
+            this.CommandDispatchers.AddRange(new List<ICommandDispatch>() {
                 new CommandDispatch() {
                     Name = "TestPluginsIsolationCleanCurrentAppDomain",
                     ParameterTypes = new List<CommandParameterType>() {

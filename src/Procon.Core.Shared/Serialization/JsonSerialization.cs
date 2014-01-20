@@ -33,7 +33,8 @@ namespace Procon.Core.Shared.Serialization {
                 new InterfaceJsonConverter<ICommandData, CommandData>(),
                 new InterfaceJsonConverter<ICommandResult, CommandResult>(),
                 new InterfaceJsonConverter<ICommand, Command>(),
-                new InterfaceJsonConverter<ICommandParameter, CommandParameter>()
+                new InterfaceJsonConverter<ICommandParameter, CommandParameter>(),
+                new InterfaceJsonConverter<ICommandDispatch, CommandDispatch>()
             }).ToList();
 
             JsonSerialization.Minimal = Net.Shared.Serialization.JsonSerialization.Minimal;

@@ -32,7 +32,7 @@ namespace Procon.Core.Connections.TextCommands {
             this.Shared = new SharedReferences();
             this.TextCommands = new List<TextCommandModel>();
 
-            this.CommandDispatchers.AddRange(new List<CommandDispatch>() {
+            this.CommandDispatchers.AddRange(new List<ICommandDispatch>() {
                 new CommandDispatch() {
                     CommandType = CommandType.TextCommandsExecute,
                     ParameterTypes = new List<CommandParameterType>() {

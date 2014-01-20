@@ -38,7 +38,7 @@ namespace Myrcon.Plugins.Test {
 
             this.Commands = new List<TextCommandModel>();
 
-            this.CommandDispatchers.AddRange(new List<CommandDispatch>() {
+            this.CommandDispatchers.AddRange(new List<ICommandDispatch>() {
                 new CommandDispatch() {
                     Name = "HelpCommand",
                     ParameterTypes = new List<CommandParameterType>() {

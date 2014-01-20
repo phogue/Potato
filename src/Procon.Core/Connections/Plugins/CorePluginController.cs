@@ -61,7 +61,7 @@ namespace Procon.Core.Connections.Plugins {
                 }
             };
 
-            this.CommandDispatchers.AddRange(new List<CommandDispatch>() {
+            this.CommandDispatchers.AddRange(new List<ICommandDispatch>() {
                 new CommandDispatch() {
                     CommandType = CommandType.PluginsEnable,
                     Handler = this.EnablePlugin

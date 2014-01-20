@@ -8,7 +8,7 @@ using System.Collections.Generic;
 namespace Procon.Core.Shared.Test.ExecutableCommands.Objects {
     public class ExecutablePreviewTester : ExecutableBasicTester {
         public ExecutablePreviewTester() : base() {
-            this.CommandDispatchers.AddRange(new List<CommandDispatch>() {
+            this.CommandDispatchers.AddRange(new List<ICommandDispatch>() {
                 new CommandDispatch() {
                     CommandType = CommandType.VariablesSet,
                     CommandAttributeType = CommandAttributeType.Preview,

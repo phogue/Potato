@@ -32,7 +32,7 @@ namespace Procon.Core.Localization {
             this.Default = null;
             this.LoadedLanguageFiles = new List<LanguageConfig>();
 
-            this.CommandDispatchers.AddRange(new List<CommandDispatch>() {
+            this.CommandDispatchers.AddRange(new List<ICommandDispatch>() {
                 new CommandDispatch() {
                     CommandType = CommandType.LanguageLocalize,
                     ParameterTypes = new List<CommandParameterType>() {

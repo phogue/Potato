@@ -23,7 +23,7 @@ namespace Procon.Examples.Plugins.Database {
         //           Procon uses the GUID to pipe through events/commands.
 
         public Program() : base() {
-            this.CommandDispatchers.AddRange(new List<CommandDispatch>() {
+            this.CommandDispatchers.AddRange(new List<ICommandDispatch>() {
                 new CommandDispatch() {
                     Name = "SaveOneUser",
                     CommandAttributeType = CommandAttributeType.Handler,

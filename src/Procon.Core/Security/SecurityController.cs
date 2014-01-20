@@ -26,7 +26,7 @@ namespace Procon.Core.Security {
             this.Shared = new SharedReferences();
             this.Groups = new List<GroupModel>();
 
-            this.CommandDispatchers.AddRange(new List<CommandDispatch>() {
+            this.CommandDispatchers.AddRange(new List<ICommandDispatch>() {
                 new CommandDispatch() {
                     CommandType = CommandType.SecurityAddGroup,
                     ParameterTypes = new List<CommandParameterType>() {

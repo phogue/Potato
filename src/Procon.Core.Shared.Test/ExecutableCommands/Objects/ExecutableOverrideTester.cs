@@ -9,7 +9,7 @@ using Procon.Core.Shared.Models;
 namespace Procon.Core.Shared.Test.ExecutableCommands.Objects {
     public class ExecutableOverrideTester : CoreController {
         public ExecutableOverrideTester() : base() {
-            this.CommandDispatchers.AddRange(new List<CommandDispatch>() {
+            this.CommandDispatchers.AddRange(new List<ICommandDispatch>() {
                 new CommandDispatch() {
                     CommandType = CommandType.VariablesSet,
                     CommandAttributeType = CommandAttributeType.Executed,

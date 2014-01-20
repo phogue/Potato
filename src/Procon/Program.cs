@@ -8,7 +8,7 @@ using Procon.Service.Shared;
 
 namespace Procon {
     internal class Program {
-
+        
         public static List<String> Wordify(String data) {
             List<String> list = new List<String>();
 

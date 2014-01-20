@@ -178,7 +178,7 @@ namespace Procon.Core.Shared {
         private ICommandResult Run(CommandAttributeType attributeType, ICommand command, CommandResultType maintainStatus) {
 
             // Loop through all matching commands with the identical name and type
-            foreach (var dispatch in this.CommandDispatchHandlers.Where(dispatch => dispatch.Key.CommandAttributeType == attributeType && dispatch.Key.Name == command.Name)) {
+            foreach (var dispatch in this.CommandDispatchHandlers.Where(dispatch => dispatch.Key.CanDispatch(attributeType, command))) {
                 
                 // Check if we can build a parameter list.
                 Dictionary<String, ICommandParameter> parameters = this.BuildParameterDictionary(dispatch.Key.ParameterTypes, command.Parameters);

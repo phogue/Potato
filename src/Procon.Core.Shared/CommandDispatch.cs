@@ -62,6 +62,14 @@ namespace Procon.Core.Shared {
         }
         
         /// <summary>
+        /// Checks if this dspatcher can handle the command
+        /// </summary>
+        /// <returns></returns>
+        public bool CanDispatch(CommandAttributeType attributeType, ICommand command) {
+            return this.CommandAttributeType == attributeType && this.Name == command.Name;
+        }
+
+        /// <summary>
         /// Totally my first time overloading an operator. Never needed to before.
         /// </summary>
         /// <param name="a"></param>

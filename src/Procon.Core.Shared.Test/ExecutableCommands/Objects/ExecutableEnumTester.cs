@@ -8,8 +8,8 @@ using System.Collections.Generic;
 namespace Procon.Core.Shared.Test.ExecutableCommands.Objects {
     public class ExecutableEnumTester : CoreController {
         public ExecutableEnumTester() : base() {
-            this.AppendDispatchHandlers(new Dictionary<CommandDispatch, CommandDispatchHandler>() {
-                {new CommandDispatch() {
+            this.CommandDispatchers.AddRange(new List<CommandDispatch>() {
+                new CommandDispatch() {
                     CommandType = CommandType.VariablesSet,
                     CommandAttributeType = CommandAttributeType.Executed,
                     ParameterTypes = new List<CommandParameterType>() {
@@ -17,10 +17,10 @@ namespace Procon.Core.Shared.Test.ExecutableCommands.Objects {
                             Name = "value",
                             Type = typeof (ExecutableFlagsEnum)
                         }
-                    }
+                    },
+                    Handler = this.SetTestFlagsEnum
                 },
-                    new CommandDispatchHandler(SetTestFlagsEnum)},
-                {new CommandDispatch() {
+                new CommandDispatch() {
                     CommandType = CommandType.VariablesSet,
                     CommandAttributeType = CommandAttributeType.Executed,
                     ParameterTypes = new List<CommandParameterType>() {
@@ -28,9 +28,9 @@ namespace Procon.Core.Shared.Test.ExecutableCommands.Objects {
                             Name = "value",
                             Type = typeof (ExecutableEnum)
                         }
-                    }
-                },
-                    new CommandDispatchHandler(SetTestEnum)}
+                    },
+                    Handler = this.SetTestEnum
+                }
             });
         }
 

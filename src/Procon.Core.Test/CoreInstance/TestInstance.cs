@@ -13,6 +13,7 @@ using Procon.Core.Events;
 using Procon.Core.Localization;
 using Procon.Core.Security;
 using Procon.Core.Shared;
+using Procon.Core.Shared.Serialization;
 using Procon.Core.Test.Mocks.Protocols;
 using Procon.Core.Variables;
 using Procon.Net.Shared.Protocols;
@@ -172,7 +173,7 @@ namespace Procon.Core.Test.CoreInstance {
             var loadConfig = new Config();
             loadConfig.Load(ConfigFileInfo);
             // .Where(item => item.Name == "InstanceAddConnection")
-            var commands = loadConfig.RootOf<InstanceController>().Children<JObject>().Select(item => item.ToObject<Command>()).ToList();
+            var commands = loadConfig.RootOf<InstanceController>().Children<JObject>().Select(item => item.ToObject<Command>(JsonSerialization.Minimal)).ToList();
 
             Assert.AreEqual("InstanceAddConnection", commands[0].Name);
             Assert.AreEqual("Myrcon", commands[0].Parameters[0].First<String>());

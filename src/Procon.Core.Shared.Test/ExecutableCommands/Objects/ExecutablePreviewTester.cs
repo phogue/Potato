@@ -8,8 +8,8 @@ using System.Collections.Generic;
 namespace Procon.Core.Shared.Test.ExecutableCommands.Objects {
     public class ExecutablePreviewTester : ExecutableBasicTester {
         public ExecutablePreviewTester() : base() {
-            this.AppendDispatchHandlers(new Dictionary<CommandDispatch, CommandDispatchHandler>() {
-                {new CommandDispatch() {
+            this.CommandDispatchers.AddRange(new List<CommandDispatch>() {
+                new CommandDispatch() {
                     CommandType = CommandType.VariablesSet,
                     CommandAttributeType = CommandAttributeType.Preview,
                     ParameterTypes = new List<CommandParameterType>() {
@@ -17,9 +17,9 @@ namespace Procon.Core.Shared.Test.ExecutableCommands.Objects {
                             Name = "value",
                             Type = typeof (int)
                         }
-                    }
-                },
-                    new CommandDispatchHandler(SetTestFlagPreview)}
+                    },
+                    Handler = this.SetTestFlagPreview
+                }
             });
         }
 

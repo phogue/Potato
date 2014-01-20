@@ -26,234 +26,212 @@ namespace Procon.Core.Security {
             this.Shared = new SharedReferences();
             this.Groups = new List<GroupModel>();
 
-            this.AppendDispatchHandlers(new Dictionary<CommandDispatch, CommandDispatchHandler>() {
-                {
-                    new CommandDispatch() {
-                        CommandType = CommandType.SecurityAddGroup,
-                        ParameterTypes = new List<CommandParameterType>() {
-                            new CommandParameterType() {
-                                Name = "groupName",
-                                Type = typeof(String)
-                            }
+            this.CommandDispatchers.AddRange(new List<CommandDispatch>() {
+                new CommandDispatch() {
+                    CommandType = CommandType.SecurityAddGroup,
+                    ParameterTypes = new List<CommandParameterType>() {
+                        new CommandParameterType() {
+                            Name = "groupName",
+                            Type = typeof(String)
                         }
                     },
-                    new CommandDispatchHandler(this.SecurityAddGroup)
-                }, {
-                    new CommandDispatch() {
-                        CommandType = CommandType.SecurityRemoveGroup,
-                        ParameterTypes = new List<CommandParameterType>() {
-                            new CommandParameterType() {
-                                Name = "groupName",
-                                Type = typeof(String)
-                            }
-                        }
-                    },
-                    new CommandDispatchHandler(this.SecurityRemoveGroup)
-                }, {
-                    new CommandDispatch() {
-                        CommandType = CommandType.SecurityRemoveAccount,
-                        ParameterTypes = new List<CommandParameterType>() {
-                            new CommandParameterType() {
-                                Name = "username",
-                                Type = typeof(String)
-                            }
-                        }
-                    },
-                    new CommandDispatchHandler(this.SecurityRemoveAccount)
-                }, {
-                    new CommandDispatch() {
-                        CommandType = CommandType.SecurityRemovePlayer,
-                        ParameterTypes = new List<CommandParameterType>() {
-                            new CommandParameterType() {
-                                Name = "gameType",
-                                Type = typeof(String)
-                            },
-                            new CommandParameterType() {
-                                Name = "uid",
-                                Type = typeof(String)
-                            }
-                        }
-                    },
-                    new CommandDispatchHandler(this.SecurityRemovePlayer)
-                }, {
-                    new CommandDispatch() {
-                        CommandType = CommandType.SecurityQueryPermission,
-                        ParameterTypes = new List<CommandParameterType>() {
-                            new CommandParameterType() {
-                                Name = "commandName",
-                                Type = typeof(String)
-                            },
-                            new CommandParameterType() {
-                                Name = "targetGameType",
-                                Type = typeof(String)
-                            },
-                            new CommandParameterType() {
-                                Name = "targetUid",
-                                Type = typeof(String)
-                            }
-                        }
-                    },
-                    new CommandDispatchHandler(this.DispatchPermissionsCheckByAccountPlayerDetails)
-                }, {
-                    new CommandDispatch() {
-                        CommandType = CommandType.SecurityQueryPermission,
-                        ParameterTypes = new List<CommandParameterType>() {
-                            new CommandParameterType() {
-                                Name = "commandName",
-                                Type = typeof(String)
-                            },
-                            new CommandParameterType() {
-                                Name = "targetAccountName",
-                                Type = typeof(String)
-                            }
-                        }
-                    },
-                    new CommandDispatchHandler(this.DispatchPermissionsCheckByAccountDetails)
-                }, {
-                    new CommandDispatch() {
-                        CommandType = CommandType.SecurityQueryPermission,
-                        ParameterTypes = new List<CommandParameterType>() {
-                            new CommandParameterType() {
-                                Name = "commandName",
-                                Type = typeof(String)
-                            }
-                        }
-                    },
-                    new CommandDispatchHandler(this.DispatchPermissionsCheckByCommand)
+                    Handler = this.SecurityAddGroup
                 },
-
-                // Groups
-                {
-                    new CommandDispatch() {
-                        CommandType = CommandType.SecurityGroupSetPermission,
-                        ParameterTypes = new List<CommandParameterType>() {
-                            new CommandParameterType() {
-                                Name = "groupName",
-                                Type = typeof(String)
-                            },
-                            new CommandParameterType() {
-                                Name = "permissionName",
-                                Type = typeof(String)
-                            },
-                            new CommandParameterType() {
-                                Name = "authority",
-                                Type = typeof(int)
-                            }
+                new CommandDispatch() {
+                    CommandType = CommandType.SecurityRemoveGroup,
+                    ParameterTypes = new List<CommandParameterType>() {
+                        new CommandParameterType() {
+                            Name = "groupName",
+                            Type = typeof(String)
                         }
                     },
-                    new CommandDispatchHandler(this.SecurityGroupSetPermission)
-                }, {
-                    new CommandDispatch() {
-                        CommandType = CommandType.SecurityGroupCopyPermissions,
-                        ParameterTypes = new List<CommandParameterType>() {
-                            new CommandParameterType() {
-                                Name = "sourceGroupName",
-                                Type = typeof(String)
-                            },
-                            new CommandParameterType() {
-                                Name = "destinationGroupName",
-                                Type = typeof(String)
-                            }
-                        }
-                    },
-                    new CommandDispatchHandler(this.SecurityGroupCopyPermissions)
-                }, {
-                    new CommandDispatch() {
-                        CommandType = CommandType.SecurityGroupAddAccount,
-                        ParameterTypes = new List<CommandParameterType>() {
-                            new CommandParameterType() {
-                                Name = "groupName",
-                                Type = typeof(String)
-                            },
-                            new CommandParameterType() {
-                                Name = "username",
-                                Type = typeof(String)
-                            }
-                        }
-                    },
-                    new CommandDispatchHandler(this.SecurityGroupAddAccount)
+                    Handler = this.SecurityRemoveGroup
                 },
-
-                // Accounts
-                {
-                    new CommandDispatch() {
-                        CommandType = CommandType.SecurityAccountAddPlayer,
-                        ParameterTypes = new List<CommandParameterType>() {
-                            new CommandParameterType() {
-                                Name = "username",
-                                Type = typeof(String)
-                            },
-                            new CommandParameterType() {
-                                Name = "gameType",
-                                Type = typeof(String)
-                            },
-                            new CommandParameterType() {
-                                Name = "uid",
-                                Type = typeof(String)
-                            }
+                new CommandDispatch() {
+                    CommandType = CommandType.SecurityRemoveAccount,
+                    ParameterTypes = new List<CommandParameterType>() {
+                        new CommandParameterType() {
+                            Name = "username",
+                            Type = typeof(String)
                         }
                     },
-                    new CommandDispatchHandler(this.SecurityAccountAddPlayer)
-                }, {
-                    new CommandDispatch() {
-                        CommandType = CommandType.SecurityAccountSetPassword,
-                        ParameterTypes = new List<CommandParameterType>() {
-                            new CommandParameterType() {
-                                Name = "username",
-                                Type = typeof(String)
-                            },
-                            new CommandParameterType() {
-                                Name = "password",
-                                Type = typeof(String)
-                            }
+                    Handler = this.SecurityRemoveAccount
+                },
+                new CommandDispatch() {
+                    CommandType = CommandType.SecurityRemovePlayer,
+                    ParameterTypes = new List<CommandParameterType>() {
+                        new CommandParameterType() {
+                            Name = "gameType",
+                            Type = typeof(String)
+                        },
+                        new CommandParameterType() {
+                            Name = "uid",
+                            Type = typeof(String)
                         }
                     },
-                    new CommandDispatchHandler(this.SecurityAccountSetPassword)
-                }, {
-                    new CommandDispatch() {
-                        CommandType = CommandType.SecurityAccountSetPasswordHash,
-                        ParameterTypes = new List<CommandParameterType>() {
-                            new CommandParameterType() {
-                                Name = "username",
-                                Type = typeof(String)
-                            },
-                            new CommandParameterType() {
-                                Name = "passwordHash",
-                                Type = typeof(String)
-                            }
+                    Handler = this.SecurityRemovePlayer
+                },
+                new CommandDispatch() {
+                    CommandType = CommandType.SecurityQueryPermission,
+                    ParameterTypes = new List<CommandParameterType>() {
+                        new CommandParameterType() {
+                            Name = "commandName",
+                            Type = typeof(String)
+                        },
+                        new CommandParameterType() {
+                            Name = "targetGameType",
+                            Type = typeof(String)
+                        },
+                        new CommandParameterType() {
+                            Name = "targetUid",
+                            Type = typeof(String)
                         }
                     },
-                    new CommandDispatchHandler(this.SecurityAccountSetPasswordHash)
-                }, {
-                    new CommandDispatch() {
-                        CommandType = CommandType.SecurityAccountAuthenticate,
-                        ParameterTypes = new List<CommandParameterType>() {
-                            new CommandParameterType() {
-                                Name = "username",
-                                Type = typeof(String)
-                            },
-                            new CommandParameterType() {
-                                Name = "passwordPlainText",
-                                Type = typeof(String)
-                            }
+                    Handler = this.DispatchPermissionsCheckByAccountPlayerDetails
+                },
+                new CommandDispatch() {
+                    CommandType = CommandType.SecurityQueryPermission,
+                    ParameterTypes = new List<CommandParameterType>() {
+                        new CommandParameterType() {
+                            Name = "commandName",
+                            Type = typeof(String)
+                        },
+                        new CommandParameterType() {
+                            Name = "targetAccountName",
+                            Type = typeof(String)
                         }
                     },
-                    new CommandDispatchHandler(this.SecurityAccountAuthenticate)
-                }, {
-                    new CommandDispatch() {
-                        CommandType = CommandType.SecurityAccountSetPreferredLanguageCode,
-                        ParameterTypes = new List<CommandParameterType>() {
-                            new CommandParameterType() {
-                                Name = "username",
-                                Type = typeof(String)
-                            },
-                            new CommandParameterType() {
-                                Name = "languageCode",
-                                Type = typeof(String)
-                            }
+                    Handler = this.DispatchPermissionsCheckByAccountDetails
+                },
+                new CommandDispatch() {
+                    CommandType = CommandType.SecurityQueryPermission,
+                    ParameterTypes = new List<CommandParameterType>() {
+                        new CommandParameterType() {
+                            Name = "commandName",
+                            Type = typeof(String)
                         }
                     },
-                    new CommandDispatchHandler(this.SecurityAccountSetPreferredLanguageCode)
+                    Handler = this.DispatchPermissionsCheckByCommand
+                },
+                new CommandDispatch() {
+                    CommandType = CommandType.SecurityGroupSetPermission,
+                    ParameterTypes = new List<CommandParameterType>() {
+                        new CommandParameterType() {
+                            Name = "groupName",
+                            Type = typeof(String)
+                        },
+                        new CommandParameterType() {
+                            Name = "permissionName",
+                            Type = typeof(String)
+                        },
+                        new CommandParameterType() {
+                            Name = "authority",
+                            Type = typeof(int)
+                        }
+                    },
+                    Handler = this.SecurityGroupSetPermission
+                },
+                new CommandDispatch() {
+                    CommandType = CommandType.SecurityGroupCopyPermissions,
+                    ParameterTypes = new List<CommandParameterType>() {
+                        new CommandParameterType() {
+                            Name = "sourceGroupName",
+                            Type = typeof(String)
+                        },
+                        new CommandParameterType() {
+                            Name = "destinationGroupName",
+                            Type = typeof(String)
+                        }
+                    },
+                    Handler = this.SecurityGroupCopyPermissions
+                },
+                new CommandDispatch() {
+                    CommandType = CommandType.SecurityGroupAddAccount,
+                    ParameterTypes = new List<CommandParameterType>() {
+                        new CommandParameterType() {
+                            Name = "groupName",
+                            Type = typeof(String)
+                        },
+                        new CommandParameterType() {
+                            Name = "username",
+                            Type = typeof(String)
+                        }
+                    },
+                    Handler = this.SecurityGroupAddAccount
+                },
+                new CommandDispatch() {
+                    CommandType = CommandType.SecurityAccountAddPlayer,
+                    ParameterTypes = new List<CommandParameterType>() {
+                        new CommandParameterType() {
+                            Name = "username",
+                            Type = typeof(String)
+                        },
+                        new CommandParameterType() {
+                            Name = "gameType",
+                            Type = typeof(String)
+                        },
+                        new CommandParameterType() {
+                            Name = "uid",
+                            Type = typeof(String)
+                        }
+                    },
+                    Handler = this.SecurityAccountAddPlayer
+                },
+                new CommandDispatch() {
+                    CommandType = CommandType.SecurityAccountSetPassword,
+                    ParameterTypes = new List<CommandParameterType>() {
+                        new CommandParameterType() {
+                            Name = "username",
+                            Type = typeof(String)
+                        },
+                        new CommandParameterType() {
+                            Name = "password",
+                            Type = typeof(String)
+                        }
+                    },
+                    Handler = this.SecurityAccountSetPassword
+                },
+                new CommandDispatch() {
+                    CommandType = CommandType.SecurityAccountSetPasswordHash,
+                    ParameterTypes = new List<CommandParameterType>() {
+                        new CommandParameterType() {
+                            Name = "username",
+                            Type = typeof(String)
+                        },
+                        new CommandParameterType() {
+                            Name = "passwordHash",
+                            Type = typeof(String)
+                        }
+                    },
+                    Handler = this.SecurityAccountSetPasswordHash
+                },
+                new CommandDispatch() {
+                    CommandType = CommandType.SecurityAccountAuthenticate,
+                    ParameterTypes = new List<CommandParameterType>() {
+                        new CommandParameterType() {
+                            Name = "username",
+                            Type = typeof(String)
+                        },
+                        new CommandParameterType() {
+                            Name = "passwordPlainText",
+                            Type = typeof(String)
+                        }
+                    },
+                    Handler = this.SecurityAccountAuthenticate
+                },
+                new CommandDispatch() {
+                    CommandType = CommandType.SecurityAccountSetPreferredLanguageCode,
+                    ParameterTypes = new List<CommandParameterType>() {
+                        new CommandParameterType() {
+                            Name = "username",
+                            Type = typeof(String)
+                        },
+                        new CommandParameterType() {
+                            Name = "languageCode",
+                            Type = typeof(String)
+                        }
+                    },
+                    Handler = this.SecurityAccountSetPreferredLanguageCode
                 }
             });
         }

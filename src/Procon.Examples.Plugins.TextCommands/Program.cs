@@ -18,30 +18,26 @@ namespace Procon.Examples.Plugins.TextCommands {
 
             // 1. Setup a command dispatch to let us know when the command has been executed.
             // Commands can be executed from within game or via the daemon
-            this.AppendDispatchHandlers(new Dictionary<CommandDispatch, CommandDispatchHandler>() {
-                {
-                    new CommandDispatch() {
-                        Name = "FuzzyCommand",
-                        ParameterTypes = new List<CommandParameterType>() {
-                            new CommandParameterType() {
-                                Name = "e",
-                                Type = typeof(ICommandResult)
-                            }
+            this.CommandDispatchers.AddRange(new List<CommandDispatch>() {
+                new CommandDispatch() {
+                    Name = "FuzzyCommand",
+                    ParameterTypes = new List<CommandParameterType>() {
+                        new CommandParameterType() {
+                            Name = "e",
+                            Type = typeof(ICommandResult)
                         }
                     },
-                    new CommandDispatchHandler(this.FuzzyCommand)
+                    Handler = this.FuzzyCommand
                 },
-                {
-                    new CommandDispatch() {
-                        Name = "RouteCommand",
-                        ParameterTypes = new List<CommandParameterType>() {
-                            new CommandParameterType() {
-                                Name = "e",
-                                Type = typeof(ICommandResult)
-                            }
+                new CommandDispatch() {
+                    Name = "RouteCommand",
+                    ParameterTypes = new List<CommandParameterType>() {
+                        new CommandParameterType() {
+                            Name = "e",
+                            Type = typeof(ICommandResult)
                         }
                     },
-                    new CommandDispatchHandler(this.RouteCommand)
+                    Handler = this.RouteCommand
                 }
             });
         }

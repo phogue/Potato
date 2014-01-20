@@ -14,9 +14,7 @@ namespace Procon.Core.Shared {
         /// <summary>
         /// List of dispatch attributes to the method to call, provided the parameter list matches.
         /// </summary>
-        protected readonly Dictionary<CommandDispatch, CommandDispatchHandler> CommandDispatchHandlers = new Dictionary<CommandDispatch, CommandDispatchHandler>();
-
-        protected delegate ICommandResult CommandDispatchHandler(ICommand command, Dictionary<String, ICommandParameter> parameters);
+        protected readonly List<CommandDispatch> CommandDispatchers = new List<CommandDispatch>(); 
 
         /// <summary>
         /// All objects to tunnel downwards
@@ -31,21 +29,6 @@ namespace Procon.Core.Shared {
         protected CoreController() : base() {
             this.TunnelObjects = new List<ICoreController>();
             this.BubbleObjects = new List<ICoreController>();
-        }
-
-        /// <summary>
-        /// Appends a list of dispatch handlers to the internal list, updating existing handlers if they exist.
-        /// </summary>
-        /// <param name="handlers"></param>
-        protected void AppendDispatchHandlers(Dictionary<CommandDispatch, CommandDispatchHandler> handlers) {
-            foreach (var handler in handlers) {
-                if (this.CommandDispatchHandlers.ContainsKey(handler.Key) == false) {
-                    this.CommandDispatchHandlers.Add(handler.Key, handler.Value);
-                }
-                else {
-                    this.CommandDispatchHandlers[handler.Key] = handler.Value;
-                }
-            }
         }
 
         /// <summary>
@@ -178,13 +161,13 @@ namespace Procon.Core.Shared {
         private ICommandResult Run(CommandAttributeType attributeType, ICommand command, CommandResultType maintainStatus) {
 
             // Loop through all matching commands with the identical name and type
-            foreach (var dispatch in this.CommandDispatchHandlers.Where(dispatch => dispatch.Key.CanDispatch(attributeType, command))) {
+            foreach (var dispatch in this.CommandDispatchers.Where(dispatch => dispatch.CanDispatch(attributeType, command))) {
                 
                 // Check if we can build a parameter list.
-                Dictionary<String, ICommandParameter> parameters = this.BuildParameterDictionary(dispatch.Key.ParameterTypes, command.Parameters);
+                Dictionary<String, ICommandParameter> parameters = this.BuildParameterDictionary(dispatch.ParameterTypes, command.Parameters);
 
                 if (parameters != null) {
-                    command.Result = dispatch.Value(command, parameters);
+                    command.Result = dispatch.Handler(command, parameters);
 
                     // Our status has changed, break our loop.
                     if (command.Result.Status != maintainStatus) {

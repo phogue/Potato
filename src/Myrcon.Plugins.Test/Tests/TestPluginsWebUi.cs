@@ -10,40 +10,28 @@ namespace Myrcon.Plugins.Test.Tests {
     public class TestPluginsWebUi : CoreController {
 
         public TestPluginsWebUi() : base() {
-            this.AppendDispatchHandlers(new Dictionary<CommandDispatch, CommandDispatchHandler>() {
-                {
-                    new CommandDispatch() {
-                        Name = "/"
-                    },
-                    new CommandDispatchHandler(this.TestPluginIndex)
-                }
-            });
-
-            this.AppendDispatchHandlers(new Dictionary<CommandDispatch, CommandDispatchHandler>() {
-                {
-                    new CommandDispatch() {
-                        Name = "/settings"
-                    },
-                    new CommandDispatchHandler(this.TestPluginSettings)
-                }
-            }); 
-            
-            this.AppendDispatchHandlers(new Dictionary<CommandDispatch, CommandDispatchHandler>() {
-                {
-                    new CommandDispatch() {
-                        Name = "/test/parameters",
-                        ParameterTypes = new List<CommandParameterType>() {
-                            new CommandParameterType() {
-                                Name = "name",
-                                Type = typeof(String)
-                            },
-                            new CommandParameterType() {
-                                Name = "score",
-                                Type = typeof(int)
-                            }
+            this.CommandDispatchers.AddRange(new List<CommandDispatch>() {
+                new CommandDispatch() {
+                    Name = "/",
+                    Handler = this.TestPluginIndex
+                },
+                new CommandDispatch() {
+                    Name = "/settings",
+                    Handler = this.TestPluginSettings
+                },
+                new CommandDispatch() {
+                    Name = "/test/parameters",
+                    ParameterTypes = new List<CommandParameterType>() {
+                        new CommandParameterType() {
+                            Name = "name",
+                            Type = typeof(String)
+                        },
+                        new CommandParameterType() {
+                            Name = "score",
+                            Type = typeof(int)
                         }
                     },
-                    new CommandDispatchHandler(this.TestPluginParameters)
+                    Handler = this.TestPluginParameters
                 }
             });
         }

@@ -38,64 +38,58 @@ namespace Myrcon.Plugins.Test {
 
             this.Commands = new List<TextCommandModel>();
 
-            this.AppendDispatchHandlers(new Dictionary<CommandDispatch, CommandDispatchHandler>() {
-                {
-                    new CommandDispatch() {
-                        Name = "HelpCommand",
-                        ParameterTypes = new List<CommandParameterType>() {
-                            new CommandParameterType() {
-                                Name = "e",
-                                Type = typeof(ICommandResult)
-                            }
+            this.CommandDispatchers.AddRange(new List<CommandDispatch>() {
+                new CommandDispatch() {
+                    Name = "HelpCommand",
+                    ParameterTypes = new List<CommandParameterType>() {
+                        new CommandParameterType() {
+                            Name = "e",
+                            Type = typeof(ICommandResult)
                         }
                     },
-                    new CommandDispatchHandler(this.HelpCommand)
-                }, {
-                    new CommandDispatch() {
-                        Name = "KillCommand",
-                        ParameterTypes = new List<CommandParameterType>() {
-                            new CommandParameterType() {
-                                Name = "e",
-                                Type = typeof(ICommandResult)
-                            }
+                    Handler = this.HelpCommand
+                },
+                new CommandDispatch() {
+                    Name = "KillCommand",
+                    ParameterTypes = new List<CommandParameterType>() {
+                        new CommandParameterType() {
+                            Name = "e",
+                            Type = typeof(ICommandResult)
                         }
                     },
-                    new CommandDispatchHandler(this.KillCommand)
-                }, {
-                    new CommandDispatch() {
-                        Name = "TestCommand",
-                        ParameterTypes = new List<CommandParameterType>() {
-                            new CommandParameterType() {
-                                Name = "e",
-                                Type = typeof(ICommandResult)
-                            }
+                    Handler = this.KillCommand
+                },
+                new CommandDispatch() {
+                    Name = "TestCommand",
+                    ParameterTypes = new List<CommandParameterType>() {
+                        new CommandParameterType() {
+                            Name = "e",
+                            Type = typeof(ICommandResult)
                         }
                     },
-                    new CommandDispatchHandler(this.TestCommand)
-                }, {
-                    new CommandDispatch() {
-                        CommandType = CommandType.TextCommandsRegister,
-                        CommandAttributeType = CommandAttributeType.Preview,
-                        ParameterTypes = new List<CommandParameterType>() {
-                            new CommandParameterType() {
-                                Name = "textCommand",
-                                Type = typeof(TextCommandModel)
-                            }
+                    Handler = this.TestCommand
+                },
+                new CommandDispatch() {
+                    CommandType = CommandType.TextCommandsRegister,
+                    CommandAttributeType = CommandAttributeType.Preview,
+                    ParameterTypes = new List<CommandParameterType>() {
+                        new CommandParameterType() {
+                            Name = "textCommand",
+                            Type = typeof(TextCommandModel)
                         }
                     },
-                    new CommandDispatchHandler(this.RegisterTextCommandPreview)
-                }, {
-                    new CommandDispatch() {
-                        CommandType = CommandType.TextCommandsRegister,
-                        CommandAttributeType = CommandAttributeType.Executed,
-                        ParameterTypes = new List<CommandParameterType>() {
-                            new CommandParameterType() {
-                                Name = "textCommand",
-                                Type = typeof(TextCommandModel)
-                            }
+                    Handler = this.RegisterTextCommandPreview
+                },
+                new CommandDispatch() {
+                    CommandType = CommandType.TextCommandsRegister,
+                    CommandAttributeType = CommandAttributeType.Executed,
+                    ParameterTypes = new List<CommandParameterType>() {
+                        new CommandParameterType() {
+                            Name = "textCommand",
+                            Type = typeof(TextCommandModel)
                         }
                     },
-                    new CommandDispatchHandler(this.RegisterTextCommandExecuted)
+                    Handler = this.RegisterTextCommandExecuted
                 }
             });
         }

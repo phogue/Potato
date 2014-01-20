@@ -32,74 +32,70 @@ namespace Procon.Core.Localization {
             this.Default = null;
             this.LoadedLanguageFiles = new List<LanguageConfig>();
 
-            this.AppendDispatchHandlers(new Dictionary<CommandDispatch, CommandDispatchHandler>() {
-                {
-                    new CommandDispatch() {
-                        CommandType = CommandType.LanguageLocalize,
-                        ParameterTypes = new List<CommandParameterType>() {
-                            new CommandParameterType() {
-                                Name = "languageCode",
-                                Type = typeof(String)
-                            },
-                            new CommandParameterType() {
-                                Name = "namespace",
-                                Type = typeof(String)
-                            },
-                            new CommandParameterType() {
-                                Name = "name",
-                                Type = typeof(String)
-                            },
-                            new CommandParameterType() {
-                                Name = "args",
-                                Type = typeof(String),
-                                IsList = true,
-                                IsConvertable = true
-                            }
+            this.CommandDispatchers.AddRange(new List<CommandDispatch>() {
+                new CommandDispatch() {
+                    CommandType = CommandType.LanguageLocalize,
+                    ParameterTypes = new List<CommandParameterType>() {
+                        new CommandParameterType() {
+                            Name = "languageCode",
+                            Type = typeof(String)
+                        },
+                        new CommandParameterType() {
+                            Name = "namespace",
+                            Type = typeof(String)
+                        },
+                        new CommandParameterType() {
+                            Name = "name",
+                            Type = typeof(String)
+                        },
+                        new CommandParameterType() {
+                            Name = "args",
+                            Type = typeof(String),
+                            IsList = true,
+                            IsConvertable = true
                         }
                     },
-                    new CommandDispatchHandler(this.Localize)
-                }, {
-                    new CommandDispatch() {
-                        CommandType = CommandType.LanguageLocalize,
-                        ParameterTypes = new List<CommandParameterType>() {
-                            new CommandParameterType() {
-                                Name = "languageCode",
-                                Type = typeof(String)
-                            },
-                            new CommandParameterType() {
-                                Name = "namespace",
-                                Type = typeof(String)
-                            },
-                            new CommandParameterType() {
-                                Name = "name",
-                                Type = typeof(String)
-                            },
-                            new CommandParameterType() {
-                                Name = "arg",
-                                Type = typeof(String)
-                            }
+                    Handler = this.Localize
+                },
+                new CommandDispatch() {
+                    CommandType = CommandType.LanguageLocalize,
+                    ParameterTypes = new List<CommandParameterType>() {
+                        new CommandParameterType() {
+                            Name = "languageCode",
+                            Type = typeof(String)
+                        },
+                        new CommandParameterType() {
+                            Name = "namespace",
+                            Type = typeof(String)
+                        },
+                        new CommandParameterType() {
+                            Name = "name",
+                            Type = typeof(String)
+                        },
+                        new CommandParameterType() {
+                            Name = "arg",
+                            Type = typeof(String)
                         }
                     },
-                    new CommandDispatchHandler(this.SingleParameterLocalize)
-                }, {
-                    new CommandDispatch() {
-                        CommandType = CommandType.LanguageLocalize,
-                        ParameterTypes = new List<CommandParameterType>() {
-                            new CommandParameterType() {
-                                Name = "languageCode",
-                                Type = typeof(String)
-                            },
-                            new CommandParameterType() {
-                                Name = "namespace",
-                                Type = typeof(String)
-                            },
-                            new CommandParameterType() {
-                                Name = "name",
-                                Type = typeof(String)
-                            }
+                    Handler = this.SingleParameterLocalize
+                },
+                new CommandDispatch() {
+                    CommandType = CommandType.LanguageLocalize,
+                    ParameterTypes = new List<CommandParameterType>() {
+                        new CommandParameterType() {
+                            Name = "languageCode",
+                            Type = typeof(String)
+                        },
+                        new CommandParameterType() {
+                            Name = "namespace",
+                            Type = typeof(String)
+                        },
+                        new CommandParameterType() {
+                            Name = "name",
+                            Type = typeof(String)
                         }
                     },
-                    new CommandDispatchHandler(this.ParameterlessLocalize)
+                    Handler = this.ParameterlessLocalize
                 }
             });
         }

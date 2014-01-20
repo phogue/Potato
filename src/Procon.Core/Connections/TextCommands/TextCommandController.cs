@@ -32,51 +32,46 @@ namespace Procon.Core.Connections.TextCommands {
             this.Shared = new SharedReferences();
             this.TextCommands = new List<TextCommandModel>();
 
-            this.AppendDispatchHandlers(new Dictionary<CommandDispatch, CommandDispatchHandler>() {
-                {
-                    new CommandDispatch() {
-                        CommandType = CommandType.TextCommandsExecute,
-                        ParameterTypes = new List<CommandParameterType>() {
-                            new CommandParameterType() {
-                                Name = "text",
-                                Type = typeof(String)
-                            }
+            this.CommandDispatchers.AddRange(new List<CommandDispatch>() {
+                new CommandDispatch() {
+                    CommandType = CommandType.TextCommandsExecute,
+                    ParameterTypes = new List<CommandParameterType>() {
+                        new CommandParameterType() {
+                            Name = "text",
+                            Type = typeof(String)
                         }
                     },
-                    new CommandDispatchHandler(this.ExecuteTextCommand)
-                }, {
-                    new CommandDispatch() {
-                        CommandType = CommandType.TextCommandsPreview,
-                        ParameterTypes = new List<CommandParameterType>() {
-                            new CommandParameterType() {
-                                Name = "text",
-                                Type = typeof(String)
-                            }
+                    Handler = this.ExecuteTextCommand
+                },
+                new CommandDispatch() {
+                    CommandType = CommandType.TextCommandsPreview,
+                    ParameterTypes = new List<CommandParameterType>() {
+                        new CommandParameterType() {
+                            Name = "text",
+                            Type = typeof(String)
                         }
                     },
-                    new CommandDispatchHandler(this.PreviewTextCommand)
-                }, {
-                    new CommandDispatch() {
-                        CommandType = CommandType.TextCommandsRegister,
-                        ParameterTypes = new List<CommandParameterType>() {
-                            new CommandParameterType() {
-                                Name = "textCommand",
-                                Type = typeof(TextCommandModel)
-                            }
+                    Handler = this.PreviewTextCommand
+                },
+                new CommandDispatch() {
+                    CommandType = CommandType.TextCommandsRegister,
+                    ParameterTypes = new List<CommandParameterType>() {
+                        new CommandParameterType() {
+                            Name = "textCommand",
+                            Type = typeof(TextCommandModel)
                         }
                     },
-                    new CommandDispatchHandler(this.RegisterTextCommand)
-                }, {
-                    new CommandDispatch() {
-                        CommandType = CommandType.TextCommandsUnregister,
-                        ParameterTypes = new List<CommandParameterType>() {
-                            new CommandParameterType() {
-                                Name = "textCommand",
-                                Type = typeof(TextCommandModel)
-                            }
+                    Handler = this.RegisterTextCommand
+                },
+                new CommandDispatch() {
+                    CommandType = CommandType.TextCommandsUnregister,
+                    ParameterTypes = new List<CommandParameterType>() {
+                        new CommandParameterType() {
+                            Name = "textCommand",
+                            Type = typeof(TextCommandModel)
                         }
                     },
-                    new CommandDispatchHandler(this.UnregisterTextCommand)
+                    Handler = this.UnregisterTextCommand
                 }
             });
         }

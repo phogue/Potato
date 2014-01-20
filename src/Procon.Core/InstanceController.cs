@@ -91,110 +91,100 @@ namespace Procon.Core {
 
             this.EventsConsole = new EventsConsoleController();
 
-            this.AppendDispatchHandlers(new Dictionary<CommandDispatch, CommandDispatchHandler>() {
-                {
-                    new CommandDispatch() {
-                        CommandType = CommandType.InstanceServiceMergePackage,
-                        ParameterTypes = new List<CommandParameterType>() {
-                            new CommandParameterType() {
-                                Name = "uri",
-                                Type = typeof(String)
-                            },
-                            new CommandParameterType() {
-                                Name = "packageId",
-                                Type = typeof(String)
-                            }
+            this.CommandDispatchers.AddRange(new List<CommandDispatch>() {
+                new CommandDispatch() {
+                    CommandType = CommandType.InstanceServiceMergePackage,
+                    ParameterTypes = new List<CommandParameterType>() {
+                        new CommandParameterType() {
+                            Name = "uri",
+                            Type = typeof(String)
+                        },
+                        new CommandParameterType() {
+                            Name = "packageId",
+                            Type = typeof(String)
                         }
                     },
-                    new CommandDispatchHandler(this.InstanceServiceMergePackage)
+                    Handler = this.InstanceServiceMergePackage
                 },
-                {
-                    new CommandDispatch() {
-                        CommandType = CommandType.InstanceServiceUninstallPackage,
-                        ParameterTypes = new List<CommandParameterType>() {
-                            new CommandParameterType() {
-                                Name = "packageId",
-                                Type = typeof(String)
-                            }
+                new CommandDispatch() {
+                    CommandType = CommandType.InstanceServiceUninstallPackage,
+                    ParameterTypes = new List<CommandParameterType>() {
+                        new CommandParameterType() {
+                            Name = "packageId",
+                            Type = typeof(String)
                         }
                     },
-                    new CommandDispatchHandler(this.InstanceServiceUninstallPackage)
+                    Handler = this.InstanceServiceUninstallPackage
                 },
-                {
-                    new CommandDispatch() {
-                        CommandType = CommandType.InstanceServiceRestart
-                    },
-                    new CommandDispatchHandler(this.InstanceServiceRestart)
-                }, {
-                    new CommandDispatch() {
-                        CommandType = CommandType.InstanceAddConnection,
-                        ParameterTypes = new List<CommandParameterType>() {
-                            new CommandParameterType() {
-                                Name = "gameTypeProvider",
-                                Type = typeof(String)
-                            },
-                            new CommandParameterType() {
-                                Name = "gameTypeType",
-                                Type = typeof(String)
-                            },
-                            new CommandParameterType() {
-                                Name = "hostName",
-                                Type = typeof(String)
-                            },
-                            new CommandParameterType() {
-                                Name = "port",
-                                Type = typeof(UInt16)
-                            },
-                            new CommandParameterType() {
-                                Name = "password",
-                                Type = typeof(String)
-                            },
-                            new CommandParameterType() {
-                                Name = "additional",
-                                Type = typeof(String)
-                            }
+                new CommandDispatch() {
+                    CommandType = CommandType.InstanceServiceRestart,
+                    Handler = this.InstanceServiceRestart
+                },
+                new CommandDispatch() {
+                    CommandType = CommandType.InstanceAddConnection,
+                    ParameterTypes = new List<CommandParameterType>() {
+                        new CommandParameterType() {
+                            Name = "gameTypeProvider",
+                            Type = typeof(String)
+                        },
+                        new CommandParameterType() {
+                            Name = "gameTypeType",
+                            Type = typeof(String)
+                        },
+                        new CommandParameterType() {
+                            Name = "hostName",
+                            Type = typeof(String)
+                        },
+                        new CommandParameterType() {
+                            Name = "port",
+                            Type = typeof(UInt16)
+                        },
+                        new CommandParameterType() {
+                            Name = "password",
+                            Type = typeof(String)
+                        },
+                        new CommandParameterType() {
+                            Name = "additional",
+                            Type = typeof(String)
                         }
                     },
-                    new CommandDispatchHandler(this.InstanceAddConnection)
-                }, {
-                    new CommandDispatch() {
-                        CommandType = CommandType.InstanceRemoveConnection,
-                        ParameterTypes = new List<CommandParameterType>() {
-                            new CommandParameterType() {
-                                Name = "connectionGuid",
-                                Type = typeof(String)
-                            }
+                    Handler = this.InstanceAddConnection
+                },
+                new CommandDispatch() {
+                    CommandType = CommandType.InstanceRemoveConnection,
+                    ParameterTypes = new List<CommandParameterType>() {
+                        new CommandParameterType() {
+                            Name = "connectionGuid",
+                            Type = typeof(String)
                         }
                     },
-                    new CommandDispatchHandler(this.InstanceRemoveConnectionByGuid)
-                }, {
-                    new CommandDispatch() {
-                        CommandType = CommandType.InstanceRemoveConnection,
-                        ParameterTypes = new List<CommandParameterType>() {
-                            new CommandParameterType() {
-                                Name = "gameTypeProvider",
-                                Type = typeof(String)
-                            },
-                            new CommandParameterType() {
-                                Name = "gameTypeType",
-                                Type = typeof(String)
-                            },
-                            new CommandParameterType() {
-                                Name = "hostName",
-                                Type = typeof(String)
-                            },
-                            new CommandParameterType() {
-                                Name = "port",
-                                Type = typeof(UInt16)
-                            }
+                    Handler = this.InstanceRemoveConnectionByGuid
+                },
+                new CommandDispatch() {
+                    CommandType = CommandType.InstanceRemoveConnection,
+                    ParameterTypes = new List<CommandParameterType>() {
+                        new CommandParameterType() {
+                            Name = "gameTypeProvider",
+                            Type = typeof(String)
+                        },
+                        new CommandParameterType() {
+                            Name = "gameTypeType",
+                            Type = typeof(String)
+                        },
+                        new CommandParameterType() {
+                            Name = "hostName",
+                            Type = typeof(String)
+                        },
+                        new CommandParameterType() {
+                            Name = "port",
+                            Type = typeof(UInt16)
                         }
                     },
-                    new CommandDispatchHandler(this.InstanceRemoveConnectionByDetails)
-                }, {
-                    new CommandDispatch() {
-                        CommandType = CommandType.InstanceQuery
-                    },
-                    new CommandDispatchHandler(this.InstanceQuery)
+                    Handler = this.InstanceRemoveConnectionByDetails
+                },
+                new CommandDispatch() {
+                    CommandType = CommandType.InstanceQuery,
+                    Handler = this.InstanceQuery
                 }
             });
         }

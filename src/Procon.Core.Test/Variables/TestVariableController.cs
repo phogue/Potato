@@ -8,6 +8,7 @@ using NUnit.Framework;
 using Newtonsoft.Json.Linq;
 using Procon.Core.Shared;
 using Procon.Core.Shared.Models;
+using Procon.Core.Shared.Serialization;
 using Procon.Core.Variables;
 using Procon.Net.Shared.Utils;
 
@@ -229,7 +230,7 @@ namespace Procon.Core.Test.Variables {
             var loadConfig = new Config();
             loadConfig.Load(ConfigFileInfo);
 
-            var commands = loadConfig.RootOf<VariableController>().Children<JObject>().Select(item => item.ToObject<Command>()).ToList();
+            var commands = loadConfig.RootOf<VariableController>().Children<JObject>().Select(item => item.ToObject<Command>(JsonSerialization.Minimal)).ToList();
 
             Assert.AreEqual("VariablesSetA", commands[0].Name);
             Assert.AreEqual("NameToWriteString", commands[0].Parameters[0].First<String>());

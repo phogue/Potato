@@ -30,42 +30,36 @@ namespace Procon.Examples.Plugins.Commands {
                 }
             };
 
-            this.AppendDispatchHandlers(new Dictionary<CommandDispatch, CommandDispatchHandler>() {
-                {
-                    new CommandDispatch() {
-                        Name = "SingleParameterCommand",
-                        CommandAttributeType = CommandAttributeType.Handler,
-                        ParameterTypes = new List<CommandParameterType>() {
-                            new CommandParameterType() {
-                                Name = "text",
-                                // Commands must have a type that appears within Procon.Core.CommandParameterData
-                                // but "Content" works as a generic, so you can accept integers here for instance
-                                // and if it can be converted it will be.
-                                Type = typeof(String)
-                            }
+            this.CommandDispatchers.AddRange(new List<CommandDispatch>() {
+                new CommandDispatch() {
+                    Name = "SingleParameterCommand",
+                    CommandAttributeType = CommandAttributeType.Handler,
+                    ParameterTypes = new List<CommandParameterType>() {
+                        new CommandParameterType() {
+                            Name = "text",
+                            // Commands must have a type that appears within Procon.Core.CommandParameterData
+                            // but "Content" works as a generic, so you can accept integers here for instance
+                            // and if it can be converted it will be.
+                            Type = typeof(String)
                         }
                     },
-                    new CommandDispatchHandler(this.SingleParameterCommand)
+                    Handler = this.SingleParameterCommand
                 },
-                {
-                    new CommandDispatch() {
-                        Name = "SingleConvertedParameterCommand",
-                        CommandAttributeType = CommandAttributeType.Handler,
-                        ParameterTypes = new List<CommandParameterType>() {
-                            new CommandParameterType() {
-                                Name = "number",
-                                Type = typeof(int)
-                            }
+                new CommandDispatch() {
+                    Name = "SingleConvertedParameterCommand",
+                    CommandAttributeType = CommandAttributeType.Handler,
+                    ParameterTypes = new List<CommandParameterType>() {
+                        new CommandParameterType() {
+                            Name = "number",
+                            Type = typeof(int)
                         }
                     },
-                    new CommandDispatchHandler(this.SingleConvertedParameterCommand)
+                    Handler = this.SingleConvertedParameterCommand
                 },
-                {
-                    new CommandDispatch() {
-                        Name = "NoParameterCommand",
-                        CommandAttributeType = CommandAttributeType.Handler
-                    },
-                    new CommandDispatchHandler(this.NoParameterCommand)
+                new CommandDispatch() {
+                    Name = "NoParameterCommand",
+                    CommandAttributeType = CommandAttributeType.Handler,
+                    Handler = this.NoParameterCommand
                 }
             });
         }

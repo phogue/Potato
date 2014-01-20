@@ -60,62 +60,56 @@ namespace Procon.Core.Connections {
 
             this.ConnectionModel = new ConnectionModel();
 
-            this.AppendDispatchHandlers(new Dictionary<CommandDispatch, CommandDispatchHandler>() {
-                {
-                    new CommandDispatch() {
-                        CommandType = CommandType.ConnectionQuery
-                    },
-                    new CommandDispatchHandler(this.ConnectionQuery)
-                }, {
-                    new CommandDispatch() {
-                        CommandType = CommandType.NetworkProtocolQueryPlayers
-                    },
-                    new CommandDispatchHandler(this.NetworkProtocolQueryPlayers)
-                }, {
-                    new CommandDispatch() {
-                        CommandType = CommandType.NetworkProtocolQuerySettings
-                    },
-                    new CommandDispatchHandler(this.NetworkProtocolQuerySettings)
-                }, {
-                    new CommandDispatch() {
-                        CommandType = CommandType.NetworkProtocolQueryBans
-                    },
-                    new CommandDispatchHandler(this.NetworkProtocolQueryBans)
-                }, {
-                    new CommandDispatch() {
-                        CommandType = CommandType.NetworkProtocolQueryMaps
-                    },
-                    new CommandDispatchHandler(this.NetworkProtocolQueryMaps)
-                }, {
-                    new CommandDispatch() {
-                        CommandType = CommandType.NetworkProtocolQueryMapPool
-                    },
-                    new CommandDispatchHandler(this.NetworkProtocolQueryMapPool)
+            this.CommandDispatchers.AddRange(new List<CommandDispatch>() {
+                new CommandDispatch() {
+                    CommandType = CommandType.ConnectionQuery,
+                    Handler = this.ConnectionQuery
+                },
+                new CommandDispatch() {
+                    CommandType = CommandType.NetworkProtocolQueryPlayers,
+                    Handler = this.NetworkProtocolQueryPlayers
+                },
+                new CommandDispatch() {
+                    CommandType = CommandType.NetworkProtocolQuerySettings,
+                    Handler = this.NetworkProtocolQuerySettings
+                },
+                new CommandDispatch() {
+                    CommandType = CommandType.NetworkProtocolQueryBans,
+                    Handler = this.NetworkProtocolQueryBans
+                },
+                new CommandDispatch() {
+                    CommandType = CommandType.NetworkProtocolQueryMaps,
+                    Handler = this.NetworkProtocolQueryMaps
+                },
+                new CommandDispatch() {
+                    CommandType = CommandType.NetworkProtocolQueryMapPool,
+                    Handler = this.NetworkProtocolQueryMapPool
                 }
             });
 
             // Add all network actions, dispatching them to NetworkProtocolAction
-            this.AppendDispatchHandlers(Enum.GetValues(typeof(NetworkActionType)).Cast<NetworkActionType>().ToDictionary(actionType => new CommandDispatch() {
+            this.CommandDispatchers.AddRange(Enum.GetValues(typeof(NetworkActionType)).Cast<NetworkActionType>().Select(actionType => new CommandDispatch() {
                 Name = actionType.ToString(),
                 ParameterTypes = new List<CommandParameterType>() {
                     new CommandParameterType() {
                         Name = "action",
                         Type = typeof(INetworkAction)
                     }
-                }
-            }, actionType => new CommandDispatchHandler(this.NetworkProtocolAction)));
+                },
+                Handler = this.NetworkProtocolAction
+            }));
 
-
-            this.AppendDispatchHandlers(Enum.GetValues(typeof(NetworkActionType)).Cast<NetworkActionType>().ToDictionary(actionType => new CommandDispatch() {
+            this.CommandDispatchers.AddRange(Enum.GetValues(typeof(NetworkActionType)).Cast<NetworkActionType>().Select(actionType => new CommandDispatch() {
                 Name = actionType.ToString(),
                 ParameterTypes = new List<CommandParameterType>() {
                     new CommandParameterType() {
-                        Name = "actions",
+                        Name = "action",
                         Type = typeof(INetworkAction),
                         IsList = true
                     }
-                }
-            }, actionType => new CommandDispatchHandler(this.NetworkProtocolActions)));
+                },
+                Handler = this.NetworkProtocolActions
+            }));
         }
 
         public override void WriteConfig(IConfig config) {

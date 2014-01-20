@@ -9,6 +9,7 @@ using Newtonsoft.Json.Linq;
 using Procon.Core.Security;
 using Procon.Core.Shared;
 using Procon.Core.Shared.Models;
+using Procon.Core.Shared.Serialization;
 using Procon.Net.Shared.Protocols;
 
 #endregion
@@ -306,7 +307,7 @@ namespace Procon.Core.Test.Security {
             var loadConfig = new Config();
             loadConfig.Load(ConfigFileInfo);
 
-            var commands = loadConfig.RootOf<SecurityController>().Children<JObject>().Select(item => item.ToObject<Command>()).ToList();
+            var commands = loadConfig.RootOf<SecurityController>().Children<JObject>().Select(item => item.ToObject<Command>(JsonSerialization.Minimal)).ToList();
 
             Assert.AreEqual("SecurityAddGroup", commands[0].Name);
             Assert.AreEqual("GroupName", commands[0].Parameters[0].First<String>());

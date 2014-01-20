@@ -54,64 +54,56 @@ namespace Procon.Core.Database {
                 }
             };
 
-            this.AppendDispatchHandlers(new Dictionary<CommandDispatch, CommandDispatchHandler>() {
-                {
-                    new CommandDispatch() {
-                        CommandType = CommandType.DatabaseQuery,
-                        ParameterTypes = new List<CommandParameterType>() {
-                            new CommandParameterType() {
-                                Name = "query",
-                                Type = typeof(IDatabaseObject)
-                            }
+            this.CommandDispatchers.AddRange(new List<CommandDispatch>() {
+                new CommandDispatch() {
+                    CommandType = CommandType.DatabaseQuery,
+                    ParameterTypes = new List<CommandParameterType>() {
+                        new CommandParameterType() {
+                            Name = "query",
+                            Type = typeof(IDatabaseObject)
                         }
                     },
-                    new CommandDispatchHandler(this.Query)
+                    Handler = this.Query
                 },
-                {
-                    new CommandDispatch() {
-                        CommandType = CommandType.DatabaseQuery,
-                        ParameterTypes = new List<CommandParameterType>() {
-                            new CommandParameterType() {
-                                Name = "query",
-                                Type = typeof(IDatabaseObject),
-                                IsList = true
-                            }
+                new CommandDispatch() {
+                    CommandType = CommandType.DatabaseQuery,
+                    ParameterTypes = new List<CommandParameterType>() {
+                        new CommandParameterType() {
+                            Name = "query",
+                            Type = typeof(IDatabaseObject),
+                            IsList = true
                         }
                     },
-                    new CommandDispatchHandler(this.Query)
+                    Handler = this.Query
                 },
-                {
-                    new CommandDispatch() {
-                        CommandType = CommandType.DatabaseQuery,
-                        ParameterTypes = new List<CommandParameterType>() {
-                            new CommandParameterType() {
-                                Name = "driver",
-                                Type = typeof(String)
-                            },
-                            new CommandParameterType() {
-                                Name = "query",
-                                Type = typeof(IDatabaseObject)
-                            }
+                new CommandDispatch() {
+                    CommandType = CommandType.DatabaseQuery,
+                    ParameterTypes = new List<CommandParameterType>() {
+                        new CommandParameterType() {
+                            Name = "driver",
+                            Type = typeof(String)
+                        },
+                        new CommandParameterType() {
+                            Name = "query",
+                            Type = typeof(IDatabaseObject)
                         }
                     },
-                    new CommandDispatchHandler(this.QueryDriver)
+                    Handler = this.QueryDriver
                 },
-                {
-                    new CommandDispatch() {
-                        CommandType = CommandType.DatabaseQuery,
-                        ParameterTypes = new List<CommandParameterType>() {
-                            new CommandParameterType() {
-                                Name = "driver",
-                                Type = typeof(String)
-                            },
-                            new CommandParameterType() {
-                                Name = "query",
-                                Type = typeof(IDatabaseObject),
-                                IsList = true
-                            }
+                new CommandDispatch() {
+                    CommandType = CommandType.DatabaseQuery,
+                    ParameterTypes = new List<CommandParameterType>() {
+                        new CommandParameterType() {
+                            Name = "driver",
+                            Type = typeof(String)
+                        },
+                        new CommandParameterType() {
+                            Name = "query",
+                            Type = typeof(IDatabaseObject),
+                            IsList = true
                         }
                     },
-                    new CommandDispatchHandler(this.QueryDriver)
+                    Handler = this.QueryDriver
                 }
             });
         }

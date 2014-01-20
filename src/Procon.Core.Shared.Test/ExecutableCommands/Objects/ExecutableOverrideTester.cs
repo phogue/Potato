@@ -9,8 +9,8 @@ using Procon.Core.Shared.Models;
 namespace Procon.Core.Shared.Test.ExecutableCommands.Objects {
     public class ExecutableOverrideTester : CoreController {
         public ExecutableOverrideTester() : base() {
-            this.AppendDispatchHandlers(new Dictionary<CommandDispatch, CommandDispatchHandler>() {
-                {new CommandDispatch() {
+            this.CommandDispatchers.AddRange(new List<CommandDispatch>() {
+                new CommandDispatch() {
                     CommandType = CommandType.VariablesSet,
                     CommandAttributeType = CommandAttributeType.Executed,
                     ParameterTypes = new List<CommandParameterType>() {
@@ -18,10 +18,10 @@ namespace Procon.Core.Shared.Test.ExecutableCommands.Objects {
                             Name = "value",
                             Type = typeof (int)
                         }
-                    }
+                    },
+                    Handler = this.SetTestFlagInteger
                 },
-                    new CommandDispatchHandler(SetTestFlagInteger)},
-                {new CommandDispatch() {
+                new CommandDispatch() {
                     CommandType = CommandType.VariablesSet,
                     CommandAttributeType = CommandAttributeType.Executed,
                     ParameterTypes = new List<CommandParameterType>() {
@@ -29,9 +29,9 @@ namespace Procon.Core.Shared.Test.ExecutableCommands.Objects {
                             Name = "value",
                             Type = typeof (float)
                         }
-                    }
-                },
-                    new CommandDispatchHandler(SetTestFlagFloat)}
+                    },
+                    Handler = this.SetTestFlagFloat
+                }
             });
         }
 

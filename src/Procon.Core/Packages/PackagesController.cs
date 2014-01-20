@@ -49,34 +49,30 @@ namespace Procon.Core.Packages {
                 }
             };
 
-            this.AppendDispatchHandlers(new Dictionary<CommandDispatch, CommandDispatchHandler>() {
-                {
-                    new CommandDispatch() {
-                        CommandType = CommandType.PackagesMergePackage,
-                        ParameterTypes = new List<CommandParameterType>() {
-                            new CommandParameterType() {
-                                Name = "packageId",
-                                Type = typeof(String)
-                            }
+            this.CommandDispatchers.AddRange(new List<CommandDispatch>() {
+                new CommandDispatch() {
+                    CommandType = CommandType.PackagesMergePackage,
+                    ParameterTypes = new List<CommandParameterType>() {
+                        new CommandParameterType() {
+                            Name = "packageId",
+                            Type = typeof(String)
                         }
                     },
-                    new CommandDispatchHandler(this.PackagesMergePackage)
-                }, {
-                    new CommandDispatch() {
-                        CommandType = CommandType.PackagesUninstallPackage,
-                        ParameterTypes = new List<CommandParameterType>() {
-                            new CommandParameterType() {
-                                Name = "packageId",
-                                Type = typeof(String)
-                            }
+                    Handler = this.PackagesMergePackage
+                },
+                new CommandDispatch() {
+                    CommandType = CommandType.PackagesUninstallPackage,
+                    ParameterTypes = new List<CommandParameterType>() {
+                        new CommandParameterType() {
+                            Name = "packageId",
+                            Type = typeof(String)
                         }
                     },
-                    new CommandDispatchHandler(this.PackagesUninstallPackage)
-                }, {
-                    new CommandDispatch() {
-                        CommandType = CommandType.PackagesFetchPackages
-                    },
-                    new CommandDispatchHandler(this.PackagesFetchPackages)
+                    Handler = this.PackagesUninstallPackage
+                },
+                new CommandDispatch() {
+                    CommandType = CommandType.PackagesFetchPackages,
+                    Handler = this.PackagesFetchPackages
                 }
             });
         }

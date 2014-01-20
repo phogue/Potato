@@ -52,21 +52,19 @@ namespace Procon.Core.Shared.Plugins {
 
             this.DeferredActions = new ConcurrentDictionary<Guid, IDeferredAction>();
 
-            this.AppendDispatchHandlers(new Dictionary<CommandDispatch, CommandDispatchHandler>() {
-                {
-                    new CommandDispatch() {
-                        CommandType = CommandType.TextCommandsExecute,
-                        CommandAttributeType = CommandAttributeType.Executed,
-                        ParameterTypes = new List<CommandParameterType>() {
-                            new CommandParameterType() {
-                                Name = "text",
-                                Type = typeof(String)
-                            }
+            this.CommandDispatchers.Add(
+                new CommandDispatch() {
+                    CommandType = CommandType.TextCommandsExecute,
+                    CommandAttributeType = CommandAttributeType.Executed,
+                    ParameterTypes = new List<CommandParameterType>() {
+                        new CommandParameterType() {
+                            Name = "text",
+                            Type = typeof(String)
                         }
                     },
-                    new CommandDispatchHandler(this.TextCommandExecuted)
+                    Handler = this.TextCommandExecuted
                 }
-            });
+            );
         }
         
         /// <summary>

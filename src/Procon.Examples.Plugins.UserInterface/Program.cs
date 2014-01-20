@@ -19,20 +19,16 @@ namespace Procon.Examples.Plugins.UserInterface {
 
         public Program() : base() {
 
-            this.AppendDispatchHandlers(new Dictionary<CommandDispatch, CommandDispatchHandler>() {
-                {
-                    new CommandDispatch() {
-                        Name = "/",
-                        CommandAttributeType = CommandAttributeType.Handler
-                    },
-                    new CommandDispatchHandler(this.PageIndex)
+            this.CommandDispatchers.AddRange(new List<CommandDispatch>() {
+                new CommandDispatch() {
+                    Name = "/",
+                    CommandAttributeType = CommandAttributeType.Handler,
+                    Handler = this.PageIndex
                 },
-                {
-                    new CommandDispatch() {
-                        Name = "/settings",
-                        CommandAttributeType = CommandAttributeType.Handler
-                    },
-                    new CommandDispatchHandler(this.PageSettings)
+                new CommandDispatch() {
+                    Name = "/settings",
+                    CommandAttributeType = CommandAttributeType.Handler,
+                    Handler = this.PageSettings
                 }
             });
 

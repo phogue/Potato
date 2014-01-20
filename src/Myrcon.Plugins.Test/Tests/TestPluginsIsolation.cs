@@ -8,29 +8,26 @@ namespace Myrcon.Plugins.Test.Tests {
     public class TestPluginsIsolation : CoreController {
 
         public TestPluginsIsolation() : base() {
-            this.AppendDispatchHandlers(new Dictionary<CommandDispatch, CommandDispatchHandler>() {
-                {
-                    new CommandDispatch() {
-                        Name = "TestPluginsIsolationCleanCurrentAppDomain",
-                        ParameterTypes = new List<CommandParameterType>() {
-                            new CommandParameterType() {
-                                Name = "parameterMessage",
-                                Type = typeof(String)
-                            }
+            this.CommandDispatchers.AddRange(new List<CommandDispatch>() {
+                new CommandDispatch() {
+                    Name = "TestPluginsIsolationCleanCurrentAppDomain",
+                    ParameterTypes = new List<CommandParameterType>() {
+                        new CommandParameterType() {
+                            Name = "parameterMessage",
+                            Type = typeof(String)
                         }
                     },
-                    new CommandDispatchHandler(this.TestPluginsIsolationCleanCurrentAppDomain)
-                }, {
-                    new CommandDispatch() {
-                        Name = "TestPluginsIsolationWriteToDirectory",
-                        ParameterTypes = new List<CommandParameterType>() {
-                            new CommandParameterType() {
-                                Name = "path",
-                                Type = typeof(String)
-                            }
+                    Handler = this.TestPluginsIsolationCleanCurrentAppDomain
+                },
+                new CommandDispatch() {
+                    Name = "TestPluginsIsolationWriteToDirectory",
+                    ParameterTypes = new List<CommandParameterType>() {
+                        new CommandParameterType() {
+                            Name = "path",
+                            Type = typeof(String)
                         }
                     },
-                    new CommandDispatchHandler(this.TestPluginsIsolationWriteToDirectory)
+                    Handler = this.TestPluginsIsolationWriteToDirectory
                 }
             });
         }

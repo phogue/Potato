@@ -20,25 +20,21 @@ namespace Procon.Examples.Plugins.Support {
 
         public Program() : base() {
 
-            this.AppendDispatchHandlers(new Dictionary<CommandAttribute, CommandDispatchHandler>() {
-                {
-                    new CommandAttribute() {
-                        Name = "TestSupportToKillPlayersUsingBranchBuilder",
-                        CommandAttributeType = CommandAttributeType.Handler
-                    },
-                    new CommandDispatchHandler(this.TestSupportToKillPlayersUsingBranchBuilder)
+            this.CommandDispatchers.AddRange(new List<ICommandDispatch>() {
+                new CommandDispatch() {
+                    Name = "TestSupportToKillPlayersUsingBranchBuilder",
+                    CommandAttributeType = CommandAttributeType.Handler,
+                    Handler = this.TestSupportToKillPlayersUsingBranchBuilder
                 },
-                {
-                    new CommandAttribute() {
-                        Name = "TestSupportCustomBuildAndTest",
-                        CommandAttributeType = CommandAttributeType.Handler
-                    },
-                    new CommandDispatchHandler(this.TestSupportCustomBuildAndTest)
+                new CommandDispatch() {
+                    Name = "TestSupportCustomBuildAndTest",
+                    CommandAttributeType = CommandAttributeType.Handler,
+                    Handler = this.TestSupportCustomBuildAndTest
                 }
             });
         }
 
-        public CommandResult TestSupportToKillPlayersUsingBranchBuilder(Command command, Dictionary<String, CommandParameter> parameters) {
+        public ICommandResult TestSupportToKillPlayersUsingBranchBuilder(ICommand command, Dictionary<String, ICommandParameter> parameters) {
             bool canKillPlayer = this.GameState.Support.Test(BranchBuilder.ProtocolCanKillPlayer());
 
             // If we can issue a kill action against a player
@@ -47,7 +43,7 @@ namespace Procon.Examples.Plugins.Support {
             return command.Result;
         }
 
-        public CommandResult TestSupportCustomBuildAndTest(Command command, Dictionary<String, CommandParameter> parameters) {
+        public ICommandResult TestSupportCustomBuildAndTest(ICommand command, Dictionary<String, ICommandParameter> parameters) {
             bool canKillPlayer = this.GameState.Support.BuildAndTest(new ProtocolAgent(), new CanFlow(), new KillGoal(), new PlayerAgent());
 
             // If we can issue a kill action against a player, but we built the condition ourselves. Allows for

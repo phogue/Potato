@@ -6,10 +6,10 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using Procon.Core.Shared.Events;
+using Procon.Core.Shared.Models;
 using Procon.Net.Shared;
 using Procon.Net.Shared.Actions;
 using Procon.Net.Shared.Actions.Deferred;
-using Procon.Net.Shared.Models;
 
 namespace Procon.Core.Shared.Plugins {
     /// <summary>
@@ -40,7 +40,7 @@ namespace Procon.Core.Shared.Plugins {
         /// <summary>
         /// The latest GameState that was passed across the AppDomain.
         /// </summary>
-        public ProtocolState GameState { get; set; }
+        public IProtocolState GameState { get; set; }
 
         /// <summary>
         /// All actions awaiting responses from the game networking layer
@@ -52,21 +52,19 @@ namespace Procon.Core.Shared.Plugins {
 
             this.DeferredActions = new ConcurrentDictionary<Guid, IDeferredAction>();
 
-            this.AppendDispatchHandlers(new Dictionary<CommandAttribute, CommandDispatchHandler>() {
-                {
-                    new CommandAttribute() {
-                        CommandType = CommandType.TextCommandsExecute,
-                        CommandAttributeType = CommandAttributeType.Executed,
-                        ParameterTypes = new List<CommandParameterType>() {
-                            new CommandParameterType() {
-                                Name = "text",
-                                Type = typeof(String)
-                            }
+            this.CommandDispatchers.Add(
+                new CommandDispatch() {
+                    CommandType = CommandType.TextCommandsExecute,
+                    CommandAttributeType = CommandAttributeType.Executed,
+                    ParameterTypes = new List<CommandParameterType>() {
+                        new CommandParameterType() {
+                            Name = "text",
+                            Type = typeof(String)
                         }
                     },
-                    new CommandDispatchHandler(this.TextCommandExecuted)
+                    Handler = this.TextCommandExecuted
                 }
-            });
+            );
         }
         
         /// <summary>
@@ -85,9 +83,9 @@ namespace Procon.Core.Shared.Plugins {
             return guid;
         }
 
-        public override void BeginBubble(Command command, Action<CommandResult> completed = null) {
+        public override void BeginBubble(ICommand command, Action<ICommandResult> completed = null) {
             // There isn't much point in bubbling up if we just need to come back down here.
-            if (command.Scope != null && command.Scope.PluginGuid == this.PluginGuid) {
+            if (command.ScopeModel != null && command.ScopeModel.PluginGuid == this.PluginGuid) {
                 base.BeginTunnel(command, completed);
             }
             else if (this.BubbleObjects != null) {
@@ -95,9 +93,9 @@ namespace Procon.Core.Shared.Plugins {
             }
         }
 
-        public override CommandResult Bubble(Command command) {
+        public override ICommandResult Bubble(ICommand command) {
             // There isn't much point in bubbling up if we just need to come back down here.
-            if (command.Scope != null && command.Scope.PluginGuid == this.PluginGuid) {
+            if (command.ScopeModel != null && command.ScopeModel.PluginGuid == this.PluginGuid) {
                 command.Result = this.Tunnel(command);
             }
             else if (this.BubbleObjects != null) {
@@ -115,16 +113,16 @@ namespace Procon.Core.Shared.Plugins {
         /// </remarks>
         /// <param name="action">The action to send to the server.</param>
         /// <returns>The result of the command, check the status for a success message.</returns>
-        public virtual CommandResult Action(NetworkAction action) {
+        public virtual ICommandResult Action(INetworkAction action) {
             return this.Bubble(new Command() {
                 Name = action.ActionType.ToString(),
-                Scope = new CommandScope() {
+                ScopeModel = new CommandScopeModel() {
                     ConnectionGuid = this.ConnectionGuid
                 },
-                Parameters = new List<CommandParameter>() {
+                Parameters = new List<ICommandParameter>() {
                     new CommandParameter() {
                         Data = {
-                            NetworkActions = new List<NetworkAction>() {
+                            NetworkActions = new List<INetworkAction>() {
                                 action
                             }
                         }
@@ -138,8 +136,8 @@ namespace Procon.Core.Shared.Plugins {
         /// </summary>
         /// <param name="action"></param>
         /// <returns></returns>
-        public virtual CommandResult Action(IDeferredAction action) {
-            CommandResult result = null;
+        public virtual ICommandResult Action(IDeferredAction action) {
+            ICommandResult result = null;
 
             if (action.GetAction() != null) {
                 // Wait for responses from this action
@@ -164,7 +162,7 @@ namespace Procon.Core.Shared.Plugins {
         /// needs to make the initial config object before writing to it.</remarks>
         public virtual void WriteConfig() {
             if (this.ConfigDirectoryInfo != null) {
-                JsonConfig config = new JsonConfig();
+                Config config = new Config();
                 config.Create(this.GetType());
                 this.WriteConfig(config);
 
@@ -185,7 +183,7 @@ namespace Procon.Core.Shared.Plugins {
                 GenericEventType = GenericEventType.ConfigLoading
             });
 
-            this.Execute(new JsonConfig().Load(ConfigDirectoryInfo));
+            this.Execute(new Config().Load(ConfigDirectoryInfo));
 
             this.GenericEvent(new GenericEvent() {
                 GenericEventType = GenericEventType.ConfigLoaded
@@ -208,13 +206,13 @@ namespace Procon.Core.Shared.Plugins {
             }
         }
 
-        public virtual void GameEvent(ProtocolEventArgs e) {
+        public virtual void GameEvent(IProtocolEventArgs e) {
             this.GameState = e.ProtocolState;
         }
 
-        public virtual void ClientEvent(ClientEventArgs e) {
+        public virtual void ClientEvent(IClientEventArgs e) {
             if (e.EventType == ClientEventType.ClientActionDone) {
-                NetworkAction doneAction = e.Then.Actions.FirstOrDefault();
+                INetworkAction doneAction = e.Then.Actions.FirstOrDefault();
 
                 if (doneAction != null) {
                     IDeferredAction deferredAction;
@@ -227,7 +225,7 @@ namespace Procon.Core.Shared.Plugins {
                 }
             }
             else if (e.EventType == ClientEventType.ClientActionExpired) {
-                NetworkAction doneAction = e.Then.Actions.FirstOrDefault();
+                INetworkAction doneAction = e.Then.Actions.FirstOrDefault();
 
                 if (doneAction != null) {
                     IDeferredAction deferredAction;
@@ -247,7 +245,7 @@ namespace Procon.Core.Shared.Plugins {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public virtual CommandResult TextCommandExecuted(Command command, Dictionary<String, CommandParameter> parameters) {
+        public virtual ICommandResult TextCommandExecuted(ICommand command, Dictionary<String, ICommandParameter> parameters) {
 
             // Not used.
             // String text = parameters["text"].First<String>();
@@ -256,10 +254,10 @@ namespace Procon.Core.Shared.Plugins {
                 this.Tunnel(new Command() {
                     Origin = CommandOrigin.Local,
                     Name = command.Result.Now.TextCommands.First().PluginCommand,
-                    Parameters = new List<CommandParameter>() {
+                    Parameters = new List<ICommandParameter>() {
                         new CommandParameter() {
                             Data = {
-                                CommandResults = new List<CommandResult>() {
+                                CommandResults = new List<ICommandResult>() {
                                     command.Result
                                 }
                             }
@@ -298,10 +296,10 @@ namespace Procon.Core.Shared.Plugins {
             this.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 Name = e.Now.TextCommands.First().PluginCommand,
-                Parameters = new List<CommandParameter>() {
+                Parameters = new List<ICommandParameter>() {
                     new CommandParameter() {
                         Data = {
-                            Events = new List<GenericEvent>() {
+                            Events = new List<IGenericEvent>() {
                                 e
                             }
                         }

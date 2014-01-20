@@ -1,6 +1,8 @@
 ﻿namespace Procon.Net.Shared {
+    /// <summary>
+    /// Handles serialization of packets to/from a byte stream
+    /// </summary>
     public interface IPacketSerializer {
-        
         /// <summary>
         /// The minimum packet size requires to be passed into the packet serializer. Anything smaller
         /// and it the full header of a packet wouldn't be available, therefore we wouldn't know

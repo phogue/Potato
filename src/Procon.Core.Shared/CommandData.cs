@@ -1,11 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.Xml.Serialization;
 using Newtonsoft.Json;
 using Procon.Core.Shared.Events;
 using Procon.Core.Shared.Models;
 using Procon.Database.Shared;
-using Procon.Net;
 using Procon.Net.Shared;
 using Procon.Net.Shared.Actions;
 using Procon.Net.Shared.Models;
@@ -15,8 +13,7 @@ namespace Procon.Core.Shared {
     /// All data types, as lists, that can be attached to a command.
     /// </summary>
     [Serializable]
-    public sealed class CommandData : IDisposable {
-
+    public sealed class CommandData : ICommandData {
         /// <summary>
         /// List of strings to use as general content (localization(s), html etc.)
         /// </summary>
@@ -75,7 +72,7 @@ namespace Procon.Core.Shared {
         /// <summary>
         /// Variables effected by this event.
         /// </summary>
-        public List<GenericEvent> Events { get; set; }
+        public List<IGenericEvent> Events { get; set; }
 
         /// <summary>
         /// Repositories effected by this event.
@@ -95,42 +92,42 @@ namespace Procon.Core.Shared {
         /// <summary>
         /// The network actions attached to this event, if any.
         /// </summary>
-        public List<NetworkAction> NetworkActions { get; set; } 
+        public List<INetworkAction> NetworkActions { get; set; } 
 
         /// <summary>
         /// The chats attached to this event, if any.
         /// </summary>
-        public List<Chat> Chats { get; set; }
+        public List<ChatModel> Chats { get; set; }
 
         /// <summary>
         /// The players attached to this event, if any.
         /// </summary>
-        public List<Player> Players { get; set; }
+        public List<PlayerModel> Players { get; set; }
 
         /// <summary>
         /// The kills attached to this event, if any.
         /// </summary>
-        public List<Kill> Kills { get; set; }
+        public List<KillModel> Kills { get; set; }
 
         /// <summary>
         /// The moves attached to this event, if any.
         /// </summary>
-        public List<Move> Moves { get; set; }
+        public List<MoveModel> Moves { get; set; }
 
         /// <summary>
         /// The spawns attached to this event, if any.
         /// </summary>
-        public List<Spawn> Spawns { get; set; }
+        public List<SpawnModel> Spawns { get; set; }
 
         /// <summary>
         /// The kicks attached to this event, if any.
         /// </summary>
-        public List<Kick> Kicks { get; set; }
+        public List<KickModel> Kicks { get; set; }
 
         /// <summary>
         /// The bans attached to this event, if any.
         /// </summary>
-        public List<Ban> Bans { get; set; }
+        public List<BanModel> Bans { get; set; }
 
         /// <summary>
         /// The settings attached to this event, if any. If any, if any. If any. Hai Ike.
@@ -140,18 +137,12 @@ namespace Procon.Core.Shared {
         /// <summary>
         /// The maps attached to this event, if any.
         /// </summary>
-        public List<Map> Maps { get; set; }
+        public List<MapModel> Maps { get; set; }
 
         /// <summary>
         /// The command results attached to this event, if any.
         /// </summary>
-        public List<CommandResult> CommandResults { get; set; }
-
-        /// <summary>
-        /// Raw packets (in plain or completed format) 
-        /// </summary>
-        [JsonIgnore]
-        public List<Raw> Raws { get; set; }
+        public List<ICommandResult> CommandResults { get; set; }
 
         /// <summary>
         /// The raw packets attached to this command or event, if any.
@@ -235,9 +226,6 @@ namespace Procon.Core.Shared {
 
             if (this.CommandResults != null) this.CommandResults.Clear();
             this.CommandResults = null;
-
-            if (this.Raws != null) this.Raws.Clear();
-            this.Raws = null;
 
             if (this.Packets != null) this.Packets.Clear();
             this.Packets = null;

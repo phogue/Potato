@@ -8,15 +8,15 @@ namespace Myrcon.Protocols.Frostbite.Objects {
     [Serializable]
     public class FrostbiteBan {
 
-        public static Ban ParseBanListItem(List<string> words) {
-            Ban ban = new Ban();
+        public static BanModel ParseBanListItem(List<string> words) {
+            BanModel ban = new BanModel();
 
             if (words.Count == 5) {
 
                 ban.Scope.Times.Add(FrostbiteTimeSubset.Parse(words.GetRange(2, 2)));
 
                 if (String.CompareOrdinal(words[0], "name") == 0) {
-                    ban.Scope.Players.Add(new Player() {
+                    ban.Scope.Players.Add(new PlayerModel() {
                         Name = words[1]
                     });
                 }
@@ -25,7 +25,7 @@ namespace Myrcon.Protocols.Frostbite.Objects {
                 //    this.IpAddress = words[1];
                 //}
                 else if (String.CompareOrdinal(words[0], "guid") == 0) {
-                    ban.Scope.Players.Add(new Player() {
+                    ban.Scope.Players.Add(new PlayerModel() {
                         Uid = words[1]
                     });
                 }
@@ -38,16 +38,16 @@ namespace Myrcon.Protocols.Frostbite.Objects {
             return ban;
         }
 
-        public static Ban ParseBanRemove(List<string> words) {
-            Ban ban = new Ban();
+        public static BanModel ParseBanRemove(List<string> words) {
+            BanModel ban = new BanModel();
 
             if (String.CompareOrdinal(words[0], "name") == 0) {
-                ban.Scope.Players.Add(new Player() {
+                ban.Scope.Players.Add(new PlayerModel() {
                     Name = words[1]
                 });
             }
             else if (String.CompareOrdinal(words[0], "guid") == 0) {
-                ban.Scope.Players.Add(new Player() {
+                ban.Scope.Players.Add(new PlayerModel() {
                     Uid = words[1]
                 });
             }
@@ -55,16 +55,16 @@ namespace Myrcon.Protocols.Frostbite.Objects {
             return ban;
         }
 
-        public static Ban ParseBanAdd(List<string> words) {
-            Ban ban = new Ban();
+        public static BanModel ParseBanAdd(List<string> words) {
+            BanModel ban = new BanModel();
 
             if (String.CompareOrdinal(words[0], "name") == 0) {
-                ban.Scope.Players.Add(new Player() {
+                ban.Scope.Players.Add(new PlayerModel() {
                     Name = words[1]
                 });
             }
             else if (String.CompareOrdinal(words[0], "guid") == 0) {
-                ban.Scope.Players.Add(new Player() {
+                ban.Scope.Players.Add(new PlayerModel() {
                     Uid = words[1]
                 });
             }

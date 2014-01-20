@@ -61,13 +61,13 @@ namespace Procon.Core.Shared.Models {
         /// List of matched players found in the text by name
         /// association or by matching the predicate found in the text.
         /// </summary>
-        public List<Player> Players { get; set; }
+        public List<PlayerModel> Players { get; set; }
 
         /// <summary>
         /// List of matched maps found in the text by name
         /// association or by matching the predicate found in the text.
         /// </summary>
-        public List<Map> Maps { get; set; }
+        public List<MapModel> Maps { get; set; }
 
         public override int GetHashCode() {
             unchecked {

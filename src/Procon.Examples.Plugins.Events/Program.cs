@@ -3,7 +3,6 @@ using System.Linq;
 using Procon.Core.Shared.Events;
 using Procon.Core.Shared.Plugins;
 using Procon.Net.Shared;
-using Procon.Net.Shared.Actions;
 using Procon.Net.Shared.Models;
 
 namespace Procon.Examples.Plugins.Events {
@@ -17,7 +16,7 @@ namespace Procon.Examples.Plugins.Events {
         //           but then remain constant over your releases.
         //           Procon uses the GUID to pipe through events/commands.
 
-        public override void ClientEvent(ClientEventArgs e) {
+        public override void ClientEvent(IClientEventArgs e) {
             // Unless you specifically want to override some of the plugins default
             // functionality, you should always call the base method.
             base.ClientEvent(e);
@@ -31,17 +30,17 @@ namespace Procon.Examples.Plugins.Events {
             // else more!
         }
 
-        public override void GameEvent(ProtocolEventArgs e) {
+        public override void GameEvent(IProtocolEventArgs e) {
             // Unless you specifically want to override some of the plugins default
             // functionality, you should always call the base method.
             base.GameEvent(e);
 
             // See Procon.Net.GameEventType enum for descriptions of each possible event.
             if (e.ProtocolEventType == ProtocolEventType.ProtocolChat) {
-                Chat chat = e.Now.Chats.First();
+                ChatModel chat = e.Now.Chats.First();
 
                 String text = chat.Now.Content.First();
-                Player talker = chat.Now.Players.First();
+                PlayerModel talker = chat.Now.Players.First();
 
                 Console.WriteLine("Program.GameEvent.GameChat: {0} said \"{1}\"", talker.Name, text);
             }

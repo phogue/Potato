@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 using NUnit.Framework;
 using Procon.Core.Remote;
 using Procon.Core.Shared;
-using Procon.Net.Shared.Protocols.CommandServer;
+using Procon.Net.Protocols.CommandServer;
 using Procon.Net.Shared.Utils.HTTP;
 
 namespace Procon.Core.Test.Remote.TestCommandServerSerializer {
@@ -18,9 +18,11 @@ namespace Procon.Core.Test.Remote.TestCommandServerSerializer {
         public void TestJsonDeserialization() {
             Command original = new Command() {
                 CommandType = CommandType.VariablesSet,
-                Username = "username",
-                PasswordPlainText = "password",
-                Parameters = new List<CommandParameter>() {
+                Authentication = {
+                    Username = "username",
+                    PasswordPlainText = "password"
+                },
+                Parameters = new List<ICommandParameter>() {
                     new CommandParameter() {
                         Data = {
                             Content = new List<String>() {
@@ -38,7 +40,7 @@ namespace Procon.Core.Test.Remote.TestCommandServerSerializer {
                 }
             };
 
-            Command deserialized = CommandServerSerializer.DeserializeCommand(new CommandServerPacket() {
+            ICommand deserialized = CommandServerSerializer.DeserializeCommand(new CommandServerPacket() {
                 Content = JsonConvert.SerializeObject(original),
                 Headers = new WebHeaderCollection() {
                     { HttpRequestHeader.ContentType, Mime.ApplicationJson }
@@ -46,8 +48,8 @@ namespace Procon.Core.Test.Remote.TestCommandServerSerializer {
             });
 
             Assert.AreEqual(original.CommandType.ToString(), deserialized.Name);
-            Assert.AreEqual(original.Username, deserialized.Username);
-            Assert.AreEqual(original.PasswordPlainText, deserialized.PasswordPlainText);
+            Assert.AreEqual(original.Authentication.Username, deserialized.Authentication.Username);
+            Assert.AreEqual(original.Authentication.PasswordPlainText, deserialized.Authentication.PasswordPlainText);
             Assert.IsNotEmpty(deserialized.Parameters);
         }
 
@@ -58,11 +60,13 @@ namespace Procon.Core.Test.Remote.TestCommandServerSerializer {
         public void TestJsonDeserializationEmptyParameterList() {
             Command original = new Command() {
                 CommandType = CommandType.VariablesSet,
-                Username = "username",
-                PasswordPlainText = "password"
+                Authentication = {
+                    Username = "username",
+                    PasswordPlainText = "password"
+                }
             };
 
-            Command deserialized = CommandServerSerializer.DeserializeCommand(new CommandServerPacket() {
+            ICommand deserialized = CommandServerSerializer.DeserializeCommand(new CommandServerPacket() {
                 Content = JsonConvert.SerializeObject(original),
                 Headers = new WebHeaderCollection() {
                     { HttpRequestHeader.ContentType, Mime.ApplicationJson }
@@ -70,8 +74,8 @@ namespace Procon.Core.Test.Remote.TestCommandServerSerializer {
             });
 
             Assert.AreEqual(original.CommandType.ToString(), deserialized.Name);
-            Assert.AreEqual(original.Username, deserialized.Username);
-            Assert.AreEqual(original.PasswordPlainText, deserialized.PasswordPlainText);
+            Assert.AreEqual(original.Authentication.Username, deserialized.Authentication.Username);
+            Assert.AreEqual(original.Authentication.PasswordPlainText, deserialized.Authentication.PasswordPlainText);
             Assert.IsNull(deserialized.Parameters);
         }
 
@@ -80,7 +84,7 @@ namespace Procon.Core.Test.Remote.TestCommandServerSerializer {
         /// </summary>
         [Test]
         public void TestIncorrectDeserialization() {
-            Command deserialized = CommandServerSerializer.DeserializeCommand(new CommandServerPacket() {
+            ICommand deserialized = CommandServerSerializer.DeserializeCommand(new CommandServerPacket() {
                 Content = "this is junk text that won't be deserialized.",
                 Headers = new WebHeaderCollection() {
                     { HttpRequestHeader.ContentType, Mime.ApplicationJson }

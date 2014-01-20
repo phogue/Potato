@@ -40,111 +40,103 @@ namespace Procon.Core.Variables {
             this.ArchiveVariables = new List<VariableModel>();
             this.FlashVariables = new List<VariableModel>();
 
-            this.AppendDispatchHandlers(new Dictionary<CommandAttribute, CommandDispatchHandler>() {
-                {
-                    new CommandAttribute() {
-                        CommandType = CommandType.VariablesSet,
-                        ParameterTypes = new List<CommandParameterType>() {
-                            new CommandParameterType() {
-                                Name = "name",
-                                Type = typeof(String)
-                            },
-                            new CommandParameterType() {
-                                Name = "value",
-                                Type = typeof(String),
-                                IsList = true
-                            }
+            this.CommandDispatchers.AddRange(new List<ICommandDispatch>() {
+                new CommandDispatch() {
+                    CommandType = CommandType.VariablesSet,
+                    ParameterTypes = new List<CommandParameterType>() {
+                        new CommandParameterType() {
+                            Name = "name",
+                            Type = typeof(String)
+                        },
+                        new CommandParameterType() {
+                            Name = "value",
+                            Type = typeof(String),
+                            IsList = true
                         }
                     },
-                    new CommandDispatchHandler(this.CommandSetCollection)
-                }, {
-                    new CommandAttribute() {
-                        CommandType = CommandType.VariablesSet,
-                        ParameterTypes = new List<CommandParameterType>() {
-                            new CommandParameterType() {
-                                Name = "name",
-                                Type = typeof(String)
-                            },
-                            new CommandParameterType() {
-                                Name = "value",
-                                Type = typeof(String)
-                            }
+                    Handler = this.CommandSetCollection
+                },
+                new CommandDispatch() {
+                    CommandType = CommandType.VariablesSet,
+                    ParameterTypes = new List<CommandParameterType>() {
+                        new CommandParameterType() {
+                            Name = "name",
+                            Type = typeof(String)
+                        },
+                        new CommandParameterType() {
+                            Name = "value",
+                            Type = typeof(String)
                         }
                     },
-                    new CommandDispatchHandler(this.CommandSetSingular)
-                }, {
-                    new CommandAttribute() {
-                        CommandType = CommandType.VariablesSetA,
-                        ParameterTypes = new List<CommandParameterType>() {
-                            new CommandParameterType() {
-                                Name = "name",
-                                Type = typeof(String)
-                            },
-                            new CommandParameterType() {
-                                Name = "value",
-                                Type = typeof(String),
-                                IsList = true
-                            }
+                    Handler = this.CommandSetSingular
+                },
+                new CommandDispatch() {
+                    CommandType = CommandType.VariablesSetA,
+                    ParameterTypes = new List<CommandParameterType>() {
+                        new CommandParameterType() {
+                            Name = "name",
+                            Type = typeof(String)
+                        },
+                        new CommandParameterType() {
+                            Name = "value",
+                            Type = typeof(String),
+                            IsList = true
                         }
                     },
-                    new CommandDispatchHandler(this.CommandSetACollection)
-                }, {
-                    new CommandAttribute() {
-                        CommandType = CommandType.VariablesSetA,
-                        ParameterTypes = new List<CommandParameterType>() {
-                            new CommandParameterType() {
-                                Name = "name",
-                                Type = typeof(String)
-                            },
-                            new CommandParameterType() {
-                                Name = "value",
-                                Type = typeof(String)
-                            }
+                    Handler = this.CommandSetACollection
+                },
+                new CommandDispatch() {
+                    CommandType = CommandType.VariablesSetA,
+                    ParameterTypes = new List<CommandParameterType>() {
+                        new CommandParameterType() {
+                            Name = "name",
+                            Type = typeof(String)
+                        },
+                        new CommandParameterType() {
+                            Name = "value",
+                            Type = typeof(String)
                         }
                     },
-                    new CommandDispatchHandler(this.CommandSetASingular)
-                }, {
-                    new CommandAttribute() {
-                        CommandType = CommandType.VariablesSetF,
-                        ParameterTypes = new List<CommandParameterType>() {
-                            new CommandParameterType() {
-                                Name = "name",
-                                Type = typeof(String)
-                            },
-                            new CommandParameterType() {
-                                Name = "value",
-                                Type = typeof(String),
-                                IsList = true
-                            }
+                    Handler = this.CommandSetASingular
+                },
+                new CommandDispatch() {
+                    CommandType = CommandType.VariablesSetF,
+                    ParameterTypes = new List<CommandParameterType>() {
+                        new CommandParameterType() {
+                            Name = "name",
+                            Type = typeof(String)
+                        },
+                        new CommandParameterType() {
+                            Name = "value",
+                            Type = typeof(String),
+                            IsList = true
                         }
                     },
-                    new CommandDispatchHandler(this.CommandSetFCollection)
-                }, {
-                    new CommandAttribute() {
-                        CommandType = CommandType.VariablesSetF,
-                        ParameterTypes = new List<CommandParameterType>() {
-                            new CommandParameterType() {
-                                Name = "name",
-                                Type = typeof(String)
-                            },
-                            new CommandParameterType() {
-                                Name = "value",
-                                Type = typeof(String)
-                            }
+                    Handler = this.CommandSetFCollection
+                },
+                new CommandDispatch() {
+                    CommandType = CommandType.VariablesSetF,
+                    ParameterTypes = new List<CommandParameterType>() {
+                        new CommandParameterType() {
+                            Name = "name",
+                            Type = typeof(String)
+                        },
+                        new CommandParameterType() {
+                            Name = "value",
+                            Type = typeof(String)
                         }
                     },
-                    new CommandDispatchHandler(this.CommandSetFSingular)
-                }, {
-                    new CommandAttribute() {
-                        CommandType = CommandType.VariablesGet,
-                        ParameterTypes = new List<CommandParameterType>() {
-                            new CommandParameterType() {
-                                Name = "name",
-                                Type = typeof(String)
-                            }
+                    Handler = this.CommandSetFSingular
+                },
+                new CommandDispatch() {
+                    CommandType = CommandType.VariablesGet,
+                    ParameterTypes = new List<CommandParameterType>() {
+                        new CommandParameterType() {
+                            Name = "name",
+                            Type = typeof(String)
                         }
                     },
-                    new CommandDispatchHandler(this.CommandGet)
+                    Handler = this.CommandGet
                 }
             });
         }
@@ -282,49 +274,49 @@ namespace Procon.Core.Variables {
             }
         }
 
-        protected CommandResult CommandSetCollection(Command command, Dictionary<String, CommandParameter> parameters) {
+        protected ICommandResult CommandSetCollection(ICommand command, Dictionary<String, ICommandParameter> parameters) {
             String name = parameters["name"].First<String>();
             List<String> value = parameters["value"].All<String>();
 
             return this.Set(command, name, value);
         }
 
-        protected CommandResult CommandSetSingular(Command command, Dictionary<String, CommandParameter> parameters) {
+        protected ICommandResult CommandSetSingular(ICommand command, Dictionary<String, ICommandParameter> parameters) {
             String name = parameters["name"].First<String>();
             String value = parameters["value"].First<String>();
 
             return this.Set(command, name, value);
         }
 
-        protected CommandResult CommandSetACollection(Command command, Dictionary<String, CommandParameter> parameters) {
+        protected ICommandResult CommandSetACollection(ICommand command, Dictionary<String, ICommandParameter> parameters) {
             String name = parameters["name"].First<String>();
             List<String> value = parameters["value"].All<String>();
 
             return this.SetA(command, name, value);
         }
 
-        protected CommandResult CommandSetASingular(Command command, Dictionary<String, CommandParameter> parameters) {
+        protected ICommandResult CommandSetASingular(ICommand command, Dictionary<String, ICommandParameter> parameters) {
             String name = parameters["name"].First<String>();
             String value = parameters["value"].First<String>();
 
             return this.SetA(command, name, value);
         }
 
-        protected CommandResult CommandSetFCollection(Command command, Dictionary<String, CommandParameter> parameters) {
+        protected ICommandResult CommandSetFCollection(ICommand command, Dictionary<String, ICommandParameter> parameters) {
             String name = parameters["name"].First<String>();
             List<String> value = parameters["value"].All<String>();
 
             return this.SetF(command, name, value);
         }
 
-        protected CommandResult CommandSetFSingular(Command command, Dictionary<String, CommandParameter> parameters) {
+        protected ICommandResult CommandSetFSingular(ICommand command, Dictionary<String, ICommandParameter> parameters) {
             String name = parameters["name"].First<String>();
             String value = parameters["value"].First<String>();
 
             return this.SetF(command, name, value);
         }
 
-        protected CommandResult CommandGet(Command command, Dictionary<String, CommandParameter> parameters) {
+        protected ICommandResult CommandGet(ICommand command, Dictionary<String, ICommandParameter> parameters) {
             String name = parameters["name"].First<String>();
 
             return this.Get(command, name);
@@ -338,8 +330,8 @@ namespace Procon.Core.Variables {
         /// <param name="name">The unique name of the variable to set</param>
         /// <param name="value">The value of the variable</param>
         /// <returns></returns>
-        public CommandResult Set(Command command, String name, Object value) {
-            CommandResult result = null;
+        public ICommandResult Set(ICommand command, String name, Object value) {
+            ICommandResult result = null;
 
             if (command.Origin == CommandOrigin.Local || this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
                 if (name.Length > 0) {
@@ -395,7 +387,7 @@ namespace Procon.Core.Variables {
         /// <param name="name">The unique name of the variable to set</param>
         /// <param name="value">The value of the variable</param>
         /// <returns></returns>
-        public CommandResult Set(Command command, CommonVariableNames name, Object value) {
+        public ICommandResult Set(ICommand command, CommonVariableNames name, Object value) {
             return this.Set(command, name.ToString(), value);
         }
 
@@ -407,11 +399,11 @@ namespace Procon.Core.Variables {
         /// <param name="name">The unique name of the variable to set</param>
         /// <param name="value">The value of the variable</param>
         /// <returns></returns>
-        public CommandResult SetA(Command command, String name, Object value) {
-            CommandResult result = null;
+        public ICommandResult SetA(ICommand command, String name, Object value) {
+            ICommandResult result = null;
 
             if (command.Origin == CommandOrigin.Local || this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
-                CommandResult volatileSetResult = this.Set(command, name, value);
+                ICommandResult volatileSetResult = this.Set(command, name, value);
 
                 if (volatileSetResult.Success == true) {
                     // All good.
@@ -462,11 +454,11 @@ namespace Procon.Core.Variables {
         /// <param name="name">The unique name of the variable to set</param>
         /// <param name="value">The value of the variable</param>
         /// <returns></returns>
-        public CommandResult SetF(Command command, String name, Object value) {
-            CommandResult result = null;
+        public ICommandResult SetF(ICommand command, String name, Object value) {
+            ICommandResult result = null;
 
             if (command.Origin == CommandOrigin.Local || this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
-                CommandResult volatileSetResult = this.Set(command, name, value);
+                ICommandResult volatileSetResult = this.Set(command, name, value);
 
                 if (volatileSetResult.Success == true) {
                     // All good.
@@ -544,8 +536,8 @@ namespace Procon.Core.Variables {
         /// <param name="name">The unique name of the variable to fetch</param>
         /// <param name="defaultValue"></param>
         /// <returns>The raw object with no conversion</returns>
-        public CommandResult Get(Command command, String name, Object defaultValue = null) {
-            CommandResult result = null;
+        public ICommandResult Get(ICommand command, String name, Object defaultValue = null) {
+            ICommandResult result = null;
 
             if (command.Origin == CommandOrigin.Local || this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
                 if (name.Length > 0) {

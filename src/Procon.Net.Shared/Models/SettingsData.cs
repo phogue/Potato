@@ -20,7 +20,6 @@ namespace Procon.Net.Shared.Models {
     /// </summary>
     [Serializable]
     public sealed class SettingsData {
-
         /// <summary>
         /// The maxmimum amount of lines able to be entered into the chat (4 in bf4 for instance)
         /// </summary>

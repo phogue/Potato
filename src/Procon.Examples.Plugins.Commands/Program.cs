@@ -30,42 +30,36 @@ namespace Procon.Examples.Plugins.Commands {
                 }
             };
 
-            this.AppendDispatchHandlers(new Dictionary<CommandAttribute, CommandDispatchHandler>() {
-                {
-                    new CommandAttribute() {
-                        Name = "SingleParameterCommand",
-                        CommandAttributeType = CommandAttributeType.Handler,
-                        ParameterTypes = new List<CommandParameterType>() {
-                            new CommandParameterType() {
-                                Name = "text",
-                                // Commands must have a type that appears within Procon.Core.CommandParameterData
-                                // but "Content" works as a generic, so you can accept integers here for instance
-                                // and if it can be converted it will be.
-                                Type = typeof(String)
-                            }
+            this.CommandDispatchers.AddRange(new List<ICommandDispatch>() {
+                new CommandDispatch() {
+                    Name = "SingleParameterCommand",
+                    CommandAttributeType = CommandAttributeType.Handler,
+                    ParameterTypes = new List<CommandParameterType>() {
+                        new CommandParameterType() {
+                            Name = "text",
+                            // Commands must have a type that appears within Procon.Core.CommandParameterData
+                            // but "Content" works as a generic, so you can accept integers here for instance
+                            // and if it can be converted it will be.
+                            Type = typeof(String)
                         }
                     },
-                    new CommandDispatchHandler(this.SingleParameterCommand)
+                    Handler = this.SingleParameterCommand
                 },
-                {
-                    new CommandAttribute() {
-                        Name = "SingleConvertedParameterCommand",
-                        CommandAttributeType = CommandAttributeType.Handler,
-                        ParameterTypes = new List<CommandParameterType>() {
-                            new CommandParameterType() {
-                                Name = "number",
-                                Type = typeof(int)
-                            }
+                new CommandDispatch() {
+                    Name = "SingleConvertedParameterCommand",
+                    CommandAttributeType = CommandAttributeType.Handler,
+                    ParameterTypes = new List<CommandParameterType>() {
+                        new CommandParameterType() {
+                            Name = "number",
+                            Type = typeof(int)
                         }
                     },
-                    new CommandDispatchHandler(this.SingleConvertedParameterCommand)
+                    Handler = this.SingleConvertedParameterCommand
                 },
-                {
-                    new CommandAttribute() {
-                        Name = "NoParameterCommand",
-                        CommandAttributeType = CommandAttributeType.Handler
-                    },
-                    new CommandDispatchHandler(this.NoParameterCommand)
+                new CommandDispatch() {
+                    Name = "NoParameterCommand",
+                    CommandAttributeType = CommandAttributeType.Handler,
+                    Handler = this.NoParameterCommand
                 }
             });
         }
@@ -77,7 +71,7 @@ namespace Procon.Examples.Plugins.Commands {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        protected CommandResult SingleParameterCommand(Command command, Dictionary<String, CommandParameter> parameters) {
+        protected ICommandResult SingleParameterCommand(ICommand command, Dictionary<String, ICommandParameter> parameters) {
             String text = parameters["text"].First<String>();
 
             command.Result.Message = text;
@@ -91,7 +85,7 @@ namespace Procon.Examples.Plugins.Commands {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        protected CommandResult SingleConvertedParameterCommand(Command command, Dictionary<String, CommandParameter> parameters) {
+        protected ICommandResult SingleConvertedParameterCommand(ICommand command, Dictionary<String, ICommandParameter> parameters) {
             int number = parameters["number"].First<int>();
 
             command.Result.Message = (number * 2).ToString(CultureInfo.InvariantCulture);
@@ -105,7 +99,7 @@ namespace Procon.Examples.Plugins.Commands {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        protected CommandResult NoParameterCommand(Command command, Dictionary<String, CommandParameter> parameters) {
+        protected ICommandResult NoParameterCommand(ICommand command, Dictionary<String, ICommandParameter> parameters) {
             command.Result.Message = "NoParameterCommandSetResult";
 
             return command.Result;

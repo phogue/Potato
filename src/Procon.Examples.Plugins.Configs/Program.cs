@@ -12,25 +12,23 @@ namespace Procon.Examples.Plugins.Configs {
         //           Procon uses the GUID to pipe through events/commands.
 
         public Program() : base() {
-            this.AppendDispatchHandlers(new Dictionary<CommandAttribute, CommandDispatchHandler>() {
-                {
-                    new CommandAttribute() {
-                        Name = "ThisIsJustACommand",
-                        CommandAttributeType = CommandAttributeType.Executed,
-                        ParameterTypes = new List<CommandParameterType>() {
-                            new CommandParameterType() {
-                                Name = "param1",
-                                Type = typeof(String)
-                            },
-                            new CommandParameterType() {
-                                Name = "param2",
-                                Type = typeof(String)
-                            }
+            this.CommandDispatchers.Add(
+                new CommandDispatch() {
+                    Name = "ThisIsJustACommand",
+                    CommandAttributeType = CommandAttributeType.Executed,
+                    ParameterTypes = new List<CommandParameterType>() {
+                        new CommandParameterType() {
+                            Name = "param1",
+                            Type = typeof(String)
+                        },
+                        new CommandParameterType() {
+                            Name = "param2",
+                            Type = typeof(String)
                         }
                     },
-                    new CommandDispatchHandler(this.ThisIsJustACommand)
+                    Handler = this.ThisIsJustACommand
                 }
-            });
+            );
         }
 
         /// <summary>
@@ -39,11 +37,9 @@ namespace Procon.Examples.Plugins.Configs {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        protected CommandResult ThisIsJustACommand(Command command, Dictionary<String, CommandParameter> parameters) {
+        protected ICommandResult ThisIsJustACommand(ICommand command, Dictionary<String, ICommandParameter> parameters) {
             String param1 = parameters["param1"].First<String>();
             String param2 = parameters["param2"].First<String>();
-
-
 
             return command.Result;
         }
@@ -57,7 +53,7 @@ namespace Procon.Examples.Plugins.Configs {
 
             config.Append(new Command() {
                 Name = "ThisIsJustACommand",
-                Parameters = new List<CommandParameter>() {
+                Parameters = new List<ICommandParameter>() {
                     new CommandParameter() {
                         Data = {
                             Content = new List<String>() {

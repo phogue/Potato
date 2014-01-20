@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Xml.Serialization;
 using Newtonsoft.Json;
-using Procon.Net.Shared.Protocols;
-using Procon.Net.Shared.Protocols.CommandServer;
+using Procon.Core.Shared.Models;
 
 namespace Procon.Core.Shared {
     /// <summary>
@@ -11,95 +9,56 @@ namespace Procon.Core.Shared {
     /// to originate for various sources but allow for security, serialization and general neatness.
     /// </summary>
     [Serializable]
-    public class Command : CommandAttribute {
+    public class Command : ICommand {
+        public String Name { get; set; }
 
-        /// <summary>
-        /// The commands unique identifier, created when the command object is created.
-        /// </summary>
+        [JsonIgnore]
+        public CommandType CommandType {
+            get { return this._mCommandType; }
+            set {
+                this._mCommandType = value;
+
+                if (this._mCommandType != CommandType.None) {
+                    this.Name = value.ToString();
+                }
+            }
+        }
+        private CommandType _mCommandType;
+
         public Guid CommandGuid { get; set; }
 
-        /// <summary>
-        /// The scope that this commands execution should be limited to.
-        /// </summary>
-        public CommandScope Scope { get; set; }
+        public CommandScopeModel ScopeModel { get; set; }
 
-        /// <summary>
-        /// Where the command came from
-        /// </summary>
         public CommandOrigin Origin { get; set; }
+        
+        public ICommandResult Result { get; set; }
 
-        /// <summary>
-        /// The final result of this command.
-        /// </summary>
-        public CommandResult Result { get; set; }
-
-        /// <summary>
-        /// The original request from a remote source.
-        /// </summary>
         [JsonIgnore]
-        public CommandServerPacket RemoteRequest { get; set; }
+        public ICommandRequest Request { get; set; }
 
-        /// <summary>
-        /// The raw parameters to be passed into the executable command.
-        /// </summary>
-        public List<CommandParameter> Parameters { get; set; } 
+        public List<ICommandParameter> Parameters { get; set; }
 
-        #region Executing User - Should we move this to it's own object?
-
-        /// <summary>
-        /// The username of the initiator
-        /// </summary>
-        public String Username { get; set; }
-
-        /// <summary>
-        /// The password of the user executing the command. Used to authenticate
-        /// remote requests.
-        /// </summary>
-        /// <remarks>Will change to much more secure password authentication</remarks>
-        public String PasswordPlainText { get; set; }
-
-        /// <summary>
-        /// The game type of the initiators player Uid
-        /// </summary>
-        public String GameType { get; set; }
-
-        /// <summary>
-        /// The uid of the player initiating the command
-        /// </summary>
-        public String Uid { get; set; }
-
-        #endregion
+        public CommandAuthenticationModel Authentication { get; set; }
 
         /// <summary>
         /// Initializes a new command with the default values.
         /// </summary>
         public Command() {
             this.CommandGuid = Guid.NewGuid();
-            this.Username = null;
-            this.GameType = CommonGameType.None;
-            this.Uid = null;
 
-            this.Scope = new CommandScope();
+            this.Authentication = new CommandAuthenticationModel();
+
+            this.ScopeModel = new CommandScopeModel();
         }
 
-        /// <summary>
-        /// Sets the origin of the command, then returns the command. Allows for method chaining
-        /// </summary>
-        /// <param name="origin">The origin to set this command</param>
-        /// <returns>this</returns>
-        public Command SetOrigin(CommandOrigin origin) {
+        public ICommand SetOrigin(CommandOrigin origin) {
             this.Origin = origin;
 
             return this;
         }
 
-        /// <summary>
-        /// Sets the username of the command, then returns the command. Allows for method chaining.
-        /// </summary>
-        /// <param name="username">The username to assign</param>
-        /// <returns>this</returns>
-        public Command SetUsername(String username) {
-            this.Username = username;
+        public ICommand SetUsername(String username) {
+            this.Authentication.Username = username;
 
             return this;
         }
@@ -109,29 +68,30 @@ namespace Procon.Core.Shared {
         /// attributes.
         /// </summary>
         /// <param name="command"></param>
-        public Command(Command command) {
+        public Command(ICommand command) {
             this.CommandType = command.CommandType;
             this.Name = command.Name;
-            this.Username = command.Username;
-            this.GameType = command.GameType;
-            this.Uid = command.Uid;
+            this.Authentication = command.Authentication;
             this.Origin = command.Origin;
-            this.PasswordPlainText = command.PasswordPlainText;
-            this.Scope = command.Scope;
-            this.Parameters = new List<CommandParameter>(command.Parameters ?? new List<CommandParameter>());
+            this.ScopeModel = command.ScopeModel;
+            this.Parameters = new List<ICommandParameter>(command.Parameters ?? new List<ICommandParameter>());
         }
 
-        /// <summary>
-        /// The config only requires the name and parameters, everything else is ignored. We could just
-        /// return the results of ToXElement() but we neaten it up a little bit just so the config
-        /// isn't bloated with useless information.
-        /// </summary>
-        /// <returns></returns>
-        public Command ToConfigCommand() {
+        public ICommand ToConfigCommand() {
             return new Command(this) {
-                Scope = null,
-                GameType = null
+                ScopeModel = null
             };
+        }
+
+        public ICommand ParseCommandType(String commandName) {
+            if (Enum.IsDefined(typeof(CommandType), commandName)) {
+                this.CommandType = (CommandType)Enum.Parse(typeof(CommandType), commandName);
+            }
+            else {
+                this.Name = commandName;
+            }
+
+            return this;
         }
     }
 }

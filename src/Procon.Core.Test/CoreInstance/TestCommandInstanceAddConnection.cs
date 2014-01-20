@@ -36,7 +36,7 @@ namespace Procon.Core.Test.CoreInstance {
         /// </summary>
         [Test]
         public void TestInstanceAddConnectionDuplicate() {
-            var instance = new InstanceController().Execute() as InstanceController;
+            var instance = (InstanceController)new InstanceController().Execute();
 
             instance.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
@@ -55,7 +55,7 @@ namespace Procon.Core.Test.CoreInstance {
             Assert.AreEqual(1, instance.Connections.Count);
 
             // Now readd the same connection we just added.
-            CommandResult result = instance.Tunnel(new Command() {
+            ICommandResult result = instance.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.InstanceAddConnection,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -81,18 +81,18 @@ namespace Procon.Core.Test.CoreInstance {
         [Test]
         public void TestInstanceAddConnectionExceedMaximumConnectionLimit() {
             var variables = new VariableController();
-            var instance = new InstanceController() {
+            var instance = (InstanceController)new InstanceController() {
                 Shared = {
                     Variables = variables
                 }
-            }.Execute() as InstanceController;
+            }.Execute();
 
             // Lower the maximum connections to nothing
             variables.Set(new Command() {
                 Origin = CommandOrigin.Local
             }, CommonVariableNames.MaximumProtocolConnections, 0);
 
-            CommandResult result = instance.Tunnel(new Command() {
+            ICommandResult result = instance.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.InstanceAddConnection,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -117,9 +117,9 @@ namespace Procon.Core.Test.CoreInstance {
         /// </summary>
         [Test]
         public void TestInstanceAddConnectionGameTypeDoesNotExist() {
-            var instance = new InstanceController().Execute() as InstanceController;
+            var instance = (InstanceController)new InstanceController().Execute();
 
-            CommandResult result = instance.Tunnel(new Command() {
+            ICommandResult result = instance.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.InstanceAddConnection,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -144,11 +144,13 @@ namespace Procon.Core.Test.CoreInstance {
         /// </summary>
         [Test]
         public void TestInstanceAddConnectionInsufficientPermissions() {
-            var instance = new InstanceController().Execute() as InstanceController;
+            var instance = (InstanceController)new InstanceController().Execute();
 
-            CommandResult result = instance.Tunnel(new Command() {
+            ICommandResult result = instance.Tunnel(new Command() {
                 Origin = CommandOrigin.Remote,
-                Username = "Phogue",
+                Authentication = {
+                    Username = "Phogue"
+                },
                 CommandType = CommandType.InstanceAddConnection,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     "Myrcon",
@@ -172,9 +174,9 @@ namespace Procon.Core.Test.CoreInstance {
         /// </summary>
         [Test]
         public void TestInstanceAddConnectionSuccess() {
-            var instance = new InstanceController().Execute() as InstanceController;
+            var instance = (InstanceController)new InstanceController().Execute();
 
-            CommandResult result = instance.Tunnel(new Command() {
+            ICommandResult result = instance.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.InstanceAddConnection,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {

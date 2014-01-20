@@ -9,7 +9,7 @@ namespace Procon.Net.Test.Mocks.Game {
             : base(hostName, port) {
         }
 
-        protected override List<IPacketWrapper> DispatchAction(NetworkAction action) {
+        protected override List<IPacketWrapper> DispatchAction(INetworkAction action) {
             return new List<IPacketWrapper>() {
                 null
             };

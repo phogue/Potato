@@ -2,6 +2,6 @@
 
 namespace Myrcon.Plugins.Test.Pages {
     public partial class TestParameterPageView {
-        public Player Player { get; set; }
+        public PlayerModel Player { get; set; }
     }
 }

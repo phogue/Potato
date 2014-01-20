@@ -13,12 +13,12 @@ namespace Procon.Examples.Plugins.UserInterface.Pages {
         /// <summary>
         /// A list of players to output, showing how to loop within a template (therefore how to use conditions and what not as well)
         /// </summary>
-        public IList<Player> MyListOfPlayers { get; set; }
+        public IList<PlayerModel> MyListOfPlayers { get; set; }
 
         public SettingsPageView() : base() {
             this.MyStringyVariable = "Empty";
 
-            this.MyListOfPlayers = new List<Player>();
+            this.MyListOfPlayers = new List<PlayerModel>();
         }
     }
 }

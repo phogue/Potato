@@ -1,6 +1,9 @@
 ﻿using System;
 
 namespace Procon.Core.Shared.Models {
+    /// <summary>
+    /// Describes a language, it's origin and simplified readable text acount it
+    /// </summary>
     [Serializable]
     public class LanguageModel : CoreModel {
         /// <summary>

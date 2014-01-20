@@ -1,24 +1,23 @@
 using System;
 
 namespace Procon.Core.Shared {
-
+    /// <summary>
+    /// A status type as a result of the command.
+    /// </summary>
     [Serializable]
     public enum CommandResultType {
         /// <summary>
         /// Command never got run?
         /// </summary>
         None,
-
         /// <summary>
         /// Nothing was found or no errors, cancels, etc have occured. The command should continue to execute.
         /// </summary>
         Continue,
-
         /// <summary>
         /// The command should be canceled with no further previews/executions.
         /// </summary>
         Cancel,
-
         /// <summary>
         /// The command has failed
         /// </summary>

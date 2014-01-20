@@ -8,34 +8,31 @@ namespace Myrcon.Plugins.Test.Tests {
     public class TestPluginsIsolation : CoreController {
 
         public TestPluginsIsolation() : base() {
-            this.AppendDispatchHandlers(new Dictionary<CommandAttribute, CommandDispatchHandler>() {
-                {
-                    new CommandAttribute() {
-                        Name = "TestPluginsIsolationCleanCurrentAppDomain",
-                        ParameterTypes = new List<CommandParameterType>() {
-                            new CommandParameterType() {
-                                Name = "parameterMessage",
-                                Type = typeof(String)
-                            }
+            this.CommandDispatchers.AddRange(new List<ICommandDispatch>() {
+                new CommandDispatch() {
+                    Name = "TestPluginsIsolationCleanCurrentAppDomain",
+                    ParameterTypes = new List<CommandParameterType>() {
+                        new CommandParameterType() {
+                            Name = "parameterMessage",
+                            Type = typeof(String)
                         }
                     },
-                    new CommandDispatchHandler(this.TestPluginsIsolationCleanCurrentAppDomain)
-                }, {
-                    new CommandAttribute() {
-                        Name = "TestPluginsIsolationWriteToDirectory",
-                        ParameterTypes = new List<CommandParameterType>() {
-                            new CommandParameterType() {
-                                Name = "path",
-                                Type = typeof(String)
-                            }
+                    Handler = this.TestPluginsIsolationCleanCurrentAppDomain
+                },
+                new CommandDispatch() {
+                    Name = "TestPluginsIsolationWriteToDirectory",
+                    ParameterTypes = new List<CommandParameterType>() {
+                        new CommandParameterType() {
+                            Name = "path",
+                            Type = typeof(String)
                         }
                     },
-                    new CommandDispatchHandler(this.TestPluginsIsolationWriteToDirectory)
+                    Handler = this.TestPluginsIsolationWriteToDirectory
                 }
             });
         }
 
-        protected CommandResult TestPluginsIsolationCleanCurrentAppDomain(Command command, Dictionary<String, CommandParameter> parameters) {
+        protected ICommandResult TestPluginsIsolationCleanCurrentAppDomain(ICommand command, Dictionary<String, ICommandParameter> parameters) {
             String parameterMessage = parameters["parameterMessage"].First<String>();
 
             command.Result.Message = parameterMessage;
@@ -44,7 +41,7 @@ namespace Myrcon.Plugins.Test.Tests {
             return command.Result;
         }
 
-        protected CommandResult TestPluginsIsolationWriteToDirectory(Command command, Dictionary<String, CommandParameter> parameters) {
+        protected ICommandResult TestPluginsIsolationWriteToDirectory(ICommand command, Dictionary<String, ICommandParameter> parameters) {
             String path = parameters["path"].First<String>();
 
             try {

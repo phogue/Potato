@@ -11,31 +11,31 @@ namespace Procon.Core.Shared.Test.ExecutableCommands.Objects {
         private int _testNumber;
 
         public ExecutableBasicTester() : base() {
-            this.AppendDispatchHandlers(new Dictionary<CommandAttribute, CommandDispatchHandler>() {
-                {new CommandAttribute() {
+            this.CommandDispatchers.AddRange(new List<ICommandDispatch>() {
+                new CommandDispatch() {
                     CommandType = CommandType.VariablesSet,
                     ParameterTypes = new List<CommandParameterType>() {
                         new CommandParameterType() {
                             Name = "value",
                             Type = typeof (int)
                         }
-                    }
+                    },
+                    Handler = this.SetTestFlag
                 },
-                    new CommandDispatchHandler(SetTestFlag)},
-                {new CommandAttribute() {
-                    CommandType = CommandType.VariablesGet
+                new CommandDispatch() {
+                    CommandType = CommandType.VariablesGet,
+                    Handler = this.GetTestFlag
                 },
-                    new CommandDispatchHandler(GetTestFlag)},
-                {new CommandAttribute() {
+                new CommandDispatch() {
                     Name = "CustomSet",
                     ParameterTypes = new List<CommandParameterType>() {
                         new CommandParameterType() {
                             Name = "value",
                             Type = typeof (int)
                         }
-                    }
-                },
-                    new CommandDispatchHandler(CustomSetTestFlag)}
+                    },
+                    Handler = this.CustomSetTestFlag
+                }
             });
         }
 
@@ -50,7 +50,7 @@ namespace Procon.Core.Shared.Test.ExecutableCommands.Objects {
         /// <summary>
         ///     Sets the value of the test flag.
         /// </summary>
-        public CommandResult SetTestFlag(Command command, Dictionary<String, CommandParameter> parameters) {
+        public ICommandResult SetTestFlag(ICommand command, Dictionary<String, ICommandParameter> parameters) {
             int value = parameters["value"].First<int>();
 
             TestNumber = value;
@@ -73,7 +73,7 @@ namespace Procon.Core.Shared.Test.ExecutableCommands.Objects {
         /// <summary>
         ///     Gets the value as an integer for the single test flag.
         /// </summary>
-        public CommandResult GetTestFlag(Command command, Dictionary<String, CommandParameter> parameters) {
+        public ICommandResult GetTestFlag(ICommand command, Dictionary<String, ICommandParameter> parameters) {
             return new CommandResult() {
                 Success = true,
                 Status = CommandResultType.Success,
@@ -92,7 +92,7 @@ namespace Procon.Core.Shared.Test.ExecutableCommands.Objects {
         /// <summary>
         ///     Sets the value of the test flag, but with a custom name.
         /// </summary>
-        public CommandResult CustomSetTestFlag(Command command, Dictionary<String, CommandParameter> parameters) {
+        public ICommandResult CustomSetTestFlag(ICommand command, Dictionary<String, ICommandParameter> parameters) {
             return SetTestFlag(command, parameters);
         }
     }

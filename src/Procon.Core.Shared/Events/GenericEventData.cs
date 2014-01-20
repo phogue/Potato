@@ -1,16 +1,17 @@
-﻿using Procon.Net;
-using Procon.Net.Shared;
+﻿using Procon.Net.Shared;
 
 namespace Procon.Core.Shared.Events {
+    /// <summary>
+    /// THe data attached to a generic event.
+    /// </summary>
     public static class GenericEventData {
-
         /// <summary>
         /// Parses a gameEventData object, returning a generic event data. We do this instead of
         /// inheritance in case we need to extend events from NLP or another library in the future.
         /// </summary>
         /// <param name="gameEventData"></param>
         /// <returns>A new GenericEventData object with the gameEventData included.</returns>
-        public static CommandData Parse(ProtocolEventData gameEventData) {
+        public static CommandData Parse(IProtocolEventData gameEventData) {
             return new CommandData() {
                 Chats = gameEventData.Chats,
                 Players = gameEventData.Players,

@@ -52,7 +52,7 @@ namespace Procon.Core.Test.Events {
                 Stamp = DateTime.Now.AddHours(-1)
             });
 
-            CommandResult result = events.Tunnel(new Command() {
+            ICommandResult result = events.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.EventsFetchAfterEventId,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -86,8 +86,10 @@ namespace Procon.Core.Test.Events {
                 }
             });
 
-            CommandResult result = events.Tunnel(new Command() {
-                Username = "Phogue",
+            ICommandResult result = events.Tunnel(new Command() {
+                Authentication = {
+                    Username = "Phogue"
+                },
                 Origin = CommandOrigin.Remote,
                 CommandType = CommandType.EventsFetchAfterEventId,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -118,7 +120,7 @@ namespace Procon.Core.Test.Events {
                 }
             });
 
-            CommandResult result = events.Tunnel(new Command() {
+            ICommandResult result = events.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.EventsFetchAfterEventId,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {

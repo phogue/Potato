@@ -18,30 +18,26 @@ namespace Procon.Examples.Plugins.TextCommands {
 
             // 1. Setup a command dispatch to let us know when the command has been executed.
             // Commands can be executed from within game or via the daemon
-            this.AppendDispatchHandlers(new Dictionary<CommandAttribute, CommandDispatchHandler>() {
-                {
-                    new CommandAttribute() {
-                        Name = "FuzzyCommand",
-                        ParameterTypes = new List<CommandParameterType>() {
-                            new CommandParameterType() {
-                                Name = "e",
-                                Type = typeof(CommandResult)
-                            }
+            this.CommandDispatchers.AddRange(new List<ICommandDispatch>() {
+                new CommandDispatch() {
+                    Name = "FuzzyCommand",
+                    ParameterTypes = new List<CommandParameterType>() {
+                        new CommandParameterType() {
+                            Name = "e",
+                            Type = typeof(ICommandResult)
                         }
                     },
-                    new CommandDispatchHandler(this.FuzzyCommand)
+                    Handler = this.FuzzyCommand
                 },
-                {
-                    new CommandAttribute() {
-                        Name = "RouteCommand",
-                        ParameterTypes = new List<CommandParameterType>() {
-                            new CommandParameterType() {
-                                Name = "e",
-                                Type = typeof(CommandResult)
-                            }
+                new CommandDispatch() {
+                    Name = "RouteCommand",
+                    ParameterTypes = new List<CommandParameterType>() {
+                        new CommandParameterType() {
+                            Name = "e",
+                            Type = typeof(ICommandResult)
                         }
                     },
-                    new CommandDispatchHandler(this.RouteCommand)
+                    Handler = this.RouteCommand
                 }
             });
         }
@@ -57,10 +53,10 @@ namespace Procon.Examples.Plugins.TextCommands {
                 // If you wanted to follow the execution of this eventually you will find yourself in Procon.Core.Connections.TextCommands.TextCommandController.RegisterTextCommand
                 this.Bubble(new Command() {
                     CommandType = CommandType.TextCommandsRegister,
-                    Scope = new CommandScope() {
+                    ScopeModel = new CommandScopeModel() {
                         ConnectionGuid = this.ConnectionGuid
                     },
-                    Parameters = new List<CommandParameter>() {
+                    Parameters = new List<ICommandParameter>() {
                         new CommandParameter() {
                             Data = {
                                 TextCommands = new List<TextCommandModel>() {
@@ -85,10 +81,10 @@ namespace Procon.Examples.Plugins.TextCommands {
                 // Register a route command, which is a very specific format of text command
                 this.Bubble(new Command() {
                     CommandType = CommandType.TextCommandsRegister,
-                    Scope = new CommandScope() {
+                    ScopeModel = new CommandScopeModel() {
                         ConnectionGuid = this.ConnectionGuid
                     },
-                    Parameters = new List<CommandParameter>() {
+                    Parameters = new List<ICommandParameter>() {
                         new CommandParameter() {
                             Data = {
                                 TextCommands = new List<TextCommandModel>() {
@@ -117,8 +113,8 @@ namespace Procon.Examples.Plugins.TextCommands {
         }
 
         // 3. Handle the test fuzzy command.
-        protected CommandResult FuzzyCommand(Command command, Dictionary<String, CommandParameter> parameters) {
-            CommandResult e = parameters["e"].First<CommandResult>();
+        protected ICommandResult FuzzyCommand(ICommand command, Dictionary<String, ICommandParameter> parameters) {
+            ICommandResult e = parameters["e"].First<ICommandResult>();
 
             TextCommandMatchModel match = e.Now.TextCommandMatches.First();
 
@@ -158,8 +154,8 @@ namespace Procon.Examples.Plugins.TextCommands {
         }
 
         // 3. Handle the test route command.
-        protected CommandResult RouteCommand(Command command, Dictionary<String, CommandParameter> parameters) {
-            CommandResult e = parameters["e"].First<CommandResult>();
+        protected ICommandResult RouteCommand(ICommand command, Dictionary<String, ICommandParameter> parameters) {
+            ICommandResult e = parameters["e"].First<ICommandResult>();
 
             TextCommandMatchModel match = e.Now.TextCommandMatches.First();
 

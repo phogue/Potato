@@ -1,8 +1,14 @@
 ﻿using System;
 
 namespace Procon.Net.Shared.Models {
+    /// <summary>
+    /// A brief description of a unit of time
+    /// </summary>
     [Serializable]
     public enum TimeSubsetContext {
+        /// <summary>
+        /// No time subset specified
+        /// </summary>
         None,
         /// <summary>
         /// The subset covers all times

@@ -23,25 +23,21 @@ namespace Procon.Examples.Plugins.Database {
         //           Procon uses the GUID to pipe through events/commands.
 
         public Program() : base() {
-            this.AppendDispatchHandlers(new Dictionary<CommandAttribute, CommandDispatchHandler>() {
-                {
-                    new CommandAttribute() {
-                        Name = "SaveOneUser",
-                        CommandAttributeType = CommandAttributeType.Handler
-                    },
-                    new CommandDispatchHandler(this.SaveOneUser)
+            this.CommandDispatchers.AddRange(new List<ICommandDispatch>() {
+                new CommandDispatch() {
+                    Name = "SaveOneUser",
+                    CommandAttributeType = CommandAttributeType.Handler,
+                    Handler = this.SaveOneUser
                 },
-                {
-                    new CommandAttribute() {
-                        Name = "FindOneUser",
-                        CommandAttributeType = CommandAttributeType.Handler
-                    },
-                    new CommandDispatchHandler(this.FindOneUser)
+                new CommandDispatch() {
+                    Name = "FindOneUser",
+                    CommandAttributeType = CommandAttributeType.Handler,
+                    Handler = this.FindOneUser
                 }
             });
         }
 
-        protected CommandResult SaveOneUser(Command command, Dictionary<String, CommandParameter> parameters) {
+        protected ICommandResult SaveOneUser(ICommand command, Dictionary<String, ICommandParameter> parameters) {
             command.Result.Status = CommandResultType.Success;
             command.Result.Success = true;
 
@@ -65,9 +61,9 @@ namespace Procon.Examples.Plugins.Database {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        protected CommandResult FindOneUser(Command command, Dictionary<String, CommandParameter> parameters) {
+        protected ICommandResult FindOneUser(ICommand command, Dictionary<String, ICommandParameter> parameters) {
             // Grab the first result from the table.
-            CommandResult fetchResult = this.Bubble(
+            ICommandResult fetchResult = this.Bubble(
                 CommandBuilder.DatabaseQuery(
                     new Find()
                     .Collection("Procon_Example_Database_Users")

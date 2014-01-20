@@ -20,6 +20,6 @@ namespace Procon.Core.Events {
         /// <summary>
         /// A list of events to serialize and send.
         /// </summary>
-        public List<GenericEvent> Events { get; set; }
+        public List<IGenericEvent> Events { get; set; }
     }
 }

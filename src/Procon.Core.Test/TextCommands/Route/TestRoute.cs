@@ -4,7 +4,6 @@ using NUnit.Framework;
 using Procon.Core.Connections.TextCommands;
 using Procon.Core.Shared;
 using Procon.Core.Shared.Models;
-using Procon.Net.Shared.Actions;
 using Procon.Net.Shared.Models;
 
 namespace Procon.Core.Test.TextCommands.Route {
@@ -61,7 +60,7 @@ namespace Procon.Core.Test.TextCommands.Route {
 
             textCommandController.TextCommands.Add(command);
 
-            CommandResult result = ExecuteTextCommand(textCommandController, "command 20 for something and something");
+            ICommandResult result = ExecuteTextCommand(textCommandController, "command 20 for something and something");
 
             AssertExecutedCommandAgainstNumericValue(result, command, 20);
             AssertExecutedCommandAgainstSentencesList(result, command, new List<String>() {
@@ -124,9 +123,9 @@ namespace Procon.Core.Test.TextCommands.Route {
 
             textCommandController.TextCommands.Add(command);
 
-            AssertCommandPlayerListMapList(textCommandController, "Command phogue", command, new List<Player>() {
+            AssertCommandPlayerListMapList(textCommandController, "Command phogue", command, new List<PlayerModel>() {
                 PlayerPhogue
-            }, new List<Map>());
+            }, new List<MapModel>());
         }
 
         [Test]
@@ -144,10 +143,10 @@ namespace Procon.Core.Test.TextCommands.Route {
 
             textCommandController.TextCommands.Add(command);
 
-            AssertCommandPlayerListMapList(textCommandController, "Command phogue morpheus", command, new List<Player>() {
+            AssertCommandPlayerListMapList(textCommandController, "Command phogue morpheus", command, new List<PlayerModel>() {
                 PlayerPhogue,
                 PlayerMorpheus
-            }, new List<Map>());
+            }, new List<MapModel>());
         }
 
         [Test]
@@ -165,7 +164,7 @@ namespace Procon.Core.Test.TextCommands.Route {
 
             textCommandController.TextCommands.Add(command);
 
-            AssertCommandPlayerListMapList(textCommandController, "Command port valdez", command, new List<Player>() , new List<Map>() {
+            AssertCommandPlayerListMapList(textCommandController, "Command port valdez", command, new List<PlayerModel>() , new List<MapModel>() {
                 MapPortValdez
             });
         }
@@ -185,16 +184,16 @@ namespace Procon.Core.Test.TextCommands.Route {
 
             textCommandController.TextCommands.Add(command);
 
-            CommandResult result = ExecuteTextCommand(textCommandController, "command phogue morpheus for something and something");
+            ICommandResult result = ExecuteTextCommand(textCommandController, "command phogue morpheus for something and something");
 
             AssertExecutedCommandAgainstSentencesList(result, command, new List<String>() {
                 "for something and something"
             });
 
-            AssertExecutedCommandAgainstPlayerListMapList(result, command, new List<Player>() {
+            AssertExecutedCommandAgainstPlayerListMapList(result, command, new List<PlayerModel>() {
                 PlayerPhogue,
                 PlayerMorpheus
-            }, new List<Map>());
+            }, new List<MapModel>());
         }
 
         [Test]
@@ -212,16 +211,16 @@ namespace Procon.Core.Test.TextCommands.Route {
 
             textCommandController.TextCommands.Add(command);
 
-            CommandResult result = ExecuteTextCommand(textCommandController, "command phogue something, something, something dark side morpheus");
+            ICommandResult result = ExecuteTextCommand(textCommandController, "command phogue something, something, something dark side morpheus");
 
             AssertExecutedCommandAgainstSentencesList(result, command, new List<String>() {
                 "something, something, something dark side"
             });
 
-            AssertExecutedCommandAgainstPlayerListMapList(result, command, new List<Player>() {
+            AssertExecutedCommandAgainstPlayerListMapList(result, command, new List<PlayerModel>() {
                 PlayerPhogue,
                 PlayerMorpheus
-            }, new List<Map>());
+            }, new List<MapModel>());
         }
 
         [Test]
@@ -239,7 +238,7 @@ namespace Procon.Core.Test.TextCommands.Route {
 
             textCommandController.TextCommands.Add(command);
 
-            CommandResult result = ExecuteTextCommand(textCommandController, "command phogue something, something, something dark side morpheus 25");
+            ICommandResult result = ExecuteTextCommand(textCommandController, "command phogue something, something, something dark side morpheus 25");
 
             AssertExecutedCommandAgainstSentencesList(result, command, new List<String>() {
                 "something, something, something dark side"
@@ -247,10 +246,10 @@ namespace Procon.Core.Test.TextCommands.Route {
 
             AssertExecutedCommandAgainstNumericValue(result, command, 25);
 
-            AssertExecutedCommandAgainstPlayerListMapList(result, command, new List<Player>() {
+            AssertExecutedCommandAgainstPlayerListMapList(result, command, new List<PlayerModel>() {
                 PlayerPhogue,
                 PlayerMorpheus
-            }, new List<Map>());
+            }, new List<MapModel>());
         }
 
         [Test]
@@ -268,15 +267,15 @@ namespace Procon.Core.Test.TextCommands.Route {
 
             textCommandController.TextCommands.Add(command);
 
-            CommandResult result = ExecuteTextCommand(textCommandController, "command phogue for some time");
+            ICommandResult result = ExecuteTextCommand(textCommandController, "command phogue for some time");
 
             AssertExecutedCommandAgainstSentencesList(result, command, new List<String>() {
                 "some time"
             });
 
-            AssertExecutedCommandAgainstPlayerListMapList(result, command, new List<Player>() {
+            AssertExecutedCommandAgainstPlayerListMapList(result, command, new List<PlayerModel>() {
                 PlayerPhogue
-            }, new List<Map>());
+            }, new List<MapModel>());
         }
     }
 }

@@ -3,28 +3,15 @@ using System.Collections.Generic;
 using Procon.Net.Shared.Actions;
 
 namespace Procon.Net.Shared {
-
+    /// <summary>
+    /// Data attached to a client event
+    /// </summary>
     [Serializable]
-    public class ClientEventData {
-        [NonSerialized]
-        private List<Exception> _exceptions;
+    public class ClientEventData : IClientEventData {
+        public List<String> Exceptions { get; set; }
 
-        /// <summary>
-        /// List of exceptions attached to this event, if any.
-        /// </summary>
-        public List<Exception> Exceptions {
-            get { return _exceptions; }
-            set { _exceptions = value; }
-        }
-
-        /// <summary>
-        /// List of packets attached to this event, if any.
-        /// </summary>
         public List<IPacket> Packets { get; set; }
 
-        /// <summary>
-        /// List of actions attached to this event, if any.
-        /// </summary>
-        public List<NetworkAction> Actions { get; set; } 
+        public List<INetworkAction> Actions { get; set; } 
     }
 }

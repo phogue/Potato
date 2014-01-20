@@ -14,7 +14,7 @@ namespace Procon.Net.Shared.Actions.Deferred {
         /// <summary>
         /// The action taken to generate the requests
         /// </summary>
-        NetworkAction Action { get; set; }
+        INetworkAction Action { get; set; }
 
         /// <summary>
         /// List of packets waiting for responses

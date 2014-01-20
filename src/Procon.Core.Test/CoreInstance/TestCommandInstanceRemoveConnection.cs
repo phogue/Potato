@@ -52,7 +52,7 @@ namespace Procon.Core.Test.CoreInstance {
             // Make sure we have at least one connection added.
             Assert.AreEqual(1, instance.Connections.Count);
 
-            CommandResult result = instance.Tunnel(new Command() {
+            ICommandResult result = instance.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.InstanceRemoveConnection,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -76,7 +76,7 @@ namespace Procon.Core.Test.CoreInstance {
             var instance = (InstanceController)new InstanceController().Execute();
 
             // Now readd the same connection we just added.
-            CommandResult result = instance.Tunnel(new Command() {
+            ICommandResult result = instance.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.InstanceRemoveConnection,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -101,9 +101,11 @@ namespace Procon.Core.Test.CoreInstance {
         public void TestInstanceRemoveConnectionInsufficientPermissions() {
             var instance = (InstanceController)new InstanceController().Execute();
 
-            CommandResult result = instance.Tunnel(new Command() {
+            ICommandResult result = instance.Tunnel(new Command() {
                 Origin = CommandOrigin.Remote,
-                Username = "Phogue",
+                Authentication = {
+                    Username = "Phogue"
+                },
                 CommandType = CommandType.InstanceRemoveConnection,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     "Myrcon",
@@ -143,7 +145,7 @@ namespace Procon.Core.Test.CoreInstance {
             // Make sure we have at least one connection added.
             Assert.IsNotEmpty(instance.Connections);
 
-            CommandResult result = instance.Tunnel(new Command() {
+            ICommandResult result = instance.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.InstanceRemoveConnection,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {

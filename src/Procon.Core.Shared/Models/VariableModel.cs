@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.ComponentModel;
 
 namespace Procon.Core.Shared.Models {
+    /// <summary>
+    /// A simple variable (name, value)
+    /// </summary>
     [Serializable]
     public class VariableModel : CoreModel, IDisposable {
         private object _value;
@@ -42,6 +45,9 @@ namespace Procon.Core.Shared.Models {
             }
         }
 
+        /// <summary>
+        /// Initializes the variable with default values.
+        /// </summary>
         public VariableModel() {
             this.Name = String.Empty;
         }

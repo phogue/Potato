@@ -11,7 +11,7 @@ namespace Procon.Core.Connections.TextCommands.Parsers.Fuzzy {
         /// <summary>
         /// The items attached to this thing.
         /// </summary>
-        public List<Item> Items { get; set; }
+        public List<ItemModel> Items { get; set; }
 
         public bool CompatibleWith(IThingReference other) {
             return other is ItemThingReference || other is PlayerThingReference;

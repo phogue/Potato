@@ -19,7 +19,9 @@ namespace Procon.Core.Connections.Plugins {
     /// Manages loading and propogating plugin events, as well as callbacks from
     /// a plugin back to Procon.
     /// </summary>
-    public class CorePluginController : AsynchronousCoreController, ISharedReferenceAccess, IRenewableLease {
+    public class CorePluginController : AsynchronousCoreController, ISharedReferenceAccess, ICorePluginController {
+        public List<PluginModel> LoadedPlugins { get; protected set; }
+
         /// <summary>
         /// The appdomain all of the plugins are loaded into.
         /// </summary>
@@ -31,14 +33,9 @@ namespace Procon.Core.Connections.Plugins {
         public ISandboxPluginController PluginFactory { get; protected set; }
 
         /// <summary>
-        /// List of plugins loaded in the app domain.
-        /// </summary>
-        public List<PluginModel> LoadedPlugins { get; protected set; }
-
-        /// <summary>
         /// The connection which owns this plugin app domain and the connection which the plugins control.
         /// </summary>
-        public ConnectionController Connection { get; set; }
+        public IConnectionController Connection { get; set; }
 
         /// <summary>
         /// Works between PluginController and RemotePluginController as a known type by a plugin
@@ -61,17 +58,14 @@ namespace Procon.Core.Connections.Plugins {
                 }
             };
 
-            this.AppendDispatchHandlers(new Dictionary<CommandAttribute, CommandDispatchHandler>() {
-                {
-                    new CommandAttribute() {
-                        CommandType = CommandType.PluginsEnable
-                    },
-                    new CommandDispatchHandler(this.EnablePlugin)
-                }, {
-                    new CommandAttribute() {
-                        CommandType = CommandType.PluginsDisable
-                    },
-                    new CommandDispatchHandler(this.DisablePlugin)
+            this.CommandDispatchers.AddRange(new List<ICommandDispatch>() {
+                new CommandDispatch() {
+                    CommandType = CommandType.PluginsEnable,
+                    Handler = this.EnablePlugin
+                },
+                new CommandDispatch() {
+                    CommandType = CommandType.PluginsDisable,
+                    Handler = this.DisablePlugin
                 }
             });
         }
@@ -82,11 +76,11 @@ namespace Procon.Core.Connections.Plugins {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public CommandResult EnablePlugin(Command command, Dictionary<String, CommandParameter> parameters) {
-            CommandResult result = null;
+        public ICommandResult EnablePlugin(ICommand command, Dictionary<String, ICommandParameter> parameters) {
+            ICommandResult result = null;
 
             if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
-                Guid pluginGuid = command.Scope.PluginGuid;
+                Guid pluginGuid = command.ScopeModel.PluginGuid;
 
                 if (this.LoadedPlugins.Count(plugin => plugin.PluginGuid == pluginGuid) > 0) {
                     if (this.PluginFactory.TryEnablePlugin(pluginGuid) == true) {
@@ -139,11 +133,11 @@ namespace Procon.Core.Connections.Plugins {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public CommandResult DisablePlugin(Command command, Dictionary<String, CommandParameter> parameters) {
-            CommandResult result = null;
+        public ICommandResult DisablePlugin(ICommand command, Dictionary<String, ICommandParameter> parameters) {
+            ICommandResult result = null;
 
             if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
-                Guid pluginGuid = command.Scope.PluginGuid;
+                Guid pluginGuid = command.ScopeModel.PluginGuid;
 
                 if (this.LoadedPlugins.Count(plugin => plugin.PluginGuid == pluginGuid) > 0) {
                     if (this.PluginFactory.TryDisablePlugin(pluginGuid) == true) {
@@ -252,7 +246,7 @@ namespace Procon.Core.Connections.Plugins {
             foreach (PluginModel plugin in this.LoadedPlugins.Where(plugin => plugin.IsEnabled == true)) {
                 config.Append(new Command() {
                     CommandType = CommandType.PluginsEnable,
-                    Scope = {
+                    ScopeModel = {
                         ConnectionGuid = this.Connection.ConnectionModel.ConnectionGuid,
                         PluginGuid = plugin.PluginGuid
                     }
@@ -281,13 +275,13 @@ namespace Procon.Core.Connections.Plugins {
             return base.Execute();
         }
 
-        private void Connection_ClientEvent(IProtocol sender, ClientEventArgs e) {
+        private void Connection_ClientEvent(IProtocol sender, IClientEventArgs e) {
             if (this.PluginFactory != null) {
                 this.PluginFactory.ClientEvent(e);
             }
         }
 
-        private void Connection_GameEvent(IProtocol sender, ProtocolEventArgs e) {
+        private void Connection_GameEvent(IProtocol sender, IProtocolEventArgs e) {
             if (this.PluginFactory != null) {
                 this.PluginFactory.GameEvent(e);
             }
@@ -369,7 +363,7 @@ namespace Procon.Core.Connections.Plugins {
         /// <summary>
         /// Renews the lease on the plugin factory as well as each loaded plugin proxy
         /// </summary>
-        public void RenewLease() {
+        public override void Poke() {
             ILease lease = ((MarshalByRefObject)this.PluginFactory).GetLifetimeService() as ILease;
 
             if (lease != null) {
@@ -377,8 +371,8 @@ namespace Procon.Core.Connections.Plugins {
             }
         }
 
-        public override CommandResult PropogatePreview(Command command, CommandDirection direction) {
-            CommandResult synchronousResult = null;
+        public override ICommandResult PropogatePreview(ICommand command, CommandDirection direction) {
+            ICommandResult synchronousResult = null;
 
             // If we're bubbling and we have not seen this command yet
             if (direction == CommandDirection.Bubble && this.AsyncStateModel.IsKnown(command.CommandGuid) == false) {

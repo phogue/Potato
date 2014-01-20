@@ -13,7 +13,7 @@ namespace Procon.Core.Shared.Test.TestConfig {
         public void TestDocumentNotNull() {
             File.WriteAllText(this.ConfigFileA.FullName, @"{ ""Procon.Core.Shared.Test.TestConfig.Mocks.MockSimpleConcrete"": [ { ""Name"":""Phogue"", ""Age"": 100  } ] }");
 
-            IConfig config = new JsonConfig().Load(this.ConfigFileA);
+            IConfig config = new Config().Load(this.ConfigFileA);
 
             Assert.IsNotNull(config.Document);
         }
@@ -25,7 +25,7 @@ namespace Procon.Core.Shared.Test.TestConfig {
         public void TestRootNotNullWithMatchingProperty() {
             File.WriteAllText(this.ConfigFileA.FullName, @"{ ""Procon.Core.Shared.Test.TestConfig.Mocks.MockSimpleConcrete"": [ { ""Name"":""Phogue"", ""Age"": 100  } ] }");
 
-            IConfig config = new JsonConfig().Load(this.ConfigFileA);
+            IConfig config = new Config().Load(this.ConfigFileA);
 
             Assert.IsNotNull(config.Root);
         }
@@ -38,7 +38,7 @@ namespace Procon.Core.Shared.Test.TestConfig {
         public void TestRootNotNullWithoutMatchingProperty() {
             File.WriteAllText(this.ConfigFileA.FullName, @"{ ""This.Type.Does.Not.Exist"": [ { ""Name"":""Phogue"", ""Age"": 100  } ] }");
 
-            IConfig config = new JsonConfig().Load(this.ConfigFileA);
+            IConfig config = new Config().Load(this.ConfigFileA);
 
             Assert.IsNotNull(config.Root);
         }
@@ -50,7 +50,7 @@ namespace Procon.Core.Shared.Test.TestConfig {
         public void TestRootNotNullEmptyFile() {
             File.WriteAllText(this.ConfigFileA.FullName, @"{ }");
 
-            IConfig config = new JsonConfig().Load(this.ConfigFileA);
+            IConfig config = new Config().Load(this.ConfigFileA);
 
             Assert.IsNotNull(config.Root);
         }
@@ -62,7 +62,7 @@ namespace Procon.Core.Shared.Test.TestConfig {
         public void TestRootNotNullNotArray() {
             File.WriteAllText(this.ConfigFileA.FullName, @"{ ""This.Type.Does.Not.Exist"": { ""Name"":""Phogue"", ""Age"": 100  } }");
 
-            IConfig config = new JsonConfig().Load(this.ConfigFileA);
+            IConfig config = new Config().Load(this.ConfigFileA);
 
             Assert.IsNotNull(config.Root);
         }
@@ -74,7 +74,7 @@ namespace Procon.Core.Shared.Test.TestConfig {
         public void TestRootSetToFilePath() {
             File.WriteAllText(this.ConfigFileA.FullName, @"{ ""Procon.Core.Shared.Test.TestConfig.Mocks.MockSimpleConcrete"": [ { ""Name"":""Phogue"", ""Age"": 100  } ] }");
 
-            IConfig config = new JsonConfig().Load(this.ConfigFileA);
+            IConfig config = new Config().Load(this.ConfigFileA);
 
             Assert.AreEqual("Phogue", config.Root.First["Name"].Value<String>());
             Assert.AreEqual(100, config.Root.First["Age"].Value<int>());
@@ -87,7 +87,7 @@ namespace Procon.Core.Shared.Test.TestConfig {
         public void TestInvalidJsonParsingNotNullRoot() {
             File.WriteAllText(this.ConfigFileA.FullName, @"{ ""Procon.Core.Shared.Test.TestConfig.Mocks.MockSimpleConcrete"": [ { ""N 100  } ] }");
 
-            IConfig config = new JsonConfig().Load(this.ConfigFileA);
+            IConfig config = new Config().Load(this.ConfigFileA);
 
             Assert.IsNotNull(config.Root);
         }
@@ -99,7 +99,7 @@ namespace Procon.Core.Shared.Test.TestConfig {
         public void TestInvalidJsonParsingNotNullDocument() {
             File.WriteAllText(this.ConfigFileA.FullName, @"{ ""Procon.Core.Shared.Test.TestConfig.Mocks.MockSimpleConcrete"": [ { ""N 100  } ] }");
 
-            IConfig config = new JsonConfig().Load(this.ConfigFileA);
+            IConfig config = new Config().Load(this.ConfigFileA);
 
             Assert.IsNotNull(config.Document);
         }
@@ -109,7 +109,7 @@ namespace Procon.Core.Shared.Test.TestConfig {
         /// </summary>
         [Test, ExpectedException(typeof(ArgumentNullException))]
         public void TestNullException() {
-            new JsonConfig().Load((FileInfo) null);
+            new Config().Load((FileInfo) null);
         }
     }
 }

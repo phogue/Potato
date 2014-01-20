@@ -6,17 +6,15 @@ namespace Myrcon.Plugins.Test.Tests {
     public class TestPluginsCommands : CoreController {
 
         public TestPluginsCommands() : base() {
-            this.AppendDispatchHandlers(new Dictionary<CommandAttribute, CommandDispatchHandler>() {
-                {
-                    new CommandAttribute() {
-                        Name = "TestPluginsCommandsZeroParameters"
-                    },
-                    new CommandDispatchHandler(this.TestPluginsCommandsZeroParameters)
+            this.CommandDispatchers.Add(
+                new CommandDispatch() {
+                    Name = "TestPluginsCommandsZeroParameters",
+                    Handler = this.TestPluginsCommandsZeroParameters
                 }
-            });
+            );
         }
 
-        protected CommandResult TestPluginsCommandsZeroParameters(Command command, Dictionary<String, CommandParameter> parameters) {
+        protected ICommandResult TestPluginsCommandsZeroParameters(ICommand command, Dictionary<String, ICommandParameter> parameters) {
             command.Result.Message = command.Name;
             command.Result.Status = CommandResultType.Success;
 

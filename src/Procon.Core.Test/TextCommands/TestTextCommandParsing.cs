@@ -42,7 +42,7 @@ namespace Procon.Core.Test.TextCommands {
             textCommands.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.TextCommandsRegister,
-                Parameters = new List<CommandParameter>() {
+                Parameters = new List<ICommandParameter>() {
                     new CommandParameter() {
                         Data = {
                             TextCommands = new List<TextCommandModel>() {
@@ -62,7 +62,7 @@ namespace Procon.Core.Test.TextCommands {
             Assert.AreEqual(1, textCommands.TextCommands.Count);
             Assert.AreEqual("ExecuteTest", textCommands.TextCommands.First().Commands.First());
 
-            CommandResult result = textCommands.Tunnel(new Command() {
+            ICommandResult result = textCommands.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.TextCommandsExecute,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -85,9 +85,11 @@ namespace Procon.Core.Test.TextCommands {
                 }
             };
 
-            CommandResult result = textCommands.Tunnel(new Command() {
+            ICommandResult result = textCommands.Tunnel(new Command() {
                 Origin = CommandOrigin.Remote,
-                Username = "Phogue",
+                Authentication = {
+                    Username = "Phogue"
+                },
                 CommandType = CommandType.TextCommandsExecute,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     "!test something something something dark side"
@@ -103,7 +105,7 @@ namespace Procon.Core.Test.TextCommands {
         /// </summary>
         [Test]
         public void TestTextCommandParsingExecuteUsePreferredLanguage() {
-            var security = new SecurityController().Execute() as SecurityController;
+            var security = (SecurityController)new SecurityController().Execute();
 
             security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
@@ -165,7 +167,7 @@ namespace Procon.Core.Test.TextCommands {
             textCommands.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.TextCommandsRegister,
-                Parameters = new List<CommandParameter>() {
+                Parameters = new List<ICommandParameter>() {
                     new CommandParameter() {
                         Data = {
                             TextCommands = new List<TextCommandModel>() {
@@ -185,9 +187,11 @@ namespace Procon.Core.Test.TextCommands {
             Assert.AreEqual(1, textCommands.TextCommands.Count);
             Assert.AreEqual("ExecuteTest", textCommands.TextCommands.First().Commands.First());
 
-            CommandResult result = textCommands.Tunnel(new Command() {
+            ICommandResult result = textCommands.Tunnel(new Command() {
                 Origin = CommandOrigin.Plugin,
-                Username = "Phogue",
+                Authentication = {
+                    Username = "Phogue"
+                },
                 CommandType = CommandType.TextCommandsExecute,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     "ExecuteTest stuff"
@@ -218,7 +222,7 @@ namespace Procon.Core.Test.TextCommands {
             textCommands.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.TextCommandsRegister,
-                Parameters = new List<CommandParameter>() {
+                Parameters = new List<ICommandParameter>() {
                     new CommandParameter() {
                         Data = {
                             TextCommands = new List<TextCommandModel>() {
@@ -238,7 +242,7 @@ namespace Procon.Core.Test.TextCommands {
             Assert.AreEqual(1, textCommands.TextCommands.Count);
             Assert.AreEqual("ExecuteTest", textCommands.TextCommands.First().Commands.First());
 
-            CommandResult result = textCommands.Tunnel(new Command() {
+            ICommandResult result = textCommands.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.TextCommandsPreview,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -261,9 +265,11 @@ namespace Procon.Core.Test.TextCommands {
                 }
             };
 
-            CommandResult result = textCommands.Tunnel(new Command() {
+            ICommandResult result = textCommands.Tunnel(new Command() {
                 CommandType = CommandType.TextCommandsPreview,
-                Username = "Phogue",
+                Authentication = {
+                    Username = "Phogue"
+                },
                 Origin = CommandOrigin.Remote,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     "!test something something something dark side"

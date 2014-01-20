@@ -1,8 +1,10 @@
 using System;
 
 namespace Procon.Core.Shared {
+    /// <summary>
+    /// Specifies what type of parameter the command is expecting
+    /// </summary>
     public sealed class CommandParameterType {
-
         /// <summary>
         /// The name of parameter.
         /// </summary>
@@ -23,6 +25,9 @@ namespace Procon.Core.Shared {
         /// </summary>
         public bool IsConvertable { get; set; }
 
+        /// <summary>
+        /// Initializes the parameter type with default values.
+        /// </summary>
         public CommandParameterType() {
             this.IsConvertable = true;
             this.IsList = false;

@@ -10,37 +10,33 @@ namespace Procon.Examples.Plugins.Commands {
     public class TunneledCommands : CoreController {
 
         public TunneledCommands() : base() {
-            this.AppendDispatchHandlers(new Dictionary<CommandAttribute, CommandDispatchHandler>() {
-                {
-                    new CommandAttribute() {
-                        Name = "ThisCommandIsInAChildObject",
-                        CommandAttributeType = CommandAttributeType.Handler
-                    },
-                    new CommandDispatchHandler(this.ThisCommandIsInAChildObject)
+            this.CommandDispatchers.AddRange(new List<ICommandDispatch>() {
+                new CommandDispatch() {
+                    Name = "ThisCommandIsInAChildObject",
+                    CommandAttributeType = CommandAttributeType.Handler,
+                    Handler = this.ThisCommandIsInAChildObject
                 },
-                {
-                    new CommandAttribute() {
-                        Name = "NoParameterBubbleCommand",
-                        CommandAttributeType = CommandAttributeType.Handler,
-                        ParameterTypes = new List<CommandParameterType>() {
-                            new CommandParameterType() {
-                                Name = "number",
-                                Type = typeof(int)
-                            }
+                new CommandDispatch() {
+                    Name = "NoParameterBubbleCommand",
+                    CommandAttributeType = CommandAttributeType.Handler,
+                    ParameterTypes = new List<CommandParameterType>() {
+                        new CommandParameterType() {
+                            Name = "number",
+                            Type = typeof(int)
                         }
                     },
-                    new CommandDispatchHandler(this.NoParameterBubbleCommand)
+                    Handler = this.NoParameterBubbleCommand
                 }
             });
         }
 
-        protected CommandResult ThisCommandIsInAChildObject(Command command, Dictionary<String, CommandParameter> parameters) {
+        protected ICommandResult ThisCommandIsInAChildObject(ICommand command, Dictionary<String, ICommandParameter> parameters) {
             command.Result.Message = "ThisCommandIsInAChildObjectResult";
 
             return command.Result;
         }
 
-        protected CommandResult NoParameterBubbleCommand(Command command, Dictionary<String, CommandParameter> parameters) {
+        protected ICommandResult NoParameterBubbleCommand(ICommand command, Dictionary<String, ICommandParameter> parameters) {
             command.Name = "SingleConvertedParameterCommand";
 
             // Bubble the command back up to Program.cs

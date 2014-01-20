@@ -1,13 +1,16 @@
 ﻿using System;
 
 namespace Procon.Net.Shared {
-
     /// <summary>
     /// Event that has occured related to a connection, but not yet processed or
     /// already processed by the game.
     /// </summary>
     [Serializable]
     public enum ClientEventType {
+        /// <summary>
+        /// No event specified.
+        /// </summary>
+        None,
         /// <summary>
         /// The sate of the connection has changed (connection -> disconnected, etc.)
         /// </summary>

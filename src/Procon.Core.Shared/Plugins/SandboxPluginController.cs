@@ -104,7 +104,7 @@ namespace Procon.Core.Shared.Plugins {
         /// Remote proxy to propogate the game event across all enabled plugins and avoid multiple remoting calls.
         /// </summary>
         /// <param name="e"></param>
-        public void GameEvent(ProtocolEventArgs e) {
+        public void GameEvent(IProtocolEventArgs e) {
             foreach (var enabledPlugin in this.EnabledPlugins) {
                 enabledPlugin.Value.GameEvent(e);
             }
@@ -114,7 +114,7 @@ namespace Procon.Core.Shared.Plugins {
         /// Remote proxy to propogate the client event across all enabled plugins and avoid multiple remoting calls.
         /// </summary>
         /// <param name="e"></param>
-        public void ClientEvent(ClientEventArgs e) {
+        public void ClientEvent(IClientEventArgs e) {
             foreach (var enabledPlugin in this.EnabledPlugins) {
                 enabledPlugin.Value.ClientEvent(e);
             }
@@ -147,20 +147,20 @@ namespace Procon.Core.Shared.Plugins {
         /// </summary>
         /// <param name="command"></param>
         /// <returns></returns>
-        protected override IList<ICoreController> BubbleExecutableObjects(Command command) {
+        protected override IList<ICoreController> BubbleExecutableObjects(ICommand command) {
             command.Origin = CommandOrigin.Plugin;
 
             return this.BubbleObjects ?? new List<ICoreController>();
         }
 
-        protected override IList<ICoreController> TunnelExecutableObjects(Command command) {
+        protected override IList<ICoreController> TunnelExecutableObjects(ICommand command) {
             List<ICoreController> list = new List<ICoreController>();
 
-            if (command.Scope != null && command.Scope.PluginGuid != Guid.Empty) {
+            if (command.ScopeModel != null && command.ScopeModel.PluginGuid != Guid.Empty) {
                 IPluginController enabledPlugin;
 
                 // Get the enabled plugin if it exists.
-                if (this.EnabledPlugins.TryGetValue(command.Scope.PluginGuid, out enabledPlugin) == true) {
+                if (this.EnabledPlugins.TryGetValue(command.ScopeModel.PluginGuid, out enabledPlugin) == true) {
                     list.Add(enabledPlugin);
                 }
                 // else the plugin isn't enabled

@@ -1,4 +1,5 @@
 ﻿using System;
+using Procon.Net.Shared.Models;
 
 namespace Procon.Net.Shared.Geolocation {
     /// <summary>

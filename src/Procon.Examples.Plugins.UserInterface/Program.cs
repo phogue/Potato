@@ -19,26 +19,22 @@ namespace Procon.Examples.Plugins.UserInterface {
 
         public Program() : base() {
 
-            this.AppendDispatchHandlers(new Dictionary<CommandAttribute, CommandDispatchHandler>() {
-                {
-                    new CommandAttribute() {
-                        Name = "/",
-                        CommandAttributeType = CommandAttributeType.Handler
-                    },
-                    new CommandDispatchHandler(this.PageIndex)
+            this.CommandDispatchers.AddRange(new List<ICommandDispatch>() {
+                new CommandDispatch() {
+                    Name = "/",
+                    CommandAttributeType = CommandAttributeType.Handler,
+                    Handler = this.PageIndex
                 },
-                {
-                    new CommandAttribute() {
-                        Name = "/settings",
-                        CommandAttributeType = CommandAttributeType.Handler
-                    },
-                    new CommandDispatchHandler(this.PageSettings)
+                new CommandDispatch() {
+                    Name = "/settings",
+                    CommandAttributeType = CommandAttributeType.Handler,
+                    Handler = this.PageSettings
                 }
             });
 
         }
 
-        protected CommandResult PageIndex(Command command, Dictionary<String, CommandParameter> parameters) {
+        protected ICommandResult PageIndex(ICommand command, Dictionary<String, ICommandParameter> parameters) {
             return new CommandResult() {
                 Now = new CommandData() {
                     Content = new List<string>() {
@@ -51,18 +47,18 @@ namespace Procon.Examples.Plugins.UserInterface {
             };
         }
 
-        protected CommandResult PageSettings(Command command, Dictionary<String, CommandParameter> parameters) {
+        protected ICommandResult PageSettings(ICommand command, Dictionary<String, ICommandParameter> parameters) {
             return new CommandResult() {
                 Now = new CommandData() {
                     Content = new List<string>() {
                         new SettingsPageView() {
                             MyStringyVariable = "Output of the variable!",
-                            MyListOfPlayers = new List<Player>() {
-                                new Player() {
+                            MyListOfPlayers = new List<PlayerModel>() {
+                                new PlayerModel() {
                                     Name = "Player1",
                                     Score = 100
                                 },
-                                new Player() {
+                                new PlayerModel() {
                                     Name = "Player2",
                                     Score = 250
                                 }

@@ -4,7 +4,6 @@ using System.Linq;
 using Procon.Net.Shared;
 using Procon.Net.Shared.Actions;
 using Procon.Net.Shared.Actions.Deferred;
-using Procon.Net.Shared.Models;
 using Procon.Net.Shared.Protocols;
 
 namespace Procon.Net {
@@ -26,7 +25,7 @@ namespace Procon.Net {
         /// Everything the connection currently knows about the game. This is updated
         /// with all of the information we receive from the server.
         /// </summary>
-        public ProtocolState State { get; protected set; }
+        public IProtocolState State { get; protected set; }
 
         /// <summary>
         /// The password used to authenticate with the server.
@@ -113,14 +112,14 @@ namespace Procon.Net {
             });
 
             this.Client.SocketException += (sender, se) => this.OnClientEvent(ClientEventType.ClientSocketException, new ClientEventData() {
-                Exceptions = new List<Exception>() {
-                    se
+                Exceptions = new List<String>() {
+                    se.ToString()
                 }
             });
 
             this.Client.ConnectionFailure += (sender, exception) => this.OnClientEvent(ClientEventType.ClientConnectionFailure, new ClientEventData() {
-                Exceptions = new List<Exception>() {
-                    exception
+                Exceptions = new List<String>() {
+                    exception.ToString()
                 }
             });
 
@@ -131,7 +130,7 @@ namespace Procon.Net {
                         Packets = responses
                     },
                     new ClientEventData() {
-                        Actions = new List<NetworkAction>() {
+                        Actions = new List<INetworkAction>() {
                             action
                         },
                         Packets = requests
@@ -143,7 +142,7 @@ namespace Procon.Net {
                         Packets = responses
                     },
                     new ClientEventData() {
-                        Actions = new List<NetworkAction>() {
+                        Actions = new List<INetworkAction>() {
                             action
                         },
                         Packets = requests
@@ -155,9 +154,9 @@ namespace Procon.Net {
         /// <summary>
         /// Fired when ever a dispatched game event occurs.
         /// </summary>
-        public virtual event Action<IProtocol, ProtocolEventArgs> ProtocolEvent;
+        public virtual event Action<IProtocol, IProtocolEventArgs> ProtocolEvent;
 
-        protected void OnGameEvent(ProtocolEventType eventType, ProtocolEventData now = null, ProtocolEventData then = null) {
+        protected void OnGameEvent(ProtocolEventType eventType, IProtocolEventData now = null, IProtocolEventData then = null) {
             var handler = this.ProtocolEvent;
             if (handler != null) {
                 handler(
@@ -177,9 +176,9 @@ namespace Procon.Net {
         /// Fired when something occurs with the underlying client. This can
         /// be connections, disconnections, logins or raw packets being recieved.
         /// </summary>
-        public virtual event Action<IProtocol, ClientEventArgs> ClientEvent;
+        public virtual event Action<IProtocol, IClientEventArgs> ClientEvent;
 
-        protected void OnClientEvent(ClientEventType eventType, ClientEventData now = null, ClientEventData then = null) {
+        protected void OnClientEvent(ClientEventType eventType, IClientEventData now = null, IClientEventData then = null) {
             var handler = this.ClientEvent;
             if (handler != null) {
                 handler(this, new ClientEventArgs() {
@@ -201,7 +200,7 @@ namespace Procon.Net {
         /// Process a generic network action
         /// </summary>
         /// <param name="action"></param>
-        public virtual List<IPacket> Action(NetworkAction action) {
+        public virtual List<IPacket> Action(INetworkAction action) {
             List<IPacket> packets = null;
             List<IPacketWrapper> wrappers = this.DispatchAction(action);
 
@@ -221,7 +220,7 @@ namespace Procon.Net {
             return packets;
         }
 
-        protected virtual List<IPacketWrapper> DispatchAction(NetworkAction action) {
+        protected virtual List<IPacketWrapper> DispatchAction(INetworkAction action) {
             List<IPacketWrapper> wrappers = new List<IPacketWrapper>();
 
             switch (action.ActionType) {
@@ -273,19 +272,19 @@ namespace Procon.Net {
             return wrappers;
         }
 
-        protected abstract List<IPacketWrapper> ActionChat(NetworkAction action);
+        protected abstract List<IPacketWrapper> ActionChat(INetworkAction action);
 
-        protected abstract List<IPacketWrapper> ActionKill(NetworkAction action);
+        protected abstract List<IPacketWrapper> ActionKill(INetworkAction action);
 
-        protected abstract List<IPacketWrapper> ActionKick(NetworkAction action);
+        protected abstract List<IPacketWrapper> ActionKick(INetworkAction action);
 
-        protected abstract List<IPacketWrapper> ActionBan(NetworkAction action);
+        protected abstract List<IPacketWrapper> ActionBan(INetworkAction action);
 
-        protected abstract List<IPacketWrapper> ActionMove(NetworkAction action);
+        protected abstract List<IPacketWrapper> ActionMove(INetworkAction action);
 
-        protected abstract List<IPacketWrapper> ActionMap(NetworkAction action);
+        protected abstract List<IPacketWrapper> ActionMap(INetworkAction action);
 
-        protected virtual List<IPacketWrapper> ActionRaw(NetworkAction action) {
+        protected virtual List<IPacketWrapper> ActionRaw(INetworkAction action) {
             List<IPacketWrapper> wrappers = new List<IPacketWrapper>();
 
             wrappers.AddRange(action.Now.Content.Select(text => this.CreatePacket(text)));

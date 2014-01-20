@@ -36,7 +36,7 @@ namespace Myrcon.Protocols.Frostbite.Battlefield.Battlefield4 {
 
         //[DispatchPacket(MatchText = "admin.listPlayers", PacketOrigin = PacketOrigin.Client)]
         public override void AdminListPlayersResponseDispatchHandler(IPacketWrapper request, IPacketWrapper response) {
-            List<Player> players = Battlefield4Players.Parse(response.Packet.Words.GetRange(1, response.Packet.Words.Count - 1));
+            List<PlayerModel> players = Battlefield4Players.Parse(response.Packet.Words.GetRange(1, response.Packet.Words.Count - 1));
 
             this.AdminListPlayersFinalize(players);
         }
@@ -44,10 +44,10 @@ namespace Myrcon.Protocols.Frostbite.Battlefield.Battlefield4 {
         public override void MapListListDispatchHandler(IPacketWrapper request, IPacketWrapper response) {
             if (request.Packet.Words.Count >= 1) {
 
-                List<Map> maps = Battlefield4FrostbiteMapList.Parse(response.Packet.Words.GetRange(1, response.Packet.Words.Count - 1));
+                List<MapModel> maps = Battlefield4FrostbiteMapList.Parse(response.Packet.Words.GetRange(1, response.Packet.Words.Count - 1));
 
-                foreach (Map map in maps) {
-                    Map mapInfo = this.State.MapPool.Find(x => String.Compare(x.Name, map.Name, StringComparison.OrdinalIgnoreCase) == 0);
+                foreach (MapModel map in maps) {
+                    MapModel mapInfo = this.State.MapPool.Find(x => String.Compare(x.Name, map.Name, StringComparison.OrdinalIgnoreCase) == 0);
                     if (mapInfo != null) {
                         map.FriendlyName = mapInfo.FriendlyName;
                         map.GameMode = mapInfo.GameMode;
@@ -78,10 +78,10 @@ namespace Myrcon.Protocols.Frostbite.Battlefield.Battlefield4 {
                     this.State.Bans.Clear();
                 }
 
-                List<Ban> banList = Battlefield4BanList.Parse(response.Packet.Words.GetRange(1, response.Packet.Words.Count - 1));
+                List<BanModel> banList = Battlefield4BanList.Parse(response.Packet.Words.GetRange(1, response.Packet.Words.Count - 1));
 
                 if (banList.Count > 0) {
-                    foreach (Ban ban in banList)
+                    foreach (BanModel ban in banList)
                         this.State.Bans.Add(ban);
 
                     this.Send(this.CreatePacket("banList.list {0}", startOffset + 100));
@@ -107,7 +107,7 @@ namespace Myrcon.Protocols.Frostbite.Battlefield.Battlefield4 {
 
             if (request.Packet.Words.Count >= 2) {
 
-                Player player = new Player() {
+                PlayerModel player = new PlayerModel() {
                     Name = request.Packet.Words[1],
                     Uid = request.Packet.Words[2]
                 };
@@ -116,7 +116,7 @@ namespace Myrcon.Protocols.Frostbite.Battlefield.Battlefield4 {
                     this.State.Players.Add(player);
                 }
 
-                this.OnGameEvent(ProtocolEventType.ProtocolPlayerJoin, new ProtocolEventData() { Players = new List<Player>() { player } });
+                this.OnGameEvent(ProtocolEventType.ProtocolPlayerJoin, new ProtocolEventData() { Players = new List<PlayerModel>() { player } });
             }
         }
 
@@ -128,10 +128,10 @@ namespace Myrcon.Protocols.Frostbite.Battlefield.Battlefield4 {
 
                 if (bool.TryParse(request.Packet.Words[4], out headshot) == true) {
 
-                    Item item = this.State.Items.FirstOrDefault(i => i.Name == Regex.Replace(request.Packet.Words[3], @"[^\w\/_-]+", ""));
+                    ItemModel item = this.State.Items.FirstOrDefault(i => i.Name == Regex.Replace(request.Packet.Words[3], @"[^\w\/_-]+", ""));
 
-                    Player killer = this.State.Players.Find(x => x.Name == request.Packet.Words[1]);
-                    Player victim = this.State.Players.Find(x => x.Name == request.Packet.Words[2]);
+                    PlayerModel killer = this.State.Players.Find(x => x.Name == request.Packet.Words[1]);
+                    PlayerModel victim = this.State.Players.Find(x => x.Name == request.Packet.Words[2]);
 
                     // Assign the item to the player, overwriting everything else attached to this killer.
                     if (killer != null) {
@@ -140,13 +140,13 @@ namespace Myrcon.Protocols.Frostbite.Battlefield.Battlefield4 {
                     }
 
                     this.OnGameEvent(ProtocolEventType.ProtocolPlayerKill, new ProtocolEventData() {
-                        Kills = new List<Kill>() {
-                            new Kill() {
+                        Kills = new List<KillModel>() {
+                            new KillModel() {
                                 Scope = {
-                                    Players = new List<Player>() {
+                                    Players = new List<PlayerModel>() {
                                         victim
                                     },
-                                    Items = new List<Item>() {
+                                    Items = new List<ItemModel>() {
                                         item
                                     },
                                     HumanHitLocations = new List<HumanHitLocation>() {
@@ -154,7 +154,7 @@ namespace Myrcon.Protocols.Frostbite.Battlefield.Battlefield4 {
                                     }
                                 },
                                 Now = {
-                                    Players = new List<Player>() {
+                                    Players = new List<PlayerModel>() {
                                         killer
                                     }
                                 }
@@ -165,10 +165,10 @@ namespace Myrcon.Protocols.Frostbite.Battlefield.Battlefield4 {
             }
         }
 
-        protected override List<IPacketWrapper> ActionMap(NetworkAction action) {
+        protected override List<IPacketWrapper> ActionMap(INetworkAction action) {
             List<IPacketWrapper> wrappers = new List<IPacketWrapper>();
 
-            foreach (Map map in action.Now.Maps) {
+            foreach (MapModel map in action.Now.Maps) {
                 if (action.ActionType == NetworkActionType.NetworkMapAppend) {
                     // mapList.add <map: string> <gamemode: string> <rounds: integer> [index: integer]
                     wrappers.Add(this.CreatePacket("mapList.add \"{0}\" \"{1}\" {2}", map.Name, map.GameMode.Name, map.Rounds));

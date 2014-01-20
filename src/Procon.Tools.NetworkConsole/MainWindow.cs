@@ -118,7 +118,7 @@ namespace Procon.Tools.NetworkConsole {
             }
         }
 
-        void ActiveGame_ClientEvent(IProtocol sender, ClientEventArgs e) {
+        void ActiveGame_ClientEvent(IProtocol sender, IClientEventArgs e) {
             if (this.InvokeRequired == true) {
                 this.Invoke(new Action<Protocol, ClientEventArgs>(this.ActiveGame_ClientEvent), sender, e);
                 return;
@@ -138,7 +138,7 @@ namespace Procon.Tools.NetworkConsole {
                     }
                 }
                 else if (e.EventType == ClientEventType.ClientConnectionFailure || e.EventType == ClientEventType.ClientSocketException) {
-                    this.ConsoleAppendLine("^1Error: {0}", e.Now.Exceptions.FirstOrDefault().Message);
+                    this.ConsoleAppendLine("^1Error: {0}", e.Now.Exceptions.FirstOrDefault());
                 }
                 else if (e.EventType == ClientEventType.ClientPacketSent) {
                     this.ConsoleAppendLine("^2SEND: {0}", e.Now.Packets.FirstOrDefault().DebugText);

@@ -20,19 +20,17 @@ namespace Procon.Examples.Plugins.Actions.Test {
         public WaitingActions Waiting = new WaitingActions();
 
         public MockNetworkLayer() : base() {
-            this.AppendDispatchHandlers(new Dictionary<CommandAttribute, CommandDispatchHandler>() {
-                {
-                    new CommandAttribute() {
-                        Name = NetworkActionType.NetworkPlayerKick.ToString(),
-                        CommandAttributeType = CommandAttributeType.Handler,
-                        ParameterTypes = new List<CommandParameterType>() {
-                            new CommandParameterType() {
-                                Name = "action",
-                                Type = typeof(NetworkAction)
-                            }
+            this.CommandDispatchers.AddRange(new List<ICommandDispatch>() {
+                new CommandDispatch() {
+                    Name = NetworkActionType.NetworkPlayerKick.ToString(),
+                    CommandAttributeType = CommandAttributeType.Handler,
+                    ParameterTypes = new List<CommandParameterType>() {
+                        new CommandParameterType() {
+                            Name = "action",
+                            Type = typeof(INetworkAction)
                         }
                     },
-                    new CommandDispatchHandler(this.NetworkProtocolActionKick)
+                    Handler = this.NetworkProtocolActionKick
                 }
             });
         }
@@ -68,15 +66,15 @@ namespace Procon.Examples.Plugins.Actions.Test {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public CommandResult NetworkProtocolActionKick(Command command, Dictionary<String, CommandParameter> parameters) {
-            CommandResult result = new CommandResult() {
+        public ICommandResult NetworkProtocolActionKick(ICommand command, Dictionary<String, ICommandParameter> parameters) {
+            ICommandResult result = new CommandResult() {
                 Status = CommandResultType.Success,
                 Success = true
             };
 
             // You can ignore this. This is a mock of Procon's internal process, but looks nothing like it really
 
-            NetworkAction kick = parameters["action"].First<NetworkAction>();
+            INetworkAction kick = parameters["action"].First<INetworkAction>();
 
             List<IPacket> requests = new List<IPacket>() {
                 new Packet() {

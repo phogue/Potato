@@ -50,12 +50,12 @@ namespace Procon.Core.Connections.TextCommands.Parsers {
             bool matching = true;
             int maximumNameLength = this.Connection.ProtocolState.Players.Count > 0 ? this.Connection.ProtocolState.Players.Max(player => player.Name.Length) : 0;
 
-            result.Players = new List<Player>();
+            result.Players = new List<PlayerModel>();
 
             for (var offset = 0; match.Groups["player" + offset].Success == true && matching == true; offset++) {
                 var text = match.Groups["player" + offset].Value;
 
-                Player player = this.Connection.ProtocolState.Players.FirstOrDefault(p => Math.Max(p.NameStripped.DePluralStringSimularity(text), p.Name.DePluralStringSimularity(text)) >= this.MinimumSimilarity(55, 70, maximumNameLength, p.Name.Length));
+                PlayerModel player = this.Connection.ProtocolState.Players.FirstOrDefault(p => Math.Max(p.NameStripped.DePluralStringSimularity(text), p.Name.DePluralStringSimularity(text)) >= this.MinimumSimilarity(55, 70, maximumNameLength, p.Name.Length));
 
                 if (player != null) {
                     result.Players.Add(player);
@@ -77,12 +77,12 @@ namespace Procon.Core.Connections.TextCommands.Parsers {
         protected bool TryMatchMaps(Match match, TextCommandMatchModel result) {
             bool matching = true;
 
-            result.Maps = new List<Map>();
+            result.Maps = new List<MapModel>();
 
             for (var offset = 0; match.Groups["map" + offset].Success == true && matching == true; offset++) {
                 var text = match.Groups["map" + offset].Value;
 
-                Map map = this.Connection.ProtocolState.MapPool.FirstOrDefault(m => Math.Max(m.FriendlyName.DePluralStringSimularity(text), m.Name.DePluralStringSimularity(text)) >= 60);
+                MapModel map = this.Connection.ProtocolState.MapPool.FirstOrDefault(m => Math.Max(m.FriendlyName.DePluralStringSimularity(text), m.Name.DePluralStringSimularity(text)) >= 60);
 
                 if (map != null) {
                     result.Maps.Add(map);
@@ -157,8 +157,8 @@ namespace Procon.Core.Connections.TextCommands.Parsers {
         /// <param name="match">The result of a regular expression match against a compiled command</param>
         /// <param name="compiledTextCommand">The compiled text command to pull for additional meta data about the command being built</param>
         /// <returns>A command result if the matching was successful, or null if matching was not successful</returns>
-        protected CommandResult BuildCommandResult(Match match, CompiledTextCommand compiledTextCommand) {
-            CommandResult result = null;
+        protected ICommandResult BuildCommandResult(Match match, CompiledTextCommand compiledTextCommand) {
+            ICommandResult result = null;
 
             if (match.Success == true) {
                 TextCommandMatchModel textCommandMatchModel = this.BuildTextCommandMatch(match);
@@ -168,7 +168,7 @@ namespace Procon.Core.Connections.TextCommands.Parsers {
                         Success = true,
                         Status = CommandResultType.Success,
                         Now = new CommandData() {
-                            Players = new List<Player>() {
+                            Players = new List<PlayerModel>() {
                                 this.SpeakerPlayer
                             },
                             TextCommands = new List<TextCommandModel>() {
@@ -185,7 +185,7 @@ namespace Procon.Core.Connections.TextCommands.Parsers {
             return result;
         }
 
-        public override CommandResult Parse(String prefix, String text) {
+        public override ICommandResult Parse(String prefix, String text) {
             return this.CompileTextCommands()
                 .Select(compiledTextCommand => this.BuildCommandResult(compiledTextCommand.Match(text), compiledTextCommand))
                 .FirstOrDefault(result => result != null);

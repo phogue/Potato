@@ -2,22 +2,19 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Xml.Serialization;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Procon.Core.Shared.Serialization;
 
 namespace Procon.Core.Shared {
     /// <summary>
     /// Handles command routing and config handling
     /// </summary>
     [Serializable]
-    public abstract class CoreController : MarshalByRefObject, INotifyPropertyChanged, IDisposable, ICloneable, ICoreController {
+    public abstract class CoreController : MarshalByRefObject, INotifyPropertyChanged, ICloneable, ICoreController {
         /// <summary>
         /// List of dispatch attributes to the method to call, provided the parameter list matches.
         /// </summary>
-        protected readonly Dictionary<CommandAttribute, CommandDispatchHandler> CommandDispatchHandlers = new Dictionary<CommandAttribute, CommandDispatchHandler>();
-
-        protected delegate CommandResult CommandDispatchHandler(Command command, Dictionary<String, CommandParameter> parameters);
+        protected readonly List<ICommandDispatch> CommandDispatchers = new List<ICommandDispatch>(); 
 
         /// <summary>
         /// All objects to tunnel downwards
@@ -32,21 +29,6 @@ namespace Procon.Core.Shared {
         protected CoreController() : base() {
             this.TunnelObjects = new List<ICoreController>();
             this.BubbleObjects = new List<ICoreController>();
-        }
-
-        /// <summary>
-        /// Appends a list of dispatch handlers to the internal list, updating existing handlers if they exist.
-        /// </summary>
-        /// <param name="handlers"></param>
-        protected void AppendDispatchHandlers(Dictionary<CommandAttribute, CommandDispatchHandler> handlers) {
-            foreach (var handler in handlers) {
-                if (this.CommandDispatchHandlers.ContainsKey(handler.Key) == false) {
-                    this.CommandDispatchHandlers.Add(handler.Key, handler.Value);
-                }
-                else {
-                    this.CommandDispatchHandlers[handler.Key] = handler.Value;
-                }
-            }
         }
 
         /// <summary>
@@ -84,6 +66,10 @@ namespace Procon.Core.Shared {
         /// <param name="config"></param>
         public virtual void WriteConfig(IConfig config) { }
 
+        public virtual void Poke() {
+            
+        }
+
         /// <summary>
         /// Loads the specified configuration file.
         /// </summary>
@@ -116,93 +102,31 @@ namespace Procon.Core.Shared {
         /// </summary>
         /// <param name="command"></param>
         /// <param name="config"></param>
-        protected void Execute(Command command, IConfig config) {
+        protected void Execute(ICommand command, IConfig config) {
             if (config != null && config.Root != null) {
 
-                foreach (var loadedCommand in config.RootOf(this.GetType()).Children<JObject>().Select(item => item.ToObject<Command>())) {
+                foreach (var loadedCommand in config.RootOf(this.GetType()).Children<JObject>().Select(item => item.ToObject<Command>(JsonSerialization.Minimal))) {
                     if (loadedCommand != null && loadedCommand.Name != null) {
                         command.ParseCommandType(loadedCommand.Name);
                         command.Parameters = loadedCommand.Parameters;
-                        command.Scope = loadedCommand.Scope;
+                        command.ScopeModel = loadedCommand.ScopeModel;
 
                         this.Tunnel(command);
                     }
                 }
-                /*
-                // Drill down in the config to this object's type.
-                var nodes = this.GetType().FullName.Split('`').First().Split('.').Skip(1).Aggregate(config.Root.Elements(), (current, name) => current.DescendantsAndSelf(name));
-
-                // For each of the commands for this object...
-                foreach (XElement xCommand in nodes.Descendants("Command")) {
-                    Command loadedCommand = xCommand.FromXElement<Command>();
-
-                    if (loadedCommand != null && loadedCommand.Name != null) {
-                        command.ParseCommandType(loadedCommand.Name);
-                        command.Parameters = loadedCommand.Parameters;
-                        command.Scope = loadedCommand.Scope;
-
-                        this.Tunnel(command);
-                    }
-                }
-                */
             }
         }
 
-        /// <summary>
-        /// Compares an expected parameter list against the parameters supplied. If the types match (or can be converted) then
-        /// a dictionary of parameter names to the parameters supplied is returned, otherwise null is returned implying
-        /// and error was encountered or a type wasn't found.
-        /// </summary>
-        /// <param name="expectedParameterTypes"></param>
-        /// <param name="parameters"></param>
-        /// <returns></returns>
-        private Dictionary<String, CommandParameter> BuildParameterDictionary(IList<CommandParameterType> expectedParameterTypes, IList<CommandParameter> parameters) {
-            Dictionary<String, CommandParameter> parameterDictionary = new Dictionary<string, CommandParameter>();
-
-            // If we're not expecting any parameters
-            if (expectedParameterTypes != null) {
-                if (parameters != null && expectedParameterTypes.Count == parameters.Count) {
-                    for (int offset = 0; offset < expectedParameterTypes.Count && parameterDictionary != null; offset++) {
-
-                        if (expectedParameterTypes[offset].IsList == true) {
-                            if (parameters[offset].HasMany(expectedParameterTypes[offset].Type, expectedParameterTypes[offset].IsConvertable) == true) {
-                                parameterDictionary.Add(expectedParameterTypes[offset].Name, parameters[offset]);
-                            }
-                            else {
-                                // Parameter type mismatch. Return null.
-                                parameterDictionary = null;
-                            }
-                        }
-                        else {
-                            if (parameters[offset].HasOne(expectedParameterTypes[offset].Type, expectedParameterTypes[offset].IsConvertable) == true) {
-                                parameterDictionary.Add(expectedParameterTypes[offset].Name, parameters[offset]);
-                            }
-                            else {
-                                // Parameter type mismatch. Return null.
-                                parameterDictionary = null;
-                            }
-                        }
-                    }
-                }
-                else {
-                    // Parameter count mismatch. Return null.
-                    parameterDictionary = null;
-                }
-            }
-
-            return parameterDictionary;
-        }
-
-        private CommandResult Run(CommandAttributeType attributeType, Command command, CommandResultType maintainStatus) {
+        private ICommandResult Run(CommandAttributeType attributeType, ICommand command, CommandResultType maintainStatus) {
 
             // Loop through all matching commands with the identical name and type
-            foreach (var dispatch in this.CommandDispatchHandlers.Where(dispatch => dispatch.Key.CommandAttributeType == attributeType && dispatch.Key.Name == command.Name)) {
+            foreach (var dispatch in this.CommandDispatchers.Where(dispatch => dispatch.CanDispatch(attributeType, command))) {
                 
                 // Check if we can build a parameter list.
-                Dictionary<String, CommandParameter> parameters = this.BuildParameterDictionary(dispatch.Key.ParameterTypes, command.Parameters);
+                Dictionary<String, ICommandParameter> parameters = dispatch.BuildParameterDictionary(command.Parameters);
 
                 if (parameters != null) {
-                    command.Result = dispatch.Value(command, parameters);
+                    command.Result = dispatch.Handler(command, parameters);
 
                     // Our status has changed, break our loop.
                     if (command.Result.Status != maintainStatus) {
@@ -214,7 +138,7 @@ namespace Procon.Core.Shared {
             return command.Result;
         }
 
-        public virtual CommandResult PropogatePreview(Command command, CommandDirection direction) {
+        public virtual ICommandResult PropogatePreview(ICommand command, CommandDirection direction) {
             command.Result = this.Run(CommandAttributeType.Preview, command, CommandResultType.Continue);
 
             if (command.Result.Status == CommandResultType.Continue) {
@@ -230,7 +154,7 @@ namespace Procon.Core.Shared {
             return command.Result;
         }
 
-        public virtual CommandResult PropogateHandler(Command command, CommandDirection direction) {
+        public virtual ICommandResult PropogateHandler(ICommand command, CommandDirection direction) {
             command.Result = this.Run(CommandAttributeType.Handler, command, CommandResultType.Continue);
 
             if (command.Result.Status == CommandResultType.Continue) {
@@ -246,7 +170,7 @@ namespace Procon.Core.Shared {
             return command.Result;
         }
 
-        public virtual CommandResult PropogateExecuted(Command command, CommandDirection direction) {
+        public virtual ICommandResult PropogateExecuted(ICommand command, CommandDirection direction) {
             command.Result = this.Run(CommandAttributeType.Executed, command, command.Result.Status);
 
             IList<ICoreController> propogationList = direction == CommandDirection.Tunnel ? this.TunnelExecutableObjects(command) : this.BubbleExecutableObjects(command);
@@ -267,7 +191,7 @@ namespace Procon.Core.Shared {
         /// </summary>
         /// <param name="command"></param>
         /// <returns></returns>
-        public virtual CommandResult Tunnel(Command command) {
+        public virtual ICommandResult Tunnel(ICommand command) {
             // Setup the initial command result.
             command.Result = new CommandResult() {
                 Success = true,
@@ -294,7 +218,7 @@ namespace Procon.Core.Shared {
         /// </summary>
         /// <param name="command"></param>
         /// <returns></returns>
-        public virtual CommandResult Bubble(Command command) {
+        public virtual ICommandResult Bubble(ICommand command) {
             // Setup the initial command result.
             command.Result = new CommandResult() {
                 Success = true,
@@ -316,11 +240,11 @@ namespace Procon.Core.Shared {
             return command.Result;
         }
 
-        protected virtual IList<ICoreController> TunnelExecutableObjects(Command command) {
+        protected virtual IList<ICoreController> TunnelExecutableObjects(ICommand command) {
             return this.TunnelObjects;
         }
 
-        protected virtual IList<ICoreController> BubbleExecutableObjects(Command command) {
+        protected virtual IList<ICoreController> BubbleExecutableObjects(ICommand command) {
             return this.BubbleObjects;
         } 
 

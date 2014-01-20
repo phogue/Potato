@@ -1,6 +1,9 @@
 ﻿using System;
 
 namespace Procon.Net.Shared {
+    /// <summary>
+    /// A simple predicate to determine if the packet matches criteria to dispatch
+    /// </summary>
     public interface IPacketDispatch {
         /// <summary>
         /// The name of the packet we should check against

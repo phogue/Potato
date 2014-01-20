@@ -1,5 +1,4 @@
 using System;
-using System.IO;
 using Procon.Core.Shared.Events;
 using Procon.Net.Shared;
 
@@ -29,14 +28,14 @@ namespace Procon.Core.Shared.Plugins {
         /// then processed with as an event from the game server. (OnChat, OnKill etc.)
         /// </summary>
         /// <param name="e">Description of the game event</param>
-        void GameEvent(ProtocolEventArgs e);
+        void GameEvent(IProtocolEventArgs e);
 
         /// <summary>
         /// Fired whenever an event is fired from the networking layer (packet sent/recv,
         /// connection state change or any socket errors)
         /// </summary>
         /// <param name="e">Description of the client event</param>
-        void ClientEvent(ClientEventArgs e);
+        void ClientEvent(IClientEventArgs e);
 
         /// <summary>
         /// Fired whenever an event occurs from Procon, but isolated to this particular plugin.

@@ -4,13 +4,12 @@ using Procon.Core.Shared.Events;
 using Procon.Core.Shared.Models;
 using Procon.Net.Protocols.CommandServer;
 using Procon.Net.Shared;
-using Procon.Net.Shared.Protocols.CommandServer;
 
 namespace Procon.Core.Remote {
     /// <summary>
     /// Listens for incoming connections, authenticates and dispatches commands
     /// </summary>
-    public class CommandServerController : CoreController, ISharedReferenceAccess, ICommandServerController {
+    public class CommandServerController : CoreController, ISharedReferenceAccess {
         /// <summary>
         /// The client to send/recv remote commands.
         /// </summary>
@@ -131,12 +130,12 @@ namespace Procon.Core.Remote {
                 }
             };
 
-            Command command = CommandServerSerializer.DeserializeCommand(request);
+            ICommand command = CommandServerSerializer.DeserializeCommand(request);
 
             if (command != null) {
-                if (this.Shared.Security.Tunnel(CommandBuilder.SecurityAccountAuthenticate(command.Username, command.PasswordPlainText).SetOrigin(CommandOrigin.Remote)).Success == true) {
+                if (this.Shared.Security.Tunnel(CommandBuilder.SecurityAccountAuthenticate(command.Authentication.Username, command.Authentication.PasswordPlainText).SetOrigin(CommandOrigin.Remote)).Success == true) {
                     // Now dispatch the command
-                    CommandResult result = this.Tunnel(command);
+                    ICommandResult result = this.Tunnel(command);
 
                     response = CommandServerSerializer.CompleteResponsePacket(CommandServerSerializer.ResponseContentType(command), response, result);
                 }

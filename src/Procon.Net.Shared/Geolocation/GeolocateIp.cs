@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using Procon.Net.Shared.Geolocation.Maxmind;
+using Procon.Net.Shared.Models;
 
 namespace Procon.Net.Shared.Geolocation {
     /// <summary>

@@ -1,10 +1,11 @@
+using System;
 using System.Collections.Generic;
 
 namespace Procon.Core.Shared {
     /// <summary>
     /// The implementing object accepts command execution
     /// </summary>
-    public interface ICoreController {
+    public interface ICoreController : IDisposable {
         /// <summary>
         /// All objects to tunnel downwards during execution
         /// </summary>
@@ -21,7 +22,7 @@ namespace Procon.Core.Shared {
         /// <param name="command"></param>
         /// <param name="direction">If the command should then be tunneled or bubbled</param>
         /// <returns>The result of the preview. A handler may have canceled the command.</returns>
-        CommandResult PropogatePreview(Command command, CommandDirection direction);
+        ICommandResult PropogatePreview(ICommand command, CommandDirection direction);
 
         /// <summary>
         /// Run a command on the current object, then tunnel or bubble the command.
@@ -29,7 +30,7 @@ namespace Procon.Core.Shared {
         /// <param name="command"></param>
         /// <param name="direction">If the command should then be tunneled or bubbled</param>
         /// <returns>The result of the execution.</returns>
-        CommandResult PropogateHandler(Command command, CommandDirection direction);
+        ICommandResult PropogateHandler(ICommand command, CommandDirection direction);
 
         /// <summary>
         /// Alert the object that a command has been executed with the following results
@@ -37,20 +38,35 @@ namespace Procon.Core.Shared {
         /// <param name="command"></param>
         /// <param name="direction">If the command should then be tunneled or bubbled</param>
         /// <returns>The result of the executed.</returns>
-        CommandResult PropogateExecuted(Command command, CommandDirection direction);
+        ICommandResult PropogateExecuted(ICommand command, CommandDirection direction);
 
         /// <summary>
         /// Execute a command, then tunnel it if the dispatch fails or remains as continuing
         /// </summary>
         /// <param name="command"></param>
         /// <returns></returns>
-        CommandResult Tunnel(Command command);
+        ICommandResult Tunnel(ICommand command);
 
         /// <summary>
         /// Execute a command, then bubble it if the dispatch fails or remains as continuing
         /// </summary>
         /// <param name="command"></param>
         /// <returns></returns>
-        CommandResult Bubble(Command command);
+        ICommandResult Bubble(ICommand command);
+
+        /// <summary>
+        /// Call after the constructor is called to setup events with any assigned properties
+        /// </summary>
+        ICoreController Execute();
+
+        /// <summary>
+        /// Appends config items
+        /// </summary>
+        void WriteConfig(IConfig config);
+
+        /// <summary>
+        /// A set interval Poke
+        /// </summary>
+        void Poke();
     }
 }

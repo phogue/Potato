@@ -8,6 +8,7 @@ using NUnit.Framework;
 using Newtonsoft.Json.Linq;
 using Procon.Core.Shared;
 using Procon.Core.Shared.Models;
+using Procon.Core.Shared.Serialization;
 using Procon.Core.Variables;
 using Procon.Net.Shared.Utils;
 
@@ -161,14 +162,14 @@ namespace Procon.Core.Test.Variables {
             });
 
             // Save a config of the variables controller
-            var saveConfig = new JsonConfig();
+            var saveConfig = new Config();
             saveConfig.Create(typeof (VariableController));
             saveVariables.WriteConfig(saveConfig);
             saveConfig.Save(ConfigFileInfo);
 
             // Load the config in a new config.
             var loadVariables = (VariableController)new VariableController().Execute();
-            var loadConfig = new JsonConfig();
+            var loadConfig = new Config();
             loadConfig.Load(ConfigFileInfo);
             loadVariables.Execute(loadConfig);
 
@@ -220,16 +221,16 @@ namespace Procon.Core.Test.Variables {
             });
 
             // Save a config of the variables controller
-            var saveConfig = new JsonConfig();
+            var saveConfig = new Config();
             saveConfig.Create(typeof (VariableController));
             variables.WriteConfig(saveConfig);
             saveConfig.Save(ConfigFileInfo);
 
             // Load the config in a new config.
-            var loadConfig = new JsonConfig();
+            var loadConfig = new Config();
             loadConfig.Load(ConfigFileInfo);
 
-            var commands = loadConfig.RootOf<VariableController>().Children<JObject>().Select(item => item.ToObject<Command>()).ToList();
+            var commands = loadConfig.RootOf<VariableController>().Children<JObject>().Select(item => item.ToObject<Command>(JsonSerialization.Minimal)).ToList();
 
             Assert.AreEqual("VariablesSetA", commands[0].Name);
             Assert.AreEqual("NameToWriteString", commands[0].Parameters[0].First<String>());

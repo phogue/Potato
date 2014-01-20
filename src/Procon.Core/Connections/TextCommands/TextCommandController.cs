@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Xml.Linq;
 using Procon.Core.Connections.TextCommands.Parsers;
 using Procon.Core.Localization;
 using Procon.Core.Shared;
@@ -22,7 +21,7 @@ namespace Procon.Core.Connections.TextCommands {
         /// <summary>
         /// The owner of this controller, used to lookup the game with all the player data and such in it.
         /// </summary>
-        public ConnectionController Connection { get; set; }
+        public IConnectionController Connection { get; set; }
 
         public SharedReferences Shared { get; private set; }
 
@@ -33,51 +32,46 @@ namespace Procon.Core.Connections.TextCommands {
             this.Shared = new SharedReferences();
             this.TextCommands = new List<TextCommandModel>();
 
-            this.AppendDispatchHandlers(new Dictionary<CommandAttribute, CommandDispatchHandler>() {
-                {
-                    new CommandAttribute() {
-                        CommandType = CommandType.TextCommandsExecute,
-                        ParameterTypes = new List<CommandParameterType>() {
-                            new CommandParameterType() {
-                                Name = "text",
-                                Type = typeof(String)
-                            }
+            this.CommandDispatchers.AddRange(new List<ICommandDispatch>() {
+                new CommandDispatch() {
+                    CommandType = CommandType.TextCommandsExecute,
+                    ParameterTypes = new List<CommandParameterType>() {
+                        new CommandParameterType() {
+                            Name = "text",
+                            Type = typeof(String)
                         }
                     },
-                    new CommandDispatchHandler(this.ExecuteTextCommand)
-                }, {
-                    new CommandAttribute() {
-                        CommandType = CommandType.TextCommandsPreview,
-                        ParameterTypes = new List<CommandParameterType>() {
-                            new CommandParameterType() {
-                                Name = "text",
-                                Type = typeof(String)
-                            }
+                    Handler = this.ExecuteTextCommand
+                },
+                new CommandDispatch() {
+                    CommandType = CommandType.TextCommandsPreview,
+                    ParameterTypes = new List<CommandParameterType>() {
+                        new CommandParameterType() {
+                            Name = "text",
+                            Type = typeof(String)
                         }
                     },
-                    new CommandDispatchHandler(this.PreviewTextCommand)
-                }, {
-                    new CommandAttribute() {
-                        CommandType = CommandType.TextCommandsRegister,
-                        ParameterTypes = new List<CommandParameterType>() {
-                            new CommandParameterType() {
-                                Name = "textCommand",
-                                Type = typeof(TextCommandModel)
-                            }
+                    Handler = this.PreviewTextCommand
+                },
+                new CommandDispatch() {
+                    CommandType = CommandType.TextCommandsRegister,
+                    ParameterTypes = new List<CommandParameterType>() {
+                        new CommandParameterType() {
+                            Name = "textCommand",
+                            Type = typeof(TextCommandModel)
                         }
                     },
-                    new CommandDispatchHandler(this.RegisterTextCommand)
-                }, {
-                    new CommandAttribute() {
-                        CommandType = CommandType.TextCommandsUnregister,
-                        ParameterTypes = new List<CommandParameterType>() {
-                            new CommandParameterType() {
-                                Name = "textCommand",
-                                Type = typeof(TextCommandModel)
-                            }
+                    Handler = this.RegisterTextCommand
+                },
+                new CommandDispatch() {
+                    CommandType = CommandType.TextCommandsUnregister,
+                    ParameterTypes = new List<CommandParameterType>() {
+                        new CommandParameterType() {
+                            Name = "textCommand",
+                            Type = typeof(TextCommandModel)
                         }
                     },
-                    new CommandDispatchHandler(this.UnregisterTextCommand)
+                    Handler = this.UnregisterTextCommand
                 }
             });
         }
@@ -104,7 +98,7 @@ namespace Procon.Core.Connections.TextCommands {
         /// <param name="speaker">The player executing the command</param>
         /// <param name="speakerAccount">The account executing the command</param>
         /// <returns>The fuzzy parser, provided a language could be found.</returns>
-        protected ITextCommandParser BuildFuzzyParser(Player speaker, AccountModel speakerAccount) {
+        protected ITextCommandParser BuildFuzzyParser(PlayerModel speaker, AccountModel speakerAccount) {
             LanguageConfig selectedLanguage = null;
 
             if (speakerAccount != null && speakerAccount.PreferredLanguageCode != String.Empty) {
@@ -129,7 +123,7 @@ namespace Procon.Core.Connections.TextCommands {
         /// <param name="speaker">The player executing the command</param>
         /// <param name="speakerAccount">The account executing the command</param>
         /// <returns>The route parser, provided a language could be found.</returns>
-        protected ITextCommandParser BuildRouteParser(Player speaker, AccountModel speakerAccount) {
+        protected ITextCommandParser BuildRouteParser(PlayerModel speaker, AccountModel speakerAccount) {
             return new RouteParser() {
                 Connection = this.Connection,
                 TextCommands = this.TextCommands.Where(textCommand => textCommand.Parser == TextCommandParserType.Any || textCommand.Parser == TextCommandParserType.Route).ToList(),
@@ -151,7 +145,7 @@ namespace Procon.Core.Connections.TextCommands {
         /// <param name="prefix"></param>
         /// <param name="text"></param>
         /// <returns>The generated event, if any.</returns>
-        protected CommandResult Parse(Player speakerNetworkPlayer, AccountModel speakerAccount, String prefix, String text) {
+        protected ICommandResult Parse(PlayerModel speakerNetworkPlayer, AccountModel speakerAccount, String prefix, String text) {
             List<ITextCommandParser> parsers = new List<ITextCommandParser>() {
                 this.BuildFuzzyParser(speakerNetworkPlayer, speakerAccount),
                 this.BuildRouteParser(speakerNetworkPlayer, speakerAccount)
@@ -172,14 +166,14 @@ namespace Procon.Core.Connections.TextCommands {
         /// <param name="command"></param>
         /// <param name="speaker"></param>
         /// <returns></returns>
-        protected Player GetAccountNetworkPlayer(Command command, AccountModel speaker) {
-            Player player = this.Connection.ProtocolState.Players.FirstOrDefault(x => x.Uid == command.Uid);
+        protected PlayerModel GetAccountNetworkPlayer(ICommand command, AccountModel speaker) {
+            PlayerModel player = this.Connection.ProtocolState.Players.FirstOrDefault(p => p.Uid == command.Authentication.Uid);
 
             if (speaker != null) {
                 AccountPlayerModel accountPlayer = speaker.Players.FirstOrDefault(p => p.GameType == this.Connection.ConnectionModel.ProtocolType.Type);
 
                 if (accountPlayer != null) {
-                    player = this.Connection.ProtocolState.Players.FirstOrDefault(x => x.Uid == accountPlayer.Uid);
+                    player = this.Connection.ProtocolState.Players.FirstOrDefault(p => p.Uid == accountPlayer.Uid);
                 }
             }
 
@@ -192,8 +186,8 @@ namespace Procon.Core.Connections.TextCommands {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns>The generated event, if any.</returns>
-        public CommandResult ExecuteTextCommand(Command command, Dictionary<String, CommandParameter> parameters) {
-            CommandResult result = null;
+        public ICommandResult ExecuteTextCommand(ICommand command, Dictionary<String, ICommandParameter> parameters) {
+            ICommandResult result = null;
 
             String text = parameters["text"].First<String>();
 
@@ -223,8 +217,8 @@ namespace Procon.Core.Connections.TextCommands {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns>The generated event, if any.</returns>
-        public CommandResult PreviewTextCommand(Command command, Dictionary<String, CommandParameter> parameters) {
-            CommandResult result = null;
+        public ICommandResult PreviewTextCommand(ICommand command, Dictionary<String, ICommandParameter> parameters) {
+            ICommandResult result = null;
 
             String text = parameters["text"].First<String>();
 
@@ -252,8 +246,8 @@ namespace Procon.Core.Connections.TextCommands {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public CommandResult RegisterTextCommand(Command command, Dictionary<String, CommandParameter> parameters) {
-            CommandResult result = null;
+        public ICommandResult RegisterTextCommand(ICommand command, Dictionary<String, ICommandParameter> parameters) {
+            ICommandResult result = null;
 
             TextCommandModel textCommand = parameters["textCommand"].First<TextCommandModel>();
 
@@ -302,8 +296,8 @@ namespace Procon.Core.Connections.TextCommands {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public CommandResult UnregisterTextCommand(Command command, Dictionary<String, CommandParameter> parameters) {
-            CommandResult result = null;
+        public ICommandResult UnregisterTextCommand(ICommand command, Dictionary<String, ICommandParameter> parameters) {
+            ICommandResult result = null;
 
             TextCommandModel textCommand = parameters["textCommand"].First<TextCommandModel>();
 
@@ -341,23 +335,6 @@ namespace Procon.Core.Connections.TextCommands {
             }
             else {
                 result = CommandResult.InsufficientPermissions;
-            }
-
-            return result;
-        }
-
-        /// <summary>
-        /// Checks if a prefix is an allowed prefix
-        /// </summary>
-        /// <param name="prefix">The prefix to check (e.g !, @ etc.)</param>
-        /// <returns>The parameter prefix, or null if the prefix is invalid</returns>
-        public String GetValidTextCommandPrefix(String prefix) {
-            String result = null;
-
-            if (prefix == this.Shared.Variables.Get<String>(CommonVariableNames.TextCommandPublicPrefix) ||
-                prefix == this.Shared.Variables.Get<String>(CommonVariableNames.TextCommandProtectedPrefix) ||
-                prefix == this.Shared.Variables.Get<String>(CommonVariableNames.TextCommandPrivatePrefix)) {
-                result = prefix;
             }
 
             return result;

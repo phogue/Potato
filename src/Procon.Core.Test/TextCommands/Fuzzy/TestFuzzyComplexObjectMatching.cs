@@ -14,7 +14,7 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
     public class TestFuzzyComplexObjectMatching : TestTextCommandParserBase {
         [Test]
         public void TestComplexChangeMapToAllMaps() {
-            AssertCommandPlayerListMapList(CreateTextCommandController(), "change map to all maps", TextCommandChangeMap, new List<Player>(), new List<Map>() {
+            AssertCommandPlayerListMapList(CreateTextCommandController(), "change map to all maps", TextCommandChangeMap, new List<PlayerModel>(), new List<MapModel>() {
                 MapPortValdez,
                 MapValparaiso,
                 MapPanamaCanal
@@ -25,28 +25,28 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
         public void TestComplexKickAllPlayers() {
             TextCommandController textCommandController = CreateTextCommandController();
 
-            AssertCommandPlayerListMapList(textCommandController, "kick all players", TextCommandKick, textCommandController.Connection.ProtocolState.Players, new List<Map>());
+            AssertCommandPlayerListMapList(textCommandController, "kick all players", TextCommandKick, textCommandController.Connection.ProtocolState.Players, new List<MapModel>());
         }
 
         [Test]
         public void TestComplexKickEveryoneExceptMe() {
             TextCommandController textCommandController = CreateTextCommandController();
 
-            AssertCommandPlayerListMapList(textCommandController, "kick everyone except me", TextCommandKick, textCommandController.Connection.ProtocolState.Players.Where(player => player != PlayerPhogue).ToList(), new List<Map>());
+            AssertCommandPlayerListMapList(textCommandController, "kick everyone except me", TextCommandKick, textCommandController.Connection.ProtocolState.Players.Where(player => player != PlayerPhogue).ToList(), new List<MapModel>());
         }
 
         [Test]
         public void TestComplexKickEveryoneExceptPhogue() {
             TextCommandController textCommandController = CreateTextCommandController();
 
-            AssertCommandPlayerListMapList(textCommandController, "kick everyone except phogue", TextCommandKick, textCommandController.Connection.ProtocolState.Players.Where(player => player != PlayerPhogue).ToList(), new List<Map>());
+            AssertCommandPlayerListMapList(textCommandController, "kick everyone except phogue", TextCommandKick, textCommandController.Connection.ProtocolState.Players.Where(player => player != PlayerPhogue).ToList(), new List<MapModel>());
         }
 
         [Test]
         public void TestComplexKickEveryoneExceptPhogueOnAllMapsButPortValdez() {
             TextCommandController textCommandController = CreateTextCommandController();
 
-            AssertCommandPlayerListMapList(textCommandController, "kick everyone except phogue on all maps but port valdez", TextCommandKick, textCommandController.Connection.ProtocolState.Players.Where(player => player != PlayerPhogue).ToList(), new List<Map>() {
+            AssertCommandPlayerListMapList(textCommandController, "kick everyone except phogue on all maps but port valdez", TextCommandKick, textCommandController.Connection.ProtocolState.Players.Where(player => player != PlayerPhogue).ToList(), new List<MapModel>() {
                 MapValparaiso,
                 MapPanamaCanal
             });
@@ -56,24 +56,24 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
         public void TestComplexKickEveryoneNotUsingC4() {
             TextCommandController textCommandController = CreateTextCommandController();
 
-            AssertCommandPlayerListMapList(textCommandController, "kick everyone not using C4", TextCommandKick, textCommandController.Connection.ProtocolState.Players.Where(player => player != PlayerImisnew2).ToList(), new List<Map>());
+            AssertCommandPlayerListMapList(textCommandController, "kick everyone not using C4", TextCommandKick, textCommandController.Connection.ProtocolState.Players.Where(player => player != PlayerImisnew2).ToList(), new List<MapModel>());
         }
 
         [Test]
         public void TestComplexKickEveryoneUsingSniperRifles() {
             TextCommandController textCommandController = CreateTextCommandController();
 
-            AssertCommandPlayerListMapList(textCommandController, "kick everyone using sniper rifles", TextCommandKick, new List<Player>() {
+            AssertCommandPlayerListMapList(textCommandController, "kick everyone using sniper rifles", TextCommandKick, new List<PlayerModel>() {
                 PlayerZaeed,
                 PlayerPhogueIsAButterfly
-            }, new List<Map>());
+            }, new List<MapModel>());
         }
 
         [Test]
         public void TestComplexKickPhogueOnPortValdez() {
-            AssertCommandPlayerListMapList(CreateTextCommandController(), "kick phogue on port valdez", TextCommandKick, new List<Player>() {
+            AssertCommandPlayerListMapList(CreateTextCommandController(), "kick phogue on port valdez", TextCommandKick, new List<PlayerModel>() {
                 PlayerPhogue
-            }, new List<Map>() {
+            }, new List<MapModel>() {
                 MapPortValdez
             });
         }
@@ -83,9 +83,9 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
         /// </summary>
         [Test]
         public void TestComplexKickPlayersEqualToPing() {
-            AssertCommandPlayerListMapList(CreateTextCommandController(), "kick players with ping equal to 50", TextCommandKick, new List<Player>() {
+            AssertCommandPlayerListMapList(CreateTextCommandController(), "kick players with ping equal to 50", TextCommandKick, new List<PlayerModel>() {
                 PlayerPhogue
-            }, new List<Map>());
+            }, new List<MapModel>());
         }
 
         /// <summary>
@@ -93,11 +93,11 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
         /// </summary>
         [Test]
         public void TestComplexKickPlayersFromAustralia() {
-            AssertCommandPlayerListMapList(CreateTextCommandController(), "kick everyone from australia", TextCommandKick, new List<Player>() {
+            AssertCommandPlayerListMapList(CreateTextCommandController(), "kick everyone from australia", TextCommandKick, new List<PlayerModel>() {
                 PlayerPhogue,
                 PlayerZaeed,
                 PlayerPhogueIsAButterfly
-            }, new List<Map>());
+            }, new List<MapModel>());
         }
 
         /// <summary>
@@ -106,10 +106,10 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
         /// </summary>
         [Test]
         public void TestComplexKickPlayersFromAustraliaAndScoreLessThan1000() {
-            AssertCommandPlayerListMapList(CreateTextCommandController(), "kick everyone from australia and score less than 1000", TextCommandKick, new List<Player>() {
+            AssertCommandPlayerListMapList(CreateTextCommandController(), "kick everyone from australia and score less than 1000", TextCommandKick, new List<PlayerModel>() {
                 PlayerZaeed,
                 PlayerPhogueIsAButterfly
-            }, new List<Map>());
+            }, new List<MapModel>());
         }
 
         /// <summary>
@@ -117,20 +117,20 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
         /// </summary>
         [Test]
         public void TestComplexKickPlayersGreaterThanPing() {
-            AssertCommandPlayerListMapList(CreateTextCommandController(), "kick players with ping greater than 300", TextCommandKick, new List<Player>() {
+            AssertCommandPlayerListMapList(CreateTextCommandController(), "kick players with ping greater than 300", TextCommandKick, new List<PlayerModel>() {
                 PlayerEBassie,
                 PlayerZaeed,
                 PlayerPhogueIsAButterfly
-            }, new List<Map>());
+            }, new List<MapModel>());
         }
 
         [Test]
         public void TestComplexKickPlayersGreaterThanPingOnPortValdez() {
-            AssertCommandPlayerListMapList(CreateTextCommandController(), "kick players with ping over 320 on port valdez", TextCommandKick, new List<Player>() {
+            AssertCommandPlayerListMapList(CreateTextCommandController(), "kick players with ping over 320 on port valdez", TextCommandKick, new List<PlayerModel>() {
                 PlayerEBassie,
                 PlayerZaeed,
                 PlayerPhogueIsAButterfly
-            }, new List<Map>() {
+            }, new List<MapModel>() {
                 MapPortValdez
             });
         }
@@ -140,12 +140,12 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
         /// </summary>
         [Test]
         public void TestComplexKickPlayersGreaterThanorEqualToPing() {
-            AssertCommandPlayerListMapList(CreateTextCommandController(), "kick players with ping gteq 300", TextCommandKick, new List<Player>() {
+            AssertCommandPlayerListMapList(CreateTextCommandController(), "kick players with ping gteq 300", TextCommandKick, new List<PlayerModel>() {
                 PlayerEBassie,
                 PlayerZaeed,
                 PlayerPhogueIsAButterfly,
                 PlayerPapaCharlie9
-            }, new List<Map>());
+            }, new List<MapModel>());
         }
 
         /// <summary>
@@ -153,12 +153,12 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
         /// </summary>
         [Test]
         public void TestComplexKickPlayersLessThanOrEqualToPing() {
-            AssertCommandPlayerListMapList(CreateTextCommandController(), "kick players with ping lteq 100", TextCommandKick, new List<Player>() {
+            AssertCommandPlayerListMapList(CreateTextCommandController(), "kick players with ping lteq 100", TextCommandKick, new List<PlayerModel>() {
                 PlayerPhogue,
                 PlayerSayaNishino,
                 PlayerMrDiacritic,
                 PlayerImisnew2
-            }, new List<Map>());
+            }, new List<MapModel>());
         }
 
         /// <summary>
@@ -166,11 +166,11 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
         /// </summary>
         [Test]
         public void TestComplexKickPlayersLessThanPing() {
-            AssertCommandPlayerListMapList(CreateTextCommandController(), "kick players with ping less than 100", TextCommandKick, new List<Player>() {
+            AssertCommandPlayerListMapList(CreateTextCommandController(), "kick players with ping less than 100", TextCommandKick, new List<PlayerModel>() {
                 PlayerPhogue,
                 PlayerSayaNishino,
                 PlayerMrDiacritic
-            }, new List<Map>());
+            }, new List<MapModel>());
         }
 
         /// <summary>
@@ -180,11 +180,11 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
         public void TestComplexKickPlayersNotFromAustralia() {
             TextCommandController textCommandController = CreateTextCommandController();
 
-            AssertCommandPlayerListMapList(textCommandController, "kick everyone not from australia", TextCommandKick, textCommandController.Connection.ProtocolState.Players.Except(new List<Player>() {
+            AssertCommandPlayerListMapList(textCommandController, "kick everyone not from australia", TextCommandKick, textCommandController.Connection.ProtocolState.Players.Except(new List<PlayerModel>() {
                 PlayerPhogue,
                 PlayerZaeed,
                 PlayerPhogueIsAButterfly
-            }).ToList(), new List<Map>());
+            }).ToList(), new List<MapModel>());
         }
 
         /// <summary>
@@ -192,10 +192,10 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
         /// </summary>
         [Test]
         public void TestComplexKickPlayersWithinRangeOfPing() {
-            AssertCommandPlayerListMapList(CreateTextCommandController(), "kick players with ping gteq 50 and ping lteq 100", TextCommandKick, new List<Player>() {
+            AssertCommandPlayerListMapList(CreateTextCommandController(), "kick players with ping gteq 50 and ping lteq 100", TextCommandKick, new List<PlayerModel>() {
                 PlayerPhogue,
                 PlayerImisnew2
-            }, new List<Map>());
+            }, new List<MapModel>());
         }
 
         /// <summary>
@@ -203,9 +203,9 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
         /// </summary>
         [Test]
         public void TestComplexKickPlayersWithinRangeOfPingAndScoreEqualTo1000() {
-            AssertCommandPlayerListMapList(CreateTextCommandController(), "kick players with ping gteq 50 and ping lteq 100 and score = 1000", TextCommandKick, new List<Player>() {
+            AssertCommandPlayerListMapList(CreateTextCommandController(), "kick players with ping gteq 50 and ping lteq 100 and score = 1000", TextCommandKick, new List<PlayerModel>() {
                 PlayerPhogue
-            }, new List<Map>());
+            }, new List<MapModel>());
         }
     }
 }

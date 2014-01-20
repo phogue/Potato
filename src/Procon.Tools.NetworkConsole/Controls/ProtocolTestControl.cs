@@ -42,7 +42,7 @@ namespace Procon.Tools.NetworkConsole.Controls {
         }
 
 
-        private void m_activeGame_ClientEvent(IProtocol sender, ClientEventArgs e) {
+        private void m_activeGame_ClientEvent(IProtocol sender, IClientEventArgs e) {
             if (this.InvokeRequired == true) {
                 this.Invoke(new Action<Protocol, ClientEventArgs>(this.m_activeGame_ClientEvent), sender, e);
                 return;
@@ -53,9 +53,9 @@ namespace Procon.Tools.NetworkConsole.Controls {
             }
         }
 
-        private void m_activeGame_GameEvent(IProtocol sender, ProtocolEventArgs e) {
+        private void m_activeGame_GameEvent(IProtocol sender, IProtocolEventArgs e) {
             if (this.InvokeRequired == true) {
-                this.Invoke(new Action<Protocol, ProtocolEventArgs>(this.m_activeGame_GameEvent), sender, e);
+                this.Invoke(new Action<Protocol, IProtocolEventArgs>(this.m_activeGame_GameEvent), sender, e);
                 return;
             }
 
@@ -226,7 +226,7 @@ namespace Procon.Tools.NetworkConsole.Controls {
             this.ActiveGame.ClientEvent += ActiveGame_ClientEvent;
         }
 
-        protected void ActiveGame_ClientEvent(IProtocol sender, ClientEventArgs e) {
+        protected void ActiveGame_ClientEvent(IProtocol sender, IClientEventArgs e) {
             if (this.InvokeRequired == true) {
                 this.Invoke(new Action<Protocol, ClientEventArgs>(this.ActiveGame_ClientEvent), sender, e);
                 return;
@@ -236,7 +236,7 @@ namespace Procon.Tools.NetworkConsole.Controls {
                 this.ConsoleAppendLine("State: ^6{0}", e.ConnectionState.ToString());
             }
             else if (e.EventType == ClientEventType.ClientConnectionFailure || e.EventType == ClientEventType.ClientSocketException) {
-                this.ConsoleAppendLine("^1Error: {0}", e.Now.Exceptions.FirstOrDefault().Message);
+                this.ConsoleAppendLine("^1Error: {0}", e.Now.Exceptions.FirstOrDefault());
             }
             else if (e.EventType == ClientEventType.ClientPacketSent) {
                 this.ConsoleAppendLine("^2SEND: {0}", e.Now.Packets.FirstOrDefault().DebugText);

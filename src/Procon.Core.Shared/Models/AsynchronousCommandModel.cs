@@ -7,11 +7,10 @@ namespace Procon.Core.Shared.Models {
     /// </summary>
     [Serializable]
     public class AsynchronousCommandModel : CoreModel {
-
         /// <summary>
         /// The command being passed around
         /// </summary>
-        public Command Command { get; set; }
+        public ICommand Command { get; set; }
 
         /// <summary>
         /// If the command is moving up or down the chain of objects
@@ -21,14 +20,14 @@ namespace Procon.Core.Shared.Models {
         /// <summary>
         /// Callback when a result has been returned for a command.
         /// </summary>
-        public Action<CommandResult> Completed { get; set; }
+        public Action<ICommandResult> Completed { get; set; }
 
         /// <summary>
         /// Pass in the result of the command, which will handle calling the completed
         /// delegate. Just a cleaner shorthand.
         /// </summary>
         /// <param name="result">The result of the executed command.</param>
-        public void OnResult(CommandResult result) {
+        public void OnResult(ICommandResult result) {
             var handler = Completed;
 
             if (handler != null) {

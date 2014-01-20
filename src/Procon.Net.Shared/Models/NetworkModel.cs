@@ -1,37 +1,26 @@
 ﻿using System;
-using System.Xml.Serialization;
 using Newtonsoft.Json;
 
 namespace Procon.Net.Shared.Models {
+    /// <summary>
+    /// Base model for objects within Procon.Net.*
+    /// </summary>
     [Serializable]
-    public class NetworkModel : ICloneable {
-
-        /// <summary>
-        /// When this object was created.
-        /// </summary>
+    public class NetworkModel : INetworkModel, ICloneable {
         [JsonIgnore]
         public DateTime Created { get; set; }
 
-        /// <summary>
-        /// Where this data originated from.
-        /// </summary>
         public NetworkOrigin Origin { get; set; }
 
-        /// <summary>
-        /// The limiting factor(s) of the action
-        /// </summary>
         public NetworkModelData Scope { get; set; }
 
-        /// <summary>
-        /// Any data that reflects what something looked like before the action was taken
-        /// </summary>
         public NetworkModelData Then { get; set; }
 
-        /// <summary>
-        /// Any data showing the modifications or new data that was introduced with this action.
-        /// </summary>
         public NetworkModelData Now { get; set; }
 
+        /// <summary>
+        /// Initializes the model with the default values.
+        /// </summary>
         public NetworkModel() {
             this.Created = DateTime.Now;
 

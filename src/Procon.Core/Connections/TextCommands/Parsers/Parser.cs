@@ -13,7 +13,7 @@ namespace Procon.Core.Connections.TextCommands.Parsers {
         /// <summary>
         /// The connection which owns this parser, used to fetch player lists, map pools etc.
         /// </summary>
-        public ConnectionController Connection { get; set; }
+        public IConnectionController Connection { get; set; }
 
         /// <summary>
         /// List of potential text commands to match against
@@ -24,7 +24,7 @@ namespace Procon.Core.Connections.TextCommands.Parsers {
         /// The player (in game) that is currently talking or attached to the account
         /// that has initiated the action via command.
         /// </summary>
-        public Player SpeakerPlayer { get; set; }
+        public PlayerModel SpeakerPlayer { get; set; }
 
         /// <summary>
         /// The account of the player that has talked in game or initiated the action via command.
@@ -37,6 +37,6 @@ namespace Procon.Core.Connections.TextCommands.Parsers {
         /// <param name="prefix">The text prefix that was used at the start of the text (!, @, #) "!hello world" -> "!"</param>
         /// <param name="text">The rest of the text "!hello world" -> "hello world"</param>
         /// <returns></returns>
-        public abstract CommandResult Parse(string prefix, string text);
+        public abstract ICommandResult Parse(string prefix, string text);
     }
 }

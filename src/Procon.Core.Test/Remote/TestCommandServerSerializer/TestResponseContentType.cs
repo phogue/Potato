@@ -1,8 +1,10 @@
-﻿using System.Net;
+﻿using System;
+using System.Collections.Generic;
+using System.Net;
 using NUnit.Framework;
 using Procon.Core.Remote;
 using Procon.Core.Shared;
-using Procon.Net.Shared.Protocols.CommandServer;
+using Procon.Core.Shared.Remote;
 using Procon.Net.Shared.Utils.HTTP;
 
 namespace Procon.Core.Test.Remote.TestCommandServerSerializer {
@@ -31,9 +33,9 @@ namespace Procon.Core.Test.Remote.TestCommandServerSerializer {
                 Result = new CommandResult() {
                     ContentType = null
                 },
-                RemoteRequest = new CommandServerPacket() {
-                    Headers = new WebHeaderCollection() {
-                        { HttpRequestHeader.ContentType, Mime.ApplicationJson }
+                Request = new HttpCommandRequest() {
+                    Tags = new Dictionary<String, String>() {
+                        { HttpRequestHeader.ContentType.ToString(), Mime.ApplicationJson }
                     }
                 }
             });
@@ -48,9 +50,9 @@ namespace Procon.Core.Test.Remote.TestCommandServerSerializer {
         public void TestNulledCommandResult() {
             var contentType = CommandServerSerializer.ResponseContentType(new Command() {
                 Result = null,
-                RemoteRequest = new CommandServerPacket() {
-                    Headers = new WebHeaderCollection() {
-                        { HttpRequestHeader.ContentType, Mime.ApplicationJson }
+                Request = new HttpCommandRequest() {
+                    Tags = new Dictionary<String, String>() {
+                        { HttpRequestHeader.ContentType.ToString(), Mime.ApplicationJson }
                     }
                 }
             });
@@ -65,9 +67,9 @@ namespace Procon.Core.Test.Remote.TestCommandServerSerializer {
         public void TestRequestAndResponseALlNullApplicationXml() {
             var contentType = CommandServerSerializer.ResponseContentType(new Command() {
                 Result = null,
-                RemoteRequest = new CommandServerPacket() {
-                    Headers = new WebHeaderCollection() {
-                        
+                Request = new HttpCommandRequest() {
+                    Tags = new Dictionary<String, String>() {
+
                     }
                 }
             });

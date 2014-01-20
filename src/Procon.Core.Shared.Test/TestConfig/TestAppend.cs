@@ -11,7 +11,7 @@ namespace Procon.Core.Shared.Test.TestConfig {
         /// </summary>
         [Test]
         public void TestAppendedToRoot() {
-            IConfig config = new JsonConfig().Create<MockSimpleConcrete>();
+            IConfig config = new Config().Create<MockSimpleConcrete>();
             config.Append(new MockSimpleConcrete() {
                 Name = "Phogue",
                 Age = 100
@@ -26,7 +26,7 @@ namespace Procon.Core.Shared.Test.TestConfig {
         /// </summary>
         [Test, ExpectedException(typeof(ArgumentNullException))]
         public void TestNullException() {
-            new JsonConfig().Append<MockSimpleConcrete>(null);
+            new Config().Append<MockSimpleConcrete>(null);
         }
     }
 }

@@ -10,20 +10,16 @@ using Procon.Net.Shared.Models;
 namespace Procon.Examples.Plugins.Actions {
     public class Program : PluginController {
         public Program() : base() {
-            this.AppendDispatchHandlers(new Dictionary<CommandAttribute, CommandDispatchHandler>() {
-                {
-                    new CommandAttribute() {
-                        Name = "KickPlayer",
-                        CommandAttributeType = CommandAttributeType.Handler
-                    },
-                    new CommandDispatchHandler(this.KickPlayer)
+            this.CommandDispatchers.AddRange(new List<ICommandDispatch>() {
+                new CommandDispatch() {
+                    Name = "KickPlayer",
+                    CommandAttributeType = CommandAttributeType.Handler,
+                    Handler = this.KickPlayer
                 },
-                {
-                    new CommandAttribute() {
-                        Name = "DeferredKickPlayer",
-                        CommandAttributeType = CommandAttributeType.Handler
-                    },
-                    new CommandDispatchHandler(this.DeferredKickPlayer)
+                new CommandDispatch() {
+                    Name = "DeferredKickPlayer",
+                    CommandAttributeType = CommandAttributeType.Handler,
+                    Handler = this.DeferredKickPlayer
                 }
             });
         }
@@ -34,13 +30,13 @@ namespace Procon.Examples.Plugins.Actions {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        protected CommandResult KickPlayer(Command command, Dictionary<String, CommandParameter> parameters) {
+        protected ICommandResult KickPlayer(ICommand command, Dictionary<String, ICommandParameter> parameters) {
             // You would usually pull the player object from this.GameState but we mock together a player here.
-            CommandResult result = this.Action(new NetworkAction() {
+            ICommandResult result = this.Action(new NetworkAction() {
                 ActionType = NetworkActionType.NetworkPlayerKick,
                 Scope = {
-                    Players = new List<Player>() {
-                        new Player() {
+                    Players = new List<PlayerModel>() {
+                        new PlayerModel() {
                             Uid = "EA_12345",
                             Name = "Phogue"
                         }
@@ -69,14 +65,14 @@ namespace Procon.Examples.Plugins.Actions {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        protected CommandResult DeferredKickPlayer(Command command, Dictionary<String, CommandParameter> parameters) {
+        protected ICommandResult DeferredKickPlayer(ICommand command, Dictionary<String, ICommandParameter> parameters) {
             command.Result = new CommandResult {
                 Now = {
                     Content = new List<String>()
                 }
             };
 
-            this.Action(new DeferredAction<NetworkAction>() {
+            this.Action(new DeferredAction<INetworkAction>() {
 
                 // The action to send to the networking layer. 
                 // Ideal execution order: [ "Sent", "Each", "Done", "Always" ]
@@ -84,8 +80,8 @@ namespace Procon.Examples.Plugins.Actions {
                 Action = new NetworkAction() {
                     ActionType = NetworkActionType.NetworkPlayerKick,
                     Scope = {
-                        Players = new List<Player>() {
-                            new Player() {
+                        Players = new List<PlayerModel>() {
+                            new PlayerModel() {
                                 Uid = "EA_12345",
                                 Name = "Phogue"
                             }

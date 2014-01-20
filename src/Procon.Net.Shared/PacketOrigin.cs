@@ -1,6 +1,9 @@
 ﻿using System;
 
 namespace Procon.Net.Shared {
+    /// <summary>
+    /// The original origin of the packet
+    /// </summary>
     [Flags]
     public enum PacketOrigin {
         /// <summary>

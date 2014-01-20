@@ -6,7 +6,6 @@ using NUnit.Framework;
 using Procon.Core.Security;
 using Procon.Core.Shared;
 using Procon.Core.Shared.Models;
-using Procon.Net.Protocols;
 using Procon.Net.Shared.Protocols;
 
 #endregion
@@ -48,8 +47,10 @@ namespace Procon.Core.Test.Security {
             });
 
             AccountModel account = security.GetAccount(new Command() {
-                GameType = CommonGameType.DiceBattlefield3,
-                Uid = "ABCDEF"
+                Authentication = {
+                    GameType = CommonGameType.DiceBattlefield3,
+                    Uid = "ABCDEF"
+                }
             });
 
             // Validate the account was fetched successfully
@@ -86,7 +87,9 @@ namespace Procon.Core.Test.Security {
             });
 
             AccountModel account = security.GetAccount(new Command() {
-                Username = "Phogue"
+                Authentication = {
+                    Username = "Phogue"
+                }
             });
 
             // Validate the account was fetched successfully
@@ -235,9 +238,11 @@ namespace Procon.Core.Test.Security {
                 })
             });
 
-            CommandResult result = security.Tunnel(new Command() {
+            ICommandResult result = security.Tunnel(new Command() {
                 CommandType = CommandType.SecurityQueryPermission,
-                Username = "Zaeed",
+                Authentication = {
+                    Username = "Zaeed",
+                },
                 Origin = CommandOrigin.Remote,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     CommandType.VariablesSet,
@@ -320,9 +325,11 @@ namespace Procon.Core.Test.Security {
                 })
             });
 
-            CommandResult result = security.Tunnel(new Command() {
+            ICommandResult result = security.Tunnel(new Command() {
                 CommandType = CommandType.SecurityQueryPermission,
-                Username = "Zaeed",
+                Authentication = {
+                    Username = "Zaeed"
+                },
                 Origin = CommandOrigin.Remote,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     CommandType.VariablesSet,
@@ -406,9 +413,11 @@ namespace Procon.Core.Test.Security {
                 })
             });
 
-            CommandResult result = security.Tunnel(new Command() {
+            ICommandResult result = security.Tunnel(new Command() {
                 CommandType = CommandType.SecurityQueryPermission,
-                Username = "Phogue",
+                Authentication = {
+                    Username = "Phogue"
+                },
                 Origin = CommandOrigin.Remote,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     CommandType.VariablesSet,
@@ -491,9 +500,11 @@ namespace Procon.Core.Test.Security {
                 })
             });
 
-            CommandResult result = security.Tunnel(new Command() {
+            ICommandResult result = security.Tunnel(new Command() {
                 CommandType = CommandType.SecurityQueryPermission,
-                Username = "Phogue",
+                Authentication = {
+                    Username = "Phogue"
+                },
                 Origin = CommandOrigin.Remote,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     CommandType.VariablesSet,
@@ -577,9 +588,11 @@ namespace Procon.Core.Test.Security {
                 })
             });
 
-            CommandResult result = security.Tunnel(new Command() {
+            ICommandResult result = security.Tunnel(new Command() {
                 CommandType = CommandType.SecurityQueryPermission,
-                Username = "Phogue",
+                Authentication = {
+                    Username = "Phogue"
+                },
                 Origin = CommandOrigin.Remote,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     CommandType.VariablesSet,
@@ -662,9 +675,11 @@ namespace Procon.Core.Test.Security {
                 })
             });
 
-            CommandResult result = security.Tunnel(new Command() {
+            ICommandResult result = security.Tunnel(new Command() {
                 CommandType = CommandType.SecurityQueryPermission,
-                Username = "Phogue",
+                Authentication = {
+                    Username = "Phogue"
+                },
                 Origin = CommandOrigin.Remote,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     CommandType.VariablesSet,
@@ -718,7 +733,7 @@ namespace Procon.Core.Test.Security {
                 })
             });
 
-            CommandResult result = security.Tunnel(new Command() {
+            ICommandResult result = security.Tunnel(new Command() {
                 CommandType = CommandType.SecurityQueryPermission,
                 Origin = CommandOrigin.Plugin,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -803,9 +818,11 @@ namespace Procon.Core.Test.Security {
                 })
             });
 
-            CommandResult result = security.Tunnel(new Command() {
+            ICommandResult result = security.Tunnel(new Command() {
                 CommandType = CommandType.SecurityQueryPermission,
-                Username = "Phogue",
+                Authentication = {
+                    Username = "Phogue"
+                },
                 Origin = CommandOrigin.None,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     CommandType.VariablesSet,

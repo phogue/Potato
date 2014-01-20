@@ -1,9 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using Newtonsoft.Json;
 using Procon.Core.Shared;
-using Procon.Net.Shared.Protocols.CommandServer;
+using Procon.Core.Shared.Remote;
+using Procon.Net.Protocols.CommandServer;
+using Procon.Net.Shared;
+using Procon.Net.Shared.Serialization;
 using Procon.Net.Shared.Utils.HTTP;
 
 namespace Procon.Core.Remote {
@@ -16,19 +20,33 @@ namespace Procon.Core.Remote {
         /// </summary>
         /// <param name="request">The http request for this command</param>
         /// <returns>The deserialized command or null if an error occured during deserialization</returns>
-        public static Command DeserializeCommand(CommandServerPacket request) {
-            Command command = null;
+        public static ICommand DeserializeCommand(CommandServerPacket request) {
+            ICommand command = null;
 
             try {
                 switch (request.Headers[HttpRequestHeader.ContentType].ToLower()) {
                     default:
-                        command = JsonConvert.DeserializeObject<Command>(request.Content);
+                        command = Core.Shared.Serialization.JsonSerialization.Minimal.Deserialize<Command>(request.Content);
                         break;
                 }
 
                 if (command != null) {
                     command.Origin = CommandOrigin.Remote;
-                    command.RemoteRequest = request;
+
+                    HttpCommandRequest commandRequest = new HttpCommandRequest() {
+                        Content = new List<String>() {
+                            request.Header,
+                            request.Content
+                        },
+                        Packets = new List<IPacket>() {
+                            request.Packet
+                        }
+                    };
+
+                    commandRequest.AppendTags(request.Headers);
+                    commandRequest.AppendTags(request.Query);
+
+                    command.Request = commandRequest;
                 }
             }
             catch {
@@ -43,13 +61,13 @@ namespace Procon.Core.Remote {
         /// </summary>
         /// <param name="command">The command that has been dispatched for execution</param>
         /// <returns></returns>
-        public static String ResponseContentType(Command command) {
+        public static String ResponseContentType(ICommand command) {
             String contentType = command.Result != null ? command.Result.ContentType : null;
             
             // If no response type was specified elsewhere
             if (String.IsNullOrEmpty(contentType) == true) {
                 // Then assume they want whatever data serialized and returned in whatever the request format was.
-                contentType = command.RemoteRequest.Headers[HttpRequestHeader.ContentType] != null ? command.RemoteRequest.Headers[HttpRequestHeader.ContentType].ToLower() : Mime.ApplicationXml;
+                contentType = command.Request.Tags.ContainsKey(HttpRequestHeader.ContentType.ToString()) == true ? command.Request.Tags[HttpRequestHeader.ContentType.ToString()].ToLower() : Mime.ApplicationXml;
             }
 
             return contentType;
@@ -62,7 +80,7 @@ namespace Procon.Core.Remote {
         /// <param name="response">The existing response packet to be modified with additional data/changes</param>
         /// <param name="result">The result of the command issued in the request</param>
         /// <returns>The existing response packet, modified with the result of the command execution.</returns>
-        public static CommandServerPacket CompleteResponsePacket(String contentType, CommandServerPacket response, CommandResult result) {
+        public static CommandServerPacket CompleteResponsePacket(String contentType, CommandServerPacket response, ICommandResult result) {
             switch (contentType) {
                 case Mime.TextHtml:
                     response.Headers.Add(HttpRequestHeader.ContentType, Mime.TextHtml);

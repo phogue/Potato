@@ -7,7 +7,6 @@ using Procon.Core.Remote;
 using Procon.Core.Shared;
 using Procon.Core.Test.Remote.TestCommandServerController.Mocks;
 using Procon.Net.Protocols.CommandServer;
-using Procon.Net.Shared.Protocols.CommandServer;
 using Procon.Net.Shared.Utils.HTTP;
 
 namespace Procon.Core.Test.Remote.TestCommandServerController {
@@ -113,8 +112,10 @@ namespace Procon.Core.Test.Remote.TestCommandServerController {
                 },
                 Content = JsonConvert.SerializeObject(new Command() {
                     CommandType = CommandType.VariablesSet,
-                    Username = "Phogue",
-                    PasswordPlainText = "password"
+                    Authentication = {
+                        Username = "Phogue",
+                        PasswordPlainText = "password"
+                    }
                 })
             });
 
@@ -178,8 +179,10 @@ namespace Procon.Core.Test.Remote.TestCommandServerController {
                 },
                 Content = JsonConvert.SerializeObject(new Command() {
                     CommandType = CommandType.VariablesSet,
-                    Username = "Phogue",
-                    PasswordPlainText = "incorrect password"
+                    Authentication = {
+                        Username = "Phogue",
+                        PasswordPlainText = "incorrect password"
+                    }
                 })
             });
 
@@ -196,7 +199,7 @@ namespace Procon.Core.Test.Remote.TestCommandServerController {
         /// </summary>
         [Test]
         public void TestCommandTunnelled() {
-            Command propogatedCommand = null;
+            ICommand propogatedCommand = null;
 
             CommandServerController commandServer = new CommandServerController() {
                 CommandServerListener = new CommandServerListener(),
@@ -246,8 +249,10 @@ namespace Procon.Core.Test.Remote.TestCommandServerController {
                 },
                 Content = JsonConvert.SerializeObject(new Command() {
                     CommandType = CommandType.VariablesSet,
-                    Username = "Phogue",
-                    PasswordPlainText = "password"
+                    Authentication = {
+                        Username = "Phogue",
+                        PasswordPlainText = "password"
+                    }
                 })
             });
 

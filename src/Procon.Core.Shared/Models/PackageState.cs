@@ -1,6 +1,9 @@
 ﻿using System;
 
 namespace Procon.Core.Shared.Models {
+    /// <summary>
+    /// The current state of a package (installed, updatable or installed with no update)
+    /// </summary>
     [Serializable]
     public enum PackageState {
         /// <summary>

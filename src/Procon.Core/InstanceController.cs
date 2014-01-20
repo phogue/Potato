@@ -5,7 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using Procon.Core.Connections;
-using Procon.Core.Connections.Plugins;
+using Procon.Core.Database;
 using Procon.Core.Events;
 using Procon.Core.Packages;
 using Procon.Core.Remote;
@@ -24,22 +24,28 @@ namespace Procon.Core {
         /// <summary>
         /// List of game connections
         /// </summary>
-        public List<ConnectionController> Connections { get; protected set; }
+        // todo Convert to ICoreController
+        public List<IConnectionController> Connections { get; protected set; }
 
         /// <summary>
         /// The packages that are intalled or can be installed.
         /// </summary>
-        public PackagesController Packages { get; protected set; }
+        public ICoreController Packages { get; protected set; }
 
         /// <summary>
         /// The command server controller, if active.
         /// </summary>
-        public ICommandServerController CommandServer { get; protected set; }
+        public ICoreController CommandServer { get; protected set; }
+
+        /// <summary>
+        /// The database controller for interacting with databases.
+        /// </summary>
+        public ICoreController Database { get; protected set; }
 
         /// <summary>
         /// Controller to push events to various sources.
         /// </summary>
-        public PushEventsController PushEvents { get; protected set; }
+        public ICoreController PushEvents { get; protected set; }
 
         /// <summary>
         /// Tasks to be run by this connection. Primarily used to reattempt connections
@@ -50,7 +56,7 @@ namespace Procon.Core {
         /// <summary>
         /// Output to the console for all events processed by this instance.
         /// </summary>
-        public EventsConsoleController EventsConsole { get; protected set; }
+        public ICoreController EventsConsole { get; protected set; }
 
         /// <summary>
         /// The latest service message to post back to the service controller. If no message exists then a "ok" response will be sent.
@@ -64,8 +70,8 @@ namespace Procon.Core {
         /// </summary>
         public InstanceController() : base() {
             this.Shared = new SharedReferences();
-            
-            this.Connections = new List<ConnectionController>();
+
+            this.Connections = new List<IConnectionController>();
 
             this.Packages = new PackagesController() {
                 BubbleObjects = new List<ICoreController>() {
@@ -79,122 +85,117 @@ namespace Procon.Core {
                 }
             };
 
+            this.Database = new DatabaseController() {
+                BubbleObjects = new List<ICoreController>() {
+                    this
+                }
+            };
+
             this.PushEvents = new PushEventsController();
 
             this.Tasks = new List<Timer>() {
                 new Timer(Connection_Tick, this, TimeSpan.FromSeconds(15), TimeSpan.FromSeconds(15)),
                 new Timer(Events_Tick, this, TimeSpan.FromSeconds(60), TimeSpan.FromSeconds(60)),
                 new Timer(CommandServer_Tick, this, TimeSpan.FromSeconds(60), TimeSpan.FromSeconds(60)),
-                new Timer(Plugin_Tick, this, TimeSpan.FromSeconds(60), TimeSpan.FromSeconds(60)),
                 new Timer(Packages_Tick, this, TimeSpan.FromSeconds(5), TimeSpan.FromMinutes(60))
             };
 
             this.EventsConsole = new EventsConsoleController();
 
-            this.AppendDispatchHandlers(new Dictionary<CommandAttribute, CommandDispatchHandler>() {
-                {
-                    new CommandAttribute() {
-                        CommandType = CommandType.InstanceServiceMergePackage,
-                        ParameterTypes = new List<CommandParameterType>() {
-                            new CommandParameterType() {
-                                Name = "uri",
-                                Type = typeof(String)
-                            },
-                            new CommandParameterType() {
-                                Name = "packageId",
-                                Type = typeof(String)
-                            }
+            this.CommandDispatchers.AddRange(new List<ICommandDispatch>() {
+                new CommandDispatch() {
+                    CommandType = CommandType.InstanceServiceMergePackage,
+                    ParameterTypes = new List<CommandParameterType>() {
+                        new CommandParameterType() {
+                            Name = "uri",
+                            Type = typeof(String)
+                        },
+                        new CommandParameterType() {
+                            Name = "packageId",
+                            Type = typeof(String)
                         }
                     },
-                    new CommandDispatchHandler(this.InstanceServiceMergePackage)
+                    Handler = this.InstanceServiceMergePackage
                 },
-                {
-                    new CommandAttribute() {
-                        CommandType = CommandType.InstanceServiceUninstallPackage,
-                        ParameterTypes = new List<CommandParameterType>() {
-                            new CommandParameterType() {
-                                Name = "packageId",
-                                Type = typeof(String)
-                            }
+                new CommandDispatch() {
+                    CommandType = CommandType.InstanceServiceUninstallPackage,
+                    ParameterTypes = new List<CommandParameterType>() {
+                        new CommandParameterType() {
+                            Name = "packageId",
+                            Type = typeof(String)
                         }
                     },
-                    new CommandDispatchHandler(this.InstanceServiceUninstallPackage)
+                    Handler = this.InstanceServiceUninstallPackage
                 },
-                {
-                    new CommandAttribute() {
-                        CommandType = CommandType.InstanceServiceRestart
-                    },
-                    new CommandDispatchHandler(this.InstanceServiceRestart)
-                }, {
-                    new CommandAttribute() {
-                        CommandType = CommandType.InstanceAddConnection,
-                        ParameterTypes = new List<CommandParameterType>() {
-                            new CommandParameterType() {
-                                Name = "gameTypeProvider",
-                                Type = typeof(String)
-                            },
-                            new CommandParameterType() {
-                                Name = "gameTypeType",
-                                Type = typeof(String)
-                            },
-                            new CommandParameterType() {
-                                Name = "hostName",
-                                Type = typeof(String)
-                            },
-                            new CommandParameterType() {
-                                Name = "port",
-                                Type = typeof(UInt16)
-                            },
-                            new CommandParameterType() {
-                                Name = "password",
-                                Type = typeof(String)
-                            },
-                            new CommandParameterType() {
-                                Name = "additional",
-                                Type = typeof(String)
-                            }
+                new CommandDispatch() {
+                    CommandType = CommandType.InstanceServiceRestart,
+                    Handler = this.InstanceServiceRestart
+                },
+                new CommandDispatch() {
+                    CommandType = CommandType.InstanceAddConnection,
+                    ParameterTypes = new List<CommandParameterType>() {
+                        new CommandParameterType() {
+                            Name = "gameTypeProvider",
+                            Type = typeof(String)
+                        },
+                        new CommandParameterType() {
+                            Name = "gameTypeType",
+                            Type = typeof(String)
+                        },
+                        new CommandParameterType() {
+                            Name = "hostName",
+                            Type = typeof(String)
+                        },
+                        new CommandParameterType() {
+                            Name = "port",
+                            Type = typeof(UInt16)
+                        },
+                        new CommandParameterType() {
+                            Name = "password",
+                            Type = typeof(String)
+                        },
+                        new CommandParameterType() {
+                            Name = "additional",
+                            Type = typeof(String)
                         }
                     },
-                    new CommandDispatchHandler(this.InstanceAddConnection)
-                }, {
-                    new CommandAttribute() {
-                        CommandType = CommandType.InstanceRemoveConnection,
-                        ParameterTypes = new List<CommandParameterType>() {
-                            new CommandParameterType() {
-                                Name = "connectionGuid",
-                                Type = typeof(String)
-                            }
+                    Handler = this.InstanceAddConnection
+                },
+                new CommandDispatch() {
+                    CommandType = CommandType.InstanceRemoveConnection,
+                    ParameterTypes = new List<CommandParameterType>() {
+                        new CommandParameterType() {
+                            Name = "connectionGuid",
+                            Type = typeof(String)
                         }
                     },
-                    new CommandDispatchHandler(this.InstanceRemoveConnectionByGuid)
-                }, {
-                    new CommandAttribute() {
-                        CommandType = CommandType.InstanceRemoveConnection,
-                        ParameterTypes = new List<CommandParameterType>() {
-                            new CommandParameterType() {
-                                Name = "gameTypeProvider",
-                                Type = typeof(String)
-                            },
-                            new CommandParameterType() {
-                                Name = "gameTypeType",
-                                Type = typeof(String)
-                            },
-                            new CommandParameterType() {
-                                Name = "hostName",
-                                Type = typeof(String)
-                            },
-                            new CommandParameterType() {
-                                Name = "port",
-                                Type = typeof(UInt16)
-                            }
+                    Handler = this.InstanceRemoveConnectionByGuid
+                },
+                new CommandDispatch() {
+                    CommandType = CommandType.InstanceRemoveConnection,
+                    ParameterTypes = new List<CommandParameterType>() {
+                        new CommandParameterType() {
+                            Name = "gameTypeProvider",
+                            Type = typeof(String)
+                        },
+                        new CommandParameterType() {
+                            Name = "gameTypeType",
+                            Type = typeof(String)
+                        },
+                        new CommandParameterType() {
+                            Name = "hostName",
+                            Type = typeof(String)
+                        },
+                        new CommandParameterType() {
+                            Name = "port",
+                            Type = typeof(UInt16)
                         }
                     },
-                    new CommandDispatchHandler(this.InstanceRemoveConnectionByDetails)
-                }, {
-                    new CommandAttribute() {
-                        CommandType = CommandType.InstanceQuery
-                    },
-                    new CommandDispatchHandler(this.InstanceQuery)
+                    Handler = this.InstanceRemoveConnectionByDetails
+                },
+                new CommandDispatch() {
+                    CommandType = CommandType.InstanceQuery,
+                    Handler = this.InstanceQuery
                 }
             });
         }
@@ -234,13 +235,8 @@ namespace Procon.Core {
         private void Connection_Tick(Object state) {
             if (this.Connections != null) {
                 lock (this.Connections) {
-                    foreach (ConnectionController connection in this.Connections.Where(connection => connection.Protocol != null)) {
-                        if (connection.Protocol.State != null && connection.Protocol.State.Settings.Current.ConnectionState == ConnectionState.ConnectionDisconnected) {
-                            connection.AttemptConnection();
-                        }
-                        else {
-                            connection.Protocol.Synchronize();
-                        }
+                    foreach (IConnectionController connection in this.Connections) {
+                        connection.Poke();
                     }
                 }
             }
@@ -266,18 +262,6 @@ namespace Procon.Core {
         }
 
         /// <summary>
-        /// Renews all of the remoting leases on active plugins for each connection.
-        /// </summary>
-        /// <param name="state"></param>
-        protected void Plugin_Tick(Object state) {
-            if (this.Connections != null) {
-                foreach (CorePluginController plugins in this.Connections.Select(connection => connection.Plugins)) {
-                    plugins.RenewLease();
-                }
-            }
-        }
-
-        /// <summary>
         /// Rebuilds the current repositories cache every 60 minutes
         /// </summary>
         /// <param name="state"></param>
@@ -287,7 +271,7 @@ namespace Procon.Core {
                 // repository the host has setup.
                 this.Shared.Variables.Variable(CommonVariableNames.PackagesRepositoryUri).Value = this.Shared.Variables.Get(CommonVariableNames.PackagesDefaultSourceRepositoryUri, Defines.PackagesDefaultSourceRepositoryUri);
 
-                this.Packages.BuildRepositoryCache();
+                this.Packages.Poke();
             }
         }
 
@@ -302,10 +286,11 @@ namespace Procon.Core {
             this.Packages.Execute();
             this.CommandServer.Execute();
             this.PushEvents.Execute();
+            this.Database.Execute();
 
             this.Execute(new Command() {
                 Origin = CommandOrigin.Local
-            }, new JsonConfig().Load(new DirectoryInfo(Defines.ConfigsDirectory.FullName)));
+            }, new Config().Load(new DirectoryInfo(Defines.ConfigsDirectory.FullName)));
             
             this.Shared.Events.Log(new GenericEvent() {
                 GenericEventType = GenericEventType.InstanceServiceStarted,
@@ -334,7 +319,7 @@ namespace Procon.Core {
         /// Writes the current object out to a file.
         /// </summary>
         public void WriteConfig() {
-            IConfig config = new JsonConfig();
+            IConfig config = new Config();
             config.Create<InstanceController>();
             this.WriteConfig(config);
 
@@ -352,6 +337,8 @@ namespace Procon.Core {
 
             this.Packages.WriteConfig(config);
 
+            this.Database.WriteConfig(config);
+
             this.Shared.Languages.WriteConfig(config);
 
             this.Shared.Security.WriteConfig(config);
@@ -366,7 +353,7 @@ namespace Procon.Core {
                     // I had to write this comment because I kept moving it to the actual connection and failing oh so hard.
                     config.Append(new Command() {
                         CommandType = CommandType.InstanceAddConnection,
-                        Parameters = new List<CommandParameter>() {
+                        Parameters = new List<ICommandParameter>() {
                             new CommandParameter() {
                                 Data = {
                                     Content = new List<String>() {
@@ -398,14 +385,14 @@ namespace Procon.Core {
                             new CommandParameter() {
                                 Data = {
                                     Content = new List<String>() {
-                                        connection.Password
+                                        connection.ConnectionModel.Password
                                     }
                                 }
                             },
                             new CommandParameter() {
                                 Data = {
                                     Content = new List<String>() {
-                                        connection.Additional
+                                        connection.ConnectionModel.Additional
                                     }
                                 }
                             }
@@ -424,16 +411,16 @@ namespace Procon.Core {
         /// </summary>
         /// <param name="command"></param>
         /// <returns></returns>
-        public override CommandResult Bubble(Command command) {
+        public override ICommandResult Bubble(ICommand command) {
             return this.Tunnel(command);
         }
 
-        protected override IList<ICoreController> TunnelExecutableObjects(Command command) {
+        protected override IList<ICoreController> TunnelExecutableObjects(ICommand command) {
             List<ICoreController> list = new List<ICoreController>();
 
-            if (command.Scope != null && command.Scope.ConnectionGuid != Guid.Empty) {
+            if (command.ScopeModel != null && command.ScopeModel.ConnectionGuid != Guid.Empty) {
                 // Focus only on the connection.
-                this.Connections.Where(connection => connection.ConnectionModel.ConnectionGuid == command.Scope.ConnectionGuid).ToList().ForEach(list.Add);
+                this.Connections.Where(connection => connection.ConnectionModel.ConnectionGuid == command.ScopeModel.ConnectionGuid).ToList().ForEach(list.Add);
             }
             else {
                 // Add all of the connections.
@@ -445,6 +432,7 @@ namespace Procon.Core {
                 list.Add(this.Shared.Variables);
                 list.Add(this.Shared.Events);
                 list.Add(this.Packages);
+                list.Add(this.Database);
             }
             
             return list;
@@ -489,6 +477,9 @@ namespace Procon.Core {
             this.Packages.Dispose();
             this.Packages = null;
 
+            this.Database.Dispose();
+            this.Database = null;
+
             this.CommandServer.Dispose();
             this.CommandServer = null;
 
@@ -510,8 +501,8 @@ namespace Procon.Core {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public CommandResult InstanceServiceRestart(Command command, Dictionary<String, CommandParameter> parameters) {
-            CommandResult result = null;
+        public ICommandResult InstanceServiceRestart(ICommand command, Dictionary<String, ICommandParameter> parameters) {
+            ICommandResult result = null;
 
             // As long as the current account is allowed to execute this command...
             if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
@@ -540,8 +531,8 @@ namespace Procon.Core {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public CommandResult InstanceServiceMergePackage(Command command, Dictionary<String, CommandParameter> parameters) {
-            CommandResult result = null;
+        public ICommandResult InstanceServiceMergePackage(ICommand command, Dictionary<String, ICommandParameter> parameters) {
+            ICommandResult result = null;
 
             String uri = parameters["uri"].First<String>();
             String packageId = parameters["packageId"].First<String>();
@@ -586,8 +577,8 @@ namespace Procon.Core {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public CommandResult InstanceServiceUninstallPackage(Command command, Dictionary<String, CommandParameter> parameters) {
-            CommandResult result = null;
+        public ICommandResult InstanceServiceUninstallPackage(ICommand command, Dictionary<String, ICommandParameter> parameters) {
+            ICommandResult result = null;
 
             String packageId = parameters["packageId"].First<String>();
 
@@ -629,8 +620,8 @@ namespace Procon.Core {
         /// </summary>
         /// <param name="command"></param>
         /// <param name="parameters"></param>
-        public CommandResult InstanceAddConnection(Command command, Dictionary<String, CommandParameter> parameters) {
-            CommandResult result = null;
+        public ICommandResult InstanceAddConnection(ICommand command, Dictionary<String, ICommandParameter> parameters) {
+            ICommandResult result = null;
 
             String gameTypeProvider = parameters["gameTypeProvider"].First<String>();
             String gameTypeType = parameters["gameTypeType"].First<String>();
@@ -717,8 +708,8 @@ namespace Procon.Core {
             return result;
         }
 
-        protected CommandResult InstanceRemoveConnection(Command command, ConnectionController connection) {
-            CommandResult result = null;
+        protected ICommandResult InstanceRemoveConnection(ICommand command, IConnectionController connection) {
+            ICommandResult result = null;
 
             // As long as the current account is allowed to execute this command...
             if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
@@ -765,10 +756,10 @@ namespace Procon.Core {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public CommandResult InstanceRemoveConnectionByGuid(Command command, Dictionary<String, CommandParameter> parameters) {
+        public ICommandResult InstanceRemoveConnectionByGuid(ICommand command, Dictionary<String, ICommandParameter> parameters) {
             String connectionGuid = parameters["connectionGuid"].First<String>();
 
-            ConnectionController connection = this.Connections.FirstOrDefault(x => String.Compare(x.ConnectionModel.ConnectionGuid.ToString(), connectionGuid, StringComparison.OrdinalIgnoreCase) == 0);
+            IConnectionController connection = this.Connections.FirstOrDefault(x => String.Compare(x.ConnectionModel.ConnectionGuid.ToString(), connectionGuid, StringComparison.OrdinalIgnoreCase) == 0);
 
             return this.InstanceRemoveConnection(command, connection);
         }
@@ -778,13 +769,13 @@ namespace Procon.Core {
         /// </summary>
         /// <param name="command"></param>
         /// <param name="parameters"></param>
-        public CommandResult InstanceRemoveConnectionByDetails(Command command, Dictionary<String, CommandParameter> parameters) {
+        public ICommandResult InstanceRemoveConnectionByDetails(ICommand command, Dictionary<String, ICommandParameter> parameters) {
             String gameTypeProvider = parameters["gameTypeProvider"].First<String>();
             String gameTypeType = parameters["gameTypeType"].First<String>();
             String hostName = parameters["hostName"].First<String>();
             UInt16 port = parameters["port"].First<UInt16>();
 
-            ConnectionController connection = this.Connections.FirstOrDefault(c =>
+            IConnectionController connection = this.Connections.FirstOrDefault(c =>
                 c.ConnectionModel.ProtocolType.Provider == gameTypeProvider &&
                 c.ConnectionModel.ProtocolType.Type == gameTypeType &&
                 c.ConnectionModel.Hostname == hostName &&
@@ -800,17 +791,21 @@ namespace Procon.Core {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public CommandResult InstanceQuery(Command command, Dictionary<String, CommandParameter> parameters) {
-            CommandResult result = null;
+        public ICommandResult InstanceQuery(ICommand command, Dictionary<String, ICommandParameter> parameters) {
+            ICommandResult result = null;
 
             if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
+                ICommandResult packages = this.Packages.Tunnel(new Command(command) {
+                    CommandType = CommandType.PackagesFetchPackages
+                });
+                
                 result = new CommandResult() {
                     Success = true,
                     Status = CommandResultType.Success,
                     Now = new CommandData() {
                         Connections = this.Connections.Select(connection => connection.ConnectionModel).ToList(),
                         GameTypes = new List<ProtocolType>(SupportedGameTypes.GetSupportedGames().Select(k => k.Key as ProtocolType)),
-                        Repositories = new List<RepositoryModel>(this.Packages.Cache.Repositories),
+                        Repositories = new List<RepositoryModel>(packages.Now.Repositories ?? new List<RepositoryModel>()),
                         Groups = new List<GroupModel>(this.Shared.Security.Groups),
                         Languages = this.Shared.Languages.LoadedLanguageFiles.Select(language => language.LanguageModel).ToList(),
                         Variables = new List<VariableModel>(this.Shared.Variables.VolatileVariables)

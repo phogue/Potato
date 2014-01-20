@@ -1,6 +1,5 @@
 ﻿#region
 
-using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -28,11 +27,11 @@ namespace Procon.Core.Shared.Test.ExecutableCommands {
             tester.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 Name = "CustomSet",
-                Parameters = new List<CommandParameter>() {
+                Parameters = new List<ICommandParameter>() {
                     new CommandParameter() {
                         Data = {
                             Content = new List<string>() {
-                                50.ToString()
+                                50.ToString(CultureInfo.InvariantCulture)
                             }
                         }
                     }
@@ -54,7 +53,7 @@ namespace Procon.Core.Shared.Test.ExecutableCommands {
             tester.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 Name = "CustomSet",
-                Parameters = new List<CommandParameter>() {
+                Parameters = new List<ICommandParameter>() {
                     new CommandParameter() {
                         Data = {
                             Content = new List<string>() {
@@ -80,7 +79,7 @@ namespace Procon.Core.Shared.Test.ExecutableCommands {
             tester.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 Name = "CustomSet",
-                Parameters = new List<CommandParameter>() {
+                Parameters = new List<ICommandParameter>() {
                     new CommandParameter() {
                         Data = {
                             Content = new List<string>() {
@@ -103,11 +102,11 @@ namespace Procon.Core.Shared.Test.ExecutableCommands {
                 TestNumber = 33
             };
 
-            CommandResult result = tester.Tunnel(new Command() {
+            ICommandResult result = tester.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.VariablesGet
             });
-            // CommandResult result = tester.Execute(Command.Local, new CommandExecutableAttribute() { CommandType = CommandType.VariablesGet });
+            // ICommandResult result = tester.Execute(Command.Local, new CommandExecutableAttribute() { CommandType = CommandType.VariablesGet });
 
             Assert.AreEqual(tester.TestNumber, result.Now.Variables.First().ToType<int>());
         }
@@ -124,7 +123,7 @@ namespace Procon.Core.Shared.Test.ExecutableCommands {
             tester.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.VariablesSet,
-                Parameters = new List<CommandParameter>() {
+                Parameters = new List<ICommandParameter>() {
                     new CommandParameter() {
                         Data = {
                             Content = new List<string>() {
@@ -150,7 +149,7 @@ namespace Procon.Core.Shared.Test.ExecutableCommands {
             tester.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.VariablesSet,
-                Parameters = new List<CommandParameter>() {
+                Parameters = new List<ICommandParameter>() {
                     new CommandParameter() {
                         Data = {
                             Content = new List<string>() {
@@ -176,7 +175,7 @@ namespace Procon.Core.Shared.Test.ExecutableCommands {
             tester.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.VariablesSet,
-                Parameters = new List<CommandParameter>() {
+                Parameters = new List<ICommandParameter>() {
                     new CommandParameter() {
                         Data = {
                             Content = new List<string>() {

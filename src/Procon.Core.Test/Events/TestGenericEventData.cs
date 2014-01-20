@@ -22,8 +22,8 @@ namespace Procon.Core.Test.Events {
         [Test]
         public void TestGameEventObjectConversion() {
             var gameEventData = new ProtocolEventData() {
-                Bans = new List<Ban>() {
-                    new Ban() {
+                Bans = new List<BanModel>() {
+                    new BanModel() {
                         Now = {
                             Content = new List<String>() {
                                 "I should remove this property"
@@ -31,8 +31,8 @@ namespace Procon.Core.Test.Events {
                         }
                     }
                 },
-                Chats = new List<Chat>() {
-                    new Chat() {
+                Chats = new List<ChatModel>() {
+                    new ChatModel() {
                         Now = {
                             Content = new List<String>() {
                                 "I should remove this property"
@@ -40,8 +40,8 @@ namespace Procon.Core.Test.Events {
                         }
                     }
                 },
-                Kicks = new List<Kick>() {
-                    new Kick() {
+                Kicks = new List<KickModel>() {
+                    new KickModel() {
                         Scope = {
                             Content = new List<String>() {
                                 "I should remove this property"
@@ -49,8 +49,8 @@ namespace Procon.Core.Test.Events {
                         }
                     }
                 },
-                Kills = new List<Kill>() {
-                    new Kill() {
+                Kills = new List<KillModel>() {
+                    new KillModel() {
                         Scope = {
                             Content = new List<String>() {
                                 "I should remove this property"
@@ -58,15 +58,15 @@ namespace Procon.Core.Test.Events {
                         }
                     }
                 },
-                Players = new List<Player>() {
-                    new Player() {
+                Players = new List<PlayerModel>() {
+                    new PlayerModel() {
                         Name = "Phogue",
                         Ping = 100
                     }
                 },
-                Spawns = new List<Spawn>() {
-                    new Spawn() {
-                        Player = new Player() {
+                Spawns = new List<SpawnModel>() {
+                    new SpawnModel() {
+                        Player = new PlayerModel() {
                             Name = "Phogue",
                             Ping = 100
                         }

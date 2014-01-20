@@ -1,9 +1,15 @@
 ﻿using System;
 
 namespace Procon.Net.Shared {
-
+    /// <summary>
+    /// The type of event originating from the protocol
+    /// </summary>
     [Serializable]
     public enum ProtocolEventType {
+        /// <summary>
+        /// No event specified.
+        /// </summary>
+        None,
         /// <summary>
         /// The game has had its definitions for gamemodes, maps etc. loaded.
         /// </summary>

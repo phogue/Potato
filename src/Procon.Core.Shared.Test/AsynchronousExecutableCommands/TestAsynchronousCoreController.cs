@@ -26,7 +26,7 @@ namespace Procon.Core.Shared.Test.AsynchronousExecutableCommands {
                 new Command() {
                     Name = "AppendMessage",
                     Origin = CommandOrigin.Local,
-                    Parameters = new List<CommandParameter>() {
+                    Parameters = new List<ICommandParameter>() {
                         new CommandParameter() {
                             Data = {
                                 Content = new List<String>() {
@@ -65,7 +65,7 @@ namespace Procon.Core.Shared.Test.AsynchronousExecutableCommands {
                 new Command() {
                     Name = "AppendMessage",
                     Origin = CommandOrigin.Local,
-                    Parameters = new List<CommandParameter>() {
+                    Parameters = new List<ICommandParameter>() {
                         new CommandParameter() {
                             Data = {
                                 Content = new List<String>() {
@@ -97,11 +97,11 @@ namespace Procon.Core.Shared.Test.AsynchronousExecutableCommands {
                 }
             }.Execute();
 
-            CommandResult result = mockController.Bubble(
+            ICommandResult result = mockController.Bubble(
                 new Command() {
                     Name = "AppendMessage",
                     Origin = CommandOrigin.Local,
-                    Parameters = new List<CommandParameter>() {
+                    Parameters = new List<ICommandParameter>() {
                         new CommandParameter() {
                             Data = {
                                 Content = new List<String>() {
@@ -127,11 +127,11 @@ namespace Procon.Core.Shared.Test.AsynchronousExecutableCommands {
                 }
             }.Execute();
 
-            CommandResult result = mockController.Tunnel(
+            ICommandResult result = mockController.Tunnel(
                 new Command() {
                     Name = "AppendMessage",
                     Origin = CommandOrigin.Local,
-                    Parameters = new List<CommandParameter>() {
+                    Parameters = new List<ICommandParameter>() {
                         new CommandParameter() {
                             Data = {
                                 Content = new List<String>() {
@@ -169,7 +169,7 @@ namespace Procon.Core.Shared.Test.AsynchronousExecutableCommands {
                 new Command() {
                     Name = "AppendMessage",
                     Origin = CommandOrigin.Local,
-                    Parameters = new List<CommandParameter>() {
+                    Parameters = new List<ICommandParameter>() {
                         new CommandParameter() {
                             Data = {
                                 Content = new List<String>() {
@@ -213,7 +213,7 @@ namespace Procon.Core.Shared.Test.AsynchronousExecutableCommands {
                 new Command() {
                     Name = "AppendMessage",
                     Origin = CommandOrigin.Local,
-                    Parameters = new List<CommandParameter>() {
+                    Parameters = new List<ICommandParameter>() {
                         new CommandParameter() {
                             Data = {
                                 Content = new List<String>() {
@@ -250,11 +250,11 @@ namespace Procon.Core.Shared.Test.AsynchronousExecutableCommands {
                 }
             }.Execute();
 
-            CommandResult result = mockController.Bubble(
+            ICommandResult result = mockController.Bubble(
                 new Command() {
                     Name = "AppendMessage",
                     Origin = CommandOrigin.Local,
-                    Parameters = new List<CommandParameter>() {
+                    Parameters = new List<ICommandParameter>() {
                         new CommandParameter() {
                             Data = {
                                 Content = new List<String>() {
@@ -285,11 +285,11 @@ namespace Procon.Core.Shared.Test.AsynchronousExecutableCommands {
                 }
             }.Execute();
 
-            CommandResult result = mockController.Tunnel(
+            ICommandResult result = mockController.Tunnel(
                 new Command() {
                     Name = "AppendMessage",
                     Origin = CommandOrigin.Local,
-                    Parameters = new List<CommandParameter>() {
+                    Parameters = new List<ICommandParameter>() {
                         new CommandParameter() {
                             Data = {
                                 Content = new List<String>() {

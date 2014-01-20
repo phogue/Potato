@@ -49,34 +49,30 @@ namespace Procon.Core.Packages {
                 }
             };
 
-            this.AppendDispatchHandlers(new Dictionary<CommandAttribute, CommandDispatchHandler>() {
-                {
-                    new CommandAttribute() {
-                        CommandType = CommandType.PackagesMergePackage,
-                        ParameterTypes = new List<CommandParameterType>() {
-                            new CommandParameterType() {
-                                Name = "packageId",
-                                Type = typeof(String)
-                            }
+            this.CommandDispatchers.AddRange(new List<ICommandDispatch>() {
+                new CommandDispatch() {
+                    CommandType = CommandType.PackagesMergePackage,
+                    ParameterTypes = new List<CommandParameterType>() {
+                        new CommandParameterType() {
+                            Name = "packageId",
+                            Type = typeof(String)
                         }
                     },
-                    new CommandDispatchHandler(this.PackagesMergePackage)
-                }, {
-                    new CommandAttribute() {
-                        CommandType = CommandType.PackagesUninstallPackage,
-                        ParameterTypes = new List<CommandParameterType>() {
-                            new CommandParameterType() {
-                                Name = "packageId",
-                                Type = typeof(String)
-                            }
+                    Handler = this.PackagesMergePackage
+                },
+                new CommandDispatch() {
+                    CommandType = CommandType.PackagesUninstallPackage,
+                    ParameterTypes = new List<CommandParameterType>() {
+                        new CommandParameterType() {
+                            Name = "packageId",
+                            Type = typeof(String)
                         }
                     },
-                    new CommandDispatchHandler(this.PackagesUninstallPackage)
-                }, {
-                    new CommandAttribute() {
-                        CommandType = CommandType.PackagesFetchPackages
-                    },
-                    new CommandDispatchHandler(this.PackagesFetchPackages)
+                    Handler = this.PackagesUninstallPackage
+                },
+                new CommandDispatch() {
+                    CommandType = CommandType.PackagesFetchPackages,
+                    Handler = this.PackagesFetchPackages
                 }
             });
         }
@@ -87,8 +83,8 @@ namespace Procon.Core.Packages {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public CommandResult PackagesMergePackage(Command command, Dictionary<String, CommandParameter> parameters) {
-            CommandResult result = null;
+        public ICommandResult PackagesMergePackage(ICommand command, Dictionary<String, ICommandParameter> parameters) {
+            ICommandResult result = null;
 
             String packageId = parameters["packageId"].First<String>();
 
@@ -156,8 +152,8 @@ namespace Procon.Core.Packages {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public CommandResult PackagesUninstallPackage(Command command, Dictionary<String, CommandParameter> parameters) {
-            CommandResult result = null;
+        public ICommandResult PackagesUninstallPackage(ICommand command, Dictionary<String, ICommandParameter> parameters) {
+            ICommandResult result = null;
 
             String packageId = parameters["packageId"].First<String>();
 
@@ -225,12 +221,11 @@ namespace Procon.Core.Packages {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public CommandResult PackagesFetchPackages(Command command, Dictionary<String, CommandParameter> parameters) {
-            CommandResult result = null;
+        public ICommandResult PackagesFetchPackages(ICommand command, Dictionary<String, ICommandParameter> parameters) {
+            ICommandResult result = null;
 
             if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
-                Task.Factory.StartNew(this.BuildRepositoryCache);
-
+                // Give a representation of what we know right now
                 result = new CommandResult() {
                     Message = String.Format("Dispatched packages fetch signal."),
                     Status = CommandResultType.Success,
@@ -239,6 +234,9 @@ namespace Procon.Core.Packages {
                         Repositories = new List<RepositoryModel>(this.Cache.Repositories)
                     }
                 };
+
+                // Now dispatch an update.
+                Task.Factory.StartNew(this.Poke);
             }
             else {
                 result = CommandResult.InsufficientPermissions;
@@ -254,7 +252,7 @@ namespace Procon.Core.Packages {
         /// <remarks>
         ///     <para>This method can potentially be time consuming and should be run in a new thread.</para>
         /// </remarks>
-        public void BuildRepositoryCache() {
+        public override void Poke() {
             this.Cache.Build(this.LocalRepository);
 
             this.Shared.Events.Log(new GenericEvent() {

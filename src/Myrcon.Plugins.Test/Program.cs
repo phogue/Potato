@@ -38,78 +38,72 @@ namespace Myrcon.Plugins.Test {
 
             this.Commands = new List<TextCommandModel>();
 
-            this.AppendDispatchHandlers(new Dictionary<CommandAttribute, CommandDispatchHandler>() {
-                {
-                    new CommandAttribute() {
-                        Name = "HelpCommand",
-                        ParameterTypes = new List<CommandParameterType>() {
-                            new CommandParameterType() {
-                                Name = "e",
-                                Type = typeof(CommandResult)
-                            }
+            this.CommandDispatchers.AddRange(new List<ICommandDispatch>() {
+                new CommandDispatch() {
+                    Name = "HelpCommand",
+                    ParameterTypes = new List<CommandParameterType>() {
+                        new CommandParameterType() {
+                            Name = "e",
+                            Type = typeof(ICommandResult)
                         }
                     },
-                    new CommandDispatchHandler(this.HelpCommand)
-                }, {
-                    new CommandAttribute() {
-                        Name = "KillCommand",
-                        ParameterTypes = new List<CommandParameterType>() {
-                            new CommandParameterType() {
-                                Name = "e",
-                                Type = typeof(CommandResult)
-                            }
+                    Handler = this.HelpCommand
+                },
+                new CommandDispatch() {
+                    Name = "KillCommand",
+                    ParameterTypes = new List<CommandParameterType>() {
+                        new CommandParameterType() {
+                            Name = "e",
+                            Type = typeof(ICommandResult)
                         }
                     },
-                    new CommandDispatchHandler(this.KillCommand)
-                }, {
-                    new CommandAttribute() {
-                        Name = "TestCommand",
-                        ParameterTypes = new List<CommandParameterType>() {
-                            new CommandParameterType() {
-                                Name = "e",
-                                Type = typeof(CommandResult)
-                            }
+                    Handler = this.KillCommand
+                },
+                new CommandDispatch() {
+                    Name = "TestCommand",
+                    ParameterTypes = new List<CommandParameterType>() {
+                        new CommandParameterType() {
+                            Name = "e",
+                            Type = typeof(ICommandResult)
                         }
                     },
-                    new CommandDispatchHandler(this.TestCommand)
-                }, {
-                    new CommandAttribute() {
-                        CommandType = CommandType.TextCommandsRegister,
-                        CommandAttributeType = CommandAttributeType.Preview,
-                        ParameterTypes = new List<CommandParameterType>() {
-                            new CommandParameterType() {
-                                Name = "textCommand",
-                                Type = typeof(TextCommandModel)
-                            }
+                    Handler = this.TestCommand
+                },
+                new CommandDispatch() {
+                    CommandType = CommandType.TextCommandsRegister,
+                    CommandAttributeType = CommandAttributeType.Preview,
+                    ParameterTypes = new List<CommandParameterType>() {
+                        new CommandParameterType() {
+                            Name = "textCommand",
+                            Type = typeof(TextCommandModel)
                         }
                     },
-                    new CommandDispatchHandler(this.RegisterTextCommandPreview)
-                }, {
-                    new CommandAttribute() {
-                        CommandType = CommandType.TextCommandsRegister,
-                        CommandAttributeType = CommandAttributeType.Executed,
-                        ParameterTypes = new List<CommandParameterType>() {
-                            new CommandParameterType() {
-                                Name = "textCommand",
-                                Type = typeof(TextCommandModel)
-                            }
+                    Handler = this.RegisterTextCommandPreview
+                },
+                new CommandDispatch() {
+                    CommandType = CommandType.TextCommandsRegister,
+                    CommandAttributeType = CommandAttributeType.Executed,
+                    ParameterTypes = new List<CommandParameterType>() {
+                        new CommandParameterType() {
+                            Name = "textCommand",
+                            Type = typeof(TextCommandModel)
                         }
                     },
-                    new CommandDispatchHandler(this.RegisterTextCommandExecuted)
+                    Handler = this.RegisterTextCommandExecuted
                 }
             });
         }
 
-        protected override IList<ICoreController> TunnelExecutableObjects(Command command) {
+        protected override IList<ICoreController> TunnelExecutableObjects(ICommand command) {
             return this.Tests;
         }
 
-        protected List<string> ShortCommandList(CommandResult e) {
+        protected List<string> ShortCommandList(ICommandResult e) {
             return this.Commands.Select(x => x.Commands.FirstOrDefault()).ToList();
         }
 
-        protected CommandResult HelpCommand(Command command, Dictionary<String, CommandParameter> parameters) {
-            CommandResult e = parameters["e"].First<CommandResult>();
+        protected ICommandResult HelpCommand(ICommand command, Dictionary<String, ICommandParameter> parameters) {
+            ICommandResult e = parameters["e"].First<ICommandResult>();
 
             NetworkAction output = new NetworkAction() {
                 ActionType = NetworkActionType.NetworkTextSay
@@ -150,8 +144,8 @@ namespace Myrcon.Plugins.Test {
             return command.Result;
         }
 
-        protected CommandResult KillCommand(Command command, Dictionary<String, CommandParameter> parameters) {
-            CommandResult e = parameters["e"].First<CommandResult>();
+        protected ICommandResult KillCommand(ICommand command, Dictionary<String, ICommandParameter> parameters) {
+            ICommandResult e = parameters["e"].First<ICommandResult>();
 
             TextCommandMatchModel match = e.Now.TextCommandMatches.First();
 
@@ -160,7 +154,7 @@ namespace Myrcon.Plugins.Test {
                     Action = new NetworkAction() {
                         ActionType = NetworkActionType.NetworkPlayerKill,
                         Scope = {
-                            Players = new List<Player>(match.Players),
+                            Players = new List<PlayerModel>(match.Players),
                                 Content = new List<String>() {
                                 "Testing"
                             }
@@ -191,8 +185,8 @@ namespace Myrcon.Plugins.Test {
             return command.Result;
         }
 
-        protected CommandResult TestCommand(Command command, Dictionary<String, CommandParameter> parameters) {
-            CommandResult e = parameters["e"].First<CommandResult>();
+        protected ICommandResult TestCommand(ICommand command, Dictionary<String, ICommandParameter> parameters) {
+            ICommandResult e = parameters["e"].First<ICommandResult>();
 
             NetworkAction output = new NetworkAction() {
                 ActionType = NetworkActionType.NetworkTextSay
@@ -239,13 +233,13 @@ namespace Myrcon.Plugins.Test {
             return command.Result;
         }
 
-        public CommandResult RegisterTextCommandPreview(Command command, Dictionary<String, CommandParameter> parameters) {
+        public ICommandResult RegisterTextCommandPreview(ICommand command, Dictionary<String, ICommandParameter> parameters) {
             //TextCommand textCommand = parameters["textCommand"].First<TextCommand>();
 
             return command.Result;
         }
 
-        public CommandResult RegisterTextCommandExecuted(Command command, Dictionary<String, CommandParameter> parameters) {
+        public ICommandResult RegisterTextCommandExecuted(ICommand command, Dictionary<String, ICommandParameter> parameters) {
             //TextCommand textCommand = parameters["textCommand"].First<TextCommand>();
 
             return command.Result;
@@ -264,10 +258,10 @@ namespace Myrcon.Plugins.Test {
 
                 this.Bubble(new Command() {
                     CommandType = CommandType.TextCommandsRegister,
-                    Scope = new CommandScope() {
+                    ScopeModel = new CommandScopeModel() {
                         ConnectionGuid = this.ConnectionGuid
                     },
-                    Parameters = new List<CommandParameter>() {
+                    Parameters = new List<ICommandParameter>() {
                         new CommandParameter() {
                             Data = {
                                 TextCommands = new List<TextCommandModel>() {
@@ -287,10 +281,10 @@ namespace Myrcon.Plugins.Test {
 
                 this.Bubble(new Command() {
                     CommandType = CommandType.TextCommandsRegister,
-                    Scope = new CommandScope() {
+                    ScopeModel = new CommandScopeModel() {
                         ConnectionGuid = this.ConnectionGuid
                     },
-                    Parameters = new List<CommandParameter>() {
+                    Parameters = new List<ICommandParameter>() {
                         new CommandParameter() {
                             Data = {
                                 TextCommands = new List<TextCommandModel>() {
@@ -310,10 +304,10 @@ namespace Myrcon.Plugins.Test {
 
                 this.Bubble(new Command() {
                     CommandType = CommandType.TextCommandsRegister,
-                    Scope = new CommandScope() {
+                    ScopeModel = new CommandScopeModel() {
                         ConnectionGuid = this.ConnectionGuid
                     },
-                    Parameters = new List<CommandParameter>() {
+                    Parameters = new List<ICommandParameter>() {
                         new CommandParameter() {
                             Data = {
                                 TextCommands = new List<TextCommandModel>() {

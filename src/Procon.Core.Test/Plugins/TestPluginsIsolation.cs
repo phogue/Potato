@@ -26,19 +26,21 @@ namespace Procon.Core.Test.Plugins {
         /// <param name="expectedSuccessFlag"></param>
         /// <param name="resultType"></param>
         protected void TestPluginsIsolationWriteToDirectory(String path, bool expectedSuccessFlag, CommandResultType resultType) {
-            var plugins = new CorePluginController().Execute() as CorePluginController;
+            var plugins = (CorePluginController)new CorePluginController().Execute();
 
             plugins.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.PluginsEnable,
-                Scope = {
+                ScopeModel = {
                     PluginGuid = plugins.LoadedPlugins.First().PluginGuid
                 }
             });
 
-            CommandResult result = plugins.Tunnel(new Command() {
+            ICommandResult result = plugins.Tunnel(new Command() {
                 Name = "TestPluginsIsolationWriteToDirectory",
-                Username = "Phogue",
+                Authentication = {
+                    Username = "Phogue"
+                },
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     path
                 })
@@ -69,21 +71,23 @@ namespace Procon.Core.Test.Plugins {
         /// </summary>
         [Test]
         public void TestPluginsIsolationCleanCurrentAppDomain() {
-            var plugins = new CorePluginController().Execute() as CorePluginController;
+            var plugins = (CorePluginController)new CorePluginController().Execute();
 
             plugins.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.PluginsEnable,
-                Scope = {
+                ScopeModel = {
                     PluginGuid = plugins.LoadedPlugins.First().PluginGuid
                 }
             });
 
             // Send a command to ensure the appdomain actually has a functional copy of the TestPlugin
             // assembly loaded.
-            CommandResult result = plugins.Tunnel(new Command() {
+            ICommandResult result = plugins.Tunnel(new Command() {
                 Name = "TestPluginsIsolationCleanCurrentAppDomain",
-                Username = "Phogue",
+                Authentication = {
+                    Username = "Phogue"
+                },
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     "Return Message"
                 })

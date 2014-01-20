@@ -10,7 +10,7 @@ namespace Procon.Core.Shared.Test.TestConfig {
         /// </summary>
         [Test]
         public void TestStructureCreated() {
-            IConfig config = new JsonConfig().Create<MockSimpleConcrete>();
+            IConfig config = new Config().Create<MockSimpleConcrete>();
 
             Assert.IsNotNull(config.Document);
             Assert.IsNotNull(config.Document["Procon.Core.Shared.Test.TestConfig.Mocks.MockSimpleConcrete"]);
@@ -22,7 +22,7 @@ namespace Procon.Core.Shared.Test.TestConfig {
         /// </summary>
         [Test]
         public void TestRootMatchesNamespace() {
-            IConfig config = new JsonConfig().Create<MockSimpleConcrete>();
+            IConfig config = new Config().Create<MockSimpleConcrete>();
 
             Assert.AreEqual(config.Document["Procon.Core.Shared.Test.TestConfig.Mocks.MockSimpleConcrete"], config.Root);
         }

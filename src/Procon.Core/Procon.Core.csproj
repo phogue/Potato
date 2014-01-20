@@ -69,6 +69,8 @@
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Connections\ConnectionController.cs" />
+    <Compile Include="Connections\IConnectionController.cs" />
+    <Compile Include="Connections\Plugins\ICorePluginController.cs" />
     <Compile Include="Connections\TextCommands\Parsers\Fuzzy\ItemThingReference.cs" />
     <Compile Include="Connections\TextCommands\ITextCommandParser.cs" />
     <Compile Include="Connections\TextCommands\Parsers\Fuzzy\KdrPropertyReference.cs" />
@@ -95,7 +97,6 @@
     <Compile Include="Remote\CertificateController.cs" />
     <Compile Include="Remote\CommandServerSerializer.cs" />
     <Compile Include="Remote\ICertificateController.cs" />
-    <Compile Include="Remote\ICommandServerController.cs" />
     <Compile Include="SharedReferences.cs" />
     <Compile Include="Database\DatabaseController.cs" />
     <Compile Include="Events\EventsConsoleController.cs" />
@@ -107,7 +108,6 @@
     <Compile Include="Events\PushEventsEndPoint.cs" />
     <Compile Include="Connections\Plugins\CorePluginController.cs" />
     <Compile Include="InstanceController.cs" />
-    <Compile Include="Utils\DirectoryInfoExtensions.cs" />
     <Compile Include="Variables\GroupedVariableListener.cs" />
     <Compile Include="Variables\VariableController.cs" />
     <Compile Include="Localization\LanguageController.cs" />

@@ -9,8 +9,8 @@ using Procon.Core.Shared.Models;
 namespace Procon.Core.Shared.Test.ExecutableCommands.Objects {
     public class ExecutableOverrideTester : CoreController {
         public ExecutableOverrideTester() : base() {
-            this.AppendDispatchHandlers(new Dictionary<CommandAttribute, CommandDispatchHandler>() {
-                {new CommandAttribute() {
+            this.CommandDispatchers.AddRange(new List<ICommandDispatch>() {
+                new CommandDispatch() {
                     CommandType = CommandType.VariablesSet,
                     CommandAttributeType = CommandAttributeType.Executed,
                     ParameterTypes = new List<CommandParameterType>() {
@@ -18,10 +18,10 @@ namespace Procon.Core.Shared.Test.ExecutableCommands.Objects {
                             Name = "value",
                             Type = typeof (int)
                         }
-                    }
+                    },
+                    Handler = this.SetTestFlagInteger
                 },
-                    new CommandDispatchHandler(SetTestFlagInteger)},
-                {new CommandAttribute() {
+                new CommandDispatch() {
                     CommandType = CommandType.VariablesSet,
                     CommandAttributeType = CommandAttributeType.Executed,
                     ParameterTypes = new List<CommandParameterType>() {
@@ -29,9 +29,9 @@ namespace Procon.Core.Shared.Test.ExecutableCommands.Objects {
                             Name = "value",
                             Type = typeof (float)
                         }
-                    }
-                },
-                    new CommandDispatchHandler(SetTestFlagFloat)}
+                    },
+                    Handler = this.SetTestFlagFloat
+                }
             });
         }
 
@@ -40,7 +40,7 @@ namespace Procon.Core.Shared.Test.ExecutableCommands.Objects {
         /// <summary>
         ///     Sets the value of the test flag.
         /// </summary>
-        public CommandResult SetTestFlagInteger(Command command, Dictionary<String, CommandParameter> parameters) {
+        public ICommandResult SetTestFlagInteger(ICommand command, Dictionary<String, ICommandParameter> parameters) {
             int value = parameters["value"].First<int>();
 
             TestNumber = value;
@@ -63,7 +63,7 @@ namespace Procon.Core.Shared.Test.ExecutableCommands.Objects {
         /// <summary>
         ///     Sets the value of the test flag.
         /// </summary>
-        public CommandResult SetTestFlagFloat(Command command, Dictionary<String, CommandParameter> parameters) {
+        public ICommandResult SetTestFlagFloat(ICommand command, Dictionary<String, ICommandParameter> parameters) {
             float value = parameters["value"].First<float>();
 
             TestNumber = (int) value;

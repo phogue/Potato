@@ -8,8 +8,8 @@ namespace Myrcon.Protocols.Frostbite.Battlefield.Battlefield4.Objects {
     [Serializable]
     public class Battlefield4BanList {
 
-        public static List<Ban> Parse(List<string> words) {
-            List<Ban> bans = new List<Ban>();
+        public static List<BanModel> Parse(List<string> words) {
+            List<BanModel> bans = new List<BanModel>();
 
             for (int i = 0; i < words.Count; i += 6) {
                 List<string> banWords = words.GetRange(i, 6);

@@ -5,7 +5,6 @@ using System.Net;
 using System.Net.Sockets;
 using System.Security.Cryptography.X509Certificates;
 using Procon.Net.Shared;
-using Procon.Net.Shared.Protocols.CommandServer;
 
 namespace Procon.Net.Protocols.CommandServer {
     /// <summary>

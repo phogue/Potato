@@ -16,14 +16,14 @@ namespace Procon.Core.Test {
         /// <remarks>This is implemented to convert from the old method of parsing parameters to the new.</remarks>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public static List<CommandParameter> ObjectListToContentList(List<Object> parameters) {
+        public static List<ICommandParameter> ObjectListToContentList(List<Object> parameters) {
             return parameters.Select(param => new CommandParameter() {
                 Data = {
                     Content = new List<string>() {
                         param.ToString()
                     }
                 }
-            }).ToList();
+            }).Cast<ICommandParameter>().ToList();
         }
     }
 }

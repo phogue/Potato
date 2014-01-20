@@ -11,7 +11,7 @@ namespace Procon.Net.Shared.Test.Models {
         /// </summary>
         [Test]
         public void TestNameStripped() {
-            Player player = new Player {
+            PlayerModel player = new PlayerModel {
                 Name = "P]-[0gu3 Brösel"
             };
 
@@ -24,7 +24,7 @@ namespace Procon.Net.Shared.Test.Models {
         /// </summary>
         [Test]
         public void TestKdr() {
-            Player player = new Player() {
+            PlayerModel player = new PlayerModel() {
                 Kills = 10,
                 Deaths = 5
             };
@@ -37,7 +37,7 @@ namespace Procon.Net.Shared.Test.Models {
         /// </summary>
         [Test]
         public void TestKdrNoDeaths() {
-            Player player = new Player() {
+            PlayerModel player = new PlayerModel() {
                 Kills = 10,
                 Deaths = 0
             };
@@ -50,7 +50,7 @@ namespace Procon.Net.Shared.Test.Models {
         /// </summary>
         [Test]
         public void TestIp() {
-            Player player = new Player() {
+            PlayerModel player = new PlayerModel() {
                 Ip = "1.1.1.1"
             };
 
@@ -64,7 +64,7 @@ namespace Procon.Net.Shared.Test.Models {
         /// </summary>
         [Test]
         public void TestIpPort() {
-            Player player = new Player() {
+            PlayerModel player = new PlayerModel() {
                 Ip = "1.1.1.1:9000"
             };
 
@@ -79,16 +79,16 @@ namespace Procon.Net.Shared.Test.Models {
         /// </summary>
         [Test]
         public void TestModifyGroupDoesNotExist() {
-            Player player = new Player();
+            PlayerModel player = new PlayerModel();
 
             player.ModifyGroup(
-                new Grouping() {
-                    Type = Grouping.Team,
+                new GroupingModel() {
+                    Type = GroupingModel.Team,
                     Uid = "1"
                 }
             );
 
-            Assert.AreEqual("1", player.Groups.First(group => group.Type == Grouping.Team).Uid);
+            Assert.AreEqual("1", player.Groups.First(group => group.Type == GroupingModel.Team).Uid);
             Assert.AreEqual(1, player.Groups.Count);
         }
 
@@ -97,23 +97,23 @@ namespace Procon.Net.Shared.Test.Models {
         /// </summary>
         [Test]
         public void TestModifyGroupExists() {
-            Player player = new Player() {
+            PlayerModel player = new PlayerModel() {
                 Groups = {
-                    new Grouping() {
-                        Type = Grouping.Team,
+                    new GroupingModel() {
+                        Type = GroupingModel.Team,
                         Uid = "1"
                     }
                 }
             };
 
             player.ModifyGroup(
-                new Grouping() {
-                    Type = Grouping.Team,
+                new GroupingModel() {
+                    Type = GroupingModel.Team,
                     Uid = "2"
                 }
             );
 
-            Assert.AreEqual("2", player.Groups.First(group => group.Type == Grouping.Team).Uid);
+            Assert.AreEqual("2", player.Groups.First(group => group.Type == GroupingModel.Team).Uid);
             Assert.AreEqual(1, player.Groups.Count);
         }
     }

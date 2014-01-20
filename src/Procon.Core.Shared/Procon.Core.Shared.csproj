@@ -44,14 +44,22 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Events\IGenericEvent.cs" />
+    <Compile Include="ICommand.cs" />
+    <Compile Include="ICommandData.cs" />
+    <Compile Include="ICommandDispatch.cs" />
+    <Compile Include="ICommandParameter.cs" />
+    <Compile Include="ICommandRequest.cs" />
+    <Compile Include="ICommandResult.cs" />
+    <Compile Include="Models\CommandAuthenticationModel.cs" />
     <Compile Include="CommandDirection.cs" />
     <Compile Include="IConfig.cs" />
-    <Compile Include="JsonConfig.cs" />
+    <Compile Include="Config.cs" />
     <Compile Include="Models\AsynchronousCommandModel.cs" />
     <Compile Include="Models\AsynchronousCommandStateModel.cs" />
     <Compile Include="AsynchronousCoreController.cs" />
     <Compile Include="Command.cs" />
-    <Compile Include="CommandAttribute.cs" />
+    <Compile Include="CommandDispatch.cs" />
     <Compile Include="CommandAttributeType.cs" />
     <Compile Include="CommandBuilder.cs" />
     <Compile Include="CommandData.cs" />
@@ -60,7 +68,7 @@
     <Compile Include="CommandParameterType.cs" />
     <Compile Include="CommandResult.cs" />
     <Compile Include="CommandResultType.cs" />
-    <Compile Include="CommandScope.cs" />
+    <Compile Include="Models\CommandScopeModel.cs" />
     <Compile Include="CommandType.cs" />
     <Compile Include="Models\LanguageEntryModel.cs" />
     <Compile Include="Database\DatabaseModel.cs" />
@@ -76,7 +84,7 @@
     <Compile Include="Events\GenericEventType.cs" />
     <Compile Include="CoreController.cs" />
     <Compile Include="ICoreController.cs" />
-    <Compile Include="CoreModel.cs" />
+    <Compile Include="Models\CoreModel.cs" />
     <Compile Include="Models\AccountModel.cs" />
     <Compile Include="Models\AccountPlayerModel.cs" />
     <Compile Include="Models\CommonVariableNames.cs" />
@@ -98,12 +106,13 @@
     <Compile Include="Plugins\IPluginController.cs" />
     <Compile Include="Plugins\IPluginSetup.cs" />
     <Compile Include="Plugins\ISandboxPluginController.cs" />
-    <Compile Include="Plugins\IRenewableLease.cs" />
     <Compile Include="Plugins\CorePluginControllerCallbackProxy.cs" />
     <Compile Include="Plugins\PluginController.cs" />
     <Compile Include="Plugins\PluginSetup.cs" />
     <Compile Include="Plugins\SandboxPluginController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Remote\HttpCommandRequest.cs" />
+    <Compile Include="Serialization\JsonSerialization.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Procon.Database.Shared\Procon.Database.Shared.csproj">

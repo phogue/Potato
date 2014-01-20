@@ -1,6 +1,9 @@
 ﻿using System;
 
 namespace Procon.Net.Shared {
+    /// <summary>
+    /// The type of packet, originally sent or recieved.
+    /// </summary>
     [Flags]
     public enum PacketType {
         /// <summary>

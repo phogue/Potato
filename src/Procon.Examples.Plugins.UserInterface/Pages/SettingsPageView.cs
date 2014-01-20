@@ -28,7 +28,7 @@ namespace Procon.Examples.Plugins.UserInterface.Pages
             this.Write("</b>");
             
             #line 2 "C:\Users\P\Documents\Projects\clients\myrcon\procon\Procon-2\src\Procon.Examples.UserInterface\Pages\SettingsPageView.tt"
- foreach (Player player in this.MyListOfPlayers) { 
+ foreach (PlayerModel player in this.MyListOfPlayers) { 
             
             #line default
             #line hidden

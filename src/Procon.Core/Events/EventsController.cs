@@ -2,15 +2,11 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Xml;
-using System.Xml.Linq;
 using Newtonsoft.Json;
 using Procon.Core.Shared;
 using Procon.Core.Shared.Events;
 using Procon.Core.Shared.Models;
 using Procon.Net.Shared;
-using Procon.Net.Shared.Utils;
 using Procon.Service.Shared;
 
 namespace Procon.Core.Events {
@@ -22,7 +18,7 @@ namespace Procon.Core.Events {
         /// <summary>
         /// List of events for history
         /// </summary>
-        public List<GenericEvent> LoggedEvents { get; protected set; }
+        public List<IGenericEvent> LoggedEvents { get; protected set; }
 
         /// <summary>
         /// Lock used when fetching a new event Id. I hate that this was originally copied from Procon.Net without looking =\
@@ -65,20 +61,18 @@ namespace Procon.Core.Events {
         /// </summary>
         public EventsController() : base() {
             this.Shared = new SharedReferences();
-            this.LoggedEvents = new List<GenericEvent>();
+            this.LoggedEvents = new List<IGenericEvent>();
 
-            this.AppendDispatchHandlers(new Dictionary<CommandAttribute, CommandDispatchHandler>() {
-                {
-                    new CommandAttribute() {
-                        CommandType = CommandType.EventsFetchAfterEventId,
-                        ParameterTypes = new List<CommandParameterType>() {
-                            new CommandParameterType() {
-                                Name = "eventId",
-                                Type = typeof(ulong)
-                            }
+            this.CommandDispatchers.AddRange(new List<ICommandDispatch>() {
+                new CommandDispatch() {
+                    CommandType = CommandType.EventsFetchAfterEventId,
+                    ParameterTypes = new List<CommandParameterType>() {
+                        new CommandParameterType() {
+                            Name = "eventId",
+                            Type = typeof(ulong)
                         }
                     },
-                    new CommandDispatchHandler(this.FetchEventsSince)
+                    Handler = this.FetchEventsSince
                 }
             });
         }
@@ -137,7 +131,7 @@ namespace Procon.Core.Events {
         /// Writes the selected events to a file.
         /// </summary>
         /// <param name="events">The events to write.</param>
-        protected bool WriteEventsList(List<GenericEvent> events) {
+        protected bool WriteEventsList(List<IGenericEvent> events) {
             // Assume everything was successful
             bool saved = true;
 
@@ -185,7 +179,7 @@ namespace Procon.Core.Events {
             // Events can be null after disposal.
             if (this.LoggedEvents != null) {
 
-                List<GenericEvent> flushEvents = null;
+                List<IGenericEvent> flushEvents = null;
 
                 lock (this.LoggedEvents) {
                     DateTime before = now - TimeSpan.FromSeconds(this.Shared.Variables.Get(CommonVariableNames.MaximumEventsTimeSeconds, 30));
@@ -216,13 +210,13 @@ namespace Procon.Core.Events {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public CommandResult FetchEventsSince(Command command, Dictionary<String, CommandParameter> parameters) {
-            CommandResult result = null;
+        public ICommandResult FetchEventsSince(ICommand command, Dictionary<String, ICommandParameter> parameters) {
+            ICommandResult result = null;
 
             ulong eventId = parameters["eventId"].First<ulong>();
 
             if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
-                List<GenericEvent> events = null;
+                List<IGenericEvent> events = null;
 
                 lock (this.LoggedEvents) {
                     events = this.LoggedEvents.Where(e => e.Stamp > DateTime.Now - TimeSpan.FromSeconds(this.Shared.Variables.Get(CommonVariableNames.MaximumEventsTimeSeconds, 300)))

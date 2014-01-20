@@ -138,9 +138,6 @@
     <Compile Include="TextCommands\TestTextCommandParsing.cs" />
     <Compile Include="TextCommands\TestTextCommandRegistration.cs" />
     <Compile Include="TextCommands\TestTextCommands.cs" />
-    <Compile Include="Utils\Objects\XElementTester.cs" />
-    <Compile Include="Utils\TestDefines.cs" />
-    <Compile Include="Utils\TestDirectoryInfoExtensions.cs" />
     <Compile Include="Variables\TestVariablesSetF.cs" />
     <Compile Include="Variables\TestVariablesGetA.cs" />
     <Compile Include="Variables\TestVariablesSetA.cs" />
@@ -187,10 +184,7 @@
       <Name>Myrcon.Plugins.Test</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Utils\DirectoryInfoExtensions\Clean\" />
-    <Folder Include="Utils\DirectoryInfoExtensions\Zip\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="Certificates\CommandServer.pfx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

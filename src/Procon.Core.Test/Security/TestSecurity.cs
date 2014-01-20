@@ -9,6 +9,7 @@ using Newtonsoft.Json.Linq;
 using Procon.Core.Security;
 using Procon.Core.Shared;
 using Procon.Core.Shared.Models;
+using Procon.Core.Shared.Serialization;
 using Procon.Net.Shared.Protocols;
 
 #endregion
@@ -187,14 +188,14 @@ namespace Procon.Core.Test.Security {
             });
 
             // Save a config of the security controller
-            var saveConfig = new JsonConfig();
+            var saveConfig = new Config();
             saveConfig.Create(typeof (SecurityController));
             saveSecurity.WriteConfig(saveConfig);
             saveConfig.Save(ConfigFileInfo);
 
             // Load the config in a new config.
             var loadSecurity = (SecurityController)new SecurityController().Execute();
-            var loadConfig = new JsonConfig();
+            var loadConfig = new Config();
             loadConfig.Load(ConfigFileInfo);
             loadSecurity.Execute(loadConfig);
 
@@ -208,7 +209,7 @@ namespace Procon.Core.Test.Security {
             Assert.AreEqual("ABCDEF", loadSecurity.Groups.SelectMany(group => group.Accounts).SelectMany(account => account.Players).First().Uid);
 
             // Now validate that we can authenticate against the loaded in password
-            CommandResult result = loadSecurity.Tunnel(new Command() {
+            ICommandResult result = loadSecurity.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityAccountAuthenticate,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
@@ -297,16 +298,16 @@ namespace Procon.Core.Test.Security {
             });
 
             // Save a config of the language controller
-            var saveConfig = new JsonConfig();
+            var saveConfig = new Config();
             saveConfig.Create(typeof (SecurityController));
             security.WriteConfig(saveConfig);
             saveConfig.Save(ConfigFileInfo);
 
             // Load the config in a new config.
-            var loadConfig = new JsonConfig();
+            var loadConfig = new Config();
             loadConfig.Load(ConfigFileInfo);
 
-            var commands = loadConfig.RootOf<SecurityController>().Children<JObject>().Select(item => item.ToObject<Command>()).ToList();
+            var commands = loadConfig.RootOf<SecurityController>().Children<JObject>().Select(item => item.ToObject<Command>(JsonSerialization.Minimal)).ToList();
 
             Assert.AreEqual("SecurityAddGroup", commands[0].Name);
             Assert.AreEqual("GroupName", commands[0].Parameters[0].First<String>());

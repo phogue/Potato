@@ -9,12 +9,12 @@ namespace Procon.Net.Shared.Actions.Deferred {
         /// <summary>
         /// Called once all of the packets sent have had packets marked against them.
         /// </summary>
-        Action<NetworkAction, List<IPacket>, List<IPacket>> Done { get; set; }
+        Action<INetworkAction, List<IPacket>, List<IPacket>> Done { get; set; }
 
         /// <summary>
         /// Called when an action has expired.
         /// </summary>
-        Action<NetworkAction, List<IPacket>, List<IPacket>> Expired { get; set; }
+        Action<INetworkAction, List<IPacket>, List<IPacket>> Expired { get; set; }
 
         /// <summary>
         /// Register a new action to await for responses.
@@ -22,7 +22,7 @@ namespace Procon.Net.Shared.Actions.Deferred {
         /// <param name="action">The action being taken</param>
         /// <param name="requests">A list of packets sent to the game server to complete this action</param>
         /// <param name="expiration">An optional datetime when this action should expire</param>
-        void Wait(NetworkAction action, List<IPacket> requests, DateTime? expiration = null);
+        void Wait(INetworkAction action, List<IPacket> requests, DateTime? expiration = null);
 
         /// <summary>
         /// Register a response to check against actions being taken

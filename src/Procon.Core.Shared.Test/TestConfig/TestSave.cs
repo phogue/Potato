@@ -15,7 +15,7 @@ namespace Procon.Core.Shared.Test.TestConfig {
         /// </summary>
         [Test]
         public void TestEmptyDocumentCreatesFile() {
-            IConfig config = new JsonConfig();
+            IConfig config = new Config();
 
             config.Save(this.ConfigFileA);
 
@@ -29,7 +29,7 @@ namespace Procon.Core.Shared.Test.TestConfig {
         /// </summary>
         [Test]
         public void TestSimpleDocumentCreatesFile() {
-            IConfig config = new JsonConfig() {
+            IConfig config = new Config() {
                 Document = new JObject() {
                     new JProperty("Hello", "World!")
                 }
@@ -47,7 +47,7 @@ namespace Procon.Core.Shared.Test.TestConfig {
         /// </summary>
         [Test]
         public void TestSimpleDocumentCanDeserialize() {
-            IConfig config = new JsonConfig() {
+            IConfig config = new Config() {
                 Document = new JObject() {
                     new JProperty("Hello", "World!")
                 }
@@ -66,7 +66,7 @@ namespace Procon.Core.Shared.Test.TestConfig {
         /// </summary>
         [Test, ExpectedException(typeof(ArgumentNullException))]
         public void TestNullException() {
-            IConfig config = new JsonConfig();
+            IConfig config = new Config();
 
             config.Save(null);
         }

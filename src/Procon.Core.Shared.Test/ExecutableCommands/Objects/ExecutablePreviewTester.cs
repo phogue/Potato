@@ -8,8 +8,8 @@ using System.Collections.Generic;
 namespace Procon.Core.Shared.Test.ExecutableCommands.Objects {
     public class ExecutablePreviewTester : ExecutableBasicTester {
         public ExecutablePreviewTester() : base() {
-            this.AppendDispatchHandlers(new Dictionary<CommandAttribute, CommandDispatchHandler>() {
-                {new CommandAttribute() {
+            this.CommandDispatchers.AddRange(new List<ICommandDispatch>() {
+                new CommandDispatch() {
                     CommandType = CommandType.VariablesSet,
                     CommandAttributeType = CommandAttributeType.Preview,
                     ParameterTypes = new List<CommandParameterType>() {
@@ -17,19 +17,19 @@ namespace Procon.Core.Shared.Test.ExecutableCommands.Objects {
                             Name = "value",
                             Type = typeof (int)
                         }
-                    }
-                },
-                    new CommandDispatchHandler(SetTestFlagPreview)}
+                    },
+                    Handler = this.SetTestFlagPreview
+                }
             });
         }
 
         /// <summary>
         ///     Sets the value of the test flag.
         /// </summary>
-        public CommandResult SetTestFlagPreview(Command command, Dictionary<String, CommandParameter> parameters) {
+        public ICommandResult SetTestFlagPreview(ICommand command, Dictionary<String, ICommandParameter> parameters) {
             int value = parameters["value"].First<int>();
 
-            CommandResult result = command.Result;
+            ICommandResult result = command.Result;
 
             if (value == 10) {
                 result.Status = CommandResultType.None;

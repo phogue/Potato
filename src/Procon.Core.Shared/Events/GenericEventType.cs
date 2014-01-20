@@ -7,6 +7,9 @@ namespace Procon.Core.Shared.Events {
     /// </summary>
     [Serializable]
     public enum GenericEventType {
+        /// <summary>
+        /// No event specified.
+        /// </summary>
         None,
 
         /// <summary>

@@ -11,17 +11,16 @@ namespace Procon.Core.Shared {
     ///     <para>This class will be added to as I go, just to cleanup some of the existing code.</para>
     /// </remarks>
     public static class CommandBuilder {
-
         /// <summary>
         /// Builds a command to send a DatabaseQuery with the database group to use.
         /// </summary>
         /// <param name="group">The name of the database group to use</param>
         /// <param name="queries">The queries to send </param>
         /// <returns>The built command to dispatch</returns>
-        public static Command DatabaseQuery(String group, params IDatabaseObject[] queries) {
+        public static ICommand DatabaseQuery(String group, params IDatabaseObject[] queries) {
             return new Command() {
                 CommandType = CommandType.DatabaseQuery,
-                Parameters = new List<CommandParameter>() {
+                Parameters = new List<ICommandParameter>() {
                     new CommandParameter() {
                         Data = {
                             Content = new List<String>() {
@@ -43,10 +42,10 @@ namespace Procon.Core.Shared {
         /// </summary>
         /// <param name="queries">The queries to send </param>
         /// <returns>The built command to dispatch</returns>
-        public static Command DatabaseQuery(params IDatabaseObject[] queries) {
+        public static ICommand DatabaseQuery(params IDatabaseObject[] queries) {
             return new Command() {
                 CommandType = CommandType.DatabaseQuery,
-                Parameters = new List<CommandParameter>() {
+                Parameters = new List<ICommandParameter>() {
                     new CommandParameter() {
                         Data = {
                             Queries = new List<IDatabaseObject>(queries)
@@ -60,7 +59,7 @@ namespace Procon.Core.Shared {
         /// Builds a command to send a InstanceServiceRestart signal
         /// </summary>
         /// <returns>The built command to the dispatch</returns>
-        public static Command InstanceServiceRestart() {
+        public static ICommand InstanceServiceRestart() {
             return new Command() {
                 CommandType = CommandType.InstanceServiceRestart
             };
@@ -72,10 +71,10 @@ namespace Procon.Core.Shared {
         /// <param name="uri">The uri of the repository to find the package source in</param>
         /// <param name="packageId">The package id to install</param>
         /// <returns>The built command to the dispatch</returns>
-        public static Command InstanceServiceMergePackage(String uri, String packageId) {
+        public static ICommand InstanceServiceMergePackage(String uri, String packageId) {
             return new Command() {
                 CommandType = CommandType.InstanceServiceMergePackage,
-                Parameters = new List<CommandParameter>() {
+                Parameters = new List<ICommandParameter>() {
                     new CommandParameter() {
                         Data = {
                             Content = new List<String>() {
@@ -99,10 +98,10 @@ namespace Procon.Core.Shared {
         /// </summary>
         /// <param name="packageId">The package id to uninstall</param>
         /// <returns>The built command to the dispatch</returns>
-        public static Command InstanceServiceUninstallPackage(String packageId) {
+        public static ICommand InstanceServiceUninstallPackage(String packageId) {
             return new Command() {
                 CommandType = CommandType.InstanceServiceUninstallPackage,
-                Parameters = new List<CommandParameter>() {
+                Parameters = new List<ICommandParameter>() {
                     new CommandParameter() {
                         Data = {
                             Content = new List<String>() {
@@ -119,10 +118,10 @@ namespace Procon.Core.Shared {
         /// </summary>
         /// <param name="packageId">The package id to install</param>
         /// <returns>The built command to the dispatch</returns>
-        public static Command PackagesMergePackage(String packageId) {
+        public static ICommand PackagesMergePackage(String packageId) {
             return new Command() {
                 CommandType = CommandType.PackagesMergePackage,
-                Parameters = new List<CommandParameter>() {
+                Parameters = new List<ICommandParameter>() {
                     new CommandParameter() {
                         Data = {
                             Content = new List<String>() {
@@ -139,10 +138,10 @@ namespace Procon.Core.Shared {
         /// </summary>
         /// <param name="packageId">The package id to install</param>
         /// <returns>The built command to the dispatch</returns>
-        public static Command PackagesUninstallPackage(String packageId) {
+        public static ICommand PackagesUninstallPackage(String packageId) {
             return new Command() {
                 CommandType = CommandType.PackagesUninstallPackage,
-                Parameters = new List<CommandParameter>() {
+                Parameters = new List<ICommandParameter>() {
                     new CommandParameter() {
                         Data = {
                             Content = new List<String>() {
@@ -158,7 +157,7 @@ namespace Procon.Core.Shared {
         /// Builds a command to send a PackagesFetchPackages
         /// </summary>
         /// <returns>The built command to the dispatch</returns>
-        public static Command PackagesFetchPackages() {
+        public static ICommand PackagesFetchPackages() {
             return new Command() {
                 CommandType = CommandType.PackagesFetchPackages
             };
@@ -170,11 +169,13 @@ namespace Procon.Core.Shared {
         /// <param name="username">The username to attach to the command and parameter</param>
         /// <param name="passwordPlainText">The plain text password to add as a parameter</param>
         /// <returns>The build command to dispatch</returns>
-        public static Command SecurityAccountAuthenticate(String username, String passwordPlainText) {
+        public static ICommand SecurityAccountAuthenticate(String username, String passwordPlainText) {
             return new Command() {
-                Username = username,
+                Authentication = {
+                    Username = username
+                },
                 CommandType = CommandType.SecurityAccountAuthenticate,
-                Parameters = new List<CommandParameter>() {
+                Parameters = new List<ICommandParameter>() {
                     new CommandParameter() {
                         Data = {
                             Content = new List<String>() {
@@ -199,10 +200,10 @@ namespace Procon.Core.Shared {
         /// <param name="name">The name of the variable to set</param>
         /// <param name="value">The value to assign to the variable</param>
         /// <returns>The built command to dispatch</returns>
-        public static Command VariablesSet(String name, String value) {
+        public static ICommand VariablesSet(String name, String value) {
             return new Command() {
                 CommandType = CommandType.VariablesSet,
-                Parameters = new List<CommandParameter>() {
+                Parameters = new List<ICommandParameter>() {
                     new CommandParameter() {
                         Data = {
                             Content = new List<String>() {
@@ -227,10 +228,10 @@ namespace Procon.Core.Shared {
         /// <param name="name">The name of the variable to set</param>
         /// <param name="value">The value to assign to the variable</param>
         /// <returns>The built command to dispatch</returns>
-        public static Command VariablesSet(String name, List<String> value) {
+        public static ICommand VariablesSet(String name, List<String> value) {
             return new Command() {
                 CommandType = CommandType.VariablesSet,
-                Parameters = new List<CommandParameter>() {
+                Parameters = new List<ICommandParameter>() {
                     new CommandParameter() {
                         Data = {
                             Content = new List<String>() {
@@ -253,7 +254,7 @@ namespace Procon.Core.Shared {
         /// <param name="name">The name of the variable to set</param>
         /// <param name="value">The value to assign to the variable</param>
         /// <returns>The built command to dispatch</returns>
-        public static Command VariablesSet(CommonVariableNames name, String value) {
+        public static ICommand VariablesSet(CommonVariableNames name, String value) {
             return VariablesSet(name.ToString(), value);
         }
 
@@ -263,7 +264,7 @@ namespace Procon.Core.Shared {
         /// <param name="name">The name of the variable to set</param>
         /// <param name="value">The value to assign to the variable</param>
         /// <returns>The built command to dispatch</returns>
-        public static Command VariablesSet(CommonVariableNames name, List<String> value) {
+        public static ICommand VariablesSet(CommonVariableNames name, List<String> value) {
             return VariablesSet(name.ToString(), value);
         }
 
@@ -273,10 +274,10 @@ namespace Procon.Core.Shared {
         /// <param name="name">The name of the variable to set</param>
         /// <param name="value">The value to assign to the variable</param>
         /// <returns>The built command to dispatch</returns>
-        public static Command VariablesSetA(String name, String value) {
+        public static ICommand VariablesSetA(String name, String value) {
             return new Command() {
                 CommandType = CommandType.VariablesSetA,
-                Parameters = new List<CommandParameter>() {
+                Parameters = new List<ICommandParameter>() {
                     new CommandParameter() {
                         Data = {
                             Content = new List<String>() {
@@ -301,10 +302,10 @@ namespace Procon.Core.Shared {
         /// <param name="name">The name of the variable to set</param>
         /// <param name="value">The value to assign to the variable</param>
         /// <returns>The built command to dispatch</returns>
-        public static Command VariablesSetA(String name, List<String> value) {
+        public static ICommand VariablesSetA(String name, List<String> value) {
             return new Command() {
                 CommandType = CommandType.VariablesSetA,
-                Parameters = new List<CommandParameter>() {
+                Parameters = new List<ICommandParameter>() {
                     new CommandParameter() {
                         Data = {
                             Content = new List<String>() {
@@ -327,7 +328,7 @@ namespace Procon.Core.Shared {
         /// <param name="name">The name of the variable to set</param>
         /// <param name="value">The value to assign to the variable</param>
         /// <returns>The built command to dispatch</returns>
-        public static Command VariablesSetA(CommonVariableNames name, String value) {
+        public static ICommand VariablesSetA(CommonVariableNames name, String value) {
             return VariablesSetA(name.ToString(), value);
         }
 
@@ -337,7 +338,7 @@ namespace Procon.Core.Shared {
         /// <param name="name">The name of the variable to set</param>
         /// <param name="value">The value to assign to the variable</param>
         /// <returns>The built command to dispatch</returns>
-        public static Command VariablesSetA(CommonVariableNames name, List<String> value) {
+        public static ICommand VariablesSetA(CommonVariableNames name, List<String> value) {
             return VariablesSetA(name.ToString(), value);
         }
 
@@ -347,10 +348,10 @@ namespace Procon.Core.Shared {
         /// <param name="name">The name of the variable to set</param>
         /// <param name="value">The value to assign to the variable</param>
         /// <returns>The built command to dispatch</returns>
-        public static Command VariablesSetF(String name, String value) {
+        public static ICommand VariablesSetF(String name, String value) {
             return new Command() {
                 CommandType = CommandType.VariablesSetF,
-                Parameters = new List<CommandParameter>() {
+                Parameters = new List<ICommandParameter>() {
                     new CommandParameter() {
                         Data = {
                             Content = new List<String>() {
@@ -375,7 +376,7 @@ namespace Procon.Core.Shared {
         /// <param name="name">The name of the variable to set</param>
         /// <param name="value">The value to assign to the variable</param>
         /// <returns>The built command to dispatch</returns>
-        public static Command VariablesSetF(CommonVariableNames name, String value) {
+        public static ICommand VariablesSetF(CommonVariableNames name, String value) {
             return VariablesSetF(name.ToString(), value);
         }
 
@@ -384,10 +385,10 @@ namespace Procon.Core.Shared {
         /// </summary>
         /// <param name="name">The name of the variable to set</param>
         /// <returns>The built command to dispatch</returns>
-        public static Command VariablesGet(String name) {
+        public static ICommand VariablesGet(String name) {
             return new Command() {
                 CommandType = CommandType.VariablesGet,
-                Parameters = new List<CommandParameter>() {
+                Parameters = new List<ICommandParameter>() {
                     new CommandParameter() {
                         Data = {
                             Content = new List<String>() {
@@ -404,7 +405,7 @@ namespace Procon.Core.Shared {
         /// </summary>
         /// <param name="name">The name of the variable to set</param>
         /// <returns>The built command to dispatch</returns>
-        public static Command VariablesGet(CommonVariableNames name) {
+        public static ICommand VariablesGet(CommonVariableNames name) {
             return VariablesGet(name.ToString());
         }
     }

@@ -69,7 +69,7 @@ namespace Procon.Core.Shared.Database.Migrations {
         /// <returns>The current version of the migration for this stream</returns>
         public int FindCurrentVersion() {
             // Find the last entry added to the db.
-            CommandResult result = this.Bubble(
+            ICommandResult result = this.Bubble(
                 CommandBuilder.DatabaseQuery(
                     new Find()
                     .Condition("Origin", this.Settings.Origin.ToString())

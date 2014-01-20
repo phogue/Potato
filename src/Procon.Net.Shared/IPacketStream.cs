@@ -1,4 +1,7 @@
 ﻿namespace Procon.Net.Shared {
+    /// <summary>
+    /// A packet stream to pull completed packets from
+    /// </summary>
     public interface IPacketStream {
         /// <summary>
         /// Returns the size of the stored Data.

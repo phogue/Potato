@@ -19,15 +19,15 @@ namespace Myrcon.Protocols.Frostbite.Objects {
             "Subset"
         };
 
-        private static Chat Parse(List<String> words, IList<String> parameters) {
-            Chat chat = new Chat();
+        private static ChatModel Parse(List<String> words, IList<String> parameters) {
+            ChatModel chat = new ChatModel();
 
             for (int paramCount = 0, varCount = 0; paramCount < parameters.Count && varCount < words.Count; paramCount++, varCount++) {
 
                 switch (parameters[paramCount]) {
                     case "Author":
-                        chat.Now.Players = new List<Player>() {
-                            new Player() {
+                        chat.Now.Players = new List<PlayerModel>() {
+                            new PlayerModel() {
                                 Name = words[varCount]
                             }
                         };
@@ -74,20 +74,20 @@ namespace Myrcon.Protocols.Frostbite.Objects {
             return chat;
         }
 
-        public static Chat ParsePlayerChat(List<string> words) {
-            Chat chat = FrostbiteChat.Parse(words, FrostbiteChat.PlayerChatParameters);
+        public static ChatModel ParsePlayerChat(List<string> words) {
+            ChatModel chat = FrostbiteChat.Parse(words, FrostbiteChat.PlayerChatParameters);
 
             chat.Origin = NetworkOrigin.Player;
 
             return chat;
         }
 
-        public static Chat ParseAdminSay(List<string> words) {
-            Chat chat = FrostbiteChat.Parse(words, FrostbiteChat.AdminSayParameters);
+        public static ChatModel ParseAdminSay(List<string> words) {
+            ChatModel chat = FrostbiteChat.Parse(words, FrostbiteChat.AdminSayParameters);
 
             chat.Origin = NetworkOrigin.Reflected;
-            chat.Now.Players = new List<Player>() {
-                new Player() {
+            chat.Now.Players = new List<PlayerModel>() {
+                new PlayerModel() {
                     Name = "Procon"
                 }
             };

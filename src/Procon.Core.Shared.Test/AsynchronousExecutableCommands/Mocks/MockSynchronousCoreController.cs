@@ -8,26 +8,24 @@ namespace Procon.Core.Shared.Test.AsynchronousExecutableCommands.Mocks {
     public class MockSynchronousCoreController : CoreController {
 
         public MockSynchronousCoreController() : base() {
-            this.AppendDispatchHandlers(new Dictionary<CommandAttribute, CommandDispatchHandler>() {
-                {
-                    new CommandAttribute() {
-                        Name = "AppendMessage",
-                        ParameterTypes = new List<CommandParameterType>() {
-                            new CommandParameterType() {
-                                Name = "value",
-                                Type = typeof (String)
-                            }
+            this.CommandDispatchers.Add(
+                new CommandDispatch() {
+                    Name = "AppendMessage",
+                    ParameterTypes = new List<CommandParameterType>() {
+                        new CommandParameterType() {
+                            Name = "value",
+                            Type = typeof (String)
                         }
                     },
-                    new CommandDispatchHandler(this.AppendMessage)
+                    Handler = this.AppendMessage
                 }
-            });
+            );
         }
 
         /// <summary>
         ///     Sets the value of the test flag.
         /// </summary>
-        public CommandResult AppendMessage(Command command, Dictionary<String, CommandParameter> parameters) {
+        public ICommandResult AppendMessage(ICommand command, Dictionary<String, ICommandParameter> parameters) {
             String value = parameters["value"].First<String>();
 
             return new CommandResult() {

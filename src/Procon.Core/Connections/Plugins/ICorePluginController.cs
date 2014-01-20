@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using Procon.Core.Shared;
 using Procon.Core.Shared.Models;
-using Procon.Core.Shared.Plugins;
 
 namespace Procon.Core.Connections.Plugins {
     /// <summary>

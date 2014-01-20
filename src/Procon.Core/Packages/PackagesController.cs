@@ -225,8 +225,7 @@ namespace Procon.Core.Packages {
             ICommandResult result = null;
 
             if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
-                Task.Factory.StartNew(this.Poke);
-
+                // Give a representation of what we know right now
                 result = new CommandResult() {
                     Message = String.Format("Dispatched packages fetch signal."),
                     Status = CommandResultType.Success,
@@ -235,6 +234,9 @@ namespace Procon.Core.Packages {
                         Repositories = new List<RepositoryModel>(this.Cache.Repositories)
                     }
                 };
+
+                // Now dispatch an update.
+                Task.Factory.StartNew(this.Poke);
             }
             else {
                 result = CommandResult.InsufficientPermissions;

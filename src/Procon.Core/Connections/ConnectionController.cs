@@ -22,6 +22,9 @@ namespace Procon.Core.Connections {
 
         public IProtocol Protocol { get; set; }
 
+        /// <summary>
+        /// The controller to load up and manage plugins
+        /// </summary>
         public ICorePluginController Plugins { get; set; }
 
         /// <summary>

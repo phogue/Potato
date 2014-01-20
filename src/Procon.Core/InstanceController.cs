@@ -30,8 +30,7 @@ namespace Procon.Core {
         /// <summary>
         /// The packages that are intalled or can be installed.
         /// </summary>
-        // todo Convert to ICoreController
-        public PackagesController Packages { get; protected set; }
+        public ICoreController Packages { get; protected set; }
 
         /// <summary>
         /// The command server controller, if active.
@@ -796,13 +795,17 @@ namespace Procon.Core {
             ICommandResult result = null;
 
             if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
+                ICommandResult packages = this.Packages.Tunnel(new Command(command) {
+                    CommandType = CommandType.PackagesFetchPackages
+                });
+                
                 result = new CommandResult() {
                     Success = true,
                     Status = CommandResultType.Success,
                     Now = new CommandData() {
                         Connections = this.Connections.Select(connection => connection.ConnectionModel).ToList(),
                         GameTypes = new List<ProtocolType>(SupportedGameTypes.GetSupportedGames().Select(k => k.Key as ProtocolType)),
-                        Repositories = new List<RepositoryModel>(this.Packages.Cache.Repositories),
+                        Repositories = new List<RepositoryModel>(packages.Now.Repositories ?? new List<RepositoryModel>()),
                         Groups = new List<GroupModel>(this.Shared.Security.Groups),
                         Languages = this.Shared.Languages.LoadedLanguageFiles.Select(language => language.LanguageModel).ToList(),
                         Variables = new List<VariableModel>(this.Shared.Variables.VolatileVariables)

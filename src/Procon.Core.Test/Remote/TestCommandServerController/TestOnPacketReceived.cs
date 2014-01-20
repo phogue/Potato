@@ -7,7 +7,6 @@ using Procon.Core.Remote;
 using Procon.Core.Shared;
 using Procon.Core.Test.Remote.TestCommandServerController.Mocks;
 using Procon.Net.Protocols.CommandServer;
-using Procon.Net.Shared.Protocols.CommandServer;
 using Procon.Net.Shared.Utils.HTTP;
 
 namespace Procon.Core.Test.Remote.TestCommandServerController {

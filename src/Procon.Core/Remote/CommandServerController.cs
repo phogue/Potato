@@ -4,7 +4,6 @@ using Procon.Core.Shared.Events;
 using Procon.Core.Shared.Models;
 using Procon.Net.Protocols.CommandServer;
 using Procon.Net.Shared;
-using Procon.Net.Shared.Protocols.CommandServer;
 
 namespace Procon.Core.Remote {
     /// <summary>

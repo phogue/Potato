@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 using NUnit.Framework;
 using Procon.Core.Remote;
 using Procon.Core.Shared;
-using Procon.Net.Shared.Protocols.CommandServer;
+using Procon.Net.Protocols.CommandServer;
 using Procon.Net.Shared.Utils.HTTP;
 
 namespace Procon.Core.Test.Remote.TestCommandServerSerializer {

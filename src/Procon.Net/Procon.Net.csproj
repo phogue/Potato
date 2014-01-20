@@ -70,6 +70,7 @@
     <Compile Include="MarkManager.cs" />
     <Compile Include="PacketStream.cs" />
     <Compile Include="Protocols\CommandServer\CommandServerClient.cs" />
+    <Compile Include="Protocols\CommandServer\CommandServerPacket.cs" />
     <Compile Include="Protocols\CommandServer\CommandServerPacketSerializer.cs" />
     <Compile Include="Protocols\CommandServer\CommandServerListener.cs" />
     <Compile Include="Protocol.cs" />

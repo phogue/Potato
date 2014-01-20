@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using Newtonsoft.Json;
 using Procon.Core.Shared;
+using Procon.Core.Shared.Remote;
+using Procon.Net.Protocols.CommandServer;
+using Procon.Net.Shared;
 using Procon.Net.Shared.Serialization;
-using Procon.Net.Shared.Protocols.CommandServer;
 using Procon.Net.Shared.Utils.HTTP;
 
 namespace Procon.Core.Remote {
@@ -29,7 +32,21 @@ namespace Procon.Core.Remote {
 
                 if (command != null) {
                     command.Origin = CommandOrigin.Remote;
-                    command.RemoteRequest = request;
+
+                    HttpCommandRequest commandRequest = new HttpCommandRequest() {
+                        Content = new List<String>() {
+                            request.Header,
+                            request.Content
+                        },
+                        Packets = new List<IPacket>() {
+                            request.Packet
+                        }
+                    };
+
+                    commandRequest.AppendTags(request.Headers);
+                    commandRequest.AppendTags(request.Query);
+
+                    command.Request = commandRequest;
                 }
             }
             catch {
@@ -50,7 +67,7 @@ namespace Procon.Core.Remote {
             // If no response type was specified elsewhere
             if (String.IsNullOrEmpty(contentType) == true) {
                 // Then assume they want whatever data serialized and returned in whatever the request format was.
-                contentType = command.RemoteRequest.Headers[HttpRequestHeader.ContentType] != null ? command.RemoteRequest.Headers[HttpRequestHeader.ContentType].ToLower() : Mime.ApplicationXml;
+                contentType = command.Request.Tags.ContainsKey(HttpRequestHeader.ContentType.ToString()) == true ? command.Request.Tags[HttpRequestHeader.ContentType.ToString()].ToLower() : Mime.ApplicationXml;
             }
 
             return contentType;

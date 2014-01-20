@@ -1,8 +1,9 @@
 using System;
 using System.Collections.Specialized;
 using System.Net;
+using Procon.Net.Shared;
 
-namespace Procon.Net.Shared.Protocols.CommandServer {
+namespace Procon.Net.Protocols.CommandServer {
     /// <summary>
     /// A packet (essentially http) for communication via the command server
     /// </summary>

@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using Procon.Core.Shared.Models;
-using Procon.Net.Shared.Protocols.CommandServer;
 
 namespace Procon.Core.Shared {
     /// <summary>
@@ -35,7 +34,7 @@ namespace Procon.Core.Shared {
         public ICommandResult Result { get; set; }
 
         [JsonIgnore]
-        public CommandServerPacket RemoteRequest { get; set; }
+        public ICommandRequest Request { get; set; }
 
         public List<CommandParameter> Parameters { get; set; }
 

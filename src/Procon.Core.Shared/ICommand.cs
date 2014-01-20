@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Newtonsoft.Json;
 using Procon.Core.Shared.Models;
-using Procon.Net.Shared.Protocols.CommandServer;
 
 namespace Procon.Core.Shared {
     /// <summary>
@@ -43,8 +41,7 @@ namespace Procon.Core.Shared {
         /// <summary>
         /// The original request from a remote source.
         /// </summary>
-        [JsonIgnore]
-        CommandServerPacket RemoteRequest { get; set; }
+        ICommandRequest Request { get; set; }
 
         /// <summary>
         /// The raw parameters to be passed into the executable command.

@@ -113,58 +113,13 @@ namespace Procon.Core.Shared {
             }
         }
 
-        /// <summary>
-        /// Compares an expected parameter list against the parameters supplied. If the types match (or can be converted) then
-        /// a dictionary of parameter names to the parameters supplied is returned, otherwise null is returned implying
-        /// and error was encountered or a type wasn't found.
-        /// </summary>
-        /// <param name="expectedParameterTypes"></param>
-        /// <param name="parameters"></param>
-        /// <returns></returns>
-        private Dictionary<String, ICommandParameter> BuildParameterDictionary(IList<CommandParameterType> expectedParameterTypes, IList<ICommandParameter> parameters) {
-            Dictionary<String, ICommandParameter> parameterDictionary = new Dictionary<String, ICommandParameter>();
-
-            // If we're not expecting any parameters
-            if (expectedParameterTypes != null) {
-                if (parameters != null && expectedParameterTypes.Count == parameters.Count) {
-                    for (int offset = 0; offset < expectedParameterTypes.Count && parameterDictionary != null; offset++) {
-
-                        if (expectedParameterTypes[offset].IsList == true) {
-                            if (parameters[offset].HasMany(expectedParameterTypes[offset].Type, expectedParameterTypes[offset].IsConvertable) == true) {
-                                parameterDictionary.Add(expectedParameterTypes[offset].Name, parameters[offset]);
-                            }
-                            else {
-                                // Parameter type mismatch. Return null.
-                                parameterDictionary = null;
-                            }
-                        }
-                        else {
-                            if (parameters[offset].HasOne(expectedParameterTypes[offset].Type, expectedParameterTypes[offset].IsConvertable) == true) {
-                                parameterDictionary.Add(expectedParameterTypes[offset].Name, parameters[offset]);
-                            }
-                            else {
-                                // Parameter type mismatch. Return null.
-                                parameterDictionary = null;
-                            }
-                        }
-                    }
-                }
-                else {
-                    // Parameter count mismatch. Return null.
-                    parameterDictionary = null;
-                }
-            }
-
-            return parameterDictionary;
-        }
-
         private ICommandResult Run(CommandAttributeType attributeType, ICommand command, CommandResultType maintainStatus) {
 
             // Loop through all matching commands with the identical name and type
             foreach (var dispatch in this.CommandDispatchers.Where(dispatch => dispatch.CanDispatch(attributeType, command))) {
                 
                 // Check if we can build a parameter list.
-                Dictionary<String, ICommandParameter> parameters = this.BuildParameterDictionary(dispatch.ParameterTypes, command.Parameters);
+                Dictionary<String, ICommandParameter> parameters = dispatch.BuildParameterDictionary(command.Parameters);
 
                 if (parameters != null) {
                     command.Result = dispatch.Handler(command, parameters);

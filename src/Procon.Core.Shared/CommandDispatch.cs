@@ -53,5 +53,42 @@ namespace Procon.Core.Shared {
         public bool CanDispatch(CommandAttributeType attributeType, ICommand command) {
             return this.CommandAttributeType == attributeType && this.Name == command.Name;
         }
+
+        public Dictionary<String, ICommandParameter> BuildParameterDictionary(IList<ICommandParameter> parameters) {
+            Dictionary<String, ICommandParameter> parameterDictionary = new Dictionary<String, ICommandParameter>();
+
+            // If we're not expecting any parameters
+            if (this.ParameterTypes != null) {
+                if (parameters != null && this.ParameterTypes.Count == parameters.Count) {
+                    for (int offset = 0; offset < this.ParameterTypes.Count && parameterDictionary != null; offset++) {
+
+                        if (this.ParameterTypes[offset].IsList == true) {
+                            if (parameters[offset].HasMany(this.ParameterTypes[offset].Type, this.ParameterTypes[offset].IsConvertable) == true) {
+                                parameterDictionary.Add(this.ParameterTypes[offset].Name, parameters[offset]);
+                            }
+                            else {
+                                // Parameter type mismatch. Return null.
+                                parameterDictionary = null;
+                            }
+                        }
+                        else {
+                            if (parameters[offset].HasOne(this.ParameterTypes[offset].Type, this.ParameterTypes[offset].IsConvertable) == true) {
+                                parameterDictionary.Add(this.ParameterTypes[offset].Name, parameters[offset]);
+                            }
+                            else {
+                                // Parameter type mismatch. Return null.
+                                parameterDictionary = null;
+                            }
+                        }
+                    }
+                }
+                else {
+                    // Parameter count mismatch. Return null.
+                    parameterDictionary = null;
+                }
+            }
+
+            return parameterDictionary;
+        }
     }
 }

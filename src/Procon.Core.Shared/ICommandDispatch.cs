@@ -36,5 +36,12 @@ namespace Procon.Core.Shared {
         /// </summary>
         /// <returns></returns>
         bool CanDispatch(CommandAttributeType attributeType, ICommand command);
+
+        /// <summary>
+        /// Compares an expected parameter list against the parameters supplied. If the types match (or can be converted) then
+        /// a dictionary of parameter names to the parameters supplied is returned, otherwise null is returned implying
+        /// and error was encountered or a type wasn't found.
+        /// </summary>
+        Dictionary<String, ICommandParameter> BuildParameterDictionary(IList<ICommandParameter> parameters);
     }
 }

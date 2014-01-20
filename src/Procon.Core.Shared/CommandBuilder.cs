@@ -11,7 +11,6 @@ namespace Procon.Core.Shared {
     ///     <para>This class will be added to as I go, just to cleanup some of the existing code.</para>
     /// </remarks>
     public static class CommandBuilder {
-
         /// <summary>
         /// Builds a command to send a DatabaseQuery with the database group to use.
         /// </summary>

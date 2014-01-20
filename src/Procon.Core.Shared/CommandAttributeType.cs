@@ -1,4 +1,7 @@
 namespace Procon.Core.Shared {
+    /// <summary>
+    /// Specifies when a dispatch handler will be called in the command execution
+    /// </summary>
     public enum CommandAttributeType {
         /// <summary>
         /// We want to preview a command. This allows for commands to be cancelled

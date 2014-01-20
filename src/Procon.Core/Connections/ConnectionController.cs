@@ -18,17 +18,10 @@ namespace Procon.Core.Connections {
     /// </summary>
     [Serializable]
     public class ConnectionController : CoreController, ISharedReferenceAccess {
-
+        /// <summary>
+        /// Data about the protocol connection
+        /// </summary>
         public ConnectionModel ConnectionModel { get; set; }
-
-        public String Password {
-            get { return this.Protocol != null ? this.Protocol.Password : String.Empty; }
-        }
-
-        [Obsolete]
-        public String Additional {
-            get { return this.Protocol != null ? this.Protocol.Additional : String.Empty; }
-        }
 
         /// <summary>
         /// The controller to load up and manage plugins
@@ -50,12 +43,18 @@ namespace Procon.Core.Connections {
         /// </summary>
         public InstanceController Instance { get; set; }
 
+        /// <summary>
+        /// Proxy to the active protocol state
+        /// </summary>
         public IProtocolState ProtocolState {
             get { return this.Protocol != null ? this.Protocol.State : null; }
         }
 
         public SharedReferences Shared { get; private set; }
 
+        /// <summary>
+        /// Initializes the connection controller with default values, setting up command dispatches
+        /// </summary>
         public ConnectionController() : base() {
             this.Shared = new SharedReferences();
 
@@ -128,6 +127,8 @@ namespace Procon.Core.Connections {
                 this.ConnectionModel.ProtocolType = this.Protocol.ProtocolType as ProtocolType;
                 this.ConnectionModel.Hostname = this.Protocol.Client.Hostname;
                 this.ConnectionModel.Port = this.Protocol.Client.Port;
+                this.ConnectionModel.Password = this.Protocol.Password;
+                this.ConnectionModel.Additional = this.Protocol.Additional;
             }
 
             this.ConnectionModel.ConnectionGuid = MD5.Guid(String.Format("{0}:{1}:{2}", this.ConnectionModel.ProtocolType, this.ConnectionModel.Hostname, this.ConnectionModel.Port));
@@ -224,6 +225,9 @@ namespace Procon.Core.Connections {
             }
         }
 
+        /// <summary>
+        /// Queries for information about the current connection
+        /// </summary>
         public ICommandResult ConnectionQuery(ICommand command, Dictionary<String, ICommandParameter> parameters) {
             ICommandResult result = null;
 
@@ -269,6 +273,9 @@ namespace Procon.Core.Connections {
             return result;
         }
 
+        /// <summary>
+        /// Queries this connection for an up to date list of players
+        /// </summary>
         public ICommandResult NetworkProtocolQueryPlayers(ICommand command, Dictionary<String, ICommandParameter> parameters) {
             ICommandResult result = null;
 
@@ -293,6 +300,9 @@ namespace Procon.Core.Connections {
             return result;
         }
 
+        /// <summary>
+        /// Queries this connection for the current protocol settings
+        /// </summary>
         public ICommandResult NetworkProtocolQuerySettings(ICommand command, Dictionary<String, ICommandParameter> parameters) {
             ICommandResult result = null;
 
@@ -319,6 +329,9 @@ namespace Procon.Core.Connections {
             return result;
         }
 
+        /// <summary>
+        /// Queries this connection for a complete list of active bans
+        /// </summary>
         public ICommandResult NetworkProtocolQueryBans(ICommand command, Dictionary<String, ICommandParameter> parameters) {
             ICommandResult result = null;
 
@@ -343,6 +356,9 @@ namespace Procon.Core.Connections {
             return result;
         }
 
+        /// <summary>
+        /// Queries this connection for a list of maps currently running
+        /// </summary>
         public ICommandResult NetworkProtocolQueryMaps(ICommand command, Dictionary<String, ICommandParameter> parameters) {
             ICommandResult result = null;
 
@@ -367,6 +383,9 @@ namespace Procon.Core.Connections {
             return result;
         }
 
+        /// <summary>
+        /// Queries this connection for a list of maps available
+        /// </summary>
         public ICommandResult NetworkProtocolQueryMapPool(ICommand command, Dictionary<String, ICommandParameter> parameters) {
             ICommandResult result = null;
 
@@ -391,6 +410,9 @@ namespace Procon.Core.Connections {
             return result;
         }
 
+        /// <summary>
+        /// Executes a single action on the protocol
+        /// </summary>
         public ICommandResult NetworkProtocolAction(ICommand command, Dictionary<String, ICommandParameter> parameters) {
             ICommandResult result = null;
 
@@ -414,6 +436,12 @@ namespace Procon.Core.Connections {
             return result;
         }
 
+        /// <summary>
+        /// Executes a list of actions on the protocol, ensuring each action matches the authenticated command
+        /// </summary>
+        /// <param name="command"></param>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
         public ICommandResult NetworkProtocolActions(ICommand command, Dictionary<String, ICommandParameter> parameters) {
             ICommandResult result = null;
 

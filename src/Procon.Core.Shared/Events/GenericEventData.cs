@@ -1,8 +1,10 @@
 ﻿using Procon.Net.Shared;
 
 namespace Procon.Core.Shared.Events {
+    /// <summary>
+    /// THe data attached to a generic event.
+    /// </summary>
     public static class GenericEventData {
-
         /// <summary>
         /// Parses a gameEventData object, returning a generic event data. We do this instead of
         /// inheritance in case we need to extend events from NLP or another library in the future.

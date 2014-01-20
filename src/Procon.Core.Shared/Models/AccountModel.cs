@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 
 namespace Procon.Core.Shared.Models {
+    /// <summary>
+    /// A single account attached to a group
+    /// </summary>
     [Serializable]
     public class AccountModel : CoreModel, IDisposable {
         /// <summary>
@@ -35,6 +38,9 @@ namespace Procon.Core.Shared.Models {
         [JsonIgnore]
         public GroupModel Group { get; set; }
 
+        /// <summary>
+        /// Initializes the account with default values.
+        /// </summary>
         public AccountModel()
             : base() {
             this.Username = String.Empty;

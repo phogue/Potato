@@ -398,14 +398,14 @@ namespace Procon.Core {
                             new CommandParameter() {
                                 Data = {
                                     Content = new List<String>() {
-                                        connection.Password
+                                        connection.ConnectionModel.Password
                                     }
                                 }
                             },
                             new CommandParameter() {
                                 Data = {
                                     Content = new List<String>() {
-                                        connection.Additional
+                                        connection.ConnectionModel.Additional
                                     }
                                 }
                             }

@@ -13,6 +13,9 @@ namespace Procon.Core.Shared.Models {
         /// </summary>
         public int? Authority { get; set; }
 
+        /// <summary>
+        /// Initializes the permission with default values.
+        /// </summary>
         public PermissionModel() {
             this.Authority = null;
         }

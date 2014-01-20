@@ -82,6 +82,12 @@ namespace Procon.Core.Shared {
             return a.CompareTo(b) == 0;
         }
 
+        /// <summary>
+        /// Second time overloading an operator. It's worn off now.
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        /// <returns></returns>
         public static bool operator !=(CommandDispatch a, CommandDispatch b) {
             return !(a == b);
         }

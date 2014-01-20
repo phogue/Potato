@@ -3,6 +3,9 @@ using Newtonsoft.Json;
 using Procon.Net.Shared.Protocols;
 
 namespace Procon.Core.Shared.Models {
+    /// <summary>
+    /// A player attached to a security account
+    /// </summary>
     [Serializable]
     public class AccountPlayerModel : IDisposable, ICloneable {
         /// <summary>
@@ -23,6 +26,9 @@ namespace Procon.Core.Shared.Models {
         [JsonIgnore]
         public AccountModel Account { get; set; }
 
+        /// <summary>
+        /// Initializes the account player with default values.
+        /// </summary>
         public AccountPlayerModel() {
             this.GameType = CommonGameType.None;
 

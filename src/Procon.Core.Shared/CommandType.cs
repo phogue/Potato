@@ -11,13 +11,11 @@ namespace Procon.Core.Shared {
         /// No command type specified
         /// </summary>
         None,
-
         /// <summary>
         /// General query to fetch all of the connections, security group and variables. Anything in
         /// the Instance class pretty much.
         /// </summary>
         InstanceQuery,
-
         /// <summary>
         /// Sends a signal to the service controller to restart Procon, applying any updates.
         /// </summary>
@@ -32,17 +30,25 @@ namespace Procon.Core.Shared {
         /// and then start Procon.
         /// </summary>
         InstanceServiceUninstallPackage,
-
         /// <summary>
         /// Queries information related specificy to a connection. Note that this will essentially query all
         /// other list queries below (NetworkProtocolQuery*) and populate a single request with the results.
         /// </summary>
         ConnectionQuery,
 
-        LanguageLocalize,
-        
+        /// <summary>
+        /// Adds a new protocol connection
+        /// </summary>
         InstanceAddConnection,
+        /// <summary>
+        /// Removes a protocol connection
+        /// </summary>
         InstanceRemoveConnection,
+
+        /// <summary>
+        /// Pulls a localized text from the localization controller.
+        /// </summary>
+        LanguageLocalize,
 
         /// <summary>
         /// Enables a plugin, allowing events/commands to be passed through to the plugin
@@ -53,43 +59,91 @@ namespace Procon.Core.Shared {
         /// </summary>
         PluginsDisable,
 
-        #region Security
-
+        /// <summary>
+        /// Queries the permissions of a group
+        /// </summary>
         SecurityQueryPermission,
 
         // Groups
 
+        /// <summary>
+        /// Adds a new group to the security controller
+        /// </summary>
         SecurityAddGroup,
+        /// <summary>
+        /// Removes a group
+        /// </summary>
         SecurityRemoveGroup,
+        /// <summary>
+        /// Sets a single permission on a group
+        /// </summary>
         SecurityGroupSetPermission,
+        /// <summary>
+        /// Copies the permissions from one group to another group
+        /// </summary>
         SecurityGroupCopyPermissions,
 
         // Accounts
 
+        /// <summary>
+        /// Adds a new account to a group
+        /// </summary>
         SecurityGroupAddAccount,
+        /// <summary>
+        /// Removes an account
+        /// </summary>
         SecurityRemoveAccount,
 
+        /// <summary>
+        /// Checks if an account can execute a given command
+        /// </summary>
         SecurityAccountAuthenticate,
+        /// <summary>
+        /// Sets a new password for an account, updating the password hash
+        /// with the new hashed password.
+        /// </summary>
         SecurityAccountSetPassword,
+        /// <summary>
+        /// Modifies the password hash (literal) for the account
+        /// </summary>
         SecurityAccountSetPasswordHash,
-
+        /// <summary>
+        /// Sets the default language to use on an account
+        /// </summary>
         SecurityAccountSetPreferredLanguageCode,
 
         // Players
 
+        /// <summary>
+        /// Adds a player to an account
+        /// </summary>
         SecurityAccountAddPlayer,
+        /// <summary>
+        /// Removes a player from an account
+        /// </summary>
         SecurityRemovePlayer,
-
-        #endregion
 
         /// <summary>
         /// Queries the database controller, dispatching a query to an open driver.
         /// </summary>
         DatabaseQuery,
 
+        /// <summary>
+        /// Finds a match against a registered text command then dispatches the
+        /// command for execution.
+        /// </summary>
         TextCommandsExecute,
+        /// <summary>
+        /// Preview a text command match, but do not dispatch for execution.
+        /// </summary>
         TextCommandsPreview,
+        /// <summary>
+        /// Adds a new text command
+        /// </summary>
         TextCommandsRegister,
+        /// <summary>
+        /// Removes a text command
+        /// </summary>
         TextCommandsUnregister,
 
         /// <summary>
@@ -124,6 +178,9 @@ namespace Procon.Core.Shared {
         /// </summary>
         VariablesGet,
 
+        /// <summary>
+        /// Fetches all events after an event id, provided the events remain in the stream.
+        /// </summary>
         EventsFetchAfterEventId,
 
         // Game queries

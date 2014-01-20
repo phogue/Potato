@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Procon.Net.Shared.Actions;
 
 namespace Procon.Core.Shared.Models {
+    /// <summary>
+    /// A group attached to the security controller
+    /// </summary>
     [Serializable]
     public class GroupModel : CoreModel, IDisposable {
         /// <summary>
@@ -22,22 +24,21 @@ namespace Procon.Core.Shared.Models {
         /// </summary>
         public List<AccountModel> Accounts { get; set; }
 
+        /// <summary>
+        /// Initializes the group with default values.
+        /// </summary>
         public GroupModel() : base() {
             this.Name = String.Empty;
             this.Accounts = new List<AccountModel>();
             this.Permissions = new List<PermissionModel>();
 
             // Setup the default permissions.
-            foreach (CommandType name in Enum.GetValues(typeof(CommandType)).Cast<CommandType>()) {
-                if (name != CommandType.None) {
-                    this.Permissions.Add(new PermissionModel() { CommandType = name });
-                }
+            foreach (CommandType name in Enum.GetValues(typeof(CommandType)).Cast<CommandType>().Where(name => name != CommandType.None)) {
+                this.Permissions.Add(new PermissionModel() { CommandType = name });
             }
 
-            foreach (NetworkActionType name in Enum.GetValues(typeof(NetworkActionType)).Cast<NetworkActionType>()) {
-                if (name != NetworkActionType.None) {
-                    this.Permissions.Add(new PermissionModel() { Name = name.ToString() });
-                }
+            foreach (NetworkActionType name in Enum.GetValues(typeof(NetworkActionType)).Cast<NetworkActionType>().Where(name => name != NetworkActionType.None)) {
+                this.Permissions.Add(new PermissionModel() { Name = name.ToString() });
             }
         }
 

@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Newtonsoft.Json;
 
 namespace Procon.Core.Shared {
     /// <summary>
@@ -18,7 +17,6 @@ namespace Procon.Core.Shared {
         /// <summary>
         /// The command to be executed, will be converted to a string in Name
         /// </summary>
-        [JsonIgnore]
         public CommandType CommandType {
             get { return this._mCommandType; }
             set {
@@ -34,15 +32,16 @@ namespace Procon.Core.Shared {
         /// <summary>
         /// When in the execution we want to capture the command (before, as the handler or after)
         /// </summary>
-        [JsonIgnore]
         public CommandAttributeType CommandAttributeType { get; set; }
 
         /// <summary>
         /// A list of parameter names with the type of parameter expected.
         /// </summary>
-        [JsonIgnore]
         public List<CommandParameterType> ParameterTypes { get; set; }
 
+        /// <summary>
+        /// Initializes the dispatch with default values.
+        /// </summary>
         public CommandDispatch() {
             this.CommandAttributeType = CommandAttributeType.Handler;
         }

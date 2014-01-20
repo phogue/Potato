@@ -17,31 +17,12 @@ namespace Procon.Core.Connections {
     /// Handles connections, plugins and text commands for a single game server.
     /// </summary>
     [Serializable]
-    public class ConnectionController : CoreController, ISharedReferenceAccess {
-        /// <summary>
-        /// Data about the protocol connection
-        /// </summary>
+    public class ConnectionController : CoreController, ISharedReferenceAccess, IConnectionController {
         public ConnectionModel ConnectionModel { get; set; }
 
-        /// <summary>
-        /// The controller to load up and manage plugins
-        /// </summary>
-        public CorePluginController Plugins { get; set; }
-
-        /// <summary>
-        /// Text command controller to pipe all text chats through for analysis of text commands.
-        /// </summary>
-        public TextCommandController TextCommands { get; protected set; }
-
-        /// <summary>
-        ///  The actual game object
-        /// </summary>
         public IProtocol Protocol { get; set; }
 
-        /// <summary>
-        /// The instance of procon that owns this connection.
-        /// </summary>
-        public InstanceController Instance { get; set; }
+        public ICorePluginController Plugins { get; set; }
 
         /// <summary>
         /// Proxy to the active protocol state
@@ -49,6 +30,16 @@ namespace Procon.Core.Connections {
         public IProtocolState ProtocolState {
             get { return this.Protocol != null ? this.Protocol.State : null; }
         }
+
+        /// <summary>
+        /// Text command controller to pipe all text chats through for analysis of text commands.
+        /// </summary>
+        public ITextCommandController TextCommands { get; protected set; }
+
+        /// <summary>
+        /// The instance of procon that owns this connection.
+        /// </summary>
+        public InstanceController Instance { get; set; }
 
         public SharedReferences Shared { get; private set; }
 
@@ -159,6 +150,23 @@ namespace Procon.Core.Connections {
             });
 
             return base.Execute();
+        }
+
+        public override void Poke() {
+            base.Poke();
+
+            if (this.Protocol != null) {
+                if (this.Protocol.State != null && this.Protocol.State.Settings.Current.ConnectionState == ConnectionState.ConnectionDisconnected) {
+                    this.AttemptConnection();
+                }
+                else {
+                    this.Protocol.Synchronize();
+                }
+            }
+
+            if (this.Plugins != null) {
+                this.Plugins.Poke();
+            }
         }
 
         /// <summary>

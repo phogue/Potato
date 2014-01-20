@@ -225,7 +225,7 @@ namespace Procon.Core.Packages {
             ICommandResult result = null;
 
             if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
-                Task.Factory.StartNew(this.BuildRepositoryCache);
+                Task.Factory.StartNew(this.Poke);
 
                 result = new CommandResult() {
                     Message = String.Format("Dispatched packages fetch signal."),
@@ -250,7 +250,7 @@ namespace Procon.Core.Packages {
         /// <remarks>
         ///     <para>This method can potentially be time consuming and should be run in a new thread.</para>
         /// </remarks>
-        public void BuildRepositoryCache() {
+        public override void Poke() {
             this.Cache.Build(this.LocalRepository);
 
             this.Shared.Events.Log(new GenericEvent() {

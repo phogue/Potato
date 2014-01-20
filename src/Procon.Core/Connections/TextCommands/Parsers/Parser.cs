@@ -13,7 +13,7 @@ namespace Procon.Core.Connections.TextCommands.Parsers {
         /// <summary>
         /// The connection which owns this parser, used to fetch player lists, map pools etc.
         /// </summary>
-        public ConnectionController Connection { get; set; }
+        public IConnectionController Connection { get; set; }
 
         /// <summary>
         /// List of potential text commands to match against

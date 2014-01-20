@@ -44,7 +44,7 @@ namespace Procon.Core.Test.Packages {
                 Cache = cache
             };
 
-            packages.BuildRepositoryCache();
+            packages.Poke();
 
             Assert.IsNotNull(packages.Cache.Repositories.First(repository => repository.Uri == "localhost"));
             Assert.AreEqual("A", packages.Cache.Repositories.First(repository => repository.Uri == "localhost").Packages.First().Id);
@@ -84,7 +84,7 @@ namespace Procon.Core.Test.Packages {
 
             packages.Shared.Events = events;
 
-            packages.BuildRepositoryCache();
+            packages.Poke();
 
             Assert.IsNotEmpty(events.LoggedEvents);
             Assert.AreEqual("PackagesCacheRebuilt", events.LoggedEvents.First().Name);

@@ -19,7 +19,9 @@ namespace Procon.Core.Connections.Plugins {
     /// Manages loading and propogating plugin events, as well as callbacks from
     /// a plugin back to Procon.
     /// </summary>
-    public class CorePluginController : AsynchronousCoreController, ISharedReferenceAccess, IRenewableLease {
+    public class CorePluginController : AsynchronousCoreController, ISharedReferenceAccess, ICorePluginController {
+        public List<PluginModel> LoadedPlugins { get; protected set; }
+
         /// <summary>
         /// The appdomain all of the plugins are loaded into.
         /// </summary>
@@ -31,14 +33,9 @@ namespace Procon.Core.Connections.Plugins {
         public ISandboxPluginController PluginFactory { get; protected set; }
 
         /// <summary>
-        /// List of plugins loaded in the app domain.
-        /// </summary>
-        public List<PluginModel> LoadedPlugins { get; protected set; }
-
-        /// <summary>
         /// The connection which owns this plugin app domain and the connection which the plugins control.
         /// </summary>
-        public ConnectionController Connection { get; set; }
+        public IConnectionController Connection { get; set; }
 
         /// <summary>
         /// Works between PluginController and RemotePluginController as a known type by a plugin
@@ -366,7 +363,7 @@ namespace Procon.Core.Connections.Plugins {
         /// <summary>
         /// Renews the lease on the plugin factory as well as each loaded plugin proxy
         /// </summary>
-        public void RenewLease() {
+        public override void Poke() {
             ILease lease = ((MarshalByRefObject)this.PluginFactory).GetLifetimeService() as ILease;
 
             if (lease != null) {

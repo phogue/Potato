@@ -12,7 +12,7 @@ namespace Procon.Core.Connections.TextCommands {
     /// <summary>
     /// Manages registering, dispatching text commands
     /// </summary>
-    public class TextCommandController : CoreController, ISharedReferenceAccess {
+    public class TextCommandController : CoreController, ISharedReferenceAccess, ITextCommandController {
         /// <summary>
         /// Full list of text commands to check against.
         /// </summary>
@@ -21,7 +21,7 @@ namespace Procon.Core.Connections.TextCommands {
         /// <summary>
         /// The owner of this controller, used to lookup the game with all the player data and such in it.
         /// </summary>
-        public ConnectionController Connection { get; set; }
+        public IConnectionController Connection { get; set; }
 
         public SharedReferences Shared { get; private set; }
 
@@ -340,11 +340,6 @@ namespace Procon.Core.Connections.TextCommands {
             return result;
         }
 
-        /// <summary>
-        /// Checks if a prefix is an allowed prefix
-        /// </summary>
-        /// <param name="prefix">The prefix to check (e.g !, @ etc.)</param>
-        /// <returns>The parameter prefix, or null if the prefix is invalid</returns>
         public String GetValidTextCommandPrefix(String prefix) {
             String result = null;
 

@@ -10,7 +10,7 @@ namespace Procon.Core.Shared {
     /// Handles command routing and config handling
     /// </summary>
     [Serializable]
-    public abstract class CoreController : MarshalByRefObject, INotifyPropertyChanged, IDisposable, ICloneable, ICoreController {
+    public abstract class CoreController : MarshalByRefObject, INotifyPropertyChanged, ICloneable, ICoreController {
         /// <summary>
         /// List of dispatch attributes to the method to call, provided the parameter list matches.
         /// </summary>
@@ -65,6 +65,10 @@ namespace Procon.Core.Shared {
         /// </summary>
         /// <param name="config"></param>
         public virtual void WriteConfig(IConfig config) { }
+
+        public virtual void Poke() {
+            
+        }
 
         /// <summary>
         /// Loads the specified configuration file.

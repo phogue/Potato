@@ -5,7 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using Procon.Core.Connections;
-using Procon.Core.Connections.Plugins;
+using Procon.Core.Database;
 using Procon.Core.Events;
 using Procon.Core.Packages;
 using Procon.Core.Remote;
@@ -24,22 +24,29 @@ namespace Procon.Core {
         /// <summary>
         /// List of game connections
         /// </summary>
-        public List<ConnectionController> Connections { get; protected set; }
+        // todo Convert to ICoreController
+        public List<IConnectionController> Connections { get; protected set; }
 
         /// <summary>
         /// The packages that are intalled or can be installed.
         /// </summary>
+        // todo Convert to ICoreController
         public PackagesController Packages { get; protected set; }
 
         /// <summary>
         /// The command server controller, if active.
         /// </summary>
-        public ICommandServerController CommandServer { get; protected set; }
+        public ICoreController CommandServer { get; protected set; }
+
+        /// <summary>
+        /// The database controller for interacting with databases.
+        /// </summary>
+        public ICoreController Database { get; protected set; }
 
         /// <summary>
         /// Controller to push events to various sources.
         /// </summary>
-        public PushEventsController PushEvents { get; protected set; }
+        public ICoreController PushEvents { get; protected set; }
 
         /// <summary>
         /// Tasks to be run by this connection. Primarily used to reattempt connections
@@ -50,7 +57,7 @@ namespace Procon.Core {
         /// <summary>
         /// Output to the console for all events processed by this instance.
         /// </summary>
-        public EventsConsoleController EventsConsole { get; protected set; }
+        public ICoreController EventsConsole { get; protected set; }
 
         /// <summary>
         /// The latest service message to post back to the service controller. If no message exists then a "ok" response will be sent.
@@ -64,8 +71,8 @@ namespace Procon.Core {
         /// </summary>
         public InstanceController() : base() {
             this.Shared = new SharedReferences();
-            
-            this.Connections = new List<ConnectionController>();
+
+            this.Connections = new List<IConnectionController>();
 
             this.Packages = new PackagesController() {
                 BubbleObjects = new List<ICoreController>() {
@@ -79,13 +86,18 @@ namespace Procon.Core {
                 }
             };
 
+            this.Database = new DatabaseController() {
+                BubbleObjects = new List<ICoreController>() {
+                    this
+                }
+            };
+
             this.PushEvents = new PushEventsController();
 
             this.Tasks = new List<Timer>() {
                 new Timer(Connection_Tick, this, TimeSpan.FromSeconds(15), TimeSpan.FromSeconds(15)),
                 new Timer(Events_Tick, this, TimeSpan.FromSeconds(60), TimeSpan.FromSeconds(60)),
                 new Timer(CommandServer_Tick, this, TimeSpan.FromSeconds(60), TimeSpan.FromSeconds(60)),
-                new Timer(Plugin_Tick, this, TimeSpan.FromSeconds(60), TimeSpan.FromSeconds(60)),
                 new Timer(Packages_Tick, this, TimeSpan.FromSeconds(5), TimeSpan.FromMinutes(60))
             };
 
@@ -224,13 +236,8 @@ namespace Procon.Core {
         private void Connection_Tick(Object state) {
             if (this.Connections != null) {
                 lock (this.Connections) {
-                    foreach (ConnectionController connection in this.Connections.Where(connection => connection.Protocol != null)) {
-                        if (connection.Protocol.State != null && connection.Protocol.State.Settings.Current.ConnectionState == ConnectionState.ConnectionDisconnected) {
-                            connection.AttemptConnection();
-                        }
-                        else {
-                            connection.Protocol.Synchronize();
-                        }
+                    foreach (IConnectionController connection in this.Connections) {
+                        connection.Poke();
                     }
                 }
             }
@@ -256,18 +263,6 @@ namespace Procon.Core {
         }
 
         /// <summary>
-        /// Renews all of the remoting leases on active plugins for each connection.
-        /// </summary>
-        /// <param name="state"></param>
-        protected void Plugin_Tick(Object state) {
-            if (this.Connections != null) {
-                foreach (CorePluginController plugins in this.Connections.Select(connection => connection.Plugins)) {
-                    plugins.RenewLease();
-                }
-            }
-        }
-
-        /// <summary>
         /// Rebuilds the current repositories cache every 60 minutes
         /// </summary>
         /// <param name="state"></param>
@@ -277,7 +272,7 @@ namespace Procon.Core {
                 // repository the host has setup.
                 this.Shared.Variables.Variable(CommonVariableNames.PackagesRepositoryUri).Value = this.Shared.Variables.Get(CommonVariableNames.PackagesDefaultSourceRepositoryUri, Defines.PackagesDefaultSourceRepositoryUri);
 
-                this.Packages.BuildRepositoryCache();
+                this.Packages.Poke();
             }
         }
 
@@ -292,6 +287,7 @@ namespace Procon.Core {
             this.Packages.Execute();
             this.CommandServer.Execute();
             this.PushEvents.Execute();
+            this.Database.Execute();
 
             this.Execute(new Command() {
                 Origin = CommandOrigin.Local
@@ -341,6 +337,8 @@ namespace Procon.Core {
             this.Shared.Events.WriteConfig(config);
 
             this.Packages.WriteConfig(config);
+
+            this.Database.WriteConfig(config);
 
             this.Shared.Languages.WriteConfig(config);
 
@@ -435,6 +433,7 @@ namespace Procon.Core {
                 list.Add(this.Shared.Variables);
                 list.Add(this.Shared.Events);
                 list.Add(this.Packages);
+                list.Add(this.Database);
             }
             
             return list;
@@ -478,6 +477,9 @@ namespace Procon.Core {
 
             this.Packages.Dispose();
             this.Packages = null;
+
+            this.Database.Dispose();
+            this.Database = null;
 
             this.CommandServer.Dispose();
             this.CommandServer = null;
@@ -707,7 +709,7 @@ namespace Procon.Core {
             return result;
         }
 
-        protected ICommandResult InstanceRemoveConnection(ICommand command, ConnectionController connection) {
+        protected ICommandResult InstanceRemoveConnection(ICommand command, IConnectionController connection) {
             ICommandResult result = null;
 
             // As long as the current account is allowed to execute this command...
@@ -758,7 +760,7 @@ namespace Procon.Core {
         public ICommandResult InstanceRemoveConnectionByGuid(ICommand command, Dictionary<String, ICommandParameter> parameters) {
             String connectionGuid = parameters["connectionGuid"].First<String>();
 
-            ConnectionController connection = this.Connections.FirstOrDefault(x => String.Compare(x.ConnectionModel.ConnectionGuid.ToString(), connectionGuid, StringComparison.OrdinalIgnoreCase) == 0);
+            IConnectionController connection = this.Connections.FirstOrDefault(x => String.Compare(x.ConnectionModel.ConnectionGuid.ToString(), connectionGuid, StringComparison.OrdinalIgnoreCase) == 0);
 
             return this.InstanceRemoveConnection(command, connection);
         }
@@ -774,7 +776,7 @@ namespace Procon.Core {
             String hostName = parameters["hostName"].First<String>();
             UInt16 port = parameters["port"].First<UInt16>();
 
-            ConnectionController connection = this.Connections.FirstOrDefault(c =>
+            IConnectionController connection = this.Connections.FirstOrDefault(c =>
                 c.ConnectionModel.ProtocolType.Provider == gameTypeProvider &&
                 c.ConnectionModel.ProtocolType.Type == gameTypeType &&
                 c.ConnectionModel.Hostname == hostName &&

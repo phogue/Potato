@@ -1,10 +1,11 @@
+using System;
 using System.Collections.Generic;
 
 namespace Procon.Core.Shared {
     /// <summary>
     /// The implementing object accepts command execution
     /// </summary>
-    public interface ICoreController {
+    public interface ICoreController : IDisposable {
         /// <summary>
         /// All objects to tunnel downwards during execution
         /// </summary>
@@ -52,5 +53,20 @@ namespace Procon.Core.Shared {
         /// <param name="command"></param>
         /// <returns></returns>
         ICommandResult Bubble(ICommand command);
+
+        /// <summary>
+        /// Call after the constructor is called to setup events with any assigned properties
+        /// </summary>
+        ICoreController Execute();
+
+        /// <summary>
+        /// Appends config items
+        /// </summary>
+        void WriteConfig(IConfig config);
+
+        /// <summary>
+        /// A set interval Poke
+        /// </summary>
+        void Poke();
     }
 }

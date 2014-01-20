@@ -9,7 +9,7 @@ namespace Procon.Core.Remote {
     /// <summary>
     /// Listens for incoming connections, authenticates and dispatches commands
     /// </summary>
-    public class CommandServerController : CoreController, ISharedReferenceAccess, ICommandServerController {
+    public class CommandServerController : CoreController, ISharedReferenceAccess {
         /// <summary>
         /// The client to send/recv remote commands.
         /// </summary>

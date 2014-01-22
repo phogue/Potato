@@ -182,6 +182,10 @@ namespace Procon.Core.Shared {
         /// Fetches all events after an event id, provided the events remain in the stream.
         /// </summary>
         EventsFetchAfterEventId,
+        /// <summary>
+        /// Log a new event, assigning it an id and setting the stamp to the current date/time. 
+        /// </summary>
+        EventsLog,
 
         // Game queries
 

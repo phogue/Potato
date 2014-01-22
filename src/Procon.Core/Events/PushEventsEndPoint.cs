@@ -10,7 +10,7 @@ namespace Procon.Core.Events {
     /// <summary>
     /// An end point to push grouped events to via http/https
     /// </summary>
-    public class PushEventsEndPoint : IDisposable {
+    public class PushEventsEndPoint : IPushEventsEndPoint, IDisposable {
         /// <summary>
         /// The identifier of this stream
         /// </summary>
@@ -45,12 +45,12 @@ namespace Procon.Core.Events {
         /// <summary>
         /// List of objects to serialize to xml passing through as content as POST.
         /// </summary>
-        public List<GenericEvent> EventsStream { get; set; }
+        public List<IGenericEvent> EventsStream { get; set; }
 
         /// <summary>
         /// Event fired whenever a push has completed successfully or with an error.
         /// </summary>
-        public event EventHandler PushCompleted;
+        public event Action<IPushEventsEndPoint> PushCompleted;
 
         /// <summary>
         /// Initializes the end point with the default values.
@@ -58,7 +58,7 @@ namespace Procon.Core.Events {
         public PushEventsEndPoint() {
             this.Id = String.Empty;
             this.StreamKey = String.Empty;
-            this.EventsStream = new List<GenericEvent>();
+            this.EventsStream = new List<IGenericEvent>();
             this.Pushing = false;
             this.Interval = 1;
             this.ContentType = Mime.ApplicationXml;
@@ -69,10 +69,10 @@ namespace Procon.Core.Events {
         /// Appends an event onto the end of the objects to stream next sync
         /// </summary>
         /// <param name="item">The event to append</param>
-        public void Append(GenericEvent item) {
+        public void Append(IGenericEvent item) {
             if (this.EventsStream != null) {
                 lock (this.EventsStream) {
-                    item.Disposed += new EventHandler(GenericEventArgs_Disposed);
+                    item.Disposed += GenericEventArgs_Disposed;
 
                     this.EventsStream.Add(item);
                 }
@@ -199,9 +199,9 @@ namespace Procon.Core.Events {
         }
 
         protected virtual void OnPushCompleted() {
-            EventHandler handler = this.PushCompleted;
+            var handler = this.PushCompleted;
             if (handler != null) {
-                handler(this, EventArgs.Empty);
+                handler(this);
             }
         }
 

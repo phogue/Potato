@@ -86,6 +86,7 @@
     <Compile Include="Connections\TextCommands\TextCommandController.cs" />
     <Compile Include="Connections\TextCommands\Parsers\FuzzyParser.cs" />
     <Compile Include="Connections\TextCommands\Parsers\Parser.cs" />
+    <Compile Include="Events\IPushEventsEndPoint.cs" />
     <Compile Include="Packages\IRepositoryCache.cs" />
     <Compile Include="Packages\OrphanedCacheBuilder.cs" />
     <Compile Include="Packages\AvailableCacheBuilder.cs" />

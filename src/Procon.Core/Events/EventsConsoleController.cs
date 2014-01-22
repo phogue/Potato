@@ -41,7 +41,7 @@ namespace Procon.Core.Events {
             return String.Format("{0}..{1}", new String(guid.Take(5).ToArray()), new String(guid.Skip(Math.Max(0, guid.Count() - 3)).Take(3).ToArray()));
         }
 
-        protected String FormatEvent(GenericEvent item) {
+        protected String FormatEvent(IGenericEvent item) {
             String text = null;
 
             switch (item.Name) {
@@ -78,7 +78,7 @@ namespace Procon.Core.Events {
             return text;
         }
 
-        protected void Events_EventLogged(object sender, GenericEvent e) {
+        protected void Events_EventLogged(object sender, IGenericEvent e) {
             String text = this.FormatEvent(e);
 
             if (String.IsNullOrEmpty(text) == false) Console.WriteLine(text);

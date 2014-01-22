@@ -47,7 +47,7 @@ namespace Procon.Core.Events {
         /// </summary>
         /// <param name="sender">The sender</param>
         /// <param name="e">The event that has been logged</param>
-        public delegate void EventLoggedHandler(Object sender, GenericEvent e);
+        public delegate void EventLoggedHandler(Object sender, IGenericEvent e);
 
         public SharedReferences Shared { get; private set; }
 
@@ -72,12 +72,22 @@ namespace Procon.Core.Events {
                             Type = typeof(ulong)
                         }
                     },
-                    Handler = this.FetchEventsSince
+                    Handler = this.EventsFetchAfterEventId
+                },
+                new CommandDispatch() {
+                    CommandType = CommandType.EventsLog,
+                    ParameterTypes = new List<CommandParameterType>() {
+                        new CommandParameterType() {
+                            Name = "event",
+                            Type = typeof(IGenericEvent)
+                        }
+                    },
+                    Handler = this.EventsLog
                 }
             });
         }
 
-        protected virtual void OnEventLogged(GenericEvent e) {
+        protected virtual void OnEventLogged(IGenericEvent e) {
             EventLoggedHandler handler = this.EventLogged;
 
             if (handler != null) {
@@ -99,7 +109,7 @@ namespace Procon.Core.Events {
         /// Log an item to the events list
         /// </summary>
         /// <param name="item"></param>
-        public void Log(GenericEvent item) {
+        public void Log(IGenericEvent item) {
             // Can be null after disposal.
             if (this.LoggedEvents != null) {
                 item.Id = this.AcquireEventId;
@@ -210,7 +220,7 @@ namespace Procon.Core.Events {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public ICommandResult FetchEventsSince(ICommand command, Dictionary<String, ICommandParameter> parameters) {
+        public ICommandResult EventsFetchAfterEventId(ICommand command, Dictionary<String, ICommandParameter> parameters) {
             ICommandResult result = null;
 
             ulong eventId = parameters["eventId"].First<ulong>();
@@ -233,6 +243,24 @@ namespace Procon.Core.Events {
                         Events = events
                     }
                 };
+            }
+            else {
+                result = CommandResult.InsufficientPermissions;
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Logs a new event
+        /// </summary>
+        public ICommandResult EventsLog(ICommand command, Dictionary<String, ICommandParameter> parameters) {
+            ICommandResult result = null;
+
+            IGenericEvent @event = parameters["event"].First<IGenericEvent>();
+
+            if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
+                this.Log(@event);
             }
             else {
                 result = CommandResult.InsufficientPermissions;

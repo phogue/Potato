@@ -151,7 +151,7 @@ namespace Procon.Core.Events {
             return base.Execute();
         }
 
-        private void MasterEvents_EventLogged(object sender, GenericEvent e) {
+        private void MasterEvents_EventLogged(object sender, IGenericEvent e) {
             foreach (KeyValuePair<String, PushEventsEndPoint> endPoint in this.EndPoints) {
                 endPoint.Value.Append(e);
             }

@@ -10,7 +10,7 @@ namespace Procon.Core.Events {
     /// <summary>
     /// An end point to push grouped events to via http/https
     /// </summary>
-    public class PushEventsEndPoint : IPushEventsEndPoint, IDisposable {
+    public class PushEventsEndPoint : IPushEventsEndPoint {
         /// <summary>
         /// The identifier of this stream
         /// </summary>

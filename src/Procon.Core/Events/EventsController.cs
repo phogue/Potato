@@ -261,6 +261,15 @@ namespace Procon.Core.Events {
 
             if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
                 this.Log(@event);
+
+                result = new CommandResult() {
+                    Success = true,
+                    Status = CommandResultType.Success,
+                    Message = String.Format(@"Fetched {0} event(s)", events.Count),
+                    Now = {
+                        Events = events
+                    }
+                };
             }
             else {
                 result = CommandResult.InsufficientPermissions;

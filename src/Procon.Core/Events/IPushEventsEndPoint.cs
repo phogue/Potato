@@ -6,7 +6,7 @@ namespace Procon.Core.Events {
     /// <summary>
     /// An end point to push grouped events to via http/https
     /// </summary>
-    public interface IPushEventsEndPoint {
+    public interface IPushEventsEndPoint : IDisposable {
         /// <summary>
         /// The identifier of this stream
         /// </summary>
@@ -47,5 +47,16 @@ namespace Procon.Core.Events {
         /// Event fired whenever a push has completed successfully or with an error.
         /// </summary>
         event Action<IPushEventsEndPoint> PushCompleted;
+
+        /// <summary>
+        /// Appends an event onto the end of the objects to stream next sync
+        /// </summary>
+        /// <param name="item">The event to append</param>
+        void Append(IGenericEvent item);
+
+        /// <summary>
+        /// Pushes the current data to the Uri.
+        /// </summary>
+        void Push();
     }
 }

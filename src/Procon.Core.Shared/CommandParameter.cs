@@ -29,7 +29,7 @@ namespace Procon.Core.Shared {
             typeof (LanguageModel),
             typeof (TextCommandModel),
             typeof (TextCommandMatchModel),
-            typeof (GenericEvent),
+            typeof (IGenericEvent),
             typeof (RepositoryModel),
             typeof (PackageWrapperModel),
             typeof (PluginModel),
@@ -101,7 +101,7 @@ namespace Procon.Core.Shared {
             else if (t == typeof(TextCommandMatchModel) && this.Data.TextCommandMatches != null) {
                 all = this.Data.TextCommandMatches.Cast<Object>().ToList();
             }
-            else if (t == typeof(GenericEvent) && this.Data.Events != null) {
+            else if (t == typeof(IGenericEvent) && this.Data.Events != null) {
                 all = this.Data.Events.Cast<Object>().ToList();
             }
             else if (t == typeof(RepositoryModel) && this.Data.Repositories != null) {

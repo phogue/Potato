@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
 using Procon.Core.Connections.Plugins;
+using Procon.Core.Events;
 using Procon.Core.Shared;
 using Procon.Net.Shared;
 using Procon.Net.Shared.Models;
@@ -106,7 +107,6 @@ namespace Procon.Examples.Plugins.Events.Test {
             });
         }
 
-
         /// <summary>
         /// Test for you to debug.
         /// Set a breakpoint within Procon.Examples.Events.GenericEvent.PluginsPluginEnabled
@@ -127,6 +127,37 @@ namespace Procon.Examples.Plugins.Events.Test {
             });
 
             // That's it. Enabling the plugin will have this event fired.
+        }
+
+        /// <summary>
+        /// Test for you to debug.
+        /// Set a breakpoint within Procon.Examples.Events.GenericEvent.PluginsPluginEnabled
+        /// </summary>
+        [Test]
+        public void TestCustomEventLoggedFromPlugin() {
+            // Create an events controller to bubble up commands from the plugins controller
+            EventsController events = (EventsController)new EventsController().Execute();
+
+            // Create a new plugin controller to load up the test plugin
+            CorePluginController plugins = (CorePluginController)new CorePluginController().Execute();
+
+            plugins.BubbleObjects = new List<ICoreController>() {
+                events
+            };
+
+            // Enable the single plugin that was loaded, otherwise it won't recieve any tunneled
+            // commands or events.
+            plugins.Tunnel(new Command() {
+                Origin = CommandOrigin.Local,
+                CommandType = CommandType.PluginsEnable,
+                ScopeModel = {
+                    PluginGuid = plugins.LoadedPlugins.First().PluginGuid
+                }
+            });
+
+            // Now check that our custom event was logged to th events controller
+            Assert.IsNotEmpty(events.LoggedEvents);
+            Assert.AreEqual("This is a custom event that will be logged when the plugin is enabled.", events.LoggedEvents.First().Name);
         }
     }
 }

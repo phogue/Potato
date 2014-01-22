@@ -265,9 +265,10 @@ namespace Procon.Core.Events {
                 result = new CommandResult() {
                     Success = true,
                     Status = CommandResultType.Success,
-                    Message = String.Format(@"Fetched {0} event(s)", events.Count),
                     Now = {
-                        Events = events
+                        Events = new List<IGenericEvent>() {
+                            @event
+                        }
                     }
                 };
             }

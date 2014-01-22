@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Procon.Core.Shared;
 using Procon.Core.Shared.Events;
 using Procon.Core.Shared.Plugins;
 using Procon.Net.Shared;
@@ -66,6 +67,12 @@ namespace Procon.Examples.Plugins.Events {
                 // get commands and events from now on.
 
                 Console.WriteLine("Program.GenericEvent.PluginsPluginEnabled: k, go!");
+
+                // Log a custom event with procon whenever this plugin is enabled. You
+                // can log these whenever you want something recorded/transported over the push event
+                this.Bubble(CommandBuilder.EventsLog(new GenericEvent() {
+                    Name = "This is a custom event that will be logged when the plugin is enabled."
+                }));
             }
         }
     }

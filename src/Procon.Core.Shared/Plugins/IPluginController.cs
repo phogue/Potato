@@ -6,16 +6,11 @@ namespace Procon.Core.Shared.Plugins {
     /// <summary>
     /// Interface for procon to communicate across the AppDomain to the plugin
     /// </summary>
-    public interface IPluginController : ICoreController, IDisposable {
+    public interface IPluginController : ICoreController {
         /// <summary>
         /// The Guid of the executing assembly. Used to uniquely identify this plugin. 
         /// </summary>
         Guid PluginGuid { get; }
-
-        /// <summary>
-        /// Execute the controller
-        /// </summary>
-        ICoreController Execute();
 
         /// <summary>
         /// Creates and sets the more complex properties of this plugin.

@@ -3,10 +3,23 @@ using System.Collections.Generic;
 using System.Linq;
 
 namespace Procon.Net.Shared.Utils.HTTP {
+    /// <summary>
+    /// Mime types
+    /// </summary>
     public class Mime {
-
+        /// <summary>
+        /// application/json
+        /// </summary>
         public const String ApplicationJson = "application/json";
+
+        /// <summary>
+        /// application/xml
+        /// </summary>
         public const String ApplicationXml = "application/xml";
+
+        /// <summary>
+        /// text/html
+        /// </summary>
         public const String TextHtml = "text/html";
 
         /// <summary>

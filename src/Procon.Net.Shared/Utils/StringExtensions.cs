@@ -7,6 +7,9 @@ using System.Linq;
 using System.Globalization;
 
 namespace Procon.Net.Shared.Utils {
+    /// <summary>
+    /// A variety of string extenstions to help with various tasks
+    /// </summary>
     public static class StringExtensions {
 
         /// <summary>
@@ -20,67 +23,70 @@ namespace Procon.Net.Shared.Utils {
             return System.Convert.ToBase64String(randBuffer).Remove(length);
         }
 
-        public static List<String> Wordify(this string data) {
-            List<String> returnList = new List<String>();
+        /// <summary>
+        /// Splits a string into words, preserving words inside quotes
+        /// </summary>
+        public static List<String> Wordify(this String data) {
+            List<String> list = new List<String>();
 
-            String fullWord = String.Empty;
-            int quoteStack = 0;
-            bool isEscaped = false;
+            String word = String.Empty;
+            int stack = 0;
+            bool escaped = false;
 
             foreach (char input in data) {
 
                 if (input == ' ') {
-                    if (quoteStack == 0) {
-                        returnList.Add(fullWord);
-                        fullWord = String.Empty;
+                    if (stack == 0) {
+                        list.Add(word);
+                        word = String.Empty;
                     }
                     else {
-                        fullWord += ' ';
+                        word += ' ';
                     }
                 }
-                else if (input == 'n' && isEscaped == true) {
-                    fullWord += '\n';
-                    isEscaped = false;
+                else if (input == 'n' && escaped == true) {
+                    word += '\n';
+                    escaped = false;
                 }
-                else if (input == 'r' && isEscaped == true) {
-                    fullWord += '\r';
-                    isEscaped = false;
+                else if (input == 'r' && escaped == true) {
+                    word += '\r';
+                    escaped = false;
                 }
-                else if (input == 't' && isEscaped == true) {
-                    fullWord += '\t';
-                    isEscaped = false;
+                else if (input == 't' && escaped == true) {
+                    word += '\t';
+                    escaped = false;
                 }
                 else if (input == '"') {
-                    if (isEscaped == false) {
-                        if (quoteStack == 0) {
-                            quoteStack++;
+                    if (escaped == false) {
+                        if (stack == 0) {
+                            stack++;
                         }
                         else {
-                            quoteStack--;
+                            stack--;
                         }
                     }
                     else {
-                        fullWord += '"';
+                        word += '"';
                     }
                 }
                 else if (input == '\\') {
-                    if (isEscaped == true) {
-                        fullWord += '\\';
-                        isEscaped = false;
+                    if (escaped == true) {
+                        word += '\\';
+                        escaped = false;
                     }
                     else {
-                        isEscaped = true;
+                        escaped = true;
                     }
                 }
                 else {
-                    fullWord += input;
-                    isEscaped = false;
+                    word += input;
+                    escaped = false;
                 }
             }
 
-            returnList.Add(fullWord);
+            list.Add(word);
 
-            return returnList;
+            return list;
         }
 
         /// <summary><![CDATA[
@@ -186,13 +192,18 @@ namespace Procon.Net.Shared.Utils {
             return stripped;
         }
 
+        /// <summary>
+        /// Sanitizes a directory name (replaces all non-word chars with hyphens)
+        /// </summary>
         public static String SanitizeDirectory(this String s) {
-            //s = Regex.Replace(s, "[/\\\\]+", "-").Trim('-');
             s = Regex.Replace(s, "[^\\w]+", "-").Trim('-');
 
             return s;
         }
 
+        /// <summary>
+        /// Strips the query string from a url and sanitizes the remaining text
+        /// </summary>
         public static String Slug(this String s) {
             String combined = s;
             Uri uri;

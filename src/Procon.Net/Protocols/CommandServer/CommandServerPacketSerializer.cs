@@ -11,7 +11,6 @@ using System.Text.RegularExpressions;
 using System.Web;
 using Procon.Net.Shared;
 using Procon.Net.Shared.Utils;
-using Procon.Net.Utils;
 
 namespace Procon.Net.Protocols.CommandServer {
     /// <summary>
@@ -93,7 +92,7 @@ namespace Procon.Net.Protocols.CommandServer {
 
             using (MemoryStream memoryStream = new MemoryStream()) {
                 using (GZipStream compressionStream = new GZipStream(memoryStream, CompressionMode.Compress)) {
-                    compressionStream.Write(data);
+                    compressionStream.Write(data, 0, data.Length);
                 }
 
                 compressedData = memoryStream.ToArray();
@@ -107,7 +106,7 @@ namespace Procon.Net.Protocols.CommandServer {
 
             using (MemoryStream memoryStream = new MemoryStream()) {
                 using (DeflateStream compressionStream = new DeflateStream(memoryStream, CompressionMode.Compress)) {
-                    compressionStream.Write(data);
+                    compressionStream.Write(data, 0, data.Length);
                 }
 
                 compressedData = memoryStream.ToArray();

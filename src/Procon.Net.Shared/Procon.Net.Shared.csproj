@@ -137,7 +137,6 @@
     <Compile Include="Utils\HTTP\Mime.cs" />
     <Compile Include="Utils\MD5.cs" />
     <Compile Include="Utils\Network.cs" />
-    <Compile Include="Utils\StreamExtensions.cs" />
     <Compile Include="Utils\StringExtensions.cs" />
   </ItemGroup>
   <ItemGroup>

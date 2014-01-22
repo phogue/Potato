@@ -34,12 +34,12 @@ namespace Procon.Core.Test.Events {
 
             var events = new EventsController();
 
-            var pushEvents = new PushEventsController() {
+            var pushEvents = (PushEventsController)new PushEventsController() {
                 Shared = {
                     Variables = variables,
                     Events = events
                 }
-            }.Execute() as PushEventsController;
+            }.Execute();
 
             var groupVariables = new Dictionary<String, Object>() {
                 {CommonVariableNames.EventsPushConfigGroups.ToString(), new List<String>() {
@@ -85,12 +85,12 @@ namespace Procon.Core.Test.Events {
 
             var events = new EventsController();
 
-            var pushEvents = new PushEventsController() {
+            var pushEvents = (PushEventsController)new PushEventsController() {
                 Shared = {
                     Variables = variables,
                     Events = events
                 }
-            }.Execute() as PushEventsController;
+            }.Execute();
 
             variables.Set(new Command() {
                 Origin = CommandOrigin.Local,
@@ -126,12 +126,12 @@ namespace Procon.Core.Test.Events {
 
             var events = new EventsController();
 
-            var pushEvents = new PushEventsController() {
+            var pushEvents = (PushEventsController)new PushEventsController() {
                 Shared = {
                     Variables = variables,
                     Events = events
                 }
-            }.Execute() as PushEventsController;
+            }.Execute();
 
             variables.Set(new Command() {
                 Origin = CommandOrigin.Local,
@@ -152,7 +152,7 @@ namespace Procon.Core.Test.Events {
                 Message = "Yo."
             });
 
-            pushEvents.EndPoints[String.Empty].PushCompleted += (sender, args) => requestWait.Set();
+            pushEvents.EndPoints[String.Empty].PushCompleted += sender => requestWait.Set();
 
             Assert.IsTrue(requestWait.WaitOne(60000));
             Assert.AreEqual(0, pushEvents.EndPoints[String.Empty].EventsStream.Count);
@@ -198,12 +198,12 @@ namespace Procon.Core.Test.Events {
 
             var events = new EventsController();
 
-            var pushEvents = new PushEventsController() {
+            var pushEvents = (PushEventsController)new PushEventsController() {
                 Shared = {
                     Variables = variables,
                     Events = events
                 }
-            }.Execute() as PushEventsController;
+            }.Execute();
 
             variables.Set(new Command() {
                 Origin = CommandOrigin.Local,
@@ -241,12 +241,12 @@ namespace Procon.Core.Test.Events {
 
             var events = new EventsController();
 
-            var pushEvents = new PushEventsController() {
+            var pushEvents = (PushEventsController)new PushEventsController() {
                 Shared = {
                     Variables = variables,
                     Events = events
                 }
-            }.Execute() as PushEventsController;
+            }.Execute();
 
             variables.Set(new Command() {
                 Origin = CommandOrigin.Local,
@@ -307,12 +307,12 @@ namespace Procon.Core.Test.Events {
 
             var events = new EventsController();
 
-            var pushEvents = new PushEventsController() {
+            var pushEvents = (PushEventsController)new PushEventsController() {
                 Shared = {
                     Variables = variables,
                     Events = events
                 }
-            }.Execute() as PushEventsController;
+            }.Execute();
 
             variables.Set(new Command() {
                 Origin = CommandOrigin.Local,

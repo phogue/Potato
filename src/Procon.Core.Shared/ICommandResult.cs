@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Procon.Core.Shared {
     /// <summary>
@@ -51,5 +48,10 @@ namespace Procon.Core.Shared {
         /// Defaults to application/xml where the entire result is output
         /// </summary>
         String ContentType { get; set; }
+
+        /// <summary>
+        /// Called when the object is being disposed.
+        /// </summary>
+        event EventHandler Disposed;
     }
 }

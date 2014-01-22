@@ -70,7 +70,7 @@ namespace Procon.Core.Test.Events {
                 Message = "What up?"
             });
 
-            pushEndPoint.PushCompleted += (sender, args) => requestWait.Set();
+            pushEndPoint.PushCompleted += sender => requestWait.Set();
 
             pushEndPoint.Push();
 

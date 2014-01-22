@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Procon.Core.Shared.Events;
 using Procon.Core.Shared.Models;
 using Procon.Database.Shared;
 
@@ -407,6 +408,25 @@ namespace Procon.Core.Shared {
         /// <returns>The built command to dispatch</returns>
         public static ICommand VariablesGet(CommonVariableNames name) {
             return VariablesGet(name.ToString());
+        }
+
+        /// <summary>
+        /// Builds a command to send a EventsLog
+        /// </summary>
+        /// <returns>The built command to dispatch</returns>
+        public static ICommand EventsLog(IGenericEvent e) {
+            return new Command() {
+                CommandType = CommandType.EventsLog,
+                Parameters = new List<ICommandParameter>() {
+                    new CommandParameter() {
+                        Data = {
+                            Events = new List<IGenericEvent>() {
+                                e
+                            }
+                        }
+                    }
+                }
+            };
         }
     }
 }

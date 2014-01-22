@@ -15,7 +15,7 @@ namespace Procon.Core.Events {
         /// <summary>
         /// The end points to push new events to.
         /// </summary>
-        public Dictionary<String, PushEventsEndPoint> EndPoints { get; set; }
+        public Dictionary<String, IPushEventsEndPoint> EndPoints { get; set; }
 
         /// <summary>
         /// Our own task controller since various sources can set their own interval to be pushed.
@@ -34,7 +34,7 @@ namespace Procon.Core.Events {
         /// </summary>
         public PushEventsController() : base() {
             this.Shared = new SharedReferences();
-            this.EndPoints = new Dictionary<String, PushEventsEndPoint>();
+            this.EndPoints = new Dictionary<String, IPushEventsEndPoint>();
             this.Tasks = new List<Timer>();
             
             this.GroupedVariableListener = new GroupedVariableListener() {
@@ -85,7 +85,7 @@ namespace Procon.Core.Events {
                 // Make sure we have the available data to setup this end point.
                 if (String.IsNullOrEmpty(pushUri) == false) {
                     if (this.EndPoints.ContainsKey(pushEventsGroupName) == false) {
-                        PushEventsEndPoint endPoint = new PushEventsEndPoint() {
+                        IPushEventsEndPoint endPoint = new PushEventsEndPoint() {
                             // Deliberately done this way so two end points can't share identical credentials
                             // but share identical Uri's. Who knows what people might be doing?
                             Id = pushEventsGroupName,
@@ -122,7 +122,7 @@ namespace Procon.Core.Events {
             this.Tasks.ForEach(task => task.Dispose());
             this.Tasks.Clear();
 
-            foreach (KeyValuePair<String, PushEventsEndPoint> endPoint in this.EndPoints) {
+            foreach (var endPoint in this.EndPoints) {
                 this.Tasks.Add(
                     new Timer(OnTick, endPoint.Value, TimeSpan.FromMilliseconds(0), TimeSpan.FromSeconds(endPoint.Value.Interval))
                 );
@@ -134,7 +134,7 @@ namespace Procon.Core.Events {
         /// </summary>
         /// <param name="sender"></param>
         private static void OnTick(object sender) {
-            PushEventsEndPoint endPoint = sender as PushEventsEndPoint;
+            IPushEventsEndPoint endPoint = sender as PushEventsEndPoint;
 
             if (endPoint != null) {
                 endPoint.Push();
@@ -151,8 +151,8 @@ namespace Procon.Core.Events {
             return base.Execute();
         }
 
-        private void MasterEvents_EventLogged(object sender, GenericEvent e) {
-            foreach (KeyValuePair<String, PushEventsEndPoint> endPoint in this.EndPoints) {
+        private void MasterEvents_EventLogged(object sender, IGenericEvent e) {
+            foreach (var endPoint in this.EndPoints) {
                 endPoint.Value.Append(e);
             }
         }
@@ -160,7 +160,7 @@ namespace Procon.Core.Events {
         public override void Dispose() {
             this.UnassignEvents();
 
-            foreach (KeyValuePair<String, PushEventsEndPoint> endPoint in this.EndPoints) {
+            foreach (var endPoint in this.EndPoints) {
                 endPoint.Value.Dispose();
             }
             this.EndPoints.Clear();

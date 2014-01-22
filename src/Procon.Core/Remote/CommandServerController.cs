@@ -63,7 +63,7 @@ namespace Procon.Core.Remote {
         /// Pokes the underlying listener, ensuring that all clients held in memory are still
         /// active and not disconnected.
         /// </summary>
-        public void Poke() {
+        public override void Poke() {
             // Method implemented here instead of calling the public method so we can do
             // additional work during a Poke in the future.
 

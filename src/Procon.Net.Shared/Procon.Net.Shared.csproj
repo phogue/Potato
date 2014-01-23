@@ -49,6 +49,7 @@
     <Compile Include="IClientEventData.cs" />
     <Compile Include="IProtocolEventArgs.cs" />
     <Compile Include="IProtocolEventData.cs" />
+    <Compile Include="IProtocolSetup.cs" />
     <Compile Include="IProtocolState.cs" />
     <Compile Include="Models\BanModel.cs" />
     <Compile Include="Models\ChatModel.cs" />
@@ -75,6 +76,7 @@
     <Compile Include="ProtocolEventArgs.cs" />
     <Compile Include="ProtocolEventData.cs" />
     <Compile Include="ProtocolEventType.cs" />
+    <Compile Include="ProtocolSetup.cs" />
     <Compile Include="ProtocolType.cs" />
     <Compile Include="Geolocation\GeolocateIp.cs" />
     <Compile Include="Geolocation\IGeolocate.cs" />

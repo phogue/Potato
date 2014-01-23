@@ -42,9 +42,9 @@ namespace Procon.Core.Test.CoreInstance {
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     "Myrcon",
                     "MockProtocol",
-                    "93.186.198.11",
+                    "1.1.1.1",
                     27516,
-                    "phogueisabutterfly",
+                    "password",
                     ""
                 })
             });
@@ -82,7 +82,7 @@ namespace Procon.Core.Test.CoreInstance {
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     "Myrcon",
                     "MockProtocol",
-                    "93.186.198.11",
+                    "1.1.1.1",
                     27516
                 })
             });
@@ -110,7 +110,7 @@ namespace Procon.Core.Test.CoreInstance {
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     "Myrcon",
                     "MockProtocol",
-                    "93.186.198.11",
+                    "1.1.1.1",
                     27516
                 })
             });
@@ -135,9 +135,9 @@ namespace Procon.Core.Test.CoreInstance {
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     "Myrcon",
                     "MockProtocol",
-                    "93.186.198.11",
+                    "1.1.1.1",
                     27516,
-                    "phogueisabutterfly",
+                    "password",
                     ""
                 })
             });
@@ -151,7 +151,7 @@ namespace Procon.Core.Test.CoreInstance {
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     "Myrcon",
                     "MockProtocol",
-                    "93.186.198.11",
+                    "1.1.1.1",
                     27516
                 })
             });

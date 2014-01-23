@@ -6,7 +6,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
-using System.Xml.Linq;
 using NUnit.Framework;
 using Newtonsoft.Json.Linq;
 using Procon.Core.Events;
@@ -17,7 +16,6 @@ using Procon.Core.Shared.Serialization;
 using Procon.Core.Test.Mocks.Protocols;
 using Procon.Core.Variables;
 using Procon.Net.Shared.Protocols;
-using Procon.Net.Shared.Utils;
 using Procon.Service.Shared;
 
 #endregion
@@ -46,14 +44,14 @@ namespace Procon.Core.Test.CoreInstance {
         public void TestInstanceCommandScopeNoScope() {
             var variables = new VariableController();
 
-            var instance = new InstanceController() {
+            var instance = (InstanceController)new InstanceController() {
                 Shared = {
                     Variables = variables,
                     Security = new SecurityController(),
                     Events = new EventsController(),
                     Languages = new LanguageController()
                 }
-            }.Execute() as InstanceController;
+            }.Execute();
 
             instance.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
@@ -61,9 +59,9 @@ namespace Procon.Core.Test.CoreInstance {
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     "Myrcon",
                     "MockProtocol",
-                    "93.186.198.11",
+                    "1.1.1.1",
                     27516,
-                    "phogueisabutterfly",
+                    "password",
                     ""
                 })
             });
@@ -95,14 +93,14 @@ namespace Procon.Core.Test.CoreInstance {
         public void TestInstanceCommandScopeWithConnectionScope() {
             var variables = new VariableController();
 
-            var instance = new InstanceController() {
+            var instance = (InstanceController)new InstanceController() {
                 Shared = {
                     Variables = variables,
                     Security = new SecurityController(),
                     Events = new EventsController(),
                     Languages = new LanguageController()
                 }
-            }.Execute() as InstanceController;
+            }.Execute();
 
             instance.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
@@ -110,9 +108,9 @@ namespace Procon.Core.Test.CoreInstance {
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     "Myrcon",
                     "MockProtocol",
-                    "93.186.198.11",
+                    "1.1.1.1",
                     27516,
-                    "phogueisabutterfly",
+                    "password",
                     ""
                 })
             });
@@ -145,14 +143,14 @@ namespace Procon.Core.Test.CoreInstance {
         /// <remarks>We test individual controllers configs in other unit tests.</remarks>
         [Test]
         public void TestInstanceConfigWritten() {
-            var instance = new InstanceController() {
+            var instance = (InstanceController)new InstanceController() {
                 Shared = {
                     Variables = new VariableController().Execute() as VariableController,
                     Security = new SecurityController().Execute() as SecurityController,
                     Events = new EventsController().Execute() as EventsController,
                     Languages = new LanguageController().Execute() as LanguageController
                 }
-            }.Execute() as InstanceController;
+            }.Execute();
 
             // Add a single connection, just so we can validate that it has been removed.
             instance.Tunnel(new Command() {
@@ -161,9 +159,9 @@ namespace Procon.Core.Test.CoreInstance {
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     "Myrcon",
                     "MockProtocol",
-                    "93.186.198.11",
+                    "1.1.1.1",
                     27516,
-                    "phogueisabutterfly",
+                    "password",
                     ""
                 })
             });
@@ -178,9 +176,9 @@ namespace Procon.Core.Test.CoreInstance {
             Assert.AreEqual("InstanceAddConnection", commands[0].Name);
             Assert.AreEqual("Myrcon", commands[0].Parameters[0].First<String>());
             Assert.AreEqual("MockProtocol", commands[0].Parameters[1].First<String>());
-            Assert.AreEqual("93.186.198.11", commands[0].Parameters[2].First<String>());
+            Assert.AreEqual("1.1.1.1", commands[0].Parameters[2].First<String>());
             Assert.AreEqual("27516", commands[0].Parameters[3].First<String>());
-            Assert.AreEqual("phogueisabutterfly", commands[0].Parameters[4].First<String>());
+            Assert.AreEqual("password", commands[0].Parameters[4].First<String>());
             Assert.AreEqual("", commands[0].Parameters[5].First<String>());
 
             instance.Dispose();
@@ -194,14 +192,14 @@ namespace Procon.Core.Test.CoreInstance {
         public void TestInstanceDispose() {
             var requestWait = new AutoResetEvent(false);
 
-            var instance = new InstanceController() {
+            var instance = (InstanceController)new InstanceController() {
                 Shared = {
                     Variables = new VariableController(),
                     Security = new SecurityController(),
                     Events = new EventsController(),
                     Languages = new LanguageController()
                 }
-            }.Execute() as InstanceController;
+            }.Execute();
 
             // Add a single connection, just so we can validate that it has been removed.
             instance.Tunnel(new Command() {
@@ -209,9 +207,9 @@ namespace Procon.Core.Test.CoreInstance {
                 CommandType = CommandType.InstanceAddConnection,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     "MockProtocol",
-                    "93.186.198.11",
+                    "1.1.1.1",
                     27516,
-                    "phogueisabutterfly",
+                    "password",
                     ""
                 })
             });

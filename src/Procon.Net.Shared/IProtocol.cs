@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Procon.Net.Shared.Actions;
-using Procon.Net.Shared.Models;
 
 namespace Procon.Net.Shared {
     /// <summary>
@@ -20,14 +19,9 @@ namespace Procon.Net.Shared {
         IProtocolState State { get; }
 
         /// <summary>
-        /// The password used to authenticate with the server.
+        /// All of the credentials and connection details required to connect the protocol
         /// </summary>
-        String Password { get; set; }
-
-        /// <summary>
-        /// The password used to authenticate with the server.
-        /// </summary>
-        String Additional { get; set; }
+        IProtocolSetup Options { get; }
 
         /// <summary>
         /// Describing attribute of this game.
@@ -49,6 +43,11 @@ namespace Procon.Net.Shared {
         /// be connections, disconnections, logins or raw packets being recieved.
         /// </summary>
         event Action<IProtocol, IClientEventArgs> ClientEvent;
+
+        /// <summary>
+        /// Sets up the protocol, initializing the client
+        /// </summary>
+        void Setup(IProtocolSetup setup);
 
         /// <summary>
         /// Process a generic network action. All packets generated and sent to the server should be returned here.

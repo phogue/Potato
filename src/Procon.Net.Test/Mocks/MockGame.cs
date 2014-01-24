@@ -6,7 +6,9 @@ namespace Procon.Net.Test.Mocks {
 
     [ProtocolDeclaration(Type = "MOCK_3", Name = "MockGame 3", Provider = "Myrcon")]
     public class MockGame : Procon.Net.Protocol {
-        public MockGame(string hostName, ushort port) : base(hostName, port) {
+
+        public MockGame() : base() {
+            this.Client = new MockTcpClient();
         }
 
         protected override void Login(string password) {
@@ -39,10 +41,6 @@ namespace Procon.Net.Test.Mocks {
 
         protected override List<IPacketWrapper> ActionMap(INetworkAction action) {
             throw new System.NotImplementedException();
-        }
-
-        protected override IClient CreateClient(string hostName, ushort port) {
-            return new MockTcpClient(hostName, port);
         }
 
         protected override IPacketWrapper CreatePacket(string format, params object[] args) {

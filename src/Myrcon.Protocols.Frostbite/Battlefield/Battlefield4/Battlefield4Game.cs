@@ -13,8 +13,7 @@ namespace Myrcon.Protocols.Frostbite.Battlefield.Battlefield4 {
     [ProtocolDeclaration(Type = CommonGameType.DiceBattlefield4, Name = "Battlefield 4", Provider = "Myrcon")]
     public class Battlefield4Game : BattlefieldGame {
 
-        public Battlefield4Game(string hostName, ushort port)
-            : base(hostName, port) {
+        public Battlefield4Game() : base() {
 
             this.ServerInfoParameters = new List<string>() {
                 "ServerName",

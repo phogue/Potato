@@ -7,14 +7,9 @@ namespace Procon.Net.Shared {
     /// </summary>
     public interface IClient {
         /// <summary>
-        /// The hostname to connect to.
+        /// All of the credentials and connection details required to connect the protocol
         /// </summary>
-        String Hostname { get; }
-
-        /// <summary>
-        /// The port to connect on.
-        /// </summary>
-        ushort Port { get; }
+        IClientSetup Options { get; }
 
         /// <summary>
         /// The current connection state.
@@ -45,6 +40,11 @@ namespace Procon.Net.Shared {
         /// Fired whenever this connection state has changed.
         /// </summary>
         event Action<IClient, ConnectionState> ConnectionStateChanged;
+
+        /// <summary>
+        /// Sets up the protocol, initializing the client
+        /// </summary>
+        void Setup(IClientSetup setup);
 
         /// <summary>
         /// Pokes the connection, ensuring that the connection is still alive. If

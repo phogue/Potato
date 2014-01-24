@@ -28,9 +28,16 @@ namespace Myrcon.Protocols.Frostbite {
         /// </summary>
         protected DateTime NextAuxiliarySynchronization = DateTime.Now;
 
-        protected FrostbiteGame(string hostName, ushort port) : base(hostName, port) {
-            State.Settings.Maximum.ChatLinesCount = 100;
-            
+        protected FrostbiteGame() : base() {
+            this.State.Settings.Maximum.ChatLinesCount = 100;
+
+            // Client
+            this.Client = new FrostbiteClient();
+
+            this.PacketDispatcher = new FrostbitePacketDispatcher() {
+                PacketQueue = ((FrostbiteClient)this.Client).PacketQueue
+            };
+
             this.PacketDispatcher.Append(new Dictionary<IPacketDispatch, Action<IPacketWrapper, IPacketWrapper>>() {
                 {
                     new PacketDispatch() {
@@ -264,16 +271,6 @@ namespace Myrcon.Protocols.Frostbite {
             });
         }
 
-        protected override IPacketDispatcher CreatePacketDispatcher() {
-            return new FrostbitePacketDispatcher() {
-                PacketQueue = ((FrostbiteClient)this.Client).PacketQueue
-            };
-        }
-
-        protected override IClient CreateClient(string hostName, ushort port) {
-            return new FrostbiteClient(hostName, port);
-        }
-
         protected virtual void AuxiliarySynchronize() {
             this.Send(this.CreatePacket("punkBuster.pb_sv_command pb_sv_plist"));
             // this.Send(this.Create("mapList.list rounds")); BF3 doesn't take the "rounds" on the end.
@@ -375,7 +372,7 @@ namespace Myrcon.Protocols.Frostbite {
 
             if (response != null) {
                 if (request.Packet.Words.Count == 1 && response.Packet.Words.Count >= 2) {
-                    this.SendRequest("login.hashed", this.GeneratePasswordHash(this.HashToByteArray(response.Packet.Words[1]), this.Password));
+                    this.SendRequest("login.hashed", this.GeneratePasswordHash(this.HashToByteArray(response.Packet.Words[1]), this.Options.Password));
                 }
                 else if (request.Packet.Words.Count >= 2 && response.Packet.Words.Count == 1) {
                     // We logged in successfully. Make sure we have events enabled before we announce we are ready though.

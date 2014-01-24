@@ -4,18 +4,11 @@ using System.Net.Sockets;
 using Procon.Net.Shared;
 
 namespace Procon.Net {
-
+    /// <summary>
+    /// Base class for communication over a network as the client
+    /// </summary>
     public abstract class Client : IClient {
-
-        /// <summary>
-        /// The hostname to connect to.
-        /// </summary>
-        public String Hostname { get; protected set; }
-
-        /// <summary>
-        /// The port to connect on.
-        /// </summary>
-        public ushort Port { get; protected set; }
+        public IClientSetup Options { get; set; }
 
         /// <summary>
         /// The local end point, which port we're using on the outbound connection.
@@ -128,12 +121,14 @@ namespace Procon.Net {
         /// </summary>
         public event Action<IClient, ConnectionState> ConnectionStateChanged;
 
-        protected Client(string hostname, UInt16 port) {
-            this.Hostname = hostname;
-            this.Port = port;
-            this.SequenceNumber = 0;
-
+        protected Client() {
             this.MarkManager = new MarkManager();
+            this.SequenceNumber = 0;
+            this.Options = new ClientSetup();
+        }
+
+        public void Setup(IClientSetup setup) {
+            this.Options = setup;
         }
 
         /// <summary>

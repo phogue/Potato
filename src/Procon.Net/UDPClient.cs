@@ -18,10 +18,6 @@ namespace Procon.Net {
         /// </summary>
         public IPEndPoint RemoteIpEndPoint;
 
-        public UdpClient(string hostname, UInt16 port) : base(hostname, port) {
-
-        }
-
         protected virtual void ClearConnection() {
             this.ReceivedBuffer = new byte[this.BufferSize];
         }
@@ -33,7 +29,7 @@ namespace Procon.Net {
                 try {
                     this.ConnectionState = ConnectionState.ConnectionConnecting;
 
-                    this.Client = new System.Net.Sockets.UdpClient(this.Hostname, this.Port) {
+                    this.Client = new System.Net.Sockets.UdpClient(this.Options.Hostname, this.Options.Port) {
                         DontFragment = true
                     };
 

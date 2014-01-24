@@ -21,8 +21,7 @@ namespace Procon.Net.Protocols.CommandServer {
         /// </summary>
         /// <param name="client"></param>
         /// <param name="certificate"></param>
-        public CommandServerClient(System.Net.Sockets.TcpClient client, X509Certificate2 certificate)
-            : base(((IPEndPoint)client.Client.RemoteEndPoint).Address.ToString(), (ushort)((IPEndPoint)client.Client.RemoteEndPoint).Port) {
+        public CommandServerClient(System.Net.Sockets.TcpClient client, X509Certificate2 certificate) : base() {
             this.Client = client;
             this.RemoteEndPoint = (IPEndPoint) client.Client.RemoteEndPoint;
 

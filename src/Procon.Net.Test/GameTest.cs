@@ -1,10 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using NUnit.Framework;
 using Procon.Net.Shared;
 using Procon.Net.Shared.Actions;
-using Procon.Net.Shared.Models;
 using Procon.Net.Test.Mocks;
 using Procon.Net.Test.Mocks.Game;
 
@@ -17,7 +15,7 @@ namespace Procon.Net.Test {
         /// </summary>
         [Test]
         public void TestGameTypeAttributeConversion() {
-            MockGame game = new MockGame("localhost", 5000);
+            MockGame game = new MockGame();
 
             Assert.AreEqual("MOCK_3", game.ProtocolType.Type);
             Assert.AreEqual("MockGame 3", game.ProtocolType.Name);
@@ -32,7 +30,7 @@ namespace Procon.Net.Test {
         public void TestGameActionDispatch() {
             List<IPacket> packets = new List<IPacket>();
 
-            MockActionDispatchGame game = new MockActionDispatchGame("localhost", 5000);
+            MockActionDispatchGame game = new MockActionDispatchGame();
 
             packets.AddRange(game.Action(new NetworkAction() { ActionType = NetworkActionType.NetworkTextSay }));
             packets.AddRange(game.Action(new NetworkAction() { ActionType = NetworkActionType.NetworkPlayerKick }));
@@ -56,7 +54,7 @@ namespace Procon.Net.Test {
         /// </summary>
         [Test]
         public void TestGameActionDispatchNullsRemoved() {
-            MockActionChatNullResultGame game = new MockActionChatNullResultGame("localhost", 5000);
+            MockActionChatNullResultGame game = new MockActionChatNullResultGame();
 
             List<IPacket> packets = game.Action(new NetworkAction() {
                 ActionType = NetworkActionType.NetworkTextSay

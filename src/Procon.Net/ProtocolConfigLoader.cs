@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
@@ -39,6 +40,11 @@ namespace Procon.Net {
             if (config.MapPool != null && config.GameModes != null) {
                 foreach (MapModel map in config.MapPool) {
                     map.GameMode = config.GameModes.FirstOrDefault(known => known.Name == map.GameMode.Name);
+
+                    if (config.Groupings != null) {
+                        // Load in all default groupings, except for those explicitly defined.
+                        map.Groups = map.Groups.Union(config.Groupings.Where(existing => map.Groups.Any(group => group.Uid == existing.Uid && group.Type == existing.Type) == false)).ToList();
+                    }
                 }
             }
 

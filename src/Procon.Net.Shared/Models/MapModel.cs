@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Procon.Net.Shared.Models {
     /// <summary>
@@ -30,5 +31,17 @@ namespace Procon.Net.Shared.Models {
         /// This map's game mode.
         /// </summary>
         public GameModeModel GameMode { get; set; }
+
+        /// <summary>
+        /// This maps possible groups
+        /// </summary>
+        public List<GroupingModel> Groups { get; set; }
+
+        /// <summary>
+        /// Initializes the map model with default values.
+        /// </summary>
+        public MapModel() {
+            this.Groups = new List<GroupingModel>();
+        }
     }
 }

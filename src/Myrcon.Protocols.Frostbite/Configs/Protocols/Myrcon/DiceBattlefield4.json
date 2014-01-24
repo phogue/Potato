@@ -830,7 +830,29 @@
             "FriendlyName":"Zavod 311",
             "GameMode":{
                 "Name":"SquadDeathMatch0"
-            }
+            },
+			"Groups": [
+				{
+					"Uid":"1",
+					"Type":"Team",
+					"FriendlyName":"Alpha"
+				},
+				{
+					"Uid":"2",
+					"Type":"Team",
+					"FriendlyName":"Beta"
+				},
+				{
+					"Uid":"3",
+					"Type":"Team",
+					"FriendlyName":"Charlie"
+				},
+				{
+					"Uid":"4",
+					"Type":"Team",
+					"FriendlyName":"Delta"
+				}
+			]
         },
         {
             "Index":"0",
@@ -839,7 +861,29 @@
             "FriendlyName":"Lancang Dam",
             "GameMode":{
                 "Name":"SquadDeathMatch0"
-            }
+            },
+			"Groups": [
+				{
+					"Uid":"1",
+					"Type":"Team",
+					"FriendlyName":"Alpha"
+				},
+				{
+					"Uid":"2",
+					"Type":"Team",
+					"FriendlyName":"Beta"
+				},
+				{
+					"Uid":"3",
+					"Type":"Team",
+					"FriendlyName":"Charlie"
+				},
+				{
+					"Uid":"4",
+					"Type":"Team",
+					"FriendlyName":"Delta"
+				}
+			]
         },
         {
             "Index":"0",
@@ -848,7 +892,29 @@
             "FriendlyName":"Flood Zone",
             "GameMode":{
                 "Name":"SquadDeathMatch0"
-            }
+            },
+			"Groups": [
+				{
+					"Uid":"1",
+					"Type":"Team",
+					"FriendlyName":"Alpha"
+				},
+				{
+					"Uid":"2",
+					"Type":"Team",
+					"FriendlyName":"Beta"
+				},
+				{
+					"Uid":"3",
+					"Type":"Team",
+					"FriendlyName":"Charlie"
+				},
+				{
+					"Uid":"4",
+					"Type":"Team",
+					"FriendlyName":"Delta"
+				}
+			]
         },
         {
             "Index":"0",
@@ -857,7 +923,29 @@
             "FriendlyName":"Golmud Railway",
             "GameMode":{
                 "Name":"SquadDeathMatch0"
-            }
+            },
+			"Groups": [
+				{
+					"Uid":"1",
+					"Type":"Team",
+					"FriendlyName":"Alpha"
+				},
+				{
+					"Uid":"2",
+					"Type":"Team",
+					"FriendlyName":"Beta"
+				},
+				{
+					"Uid":"3",
+					"Type":"Team",
+					"FriendlyName":"Charlie"
+				},
+				{
+					"Uid":"4",
+					"Type":"Team",
+					"FriendlyName":"Delta"
+				}
+			]
         },
         {
             "Index":"0",
@@ -866,7 +954,29 @@
             "FriendlyName":"Paracel Storm",
             "GameMode":{
                 "Name":"SquadDeathMatch0"
-            }
+            },
+			"Groups": [
+				{
+					"Uid":"1",
+					"Type":"Team",
+					"FriendlyName":"Alpha"
+				},
+				{
+					"Uid":"2",
+					"Type":"Team",
+					"FriendlyName":"Beta"
+				},
+				{
+					"Uid":"3",
+					"Type":"Team",
+					"FriendlyName":"Charlie"
+				},
+				{
+					"Uid":"4",
+					"Type":"Team",
+					"FriendlyName":"Delta"
+				}
+			]
         },
         {
             "Index":"0",
@@ -875,7 +985,29 @@
             "FriendlyName":"Operation Locker",
             "GameMode":{
                 "Name":"SquadDeathMatch0"
-            }
+            },
+			"Groups": [
+				{
+					"Uid":"1",
+					"Type":"Team",
+					"FriendlyName":"Alpha"
+				},
+				{
+					"Uid":"2",
+					"Type":"Team",
+					"FriendlyName":"Beta"
+				},
+				{
+					"Uid":"3",
+					"Type":"Team",
+					"FriendlyName":"Charlie"
+				},
+				{
+					"Uid":"4",
+					"Type":"Team",
+					"FriendlyName":"Delta"
+				}
+			]
         },
         {
             "Index":"0",
@@ -884,7 +1016,29 @@
             "FriendlyName":"Hainan Resort",
             "GameMode":{
                 "Name":"SquadDeathMatch0"
-            }
+            },
+			"Groups": [
+				{
+					"Uid":"1",
+					"Type":"Team",
+					"FriendlyName":"Alpha"
+				},
+				{
+					"Uid":"2",
+					"Type":"Team",
+					"FriendlyName":"Beta"
+				},
+				{
+					"Uid":"3",
+					"Type":"Team",
+					"FriendlyName":"Charlie"
+				},
+				{
+					"Uid":"4",
+					"Type":"Team",
+					"FriendlyName":"Delta"
+				}
+			]
         },
         {
             "Index":"0",
@@ -893,7 +1047,29 @@
             "FriendlyName":"Siege of Shanghai",
             "GameMode":{
                 "Name":"SquadDeathMatch0"
-            }
+            },
+			"Groups": [
+				{
+					"Uid":"1",
+					"Type":"Team",
+					"FriendlyName":"Alpha"
+				},
+				{
+					"Uid":"2",
+					"Type":"Team",
+					"FriendlyName":"Beta"
+				},
+				{
+					"Uid":"3",
+					"Type":"Team",
+					"FriendlyName":"Charlie"
+				},
+				{
+					"Uid":"4",
+					"Type":"Team",
+					"FriendlyName":"Delta"
+				}
+			]
         },
         {
             "Index":"0",
@@ -902,7 +1078,29 @@
             "FriendlyName":"Rogue Transmission",
             "GameMode":{
                 "Name":"SquadDeathMatch0"
-            }
+            },
+			"Groups": [
+				{
+					"Uid":"1",
+					"Type":"Team",
+					"FriendlyName":"Alpha"
+				},
+				{
+					"Uid":"2",
+					"Type":"Team",
+					"FriendlyName":"Beta"
+				},
+				{
+					"Uid":"3",
+					"Type":"Team",
+					"FriendlyName":"Charlie"
+				},
+				{
+					"Uid":"4",
+					"Type":"Team",
+					"FriendlyName":"Delta"
+				}
+			]
         },
         {
             "Index":"0",
@@ -911,7 +1109,29 @@
             "FriendlyName":"Dawnbreaker",
             "GameMode":{
                 "Name":"SquadDeathMatch0"
-            }
+            },
+			"Groups": [
+				{
+					"Uid":"1",
+					"Type":"Team",
+					"FriendlyName":"Alpha"
+				},
+				{
+					"Uid":"2",
+					"Type":"Team",
+					"FriendlyName":"Beta"
+				},
+				{
+					"Uid":"3",
+					"Type":"Team",
+					"FriendlyName":"Charlie"
+				},
+				{
+					"Uid":"4",
+					"Type":"Team",
+					"FriendlyName":"Delta"
+				}
+			]
         },
         {
             "Index":"0",

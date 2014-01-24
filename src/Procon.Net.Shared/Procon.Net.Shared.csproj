@@ -45,8 +45,10 @@
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Actions\INetworkAction.cs" />
+    <Compile Include="ClientSetup.cs" />
     <Compile Include="IClientEventArgs.cs" />
     <Compile Include="IClientEventData.cs" />
+    <Compile Include="IClientSetup.cs" />
     <Compile Include="IProtocolEventArgs.cs" />
     <Compile Include="IProtocolEventData.cs" />
     <Compile Include="IProtocolSetup.cs" />

@@ -8,10 +8,6 @@ namespace Procon.Net.Test.Mocks.Game {
     /// Used to simply ensure that actions are dispatched/converted etc. correctly.
     /// </summary>
     public class MockActionDispatchGame : MockGame {
-        public MockActionDispatchGame(string hostName, ushort port)
-            : base(hostName, port) {
-        }
-
         protected override List<IPacketWrapper> DispatchAction(INetworkAction action) {
             List<IPacketWrapper> wrappers = base.DispatchAction(action);
 

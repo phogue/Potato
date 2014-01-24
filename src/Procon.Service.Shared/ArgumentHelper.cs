@@ -18,7 +18,7 @@ namespace Procon.Service.Shared {
                 String key = input[offset];
 
                 // if the argument is a switch.
-                if (key[0] == '-') {
+                if (key.Length > 0 && key[0] == '-') {
                     // Trims any hyphens from the start of the argument. Allows for "-argument" and "--argument"
                     key = key.TrimStart('-');
 

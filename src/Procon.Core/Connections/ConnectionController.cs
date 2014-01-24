@@ -113,10 +113,10 @@ namespace Procon.Core.Connections {
         public override ICoreController Execute() {
             if (this.Protocol != null) {
                 this.ConnectionModel.ProtocolType = this.Protocol.ProtocolType as ProtocolType;
-                this.ConnectionModel.Hostname = this.Protocol.Client.Hostname;
-                this.ConnectionModel.Port = this.Protocol.Client.Port;
-                this.ConnectionModel.Password = this.Protocol.Password;
-                this.ConnectionModel.Additional = this.Protocol.Additional;
+                this.ConnectionModel.Hostname = this.Protocol.Options.Hostname;
+                this.ConnectionModel.Port = this.Protocol.Options.Port;
+                this.ConnectionModel.Password = this.Protocol.Options.Password;
+                this.ConnectionModel.Variables = this.Protocol.Options.VariablesString();
             }
 
             this.ConnectionModel.ConnectionGuid = MD5.Guid(String.Format("{0}:{1}:{2}", this.ConnectionModel.ProtocolType, this.ConnectionModel.Hostname, this.ConnectionModel.Port));
@@ -480,8 +480,8 @@ namespace Procon.Core.Connections {
             if (e.EventType == ClientEventType.ClientConnectionStateChange) {
                 if (this.Protocol != null) {
                     this.ConnectionModel.ProtocolType = this.Protocol.ProtocolType as ProtocolType;
-                    this.ConnectionModel.Hostname = this.Protocol.Client.Hostname;
-                    this.ConnectionModel.Port = this.Protocol.Client.Port;
+                    this.ConnectionModel.Hostname = this.Protocol.Options.Hostname;
+                    this.ConnectionModel.Port = this.Protocol.Options.Port;
 
                     // Once connected, sync the connection.
                     if (e.ConnectionState == ConnectionState.ConnectionLoggedIn) {

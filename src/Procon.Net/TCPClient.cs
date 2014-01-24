@@ -30,7 +30,7 @@ namespace Procon.Net {
             get { return this.PacketSerializer != null ? this.PacketSerializer.PacketHeaderSize : 0; }
         }
 
-        protected TcpClient(string hostname, UInt16 port) : base(hostname, port) {
+        protected TcpClient() : base() {
             this.ReceivedBuffer = new byte[this.BufferSize];
             this.PacketStream = new PacketStream();
         }
@@ -197,7 +197,7 @@ namespace Procon.Net {
             if (this.MarkManager.RemoveExpiredMarks().IsValidMarkWindow() == true) {
                 this.MarkManager.Mark();
 
-                if (this.Hostname != null && this.Port != 0) {
+                if (this.Options.Hostname != null && this.Options.Port != 0) {
                     try {
                         this.ReceivedBuffer = new byte[this.BufferSize];
                         this.PacketStream = new PacketStream();
@@ -210,7 +210,7 @@ namespace Procon.Net {
                             NoDelay = true
                         };
 
-                        this.Client.BeginConnect(this.Hostname, this.Port, this.ConnectedCallback, this);
+                        this.Client.BeginConnect(this.Options.Hostname, this.Options.Port, this.ConnectedCallback, this);
                     }
                     catch (SocketException se) {
                         this.Shutdown(se);

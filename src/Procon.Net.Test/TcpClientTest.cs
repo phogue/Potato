@@ -22,7 +22,12 @@ namespace Procon.Net.Test {
 
             listener.BeginListener();
 
-            client = new MockTcpClient("localhost", port);
+            client = new MockTcpClient();
+
+            client.Setup(new ClientSetup() {
+                Hostname = "localhost",
+                Port = port
+            });
 
             client.Connect();
 

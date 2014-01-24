@@ -3,6 +3,7 @@ using System.Linq;
 using NUnit.Framework;
 using Procon.Core.Connections;
 using Procon.Core.Shared;
+using Procon.Net.Shared;
 
 namespace Procon.Examples.Plugins.TextCommands.Test {
     /// <summary>
@@ -19,11 +20,18 @@ namespace Procon.Examples.Plugins.TextCommands.Test {
         /// <remarks>The plugin will be enabled during this process.</remarks>
         /// <returns></returns>
         protected ConnectionController CreateConnection() {
+            IProtocol protocol = new MockGame();
+
+            protocol.Setup(new ProtocolSetup() {
+                Hostname = "localhost",
+                Port = 9000
+            });
+
             ConnectionController connection = new ConnectionController() {
                 // This won't actually connect to anything.
                 // It's just a mock so the GameState is available to be modified.
                 // See MockGame for all the mock data we create.
-                Protocol = new MockGame("localhost", 9000)
+                Protocol = protocol
             };
 
             // 1. When this is called you will see the constructor in the plugin executed.

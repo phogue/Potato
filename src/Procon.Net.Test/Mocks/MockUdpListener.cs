@@ -37,7 +37,7 @@ namespace Procon.Net.Test.Mocks {
         /// </summary>
         public void BeginListener() {
             try {
-                this.Listener = new MockUdpClient("localhost", this.Port) {
+                this.Listener = new MockUdpClient() {
                     RemoteIpEndPoint = new IPEndPoint(IPAddress.Loopback, this.Port),
                     Client = new System.Net.Sockets.UdpClient {
                         Client = {
@@ -46,6 +46,11 @@ namespace Procon.Net.Test.Mocks {
                         ExclusiveAddressUse = false
                     }
                 };
+
+                this.Listener.Setup(new ClientSetup() {
+                    Hostname = "localhost",
+                    Port = this.Port
+                });
 
                 this.Listener.Client.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
                 this.Listener.Client.Client.Bind(this.Listener.RemoteIpEndPoint);

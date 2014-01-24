@@ -93,8 +93,13 @@ namespace Procon.Tools.NetworkConsole {
 
                     Type gameType = this.Games.First(game => game.Key.Type == (string)this.cboGames.SelectedItem).Value;
 
-                    this.ActiveGame = (Protocol)Activator.CreateInstance(gameType, this.txtHostname.Text, port);
-                    this.ActiveGame.Password = this.txtPassword.Text;
+                    this.ActiveGame = (Protocol)Activator.CreateInstance(gameType);
+
+                    this.ActiveGame.Setup(new ProtocolSetup() {
+                        Hostname = "localhost",
+                        Port = 9000,
+                        Password = this.txtPassword.Text
+                    });
 
                     DirectoryInfo packagePath = Procon.Service.Shared.Defines.PackageContainingPath(gameType.Assembly.Location);
 
@@ -102,7 +107,6 @@ namespace Procon.Tools.NetworkConsole {
                         this.ActiveGame.ProtocolsConfigDirectory = packagePath.GetDirectories(Procon.Service.Shared.Defines.ProtocolsDirectoryName, SearchOption.AllDirectories).Select(directory => directory.FullName).FirstOrDefault();
                     }
 
-                    this.ActiveGame.Additional = this.txtAdditional.Text;
                     this.protocolTestControl1.ActiveGame = this.ActiveGame;
 
                     this.ActiveGame.ClientEvent += ActiveGame_ClientEvent;
@@ -173,10 +177,9 @@ namespace Procon.Tools.NetworkConsole {
             if (this.ActiveGame != null) {
                 new ConnectionDetails() {
                     GameName = this.cboGames.SelectedItem.ToString(),
-                    Hostname = this.ActiveGame.Client.Hostname,
-                    Port = this.ActiveGame.Client.Port,
-                    Password = this.ActiveGame.Password,
-                    Additional = this.ActiveGame.Additional
+                    Hostname = this.ActiveGame.Options.Hostname,
+                    Port = this.ActiveGame.Options.Port,
+                    Password = this.ActiveGame.Options.Password
                 }.Write();
 
                 this.ActiveGame.Shutdown();

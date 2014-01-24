@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Newtonsoft.Json;
 using Procon.Net.Shared;
 
@@ -35,8 +36,8 @@ namespace Procon.Core.Shared.Models {
         public String Password { get; set; }
 
         /// <summary>
-        /// Proxy to the active protocol additional field. It's obsolete and will be replaced prior to release.
+        /// Additional arguments for a connection
         /// </summary>
-        public String Additional { get; set; }
+        public String Variables { get; set; }
     }
 }

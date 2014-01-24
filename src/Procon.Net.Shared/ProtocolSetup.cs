@@ -10,5 +10,23 @@ namespace Procon.Net.Shared {
         public ushort Port { get; set; }
         public String Password { get; set; }
         public Dictionary<String, String> Variables { get; set; }
+
+        /// <summary>
+        /// Initializes the setup with default values.
+        /// </summary>
+        public ProtocolSetup() {
+            this.Variables = new Dictionary<String, String>();
+        }
+
+        public String VariablesString() {
+            var list = new List<String>();
+
+            foreach (var variable in this.Variables) {
+                list.Add(String.Format("--{0}", variable.Key));
+                list.Add(String.Format(@"""{0}""", variable.Value));
+            }
+
+            return String.Join(" ", list);
+        }
     }
 }

@@ -13,7 +13,7 @@ namespace Myrcon.Protocols.Frostbite.MedalOfHonor {
     [ProtocolDeclaration(Type = CommonGameType.DiceMedalOfHonor2010, Name = "Medal of Honor 2010", Provider = "Myrcon")]
     public class MohGame : FrostbiteGame {
 
-        public MohGame(string hostName, ushort port) : base(hostName, port) {
+        public MohGame() : base() {
             ServerInfoParameters = new List<String>() {
                 "ServerName",       "PlayerCount",   "MaxPlayerCount",   "GameMode",
                 "Map",              "CurrentRound",  "TotalRounds",      "TeamScores",

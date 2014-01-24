@@ -7,8 +7,10 @@ using Procon.Net.Shared.Models;
 
 namespace Procon.Examples.Plugins.TextCommands.Test {
     public class MockGame : Protocol {
-        public MockGame(string hostName, ushort port) : base(hostName, port) {
+        public MockGame() : base() {
             
+            this.Client = new MockClient();
+
             this.State.Players.AddRange(new List<PlayerModel>() {
                 new PlayerModel() {
                     Name = "Phogue",
@@ -53,10 +55,6 @@ namespace Procon.Examples.Plugins.TextCommands.Test {
 
         protected override List<IPacketWrapper> ActionMap(INetworkAction action) {
             throw new NotImplementedException();
-        }
-
-        protected override IClient CreateClient(string hostName, ushort port) {
-            return new MockClient(hostName, port);
         }
 
         protected override IPacketWrapper CreatePacket(string format, params object[] args) {

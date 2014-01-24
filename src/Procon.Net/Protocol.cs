@@ -27,10 +27,7 @@ namespace Procon.Net {
         /// </summary>
         public IProtocolState State { get; protected set; }
 
-        /// <summary>
-        /// The password used to authenticate with the server.
-        /// </summary>
-        public string Password { get; set; }
+        public IProtocolSetup Options { get; protected set; }
 
         /// <summary>
         /// Describing attribute of this game.
@@ -55,17 +52,10 @@ namespace Procon.Net {
         /// </summary>
         public String ProtocolsConfigDirectory { get; set; }
 
-        [Obsolete]
-        public string Additional { get; set; }
-        
         /// <summary>
         /// Handles all packet dispatching.
         /// </summary>
         public IPacketDispatcher PacketDispatcher { get; set; }
-
-        protected Protocol(string hostName, ushort port) : base() {
-            this.Execute(hostName, port);
-        }
 
         /// <summary>
         /// This should be moved from here
@@ -76,52 +66,10 @@ namespace Procon.Net {
             SupportedGameTypes.GetSupportedGames();
         }
 
-        protected virtual void Execute(string hostName, ushort port) {
+        protected Protocol() {
+            this.Options = new ProtocolSetup();
             this.State = new ProtocolState();
-            this.Client = this.CreateClient(hostName, port);
-            this.PacketDispatcher = this.CreatePacketDispatcher();
-
-            // Handle client events, most of which are proxies to events we fire.
-            this.Client.PacketReceived += (sender, wrapper) => {
-                this.PacketDispatcher.Dispatch(wrapper);
-
-                // Alert the deferrer that we have a new packet that's been dispatched
-                this.WaitingActions.Mark(wrapper.Packet);
-
-                this.OnClientEvent(ClientEventType.ClientPacketReceived, new ClientEventData() {
-                    Packets = new List<IPacket>() {
-                        wrapper.Packet
-                    }
-                });
-            };
-
-            this.Client.ConnectionStateChanged += (sender, state) => {
-                this.OnClientEvent(ClientEventType.ClientConnectionStateChange);
-
-                this.State.Settings.Current.ConnectionState = state;
-
-                if (state == ConnectionState.ConnectionReady) {
-                    this.Login(this.Password);
-                }
-            };
-
-            this.Client.PacketSent += (sender, wrapper) => this.OnClientEvent(ClientEventType.ClientPacketSent, new ClientEventData() {
-                Packets = new List<IPacket>() {
-                    wrapper.Packet
-                }
-            });
-
-            this.Client.SocketException += (sender, se) => this.OnClientEvent(ClientEventType.ClientSocketException, new ClientEventData() {
-                Exceptions = new List<String>() {
-                    se.ToString()
-                }
-            });
-
-            this.Client.ConnectionFailure += (sender, exception) => this.OnClientEvent(ClientEventType.ClientConnectionFailure, new ClientEventData() {
-                Exceptions = new List<String>() {
-                    exception.ToString()
-                }
-            });
+            this.PacketDispatcher = new PacketDispatcher();
 
             this.WaitingActions = new WaitingActions() {
                 Done = (action, requests, responses) => this.OnClientEvent(
@@ -311,6 +259,53 @@ namespace Procon.Net {
             return sent;
         }
 
+        public virtual void Setup(IProtocolSetup setup) {
+            this.Options = setup;
+            this.Client.Setup(ClientSetup.FromProtocolSetup(setup));
+
+            // Handle client events, most of which are proxies to events we fire.
+            this.Client.PacketReceived += (sender, wrapper) => {
+                this.PacketDispatcher.Dispatch(wrapper);
+
+                // Alert the deferrer that we have a new packet that's been dispatched
+                this.WaitingActions.Mark(wrapper.Packet);
+
+                this.OnClientEvent(ClientEventType.ClientPacketReceived, new ClientEventData() {
+                    Packets = new List<IPacket>() {
+                        wrapper.Packet
+                    }
+                });
+            };
+
+            this.Client.ConnectionStateChanged += (sender, state) => {
+                this.OnClientEvent(ClientEventType.ClientConnectionStateChange);
+
+                this.State.Settings.Current.ConnectionState = state;
+
+                if (state == ConnectionState.ConnectionReady) {
+                    this.Login(this.Options.Password);
+                }
+            };
+
+            this.Client.PacketSent += (sender, wrapper) => this.OnClientEvent(ClientEventType.ClientPacketSent, new ClientEventData() {
+                Packets = new List<IPacket>() {
+                    wrapper.Packet
+                }
+            });
+
+            this.Client.SocketException += (sender, se) => this.OnClientEvent(ClientEventType.ClientSocketException, new ClientEventData() {
+                Exceptions = new List<String>() {
+                    se.ToString()
+                }
+            });
+
+            this.Client.ConnectionFailure += (sender, exception) => this.OnClientEvent(ClientEventType.ClientConnectionFailure, new ClientEventData() {
+                Exceptions = new List<String>() {
+                    exception.ToString()
+                }
+            });
+        }
+
         /// <summary>
         /// Attempts a connection to the server.
         /// </summary>
@@ -337,22 +332,6 @@ namespace Procon.Net {
                 this.Client.Poke();
             }
         }
-
-        /// <summary>
-        /// Create the dispatcher to use.
-        /// </summary>
-        /// <returns></returns>
-        protected virtual IPacketDispatcher CreatePacketDispatcher() {
-            return new PacketDispatcher();
-        }
-
-        /// <summary>
-        /// Creates an appropriate client for the game type
-        /// </summary>
-        /// <param name="hostName">The hostname of the server to connect to</param>
-        /// <param name="port">The port on the server to connect to</param>
-        /// <returns>A client capable of communicating with this game server</returns>
-        protected abstract IClient CreateClient(string hostName, ushort port);
 
         /// <summary>
         /// Create a packet from a string

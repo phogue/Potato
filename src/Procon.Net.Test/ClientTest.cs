@@ -17,7 +17,7 @@ namespace Procon.Net.Test {
         /// </summary>
         [Test]
         public void TestAcquireSequenceNumber() {
-            MockTcpClient client = new MockTcpClient("localhost", 50);
+            MockTcpClient client = new MockTcpClient();
 
             Assert.AreEqual(1, client.AcquireSequenceNumber);
         }
@@ -33,9 +33,14 @@ namespace Procon.Net.Test {
             };
             listener.BeginListener();
 
-            MockTcpClient client = new MockTcpClient("localhost", 36000) {
+            MockTcpClient client = new MockTcpClient() {
                 ConnectionState = ConnectionState.ConnectionLoggedIn
             };
+
+            client.Setup(new ClientSetup() {
+                Hostname = "localhost",
+                Port = 36000
+            });
 
             AutoResetEvent connectionWait = new AutoResetEvent(false);
 
@@ -66,7 +71,7 @@ namespace Procon.Net.Test {
             };
             listener.BeginListener();
 
-            MockTcpClient client = new MockTcpClient("localhost", 36001) {
+            MockTcpClient client = new MockTcpClient() {
                 LastPacketReceived = new MockPacket() {
                     Packet = {
                         Stamp = DateTime.Now
@@ -78,6 +83,11 @@ namespace Procon.Net.Test {
                     }
                 }
             };
+
+            client.Setup(new ClientSetup() {
+                Hostname = "localhost",
+                Port = 36001
+            });
 
             AutoResetEvent connectionWait = new AutoResetEvent(false);
 
@@ -108,7 +118,7 @@ namespace Procon.Net.Test {
             };
             listener.BeginListener();
 
-            MockTcpClient client = new MockTcpClient("localhost", 36002) {
+            MockTcpClient client = new MockTcpClient() {
                 LastPacketReceived = new MockPacket() {
                     Packet = {
                         Stamp = DateTime.Now.AddHours(-1)
@@ -120,6 +130,11 @@ namespace Procon.Net.Test {
                     }
                 }
             };
+
+            client.Setup(new ClientSetup() {
+                Hostname = "localhost",
+                Port = 36002
+            });
 
             AutoResetEvent connectionWait = new AutoResetEvent(false);
 

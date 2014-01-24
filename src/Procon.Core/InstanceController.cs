@@ -14,6 +14,7 @@ using Procon.Core.Shared.Events;
 using Procon.Core.Shared.Models;
 using Procon.Net.Shared;
 using Procon.Net.Shared.Protocols;
+using Procon.Net.Shared.Utils;
 using Procon.Service.Shared;
 
 namespace Procon.Core {
@@ -392,7 +393,7 @@ namespace Procon.Core {
                             new CommandParameter() {
                                 Data = {
                                     Content = new List<String>() {
-                                        connection.ConnectionModel.Additional
+                                        connection.ConnectionModel.Variables
                                     }
                                 }
                             }
@@ -642,9 +643,13 @@ namespace Procon.Core {
 
                         // As long as the game type selected is supported...
                         if (gameType != null) {
-                            IProtocol game = (IProtocol) Activator.CreateInstance(gameType, hostName, port);
-                            game.Additional = additional;
-                            game.Password = password;
+                            IProtocol game = (IProtocol) Activator.CreateInstance(gameType);
+                            game.Setup(new ProtocolSetup() {
+                                Hostname = hostName,
+                                Port = port,
+                                Password = password,
+                                Variables = ArgumentHelper.ToArguments(additional.Wordify())
+                            });
 
                             DirectoryInfo packagePath = Defines.PackageContainingPath(gameType.Assembly.Location);
 

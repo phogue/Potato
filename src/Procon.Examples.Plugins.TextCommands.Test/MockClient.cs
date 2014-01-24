@@ -5,9 +5,6 @@ using Procon.Net.Shared;
 
 namespace Procon.Examples.Plugins.TextCommands.Test {
     class MockClient : Client {
-        public MockClient(string hostname, ushort port) : base(hostname, port) {
-        }
-
         public override IPacket Send(IPacketWrapper wrapper) {
             throw new NotImplementedException();
         }

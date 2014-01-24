@@ -11,8 +11,7 @@ namespace Myrcon.Protocols.Frostbite {
         /// </summary>
         public IPacketQueue PacketQueue { get; set; }
 
-        public FrostbiteClient(string hostname, ushort port) : base(hostname, port) {
-
+        public FrostbiteClient() : base() {
             this.PacketQueue = new PacketQueue();
 
             this.PacketSerializer = new FrostbitePacketSerializer();

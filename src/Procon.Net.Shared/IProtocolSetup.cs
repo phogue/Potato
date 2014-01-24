@@ -25,5 +25,10 @@ namespace Procon.Net.Shared {
         /// A list of generic variables to us 
         /// </summary>
         Dictionary<String, String> Variables { get; }
+
+        /// <summary>
+        /// Convert the variables dictionary to a simple string
+        /// </summary>
+        String VariablesString();
     }
 }

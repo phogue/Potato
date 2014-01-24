@@ -21,8 +21,8 @@ namespace Myrcon.Protocols.Frostbite.Objects {
             return result;
         }
 
-        public static List<GroupingModel> Parse(List<String> words) {
-            List<GroupingModel> groupings = new List<GroupingModel>();
+        public static List<GroupModel> Parse(List<String> words) {
+            List<GroupModel> groups = new List<GroupModel>();
 
             if (words.Count >= 1) {
 
@@ -32,14 +32,14 @@ namespace Myrcon.Protocols.Frostbite.Objects {
                     int parsedTeamId = 0;
 
                     if (context == FrostbitePlayerSubsetContext.Player) {
-                        groupings.Add(new GroupingModel() {
-                            Type = GroupingModel.Player,
+                        groups.Add(new GroupModel() {
+                            Type = GroupModel.Player,
                             Uid = words[1]
                         });
                     }
                     else if (context == FrostbitePlayerSubsetContext.Team && int.TryParse(words[1], out parsedTeamId) == true) {
-                        groupings.Add(new GroupingModel() {
-                            Type = GroupingModel.Team,
+                        groups.Add(new GroupModel() {
+                            Type = GroupModel.Team,
                             Uid = parsedTeamId.ToString(CultureInfo.InvariantCulture)
                         });
                     }
@@ -47,12 +47,12 @@ namespace Myrcon.Protocols.Frostbite.Objects {
                         int parsedSquadId = 0;
 
                         if (context == FrostbitePlayerSubsetContext.Squad && int.TryParse(words[1], out parsedTeamId) == true && int.TryParse(words[2], out parsedSquadId) == true) {
-                            groupings.Add(new GroupingModel() {
-                                Type = GroupingModel.Team,
+                            groups.Add(new GroupModel() {
+                                Type = GroupModel.Team,
                                 Uid = parsedTeamId.ToString(CultureInfo.InvariantCulture)
                             });
-                            groupings.Add(new GroupingModel() {
-                                Type = GroupingModel.Squad,
+                            groups.Add(new GroupModel() {
+                                Type = GroupModel.Squad,
                                 Uid = parsedSquadId.ToString(CultureInfo.InvariantCulture)
                             });
                         }
@@ -60,7 +60,7 @@ namespace Myrcon.Protocols.Frostbite.Objects {
                 }
             }
 
-            return groupings;
+            return groups;
         }
 
     }

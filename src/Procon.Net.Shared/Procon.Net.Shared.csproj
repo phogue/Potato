@@ -96,7 +96,7 @@
     <Compile Include="IPacketWrapper.cs" />
     <Compile Include="Models\GameModeModel.cs" />
     <Compile Include="ProtocolState.cs" />
-    <Compile Include="Models\GroupingModel.cs" />
+    <Compile Include="Models\GroupModel.cs" />
     <Compile Include="Models\HumanHitLocation.cs" />
     <Compile Include="Models\InventoryModel.cs" />
     <Compile Include="Models\ItemModel.cs" />

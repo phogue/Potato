@@ -21,7 +21,7 @@ namespace Procon.Core.Shared {
             typeof (String),
             typeof (ConnectionModel),
             typeof (ProtocolType),
-            typeof (GroupModel),
+            typeof (Core.Shared.Models.GroupModel),
             typeof (AccountModel),
             typeof (PermissionModel),
             typeof (AccountPlayerModel),
@@ -77,7 +77,7 @@ namespace Procon.Core.Shared {
             else if (t == typeof(ProtocolType) && this.Data.GameTypes != null) {
                 all = this.Data.GameTypes.Cast<Object>().ToList();
             }
-            else if (t == typeof(GroupModel) && this.Data.Groups != null) {
+            else if (t == typeof(Core.Shared.Models.GroupModel) && this.Data.Groups != null) {
                 all = this.Data.Groups.Cast<Object>().ToList();
             }
             else if (t == typeof(AccountModel) && this.Data.Accounts != null) {

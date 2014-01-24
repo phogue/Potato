@@ -417,8 +417,8 @@ namespace Myrcon.Protocols.Frostbite {
                     statePlayer.Ping = Math.Min(player.Ping, 1000);
                     statePlayer.Uid = player.Uid;
                     
-                    statePlayer.ModifyGroup(player.Groups.FirstOrDefault(group => group.Type == GroupingModel.Team));
-                    statePlayer.ModifyGroup(player.Groups.FirstOrDefault(group => group.Type == GroupingModel.Squad));
+                    statePlayer.ModifyGroup(player.Groups.FirstOrDefault(group => group.Type == GroupModel.Team));
+                    statePlayer.ModifyGroup(player.Groups.FirstOrDefault(group => group.Type == GroupModel.Squad));
                 }
             }
 
@@ -767,8 +767,8 @@ namespace Myrcon.Protocols.Frostbite {
                         statePlayer.Ping = player.Ping;
                         statePlayer.Uid = player.Uid;
 
-                        statePlayer.ModifyGroup(player.Groups.FirstOrDefault(group => group.Type == GroupingModel.Team));
-                        statePlayer.ModifyGroup(player.Groups.FirstOrDefault(group => group.Type == GroupingModel.Squad));
+                        statePlayer.ModifyGroup(player.Groups.FirstOrDefault(group => group.Type == GroupModel.Team));
+                        statePlayer.ModifyGroup(player.Groups.FirstOrDefault(group => group.Type == GroupModel.Squad));
 
                         player = statePlayer;
                     }
@@ -791,9 +791,9 @@ namespace Myrcon.Protocols.Frostbite {
                 ChatModel chat = FrostbiteChat.ParsePlayerChat(request.Packet.Words.GetRange(1, request.Packet.Words.Count - 1));
 
                 // If it was directed towards a specific player.
-                if (chat.Scope.Groups != null && chat.Scope.Groups.Any(group => group.Type == GroupingModel.Player) == true) {
+                if (chat.Scope.Groups != null && chat.Scope.Groups.Any(group => group.Type == GroupModel.Player) == true) {
                     chat.Scope.Players = new List<PlayerModel>() {
-                        this.State.Players.FirstOrDefault(player => player.Uid == chat.Scope.Groups.First(group => @group.Type == GroupingModel.Player).Uid)
+                        this.State.Players.FirstOrDefault(player => player.Uid == chat.Scope.Groups.First(group => @group.Type == GroupModel.Player).Uid)
                     };
                 }
 
@@ -878,8 +878,8 @@ namespace Myrcon.Protocols.Frostbite {
 
             if (player != null && int.TryParse(request.Packet.Words[2], out teamId) == true && int.TryParse(request.Packet.Words[3], out squadId) == true) {
 
-                player.ModifyGroup(new GroupingModel() {
-                    Type = GroupingModel.Squad,
+                player.ModifyGroup(new GroupModel() {
+                    Type = GroupModel.Squad,
                     Uid = squadId.ToString(CultureInfo.InvariantCulture)
                 });
 
@@ -896,13 +896,13 @@ namespace Myrcon.Protocols.Frostbite {
             int teamId = 0, squadId = 0;
 
             if (player != null && int.TryParse(request.Packet.Words[2], out teamId) == true && int.TryParse(request.Packet.Words[3], out squadId) == true) {
-                player.ModifyGroup(new GroupingModel() {
-                    Type = GroupingModel.Team,
+                player.ModifyGroup(new GroupModel() {
+                    Type = GroupModel.Team,
                     Uid = teamId.ToString(CultureInfo.InvariantCulture)
                 });
 
-                player.ModifyGroup(new GroupingModel() {
-                    Type = GroupingModel.Squad,
+                player.ModifyGroup(new GroupModel() {
+                    Type = GroupModel.Squad,
                     Uid = squadId.ToString(CultureInfo.InvariantCulture)
                 });
 
@@ -1003,11 +1003,11 @@ namespace Myrcon.Protocols.Frostbite {
                     else if (action.Scope.Players != null && action.Scope.Players.Count > 0) {
                         subset = String.Format(@"player ""{0}""", action.Scope.Players.First().Name);
                     }
-                    else if (action.Scope.Groups != null && action.Scope.Groups.Any(group => @group.Type == GroupingModel.Team) == true) {
-                        subset = String.Format("team {0}", action.Scope.Groups.First(group => @group.Type == GroupingModel.Team).Uid);
+                    else if (action.Scope.Groups != null && action.Scope.Groups.Any(group => @group.Type == GroupModel.Team) == true) {
+                        subset = String.Format("team {0}", action.Scope.Groups.First(group => @group.Type == GroupModel.Team).Uid);
                     }
-                    else if (action.Scope.Groups != null && action.Scope.Groups.Any(group => @group.Type == GroupingModel.Team) == true && action.Scope.Groups.Any(group => @group.Type == GroupingModel.Squad) == true) {
-                        subset = String.Format("squad {0} {1}", action.Scope.Groups.First(group => @group.Type == GroupingModel.Team).Uid, action.Scope.Groups.First(group => @group.Type == GroupingModel.Squad).Uid);
+                    else if (action.Scope.Groups != null && action.Scope.Groups.Any(group => @group.Type == GroupModel.Team) == true && action.Scope.Groups.Any(group => @group.Type == GroupModel.Squad) == true) {
+                        subset = String.Format("squad {0} {1}", action.Scope.Groups.First(group => @group.Type == GroupModel.Team).Uid, action.Scope.Groups.First(group => @group.Type == GroupModel.Squad).Uid);
                     }
 
                     if (action.ActionType == NetworkActionType.NetworkTextSay) {
@@ -1101,14 +1101,14 @@ namespace Myrcon.Protocols.Frostbite {
 
                             int currentTeamId = -1;
 
-                            int.TryParse(movePlayer.Groups.First(group => @group.Type == GroupingModel.Team).Uid, out currentTeamId);
+                            int.TryParse(movePlayer.Groups.First(group => @group.Type == GroupModel.Team).Uid, out currentTeamId);
 
                             // Avoid divide by 0 error - shouldn't ever be encountered though.
                             if (selectedMap.GameMode != null && selectedMap.GameMode.TeamCount > 0) {
                                 int newTeamId = (currentTeamId + 1) % (selectedMap.GameMode.TeamCount + 1);
 
-                                action.Now.Groups.Add(new GroupingModel() {
-                                    Type = GroupingModel.Team,
+                                action.Now.Groups.Add(new GroupModel() {
+                                    Type = GroupModel.Team,
                                     Uid = newTeamId == 0 ? "1" : newTeamId.ToString(CultureInfo.InvariantCulture)
                                 });
                             }
@@ -1116,8 +1116,8 @@ namespace Myrcon.Protocols.Frostbite {
 
                         // Now check if the destination squad is supported.
                         if (selectedMap.GameMode != null && (selectedMap.GameMode.Name == "SQDM" || selectedMap.GameMode.Name == "SQRUSH")) {
-                            if (selectedMap.GameMode.DefaultGroups.Find(group => @group.Type == GroupingModel.Squad) != null) {
-                                action.Now.Groups.Add(selectedMap.GameMode.DefaultGroups.Find(group => @group.Type == GroupingModel.Squad));
+                            if (selectedMap.GameMode.DefaultGroups.Find(group => @group.Type == GroupModel.Squad) != null) {
+                                action.Now.Groups.Add(selectedMap.GameMode.DefaultGroups.Find(group => @group.Type == GroupModel.Squad));
                             }
                         }
                     }
@@ -1125,8 +1125,8 @@ namespace Myrcon.Protocols.Frostbite {
                     wrappers.Add(this.CreatePacket(
                         "admin.movePlayer \"{0}\" {1} {2} {3}",
                         movePlayer.Name,
-                        action.Now.Groups.First(group => @group.Type == GroupingModel.Team).Uid,
-                        action.Now.Groups.First(group => @group.Type == GroupingModel.Squad).Uid,
+                        action.Now.Groups.First(group => @group.Type == GroupModel.Team).Uid,
+                        action.Now.Groups.First(group => @group.Type == GroupModel.Squad).Uid,
                         FrostbiteConverter.BoolToString(forceMove)
                     ));
                 }

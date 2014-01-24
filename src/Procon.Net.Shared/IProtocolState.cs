@@ -35,7 +35,7 @@ namespace Procon.Net.Shared {
         /// <summary>
         /// List of potential groups available 
         /// </summary>
-        List<GroupingModel> Groupings { get; set; }
+        List<GroupModel> Groups { get; set; }
 
         /// <summary>
         /// List of potential items available in this game.

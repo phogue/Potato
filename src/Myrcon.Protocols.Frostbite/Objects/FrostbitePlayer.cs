@@ -27,16 +27,16 @@ namespace Myrcon.Protocols.Frostbite.Objects {
                             break;
                         case "teamid":
                             if (int.TryParse(variables[i], out intValue)) {
-                                player.Groups.Add(new GroupingModel() {
-                                    Type = GroupingModel.Team,
+                                player.Groups.Add(new GroupModel() {
+                                    Type = GroupModel.Team,
                                     Uid = intValue.ToString(CultureInfo.InvariantCulture)
                                 });
                             }
                             break;
                         case "squadid":
                             if (int.TryParse(variables[i], out intValue)) {
-                                player.Groups.Add(new GroupingModel() {
-                                    Type = GroupingModel.Squad,
+                                player.Groups.Add(new GroupModel() {
+                                    Type = GroupModel.Squad,
                                     Uid = intValue.ToString(CultureInfo.InvariantCulture)
                                 });
                             }

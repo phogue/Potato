@@ -31,9 +31,9 @@ namespace Procon.Net {
         /// <param name="config"></param>
         /// <returns></returns>
         public static T Populate<T>(T config) where T : ProtocolConfigModel {
-            if (config.GameModes != null && config.Groupings != null) {
+            if (config.GameModes != null && config.Groups != null) {
                 foreach (GameModeModel mode in config.GameModes) {
-                    mode.DefaultGroups = config.Groupings.Where(known => mode.DefaultGroups.Any(group => group.Uid == known.Uid && group.Type == known.Type)).ToList();
+                    mode.DefaultGroups = config.Groups.Where(known => mode.DefaultGroups.Any(group => group.Uid == known.Uid && group.Type == known.Type)).ToList();
                 }
             }
 
@@ -41,9 +41,9 @@ namespace Procon.Net {
                 foreach (MapModel map in config.MapPool) {
                     map.GameMode = config.GameModes.FirstOrDefault(known => known.Name == map.GameMode.Name);
 
-                    if (config.Groupings != null) {
+                    if (config.Groups != null) {
                         // Load in all default groupings, except for those explicitly defined.
-                        map.Groups = map.Groups.Union(config.Groupings.Where(existing => map.Groups.Any(group => group.Uid == existing.Uid && group.Type == existing.Type) == false)).ToList();
+                        map.Groups = map.Groups.Union(config.Groups.Where(existing => map.Groups.Any(group => group.Uid == existing.Uid && group.Type == existing.Type) == false)).ToList();
                     }
                 }
             }

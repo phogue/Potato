@@ -20,7 +20,7 @@ namespace Procon.Core.Shared.Test.ExecutableCommands {
             var data = new CommandData() {
                 Content = new List<String>(),
                 Connections = new List<ConnectionModel>(),
-                Groups = new List<GroupModel>(),
+                Groups = new List<Core.Shared.Models.GroupModel>(),
                 Accounts = new List<AccountModel>(),
                 Permissions = new List<PermissionModel>(),
                 AccountPlayers = new List<AccountPlayerModel>(),

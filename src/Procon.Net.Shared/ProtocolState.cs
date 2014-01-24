@@ -19,7 +19,7 @@ namespace Procon.Net.Shared {
 
         public List<GameModeModel> GameModePool { get; set; }
 
-        public List<GroupingModel> Groupings { get; set; }
+        public List<GroupModel> Groups { get; set; }
 
         public List<ItemModel> Items { get; set; } 
 
@@ -37,7 +37,7 @@ namespace Procon.Net.Shared {
 
             this.MapPool = new List<MapModel>();
             this.GameModePool = new List<GameModeModel>();
-            this.Groupings = new List<GroupingModel>();
+            this.Groups = new List<GroupModel>();
             this.Items = new List<ItemModel>();
 
             this.Settings = new Settings();

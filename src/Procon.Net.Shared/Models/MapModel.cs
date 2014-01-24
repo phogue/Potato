@@ -35,13 +35,13 @@ namespace Procon.Net.Shared.Models {
         /// <summary>
         /// This maps possible groups
         /// </summary>
-        public List<GroupingModel> Groups { get; set; }
+        public List<GroupModel> Groups { get; set; }
 
         /// <summary>
         /// Initializes the map model with default values.
         /// </summary>
         public MapModel() {
-            this.Groups = new List<GroupingModel>();
+            this.Groups = new List<GroupModel>();
         }
     }
 }

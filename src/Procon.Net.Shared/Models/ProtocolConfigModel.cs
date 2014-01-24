@@ -18,9 +18,9 @@ namespace Procon.Net.Shared.Models {
         public List<GameModeModel> GameModes { get; set; }
 
         /// <summary>
-        /// List of groupings for this game
+        /// List of groups for this game
         /// </summary>
-        public List<GroupingModel> Groupings { get; set; }
+        public List<GroupModel> Groups { get; set; }
 
         /// <summary>
         /// List of items for this game.
@@ -34,7 +34,7 @@ namespace Procon.Net.Shared.Models {
         public virtual void Parse(IProtocol game) {
             game.State.MapPool = this.MapPool ?? new List<MapModel>();
             game.State.GameModePool = this.GameModes ?? new List<GameModeModel>();
-            game.State.Groupings = this.Groupings ?? new List<GroupingModel>();
+            game.State.Groups = this.Groups ?? new List<GroupModel>();
             game.State.Items = this.Items ?? new List<ItemModel>();
         }
     }

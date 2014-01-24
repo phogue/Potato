@@ -32,7 +32,7 @@ namespace Procon.Core.Shared {
         /// <summary>
         /// Groups effected by this event.
         /// </summary>
-        public List<GroupModel> Groups { get; set; }
+        public List<Core.Shared.Models.GroupModel> Groups { get; set; }
 
         /// <summary>
         /// Accounts effected by this event.

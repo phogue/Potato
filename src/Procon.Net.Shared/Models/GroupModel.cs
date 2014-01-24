@@ -5,7 +5,7 @@ namespace Procon.Net.Shared.Models {
     /// A group identifier to group players by
     /// </summary>
     [Serializable]
-    public sealed class GroupingModel : NetworkModel {
+    public sealed class GroupModel : NetworkModel {
         /// <summary>
         /// A majority of games have teams, teams have squads. So we have these variables
         /// where to simply avoid debugging string issues later.
@@ -42,7 +42,7 @@ namespace Procon.Net.Shared.Models {
         /// <summary>
         /// Initializes default values.
         /// </summary>
-        public GroupingModel() {
+        public GroupModel() {
             this.Type = String.Empty;
             this.Uid = null;
             this.FriendlyName = String.Empty;

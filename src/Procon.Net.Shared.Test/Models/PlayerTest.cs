@@ -82,13 +82,13 @@ namespace Procon.Net.Shared.Test.Models {
             PlayerModel player = new PlayerModel();
 
             player.ModifyGroup(
-                new GroupingModel() {
-                    Type = GroupingModel.Team,
+                new GroupModel() {
+                    Type = GroupModel.Team,
                     Uid = "1"
                 }
             );
 
-            Assert.AreEqual("1", player.Groups.First(group => group.Type == GroupingModel.Team).Uid);
+            Assert.AreEqual("1", player.Groups.First(group => group.Type == GroupModel.Team).Uid);
             Assert.AreEqual(1, player.Groups.Count);
         }
 
@@ -99,21 +99,21 @@ namespace Procon.Net.Shared.Test.Models {
         public void TestModifyGroupExists() {
             PlayerModel player = new PlayerModel() {
                 Groups = {
-                    new GroupingModel() {
-                        Type = GroupingModel.Team,
+                    new GroupModel() {
+                        Type = GroupModel.Team,
                         Uid = "1"
                     }
                 }
             };
 
             player.ModifyGroup(
-                new GroupingModel() {
-                    Type = GroupingModel.Team,
+                new GroupModel() {
+                    Type = GroupModel.Team,
                     Uid = "2"
                 }
             );
 
-            Assert.AreEqual("2", player.Groups.First(group => group.Type == GroupingModel.Team).Uid);
+            Assert.AreEqual("2", player.Groups.First(group => group.Type == GroupModel.Team).Uid);
             Assert.AreEqual(1, player.Groups.Count);
         }
     }

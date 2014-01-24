@@ -38,14 +38,14 @@ namespace Myrcon.Protocols.Frostbite.MedalOfHonor {
 
                     int currentTeamId = -1;
 
-                    int.TryParse(movePlayer.Groups.First(group => group.Type == GroupingModel.Team).Uid, out currentTeamId);
+                    int.TryParse(movePlayer.Groups.First(group => group.Type == GroupModel.Team).Uid, out currentTeamId);
 
                     // Avoid divide by 0 error - shouldn't ever be encountered though.
                     if (selectedMap.GameMode.TeamCount > 0) {
                         int newTeamId = (currentTeamId + 1) % (selectedMap.GameMode.TeamCount + 1);
 
-                        action.Now.Groups.Add(new GroupingModel() {
-                            Type = GroupingModel.Team,
+                        action.Now.Groups.Add(new GroupModel() {
+                            Type = GroupModel.Team,
                             Uid = newTeamId == 0 ? "1" : newTeamId.ToString(CultureInfo.InvariantCulture)
                         });
                     }
@@ -56,7 +56,7 @@ namespace Myrcon.Protocols.Frostbite.MedalOfHonor {
                 this.CreatePacket(
                     "admin.movePlayer \"{0}\" {1} {2}",
                     movePlayer.Name,
-                    action.Now.Groups.First(group => group.Type == GroupingModel.Team).Uid,
+                    action.Now.Groups.First(group => group.Type == GroupModel.Team).Uid,
                     FrostbiteConverter.BoolToString(forceMove)
                 )
             );

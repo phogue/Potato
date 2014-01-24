@@ -52,7 +52,7 @@ namespace Procon.Net.Shared.Models {
         /// <summary>
         /// This players grouping on this server
         /// </summary>
-        public List<GroupingModel> Groups { get; set; }
+        public List<GroupModel> Groups { get; set; }
 
         /// <summary>
         /// This player's Score.
@@ -132,7 +132,7 @@ namespace Procon.Net.Shared.Models {
             this.Uid = String.Empty;
             this.ClanTag = String.Empty;
             this.Name = String.Empty;
-            this.Groups = new List<GroupingModel>();
+            this.Groups = new List<GroupModel>();
             this.Location = new Location();
             this.Inventory = new InventoryModel();
         }
@@ -141,12 +141,12 @@ namespace Procon.Net.Shared.Models {
         /// Adds or updates an existing group with the same type.
         /// </summary>
         /// <param name="updateGroup">The group to add or modify the existing group with the same type</param>
-        public void ModifyGroup(GroupingModel updateGroup) {
+        public void ModifyGroup(GroupModel updateGroup) {
             if (updateGroup != null) {
-                GroupingModel existingGroup = this.Groups.FirstOrDefault(group => group.Type == updateGroup.Type);
+                GroupModel existingGroup = this.Groups.FirstOrDefault(group => group.Type == updateGroup.Type);
 
                 if (existingGroup == null) {
-                    this.Groups.Add(updateGroup.Clone() as GroupingModel);
+                    this.Groups.Add(updateGroup.Clone() as GroupModel);
                 }
                 else {
                     existingGroup.Uid = updateGroup.Uid;

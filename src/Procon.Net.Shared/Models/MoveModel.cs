@@ -12,8 +12,8 @@ namespace Procon.Net.Shared.Models {
         /// </summary>
         public MoveModel() {
             this.Scope.Players = new List<PlayerModel>();
-            this.Then.Groups = new List<GroupingModel>();
-            this.Now.Groups = new List<GroupingModel>();
+            this.Then.Groups = new List<GroupModel>();
+            this.Now.Groups = new List<GroupModel>();
         }
     }
 }

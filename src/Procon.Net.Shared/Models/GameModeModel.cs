@@ -25,7 +25,7 @@ namespace Procon.Net.Shared.Models {
         /// <summary>
         /// List of groups to default a player to when moving them and such.
         /// </summary>
-        public List<GroupingModel> DefaultGroups { get; set; }
+        public List<GroupModel> DefaultGroups { get; set; }
 
         /// <summary>
         /// Initializes the game mode with the default values.

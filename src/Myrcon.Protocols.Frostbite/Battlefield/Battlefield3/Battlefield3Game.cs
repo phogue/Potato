@@ -70,8 +70,8 @@ namespace Myrcon.Protocols.Frostbite.Battlefield.Battlefield3 {
                     statePlayer.ClanTag = player.ClanTag;
                     statePlayer.Uid = player.Uid;
 
-                    statePlayer.ModifyGroup(player.Groups.FirstOrDefault(group => group.Type == GroupingModel.Team));
-                    statePlayer.ModifyGroup(player.Groups.FirstOrDefault(group => group.Type == GroupingModel.Squad));
+                    statePlayer.ModifyGroup(player.Groups.FirstOrDefault(group => group.Type == GroupModel.Team));
+                    statePlayer.ModifyGroup(player.Groups.FirstOrDefault(group => group.Type == GroupModel.Squad));
                 }
             }
 

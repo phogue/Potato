@@ -82,9 +82,9 @@ namespace Procon.Examples.Plugins.Events.Test {
                         new ChatModel() {
                             Origin = NetworkOrigin.Player,
                             Scope = {
-                                Groups = new List<GroupingModel>() {
-                                    new GroupingModel() {
-                                        Type = GroupingModel.Team,
+                                Groups = new List<GroupModel>() {
+                                    new GroupModel() {
+                                        Type = GroupModel.Team,
                                         Uid = "1"
                                     }
                                 }

@@ -22,7 +22,7 @@ namespace Procon.Net.Shared.Models {
         /// <summary>
         /// The groups attached to this action.
         /// </summary>
-        public List<GroupingModel> Groups { get; set; }
+        public List<GroupModel> Groups { get; set; }
 
         /// <summary>
         /// The list of points (3d) attached to this action, if any.

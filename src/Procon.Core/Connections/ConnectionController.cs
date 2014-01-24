@@ -116,7 +116,7 @@ namespace Procon.Core.Connections {
                 this.ConnectionModel.Hostname = this.Protocol.Options.Hostname;
                 this.ConnectionModel.Port = this.Protocol.Options.Port;
                 this.ConnectionModel.Password = this.Protocol.Options.Password;
-                this.ConnectionModel.Variables = this.Protocol.Options.VariablesString();
+                this.ConnectionModel.Arguments = this.Protocol.Options.ArgumentsString();
             }
 
             this.ConnectionModel.ConnectionGuid = MD5.Guid(String.Format("{0}:{1}:{2}", this.ConnectionModel.ProtocolType, this.ConnectionModel.Hostname, this.ConnectionModel.Port));

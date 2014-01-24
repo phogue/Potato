@@ -9,19 +9,19 @@ namespace Procon.Net.Shared {
         public String Hostname { get; set; }
         public ushort Port { get; set; }
         public String Password { get; set; }
-        public Dictionary<String, String> Variables { get; set; }
+        public Dictionary<String, String> Arguments { get; set; }
 
         /// <summary>
         /// Initializes the setup with default values.
         /// </summary>
         public ProtocolSetup() {
-            this.Variables = new Dictionary<String, String>();
+            this.Arguments = new Dictionary<String, String>();
         }
 
-        public String VariablesString() {
+        public String ArgumentsString() {
             var list = new List<String>();
 
-            foreach (var variable in this.Variables) {
+            foreach (var variable in this.Arguments) {
                 list.Add(String.Format("--{0}", variable.Key));
                 list.Add(String.Format(@"""{0}""", variable.Value));
             }

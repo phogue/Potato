@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using Newtonsoft.Json;
 using Procon.Net.Shared;
 
@@ -38,6 +37,6 @@ namespace Procon.Core.Shared.Models {
         /// <summary>
         /// Additional arguments for a connection
         /// </summary>
-        public String Variables { get; set; }
+        public String Arguments { get; set; }
     }
 }

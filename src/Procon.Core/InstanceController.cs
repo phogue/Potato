@@ -393,7 +393,7 @@ namespace Procon.Core {
                             new CommandParameter() {
                                 Data = {
                                     Content = new List<String>() {
-                                        connection.ConnectionModel.Variables
+                                        connection.ConnectionModel.Arguments
                                     }
                                 }
                             }
@@ -648,7 +648,7 @@ namespace Procon.Core {
                                 Hostname = hostName,
                                 Port = port,
                                 Password = password,
-                                Variables = ArgumentHelper.ToArguments(additional.Wordify())
+                                Arguments = ArgumentHelper.ToArguments(additional.Wordify())
                             });
 
                             DirectoryInfo packagePath = Defines.PackageContainingPath(gameType.Assembly.Location);

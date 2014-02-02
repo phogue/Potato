@@ -1861,6 +1861,15 @@
                 "BattlePickup"
             ]
         },
+		{
+            "Name":"U_ASVAL",
+            "FriendlyName":"AS VAL",
+            "Tags":[
+                "Engineer",
+                "Primary",
+                "SMG"
+            ]
+        },
         {
             "Name":"U_AT4",
             "FriendlyName":"AT-4",
@@ -2028,6 +2037,15 @@
                 "Handgun"
             ]
         },
+		{
+            "Name":"U_DAO12",
+            "FriendlyName":"DAO-12",
+            "Tags":[
+                "General",
+                "Primary",
+                "Shotgun"
+            ]
+        },
         {
             "Name":"U_DBV12",
             "FriendlyName":"DBV-12",
@@ -2044,6 +2062,15 @@
                 "Assault",
                 "Gadget",
                 "None"
+            ]
+        },
+		{
+            "Name":"U_F2000",
+            "FriendlyName":"F2000",
+            "Tags":[
+                "Assault",
+                "Primary",
+                "AssaultRifle"
             ]
         },
         {
@@ -2152,6 +2179,15 @@
             "Tags":[
                 "General",
                 "Handgun"
+            ]
+        },
+		{
+            "Name":"U_GOL",
+            "FriendlyName":"GOL Magnum",
+            "Tags":[
+                "Recon",
+                "Primary",
+                "SniperRifle"
             ]
         },
         {
@@ -2637,6 +2673,15 @@
                 "General",
                 "Primary",
                 "Carbine"
+            ]
+        },
+		{
+            "Name":"U_M60E4",
+            "FriendlyName":"M60-E4",
+            "Tags":[
+                "Support",
+                "Primary",
+                "LMG"
             ]
         },
         {

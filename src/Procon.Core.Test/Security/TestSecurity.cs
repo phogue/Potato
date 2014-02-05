@@ -79,7 +79,7 @@ namespace Procon.Core.Test.Security {
                 CommandType = CommandType.SecurityAccountAddPlayer,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     "Phogue",
-                    CommonGameType.DiceBattlefield3,
+                    CommonProtocolType.DiceBattlefield3,
                     "ABCDEF"
                 })
             });
@@ -108,7 +108,7 @@ namespace Procon.Core.Test.Security {
             Assert.IsNull(permission.Name);
             Assert.IsNull(permission.Authority);
 
-            Assert.AreEqual(CommonGameType.None, accountPlayer.GameType);
+            Assert.AreEqual(CommonProtocolType.None, accountPlayer.ProtocolType);
             Assert.IsNull(accountPlayer.Uid);
             Assert.IsNull(accountPlayer.Account);
         }
@@ -182,7 +182,7 @@ namespace Procon.Core.Test.Security {
                 CommandType = CommandType.SecurityAccountAddPlayer,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     "Phogue",
-                    CommonGameType.DiceBattlefield3,
+                    CommonProtocolType.DiceBattlefield3,
                     "ABCDEF"
                 })
             });
@@ -205,7 +205,7 @@ namespace Procon.Core.Test.Security {
             Assert.AreEqual(88, loadSecurity.Groups.FirstOrDefault(group => group.Name == "GroupName").Permissions.Where(permission => permission.Name == CommandType.VariablesSetA.ToString()).First().Authority);
             Assert.AreEqual("Phogue", loadSecurity.Groups.SelectMany(group => group.Accounts).First().Username);
             Assert.AreEqual("de-DE", loadSecurity.Groups.First().Accounts.First().PreferredLanguageCode);
-            Assert.AreEqual(CommonGameType.DiceBattlefield3, loadSecurity.Groups.SelectMany(group => group.Accounts).SelectMany(account => account.Players).First().GameType);
+            Assert.AreEqual(CommonProtocolType.DiceBattlefield3, loadSecurity.Groups.SelectMany(group => group.Accounts).SelectMany(account => account.Players).First().ProtocolType);
             Assert.AreEqual("ABCDEF", loadSecurity.Groups.SelectMany(group => group.Accounts).SelectMany(account => account.Players).First().Uid);
 
             // Now validate that we can authenticate against the loaded in password
@@ -292,7 +292,7 @@ namespace Procon.Core.Test.Security {
                 CommandType = CommandType.SecurityAccountAddPlayer,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     "Phogue",
-                    CommonGameType.DiceBattlefield3,
+                    CommonProtocolType.DiceBattlefield3,
                     "ABCDEF"
                 })
             });
@@ -342,7 +342,7 @@ namespace Procon.Core.Test.Security {
 
             Assert.AreEqual("SecurityAccountAddPlayer", commands[7].Name);
             Assert.AreEqual("Phogue", commands[7].Parameters[0].First<String>());
-            Assert.AreEqual(CommonGameType.DiceBattlefield3, commands[7].Parameters[1].First<String>());
+            Assert.AreEqual(CommonProtocolType.DiceBattlefield3, commands[7].Parameters[1].First<String>());
             Assert.AreEqual("ABCDEF", commands[7].Parameters[2].First<String>());
         }
     }

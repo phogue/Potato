@@ -34,7 +34,7 @@ namespace Procon.Core.Shared.Models {
         /// </summary>
         public CommandAuthenticationModel() {
             this.Username = null;
-            this.GameType = CommonGameType.None;
+            this.GameType = CommonProtocolType.None;
             this.Uid = null;
             this.PasswordPlainText = null;
         }

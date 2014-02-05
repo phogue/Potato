@@ -11,7 +11,7 @@ namespace Procon.Core.Shared.Models {
         /// <summary>
         /// The name of the game 
         /// </summary>
-        public String GameType { get; set; }
+        public String ProtocolType { get; set; }
 
         /// <summary>
         /// Unique identifer value for the player.  In Frostbite based
@@ -30,13 +30,13 @@ namespace Procon.Core.Shared.Models {
         /// Initializes the account player with default values.
         /// </summary>
         public AccountPlayerModel() {
-            this.GameType = CommonGameType.None;
+            this.ProtocolType = CommonProtocolType.None;
 
             this.Uid = String.Empty;
         }
 
         public void Dispose() {
-            this.GameType = CommonGameType.None;
+            this.ProtocolType = CommonProtocolType.None;
             this.Uid = null;
             this.Account = null;
         }

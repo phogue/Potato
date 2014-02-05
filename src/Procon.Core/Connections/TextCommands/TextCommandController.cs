@@ -170,7 +170,7 @@ namespace Procon.Core.Connections.TextCommands {
             PlayerModel player = this.Connection.ProtocolState.Players.FirstOrDefault(p => p.Uid == command.Authentication.Uid);
 
             if (speaker != null) {
-                AccountPlayerModel accountPlayer = speaker.Players.FirstOrDefault(p => p.GameType == this.Connection.ConnectionModel.ProtocolType.Type);
+                AccountPlayerModel accountPlayer = speaker.Players.FirstOrDefault(p => p.ProtocolType == this.Connection.ConnectionModel.ProtocolType.Type);
 
                 if (accountPlayer != null) {
                     player = this.Connection.ProtocolState.Players.FirstOrDefault(p => p.Uid == accountPlayer.Uid);

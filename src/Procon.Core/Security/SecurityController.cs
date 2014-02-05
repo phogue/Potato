@@ -375,7 +375,7 @@ namespace Procon.Core.Security {
                                 new CommandParameter() {
                                     Data = {
                                         Content = new List<String>() {
-                                            assignment.GameType
+                                            assignment.ProtocolType
                                         }
                                     }
                                 },
@@ -584,7 +584,7 @@ namespace Procon.Core.Security {
 
                 if (uid.Length > 0) {
                     AccountPlayerModel player = this.Groups.SelectMany(group => @group.Accounts)
-                                               .SelectMany(account => account.Players).FirstOrDefault(x => x.GameType == gameType && x.Uid == uid);
+                                               .SelectMany(account => account.Players).FirstOrDefault(x => x.ProtocolType == gameType && x.Uid == uid);
 
                     // If the player exists for any other player..
                     if (player != null) {
@@ -594,7 +594,7 @@ namespace Procon.Core.Security {
                         result = new CommandResult() {
                             Success = true,
                             Status = CommandResultType.Success,
-                            Message = String.Format(@"Player with UID of ""{0}"" in game type ""{1}"" successfully removed from account ""{2}"".", player.Uid, player.GameType, player.Account.Username),
+                            Message = String.Format(@"Player with UID of ""{0}"" in game type ""{1}"" successfully removed from account ""{2}"".", player.Uid, player.ProtocolType, player.Account.Username),
                             Then = new CommandData() {
                                 AccountPlayers = new List<AccountPlayerModel>() {
                                     player.Clone() as AccountPlayerModel
@@ -697,7 +697,7 @@ namespace Procon.Core.Security {
                 };
             }
             else if (command.Origin == CommandOrigin.Plugin) {
-                if (command.Authentication.Username == null && command.Authentication.Uid == null && command.Authentication.GameType == CommonGameType.None) {
+                if (command.Authentication.Username == null && command.Authentication.Uid == null && command.Authentication.GameType == CommonProtocolType.None) {
                     // The plugin has not provided additional details on who has executed it.
                     result = new CommandResult() {
                         Success = true,
@@ -789,7 +789,7 @@ namespace Procon.Core.Security {
         public AccountModel GetAccount(String gameType, String uid) {
             return this.Groups.SelectMany(group => group.Accounts)
                               .SelectMany(account => account.Players)
-                              .Where(player => player.GameType == gameType)
+                              .Where(player => player.ProtocolType == gameType)
                               .Where(player => player.Uid == uid)
                               .Select(player => player.Account)
                               .FirstOrDefault();
@@ -1075,12 +1075,12 @@ namespace Procon.Core.Security {
                     if (uid.Length > 0) {
                         AccountPlayerModel player = this.Groups.SelectMany(group => @group.Accounts)
                                                    .SelectMany(a => a.Players)
-                                                   .FirstOrDefault(x => x.GameType == gameType && x.Uid == uid);
+                                                   .FirstOrDefault(x => x.ProtocolType == gameType && x.Uid == uid);
 
                         // If the player does not exist for any other player..
                         if (player == null) {
                             player = new AccountPlayerModel() {
-                                GameType = gameType,
+                                ProtocolType = gameType,
                                 Uid = uid,
                                 Account = account
                             };
@@ -1090,7 +1090,7 @@ namespace Procon.Core.Security {
                             result = new CommandResult() {
                                 Success = true,
                                 Status = CommandResultType.Success,
-                                Message = String.Format(@"Player with UID of ""{0}"" in game type ""{1}"" successfully added to account ""{2}"".", player.Uid, player.GameType, account.Username),
+                                Message = String.Format(@"Player with UID of ""{0}"" in game type ""{1}"" successfully added to account ""{2}"".", player.Uid, player.ProtocolType, account.Username),
                                 Scope = new CommandData() {
                                     Accounts = new List<AccountModel>() {
                                         account
@@ -1124,7 +1124,7 @@ namespace Procon.Core.Security {
                             result = new CommandResult() {
                                 Success = true,
                                 Status = CommandResultType.Success,
-                                Message = String.Format(@"Player with UID of ""{0}"" in game type ""{1}"" successfully added to account ""{2}"".", player.Uid, player.GameType, account.Username),
+                                Message = String.Format(@"Player with UID of ""{0}"" in game type ""{1}"" successfully added to account ""{2}"".", player.Uid, player.ProtocolType, account.Username),
                                 Scope = new CommandData() {
                                     AccountPlayers = new List<AccountPlayerModel>() {
                                         player

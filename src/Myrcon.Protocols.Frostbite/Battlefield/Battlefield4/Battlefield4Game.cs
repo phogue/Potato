@@ -10,7 +10,7 @@ using Procon.Net.Shared.Models;
 using Procon.Net.Shared.Protocols;
 
 namespace Myrcon.Protocols.Frostbite.Battlefield.Battlefield4 {
-    [ProtocolDeclaration(Type = CommonGameType.DiceBattlefield4, Name = "Battlefield 4", Provider = "Myrcon")]
+    [ProtocolDeclaration(Type = CommonProtocolType.DiceBattlefield4, Name = "Battlefield 4", Provider = "Myrcon")]
     public class Battlefield4Game : BattlefieldGame {
 
         public Battlefield4Game() : base() {

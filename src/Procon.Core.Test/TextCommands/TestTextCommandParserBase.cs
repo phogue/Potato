@@ -359,7 +359,7 @@ namespace Procon.Core.Test.TextCommands {
                 CommandType = CommandType.SecurityAccountAddPlayer,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     "Phogue",
-                    CommonGameType.DiceBattlefield3,
+                    CommonProtocolType.DiceBattlefield3,
                     "EA_63A9F96745B22DFB509C558FC8B5C50F"
                 })
             });
@@ -376,9 +376,9 @@ namespace Procon.Core.Test.TextCommands {
                     },
                     ConnectionModel = {
                         ProtocolType = new ProtocolType() {
-                            Name = CommonGameType.DiceBattlefield3,
+                            Name = CommonProtocolType.DiceBattlefield3,
                             Provider = "Myrcon",
-                            Type = CommonGameType.DiceBattlefield3
+                            Type = CommonProtocolType.DiceBattlefield3
                         }
                     }
                 }

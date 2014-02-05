@@ -15,7 +15,7 @@ namespace Procon.Net.Shared.Protocols {
     ///     </para>
     /// </remarks>
     [Serializable]
-    public static class CommonGameType {
+    public static class CommonProtocolType {
         /// <summary>
         /// No game type specified.
         /// </summary>

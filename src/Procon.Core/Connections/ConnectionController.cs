@@ -245,10 +245,6 @@ namespace Procon.Core.Connections {
                     CommandType = CommandType.NetworkProtocolQuerySettings
                 });
 
-                ICommandResult bans = this.Tunnel(new Command(command) {
-                    CommandType = CommandType.NetworkProtocolQueryBans
-                });
-
                 ICommandResult maps = this.Tunnel(new Command(command) {
                     CommandType = CommandType.NetworkProtocolQueryMaps
                 });
@@ -266,7 +262,6 @@ namespace Procon.Core.Connections {
                         Plugins = new List<PluginModel>(this.Plugins.LoadedPlugins),
                         Players = players.Now.Players,
                         Settings = settings.Now.Settings,
-                        Bans = bans.Now.Bans,
                         Maps = maps.Now.Maps
                     }
                 };

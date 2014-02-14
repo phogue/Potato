@@ -9,7 +9,6 @@ namespace Procon.Net.Shared.Geolocation {
     /// Geolocation with an IP using Maxmind's library and database.
     /// </summary>
     public class GeolocateIp : IGeolocate {
-        
         /// <summary>
         /// Used when determining a player's Country Name and Code.
         /// </summary>
@@ -18,9 +17,16 @@ namespace Procon.Net.Shared.Geolocation {
         /// <summary>
         /// Loads the Maxmind GeoIP database, if available.
         /// </summary>
-        public GeolocateIp() {
-            if (File.Exists("GeoIP.dat") == true) {
-                GeolocateIp.CountryLookup = new CountryLookup("GeoIP.dat");
+        static GeolocateIp() {
+            try {
+                String path = Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, "GeoIP.dat", SearchOption.AllDirectories).FirstOrDefault();
+
+                if (String.IsNullOrEmpty(path) == false) {
+                    GeolocateIp.CountryLookup = new CountryLookup(path);
+                }
+            }
+            catch {
+                GeolocateIp.CountryLookup = null;
             }
         }
 

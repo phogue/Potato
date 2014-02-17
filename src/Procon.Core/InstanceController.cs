@@ -623,13 +623,13 @@ namespace Procon.Core {
         /// <param name="parameters"></param>
         public ICommandResult InstanceAddConnection(ICommand command, Dictionary<String, ICommandParameter> parameters) {
             ICommandResult result = null;
-
-            String gameTypeProvider = parameters["gameTypeProvider"].First<String>();
-            String gameTypeType = parameters["gameTypeType"].First<String>();
-            String hostName = parameters["hostName"].First<String>();
+            
+            String gameTypeProvider = parameters["gameTypeProvider"].First<String>() ?? "";
+            String gameTypeType = parameters["gameTypeType"].First<String>() ?? "";
+            String hostName = parameters["hostName"].First<String>() ?? "";
             UInt16 port = parameters["port"].First<UInt16>();
-            String password = parameters["password"].First<String>();
-            String additional = parameters["additional"].First<String>();
+            String password = parameters["password"].First<String>() ?? "";
+            String additional = parameters["additional"].First<String>() ?? "";
 
             // As long as the current account is allowed to execute this command...
             if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {

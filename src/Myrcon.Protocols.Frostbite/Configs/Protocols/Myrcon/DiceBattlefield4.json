@@ -275,6 +275,17 @@
                     "Type":"Squad"
                 }
             ]
+        },
+        {
+            "Name":"CaptureTheFlag0",
+            "FriendlyName":"Capture The Flag",
+            "TeamCount":"2",
+            "DefaultGroups": [
+                {
+                    "Uid":"0",
+                    "Type":"Squad"
+                }
+            ]
         }
     ],
     "MapPool":[
@@ -1708,6 +1719,466 @@
             "FriendlyName":"Dragon Pass",
             "GameMode":{
                 "Name":"AirSuperiority0"
+            }
+        },
+        {
+            "Index":"0",
+            "Rounds":"2",
+            "Name":"XP0_Caspian",
+            "FriendlyName":"Caspian Border 2014",
+            "GameMode":{
+                "Name":"ConquestLarge0"
+            }
+        },
+        {
+            "Index":"0",
+            "Rounds":"2",
+            "Name":"XP0_Firestorm",
+            "FriendlyName":"Operation Firestorm 2014",
+            "GameMode":{
+                "Name":"ConquestLarge0"
+            }
+        },
+        {
+            "Index":"0",
+            "Rounds":"2",
+            "Name":"XP0_Metro",
+            "FriendlyName":"Operation Metro 2014",
+            "GameMode":{
+                "Name":"ConquestLarge0"
+            }
+        },
+        {
+            "Index":"0",
+            "Rounds":"2",
+            "Name":"XP0_Oman",
+            "FriendlyName":"Gulf of Oman 2014",
+            "GameMode":{
+                "Name":"ConquestLarge0"
+            }
+        },
+        {
+            "Index":"0",
+            "Rounds":"2",
+            "Name":"XP0_Caspian",
+            "FriendlyName":"Caspian Border 2014",
+            "GameMode":{
+                "Name":"ConquestSmall0"
+            }
+        },
+        {
+            "Index":"0",
+            "Rounds":"2",
+            "Name":"XP0_Firestorm",
+            "FriendlyName":"Operation Firestorm 2014",
+            "GameMode":{
+                "Name":"ConquestSmall0"
+            }
+        },
+        {
+            "Index":"0",
+            "Rounds":"2",
+            "Name":"XP0_Metro",
+            "FriendlyName":"Operation Metro 2014",
+            "GameMode":{
+                "Name":"ConquestSmall0"
+            }
+        },
+        {
+            "Index":"0",
+            "Rounds":"2",
+            "Name":"XP0_Oman",
+            "FriendlyName":"Gulf of Oman 2014",
+            "GameMode":{
+                "Name":"ConquestSmall0"
+            }
+        },
+        {
+            "Index":"0",
+            "Rounds":"2",
+            "Name":"XP0_Caspian",
+            "FriendlyName":"Caspian Border 2014",
+            "GameMode":{
+                "Name":"Domination0"
+            }
+        },
+        {
+            "Index":"0",
+            "Rounds":"2",
+            "Name":"XP0_Firestorm",
+            "FriendlyName":"Operation Firestorm 2014",
+            "GameMode":{
+                "Name":"Domination0"
+            }
+        },
+        {
+            "Index":"0",
+            "Rounds":"2",
+            "Name":"XP0_Metro",
+            "FriendlyName":"Operation Metro 2014",
+            "GameMode":{
+                "Name":"Domination0"
+            }
+        },
+        {
+            "Index":"0",
+            "Rounds":"2",
+            "Name":"XP0_Oman",
+            "FriendlyName":"Gulf of Oman 2014",
+            "GameMode":{
+                "Name":"Domination0"
+            }
+        },
+        {
+            "Index":"0",
+            "Rounds":"2",
+            "Name":"XP0_Caspian",
+            "FriendlyName":"Caspian Border 2014",
+            "GameMode":{
+                "Name":"Elimination0"
+            }
+        },
+        {
+            "Index":"0",
+            "Rounds":"2",
+            "Name":"XP0_Firestorm",
+            "FriendlyName":"Operation Firestorm 2014",
+            "GameMode":{
+                "Name":"Elimination0"
+            }
+        },
+        {
+            "Index":"0",
+            "Rounds":"2",
+            "Name":"XP0_Metro",
+            "FriendlyName":"Operation Metro 2014",
+            "GameMode":{
+                "Name":"Elimination0"
+            }
+        },
+        {
+            "Index":"0",
+            "Rounds":"2",
+            "Name":"XP0_Oman",
+            "FriendlyName":"Gulf of Oman 2014",
+            "GameMode":{
+                "Name":"Elimination0"
+            }
+        },
+        {
+            "Index":"0",
+            "Rounds":"2",
+            "Name":"XP0_Caspian",
+            "FriendlyName":"Caspian Border 2014",
+            "GameMode":{
+                "Name":"Obliteration"
+            }
+        },
+        {
+            "Index":"0",
+            "Rounds":"2",
+            "Name":"XP0_Firestorm",
+            "FriendlyName":"Operation Firestorm 2014",
+            "GameMode":{
+                "Name":"Obliteration"
+            }
+        },
+        {
+            "Index":"0",
+            "Rounds":"2",
+            "Name":"XP0_Metro",
+            "FriendlyName":"Operation Metro 2014",
+            "GameMode":{
+                "Name":"Obliteration"
+            }
+        },
+        {
+            "Index":"0",
+            "Rounds":"2",
+            "Name":"XP0_Oman",
+            "FriendlyName":"Gulf of Oman 2014",
+            "GameMode":{
+                "Name":"Obliteration"
+            }
+        },
+        {
+            "Index":"0",
+            "Rounds":"2",
+            "Name":"XP0_Caspian",
+            "FriendlyName":"Caspian Border 2014",
+            "GameMode":{
+                "Name":"RushLarge0"
+            },
+			"Groups": [
+				{
+					"Uid":"1",
+					"Type":"Team",
+					"FriendlyName":"Attacker"
+				},
+				{
+					"Uid":"2",
+					"Type":"Team",
+					"FriendlyName":"Defender"
+				}
+			]
+        },
+        {
+            "Index":"0",
+            "Rounds":"2",
+            "Name":"XP0_Firestorm",
+            "FriendlyName":"Operation Firestorm 2014",
+            "GameMode":{
+                "Name":"RushLarge0"
+            },
+			"Groups": [
+				{
+					"Uid":"1",
+					"Type":"Team",
+					"FriendlyName":"Attacker"
+				},
+				{
+					"Uid":"2",
+					"Type":"Team",
+					"FriendlyName":"Defender"
+				}
+			]
+        },
+        {
+            "Index":"0",
+            "Rounds":"2",
+            "Name":"XP0_Metro",
+            "FriendlyName":"Operation Metro 2014",
+            "GameMode":{
+                "Name":"RushLarge0"
+            },
+			"Groups": [
+				{
+					"Uid":"1",
+					"Type":"Team",
+					"FriendlyName":"Attacker"
+				},
+				{
+					"Uid":"2",
+					"Type":"Team",
+					"FriendlyName":"Defender"
+				}
+			]
+        },
+        {
+            "Index":"0",
+            "Rounds":"2",
+            "Name":"XP0_Oman",
+            "FriendlyName":"Gulf of Oman 2014",
+            "GameMode":{
+                "Name":"RushLarge0"
+            },
+			"Groups": [
+				{
+					"Uid":"1",
+					"Type":"Team",
+					"FriendlyName":"Attacker"
+				},
+				{
+					"Uid":"2",
+					"Type":"Team",
+					"FriendlyName":"Defender"
+				}
+			]
+        },
+        {
+            "Index":"0",
+            "Rounds":"2",
+            "Name":"XP0_Caspian",
+            "FriendlyName":"Caspian Border 2014",
+            "GameMode":{
+                "Name":"SquadDeathMatch0"
+            },
+			"Groups": [
+				{
+					"Uid":"1",
+					"Type":"Team",
+					"FriendlyName":"Alpha"
+				},
+				{
+					"Uid":"2",
+					"Type":"Team",
+					"FriendlyName":"Beta"
+				},
+				{
+					"Uid":"3",
+					"Type":"Team",
+					"FriendlyName":"Charlie"
+				},
+				{
+					"Uid":"4",
+					"Type":"Team",
+					"FriendlyName":"Delta"
+				}
+			]
+        },
+        {
+            "Index":"0",
+            "Rounds":"2",
+            "Name":"XP0_Firestorm",
+            "FriendlyName":"Operation Firestorm 2014",
+            "GameMode":{
+                "Name":"SquadDeathMatch0"
+            },
+			"Groups": [
+				{
+					"Uid":"1",
+					"Type":"Team",
+					"FriendlyName":"Alpha"
+				},
+				{
+					"Uid":"2",
+					"Type":"Team",
+					"FriendlyName":"Beta"
+				},
+				{
+					"Uid":"3",
+					"Type":"Team",
+					"FriendlyName":"Charlie"
+				},
+				{
+					"Uid":"4",
+					"Type":"Team",
+					"FriendlyName":"Delta"
+				}
+			]
+        },
+        {
+            "Index":"0",
+            "Rounds":"2",
+            "Name":"XP0_Metro",
+            "FriendlyName":"Operation Metro 2014",
+            "GameMode":{
+                "Name":"SquadDeathMatch0"
+            },
+			"Groups": [
+				{
+					"Uid":"1",
+					"Type":"Team",
+					"FriendlyName":"Alpha"
+				},
+				{
+					"Uid":"2",
+					"Type":"Team",
+					"FriendlyName":"Beta"
+				},
+				{
+					"Uid":"3",
+					"Type":"Team",
+					"FriendlyName":"Charlie"
+				},
+				{
+					"Uid":"4",
+					"Type":"Team",
+					"FriendlyName":"Delta"
+				}
+			]
+        },
+        {
+            "Index":"0",
+            "Rounds":"2",
+            "Name":"XP0_Oman",
+            "FriendlyName":"Gulf of Oman 2014",
+            "GameMode":{
+                "Name":"SquadDeathMatch0"
+            },
+			"Groups": [
+				{
+					"Uid":"1",
+					"Type":"Team",
+					"FriendlyName":"Alpha"
+				},
+				{
+					"Uid":"2",
+					"Type":"Team",
+					"FriendlyName":"Beta"
+				},
+				{
+					"Uid":"3",
+					"Type":"Team",
+					"FriendlyName":"Charlie"
+				},
+				{
+					"Uid":"4",
+					"Type":"Team",
+					"FriendlyName":"Delta"
+				}
+			]
+        },
+        {
+            "Index":"0",
+            "Rounds":"2",
+            "Name":"XP0_Caspian",
+            "FriendlyName":"Caspian Border 2014",
+            "GameMode":{
+                "Name":"TeamDeathMatch0"
+            }
+        },
+        {
+            "Index":"0",
+            "Rounds":"2",
+            "Name":"XP0_Firestorm",
+            "FriendlyName":"Operation Firestorm 2014",
+            "GameMode":{
+                "Name":"TeamDeathMatch0"
+            }
+        },
+        {
+            "Index":"0",
+            "Rounds":"2",
+            "Name":"XP0_Metro",
+            "FriendlyName":"Operation Metro 2014",
+            "GameMode":{
+                "Name":"TeamDeathMatch0"
+            }
+        },
+        {
+            "Index":"0",
+            "Rounds":"2",
+            "Name":"XP0_Oman",
+            "FriendlyName":"Gulf of Oman 2014",
+            "GameMode":{
+                "Name":"TeamDeathMatch0"
+            }
+        },
+        {
+            "Index":"0",
+            "Rounds":"2",
+            "Name":"XP0_Caspian",
+            "FriendlyName":"Caspian Border 2014",
+            "GameMode":{
+                "Name":"CaptureTheFlag0"
+            }
+        },
+        {
+            "Index":"0",
+            "Rounds":"2",
+            "Name":"XP0_Firestorm",
+            "FriendlyName":"Operation Firestorm 2014",
+            "GameMode":{
+                "Name":"CaptureTheFlag0"
+            }
+        },
+        {
+            "Index":"0",
+            "Rounds":"2",
+            "Name":"XP0_Metro",
+            "FriendlyName":"Operation Metro 2014",
+            "GameMode":{
+                "Name":"CaptureTheFlag0"
+            }
+        },
+        {
+            "Index":"0",
+            "Rounds":"2",
+            "Name":"XP0_Oman",
+            "FriendlyName":"Gulf of Oman 2014",
+            "GameMode":{
+                "Name":"CaptureTheFlag0"
             }
         }
     ],

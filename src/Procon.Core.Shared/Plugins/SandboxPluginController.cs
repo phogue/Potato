@@ -100,23 +100,19 @@ namespace Procon.Core.Shared.Plugins {
             return wasDisabled;
         }
 
-        /// <summary>
-        /// Remote proxy to propogate the game event across all enabled plugins and avoid multiple remoting calls.
-        /// </summary>
-        /// <param name="e"></param>
-        public void GameEvent(IProtocolEventArgs e) {
-            foreach (var enabledPlugin in this.EnabledPlugins) {
-                enabledPlugin.Value.GameEvent(e);
+        public void GameEvent(List<IProtocolEventArgs> items) {
+            foreach (var item in items) {
+                foreach (var enabledPlugin in this.EnabledPlugins) {
+                    enabledPlugin.Value.GameEvent(item);
+                }
             }
         }
 
-        /// <summary>
-        /// Remote proxy to propogate the client event across all enabled plugins and avoid multiple remoting calls.
-        /// </summary>
-        /// <param name="e"></param>
-        public void ClientEvent(IClientEventArgs e) {
-            foreach (var enabledPlugin in this.EnabledPlugins) {
-                enabledPlugin.Value.ClientEvent(e);
+        public void ClientEvent(List<IClientEventArgs> items) {
+            foreach (var item in items) {
+                foreach (var enabledPlugin in this.EnabledPlugins) {
+                    enabledPlugin.Value.ClientEvent(item);
+                }
             }
         }
 

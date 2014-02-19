@@ -35,20 +35,22 @@ namespace Procon.Examples.Plugins.Events.Test {
                 }
             });
 
-            plugins.PluginFactory.ClientEvent(new ClientEventArgs() {
-                EventType = ClientEventType.ClientPacketReceived,
-                ConnectionState = ConnectionState.ConnectionLoggedIn,
-                Now = {
-                    Packets = new List<IPacket>() {
-                        new Packet() {
-                            RequestId = 1,
-                            Origin = PacketOrigin.Client,
-                            Type = PacketType.Response,
-                            Text = "hello world!",
-                            DebugText = "[0-hello] [1-world!]",
-                            Words = new List<String>() {
-                                "hello",
-                                "world!"
+            plugins.PluginFactory.ClientEvent(new List<IClientEventArgs>() {
+                new ClientEventArgs() {
+                    EventType = ClientEventType.ClientPacketReceived,
+                    ConnectionState = ConnectionState.ConnectionLoggedIn,
+                    Now = {
+                        Packets = new List<IPacket>() {
+                            new Packet() {
+                                RequestId = 1,
+                                Origin = PacketOrigin.Client,
+                                Type = PacketType.Response,
+                                Text = "hello world!",
+                                DebugText = "[0-hello] [1-world!]",
+                                Words = new List<String>() {
+                                    "hello",
+                                    "world!"
+                                }
                             }
                         }
                     }
@@ -75,29 +77,31 @@ namespace Procon.Examples.Plugins.Events.Test {
                 }
             });
 
-            plugins.PluginFactory.GameEvent(new ProtocolEventArgs() {
-                ProtocolEventType = ProtocolEventType.ProtocolChat,
-                Now = {
-                    Chats = new List<ChatModel>() {
-                        new ChatModel() {
-                            Origin = NetworkOrigin.Player,
-                            Scope = {
-                                Groups = new List<GroupModel>() {
-                                    new GroupModel() {
-                                        Type = GroupModel.Team,
-                                        Uid = "1"
+            plugins.PluginFactory.GameEvent(new List<IProtocolEventArgs>() {
+                new ProtocolEventArgs() {
+                    ProtocolEventType = ProtocolEventType.ProtocolChat,
+                    Now = {
+                        Chats = new List<ChatModel>() {
+                            new ChatModel() {
+                                Origin = NetworkOrigin.Player,
+                                Scope = {
+                                    Groups = new List<GroupModel>() {
+                                        new GroupModel() {
+                                            Type = GroupModel.Team,
+                                            Uid = "1"
+                                        }
                                     }
-                                }
-                            },
-                            Now = {
-                                Content = new List<String>() {
-                                    "Hello!"
                                 },
-                                Players = new List<PlayerModel>() {
-                                    new PlayerModel() {
-                                        Uid = "EA_1234",
-                                        Name = "Phogue"
-                                        // other details..
+                                Now = {
+                                    Content = new List<String>() {
+                                        "Hello!"
+                                    },
+                                    Players = new List<PlayerModel>() {
+                                        new PlayerModel() {
+                                            Uid = "EA_1234",
+                                            Name = "Phogue"
+                                            // other details..
+                                        }
                                     }
                                 }
                             }

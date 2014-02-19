@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Procon.Net.Shared;
 
 namespace Procon.Core.Shared.Plugins {
@@ -31,14 +32,12 @@ namespace Procon.Core.Shared.Plugins {
         /// <summary>
         /// Remote proxy to propogate the game event across all enabled plugins and avoid multiple remoting calls.
         /// </summary>
-        /// <param name="e"></param>
-        void GameEvent(IProtocolEventArgs e);
+        void GameEvent(List<IProtocolEventArgs> items);
 
         /// <summary>
         /// Remote proxy to propogate the client event across all enabled plugins and avoid multiple remoting calls.
         /// </summary>
-        /// <param name="e"></param>
-        void ClientEvent(IClientEventArgs e);
+        void ClientEvent(List<IClientEventArgs> items);
 
         /// <summary>
         /// Check if a plugin is marked as enabled or not

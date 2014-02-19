@@ -43,8 +43,20 @@ namespace Procon.Core.Connections.Plugins {
         /// </summary>
         public CorePluginControllerCallbackProxy CorePluginControllerCallbackProxy { get; set; }
 
-        public SharedReferences Shared { get; private set; }
+        /// <summary>
+        /// Throttles the stream of client events crossing the appdomain, grouping them into a 
+        /// list every second and passing them through to the plugins.
+        /// </summary>
+        public IThrottledStream<IClientEventArgs> ClientEventStream { get; set; }
+        
+        /// <summary>
+        /// Throttles the stream of protocol events crossing the appdomain, grouping them into a 
+        /// list every second and passing them through to the plugins.
+        /// </summary>
+        public IThrottledStream<IProtocolEventArgs> ProtocolEventStream { get; set; }
 
+        public SharedReferences Shared { get; private set; }
+        
         /// <summary>
         /// Default Initialization
         /// </summary>
@@ -276,14 +288,14 @@ namespace Procon.Core.Connections.Plugins {
         }
 
         private void Connection_ClientEvent(IProtocol sender, IClientEventArgs e) {
-            if (this.PluginFactory != null) {
-                this.PluginFactory.ClientEvent(e);
+            if (this.ClientEventStream != null) {
+                this.ClientEventStream.Call(e);
             }
         }
 
         private void Connection_GameEvent(IProtocol sender, IProtocolEventArgs e) {
-            if (this.PluginFactory != null) {
-                this.PluginFactory.GameEvent(e);
+            if (this.ProtocolEventStream != null) {
+                this.ProtocolEventStream.Call(e);
             }
         }
 
@@ -305,6 +317,14 @@ namespace Procon.Core.Connections.Plugins {
             this.PluginFactory.BubbleObjects = new List<ICoreController>() {
                 this.CorePluginControllerCallbackProxy
             };
+
+            this.ClientEventStream = new ThrottledStream<IClientEventArgs>() {
+                FlushTo = this.PluginFactory.ClientEvent
+            }.Start();
+            
+            this.ProtocolEventStream = new ThrottledStream<IProtocolEventArgs>() {
+                FlushTo = this.PluginFactory.GameEvent
+            }.Start();
         }
 
         /// <summary>

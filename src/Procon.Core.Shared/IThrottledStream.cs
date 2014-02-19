@@ -30,16 +30,16 @@ namespace Procon.Core.Shared {
         /// passed through next time.
         /// </summary>
         /// <param name="item">The item </param>
-        void Call(T item);
+        IThrottledStream<T> Call(T item);
 
         /// <summary>
         /// Start processing the stream, collecting items.
         /// </summary>
-        void Start();
+        IThrottledStream<T> Start();
 
         /// <summary>
         /// Stop processing the stream. Essentially disposes the object.
         /// </summary>
-        void Stop();
+        IThrottledStream<T> Stop();
     }
 }

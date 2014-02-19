@@ -40,32 +40,36 @@ namespace Procon.Core.Shared {
         /// Flushes any waitign items to the callback method
         /// </summary>
         public void Flush() {
-            lock (this.ItemsLock) {
+            //lock (this.ItemsLock) {
                 if (this.Running == true && this.Items.Count > 0) {
                     if (this.FlushTo != null) {
                         this.FlushTo(new List<T>(this.Items));
-
-                        this.Items.Clear();
                     }
                 }
-            }
+
+                this.Items.Clear();
+            //}
         }
 
-        public void Call(T item) {
+        public IThrottledStream<T> Call(T item) {
             if (this.Running == true) {
-                lock (this.ItemsLock) {
+                //lock (this.ItemsLock) {
                     this.Items.Add(item);
-                }
+                //}
             }
+
+            return this;
         }
 
-        public void Start() {
+        public IThrottledStream<T> Start() {
             this.Running = true;
 
             this.IntervalTick = new Timer(state => this.Flush(), null, this.Interval, this.Interval);
+
+            return this;
         }
 
-        public void Stop() {
+        public IThrottledStream<T> Stop() {
             this.Running = false;
 
             this.FlushTo = null;
@@ -74,6 +78,8 @@ namespace Procon.Core.Shared {
                 this.IntervalTick.Dispose();
                 this.IntervalTick = null;
             }
+
+            return this;
         }
     }
 }

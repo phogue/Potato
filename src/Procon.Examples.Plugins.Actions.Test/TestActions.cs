@@ -78,8 +78,8 @@ namespace Procon.Examples.Plugins.Actions.Test {
             });
 
             // Fake client events from the networking layer.
-            layer.Waiting.Done += (action, requests, responses) => {
-                plugins.PluginFactory.ClientEvent(new ClientEventArgs() {
+            layer.Waiting.Done += (action, requests, responses) => plugins.PluginFactory.ClientEvent(new List<IClientEventArgs>() {
+                new ClientEventArgs() {
                     EventType = ClientEventType.ClientActionDone,
                     ConnectionState = ConnectionState.ConnectionLoggedIn,
                     Now = new ClientEventData() {
@@ -87,12 +87,12 @@ namespace Procon.Examples.Plugins.Actions.Test {
                     },
                     Then = new ClientEventData() {
                         Actions = new List<INetworkAction>() {
-			                action
-		                },
+                            action
+                        },
                         Packets = requests
                     }
-                });
-            };
+                }
+            });
 
             // Now fire off the mock responses (you'll see the above anonymous method that fires
             // a ClientEvent called during this method)

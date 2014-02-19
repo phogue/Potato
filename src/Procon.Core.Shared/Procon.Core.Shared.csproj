@@ -107,9 +107,11 @@
     <Compile Include="Plugins\IPluginSetup.cs" />
     <Compile Include="Plugins\ISandboxPluginController.cs" />
     <Compile Include="Plugins\CorePluginControllerCallbackProxy.cs" />
+    <Compile Include="IThrottledStream.cs" />
     <Compile Include="Plugins\PluginController.cs" />
     <Compile Include="Plugins\PluginSetup.cs" />
     <Compile Include="Plugins\SandboxPluginController.cs" />
+    <Compile Include="ThrottledStream.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Remote\HttpCommandRequest.cs" />
     <Compile Include="Serialization\JsonSerialization.cs" />

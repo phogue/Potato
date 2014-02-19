@@ -40,7 +40,7 @@ namespace Procon.Core.Shared {
         /// Flushes any waitign items to the callback method
         /// </summary>
         public void Flush() {
-            //lock (this.ItemsLock) {
+            lock (this.ItemsLock) {
                 if (this.Running == true && this.Items.Count > 0) {
                     if (this.FlushTo != null) {
                         this.FlushTo(new List<T>(this.Items));
@@ -48,14 +48,14 @@ namespace Procon.Core.Shared {
                 }
 
                 this.Items.Clear();
-            //}
+            }
         }
 
         public IThrottledStream<T> Call(T item) {
             if (this.Running == true) {
-                //lock (this.ItemsLock) {
+                lock (this.ItemsLock) {
                     this.Items.Add(item);
-                //}
+                }
             }
 
             return this;

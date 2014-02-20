@@ -319,6 +319,13 @@ namespace Myrcon.Protocols.Frostbite {
 
                 FrostbiteServerInfo info = new FrostbiteServerInfo().Parse(response.Packet.Words.GetRange(1, response.Packet.Words.Count - 1), this.ServerInfoParameters);
 
+                MapModel selectedMap = this.State.MapPool.Find(map => String.Compare(map.Name, info.Map, StringComparison.OrdinalIgnoreCase) == 0);
+
+                if (selectedMap != null) {
+                    this.State.Settings.Current.FriendlyGameModeNameText = selectedMap.GameMode.FriendlyName;
+                    this.State.Settings.Current.FriendlyMapNameText = selectedMap.FriendlyName;
+                }
+
                 this.State.Settings.Current.ServerNameText = info.ServerName;
                 this.State.Settings.Current.MapNameText = info.Map;
                 this.State.Settings.Current.GameModeNameText = info.GameMode;
@@ -719,8 +726,13 @@ namespace Myrcon.Protocols.Frostbite {
                     else {
                         MapModel selectedMap = this.State.MapPool.Find(x => String.Compare(x.Name, request.Packet.Words[1], StringComparison.OrdinalIgnoreCase) == 0);
 
-                        if (selectedMap != null)
+                        if (selectedMap != null) {
                             this.State.Settings.Current.GameModeNameText = selectedMap.GameMode.Name;
+                            this.State.Settings.Current.FriendlyGameModeNameText = selectedMap.GameMode.FriendlyName;
+
+                            this.State.Settings.Current.FriendlyMapNameText = selectedMap.FriendlyName;
+                        }
+
                         this.State.Settings.Current.MapNameText = request.Packet.Words[1];
                         this.OnGameEvent(ProtocolEventType.ProtocolMapChanged);
                     }

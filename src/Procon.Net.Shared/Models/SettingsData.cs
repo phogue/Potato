@@ -145,9 +145,19 @@ namespace Procon.Net.Shared.Models {
         public String MapNameText { get; set; }
 
         /// <summary>
+        /// The name of the current map that would output to a user
+        /// </summary>
+        public String FriendlyMapNameText { get; set; }
+
+        /// <summary>
         /// The name of the current game mode
         /// </summary>
         public String GameModeNameText { get; set; }
+
+        /// <summary>
+        /// The name of the current game mode that would output to a user
+        /// </summary>
+        public String FriendlyGameModeNameText { get; set; }
 
         /// <summary>
         /// The name of any mod being run

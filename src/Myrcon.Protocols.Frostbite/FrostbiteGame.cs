@@ -421,7 +421,7 @@ namespace Myrcon.Protocols.Frostbite {
                     statePlayer.Score = player.Score;
                     statePlayer.Deaths = player.Deaths;
                     statePlayer.ClanTag = player.ClanTag;
-                    statePlayer.Ping = Math.Min(player.Ping, 1000);
+                    statePlayer.Ping = player.Ping > 1000 ? 0 : player.Ping;
                     statePlayer.Uid = player.Uid;
                     
                     statePlayer.ModifyGroup(player.Groups.FirstOrDefault(group => group.Type == GroupModel.Team));

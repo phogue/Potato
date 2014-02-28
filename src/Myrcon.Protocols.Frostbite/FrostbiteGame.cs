@@ -464,13 +464,14 @@ namespace Myrcon.Protocols.Frostbite {
                 List<MapModel> maps = FrostbiteMapList.Parse(response.Packet.Words.GetRange(1, response.Packet.Words.Count - 1));
 
                 foreach (MapModel map in maps) {
-                    MapModel mapInfo = this.State.MapPool.Find(x => String.Compare(x.Name, map.Name, System.StringComparison.OrdinalIgnoreCase) == 0);
+                    MapModel mapInfo = this.State.MapPool.Find(item => String.Compare(item.Name, map.Name, StringComparison.OrdinalIgnoreCase) == 0 && String.Compare(item.GameMode.Name, map.GameMode.Name, StringComparison.OrdinalIgnoreCase) == 0);
 
                     if (mapInfo != null) {
                         map.FriendlyName = mapInfo.FriendlyName;
                         map.GameMode     = mapInfo.GameMode;
                     }
                 }
+
                 this.State.Maps = maps;
 
                 this.OnGameEvent(

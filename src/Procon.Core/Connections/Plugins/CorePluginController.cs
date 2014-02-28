@@ -295,6 +295,7 @@ namespace Procon.Core.Connections.Plugins {
 
         private void Connection_GameEvent(IProtocol sender, IProtocolEventArgs e) {
             if (this.ProtocolEventStream != null) {
+                e.ProtocolState = null;
                 this.ProtocolEventStream.Call(e);
             }
         }

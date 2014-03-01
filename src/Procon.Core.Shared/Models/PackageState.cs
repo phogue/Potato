@@ -11,12 +11,12 @@ namespace Procon.Core.Shared.Models {
         /// </summary>
         NotInstalled,
         /// <summary>
-        /// Package installed, but version is out of date.
-        /// </summary>
-        UpdateAvailable,
-        /// <summary>
         /// The package is installed and up to date
         /// </summary>
         Installed,
+        /// <summary>
+        /// Package installed, but version is out of date.
+        /// </summary>
+        UpdateAvailable
     }
 }

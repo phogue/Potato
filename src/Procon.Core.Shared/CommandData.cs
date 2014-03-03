@@ -27,7 +27,7 @@ namespace Procon.Core.Shared {
         /// <summary>
         /// Game types attached to this event.
         /// </summary>
-        public List<ProtocolType> GameTypes { get; set; }
+        public List<ProtocolType> ProtocolTypes { get; set; }
 
         /// <summary>
         /// Groups effected by this event.
@@ -164,8 +164,8 @@ namespace Procon.Core.Shared {
             if (this.Content != null) this.Content.Clear();
             this.Content = null;
 
-            if (this.GameTypes != null) this.GameTypes.Clear();
-            this.GameTypes = null;
+            if (this.ProtocolTypes != null) this.ProtocolTypes.Clear();
+            this.ProtocolTypes = null;
 
             if (this.Connections != null) this.Connections.Clear();
             this.Connections = null;

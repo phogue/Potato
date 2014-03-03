@@ -809,7 +809,7 @@ namespace Procon.Core {
                     Status = CommandResultType.Success,
                     Now = new CommandData() {
                         Connections = this.Connections.Select(connection => connection.ConnectionModel).ToList(),
-                        GameTypes = new List<ProtocolType>(SupportedGameTypes.GetSupportedGames().Select(k => k.Key as ProtocolType)),
+                        ProtocolTypes = new List<ProtocolType>(SupportedGameTypes.GetSupportedGames().Select(k => k.Key as ProtocolType)),
                         Repositories = new List<RepositoryModel>(packages.Now.Repositories ?? new List<RepositoryModel>()),
                         Groups = new List<Core.Shared.Models.GroupModel>(this.Shared.Security.Groups),
                         Languages = this.Shared.Languages.LoadedLanguageFiles.Select(language => language.LanguageModel).ToList(),

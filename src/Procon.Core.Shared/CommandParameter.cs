@@ -74,8 +74,8 @@ namespace Procon.Core.Shared {
             else if (t == typeof(ConnectionModel) && this.Data.Connections != null) {
                 all = this.Data.Connections.Cast<Object>().ToList();
             }
-            else if (t == typeof(ProtocolType) && this.Data.GameTypes != null) {
-                all = this.Data.GameTypes.Cast<Object>().ToList();
+            else if (t == typeof(ProtocolType) && this.Data.ProtocolTypes != null) {
+                all = this.Data.ProtocolTypes.Cast<Object>().ToList();
             }
             else if (t == typeof(Core.Shared.Models.GroupModel) && this.Data.Groups != null) {
                 all = this.Data.Groups.Cast<Object>().ToList();

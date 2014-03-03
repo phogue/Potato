@@ -328,7 +328,8 @@ namespace Procon.Core.Test.Security {
             ICommandResult result = security.Tunnel(new Command() {
                 CommandType = CommandType.SecurityQueryPermission,
                 Authentication = {
-                    Username = "Zaeed"
+                    GameType = CommonProtocolType.DiceBattlefield3,
+                    Uid = "0123456789"
                 },
                 Origin = CommandOrigin.Remote,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {

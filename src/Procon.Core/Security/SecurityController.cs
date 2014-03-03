@@ -649,11 +649,19 @@ namespace Procon.Core.Security {
             return result;
         }
 
-        private static ICommandResult CheckPermissions(AccountModel initiatorAccount, String commandName, AccountModel targetAccount = null) {
+        /// <summary>
+        /// Checks if an initiator can act on a command against a target, falling back to a guest authority if either account is missing.
+        /// </summary>
+        /// <param name="initiatorAccount">Who is initiating the action</param>
+        /// <param name="commandName">What action is being taken</param>
+        /// <param name="targetAccount">Who the action is being taken against</param>
+        /// <param name="guestAuthority">The fallback authority to use if neither initiator or target is passed or does not have an authority defined for the command.</param>
+        /// <returns>A command result describing if the action can be taken</returns>
+        private static ICommandResult CheckPermissions(AccountModel initiatorAccount, String commandName, AccountModel targetAccount, int? guestAuthority) {
             ICommandResult result = null;
 
-            int? initiatorAuthority = SecurityController.HighestAuthority(initiatorAccount, commandName);
-            int? targetAuthority = SecurityController.HighestAuthority(targetAccount, commandName);
+            int? initiatorAuthority = SecurityController.HighestAuthority(initiatorAccount, commandName) ?? guestAuthority;
+            int? targetAuthority = SecurityController.HighestAuthority(targetAccount, commandName) ?? guestAuthority;
 
             if (initiatorAuthority.HasValue == true) {
                 if (targetAuthority.HasValue == true) {
@@ -703,6 +711,12 @@ namespace Procon.Core.Security {
         protected ICommandResult DispatchPermissionsCheck(ICommand command, AccountModel initiatorAccount, String commandName, AccountModel targetAccount = null) {
             ICommandResult result = null;
 
+            var guestAuthority = this.Groups.Where(group => group.IsGuest)
+                .SelectMany(group => group.Permissions)
+                .Where(permission => permission.Name == commandName)
+                .Select(permission => permission.Authority)
+                .FirstOrDefault();
+
             if (command.Origin == CommandOrigin.Local) {
                 // All good.
                 result = new CommandResult() {
@@ -720,11 +734,11 @@ namespace Procon.Core.Security {
                 }
                 else {
                     // The plugin has supplied us with details on who has initiated the command.
-                    result = SecurityController.CheckPermissions(initiatorAccount, commandName, targetAccount);
+                    result = SecurityController.CheckPermissions(initiatorAccount, commandName, targetAccount, guestAuthority);
                 }
             }
             else if (command.Origin == CommandOrigin.Remote) {
-                result = SecurityController.CheckPermissions(initiatorAccount, commandName, targetAccount);
+                result = SecurityController.CheckPermissions(initiatorAccount, commandName, targetAccount, guestAuthority);
             }
             else {
                 result = new CommandResult() {

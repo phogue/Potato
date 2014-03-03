@@ -343,6 +343,203 @@ namespace Procon.Core.Test.Security {
             Assert.AreEqual(CommandResultType.InsufficientAuthority, result.Status);
         }
 
+        /// <summary>
+        /// Tests that no authority set for a permission will result in a simple
+        /// insufficient permission error.
+        /// </summary>
+        [Test]
+        public void TestSecurityQueryDetailsNoAuthorityByPlayerDetailsAsGuest() {
+            var security = new SecurityController();
+            security.Tunnel(new Command() {
+                Origin = CommandOrigin.Local,
+                CommandType = CommandType.SecurityAddGroup,
+                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                    "FirstGroupName"
+                })
+            });
+            security.Tunnel(new Command() {
+                Origin = CommandOrigin.Local,
+                CommandType = CommandType.SecurityGroupAddAccount,
+                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                    "FirstGroupName",
+                    "Phogue"
+                })
+            });
+            security.Tunnel(new Command() {
+                Origin = CommandOrigin.Local,
+                CommandType = CommandType.SecurityGroupSetPermission,
+                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                    "FirstGroupName",
+                    CommandType.VariablesSet,
+                    100
+                })
+            });
+            security.Tunnel(new Command() {
+                Origin = CommandOrigin.Local,
+                CommandType = CommandType.SecurityAccountAddPlayer,
+                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                    "Phogue",
+                    CommonProtocolType.DiceBattlefield3,
+                    "ABCDEF"
+                })
+            });
+
+            ICommandResult result = security.Tunnel(new Command() {
+                CommandType = CommandType.SecurityQueryPermission,
+                Authentication = {
+                    GameType = CommonProtocolType.DiceBattlefield3,
+                    Uid = "0123456789"
+                },
+                Origin = CommandOrigin.Plugin,
+                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                    CommandType.VariablesSet,
+                    CommonProtocolType.DiceBattlefield3,
+                    "ABCDEF"
+                })
+            });
+
+            Assert.IsFalse(result.Success);
+            Assert.AreEqual(CommandResultType.InsufficientPermissions, result.Status);
+        }
+
+        /// <summary>
+        /// Tests that a guest account with less authority against an established account with more authority
+        /// will fail.
+        /// </summary>
+        [Test]
+        public void TestSecurityQueryDetailsLessAuthorityByPlayerDetailsAsGuest() {
+            var security = new SecurityController();
+            security.Tunnel(new Command() {
+                Origin = CommandOrigin.Local,
+                CommandType = CommandType.SecurityAddGroup,
+                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                    "FirstGroupName"
+                })
+            });
+            security.Tunnel(new Command() {
+                Origin = CommandOrigin.Local,
+                CommandType = CommandType.SecurityGroupAddAccount,
+                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                    "FirstGroupName",
+                    "Phogue"
+                })
+            });
+            security.Tunnel(new Command() {
+                Origin = CommandOrigin.Local,
+                CommandType = CommandType.SecurityGroupSetPermission,
+                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                    "FirstGroupName",
+                    CommandType.VariablesSet,
+                    100
+                })
+            });
+            security.Tunnel(new Command() {
+                Origin = CommandOrigin.Local,
+                CommandType = CommandType.SecurityAccountAddPlayer,
+                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                    "Phogue",
+                    CommonProtocolType.DiceBattlefield3,
+                    "ABCDEF"
+                })
+            });
+
+            security.Tunnel(new Command() {
+                Origin = CommandOrigin.Local,
+                CommandType = CommandType.SecurityGroupSetPermission,
+                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                    "Guest",
+                    CommandType.VariablesSet,
+                    50
+                })
+            });
+
+            ICommandResult result = security.Tunnel(new Command() {
+                CommandType = CommandType.SecurityQueryPermission,
+                Authentication = {
+                    GameType = CommonProtocolType.DiceBattlefield3,
+                    Uid = "0123456789"
+                },
+                Origin = CommandOrigin.Plugin,
+                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                    CommandType.VariablesSet,
+                    CommonProtocolType.DiceBattlefield3,
+                    "ABCDEF"
+                })
+            });
+
+            Assert.IsFalse(result.Success);
+            Assert.AreEqual(CommandResultType.InsufficientAuthority, result.Status);
+        }
+
+        /// <summary>
+        /// Tests that a guest with more authority will be successful against an established 
+        /// account with less authority.
+        /// </summary>
+        [Test]
+        public void TestSecurityQueryDetailsMoreAuthorityByPlayerDetailsAsGuest() {
+            var security = new SecurityController();
+            security.Tunnel(new Command() {
+                Origin = CommandOrigin.Local,
+                CommandType = CommandType.SecurityAddGroup,
+                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                    "FirstGroupName"
+                })
+            });
+            security.Tunnel(new Command() {
+                Origin = CommandOrigin.Local,
+                CommandType = CommandType.SecurityGroupAddAccount,
+                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                    "FirstGroupName",
+                    "Phogue"
+                })
+            });
+            security.Tunnel(new Command() {
+                Origin = CommandOrigin.Local,
+                CommandType = CommandType.SecurityGroupSetPermission,
+                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                    "FirstGroupName",
+                    CommandType.VariablesSet,
+                    100
+                })
+            });
+            security.Tunnel(new Command() {
+                Origin = CommandOrigin.Local,
+                CommandType = CommandType.SecurityAccountAddPlayer,
+                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                    "Phogue",
+                    CommonProtocolType.DiceBattlefield3,
+                    "ABCDEF"
+                })
+            });
+
+            security.Tunnel(new Command() {
+                Origin = CommandOrigin.Local,
+                CommandType = CommandType.SecurityGroupSetPermission,
+                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                    "Guest",
+                    CommandType.VariablesSet,
+                    200
+                })
+            });
+
+            ICommandResult result = security.Tunnel(new Command() {
+                CommandType = CommandType.SecurityQueryPermission,
+                Authentication = {
+                    GameType = CommonProtocolType.DiceBattlefield3,
+                    Uid = "0123456789"
+                },
+                Origin = CommandOrigin.Plugin,
+                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                    CommandType.VariablesSet,
+                    CommonProtocolType.DiceBattlefield3,
+                    "ABCDEF"
+                })
+            });
+
+            Assert.IsTrue(result.Success);
+            Assert.AreEqual(CommandResultType.Success, result.Status);
+        }
+
         [Test]
         public void TestSecurityQueryDetailsMoreAuthorityByAccountUsername() {
             var security = new SecurityController();

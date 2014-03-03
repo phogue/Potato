@@ -35,7 +35,7 @@ namespace Procon.Core.Test.Security {
 
             // Make sure it was successful.
             Assert.IsTrue(result.Success);
-            Assert.AreEqual(security.Groups.First().Name, "GroupName");
+            Assert.AreEqual(security.Groups.Last().Name, "GroupName");
         }
 
         /// <summary>
@@ -53,7 +53,7 @@ namespace Procon.Core.Test.Security {
             });
 
             // Test that the group was initially added.
-            Assert.AreEqual(security.Groups.First().Name, "GroupName");
+            Assert.AreEqual(security.Groups.Last().Name, "GroupName");
 
             // Now readd the same group name.
             result = security.Tunnel(new Command() {
@@ -265,7 +265,7 @@ namespace Procon.Core.Test.Security {
             });
 
             // Test that the group was initially added.
-            Assert.AreEqual(security.Groups.First().Name, "GroupName");
+            Assert.AreEqual(security.Groups.Last().Name, "GroupName");
 
             // Now set the kick permission
             ICommandResult result = security.Tunnel(new Command() {
@@ -281,7 +281,7 @@ namespace Procon.Core.Test.Security {
             // Make sure setting the kick permission was successfull.
             Assert.IsTrue(result.Success);
             Assert.AreEqual(result.Status, CommandResultType.Success);
-            Assert.AreEqual(security.Groups.First().Permissions.First(permission => permission.Name == "CustomPermission").Authority, 50);
+            Assert.AreEqual(security.Groups.Last().Permissions.First(permission => permission.Name == "CustomPermission").Authority, 50);
         }
 
         [Test]
@@ -296,7 +296,7 @@ namespace Procon.Core.Test.Security {
             });
 
             // Test that the group was initially added.
-            Assert.AreEqual(security.Groups.First().Name, "GroupName");
+            Assert.AreEqual(security.Groups.Last().Name, "GroupName");
 
             // Now set the kick permission
             ICommandResult result = security.Tunnel(new Command() {
@@ -312,7 +312,7 @@ namespace Procon.Core.Test.Security {
             // Make sure setting the kick permission was successfull.
             Assert.IsTrue(result.Success);
             Assert.AreEqual(result.Status, CommandResultType.Success);
-            Assert.AreEqual(security.Groups.First().Permissions.First(permission => permission.Name == CommandType.VariablesSet.ToString()).Authority, 50);
+            Assert.AreEqual(security.Groups.Last().Permissions.First(permission => permission.Name == CommandType.VariablesSet.ToString()).Authority, 50);
         }
 
         /// <summary>
@@ -331,13 +331,13 @@ namespace Procon.Core.Test.Security {
             });
 
             // Test that the group was initially added.
-            Assert.AreEqual(security.Groups.First().Name, "GroupName");
+            Assert.AreEqual(security.Groups.Last().Name, "GroupName");
 
             // Remove the kick permission.
-            security.Groups.First().Permissions.RemoveAll(permission => permission.Name == CommandType.VariablesSet.ToString());
+            security.Groups.Last().Permissions.RemoveAll(permission => permission.Name == CommandType.VariablesSet.ToString());
 
             // Validate the kick permission does not exist.
-            Assert.IsNull(security.Groups.First().Permissions.FirstOrDefault(permission => permission.Name == CommandType.VariablesSet.ToString()));
+            Assert.IsNull(security.Groups.Last().Permissions.FirstOrDefault(permission => permission.Name == CommandType.VariablesSet.ToString()));
 
             // Now set the kick permission
             ICommandResult result = security.Tunnel(new Command() {
@@ -353,7 +353,7 @@ namespace Procon.Core.Test.Security {
             // Make sure setting the kick permission was successfull.
             Assert.IsTrue(result.Success);
             Assert.AreEqual(result.Status, CommandResultType.Success);
-            Assert.AreEqual(security.Groups.First().Permissions.First(permission => permission.Name == CommandType.VariablesSet.ToString()).Authority, 50);
+            Assert.AreEqual(security.Groups.Last().Permissions.First(permission => permission.Name == CommandType.VariablesSet.ToString()).Authority, 50);
         }
 
 
@@ -430,7 +430,7 @@ namespace Procon.Core.Test.Security {
             });
 
             // Test that the group was initially added.
-            Assert.AreEqual(security.Groups.First().Name, "GroupName");
+            Assert.AreEqual(security.Groups.Last().Name, "GroupName");
 
             // Now set the kick permission
             ICommandResult result = security.Tunnel(new Command() {
@@ -446,7 +446,7 @@ namespace Procon.Core.Test.Security {
             // Make sure setting the kick permission was successfull.
             Assert.IsTrue(result.Success);
             Assert.AreEqual(result.Status, CommandResultType.Success);
-            Assert.AreEqual(security.Groups.First().Permissions.First(permission => permission.Name == CommandType.VariablesSet.ToString()).Authority, 60);
+            Assert.AreEqual(security.Groups.Last().Permissions.First(permission => permission.Name == CommandType.VariablesSet.ToString()).Authority, 60);
         }
 
         /// <summary>
@@ -464,7 +464,7 @@ namespace Procon.Core.Test.Security {
             });
 
             // Test that the group was initially added.
-            Assert.AreEqual(security.Groups.First().Name, "GroupName");
+            Assert.AreEqual(security.Groups.Last().Name, "GroupName");
 
             ICommandResult result = security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
@@ -476,7 +476,28 @@ namespace Procon.Core.Test.Security {
 
             // Make sure it was successful.
             Assert.IsTrue(result.Success);
-            Assert.AreEqual(security.Groups.Count, 0);
+            Assert.AreEqual(security.Groups.Count, 1);
+        }
+
+        /// <summary>
+        /// Tests that removing the guest account will fail.
+        /// </summary>
+        [Test]
+        public void TestSecurityRemoveGuestGroup() {
+            var security = new SecurityController();
+
+            ICommandResult result = security.Tunnel(new Command() {
+                Origin = CommandOrigin.Local,
+                CommandType = CommandType.SecurityRemoveGroup,
+                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                    "Guest"
+                })
+            });
+
+            // Make sure it was successful.
+            Assert.IsFalse(result.Success);
+            Assert.AreEqual(CommandResultType.InvalidParameter, result.Status);
+            Assert.AreEqual(security.Groups.Count, 1);
         }
 
         /// <summary>

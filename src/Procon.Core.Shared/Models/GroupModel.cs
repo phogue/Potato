@@ -15,6 +15,11 @@ namespace Procon.Core.Shared.Models {
         public String Name { get; set; }
 
         /// <summary>
+        /// Signifies the group as a guest group. Guest groups cannot have any 
+        /// </summary>
+        public bool IsGuest { get; set; }
+
+        /// <summary>
         /// All of the permissions each person has in this group.
         /// </summary>
         public List<PermissionModel> Permissions { get; set; }

@@ -33,7 +33,7 @@ namespace Procon.Core.Test.Security {
             });
 
             // Test that the group was initially added.
-            Assert.AreEqual(security.Groups.First().Name, "GroupName");
+            Assert.AreEqual(security.Groups.Last().Name, "GroupName");
 
             // Now add the user.
             security.Tunnel(new Command() {
@@ -81,7 +81,7 @@ namespace Procon.Core.Test.Security {
             });
 
             // Test that the group was initially added.
-            Assert.AreEqual(security.Groups.First().Name, "GroupName");
+            Assert.AreEqual(security.Groups.Last().Name, "GroupName");
 
             // Now add the user.
             security.Tunnel(new Command() {
@@ -127,7 +127,7 @@ namespace Procon.Core.Test.Security {
             });
 
             // Test that the group was initially added.
-            Assert.AreEqual(security.Groups.First().Name, "GroupName");
+            Assert.AreEqual(security.Groups.Last().Name, "GroupName");
 
             // Now add the user.
             security.Tunnel(new Command() {
@@ -243,7 +243,7 @@ namespace Procon.Core.Test.Security {
             });
 
             // Test that the group was initially added.
-            Assert.AreEqual(security.Groups.First().Name, "GroupName");
+            Assert.AreEqual(security.Groups.Last().Name, "GroupName");
 
             // Now add the user.
             security.Tunnel(new Command() {

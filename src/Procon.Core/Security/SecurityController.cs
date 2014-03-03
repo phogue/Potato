@@ -24,7 +24,12 @@ namespace Procon.Core.Security {
         /// </summary>
         public SecurityController() : base() {
             this.Shared = new SharedReferences();
-            this.Groups = new List<GroupModel>();
+            this.Groups = new List<GroupModel>() {
+                new GroupModel() {
+                    Name = "Guest",
+                    IsGuest = true
+                }
+            };
 
             this.CommandDispatchers.AddRange(new List<ICommandDispatch>() {
                 new CommandDispatch() {
@@ -464,25 +469,34 @@ namespace Procon.Core.Security {
                     GroupModel group = this.Groups.FirstOrDefault(g => g.Name == groupName);
 
                     if (group != null) {
-                        Groups.Remove(group);
+                        if (group.IsGuest == false) {
+                            Groups.Remove(group);
 
-                        result = new CommandResult() {
-                            Success = true,
-                            Status = CommandResultType.Success,
-                            Message = String.Format(@"Group ""{0}"" successfully removed.", groupName),
-                            Then = new CommandData() {
-                                Groups = new List<GroupModel>() {
-                                    group.Clone() as GroupModel
+                            result = new CommandResult() {
+                                Success = true,
+                                Status = CommandResultType.Success,
+                                Message = String.Format(@"Group ""{0}"" successfully removed.", groupName),
+                                Then = new CommandData() {
+                                    Groups = new List<GroupModel>() {
+                                        group.Clone() as GroupModel
+                                    }
                                 }
+                            };
+
+                            if (this.Shared.Events != null) {
+                                this.Shared.Events.Log(GenericEvent.ConvertToGenericEvent(result, GenericEventType.SecurityGroupRemoved));
                             }
-                        };
 
-                        if (this.Shared.Events != null) {
-                            this.Shared.Events.Log(GenericEvent.ConvertToGenericEvent(result, GenericEventType.SecurityGroupRemoved));
+                            // Now cleanup our stored account
+                            group.Dispose();
                         }
-
-                        // Now cleanup our stored account
-                        group.Dispose();
+                        else {
+                            result = new CommandResult() {
+                                Success = false,
+                                Status = CommandResultType.InvalidParameter,
+                                Message = "Cannot delete the guest group"
+                            };
+                        }
                     }
                     else {
                         result = new CommandResult() {
@@ -956,80 +970,89 @@ namespace Procon.Core.Security {
                 GroupModel group = this.Groups.FirstOrDefault(g => g.Name == groupName);
 
                 if (group != null) {
-                    if (username.Length > 0) {
-                        AccountModel account = this.Groups.SelectMany(g => g.Accounts).FirstOrDefault(a => a.Username == username);
+                    if (group.IsGuest == false) {
+                        if (username.Length > 0) {
+                            AccountModel account = this.Groups.SelectMany(g => g.Accounts).FirstOrDefault(a => a.Username == username);
 
-                        // If the account does not exist in any other group yet..
-                        if (account == null) {
-                            account = new AccountModel() {
-                                Username = username,
-                                Group = group,
-                            };
+                            // If the account does not exist in any other group yet..
+                            if (account == null) {
+                                account = new AccountModel() {
+                                    Username = username,
+                                    Group = group,
+                                };
 
-                            group.Accounts.Add(account);
+                                group.Accounts.Add(account);
 
-                            result = new CommandResult() {
-                                Success = true,
-                                Status = CommandResultType.Success,
-                                Message = String.Format(@"Account ""{0}"" successfully added to group ""{1}"".", account.Username, group.Name),
-                                Scope = new CommandData() {
-                                    Groups = new List<GroupModel>() {
+                                result = new CommandResult() {
+                                    Success = true,
+                                    Status = CommandResultType.Success,
+                                    Message = String.Format(@"Account ""{0}"" successfully added to group ""{1}"".", account.Username, group.Name),
+                                    Scope = new CommandData() {
+                                        Groups = new List<GroupModel>() {
                                         group
                                     }
-                                },
-                                Now = new CommandData() {
-                                    Accounts = new List<AccountModel>() {
+                                    },
+                                    Now = new CommandData() {
+                                        Accounts = new List<AccountModel>() {
                                         account
                                     }
+                                    }
+                                };
+
+                                if (this.Shared.Events != null) {
+                                    this.Shared.Events.Log(GenericEvent.ConvertToGenericEvent(result, GenericEventType.SecurityAccountAdded));
                                 }
-                            };
-
-                            if (this.Shared.Events != null) {
-                                this.Shared.Events.Log(GenericEvent.ConvertToGenericEvent(result, GenericEventType.SecurityAccountAdded));
                             }
-                        }
-                        // Else the account exists already, relocate it.
-                        else {
-                            GroupModel existingGroup = account.Group;
+                            // Else the account exists already, relocate it.
+                            else {
+                                GroupModel existingGroup = account.Group;
 
-                            // Remove it from the other group
-                            account.Group.Accounts.Remove(account);
+                                // Remove it from the other group
+                                account.Group.Accounts.Remove(account);
 
-                            // Add the account to this group.
-                            account.Group = group;
-                            group.Accounts.Add(account);
+                                // Add the account to this group.
+                                account.Group = group;
+                                group.Accounts.Add(account);
 
-                            result = new CommandResult() {
-                                Success = true,
-                                Status = CommandResultType.Success,
-                                Message = String.Format(@"Account ""{0}"" successfully added to group ""{1}"".", account.Username, group.Name),
-                                Scope = new CommandData() {
-                                    Accounts = new List<AccountModel>() {
+                                result = new CommandResult() {
+                                    Success = true,
+                                    Status = CommandResultType.Success,
+                                    Message = String.Format(@"Account ""{0}"" successfully added to group ""{1}"".", account.Username, group.Name),
+                                    Scope = new CommandData() {
+                                        Accounts = new List<AccountModel>() {
                                         account
                                     }
-                                },
-                                Then = new CommandData() {
-                                    Groups = new List<GroupModel>() {
+                                    },
+                                    Then = new CommandData() {
+                                        Groups = new List<GroupModel>() {
                                         existingGroup
                                     }
-                                },
-                                Now = new CommandData() {
-                                    Groups = new List<GroupModel>() {
+                                    },
+                                    Now = new CommandData() {
+                                        Groups = new List<GroupModel>() {
                                         group
                                     }
-                                }
-                            };
+                                    }
+                                };
 
-                            if (this.Shared.Events != null) {
-                                this.Shared.Events.Log(GenericEvent.ConvertToGenericEvent(result, GenericEventType.SecurityAccountAdded));
+                                if (this.Shared.Events != null) {
+                                    this.Shared.Events.Log(GenericEvent.ConvertToGenericEvent(result, GenericEventType.SecurityAccountAdded));
+                                }
                             }
+                        }
+                        else {
+                            result = new CommandResult() {
+                                Success = false,
+                                Status = CommandResultType.InvalidParameter,
+                                Message = "An account username must not be zero length"
+                            };
                         }
                     }
                     else {
                         result = new CommandResult() {
                             Success = false,
                             Status = CommandResultType.InvalidParameter,
-                            Message = "An account username must not be zero length"
+                            Message = "Cannot add an account to a guest group"
                         };
                     }
                 }

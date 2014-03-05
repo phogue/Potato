@@ -1385,7 +1385,12 @@ namespace Procon.Core.Security {
                             result = new CommandResult() {
                                 Success = true,
                                 Status = CommandResultType.Success,
-                                Message = String.Format(@"Successfully authenticated against account with username ""{0}"".", account.Username)
+                                Message = String.Format(@"Successfully authenticated against account with username ""{0}"".", account.Username),
+                                Scope = {
+                                    Accounts = new List<AccountModel>() {
+                                        account
+                                    }
+                                }
                             };
                         }
                         else {

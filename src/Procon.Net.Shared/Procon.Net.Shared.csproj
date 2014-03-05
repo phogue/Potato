@@ -144,7 +144,7 @@
     <Compile Include="Utils\StringExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="GeoIP.dat">
+    <None Include="Geolocation\Maxmind\GeoIP.dat">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />

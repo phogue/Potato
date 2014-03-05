@@ -798,6 +798,65 @@ namespace Procon.Core.Security {
             return this.DispatchPermissionsCheck(command, this.GetAccount(command), commandName);
         }
 
+        /// <summary>
+        /// Checks the authentication of the command against an account, seeing if they are identical
+        /// (the command executor is the same as the account)
+        /// </summary>
+        /// <param name="command">The command to extract the executor from</param>
+        /// <param name="username">The username of the target account</param>
+        /// <returns>The result of the comparison</returns>
+        public ICommandResult DispatchIdentityCheck(ICommand command, String username) {
+            ICommandResult result = null;
+
+            AccountModel executor = this.GetAccount(command);
+            AccountModel target = this.GetAccount(username);
+
+            if (executor != null && executor.Equals(target) == true) {
+                result = new CommandResult() {
+                    Success = true,
+                    Status = CommandResultType.Success
+                };
+            }
+            else {
+                result = new CommandResult() {
+                    Success = false,
+                    Status = CommandResultType.Failed
+                };
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Checks the authentication of the command against an account, seeing if they are identical
+        /// (the command executor is the same as the account)
+        /// </summary>
+        /// <param name="command">The command to extract the executor from</param>
+        /// <param name="gameType"></param>
+        /// <param name="uid"></param>
+        /// <returns>The result of the comparison</returns>
+        public ICommandResult DispatchIdentityCheck(ICommand command, String gameType, String uid) {
+            ICommandResult result = null;
+
+            AccountModel executor = this.GetAccount(command);
+            AccountModel target = this.GetAccount(gameType, uid);
+
+            if (executor != null && executor.Equals(target) == true) {
+                result = new CommandResult() {
+                    Success = true,
+                    Status = CommandResultType.Success
+                };
+            }
+            else {
+                result = new CommandResult() {
+                    Success = false,
+                    Status = CommandResultType.Failed
+                };
+            }
+
+            return result;
+        }
+
         private static int? HighestAuthority(AccountModel account, String permission) {
             return account != null ? account.Group.Permissions.Where(perm => perm.Name == permission).Select(perm => perm.Authority).FirstOrDefault() : null;
         }
@@ -1373,7 +1432,8 @@ namespace Procon.Core.Security {
             String username = parameters["username"].First<String>();
             String languageCode = parameters["languageCode"].First<String>();
 
-            if (this.DispatchPermissionsCheck(command, command.Name).Success == true) {
+            // If the user has permission or they are setting their own authenticated account.
+            if (this.DispatchPermissionsCheck(command, command.Name).Success == true || this.DispatchIdentityCheck(command, username).Success == true) {
                 AccountModel account = this.Groups.SelectMany(g => g.Accounts).FirstOrDefault(a => a.Username == username);
 
                 if (account != null) {

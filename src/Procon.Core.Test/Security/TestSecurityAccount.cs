@@ -581,6 +581,10 @@ namespace Procon.Core.Test.Security {
             Assert.AreEqual(result.Status, CommandResultType.InvalidParameter);
         }
 
+        /// <summary>
+        /// Tests that an account cannot set the preferred language of another account unless they
+        /// have permission to do so.
+        /// </summary>
         [Test]
         public void TestSecurityAccountSetPreferredLanguageAccountInsufficientPermission() {
             var security = new SecurityController();
@@ -599,6 +603,14 @@ namespace Procon.Core.Test.Security {
                     "Phogue"
                 })
             });
+            security.Tunnel(new Command() {
+                Origin = CommandOrigin.Local,
+                CommandType = CommandType.SecurityGroupAddAccount,
+                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                    "GroupName",
+                    "Ike"
+                })
+            });
 
             // Now change the language of the account.
             ICommandResult result = security.Tunnel(new Command() {
@@ -608,7 +620,7 @@ namespace Procon.Core.Test.Security {
                 },
                 Origin = CommandOrigin.Remote,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
-                    "Phogue",
+                    "Ike",
                     "en-UK"
                 })
             });
@@ -650,6 +662,46 @@ namespace Procon.Core.Test.Security {
             // Now change the language of the account.
             ICommandResult result = security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
+                CommandType = CommandType.SecurityAccountSetPreferredLanguageCode,
+                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                    "Phogue",
+                    "de-DE"
+                })
+            });
+
+            // Make sure it was successful.
+            Assert.IsTrue(result.Success);
+            Assert.AreEqual(result.Status, CommandResultType.Success);
+            Assert.AreEqual(security.Groups.Last().Accounts.First().PreferredLanguageCode, "de-DE");
+        }
+
+
+        /// <summary>
+        /// Tests that an account can set their own preferred language, even if their group does not have permission to do so.
+        /// </summary>
+        [Test]
+        public void TestSecurityAccountSetPreferredLanguageCodeOwnAccount() {
+            var security = new SecurityController();
+            security.Tunnel(new Command() {
+                Origin = CommandOrigin.Local,
+                CommandType = CommandType.SecurityAddGroup,
+                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                    "GroupName"
+                })
+            });
+            security.Tunnel(new Command() {
+                Origin = CommandOrigin.Local,
+                CommandType = CommandType.SecurityGroupAddAccount,
+                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                    "GroupName",
+                    "Phogue"
+                })
+            });
+            ICommandResult result = security.Tunnel(new Command() {
+                Authentication = {
+                    Username = "Phogue"
+                },
+                Origin = CommandOrigin.Remote,
                 CommandType = CommandType.SecurityAccountSetPreferredLanguageCode,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     "Phogue",

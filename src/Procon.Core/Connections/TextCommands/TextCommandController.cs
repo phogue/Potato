@@ -41,7 +41,7 @@ namespace Procon.Core.Connections.TextCommands {
                             Type = typeof(String)
                         }
                     },
-                    Handler = this.ExecuteTextCommand
+                    Handler = this.TextCommandsExecute
                 },
                 new CommandDispatch() {
                     CommandType = CommandType.TextCommandsPreview,
@@ -51,7 +51,7 @@ namespace Procon.Core.Connections.TextCommands {
                             Type = typeof(String)
                         }
                     },
-                    Handler = this.PreviewTextCommand
+                    Handler = this.TextCommandsPreview
                 },
                 new CommandDispatch() {
                     CommandType = CommandType.TextCommandsRegister,
@@ -61,7 +61,7 @@ namespace Procon.Core.Connections.TextCommands {
                             Type = typeof(TextCommandModel)
                         }
                     },
-                    Handler = this.RegisterTextCommand
+                    Handler = this.TextCommandsRegister
                 },
                 new CommandDispatch() {
                     CommandType = CommandType.TextCommandsUnregister,
@@ -71,7 +71,7 @@ namespace Procon.Core.Connections.TextCommands {
                             Type = typeof(TextCommandModel)
                         }
                     },
-                    Handler = this.UnregisterTextCommand
+                    Handler = this.TextCommandsUnregister
                 }
             });
         }
@@ -186,7 +186,7 @@ namespace Procon.Core.Connections.TextCommands {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns>The generated event, if any.</returns>
-        public ICommandResult ExecuteTextCommand(ICommand command, Dictionary<String, ICommandParameter> parameters) {
+        public ICommandResult TextCommandsExecute(ICommand command, Dictionary<String, ICommandParameter> parameters) {
             ICommandResult result = null;
 
             String text = parameters["text"].First<String>();
@@ -217,7 +217,7 @@ namespace Procon.Core.Connections.TextCommands {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns>The generated event, if any.</returns>
-        public ICommandResult PreviewTextCommand(ICommand command, Dictionary<String, ICommandParameter> parameters) {
+        public ICommandResult TextCommandsPreview(ICommand command, Dictionary<String, ICommandParameter> parameters) {
             ICommandResult result = null;
 
             String text = parameters["text"].First<String>();
@@ -246,7 +246,7 @@ namespace Procon.Core.Connections.TextCommands {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public ICommandResult RegisterTextCommand(ICommand command, Dictionary<String, ICommandParameter> parameters) {
+        public ICommandResult TextCommandsRegister(ICommand command, Dictionary<String, ICommandParameter> parameters) {
             ICommandResult result = null;
 
             TextCommandModel textCommand = parameters["textCommand"].First<TextCommandModel>();
@@ -296,7 +296,7 @@ namespace Procon.Core.Connections.TextCommands {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public ICommandResult UnregisterTextCommand(ICommand command, Dictionary<String, ICommandParameter> parameters) {
+        public ICommandResult TextCommandsUnregister(ICommand command, Dictionary<String, ICommandParameter> parameters) {
             ICommandResult result = null;
 
             TextCommandModel textCommand = parameters["textCommand"].First<TextCommandModel>();

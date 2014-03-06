@@ -13,7 +13,7 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
     public class TestFuzzyBasicObjectMatching : TestTextCommandParserBase {
         [Test]
         public void TestBasicAlternateKickPhogueCommandSevereTypo() {
-            ICommandResult result = CreateTextCommandController().ExecuteTextCommand(new Command() {
+            ICommandResult result = CreateTextCommandController().TextCommandsExecute(new Command() {
                 Authentication = {
                     Username = "Phogue"
                 },
@@ -55,7 +55,7 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
 
         [Test]
         public void TestBasicKickPhogueCommandSevereTypo() {
-            ICommandResult result = CreateTextCommandController().ExecuteTextCommand(new Command() {
+            ICommandResult result = CreateTextCommandController().TextCommandsExecute(new Command() {
                 Authentication = {
                     Username = "Phogue"
                 },
@@ -76,7 +76,7 @@ namespace Procon.Core.Test.TextCommands.Fuzzy {
 
         [Test]
         public void TestBasicKickPhogueCommandSmallTypo() {
-            ICommandResult result = CreateTextCommandController().ExecuteTextCommand(new Command() {
+            ICommandResult result = CreateTextCommandController().TextCommandsExecute(new Command() {
                 Authentication = {
                     Username = "Phogue"
                 },

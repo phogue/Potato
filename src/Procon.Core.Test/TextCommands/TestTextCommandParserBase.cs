@@ -426,7 +426,7 @@ namespace Procon.Core.Test.TextCommands {
         /// <param name="username">A username to execute the command as.</param>
         /// <returns>The event generated when executing the text command.</returns>
         protected static ICommandResult ExecuteTextCommand(TextCommandController textCommandController, String command, String username = "Phogue") {
-            ICommandResult result = textCommandController.ExecuteTextCommand(new Command() {
+            ICommandResult result = textCommandController.TextCommandsExecute(new Command() {
                 Authentication = {
                     Username = "Phogue"
                 },

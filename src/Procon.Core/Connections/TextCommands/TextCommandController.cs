@@ -198,9 +198,21 @@ namespace Procon.Core.Connections.TextCommands {
 
                 String prefix = this.Shared.Variables.Get<String>(CommonVariableNames.TextCommandPublicPrefix);
 
-                result = this.Parse(this.GetAccountNetworkPlayer(command, speakerAccount), speakerAccount, prefix, text) ?? command.Result;
+                result = this.Parse(this.GetAccountNetworkPlayer(command, speakerAccount), speakerAccount, prefix, text);
 
-                // todo fire event? GenericEventType.TextCommandExecuted
+                if (result != null) {
+                    result.Scope = new CommandData() {
+                        Content = new List<String>() {
+                            text
+                        },
+                        Connections = new List<ConnectionModel>() {
+                            this.Connection.ConnectionModel
+                        }
+                    };
+                }
+                else {
+                    result = command.Result;
+                }
             }
             else {
                 result = CommandResult.InsufficientPermissions;
@@ -229,9 +241,21 @@ namespace Procon.Core.Connections.TextCommands {
 
                 String prefix = this.Shared.Variables.Get<String>(CommonVariableNames.TextCommandPublicPrefix);
 
-                result = this.Parse(this.GetAccountNetworkPlayer(command, speakerAccount), speakerAccount, prefix, text) ?? command.Result;
+                result = this.Parse(this.GetAccountNetworkPlayer(command, speakerAccount), speakerAccount, prefix, text);
 
-                // todo fire event? GenericEventType.TextCommandPreviewed
+                if (result != null) {
+                    result.Scope = new CommandData() {
+                        Content = new List<String>() {
+                            text
+                        },
+                        Connections = new List<ConnectionModel>() {
+                            this.Connection.ConnectionModel
+                        }
+                    };
+                }
+                else {
+                    result = command.Result;
+                }
             }
             else {
                 result = CommandResult.InsufficientPermissions;

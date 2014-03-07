@@ -189,7 +189,10 @@ namespace Myrcon.Plugins.Test {
             ICommandResult e = parameters["e"].First<ICommandResult>();
 
             NetworkAction output = new NetworkAction() {
-                ActionType = NetworkActionType.NetworkTextSay
+                ActionType = NetworkActionType.NetworkTextSay,
+                Now = {
+                    Content = new List<String>()
+                }
             };
 
             Console.WriteLine(e.Now.TextCommands.First().DescriptionKey);

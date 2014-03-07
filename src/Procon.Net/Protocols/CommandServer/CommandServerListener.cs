@@ -41,28 +41,39 @@ namespace Procon.Net.Protocols.CommandServer {
         /// <summary>
         /// Fired whenever an incoming request occurs.
         /// </summary>
-        public event Action<IClient, CommandServerPacket> PacketReceived;
+        public Action<IClient, CommandServerPacket> PacketReceived;
 
         /// <summary>
-        /// An exception occured.
+        /// An exception occured while starting the listener.
         /// </summary>
-        public event Action<Exception> Exception;
+        public Action<Exception> BeginException;
+
+        /// <summary>
+        /// An exception occured while accepting a connection.
+        /// </summary>
+        public Action<Exception> ListenerException;
 
         /// <summary>
         /// Creates and starts listening for tcp clients on the specified port.
         /// </summary>
-        public void BeginListener() {
+        public bool BeginListener() {
+            bool started = false;
+
             try {
                 this.Listener = new TcpListener(IPAddress.Any, this.Port);
                 this.Listener.Start();
-
+                
                 // Accept the connection.
                 this.Listener.BeginAcceptTcpClient(new AsyncCallback(CommandServerListener.AcceptTcpClientCallback), this);
+
+                started = true;
             }
             catch (Exception e) {
-                this.OnException(e);
                 this.Dispose();
+                this.OnBeginException(e);
             }
+
+            return started;
         }
 
         // Process the client connection. 
@@ -89,8 +100,8 @@ namespace Procon.Net.Protocols.CommandServer {
                     commandServerListener.Listener.BeginAcceptTcpClient(new AsyncCallback(AcceptTcpClientCallback), commandServerListener);
                 }
                 catch (Exception e) {
-                    commandServerListener.OnException(e);
                     commandServerListener.Dispose();
+                    commandServerListener.OnListenerException(e);
                 }
             }
         }
@@ -160,8 +171,16 @@ namespace Procon.Net.Protocols.CommandServer {
             }
         }
 
-        protected virtual void OnException(Exception exception) {
-            var handler = Exception;
+        protected virtual void OnListenerException(Exception exception) {
+            var handler = ListenerException;
+
+            if (handler != null) {
+                handler(exception);
+            }
+        }
+
+        protected virtual void OnBeginException(Exception exception) {
+            var handler = BeginException;
 
             if (handler != null) {
                 handler(exception);

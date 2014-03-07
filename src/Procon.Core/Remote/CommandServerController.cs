@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 using Procon.Core.Shared;
 using Procon.Core.Shared.Events;
 using Procon.Core.Shared.Models;
@@ -81,22 +82,29 @@ namespace Procon.Core.Remote {
         public void Configure() {
             if (this.Shared.Variables.Get<bool>(CommonVariableNames.CommandServerEnabled) == true) {
                 if (this.Certificate.Certificate != null) {
-                    this.CommandServerListener = new CommandServerListener() {
+                    this.CommandServerListener = new CommandServerListener {
                         Certificate = this.Certificate.Certificate,
-                        Port = this.Shared.Variables.Get<int>(CommonVariableNames.CommandServerPort)
+                        Port = this.Shared.Variables.Get<int>(CommonVariableNames.CommandServerPort),
+                        PacketReceived = OnPacketReceived,
+                        BeginException = OnBeginException,
+                        ListenerException = OnListenerException
                     };
 
-                    // Assign events.
-                    this.CommandServerListener.PacketReceived += OnPacketReceived;
-
                     // Start accepting connections.
-                    this.CommandServerListener.BeginListener();
-
-                    this.Shared.Events.Log(new GenericEvent() {
-                        GenericEventType = GenericEventType.CommandServerStarted,
-                        Success = true,
-                        Status = CommandResultType.Success
-                    });
+                    if (this.CommandServerListener.BeginListener() == true) {
+                        this.Shared.Events.Log(new GenericEvent() {
+                            GenericEventType = GenericEventType.CommandServerStarted,
+                            Success = true,
+                            Status = CommandResultType.Success
+                        });
+                    }
+                    else {
+                        this.Shared.Events.Log(new GenericEvent() {
+                            GenericEventType = GenericEventType.CommandServerStarted,
+                            Success = false,
+                            Status = CommandResultType.Failed
+                        });
+                    }
                 }
             }
             else if (this.CommandServerListener != null) {
@@ -109,6 +117,40 @@ namespace Procon.Core.Remote {
                     Status = CommandResultType.Success
                 });
             }
+        }
+
+        /// <summary>
+        /// Called when an exception is caught while setting up the listener, after the listener has been disposed.
+        /// </summary>
+        /// <param name="exception"></param>
+        public void OnBeginException(Exception exception) {
+            this.Shared.Events.Log(new GenericEvent() {
+                GenericEventType = GenericEventType.CommandServerStopped,
+                Success = false,
+                Status = CommandResultType.Failed
+            });
+
+            // Log the exception for debugging purposes.
+            Procon.Service.Shared.ServiceControllerHelpers.LogUnhandledException("CommandServerController.OnBeginException", exception);
+        }
+
+        /// <summary>
+        /// Called when an exception is caught while a client is connecting, after the listener has been disposed.
+        /// </summary>
+        /// <param name="exception"></param>
+        public void OnListenerException(Exception exception) {
+            this.Shared.Events.Log(new GenericEvent() {
+                GenericEventType = GenericEventType.CommandServerStopped,
+                Success = false,
+                Status = CommandResultType.Failed
+            });
+
+            // Log the exception for debugging purposes.
+            Procon.Service.Shared.ServiceControllerHelpers.LogUnhandledException("CommandServerController.OnListenerException", exception);
+
+            // Now start the listener back up. It was running successfully, but a problem occured
+            // while processing a client. The error has been logged 
+            this.Configure();
         }
 
         /// <summary>

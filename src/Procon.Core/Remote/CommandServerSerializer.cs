@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using Newtonsoft.Json;
@@ -90,10 +91,11 @@ namespace Procon.Core.Remote {
                 default:
                     response.Headers.Add(HttpRequestHeader.ContentType, Mime.ApplicationJson);
 
-                    response.Content = JsonConvert.SerializeObject(result, new JsonSerializerSettings() {
-                        NullValueHandling = NullValueHandling.Ignore,
-                        ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-                    });
+                    using (StringWriter writer = new StringWriter()) {
+                        Core.Shared.Serialization.JsonSerialization.Minimal.Serialize(writer, result);
+
+                        response.Content = writer.ToString();
+                    }
 
                     response.StatusCode = HttpStatusCode.OK;
                     break;

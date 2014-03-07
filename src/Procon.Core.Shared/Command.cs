@@ -78,9 +78,15 @@ namespace Procon.Core.Shared {
         }
 
         public ICommand ToConfigCommand() {
-            return new Command(this) {
-                ScopeModel = null
-            };
+            ICommand command = new Command(this);
+
+            // If the scope model does not have any useful information within.
+            if (this.ScopeModel != null && this.ScopeModel.ConnectionGuid == Guid.Empty && this.ScopeModel.PluginGuid == Guid.Empty) {
+                // Null it out. This avoids storing empty GUID's for no reason.
+                command.ScopeModel = null;
+            }
+
+            return command;
         }
 
         public ICommand ParseCommandType(String commandName) {

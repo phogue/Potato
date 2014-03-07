@@ -55,6 +55,7 @@
     <Compile Include="ExecutableCommands\Objects\ExecutableOverrideTester.cs" />
     <Compile Include="ExecutableCommands\Objects\ExecutablePreviewTester.cs" />
     <Compile Include="ExecutableCommands\TestCommandAttribute.cs" />
+    <Compile Include="ExecutableCommands\TestCommandConfig.cs" />
     <Compile Include="ExecutableCommands\TestCommandData.cs" />
     <Compile Include="ExecutableCommands\TestCommandParameter.cs" />
     <Compile Include="ExecutableCommands\TestExecutableBasic.cs" />

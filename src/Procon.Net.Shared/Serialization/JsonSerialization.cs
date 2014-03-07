@@ -38,13 +38,15 @@ namespace Procon.Net.Shared.Serialization {
             JsonSerialization.Minimal = new JsonSerializer() {
                 NullValueHandling = NullValueHandling.Ignore,
                 ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
-                Formatting = Formatting.None
+                Formatting = Formatting.None,
+                DateTimeZoneHandling = DateTimeZoneHandling.Local
             };
 
             JsonSerialization.Readable = new JsonSerializer() {
                 NullValueHandling = NullValueHandling.Ignore,
                 ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
-                Formatting = Formatting.Indented
+                Formatting = Formatting.Indented,
+                DateTimeZoneHandling = DateTimeZoneHandling.Local
             };
 
             JsonSerialization.Converters.ForEach(converter => {

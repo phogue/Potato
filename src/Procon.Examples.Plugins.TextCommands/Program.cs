@@ -61,10 +61,10 @@ namespace Procon.Examples.Plugins.TextCommands {
                             Data = {
                                 TextCommands = new List<TextCommandModel>() {
                                     new TextCommandModel() {
-                                        PluginUid = this.PluginGuid.ToString(),
+                                        PluginGuid = this.PluginGuid,
                                         Parser = TextCommandParserType.Fuzzy,
                                         PluginCommand = "FuzzyCommand", // This will be the command name that comes through
-                                        DescriptionKey = "FuzzyCommandDescription",
+                                        Description = "FuzzyCommandDescription",
                                         // When using the fuzzy parser you just need to supply keywords to pickup in a text command
                                         Commands = new List<String>() {
                                             "Test",
@@ -89,10 +89,10 @@ namespace Procon.Examples.Plugins.TextCommands {
                             Data = {
                                 TextCommands = new List<TextCommandModel>() {
                                     new TextCommandModel() {
-                                        PluginUid = this.PluginGuid.ToString(),
+                                        PluginGuid = this.PluginGuid,
                                         Parser = TextCommandParserType.Route,
                                         PluginCommand = "RouteCommand", // This will be the command name that comes through
-                                        DescriptionKey = "RouteCommandDescription",
+                                        Description = "RouteCommandDescription",
                                         // When using the route parser the structure must be identical
                                         // to one of the command "routes" supplied below.
                                         Commands = new List<String>() {

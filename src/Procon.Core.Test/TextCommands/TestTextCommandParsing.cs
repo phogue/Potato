@@ -47,7 +47,7 @@ namespace Procon.Core.Test.TextCommands {
                         Data = {
                             TextCommands = new List<TextCommandModel>() {
                                 new TextCommandModel() {
-                                    PluginUid = "Plugin1",
+                                    PluginGuid = Guid.NewGuid(),
                                     PluginCommand = "Command1",
                                     Commands = new List<String>() {
                                         "ExecuteTest"
@@ -172,7 +172,7 @@ namespace Procon.Core.Test.TextCommands {
                         Data = {
                             TextCommands = new List<TextCommandModel>() {
                                 new TextCommandModel() {
-                                    PluginUid = "Plugin1",
+                                    PluginGuid = Guid.NewGuid(),
                                     PluginCommand = "Command1",
                                     Commands = new List<String>() {
                                         "ExecuteTest"
@@ -227,7 +227,7 @@ namespace Procon.Core.Test.TextCommands {
                         Data = {
                             TextCommands = new List<TextCommandModel>() {
                                 new TextCommandModel() {
-                                    PluginUid = "Plugin1",
+                                    PluginGuid = Guid.NewGuid(),
                                     PluginCommand = "Command1",
                                     Commands = new List<String>() {
                                         "ExecuteTest"

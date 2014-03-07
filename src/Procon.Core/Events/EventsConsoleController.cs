@@ -50,7 +50,7 @@ namespace Procon.Core.Events {
                     ConnectionModel firstConnection = item.Scope.Connections.FirstOrDefault();
 
                     if (firstTextCommand != null && firstConnection != null) {
-                        text = String.Format(@"Registed command(s) ""{0}"" to plugin {1} on connection {2}.", String.Join(", ", firstTextCommand.Commands.ToArray()), this.FormatGuid(firstTextCommand.PluginUid), this.FormatGuid(firstConnection.ConnectionGuid));
+                        text = String.Format(@"Registed command(s) ""{0}"" to plugin {1} on connection {2}.", String.Join(", ", firstTextCommand.Commands.ToArray()), this.FormatGuid(firstTextCommand.PluginGuid), this.FormatGuid(firstConnection.ConnectionGuid));
                     }
 
                     break;

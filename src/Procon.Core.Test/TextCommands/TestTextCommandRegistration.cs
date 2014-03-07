@@ -33,7 +33,7 @@ namespace Procon.Core.Test.TextCommands {
                         Data = {
                             TextCommands = new List<TextCommandModel>() {
                                 new TextCommandModel() {
-                                    PluginUid = "Plugin1",
+                                    PluginGuid = Guid.NewGuid(),
                                     PluginCommand = "Command1",
                                     Commands = new List<String>() {
                                         "RegisterTest"
@@ -58,6 +58,7 @@ namespace Procon.Core.Test.TextCommands {
         [Test]
         public void TestTextCommandRegisterDuplication() {
             var textCommands = new TextCommandController();
+            var guid = Guid.NewGuid();
 
             textCommands.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
@@ -67,7 +68,7 @@ namespace Procon.Core.Test.TextCommands {
                         Data = {
                             TextCommands = new List<TextCommandModel>() {
                                 new TextCommandModel() {
-                                    PluginUid = "Plugin1",
+                                    PluginGuid = guid,
                                     PluginCommand = "Command1",
                                     Commands = new List<String>() {
                                         "RegisterTest"
@@ -87,7 +88,7 @@ namespace Procon.Core.Test.TextCommands {
                         Data = {
                             TextCommands = new List<TextCommandModel>() {
                                 new TextCommandModel() {
-                                    PluginUid = "Plugin1",
+                                    PluginGuid = guid,
                                     PluginCommand = "Command1",
                                     Commands = new List<String>() {
                                         "RegisterTest"
@@ -122,7 +123,7 @@ namespace Procon.Core.Test.TextCommands {
                         Data = {
                             TextCommands = new List<TextCommandModel>() {
                                 new TextCommandModel() {
-                                    PluginUid = "Plugin1",
+                                    PluginGuid = Guid.NewGuid(),
                                     PluginCommand = "Command1",
                                     Commands = new List<String>() {
                                         "RegisterTest"
@@ -144,6 +145,7 @@ namespace Procon.Core.Test.TextCommands {
         [Test]
         public void TestTextCommandUnregister() {
             var textCommands = new TextCommandController();
+            var guid = Guid.NewGuid();
 
             textCommands.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
@@ -153,7 +155,7 @@ namespace Procon.Core.Test.TextCommands {
                         Data = {
                             TextCommands = new List<TextCommandModel>() {
                                 new TextCommandModel() {
-                                    PluginUid = "Plugin1",
+                                    PluginGuid = guid,
                                     PluginCommand = "Command1",
                                     Commands = new List<String>() {
                                         "RegisterTest"
@@ -177,7 +179,7 @@ namespace Procon.Core.Test.TextCommands {
                         Data = {
                             TextCommands = new List<TextCommandModel>() {
                                 new TextCommandModel() {
-                                    PluginUid = "Plugin1",
+                                    PluginGuid = guid,
                                     PluginCommand = "Command1"
                                 }
                             }
@@ -206,7 +208,7 @@ namespace Procon.Core.Test.TextCommands {
                         Data = {
                             TextCommands = new List<TextCommandModel>() {
                                 new TextCommandModel() {
-                                    PluginUid = "Plugin1",
+                                    PluginGuid = Guid.NewGuid(),
                                     PluginCommand = "Command1"
                                 }
                             }
@@ -225,6 +227,7 @@ namespace Procon.Core.Test.TextCommands {
         [Test]
         public void TestTextCommandUnregisterInsufficientPermission() {
             var textCommands = new TextCommandController();
+            var guid = Guid.NewGuid();
 
             textCommands.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
@@ -234,7 +237,7 @@ namespace Procon.Core.Test.TextCommands {
                         Data = {
                             TextCommands = new List<TextCommandModel>() {
                                 new TextCommandModel() {
-                                    PluginUid = "Plugin1",
+                                    PluginGuid = guid,
                                     PluginCommand = "Command1",
                                     Commands = new List<String>() {
                                         "RegisterTest"
@@ -261,7 +264,7 @@ namespace Procon.Core.Test.TextCommands {
                         Data = {
                             TextCommands = new List<TextCommandModel>() {
                                 new TextCommandModel() {
-                                    PluginUid = "Plugin1",
+                                    PluginGuid = guid,
                                     PluginCommand = "Command1",
                                     Commands = new List<String>() {
                                         "RegisterTest"

@@ -33,7 +33,7 @@ namespace Procon.Core.Test.TextCommands {
             },
             Parser = TextCommandParserType.Fuzzy,
             PluginCommand = "KICK",
-            DescriptionKey = "KICK"
+            Description = "KICK"
         };
 
         protected static TextCommandModel TextCommandTest = new TextCommandModel() {
@@ -42,7 +42,7 @@ namespace Procon.Core.Test.TextCommands {
             },
             Parser = TextCommandParserType.Fuzzy,
             PluginCommand = "TEST",
-            DescriptionKey = "TEST"
+            Description = "TEST"
         };
 
         protected static TextCommandModel TextCommandChangeMap = new TextCommandModel() {
@@ -52,7 +52,7 @@ namespace Procon.Core.Test.TextCommands {
             },
             Parser = TextCommandParserType.Fuzzy,
             PluginCommand = "CHANGEMAP",
-            DescriptionKey = "CHANGEMAP"
+            Description = "CHANGEMAP"
         };
 
         protected static TextCommandModel TextCommandCalculate = new TextCommandModel() {
@@ -61,7 +61,7 @@ namespace Procon.Core.Test.TextCommands {
             },
             Parser = TextCommandParserType.Fuzzy,
             PluginCommand = "CALCULATE",
-            DescriptionKey = "CALCULATE"
+            Description = "CALCULATE"
         };
 
         protected static PlayerModel PlayerPhogue = new PlayerModel() {

@@ -276,7 +276,7 @@ namespace Procon.Core.Connections.TextCommands {
             TextCommandModel textCommand = parameters["textCommand"].First<TextCommandModel>();
 
             if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
-                TextCommandModel existingRegisteredCommand = this.TextCommands.Find(existingCommand => existingCommand.PluginUid == textCommand.PluginUid && existingCommand.PluginCommand == textCommand.PluginCommand);
+                TextCommandModel existingRegisteredCommand = this.TextCommands.Find(existingCommand => existingCommand.PluginGuid == textCommand.PluginGuid && existingCommand.PluginCommand == textCommand.PluginCommand);
 
                 if (existingRegisteredCommand == null) {
                     this.TextCommands.Add(textCommand);
@@ -326,7 +326,7 @@ namespace Procon.Core.Connections.TextCommands {
             TextCommandModel textCommand = parameters["textCommand"].First<TextCommandModel>();
 
             if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
-                TextCommandModel existingRegisteredCommand = this.TextCommands.Find(existingCommand => existingCommand.PluginUid == textCommand.PluginUid && existingCommand.PluginCommand == textCommand.PluginCommand);
+                TextCommandModel existingRegisteredCommand = this.TextCommands.Find(existingCommand => existingCommand.PluginGuid == textCommand.PluginGuid && existingCommand.PluginCommand == textCommand.PluginCommand);
 
                 if (existingRegisteredCommand != null) {
                     this.TextCommands.Remove(existingRegisteredCommand);

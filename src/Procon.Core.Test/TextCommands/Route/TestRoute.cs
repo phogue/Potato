@@ -19,7 +19,7 @@ namespace Procon.Core.Test.TextCommands.Route {
                 },
                 Parser = TextCommandParserType.Route,
                 PluginCommand = "Command",
-                DescriptionKey = "Command"
+                Description = "Command"
             };
 
             textCommandController.TextCommands.Add(command);
@@ -37,7 +37,7 @@ namespace Procon.Core.Test.TextCommands.Route {
                 },
                 Parser = TextCommandParserType.Route,
                 PluginCommand = "Command",
-                DescriptionKey = "Command"
+                Description = "Command"
             };
 
             textCommandController.TextCommands.Add(command);
@@ -55,7 +55,7 @@ namespace Procon.Core.Test.TextCommands.Route {
                 },
                 Parser = TextCommandParserType.Route,
                 PluginCommand = "Command",
-                DescriptionKey = "Command"
+                Description = "Command"
             };
 
             textCommandController.TextCommands.Add(command);
@@ -78,7 +78,7 @@ namespace Procon.Core.Test.TextCommands.Route {
                 },
                 Parser = TextCommandParserType.Route,
                 PluginCommand = "Command",
-                DescriptionKey = "Command"
+                Description = "Command"
             };
 
             textCommandController.TextCommands.Add(command);
@@ -98,7 +98,7 @@ namespace Procon.Core.Test.TextCommands.Route {
                 },
                 Parser = TextCommandParserType.Route,
                 PluginCommand = "Command",
-                DescriptionKey = "Command"
+                Description = "Command"
             };
 
             textCommandController.TextCommands.Add(command);
@@ -118,7 +118,7 @@ namespace Procon.Core.Test.TextCommands.Route {
                 },
                 Parser = TextCommandParserType.Route,
                 PluginCommand = "Command",
-                DescriptionKey = "Command"
+                Description = "Command"
             };
 
             textCommandController.TextCommands.Add(command);
@@ -138,7 +138,7 @@ namespace Procon.Core.Test.TextCommands.Route {
                 },
                 Parser = TextCommandParserType.Route,
                 PluginCommand = "Command",
-                DescriptionKey = "Command"
+                Description = "Command"
             };
 
             textCommandController.TextCommands.Add(command);
@@ -159,7 +159,7 @@ namespace Procon.Core.Test.TextCommands.Route {
                 },
                 Parser = TextCommandParserType.Route,
                 PluginCommand = "Command",
-                DescriptionKey = "Command"
+                Description = "Command"
             };
 
             textCommandController.TextCommands.Add(command);
@@ -179,7 +179,7 @@ namespace Procon.Core.Test.TextCommands.Route {
                 },
                 Parser = TextCommandParserType.Route,
                 PluginCommand = "Command",
-                DescriptionKey = "Command"
+                Description = "Command"
             };
 
             textCommandController.TextCommands.Add(command);
@@ -206,7 +206,7 @@ namespace Procon.Core.Test.TextCommands.Route {
                 },
                 Parser = TextCommandParserType.Route,
                 PluginCommand = "Command",
-                DescriptionKey = "Command"
+                Description = "Command"
             };
 
             textCommandController.TextCommands.Add(command);
@@ -233,7 +233,7 @@ namespace Procon.Core.Test.TextCommands.Route {
                 },
                 Parser = TextCommandParserType.Route,
                 PluginCommand = "Command",
-                DescriptionKey = "Command"
+                Description = "Command"
             };
 
             textCommandController.TextCommands.Add(command);
@@ -262,7 +262,7 @@ namespace Procon.Core.Test.TextCommands.Route {
                 },
                 Parser = TextCommandParserType.Route,
                 PluginCommand = "Command",
-                DescriptionKey = "Command"
+                Description = "Command"
             };
 
             textCommandController.TextCommands.Add(command);

@@ -195,7 +195,7 @@ namespace Myrcon.Plugins.Test {
                 }
             };
 
-            Console.WriteLine(e.Now.TextCommands.First().DescriptionKey);
+            Console.WriteLine(e.Now.TextCommands.First().Description);
 
             TextCommandMatchModel match = e.Now.TextCommandMatches.First();
 
@@ -269,9 +269,10 @@ namespace Myrcon.Plugins.Test {
                             Data = {
                                 TextCommands = new List<TextCommandModel>() {
                                     new TextCommandModel() {
-                                        PluginUid = this.PluginGuid.ToString(),
+                                        PluginGuid = this.PluginGuid,
                                         PluginCommand = "TestCommand",
-                                        DescriptionKey = "TestCommandDescription",
+                                        Name = "Test",
+                                        Description = "Tests a command, outputting the results to player chat.",
                                         Commands = new List<String>() {
                                             "Test"
                                         }
@@ -292,9 +293,10 @@ namespace Myrcon.Plugins.Test {
                             Data = {
                                 TextCommands = new List<TextCommandModel>() {
                                     new TextCommandModel() {
-                                        PluginUid = this.PluginGuid.ToString(),
+                                        PluginGuid = this.PluginGuid,
                                         PluginCommand = "KillCommand",
-                                        DescriptionKey = "KillCommandDescription",
+                                        Name = "Kill",
+                                        Description = "Kills any matching players, sending a message to them that the action was for tesing.",
                                         Commands = new List<String>() {
                                             "Kill"
                                         }
@@ -315,10 +317,11 @@ namespace Myrcon.Plugins.Test {
                             Data = {
                                 TextCommands = new List<TextCommandModel>() {
                                     new TextCommandModel() {
-                                        PluginUid = this.PluginGuid.ToString(),
+                                        PluginGuid = this.PluginGuid,
                                         PluginCommand = "HelpCommand",
                                         Priority = 100,
-                                        DescriptionKey = "HelpCommandDescription",
+                                        Name = "Help",
+                                        Description = "Provides help about another command.",
                                         Commands = new List<String>() {
                                             "Help"
                                         }

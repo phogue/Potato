@@ -8,16 +8,15 @@ namespace Procon.Core.Shared.Models {
     /// </summary>
     [Serializable]
     public sealed class TextCommandModel : CoreModel, IDisposable {
-
         /// <summary>
-        /// The Uid of the plugin.  This is set by the PluginController automatically
-        /// if blank, otherwise left open for the plugin to designate another
+        /// The Guid of the plugin.  This is set by the PluginController automatically
+        /// if empty, otherwise left open for the plugin to designate another
         /// plugin as the owner of the command.
         /// </summary>
-        public String PluginUid { get; set; }
+        public Guid PluginGuid { get; set; }
 
         /// <summary>
-        /// The method to execute within the registered uid's plugin e.g "KickCallback" will execute public void KickCallback(...);
+        /// The command to send within the scope of the registered uid's plugin e.g "KickCommand"
         /// </summary>
         public String PluginCommand { get; set; }
 
@@ -32,11 +31,6 @@ namespace Procon.Core.Shared.Models {
         public TextCommandParserType Parser { get; set; }
 
         /// <summary>
-        /// List of commands to find in the string. "Kick", "Get rid of", "gtfo", "cya"
-        /// </summary>
-        public List<String> Commands { get; set; }
-
-        /// <summary>
         /// The priority of the command to be matched against other commands.
         /// </summary>
         /// <remarks>Defaults to 0.  This setting should only be raised if you
@@ -44,21 +38,27 @@ namespace Procon.Core.Shared.Models {
         public int Priority { get; set; }
 
         /// <summary>
-        /// A key to be used in a localization lookup for the registered Uid's
-        /// localization file, if available.
-        /// 
-        /// TODO: Change to "Description" object with a variable designating
-        /// this as a look up key or the literal text to output.
+        /// The name of the command e.g "Kill"
         /// </summary>
-        public String DescriptionKey { get; set; }
+        public String Name { get; set; }
+
+        /// <summary>
+        /// A short description of the command explaining what it will do.
+        /// </summary>
+        public String Description { get; set; }
+
+        /// <summary>
+        /// List of commands to find in the string. "Kick", "Get rid of", "gtfo", "cya"
+        /// </summary>
+        public List<String> Commands { get; set; }
 
         /// <summary>
         /// sets a default "empty" text command to match against.
         /// </summary>
         public TextCommandModel() {
-            this.PluginUid = String.Empty;
+            this.PluginGuid = Guid.Empty;
             this.PluginCommand = String.Empty;
-            this.DescriptionKey = String.Empty;
+            this.Description = String.Empty;
 
             this.Parser = TextCommandParserType.Fuzzy;
 
@@ -71,9 +71,9 @@ namespace Procon.Core.Shared.Models {
         /// This just makes the command inert
         /// </summary>
         public void Dispose() {
-            this.PluginUid = null;
+            this.PluginGuid = Guid.Empty;
             this.PluginCommand = null;
-            this.DescriptionKey = null;
+            this.Description = null;
 
             this.Parser = TextCommandParserType.Fuzzy;
 

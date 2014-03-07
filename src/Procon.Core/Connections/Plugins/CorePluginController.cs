@@ -20,7 +20,7 @@ namespace Procon.Core.Connections.Plugins {
     /// a plugin back to Procon.
     /// </summary>
     public class CorePluginController : AsynchronousCoreController, ISharedReferenceAccess, ICorePluginController {
-        public List<PluginModel> LoadedPlugins { get; protected set; }
+        public List<PluginModel> LoadedPlugins { get; set; }
 
         /// <summary>
         /// The appdomain all of the plugins are loaded into.

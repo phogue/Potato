@@ -11,6 +11,6 @@ namespace Procon.Core.Connections.Plugins {
         /// <summary>
         /// List of plugins loaded in the app domain.
         /// </summary>
-        List<PluginModel> LoadedPlugins { get; }
+        List<PluginModel> LoadedPlugins { get; set; }
     }
 }

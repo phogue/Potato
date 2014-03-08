@@ -419,6 +419,9 @@ namespace Procon.Core.Connections.Plugins {
         /// Disposes of all the plugins before calling the base dispose.
         /// </summary>
         public override void Dispose() {
+            this.ClientEventStream.Stop();
+            this.ProtocolEventStream.Stop();
+            
             this.PluginFactory.Shutdown();
 
             this.LoadedPlugins.Clear();

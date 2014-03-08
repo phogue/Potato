@@ -28,21 +28,33 @@ namespace Procon.Core.Shared.Plugins {
         /// <param name="typeName"></param>
         /// <returns></returns>
         public IPluginController Create(String assemblyFile, String typeName) {
+            IPluginController loadedPlugin = null;
 
-            IPluginController loadedPlugin = (IPluginController)Activator.CreateInstanceFrom(
-                assemblyFile,
-                typeName,
-                false,
-                BindingFlags.Instance | BindingFlags.Public | BindingFlags.CreateInstance,
-                null,
-                null,
-                null,
-                null
-            ).Unwrap();
+            try {
+                loadedPlugin = (IPluginController)Activator.CreateInstanceFrom(
+                    assemblyFile,
+                    typeName,
+                    false,
+                    BindingFlags.Instance | BindingFlags.Public | BindingFlags.CreateInstance,
+                    null,
+                    null,
+                    null,
+                    null
+                ).Unwrap();
 
-            this.LoadedPlugins.TryAdd(loadedPlugin.PluginGuid, loadedPlugin);
+                this.LoadedPlugins.TryAdd(loadedPlugin.PluginGuid, loadedPlugin);
 
-            loadedPlugin.Execute();
+                loadedPlugin.Execute();
+            }
+            // We don't do any exception logging here, as simply updating Procon may log a bunch of exceptions
+            // for plugins that are deprecated or simply forgotten about by the user.
+            // The exceptions wouldn't be terribly detailed anyway, it would just specify that a fault occured
+            // while loading the assembly/type and ultimately the original developer needs to fix something.
+            // I would also hope that beyond Beta we will not make breaking changes to the plugin interface,
+            // differing from Procon 1 in generic behaviour for IPluginController/ICoreController
+            catch {
+                loadedPlugin = null;
+            }
 
             return loadedPlugin;
         }

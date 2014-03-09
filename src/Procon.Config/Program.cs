@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using Procon.Config.Core;
 using Procon.Service.Shared;
 
@@ -19,7 +18,8 @@ namespace Procon.Config {
             if (arguments.ContainsKey(@"command")) {
                 // Split the command/arguments.
                 var command = arguments[@"command"];
-                arguments = arguments.Where(item => item.Key != @"command").ToDictionary(item => item.Key, item => item.Value);
+
+                arguments.Remove(@"command");
 
                 // Create a service to at least handle output to the console for signals.
                 ServiceController service = new ServiceController {

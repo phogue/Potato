@@ -12,7 +12,7 @@ namespace Procon.Service.Shared {
         public int DisposeServiceTimeout { get; set; }
         public string PackagesDefaultSourceRepositoryUri { get; set; }
 
-        public void ParseArguments(Dictionary<String, String> arguments) {
+        public void ParseArguments(IDictionary<String, String> arguments) {
             // If we have not been told anything update updating core OR the update has been explictely set to true
             // default: check for update, unless "-updatecore false" is passed in.
             if (arguments.ContainsKey("serviceupdatecore") == true) {

@@ -20,7 +20,7 @@ namespace Procon.Config.Core {
         ///     <para>The arguments for this command</para>
         ///     <para>Expecting "password", but it is optional. If no password is supplied a random password will be generated</para>
         /// </param>
-        public static ServiceMessage CommandServerGenerateCertificate(Dictionary<String, String> arguments) {
+        public static ServiceMessage CommandServerGenerateCertificate(IDictionary<String, String> arguments) {
             var model = new CertificateModel();
 
             if (arguments != null && arguments.Count > 0) {
@@ -48,7 +48,7 @@ namespace Procon.Config.Core {
         /// </summary>
         /// <param name="command">The command to be executed</param>
         /// <param name="arguments">Any arguments attached to this command.</param>
-        public static ServiceMessage Dispatch(String command, Dictionary<String, String> arguments) {
+        public static ServiceMessage Dispatch(String command, IDictionary<String, String> arguments) {
             ServiceMessage result = null;
 
             if (String.Compare(command, "CommandServerGenerateCertificate", StringComparison.OrdinalIgnoreCase) == 0) {

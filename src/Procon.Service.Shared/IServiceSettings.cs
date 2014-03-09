@@ -35,6 +35,6 @@ namespace Procon.Service.Shared {
         /// Processes the command line arguments
         /// </summary>
         /// <param name="arguments">The arguments from the command line "-key value"</param>
-        void ParseArguments(Dictionary<String, String> arguments);
+        void ParseArguments(IDictionary<String, String> arguments);
     }
 }

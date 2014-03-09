@@ -15,7 +15,7 @@ namespace Procon.Service.Shared {
         /// <summary>
         /// A list of arguments for this message
         /// </summary>
-        public Dictionary<String, String> Arguments { get; set; }
+        public IDictionary<String, String> Arguments { get; set; }
 
         /// <summary>
         /// When this message was created.

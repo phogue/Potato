@@ -9,7 +9,7 @@ namespace Procon.Net.Shared {
         public String Hostname { get; set; }
         public ushort Port { get; set; }
         public String Password { get; set; }
-        public Dictionary<String, String> Arguments { get; set; }
+        public IDictionary<String, String> Arguments { get; set; }
 
         /// <summary>
         /// Initializes the setup with default values.

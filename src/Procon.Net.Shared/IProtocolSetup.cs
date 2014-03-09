@@ -24,7 +24,7 @@ namespace Procon.Net.Shared {
         /// <summary>
         /// A list of generic variables to us 
         /// </summary>
-        Dictionary<String, String> Arguments { get; }
+        IDictionary<String, String> Arguments { get; }
 
         /// <summary>
         /// Convert the variables dictionary to a simple string

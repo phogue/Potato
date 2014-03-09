@@ -5,7 +5,7 @@ using Procon.Service.Shared;
 
 namespace Procon.Config.Test.Models {
     [TestFixture]
-    public class CertificateModelTest {
+    public class TestCertificateModel {
         /// <summary>
         /// Tests a certificate will be generated and can be read by .NET
         /// </summary>

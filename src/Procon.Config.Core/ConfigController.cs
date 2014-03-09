@@ -23,7 +23,7 @@ namespace Procon.Config.Core {
         public static ServiceMessage CommandServerGenerateCertificate(Dictionary<String, String> arguments) {
             var model = new CertificateModel();
 
-            if (arguments.Count > 0) {
+            if (arguments != null && arguments.Count > 0) {
                 model.Password = arguments.First().Value;
             }
             else {
@@ -37,7 +37,8 @@ namespace Procon.Config.Core {
                 Arguments = new Dictionary<String, String>() {
                     { "Command", "CommandServerCreateCertificate" },
                     { "Success", model.Exists.ToString() },
-                    { "Message", String.Format("Created certificate with password: {0}", model.Password) }
+                    { "Message", String.Format("Created certificate with password: {0}", model.Password) },
+                    { "Password", model.Password }
                 }
             };
         }

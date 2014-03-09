@@ -38,7 +38,9 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\CertificateModelTest.cs" />
+    <Compile Include="TestConfigController\TestCommandServerGenerateCertificate.cs" />
+    <Compile Include="TestConfigController\TestDispatch.cs" />
+    <Compile Include="Models\TestCertificateModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

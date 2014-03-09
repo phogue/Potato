@@ -2,6 +2,7 @@
 using Procon.Service.Shared.Test.TestServiceController.Mocks;
 
 namespace Procon.Service.Shared.Test.TestServiceController {
+    [TestFixture]
     public class TestExecuteMessage {
         /// <summary>
         /// Tests the service controller obserable object is set to Started

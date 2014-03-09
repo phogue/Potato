@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 
 namespace Procon.Service.Shared {
     /// <summary>
@@ -15,10 +16,10 @@ namespace Procon.Service.Shared {
             IDictionary<String, String> arguments = new SortedDictionary<String, String>();
 
             for (int offset = 0; offset < input.Count; offset++) {
-                String key = input[offset];
-
                 // if the argument is a switch.
-                if (key.Length > 0 && key[0] == '-') {
+                if (input[offset].Length > 0 && input[offset][0] == '-') {
+                    String key = input[offset];
+
                     // Trims any hyphens from the start of the argument. Allows for "-argument" and "--argument"
                     key = key.TrimStart('-').ToLower();
 
@@ -32,6 +33,10 @@ namespace Procon.Service.Shared {
                         else {
                             arguments[key] = input[offset + 1];
                         }
+
+                        // Skip the next value, we've just assigned it to this key. There is no reason for
+                        // checking it as a argument
+                        offset++;
                     }
                     else {
                         // Set to "true"
@@ -42,6 +47,17 @@ namespace Procon.Service.Shared {
                             arguments[key] = "1";
                         }
                     }
+                }
+                // Else we've encounted a lone value with no key describing it.
+                else {
+                    // Find a simple numeric key that has not been previously assigned a value
+                    var generated = 0;
+
+                    while (arguments.ContainsKey(generated.ToString(CultureInfo.InvariantCulture)) == true) {
+                        generated++;
+                    }
+
+                    arguments[generated.ToString(CultureInfo.InvariantCulture)] = input[offset];
                 }
             }
 

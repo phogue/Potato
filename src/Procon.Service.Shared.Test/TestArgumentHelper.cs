@@ -124,6 +124,66 @@ namespace Procon.Service.Shared.Test {
         }
 
         /// <summary>
+        /// Tests passing through multiple values in a row will create sequential keys for each value
+        /// e.g -key "value" "value1" "value2" =
+        /// { -key, value }, { 1, value1 }, { 2, value2 }
+        /// </summary>
+        /// <remarks>
+        /// This is just a shorthand way of supplying arguments in an order, not named. We always treat the
+        /// arguments as named arguments though.
+        /// </remarks>
+        [Test]
+        public void TestToArgumentsMultipleValuesGeneratedKey() {
+            var arguments = ArgumentHelper.ToArguments(new List<String>() {
+                "-key1",
+                "value1",
+                "generated0",
+                "generated1"
+            });
+
+            Assert.IsNotEmpty(arguments);
+            Assert.AreEqual("value1", arguments["key1"]);
+            Assert.AreEqual("generated0", arguments["0"]);
+            Assert.AreEqual("generated1", arguments["1"]);
+        }
+
+        /// <summary>
+        /// Tests that a value requiring a generated key in the middle will 
+        /// </summary>
+        [Test]
+        public void TestToArgumentsMultipleValuesGeneratedKeySuffixedWithSetKey() {
+            var arguments = ArgumentHelper.ToArguments(new List<String>() {
+                "-key1",
+                "value1",
+                "generated0",
+                "-key2",
+                "value2"
+            });
+
+            Assert.IsNotEmpty(arguments);
+            Assert.AreEqual("value1", arguments["key1"]);
+            Assert.AreEqual("generated0", arguments["0"]);
+            Assert.AreEqual("value2", arguments["key2"]);
+        }
+
+        /// <summary>
+        /// Tests that a named key "0" will maintain it's value when a generated key
+        /// that would usually occupy "0" requires a key.
+        /// </summary>
+        [Test]
+        public void TestToArgumentsMultipleValuesGeneratedKeyPreviouslySet() {
+            var arguments = ArgumentHelper.ToArguments(new List<String>() {
+                "-0",
+                "value0",
+                "generated0"
+            });
+
+            Assert.IsNotEmpty(arguments);
+            Assert.AreEqual("value0", arguments["0"]);
+            Assert.AreEqual("generated0", arguments["1"]);
+        }
+
+        /// <summary>
         /// This test ensures that ordered input will result in ordered output with dictionary values.
         /// </summary>
         [Test]

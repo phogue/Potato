@@ -182,5 +182,28 @@ namespace Procon.Service.Shared.Test.TestServiceController {
 
             service.Dispose();
         }
+
+        /// <summary>
+        /// Tests the signal result callback is called
+        /// </summary>
+        [Test]
+        public void TestSignalResultCallback() {
+            var signaled = false;
+
+            var service = new ServiceController() {
+                Settings = {
+                    ServiceUpdateCore = false
+                },
+                SignalResult = (controller, message) => signaled = true
+            };
+
+            service.SignalMessage(new ServiceMessage() {
+                Name = "result"
+            });
+
+            Assert.IsTrue(signaled);
+
+            service.Dispose();
+        }
     }
 }

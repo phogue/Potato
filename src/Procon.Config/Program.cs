@@ -66,8 +66,6 @@ namespace Procon.Config {
             else {
                 Console.WriteLine(@"Missing command argument");
             }
-
-            Console.ReadKey();
         }
     }
 }

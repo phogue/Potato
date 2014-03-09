@@ -45,6 +45,66 @@ namespace Procon.Service.Shared.Test {
         }
 
         /// <summary>
+        /// Tests an empty value in the string list will result in an empty arguments dictionary
+        /// </summary>
+        [Test]
+        public void TestToArgumentsEmptySingleValueInList() {
+            var arguments = ArgumentHelper.ToArguments(new List<String>() {
+                ""
+            });
+
+            Assert.IsEmpty(arguments);
+        }
+
+        /// <summary>
+        /// Tests an empty lone value acting as a key will be ignored from the end the list
+        /// </summary>
+        [Test]
+        public void TestToArgumentsEmptyKeyAtEnd() {
+            var arguments = ArgumentHelper.ToArguments(new List<String>() {
+                "-key",
+                "value",
+                ""
+            });
+
+            Assert.AreEqual(1, arguments.Count);
+            Assert.AreEqual("value", arguments["key"]);
+        }
+
+        /// <summary>
+        /// Tests an empty value at the start of the string list will be ignored
+        /// </summary>
+        [Test]
+        public void TestToArgumentsEmptyKeyAtStart() {
+            var arguments = ArgumentHelper.ToArguments(new List<String>() {
+                "",
+                "-key",
+                "value"
+            });
+
+            Assert.AreEqual(1, arguments.Count);
+            Assert.AreEqual("value", arguments["key"]);
+        }
+
+        /// <summary>
+        /// Tests an empty lone value acting as a key between two defined key-value's will be ignored
+        /// </summary>
+        [Test]
+        public void TestToArgumentsEmptyKeySandwich() {
+            var arguments = ArgumentHelper.ToArguments(new List<String>() {
+                "-key1",
+                "value1",
+                "",
+                "-key2",
+                "value2",
+            });
+
+            Assert.AreEqual(2, arguments.Count);
+            Assert.AreEqual("value1", arguments["key1"]);
+            Assert.AreEqual("value2", arguments["key2"]);
+        }
+
+        /// <summary>
         /// Tests passing through a -key without a value will give it a value of "1"
         /// for flags implied as being "on"
         /// </summary>

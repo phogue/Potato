@@ -16,49 +16,53 @@ namespace Procon.Service.Shared {
             IDictionary<String, String> arguments = new SortedDictionary<String, String>();
 
             for (int offset = 0; offset < input.Count; offset++) {
-                // if the argument is a switch.
-                if (input[offset].Length > 0 && input[offset][0] == '-') {
-                    String key = input[offset];
+                // Ignore any keys or arguments that are empty.
+                if (input[offset].Length > 0) {
+                    // if the argument is a switch.
+                    if (input[offset][0] == '-') {
+                        String key = input[offset];
 
-                    // Trims any hyphens from the start of the argument. Allows for "-argument" and "--argument"
-                    key = key.TrimStart('-').ToLower();
+                        // Trims any hyphens from the start of the argument. Allows for "-argument" and "--argument"
+                        key = key.TrimStart('-').ToLower();
 
-                    // Does another argument exist?
-                    if (offset + 1 < input.Count && input[offset + 1][0] != '-') {
-                        // No, the next string is not an argument switch. It's the value of the
-                        // argument.
-                        if (arguments.ContainsKey(key) == false) {
-                            arguments.Add(key, input[offset + 1]);
+                        // Does another argument exist?
+                        if (offset + 1 < input.Count && input[offset + 1][0] != '-') {
+                            // No, the next string is not an argument switch. It's the value of the
+                            // argument.
+                            if (arguments.ContainsKey(key) == false) {
+                                arguments.Add(key, input[offset + 1]);
+                            }
+                            else {
+                                arguments[key] = input[offset + 1];
+                            }
+
+                            // Skip the next value, we've just assigned it to this key. There is no reason for
+                            // checking it as a argument
+                            offset++;
                         }
                         else {
-                            arguments[key] = input[offset + 1];
+                            // Set to "true"
+                            if (arguments.ContainsKey(key) == false) {
+                                arguments.Add(key, "1");
+                            }
+                            else {
+                                arguments[key] = "1";
+                            }
                         }
-
-                        // Skip the next value, we've just assigned it to this key. There is no reason for
-                        // checking it as a argument
-                        offset++;
                     }
+                    // Else we've encounted a lone value with no key describing it.
                     else {
-                        // Set to "true"
-                        if (arguments.ContainsKey(key) == false) {
-                            arguments.Add(key, "1");
+                        // Find a simple numeric key that has not been previously assigned a value
+                        var generated = 0;
+
+                        while (arguments.ContainsKey(generated.ToString(CultureInfo.InvariantCulture)) == true) {
+                            generated++;
                         }
-                        else {
-                            arguments[key] = "1";
-                        }
+
+                        arguments[generated.ToString(CultureInfo.InvariantCulture)] = input[offset];
                     }
                 }
-                // Else we've encounted a lone value with no key describing it.
-                else {
-                    // Find a simple numeric key that has not been previously assigned a value
-                    var generated = 0;
-
-                    while (arguments.ContainsKey(generated.ToString(CultureInfo.InvariantCulture)) == true) {
-                        generated++;
-                    }
-
-                    arguments[generated.ToString(CultureInfo.InvariantCulture)] = input[offset];
-                }
+                // else - empty key or empty lone value, ignore.
             }
 
             return arguments;

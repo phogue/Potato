@@ -1,5 +1,0 @@
-﻿<ResourceDictionary xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
-    <BitmapImage x:Key="ProconResourceFlagsUnknown" UriSource="Flags/_unknown.png" />
-    <BitmapImage x:Key="ProconResourceFlagsGb" UriSource="Flags/GB.png" />
-    <BitmapImage x:Key="ProconResourceFlagsDe" UriSource="Flags/DE.png" />
-</ResourceDictionary>

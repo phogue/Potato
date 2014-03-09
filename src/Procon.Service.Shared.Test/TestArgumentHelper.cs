@@ -122,5 +122,89 @@ namespace Procon.Service.Shared.Test {
             Assert.IsNotEmpty(arguments);
             Assert.AreEqual("value2", arguments["key"]);
         }
+
+        /// <summary>
+        /// This test ensures that ordered input will result in ordered output with dictionary values.
+        /// </summary>
+        [Test]
+        public void TestToArgumentsAlphaKeysValuesOrderingMaintained() {
+            var arguments = ArgumentHelper.ToArguments(new List<String>() {
+                "-a",
+                "A",
+                "-b",
+                "B",
+                "-c",
+                "C"
+            });
+
+            List<String> values = new List<String>(arguments.Values);
+
+            Assert.AreEqual("A", values[0]);
+            Assert.AreEqual("B", values[1]);
+            Assert.AreEqual("C", values[2]);
+        }
+
+        /// <summary>
+        /// Test ensures that unordered input will result in ordered output with dictionary values.
+        /// </summary>
+        [Test]
+        public void TestToArgumentsAlphaKeysValuesOrderingSorted() {
+            var arguments = ArgumentHelper.ToArguments(new List<String>() {
+                "-a",
+                "A",
+                "-c",
+                "C",
+                "-b",
+                "B"
+            });
+
+            List<String> values = new List<String>(arguments.Values);
+
+            Assert.AreEqual("A", values[0]);
+            Assert.AreEqual("B", values[1]);
+            Assert.AreEqual("C", values[2]);
+        }
+
+        /// <summary>
+        /// This test ensures that ordered input will result in ordered output with dictionary values.
+        /// </summary>
+        [Test]
+        public void TestToArgumentsNumericKeysValuesOrderingMaintained() {
+            var arguments = ArgumentHelper.ToArguments(new List<String>() {
+                "-1",
+                "A",
+                "-2",
+                "B",
+                "-3",
+                "C"
+            });
+
+            List<String> values = new List<String>(arguments.Values);
+
+            Assert.AreEqual("A", values[0]);
+            Assert.AreEqual("B", values[1]);
+            Assert.AreEqual("C", values[2]);
+        }
+
+        /// <summary>
+        /// Test ensures that unordered input will result in ordered output with dictionary values.
+        /// </summary>
+        [Test]
+        public void TestToArgumentsNumericKeysValuesOrderingSorted() {
+            var arguments = ArgumentHelper.ToArguments(new List<String>() {
+                "-1",
+                "A",
+                "-3",
+                "C",
+                "-2",
+                "B"
+            });
+
+            List<String> values = new List<String>(arguments.Values);
+
+            Assert.AreEqual("A", values[0]);
+            Assert.AreEqual("B", values[1]);
+            Assert.AreEqual("C", values[2]);
+        }
     }
 }

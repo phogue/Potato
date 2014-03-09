@@ -236,6 +236,8 @@ namespace Procon.Core {
             ICommandResult result = this.Tunnel(new Command() {
                 Name = message.Name,
                 Origin = CommandOrigin.Local,
+                // This is possible because of the SortedDictionary used in Procon.Service.Shared.ArgumentsHelper
+                // This method will always assume that Arguments.Values will result in the order of execution. 
                 Parameters = message.Arguments.Values.Select(value => new CommandParameter() {
                     Data = {
                         Content = new List<String>() {

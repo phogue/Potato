@@ -12,7 +12,7 @@ namespace Procon.Service.Shared {
         /// <param name="input"></param>
         /// <returns></returns>
         public static IDictionary<String, String> ToArguments(IList<String> input) {
-            IDictionary<String, String> arguments = new Dictionary<String, String>();
+            IDictionary<String, String> arguments = new SortedDictionary<String, String>();
 
             for (int offset = 0; offset < input.Count; offset++) {
                 String key = input[offset];

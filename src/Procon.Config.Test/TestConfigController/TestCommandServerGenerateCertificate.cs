@@ -50,7 +50,7 @@ namespace Procon.Config.Test.TestConfigController {
         public void TestSuppliedPassword() {
             const string password = "TestSuppliedPassword";
 
-            var result = ConfigController.Dispatch("CommandServerGenerateCertificate", new Dictionary<String, String>() {
+            ConfigController.Dispatch("CommandServerGenerateCertificate", new Dictionary<String, String>() {
                 { "password", password }
             });
 

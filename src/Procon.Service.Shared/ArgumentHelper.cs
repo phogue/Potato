@@ -20,26 +20,26 @@ namespace Procon.Service.Shared {
                 // if the argument is a switch.
                 if (key.Length > 0 && key[0] == '-') {
                     // Trims any hyphens from the start of the argument. Allows for "-argument" and "--argument"
-                    key = key.TrimStart('-');
+                    key = key.TrimStart('-').ToLower();
 
                     // Does another argument exist?
                     if (offset + 1 < input.Count && input[offset + 1][0] != '-') {
                         // No, the next string is not an argument switch. It's the value of the
                         // argument.
                         if (arguments.ContainsKey(key) == false) {
-                            arguments.Add(key.ToLower(), input[offset + 1]);
+                            arguments.Add(key, input[offset + 1]);
                         }
                         else {
-                            arguments[key.ToLower()] = input[offset + 1];
+                            arguments[key] = input[offset + 1];
                         }
                     }
                     else {
                         // Set to "true"
                         if (arguments.ContainsKey(key) == false) {
-                            arguments.Add(key.ToLower(), "1");
+                            arguments.Add(key, "1");
                         }
                         else {
-                            arguments[key.ToLower()] = "1";
+                            arguments[key] = "1";
                         }
                     }
                 }

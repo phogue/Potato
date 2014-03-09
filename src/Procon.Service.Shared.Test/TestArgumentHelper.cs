@@ -104,5 +104,23 @@ namespace Procon.Service.Shared.Test {
             Assert.IsNotEmpty(arguments);
             Assert.AreEqual("value2", arguments["key"]);
         }
+
+        /// <summary>
+        /// Tests passing through a -key with a value will set that key to value, updating
+        /// existing values if they already exist in the arguments even if both keys
+        /// were passed through with different case
+        /// </summary>
+        [Test]
+        public void TestToArgumentsExplicitValueUpdateCaseInsensitive() {
+            var arguments = ArgumentHelper.ToArguments(new List<String>() {
+                "-key",
+                "value1",
+                "-Key",
+                "value2"
+            });
+
+            Assert.IsNotEmpty(arguments);
+            Assert.AreEqual("value2", arguments["key"]);
+        }
     }
 }

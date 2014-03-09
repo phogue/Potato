@@ -216,7 +216,7 @@ namespace Procon.Core {
             if (this.ServiceMessage != null) {
                 message = this.ServiceMessage;
 
-                // clear it for the net poll.
+                // clear it for the next poll.
                 this.ServiceMessage = null;
             }
             else {
@@ -226,6 +226,35 @@ namespace Procon.Core {
             }
             
             return message;
+        }
+
+        /// <summary>
+        /// Executes very simple commands originating from the service controller from a local origin.
+        /// </summary>
+        public ServiceMessage ExecuteMessage(ServiceMessage message) {
+            // A request from the service controller to run a command locally.
+            ICommandResult result = this.Tunnel(new Command() {
+                Name = message.Name,
+                Origin = CommandOrigin.Local,
+                Parameters = message.Arguments.Values.Select(value => new CommandParameter() {
+                    Data = {
+                        Content = new List<String>() {
+                            value
+                        }
+                    }
+                }).Cast<ICommandParameter>().ToList()
+            });
+
+            // Format and return the service message.
+            return new ServiceMessage() {
+                Name = "result",
+                Arguments = new Dictionary<string, string>() {
+                    { "Command", message.Name },
+                    { "Success", result.Success.ToString() },
+                    { "Status", result.Status.ToString() },
+                    { "Message", result.Message }
+                }
+            };
         }
 
         /// <summary>

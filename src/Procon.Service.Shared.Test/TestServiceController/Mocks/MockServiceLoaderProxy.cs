@@ -7,6 +7,8 @@ namespace Procon.Service.Shared.Test.TestServiceController.Mocks {
 
         public ServiceMessage WaitingMessage { get; set; }
 
+        public ServiceMessage ExecuteResultMessage { get; set; }
+
         public Action OnDisposeHandler { get; set; }
 
         public bool OnStart { get; set; }
@@ -14,6 +16,7 @@ namespace Procon.Service.Shared.Test.TestServiceController.Mocks {
         public bool OnDispose { get; set; }
         public List<String> OnParseCommandLineArguments { get; set; }
         public bool OnPollService { get; set; }
+        public bool OnExecuteMessage { get; set; }
         public bool OnCreate { get; set; }
 
         public void Start() {
@@ -37,6 +40,11 @@ namespace Procon.Service.Shared.Test.TestServiceController.Mocks {
         public ServiceMessage PollService() {
             this.OnPollService = true;
             return this.WaitingMessage;
+        }
+
+        public ServiceMessage ExecuteMessage(ServiceMessage message) {
+            this.OnExecuteMessage = true;
+            return this.ExecuteResultMessage;
         }
 
         public void Create() {

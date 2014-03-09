@@ -10,6 +10,7 @@ namespace Procon.Service.Shared.Test.TestServiceController.Mocks {
         public int DisposeSleep = 0;
         public int ParseCommandLineArgumentsSleep = 0;
         public int PollServiceSleep = 0;
+        public int ExecuteMessageSleep = 0;
         public int CreateSleep = 0;
 
         public void Start() {
@@ -39,6 +40,14 @@ namespace Procon.Service.Shared.Test.TestServiceController.Mocks {
         public ServiceMessage PollService() {
             if (this.PollServiceSleep > 0) {
                 Thread.Sleep(PollServiceSleep);
+            }
+
+            return new ServiceMessage();
+        }
+
+        public ServiceMessage ExecuteMessage(ServiceMessage message) {
+            if (this.PollServiceSleep > 0) {
+                Thread.Sleep(ExecuteMessageSleep);
             }
 
             return new ServiceMessage();

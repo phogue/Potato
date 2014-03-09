@@ -74,6 +74,11 @@ namespace Procon.Service.Shared {
         /// Called when a help signal comes through.
         /// </summary>
         public Action<ServiceController> SignalHelp { get; set; }
+        
+        /// <summary>
+        /// Called when a result signal is processed.
+        /// </summary>
+        public Action<ServiceController, ServiceMessage> SignalResult { get; set; }
 
         /// <summary>
         /// Called before requesting the service domain write it's config.
@@ -183,6 +188,18 @@ namespace Procon.Service.Shared {
 
             if (handler != null) {
                 handler(this);
+            }
+        }
+
+        /// <summary>
+        /// Called when a result signal is processed
+        /// </summary>
+        /// <param name="message">The service message containing further details about the result</param>
+        private void OnResult(ServiceMessage message) {
+            var handler = this.SignalResult;
+
+            if (handler != null) {
+                handler(this, message);
             }
         }
 
@@ -355,6 +372,9 @@ namespace Procon.Service.Shared {
                     else if (String.Compare(message.Name, "help", StringComparison.OrdinalIgnoreCase) == 0) {
                         this.OnHelp();
                     }
+                    else if (String.Compare(message.Name, "result", StringComparison.OrdinalIgnoreCase) == 0) {
+                        this.OnResult(message);
+                    }
                     else {
                         processed = false;
                     }
@@ -457,6 +477,19 @@ namespace Procon.Service.Shared {
             }
 
             this.Start();
+        }
+
+        /// <summary>
+        /// Runs a command on the instance, returning a signal message. The signal message is
+        /// processed the same as if it was found while polling the instance.
+        /// </summary>
+        /// <param name="message">The message to send to the instance.</param>
+        public void ExecuteMessage(ServiceMessage message) {
+            this.Start();
+
+            if (this.Observer.Status == ServiceStatusType.Started) {
+                this.SignalMessage(this.ServiceLoaderProxy.ExecuteMessage(message));
+            }
         }
 
         /// <summary>

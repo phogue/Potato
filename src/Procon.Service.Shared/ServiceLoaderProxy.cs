@@ -69,5 +69,22 @@ namespace Procon.Service.Shared {
 
             return message;
         }
+
+        public ServiceMessage ExecuteMessage(ServiceMessage message) {
+            ServiceMessage result = null;
+
+            if (this.Service != null) {
+                var polled = this.Service.ExecuteMessage(message);
+
+                // Clone the message so we have no proxy to the other side.
+                result = new ServiceMessage() {
+                    Name = polled.Name,
+                    Arguments = polled.Arguments,
+                    Stamp = polled.Stamp
+                };
+            }
+
+            return result;
+        }
     }
 }

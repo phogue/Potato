@@ -28,6 +28,10 @@ namespace Procon.Service.Shared.Test.TestServiceController.Mocks {
             throw new NotImplementedException();
         }
 
+        public ServiceMessage ExecuteMessage(ServiceMessage message) {
+            throw new NotImplementedException();
+        }
+
         public void Create() {
             throw new NotImplementedException();
         }

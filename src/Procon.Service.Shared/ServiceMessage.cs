@@ -7,7 +7,6 @@ namespace Procon.Service.Shared {
     /// </summary>
     [Serializable]
     public sealed class ServiceMessage : IDisposable {
-        
         /// <summary>
         /// A simple name for this message.
         /// </summary>

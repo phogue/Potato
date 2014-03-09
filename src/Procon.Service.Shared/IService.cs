@@ -31,5 +31,13 @@ namespace Procon.Service.Shared {
         /// Polls the service for a running status or other message.
         /// </summary>
         ServiceMessage PollService();
+
+        /// <summary>
+        /// Requests the service execute a message, returning the result as a message.
+        /// </summary>
+        /// <remarks>This will only ever handle very simple requests that require strings/integers for arguments</remarks>
+        /// <param name="message">The message to execute</param>
+        /// <returns>The result of the message</returns>
+        ServiceMessage ExecuteMessage(ServiceMessage message);
     }
 }

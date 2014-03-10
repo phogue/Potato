@@ -6,6 +6,7 @@ using System.Linq;
 using NUnit.Framework;
 using Procon.Core.Security;
 using Procon.Core.Shared;
+using Procon.Core.Shared.Models;
 
 #endregion
 
@@ -477,6 +478,41 @@ namespace Procon.Core.Test.Security {
             // Make sure it was successful.
             Assert.IsTrue(result.Success);
             Assert.AreEqual(security.Groups.Count, 1);
+        }
+
+        /// <summary>
+        /// Tests that a group can be removed if executed locally
+        /// </summary>
+        [Test]
+        public void TestRemoveGroupByLocalSuccess() {
+            var security = new SecurityController();
+            security.Tunnel(CommandBuilder.SecurityAddGroup("GroupName").SetOrigin(CommandOrigin.Local));
+            security.Tunnel(CommandBuilder.SecurityGroupAddAccount("GroupName", "Phogue").SetOrigin(CommandOrigin.Local));
+
+            ICommandResult result = security.Tunnel(CommandBuilder.SecurityRemoveGroup("GroupName").SetOrigin(CommandOrigin.Local));
+
+            // Make sure it was successful.
+            Assert.IsTrue(result.Success);
+            Assert.AreEqual(CommandResultType.Success, result.Status);
+        }
+
+        /// <summary>
+        /// Tests that a user cannot remove their own group
+        /// </summary>
+        [Test]
+        public void TestRemoveOwnGroupFailure() {
+            var security = new SecurityController();
+            security.Tunnel(CommandBuilder.SecurityAddGroup("GroupName").SetOrigin(CommandOrigin.Local));
+            security.Tunnel(CommandBuilder.SecurityGroupAddAccount("GroupName", "Phogue").SetOrigin(CommandOrigin.Local));
+            security.Tunnel(CommandBuilder.SecurityGroupSetPermission("GroupName", CommandType.SecurityRemoveGroup, 1).SetOrigin(CommandOrigin.Local));
+
+            ICommandResult result = security.Tunnel(CommandBuilder.SecurityRemoveGroup("GroupName").SetOrigin(CommandOrigin.Remote).SetAuthentication(new CommandAuthenticationModel() {
+                Username = "Phogue"
+            }));
+
+            // Make sure it was successful.
+            Assert.IsFalse(result.Success);
+            Assert.AreEqual(CommandResultType.InvalidParameter, result.Status);
         }
 
         /// <summary>

@@ -451,6 +451,26 @@ namespace Procon.Core.Shared {
         }
 
         /// <summary>
+        /// Builds a command to send a SecurityRemoveGroup
+        /// </summary>
+        /// <param name="groupName">The name of the group to remove</param>
+        /// <returns>The built command to dispatch</returns>
+        public static ICommand SecurityRemoveGroup(String groupName) {
+            return new Command() {
+                CommandType = CommandType.SecurityRemoveGroup,
+                Parameters = new List<ICommandParameter>() {
+                    new CommandParameter() {
+                        Data = {
+                            Content = new List<String>() {
+                                groupName
+                            }
+                        }
+                    }
+                }
+            };
+        }
+
+        /// <summary>
         /// Builds a command to send a SecurityGroupAddAccount
         /// </summary>
         /// <param name="groupName">The name of the group to add an account to</param>

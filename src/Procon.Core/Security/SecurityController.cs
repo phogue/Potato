@@ -486,43 +486,52 @@ namespace Procon.Core.Security {
 
             if (this.DispatchPermissionsCheck(command, command.Name).Success == true) {
                 if (groupName.Length > 0) {
-                    GroupModel group = this.Groups.FirstOrDefault(g => g.Name == groupName);
+                    if (this.DispatchGroupCheck(command, groupName).Success == false) {
+                        GroupModel group = this.Groups.FirstOrDefault(g => g.Name == groupName);
 
-                    if (group != null) {
-                        if (group.IsGuest == false) {
-                            Groups.Remove(group);
+                        if (group != null) {
+                            if (group.IsGuest == false) {
+                                Groups.Remove(group);
 
-                            result = new CommandResult() {
-                                Success = true,
-                                Status = CommandResultType.Success,
-                                Message = String.Format(@"Group ""{0}"" successfully removed.", groupName),
-                                Then = new CommandData() {
-                                    Groups = new List<GroupModel>() {
+                                result = new CommandResult() {
+                                    Success = true,
+                                    Status = CommandResultType.Success,
+                                    Message = String.Format(@"Group ""{0}"" successfully removed.", groupName),
+                                    Then = new CommandData() {
+                                        Groups = new List<GroupModel>() {
                                         group.Clone() as GroupModel
                                     }
+                                    }
+                                };
+
+                                if (this.Shared.Events != null) {
+                                    this.Shared.Events.Log(GenericEvent.ConvertToGenericEvent(result, GenericEventType.SecurityGroupRemoved));
                                 }
-                            };
 
-                            if (this.Shared.Events != null) {
-                                this.Shared.Events.Log(GenericEvent.ConvertToGenericEvent(result, GenericEventType.SecurityGroupRemoved));
+                                // Now cleanup our stored account
+                                group.Dispose();
                             }
-
-                            // Now cleanup our stored account
-                            group.Dispose();
+                            else {
+                                result = new CommandResult() {
+                                    Success = false,
+                                    Status = CommandResultType.InvalidParameter,
+                                    Message = "Cannot delete the guest group"
+                                };
+                            }
                         }
                         else {
                             result = new CommandResult() {
                                 Success = false,
-                                Status = CommandResultType.InvalidParameter,
-                                Message = "Cannot delete the guest group"
+                                Status = CommandResultType.DoesNotExists,
+                                Message = String.Format(@"Group ""{0}"" does not exist.", groupName)
                             };
                         }
                     }
                     else {
                         result = new CommandResult() {
                             Success = false,
-                            Status = CommandResultType.DoesNotExists,
-                            Message = String.Format(@"Group ""{0}"" does not exist.", groupName)
+                            Status = CommandResultType.InvalidParameter,
+                            Message = "Cannot delete the your own group"
                         };
                     }
                 }

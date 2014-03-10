@@ -1,5 +1,6 @@
 ﻿using System;
 using NUnit.Framework;
+using Procon.Core.Shared.Models;
 
 namespace Procon.Core.Shared.Test.ExecutableCommands {
     [TestFixture]
@@ -66,6 +67,32 @@ namespace Procon.Core.Shared.Test.ExecutableCommands {
 
             Assert.IsNotNull(command.ScopeModel);
             Assert.AreEqual(command.ScopeModel.PluginGuid, guid);
+        }
+
+        /// <summary>
+        /// Tests the authentication will be nulled out when supplied with details
+        /// </summary>
+        [Test]
+        public void TestAuthenticationNulled() {
+            ICommand command = new Command() {
+                Authentication = new CommandAuthenticationModel() {
+                    Uid = "Never seen"
+                }
+            }.ToConfigCommand();
+
+            Assert.IsNull(command.Authentication);
+        }
+
+        /// <summary>
+        /// Tests the authentication will be nulled of the resulting config command when nulled to begin with
+        /// </summary>
+        [Test]
+        public void TestAuthenticationNulledWhenNulled() {
+            ICommand command = new Command() {
+                Authentication = null
+            }.ToConfigCommand();
+
+            Assert.IsNull(command.Authentication);
         }
     }
 }

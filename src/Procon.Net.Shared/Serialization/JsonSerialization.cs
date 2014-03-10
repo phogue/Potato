@@ -38,6 +38,7 @@ namespace Procon.Net.Shared.Serialization {
             JsonSerialization.Minimal = new JsonSerializer() {
                 NullValueHandling = NullValueHandling.Ignore,
                 ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+                DefaultValueHandling = DefaultValueHandling.Ignore,
                 Formatting = Formatting.None,
                 DateTimeZoneHandling = DateTimeZoneHandling.Local
             };
@@ -45,6 +46,7 @@ namespace Procon.Net.Shared.Serialization {
             JsonSerialization.Readable = new JsonSerializer() {
                 NullValueHandling = NullValueHandling.Ignore,
                 ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+                DefaultValueHandling = DefaultValueHandling.Ignore,
                 Formatting = Formatting.Indented,
                 DateTimeZoneHandling = DateTimeZoneHandling.Local
             };

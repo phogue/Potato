@@ -13,6 +13,15 @@ namespace Procon.Net.Shared.Serialization {
         }
 
         /// <summary>
+        /// Use default serialization
+        /// </summary>
+        public override bool CanWrite {
+            get {
+                return false;
+            }
+        }
+
+        /// <summary>
         /// Converts type I to type C
         /// </summary>
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer) {
@@ -23,11 +32,8 @@ namespace Procon.Net.Shared.Serialization {
             return value;
         }
 
-        /// <summary>
-        /// Default write serialization (I think)
-        /// </summary>
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer) {
-            JToken.FromObject(value).WriteTo(writer);
+            throw new NotImplementedException();
         }
     }
 }

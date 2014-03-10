@@ -86,6 +86,9 @@ namespace Procon.Core.Shared {
                 command.ScopeModel = null;
             }
 
+            // Commands loaded from the config will always run as local commands.
+            command.Authentication = null;
+
             return command;
         }
 

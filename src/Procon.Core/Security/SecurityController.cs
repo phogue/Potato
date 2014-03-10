@@ -551,38 +551,48 @@ namespace Procon.Core.Security {
 
             if (this.DispatchPermissionsCheck(command, command.Name).Success == true) {
                 if (username.Length > 0) {
-                    // Fetch the account, whatever group it is added to.
-                    AccountModel account = this.Groups.SelectMany(group => @group.Accounts).FirstOrDefault(a => a.Username == username);
 
-                    if (account != null) {
-                        account.Group.Accounts.Remove(account);
+                    if (this.DispatchIdentityCheck(command, username).Success == false) {
+                        // Fetch the account, whatever group it is added to.
+                        AccountModel account = this.Groups.SelectMany(group => @group.Accounts).FirstOrDefault(a => a.Username == username);
 
-                        result = new CommandResult() {
-                            Success = true,
-                            Status = CommandResultType.Success,
-                            Message = String.Format(@"Account ""{0}"" successfully removed.", account.Username),
-                            Then = new CommandData() {
-                                Accounts = new List<AccountModel>() {
-                                    account.Clone() as AccountModel
-                                },
-                                Groups = new List<GroupModel>() {
-                                    account.Group
+                        if (account != null) {
+                            account.Group.Accounts.Remove(account);
+
+                            result = new CommandResult() {
+                                Success = true,
+                                Status = CommandResultType.Success,
+                                Message = String.Format(@"Account ""{0}"" successfully removed.", account.Username),
+                                Then = new CommandData() {
+                                    Accounts = new List<AccountModel>() {
+                                        account.Clone() as AccountModel
+                                    },
+                                    Groups = new List<GroupModel>() {
+                                        account.Group
+                                    }
                                 }
+                            };
+
+                            if (this.Shared.Events != null) {
+                                this.Shared.Events.Log(GenericEvent.ConvertToGenericEvent(result, GenericEventType.SecurityAccountRemoved));
                             }
-                        };
 
-                        if (this.Shared.Events != null) {
-                            this.Shared.Events.Log(GenericEvent.ConvertToGenericEvent(result, GenericEventType.SecurityAccountRemoved));
+                            // Now cleanup our stored account
+                            account.Dispose();
                         }
-
-                        // Now cleanup our stored account
-                        account.Dispose();
+                        else {
+                            result = new CommandResult() {
+                                Success = false,
+                                Status = CommandResultType.DoesNotExists,
+                                Message = String.Format(@"Account ""{0}"" does not exist.", username)
+                            };
+                        }
                     }
                     else {
                         result = new CommandResult() {
                             Success = false,
-                            Status = CommandResultType.DoesNotExists,
-                            Message = String.Format(@"Account ""{0}"" does not exist.", username)
+                            Status = CommandResultType.InvalidParameter,
+                            Message = "Cannot remove your own account"
                         };
                     }
                 }

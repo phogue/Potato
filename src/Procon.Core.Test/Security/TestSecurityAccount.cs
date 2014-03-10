@@ -6,6 +6,7 @@ using System.Linq;
 using NUnit.Framework;
 using Procon.Core.Security;
 using Procon.Core.Shared;
+using Procon.Core.Shared.Models;
 using Procon.Net.Shared.Utils;
 
 #endregion
@@ -999,7 +1000,7 @@ namespace Procon.Core.Test.Security {
         }
 
         /// <summary>
-        ///     Testing that a group can be removed by its name.
+        ///     Testing that an account can be removed by its name.
         /// </summary>
         [Test]
         public void TestSecurityRemoveAccountModel() {
@@ -1034,6 +1035,26 @@ namespace Procon.Core.Test.Security {
             // Make sure it was successful.
             Assert.IsTrue(result.Success);
             Assert.AreEqual(0, security.Groups.Last().Accounts.Count);
+        }
+
+
+        /// <summary>
+        /// Tests that an account will not be removed if the owner is attempting to remove it.
+        /// </summary>
+        [Test]
+        public void TestRemoveOwnAccountFailure() {
+            var security = new SecurityController();
+            security.Tunnel(CommandBuilder.SecurityAddGroup("GroupName").SetOrigin(CommandOrigin.Local));
+            security.Tunnel(CommandBuilder.SecurityGroupAddAccount("GroupName", "Phogue").SetOrigin(CommandOrigin.Local));
+            security.Tunnel(CommandBuilder.SecurityGroupSetPermission("GroupName", CommandType.SecurityRemoveAccount, 1).SetOrigin(CommandOrigin.Local));
+
+            ICommandResult result = security.Tunnel(CommandBuilder.SecurityRemoveAccount("Phogue").SetOrigin(CommandOrigin.Remote).SetAuthentication(new CommandAuthenticationModel() {
+                Username = "Phogue"
+            }));
+
+            // Make sure the command failed. The user cannot remove their own account.
+            Assert.IsFalse(result.Success);
+            Assert.AreEqual(result.Status, CommandResultType.InvalidParameter);
         }
 
         /// <summary>

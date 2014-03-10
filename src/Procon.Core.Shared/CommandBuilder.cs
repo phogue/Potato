@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using Procon.Core.Shared.Events;
 using Procon.Core.Shared.Models;
 using Procon.Database.Shared;
@@ -432,6 +433,7 @@ namespace Procon.Core.Shared {
         /// <summary>
         /// Builds a command to send a SecurityAddGroup
         /// </summary>
+        /// <param name="groupName">The name of the group create+add</param>
         /// <returns>The built command to dispatch</returns>
         public static ICommand SecurityAddGroup(String groupName) {
             return new Command() {
@@ -449,8 +451,104 @@ namespace Procon.Core.Shared {
         }
 
         /// <summary>
+        /// Builds a command to send a SecurityGroupAddAccount
+        /// </summary>
+        /// <param name="groupName">The name of the group to add an account to</param>
+        /// <param name="accountName">The name of the account to create+add</param>
+        /// <returns>The built command to dispatch</returns>
+        public static ICommand SecurityGroupAddAccount(String groupName, String accountName) {
+            return new Command() {
+                CommandType = CommandType.SecurityGroupAddAccount,
+                Parameters = new List<ICommandParameter>() {
+                    new CommandParameter() {
+                        Data = {
+                            Content = new List<String>() {
+                                groupName
+                            }
+                        }
+                    },
+                    new CommandParameter() {
+                        Data = {
+                            Content = new List<String>() {
+                                accountName
+                            }
+                        }
+                    }
+                }
+            };
+        }
+
+        /// <summary>
+        /// Builds a command to send a SecurityRemoveAccount
+        /// </summary>
+        /// <param name="accountName">The name of the account to remove</param>
+        /// <returns>The built command to dispatch</returns>
+        public static ICommand SecurityRemoveAccount(String accountName) {
+            return new Command() {
+                CommandType = CommandType.SecurityRemoveAccount,
+                Parameters = new List<ICommandParameter>() {
+                    new CommandParameter() {
+                        Data = {
+                            Content = new List<String>() {
+                                accountName
+                            }
+                        }
+                    }
+                }
+            };
+        }
+        
+        /// <summary>
+        /// Builds a command to send a SecurityGroupSetPermission
+        /// </summary>
+        /// <param name="groupName">The name of the group to modify the permission of</param>
+        /// <param name="permissionName">The name of the permission to set the authority of</param>
+        /// <param name="authority">The level of authority to set for this permission</param>
+        /// <returns>The built command to dispatch</returns>
+        public static ICommand SecurityGroupSetPermission(String groupName, String permissionName, int authority) {
+            return new Command() {
+                CommandType = CommandType.SecurityGroupSetPermission,
+                Parameters = new List<ICommandParameter>() {
+                    new CommandParameter() {
+                        Data = {
+                            Content = new List<String>() {
+                                groupName
+                            }
+                        }
+                    },
+                    new CommandParameter() {
+                        Data = {
+                            Content = new List<String>() {
+                                permissionName
+                            }
+                        }
+                    },
+                    new CommandParameter() {
+                        Data = {
+                            Content = new List<String>() {
+                                authority.ToString(CultureInfo.InvariantCulture)
+                            }
+                        }
+                    }
+                }
+            };
+        }
+
+        /// <summary>
+        /// Alias of SecurityGroupSetPermission(String, String, int)
+        /// </summary>
+        /// <param name="groupName">The name of the group to modify the permission of</param>
+        /// <param name="permissionName">The name of the permission to set the authority of</param>
+        /// <param name="authority">The level of authority to set for this permission</param>
+        /// <returns>The built command to dispatch</returns>
+        public static ICommand SecurityGroupSetPermission(String groupName, CommandType permissionName, int authority) {
+            return CommandBuilder.SecurityGroupSetPermission(groupName, permissionName.ToString(), authority);
+        }
+
+        /// <summary>
         /// Builds a command to send a SecuritySetPredefinedStreamPermissions
         /// </summary>
+        /// <param name="groupName">The name of the group to modify the permissions of</param>
         /// <returns>The built command to dispatch</returns>
         public static ICommand SecuritySetPredefinedStreamPermissions(String groupName) {
             return new Command() {
@@ -470,6 +568,7 @@ namespace Procon.Core.Shared {
         /// <summary>
         /// Builds a command to send a SecuritySetPredefinedAdministratorsPermissions
         /// </summary>
+        /// <param name="groupName">The name of the group to modify the permissions of</param>
         /// <returns>The built command to dispatch</returns>
         public static ICommand SecuritySetPredefinedAdministratorsPermissions(String groupName) {
             return new Command() {

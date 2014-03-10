@@ -106,7 +106,8 @@ namespace Procon.Core.Test.Packages {
                 new DataServicePackage() {
                     Id = "A",
                     Version = "1.0.0",
-                    Tags = "Procon Tag2"
+                    Tags = "Procon Tag2",
+                    IsLatestVersion = true
                 }
             }));
 
@@ -142,7 +143,8 @@ namespace Procon.Core.Test.Packages {
                 new DataServicePackage() {
                     Id = "A",
                     Version = "2.0.0",
-                    Tags = "Procon Tag2"
+                    Tags = "Procon Tag2",
+                    IsLatestVersion = true
                 }
             }));
 

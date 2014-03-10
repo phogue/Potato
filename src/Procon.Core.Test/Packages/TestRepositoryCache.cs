@@ -85,7 +85,8 @@ namespace Procon.Core.Test.Packages {
                 new DataServicePackage() {
                     Id = "A",
                     Version = "1.0.0",
-                    Tags = "Procon Tag2"
+                    Tags = "Procon Tag2",
+                    IsLatestVersion = true
                 }
             }));
 
@@ -111,7 +112,8 @@ namespace Procon.Core.Test.Packages {
                 new DataServicePackage() {
                     Id = "A",
                     Version = "1.0.0",
-                    Tags = "Procon Tag2"
+                    Tags = "Procon Tag2",
+                    IsLatestVersion = true
                 }
             }));
 
@@ -136,7 +138,8 @@ namespace Procon.Core.Test.Packages {
                 new DataServicePackage() {
                     Id = "A",
                     Version = "1.0.0",
-                    Tags = "Procon Tag2"
+                    Tags = "Procon Tag2",
+                    IsLatestVersion = true
                 }
             }));
 
@@ -161,17 +164,20 @@ namespace Procon.Core.Test.Packages {
                 new DataServicePackage() {
                     Id = "A",
                     Version = "1.0.0",
-                    Tags = "Tag1 Tag2"
+                    Tags = "Tag1 Tag2",
+                    IsLatestVersion = true
                 },
                 new DataServicePackage() {
                     Id = "B",
                     Version = "1.0.0",
-                    Tags = "Procon Tag2"
+                    Tags = "Procon Tag2",
+                    IsLatestVersion = true
                 },
                 new DataServicePackage() {
                     Id = "C",
                     Version = "1.0.0",
-                    Tags = "Tag1 Tag2"
+                    Tags = "Tag1 Tag2",
+                    IsLatestVersion = true
                 }
             }));
 
@@ -202,7 +208,8 @@ namespace Procon.Core.Test.Packages {
                 new DataServicePackage() {
                     Id = "A",
                     Version = "1.0.0",
-                    Tags = "Procon Tag2"
+                    Tags = "Procon Tag2",
+                    IsLatestVersion = true
                 }
             }));
 
@@ -234,7 +241,8 @@ namespace Procon.Core.Test.Packages {
                 new DataServicePackage() {
                     Id = "A",
                     Version = "2.0.0",
-                    Tags = "Procon Tag2"
+                    Tags = "Procon Tag2",
+                    IsLatestVersion = true
                 }
             }));
 

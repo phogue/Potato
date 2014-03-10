@@ -94,10 +94,9 @@ namespace Procon.Core.Packages {
                                 Repository = repository,
                                 Packages = this.GetCachedSourceRepository(repository.Uri)
                                     .GetPackages()
-                                    .Where(package => package.Tags != null && package.Tags.Contains(Defines.PackageRequiredTag))
+                                    .Where(package => package.Tags != null && package.Tags.Contains(Defines.PackageRequiredTag) && package.IsLatestVersion == true)
                                     .ToList()
                                     .OrderByDescending(pack => pack.Version)
-                                    .Distinct(PackageEqualityComparer.Id)
                                     .ToList()
                             }.Build();
 

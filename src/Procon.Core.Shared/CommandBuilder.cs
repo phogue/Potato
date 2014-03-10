@@ -197,6 +197,62 @@ namespace Procon.Core.Shared {
         }
 
         /// <summary>
+        /// Builds a command to send a SecurityAccountSetPassword
+        /// </summary>
+        /// <param name="username">The username to attach to the command and parameter</param>
+        /// <param name="passwordPlainText">The plain text password to add as a parameter</param>
+        /// <returns>The build command to dispatch</returns>
+        public static ICommand SecurityAccountSetPassword(String username, String passwordPlainText) {
+            return new Command() {
+                CommandType = CommandType.SecurityAccountSetPassword,
+                Parameters = new List<ICommandParameter>() {
+                    new CommandParameter() {
+                        Data = {
+                            Content = new List<String>() {
+                                username
+                            }
+                        }
+                    },
+                    new CommandParameter() {
+                        Data = {
+                            Content = new List<String>() {
+                                passwordPlainText
+                            }
+                        }
+                    }
+                }
+            };
+        }
+
+        /// <summary>
+        /// Builds a command to send a SecurityAccountSetPasswordHash
+        /// </summary>
+        /// <param name="username">The username to attach to the command and parameter</param>
+        /// <param name="hashedPassword">The hashed password</param>
+        /// <returns>The build command to dispatch</returns>
+        public static ICommand SecurityAccountSetPasswordHash(String username, String hashedPassword) {
+            return new Command() {
+                CommandType = CommandType.SecurityAccountSetPasswordHash,
+                Parameters = new List<ICommandParameter>() {
+                    new CommandParameter() {
+                        Data = {
+                            Content = new List<String>() {
+                                username
+                            }
+                        }
+                    },
+                    new CommandParameter() {
+                        Data = {
+                            Content = new List<String>() {
+                                hashedPassword
+                            }
+                        }
+                    }
+                }
+            };
+        }
+
+        /// <summary>
         /// Builds a command to send a VariablesSet
         /// </summary>
         /// <param name="name">The name of the variable to set</param>
@@ -547,6 +603,34 @@ namespace Procon.Core.Shared {
                         Data = {
                             Content = new List<String>() {
                                 playerUid
+                            }
+                        }
+                    }
+                }
+            };
+        }
+
+        /// <summary>
+        /// Builds a command to send a SecurityAccountSetPreferredLanguageCode
+        /// </summary>
+        /// <param name="accountName">The name of the account to remove</param>
+        /// <param name="languageCode">The language code to set for this user</param>
+        /// <returns>The built command to dispatch</returns>
+        public static ICommand SecurityAccountSetPreferredLanguageCode(String accountName, String languageCode) {
+            return new Command() {
+                CommandType = CommandType.SecurityAccountSetPreferredLanguageCode,
+                Parameters = new List<ICommandParameter>() {
+                    new CommandParameter() {
+                        Data = {
+                            Content = new List<String>() {
+                                accountName
+                            }
+                        }
+                    },
+                    new CommandParameter() {
+                        Data = {
+                            Content = new List<String>() {
+                                languageCode
                             }
                         }
                     }

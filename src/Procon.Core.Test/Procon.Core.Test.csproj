@@ -114,6 +114,10 @@
     <Compile Include="Security\TestGetAccount.cs" />
     <Compile Include="Security\TestDispatchGroupCheck.cs" />
     <Compile Include="Security\TestDispatchIdentityCheck.cs" />
+    <Compile Include="Security\TestSecurityAccountAuthenticate.cs" />
+    <Compile Include="Security\TestSecurityAccountSetPassword.cs" />
+    <Compile Include="Security\TestSecurityAccountSetPasswordHash.cs" />
+    <Compile Include="Security\TestSecurityGroupAddAccount.cs" />
     <Compile Include="Security\TestSecurityRemoveAccount.cs" />
     <Compile Include="Security\TestSecuritySetPredefinedAdministratorsPermissions.cs" />
     <Compile Include="Security\TestSecuritySetPredefinedStreamPermissions.cs" />
@@ -142,7 +146,7 @@
     <Compile Include="TextCommands\TestTextCommandParserBase.cs" />
     <Compile Include="Security\TestSecurityPermission.cs" />
     <Compile Include="Security\TestSecurity.cs" />
-    <Compile Include="Security\TestSecurityAccount.cs" />
+    <Compile Include="Security\TestSecurityAccountSetPreferredLanguageCode.cs" />
     <Compile Include="Security\TestSecurityGroup.cs" />
     <Compile Include="Security\TestSecurityPlayer.cs" />
     <Compile Include="TextCommands\Route\TestRoute.cs" />

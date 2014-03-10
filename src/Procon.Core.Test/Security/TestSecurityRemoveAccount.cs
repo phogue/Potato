@@ -9,6 +9,10 @@ using Procon.Core.Shared.Models;
 namespace Procon.Core.Test.Security {
     [TestFixture]
     public class TestSecurityRemoveAccount {
+        [SetUp]
+        public void Initialize() {
+            SharedReferences.Setup();
+        }
 
         /// <summary>
         ///     Testing that an account can be removed by its name.

@@ -110,6 +110,8 @@
     <Compile Include="Remote\TestCommandServerSerializer\TestCompleteResponsePacket.cs" />
     <Compile Include="Remote\TestCommandServerSerializer\TestResponseContentType.cs" />
     <Compile Include="Security\TestDispatchIdentityCheck.cs" />
+    <Compile Include="Security\TestSecuritySetPredefinedAdministratorsPermissions.cs" />
+    <Compile Include="Security\TestSecuritySetPredefinedStreamPermissions.cs" />
     <Compile Include="TestHelpers.cs" />
     <Compile Include="CoreInstance\TestCommandInstanceRemoveConnection.cs" />
     <Compile Include="Events\TestEvents.cs" />

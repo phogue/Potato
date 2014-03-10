@@ -428,5 +428,62 @@ namespace Procon.Core.Shared {
                 }
             };
         }
+
+        /// <summary>
+        /// Builds a command to send a SecurityAddGroup
+        /// </summary>
+        /// <returns>The built command to dispatch</returns>
+        public static ICommand SecurityAddGroup(String groupName) {
+            return new Command() {
+                CommandType = CommandType.SecurityAddGroup,
+                Parameters = new List<ICommandParameter>() {
+                    new CommandParameter() {
+                        Data = {
+                            Content = new List<String>() {
+                                groupName
+                            }
+                        }
+                    }
+                }
+            };
+        }
+
+        /// <summary>
+        /// Builds a command to send a SecuritySetPredefinedStreamPermissions
+        /// </summary>
+        /// <returns>The built command to dispatch</returns>
+        public static ICommand SecuritySetPredefinedStreamPermissions(String groupName) {
+            return new Command() {
+                CommandType = CommandType.SecuritySetPredefinedStreamPermissions,
+                Parameters = new List<ICommandParameter>() {
+                    new CommandParameter() {
+                        Data = {
+                            Content = new List<String>() {
+                                groupName
+                            }
+                        }
+                    }
+                }
+            };
+        }
+
+        /// <summary>
+        /// Builds a command to send a SecuritySetPredefinedAdministratorsPermissions
+        /// </summary>
+        /// <returns>The built command to dispatch</returns>
+        public static ICommand SecuritySetPredefinedAdministratorsPermissions(String groupName) {
+            return new Command() {
+                CommandType = CommandType.SecuritySetPredefinedAdministratorsPermissions,
+                Parameters = new List<ICommandParameter>() {
+                    new CommandParameter() {
+                        Data = {
+                            Content = new List<String>() {
+                                groupName
+                            }
+                        }
+                    }
+                }
+            };
+        }
     }
 }

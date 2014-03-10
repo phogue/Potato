@@ -237,6 +237,26 @@ namespace Procon.Core.Security {
                         }
                     },
                     Handler = this.SecurityAccountSetPreferredLanguageCode
+                },
+                new CommandDispatch() {
+                    CommandType = CommandType.SecuritySetPredefinedStreamPermissions,
+                    ParameterTypes = new List<CommandParameterType>() {
+                        new CommandParameterType() {
+                            Name = "groupName",
+                            Type = typeof(String)
+                        }
+                    },
+                    Handler = this.SecuritySetPredefinedStreamPermissions
+                },
+                new CommandDispatch() {
+                    CommandType = CommandType.SecuritySetPredefinedAdministratorsPermissions,
+                    ParameterTypes = new List<CommandParameterType>() {
+                        new CommandParameterType() {
+                            Name = "groupName",
+                            Type = typeof(String)
+                        }
+                    },
+                    Handler = this.SecuritySetPredefinedAdministratorsPermissions
                 }
             });
         }
@@ -1477,5 +1497,112 @@ namespace Procon.Core.Security {
         }
 
         #endregion
+
+        /// <summary>
+        /// Sets a group's permissions to a predefined list of permissions required
+        /// for a simple streaming account.
+        /// </summary>
+        public ICommandResult SecuritySetPredefinedStreamPermissions(ICommand command, Dictionary<String, ICommandParameter> parameters) {
+            ICommandResult result = null;
+
+            String groupName = parameters["groupName"].First<String>();
+
+            if (this.DispatchPermissionsCheck(command, command.Name).Success == true) {
+                GroupModel group = this.Groups.FirstOrDefault(g => g.Name == groupName);
+
+                if (group != null) {
+                    if (group.IsGuest == false) {
+                        // A list of permissions to keep as "1", all others will be nulled out.
+                        List<CommandType> permissions = new List<CommandType>() {
+                            CommandType.SecurityAccountAuthenticate,
+                            CommandType.VariablesSetF,
+                            CommandType.VariablesGet,
+                            CommandType.InstanceQuery,
+                            CommandType.ConnectionQuery,
+                            CommandType.NetworkProtocolQueryBans,
+                            CommandType.NetworkProtocolQueryMapPool,
+                            CommandType.NetworkProtocolQueryMaps,
+                            CommandType.NetworkProtocolQueryPlayers,
+                            CommandType.NetworkProtocolQuerySettings
+                        };
+
+                        foreach (var permission in group.Permissions) {
+                            permission.Authority = permissions.Contains(permission.CommandType) ? 1 : (int?)null;
+                        }
+
+                        result = new CommandResult() {
+                            Success = true,
+                            Status = CommandResultType.Success,
+                            Message = String.Format(@"Group with name ""{0}"" successfully set permissions to predefined stream setup.", group.Name)
+                        };
+                    }
+                    else {
+                        result = new CommandResult() {
+                            Success = false,
+                            Status = CommandResultType.InvalidParameter,
+                            Message = "Cannot add an account to a guest group"
+                        };
+                    }
+                }
+                else {
+                    result = new CommandResult() {
+                        Message = String.Format(@"Group with name ""{0}"" does not exists.", groupName),
+                        Success = false,
+                        Status = CommandResultType.DoesNotExists
+                    };
+                }
+            }
+            else {
+                result = CommandResult.InsufficientPermissions;
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Sets a group's permissions to maximo for the true Administrator experience.
+        /// </summary>
+        public ICommandResult SecuritySetPredefinedAdministratorsPermissions(ICommand command, Dictionary<String, ICommandParameter> parameters) {
+            ICommandResult result = null;
+
+            String groupName = parameters["groupName"].First<String>();
+
+            if (this.DispatchPermissionsCheck(command, command.Name).Success == true) {
+                GroupModel group = this.Groups.FirstOrDefault(g => g.Name == groupName);
+
+                if (group != null) {
+                    if (group.IsGuest == false) {
+                        foreach (var permission in group.Permissions) {
+                            permission.Authority = 2;
+                        }
+
+                        result = new CommandResult() {
+                            Success = true,
+                            Status = CommandResultType.Success,
+                            Message = String.Format(@"Group with name ""{0}"" successfully set permissions to predefined administrator setup.", group.Name)
+                        };
+                    }
+                    else {
+                        result = new CommandResult() {
+                            Success = false,
+                            Status = CommandResultType.InvalidParameter,
+                            Message = "Cannot add an account to a guest group"
+                        };
+                    }
+                }
+                else {
+                    result = new CommandResult() {
+                        Message = String.Format(@"Group with name ""{0}"" does not exists.", groupName),
+                        Success = false,
+                        Status = CommandResultType.DoesNotExists
+                    };
+                }
+            }
+            else {
+                result = CommandResult.InsufficientPermissions;
+            }
+
+            return result;
+        }
     }
 }

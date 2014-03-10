@@ -64,6 +64,21 @@ namespace Procon.Core.Shared {
         /// </summary>
         SecurityQueryPermission,
 
+        /// <summary>
+        /// Set a group to have streaming permission set, a minimal amount of permissions
+        /// to authenticate, get/set variables (flash) and query various sections of Procon.
+        /// </summary>
+        /// <remarks>All set permissions will be set to 1</remarks>
+        SecuritySetPredefinedStreamPermissions,
+
+        /// <summary>
+        /// Sets a majority of the permissions an administrator would use. There are numerous commands
+        /// that would only be useful for stream accounts, but I'm sure admins will want to have maximo
+        /// power for no reson.
+        /// </summary>
+        /// <remarks>All set permissions will be set to 2</remarks>
+        SecuritySetPredefinedAdministratorsPermissions,
+
         // Groups
 
         /// <summary>

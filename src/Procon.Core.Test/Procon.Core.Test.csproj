@@ -111,6 +111,7 @@
     <Compile Include="Remote\TestCommandServerSerializer\TestDeserializeCommand.cs" />
     <Compile Include="Remote\TestCommandServerSerializer\TestCompleteResponsePacket.cs" />
     <Compile Include="Remote\TestCommandServerSerializer\TestResponseContentType.cs" />
+    <Compile Include="Security\AccountPlayer\TestSecurityRemovePlayer.cs" />
     <Compile Include="Security\Account\TestGetAccount.cs" />
     <Compile Include="Security\TestDispatchGroupCheck.cs" />
     <Compile Include="Security\TestDispatchIdentityCheck.cs" />
@@ -148,7 +149,7 @@
     <Compile Include="Security\TestSecurity.cs" />
     <Compile Include="Security\Account\TestSecurityAccountSetPreferredLanguageCode.cs" />
     <Compile Include="Security\Group\TestSecurityGroup.cs" />
-    <Compile Include="Security\AccountPlayer\TestSecurityPlayer.cs" />
+    <Compile Include="Security\AccountPlayer\TestSecurityAccountAddPlayer.cs" />
     <Compile Include="TextCommands\Route\TestRoute.cs" />
     <Compile Include="TextCommands\TestTextCommandParsing.cs" />
     <Compile Include="TextCommands\TestTextCommandRegistration.cs" />

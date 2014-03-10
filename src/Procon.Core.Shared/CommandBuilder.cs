@@ -611,6 +611,34 @@ namespace Procon.Core.Shared {
         }
 
         /// <summary>
+        /// Builds a command to send a SecurityRemovePlayer
+        /// </summary>
+        /// <param name="protocolName">The protocol of the game the player is on</param>
+        /// <param name="playerUid">The players unique identifier for the game</param>
+        /// <returns>The built command to dispatch</returns>
+        public static ICommand SecurityRemovePlayer(String protocolName, String playerUid) {
+            return new Command() {
+                CommandType = CommandType.SecurityRemovePlayer,
+                Parameters = new List<ICommandParameter>() {
+                    new CommandParameter() {
+                        Data = {
+                            Content = new List<String>() {
+                                protocolName
+                            }
+                        }
+                    },
+                    new CommandParameter() {
+                        Data = {
+                            Content = new List<String>() {
+                                playerUid
+                            }
+                        }
+                    }
+                }
+            };
+        }
+
+        /// <summary>
         /// Builds a command to send a SecurityAccountSetPreferredLanguageCode
         /// </summary>
         /// <param name="accountName">The name of the account to remove</param>

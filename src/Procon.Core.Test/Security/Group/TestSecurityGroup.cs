@@ -10,7 +10,7 @@ using Procon.Core.Shared.Models;
 
 #endregion
 
-namespace Procon.Core.Test.Security {
+namespace Procon.Core.Test.Security.Group {
     [TestFixture]
     public class TestSecurityGroup {
         [SetUp]

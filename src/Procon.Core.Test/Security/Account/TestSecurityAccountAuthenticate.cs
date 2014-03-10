@@ -5,7 +5,7 @@ using Procon.Core.Shared;
 using Procon.Core.Shared.Models;
 using Procon.Net.Shared.Utils;
 
-namespace Procon.Core.Test.Security {
+namespace Procon.Core.Test.Security.Account {
     [TestFixture]
     public class Test {
         [SetUp]

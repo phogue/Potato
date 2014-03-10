@@ -9,7 +9,7 @@ using Procon.Net.Shared.Protocols;
 
 #endregion
 
-namespace Procon.Core.Test.Security {
+namespace Procon.Core.Test.Security.Permission {
     [TestFixture]
     public class TestSecurityPermission {
         [SetUp]

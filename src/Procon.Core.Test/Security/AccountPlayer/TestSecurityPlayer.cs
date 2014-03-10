@@ -10,7 +10,7 @@ using Procon.Net.Shared.Protocols;
 
 #endregion
 
-namespace Procon.Core.Test.Security {
+namespace Procon.Core.Test.Security.AccountPlayer {
     [TestFixture]
     public class TestSecurityPlayer {
         [SetUp]

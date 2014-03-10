@@ -4,7 +4,7 @@ using Procon.Core.Security;
 using Procon.Core.Shared;
 using Procon.Core.Shared.Models;
 
-namespace Procon.Core.Test.Security {
+namespace Procon.Core.Test.Security.Permission {
     [TestFixture]
     public class TestSecuritySetPredefinedAdministratorsPermissions {
         /// <summary>

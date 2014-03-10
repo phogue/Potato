@@ -145,7 +145,7 @@
     <Compile Include="Mocks\Protocols\MockClient.cs" />
     <Compile Include="Mocks\Protocols\MockProtocol.cs" />
     <Compile Include="TextCommands\TestTextCommandParserBase.cs" />
-    <Compile Include="Security\Permission\TestSecurityPermission.cs" />
+    <Compile Include="Security\Permission\TestSecurityQueryPermission.cs" />
     <Compile Include="Security\TestSecurity.cs" />
     <Compile Include="Security\Account\TestSecurityAccountSetPreferredLanguageCode.cs" />
     <Compile Include="Security\Group\TestSecurityGroup.cs" />

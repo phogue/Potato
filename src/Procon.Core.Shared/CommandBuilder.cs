@@ -712,6 +712,86 @@ namespace Procon.Core.Shared {
         public static ICommand SecurityGroupSetPermission(String groupName, CommandType permissionName, int authority) {
             return CommandBuilder.SecurityGroupSetPermission(groupName, permissionName.ToString(), authority);
         }
+        
+        /// <summary>
+        /// Builds a command to send a SecurityGroupSetPermission
+        /// </summary>
+        /// <param name="permissionName">The name of the permission to set the authority of</param>
+        /// <param name="accountName">The name of the account to query the permission of</param>
+        /// <returns>The built command to dispatch</returns>
+        public static ICommand SecurityQueryPermission(String permissionName, String accountName) {
+            return new Command() {
+                CommandType = CommandType.SecurityQueryPermission,
+                Parameters = new List<ICommandParameter>() {
+                    new CommandParameter() {
+                        Data = {
+                            Content = new List<String>() {
+                                permissionName
+                            }
+                        }
+                    },
+                    new CommandParameter() {
+                        Data = {
+                            Content = new List<String>() {
+                                accountName
+                            }
+                        }
+                    }
+                }
+            };
+        }
+
+        /// <summary>
+        /// Alias of SecurityGroupSetPermission(String, String)
+        /// </summary>
+        /// <returns>The built command to dispatch</returns>
+        public static ICommand SecurityQueryPermission(CommandType permissionName, String accountName) {
+            return CommandBuilder.SecurityQueryPermission(permissionName.ToString(), accountName);
+        }
+
+        /// <summary>
+        /// Builds a command to send a SecurityGroupSetPermission
+        /// </summary>
+        /// <param name="permissionName">The name of the permission to set the authority of</param>
+        /// <param name="protocolName">The protocol name of the game</param>
+        /// <param name="playerUid">The players unique identifier within the game</param>
+        /// <returns>The built command to dispatch</returns>
+        public static ICommand SecurityQueryPermission(String permissionName, String protocolName, String playerUid) {
+            return new Command() {
+                CommandType = CommandType.SecurityQueryPermission,
+                Parameters = new List<ICommandParameter>() {
+                    new CommandParameter() {
+                        Data = {
+                            Content = new List<String>() {
+                                permissionName
+                            }
+                        }
+                    },
+                    new CommandParameter() {
+                        Data = {
+                            Content = new List<String>() {
+                                protocolName
+                            }
+                        }
+                    },
+                    new CommandParameter() {
+                        Data = {
+                            Content = new List<String>() {
+                                playerUid
+                            }
+                        }
+                    }
+                }
+            };
+        }
+
+        /// <summary>
+        /// Alias of SecurityGroupSetPermission(String, String, String)
+        /// </summary>
+        /// <returns>The built command to dispatch</returns>
+        public static ICommand SecurityQueryPermission(CommandType permissionName, String protocolName, String playerUid) {
+            return CommandBuilder.SecurityQueryPermission(permissionName.ToString(), protocolName, playerUid);
+        }
 
         /// <summary>
         /// Builds a command to send a SecuritySetPredefinedStreamPermissions

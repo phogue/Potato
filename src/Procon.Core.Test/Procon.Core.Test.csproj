@@ -109,6 +109,7 @@
     <Compile Include="Remote\TestCommandServerSerializer\TestDeserializeCommand.cs" />
     <Compile Include="Remote\TestCommandServerSerializer\TestCompleteResponsePacket.cs" />
     <Compile Include="Remote\TestCommandServerSerializer\TestResponseContentType.cs" />
+    <Compile Include="Security\TestDispatchGroupCheck.cs" />
     <Compile Include="Security\TestDispatchIdentityCheck.cs" />
     <Compile Include="Security\TestSecuritySetPredefinedAdministratorsPermissions.cs" />
     <Compile Include="Security\TestSecuritySetPredefinedStreamPermissions.cs" />

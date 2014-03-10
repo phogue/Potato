@@ -887,6 +887,34 @@ namespace Procon.Core.Security {
             return result;
         }
 
+        /// <summary>
+        /// Checks the authentication of the command's group against a group name, checking if they
+        /// are identical (the command executor belongs to a specific group)
+        /// </summary>
+        /// <param name="command">The command to extract the executor from</param>
+        /// <param name="groupName">The name of the group to check against</param>
+        /// <returns>The result of the comparison</returns>
+        public ICommandResult DispatchGroupCheck(ICommand command, String groupName) {
+            ICommandResult result = null;
+
+            AccountModel executor = this.GetAccount(command);
+
+            if (executor != null && executor.Group != null && executor.Group.Name == groupName) {
+                result = new CommandResult() {
+                    Success = true,
+                    Status = CommandResultType.Success
+                };
+            }
+            else {
+                result = new CommandResult() {
+                    Success = false,
+                    Status = CommandResultType.Failed
+                };
+            }
+
+            return result;
+        }
+
         private static int? HighestAuthority(AccountModel account, String permission) {
             return account != null ? account.Group.Permissions.Where(perm => perm.Name == permission).Select(perm => perm.Authority).FirstOrDefault() : null;
         }

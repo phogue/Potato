@@ -517,7 +517,43 @@ namespace Procon.Core.Shared {
                 }
             };
         }
-        
+
+        /// <summary>
+        /// Builds a command to send a SecurityAccountAddPlayer
+        /// </summary>
+        /// <param name="accountName">The name of the account to append the player to</param>
+        /// <param name="protocolName">The protocol of the game the player is on</param>
+        /// <param name="playerUid">The players unique identifier for the game</param>
+        /// <returns>The built command to dispatch</returns>
+        public static ICommand SecurityAccountAddPlayer(String accountName, String protocolName, String playerUid) {
+            return new Command() {
+                CommandType = CommandType.SecurityAccountAddPlayer,
+                Parameters = new List<ICommandParameter>() {
+                    new CommandParameter() {
+                        Data = {
+                            Content = new List<String>() {
+                                accountName
+                            }
+                        }
+                    },
+                    new CommandParameter() {
+                        Data = {
+                            Content = new List<String>() {
+                                protocolName
+                            }
+                        }
+                    },
+                    new CommandParameter() {
+                        Data = {
+                            Content = new List<String>() {
+                                playerUid
+                            }
+                        }
+                    }
+                }
+            };
+        }
+
         /// <summary>
         /// Builds a command to send a SecurityGroupSetPermission
         /// </summary>

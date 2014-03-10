@@ -1037,6 +1037,21 @@ namespace Procon.Core.Test.Security {
             Assert.AreEqual(0, security.Groups.Last().Accounts.Count);
         }
 
+        /// <summary>
+        /// Tests that an account can be removed if the command is locally called
+        /// </summary>
+        [Test]
+        public void TestRemoveAccountByLocalSuccess() {
+            var security = new SecurityController();
+            security.Tunnel(CommandBuilder.SecurityAddGroup("GroupName").SetOrigin(CommandOrigin.Local));
+            security.Tunnel(CommandBuilder.SecurityGroupAddAccount("GroupName", "Phogue").SetOrigin(CommandOrigin.Local));
+
+            ICommandResult result = security.Tunnel(CommandBuilder.SecurityRemoveAccount("Phogue").SetOrigin(CommandOrigin.Local));
+
+            // Make sure the command failed. The user cannot remove their own account.
+            Assert.IsTrue(result.Success);
+            Assert.AreEqual(CommandResultType.Success, result.Status);
+        }
 
         /// <summary>
         /// Tests that an account will not be removed if the owner is attempting to remove it.

@@ -2,6 +2,7 @@
 using NUnit.Framework;
 using Procon.Core.Events;
 using Procon.Core.Shared;
+using Procon.Core.Shared.Models;
 
 namespace Procon.Core.Test.CoreInstance {
     [TestFixture]
@@ -19,7 +20,9 @@ namespace Procon.Core.Test.CoreInstance {
         public void TestResultInsufficientPermissions() {
             InstanceController instance = new InstanceController();
 
-            ICommandResult result = instance.Tunnel(CommandBuilder.InstanceServiceRestart().SetOrigin(CommandOrigin.Remote).SetUsername("Phogue"));
+            ICommandResult result = instance.Tunnel(CommandBuilder.InstanceServiceRestart().SetOrigin(CommandOrigin.Remote).SetAuthentication(new CommandAuthenticationModel() {
+                Username = "Phogue"
+            }));
 
             Assert.IsFalse(result.Success);
             Assert.AreEqual(CommandResultType.InsufficientPermissions, result.Status);

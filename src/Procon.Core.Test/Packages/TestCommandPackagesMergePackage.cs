@@ -3,6 +3,7 @@ using NUnit.Framework;
 using NuGet;
 using Procon.Core.Packages;
 using Procon.Core.Shared;
+using Procon.Core.Shared.Models;
 using Procon.Core.Test.Packages.Mocks;
 
 namespace Procon.Core.Test.Packages {
@@ -21,7 +22,9 @@ namespace Procon.Core.Test.Packages {
         public void TestResultInsufficientPermissions() {
             PackagesController packages = new PackagesController();
 
-            ICommandResult result = packages.Tunnel(CommandBuilder.PackagesMergePackage("id").SetOrigin(CommandOrigin.Remote).SetUsername("Phogue"));
+            ICommandResult result = packages.Tunnel(CommandBuilder.PackagesMergePackage("id").SetOrigin(CommandOrigin.Remote).SetAuthentication(new CommandAuthenticationModel() {
+                Username = "Phogue"
+            }));
 
             Assert.IsFalse(result.Success);
             Assert.AreEqual(CommandResultType.InsufficientPermissions, result.Status);

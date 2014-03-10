@@ -57,8 +57,8 @@ namespace Procon.Core.Shared {
             return this;
         }
 
-        public ICommand SetUsername(String username) {
-            this.Authentication.Username = username;
+        public ICommand SetAuthentication(CommandAuthenticationModel authentication) {
+            this.Authentication = authentication;
 
             return this;
         }

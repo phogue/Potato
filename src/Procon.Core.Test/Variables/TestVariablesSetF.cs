@@ -51,7 +51,9 @@ namespace Procon.Core.Test.Variables {
         public void TestInsufficientPermission() {
             var variables = new VariableController();
 
-            ICommandResult result = variables.Tunnel(CommandBuilder.VariablesSetF("key", "value").SetUsername("Phogue").SetOrigin(CommandOrigin.Remote));
+            ICommandResult result = variables.Tunnel(CommandBuilder.VariablesSetF("key", "value").SetAuthentication(new CommandAuthenticationModel() {
+                Username = "Phogue"
+            }).SetOrigin(CommandOrigin.Remote));
 
             // Validate the command failed because we don't have permissions to execute it.
             Assert.IsFalse(result.Success);

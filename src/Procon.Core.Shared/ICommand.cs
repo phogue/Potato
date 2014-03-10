@@ -61,11 +61,11 @@ namespace Procon.Core.Shared {
         ICommand SetOrigin(CommandOrigin origin);
 
         /// <summary>
-        /// Sets the username of the command, then returns the command. Allows for method chaining.
+        /// Sets the authentication of the command, then returns the command. Allows for method chaining.
         /// </summary>
-        /// <param name="username">The username to assign</param>
+        /// <param name="authentication">The authentication model to set</param>
         /// <returns>this</returns>
-        ICommand SetUsername(String username);
+        ICommand SetAuthentication(CommandAuthenticationModel authentication);
 
         /// <summary>
         /// The config only requires the name and parameters, everything else is ignored. We could just

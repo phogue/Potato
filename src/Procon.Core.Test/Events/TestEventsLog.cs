@@ -2,6 +2,7 @@
 using Procon.Core.Events;
 using Procon.Core.Shared;
 using Procon.Core.Shared.Events;
+using Procon.Core.Shared.Models;
 
 namespace Procon.Core.Test.Events {
     [TestFixture]
@@ -21,7 +22,9 @@ namespace Procon.Core.Test.Events {
 
             ICommandResult result = events.Tunnel(CommandBuilder.EventsLog(new GenericEvent() {
                 Name = "Nothing"
-            }).SetOrigin(CommandOrigin.Remote).SetUsername("Phogue"));
+            }).SetOrigin(CommandOrigin.Remote).SetAuthentication(new CommandAuthenticationModel() {
+                Username = "Phogue"
+            }));
 
             Assert.IsFalse(result.Success);
             Assert.AreEqual(CommandResultType.InsufficientPermissions, result.Status);

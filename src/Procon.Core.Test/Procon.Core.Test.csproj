@@ -114,6 +114,7 @@
     <Compile Include="Security\TestGetAccount.cs" />
     <Compile Include="Security\TestDispatchGroupCheck.cs" />
     <Compile Include="Security\TestDispatchIdentityCheck.cs" />
+    <Compile Include="Security\TestSecurityRemoveAccount.cs" />
     <Compile Include="Security\TestSecuritySetPredefinedAdministratorsPermissions.cs" />
     <Compile Include="Security\TestSecuritySetPredefinedStreamPermissions.cs" />
     <Compile Include="TestHelpers.cs" />

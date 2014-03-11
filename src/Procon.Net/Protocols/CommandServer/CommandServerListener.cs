@@ -12,7 +12,6 @@ namespace Procon.Net.Protocols.CommandServer {
     /// Security and packet logic should be handled elsewhere.
     /// </summary>
     public class CommandServerListener : IDisposable {
-
         /// <summary>
         /// The port to listen on.
         /// </summary>
@@ -21,7 +20,7 @@ namespace Procon.Net.Protocols.CommandServer {
         /// <summary>
         /// A list of active clients with open connections
         /// </summary>
-        protected ConcurrentDictionary<String, CommandServerClient> Clients = new ConcurrentDictionary<String, CommandServerClient>();
+        protected ConcurrentDictionary<String, CommandServerClient> Clients { get; set; }
 
         /// <summary>
         /// The listener 
@@ -29,9 +28,9 @@ namespace Procon.Net.Protocols.CommandServer {
         public TcpListener Listener { get; set; }
 
         /// <summary>
-        /// Lock used during disposal
+        /// Lock used during shutdown
         /// </summary>
-        protected readonly Object DisposeLock = new Object();
+        protected readonly Object ShutdownLock = new Object();
 
         /// <summary>
         /// The loaded CommandServer.pfx certificate to encrypt incoming stream
@@ -54,12 +53,23 @@ namespace Procon.Net.Protocols.CommandServer {
         public Action<Exception> ListenerException;
 
         /// <summary>
+        /// Initializes the command server with the default values
+        /// </summary>
+        public CommandServerListener() {
+            this.Clients = new ConcurrentDictionary<String, CommandServerClient>();
+        }
+
+        /// <summary>
         /// Creates and starts listening for tcp clients on the specified port.
         /// </summary>
         public bool BeginListener() {
             bool started = false;
 
             try {
+                if (this.Clients == null) {
+                    this.Clients = new ConcurrentDictionary<String, CommandServerClient>();
+                }
+
                 this.Listener = new TcpListener(IPAddress.Any, this.Port);
                 this.Listener.Start();
                 
@@ -69,7 +79,7 @@ namespace Procon.Net.Protocols.CommandServer {
                 started = true;
             }
             catch (Exception e) {
-                this.Dispose();
+                this.Shutdown();
                 this.OnBeginException(e);
             }
 
@@ -100,7 +110,7 @@ namespace Procon.Net.Protocols.CommandServer {
                     commandServerListener.Listener.BeginAcceptTcpClient(new AsyncCallback(AcceptTcpClientCallback), commandServerListener);
                 }
                 catch (Exception e) {
-                    commandServerListener.Dispose();
+                    commandServerListener.Shutdown();
                     commandServerListener.OnListenerException(e);
                 }
             }
@@ -187,12 +197,19 @@ namespace Procon.Net.Protocols.CommandServer {
             }
         }
 
-        public void Dispose() {
-            lock (this.DisposeLock) {
+        /// <summary>
+        /// Shuts down the current instance
+        /// </summary>
+        public void Shutdown() {
+            lock (this.ShutdownLock) {
+                // Stop listening or new connections
                 if (this.Listener != null) {
                     this.Listener.Stop();
                     this.Listener = null;
+                }
 
+                // Disconnect all existing connections
+                if (this.Clients != null) {
                     foreach (var client in this.Clients) {
                         client.Value.Shutdown();
                         client.Value.PacketReceived -= this.client_PacketReceived;
@@ -203,6 +220,18 @@ namespace Procon.Net.Protocols.CommandServer {
                     this.Clients = null;
                 }
             }
+        }
+
+        public void Dispose() {
+            // No longer calling delegates
+            this.BeginException = null;
+            this.PacketReceived = null;
+            this.ListenerException = null;
+
+            // Shutdown the listener and all current clients.
+            this.Shutdown();
+
+            this.Certificate = null;
         }
     }
 }

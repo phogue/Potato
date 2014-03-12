@@ -222,6 +222,8 @@ namespace Procon.Service.Shared {
         /// Ensure the entire directory structure has been created.
         /// </summary>
         static Defines() {
+            Defines.CertificatesDirectory.Create();
+            Defines.ConfigsDirectory.Create();
             Defines.PackagesDirectory.Create();
             Defines.LogsDirectory.Create();
             Defines.ErrorsLogsDirectory.Create();

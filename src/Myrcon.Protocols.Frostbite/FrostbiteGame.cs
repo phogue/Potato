@@ -311,6 +311,46 @@ namespace Myrcon.Protocols.Frostbite {
             return returnHash;
         }
 
+        /// <summary>
+        /// Update the current map name/gamemode, populating other settings and firing map change events as required.
+        /// </summary>
+        /// <param name="name">The name of the map to update with</param>
+        /// <param name="gameModeName">The game mdoe of the map being played</param>
+        protected void UpdateSettingsMap(String name, String gameModeName) {
+            var modified = this.State.Settings.Current.MapNameText != name || this.State.Settings.Current.GameModeNameText != gameModeName;
+
+            if (modified == true) {
+                this.State.Settings.Current.MapNameText = name;
+                this.State.Settings.Current.GameModeNameText = gameModeName;
+
+                MapModel selectedMap = this.State.MapPool.Find(map => String.Compare(map.Name, name, StringComparison.OrdinalIgnoreCase) == 0 && String.Compare(map.GameMode.Name, gameModeName, StringComparison.OrdinalIgnoreCase) == 0);
+
+                if (selectedMap != null) {
+                    this.State.Settings.Current.FriendlyGameModeNameText = selectedMap.GameMode.FriendlyName;
+                    this.State.Settings.Current.FriendlyMapNameText = selectedMap.FriendlyName;
+                }
+
+                this.OnGameEvent(ProtocolEventType.ProtocolMapChanged);
+            }
+        }
+
+        /// <summary>
+        /// Updates the current and total rounds, firing an events if they have changed.
+        /// </summary>
+        /// <param name="currentRound">The current round index being played</param>
+        /// <param name="totalRounds">The total number of rounds to be played</param>
+        protected void UpdateSettingsRound(int currentRound, int totalRounds) {
+            var modified = this.State.Settings.Current.RoundIndex != currentRound;
+
+            this.State.Settings.Maximum.RoundIndex = totalRounds;
+
+            if (modified == true) {
+                this.State.Settings.Current.RoundIndex = currentRound;
+
+                this.OnGameEvent(ProtocolEventType.ProtocolRoundChanged);
+            }
+        }
+
         #region Dispatching
 
         public void ServerInfoDispatchHandler(IPacketWrapper request, IPacketWrapper response) {
@@ -319,21 +359,13 @@ namespace Myrcon.Protocols.Frostbite {
 
                 FrostbiteServerInfo info = new FrostbiteServerInfo().Parse(response.Packet.Words.GetRange(1, response.Packet.Words.Count - 1), this.ServerInfoParameters);
 
-                MapModel selectedMap = this.State.MapPool.Find(map => String.Compare(map.Name, info.Map, StringComparison.OrdinalIgnoreCase) == 0);
-
-                if (selectedMap != null) {
-                    this.State.Settings.Current.FriendlyGameModeNameText = selectedMap.GameMode.FriendlyName;
-                    this.State.Settings.Current.FriendlyMapNameText = selectedMap.FriendlyName;
-                }
+                this.UpdateSettingsMap(info.Map, info.GameMode);
+                this.UpdateSettingsRound(info.CurrentRound, info.TotalRounds);
 
                 this.State.Settings.Current.ServerNameText = info.ServerName;
-                this.State.Settings.Current.MapNameText = info.Map;
-                this.State.Settings.Current.GameModeNameText = info.GameMode;
                 // this.State.Variables.ConnectionState = ConnectionState.Connected; String b = info.ConnectionState;
                 this.State.Settings.Current.PlayerCount = info.PlayerCount;
                 this.State.Settings.Maximum.PlayerCount = info.MaxPlayerCount;
-                this.State.Settings.Current.RoundIndex = info.CurrentRound;
-                this.State.Settings.Maximum.RoundIndex = info.TotalRounds;
                 //this.State.Settings.RankedEnabled = info.Ranked;
                 this.State.Settings.Current.AntiCheatEnabled = info.PunkBuster;
                 this.State.Settings.Current.PasswordProtectionEnabled = info.Passworded;

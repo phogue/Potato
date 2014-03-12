@@ -31,6 +31,16 @@ namespace Myrcon.Protocols.Frostbite.Battlefield.Battlefield4 {
                 "ServerUpTime",
                 "RoundTime"
             };
+
+            this.PacketDispatcher.Append(new Dictionary<IPacketDispatch, Action<IPacketWrapper, IPacketWrapper>>() {
+                {
+                    new PacketDispatch() {
+                        Name = "server.onLevelLoaded",
+                        Origin = PacketOrigin.Server
+                    },
+                    new Action<IPacketWrapper, IPacketWrapper>(this.ServerOnLevelLoadedDispatchHandler)
+                }
+            });
         }
 
         //[DispatchPacket(MatchText = "admin.listPlayers", PacketOrigin = PacketOrigin.Client)]

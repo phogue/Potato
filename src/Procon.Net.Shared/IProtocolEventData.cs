@@ -42,6 +42,11 @@ namespace Procon.Net.Shared {
         List<BanModel> Bans { get; set; }
 
         /// <summary>
+        /// The maps attached to this event, if any.
+        /// </summary>
+        List<MapModel> Maps { get; set; }
+
+        /// <summary>
         /// The settings attached to this event, if any.
         /// </summary>
         List<Settings> Settings { get; set; }

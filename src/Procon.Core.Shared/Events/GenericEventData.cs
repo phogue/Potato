@@ -20,6 +20,7 @@ namespace Procon.Core.Shared.Events {
                 Spawns = gameEventData.Spawns,
                 Kicks = gameEventData.Kicks,
                 Bans = gameEventData.Bans,
+                Maps = gameEventData.Maps,
                 Settings = gameEventData.Settings
 
                 // Maps?

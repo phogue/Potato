@@ -320,17 +320,27 @@ namespace Myrcon.Protocols.Frostbite {
             var modified = this.State.Settings.Current.MapNameText != name || this.State.Settings.Current.GameModeNameText != gameModeName;
 
             if (modified == true) {
+                MapModel oldMap = this.State.MapPool.Find(map => String.Compare(map.Name, this.State.Settings.Current.MapNameText, StringComparison.OrdinalIgnoreCase) == 0 && String.Compare(map.GameMode.Name, this.State.Settings.Current.GameModeNameText, StringComparison.OrdinalIgnoreCase) == 0);
+
                 this.State.Settings.Current.MapNameText = name;
                 this.State.Settings.Current.GameModeNameText = gameModeName;
 
-                MapModel selectedMap = this.State.MapPool.Find(map => String.Compare(map.Name, name, StringComparison.OrdinalIgnoreCase) == 0 && String.Compare(map.GameMode.Name, gameModeName, StringComparison.OrdinalIgnoreCase) == 0);
+                MapModel currentMap = this.State.MapPool.Find(map => String.Compare(map.Name, this.State.Settings.Current.MapNameText, StringComparison.OrdinalIgnoreCase) == 0 && String.Compare(map.GameMode.Name, this.State.Settings.Current.GameModeNameText, StringComparison.OrdinalIgnoreCase) == 0);
 
-                if (selectedMap != null) {
-                    this.State.Settings.Current.FriendlyGameModeNameText = selectedMap.GameMode.FriendlyName;
-                    this.State.Settings.Current.FriendlyMapNameText = selectedMap.FriendlyName;
+                if (currentMap != null) {
+                    this.State.Settings.Current.FriendlyGameModeNameText = currentMap.GameMode.FriendlyName;
+                    this.State.Settings.Current.FriendlyMapNameText = currentMap.FriendlyName;
+
+                    this.OnGameEvent(ProtocolEventType.ProtocolMapChanged, new ProtocolEventData() {
+                        Maps = new List<MapModel>() {
+                            currentMap
+                        }
+                    }, new ProtocolEventData() {
+                        Maps = new List<MapModel>() {
+                            oldMap
+                        }
+                    });
                 }
-
-                this.OnGameEvent(ProtocolEventType.ProtocolMapChanged);
             }
         }
 

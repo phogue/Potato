@@ -32,7 +32,7 @@ namespace Procon.Core.Test.Security.AccountPlayer {
             // Validate the command was a success and the player is not attached to any accounts.
             // and no longer attached to the "Phogue" account.
             Assert.IsTrue(result.Success);
-            Assert.AreEqual(result.Status, CommandResultType.Success);
+            Assert.AreEqual(result.CommandResultType, CommandResultType.Success);
             Assert.IsNull(security.Groups.SelectMany(group => group.Accounts).Where(account => account.Username == "Phogue").SelectMany(account => account.Players).FirstOrDefault());
         }
 
@@ -48,7 +48,7 @@ namespace Procon.Core.Test.Security.AccountPlayer {
 
             // Validate the command failed and returned the correct error status.
             Assert.IsFalse(result.Success);
-            Assert.AreEqual(result.Status, CommandResultType.DoesNotExists);
+            Assert.AreEqual(result.CommandResultType, CommandResultType.DoesNotExists);
             Assert.IsNull(security.Groups.SelectMany(group => group.Accounts).SelectMany(account => account.Players).FirstOrDefault());
         }
 
@@ -64,7 +64,7 @@ namespace Procon.Core.Test.Security.AccountPlayer {
 
             // Validate the command failed and returned the correct error status.
             Assert.IsFalse(result.Success);
-            Assert.AreEqual(result.Status, CommandResultType.InvalidParameter);
+            Assert.AreEqual(result.CommandResultType, CommandResultType.InvalidParameter);
             Assert.IsNull(security.Groups.SelectMany(group => group.Accounts).SelectMany(account => account.Players).FirstOrDefault());
         }
 
@@ -87,7 +87,7 @@ namespace Procon.Core.Test.Security.AccountPlayer {
             );
 
             Assert.IsFalse(result.Success);
-            Assert.AreEqual(CommandResultType.InsufficientPermissions, result.Status);
+            Assert.AreEqual(CommandResultType.InsufficientPermissions, result.CommandResultType);
         }
     }
 }

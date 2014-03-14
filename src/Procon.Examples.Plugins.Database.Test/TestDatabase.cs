@@ -76,7 +76,7 @@ namespace Procon.Examples.Plugins.Database.Test {
 
             // Test the command was successful
             Assert.AreEqual(true, result.Success);
-            Assert.AreEqual(CommandResultType.Success, result.Status);
+            Assert.AreEqual(CommandResultType.Success, result.CommandResultType);
 
             // Test that data was inserted.
             result = database.Tunnel(
@@ -88,7 +88,7 @@ namespace Procon.Examples.Plugins.Database.Test {
             );
 
             Assert.AreEqual(true, result.Success);
-            Assert.AreEqual(CommandResultType.Success, result.Status);
+            Assert.AreEqual(CommandResultType.Success, result.CommandResultType);
 
             // UserModel is found in Procon.Examples.Database.UserModel. We reuse it here in the test to keep everything consistent.
             UserModel model = UserModel.FirstFromQuery(result.Now.Queries.FirstOrDefault());
@@ -147,7 +147,7 @@ namespace Procon.Examples.Plugins.Database.Test {
 
             // Test the command was successful
             Assert.AreEqual(true, result.Success);
-            Assert.AreEqual(CommandResultType.Success, result.Status);
+            Assert.AreEqual(CommandResultType.Success, result.CommandResultType);
             Assert.AreEqual("Phogue", result.Message);
         }
     }

@@ -23,7 +23,7 @@ namespace Procon.Core.Test.Security {
 
             // Make sure it was successful.
             Assert.IsTrue(result.Success);
-            Assert.AreEqual(result.Status, CommandResultType.Success);
+            Assert.AreEqual(result.CommandResultType, CommandResultType.Success);
         }
 
         /// <summary>
@@ -47,7 +47,7 @@ namespace Procon.Core.Test.Security {
 
             // Make sure it was successful.
             Assert.IsFalse(result.Success);
-            Assert.AreEqual(result.Status, CommandResultType.Failed);
+            Assert.AreEqual(result.CommandResultType, CommandResultType.Failed);
         }
 
         /// <summary>
@@ -68,7 +68,7 @@ namespace Procon.Core.Test.Security {
 
             // Make sure it was successful.
             Assert.IsFalse(result.Success);
-            Assert.AreEqual(result.Status, CommandResultType.Failed);
+            Assert.AreEqual(result.CommandResultType, CommandResultType.Failed);
         }
 
         /// <summary>
@@ -89,7 +89,7 @@ namespace Procon.Core.Test.Security {
 
             // Make sure it was successful.
             Assert.IsFalse(result.Success);
-            Assert.AreEqual(result.Status, CommandResultType.Failed);
+            Assert.AreEqual(result.CommandResultType, CommandResultType.Failed);
         }
 
     }

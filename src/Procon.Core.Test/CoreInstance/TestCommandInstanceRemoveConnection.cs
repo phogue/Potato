@@ -61,7 +61,7 @@ namespace Procon.Core.Test.CoreInstance {
             });
 
             Assert.IsTrue(result.Success);
-            Assert.AreEqual(CommandResultType.Success, result.Status);
+            Assert.AreEqual(CommandResultType.Success, result.CommandResultType);
             Assert.AreEqual(0, instance.Connections.Count);
 
             instance.Dispose();
@@ -88,7 +88,7 @@ namespace Procon.Core.Test.CoreInstance {
             });
 
             Assert.IsFalse(result.Success);
-            Assert.AreEqual(CommandResultType.DoesNotExists, result.Status);
+            Assert.AreEqual(CommandResultType.DoesNotExists, result.CommandResultType);
 
             instance.Dispose();
         }
@@ -116,7 +116,7 @@ namespace Procon.Core.Test.CoreInstance {
             });
 
             Assert.IsFalse(result.Success);
-            Assert.AreEqual(CommandResultType.InsufficientPermissions, result.Status);
+            Assert.AreEqual(CommandResultType.InsufficientPermissions, result.CommandResultType);
             Assert.AreEqual(0, instance.Connections.Count);
 
             instance.Dispose();
@@ -157,7 +157,7 @@ namespace Procon.Core.Test.CoreInstance {
             });
 
             Assert.IsTrue(result.Success);
-            Assert.AreEqual(CommandResultType.Success, result.Status);
+            Assert.AreEqual(CommandResultType.Success, result.CommandResultType);
             Assert.IsEmpty(instance.Connections);
 
             instance.Dispose();

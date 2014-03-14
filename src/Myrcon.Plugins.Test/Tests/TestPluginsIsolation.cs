@@ -36,7 +36,7 @@ namespace Myrcon.Plugins.Test.Tests {
             String parameterMessage = parameters["parameterMessage"].First<String>();
 
             command.Result.Message = parameterMessage;
-            command.Result.Status = CommandResultType.Success;
+            command.Result.CommandResultType = CommandResultType.Success;
 
             return command.Result;
         }
@@ -50,12 +50,12 @@ namespace Myrcon.Plugins.Test.Tests {
                 }
 
                 command.Result.Success = true;
-                command.Result.Status = CommandResultType.Success;
+                command.Result.CommandResultType = CommandResultType.Success;
             }
             catch (SecurityException e) {
                 command.Result.Message = e.Message;
                 command.Result.Success = false;
-                command.Result.Status = CommandResultType.Failed;
+                command.Result.CommandResultType = CommandResultType.Failed;
             }
             catch (Exception e) {
                 var x = 0;

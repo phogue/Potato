@@ -25,7 +25,7 @@ namespace Procon.Core.Test.CoreInstance {
             }));
 
             Assert.IsFalse(result.Success);
-            Assert.AreEqual(CommandResultType.InsufficientPermissions, result.Status);
+            Assert.AreEqual(CommandResultType.InsufficientPermissions, result.CommandResultType);
 
             instance.Dispose();
         }
@@ -40,7 +40,7 @@ namespace Procon.Core.Test.CoreInstance {
             ICommandResult result = instance.Tunnel(CommandBuilder.InstanceServiceRestart().SetOrigin(CommandOrigin.Local));
 
             Assert.IsTrue(result.Success);
-            Assert.AreEqual(CommandResultType.Success, result.Status);
+            Assert.AreEqual(CommandResultType.Success, result.CommandResultType);
 
             instance.Dispose();
         }

@@ -128,7 +128,7 @@ namespace Procon.Core.Test.Database {
                 }
             });
 
-            Assert.AreEqual(CommandResultType.DoesNotExists, result.Status);
+            Assert.AreEqual(CommandResultType.DoesNotExists, result.CommandResultType);
             Assert.AreEqual(false, result.Success);
         }
 
@@ -175,7 +175,7 @@ namespace Procon.Core.Test.Database {
                 }
             });
 
-            Assert.AreEqual(CommandResultType.Success, result.Status);
+            Assert.AreEqual(CommandResultType.Success, result.CommandResultType);
             Assert.AreEqual(true, result.Success);
             Assert.AreEqual(new JArray() {
                 new JObject() {
@@ -242,7 +242,7 @@ namespace Procon.Core.Test.Database {
                 }
             });
 
-            Assert.AreEqual(CommandResultType.Success, result.Status);
+            Assert.AreEqual(CommandResultType.Success, result.CommandResultType);
             Assert.AreEqual(true, result.Success);
             Assert.AreEqual(new JArray() {
                 new JObject() {

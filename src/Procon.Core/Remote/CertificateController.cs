@@ -56,7 +56,7 @@ namespace Procon.Core.Remote {
                         Message = String.Format("Error loading certificate @ path \"{0}\" \"{1}\".", path, e.Message),
                         GenericEventType = GenericEventType.CommandServerStarted,
                         Success = false,
-                        Status = CommandResultType.Failed
+                        CommandResultType = CommandResultType.Failed
                     });
                 }
             }
@@ -66,7 +66,7 @@ namespace Procon.Core.Remote {
                     Message = String.Format("Command server certificate @ path \"{0}\" does not exists.", path),
                     GenericEventType = GenericEventType.CommandServerStarted,
                     Success = false,
-                    Status = CommandResultType.Failed
+                    CommandResultType = CommandResultType.Failed
                 });
             }
 

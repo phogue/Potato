@@ -283,7 +283,7 @@ namespace Procon.Core.Connections.TextCommands {
 
                     result = new CommandResult() {
                         Success = true,
-                        Status = CommandResultType.Success,
+                        CommandResultType = CommandResultType.Success,
                         Scope = {
                             Connections = new List<ConnectionModel>() {
                                 this.Connection != null ? this.Connection.ConnectionModel : null
@@ -303,7 +303,7 @@ namespace Procon.Core.Connections.TextCommands {
                 else {
                     result = new CommandResult() {
                         Success = false,
-                        Status = CommandResultType.AlreadyExists
+                        CommandResultType = CommandResultType.AlreadyExists
                     };
                 }
             }
@@ -333,7 +333,7 @@ namespace Procon.Core.Connections.TextCommands {
 
                     result = new CommandResult() {
                         Success = true,
-                        Status = CommandResultType.Success,
+                        CommandResultType = CommandResultType.Success,
                         Scope = {
                             Connections = new List<ConnectionModel>() {
                                 this.Connection != null ? this.Connection.ConnectionModel : null
@@ -353,7 +353,7 @@ namespace Procon.Core.Connections.TextCommands {
                 else {
                     result = new CommandResult() {
                         Success = false,
-                        Status = CommandResultType.DoesNotExists
+                        CommandResultType = CommandResultType.DoesNotExists
                     };
                 }
             }

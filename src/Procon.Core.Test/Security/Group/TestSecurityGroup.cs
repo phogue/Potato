@@ -67,7 +67,7 @@ namespace Procon.Core.Test.Security.Group {
 
             // Test the second result, make sure it failed.
             Assert.IsFalse(result.Success);
-            Assert.AreEqual(result.Status, CommandResultType.AlreadyExists);
+            Assert.AreEqual(result.CommandResultType, CommandResultType.AlreadyExists);
         }
 
         /// <summary>
@@ -88,7 +88,7 @@ namespace Procon.Core.Test.Security.Group {
 
             // Make sure adding an empty group fails.
             Assert.IsFalse(result.Success);
-            Assert.AreEqual(result.Status, CommandResultType.InvalidParameter);
+            Assert.AreEqual(result.CommandResultType, CommandResultType.InvalidParameter);
         }
 
         /// <summary>
@@ -111,7 +111,7 @@ namespace Procon.Core.Test.Security.Group {
             });
 
             Assert.IsFalse(result.Success);
-            Assert.AreEqual(CommandResultType.InsufficientPermissions, result.Status);
+            Assert.AreEqual(CommandResultType.InsufficientPermissions, result.CommandResultType);
         }
 
         /// <summary>
@@ -178,7 +178,7 @@ namespace Procon.Core.Test.Security.Group {
 
             // Now make sure the user was initially added.
             Assert.IsTrue(result.Success);
-            Assert.AreEqual(result.Status, CommandResultType.Success);
+            Assert.AreEqual(result.CommandResultType, CommandResultType.Success);
             Assert.AreEqual(security.Groups.Where(group => group.Name == "SecondGroupName").FirstOrDefault().Permissions.Where(permission => permission.Name == CommandType.VariablesSet.ToString()).First().Authority, 77);
             Assert.AreEqual(security.Groups.Where(group => group.Name == "SecondGroupName").FirstOrDefault().Permissions.Where(permission => permission.Name == CommandType.VariablesSetA.ToString()).First().Authority, 88);
         }
@@ -217,7 +217,7 @@ namespace Procon.Core.Test.Security.Group {
             });
 
             Assert.IsFalse(result.Success);
-            Assert.AreEqual(CommandResultType.InsufficientPermissions, result.Status);
+            Assert.AreEqual(CommandResultType.InsufficientPermissions, result.CommandResultType);
         }
 
         /// <summary>
@@ -248,7 +248,7 @@ namespace Procon.Core.Test.Security.Group {
             });
 
             Assert.IsFalse(result.Success);
-            Assert.AreEqual(result.Status, CommandResultType.DoesNotExists);
+            Assert.AreEqual(result.CommandResultType, CommandResultType.DoesNotExists);
         }
 
         /// <summary>
@@ -281,7 +281,7 @@ namespace Procon.Core.Test.Security.Group {
 
             // Make sure setting the kick permission was successfull.
             Assert.IsTrue(result.Success);
-            Assert.AreEqual(result.Status, CommandResultType.Success);
+            Assert.AreEqual(result.CommandResultType, CommandResultType.Success);
             Assert.AreEqual(security.Groups.Last().Permissions.First(permission => permission.Name == "CustomPermission").Authority, 50);
         }
 
@@ -312,7 +312,7 @@ namespace Procon.Core.Test.Security.Group {
 
             // Make sure setting the kick permission was successfull.
             Assert.IsTrue(result.Success);
-            Assert.AreEqual(result.Status, CommandResultType.Success);
+            Assert.AreEqual(result.CommandResultType, CommandResultType.Success);
             Assert.AreEqual(security.Groups.Last().Permissions.First(permission => permission.Name == CommandType.VariablesSet.ToString()).Authority, 50);
         }
 
@@ -353,7 +353,7 @@ namespace Procon.Core.Test.Security.Group {
 
             // Make sure setting the kick permission was successfull.
             Assert.IsTrue(result.Success);
-            Assert.AreEqual(result.Status, CommandResultType.Success);
+            Assert.AreEqual(result.CommandResultType, CommandResultType.Success);
             Assert.AreEqual(security.Groups.Last().Permissions.First(permission => permission.Name == CommandType.VariablesSet.ToString()).Authority, 50);
         }
 
@@ -382,7 +382,7 @@ namespace Procon.Core.Test.Security.Group {
 
             // Make sure the command just nulls out. It couldn't find anything to even try to set the permission.
             Assert.IsFalse(result.Success);
-            Assert.AreEqual(CommandResultType.DoesNotExists, result.Status);
+            Assert.AreEqual(CommandResultType.DoesNotExists, result.CommandResultType);
         }
 
         /// <summary>
@@ -413,7 +413,7 @@ namespace Procon.Core.Test.Security.Group {
             });
 
             Assert.IsFalse(result.Success);
-            Assert.AreEqual(CommandResultType.InsufficientPermissions, result.Status);
+            Assert.AreEqual(CommandResultType.InsufficientPermissions, result.CommandResultType);
         }
 
         /// <summary>
@@ -446,7 +446,7 @@ namespace Procon.Core.Test.Security.Group {
 
             // Make sure setting the kick permission was successfull.
             Assert.IsTrue(result.Success);
-            Assert.AreEqual(result.Status, CommandResultType.Success);
+            Assert.AreEqual(result.CommandResultType, CommandResultType.Success);
             Assert.AreEqual(security.Groups.Last().Permissions.First(permission => permission.Name == CommandType.VariablesSet.ToString()).Authority, 60);
         }
 
@@ -493,7 +493,7 @@ namespace Procon.Core.Test.Security.Group {
 
             // Make sure it was successful.
             Assert.IsTrue(result.Success);
-            Assert.AreEqual(CommandResultType.Success, result.Status);
+            Assert.AreEqual(CommandResultType.Success, result.CommandResultType);
         }
 
         /// <summary>
@@ -512,7 +512,7 @@ namespace Procon.Core.Test.Security.Group {
 
             // Make sure it was successful.
             Assert.IsFalse(result.Success);
-            Assert.AreEqual(CommandResultType.InvalidParameter, result.Status);
+            Assert.AreEqual(CommandResultType.InvalidParameter, result.CommandResultType);
         }
 
         /// <summary>
@@ -532,7 +532,7 @@ namespace Procon.Core.Test.Security.Group {
 
             // Make sure it was successful.
             Assert.IsFalse(result.Success);
-            Assert.AreEqual(CommandResultType.InvalidParameter, result.Status);
+            Assert.AreEqual(CommandResultType.InvalidParameter, result.CommandResultType);
             Assert.AreEqual(security.Groups.Count, 1);
         }
 
@@ -554,7 +554,7 @@ namespace Procon.Core.Test.Security.Group {
 
             // Make sure adding an empty group fails.
             Assert.IsFalse(result.Success);
-            Assert.AreEqual(result.Status, CommandResultType.InvalidParameter);
+            Assert.AreEqual(result.CommandResultType, CommandResultType.InvalidParameter);
         }
 
         [Test]
@@ -580,7 +580,7 @@ namespace Procon.Core.Test.Security.Group {
             });
 
             Assert.IsFalse(result.Success);
-            Assert.AreEqual(CommandResultType.InsufficientPermissions, result.Status);
+            Assert.AreEqual(CommandResultType.InsufficientPermissions, result.CommandResultType);
         }
 
         /// <summary>
@@ -599,7 +599,7 @@ namespace Procon.Core.Test.Security.Group {
 
             // Make sure it was not successful.
             Assert.IsFalse(result.Success);
-            Assert.AreEqual(result.Status, CommandResultType.DoesNotExists);
+            Assert.AreEqual(result.CommandResultType, CommandResultType.DoesNotExists);
         }
     }
 }

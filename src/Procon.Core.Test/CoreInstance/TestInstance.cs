@@ -79,7 +79,7 @@ namespace Procon.Core.Test.CoreInstance {
             });
 
             Assert.IsTrue(result.Success);
-            Assert.AreEqual(CommandResultType.Success, result.Status);
+            Assert.AreEqual(CommandResultType.Success, result.CommandResultType);
             Assert.AreEqual("value", variables.Get("key", "default value"));
 
             instance.Dispose();
@@ -131,7 +131,7 @@ namespace Procon.Core.Test.CoreInstance {
             });
 
             Assert.IsTrue(result.Success);
-            Assert.AreEqual(CommandResultType.Continue, result.Status);
+            Assert.AreEqual(CommandResultType.Continue, result.CommandResultType);
             Assert.AreEqual("default value", variables.Get("key", "default value"));
 
             instance.Dispose();

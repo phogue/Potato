@@ -25,7 +25,7 @@ namespace Procon.Core.Test.CoreInstance {
             }));
 
             Assert.IsFalse(result.Success);
-            Assert.AreEqual(CommandResultType.InsufficientPermissions, result.Status);
+            Assert.AreEqual(CommandResultType.InsufficientPermissions, result.CommandResultType);
 
             instance.Dispose();
         }
@@ -40,7 +40,7 @@ namespace Procon.Core.Test.CoreInstance {
             ICommandResult result = instance.Tunnel(CommandBuilder.InstanceServiceMergePackage("", "id").SetOrigin(CommandOrigin.Local));
 
             Assert.IsFalse(result.Success);
-            Assert.AreEqual(CommandResultType.InvalidParameter, result.Status);
+            Assert.AreEqual(CommandResultType.InvalidParameter, result.CommandResultType);
 
             instance.Dispose();
         }
@@ -55,7 +55,7 @@ namespace Procon.Core.Test.CoreInstance {
             ICommandResult result = instance.Tunnel(CommandBuilder.InstanceServiceMergePackage("localhost", "").SetOrigin(CommandOrigin.Local));
 
             Assert.IsFalse(result.Success);
-            Assert.AreEqual(CommandResultType.InvalidParameter, result.Status);
+            Assert.AreEqual(CommandResultType.InvalidParameter, result.CommandResultType);
 
             instance.Dispose();
         }
@@ -70,7 +70,7 @@ namespace Procon.Core.Test.CoreInstance {
             ICommandResult result = instance.Tunnel(CommandBuilder.InstanceServiceMergePackage("localhost", "id").SetOrigin(CommandOrigin.Local));
 
             Assert.IsTrue(result.Success);
-            Assert.AreEqual(CommandResultType.Success, result.Status);
+            Assert.AreEqual(CommandResultType.Success, result.CommandResultType);
 
             instance.Dispose();
         }

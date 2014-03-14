@@ -342,7 +342,7 @@ namespace Procon.Core.Variables {
 
                         result = new CommandResult() {
                             Success = true,
-                            Status = CommandResultType.Success,
+                            CommandResultType = CommandResultType.Success,
                             Message = String.Format(@"Successfully set value of variable name ""{0}"" to ""{1}"".", variable.Name, variable.Value),
                             Now = new CommandData() {
                                 Variables = new List<VariableModel>() {
@@ -359,7 +359,7 @@ namespace Procon.Core.Variables {
                         // Variable set to read only and cannot be modified.
                         result = new CommandResult() {
                             Success = false,
-                            Status = CommandResultType.Failed,
+                            CommandResultType = CommandResultType.Failed,
                             Message = String.Format(@"Variable name ""{0}"" is set to read-only.", variable.Name)
                         };
                     }
@@ -367,7 +367,7 @@ namespace Procon.Core.Variables {
                 else {
                     result = new CommandResult() {
                         Success = false,
-                        Status = CommandResultType.InvalidParameter,
+                        CommandResultType = CommandResultType.InvalidParameter,
                         Message = "A variable name must not be zero length"
                     };
                 }
@@ -421,7 +421,7 @@ namespace Procon.Core.Variables {
 
                     result = new CommandResult() {
                         Success = true,
-                        Status = CommandResultType.Success,
+                        CommandResultType = CommandResultType.Success,
                         Message = String.Format(@"Successfully set value of variable name ""{0}"" to ""{1}"".", variable.Name, variable.Value),
                         Now = new CommandData() {
                             Variables = new List<VariableModel>() {
@@ -476,7 +476,7 @@ namespace Procon.Core.Variables {
 
                     result = new CommandResult() {
                         Success = true,
-                        Status = CommandResultType.Success,
+                        CommandResultType = CommandResultType.Success,
                         Message = String.Format(@"Successfully set value of variable name ""{0}"" to ""{1}"".", variable.Name, variable.Value),
                         Now = new CommandData() {
                             Variables = new List<VariableModel>() {
@@ -545,7 +545,7 @@ namespace Procon.Core.Variables {
 
                     result = new CommandResult() {
                         Success = true,
-                        Status = CommandResultType.Success,
+                        CommandResultType = CommandResultType.Success,
                         Message = String.Format(@"Value of variable with name ""{0}"" is ""{1}"".", variable.Name, variable.Value),
                         Now = new CommandData() {
                             Variables = new List<VariableModel>() {
@@ -557,7 +557,7 @@ namespace Procon.Core.Variables {
                 else {
                     result = new CommandResult() {
                         Success = false,
-                        Status = CommandResultType.InvalidParameter,
+                        CommandResultType = CommandResultType.InvalidParameter,
                         Message = "A variable name must not be zero length"
                     };
                 }

@@ -46,7 +46,7 @@ namespace Procon.Core.Test.TextCommands {
             });
 
             Assert.IsTrue(result.Success);
-            Assert.AreEqual(CommandResultType.Success, result.Status);
+            Assert.AreEqual(CommandResultType.Success, result.CommandResultType);
             Assert.AreEqual(1, textCommands.TextCommands.Count);
             Assert.AreEqual("RegisterTest", textCommands.TextCommands.First().Commands.First());
         }
@@ -101,7 +101,7 @@ namespace Procon.Core.Test.TextCommands {
             });
 
             Assert.IsFalse(result.Success);
-            Assert.AreEqual(CommandResultType.AlreadyExists, result.Status);
+            Assert.AreEqual(CommandResultType.AlreadyExists, result.CommandResultType);
             Assert.AreEqual(1, textCommands.TextCommands.Count);
         }
 
@@ -136,7 +136,7 @@ namespace Procon.Core.Test.TextCommands {
             });
 
             Assert.IsFalse(result.Success);
-            Assert.AreEqual(CommandResultType.InsufficientPermissions, result.Status);
+            Assert.AreEqual(CommandResultType.InsufficientPermissions, result.CommandResultType);
         }
 
         /// <summary>
@@ -189,7 +189,7 @@ namespace Procon.Core.Test.TextCommands {
             });
 
             Assert.IsTrue(result.Success);
-            Assert.AreEqual(CommandResultType.Success, result.Status);
+            Assert.AreEqual(CommandResultType.Success, result.CommandResultType);
             Assert.AreEqual(0, textCommands.TextCommands.Count);
         }
 
@@ -218,7 +218,7 @@ namespace Procon.Core.Test.TextCommands {
             });
 
             Assert.IsFalse(result.Success);
-            Assert.AreEqual(CommandResultType.DoesNotExists, result.Status);
+            Assert.AreEqual(CommandResultType.DoesNotExists, result.CommandResultType);
         }
 
         /// <summary>
@@ -277,7 +277,7 @@ namespace Procon.Core.Test.TextCommands {
             });
 
             Assert.IsFalse(result.Success);
-            Assert.AreEqual(CommandResultType.InsufficientPermissions, result.Status);
+            Assert.AreEqual(CommandResultType.InsufficientPermissions, result.CommandResultType);
         }
     }
 }

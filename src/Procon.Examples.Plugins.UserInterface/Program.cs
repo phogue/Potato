@@ -42,7 +42,7 @@ namespace Procon.Examples.Plugins.UserInterface {
                     }
                 },
                 ContentType = Mime.TextHtml,
-                Status = CommandResultType.Success,
+                CommandResultType = CommandResultType.Success,
                 Success = true
             };
         }
@@ -67,7 +67,7 @@ namespace Procon.Examples.Plugins.UserInterface {
                     }
                 },
                 ContentType = Mime.TextHtml,
-                Status = CommandResultType.Success,
+                CommandResultType = CommandResultType.Success,
                 Success = true
             };
         }

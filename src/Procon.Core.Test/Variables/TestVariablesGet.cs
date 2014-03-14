@@ -65,7 +65,7 @@ namespace Procon.Core.Test.Variables {
             });
 
             Assert.IsTrue(result.Success);
-            Assert.AreEqual(CommandResultType.Success, result.Status);
+            Assert.AreEqual(CommandResultType.Success, result.CommandResultType);
             Assert.AreEqual("value", result.Now.Variables.First().ToType(String.Empty));
         }
 
@@ -136,7 +136,7 @@ namespace Procon.Core.Test.Variables {
             });
 
             Assert.IsFalse(result.Success);
-            Assert.AreEqual(CommandResultType.InvalidParameter, result.Status);
+            Assert.AreEqual(CommandResultType.InvalidParameter, result.CommandResultType);
         }
 
         /// <summary>
@@ -168,7 +168,7 @@ namespace Procon.Core.Test.Variables {
             });
 
             Assert.IsFalse(result.Success);
-            Assert.AreEqual(CommandResultType.InsufficientPermissions, result.Status);
+            Assert.AreEqual(CommandResultType.InsufficientPermissions, result.CommandResultType);
         }
 
         /// <summary>

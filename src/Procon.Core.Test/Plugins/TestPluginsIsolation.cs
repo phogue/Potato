@@ -47,7 +47,7 @@ namespace Procon.Core.Test.Plugins {
             });
 
             Assert.IsTrue(result.Success == expectedSuccessFlag);
-            Assert.AreEqual(resultType, result.Status);
+            Assert.AreEqual(resultType, result.CommandResultType);
         }
 
         /// <summary>
@@ -96,7 +96,7 @@ namespace Procon.Core.Test.Plugins {
             // Validate the return, this will assert if the command wasn't executed implying the 
             // assembly isn't loaded in the other app domain.
             Assert.IsTrue(result.Success);
-            Assert.AreEqual(CommandResultType.Success, result.Status);
+            Assert.AreEqual(CommandResultType.Success, result.CommandResultType);
             Assert.AreEqual("Return Message", result.Message);
 
             // Now make sure our current appdomain is clean of the test plugin

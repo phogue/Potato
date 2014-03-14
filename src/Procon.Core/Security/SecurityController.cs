@@ -437,7 +437,7 @@ namespace Procon.Core.Security {
 
                         result = new CommandResult() {
                             Success = true,
-                            Status = CommandResultType.Success,
+                            CommandResultType = CommandResultType.Success,
                             Message = String.Format(@"Group ""{0}"" created successfully.", groupName),
                             Now = new CommandData() {
                                 Groups = new List<GroupModel>() {
@@ -453,7 +453,7 @@ namespace Procon.Core.Security {
                     else {
                         result = new CommandResult() {
                             Success = false,
-                            Status = CommandResultType.AlreadyExists,
+                            CommandResultType = CommandResultType.AlreadyExists,
                             Message = String.Format(@"Group ""{0}"" already exists.", groupName)
                         };
                     }
@@ -461,7 +461,7 @@ namespace Procon.Core.Security {
                 else {
                     result = new CommandResult() {
                         Success = false,
-                        Status = CommandResultType.InvalidParameter,
+                        CommandResultType = CommandResultType.InvalidParameter,
                         Message = "A group name must not be zero length"
                     };
                 }
@@ -495,7 +495,7 @@ namespace Procon.Core.Security {
 
                                 result = new CommandResult() {
                                     Success = true,
-                                    Status = CommandResultType.Success,
+                                    CommandResultType = CommandResultType.Success,
                                     Message = String.Format(@"Group ""{0}"" successfully removed.", groupName),
                                     Then = new CommandData() {
                                         Groups = new List<GroupModel>() {
@@ -514,7 +514,7 @@ namespace Procon.Core.Security {
                             else {
                                 result = new CommandResult() {
                                     Success = false,
-                                    Status = CommandResultType.InvalidParameter,
+                                    CommandResultType = CommandResultType.InvalidParameter,
                                     Message = "Cannot delete the guest group"
                                 };
                             }
@@ -522,7 +522,7 @@ namespace Procon.Core.Security {
                         else {
                             result = new CommandResult() {
                                 Success = false,
-                                Status = CommandResultType.DoesNotExists,
+                                CommandResultType = CommandResultType.DoesNotExists,
                                 Message = String.Format(@"Group ""{0}"" does not exist.", groupName)
                             };
                         }
@@ -530,7 +530,7 @@ namespace Procon.Core.Security {
                     else {
                         result = new CommandResult() {
                             Success = false,
-                            Status = CommandResultType.InvalidParameter,
+                            CommandResultType = CommandResultType.InvalidParameter,
                             Message = "Cannot delete the your own group"
                         };
                     }
@@ -538,7 +538,7 @@ namespace Procon.Core.Security {
                 else {
                     result = new CommandResult() {
                         Success = false,
-                        Status = CommandResultType.InvalidParameter,
+                        CommandResultType = CommandResultType.InvalidParameter,
                         Message = "A group name must not be zero length"
                     };
                 }
@@ -570,7 +570,7 @@ namespace Procon.Core.Security {
 
                             result = new CommandResult() {
                                 Success = true,
-                                Status = CommandResultType.Success,
+                                CommandResultType = CommandResultType.Success,
                                 Message = String.Format(@"Account ""{0}"" successfully removed.", account.Username),
                                 Then = new CommandData() {
                                     Accounts = new List<AccountModel>() {
@@ -592,7 +592,7 @@ namespace Procon.Core.Security {
                         else {
                             result = new CommandResult() {
                                 Success = false,
-                                Status = CommandResultType.DoesNotExists,
+                                CommandResultType = CommandResultType.DoesNotExists,
                                 Message = String.Format(@"Account ""{0}"" does not exist.", username)
                             };
                         }
@@ -600,7 +600,7 @@ namespace Procon.Core.Security {
                     else {
                         result = new CommandResult() {
                             Success = false,
-                            Status = CommandResultType.InvalidParameter,
+                            CommandResultType = CommandResultType.InvalidParameter,
                             Message = "Cannot remove your own account"
                         };
                     }
@@ -608,7 +608,7 @@ namespace Procon.Core.Security {
                 else {
                     result = new CommandResult() {
                         Success = false,
-                        Status = CommandResultType.InvalidParameter,
+                        CommandResultType = CommandResultType.InvalidParameter,
                         Message = "An account name must not be zero length"
                     };
                 }
@@ -646,7 +646,7 @@ namespace Procon.Core.Security {
 
                         result = new CommandResult() {
                             Success = true,
-                            Status = CommandResultType.Success,
+                            CommandResultType = CommandResultType.Success,
                             Message = String.Format(@"Player with UID of ""{0}"" in game type ""{1}"" successfully removed from account ""{2}"".", player.Uid, player.ProtocolType, player.Account.Username),
                             Then = new CommandData() {
                                 AccountPlayers = new List<AccountPlayerModel>() {
@@ -668,7 +668,7 @@ namespace Procon.Core.Security {
                     else {
                         result = new CommandResult() {
                             Success = false,
-                            Status = CommandResultType.DoesNotExists,
+                            CommandResultType = CommandResultType.DoesNotExists,
                             Message = String.Format(@"Player with UID of ""{0}"" in game type ""{1}"" does not exist.", uid, gameType)
                         };
                     }
@@ -676,7 +676,7 @@ namespace Procon.Core.Security {
                 else {
                     result = new CommandResult() {
                         Success = false,
-                        Status = CommandResultType.InvalidParameter,
+                        CommandResultType = CommandResultType.InvalidParameter,
                         Message = "A player uid must not be zero length"
                     };
                 }
@@ -708,7 +708,7 @@ namespace Procon.Core.Security {
                         // The initiator "out ranks" the target. Good to go.
                         result = new CommandResult() {
                             Success = true,
-                            Status = CommandResultType.Success
+                            CommandResultType = CommandResultType.Success
                         };
                     }
                     else {
@@ -716,7 +716,7 @@ namespace Procon.Core.Security {
                         // The cannot execute the command, but we give some further details about it here.
                         result = new CommandResult() {
                             Success = false,
-                            Status = CommandResultType.InsufficientAuthority
+                            CommandResultType = CommandResultType.InsufficientAuthority
                         };
                     }
                 }
@@ -724,7 +724,7 @@ namespace Procon.Core.Security {
                     // The target does not have any permission, so we're good to go.
                     result = new CommandResult() {
                         Success = true,
-                        Status = CommandResultType.Success
+                        CommandResultType = CommandResultType.Success
                     };
                 }
             }
@@ -732,7 +732,7 @@ namespace Procon.Core.Security {
                 // The account has zero authority.
                 result = new CommandResult() {
                     Success = false,
-                    Status = CommandResultType.InsufficientPermissions
+                    CommandResultType = CommandResultType.InsufficientPermissions
                 };
             }
 
@@ -760,7 +760,7 @@ namespace Procon.Core.Security {
                 // All good.
                 result = new CommandResult() {
                     Success = true,
-                    Status = CommandResultType.Success
+                    CommandResultType = CommandResultType.Success
                 };
             }
             else if (command.Origin == CommandOrigin.Plugin) {
@@ -768,7 +768,7 @@ namespace Procon.Core.Security {
                     // The plugin has not provided additional details on who has executed it.
                     result = new CommandResult() {
                         Success = true,
-                        Status = CommandResultType.Success
+                        CommandResultType = CommandResultType.Success
                     };
                 }
                 else {
@@ -782,7 +782,7 @@ namespace Procon.Core.Security {
             else {
                 result = new CommandResult() {
                     Success = false,
-                    Status = CommandResultType.InsufficientPermissions
+                    CommandResultType = CommandResultType.InsufficientPermissions
                 };
             }
 
@@ -853,13 +853,13 @@ namespace Procon.Core.Security {
             if (executor != null && executor.Equals(target) == true) {
                 result = new CommandResult() {
                     Success = true,
-                    Status = CommandResultType.Success
+                    CommandResultType = CommandResultType.Success
                 };
             }
             else {
                 result = new CommandResult() {
                     Success = false,
-                    Status = CommandResultType.Failed
+                    CommandResultType = CommandResultType.Failed
                 };
             }
 
@@ -883,13 +883,13 @@ namespace Procon.Core.Security {
             if (executor != null && executor.Equals(target) == true) {
                 result = new CommandResult() {
                     Success = true,
-                    Status = CommandResultType.Success
+                    CommandResultType = CommandResultType.Success
                 };
             }
             else {
                 result = new CommandResult() {
                     Success = false,
-                    Status = CommandResultType.Failed
+                    CommandResultType = CommandResultType.Failed
                 };
             }
 
@@ -911,13 +911,13 @@ namespace Procon.Core.Security {
             if (executor != null && executor.Group != null && executor.Group.Name == groupName) {
                 result = new CommandResult() {
                     Success = true,
-                    Status = CommandResultType.Success
+                    CommandResultType = CommandResultType.Success
                 };
             }
             else {
                 result = new CommandResult() {
                     Success = false,
-                    Status = CommandResultType.Failed
+                    CommandResultType = CommandResultType.Failed
                 };
             }
 
@@ -995,7 +995,7 @@ namespace Procon.Core.Security {
 
                     result = new CommandResult() {
                         Success = true,
-                        Status = CommandResultType.Success,
+                        CommandResultType = CommandResultType.Success,
                         Message = String.Format(@"Permission ""{0}"" successfully set to {1}.", permission.Name, permission.Authority),
                         Scope = new CommandData() {
                             Groups = new List<GroupModel>() {
@@ -1017,7 +1017,7 @@ namespace Procon.Core.Security {
                     result = new CommandResult() {
                         Message = String.Format(@"Group with name ""{0}"" does not exists.", groupName),
                         Success = false,
-                        Status = CommandResultType.DoesNotExists
+                        CommandResultType = CommandResultType.DoesNotExists
                     };
                 }
             }
@@ -1058,7 +1058,7 @@ namespace Procon.Core.Security {
 
                         result = new CommandResult() {
                             Success = true,
-                            Status = CommandResultType.Success,
+                            CommandResultType = CommandResultType.Success,
                             Message = String.Format(@"Successfully copied permissions from group ""{0}"" to {1}.", sourceGroup.Name, destinationGroup.Name),
                             Scope = new CommandData() {
                                 Groups = new List<GroupModel>() {
@@ -1077,7 +1077,7 @@ namespace Procon.Core.Security {
                     else {
                         result = new CommandResult() {
                             Success = false,
-                            Status = CommandResultType.DoesNotExists,
+                            CommandResultType = CommandResultType.DoesNotExists,
                             Message = String.Format(@"Source group ""{0}"" does not exist.", sourceGroupName)
                         };
                     }
@@ -1085,7 +1085,7 @@ namespace Procon.Core.Security {
                 else {
                     result = new CommandResult() {
                         Success = false,
-                        Status = CommandResultType.DoesNotExists,
+                        CommandResultType = CommandResultType.DoesNotExists,
                         Message = String.Format(@"Destination group ""{0}"" does not exist.", sourceGroupName)
                     };
                 }
@@ -1125,7 +1125,7 @@ namespace Procon.Core.Security {
 
                                 result = new CommandResult() {
                                     Success = true,
-                                    Status = CommandResultType.Success,
+                                    CommandResultType = CommandResultType.Success,
                                     Message = String.Format(@"Account ""{0}"" successfully added to group ""{1}"".", account.Username, group.Name),
                                     Scope = new CommandData() {
                                         Groups = new List<GroupModel>() {
@@ -1156,7 +1156,7 @@ namespace Procon.Core.Security {
 
                                 result = new CommandResult() {
                                     Success = true,
-                                    Status = CommandResultType.Success,
+                                    CommandResultType = CommandResultType.Success,
                                     Message = String.Format(@"Account ""{0}"" successfully added to group ""{1}"".", account.Username, group.Name),
                                     Scope = new CommandData() {
                                         Accounts = new List<AccountModel>() {
@@ -1183,7 +1183,7 @@ namespace Procon.Core.Security {
                         else {
                             result = new CommandResult() {
                                 Success = false,
-                                Status = CommandResultType.InvalidParameter,
+                                CommandResultType = CommandResultType.InvalidParameter,
                                 Message = "An account username must not be zero length"
                             };
                         }
@@ -1191,7 +1191,7 @@ namespace Procon.Core.Security {
                     else {
                         result = new CommandResult() {
                             Success = false,
-                            Status = CommandResultType.InvalidParameter,
+                            CommandResultType = CommandResultType.InvalidParameter,
                             Message = "Cannot add an account to a guest group"
                         };
                     }
@@ -1200,7 +1200,7 @@ namespace Procon.Core.Security {
                     result = new CommandResult() {
                         Message = String.Format(@"Group with name ""{0}"" does not exists.", groupName),
                         Success = false,
-                        Status = CommandResultType.DoesNotExists
+                        CommandResultType = CommandResultType.DoesNotExists
                     };
                 }
             }
@@ -1252,7 +1252,7 @@ namespace Procon.Core.Security {
 
                             result = new CommandResult() {
                                 Success = true,
-                                Status = CommandResultType.Success,
+                                CommandResultType = CommandResultType.Success,
                                 Message = String.Format(@"Player with UID of ""{0}"" in game type ""{1}"" successfully added to account ""{2}"".", player.Uid, player.ProtocolType, account.Username),
                                 Scope = new CommandData() {
                                     Accounts = new List<AccountModel>() {
@@ -1286,7 +1286,7 @@ namespace Procon.Core.Security {
 
                             result = new CommandResult() {
                                 Success = true,
-                                Status = CommandResultType.Success,
+                                CommandResultType = CommandResultType.Success,
                                 Message = String.Format(@"Player with UID of ""{0}"" in game type ""{1}"" successfully added to account ""{2}"".", player.Uid, player.ProtocolType, account.Username),
                                 Scope = new CommandData() {
                                     AccountPlayers = new List<AccountPlayerModel>() {
@@ -1313,7 +1313,7 @@ namespace Procon.Core.Security {
                     else {
                         result = new CommandResult() {
                             Success = false,
-                            Status = CommandResultType.InvalidParameter,
+                            CommandResultType = CommandResultType.InvalidParameter,
                             Message = "A player uid must not be zero length"
                         };
                     }
@@ -1322,7 +1322,7 @@ namespace Procon.Core.Security {
                     result = new CommandResult() {
                         Message = String.Format(@"Account with username ""{0}"" does not exists.", username),
                         Success = false,
-                        Status = CommandResultType.DoesNotExists
+                        CommandResultType = CommandResultType.DoesNotExists
                     };
                 }
             }
@@ -1356,14 +1356,14 @@ namespace Procon.Core.Security {
 
                         result = new CommandResult() {
                             Success = true,
-                            Status = CommandResultType.Success,
+                            CommandResultType = CommandResultType.Success,
                             Message = String.Format(@"Successfully changed password for account with username ""{0}"".", account.Username)
                         };
                     }
                     else {
                         result = new CommandResult() {
                             Success = false,
-                            Status = CommandResultType.InvalidParameter,
+                            CommandResultType = CommandResultType.InvalidParameter,
                             Message = "A password must not be zero length"
                         };
                     }
@@ -1372,7 +1372,7 @@ namespace Procon.Core.Security {
                     result = new CommandResult() {
                         Message = String.Format(@"Account with username ""{0}"" does not exists.", username),
                         Success = false,
-                        Status = CommandResultType.DoesNotExists
+                        CommandResultType = CommandResultType.DoesNotExists
                     };
                 }
             }
@@ -1404,14 +1404,14 @@ namespace Procon.Core.Security {
 
                         result = new CommandResult() {
                             Success = true,
-                            Status = CommandResultType.Success,
+                            CommandResultType = CommandResultType.Success,
                             Message = String.Format(@"Successfully set password for account with username ""{0}"".", account.Username)
                         };
                     }
                     else {
                         result = new CommandResult() {
                             Success = false,
-                            Status = CommandResultType.InvalidParameter,
+                            CommandResultType = CommandResultType.InvalidParameter,
                             Message = "A password hash must not be zero length"
                         };
                     }
@@ -1420,7 +1420,7 @@ namespace Procon.Core.Security {
                     result = new CommandResult() {
                         Message = String.Format(@"Account with username ""{0}"" does not exists.", username),
                         Success = false,
-                        Status = CommandResultType.DoesNotExists
+                        CommandResultType = CommandResultType.DoesNotExists
                     };
                 }
             }
@@ -1451,7 +1451,7 @@ namespace Procon.Core.Security {
                         if (BCrypt.CheckPassword(passwordPlainText, account.PasswordHash) == true) {
                             result = new CommandResult() {
                                 Success = true,
-                                Status = CommandResultType.Success,
+                                CommandResultType = CommandResultType.Success,
                                 Message = String.Format(@"Successfully authenticated against account with username ""{0}"".", account.Username),
                                 Scope = {
                                     Accounts = new List<AccountModel>() {
@@ -1463,7 +1463,7 @@ namespace Procon.Core.Security {
                         else {
                             result = new CommandResult() {
                                 Success = false,
-                                Status = CommandResultType.Failed,
+                                CommandResultType = CommandResultType.Failed,
                                 Message = "Invalid username or password."
                             };
                         }
@@ -1471,7 +1471,7 @@ namespace Procon.Core.Security {
                     else {
                         result = new CommandResult() {
                             Success = false,
-                            Status = CommandResultType.DoesNotExists,
+                            CommandResultType = CommandResultType.DoesNotExists,
                             Message = String.Format(@"A password has not been setup for account with username ""{0}"".", account.Username)
                         };
                     }
@@ -1480,7 +1480,7 @@ namespace Procon.Core.Security {
                     result = new CommandResult() {
                         Message = String.Format(@"Account with username ""{0}"" does not exists.", username),
                         Success = false,
-                        Status = CommandResultType.DoesNotExists
+                        CommandResultType = CommandResultType.DoesNotExists
                     };
                 }
             }
@@ -1516,14 +1516,14 @@ namespace Procon.Core.Security {
 
                         result = new CommandResult() {
                             Success = true,
-                            Status = CommandResultType.Success,
+                            CommandResultType = CommandResultType.Success,
                             Message = String.Format(@"Account with username ""{0}"" successfully set preferred language to ""{1}"".", account.Username, language.LanguageCode)
                         };
                     }
                     else {
                         result = new CommandResult() {
                             Success = false,
-                            Status = CommandResultType.DoesNotExists,
+                            CommandResultType = CommandResultType.DoesNotExists,
                             Message = String.Format(@"Language with code ""{0}"" does not exist.", languageCode)
                         };
                     }
@@ -1532,7 +1532,7 @@ namespace Procon.Core.Security {
                     result = new CommandResult() {
                         Message = String.Format(@"Account with username ""{0}"" does not exists.", username),
                         Success = false,
-                        Status = CommandResultType.DoesNotExists
+                        CommandResultType = CommandResultType.DoesNotExists
                     };
                 }
             }
@@ -1579,14 +1579,14 @@ namespace Procon.Core.Security {
 
                         result = new CommandResult() {
                             Success = true,
-                            Status = CommandResultType.Success,
+                            CommandResultType = CommandResultType.Success,
                             Message = String.Format(@"Group with name ""{0}"" successfully set permissions to predefined stream setup.", group.Name)
                         };
                     }
                     else {
                         result = new CommandResult() {
                             Success = false,
-                            Status = CommandResultType.InvalidParameter,
+                            CommandResultType = CommandResultType.InvalidParameter,
                             Message = "Cannot add an account to a guest group"
                         };
                     }
@@ -1595,7 +1595,7 @@ namespace Procon.Core.Security {
                     result = new CommandResult() {
                         Message = String.Format(@"Group with name ""{0}"" does not exists.", groupName),
                         Success = false,
-                        Status = CommandResultType.DoesNotExists
+                        CommandResultType = CommandResultType.DoesNotExists
                     };
                 }
             }
@@ -1625,14 +1625,14 @@ namespace Procon.Core.Security {
 
                         result = new CommandResult() {
                             Success = true,
-                            Status = CommandResultType.Success,
+                            CommandResultType = CommandResultType.Success,
                             Message = String.Format(@"Group with name ""{0}"" successfully set permissions to predefined administrator setup.", group.Name)
                         };
                     }
                     else {
                         result = new CommandResult() {
                             Success = false,
-                            Status = CommandResultType.InvalidParameter,
+                            CommandResultType = CommandResultType.InvalidParameter,
                             Message = "Cannot add an account to a guest group"
                         };
                     }
@@ -1641,7 +1641,7 @@ namespace Procon.Core.Security {
                     result = new CommandResult() {
                         Message = String.Format(@"Group with name ""{0}"" does not exists.", groupName),
                         Success = false,
-                        Status = CommandResultType.DoesNotExists
+                        CommandResultType = CommandResultType.DoesNotExists
                     };
                 }
             }

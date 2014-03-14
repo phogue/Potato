@@ -253,7 +253,7 @@ namespace Procon.Core {
                 Arguments = new Dictionary<string, string>() {
                     { "Command", message.Name },
                     { "Success", result.Success.ToString() },
-                    { "Status", result.Status.ToString() },
+                    { "Status", result.CommandResultType.ToString() },
                     { "Message", result.Message }
                 }
             };
@@ -544,7 +544,7 @@ namespace Procon.Core {
 
                 result = new CommandResult() {
                     Message = String.Format("Successfully posted restart signal."),
-                    Status = CommandResultType.Success,
+                    CommandResultType = CommandResultType.Success,
                     Success = true
                 };
 
@@ -582,7 +582,7 @@ namespace Procon.Core {
 
                     result = new CommandResult() {
                         Message = String.Format("Successfully posted merge signal."),
-                        Status = CommandResultType.Success,
+                        CommandResultType = CommandResultType.Success,
                         Success = true
                     };
 
@@ -591,7 +591,7 @@ namespace Procon.Core {
                 else {
                     result = new CommandResult() {
                         Message = String.Format(@"Invalid or missing parameter ""uri"" or ""packageId""."),
-                        Status = CommandResultType.InvalidParameter,
+                        CommandResultType = CommandResultType.InvalidParameter,
                         Success = false
                     };
                 }
@@ -626,7 +626,7 @@ namespace Procon.Core {
 
                     result = new CommandResult() {
                         Message = String.Format("Successfully posted uninstall signal."),
-                        Status = CommandResultType.Success,
+                        CommandResultType = CommandResultType.Success,
                         Success = true
                     };
 
@@ -635,7 +635,7 @@ namespace Procon.Core {
                 else {
                     result = new CommandResult() {
                         Message = String.Format(@"Invalid or missing parameter ""packageId""."),
-                        Status = CommandResultType.InvalidParameter,
+                        CommandResultType = CommandResultType.InvalidParameter,
                         Success = false
                     };
                 }
@@ -702,7 +702,7 @@ namespace Procon.Core {
 
                             result = new CommandResult() {
                                 Message = String.Format("Successfully added {0} connection.", gameTypeType),
-                                Status = CommandResultType.Success,
+                                CommandResultType = CommandResultType.Success,
                                 Success = true,
                                 Now = {
                                     Connections = new List<ConnectionModel>() {
@@ -716,7 +716,7 @@ namespace Procon.Core {
                         else {
                             result = new CommandResult() {
                                 Message = String.Format(@"Game type ""{0}"" is not supported.", gameTypeType),
-                                Status = CommandResultType.DoesNotExists,
+                                CommandResultType = CommandResultType.DoesNotExists,
                                 Success = false
                             };
                         }
@@ -724,7 +724,7 @@ namespace Procon.Core {
                     else {
                         result = new CommandResult() {
                             Message = String.Format(@"Game type ""{0}"" with connection to {1}:{2} has already been added.", gameTypeType, hostName, port),
-                            Status = CommandResultType.AlreadyExists,
+                            CommandResultType = CommandResultType.AlreadyExists,
                             Success = false
                         };
                     }
@@ -732,7 +732,7 @@ namespace Procon.Core {
                 else {
                     result = new CommandResult() {
                         Message = String.Format(@"Maximum number of game connections exceeded."),
-                        Status = CommandResultType.LimitExceeded,
+                        CommandResultType = CommandResultType.LimitExceeded,
                         Success = false
                     };
                 }
@@ -758,7 +758,7 @@ namespace Procon.Core {
 
                     result = new CommandResult() {
                         Message = String.Format(@"Successfully removed connection with connection to {0}:{1} and game type ""{2}"".", connection.ConnectionModel.Hostname, connection.ConnectionModel.Port, connection),
-                        Status = CommandResultType.Success,
+                        CommandResultType = CommandResultType.Success,
                         Success = true,
                         Now = {
                             Connections = new List<ConnectionModel>() {
@@ -774,7 +774,7 @@ namespace Procon.Core {
                 else {
                     result = new CommandResult() {
                         Message = String.Format(@"Connection does not exist."),
-                        Status = CommandResultType.DoesNotExists,
+                        CommandResultType = CommandResultType.DoesNotExists,
                         Success = false
                     };
                 }
@@ -837,7 +837,7 @@ namespace Procon.Core {
                 
                 result = new CommandResult() {
                     Success = true,
-                    Status = CommandResultType.Success,
+                    CommandResultType = CommandResultType.Success,
                     Now = new CommandData() {
                         Connections = this.Connections.Select(connection => connection.ConnectionModel).ToList(),
                         ProtocolTypes = new List<ProtocolType>(SupportedGameTypes.GetSupportedGames().Select(k => k.Key as ProtocolType)),

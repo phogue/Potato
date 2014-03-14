@@ -223,7 +223,7 @@ namespace Procon.Core.Localization {
                 if (language != null) {
                     result = new CommandResult() {
                         Success = true,
-                        Status = CommandResultType.Success,
+                        CommandResultType = CommandResultType.Success,
                         Now = new CommandData() {
                             Content = new List<String>() {
                                 language.Localize(@namespace, name, args)
@@ -234,7 +234,7 @@ namespace Procon.Core.Localization {
                 else {
                     result = new CommandResult() {
                         Success = false,
-                        Status = CommandResultType.DoesNotExists,
+                        CommandResultType = CommandResultType.DoesNotExists,
                         Message = String.Format(@"Language with the code ""{0}"" does not exist.", languageCode)
                     };
                 }

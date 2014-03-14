@@ -46,7 +46,7 @@ namespace Procon.Core.Test.Security.Account {
 
             // Make sure the command failed. The user cannot remove their own account.
             Assert.IsTrue(result.Success);
-            Assert.AreEqual(CommandResultType.Success, result.Status);
+            Assert.AreEqual(CommandResultType.Success, result.CommandResultType);
         }
 
         /// <summary>
@@ -65,7 +65,7 @@ namespace Procon.Core.Test.Security.Account {
 
             // Make sure the command failed. The user cannot remove their own account.
             Assert.IsFalse(result.Success);
-            Assert.AreEqual(result.Status, CommandResultType.InvalidParameter);
+            Assert.AreEqual(result.CommandResultType, CommandResultType.InvalidParameter);
         }
 
         /// <summary>
@@ -86,7 +86,7 @@ namespace Procon.Core.Test.Security.Account {
 
             // Make sure adding an empty group fails.
             Assert.IsFalse(result.Success);
-            Assert.AreEqual(result.Status, CommandResultType.InvalidParameter);
+            Assert.AreEqual(result.CommandResultType, CommandResultType.InvalidParameter);
         }
 
         /// <summary>
@@ -107,7 +107,7 @@ namespace Procon.Core.Test.Security.Account {
 
             // Make sure it was successful.
             Assert.IsFalse(result.Success);
-            Assert.AreEqual(CommandResultType.InsufficientPermissions, result.Status);
+            Assert.AreEqual(CommandResultType.InsufficientPermissions, result.CommandResultType);
         }
 
         /// <summary>
@@ -126,7 +126,7 @@ namespace Procon.Core.Test.Security.Account {
 
             // Make sure it was not successful.
             Assert.IsFalse(result.Success);
-            Assert.AreEqual(result.Status, CommandResultType.DoesNotExists);
+            Assert.AreEqual(result.CommandResultType, CommandResultType.DoesNotExists);
         }
     }
 }

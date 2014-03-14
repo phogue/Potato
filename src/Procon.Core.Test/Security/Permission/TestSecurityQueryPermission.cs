@@ -32,7 +32,7 @@ namespace Procon.Core.Test.Security.Permission {
             );
 
             Assert.IsFalse(result.Success);
-            Assert.AreEqual(CommandResultType.InsufficientPermissions, result.Status);
+            Assert.AreEqual(CommandResultType.InsufficientPermissions, result.CommandResultType);
         }
 
         [Test]
@@ -56,7 +56,7 @@ namespace Procon.Core.Test.Security.Permission {
             );
 
             Assert.IsFalse(result.Success);
-            Assert.AreEqual(CommandResultType.InsufficientAuthority, result.Status);
+            Assert.AreEqual(CommandResultType.InsufficientAuthority, result.CommandResultType);
         }
 
         [Test]
@@ -81,7 +81,7 @@ namespace Procon.Core.Test.Security.Permission {
             );
 
             Assert.IsFalse(result.Success);
-            Assert.AreEqual(CommandResultType.InsufficientAuthority, result.Status);
+            Assert.AreEqual(CommandResultType.InsufficientAuthority, result.CommandResultType);
         }
 
         /// <summary>
@@ -106,7 +106,7 @@ namespace Procon.Core.Test.Security.Permission {
             );
 
             Assert.IsFalse(result.Success);
-            Assert.AreEqual(CommandResultType.InsufficientPermissions, result.Status);
+            Assert.AreEqual(CommandResultType.InsufficientPermissions, result.CommandResultType);
         }
 
         /// <summary>
@@ -133,7 +133,7 @@ namespace Procon.Core.Test.Security.Permission {
             );
 
             Assert.IsFalse(result.Success);
-            Assert.AreEqual(CommandResultType.InsufficientAuthority, result.Status);
+            Assert.AreEqual(CommandResultType.InsufficientAuthority, result.CommandResultType);
         }
 
         /// <summary>
@@ -160,7 +160,7 @@ namespace Procon.Core.Test.Security.Permission {
             );
 
             Assert.IsTrue(result.Success);
-            Assert.AreEqual(CommandResultType.Success, result.Status);
+            Assert.AreEqual(CommandResultType.Success, result.CommandResultType);
         }
 
         [Test]
@@ -185,7 +185,7 @@ namespace Procon.Core.Test.Security.Permission {
             );
 
             Assert.IsTrue(result.Success);
-            Assert.AreEqual(CommandResultType.Success, result.Status);
+            Assert.AreEqual(CommandResultType.Success, result.CommandResultType);
         }
 
         [Test]
@@ -210,7 +210,7 @@ namespace Procon.Core.Test.Security.Permission {
             );
 
             Assert.IsTrue(result.Success);
-            Assert.AreEqual(CommandResultType.Success, result.Status);
+            Assert.AreEqual(CommandResultType.Success, result.CommandResultType);
         }
 
         [Test]
@@ -235,7 +235,7 @@ namespace Procon.Core.Test.Security.Permission {
             );
 
             Assert.IsTrue(result.Success);
-            Assert.AreEqual(CommandResultType.Success, result.Status);
+            Assert.AreEqual(CommandResultType.Success, result.CommandResultType);
         }
 
         [Test]
@@ -260,7 +260,7 @@ namespace Procon.Core.Test.Security.Permission {
             );
 
             Assert.IsTrue(result.Success);
-            Assert.AreEqual(CommandResultType.Success, result.Status);
+            Assert.AreEqual(CommandResultType.Success, result.CommandResultType);
         }
 
         /// <summary>
@@ -281,7 +281,7 @@ namespace Procon.Core.Test.Security.Permission {
             );
 
             Assert.IsTrue(result.Success);
-            Assert.AreEqual(CommandResultType.Success, result.Status);
+            Assert.AreEqual(CommandResultType.Success, result.CommandResultType);
         }
 
         [Test]
@@ -306,7 +306,7 @@ namespace Procon.Core.Test.Security.Permission {
             );
 
             Assert.IsFalse(result.Success);
-            Assert.AreEqual(CommandResultType.InsufficientPermissions, result.Status);
+            Assert.AreEqual(CommandResultType.InsufficientPermissions, result.CommandResultType);
         }
     }
 }

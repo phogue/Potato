@@ -32,7 +32,7 @@ namespace Procon.Core.Test.Security.Account {
             );
 
             Assert.IsFalse(result.Success);
-            Assert.AreEqual(CommandResultType.InsufficientPermissions, result.Status);
+            Assert.AreEqual(CommandResultType.InsufficientPermissions, result.CommandResultType);
         }
 
         /// <summary>
@@ -55,7 +55,7 @@ namespace Procon.Core.Test.Security.Account {
 
             // Validate that we could authenticate with our new password.
             Assert.IsTrue(result.Success);
-            Assert.AreEqual(result.Status, CommandResultType.Success);
+            Assert.AreEqual(result.CommandResultType, CommandResultType.Success);
         }
 
         /// <summary>
@@ -73,7 +73,7 @@ namespace Procon.Core.Test.Security.Account {
 
             // Validate that we could not set a password and the result returned false.
             Assert.IsFalse(result.Success);
-            Assert.AreEqual(CommandResultType.DoesNotExists, result.Status);
+            Assert.AreEqual(CommandResultType.DoesNotExists, result.CommandResultType);
         }
 
         /// <summary>
@@ -90,7 +90,7 @@ namespace Procon.Core.Test.Security.Account {
 
             // Validate that we could not set a password and the result returned false.
             Assert.IsFalse(result.Success);
-            Assert.AreEqual(result.Status, CommandResultType.InvalidParameter);
+            Assert.AreEqual(result.CommandResultType, CommandResultType.InvalidParameter);
         }
     }
 }

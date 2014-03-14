@@ -319,7 +319,7 @@ namespace Procon.Core.Connections.TextCommands.Parsers {
 
                 result = new CommandResult() {
                     Success = true,
-                    Status = CommandResultType.Success,
+                    CommandResultType = CommandResultType.Success,
                     Now = new CommandData() {
                         Players = new List<PlayerModel>() {
                             this.SpeakerPlayer

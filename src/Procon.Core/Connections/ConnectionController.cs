@@ -251,7 +251,7 @@ namespace Procon.Core.Connections {
 
                 result = new CommandResult() {
                     Success = true,
-                    Status = CommandResultType.Success,
+                    CommandResultType = CommandResultType.Success,
                     Scope = new CommandData() {
                         Connections = new List<ConnectionModel>() {
                             this.ConnectionModel
@@ -282,7 +282,7 @@ namespace Procon.Core.Connections {
             if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
                 result = new CommandResult() {
                     Success = true,
-                    Status = CommandResultType.Success,
+                    CommandResultType = CommandResultType.Success,
                     Scope = new CommandData() {
                         Connections = new List<ConnectionModel>() {
                             this.ConnectionModel
@@ -309,7 +309,7 @@ namespace Procon.Core.Connections {
             if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
                 result = new CommandResult() {
                     Success = true,
-                    Status = CommandResultType.Success,
+                    CommandResultType = CommandResultType.Success,
                     Scope = new CommandData() {
                         Connections = new List<ConnectionModel>() {
                             this.ConnectionModel
@@ -338,7 +338,7 @@ namespace Procon.Core.Connections {
             if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
                 result = new CommandResult() {
                     Success = true,
-                    Status = CommandResultType.Success,
+                    CommandResultType = CommandResultType.Success,
                     Scope = new CommandData() {
                         Connections = new List<ConnectionModel>() {
                             this.ConnectionModel
@@ -365,7 +365,7 @@ namespace Procon.Core.Connections {
             if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
                 result = new CommandResult() {
                     Success = true,
-                    Status = CommandResultType.Success,
+                    CommandResultType = CommandResultType.Success,
                     Scope = new CommandData() {
                         Connections = new List<ConnectionModel>() {
                             this.ConnectionModel
@@ -392,7 +392,7 @@ namespace Procon.Core.Connections {
             if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
                 result = new CommandResult() {
                     Success = true,
-                    Status = CommandResultType.Success,
+                    CommandResultType = CommandResultType.Success,
                     Scope = new CommandData() {
                         Connections = new List<ConnectionModel>() {
                             this.ConnectionModel
@@ -423,7 +423,7 @@ namespace Procon.Core.Connections {
 
                 result = new CommandResult() {
                     Success = true,
-                    Status = CommandResultType.Success,
+                    CommandResultType = CommandResultType.Success,
                     Now = new CommandData() {
                         Packets = this.Protocol.Action(action)
                     }
@@ -458,7 +458,7 @@ namespace Procon.Core.Connections {
 
                 result = new CommandResult() {
                     Success = true,
-                    Status = CommandResultType.Success,
+                    CommandResultType = CommandResultType.Success,
                     Now = new CommandData() {
                         Packets = packets
                     }

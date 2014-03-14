@@ -26,7 +26,7 @@ namespace Procon.Core.Test.Security.Account {
 
             // Make sure the account was successfully created.
             Assert.IsTrue(result.Success);
-            Assert.AreEqual(result.Status, CommandResultType.Success);
+            Assert.AreEqual(result.CommandResultType, CommandResultType.Success);
             Assert.AreEqual(security.Groups.SelectMany(group => group.Accounts).First().Username, "Phogue");
         }
 
@@ -43,7 +43,7 @@ namespace Procon.Core.Test.Security.Account {
 
             // Make sure the account was successfully created.
             Assert.IsFalse(result.Success);
-            Assert.AreEqual(result.Status, CommandResultType.InvalidParameter);
+            Assert.AreEqual(result.CommandResultType, CommandResultType.InvalidParameter);
         }
 
         /// <summary>
@@ -63,7 +63,7 @@ namespace Procon.Core.Test.Security.Account {
 
             // Make sure setting the kick permission was successfull.
             Assert.IsTrue(result.Success);
-            Assert.AreEqual(result.Status, CommandResultType.Success);
+            Assert.AreEqual(result.CommandResultType, CommandResultType.Success);
             Assert.IsNull(security.Groups.Where(group => group.Name == "FirstGroupName").SelectMany(group => group.Accounts).FirstOrDefault());
             Assert.AreEqual(security.Groups.Where(group => group.Name == "SecondGroupName").SelectMany(group => group.Accounts).First().Username, "Phogue");
         }
@@ -80,7 +80,7 @@ namespace Procon.Core.Test.Security.Account {
 
             // Make sure the command returned nothing
             Assert.IsFalse(result.Success);
-            Assert.AreEqual(CommandResultType.DoesNotExists, result.Status);
+            Assert.AreEqual(CommandResultType.DoesNotExists, result.CommandResultType);
         }
 
         /// <summary>
@@ -95,7 +95,7 @@ namespace Procon.Core.Test.Security.Account {
 
             // Make sure the command returned nothing
             Assert.IsFalse(result.Success);
-            Assert.AreEqual(CommandResultType.InvalidParameter, result.Status);
+            Assert.AreEqual(CommandResultType.InvalidParameter, result.CommandResultType);
         }
 
         /// <summary>
@@ -114,7 +114,7 @@ namespace Procon.Core.Test.Security.Account {
             );
 
             Assert.IsFalse(result.Success);
-            Assert.AreEqual(CommandResultType.InsufficientPermissions, result.Status);
+            Assert.AreEqual(CommandResultType.InsufficientPermissions, result.CommandResultType);
         }
     }
 }

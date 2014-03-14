@@ -250,7 +250,7 @@ namespace Procon.Core.Shared.Plugins {
             // Not used.
             // String text = parameters["text"].First<String>();
 
-            if (command.Result.Status == CommandResultType.Success && command.Result.Now.TextCommands.First().PluginGuid == this.PluginGuid) {
+            if (command.Result.CommandResultType == CommandResultType.Success && command.Result.Now.TextCommands.First().PluginGuid == this.PluginGuid) {
                 this.Tunnel(new Command() {
                     Origin = CommandOrigin.Local,
                     Name = command.Result.Now.TextCommands.First().PluginCommand,

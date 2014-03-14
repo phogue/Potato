@@ -27,7 +27,7 @@ namespace Procon.Core.Test.Packages {
             }));
 
             Assert.IsFalse(result.Success);
-            Assert.AreEqual(CommandResultType.InsufficientPermissions, result.Status);
+            Assert.AreEqual(CommandResultType.InsufficientPermissions, result.CommandResultType);
         }
 
         /// <summary>
@@ -40,7 +40,7 @@ namespace Procon.Core.Test.Packages {
             ICommandResult result = packages.Tunnel(CommandBuilder.PackagesUninstallPackage("").SetOrigin(CommandOrigin.Local));
 
             Assert.IsFalse(result.Success);
-            Assert.AreEqual(CommandResultType.InvalidParameter, result.Status);
+            Assert.AreEqual(CommandResultType.InvalidParameter, result.CommandResultType);
         }
 
         /// <summary>
@@ -53,7 +53,7 @@ namespace Procon.Core.Test.Packages {
             ICommandResult result = packages.Tunnel(CommandBuilder.PackagesUninstallPackage("this-does-not-exist").SetOrigin(CommandOrigin.Local));
 
             Assert.IsFalse(result.Success);
-            Assert.AreEqual(CommandResultType.DoesNotExists, result.Status);
+            Assert.AreEqual(CommandResultType.DoesNotExists, result.CommandResultType);
         }
 
         /// <summary>
@@ -84,7 +84,7 @@ namespace Procon.Core.Test.Packages {
             ICommandResult result = packages.Tunnel(CommandBuilder.PackagesUninstallPackage("A").SetOrigin(CommandOrigin.Local));
 
             Assert.IsFalse(result.Success);
-            Assert.AreEqual(CommandResultType.AlreadyExists, result.Status);
+            Assert.AreEqual(CommandResultType.AlreadyExists, result.CommandResultType);
         }
 
         /// <summary>
@@ -120,7 +120,7 @@ namespace Procon.Core.Test.Packages {
             ICommandResult result = packages.Tunnel(CommandBuilder.PackagesUninstallPackage("A").SetOrigin(CommandOrigin.Local));
 
             Assert.IsTrue(result.Success);
-            Assert.AreEqual(CommandResultType.Success, result.Status);
+            Assert.AreEqual(CommandResultType.Success, result.CommandResultType);
         }
 
         /// <summary>
@@ -156,7 +156,7 @@ namespace Procon.Core.Test.Packages {
             ICommandResult result = packages.Tunnel(CommandBuilder.PackagesUninstallPackage("A").SetOrigin(CommandOrigin.Local));
 
             Assert.IsTrue(result.Success);
-            Assert.AreEqual(CommandResultType.Success, result.Status);
+            Assert.AreEqual(CommandResultType.Success, result.CommandResultType);
         }
     }
 }

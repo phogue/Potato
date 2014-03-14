@@ -32,7 +32,7 @@ namespace Procon.Core.Shared.Test.ExecutableCommands.Objects {
             ICommandResult result = command.Result;
 
             if (value == 10) {
-                result.Status = CommandResultType.None;
+                result.CommandResultType = CommandResultType.None;
             }
 
             return result;

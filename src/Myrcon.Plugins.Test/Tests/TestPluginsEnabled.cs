@@ -24,7 +24,7 @@ namespace Myrcon.Plugins.Test.Tests {
             String parameterMessage = parameters["parameterMessage"].First<String>();
 
             command.Result.Message = parameterMessage;
-            command.Result.Status = CommandResultType.Success;
+            command.Result.CommandResultType = CommandResultType.Success;
 
             return command.Result;
         }

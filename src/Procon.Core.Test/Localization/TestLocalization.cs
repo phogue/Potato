@@ -37,7 +37,7 @@ namespace Procon.Core.Test.Localization {
             });
 
             Assert.IsTrue(result.Success);
-            Assert.AreEqual(CommandResultType.Success, result.Status);
+            Assert.AreEqual(CommandResultType.Success, result.CommandResultType);
             Assert.AreEqual("ProconCoreTestDeutschTestValue", result.Now.Content.First());
         }
 
@@ -59,7 +59,7 @@ namespace Procon.Core.Test.Localization {
             });
 
             Assert.IsTrue(result.Success);
-            Assert.AreEqual(CommandResultType.Success, result.Status);
+            Assert.AreEqual(CommandResultType.Success, result.CommandResultType);
             Assert.AreEqual("ProconCoreTestLocalizationEnglishTestValue", result.Now.Content.First());
         }
 
@@ -108,7 +108,7 @@ namespace Procon.Core.Test.Localization {
             });
 
             Assert.IsTrue(result.Success);
-            Assert.AreEqual(CommandResultType.Success, result.Status);
+            Assert.AreEqual(CommandResultType.Success, result.CommandResultType);
             Assert.AreEqual("Hello World!", result.Now.Content.First());
         }
 
@@ -130,7 +130,7 @@ namespace Procon.Core.Test.Localization {
             });
 
             Assert.IsFalse(result.Success);
-            Assert.AreEqual(CommandResultType.DoesNotExists, result.Status);
+            Assert.AreEqual(CommandResultType.DoesNotExists, result.CommandResultType);
         }
 
         /// <summary>
@@ -151,7 +151,7 @@ namespace Procon.Core.Test.Localization {
             });
 
             Assert.IsTrue(result.Success);
-            Assert.AreEqual(CommandResultType.Success, result.Status);
+            Assert.AreEqual(CommandResultType.Success, result.CommandResultType);
             Assert.AreEqual("ProconCoreTestEnglishTestValue", result.Now.Content.First());
         }
 
@@ -173,7 +173,7 @@ namespace Procon.Core.Test.Localization {
             });
 
             Assert.IsTrue(result.Success);
-            Assert.AreEqual(CommandResultType.Success, result.Status);
+            Assert.AreEqual(CommandResultType.Success, result.CommandResultType);
             Assert.AreEqual("", result.Now.Content.First());
         }
 
@@ -202,7 +202,7 @@ namespace Procon.Core.Test.Localization {
             });
 
             Assert.IsFalse(result.Success);
-            Assert.AreEqual(CommandResultType.InsufficientPermissions, result.Status);
+            Assert.AreEqual(CommandResultType.InsufficientPermissions, result.CommandResultType);
         }
 
         /// <summary>

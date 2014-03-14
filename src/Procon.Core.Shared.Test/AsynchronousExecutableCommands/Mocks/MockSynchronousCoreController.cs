@@ -30,7 +30,7 @@ namespace Procon.Core.Shared.Test.AsynchronousExecutableCommands.Mocks {
 
             return new CommandResult() {
                 Success = true,
-                Status = CommandResultType.Success,
+                CommandResultType = CommandResultType.Success,
                 Message = "SetMessage: " + value
             };
         }

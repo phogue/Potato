@@ -26,7 +26,7 @@ namespace Procon.Core.Test.Variables {
 
             // Validate that the command was successful and the key was set to the passed value.
             Assert.IsTrue(result.Success);
-            Assert.AreEqual(CommandResultType.Success, result.Status);
+            Assert.AreEqual(CommandResultType.Success, result.CommandResultType);
             Assert.AreEqual("value", variables.Get("key", String.Empty));
             Assert.AreEqual("value", variables.ArchiveVariables.First(v => v.Name == "key").ToType<String>());
         }
@@ -41,7 +41,7 @@ namespace Procon.Core.Test.Variables {
 
             // Validate that the command failed
             Assert.IsFalse(result.Success);
-            Assert.AreEqual(CommandResultType.InvalidParameter, result.Status);
+            Assert.AreEqual(CommandResultType.InvalidParameter, result.CommandResultType);
         }
 
         /// <summary>
@@ -57,7 +57,7 @@ namespace Procon.Core.Test.Variables {
 
             // Validate the command failed because we don't have permissions to execute it.
             Assert.IsFalse(result.Success);
-            Assert.AreEqual(CommandResultType.InsufficientPermissions, result.Status);
+            Assert.AreEqual(CommandResultType.InsufficientPermissions, result.CommandResultType);
         }
 
         /// <summary>
@@ -87,7 +87,7 @@ namespace Procon.Core.Test.Variables {
 
             // Validate that initially setting the VariableModel is successful.
             Assert.IsTrue(result.Success);
-            Assert.AreEqual(CommandResultType.Success, result.Status);
+            Assert.AreEqual(CommandResultType.Success, result.CommandResultType);
             Assert.AreEqual("value", variables.Get("key", String.Empty));
             Assert.AreEqual("value", variables.ArchiveVariables.First(v => v.Name == "key").ToType<String>());
 
@@ -95,7 +95,7 @@ namespace Procon.Core.Test.Variables {
 
             // Validate that we changed changed an existing VariableModel value.
             Assert.IsTrue(result.Success);
-            Assert.AreEqual(CommandResultType.Success, result.Status);
+            Assert.AreEqual(CommandResultType.Success, result.CommandResultType);
             Assert.AreEqual("changed value", variables.Get("key", String.Empty));
             Assert.AreEqual("changed value", variables.ArchiveVariables.First(v => v.Name == "key").ToType<String>());
         }

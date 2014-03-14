@@ -189,7 +189,7 @@ namespace Procon.Core.Database {
 
             result = new CommandResult() {
                 Success = true,
-                Status = CommandResultType.Success,
+                CommandResultType = CommandResultType.Success,
                 Then = {
                     Queries = new List<IDatabaseObject>(queries)
                 },
@@ -221,7 +221,7 @@ namespace Procon.Core.Database {
             else {
                 result = new CommandResult() {
                     Message = String.Format(@"Database driver ""{0}"" is not supported.", databaseGroupName),
-                    Status = CommandResultType.DoesNotExists,
+                    CommandResultType = CommandResultType.DoesNotExists,
                     Success = false
                 };
             }

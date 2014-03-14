@@ -25,7 +25,7 @@ namespace Procon.Core.Test.Variables {
             ICommandResult result = variables.Tunnel(CommandBuilder.VariablesSet("key", "value").SetOrigin(CommandOrigin.Local));
 
             Assert.IsTrue(result.Success);
-            Assert.AreEqual(CommandResultType.Success, result.Status);
+            Assert.AreEqual(CommandResultType.Success, result.CommandResultType);
             Assert.AreEqual("value", variables.Get("key", String.Empty));
         }
 
@@ -46,7 +46,7 @@ namespace Procon.Core.Test.Variables {
             });
 
             Assert.IsTrue(result.Success);
-            Assert.AreEqual(CommandResultType.Success, result.Status);
+            Assert.AreEqual(CommandResultType.Success, result.CommandResultType);
             Assert.AreEqual("TestVariablesSetValueCaseInsensitive", variables.Get("Key", String.Empty));
             Assert.AreEqual("TestVariablesSetValueCaseInsensitive", variables.Get("KEY", String.Empty));
             Assert.AreEqual("TestVariablesSetValueCaseInsensitive", variables.Get("keY", String.Empty));
@@ -72,7 +72,7 @@ namespace Procon.Core.Test.Variables {
 
             // Validate that the command failed (can't have an empty key)
             Assert.IsFalse(result.Success);
-            Assert.AreEqual(CommandResultType.InvalidParameter, result.Status);
+            Assert.AreEqual(CommandResultType.InvalidParameter, result.CommandResultType);
             Assert.AreEqual(0, variables.VolatileVariables.Count);
         }
 
@@ -100,7 +100,7 @@ namespace Procon.Core.Test.Variables {
             });
 
             Assert.IsFalse(result.Success);
-            Assert.AreEqual(CommandResultType.InsufficientPermissions, result.Status);
+            Assert.AreEqual(CommandResultType.InsufficientPermissions, result.CommandResultType);
         }
 
         /// <summary>
@@ -129,7 +129,7 @@ namespace Procon.Core.Test.Variables {
 
             // Validate that the command failed (can't have an empty key)
             Assert.IsTrue(result.Success);
-            Assert.AreEqual(CommandResultType.Success, result.Status);
+            Assert.AreEqual(CommandResultType.Success, result.CommandResultType);
             Assert.AreEqual("modified value", variables.Get("key", String.Empty));
         }
 
@@ -160,7 +160,7 @@ namespace Procon.Core.Test.Variables {
 
             // Validate that the command failed (can't have an empty key)
             Assert.IsFalse(result.Success);
-            Assert.AreEqual(CommandResultType.Failed, result.Status);
+            Assert.AreEqual(CommandResultType.Failed, result.CommandResultType);
             Assert.AreEqual("value", variables.Get("key", String.Empty));
         }
 
@@ -195,7 +195,7 @@ namespace Procon.Core.Test.Variables {
             });
 
             Assert.IsTrue(result.Success);
-            Assert.AreEqual(CommandResultType.Success, result.Status);
+            Assert.AreEqual(CommandResultType.Success, result.CommandResultType);
             Assert.IsNotNull(variables.Get<List<String>>("key"));
             Assert.AreEqual("value1", variables.Get<List<String>>("key").First());
             Assert.AreEqual("value2", variables.Get<List<String>>("key").Last());

@@ -129,7 +129,7 @@ namespace Procon.Core.Shared {
                     command.Result = dispatch.Handler(command, parameters);
 
                     // Our status has changed, break our loop.
-                    if (command.Result.Status != maintainStatus) {
+                    if (command.Result.CommandResultType != maintainStatus) {
                         break;
                     }
                 }
@@ -141,10 +141,10 @@ namespace Procon.Core.Shared {
         public virtual ICommandResult PropogatePreview(ICommand command, CommandDirection direction) {
             command.Result = this.Run(CommandAttributeType.Preview, command, CommandResultType.Continue);
 
-            if (command.Result.Status == CommandResultType.Continue) {
+            if (command.Result.CommandResultType == CommandResultType.Continue) {
                 IList<ICoreController> propogationList = direction == CommandDirection.Tunnel ? this.TunnelExecutableObjects(command) : this.BubbleExecutableObjects(command);
 
-                for (int offset = 0; propogationList != null && offset < propogationList.Count && command.Result.Status == CommandResultType.Continue; offset++) {
+                for (int offset = 0; propogationList != null && offset < propogationList.Count && command.Result.CommandResultType == CommandResultType.Continue; offset++) {
                     if (propogationList[offset] != null) {
                         command.Result = propogationList[offset].PropogatePreview(command, direction);
                     }
@@ -157,10 +157,10 @@ namespace Procon.Core.Shared {
         public virtual ICommandResult PropogateHandler(ICommand command, CommandDirection direction) {
             command.Result = this.Run(CommandAttributeType.Handler, command, CommandResultType.Continue);
 
-            if (command.Result.Status == CommandResultType.Continue) {
+            if (command.Result.CommandResultType == CommandResultType.Continue) {
                 IList<ICoreController> propogationList = direction == CommandDirection.Tunnel ? this.TunnelExecutableObjects(command) : this.BubbleExecutableObjects(command);
 
-                for (int offset = 0; propogationList != null && offset < propogationList.Count && command.Result.Status == CommandResultType.Continue; offset++) {
+                for (int offset = 0; propogationList != null && offset < propogationList.Count && command.Result.CommandResultType == CommandResultType.Continue; offset++) {
                     if (propogationList[offset] != null) {
                         command.Result = propogationList[offset].PropogateHandler(command, direction);
                     }
@@ -171,7 +171,7 @@ namespace Procon.Core.Shared {
         }
 
         public virtual ICommandResult PropogateExecuted(ICommand command, CommandDirection direction) {
-            command.Result = this.Run(CommandAttributeType.Executed, command, command.Result.Status);
+            command.Result = this.Run(CommandAttributeType.Executed, command, command.Result.CommandResultType);
 
             IList<ICoreController> propogationList = direction == CommandDirection.Tunnel ? this.TunnelExecutableObjects(command) : this.BubbleExecutableObjects(command);
 
@@ -195,18 +195,18 @@ namespace Procon.Core.Shared {
             // Setup the initial command result.
             command.Result = new CommandResult() {
                 Success = true,
-                Status = CommandResultType.Continue
+                CommandResultType = CommandResultType.Continue
             };
 
             command.Result = this.PropogatePreview(command, CommandDirection.Tunnel);
 
-            if (command.Result.Status == CommandResultType.Continue) {
+            if (command.Result.CommandResultType == CommandResultType.Continue) {
                 command.Result = this.PropogateHandler(command, CommandDirection.Tunnel);
 
                 command.Result = this.PropogateExecuted(command, CommandDirection.Tunnel);
             }
             // If the preview stole the command and executed it, let everyone know it has been executed.
-            else if (command.Result.Status == CommandResultType.Success) {
+            else if (command.Result.CommandResultType == CommandResultType.Success) {
                 command.Result = this.PropogateExecuted(command, CommandDirection.Tunnel);
             }
 
@@ -222,18 +222,18 @@ namespace Procon.Core.Shared {
             // Setup the initial command result.
             command.Result = new CommandResult() {
                 Success = true,
-                Status = CommandResultType.Continue
+                CommandResultType = CommandResultType.Continue
             };
 
             command.Result = this.PropogatePreview(command, CommandDirection.Bubble);
 
-            if (command.Result.Status == CommandResultType.Continue) {
+            if (command.Result.CommandResultType == CommandResultType.Continue) {
                 command.Result = this.PropogateHandler(command, CommandDirection.Bubble);
 
                 command.Result = this.PropogateExecuted(command, CommandDirection.Bubble);
             }
             // If the preview stole the command and executed it, let everyone know it has been executed.
-            else if (command.Result.Status == CommandResultType.Success) {
+            else if (command.Result.CommandResultType == CommandResultType.Success) {
                 command.Result = this.PropogateExecuted(command, CommandDirection.Bubble);
             }
 

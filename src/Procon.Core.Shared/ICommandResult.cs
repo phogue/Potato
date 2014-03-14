@@ -41,7 +41,7 @@ namespace Procon.Core.Shared {
         /// <summary>
         /// A more detailed status describing the command execution.
         /// </summary>
-        CommandResultType Status { get; set; }
+        CommandResultType CommandResultType { get; set; }
 
         /// <summary>
         /// How the output of the command should be handled if it is a remote request.

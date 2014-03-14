@@ -61,7 +61,7 @@ namespace Procon.Core.Test.Events {
             });
 
             Assert.IsTrue(result.Success);
-            Assert.AreEqual(CommandResultType.Success, result.Status);
+            Assert.AreEqual(CommandResultType.Success, result.CommandResultType);
             Assert.AreEqual(1, result.Now.Events.Count);
             Assert.AreEqual("Phogue", result.Now.Events.First().Scope.Accounts.First().Username);
         }
@@ -98,7 +98,7 @@ namespace Procon.Core.Test.Events {
             });
 
             Assert.IsFalse(result.Success);
-            Assert.AreEqual(CommandResultType.InsufficientPermissions, result.Status);
+            Assert.AreEqual(CommandResultType.InsufficientPermissions, result.CommandResultType);
         }
 
         /// <summary>
@@ -129,7 +129,7 @@ namespace Procon.Core.Test.Events {
             });
 
             Assert.IsTrue(result.Success);
-            Assert.AreEqual(CommandResultType.Success, result.Status);
+            Assert.AreEqual(CommandResultType.Success, result.CommandResultType);
             Assert.AreEqual(1, result.Now.Events.Count);
             Assert.AreEqual("Phogue", result.Now.Events.First().Scope.Accounts.First().Username);
         }

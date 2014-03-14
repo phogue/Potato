@@ -44,7 +44,7 @@ namespace Procon.Core.Test.Plugins {
             });
 
             Assert.IsTrue(result.Success);
-            Assert.AreEqual(CommandResultType.Success, result.Status);
+            Assert.AreEqual(CommandResultType.Success, result.CommandResultType);
             Assert.AreEqual("Return Message", result.Message);
         }
     }

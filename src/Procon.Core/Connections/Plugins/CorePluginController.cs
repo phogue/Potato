@@ -101,7 +101,7 @@ namespace Procon.Core.Connections.Plugins {
                         plugin.IsEnabled = true;
 
                         result = new CommandResult() {
-                            Status = CommandResultType.Success,
+                            CommandResultType = CommandResultType.Success,
                             Success = true,
                             Message = String.Format("Plugin {0} has been enabled", pluginGuid),
                             Scope = {
@@ -120,14 +120,14 @@ namespace Procon.Core.Connections.Plugins {
                     }
                     else {
                         result = new CommandResult() {
-                            Status = CommandResultType.Failed,
+                            CommandResultType = CommandResultType.Failed,
                             Success = false
                         };
                     }
                 }
                 else {
                     result = new CommandResult() {
-                        Status = CommandResultType.DoesNotExists,
+                        CommandResultType = CommandResultType.DoesNotExists,
                         Success = false
                     };
                 }
@@ -158,7 +158,7 @@ namespace Procon.Core.Connections.Plugins {
                         plugin.IsEnabled = false;
 
                         result = new CommandResult() {
-                            Status = CommandResultType.Success,
+                            CommandResultType = CommandResultType.Success,
                             Success = true,
                             Message = String.Format("Plugin {0} has been disabled", pluginGuid),
                             Scope = {
@@ -177,14 +177,14 @@ namespace Procon.Core.Connections.Plugins {
                     }
                     else {
                         result = new CommandResult() {
-                            Status = CommandResultType.Failed,
+                            CommandResultType = CommandResultType.Failed,
                             Success = false
                         };
                     }
                 }
                 else {
                     result = new CommandResult() {
-                        Status = CommandResultType.DoesNotExists,
+                        CommandResultType = CommandResultType.DoesNotExists,
                         Success = false
                     };
                 }

@@ -38,7 +38,7 @@ namespace Procon.Examples.Plugins.Database {
         }
 
         protected ICommandResult SaveOneUser(ICommand command, Dictionary<String, ICommandParameter> parameters) {
-            command.Result.Status = CommandResultType.Success;
+            command.Result.CommandResultType = CommandResultType.Success;
             command.Result.Success = true;
 
             this.Bubble(
@@ -74,7 +74,7 @@ namespace Procon.Examples.Plugins.Database {
             UserModel model = UserModel.FirstFromQuery(fetchResult.Now.Queries.FirstOrDefault());
 
             if (model != null) {
-                command.Result.Status = CommandResultType.Success;
+                command.Result.CommandResultType = CommandResultType.Success;
                 command.Result.Success = true;
                 command.Result.Message = model.Name;
             }

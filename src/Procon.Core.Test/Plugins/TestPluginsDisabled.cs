@@ -48,7 +48,7 @@ namespace Procon.Core.Test.Plugins {
             });
 
             Assert.IsTrue(result.Success);
-            Assert.AreEqual(CommandResultType.Success, result.Status);
+            Assert.AreEqual(CommandResultType.Success, result.CommandResultType);
         }
 
         /// <summary>
@@ -72,7 +72,7 @@ namespace Procon.Core.Test.Plugins {
             });
 
             Assert.IsFalse(result.Success);
-            Assert.AreEqual(CommandResultType.Failed, result.Status);
+            Assert.AreEqual(CommandResultType.Failed, result.CommandResultType);
         }
 
         /// <summary>
@@ -99,7 +99,7 @@ namespace Procon.Core.Test.Plugins {
             });
 
             Assert.IsTrue(result.Success);
-            Assert.AreEqual(CommandResultType.Continue, result.Status);
+            Assert.AreEqual(CommandResultType.Continue, result.CommandResultType);
             Assert.AreEqual("", result.Message);
         }
 
@@ -125,7 +125,7 @@ namespace Procon.Core.Test.Plugins {
             });
 
             Assert.IsFalse(result.Success);
-            Assert.AreEqual(CommandResultType.DoesNotExists, result.Status);
+            Assert.AreEqual(CommandResultType.DoesNotExists, result.CommandResultType);
         }
 
         /// <summary>
@@ -152,7 +152,7 @@ namespace Procon.Core.Test.Plugins {
             });
 
             Assert.IsFalse(result.Success);
-            Assert.AreEqual(CommandResultType.InsufficientPermissions, result.Status);
+            Assert.AreEqual(CommandResultType.InsufficientPermissions, result.CommandResultType);
         }
     }
 }

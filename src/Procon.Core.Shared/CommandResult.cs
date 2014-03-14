@@ -8,13 +8,31 @@ namespace Procon.Core.Shared {
     /// </summary>
     [Serializable]
     public class CommandResult : IDisposable, ICommandResult {
+        /*
+
+        public String Name { get; set; }
+
+        [JsonIgnore]
+        public CommandType CommandType {
+            get { return this._mCommandType; }
+            set {
+                this._mCommandType = value;
+
+                if (this._mCommandType != CommandType.None) {
+                    this.Name = value.ToString();
+                }
+            }
+        }
+        private CommandType _mCommandType;
+         */
+
         /// <summary>
         /// A static result describing insufficient permissions
         /// </summary>
         /// <remarks>May be moved to a "CommandResultBuilder" class at some point.</remarks>
         public static ICommandResult InsufficientPermissions = new CommandResult() {
             Success = false,
-            Status = CommandResultType.InsufficientPermissions,
+            CommandResultType = CommandResultType.InsufficientPermissions,
             Message = "You have Insufficient Permissions to execute this command."
         };
 
@@ -30,7 +48,7 @@ namespace Procon.Core.Shared {
 
         public Boolean Success { get; set; }
 
-        public CommandResultType Status { get; set; }
+        public CommandResultType CommandResultType { get; set; }
 
         public String ContentType { get; set; }
 

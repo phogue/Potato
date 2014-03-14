@@ -46,7 +46,7 @@ namespace Myrcon.Plugins.Test.Tests {
                     }
                 },
                 ContentType = Mime.TextHtml,
-                Status = CommandResultType.Success,
+                CommandResultType = CommandResultType.Success,
                 Success = true
             };
 
@@ -63,7 +63,7 @@ namespace Myrcon.Plugins.Test.Tests {
                     }
                 },
                 ContentType = Mime.TextHtml,
-                Status = CommandResultType.Success,
+                CommandResultType = CommandResultType.Success,
                 Success = true
             };
 
@@ -90,7 +90,7 @@ namespace Myrcon.Plugins.Test.Tests {
                     }
                 },
                 ContentType = Mime.TextHtml,
-                Status = CommandResultType.Success,
+                CommandResultType = CommandResultType.Success,
                 Success = true,
                 Message = name
             };

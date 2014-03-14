@@ -95,14 +95,14 @@ namespace Procon.Core.Remote {
                         this.Shared.Events.Log(new GenericEvent() {
                             GenericEventType = GenericEventType.CommandServerStarted,
                             Success = true,
-                            Status = CommandResultType.Success
+                            CommandResultType = CommandResultType.Success
                         });
                     }
                     else {
                         this.Shared.Events.Log(new GenericEvent() {
                             GenericEventType = GenericEventType.CommandServerStarted,
                             Success = false,
-                            Status = CommandResultType.Failed
+                            CommandResultType = CommandResultType.Failed
                         });
                     }
                 }
@@ -114,7 +114,7 @@ namespace Procon.Core.Remote {
                 this.Shared.Events.Log(new GenericEvent() {
                     GenericEventType = GenericEventType.CommandServerStopped,
                     Success = true,
-                    Status = CommandResultType.Success
+                    CommandResultType = CommandResultType.Success
                 });
             }
         }
@@ -127,7 +127,7 @@ namespace Procon.Core.Remote {
             this.Shared.Events.Log(new GenericEvent() {
                 GenericEventType = GenericEventType.CommandServerStopped,
                 Success = false,
-                Status = CommandResultType.Failed
+                CommandResultType = CommandResultType.Failed
             });
 
             // Log the exception for debugging purposes.
@@ -142,7 +142,7 @@ namespace Procon.Core.Remote {
             this.Shared.Events.Log(new GenericEvent() {
                 GenericEventType = GenericEventType.CommandServerStopped,
                 Success = false,
-                Status = CommandResultType.Failed
+                CommandResultType = CommandResultType.Failed
             });
 
             // Log the exception for debugging purposes.
@@ -185,7 +185,7 @@ namespace Procon.Core.Remote {
                     // They are not authorized to login or issue this command.
                     response = CommandServerSerializer.CompleteResponsePacket(CommandServerSerializer.ResponseContentType(command), response, new CommandResult() {
                         Success = false,
-                        Status = CommandResultType.InsufficientPermissions,
+                        CommandResultType = CommandResultType.InsufficientPermissions,
                         Message = "Invalid username or password"
                     });
                 }

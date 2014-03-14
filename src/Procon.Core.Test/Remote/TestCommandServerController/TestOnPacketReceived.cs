@@ -124,7 +124,7 @@ namespace Procon.Core.Test.Remote.TestCommandServerController {
             var responseCommandResult = JsonConvert.DeserializeObject<CommandResult>(packet.Content);
 
             Assert.IsTrue(responseCommandResult.Success);
-            Assert.AreEqual(CommandResultType.Continue, responseCommandResult.Status);
+            Assert.AreEqual(CommandResultType.Continue, responseCommandResult.CommandResultType);
         }
 
         /// <summary>
@@ -191,7 +191,7 @@ namespace Procon.Core.Test.Remote.TestCommandServerController {
             var responseCommandResult = JsonConvert.DeserializeObject<CommandResult>(packet.Content);
 
             Assert.IsFalse(responseCommandResult.Success);
-            Assert.AreEqual(CommandResultType.InsufficientPermissions, responseCommandResult.Status);
+            Assert.AreEqual(CommandResultType.InsufficientPermissions, responseCommandResult.CommandResultType);
         }
 
         /// <summary>

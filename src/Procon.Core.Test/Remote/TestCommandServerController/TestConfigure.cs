@@ -153,7 +153,7 @@ namespace Procon.Core.Test.Remote.TestCommandServerController {
 
             Assert.IsNotEmpty(commandServer.Shared.Events.LoggedEvents);
             Assert.AreEqual(GenericEventType.CommandServerStarted, commandServer.Shared.Events.LoggedEvents.First(e => e.GenericEventType == GenericEventType.CommandServerStarted).GenericEventType);
-            Assert.AreEqual(CommandResultType.Success, commandServer.Shared.Events.LoggedEvents.First(e => e.GenericEventType == GenericEventType.CommandServerStarted).Status);
+            Assert.AreEqual(CommandResultType.Success, commandServer.Shared.Events.LoggedEvents.First(e => e.GenericEventType == GenericEventType.CommandServerStarted).CommandResultType);
             Assert.IsTrue(commandServer.Shared.Events.LoggedEvents.First(e => e.GenericEventType == GenericEventType.CommandServerStarted).Success);
 
             commandServer.Dispose();
@@ -197,7 +197,7 @@ namespace Procon.Core.Test.Remote.TestCommandServerController {
 
             Assert.IsNotEmpty(commandServer.Shared.Events.LoggedEvents);
             Assert.AreEqual(GenericEventType.CommandServerStopped, commandServer.Shared.Events.LoggedEvents.First(e => e.GenericEventType == GenericEventType.CommandServerStopped).GenericEventType);
-            Assert.AreEqual(CommandResultType.Success, commandServer.Shared.Events.LoggedEvents.First(e => e.GenericEventType == GenericEventType.CommandServerStarted).Status);
+            Assert.AreEqual(CommandResultType.Success, commandServer.Shared.Events.LoggedEvents.First(e => e.GenericEventType == GenericEventType.CommandServerStarted).CommandResultType);
             Assert.IsTrue(commandServer.Shared.Events.LoggedEvents.First(e => e.GenericEventType == GenericEventType.CommandServerStarted).Success);
 
             commandServer.Dispose();

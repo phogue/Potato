@@ -27,7 +27,7 @@ namespace Procon.Core.Test.Events {
             }));
 
             Assert.IsFalse(result.Success);
-            Assert.AreEqual(CommandResultType.InsufficientPermissions, result.Status);
+            Assert.AreEqual(CommandResultType.InsufficientPermissions, result.CommandResultType);
         }
 
         /// <summary>
@@ -42,7 +42,7 @@ namespace Procon.Core.Test.Events {
             }).SetOrigin(CommandOrigin.Local));
 
             Assert.IsTrue(result.Success);
-            Assert.AreEqual(CommandResultType.Success, result.Status);
+            Assert.AreEqual(CommandResultType.Success, result.CommandResultType);
         }
     }
 }

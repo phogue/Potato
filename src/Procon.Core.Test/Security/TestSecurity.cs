@@ -221,7 +221,7 @@ namespace Procon.Core.Test.Security {
 
             // Validate that we could authenticate with our new password.
             Assert.IsTrue(result.Success);
-            Assert.AreEqual(result.Status, CommandResultType.Success);
+            Assert.AreEqual(result.CommandResultType, CommandResultType.Success);
         }
 
         /// <summary>

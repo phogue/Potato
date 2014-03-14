@@ -22,7 +22,7 @@ namespace Procon.Core.Test.Security.Permission {
             }));
 
             Assert.IsFalse(result.Success);
-            Assert.AreEqual(CommandResultType.InsufficientPermissions, result.Status);
+            Assert.AreEqual(CommandResultType.InsufficientPermissions, result.CommandResultType);
         }
 
         /// <summary>
@@ -37,7 +37,7 @@ namespace Procon.Core.Test.Security.Permission {
             ICommandResult result = security.Tunnel(CommandBuilder.SecuritySetPredefinedStreamPermissions("ThisIsNotValid").SetOrigin(CommandOrigin.Local));
 
             Assert.IsFalse(result.Success);
-            Assert.AreEqual(CommandResultType.DoesNotExists, result.Status);
+            Assert.AreEqual(CommandResultType.DoesNotExists, result.CommandResultType);
         }
 
         /// <summary>
@@ -51,7 +51,7 @@ namespace Procon.Core.Test.Security.Permission {
 
             // Make sure it was not successful.
             Assert.IsFalse(result.Success);
-            Assert.AreEqual(CommandResultType.InvalidParameter, result.Status);
+            Assert.AreEqual(CommandResultType.InvalidParameter, result.CommandResultType);
         }
 
         /// <summary>
@@ -67,7 +67,7 @@ namespace Procon.Core.Test.Security.Permission {
 
             // Make sure it was not successful.
             Assert.IsTrue(result.Success);
-            Assert.AreEqual(CommandResultType.Success, result.Status);
+            Assert.AreEqual(CommandResultType.Success, result.CommandResultType);
         }
 
         /// <summary>

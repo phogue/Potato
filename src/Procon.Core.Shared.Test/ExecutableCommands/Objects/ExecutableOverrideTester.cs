@@ -47,7 +47,7 @@ namespace Procon.Core.Shared.Test.ExecutableCommands.Objects {
 
             return new CommandResult() {
                 Success = true,
-                Status = CommandResultType.Success,
+                CommandResultType = CommandResultType.Success,
                 Message = "Set Number",
                 Now = new CommandData() {
                     Variables = new List<VariableModel>() {
@@ -70,7 +70,7 @@ namespace Procon.Core.Shared.Test.ExecutableCommands.Objects {
 
             return new CommandResult() {
                 Success = true,
-                Status = CommandResultType.Success,
+                CommandResultType = CommandResultType.Success,
                 Message = "Set Number",
                 Now = new CommandData() {
                     Variables = new List<VariableModel>() {

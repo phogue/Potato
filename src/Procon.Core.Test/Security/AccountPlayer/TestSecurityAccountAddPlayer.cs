@@ -28,7 +28,7 @@ namespace Procon.Core.Test.Security.AccountPlayer {
 
             // Validate the player was added successfully.
             Assert.IsTrue(result.Success);
-            Assert.AreEqual(result.Status, CommandResultType.Success);
+            Assert.AreEqual(result.CommandResultType, CommandResultType.Success);
             Assert.AreEqual(security.Groups.SelectMany(group => group.Accounts).SelectMany(account => account.Players).First().ProtocolType, CommonProtocolType.DiceBattlefield3);
             Assert.AreEqual(security.Groups.SelectMany(group => group.Accounts).SelectMany(account => account.Players).First().Uid, "ABCDEF");
         }
@@ -47,7 +47,7 @@ namespace Procon.Core.Test.Security.AccountPlayer {
 
             // Validate the player was added successfully.
             Assert.IsFalse(result.Success);
-            Assert.AreEqual(result.Status, CommandResultType.InvalidParameter);
+            Assert.AreEqual(result.CommandResultType, CommandResultType.InvalidParameter);
         }
 
         /// <summary>
@@ -69,7 +69,7 @@ namespace Procon.Core.Test.Security.AccountPlayer {
             // Validate the command was a success and the player is attached to the "PapaCharlie9" account
             // and no longer attached to the "Phogue" account.
             Assert.IsTrue(result.Success);
-            Assert.AreEqual(result.Status, CommandResultType.Success);
+            Assert.AreEqual(result.CommandResultType, CommandResultType.Success);
             Assert.IsNull(security.Groups.SelectMany(group => group.Accounts).Where(account => account.Username == "Phogue").SelectMany(account => account.Players).FirstOrDefault());
             Assert.AreEqual(security.Groups.SelectMany(group => group.Accounts).Where(account => account.Username == "PapaCharlie9").SelectMany(account => account.Players).First().ProtocolType, CommonProtocolType.DiceBattlefield3);
             Assert.AreEqual(security.Groups.SelectMany(group => group.Accounts).Where(account => account.Username == "PapaCharlie9").SelectMany(account => account.Players).First().Uid, "ABCDEF");
@@ -92,7 +92,7 @@ namespace Procon.Core.Test.Security.AccountPlayer {
             );
 
             Assert.IsFalse(result.Success);
-            Assert.AreEqual(CommandResultType.InsufficientPermissions, result.Status);
+            Assert.AreEqual(CommandResultType.InsufficientPermissions, result.CommandResultType);
         }
     }
 }

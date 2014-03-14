@@ -33,7 +33,7 @@ namespace Procon.Core.Test.Security.Account {
             );
 
             Assert.IsFalse(result.Success);
-            Assert.AreEqual(CommandResultType.InsufficientPermissions, result.Status);
+            Assert.AreEqual(CommandResultType.InsufficientPermissions, result.CommandResultType);
         }
 
         /// <summary>
@@ -50,7 +50,7 @@ namespace Procon.Core.Test.Security.Account {
 
             // Make sure it was successful.
             Assert.IsTrue(result.Success);
-            Assert.AreEqual(result.Status, CommandResultType.Success);
+            Assert.AreEqual(result.CommandResultType, CommandResultType.Success);
             Assert.AreEqual(security.Groups.Last().Accounts.First().PreferredLanguageCode, "de-DE");
         }
 
@@ -72,7 +72,7 @@ namespace Procon.Core.Test.Security.Account {
 
             // Make sure it was successful.
             Assert.IsTrue(result.Success);
-            Assert.AreEqual(result.Status, CommandResultType.Success);
+            Assert.AreEqual(result.CommandResultType, CommandResultType.Success);
             Assert.AreEqual(security.Groups.Last().Accounts.First().PreferredLanguageCode, "de-DE");
         }
 
@@ -91,7 +91,7 @@ namespace Procon.Core.Test.Security.Account {
             // Make sure we get nothing back if we try to change the language code of
             // an account that does not exist.
             Assert.IsFalse(result.Success);
-            Assert.AreEqual(CommandResultType.DoesNotExists, result.Status);
+            Assert.AreEqual(CommandResultType.DoesNotExists, result.CommandResultType);
         }
 
         /// <summary>
@@ -108,7 +108,7 @@ namespace Procon.Core.Test.Security.Account {
 
             // Make sure it was successful.
             Assert.IsFalse(result.Success);
-            Assert.AreEqual(result.Status, CommandResultType.DoesNotExists);
+            Assert.AreEqual(result.CommandResultType, CommandResultType.DoesNotExists);
             Assert.AreEqual(security.Groups.Last().Accounts.First().PreferredLanguageCode, String.Empty);
         }
     }

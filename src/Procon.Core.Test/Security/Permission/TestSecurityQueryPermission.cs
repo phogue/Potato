@@ -11,6 +11,29 @@ namespace Procon.Core.Test.Security.Permission {
         public void Initialize() {
             SharedReferences.Setup();
         }
+        
+        /// <summary>
+        /// Tests that a group with 0 authority in a permission is equal to having
+        /// no permission set at all (null)
+        /// </summary>
+        [Test]
+        public void TestZeroedAuthorityEqualsNoPermissions() {
+            var security = new SecurityController();
+
+            security.Tunnel(CommandBuilder.SecurityAddGroup("GroupName").SetOrigin(CommandOrigin.Local));
+            security.Tunnel(CommandBuilder.SecurityGroupAddAccount("GroupName", "Phogue").SetOrigin(CommandOrigin.Local));
+            security.Tunnel(CommandBuilder.SecurityGroupSetPermission("GroupName", CommandType.VariablesSet, 0).SetOrigin(CommandOrigin.Local));
+
+            ICommandResult result = security.Tunnel(CommandBuilder.SecurityQueryPermission(CommandType.VariablesSet, "DoesNotExist")
+                .SetOrigin(CommandOrigin.Remote)
+                .SetAuthentication(new CommandAuthenticationModel() {
+                    Username = "Phogue"
+                })
+            );
+
+            Assert.IsFalse(result.Success);
+            Assert.AreEqual(CommandResultType.InsufficientPermissions, result.Status);
+        }
 
         [Test]
         public void TestDetailsLessAuthorityByAccountUsername() {

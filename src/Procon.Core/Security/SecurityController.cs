@@ -702,8 +702,8 @@ namespace Procon.Core.Security {
             int? initiatorAuthority = SecurityController.HighestAuthority(initiatorAccount, commandName) ?? guestAuthority;
             int? targetAuthority = SecurityController.HighestAuthority(targetAccount, commandName) ?? guestAuthority;
 
-            if (initiatorAuthority.HasValue == true) {
-                if (targetAuthority.HasValue == true) {
+            if (initiatorAuthority.HasValue == true && initiatorAuthority.Value > 0) {
+                if (targetAuthority.HasValue == true && targetAuthority.Value > 0) {
                     if (initiatorAuthority.Value > targetAuthority.Value) {
                         // The initiator "out ranks" the target. Good to go.
                         result = new CommandResult() {

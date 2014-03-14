@@ -8,6 +8,12 @@ namespace Procon.Core.Shared {
     /// </summary>
     public interface ICommandResult {
         /// <summary>
+        /// Text based version of CommandResultType, but allows for custom result types from
+        /// custom commands within plugins.
+        /// </summary>
+        String Name { get; set; }
+
+        /// <summary>
         /// A general text message used to describe the event in more detail, if required.
         /// </summary>
         String Message { get; set; }

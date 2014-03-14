@@ -8,24 +8,6 @@ namespace Procon.Core.Shared {
     /// </summary>
     [Serializable]
     public class CommandResult : IDisposable, ICommandResult {
-        /*
-
-        public String Name { get; set; }
-
-        [JsonIgnore]
-        public CommandType CommandType {
-            get { return this._mCommandType; }
-            set {
-                this._mCommandType = value;
-
-                if (this._mCommandType != CommandType.None) {
-                    this.Name = value.ToString();
-                }
-            }
-        }
-        private CommandType _mCommandType;
-         */
-
         /// <summary>
         /// A static result describing insufficient permissions
         /// </summary>
@@ -35,6 +17,8 @@ namespace Procon.Core.Shared {
             CommandResultType = CommandResultType.InsufficientPermissions,
             Message = "You have Insufficient Permissions to execute this command."
         };
+
+        public String Name { get; set; }
 
         public String Message { get; set; }
 
@@ -48,7 +32,17 @@ namespace Procon.Core.Shared {
 
         public Boolean Success { get; set; }
 
-        public CommandResultType CommandResultType { get; set; }
+        public CommandResultType CommandResultType {
+            get { return this._mCommandResultType; }
+            set {
+                this._mCommandResultType = value;
+
+                if (this._mCommandResultType != CommandResultType.None) {
+                    this.Name = value.ToString();
+                }
+            }
+        }
+        private CommandResultType _mCommandResultType;
 
         public String ContentType { get; set; }
 
@@ -62,6 +56,7 @@ namespace Procon.Core.Shared {
         /// Initializes the command result with the default values.
         /// </summary>
         public CommandResult() {
+            this.Name = String.Empty;
             this.Stamp = DateTime.Now;
             this.Message = String.Empty;
 
@@ -83,6 +78,7 @@ namespace Procon.Core.Shared {
         /// but does not dispose the items it holds.
         /// </summary>
         public void Dispose() {
+            this.Name = null;
             this.Message = null;
 
             this.Scope.Dispose();

@@ -199,11 +199,13 @@ namespace Procon.Core.Test.Security {
             loadConfig.Load(ConfigFileInfo);
             loadSecurity.Execute(loadConfig);
 
+            var lastGroup = loadSecurity.Groups.LastOrDefault(group => @group.Name == "GroupName") ?? new GroupModel();
+
             Assert.AreEqual("Guest", loadSecurity.Groups.First().Name);
             Assert.AreEqual("GroupName", loadSecurity.Groups.Last().Name);
-            Assert.AreEqual(22, loadSecurity.Groups.LastOrDefault(group => group.Name == "GroupName").Permissions.Where(permission => permission.Name == "CustomPermission").First().Authority);
-            Assert.AreEqual(77, loadSecurity.Groups.LastOrDefault(group => group.Name == "GroupName").Permissions.Where(permission => permission.Name == CommandType.VariablesSet.ToString()).First().Authority);
-            Assert.AreEqual(88, loadSecurity.Groups.LastOrDefault(group => group.Name == "GroupName").Permissions.Where(permission => permission.Name == CommandType.VariablesSetA.ToString()).First().Authority);
+            Assert.AreEqual(22, lastGroup.Permissions.First(permission => permission.Name == "CustomPermission").Authority);
+            Assert.AreEqual(77, lastGroup.Permissions.First(permission => permission.Name == CommandType.VariablesSet.ToString()).Authority);
+            Assert.AreEqual(88, lastGroup.Permissions.First(permission => permission.Name == CommandType.VariablesSetA.ToString()).Authority);
             Assert.AreEqual("Phogue", loadSecurity.Groups.SelectMany(group => group.Accounts).First().Username);
             Assert.AreEqual("de-DE", loadSecurity.Groups.Last().Accounts.First().PreferredLanguageCode);
             Assert.AreEqual(CommonProtocolType.DiceBattlefield3, loadSecurity.Groups.SelectMany(group => group.Accounts).SelectMany(account => account.Players).First().ProtocolType);

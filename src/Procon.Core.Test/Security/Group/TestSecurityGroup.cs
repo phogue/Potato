@@ -160,11 +160,14 @@ namespace Procon.Core.Test.Security.Group {
                 })
             });
 
+            var firstGroup = security.Groups.FirstOrDefault(group => @group.Name == "FirstGroupName") ?? new GroupModel();
+            var secondGroup = security.Groups.FirstOrDefault(group => @group.Name == "SecondGroupName") ?? new GroupModel();
+
             // Validate original permissions were added.
-            Assert.AreEqual(security.Groups.Where(group => group.Name == "FirstGroupName").FirstOrDefault().Permissions.Where(permission => permission.Name == CommandType.VariablesSet.ToString()).First().Authority, 77);
-            Assert.AreEqual(security.Groups.Where(group => group.Name == "FirstGroupName").FirstOrDefault().Permissions.Where(permission => permission.Name == CommandType.VariablesSetA.ToString()).First().Authority, 88);
-            Assert.IsNull(security.Groups.Where(group => group.Name == "SecondGroupName").FirstOrDefault().Permissions.Where(permission => permission.Name == CommandType.VariablesSet.ToString()).First().Authority);
-            Assert.IsNull(security.Groups.Where(group => group.Name == "SecondGroupName").FirstOrDefault().Permissions.Where(permission => permission.Name == CommandType.VariablesSetA.ToString()).First().Authority);
+            Assert.AreEqual(firstGroup.Permissions.First(permission => permission.Name == CommandType.VariablesSet.ToString()).Authority, 77);
+            Assert.AreEqual(firstGroup.Permissions.First(permission => permission.Name == CommandType.VariablesSetA.ToString()).Authority, 88);
+            Assert.IsNull(secondGroup.Permissions.First(permission => permission.Name == CommandType.VariablesSet.ToString()).Authority);
+            Assert.IsNull(secondGroup.Permissions.First(permission => permission.Name == CommandType.VariablesSetA.ToString()).Authority);
 
             // Now copy the permissions from the first group, to the other group.
             ICommandResult result = security.Tunnel(new Command() {
@@ -179,8 +182,8 @@ namespace Procon.Core.Test.Security.Group {
             // Now make sure the user was initially added.
             Assert.IsTrue(result.Success);
             Assert.AreEqual(result.CommandResultType, CommandResultType.Success);
-            Assert.AreEqual(security.Groups.Where(group => group.Name == "SecondGroupName").FirstOrDefault().Permissions.Where(permission => permission.Name == CommandType.VariablesSet.ToString()).First().Authority, 77);
-            Assert.AreEqual(security.Groups.Where(group => group.Name == "SecondGroupName").FirstOrDefault().Permissions.Where(permission => permission.Name == CommandType.VariablesSetA.ToString()).First().Authority, 88);
+            Assert.AreEqual(secondGroup.Permissions.First(permission => permission.Name == CommandType.VariablesSet.ToString()).Authority, 77);
+            Assert.AreEqual(secondGroup.Permissions.First(permission => permission.Name == CommandType.VariablesSetA.ToString()).Authority, 88);
         }
 
         /// <summary>

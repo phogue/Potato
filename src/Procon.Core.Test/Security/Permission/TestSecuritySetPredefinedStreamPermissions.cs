@@ -79,7 +79,7 @@ namespace Procon.Core.Test.Security.Permission {
 
             security.Tunnel(CommandBuilder.SecurityAddGroup("GroupName").SetOrigin(CommandOrigin.Local));
 
-            ICommandResult result = security.Tunnel(CommandBuilder.SecuritySetPredefinedStreamPermissions("GroupName").SetOrigin(CommandOrigin.Local));
+            security.Tunnel(CommandBuilder.SecuritySetPredefinedStreamPermissions("GroupName").SetOrigin(CommandOrigin.Local));
 
             var group = security.Groups.FirstOrDefault(item => item.Name == "GroupName");
 

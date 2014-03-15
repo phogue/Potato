@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using NUnit.Framework;
 using Procon.Core.Security;
 using Procon.Core.Shared;
@@ -7,10 +8,56 @@ using Procon.Net.Shared.Utils;
 
 namespace Procon.Core.Test.Security.Account {
     [TestFixture]
-    public class Test {
+    public class TestSecurityAccountAuthenticate {
         [SetUp]
         public void Initialize() {
             SharedReferences.Setup();
+        }
+
+        /// <summary>
+        /// Tests authentication is successful when correct details are supplied
+        /// </summary>
+        [Test]
+        public void TestAuthenticationSuccess() {
+            String generatedAuthenticatePassword = StringExtensions.RandomString(10);
+
+            var security = new SecurityController();
+            security.Tunnel(CommandBuilder.SecurityAddGroup("GroupName").SetOrigin(CommandOrigin.Local));
+            security.Tunnel(CommandBuilder.SecurityGroupAddAccount("GroupName", "Phogue").SetOrigin(CommandOrigin.Local));
+            security.Tunnel(CommandBuilder.SecurityAccountSetPassword("Phogue", generatedAuthenticatePassword).SetOrigin(CommandOrigin.Local));
+            security.Tunnel(CommandBuilder.SecurityGroupSetPermission("GroupName", CommandType.SecurityAccountAuthenticate, 50).SetOrigin(CommandOrigin.Local));
+
+            // Now authenticate against an empty security object which has no accounts.
+            ICommandResult result = security.Tunnel(CommandBuilder.SecurityAccountAuthenticate("Phogue", generatedAuthenticatePassword).SetOrigin(CommandOrigin.Remote).SetAuthentication(new CommandAuthenticationModel() {
+                Username = "Phogue"
+            }));
+
+            // Validate that we get nothing back.
+            Assert.IsTrue(result.Success);
+            Assert.AreEqual(CommandResultType.Success, result.CommandResultType);
+        }
+
+        /// <summary>
+        ///     Tests that authentication returns the users account and group when successful.
+        /// </summary>
+        [Test]
+        public void TestAccountGroupReturnedInResult() {
+            String generatedAuthenticatePassword = StringExtensions.RandomString(10);
+
+            var security = new SecurityController();
+            security.Tunnel(CommandBuilder.SecurityAddGroup("GroupName").SetOrigin(CommandOrigin.Local));
+            security.Tunnel(CommandBuilder.SecurityGroupAddAccount("GroupName", "Phogue").SetOrigin(CommandOrigin.Local));
+            security.Tunnel(CommandBuilder.SecurityAccountSetPassword("Phogue", generatedAuthenticatePassword).SetOrigin(CommandOrigin.Local));
+            security.Tunnel(CommandBuilder.SecurityGroupSetPermission("GroupName", CommandType.SecurityAccountAuthenticate, 50).SetOrigin(CommandOrigin.Local));
+
+            // Now authenticate against an empty security object which has no accounts.
+            ICommandResult result = security.Tunnel(CommandBuilder.SecurityAccountAuthenticate("Phogue", generatedAuthenticatePassword).SetOrigin(CommandOrigin.Remote).SetAuthentication(new CommandAuthenticationModel() {
+                Username = "Phogue"
+            }));
+
+            // Validate that we get nothing back.
+            Assert.AreEqual("Phogue", result.Scope.Accounts.First().Username);
+            Assert.AreEqual("GroupName", result.Scope.Groups.First().Name);
         }
 
         /// <summary>

@@ -1456,6 +1456,9 @@ namespace Procon.Core.Security {
                                 Scope = {
                                     Accounts = new List<AccountModel>() {
                                         account
+                                    },
+                                    Groups = new List<GroupModel>() {
+                                        account.Group
                                     }
                                 }
                             };

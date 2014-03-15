@@ -69,6 +69,29 @@ namespace Procon.Core.Test.Security.Account {
         }
 
         /// <summary>
+        ///     Tests that adding an account with a duplicate username will move the user to the new group,
+        /// even if the supplied move name has a different case to the original name
+        /// </summary>
+        [Test]
+        public void TestExistingNameCaseInsensitive() {
+            var security = new SecurityController();
+            security.Tunnel(CommandBuilder.SecurityAddGroup("FirstGroupName").SetOrigin(CommandOrigin.Local));
+            security.Tunnel(CommandBuilder.SecurityAddGroup("SecondGroupName").SetOrigin(CommandOrigin.Local));
+
+            // Now add the user.
+            security.Tunnel(CommandBuilder.SecurityGroupAddAccount("FirstGroupName", "Phogue").SetOrigin(CommandOrigin.Local));
+
+            // Now move the user to the second group.
+            ICommandResult result = security.Tunnel(CommandBuilder.SecurityGroupAddAccount("SecondGroupName", "PHOGUE").SetOrigin(CommandOrigin.Local));
+
+            // Make sure setting the kick permission was successfull.
+            Assert.IsTrue(result.Success);
+            Assert.AreEqual(result.CommandResultType, CommandResultType.Success);
+            Assert.IsNull(security.Groups.Where(group => group.Name == "FirstGroupName").SelectMany(group => group.Accounts).FirstOrDefault());
+            Assert.AreEqual(security.Groups.Where(group => group.Name == "SecondGroupName").SelectMany(group => group.Accounts).First().Username, "Phogue");
+        }
+
+        /// <summary>
         ///     Tests that adding a simpel account can be completed.
         /// </summary>
         [Test]

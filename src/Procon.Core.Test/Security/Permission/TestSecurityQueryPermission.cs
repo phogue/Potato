@@ -35,6 +35,29 @@ namespace Procon.Core.Test.Security.Permission {
             Assert.AreEqual(CommandResultType.InsufficientPermissions, result.CommandResultType);
         }
 
+        /// <summary>
+        /// Tests that a group with 0 authority in a permission is equal to having
+        /// no permission set at all (null)
+        /// </summary>
+        [Test]
+        public void TestZeroedAuthorityEqualsNoPermissionsCaseInsensitive() {
+            var security = new SecurityController();
+
+            security.Tunnel(CommandBuilder.SecurityAddGroup("GroupName").SetOrigin(CommandOrigin.Local));
+            security.Tunnel(CommandBuilder.SecurityGroupAddAccount("GroupName", "Phogue").SetOrigin(CommandOrigin.Local));
+            security.Tunnel(CommandBuilder.SecurityGroupSetPermission("GroupName", CommandType.VariablesSet, 0).SetOrigin(CommandOrigin.Local));
+
+            ICommandResult result = security.Tunnel(CommandBuilder.SecurityQueryPermission(CommandType.VariablesSet, "DoesNotExist")
+                .SetOrigin(CommandOrigin.Remote)
+                .SetAuthentication(new CommandAuthenticationModel() {
+                    Username = "PHOGUE"
+                })
+            );
+
+            Assert.IsFalse(result.Success);
+            Assert.AreEqual(CommandResultType.InsufficientPermissions, result.CommandResultType);
+        }
+
         [Test]
         public void TestDetailsLessAuthorityByAccountUsername() {
             var security = new SecurityController();
@@ -189,6 +212,31 @@ namespace Procon.Core.Test.Security.Permission {
         }
 
         [Test]
+        public void TestDetailsMoreAuthorityByAccountUsernameCaseInsensitive() {
+            var security = new SecurityController();
+
+            security.Tunnel(CommandBuilder.SecurityAddGroup("FirstGroupName").SetOrigin(CommandOrigin.Local));
+            security.Tunnel(CommandBuilder.SecurityGroupAddAccount("FirstGroupName", "Phogue").SetOrigin(CommandOrigin.Local));
+            security.Tunnel(CommandBuilder.SecurityGroupSetPermission("FirstGroupName", CommandType.VariablesSet, 100).SetOrigin(CommandOrigin.Local));
+            security.Tunnel(CommandBuilder.SecurityAccountAddPlayer("Phogue", CommonProtocolType.DiceBattlefield3, "ABCDEF").SetOrigin(CommandOrigin.Local));
+
+            security.Tunnel(CommandBuilder.SecurityAddGroup("SecondGroupName").SetOrigin(CommandOrigin.Local));
+            security.Tunnel(CommandBuilder.SecurityGroupAddAccount("SecondGroupName", "Zaeed").SetOrigin(CommandOrigin.Local));
+            security.Tunnel(CommandBuilder.SecurityGroupSetPermission("SecondGroupName", CommandType.VariablesSet, 50).SetOrigin(CommandOrigin.Local));
+            security.Tunnel(CommandBuilder.SecurityAccountAddPlayer("Zaeed", CommonProtocolType.DiceBattlefield3, "0123456789").SetOrigin(CommandOrigin.Local));
+
+            ICommandResult result = security.Tunnel(CommandBuilder.SecurityQueryPermission(CommandType.VariablesSet, "Zaeed")
+                .SetOrigin(CommandOrigin.Remote)
+                .SetAuthentication(new CommandAuthenticationModel() {
+                    Username = "PHOGUE"
+                })
+            );
+
+            Assert.IsTrue(result.Success);
+            Assert.AreEqual(CommandResultType.Success, result.CommandResultType);
+        }
+
+        [Test]
         public void TestDetailsMoreAuthorityByPlayerDetails() {
             var security = new SecurityController();
 
@@ -231,6 +279,31 @@ namespace Procon.Core.Test.Security.Permission {
                 .SetOrigin(CommandOrigin.Remote)
                 .SetAuthentication(new CommandAuthenticationModel() {
                     Username = "Phogue"
+                })
+            );
+
+            Assert.IsTrue(result.Success);
+            Assert.AreEqual(CommandResultType.Success, result.CommandResultType);
+        }
+
+        [Test]
+        public void TestDetailsNoAuthorityByAccountUsernameCaseInsensitive() {
+            var security = new SecurityController();
+
+            security.Tunnel(CommandBuilder.SecurityAddGroup("FirstGroupName").SetOrigin(CommandOrigin.Local));
+            security.Tunnel(CommandBuilder.SecurityGroupAddAccount("FirstGroupName", "Phogue").SetOrigin(CommandOrigin.Local));
+            security.Tunnel(CommandBuilder.SecurityGroupSetPermission("FirstGroupName", CommandType.VariablesSet, 100).SetOrigin(CommandOrigin.Local));
+            security.Tunnel(CommandBuilder.SecurityAccountAddPlayer("Phogue", CommonProtocolType.DiceBattlefield3, "ABCDEF").SetOrigin(CommandOrigin.Local));
+
+            security.Tunnel(CommandBuilder.SecurityAddGroup("SecondGroupName").SetOrigin(CommandOrigin.Local));
+            security.Tunnel(CommandBuilder.SecurityGroupAddAccount("SecondGroupName", "Zaeed").SetOrigin(CommandOrigin.Local));
+            security.Tunnel(CommandBuilder.SecurityGroupSetPermission("SecondGroupName", CommandType.VariablesSet, 50).SetOrigin(CommandOrigin.Local));
+            security.Tunnel(CommandBuilder.SecurityAccountAddPlayer("Zaeed", CommonProtocolType.DiceBattlefield3, "0123456789").SetOrigin(CommandOrigin.Local));
+
+            ICommandResult result = security.Tunnel(CommandBuilder.SecurityQueryPermission(CommandType.VariablesSet, "DoesNotExist")
+                .SetOrigin(CommandOrigin.Remote)
+                .SetAuthentication(new CommandAuthenticationModel() {
+                    Username = "PHOGUE"
                 })
             );
 

@@ -563,7 +563,7 @@ namespace Procon.Core.Security {
 
                     if (this.DispatchIdentityCheck(command, username).Success == false) {
                         // Fetch the account, whatever group it is added to.
-                        AccountModel account = this.Groups.SelectMany(group => @group.Accounts).FirstOrDefault(a => a.Username == username);
+                        AccountModel account = this.Groups.SelectMany(group => @group.Accounts).FirstOrDefault(a => String.Compare(a.Username, username, StringComparison.OrdinalIgnoreCase) == 0);
 
                         if (account != null) {
                             account.Group.Accounts.Remove(account);
@@ -954,7 +954,7 @@ namespace Procon.Core.Security {
         /// </summary>
         public AccountModel GetAccount(String username) {
             return this.Groups.SelectMany(group => group.Accounts)
-                              .FirstOrDefault(account => account.Username == username);
+                              .FirstOrDefault(account => String.Compare(account.Username, username, StringComparison.OrdinalIgnoreCase) == 0);
         }
 
         #region Group
@@ -1112,7 +1112,7 @@ namespace Procon.Core.Security {
                 if (group != null) {
                     if (group.IsGuest == false) {
                         if (username.Length > 0) {
-                            AccountModel account = this.Groups.SelectMany(g => g.Accounts).FirstOrDefault(a => a.Username == username);
+                            AccountModel account = this.Groups.SelectMany(g => g.Accounts).FirstOrDefault(a => String.Compare(a.Username, username, StringComparison.OrdinalIgnoreCase) == 0);
 
                             // If the account does not exist in any other group yet..
                             if (account == null) {
@@ -1232,7 +1232,7 @@ namespace Procon.Core.Security {
             String uid = parameters["uid"].First<String>();
 
             if (this.DispatchPermissionsCheck(command, command.Name).Success == true) {
-                AccountModel account = this.Groups.SelectMany(g => g.Accounts).FirstOrDefault(a => a.Username == username);
+                AccountModel account = this.Groups.SelectMany(g => g.Accounts).FirstOrDefault(a => String.Compare(a.Username, username, StringComparison.OrdinalIgnoreCase) == 0);
 
                 if (account != null) {
                     if (uid.Length > 0) {
@@ -1348,7 +1348,7 @@ namespace Procon.Core.Security {
             String password = parameters["password"].First<String>();
 
             if (this.DispatchPermissionsCheck(command, command.Name).Success == true) {
-                AccountModel account = this.Groups.SelectMany(g => g.Accounts).FirstOrDefault(a => a.Username == username);
+                AccountModel account = this.Groups.SelectMany(g => g.Accounts).FirstOrDefault(a => String.Compare(a.Username, username, StringComparison.OrdinalIgnoreCase) == 0);
 
                 if (account != null) {
                     if (password.Length > 0) {
@@ -1396,7 +1396,7 @@ namespace Procon.Core.Security {
             String passwordHash = parameters["passwordHash"].First<String>();
 
             if (this.DispatchPermissionsCheck(command, command.Name).Success == true) {
-                AccountModel account = this.Groups.SelectMany(g => g.Accounts).FirstOrDefault(a => a.Username == username);
+                AccountModel account = this.Groups.SelectMany(g => g.Accounts).FirstOrDefault(a => String.Compare(a.Username, username, StringComparison.OrdinalIgnoreCase) == 0);
 
                 if (account != null) {
                     if (passwordHash.Length > 0) {
@@ -1444,7 +1444,7 @@ namespace Procon.Core.Security {
             String passwordPlainText = parameters["passwordPlainText"].First<String>();
 
             if (this.DispatchPermissionsCheck(command, command.Name).Success == true) {
-                AccountModel account = this.Groups.SelectMany(g => g.Accounts).FirstOrDefault(a => a.Username == username);
+                AccountModel account = this.Groups.SelectMany(g => g.Accounts).FirstOrDefault(a => String.Compare(a.Username, username, StringComparison.OrdinalIgnoreCase) == 0);
 
                 if (account != null) {
                     if (account.PasswordHash.Length > 0) {
@@ -1506,7 +1506,7 @@ namespace Procon.Core.Security {
 
             // If the user has permission or they are setting their own authenticated account.
             if (this.DispatchPermissionsCheck(command, command.Name).Success == true || this.DispatchIdentityCheck(command, username).Success == true) {
-                AccountModel account = this.Groups.SelectMany(g => g.Accounts).FirstOrDefault(a => a.Username == username);
+                AccountModel account = this.Groups.SelectMany(g => g.Accounts).FirstOrDefault(a => String.Compare(a.Username, username, StringComparison.OrdinalIgnoreCase) == 0);
 
                 if (account != null) {
                     LanguageModel language = this.Shared.Languages.LoadedLanguageFiles.Where(l => l.LanguageModel.LanguageCode == languageCode).Select(l => l.LanguageModel).FirstOrDefault();

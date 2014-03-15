@@ -50,6 +50,24 @@ namespace Procon.Core.Test.Security.Account {
         }
 
         [Test]
+        public void TestByCommandInitiatorWithUsernameCaseInsensitive() {
+            var security = new SecurityController();
+            security.Tunnel(CommandBuilder.SecurityAddGroup("GroupName").SetOrigin(CommandOrigin.Local));
+            security.Tunnel(CommandBuilder.SecurityGroupAddAccount("GroupName", "Phogue").SetOrigin(CommandOrigin.Local));
+            security.Tunnel(CommandBuilder.SecurityAccountAddPlayer("Phogue", CommonProtocolType.DiceBattlefield3, "ABCDEF").SetOrigin(CommandOrigin.Local));
+
+            AccountModel account = security.GetAccount(new Command() {
+                Authentication = {
+                    Username = "PHOGUE"
+                }
+            });
+
+            // Validate the account was fetched successfully
+            Assert.IsNotNull(account);
+            Assert.AreEqual("Phogue", account.Username);
+        }
+
+        [Test]
         public void TestByPlayerDetails() {
             var security = new SecurityController();
             security.Tunnel(CommandBuilder.SecurityAddGroup("GroupName").SetOrigin(CommandOrigin.Local));
@@ -71,6 +89,20 @@ namespace Procon.Core.Test.Security.Account {
             security.Tunnel(CommandBuilder.SecurityAccountAddPlayer("Phogue", CommonProtocolType.DiceBattlefield3, "ABCDEF").SetOrigin(CommandOrigin.Local));
 
             AccountModel account = security.GetAccount("Phogue");
+
+            // Validate the account was fetched successfully
+            Assert.IsNotNull(account);
+            Assert.AreEqual("Phogue", account.Username);
+        }
+
+        [Test]
+        public void TestByUsernameCaseInsensitive() {
+            var security = new SecurityController();
+            security.Tunnel(CommandBuilder.SecurityAddGroup("GroupName").SetOrigin(CommandOrigin.Local));
+            security.Tunnel(CommandBuilder.SecurityGroupAddAccount("GroupName", "Phogue").SetOrigin(CommandOrigin.Local));
+            security.Tunnel(CommandBuilder.SecurityAccountAddPlayer("Phogue", CommonProtocolType.DiceBattlefield3, "ABCDEF").SetOrigin(CommandOrigin.Local));
+
+            AccountModel account = security.GetAccount("PHOGUE");
 
             // Validate the account was fetched successfully
             Assert.IsNotNull(account);

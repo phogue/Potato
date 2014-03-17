@@ -72,9 +72,14 @@ namespace Procon.Net {
                     byte[] bytePacket = this.PacketSerializer.Serialize(wrapper);
 
                     if (bytePacket != null && bytePacket.Length > 0) {
-                        this.Stream.BeginWrite(bytePacket, 0, bytePacket.Length, this.SendAsynchronousCallback, wrapper);
+                        try {
+                            this.Stream.BeginWrite(bytePacket, 0, bytePacket.Length, this.SendAsynchronousCallback, wrapper);
 
-                        sent = wrapper.Packet;
+                            sent = wrapper.Packet;
+                        }
+                        catch (Exception e) {
+                            this.Shutdown(e);
+                        }
                     }
                 }
             }
@@ -142,9 +147,6 @@ namespace Procon.Net {
                     else {
                         this.Shutdown();
                     }
-                }
-                catch (SocketException se) {
-                    this.Shutdown(se);
                 }
                 catch (Exception e) {
                     this.Shutdown(e);

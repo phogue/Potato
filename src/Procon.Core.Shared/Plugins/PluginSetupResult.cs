@@ -7,6 +7,7 @@ namespace Procon.Core.Shared.Plugins {
     /// </summary>
     [Serializable]
     public class PluginSetupResult : IPluginSetupResult {
-        public List<String> Commands { get; set; } 
+        public List<String> Commands { get; set; }
+        public string Title { get; set; }
     }
 }

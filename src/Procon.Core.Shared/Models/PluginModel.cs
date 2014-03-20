@@ -8,9 +8,14 @@ namespace Procon.Core.Shared.Models {
     [Serializable]
     public class PluginModel : CoreModel {
         /// <summary>
-        /// The name of the plugin, also used as it's namespace
+        /// The assembly name of the plugin
         /// </summary>
         public String Name { get; set; }
+
+        /// <summary>
+        /// The friendly human readable name for the plugin
+        /// </summary>
+        public String Title { get; set; }
 
         /// <summary>
         /// The loaded plugin GUID

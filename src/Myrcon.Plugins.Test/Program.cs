@@ -19,6 +19,8 @@ namespace Myrcon.Plugins.Test {
         private List<TextCommandModel> Commands { get; set; }
 
         public Program() : base() {
+            this.Title = "Myrcon Test Plugin";
+
             this.Commands = new List<TextCommandModel>();
 
             this.TunnelObjects = new List<ICoreController>() {

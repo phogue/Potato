@@ -371,6 +371,7 @@ namespace Procon.Core.Connections.Plugins {
                     });
 
                     plugin.Commands = result.Commands;
+                    plugin.Title = result.Title;
 
                     // Tell the plugin it's ready to begin, everything is setup and ready 
                     // for it to start loading its config.

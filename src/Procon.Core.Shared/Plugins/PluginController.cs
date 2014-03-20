@@ -18,6 +18,11 @@ namespace Procon.Core.Shared.Plugins {
     /// </summary>
     public abstract class PluginController : AsynchronousCoreController, IPluginController {
         /// <summary>
+        /// A human readable name/title of this plugin.
+        /// </summary>
+        public String Title { get; set; }
+
+        /// <summary>
         /// The Guid of the executing assembly. Used to uniquely identify this plugin. 
         /// </summary>
         public Guid PluginGuid { get; private set; }
@@ -49,6 +54,7 @@ namespace Procon.Core.Shared.Plugins {
 
         protected PluginController() : base() {
             this.PluginGuid = this.GetAssemblyGuid();
+            this.Title = this.PluginGuid.ToString();
 
             this.DeferredActions = new ConcurrentDictionary<Guid, IDeferredAction>();
 
@@ -220,7 +226,8 @@ namespace Procon.Core.Shared.Plugins {
             }
 
             return new PluginSetupResult() {
-                Commands = this.HandledCommandNames()
+                Commands = this.HandledCommandNames(),
+                Title = this.Title
             };
         }
 

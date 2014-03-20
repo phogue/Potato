@@ -7,6 +7,11 @@ namespace Procon.Core.Shared {
     /// </summary>
     public interface ICoreController : IDisposable {
         /// <summary>
+        /// List of commands this controller will handle/dispatch.
+        /// </summary>
+        List<ICommandDispatch> CommandDispatchers { get; set; } 
+
+        /// <summary>
         /// All objects to tunnel downwards during execution
         /// </summary>
         List<ICoreController> TunnelObjects { get; set; }

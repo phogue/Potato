@@ -14,7 +14,7 @@ namespace Procon.Core.Shared {
         /// <summary>
         /// List of dispatch attributes to the method to call, provided the parameter list matches.
         /// </summary>
-        protected readonly List<ICommandDispatch> CommandDispatchers = new List<ICommandDispatch>(); 
+        public List<ICommandDispatch> CommandDispatchers { get; set; } 
 
         /// <summary>
         /// All objects to tunnel downwards
@@ -27,6 +27,7 @@ namespace Procon.Core.Shared {
         public List<ICoreController> BubbleObjects { get; set; }
 
         protected CoreController() : base() {
+            this.CommandDispatchers = new List<ICommandDispatch>();
             this.TunnelObjects = new List<ICoreController>();
             this.BubbleObjects = new List<ICoreController>();
         }

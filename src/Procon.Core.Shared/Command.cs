@@ -63,6 +63,12 @@ namespace Procon.Core.Shared {
             return this;
         }
 
+        public ICommand SetScope(CommandScopeModel scope) {
+            this.ScopeModel = scope;
+
+            return this;
+        }
+
         /// <summary>
         /// Allows for essentially cloning a command, but then allows inline overrides of the 
         /// attributes.

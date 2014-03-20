@@ -68,6 +68,13 @@ namespace Procon.Core.Shared {
         ICommand SetAuthentication(CommandAuthenticationModel authentication);
 
         /// <summary>
+        /// Sets the scope of the command, then returns the command. Allows for method chaining
+        /// </summary>
+        /// <param name="scope">The scope to set this command</param>
+        /// <returns>this</returns>
+        ICommand SetScope(CommandScopeModel scope);
+
+        /// <summary>
         /// The config only requires the name and parameters, everything else is ignored. We could just
         /// return the results of ToXElement() but we neaten it up a little bit just so the config
         /// isn't bloated with useless information.

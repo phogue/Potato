@@ -832,5 +832,19 @@ namespace Procon.Core.Shared {
                 }
             };
         }
+
+        /// <summary>
+        /// Builds a command to send a PluginsEnable
+        /// </summary>
+        /// <param name="pluginGuid">The guid of the plugin to enable</param>
+        /// <returns>The built command to dispatch</returns>
+        public static ICommand PluginsEnable(Guid pluginGuid) {
+            return new Command() {
+                CommandType = CommandType.PluginsEnable,
+                ScopeModel = {
+                    PluginGuid = pluginGuid
+                }
+            };
+        }
     }
 }

@@ -364,11 +364,13 @@ namespace Procon.Core.Connections.Plugins {
 
                     Guid connectionGuid = this.Connection != null ? this.Connection.ConnectionModel.ConnectionGuid : Guid.Empty;
 
-                    proxy.Setup(new PluginSetup() {
+                    IPluginSetupResult result = proxy.Setup(new PluginSetup() {
                         ConnectionGuid = connectionGuid.ToString(),
                         ConfigDirectoryPath = Path.Combine(Defines.ConfigsDirectory.FullName, connectionGuid.ToString(), plugin.PluginGuid.ToString()),
                         LogDirectoryPath = Path.Combine(Defines.LogsDirectory.FullName, connectionGuid.ToString(), plugin.PluginGuid.ToString())
                     });
+
+                    plugin.Commands = result.Commands;
 
                     // Tell the plugin it's ready to begin, everything is setup and ready 
                     // for it to start loading its config.

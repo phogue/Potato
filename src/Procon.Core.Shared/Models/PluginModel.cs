@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Procon.Core.Shared.Models {
     /// <summary>
@@ -20,5 +21,10 @@ namespace Procon.Core.Shared.Models {
         /// If this plugin is enabled or not.
         /// </summary>
         public bool IsEnabled { get; set; }
+
+        /// <summary>
+        /// A simple list of commands this plugin has registered handlers.
+        /// </summary>
+        public List<String> Commands { get; set; }
     }
 }

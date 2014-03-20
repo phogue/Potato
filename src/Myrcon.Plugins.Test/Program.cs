@@ -15,19 +15,10 @@ using Procon.Net.Shared.Utils;
 namespace Myrcon.Plugins.Test {
 
     public class Program : PluginController {
-        //Ignore this: - Actually, depending on how you wanna save info for plugins, the actually plugin could save it here.
-        // For now, it's in PluginAPI
-        // 
-        // protected override void WriteConfig(System.Xml.Linq.XElement xNamespace) { }
-        // public override void Dispose() { }
 
         private List<TextCommandModel> Commands { get; set; }
 
         public Program() : base() {
-            //this.Author = "Phogue";
-            //this.Website = "http://phogue.net";
-            //this.Description = "herro";
-
             this.Commands = new List<TextCommandModel>();
 
             this.TunnelObjects = new List<ICoreController>() {

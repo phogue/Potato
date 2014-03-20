@@ -16,7 +16,7 @@ namespace Procon.Core.Shared.Plugins {
         /// Creates and sets the more complex properties of this plugin.
         /// </summary>
         /// <param name="setup">The parameters to copy to the plugin app domain.</param>
-        void Setup(IPluginSetup setup);
+        IPluginSetupResult Setup(IPluginSetup setup);
 
         /// <summary>
         /// Fired whenever an event is passed from the client, to the game layer

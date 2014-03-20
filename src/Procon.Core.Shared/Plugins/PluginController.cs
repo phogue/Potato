@@ -52,19 +52,17 @@ namespace Procon.Core.Shared.Plugins {
 
             this.DeferredActions = new ConcurrentDictionary<Guid, IDeferredAction>();
 
-            this.CommandDispatchers.Add(
-                new CommandDispatch() {
-                    CommandType = CommandType.TextCommandsExecute,
-                    CommandAttributeType = CommandAttributeType.Executed,
-                    ParameterTypes = new List<CommandParameterType>() {
-                        new CommandParameterType() {
-                            Name = "text",
-                            Type = typeof(String)
-                        }
-                    },
-                    Handler = this.TextCommandExecuted
-                }
-            );
+            this.CommandDispatchers.Add(new CommandDispatch() {
+                CommandType = CommandType.TextCommandsExecute,
+                CommandAttributeType = CommandAttributeType.Executed,
+                ParameterTypes = new List<CommandParameterType>() {
+                    new CommandParameterType() {
+                        Name = "text",
+                        Type = typeof(String)
+                    }
+                },
+                Handler = this.TextCommandExecuted
+            });
         }
         
         /// <summary>
@@ -190,7 +188,23 @@ namespace Procon.Core.Shared.Plugins {
             });
         }
 
-        public void Setup(IPluginSetup setup) {
+        /// <summary>
+        /// Fetches a list of available commands handled by this controller and any controllers found in TunnelObjects.
+        /// </summary>
+        public virtual List<String> HandledCommandNames() {
+            var items = new List<ICoreController>() { this };
+            var tunneled = items.SelectMany(item => item.TunnelObjects).ToList();
+
+            while (tunneled.Count > 0) {
+                items.AddRange(tunneled);
+
+                tunneled = tunneled.SelectMany(item => item.TunnelObjects).ToList();
+            }
+
+            return items.SelectMany(item => item.CommandDispatchers).Select(item => item.Name).Distinct().OrderBy(item => item).ToList();
+        }
+
+        public IPluginSetupResult Setup(IPluginSetup setup) {
             if (setup.ConnectionGuid != null) {
                 this.ConnectionGuid = Guid.Parse(setup.ConnectionGuid);
             }
@@ -204,6 +218,10 @@ namespace Procon.Core.Shared.Plugins {
                 this.LogDirectoryInfo = new DirectoryInfo(setup.LogDirectoryPath);
                 this.LogDirectoryInfo.Create();
             }
+
+            return new PluginSetupResult() {
+                Commands = this.HandledCommandNames()
+            };
         }
 
         public virtual void GameEvent(IProtocolEventArgs e) {

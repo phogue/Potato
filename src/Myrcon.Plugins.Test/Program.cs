@@ -23,20 +23,20 @@ namespace Myrcon.Plugins.Test {
 
         private List<TextCommandModel> Commands { get; set; }
 
-        public List<ICoreController> Tests = new List<ICoreController>() {
-            new TestPluginsSerialization(),
-            new TestPluginsEnabled(),
-            new TestPluginsIsolation(),
-            new TestPluginsWebUi(),
-            new TestPluginsCommands()
-        };
-
         public Program() : base() {
             //this.Author = "Phogue";
             //this.Website = "http://phogue.net";
             //this.Description = "herro";
 
             this.Commands = new List<TextCommandModel>();
+
+            this.TunnelObjects = new List<ICoreController>() {
+                new TestPluginsSerialization(),
+                new TestPluginsEnabled(),
+                new TestPluginsIsolation(),
+                new TestPluginsWebUi(),
+                new TestPluginsCommands()
+            };
 
             this.CommandDispatchers.AddRange(new List<ICommandDispatch>() {
                 new CommandDispatch() {
@@ -92,10 +92,6 @@ namespace Myrcon.Plugins.Test {
                     Handler = this.RegisterTextCommandExecuted
                 }
             });
-        }
-
-        protected override IList<ICoreController> TunnelExecutableObjects(ICommand command) {
-            return this.Tests;
         }
 
         protected List<string> ShortCommandList(ICommandResult e) {

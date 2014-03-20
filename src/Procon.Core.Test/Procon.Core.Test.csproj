@@ -99,7 +99,6 @@
     <Compile Include="Plugins\TestPluginsDisabled.cs" />
     <Compile Include="Plugins\TestPluginsEnabled.cs" />
     <Compile Include="Plugins\TestPluginsIsolation.cs" />
-    <Compile Include="Plugins\TestPluginsSecurity.cs" />
     <Compile Include="Plugins\TestPluginsSerialization.cs" />
     <Compile Include="Remote\TestCertificateController\TestVariableLoad.cs" />
     <Compile Include="Remote\TestCertificateController\TestExplicitLoad.cs" />

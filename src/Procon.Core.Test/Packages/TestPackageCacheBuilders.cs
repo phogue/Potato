@@ -18,11 +18,11 @@ namespace Procon.Core.Test.Packages {
         /// </summary>
         [Test]
         public void TestAvailableBuilderEmptyRepository() {
-            RepositoryModel repository = new RepositoryModel();
+            var packages = new List<PackageWrapperModel>();
 
             new AvailableCacheBuilder() {
-                Repository = repository,
-                Packages = new List<IPackage>() {
+                Cache = packages,
+                Source = new List<IPackage>() {
                     new DataServicePackage() {
                         Id = "TestAvailableBuilderEmptyRepository",
                         Version = "1.0.0"
@@ -30,8 +30,8 @@ namespace Procon.Core.Test.Packages {
                 }
             }.Build();
 
-            Assert.IsNotEmpty(repository.Packages);
-            Assert.AreEqual(PackageState.NotInstalled, repository.Packages.First().State);
+            Assert.IsNotEmpty(packages);
+            Assert.AreEqual(PackageState.NotInstalled, packages.First().State);
         }
 
         /// <summary>
@@ -39,21 +39,19 @@ namespace Procon.Core.Test.Packages {
         /// </summary>
         [Test]
         public void TestAvailableBuilderInstalledRepositoryIdenticalVersions() {
-            RepositoryModel repository = new RepositoryModel() {
-                Packages = new List<PackageWrapperModel>() {
-                    new PackageWrapperModel() {
-                        State = PackageState.Installed,
-                        Installed = new PackageModel() {
-                            Id = "TestAvailableBuilderInstalledRepositoryIdenticalVersions",
-                            Version = "1.0.0"
-                        }
+            var packages = new List<PackageWrapperModel>() {
+                new PackageWrapperModel() {
+                    State = PackageState.Installed,
+                    Installed = new PackageModel() {
+                        Id = "TestAvailableBuilderInstalledRepositoryIdenticalVersions",
+                        Version = "1.0.0"
                     }
                 }
             };
 
             new AvailableCacheBuilder() {
-                Repository = repository,
-                Packages = new List<IPackage>() {
+                Cache = packages,
+                Source = new List<IPackage>() {
                     new DataServicePackage() {
                         Id = "TestAvailableBuilderInstalledRepositoryIdenticalVersions",
                         Version = "1.0.0"
@@ -61,8 +59,8 @@ namespace Procon.Core.Test.Packages {
                 }
             }.Build();
 
-            Assert.IsNotEmpty(repository.Packages);
-            Assert.AreEqual(PackageState.Installed, repository.Packages.First().State);
+            Assert.IsNotEmpty(packages);
+            Assert.AreEqual(PackageState.Installed, packages.First().State);
         }
 
         /// <summary>
@@ -70,21 +68,19 @@ namespace Procon.Core.Test.Packages {
         /// </summary>
         [Test]
         public void TestAvailableBuilderInstalledRepositoryNewerVersions() {
-            RepositoryModel repository = new RepositoryModel() {
-                Packages = new List<PackageWrapperModel>() {
-                    new PackageWrapperModel() {
-                        State = PackageState.Installed,
-                        Installed = new PackageModel() {
-                            Id = "TestAvailableBuilderInstalledRepositoryNewerVersions",
-                            Version = "1.0.0"
-                        }
+            var packages = new List<PackageWrapperModel>() {
+                new PackageWrapperModel() {
+                    State = PackageState.Installed,
+                    Installed = new PackageModel() {
+                        Id = "TestAvailableBuilderInstalledRepositoryNewerVersions",
+                        Version = "1.0.0"
                     }
                 }
             };
 
             new AvailableCacheBuilder() {
-                Repository = repository,
-                Packages = new List<IPackage>() {
+                Cache = packages,
+                Source = new List<IPackage>() {
                     new DataServicePackage() {
                         Id = "TestAvailableBuilderInstalledRepositoryNewerVersions",
                         Version = "2.0.0"
@@ -92,8 +88,8 @@ namespace Procon.Core.Test.Packages {
                 }
             }.Build();
 
-            Assert.IsNotEmpty(repository.Packages);
-            Assert.AreEqual(PackageState.UpdateAvailable, repository.Packages.First().State);
+            Assert.IsNotEmpty(packages);
+            Assert.AreEqual(PackageState.UpdateAvailable, packages.First().State);
         }
 
         /// <summary>
@@ -101,11 +97,11 @@ namespace Procon.Core.Test.Packages {
         /// </summary>
         [Test]
         public void TestInstalledBuilderEmptyRepository() {
-            RepositoryModel repository = new RepositoryModel();
+            List<PackageWrapperModel> packages = new List<PackageWrapperModel>();
 
             new InstalledCacheBuilder() {
-                Repository = repository,
-                Packages = new List<IPackage>() {
+                Cache = packages,
+                Source = new List<IPackage>() {
                     new DataServicePackage() {
                         Id = "TestInstalledBuilderEmptyRepository",
                         Version = "1.0.0"
@@ -113,7 +109,7 @@ namespace Procon.Core.Test.Packages {
                 }
             }.Build();
 
-            Assert.IsEmpty(repository.Packages);
+            Assert.IsEmpty(packages);
         }
 
         /// <summary>
@@ -122,21 +118,19 @@ namespace Procon.Core.Test.Packages {
         /// </summary>
         [Test]
         public void TestInstalledBuilderAvailableRepositoryIdenticalVersions() {
-            RepositoryModel repository = new RepositoryModel() {
-                Packages = new List<PackageWrapperModel>() {
-                    new PackageWrapperModel() {
-                        State = PackageState.NotInstalled,
-                        Available = new PackageModel() {
-                            Id = "TestInstalledBuilderAvailableRepositoryIdenticalVersions",
-                            Version = "1.0.0"
-                        }
+            var packages = new List<PackageWrapperModel>() {
+                new PackageWrapperModel() {
+                    State = PackageState.NotInstalled,
+                    Available = new PackageModel() {
+                        Id = "TestInstalledBuilderAvailableRepositoryIdenticalVersions",
+                        Version = "1.0.0"
                     }
                 }
             };
 
             new InstalledCacheBuilder() {
-                Repository = repository,
-                Packages = new List<IPackage>() {
+                Cache = packages,
+                Source = new List<IPackage>() {
                     new DataServicePackage() {
                         Id = "TestInstalledBuilderAvailableRepositoryIdenticalVersions",
                         Version = "1.0.0"
@@ -144,8 +138,8 @@ namespace Procon.Core.Test.Packages {
                 }
             }.Build();
 
-            Assert.IsNotEmpty(repository.Packages);
-            Assert.AreEqual(PackageState.Installed, repository.Packages.First().State);
+            Assert.IsNotEmpty(packages);
+            Assert.AreEqual(PackageState.Installed, packages.First().State);
         }
 
         /// <summary>
@@ -154,21 +148,19 @@ namespace Procon.Core.Test.Packages {
         /// </summary>
         [Test]
         public void TestInstalledBuilderAvailableRepositoryNewerVersions() {
-            RepositoryModel repository = new RepositoryModel() {
-                Packages = new List<PackageWrapperModel>() {
-                    new PackageWrapperModel() {
-                        State = PackageState.NotInstalled,
-                        Available = new PackageModel() {
-                            Id = "TestInstalledBuilderAvailableRepositoryNewerVersions",
-                            Version = "2.0.0"
-                        }
+            var packages = new List<PackageWrapperModel>() {
+                new PackageWrapperModel() {
+                    State = PackageState.NotInstalled,
+                    Available = new PackageModel() {
+                        Id = "TestInstalledBuilderAvailableRepositoryNewerVersions",
+                        Version = "2.0.0"
                     }
                 }
             };
 
             new InstalledCacheBuilder() {
-                Repository = repository,
-                Packages = new List<IPackage>() {
+                Cache = packages,
+                Source = new List<IPackage>() {
                     new DataServicePackage() {
                         Id = "TestInstalledBuilderAvailableRepositoryNewerVersions",
                         Version = "1.0.0"
@@ -176,8 +168,8 @@ namespace Procon.Core.Test.Packages {
                 }
             }.Build();
 
-            Assert.IsNotEmpty(repository.Packages);
-            Assert.AreEqual(PackageState.UpdateAvailable, repository.Packages.First().State);
+            Assert.IsNotEmpty(packages);
+            Assert.AreEqual(PackageState.UpdateAvailable, packages.First().State);
         }
 
         /// <summary>
@@ -185,11 +177,11 @@ namespace Procon.Core.Test.Packages {
         /// </summary>
         [Test]
         public void TestOrphanedBuilderEmptyRepository() {
-            RepositoryModel repository = new RepositoryModel();
+            List<PackageWrapperModel> packages = new List<PackageWrapperModel>();
 
             new OrphanedCacheBuilder() {
-                Repository = repository,
-                Packages = new List<IPackage>() {
+                Cache = packages,
+                Source = new List<IPackage>() {
                     new DataServicePackage() {
                         Id = "TestOrphanedBuilderEmptyRepository",
                         Version = "1.0.0"
@@ -197,8 +189,8 @@ namespace Procon.Core.Test.Packages {
                 }
             }.Build();
 
-            Assert.IsNotEmpty(repository.Packages);
-            Assert.AreEqual(PackageState.Installed, repository.Packages.First().State);
+            Assert.IsNotEmpty(packages);
+            Assert.AreEqual(PackageState.Installed, packages.First().State);
         }
 
         /// <summary>
@@ -213,8 +205,7 @@ namespace Procon.Core.Test.Packages {
         /// </remarks>
         [Test]
         public void TestOrphanedBuilderAvailableRepositoryNewerVersion() {
-            RepositoryModel repository = new RepositoryModel() {
-                Packages = new List<PackageWrapperModel>() {
+            var packages = new List<PackageWrapperModel>() {
                     new PackageWrapperModel() {
                         State = PackageState.NotInstalled,
                         Available = new PackageModel() {
@@ -224,12 +215,11 @@ namespace Procon.Core.Test.Packages {
                             Version = "2.0.0"
                         }
                     }
-                }
             };
 
             new OrphanedCacheBuilder() {
-                Repository = repository,
-                Packages = new List<IPackage>() {
+                Cache = packages,
+                Source = new List<IPackage>() {
                     new DataServicePackage() {
                         Id = "TestOrphanedBuilderAvailableRepositoryNewerVersion",
                         Version = "1.0.0"
@@ -237,8 +227,8 @@ namespace Procon.Core.Test.Packages {
                 }
             }.Build();
 
-            Assert.IsNotEmpty(repository.Packages);
-            Assert.AreEqual(PackageState.Installed, repository.Packages.First().State);
+            Assert.IsNotEmpty(packages);
+            Assert.AreEqual(PackageState.Installed, packages.First().State);
         }
     }
 }

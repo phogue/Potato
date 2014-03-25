@@ -86,8 +86,8 @@ namespace Procon.Core.Packages {
                     try {
                         // Append all available packages for this repository.
                         new AvailableCacheBuilder() {
-                            Repository = repository,
-                            Packages = this.GetCachedSourceRepository(repository.Uri)
+                            Cache = repository.Packages,
+                            Source = this.GetCachedSourceRepository(repository.Uri)
                                            .GetPackages()
                                            .Where(package => package.Tags != null && package.Tags.Contains(Defines.PackageRequiredTag) && package.IsLatestVersion == true)
                                            .ToList()
@@ -97,8 +97,8 @@ namespace Procon.Core.Packages {
 
                         // Update all available packages with those that are installed.
                         new InstalledCacheBuilder() {
-                            Repository = repository,
-                            Packages = localRepository
+                            Cache = repository.Packages,
+                            Source = localRepository
                                 .GetPackages()
                                 .ToList()
                         }.Build();
@@ -117,8 +117,8 @@ namespace Procon.Core.Packages {
 
                 // Now orphan all remaining packages that are installed but do not belong to any repository.
                 new OrphanedCacheBuilder() {
-                    Repository = this.Repositories.First(repository => repository.IsOrphanage == true),
-                    Packages = localRepository
+                    Cache = this.Repositories.First(repository => repository.IsOrphanage == true).Packages,
+                    Source = localRepository
                         .GetPackages()
                         .Where(package => availablePackageIds.Contains(package.Id) == false)
                         .ToList()

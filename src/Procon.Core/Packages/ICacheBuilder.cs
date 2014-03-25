@@ -10,12 +10,12 @@ namespace Procon.Core.Packages {
         /// <summary>
         /// The repository to build the cache on.
         /// </summary>
-        RepositoryModel Repository { get; set; }
+        IList<PackageWrapperModel> Cache { get; set; }
 
         /// <summary>
         /// The repository to use as a reference.
         /// </summary>
-        IList<IPackage> Packages { get; set; }
+        IList<IPackage> Source { get; set; }
 
         /// <summary>
         /// Build the cache within the repository, appending known information to the repository packages.

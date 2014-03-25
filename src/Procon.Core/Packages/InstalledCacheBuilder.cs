@@ -8,13 +8,13 @@ namespace Procon.Core.Packages {
     /// Updates existing package wrappers with those found in the local source
     /// </summary>
     public class InstalledCacheBuilder : ICacheBuilder {
-        public RepositoryModel Repository { get; set; }
+        public IList<PackageWrapperModel> Cache { get; set; }
 
-        public IList<IPackage> Packages { get; set; }
+        public IList<IPackage> Source { get; set; }
 
         public void Build() {
-            foreach (var installedPackage in this.Packages) {
-                PackageWrapperModel packageWrapper = this.Repository.Packages.FirstOrDefault(pack => pack.Id == installedPackage.Id);
+            foreach (var installedPackage in this.Source) {
+                PackageWrapperModel packageWrapper = this.Cache.FirstOrDefault(pack => pack.Id == installedPackage.Id);
 
                 if (packageWrapper != null) {
                     packageWrapper.Installed = PackageFactory.CreatePackageModelFromNugetPackage(installedPackage);

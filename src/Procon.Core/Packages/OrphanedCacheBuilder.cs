@@ -9,16 +9,16 @@ namespace Procon.Core.Packages {
     /// this builder will assume the repository wants to take charge of the packages.
     /// </summary>
     public class OrphanedCacheBuilder : ICacheBuilder {
-        public RepositoryModel Repository { get; set; }
+        public IList<PackageWrapperModel> Cache { get; set; }
 
-        public IList<IPackage> Packages { get; set; }
+        public IList<IPackage> Source { get; set; }
 
         public void Build() {
-            foreach (var orphanedPackage in this.Packages) {
-                PackageWrapperModel packageWrapper = this.Repository.Packages.FirstOrDefault(pack => pack.Id == orphanedPackage.Id);
+            foreach (var orphanedPackage in this.Source) {
+                PackageWrapperModel packageWrapper = this.Cache.FirstOrDefault(pack => pack.Id == orphanedPackage.Id);
 
                 if (packageWrapper == null) {
-                    this.Repository.Packages.Add(new PackageWrapperModel() {
+                    this.Cache.Add(new PackageWrapperModel() {
                         State = PackageState.Installed,
                         Installed = PackageFactory.CreatePackageModelFromNugetPackage(orphanedPackage)
                     });

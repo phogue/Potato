@@ -8,16 +8,16 @@ namespace Procon.Core.Packages {
     /// Grabs packages from source repositories
     /// </summary>
     public class AvailableCacheBuilder : ICacheBuilder {
-        public RepositoryModel Repository { get; set; }
+        public IList<PackageWrapperModel> Cache { get; set; }
 
-        public IList<IPackage> Packages { get; set; }
+        public IList<IPackage> Source { get; set; }
 
         public void Build() {
-            foreach (var availablePackage in this.Packages) {
-                PackageWrapperModel packageWrapper = this.Repository.Packages.FirstOrDefault(pack => pack.Id == availablePackage.Id);
+            foreach (var availablePackage in this.Source) {
+                PackageWrapperModel packageWrapper = this.Cache.FirstOrDefault(pack => pack.Id == availablePackage.Id);
 
                 if (packageWrapper == null) {
-                    this.Repository.Packages.Add(new PackageWrapperModel() {
+                    this.Cache.Add(new PackageWrapperModel() {
                         State = PackageState.NotInstalled,
                         Available = PackageFactory.CreatePackageModelFromNugetPackage(availablePackage)
                     });

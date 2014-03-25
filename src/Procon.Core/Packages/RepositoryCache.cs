@@ -80,41 +80,35 @@ namespace Procon.Core.Packages {
 
         public void Build(IPackageRepository localRepository) {
             if (this.IsCacheBuildable() == true) {
-                foreach (RepositoryModel repository in this.Repositories) {
-                    // Empty out all known packages. We're about to discover them all over again.
-                    repository.Packages.Clear();
+                foreach (RepositoryModel repository in this.Repositories.Where(repository => String.IsNullOrEmpty(repository.Uri) == false)) {
+                    repository.CacheStamp = DateTime.Now;
 
-                    // If we have a valid uri to query against.
-                    if (String.IsNullOrEmpty(repository.Uri) == false) {
-                        repository.CacheStamp = DateTime.Now;
+                    try {
+                        // Append all available packages for this repository.
+                        new AvailableCacheBuilder() {
+                            Repository = repository,
+                            Packages = this.GetCachedSourceRepository(repository.Uri)
+                                           .GetPackages()
+                                           .Where(package => package.Tags != null && package.Tags.Contains(Defines.PackageRequiredTag) && package.IsLatestVersion == true)
+                                           .ToList()
+                                           .OrderByDescending(pack => pack.Version)
+                                           .ToList()
+                        }.Build();
 
-                        try {
-                            // Append all available packages for this repository.
-                            new AvailableCacheBuilder() {
-                                Repository = repository,
-                                Packages = this.GetCachedSourceRepository(repository.Uri)
-                                    .GetPackages()
-                                    .Where(package => package.Tags != null && package.Tags.Contains(Defines.PackageRequiredTag) && package.IsLatestVersion == true)
-                                    .ToList()
-                                    .OrderByDescending(pack => pack.Version)
-                                    .ToList()
-                            }.Build();
+                        // Update all available packages with those that are installed.
+                        new InstalledCacheBuilder() {
+                            Repository = repository,
+                            Packages = localRepository
+                                .GetPackages()
+                                .ToList()
+                        }.Build();
 
-                            // Update all available packages with those that are installed.
-                            new InstalledCacheBuilder() {
-                                Repository = repository,
-                                Packages = localRepository
-                                    .GetPackages()
-                                    .ToList()
-                            }.Build();
-
-                            // No errors occured during fetch, null it out.
-                            repository.CacheError = null;
-                        }
-                        catch (Exception e) {
-                            // Record the error that occured while fetching the packages.
-                            repository.CacheError = e.Message;
-                        }
+                        // No errors occured during fetch, null it out.
+                        repository.CacheError = null;
+                    }
+                    catch (Exception e) {
+                        // Record the error that occured while fetching the packages.
+                        repository.CacheError = e.Message;
                     }
                 }
 

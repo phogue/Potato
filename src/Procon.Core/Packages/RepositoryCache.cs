@@ -81,12 +81,14 @@ namespace Procon.Core.Packages {
         public void Build(IPackageRepository localRepository) {
             if (this.IsCacheBuildable() == true) {
                 foreach (RepositoryModel repository in this.Repositories.Where(repository => String.IsNullOrEmpty(repository.Uri) == false)) {
+                    var cache = new List<PackageWrapperModel>();
+
                     repository.CacheStamp = DateTime.Now;
 
                     try {
                         // Append all available packages for this repository.
                         new AvailableCacheBuilder() {
-                            Cache = repository.Packages,
+                            Cache = cache,
                             Source = this.GetCachedSourceRepository(repository.Uri)
                                            .GetPackages()
                                            .Where(package => package.Tags != null && package.Tags.Contains(Defines.PackageRequiredTag) && package.IsLatestVersion == true)
@@ -97,7 +99,7 @@ namespace Procon.Core.Packages {
 
                         // Update all available packages with those that are installed.
                         new InstalledCacheBuilder() {
-                            Cache = repository.Packages,
+                            Cache = cache,
                             Source = localRepository
                                 .GetPackages()
                                 .ToList()
@@ -105,6 +107,8 @@ namespace Procon.Core.Packages {
 
                         // No errors occured during fetch, null it out.
                         repository.CacheError = null;
+
+                        repository.Packages = cache;
                     }
                     catch (Exception e) {
                         // Record the error that occured while fetching the packages.

@@ -83,8 +83,10 @@ namespace Procon.Core.Remote {
         /// <returns>The existing response packet, modified with the result of the command execution.</returns>
         public static CommandServerPacket CompleteResponsePacket(String contentType, CommandServerPacket response, ICommandResult result) {
             switch (contentType) {
+                case Mime.ApplicationJavascript:
+                case Mime.TextCss:
                 case Mime.TextHtml:
-                    response.Headers.Add(HttpRequestHeader.ContentType, Mime.TextHtml);
+                    response.Headers.Add(HttpRequestHeader.ContentType, contentType);
                     response.Content = result.Now.Content != null ? result.Now.Content.FirstOrDefault() : "";
                     response.StatusCode = HttpStatusCode.OK;
                     break;

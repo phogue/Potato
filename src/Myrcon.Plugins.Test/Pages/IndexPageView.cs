@@ -7,18 +7,54 @@
 //     the code is regenerated.
 // </auto-generated>
 // ------------------------------------------------------------------------------
-
 namespace Myrcon.Plugins.Test.Pages
 {
-#line 1 "C:\Users\P\Documents\Projects\clients\myrcon\procon\Procon-2\src\TestPlugin\Pages\IndexPageView.tt"
+    using System;
+    
+    
+    #line 1 "C:\Users\P\Documents\Projects\clients\myrcon\procon\Procon-2\src\Myrcon.Plugins.Test\Pages\IndexPageView.tt"
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "10.0.0.0")]
     public partial class IndexPageView : IndexPageViewBase
     {
         public virtual string TransformText()
         {
-            this.Write("<html>\r\n\t<head>\r\n\t\t<title>This is my title</title>\r\n\t</head>\r\n\t<body>\r\n\t\t<div id=" +
-                    "\"content\">\r\n\t\t\t<h1>Index</h1>\r\n\t\t\tWelcome to the index of this plugin. Check out" +
-                    " the <a href=\"/settings\">Settings</a>.\r\n\t\t</div>\r\n\t</body>\r\n</html>");
+            this.Write("<html>\r\n\t<head>\r\n\t\t<title>This is my title</title>\r\n\t</head>\r\n\t<body>\r\n\t\t<ul clas" +
+                    "s=\"nav nav-tabs\" ng-controller=\"MenuController\">\r\n\t\t  <li ng-class=\"{ \'active\': " +
+                    "Path == \'#/\' }\"><a href=\"#/\">Home</a></li>\r\n\t\t  <li ng-class=\"{ \'active\': Path =" +
+                    "= \'#/about\' }\"><a href=\"#/about\">About</a></li>\r\n\t\t</ul>\r\n\t\t<div id=\"content\">\r\n" +
+                    "            <div ng-view></div>\r\n\r\n            <script type=\"text/ng-template\" i" +
+                    "d=\"/index.html\">\r\n                <h2>Index</h2>\r\n\t\t\t\t<p>Here\'s a variable from " +
+                    "the controller: {{ SomeData }}</p>\r\n\r\n\t\t\t\t<form class=\"smart-form\" name=\"multipl" +
+                    "ication\" ng-submit=\"multiplication.$valid && Submit()\">\r\n\t\t\t\t\t<header>\r\n\t\t\t\t\t\t<h" +
+                    "2>Enter a number to test command architecture</h2>\r\n\t\t\t\t\t</header>\r\n\t\t\t\t\t<fields" +
+                    "et>\r\n                        <section>\r\n                            <label class" +
+                    "=\"input\">\r\n                                <input class=\"form-control\" type=\"inp" +
+                    "ut\" placeholder=\"Enter a number to multiply it by 2\" name=\"number\" ng-model=\"Mat" +
+                    "hematics.Number\" required>\r\n                            </label>\r\n              " +
+                    "              <em ng-show=\"multiplication.number.$dirty && multiplication.number" +
+                    ".$invalid && multiplication.number.$error.required\" class=\"ng-hide\">Please enter" +
+                    " a number to multiply</em>\r\n                        </section>\r\n                " +
+                    "    </fieldset>\r\n\t\t\t\t\t<footer>\r\n                        <button class=\"btn btn-p" +
+                    "rimary\" ng-disabled=\"MathematicsActions.Communicating || multiplication.$invalid" +
+                    "\" disabled=\"disabled\">\r\n                            <img ng-show=\"MathematicsAct" +
+                    "ions.Communicating\" src=\"/assets/img/loading.gif\" class=\"ng-hide\"><i ng-hide=\"Ma" +
+                    "thematicsActions.Communicating\" class=\"fa fa-arrow-right\"></i> Create\r\n         " +
+                    "               </button>\r\n                    </footer>\r\n\t\t\t\t</form>\r\n\t\t\t\t\r\n\t\t\t\t" +
+                    "<h3>Here\'s the result of the multiplication: {{ Mathematics.Result }}</h3>\r\n\t\t\t\t" +
+                    "<div ng-if=\"Mathematics.Result != 0\">\r\n\t\t\t\t\t<p>The process this just went throug" +
+                    "h:</p>\r\n\t\t\t\t\t<ul>\r\n\t\t\t\t\t\t<li>Angular.Submit()</li>\r\n\t\t\t\t\t\t<li>Through the sandbo" +
+                    "x between Procon.UI Window and this plugins iframe with postMessage</li>\r\n\t\t\t\t\t\t" +
+                    "<li>Emitted via websocket to the Procon UI</li>\r\n\t\t\t\t\t\t<li>Credentials attached " +
+                    "and the command, sent to a running Procon 2 C# Instance</li>\r\n\t\t\t\t\t\t<li>Deserial" +
+                    "ized by Procon 2, routed to a specific connection</li>\r\n\t\t\t\t\t\t<li>Crosses the sa" +
+                    "ndbox into the Plugin AppDomain</li>\r\n\t\t\t\t\t\t<li>Routes the command \"TestPluginSi" +
+                    "mpleMultiplyByTwoCommand\" at https://github.com/Myrcon/Procon-2/blob/master/src/" +
+                    "Myrcon.Plugins.Test/Tests/TestPluginsWebUi.cs </li>\r\n\t\t\t\t\t\t<li>Multiplies the nu" +
+                    "mber.</li>\r\n\t\t\t\t\t\t<li>Reverse of above.</li>\r\n\t\t\t\t\t</ul>\r\n\t\t\t\t</div>\r\n          " +
+                    "  </script>\r\n\r\n            <script type=\"text/ng-template\" id=\"/about.html\">\r\n  " +
+                    "              <h2>About</h2>\r\n\t\t\t\t<p>This plugin is made by Geoff to demonstrate" +
+                    " making a basic plugin UI.</p>\r\n            </script>\r\n\t\t</div>\r\n\t</body>\r\n</htm" +
+                    "l>");
             return this.GenerationEnvironment.ToString();
         }
     }

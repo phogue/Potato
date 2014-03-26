@@ -4,9 +4,57 @@
 		<title>This is my title</title>
 	</head>
 	<body>
+		<ul class="nav nav-tabs" ng-controller="MenuController">
+		  <li ng-class="{ 'active': Path == '#/' }"><a href="#/">Home</a></li>
+		  <li ng-class="{ 'active': Path == '#/about' }"><a href="#/about">About</a></li>
+		</ul>
 		<div id="content">
-			<h1>Index</h1>
-			Welcome to the index of this plugin. Check out the <a href="/settings">Settings</a>.
+            <div ng-view></div>
+
+            <script type="text/ng-template" id="/index.html">
+                <h2>Index</h2>
+				<p>Here's a variable from the controller: {{ SomeData }}</p>
+
+				<form class="smart-form" name="multiplication" ng-submit="multiplication.$valid && Submit()">
+					<header>
+						<h2>Enter a number to test command architecture</h2>
+					</header>
+					<fieldset>
+                        <section>
+                            <label class="input">
+                                <input class="form-control" type="input" placeholder="Enter a number to multiply it by 2" name="number" ng-model="Mathematics.Number" required>
+                            </label>
+                            <em ng-show="multiplication.number.$dirty && multiplication.number.$invalid && multiplication.number.$error.required" class="ng-hide">Please enter a number to multiply</em>
+                        </section>
+                    </fieldset>
+					<footer>
+                        <button class="btn btn-primary" ng-disabled="MathematicsActions.Communicating || multiplication.$invalid" disabled="disabled">
+                            <img ng-show="MathematicsActions.Communicating" src="/assets/img/loading.gif" class="ng-hide"><i ng-hide="MathematicsActions.Communicating" class="fa fa-arrow-right"></i> Create
+                        </button>
+                    </footer>
+				</form>
+				
+				<h3>Here's the result of the multiplication: {{ Mathematics.Result }}</h3>
+				<div ng-if="Mathematics.Result != 0">
+					<p>The process this just went through:</p>
+					<ul>
+						<li>Angular.Submit()</li>
+						<li>Through the sandbox between Procon.UI Window and this plugins iframe with postMessage</li>
+						<li>Emitted via websocket to the Procon UI</li>
+						<li>Credentials attached and the command, sent to a running Procon 2 C# Instance</li>
+						<li>Deserialized by Procon 2, routed to a specific connection</li>
+						<li>Crosses the sandbox into the Plugin AppDomain</li>
+						<li>Routes the command "TestPluginSimpleMultiplyByTwoCommand" at https://github.com/Myrcon/Procon-2/blob/master/src/Myrcon.Plugins.Test/Tests/TestPluginsWebUi.cs </li>
+						<li>Multiplies the number.</li>
+						<li>Reverse of above.</li>
+					</ul>
+				</div>
+            </script>
+
+            <script type="text/ng-template" id="/about.html">
+                <h2>About</h2>
+				<p>This plugin is made by Geoff to demonstrate making a basic plugin UI.</p>
+            </script>
 		</div>
 	</body>
 </html>

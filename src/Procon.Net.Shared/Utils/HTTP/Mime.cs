@@ -20,7 +20,18 @@ namespace Procon.Net.Shared.Utils.HTTP {
         /// <summary>
         /// text/html
         /// </summary>
+        public const String ApplicationJavascript = "application/javascript";
+
+        /// <summary>
+        /// text/html
+        /// </summary>
         public const String TextHtml = "text/html";
+        
+        /// <summary>
+        /// text/html
+        /// </summary>
+        public const String TextCss = "text/css";
+        
 
         /// <summary>
         /// A list of extensions (unique) with the mime type that relates to that file type.
@@ -28,8 +39,10 @@ namespace Procon.Net.Shared.Utils.HTTP {
         public static Dictionary<String, String> Extensions = new Dictionary<String, String>() {
             { "json", Mime.ApplicationJson },
             { "xml", Mime.ApplicationXml },
+            { "js", Mime.ApplicationJavascript },
             { "html", Mime.TextHtml },
-            { "htm", Mime.TextHtml }
+            { "htm", Mime.TextHtml },
+            { "css", Mime.TextCss }
         };
 
         /// <summary>

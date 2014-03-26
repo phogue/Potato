@@ -31,6 +31,9 @@
         controller: 'SandboxTestController'
     })
     .when('/', { templateUrl: '/index.html', controller: 'IndexController' })
+    .when('/widget/overview', { templateUrl: '/widget/overview.html', controller: 'WidgetOverviewController' })
+    .when('/widget/settings', { templateUrl: '/widget/settings.html', controller: 'WidgetSettingsController' })
+    .when('/widget/player', { templateUrl: '/widget/player.html', controller: 'WidgetPlayerController' })
     .when('/about', { templateUrl: '/about.html', controller: 'AboutController' })
     .otherwise({
         redirectTo: '/'
@@ -78,9 +81,11 @@
 } ])
 
 .controller('MenuController', ['$scope', '$location', function ($scope, $location) {
-    $scope.$on('$locationChangeSuccess', function () {
-        $scope.Path = $location.path();
-    });
+    $scope.isActive = function(viewLocation) {
+        var active = (viewLocation === $location.path());
+        return active;
+    };
+
 } ])
 
 .controller('IndexController', ['$scope', 'MathematicsActions', function ($scope, MathematicsActions) {
@@ -105,5 +110,14 @@
 
 } ])
 .controller('AboutController', [function () {
+
+} ])
+.controller('WidgetOverviewController', [function () {
+
+} ])
+.controller('WidgetSettingsController', [function () {
+
+} ])
+.controller('WidgetPlayerController', [function () {
 
 } ]);

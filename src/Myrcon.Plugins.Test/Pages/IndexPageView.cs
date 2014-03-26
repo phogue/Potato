@@ -20,40 +20,62 @@ namespace Myrcon.Plugins.Test.Pages
         {
             this.Write("<html>\r\n\t<head>\r\n\t\t<title>This is my title</title>\r\n\t</head>\r\n\t<body>\r\n\t\t<ul clas" +
                     "s=\"nav nav-tabs\" ng-controller=\"MenuController\">\r\n\t\t  <li ng-class=\"{ \'active\': " +
-                    "Path == \'#/\' }\"><a href=\"#/\">Home</a></li>\r\n\t\t  <li ng-class=\"{ \'active\': Path =" +
-                    "= \'#/about\' }\"><a href=\"#/about\">About</a></li>\r\n\t\t</ul>\r\n\t\t<div id=\"content\">\r\n" +
-                    "            <div ng-view></div>\r\n\r\n            <script type=\"text/ng-template\" i" +
-                    "d=\"/index.html\">\r\n                <h2>Index</h2>\r\n\t\t\t\t<p>Here\'s a variable from " +
-                    "the controller: {{ SomeData }}</p>\r\n\r\n\t\t\t\t<form class=\"smart-form\" name=\"multipl" +
-                    "ication\" ng-submit=\"multiplication.$valid && Submit()\">\r\n\t\t\t\t\t<header>\r\n\t\t\t\t\t\t<h" +
-                    "2>Enter a number to test command architecture</h2>\r\n\t\t\t\t\t</header>\r\n\t\t\t\t\t<fields" +
-                    "et>\r\n                        <section>\r\n                            <label class" +
-                    "=\"input\">\r\n                                <input class=\"form-control\" type=\"inp" +
-                    "ut\" placeholder=\"Enter a number to multiply it by 2\" name=\"number\" ng-model=\"Mat" +
-                    "hematics.Number\" required>\r\n                            </label>\r\n              " +
-                    "              <em ng-show=\"multiplication.number.$dirty && multiplication.number" +
-                    ".$invalid && multiplication.number.$error.required\" class=\"ng-hide\">Please enter" +
-                    " a number to multiply</em>\r\n                        </section>\r\n                " +
-                    "    </fieldset>\r\n\t\t\t\t\t<footer>\r\n                        <button class=\"btn btn-p" +
-                    "rimary\" ng-disabled=\"MathematicsActions.Communicating || multiplication.$invalid" +
-                    "\" disabled=\"disabled\">\r\n                            <img ng-show=\"MathematicsAct" +
-                    "ions.Communicating\" src=\"/assets/img/loading.gif\" class=\"ng-hide\"><i ng-hide=\"Ma" +
-                    "thematicsActions.Communicating\" class=\"fa fa-arrow-right\"></i> Create\r\n         " +
-                    "               </button>\r\n                    </footer>\r\n\t\t\t\t</form>\r\n\t\t\t\t\r\n\t\t\t\t" +
-                    "<h3>Here\'s the result of the multiplication: {{ Mathematics.Result }}</h3>\r\n\t\t\t\t" +
-                    "<div ng-if=\"Mathematics.Result != 0\">\r\n\t\t\t\t\t<p>The process this just went throug" +
-                    "h:</p>\r\n\t\t\t\t\t<ul>\r\n\t\t\t\t\t\t<li>Angular.Submit()</li>\r\n\t\t\t\t\t\t<li>Through the sandbo" +
-                    "x between Procon.UI Window and this plugins iframe with postMessage</li>\r\n\t\t\t\t\t\t" +
-                    "<li>Emitted via websocket to the Procon UI</li>\r\n\t\t\t\t\t\t<li>Credentials attached " +
-                    "and the command, sent to a running Procon 2 C# Instance</li>\r\n\t\t\t\t\t\t<li>Deserial" +
-                    "ized by Procon 2, routed to a specific connection</li>\r\n\t\t\t\t\t\t<li>Crosses the sa" +
-                    "ndbox into the Plugin AppDomain</li>\r\n\t\t\t\t\t\t<li>Routes the command \"TestPluginSi" +
-                    "mpleMultiplyByTwoCommand\" at https://github.com/Myrcon/Procon-2/blob/master/src/" +
-                    "Myrcon.Plugins.Test/Tests/TestPluginsWebUi.cs </li>\r\n\t\t\t\t\t\t<li>Multiplies the nu" +
-                    "mber.</li>\r\n\t\t\t\t\t\t<li>Reverse of above.</li>\r\n\t\t\t\t\t</ul>\r\n\t\t\t\t</div>\r\n          " +
-                    "  </script>\r\n\r\n            <script type=\"text/ng-template\" id=\"/about.html\">\r\n  " +
-                    "              <h2>About</h2>\r\n\t\t\t\t<p>This plugin is made by Geoff to demonstrate" +
-                    " making a basic plugin UI.</p>\r\n            </script>\r\n\t\t</div>\r\n\t</body>\r\n</htm" +
+                    "isActive(\'/\') }\"><a href=\"#/\">Home</a></li>\r\n\t\t  <li ng-class=\"{ \'active\': isAct" +
+                    "ive(\'/about\') }\"><a href=\"#/about\">About</a></li>\r\n\t\t  <li ng-class=\"{ \'active\':" +
+                    " isActive(\'/widget/overview\') }\"><a href=\"#/widget/overview\">Widget/Overview</a>" +
+                    "</li>\r\n\t\t  <li ng-class=\"{ \'active\': isActive(\'/widget/settings\') }\"><a href=\"#/" +
+                    "widget/settings\">Widget/Settings</a></li>\r\n\t\t  <li ng-class=\"{ \'active\': isActiv" +
+                    "e(\'/widget/player\') }\"><a href=\"#/widget/player\">Widget/Player</a></li>\r\n\t\t</ul>" +
+                    "\r\n\t\t<div id=\"content\">\r\n            <div ng-view></div>\r\n\r\n            <script t" +
+                    "ype=\"text/ng-template\" id=\"/index.html\">\r\n                <h2>Index</h2>\r\n\t\t\t\t<p" +
+                    ">Here\'s a variable from the controller: {{ SomeData }}</p>\r\n\r\n\t\t\t\t<form class=\"s" +
+                    "mart-form\" name=\"multiplication\" ng-submit=\"multiplication.$valid && Submit()\">\r" +
+                    "\n\t\t\t\t\t<header>\r\n\t\t\t\t\t\t<h2>Enter a number to test command architecture</h2>\r\n\t\t\t\t" +
+                    "\t</header>\r\n\t\t\t\t\t<fieldset>\r\n                        <section>\r\n                " +
+                    "            <label class=\"input\">\r\n                                <input class=" +
+                    "\"form-control\" type=\"input\" placeholder=\"Enter a number to multiply it by 2\" nam" +
+                    "e=\"number\" ng-model=\"Mathematics.Number\" required>\r\n                            " +
+                    "</label>\r\n                            <em ng-show=\"multiplication.number.$dirty " +
+                    "&& multiplication.number.$invalid && multiplication.number.$error.required\" clas" +
+                    "s=\"ng-hide\">Please enter a number to multiply</em>\r\n                        </se" +
+                    "ction>\r\n                    </fieldset>\r\n\t\t\t\t\t<footer>\r\n                        " +
+                    "<button class=\"btn btn-primary\" ng-disabled=\"MathematicsActions.Communicating ||" +
+                    " multiplication.$invalid\" disabled=\"disabled\">\r\n                            <img" +
+                    " ng-show=\"MathematicsActions.Communicating\" src=\"/assets/img/loading.gif\" class=" +
+                    "\"ng-hide\"><i ng-hide=\"MathematicsActions.Communicating\" class=\"fa fa-arrow-right" +
+                    "\"></i> Multiply\r\n                        </button>\r\n                    </footer" +
+                    ">\r\n\t\t\t\t</form>\r\n\t\t\t\t\r\n\t\t\t\t<h3>Here\'s the result of the multiplication: {{ Mathem" +
+                    "atics.Result }}</h3>\r\n\t\t\t\t<div ng-if=\"Mathematics.Result != 0\">\r\n\t\t\t\t\t<p>The pro" +
+                    "cess this just went through:</p>\r\n\t\t\t\t\t<ul>\r\n\t\t\t\t\t\t<li>Angular.Submit()</li>\r\n\t\t" +
+                    "\t\t\t\t<li>Through the sandbox between Procon.UI Window and this plugins iframe wit" +
+                    "h postMessage</li>\r\n\t\t\t\t\t\t<li>Emitted via websocket to the Procon UI</li>\r\n\t\t\t\t\t" +
+                    "\t<li>Credentials attached and the command, sent to a running Procon 2 C# Instanc" +
+                    "e</li>\r\n\t\t\t\t\t\t<li>Deserialized by Procon 2, routed to a specific connection</li>" +
+                    "\r\n\t\t\t\t\t\t<li>Crosses the sandbox into the Plugin AppDomain</li>\r\n\t\t\t\t\t\t<li>Routes" +
+                    " the command \"TestPluginSimpleMultiplyByTwoCommand\" at https://github.com/Myrcon" +
+                    "/Procon-2/blob/master/src/Myrcon.Plugins.Test/Tests/TestPluginsWebUi.cs </li>\r\n\t" +
+                    "\t\t\t\t\t<li>Multiplies the number.</li>\r\n\t\t\t\t\t\t<li>Reverse of above.</li>\r\n\t\t\t\t\t</u" +
+                    "l>\r\n\t\t\t\t</div>\r\n            </script>\r\n\r\n            <script type=\"text/ng-templ" +
+                    "ate\" id=\"/about.html\">\r\n                <h2>About</h2>\r\n\t\t\t\t<p>This plugin is ma" +
+                    "de by Geoff to demonstrate making a basic plugin UI.</p>\r\n            </script>\r" +
+                    "\n\r\n            <script type=\"text/ng-template\" id=\"/widget/overview.html\">\r\n    " +
+                    "            <h2>This is a plugin panel generated from the C# instance</h2>\r\n\t\t\t\t" +
+                    "<p>You can see this text being pulled from procon at https://github.com/Myrcon/P" +
+                    "rocon-2/blob/master/src/Myrcon.Plugins.Test/Pages/IndexPageView.tt </p>\r\n\t\t\t\t<p>" +
+                    "Panels like this will be displayed around Procon. It\'s entirely up to the plugin" +
+                    " developer what content and functionality shows up in this little panel.</p>\r\n  " +
+                    "          </script>\r\n\r\n            <script type=\"text/ng-template\" id=\"/widget/s" +
+                    "ettings.html\">\r\n                <h2>This is a plugin panel generated from the C#" +
+                    " instance</h2>\r\n\t\t\t\t<p>You can see this text being pulled from procon at https:/" +
+                    "/github.com/Myrcon/Procon-2/blob/master/src/Myrcon.Plugins.Test/Pages/IndexPageV" +
+                    "iew.tt </p>\r\n\t\t\t\t<p>Procon 2 is very broad on its protocol. This panel could be " +
+                    "used to display game-specific functionality of settings</p>\r\n            </scrip" +
+                    "t>\r\n\r\n            <script type=\"text/ng-template\" id=\"/widget/player.html\">\r\n   " +
+                    "             <h2>This is a plugin panel generated from the C# instance</h2>\r\n\t\t\t" +
+                    "\t<p>You can see this text being pulled from procon at https://github.com/Myrcon/" +
+                    "Procon-2/blob/master/src/Myrcon.Plugins.Test/Pages/IndexPageView.tt </p>\r\n\t\t\t\t<p" +
+                    ">This panel could be used to display additional infromation, statistics etc. abo" +
+                    "ut this particular player.</p>\r\n            </script>\r\n\t\t</div>\r\n\t</body>\r\n</htm" +
                     "l>");
             return this.GenerationEnvironment.ToString();
         }

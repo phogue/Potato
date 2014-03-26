@@ -17,6 +17,18 @@ namespace Myrcon.Plugins.Test.Tests {
                     Handler = this.TestPluginIndex
                 },
                 new CommandDispatch() {
+                    Name = "/widget/overview",
+                    Handler = this.TestPluginIndex
+                },
+                new CommandDispatch() {
+                    Name = "/widget/settings",
+                    Handler = this.TestPluginIndex
+                },
+                new CommandDispatch() {
+                    Name = "/widget/player",
+                    Handler = this.TestPluginIndex
+                },
+                new CommandDispatch() {
                     Name = "/script.js",
                     Handler = this.TestPluginScript
                 },

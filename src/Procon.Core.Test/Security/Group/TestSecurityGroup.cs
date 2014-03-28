@@ -389,6 +389,29 @@ namespace Procon.Core.Test.Security.Group {
         }
 
         /// <summary>
+        /// Tests that a user can't revoke their groups permission to set permissions. They will need to get another
+        /// group to do this. 
+        /// </summary>
+        [Test]
+        public void TestSecurityGroupsSetPermissionSettingOwnSetPermissionToNothingDenied() {
+            var security = new SecurityController();
+            security.Tunnel(CommandBuilder.SecurityAddGroup("GroupName").SetOrigin(CommandOrigin.Local));
+            security.Tunnel(CommandBuilder.SecurityGroupAddAccount("GroupName", "Phogue").SetOrigin(CommandOrigin.Local));
+            security.Tunnel(CommandBuilder.SecurityAccountSetPassword("Phogue", "Password").SetOrigin(CommandOrigin.Local));
+            security.Tunnel(CommandBuilder.SecurityGroupSetPermission("GroupName", CommandType.SecurityGroupSetPermission, 50).SetOrigin(CommandOrigin.Local));
+
+            // Now attempt to revoke our permission to set a permission
+            ICommandResult result = security.Tunnel(CommandBuilder.SecurityGroupSetPermission("GroupName", CommandType.SecurityGroupSetPermission, 0).SetOrigin(CommandOrigin.Remote).SetAuthentication(new CommandAuthenticationModel() {
+                Username = "Phogue",
+                PasswordPlainText = "password"
+            }));
+
+            // Make sure the command just nulls out. It couldn't find anything to even try to set the permission.
+            Assert.IsFalse(result.Success);
+            Assert.AreEqual(CommandResultType.InvalidParameter, result.CommandResultType);
+        }
+
+        /// <summary>
         /// Tests the command to add an account failes if the user has insufficient privileges.
         /// </summary>
         [Test]

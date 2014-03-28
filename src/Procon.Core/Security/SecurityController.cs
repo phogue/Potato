@@ -973,51 +973,63 @@ namespace Procon.Core.Security {
             int authority = parameters["authority"].First<int>();
 
             if (this.DispatchPermissionsCheck(command, command.Name).Success == true) {
-                GroupModel group = this.Groups.FirstOrDefault(g => g.Name == groupName);
+                // If it's the users group AND the permission to set permissions AND they are changing the permission to nothing
+                bool removingPermissionToSetPermission = this.DispatchGroupCheck(command, groupName).Success == true && permissionName == CommandType.SecurityGroupSetPermission.ToString() && authority <= 0;
 
-                if (group != null) {
-                    // Fetch or create the permission. Should always exist in our config, even if it is null.
-                    // This also allows for new permissions to be added to CommandName in the future
-                    // without breaking old configs.
-                    PermissionModel permission = group.Permissions.FirstOrDefault(perm => perm.Name == permissionName);
+                if (removingPermissionToSetPermission == false) {
+                    GroupModel group = this.Groups.FirstOrDefault(g => g.Name == groupName);
 
-                    if (permission == null) {
-                        permission = new PermissionModel() {
-                            Name = permissionName,
-                            Authority = authority
-                        };
+                    if (group != null) {
+                        // Fetch or create the permission. Should always exist in our config, even if it is null.
+                        // This also allows for new permissions to be added to CommandName in the future
+                        // without breaking old configs.
+                        PermissionModel permission = group.Permissions.FirstOrDefault(perm => perm.Name == permissionName);
 
-                        group.Permissions.Add(permission);
-                    }
-                    else {
-                        permission.Authority = authority;
-                    }
+                        if (permission == null) {
+                            permission = new PermissionModel() {
+                                Name = permissionName,
+                                Authority = authority
+                            };
 
-                    result = new CommandResult() {
-                        Success = true,
-                        CommandResultType = CommandResultType.Success,
-                        Message = String.Format(@"Permission ""{0}"" successfully set to {1}.", permission.Name, permission.Authority),
-                        Scope = new CommandData() {
-                            Groups = new List<GroupModel>() {
+                            group.Permissions.Add(permission);
+                        }
+                        else {
+                            permission.Authority = authority;
+                        }
+
+                        result = new CommandResult() {
+                            Success = true,
+                            CommandResultType = CommandResultType.Success,
+                            Message = String.Format(@"Permission ""{0}"" successfully set to {1}.", permission.Name, permission.Authority),
+                            Scope = new CommandData() {
+                                Groups = new List<GroupModel>() {
                                 group
                             }
-                        },
-                        Now = new CommandData() {
-                            Permissions = new List<PermissionModel>() {
+                            },
+                            Now = new CommandData() {
+                                Permissions = new List<PermissionModel>() {
                                 permission
                             }
-                        }
-                    };
+                            }
+                        };
 
-                    if (this.Shared.Events != null) {
-                        this.Shared.Events.Log(GenericEvent.ConvertToGenericEvent(result, GenericEventType.SecurityGroupPermissionAuthorityChanged));
+                        if (this.Shared.Events != null) {
+                            this.Shared.Events.Log(GenericEvent.ConvertToGenericEvent(result, GenericEventType.SecurityGroupPermissionAuthorityChanged));
+                        }
+                    }
+                    else {
+                        result = new CommandResult() {
+                            Message = String.Format(@"Group with name ""{0}"" does not exists.", groupName),
+                            Success = false,
+                            CommandResultType = CommandResultType.DoesNotExists
+                        };
                     }
                 }
                 else {
                     result = new CommandResult() {
-                        Message = String.Format(@"Group with name ""{0}"" does not exists.", groupName),
+                        Message = String.Format(@"You cannot lock your group out of the system."),
                         Success = false,
-                        CommandResultType = CommandResultType.DoesNotExists
+                        CommandResultType = CommandResultType.InvalidParameter
                     };
                 }
             }

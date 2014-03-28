@@ -80,13 +80,36 @@ namespace Procon.Service.Shared.Test.TestServiceController {
                 ServiceDomain = AppDomain.CreateDomain("Procon.Instance"),
                 UnloadServiceBegin = controller => {
                     throw new Exception("Empty");
-                }
+                },
+                Process = new MockProcess()
             };
 
             service.UnloadService();
             
             Assert.IsNotEmpty(Defines.ErrorsLogsDirectory.GetFiles());
             Assert.Greater(Defines.ErrorsLogsDirectory.GetFiles().First().Length, 0);
+
+            service.Dispose();
+        }
+
+        /// <summary>
+        /// Tests that exception that occur during config write will be captured and logged.
+        /// </summary>
+        [Test]
+        public void TestExceptionKillsProcess() {
+            var process = new MockProcess();
+
+            var service = new ServiceController() {
+                ServiceDomain = AppDomain.CreateDomain("Procon.Instance"),
+                UnloadServiceBegin = controller => {
+                    throw new Exception("Empty");
+                },
+                Process = process
+            };
+
+            service.UnloadService();
+
+            Assert.IsTrue(process.OnKill);
 
             service.Dispose();
         }

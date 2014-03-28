@@ -36,6 +36,11 @@ namespace Procon.Service.Shared {
         public IServiceSettings Settings { get; set; }
 
         /// <summary>
+        /// Our own wrapper for the currently running process.
+        /// </summary>
+        public IProcess Process { get; set; }
+
+        /// <summary>
         /// The arguments to start any instances with. This is passed on to Procon, not actually used by the service.
         /// </summary>
         public List<String> Arguments { get; set; }
@@ -123,6 +128,8 @@ namespace Procon.Service.Shared {
             this.Polling = new Timer(Polling_Tick, this, TimeSpan.FromSeconds(10), TimeSpan.FromSeconds(10));
 
             this.ServiceLoaderProxyType = typeof(ServiceLoaderProxy);
+
+            this.Process = new Process();
 
             this.Arguments = new List<String>();
             this.Settings = new ServiceSettings();
@@ -555,8 +562,15 @@ namespace Procon.Service.Shared {
         /// <summary>
         /// Unloads the service domain
         /// </summary>
-        /// <remarks>We have no time out for this process. If this fails then when we start it will behave strangely anyway. We'll
-        /// be binding to identical ports, unable to perform updates etc.</remarks>
+        /// <remarks>
+        ///     <para>
+        ///         We have no time out for this process. If this fails then when we start it will behave strangely anyway.
+        ///         We'll be binding to identical ports, unable to perform updates etc.
+        ///     </para>
+        ///     <para>
+        ///         If unloading the domain fails then the process will be terminated.
+        ///     </para>
+        /// </remarks>
         public void UnloadService() {
             if (this.ServiceDomain != null) {
                 try {
@@ -567,7 +581,11 @@ namespace Procon.Service.Shared {
                     this.OnUnloadServiceEnd();
                 }
                 catch (Exception e) {
-                    ServiceControllerHelpers.LogUnhandledException("ServiceController.UnloadService", e);
+                    ServiceControllerHelpers.LogUnhandledException("ServiceController.UnloadService.General", e);
+
+                    // The AppDomain is still running, though it may be in serious trouble or an unknown state.
+                    // We terminate the current process instead of continuing, having reached a critical state.
+                    this.Process.Kill();
                 }
                 finally {
                     this.ServiceDomain = null;

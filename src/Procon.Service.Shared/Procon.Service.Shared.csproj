@@ -57,6 +57,7 @@
     </Compile>
     <Compile Include="ArgumentHelper.cs" />
     <Compile Include="Defines.cs" />
+    <Compile Include="IProcess.cs" />
     <Compile Include="IServiceLoaderProxy.cs" />
     <Compile Include="Packages\IPackageManagerDispatch.cs" />
     <Compile Include="IService.cs" />
@@ -64,6 +65,7 @@
     <Compile Include="Packages\IServicePackageManager.cs" />
     <Compile Include="IServiceSettings.cs" />
     <Compile Include="Packages\PackageManagerDispatch.cs" />
+    <Compile Include="Process.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServiceController.cs" />
     <Compile Include="ServiceControllerHelpers.cs" />

@@ -44,6 +44,28 @@ namespace Procon.Config.Core {
         }
 
         /// <summary>
+        /// Updates the core of Procon. This won't validate that an update
+        /// is successful, it just goes through the motions of updating.
+        /// </summary>
+        public static ServiceMessage ServiceUpdateCore() {
+            ServiceController service = new ServiceController {
+                Settings = {
+                    ServiceUpdateCore = true
+                }
+            };
+
+            service.UpdateCore();
+
+            return new ServiceMessage() {
+                Name = "result",
+                Arguments = new Dictionary<String, String>() {
+                    { "Command", "ServiceUpdateCore" },
+                    { "Success", "True" }
+                }
+            };
+        }
+
+        /// <summary>
         /// Dispatches a very simple command to a handler within this controller.
         /// </summary>
         /// <param name="command">The command to be executed</param>
@@ -53,6 +75,9 @@ namespace Procon.Config.Core {
 
             if (String.Compare(command, "CommandServerGenerateCertificate", StringComparison.OrdinalIgnoreCase) == 0) {
                 result = ConfigController.CommandServerGenerateCertificate(arguments);
+            }
+            else if (String.Compare(command, "ServiceUpdateCore", StringComparison.OrdinalIgnoreCase) == 0) {
+                result = ConfigController.ServiceUpdateCore();
             }
 
             return result;

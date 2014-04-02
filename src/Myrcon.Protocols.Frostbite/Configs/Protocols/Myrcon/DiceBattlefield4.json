@@ -286,7 +286,29 @@
                     "Type":"Squad"
                 }
             ]
-        }
+        },
+        {
+            "Name":"CarrierAssaultSmall0",
+            "FriendlyName":"Carrier Assault Small",
+            "TeamCount":"2",
+            "DefaultGroups": [
+                {
+                    "Uid":"0",
+                    "Type":"Squad"
+                }
+            ]
+        },
+        {
+            "Name":"CarrierAssaultLarge0",
+            "FriendlyName":"Carrier Assault Large",
+            "TeamCount":"2",
+            "DefaultGroups": [
+                {
+                    "Uid":"0",
+                    "Type":"Squad"
+                }
+            ]
+        }s
     ],
     "MapPool":[
         {

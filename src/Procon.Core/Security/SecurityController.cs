@@ -1580,6 +1580,7 @@ namespace Procon.Core.Security {
                             CommandType.VariablesSetF,
                             CommandType.VariablesGet,
                             CommandType.InstanceQuery,
+                            CommandType.PackagesFetchPackages,
                             CommandType.ConnectionQuery,
                             CommandType.NetworkProtocolQueryBans,
                             CommandType.NetworkProtocolQueryMapPool,

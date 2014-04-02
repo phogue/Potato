@@ -88,6 +88,7 @@ namespace Procon.Core.Test.Security.Permission {
                 CommandType.VariablesSetF,
                 CommandType.VariablesGet,
                 CommandType.InstanceQuery,
+                CommandType.PackagesFetchPackages,
                 CommandType.ConnectionQuery,
                 CommandType.NetworkProtocolQueryBans,
                 CommandType.NetworkProtocolQueryMapPool,

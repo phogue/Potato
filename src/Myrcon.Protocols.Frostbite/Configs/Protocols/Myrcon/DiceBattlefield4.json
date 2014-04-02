@@ -824,6 +824,7 @@
 				}
 			]
         },
+
         {
             "Index":"0",
             "Rounds":"2",
@@ -2202,7 +2203,503 @@
             "GameMode":{
                 "Name":"CaptureTheFlag0"
             }
-        }
+        },
+		{
+            "Index":"0",
+            "Rounds":"2",
+            "Name":"XP2_001",
+            "FriendlyName":"Lost Islands",
+            "GameMode":{
+                "Name":"CarrierAsaultLarge0"
+            }
+        },
+		{
+            "Index":"0",
+            "Rounds":"2",
+            "Name":"XP2_002",
+            "FriendlyName":"Nansha Strike",
+            "GameMode":{
+                "Name":"CarrierAsaultLarge0"
+            }
+        },
+		{
+            "Index":"0",
+            "Rounds":"2",
+            "Name":"XP2_003",
+            "FriendlyName":"Wave Breaker",
+            "GameMode":{
+                "Name":"CarrierAsaultLarge0"
+            }
+        },
+		{
+            "Index":"0",
+            "Rounds":"2",
+            "Name":"XP2_004",
+            "FriendlyName":"Operation Mortar",
+            "GameMode":{
+                "Name":"CarrierAsaultLarge0"
+            }
+        },	
+		{
+            "Index":"0",
+            "Rounds":"2",
+            "Name":"XP2_001",
+            "FriendlyName":"Lost Islands",
+            "GameMode":{
+                "Name":"CarrierAsaultSmall0"
+            }
+        },
+		{
+            "Index":"0",
+            "Rounds":"2",
+            "Name":"XP2_002",
+            "FriendlyName":"Nansha Strike",
+            "GameMode":{
+                "Name":"CarrierAsaultSmall0"
+            }
+        },
+		{
+            "Index":"0",
+            "Rounds":"2",
+            "Name":"XP2_003",
+            "FriendlyName":"Wave Breaker",
+            "GameMode":{
+                "Name":"CarrierAsaultSmall0"
+            }
+        },
+		{
+            "Index":"0",
+            "Rounds":"2",
+            "Name":"XP2_004",
+            "FriendlyName":"Operation Mortar",
+            "GameMode":{
+                "Name":"CarrierAsaultSmall0"
+            }
+        },		
+		{
+            "Index":"0",
+            "Rounds":"2",
+            "Name":"XP2_001",
+            "FriendlyName":"Lost Islands",
+            "GameMode":{
+                "Name":"ConquestLarge0"
+            }
+        },
+		{
+            "Index":"0",
+            "Rounds":"2",
+            "Name":"XP2_002",
+            "FriendlyName":"Nansha Strike",
+            "GameMode":{
+                "Name":"ConquestLarge0"
+            }
+        },
+		{
+            "Index":"0",
+            "Rounds":"2",
+            "Name":"XP2_003",
+            "FriendlyName":"Wave Breaker",
+            "GameMode":{
+                "Name":"ConquestLarge0"
+            }
+        },
+		{
+            "Index":"0",
+            "Rounds":"2",
+            "Name":"XP2_004",
+            "FriendlyName":"Operation Mortar",
+            "GameMode":{
+                "Name":"ConquestLarge0"
+            }
+        },	
+		{
+            "Index":"0",
+            "Rounds":"2",
+            "Name":"XP2_001",
+            "FriendlyName":"Lost Islands",
+            "GameMode":{
+                "Name":"ConquestSmall0"
+            }
+        },
+		{
+            "Index":"0",
+            "Rounds":"2",
+            "Name":"XP2_002",
+            "FriendlyName":"Nansha Strike",
+            "GameMode":{
+                "Name":"ConquestSmall0"
+            }
+        },
+		{
+            "Index":"0",
+            "Rounds":"2",
+            "Name":"XP2_003",
+            "FriendlyName":"Wave Breaker",
+            "GameMode":{
+                "Name":"ConquestSmall0"
+            }
+        },
+		{
+            "Index":"0",
+            "Rounds":"2",
+            "Name":"XP2_004",
+            "FriendlyName":"Operation Mortar",
+            "GameMode":{
+                "Name":"ConquestSmall0"
+            }
+        },
+		{
+            "Index":"0",
+            "Rounds":"2",
+            "Name":"XP2_001",
+            "FriendlyName":"Lost Islands",
+            "GameMode":{
+                "Name":"Domination0"
+            }
+        },
+		{
+            "Index":"0",
+            "Rounds":"2",
+            "Name":"XP2_002",
+            "FriendlyName":"Nansha Strike",
+            "GameMode":{
+                "Name":"Domination0"
+            }
+        },
+		{
+            "Index":"0",
+            "Rounds":"2",
+            "Name":"XP2_003",
+            "FriendlyName":"Wave Breaker",
+            "GameMode":{
+                "Name":"Domination0"
+            }
+        },
+		{
+            "Index":"0",
+            "Rounds":"2",
+            "Name":"XP2_004",
+            "FriendlyName":"Operation Mortar",
+            "GameMode":{
+                "Name":"Domination0"
+            }
+        },
+		{
+            "Index":"0",
+            "Rounds":"2",
+            "Name":"XP2_001",
+            "FriendlyName":"Lost Islands",
+            "GameMode":{
+                "Name":"Elimination0"
+            }
+        },
+		{
+            "Index":"0",
+            "Rounds":"2",
+            "Name":"XP2_002",
+            "FriendlyName":"Nansha Strike",
+            "GameMode":{
+                "Name":"Elimination0"
+            }
+        },
+		{
+            "Index":"0",
+            "Rounds":"2",
+            "Name":"XP2_003",
+            "FriendlyName":"Wave Breaker",
+            "GameMode":{
+                "Name":"Elimination0"
+            }
+        },
+		{
+            "Index":"0",
+            "Rounds":"2",
+            "Name":"XP2_004",
+            "FriendlyName":"Operation Mortar",
+            "GameMode":{
+                "Name":"Elimination0"
+            }
+        },
+		{
+            "Index":"0",
+            "Rounds":"2",
+            "Name":"XP2_001",
+            "FriendlyName":"Lost Islands",
+            "GameMode":{
+                "Name":"Obliteration"
+            }
+        },
+		{
+            "Index":"0",
+            "Rounds":"2",
+            "Name":"XP2_002",
+            "FriendlyName":"Nansha Strike",
+            "GameMode":{
+                "Name":"Obliteration"
+            }
+        },
+		{
+            "Index":"0",
+            "Rounds":"2",
+            "Name":"XP2_003",
+            "FriendlyName":"Wave Breaker",
+            "GameMode":{
+                "Name":"Obliteration"
+            }
+        },
+		{
+            "Index":"0",
+            "Rounds":"2",
+            "Name":"XP2_004",
+            "FriendlyName":"Operation Mortar",
+            "GameMode":{
+                "Name":"Obliteration"
+            }
+        },
+        {
+            "Index":"0",
+            "Rounds":"2",
+            "Name":"XP1_001",
+            "FriendlyName":"Lost Islands",
+            "GameMode":{
+                "Name":"RushLarge0"
+            },
+			"Groups": [
+				{
+					"Uid":"1",
+					"Type":"Team",
+					"FriendlyName":"Attacker"
+				},
+				{
+					"Uid":"2",
+					"Type":"Team",
+					"FriendlyName":"Defender"
+				}
+			]
+        },
+        {
+            "Index":"0",
+            "Rounds":"2",
+            "Name":"XP1_002",
+            "FriendlyName":"Nansha Strike",
+            "GameMode":{
+                "Name":"RushLarge0"
+            },
+			"Groups": [
+				{
+					"Uid":"1",
+					"Type":"Team",
+					"FriendlyName":"Attacker"
+				},
+				{
+					"Uid":"2",
+					"Type":"Team",
+					"FriendlyName":"Defender"
+				}
+			]
+        },
+        {
+            "Index":"0",
+            "Rounds":"2",
+            "Name":"XP1_003",
+            "FriendlyName":"Wave Breaker",
+            "GameMode":{
+                "Name":"RushLarge0"
+            },
+			"Groups": [
+				{
+					"Uid":"1",
+					"Type":"Team",
+					"FriendlyName":"Attacker"
+				},
+				{
+					"Uid":"2",
+					"Type":"Team",
+					"FriendlyName":"Defender"
+				}
+			]
+        },	
+        {
+            "Index":"0",
+            "Rounds":"2",
+            "Name":"XP1_004",
+            "FriendlyName":"Operation Mortar",
+            "GameMode":{
+                "Name":"RushLarge0"
+            },
+			"Groups": [
+				{
+					"Uid":"1",
+					"Type":"Team",
+					"FriendlyName":"Attacker"
+				},
+				{
+					"Uid":"2",
+					"Type":"Team",
+					"FriendlyName":"Defender"
+				}
+			]
+        },
+		{
+            "Index":"0",
+            "Rounds":"2",
+            "Name":"XP1_001",
+            "FriendlyName":"Lost Islands",
+            "GameMode":{
+                "Name":"SquadDeathMatch0"
+            },
+			"Groups": [
+				{
+					"Uid":"1",
+					"Type":"Team",
+					"FriendlyName":"Alpha"
+				},
+				{
+					"Uid":"2",
+					"Type":"Team",
+					"FriendlyName":"Beta"
+				},
+				{
+					"Uid":"3",
+					"Type":"Team",
+					"FriendlyName":"Charlie"
+				},
+				{
+					"Uid":"4",
+					"Type":"Team",
+					"FriendlyName":"Delta"
+				}
+			]
+        },
+{
+            "Index":"0",
+            "Rounds":"2",
+            "Name":"XP1_002",
+            "FriendlyName":"Nansha Strike",
+            "GameMode":{
+                "Name":"SquadDeathMatch0"
+            },
+			"Groups": [
+				{
+					"Uid":"1",
+					"Type":"Team",
+					"FriendlyName":"Alpha"
+				},
+				{
+					"Uid":"2",
+					"Type":"Team",
+					"FriendlyName":"Beta"
+				},
+				{
+					"Uid":"3",
+					"Type":"Team",
+					"FriendlyName":"Charlie"
+				},
+				{
+					"Uid":"4",
+					"Type":"Team",
+					"FriendlyName":"Delta"
+				}
+			]
+        },
+		{
+            "Index":"0",
+            "Rounds":"2",
+            "Name":"XP1_003",
+            "FriendlyName":"Wave Breaker",
+            "GameMode":{
+                "Name":"SquadDeathMatch0"
+            },
+			"Groups": [
+				{
+					"Uid":"1",
+					"Type":"Team",
+					"FriendlyName":"Alpha"
+				},
+				{
+					"Uid":"2",
+					"Type":"Team",
+					"FriendlyName":"Beta"
+				},
+				{
+					"Uid":"3",
+					"Type":"Team",
+					"FriendlyName":"Charlie"
+				},
+				{
+					"Uid":"4",
+					"Type":"Team",
+					"FriendlyName":"Delta"
+				}
+			]
+        },	
+		{
+            "Index":"0",
+            "Rounds":"2",
+            "Name":"XP1_004",
+            "FriendlyName":"Operation Mortar",
+            "GameMode":{
+                "Name":"SquadDeathMatch0"
+            },
+			"Groups": [
+				{
+					"Uid":"1",
+					"Type":"Team",
+					"FriendlyName":"Alpha"
+				},
+				{
+					"Uid":"2",
+					"Type":"Team",
+					"FriendlyName":"Beta"
+				},
+				{
+					"Uid":"3",
+					"Type":"Team",
+					"FriendlyName":"Charlie"
+				},
+				{
+					"Uid":"4",
+					"Type":"Team",
+					"FriendlyName":"Delta"
+				}
+			]
+        },
+		{
+            "Index":"0",
+            "Rounds":"2",
+            "Name":"XP1_001",
+            "FriendlyName":"Lost Islands",
+            "GameMode":{
+                "Name":"TeamDeathMatch0"
+            }
+        },
+		{
+            "Index":"0",
+            "Rounds":"2",
+            "Name":"XP1_002",
+            "FriendlyName":"Nansha Strike",
+            "GameMode":{
+                "Name":"TeamDeathMatch0"
+            }
+        },
+		{
+            "Index":"0",
+            "Rounds":"2",
+            "Name":"XP1_003",
+            "FriendlyName":"Wave Breaker",
+            "GameMode":{
+                "Name":"TeamDeathMatch0"
+            }
+        },
+		{
+            "Index":"0",
+            "Rounds":"2",
+            "Name":"XP1_004",
+            "FriendlyName":"Operation Mortar",
+            "GameMode":{
+                "Name":"TeamDeathMatch0"
+            }
+        }																																							
     ],
     "Items":[
         {

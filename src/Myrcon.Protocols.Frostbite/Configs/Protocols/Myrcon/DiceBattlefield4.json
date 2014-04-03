@@ -2246,7 +2246,7 @@
             "Name":"XP2_001",
             "FriendlyName":"Lost Islands",
             "GameMode":{
-                "Name":"CarrierAsaultSmall0"
+                "Name":"CarrierAssaultSmall0"
             }
         },
 	{
@@ -2255,7 +2255,7 @@
             "Name":"XP2_002",
             "FriendlyName":"Nansha Strike",
             "GameMode":{
-                "Name":"CarrierAsaultSmall0"
+                "Name":"CarrierAssaultSmall0"
             }
         },
 	{
@@ -2264,7 +2264,7 @@
             "Name":"XP2_003",
             "FriendlyName":"Wave Breaker",
             "GameMode":{
-                "Name":"CarrierAsaultSmall0"
+                "Name":"CarrierAssaultSmall0"
             }
         },
 	{
@@ -2273,7 +2273,7 @@
             "Name":"XP2_004",
             "FriendlyName":"Operation Mortar",
             "GameMode":{
-                "Name":"CarrierAsaultSmall0"
+                "Name":"CarrierAssaultSmall0"
             }
         },		
 	{

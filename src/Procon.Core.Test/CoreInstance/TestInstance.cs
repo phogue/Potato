@@ -171,15 +171,15 @@ namespace Procon.Core.Test.CoreInstance {
             var loadConfig = new Config();
             loadConfig.Load(ConfigFileInfo);
             // .Where(item => item.Name == "InstanceAddConnection")
-            var commands = loadConfig.RootOf<InstanceController>().Children<JObject>().Select(item => item.ToObject<Command>(JsonSerialization.Minimal)).ToList();
+            var command = loadConfig.RootOf<InstanceController>().Children<JObject>().Select(item => item.ToObject<Command>(JsonSerialization.Minimal)).ToList().Last();
 
-            Assert.AreEqual("InstanceAddConnection", commands[1].Name);
-            Assert.AreEqual("Myrcon", commands[1].Parameters[0].First<String>());
-            Assert.AreEqual("MockProtocol", commands[1].Parameters[1].First<String>());
-            Assert.AreEqual("1.1.1.1", commands[1].Parameters[2].First<String>());
-            Assert.AreEqual("27516", commands[1].Parameters[3].First<String>());
-            Assert.AreEqual("password", commands[1].Parameters[4].First<String>());
-            Assert.AreEqual("", commands[1].Parameters[5].First<String>());
+            Assert.AreEqual("InstanceAddConnection", command.Name);
+            Assert.AreEqual("Myrcon", command.Parameters[0].First<String>());
+            Assert.AreEqual("MockProtocol", command.Parameters[1].First<String>());
+            Assert.AreEqual("1.1.1.1", command.Parameters[2].First<String>());
+            Assert.AreEqual("27516", command.Parameters[3].First<String>());
+            Assert.AreEqual("password", command.Parameters[4].First<String>());
+            Assert.AreEqual("", command.Parameters[5].First<String>());
 
             instance.Dispose();
         }

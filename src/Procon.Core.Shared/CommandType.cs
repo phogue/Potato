@@ -94,6 +94,14 @@ namespace Procon.Core.Shared {
         /// </summary>
         SecurityGroupSetPermission,
         /// <summary>
+        /// Appends a single trait onto a permission
+        /// </summary>
+        SecurityGroupAppendPermissionTrait,
+        /// <summary>
+        /// Removes a single trait from a permission
+        /// </summary>
+        SecurityGroupRemovePermissionTrait,
+        /// <summary>
         /// Copies the permissions from one group to another group
         /// </summary>
         SecurityGroupCopyPermissions,

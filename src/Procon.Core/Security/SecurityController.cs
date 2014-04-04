@@ -137,6 +137,42 @@ namespace Procon.Core.Security {
                     Handler = this.SecurityGroupSetPermission
                 },
                 new CommandDispatch() {
+                    CommandType = CommandType.SecurityGroupAppendPermissionTrait,
+                    ParameterTypes = new List<CommandParameterType>() {
+                        new CommandParameterType() {
+                            Name = "groupName",
+                            Type = typeof(String)
+                        },
+                        new CommandParameterType() {
+                            Name = "permissionName",
+                            Type = typeof(String)
+                        },
+                        new CommandParameterType() {
+                            Name = "trait",
+                            Type = typeof(String)
+                        }
+                    },
+                    Handler = this.SecurityGroupAppendPermissionTrait
+                },
+                new CommandDispatch() {
+                    CommandType = CommandType.SecurityGroupRemovePermissionTrait,
+                    ParameterTypes = new List<CommandParameterType>() {
+                        new CommandParameterType() {
+                            Name = "groupName",
+                            Type = typeof(String)
+                        },
+                        new CommandParameterType() {
+                            Name = "permissionName",
+                            Type = typeof(String)
+                        },
+                        new CommandParameterType() {
+                            Name = "trait",
+                            Type = typeof(String)
+                        }
+                    },
+                    Handler = this.SecurityGroupRemovePermissionTrait
+                },
+                new CommandDispatch() {
                     CommandType = CommandType.SecurityGroupCopyPermissions,
                     ParameterTypes = new List<CommandParameterType>() {
                         new CommandParameterType() {
@@ -322,6 +358,10 @@ namespace Procon.Core.Security {
                                 }
                             }
                         }.ToConfigCommand());
+                    }
+
+                    foreach (String trait in permission.Traits) {
+                        config.Append(CommandBuilder.SecurityGroupAppendPermissionTrait(group.Name, permission.Name, trait).ToConfigCommand());
                     }
                 }
 
@@ -1003,13 +1043,13 @@ namespace Procon.Core.Security {
                             Message = String.Format(@"Permission ""{0}"" successfully set to {1}.", permission.Name, permission.Authority),
                             Scope = new CommandData() {
                                 Groups = new List<GroupModel>() {
-                                group
-                            }
+                                    group
+                                }
                             },
                             Now = new CommandData() {
                                 Permissions = new List<PermissionModel>() {
-                                permission
-                            }
+                                    permission
+                                }
                             }
                         };
 
@@ -1030,6 +1070,146 @@ namespace Procon.Core.Security {
                         Message = String.Format(@"You cannot lock your group out of the system."),
                         Success = false,
                         CommandResultType = CommandResultType.InvalidParameter
+                    };
+                }
+            }
+            else {
+                result = CommandResult.InsufficientPermissions;
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Appends a new trait onto a permission
+        /// </summary>
+        /// <param name="command"></param>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
+        public ICommandResult SecurityGroupAppendPermissionTrait(ICommand command, Dictionary<String, ICommandParameter> parameters) {
+            ICommandResult result = null;
+
+            String groupName = parameters["groupName"].First<String>();
+            String permissionName = parameters["permissionName"].First<String>();
+            String trait = parameters["trait"].First<String>();
+
+            if (this.DispatchPermissionsCheck(command, command.Name).Success == true) {
+
+                GroupModel group = this.Groups.FirstOrDefault(g => g.Name == groupName);
+
+                if (group != null) {
+                    // Fetch or create the permission. Should always exist in our config, even if it is null.
+                    // This also allows for new permissions to be added to CommandName in the future
+                    // without breaking old configs.
+                    PermissionModel permission = group.Permissions.FirstOrDefault(perm => perm.Name == permissionName);
+
+                    if (permission == null) {
+                        permission = new PermissionModel() {
+                            Name = permissionName,
+                            Traits = {
+                                trait
+                            }
+                        };
+
+                        group.Permissions.Add(permission);
+                    }
+                    else {
+                        permission.Traits = permission.Traits.Union(new List<String>() { trait }).Distinct().ToList();
+                    }
+
+                    result = new CommandResult() {
+                        Success = true,
+                        CommandResultType = CommandResultType.Success,
+                        Message = String.Format(@"Permission ""{0}"" successfully appended trait {1}.", permission.Name, trait),
+                        Scope = new CommandData() {
+                            Groups = new List<GroupModel>() {
+                                group
+                            }
+                        },
+                        Now = new CommandData() {
+                            Permissions = new List<PermissionModel>() {
+                                permission
+                            }
+                        }
+                    };
+
+                    if (this.Shared.Events != null) {
+                        this.Shared.Events.Log(GenericEvent.ConvertToGenericEvent(result, GenericEventType.SecurityGroupPermissionTraitAppended));
+                    }
+                }
+                else {
+                    result = new CommandResult() {
+                        Message = String.Format(@"Group with name ""{0}"" does not exists.", groupName),
+                        Success = false,
+                        CommandResultType = CommandResultType.DoesNotExists
+                    };
+                }
+            }
+            else {
+                result = CommandResult.InsufficientPermissions;
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Removes a trait from a permission
+        /// </summary>
+        /// <param name="command"></param>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
+        public ICommandResult SecurityGroupRemovePermissionTrait(ICommand command, Dictionary<String, ICommandParameter> parameters) {
+            ICommandResult result = null;
+
+            String groupName = parameters["groupName"].First<String>();
+            String permissionName = parameters["permissionName"].First<String>();
+            String trait = parameters["trait"].First<String>();
+
+            if (this.DispatchPermissionsCheck(command, command.Name).Success == true) {
+
+                GroupModel group = this.Groups.FirstOrDefault(g => g.Name == groupName);
+
+                if (group != null) {
+                    PermissionModel permission = group.Permissions.FirstOrDefault(perm => perm.Name == permissionName);
+
+                    if (permission != null) {
+                        permission.Traits.RemoveAll(item => String.Compare(item, trait, StringComparison.OrdinalIgnoreCase) == 0);
+
+                        result = new CommandResult() {
+                            Success = true,
+                            CommandResultType = CommandResultType.Success,
+                            Message = String.Format(@"Permission ""{0}"" successfully appended trait {1}.", permission.Name, trait),
+                            Scope = new CommandData() {
+                                Groups = new List<GroupModel>() {
+                                    group
+                                }
+                            },
+                            Now = new CommandData() {
+                                Permissions = new List<PermissionModel>() {
+                                    permission
+                                }
+                            }
+                        };
+
+                        if (this.Shared.Events != null) {
+                            this.Shared.Events.Log(GenericEvent.ConvertToGenericEvent(result, GenericEventType.SecurityGroupPermissionTraitRemoved));
+                        }
+                    }
+                    else {
+                        result = new CommandResult() {
+                            Message = String.Format(@"Permission with name ""{0}"" does not exists.", permissionName),
+                            Success = false,
+                            CommandResultType = CommandResultType.DoesNotExists
+                        };
+                    }
+
+
+                }
+                else {
+                    result = new CommandResult() {
+                        Message = String.Format(@"Group with name ""{0}"" does not exists.", groupName),
+                        Success = false,
+                        CommandResultType = CommandResultType.DoesNotExists
                     };
                 }
             }

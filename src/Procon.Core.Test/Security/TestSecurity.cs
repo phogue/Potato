@@ -107,6 +107,7 @@ namespace Procon.Core.Test.Security {
             Assert.AreEqual(CommandType.None, permission.CommandType);
             Assert.IsNull(permission.Name);
             Assert.IsNull(permission.Authority);
+            Assert.IsNull(permission.Traits);
 
             Assert.AreEqual(CommonProtocolType.None, accountPlayer.ProtocolType);
             Assert.IsNull(accountPlayer.Uid);
@@ -144,6 +145,9 @@ namespace Procon.Core.Test.Security {
                     77
                 })
             });
+
+            saveSecurity.Tunnel(CommandBuilder.SecurityGroupAppendPermissionTrait("GroupName", CommandType.VariablesSet.ToString(), PermissionTraitsType.Boolean).SetOrigin(CommandOrigin.Local));
+
             saveSecurity.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityGroupSetPermission,
@@ -205,6 +209,7 @@ namespace Procon.Core.Test.Security {
             Assert.AreEqual("GroupName", loadSecurity.Groups.Last().Name);
             Assert.AreEqual(22, lastGroup.Permissions.First(permission => permission.Name == "CustomPermission").Authority);
             Assert.AreEqual(77, lastGroup.Permissions.First(permission => permission.Name == CommandType.VariablesSet.ToString()).Authority);
+            Assert.AreEqual(new List<String>() { PermissionTraitsType.Boolean }, lastGroup.Permissions.First(permission => permission.Name == CommandType.VariablesSet.ToString()).Traits);
             Assert.AreEqual(88, lastGroup.Permissions.First(permission => permission.Name == CommandType.VariablesSetA.ToString()).Authority);
             Assert.AreEqual("Phogue", loadSecurity.Groups.SelectMany(group => group.Accounts).First().Username);
             Assert.AreEqual("de-DE", loadSecurity.Groups.Last().Accounts.First().PreferredLanguageCode);
@@ -257,6 +262,9 @@ namespace Procon.Core.Test.Security {
                     77
                 })
             });
+
+            security.Tunnel(CommandBuilder.SecurityGroupAppendPermissionTrait("GroupName", CommandType.VariablesSet.ToString(), PermissionTraitsType.Boolean).SetOrigin(CommandOrigin.Local));
+
             security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityGroupSetPermission,
@@ -323,33 +331,39 @@ namespace Procon.Core.Test.Security {
             Assert.AreEqual(CommandType.VariablesSet.ToString(), commands[2].Parameters[1].First<String>());
             Assert.AreEqual("77", commands[2].Parameters[2].First<String>());
 
-            Assert.AreEqual("SecurityGroupSetPermission", commands[3].Name);
+            Assert.AreEqual("SecurityGroupAppendPermissionTrait", commands[3].Name);
             Assert.AreEqual("GroupName", commands[3].Parameters[0].First<String>());
-            Assert.AreEqual(CommandType.VariablesSetA.ToString(), commands[3].Parameters[1].First<String>());
-            Assert.AreEqual("88", commands[3].Parameters[2].First<String>());
+            Assert.AreEqual(CommandType.VariablesSet.ToString(), commands[3].Parameters[1].First<String>());
+            Assert.AreEqual(PermissionTraitsType.Boolean, commands[3].Parameters[2].First<String>());
 
             Assert.AreEqual("SecurityGroupSetPermission", commands[4].Name);
             Assert.AreEqual("GroupName", commands[4].Parameters[0].First<String>());
-            Assert.AreEqual("CustomPermission", commands[4].Parameters[1].First<String>());
-            Assert.AreEqual("22", commands[4].Parameters[2].First<String>());
+            Assert.AreEqual(CommandType.VariablesSetA.ToString(), commands[4].Parameters[1].First<String>());
+            Assert.AreEqual("88", commands[4].Parameters[2].First<String>());
 
-            Assert.AreEqual("SecurityGroupAddAccount", commands[5].Name);
+            Assert.AreEqual("SecurityGroupSetPermission", commands[5].Name);
             Assert.AreEqual("GroupName", commands[5].Parameters[0].First<String>());
-            Assert.AreEqual("Phogue", commands[5].Parameters[1].First<String>());
+            Assert.AreEqual("CustomPermission", commands[5].Parameters[1].First<String>());
+            Assert.AreEqual("22", commands[5].Parameters[2].First<String>());
+            Assert.AreEqual("22", commands[5].Parameters[2].First<String>());
 
-            Assert.AreEqual("SecurityAccountSetPasswordHash", commands[6].Name);
-            Assert.AreEqual("Phogue", commands[6].Parameters[0].First<String>());
-            // We can only test if this isn't null as it contains a random salt and resulting hash.
-            Assert.IsNotNull(commands[6].Parameters[1].First<String>());
+            Assert.AreEqual("SecurityGroupAddAccount", commands[6].Name);
+            Assert.AreEqual("GroupName", commands[6].Parameters[0].First<String>());
+            Assert.AreEqual("Phogue", commands[6].Parameters[1].First<String>());
 
-            Assert.AreEqual("SecurityAccountSetPreferredLanguageCode", commands[7].Name);
+            Assert.AreEqual("SecurityAccountSetPasswordHash", commands[7].Name);
             Assert.AreEqual("Phogue", commands[7].Parameters[0].First<String>());
-            Assert.AreEqual("de-DE", commands[7].Parameters[1].First<String>());
+            // We can only test if this isn't null as it contains a random salt and resulting hash.
+            Assert.IsNotNull(commands[7].Parameters[1].First<String>());
 
-            Assert.AreEqual("SecurityAccountAddPlayer", commands[8].Name);
+            Assert.AreEqual("SecurityAccountSetPreferredLanguageCode", commands[8].Name);
             Assert.AreEqual("Phogue", commands[8].Parameters[0].First<String>());
-            Assert.AreEqual(CommonProtocolType.DiceBattlefield3, commands[8].Parameters[1].First<String>());
-            Assert.AreEqual("ABCDEF", commands[8].Parameters[2].First<String>());
+            Assert.AreEqual("de-DE", commands[8].Parameters[1].First<String>());
+
+            Assert.AreEqual("SecurityAccountAddPlayer", commands[9].Name);
+            Assert.AreEqual("Phogue", commands[9].Parameters[0].First<String>());
+            Assert.AreEqual(CommonProtocolType.DiceBattlefield3, commands[9].Parameters[1].First<String>());
+            Assert.AreEqual("ABCDEF", commands[9].Parameters[2].First<String>());
         }
     }
 }

@@ -95,6 +95,7 @@
     <Compile Include="Models\PackageModel.cs" />
     <Compile Include="Models\PackageWrapperModel.cs" />
     <Compile Include="Models\PackageState.cs" />
+    <Compile Include="Models\PermissionTraitsType.cs" />
     <Compile Include="Models\TextCommandParserType.cs" />
     <Compile Include="Models\PermissionModel.cs" />
     <Compile Include="Models\PluginModel.cs" />

@@ -703,6 +703,78 @@ namespace Procon.Core.Shared {
         }
 
         /// <summary>
+        /// Builds a command to send a SecurityGroupAppendPermissionTrait
+        /// </summary>
+        /// <param name="groupName">The name of the group to modify the permission of</param>
+        /// <param name="permissionName">The name of the permission to append a trait to</param>
+        /// <param name="trait">The trait to append</param>
+        /// <returns>The built command to dispatch</returns>
+        public static ICommand SecurityGroupAppendPermissionTrait(String groupName, String permissionName, String trait) {
+            return new Command() {
+                CommandType = CommandType.SecurityGroupAppendPermissionTrait,
+                Parameters = new List<ICommandParameter>() {
+                    new CommandParameter() {
+                        Data = {
+                            Content = new List<String>() {
+                                groupName
+                            }
+                        }
+                    },
+                    new CommandParameter() {
+                        Data = {
+                            Content = new List<String>() {
+                                permissionName
+                            }
+                        }
+                    },
+                    new CommandParameter() {
+                        Data = {
+                            Content = new List<String>() {
+                                trait
+                            }
+                        }
+                    }
+                }
+            };
+        }
+
+        /// <summary>
+        /// Builds a command to send a SecurityGroupRemovePermissionTrait
+        /// </summary>
+        /// <param name="groupName">The name of the group to modify the permission of</param>
+        /// <param name="permissionName">The name of the permission to remove a trait to</param>
+        /// <param name="trait">The trait to append</param>
+        /// <returns>The built command to dispatch</returns>
+        public static ICommand SecurityGroupRemovePermissionTrait(String groupName, String permissionName, String trait) {
+            return new Command() {
+                CommandType = CommandType.SecurityGroupRemovePermissionTrait,
+                Parameters = new List<ICommandParameter>() {
+                    new CommandParameter() {
+                        Data = {
+                            Content = new List<String>() {
+                                groupName
+                            }
+                        }
+                    },
+                    new CommandParameter() {
+                        Data = {
+                            Content = new List<String>() {
+                                permissionName
+                            }
+                        }
+                    },
+                    new CommandParameter() {
+                        Data = {
+                            Content = new List<String>() {
+                                trait
+                            }
+                        }
+                    }
+                }
+            };
+        }
+
+        /// <summary>
         /// Alias of SecurityGroupSetPermission(String, String, int)
         /// </summary>
         /// <param name="groupName">The name of the group to modify the permission of</param>

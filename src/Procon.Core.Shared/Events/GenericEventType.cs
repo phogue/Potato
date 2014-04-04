@@ -50,6 +50,14 @@ namespace Procon.Core.Shared.Events {
         /// </summary>
         SecurityGroupPermissionAuthorityChanged,
         /// <summary>
+        /// A trait has been appended to a permission.
+        /// </summary>
+        SecurityGroupPermissionTraitAppended,
+        /// <summary>
+        /// A trait has been removed from a permission.
+        /// </summary>
+        SecurityGroupPermissionTraitRemoved,
+        /// <summary>
         /// A security group has cloned its permissions from another group.
         /// </summary>
         SecurityGroupPermissionsCopied,

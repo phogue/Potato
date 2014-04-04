@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Procon.Core.Shared.Models {
     /// <summary>
@@ -28,6 +29,15 @@ namespace Procon.Core.Shared.Models {
         private CommandType _mCommandType;
 
         /// <summary>
+        /// A list of traits describing how this permission should be handled.
+        /// "Boolean" for example woud mean only applicable values is 0/null for nothing
+        /// and anything above 0 for complete control. This permission
+        /// is never used against another account so level of authority is
+        /// never a permission to deny access.
+        /// </summary>
+        public List<String> Traits { get; set; }
+
+        /// <summary>
         /// The power/value they have for this permission
         /// null means no value has been set for this group.
         /// </summary>
@@ -38,12 +48,15 @@ namespace Procon.Core.Shared.Models {
         /// </summary>
         public PermissionModel() {
             this.Authority = null;
+            this.Traits = new List<String>();
         }
 
         public void Dispose() {
             this.CommandType = CommandType.None;
             this.Name = null;
             this.Authority = null;
+            this.Traits.Clear();
+            this.Traits = null;
         }
     }
 }

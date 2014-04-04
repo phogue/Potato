@@ -1013,10 +1013,10 @@ namespace Procon.Core.Security {
             int authority = parameters["authority"].First<int>();
 
             if (this.DispatchPermissionsCheck(command, command.Name).Success == true) {
-                // If it's the users group AND the permission to set permissions AND they are changing the permission to nothing
-                bool removingPermissionToSetPermission = this.DispatchGroupCheck(command, groupName).Success == true && permissionName == CommandType.SecurityGroupSetPermission.ToString() && authority <= 0;
+                // If it's the users group AND (the permission to set permissions OR the permission is to authenticate) AND they are changing the permission to nothing
+                bool willResultInSystemLockout = this.DispatchGroupCheck(command, groupName).Success == true && (permissionName == CommandType.SecurityGroupSetPermission.ToString() || permissionName == CommandType.SecurityAccountAuthenticate.ToString()) && authority <= 0;
 
-                if (removingPermissionToSetPermission == false) {
+                if (willResultInSystemLockout == false) {
                     GroupModel group = this.Groups.FirstOrDefault(g => g.Name == groupName);
 
                     if (group != null) {

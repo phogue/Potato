@@ -173,6 +173,24 @@ namespace Procon.Core.Security {
                     Handler = this.SecurityGroupRemovePermissionTrait
                 },
                 new CommandDispatch() {
+                    CommandType = CommandType.SecurityGroupSetPermissionDescription,
+                    ParameterTypes = new List<CommandParameterType>() {
+                        new CommandParameterType() {
+                            Name = "groupName",
+                            Type = typeof(String)
+                        },
+                        new CommandParameterType() {
+                            Name = "permissionName",
+                            Type = typeof(String)
+                        },
+                        new CommandParameterType() {
+                            Name = "description",
+                            Type = typeof(String)
+                        }
+                    },
+                    Handler = this.SecurityGroupSetPermissionDescription
+                },
+                new CommandDispatch() {
                     CommandType = CommandType.SecurityGroupCopyPermissions,
                     ParameterTypes = new List<CommandParameterType>() {
                         new CommandParameterType() {
@@ -358,6 +376,8 @@ namespace Procon.Core.Security {
                                 }
                             }
                         }.ToConfigCommand());
+
+                        config.Append(CommandBuilder.SecurityGroupSetPermissionDescription(group.Name, permission.Name, permission.Description).ToConfigCommand());
 
                         foreach (String trait in permission.Traits) {
                             config.Append(CommandBuilder.SecurityGroupAppendPermissionTrait(group.Name, permission.Name, trait).ToConfigCommand());
@@ -1204,6 +1224,76 @@ namespace Procon.Core.Security {
                     }
 
 
+                }
+                else {
+                    result = new CommandResult() {
+                        Message = String.Format(@"Group with name ""{0}"" does not exists.", groupName),
+                        Success = false,
+                        CommandResultType = CommandResultType.DoesNotExists
+                    };
+                }
+            }
+            else {
+                result = CommandResult.InsufficientPermissions;
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Sets the description of a permission
+        /// </summary>
+        /// <param name="command"></param>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
+        public ICommandResult SecurityGroupSetPermissionDescription(ICommand command, Dictionary<String, ICommandParameter> parameters) {
+            ICommandResult result = null;
+
+            String groupName = parameters["groupName"].First<String>();
+            String permissionName = parameters["permissionName"].First<String>();
+            String description = parameters["description"].First<String>();
+
+            if (this.DispatchPermissionsCheck(command, command.Name).Success == true) {
+
+                GroupModel group = this.Groups.FirstOrDefault(g => g.Name == groupName);
+
+                if (group != null) {
+                    // Fetch or create the permission. Should always exist in our config, even if it is null.
+                    // This also allows for new permissions to be added to CommandName in the future
+                    // without breaking old configs.
+                    PermissionModel permission = group.Permissions.FirstOrDefault(perm => perm.Name == permissionName);
+
+                    if (permission == null) {
+                        permission = new PermissionModel() {
+                            Name = permissionName,
+                            Description = description
+                        };
+
+                        group.Permissions.Add(permission);
+                    }
+                    else {
+                        permission.Description = description;
+                    }
+
+                    result = new CommandResult() {
+                        Success = true,
+                        CommandResultType = CommandResultType.Success,
+                        Message = String.Format(@"Permission ""{0}"" successfully set the description {1}.", permission.Name, description),
+                        Scope = new CommandData() {
+                            Groups = new List<GroupModel>() {
+                                group
+                            }
+                        },
+                        Now = new CommandData() {
+                            Permissions = new List<PermissionModel>() {
+                                permission
+                            }
+                        }
+                    };
+
+                    if (this.Shared.Events != null) {
+                        this.Shared.Events.Log(GenericEvent.ConvertToGenericEvent(result, GenericEventType.SecurityGroupPermissionTraitAppended));
+                    }
                 }
                 else {
                     result = new CommandResult() {

@@ -29,6 +29,11 @@ namespace Procon.Core.Shared.Models {
         private CommandType _mCommandType;
 
         /// <summary>
+        /// A short, sweet description about what the permission does.
+        /// </summary>
+        public String Description { get; set; }
+
+        /// <summary>
         /// A list of traits describing how this permission should be handled.
         /// "Boolean" for example woud mean only applicable values is 0/null for nothing
         /// and anything above 0 for complete control. This permission
@@ -57,6 +62,7 @@ namespace Procon.Core.Shared.Models {
             this.Authority = null;
             this.Traits.Clear();
             this.Traits = null;
+            this.Description = null;
         }
     }
 }

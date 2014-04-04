@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel;
 
 namespace Procon.Core.Shared {
 
@@ -15,6 +16,7 @@ namespace Procon.Core.Shared {
         /// General query to fetch all of the connections, security group and variables. Anything in
         /// the Instance class pretty much.
         /// </summary>
+        [Description("This describes this instance query business.")]
         InstanceQuery,
         /// <summary>
         /// Sends a signal to the service controller to restart Procon, applying any updates.
@@ -101,6 +103,10 @@ namespace Procon.Core.Shared {
         /// Removes a single trait from a permission
         /// </summary>
         SecurityGroupRemovePermissionTrait,
+        /// <summary>
+        /// Sets the description of the permission
+        /// </summary>
+        SecurityGroupSetPermissionDescription,
         /// <summary>
         /// Copies the permissions from one group to another group
         /// </summary>

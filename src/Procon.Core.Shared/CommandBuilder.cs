@@ -775,6 +775,42 @@ namespace Procon.Core.Shared {
         }
 
         /// <summary>
+        /// Builds a command to send a SecurityGroupSetPermissionDescription
+        /// </summary>
+        /// <param name="groupName">The name of the group to modify the permission of</param>
+        /// <param name="permissionName">The name of the permission to remove a trait to</param>
+        /// <param name="description">The description to set</param>
+        /// <returns>The built command to dispatch</returns>
+        public static ICommand SecurityGroupSetPermissionDescription(String groupName, String permissionName, String description) {
+            return new Command() {
+                CommandType = CommandType.SecurityGroupSetPermissionDescription,
+                Parameters = new List<ICommandParameter>() {
+                    new CommandParameter() {
+                        Data = {
+                            Content = new List<String>() {
+                                groupName
+                            }
+                        }
+                    },
+                    new CommandParameter() {
+                        Data = {
+                            Content = new List<String>() {
+                                permissionName
+                            }
+                        }
+                    },
+                    new CommandParameter() {
+                        Data = {
+                            Content = new List<String>() {
+                                description
+                            }
+                        }
+                    }
+                }
+            };
+        }
+
+        /// <summary>
         /// Alias of SecurityGroupSetPermission(String, String, int)
         /// </summary>
         /// <param name="groupName">The name of the group to modify the permission of</param>

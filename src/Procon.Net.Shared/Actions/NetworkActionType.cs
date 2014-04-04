@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 
 namespace Procon.Net.Shared.Actions {
     /// <summary>
@@ -14,6 +15,7 @@ namespace Procon.Net.Shared.Actions {
         /// <summary>
         /// Packet is to be sent
         /// </summary>
+        [Description("Send a raw packet to the server.")]
         NetworkPacketSend,
 
         /// <summary>

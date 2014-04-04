@@ -320,6 +320,13 @@ namespace Procon.Core.Test.Security {
 
             var commands = loadConfig.RootOf<SecurityController>().Children<JObject>().Select(item => item.ToObject<Command>(JsonSerialization.Minimal)).ToList();
 
+            // Count that we at least got some trait output. Given these
+            // are default variables attached to permission regardless of the permission
+            // setting this test would require a lot of updates as we add new default traits to
+            // a permission.
+            Assert.GreaterOrEqual(commands.Count(command => command.Name == "SecurityGroupAppendPermissionTrait"), 1);
+            commands.RemoveAll(command => command.Name == "SecurityGroupAppendPermissionTrait" && command.Parameters[1].First<String>() != CommandType.VariablesSet.ToString());
+
             Assert.AreEqual("SecurityAddGroup", commands[0].Name);
             Assert.AreEqual("Guest", commands[0].Parameters[0].First<String>());
 

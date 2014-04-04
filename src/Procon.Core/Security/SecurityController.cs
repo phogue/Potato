@@ -376,12 +376,6 @@ namespace Procon.Core.Security {
                                 }
                             }
                         }.ToConfigCommand());
-
-                        config.Append(CommandBuilder.SecurityGroupSetPermissionDescription(group.Name, permission.Name, permission.Description).ToConfigCommand());
-
-                        foreach (String trait in permission.Traits) {
-                            config.Append(CommandBuilder.SecurityGroupAppendPermissionTrait(group.Name, permission.Name, trait).ToConfigCommand());
-                        }
                     }
                 }
 

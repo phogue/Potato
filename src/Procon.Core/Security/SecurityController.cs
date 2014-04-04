@@ -358,10 +358,10 @@ namespace Procon.Core.Security {
                                 }
                             }
                         }.ToConfigCommand());
-                    }
 
-                    foreach (String trait in permission.Traits) {
-                        config.Append(CommandBuilder.SecurityGroupAppendPermissionTrait(group.Name, permission.Name, trait).ToConfigCommand());
+                        foreach (String trait in permission.Traits) {
+                            config.Append(CommandBuilder.SecurityGroupAppendPermissionTrait(group.Name, permission.Name, trait).ToConfigCommand());
+                        }
                     }
                 }
 

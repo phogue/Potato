@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using Procon.Net.Shared.Actions;
 
@@ -39,11 +40,69 @@ namespace Procon.Core.Shared.Models {
 
             // Setup the default permissions.
             foreach (CommandType name in Enum.GetValues(typeof(CommandType)).Cast<CommandType>().Where(name => name != CommandType.None)) {
-                this.Permissions.Add(new PermissionModel() { CommandType = name });
+                var permission = new PermissionModel() {
+                    CommandType = name,
+                    // All of the CommandType are boolean.
+                    Traits = {
+                        PermissionTraitsType.Boolean
+                    }
+                };
+
+                var attributes = typeof(CommandType).GetMember(name.ToString()).First().GetCustomAttributes(typeof(DescriptionAttribute), false);
+
+                if (attributes.Length > 0) {
+                    permission.Description = attributes.Cast<DescriptionAttribute>().First().Description;
+                }
+
+                this.Permissions.Add(permission);
             }
 
+            // List of permissions that are not simple boolean (they take into account the level of Authority)
+            var authorityConstrainedActions = new List<String>() {
+                "NetworkPlayerMove",
+                "NetworkPlayerMoveForce",
+                "NetworkPlayerMoveRotate",
+                "NetworkPlayerMoveRotateForce",
+                "NetworkPlayerBan",
+                "NetworkPlayerUnban",
+                "NetworkPlayerKick",
+                "NetworkPlayerKill"
+            };
+
             foreach (NetworkActionType name in Enum.GetValues(typeof(NetworkActionType)).Cast<NetworkActionType>().Where(name => name != NetworkActionType.None)) {
-                this.Permissions.Add(new PermissionModel() { Name = name.ToString() });
+                var permission = new PermissionModel() {
+                    Name = name.ToString()
+                };
+
+                if (authorityConstrainedActions.Contains(name.ToString()) == false) {
+                    permission.Traits.Add(PermissionTraitsType.Boolean);
+                }
+
+                var attributes = typeof(NetworkActionType).GetMember(name.ToString()).First().GetCustomAttributes(typeof(DescriptionAttribute), false);
+
+                if (attributes.Length > 0) {
+                    permission.Description = attributes.Cast<DescriptionAttribute>().First().Description;
+                }
+
+                this.Permissions.Add(permission);
+            }
+
+            List<String> booleanTraits = new List<String>() { PermissionTraitsType.Boolean };
+
+            // Set default boolean traits for default permissions
+            Dictionary<String, List<String>> defaultTraits = new Dictionary<String, List<String>>() {
+                { CommandType.SecurityGroupAddAccount.ToString(), booleanTraits },
+                { CommandType.SecurityRemoveAccount.ToString(), booleanTraits },
+                { CommandType.SecurityAccountAuthenticate.ToString(), booleanTraits },
+                { CommandType.SecurityAccountSetPassword.ToString(), booleanTraits },
+                { CommandType.SecurityAccountSetPasswordHash.ToString(), booleanTraits },
+                { CommandType.SecurityAccountSetPreferredLanguageCode.ToString(), booleanTraits }
+
+                // @todo more
+            };
+
+            foreach (var trait in defaultTraits) {
+                this.Permissions.First(permission => permission.Name == trait.Key).Traits.AddRange(trait.Value);
             }
         }
 

@@ -103,7 +103,7 @@ namespace Procon.Core.Test.Security.Permission {
 
             var group = security.Groups.First(item => item.Name == "GroupName");
 
-            Assert.AreEqual(new List<String>() { "Custom Trait" }, group.Permissions.First(permission => permission.CommandType == CommandType.VariablesSet).Traits);
+            Assert.AreEqual(new List<String>() { PermissionTraitsType.Boolean, "Custom Trait" }, group.Permissions.First(permission => permission.CommandType == CommandType.VariablesSet).Traits);
         }
 
         /// <summary>

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using NuGet;
 
 namespace Procon.Service.Shared {
     /// <summary>
@@ -194,7 +195,20 @@ namespace Procon.Service.Shared {
             // Create the directory if it isn't there yet.
             Directory.CreateDirectory(path);
 
-            return Directory.GetDirectories(path, String.Format("{0}*", packageId), SearchOption.TopDirectoryOnly).FirstOrDefault();
+            return Directory.GetDirectories(path, String.Format("{0}*", packageId), SearchOption.TopDirectoryOnly).OrderByDescending(directory => {
+                SemanticVersion version = null;
+
+                var fileName = Path.GetFileName(directory);
+
+                if (fileName != null) {
+                    fileName = fileName.Replace(packageId, "");
+                    fileName = fileName.Trim().Trim('.');
+
+                    SemanticVersion.TryParse(fileName, out version);
+                }
+
+                return version;
+            }).FirstOrDefault();
         }
 
         /// <summary>

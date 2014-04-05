@@ -200,6 +200,39 @@
             ]
         },
         {
+            "Name": "ConquestAssaultLarge0",
+            "FriendlyName": "Conquest Assault 64",
+            "TeamCount": "2",
+            "DefaultGroups": [
+                {
+                    "Uid": "0",
+                    "Type": "Squad"
+                }
+            ]
+        }, 
+        {
+            "Name": "ConquestAssaultSmall0",
+            "FriendlyName": "Conquest Assault",
+            "TeamCount": "2",
+            "DefaultGroups": [
+                {
+                    "Uid": "0",
+                    "Type": "Squad"
+                }
+            ]
+        }, 
+        {
+            "Name": "ConquestAssaultSmall1",
+            "FriendlyName": "Conquest Assault #2",
+            "TeamCount": "2",
+            "DefaultGroups": [
+                {
+                    "Uid": "0",
+                    "Type": "Squad"
+                }
+            ]
+        },        
+        {
             "Name": "Domination0",
             "FriendlyName": "Domination",
             "TeamCount": "2",
@@ -233,6 +266,17 @@
             ]
         },
         {
+            "Name": "SquadRush0",
+            "FriendlyName": "Squad Rush",
+            "TeamCount": "2",
+            "DefaultGroups": [
+                {
+                    "Uid": "0",
+                    "Type": "Squad"
+                }
+            ]
+        },        
+        {
             "Name": "TeamDeathMatch0",
             "FriendlyName": "Team Deathmatch",
             "TeamCount": "2",
@@ -243,6 +287,28 @@
                 }
             ]
         },
+        {
+            "Name": "TeamDeathMatchC0",
+            "FriendlyName": "TDM Close Quarters",
+            "TeamCount": "2",
+            "DefaultGroups": [
+                {
+                    "Uid": "0",
+                    "Type": "Squad"
+                }
+            ]
+        },
+        {
+            "Name": "GunMaster0",
+            "FriendlyName": "Gun Master",
+            "TeamCount": "2",
+            "DefaultGroups": [
+                {
+                    "Uid": "0",
+                    "Type": "Squad"
+                }
+            ]
+        },        
         {
             "Name": "AirSuperiority0",
             "FriendlyName": "Air Superiority",
@@ -255,6 +321,17 @@
             ]
         },
         {
+            "Name": "TankSuperiority0",
+            "FriendlyName": "Tank Superiority",
+            "TeamCount": "2",
+            "DefaultGroups": [
+                {
+                    "Uid": "0",
+                    "Type": "Squad"
+                }
+            ]
+        },        
+        {
             "Name": "CaptureTheFlag0",
             "FriendlyName": "Capture The Flag",
             "TeamCount": "2",
@@ -264,7 +341,18 @@
                     "Type": "Squad"
                 }
             ]
-        }
+        },
+        {
+            "Name": "Scavenger0",
+            "FriendlyName": "Scavenger",
+            "TeamCount": "2",
+            "DefaultGroups": [
+                {
+                    "Uid": "0",
+                    "Type": "Squad"
+                }
+            ]
+        }        
     ],
     "MapPool": [
         {
@@ -617,7 +705,7 @@
                     "FriendlyName": "Defender"
                 }
             ]
-        },        
+        },
         {
             "Index": "0",
             "Rounds": "2",
@@ -896,8 +984,1135 @@
                     "FriendlyName": "Delta"
                 }
             ]
+        }, 
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "MP_001",
+            "FriendlyName": "Grand Bazaar",
+            "GameMode": {
+                "Name": "SquadRush0"
+            },
+            "Groups": [
+                {
+                    "Uid": "1",
+                    "Type": "Team",
+                    "FriendlyName": "Attacker"
+                },
+                {
+                    "Uid": "2",
+                    "Type": "Team",
+                    "FriendlyName": "Defender"
+                }
+            ]
+        }, 
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "MP_003",
+            "FriendlyName": "Teheran Highway",
+            "GameMode": {
+                "Name": "SquadRush0"
+            },
+            "Groups": [
+                {
+                    "Uid": "1",
+                    "Type": "Team",
+                    "FriendlyName": "Attacker"
+                },
+                {
+                    "Uid": "2",
+                    "Type": "Team",
+                    "FriendlyName": "Defender"
+                }
+            ]
+        },  
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "MP_007",
+            "FriendlyName": "Caspian Border",
+            "GameMode": {
+                "Name": "SquadRush0"
+            },
+            "Groups": [
+                {
+                    "Uid": "1",
+                    "Type": "Team",
+                    "FriendlyName": "Attacker"
+                },
+                {
+                    "Uid": "2",
+                    "Type": "Team",
+                    "FriendlyName": "Defender"
+                }
+            ]
+        }, 
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "MP_011",
+            "FriendlyName": "Seine Crossing",
+            "GameMode": {
+                "Name": "SquadRush0"
+            },
+            "Groups": [
+                {
+                    "Uid": "1",
+                    "Type": "Team",
+                    "FriendlyName": "Attacker"
+                },
+                {
+                    "Uid": "2",
+                    "Type": "Team",
+                    "FriendlyName": "Defender"
+                }
+            ]
+        }, 
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "MP_012",
+            "FriendlyName": "Operation Firestorm",
+            "GameMode": {
+                "Name": "SquadRush0"
+            },
+            "Groups": [
+                {
+                    "Uid": "1",
+                    "Type": "Team",
+                    "FriendlyName": "Attacker"
+                },
+                {
+                    "Uid": "2",
+                    "Type": "Team",
+                    "FriendlyName": "Defender"
+                }
+            ]
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "MP_013",
+            "FriendlyName": "Damavand Peak",
+            "GameMode": {
+                "Name": "SquadRush0"
+            },
+            "Groups": [
+                {
+                    "Uid": "1",
+                    "Type": "Team",
+                    "FriendlyName": "Attacker"
+                },
+                {
+                    "Uid": "2",
+                    "Type": "Team",
+                    "FriendlyName": "Defender"
+                }
+            ]
+        }, 
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "MP_017",
+            "FriendlyName": "Noshahr Canals",
+            "GameMode": {
+                "Name": "SquadRush0"
+            },
+            "Groups": [
+                {
+                    "Uid": "1",
+                    "Type": "Team",
+                    "FriendlyName": "Attacker"
+                },
+                {
+                    "Uid": "2",
+                    "Type": "Team",
+                    "FriendlyName": "Defender"
+                }
+            ]
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "MP_018",
+            "FriendlyName": "Kharg Island",
+            "GameMode": {
+                "Name": "SquadRush0"
+            },
+            "Groups": [
+                {
+                    "Uid": "1",
+                    "Type": "Team",
+                    "FriendlyName": "Attacker"
+                },
+                {
+                    "Uid": "2",
+                    "Type": "Team",
+                    "FriendlyName": "Defender"
+                }
+            ]
+        },  
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "MP_Subway",
+            "FriendlyName": "Operation Metro",
+            "GameMode": {
+                "Name": "SquadRush0"
+            },
+            "Groups": [
+                {
+                    "Uid": "1",
+                    "Type": "Team",
+                    "FriendlyName": "Attacker"
+                },
+                {
+                    "Uid": "2",
+                    "Type": "Team",
+                    "FriendlyName": "Defender"
+                }
+            ]
         },         
- 
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "MP_001",
+            "FriendlyName": "Grand Bazaar",
+            "GameMode": {
+                "Name": "TeamDeathMatch0"
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "MP_003",
+            "FriendlyName": "Teheran Highway",
+            "GameMode": {
+                "Name": "TeamDeathMatch0"
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "MP_007",
+            "FriendlyName": "Caspian Border",
+            "GameMode": {
+                "Name": "TeamDeathMatch0"
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "MP_011",
+            "FriendlyName": "Seine Crossing",
+            "GameMode": {
+                "Name": "TeamDeathMatch0"
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "MP_012",
+            "FriendlyName": "Operation Firestorm",
+            "GameMode": {
+                "Name": "TeamDeathMatch0"
+            }
+        },  
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "MP_013",
+            "FriendlyName": "Damavand Peak",
+            "GameMode": {
+                "Name": "TeamDeathMatch0"
+            }
+        }, 
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "MP_017",
+            "FriendlyName": "Noshahr Canals",
+            "GameMode": {
+                "Name": "TeamDeathMatch0"
+            }
+        }, 
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "MP_018",
+            "FriendlyName": "Kharg Island",
+            "GameMode": {
+                "Name": "TeamDeathMatch0"
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "MP_Subway",
+            "FriendlyName": "Operation Metro",
+            "GameMode": {
+                "Name": "TeamDeathMatch0"
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "MP_001",
+            "FriendlyName": "Grand Bazaar",
+            "GameMode": {
+                "Name": "TeamDeathMatchC0"
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "MP_003",
+            "FriendlyName": "Teheran Highway",
+            "GameMode": {
+                "Name": "TeamDeathMatchC0"
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "MP_007",
+            "FriendlyName": "Caspian Border",
+            "GameMode": {
+                "Name": "TeamDeathMatchC0"
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "MP_011",
+            "FriendlyName": "Seine Crossing",
+            "GameMode": {
+                "Name": "TeamDeathMatchC0"
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "MP_012",
+            "FriendlyName": "Operation Firestorm",
+            "GameMode": {
+                "Name": "TeamDeathMatchC0"
+            }
+        },  
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "MP_013",
+            "FriendlyName": "Damavand Peak",
+            "GameMode": {
+                "Name": "TeamDeathMatchC0"
+            }
+        }, 
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "MP_017",
+            "FriendlyName": "Noshahr Canals",
+            "GameMode": {
+                "Name": "TeamDeathMatchC0"
+            }
+        }, 
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "MP_018",
+            "FriendlyName": "Kharg Island",
+            "GameMode": {
+                "Name": "TeamDeathMatchC0"
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "MP_Subway",
+            "FriendlyName": "Operation Metro",
+            "GameMode": {
+                "Name": "TeamDeathMatchC0"
+            }
+        },        
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP1_001",
+            "FriendlyName": "Strike at Karkand",
+            "GameMode": {
+                "Name": "ConquestLarge0"
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP1_002",
+            "FriendlyName": "Gulf of Oman",
+            "GameMode": {
+                "Name": "ConquestLarge0"
+            }
+        },  
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP1_003",
+            "FriendlyName": "Sharqi Peninsula",
+            "GameMode": {
+                "Name": "ConquestLarge0"
+            }
+        },  
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP1_004",
+            "FriendlyName": "Wake Island",
+            "GameMode": {
+                "Name": "ConquestLarge0"
+            }
+        }, 
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP1_001",
+            "FriendlyName": "Strike at Karkand",
+            "GameMode": {
+                "Name": "ConquestSmall0"
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP1_002",
+            "FriendlyName": "Gulf of Oman",
+            "GameMode": {
+                "Name": "ConquestSmall0"
+            }
+        },  
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP1_003",
+            "FriendlyName": "Sharqi Peninsula",
+            "GameMode": {
+                "Name": "ConquestSmall0"
+            }
+        },  
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP1_004",
+            "FriendlyName": "Wake Island",
+            "GameMode": {
+                "Name": "ConquestSmall0"
+            }
+        },  
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP1_001",
+            "FriendlyName": "Strike at Karkand",
+            "GameMode": {
+                "Name": "ConquestAssaultLarge0""
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP1_002",
+            "FriendlyName": "Gulf of Oman",
+            "GameMode": {
+                "Name": "ConquestAssaultLarge0""
+            }
+        },  
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP1_003",
+            "FriendlyName": "Sharqi Peninsula",
+            "GameMode": {
+                "Name": "ConquestAssaultLarge0""
+            }
+        },  
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP1_004",
+            "FriendlyName": "Wake Island",
+            "GameMode": {
+                "Name": "ConquestAssaultLarge0""
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP1_001",
+            "FriendlyName": "Strike at Karkand",
+            "GameMode": {
+                "Name": "ConquestAssaultSmall0""
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP1_002",
+            "FriendlyName": "Gulf of Oman",
+            "GameMode": {
+                "Name": "ConquestAssaultSmall0""
+            }
+        },  
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP1_003",
+            "FriendlyName": "Sharqi Peninsula",
+            "GameMode": {
+                "Name": "ConquestAssaultSmall0""
+            }
+        },  
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP1_004",
+            "FriendlyName": "Wake Island",
+            "GameMode": {
+                "Name": "ConquestAssaultSmall0""
+            }
+        }, 
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP1_001",
+            "FriendlyName": "Strike at Karkand",
+            "GameMode": {
+                "Name": "ConquestAssaultSmall1""
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP1_002",
+            "FriendlyName": "Gulf of Oman",
+            "GameMode": {
+                "Name": "ConquestAssaultSmall1""
+            }
+        },  
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP1_003",
+            "FriendlyName": "Sharqi Peninsula",
+            "GameMode": {
+                "Name": "ConquestAssaultSmall1""
+            }
+        },  
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP1_004",
+            "FriendlyName": "Wake Island",
+            "GameMode": {
+                "Name": "ConquestAssaultSmall1""
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP1_001",
+            "FriendlyName": "Strike at Karkand",
+            "GameMode": {
+                "Name": "RushLarge0"
+            },
+            "Groups": [
+                {
+                    "Uid": "1",
+                    "Type": "Team",
+                    "FriendlyName": "Attacker"
+                },
+                {
+                    "Uid": "2",
+                    "Type": "Team",
+                    "FriendlyName": "Defender"
+                }
+            ]
+        }, 
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP1_002",
+            "FriendlyName": "Gulf of Oman",
+            "GameMode": {
+                "Name": "RushLarge0"
+            },
+            "Groups": [
+                {
+                    "Uid": "1",
+                    "Type": "Team",
+                    "FriendlyName": "Attacker"
+                },
+                {
+                    "Uid": "2",
+                    "Type": "Team",
+                    "FriendlyName": "Defender"
+                }
+            ]
+        },  
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP1_003",
+            "FriendlyName": "Sharqi Peninsula",
+            "GameMode": {
+                "Name": "RushLarge0"
+            },
+            "Groups": [
+                {
+                    "Uid": "1",
+                    "Type": "Team",
+                    "FriendlyName": "Attacker"
+                },
+                {
+                    "Uid": "2",
+                    "Type": "Team",
+                    "FriendlyName": "Defender"
+                }
+            ]
+        },  
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP1_004",
+            "FriendlyName": "Wake Island",
+            "GameMode": {
+                "Name": "RushLarge0"
+            },
+            "Groups": [
+                {
+                    "Uid": "1",
+                    "Type": "Team",
+                    "FriendlyName": "Attacker"
+                },
+                {
+                    "Uid": "2",
+                    "Type": "Team",
+                    "FriendlyName": "Defender"
+                }
+            ]
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP1_001",
+            "FriendlyName": "Strike at Karkand",
+            "GameMode": {
+                "Name": "SquadDeathMatch0"
+            },
+            "Groups": [
+                {
+                    "Uid": "1",
+                    "Type": "Team",
+                    "FriendlyName": "Alpha"
+                },
+                {
+                    "Uid": "2",
+                    "Type": "Team",
+                    "FriendlyName": "Beta"
+                },
+                {
+                    "Uid": "3",
+                    "Type": "Team",
+                    "FriendlyName": "Charlie"
+                },
+                {
+                    "Uid": "4",
+                    "Type": "Team",
+                    "FriendlyName": "Delta"
+                }
+            ]
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP1_002",
+            "FriendlyName": "Gulf of Oman",
+            "GameMode": {
+                "Name": "SquadDeathMatch0"
+            },
+            "Groups": [
+                {
+                    "Uid": "1",
+                    "Type": "Team",
+                    "FriendlyName": "Alpha"
+                },
+                {
+                    "Uid": "2",
+                    "Type": "Team",
+                    "FriendlyName": "Beta"
+                },
+                {
+                    "Uid": "3",
+                    "Type": "Team",
+                    "FriendlyName": "Charlie"
+                },
+                {
+                    "Uid": "4",
+                    "Type": "Team",
+                    "FriendlyName": "Delta"
+                }
+            ]
+        }, 
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP1_003",
+            "FriendlyName": "Sharqi Peninsula",
+            "GameMode": {
+                "Name": "SquadDeathMatch0"
+            },
+            "Groups": [
+                {
+                    "Uid": "1",
+                    "Type": "Team",
+                    "FriendlyName": "Alpha"
+                },
+                {
+                    "Uid": "2",
+                    "Type": "Team",
+                    "FriendlyName": "Beta"
+                },
+                {
+                    "Uid": "3",
+                    "Type": "Team",
+                    "FriendlyName": "Charlie"
+                },
+                {
+                    "Uid": "4",
+                    "Type": "Team",
+                    "FriendlyName": "Delta"
+                }
+            ]
+        }, 
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP1_004",
+            "FriendlyName": "Wake Island",
+            "GameMode": {
+                "Name": "SquadDeathMatch0"
+            },
+            "Groups": [
+                {
+                    "Uid": "1",
+                    "Type": "Team",
+                    "FriendlyName": "Alpha"
+                },
+                {
+                    "Uid": "2",
+                    "Type": "Team",
+                    "FriendlyName": "Beta"
+                },
+                {
+                    "Uid": "3",
+                    "Type": "Team",
+                    "FriendlyName": "Charlie"
+                },
+                {
+                    "Uid": "4",
+                    "Type": "Team",
+                    "FriendlyName": "Delta"
+                }
+            ]
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP1_001",
+            "FriendlyName": "Strike at Karkand",
+            "GameMode": {
+                "Name": "SquadRush0"
+            },
+            "Groups": [
+                {
+                    "Uid": "1",
+                    "Type": "Team",
+                    "FriendlyName": "Attacker"
+                },
+                {
+                    "Uid": "2",
+                    "Type": "Team",
+                    "FriendlyName": "Defender"
+                }
+            ]
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP1_002",
+            "FriendlyName": "Gulf of Oman",
+            "GameMode": {
+                "Name": "SquadRush0"
+            },
+            "Groups": [
+                {
+                    "Uid": "1",
+                    "Type": "Team",
+                    "FriendlyName": "Attacker"
+                },
+                {
+                    "Uid": "2",
+                    "Type": "Team",
+                    "FriendlyName": "Defender"
+                }
+            ]
+        },  
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP1_003",
+            "FriendlyName": "Sharqi Peninsula",
+            "GameMode": {
+                "Name": "SquadRush0"
+            },
+            "Groups": [
+                {
+                    "Uid": "1",
+                    "Type": "Team",
+                    "FriendlyName": "Attacker"
+                },
+                {
+                    "Uid": "2",
+                    "Type": "Team",
+                    "FriendlyName": "Defender"
+                }
+            ]
+        },  
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP1_004",
+            "FriendlyName": "Wake Island",
+            "GameMode": {
+                "Name": "SquadRush0"
+            },
+            "Groups": [
+                {
+                    "Uid": "1",
+                    "Type": "Team",
+                    "FriendlyName": "Attacker"
+                },
+                {
+                    "Uid": "2",
+                    "Type": "Team",
+                    "FriendlyName": "Defender"
+                }
+            ]
+        },           
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP1_001",
+            "FriendlyName": "Strike at Karkand",
+            "GameMode": {
+                "Name": "TeamDeathMatch0"
+            }
+        }, 
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP1_002",
+            "FriendlyName": "Gulf of Oman",
+            "GameMode": {
+                "Name": "TeamDeathMatch0"
+            }
+        },  
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP1_003",
+            "FriendlyName": "Sharqi Peninsula",
+            "GameMode": {
+                "Name": "TeamDeathMatch0"
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP1_004",
+            "FriendlyName": "Wake Island",
+            "GameMode": {
+                "Name": "TeamDeathMatch0"
+            }
+        }, 
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP1_001",
+            "FriendlyName": "Strike at Karkand",
+            "GameMode": {
+                "Name": "TeamDeathMatchC0"
+            }
+        }, 
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP1_002",
+            "FriendlyName": "Gulf of Oman",
+            "GameMode": {
+                "Name": "TeamDeathMatchC0"
+            }
+        },  
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP1_003",
+            "FriendlyName": "Sharqi Peninsula",
+            "GameMode": {
+                "Name": "TeamDeathMatchC0"
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP1_004",
+            "FriendlyName": "Wake Island",
+            "GameMode": {
+                "Name": "TeamDeathMatchC0"
+            }
+        }, 
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP2_Factory",
+            "FriendlyName": "Scrapmetal",
+            "GameMode": {
+                "Name": "Domination0"
+            }
+        }, 
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP2_Office",
+            "FriendlyName": "Operation 925",
+            "GameMode": {
+                "Name": "Domination0"
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP2_Palace",
+            "FriendlyName": "Donya Fortress",
+            "GameMode": {
+                "Name": "Domination0"
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP2_Skybar",
+            "FriendlyName": "Ziba Tower",
+            "GameMode": {
+                "Name": "Domination0"
+            }
+        },
+         {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP2_Factory",
+            "FriendlyName": "Scrapmetal",
+            "GameMode": {
+                "Name": "GunMaster0"
+            }
+        }, 
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP2_Office",
+            "FriendlyName": "Operation 925",
+            "GameMode": {
+                "Name": "GunMaster0"
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP2_Palace",
+            "FriendlyName": "Donya Fortress",
+            "GameMode": {
+                "Name": "GunMaster0"
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP2_Skybar",
+            "FriendlyName": "Ziba Tower",
+            "GameMode": {
+                "Name": "GunMaster0"
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP2_Factory",
+            "FriendlyName": "Scrapmetal",
+            "GameMode": {
+                "Name": "SquadDeathMatch0"
+            },
+            "Groups": [
+                {
+                    "Uid": "1",
+                    "Type": "Team",
+                    "FriendlyName": "Alpha"
+                },
+                {
+                    "Uid": "2",
+                    "Type": "Team",
+                    "FriendlyName": "Beta"
+                },
+                {
+                    "Uid": "3",
+                    "Type": "Team",
+                    "FriendlyName": "Charlie"
+                },
+                {
+                    "Uid": "4",
+                    "Type": "Team",
+                    "FriendlyName": "Delta"
+                }
+            ]
+        }, 
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP2_Office",
+            "FriendlyName": "Operation 925",
+            "GameMode": {
+                "Name": "SquadDeathMatch0"
+            },
+            "Groups": [
+                {
+                    "Uid": "1",
+                    "Type": "Team",
+                    "FriendlyName": "Alpha"
+                },
+                {
+                    "Uid": "2",
+                    "Type": "Team",
+                    "FriendlyName": "Beta"
+                },
+                {
+                    "Uid": "3",
+                    "Type": "Team",
+                    "FriendlyName": "Charlie"
+                },
+                {
+                    "Uid": "4",
+                    "Type": "Team",
+                    "FriendlyName": "Delta"
+                }
+            ]
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP2_Palace",
+            "FriendlyName": "Donya Fortress",
+            "GameMode": {
+                "Name": "SquadDeathMatch0"
+            },
+            "Groups": [
+                {
+                    "Uid": "1",
+                    "Type": "Team",
+                    "FriendlyName": "Alpha"
+                },
+                {
+                    "Uid": "2",
+                    "Type": "Team",
+                    "FriendlyName": "Beta"
+                },
+                {
+                    "Uid": "3",
+                    "Type": "Team",
+                    "FriendlyName": "Charlie"
+                },
+                {
+                    "Uid": "4",
+                    "Type": "Team",
+                    "FriendlyName": "Delta"
+                }
+            ]
+        },         
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP2_Skybar",
+            "FriendlyName": "Ziba Tower",
+            "GameMode": {
+                "Name": "SquadDeathMatch0"
+            },
+            "Groups": [
+                {
+                    "Uid": "1",
+                    "Type": "Team",
+                    "FriendlyName": "Alpha"
+                },
+                {
+                    "Uid": "2",
+                    "Type": "Team",
+                    "FriendlyName": "Beta"
+                },
+                {
+                    "Uid": "3",
+                    "Type": "Team",
+                    "FriendlyName": "Charlie"
+                },
+                {
+                    "Uid": "4",
+                    "Type": "Team",
+                    "FriendlyName": "Delta"
+                }
+            ]
+        }, 
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP2_Factory",
+            "FriendlyName": "Scrapmetal",
+            "GameMode": {
+                "Name": "TeamDeathMatchC0"
+            }
+        },  
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP2_Office",
+            "FriendlyName": "Operation 925",
+            "GameMode": {
+                "Name": "TeamDeathMatchC0"
+            }
+        },  
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP2_Palace",
+            "FriendlyName": "Donya Fortress",
+            "GameMode": {
+                "Name": "TeamDeathMatchC0"
+            }
+        },  
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP2_Skybar",
+            "FriendlyName": "Ziba Tower",
+            "GameMode": {
+                "Name": "TeamDeathMatchC0"
+            }
+        },          
+        
 
     ],
     "Items": [

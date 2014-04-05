@@ -2561,7 +2561,7 @@
             "Index": "0",
             "Rounds": "2",
             "Name": "XP4_Rubble",
-            "FriendlyName": "Epicenter",
+            "FriendlyName": "Talah Market",
             "GameMode": {
                 "Name": "ConquestAssualtLarge0"
             }
@@ -2570,7 +2570,7 @@
             "Index": "0",
             "Rounds": "2",
             "Name": "XP4_Rubble",
-            "FriendlyName": "Epicenter",
+            "FriendlyName": "Talah Market",
             "GameMode": {
                 "Name": "ConquestAssualtSmall0"
             }
@@ -2642,7 +2642,7 @@
             "Index": "0",
             "Rounds": "2",
             "Name": "XP4_Rubble",
-            "FriendlyName": "Epicenter",
+            "FriendlyName": "Talah market",
             "GameMode": {
                 "Name": "RushLarge0"
             },
@@ -2756,7 +2756,7 @@
             "Index": "0",
             "Rounds": "2",
             "Name": "XP4_Rubble",
-            "FriendlyName": "Epicenter",
+            "FriendlyName": "Talah Market",
             "GameMode": {
                 "Name": "SquadDeathMatch0"
             },
@@ -2850,7 +2850,7 @@
             "Index": "0",
             "Rounds": "2",
             "Name": "XP4_Rubble",
-            "FriendlyName": "Epicenter",
+            "FriendlyName": "Talah Market",
             "GameMode": {
                 "Name": "SquadRush0"
             },
@@ -2898,7 +2898,7 @@
             "Index": "0",
             "Rounds": "2",
             "Name": "XP4_Rubble",
-            "FriendlyName": "Epicenter",
+            "FriendlyName": "Talah Market",
             "GameMode": {
                 "Name": "TeamDeathMatch0"
             }
@@ -2934,7 +2934,7 @@
             "Index": "0",
             "Rounds": "2",
             "Name": "XP4_Rubble",
-            "FriendlyName": "Epicenter",
+            "FriendlyName": "Talah Market",
             "GameMode": {
                 "Name": "TeamDeathMatchC0"
             }
@@ -2970,7 +2970,7 @@
             "Index": "0",
             "Rounds": "2",
             "Name": "XP4_Rubble",
-            "FriendlyName": "Epicenter",
+            "FriendlyName": "Talah Market",
             "GameMode": {
                 "Name": "GunMaster0"
             }
@@ -3006,11 +3006,517 @@
             "Index": "0",
             "Rounds": "2",
             "Name": "XP4_Rubble",
-            "FriendlyName": "Epicenter",
+            "FriendlyName": "Talah Market",
             "GameMode": {
                 "Name": "Scavenger0"
             }
-        },          
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP5_001",
+            "FriendlyName": "Operation Riverside",
+            "GameMode": {
+                "Name": "ConquestLarge0"
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP5_002",
+            "FriendlyName": "Nebandan Flats",
+            "GameMode": {
+                "Name": "ConquestLarge0"
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP5_003",
+            "FriendlyName": "Kiasar Railroad",
+            "GameMode": {
+                "Name": "ConquestLarge0"
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP5_004",
+            "FriendlyName": "Sabalan Pipeline",
+            "GameMode": {
+                "Name": "ConquestLarge0"
+            }
+        }, 
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP5_001",
+            "FriendlyName": "Operation Riverside",
+            "GameMode": {
+                "Name": "ConquestSmall0"
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP5_002",
+            "FriendlyName": "Nebandan Flats",
+            "GameMode": {
+                "Name": "ConquestSmall0"
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP5_003",
+            "FriendlyName": "Kiasar Railroad",
+            "GameMode": {
+                "Name": "ConquestSmall0"
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP5_004",
+            "FriendlyName": "Sabalan Pipeline",
+            "GameMode": {
+                "Name": "ConquestSmall0"
+            }
+        }, 
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP5_001",
+            "FriendlyName": "Operation Riverside",
+            "GameMode": {
+                "Name": "RushLarge0"
+            },
+            "Groups": [
+                {
+                    "Uid": "1",
+                    "Type": "Team",
+                    "FriendlyName": "Attacker"
+                },
+                {
+                    "Uid": "2",
+                    "Type": "Team",
+                    "FriendlyName": "Defender"
+                }
+            ]
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP5_002",
+            "FriendlyName": "Nebandan Flats",
+            "GameMode": {
+                "Name": "RushLarge0"
+            },
+            "Groups": [
+                {
+                    "Uid": "1",
+                    "Type": "Team",
+                    "FriendlyName": "Attacker"
+                },
+                {
+                    "Uid": "2",
+                    "Type": "Team",
+                    "FriendlyName": "Defender"
+                }
+            ]
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP5_003",
+            "FriendlyName": "Kiasar Railroad",
+            "GameMode": {
+                "Name": "RushLarge0"
+            },
+            "Groups": [
+                {
+                    "Uid": "1",
+                    "Type": "Team",
+                    "FriendlyName": "Attacker"
+                },
+                {
+                    "Uid": "2",
+                    "Type": "Team",
+                    "FriendlyName": "Defender"
+                }
+            ]
+        }, 
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP5_004",
+            "FriendlyName": "Sabalan Pipeline",
+            "GameMode": {
+                "Name": "RushLarge0"
+            },
+            "Groups": [
+                {
+                    "Uid": "1",
+                    "Type": "Team",
+                    "FriendlyName": "Attacker"
+                },
+                {
+                    "Uid": "2",
+                    "Type": "Team",
+                    "FriendlyName": "Defender"
+                }
+            ]
+        },           
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP5_001",
+            "FriendlyName": "Operation Riverside",
+            "GameMode": {
+                "Name": "CaptureTheFlag"
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP5_002",
+            "FriendlyName": "Nebandan Flats",
+            "GameMode": {
+                "Name": "CaptureTheFlag"
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP5_003",
+            "FriendlyName": "Kiasar Railroad",
+            "GameMode": {
+                "Name": "CaptureTheFlag"
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP5_004",
+            "FriendlyName": "Sabalan Pipeline",
+            "GameMode": {
+                "Name": "CaptureTheFlag0"
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP5_001",
+            "FriendlyName": "Operation Riverside",
+            "GameMode": {
+                "Name": "SquadDeathMatch0"
+            },
+            "Groups": [
+                {
+                    "Uid": "1",
+                    "Type": "Team",
+                    "FriendlyName": "Alpha"
+                },
+                {
+                    "Uid": "2",
+                    "Type": "Team",
+                    "FriendlyName": "Beta"
+                },
+                {
+                    "Uid": "3",
+                    "Type": "Team",
+                    "FriendlyName": "Charlie"
+                },
+                {
+                    "Uid": "4",
+                    "Type": "Team",
+                    "FriendlyName": "Delta"
+                }
+            ]
+        },
+        }
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP5_002",
+            "FriendlyName": "Nebandan Flats",
+            "GameMode": {
+                "Name": "SquadDeathMatch0"
+            },
+            "Groups": [
+                {
+                    "Uid": "1",
+                    "Type": "Team",
+                    "FriendlyName": "Alpha"
+                },
+                {
+                    "Uid": "2",
+                    "Type": "Team",
+                    "FriendlyName": "Beta"
+                },
+                {
+                    "Uid": "3",
+                    "Type": "Team",
+                    "FriendlyName": "Charlie"
+                },
+                {
+                    "Uid": "4",
+                    "Type": "Team",
+                    "FriendlyName": "Delta"
+                }
+            ]
+        },  
+        }
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP5_003",
+            "FriendlyName": "Kiasar Railroad",
+            "GameMode": {
+                "Name": "SquadDeathMatch0"
+            },
+            "Groups": [
+                {
+                    "Uid": "1",
+                    "Type": "Team",
+                    "FriendlyName": "Alpha"
+                },
+                {
+                    "Uid": "2",
+                    "Type": "Team",
+                    "FriendlyName": "Beta"
+                },
+                {
+                    "Uid": "3",
+                    "Type": "Team",
+                    "FriendlyName": "Charlie"
+                },
+                {
+                    "Uid": "4",
+                    "Type": "Team",
+                    "FriendlyName": "Delta"
+                }
+            ]
+        },
+        }
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP5_004",
+            "FriendlyName": "Sabalan Pipeline",
+            "GameMode": {
+                "Name": "SquadDeathMatch0"
+            },
+            "Groups": [
+                {
+                    "Uid": "1",
+                    "Type": "Team",
+                    "FriendlyName": "Alpha"
+                },
+                {
+                    "Uid": "2",
+                    "Type": "Team",
+                    "FriendlyName": "Beta"
+                },
+                {
+                    "Uid": "3",
+                    "Type": "Team",
+                    "FriendlyName": "Charlie"
+                },
+                {
+                    "Uid": "4",
+                    "Type": "Team",
+                    "FriendlyName": "Delta"
+                }
+            ]
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP5_001",
+            "FriendlyName": "Operation Riverside",
+            "GameMode": {
+                "Name": "SquadRush0"
+            },
+            "Groups": [
+                {
+                    "Uid": "1",
+                    "Type": "Team",
+                    "FriendlyName": "Attacker"
+                },
+                {
+                    "Uid": "2",
+                    "Type": "Team",
+                    "FriendlyName": "Defender"
+                }
+            ]
+        }, 
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP5_002",
+            "FriendlyName": "Nebandan Flats",
+            "GameMode": {
+                "Name": "SquadRush0"
+            },
+            "Groups": [
+                {
+                    "Uid": "1",
+                    "Type": "Team",
+                    "FriendlyName": "Attacker"
+                },
+                {
+                    "Uid": "2",
+                    "Type": "Team",
+                    "FriendlyName": "Defender"
+                }
+            ]
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP5_003",
+            "FriendlyName": "Kiasar Railroad",
+            "GameMode": {
+                "Name": "SquadRush0"
+            },
+            "Groups": [
+                {
+                    "Uid": "1",
+                    "Type": "Team",
+                    "FriendlyName": "Attacker"
+                },
+                {
+                    "Uid": "2",
+                    "Type": "Team",
+                    "FriendlyName": "Defender"
+                }
+            ]
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP5_004",
+            "FriendlyName": "Sabalan Pipeline",
+            "GameMode": {
+                "Name": "SquadRush0"
+            },
+            "Groups": [
+                {
+                    "Uid": "1",
+                    "Type": "Team",
+                    "FriendlyName": "Attacker"
+                },
+                {
+                    "Uid": "2",
+                    "Type": "Team",
+                    "FriendlyName": "Defender"
+                }
+            ]
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP5_001",
+            "FriendlyName": "Operation Riverside",
+            "GameMode": {
+                "Name": "TeamDeathMatch0"
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP5_002",
+            "FriendlyName": "Nebandan Flats",
+            "GameMode": {
+                "Name": "TeamDeathMatch0"
+            }
+        }, 
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP5_003",
+            "FriendlyName": "Kiasar Railroad",
+            "GameMode": {
+                "Name": "TeamDeathMatch0"
+            }
+        },
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP5_004",
+            "FriendlyName": "Sabalan Pipeline",
+            "GameMode": {
+                "Name": "TeamDeathMatch0"
+            }
+        }, 
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP5_001",
+            "FriendlyName": "Operation Riverside",
+            "GameMode": {
+                "Name": "TeamDeathMatchC0"
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP5_002",
+            "FriendlyName": "Nebandan Flats",
+            "GameMode": {
+                "Name": "TeamDeathMatchC0"
+            }
+        }, 
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP5_003",
+            "FriendlyName": "Kiasar Railroad",
+            "GameMode": {
+                "Name": "TeamDeathMatchC0"
+            }
+        },
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP5_004",
+            "FriendlyName": "Sabalan Pipeline",
+            "GameMode": {
+                "Name": "TeamDeathMatchC0"
+            }
+        },
+        }    
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP5_001",
+            "FriendlyName": "Operation Riverside", 
+            "GameMode": {
+                "Name": "AirSuperiority0"
+            }
+        },
+        }    
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP5_002",
+            "FriendlyName": "Nebandan Flats",
+            "GameMode": {
+                "Name": "AirSuperiority0"
+            }
+        }, 
+        }    
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP5_003",
+            "FriendlyName": "Kiasar Railroad",
+            "GameMode": {
+                "Name": "AirSuperiority0"
+            }
+        },
+        }    
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP5_004",
+            "FriendlyName": "Sabalan Pipeline",
+            "GameMode": {
+                "Name": "AirSuperiority0"
+            }
+        }          
         
     ],
     "Items": [

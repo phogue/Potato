@@ -108,6 +108,7 @@
     <Content Include="Configs\Protocols\Myrcon\DiceBattlefield3.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="Myrcon.Protocols.Frostbite.json" />
     <None Include="Myrcon.Protocols.Frostbite.nuspec" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

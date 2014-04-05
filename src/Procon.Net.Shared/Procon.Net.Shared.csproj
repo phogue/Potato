@@ -50,6 +50,7 @@
     <Compile Include="IClientEventArgs.cs" />
     <Compile Include="IClientEventData.cs" />
     <Compile Include="IClientSetup.cs" />
+    <Compile Include="IProtocolAssemblyMetadata.cs" />
     <Compile Include="IProtocolEventArgs.cs" />
     <Compile Include="IProtocolEventData.cs" />
     <Compile Include="IProtocolSetup.cs" />
@@ -76,6 +77,7 @@
     <Compile Include="ClientEventData.cs" />
     <Compile Include="ClientEventType.cs" />
     <Compile Include="ConnectionState.cs" />
+    <Compile Include="ProtocolAssemblyMetadata.cs" />
     <Compile Include="ProtocolEventArgs.cs" />
     <Compile Include="ProtocolEventData.cs" />
     <Compile Include="ProtocolEventType.cs" />

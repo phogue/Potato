@@ -145,7 +145,7 @@ namespace Procon.Core.Events {
             // Assume everything was successful
             bool saved = true;
 
-            if (this.Shared.Variables.Get(CommonVariableNames.WriteLogEventsToFile, true) == true) {
+            if (this.Shared.Variables.Get(CommonVariableNames.WriteLogEventsToFile, false) == true) {
                 foreach (var eventHourlyGroup in events.GroupBy(e => new DateTime(e.Stamp.Year, e.Stamp.Month, e.Stamp.Day, e.Stamp.Hour, 0, 0))) {
                     String logFileName = this.EventsLogFileName(eventHourlyGroup.Key);
 

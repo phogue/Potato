@@ -101,6 +101,7 @@ namespace Procon.Core.Test.Events {
             var roundedThenHour = new DateTime(then.Year, then.Month, then.Day, then.Hour, 0, 0);
 
             var events = new EventsController();
+            events.Shared.Variables.Tunnel(CommandBuilder.VariablesSet(CommonVariableNames.WriteLogEventsToFile, true.ToString()).SetOrigin(CommandOrigin.Local));
 
             events.Log(new GenericEvent() {
                 Success = true,
@@ -142,6 +143,7 @@ namespace Procon.Core.Test.Events {
             var roundedThenHour = new DateTime(then.Year, then.Month, then.Day, then.Hour, 0, 0);
 
             var events = new EventsController();
+            events.Shared.Variables.Tunnel(CommandBuilder.VariablesSet(CommonVariableNames.WriteLogEventsToFile, true.ToString()).SetOrigin(CommandOrigin.Local));
 
             events.Log(new GenericEvent() {
                 Success = true,
@@ -183,6 +185,7 @@ namespace Procon.Core.Test.Events {
             var roundedThenHour = new DateTime(then.Year, then.Month, then.Day, then.Hour, 0, 0);
 
             var events = new EventsController();
+            events.Shared.Variables.Tunnel(CommandBuilder.VariablesSet(CommonVariableNames.WriteLogEventsToFile, true.ToString()).SetOrigin(CommandOrigin.Local));
 
             events.Log(new GenericEvent() {
                 Success = true,

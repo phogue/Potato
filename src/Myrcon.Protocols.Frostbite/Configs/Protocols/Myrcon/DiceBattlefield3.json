@@ -1835,7 +1835,7 @@
                 "Name": "Domination0"
             }
         },
-         {
+        {
             "Index": "0",
             "Rounds": "2",
             "Name": "XP2_Factory",
@@ -2502,7 +2502,515 @@
             "GameMode": {
                 "Name": "TankSuperiority0"
             }
-        },           
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP4_FD",
+            "FriendlyName": "Markaz Monolith",
+            "GameMode": {
+                "Name": "ConquestLarge0"
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP4_Parl",
+            "FriendlyName": "Azadi Palace",
+            "GameMode": {
+                "Name": "ConquestLarge0"
+            }
+        },   
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP4_Quake",
+            "FriendlyName": "Epicenter",
+            "GameMode": {
+                "Name": "ConquestLarge0"
+            }
+        }, 
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP4_FD",
+            "FriendlyName": "Markaz Monolith",
+            "GameMode": {
+                "Name": "ConquestSmall0"
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP4_Parl",
+            "FriendlyName": "Azadi Palace",
+            "GameMode": {
+                "Name": "ConquestSmall0"
+            }
+        },   
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP4_Quake",
+            "FriendlyName": "Epicenter",
+            "GameMode": {
+                "Name": "ConquestSmall0"
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP4_Rubble",
+            "FriendlyName": "Epicenter",
+            "GameMode": {
+                "Name": "ConquestAssualtLarge0"
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP4_Rubble",
+            "FriendlyName": "Epicenter",
+            "GameMode": {
+                "Name": "ConquestAssualtSmall0"
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP4_FD",
+            "FriendlyName": "Markaz Monolith",
+            "GameMode": {
+                "Name": "RushLarge0"
+            },
+            "Groups": [
+                {
+                    "Uid": "1",
+                    "Type": "Team",
+                    "FriendlyName": "Attacker"
+                },
+                {
+                    "Uid": "2",
+                    "Type": "Team",
+                    "FriendlyName": "Defender"
+                }
+            ]
+        }, 
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP4_Parl",
+            "FriendlyName": "Azadi Palace",
+            "GameMode": {
+                "Name": "RushLarge0"
+            },
+            "Groups": [
+                {
+                    "Uid": "1",
+                    "Type": "Team",
+                    "FriendlyName": "Attacker"
+                },
+                {
+                    "Uid": "2",
+                    "Type": "Team",
+                    "FriendlyName": "Defender"
+                }
+            ]
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP4_Quake",
+            "FriendlyName": "Epicenter",
+            "GameMode": {
+                "Name": "RushLarge0"
+            },
+            "Groups": [
+                {
+                    "Uid": "1",
+                    "Type": "Team",
+                    "FriendlyName": "Attacker"
+                },
+                {
+                    "Uid": "2",
+                    "Type": "Team",
+                    "FriendlyName": "Defender"
+                }
+            ]
+        }, 
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP4_Rubble",
+            "FriendlyName": "Epicenter",
+            "GameMode": {
+                "Name": "RushLarge0"
+            },
+            "Groups": [
+                {
+                    "Uid": "1",
+                    "Type": "Team",
+                    "FriendlyName": "Attacker"
+                },
+                {
+                    "Uid": "2",
+                    "Type": "Team",
+                    "FriendlyName": "Defender"
+                }
+            ]
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP4_FD",
+            "FriendlyName": "Markaz Monolith",
+            "GameMode": {
+                "Name": "SquadDeathMatch0"
+            },
+            "Groups": [
+                {
+                    "Uid": "1",
+                    "Type": "Team",
+                    "FriendlyName": "Alpha"
+                },
+                {
+                    "Uid": "2",
+                    "Type": "Team",
+                    "FriendlyName": "Beta"
+                },
+                {
+                    "Uid": "3",
+                    "Type": "Team",
+                    "FriendlyName": "Charlie"
+                },
+                {
+                    "Uid": "4",
+                    "Type": "Team",
+                    "FriendlyName": "Delta"
+                }
+            ]
+        }, 
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP4_Parl",
+            "FriendlyName": "Azadi Palace",
+            "GameMode": {
+                "Name": "SquadDeathMatch0"
+            },
+            "Groups": [
+                {
+                    "Uid": "1",
+                    "Type": "Team",
+                    "FriendlyName": "Alpha"
+                },
+                {
+                    "Uid": "2",
+                    "Type": "Team",
+                    "FriendlyName": "Beta"
+                },
+                {
+                    "Uid": "3",
+                    "Type": "Team",
+                    "FriendlyName": "Charlie"
+                },
+                {
+                    "Uid": "4",
+                    "Type": "Team",
+                    "FriendlyName": "Delta"
+                }
+            ]
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP4_Quake",
+            "FriendlyName": "Epicenter",
+            "GameMode": {
+                "Name": "SquadDeathMatch0"
+            },
+            "Groups": [
+                {
+                    "Uid": "1",
+                    "Type": "Team",
+                    "FriendlyName": "Alpha"
+                },
+                {
+                    "Uid": "2",
+                    "Type": "Team",
+                    "FriendlyName": "Beta"
+                },
+                {
+                    "Uid": "3",
+                    "Type": "Team",
+                    "FriendlyName": "Charlie"
+                },
+                {
+                    "Uid": "4",
+                    "Type": "Team",
+                    "FriendlyName": "Delta"
+                }
+            ]
+        }, 
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP4_Rubble",
+            "FriendlyName": "Epicenter",
+            "GameMode": {
+                "Name": "SquadDeathMatch0"
+            },
+            "Groups": [
+                {
+                    "Uid": "1",
+                    "Type": "Team",
+                    "FriendlyName": "Alpha"
+                },
+                {
+                    "Uid": "2",
+                    "Type": "Team",
+                    "FriendlyName": "Beta"
+                },
+                {
+                    "Uid": "3",
+                    "Type": "Team",
+                    "FriendlyName": "Charlie"
+                },
+                {
+                    "Uid": "4",
+                    "Type": "Team",
+                    "FriendlyName": "Delta"
+                }
+            ]
+        },         
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP4_FD",
+            "FriendlyName": "Markaz Monolith",
+            "GameMode": {
+                "Name": "SquadRush0"
+            },
+            "Groups": [
+                {
+                    "Uid": "1",
+                    "Type": "Team",
+                    "FriendlyName": "Attacker"
+                },
+                {
+                    "Uid": "2",
+                    "Type": "Team",
+                    "FriendlyName": "Defender"
+                }
+            ]
+        }, 
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP4_Parl",
+            "FriendlyName": "Azadi Palace",
+            "GameMode": {
+                "Name": "SquadRush0"
+            },
+            "Groups": [
+                {
+                    "Uid": "1",
+                    "Type": "Team",
+                    "FriendlyName": "Attacker"
+                },
+                {
+                    "Uid": "2",
+                    "Type": "Team",
+                    "FriendlyName": "Defender"
+                }
+            ]
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP4_Quake",
+            "FriendlyName": "Epicenter",
+            "GameMode": {
+                "Name": "SquadRush0"
+            },
+            "Groups": [
+                {
+                    "Uid": "1",
+                    "Type": "Team",
+                    "FriendlyName": "Attacker"
+                },
+                {
+                    "Uid": "2",
+                    "Type": "Team",
+                    "FriendlyName": "Defender"
+                }
+            ]
+        }, 
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP4_Rubble",
+            "FriendlyName": "Epicenter",
+            "GameMode": {
+                "Name": "SquadRush0"
+            },
+            "Groups": [
+                {
+                    "Uid": "1",
+                    "Type": "Team",
+                    "FriendlyName": "Attacker"
+                },
+                {
+                    "Uid": "2",
+                    "Type": "Team",
+                    "FriendlyName": "Defender"
+                }
+            ]
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP4_FD",
+            "FriendlyName": "Markaz Monolith",
+            "GameMode": {
+                "Name": "TeamDeathMatch0"
+            }
+        }, 
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP4_Parl",
+            "FriendlyName": "Azadi Palace",
+            "GameMode": {
+                "Name": "TeamDeathMatch0"
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP4_Quake",
+            "FriendlyName": "Epicenter",
+            "GameMode": {
+                "Name": "TeamDeathMatch0"
+            }
+        }, 
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP4_Rubble",
+            "FriendlyName": "Epicenter",
+            "GameMode": {
+                "Name": "TeamDeathMatch0"
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP4_FD",
+            "FriendlyName": "Markaz Monolith",
+            "GameMode": {
+                "Name": "TeamDeathMatchC0"
+            }
+        }, 
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP4_Parl",
+            "FriendlyName": "Azadi Palace",
+            "GameMode": {
+                "Name": "TeamDeathMatchC0"
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP4_Quake",
+            "FriendlyName": "Epicenter",
+            "GameMode": {
+                "Name": "TeamDeathMatchC0"
+            }
+        }, 
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP4_Rubble",
+            "FriendlyName": "Epicenter",
+            "GameMode": {
+                "Name": "TeamDeathMatchC0"
+            }
+        }, 
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP4_FD",
+            "FriendlyName": "Markaz Monolith",
+            "GameMode": {
+                "Name": "GunMaster0"
+            }
+        }, 
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP4_Parl",
+            "FriendlyName": "Azadi Palace",
+            "GameMode": {
+                "Name": "GunMaster0"
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP4_Quake",
+            "FriendlyName": "Epicenter",
+            "GameMode": {
+                "Name": "GunMaster0"
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP4_Rubble",
+            "FriendlyName": "Epicenter",
+            "GameMode": {
+                "Name": "GunMaster0"
+            }
+        }, 
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP4_FD",
+            "FriendlyName": "Markaz Monolith",
+            "GameMode": {
+                "Name": "Scavenger0"
+            }
+        }, 
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP4_Parl",
+            "FriendlyName": "Azadi Palace",
+            "GameMode": {
+                "Name": "Scavenger0"
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP4_Quake",
+            "FriendlyName": "Epicenter",
+            "GameMode": {
+                "Name": "Scavenger0"
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP4_Rubble",
+            "FriendlyName": "Epicenter",
+            "GameMode": {
+                "Name": "Scavenger0"
+            }
+        },          
         
     ],
     "Items": [

@@ -253,14 +253,18 @@ namespace Procon.Core.Packages {
         ///     <para>This method can potentially be time consuming and should be run in a new thread.</para>
         /// </remarks>
         public override void Poke() {
-            this.Cache.Build(this.LocalRepository);
+            if (this.Cache != null) {
+                lock (this.Cache) {
+                    this.Cache.Build(this.LocalRepository);
 
-            this.Shared.Events.Log(new GenericEvent() {
-                GenericEventType = GenericEventType.PackagesCacheRebuilt,
-                Now = {
-                    Repositories = new List<RepositoryModel>(this.Cache.Repositories)
+                    this.Shared.Events.Log(new GenericEvent() {
+                        GenericEventType = GenericEventType.PackagesCacheRebuilt,
+                        Now = {
+                            Repositories = new List<RepositoryModel>(this.Cache.Repositories)
+                        }
+                    });
                 }
-            });
+            }
         }
 
         /// <summary>
@@ -313,8 +317,10 @@ namespace Procon.Core.Packages {
             this.UnassignEvents();
             this.GroupedVariableListener = null;
 
-            this.Cache.Clear();
-            this.Cache = null;
+            lock (this.Cache) {
+                this.Cache.Clear();
+                this.Cache = null;
+            }
 
             this.LocalRepository = null;
 

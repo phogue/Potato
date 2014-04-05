@@ -51,6 +51,11 @@ namespace Procon.Service.Shared {
         public Timer Polling { get; set; }
 
         /// <summary>
+        /// WriteConfig handler to periodically write the config to disk, just in case of unexpected outage.
+        /// </summary>
+        public Timer WriteConfig { get; set; }
+
+        /// <summary>
         /// The type to load as a service proxy (must implement IServiceLoaderProxy)
         /// </summary>
         public Type ServiceLoaderProxyType { get; set; }
@@ -126,6 +131,8 @@ namespace Procon.Service.Shared {
             };
 
             this.Polling = new Timer(Polling_Tick, this, TimeSpan.FromSeconds(10), TimeSpan.FromSeconds(10));
+
+            this.WriteConfig = new Timer(WriteConfig_Tick, this, TimeSpan.FromMinutes(10), TimeSpan.FromMinutes(10));
 
             this.ServiceLoaderProxyType = typeof(ServiceLoaderProxy);
 
@@ -324,6 +331,15 @@ namespace Procon.Service.Shared {
                 if (pollingTimeoutEvent.WaitOne(this.Settings.ServicePollingTimeout) == false || this.SignalMessage(message) == false) {
                     this.Restart();
                 }
+            }
+        }
+
+        /// <summary>
+        /// Fired every 10 minutes to write the current config to disk.
+        /// </summary>
+        public void WriteConfig_Tick(object state) {
+            if (this.Observer.Status == ServiceStatusType.Started && this.ServiceLoaderProxy != null) {
+                this.WriteServiceConfig();
             }
         }
 
@@ -617,6 +633,7 @@ namespace Procon.Service.Shared {
             this.Stop();
 
             this.Polling.Dispose();
+            this.WriteConfig.Dispose();
         }
     }
 }

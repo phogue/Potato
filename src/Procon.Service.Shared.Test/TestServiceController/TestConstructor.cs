@@ -25,6 +25,7 @@ namespace Procon.Service.Shared.Test.TestServiceController {
 
             Assert.IsNotNull(service.Observer);
             Assert.IsNotNull(service.Polling);
+            Assert.IsNotNull(service.WriteConfig);
             Assert.IsNotNull(service.Arguments);
             Assert.IsNotNull(service.Settings);
             Assert.IsNotNull(service.Packages);

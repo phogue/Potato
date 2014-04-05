@@ -384,13 +384,19 @@ namespace Myrcon.Protocols.Frostbite {
                 this.State.Settings.Current.ModNameText = info.GameMod.ToString();
 
                 if (this.State.MapPool.Count == 0) {
+                    ProtocolConfigModel config = null;
+
                     if (info.GameMod == GameMods.None) {
-                        ProtocolConfigLoader.Load<ProtocolConfigModel>(this.ProtocolsConfigDirectory, this.ProtocolType).Parse(this);
+                        config = ProtocolConfigLoader.Load<ProtocolConfigModel>(this.ProtocolsConfigDirectory, this.ProtocolType);
                     }
                     else {
-                        ProtocolConfigLoader.Load<ProtocolConfigModel>(this.ProtocolsConfigDirectory, new ProtocolType(this.ProtocolType) {
+                        config = ProtocolConfigLoader.Load<ProtocolConfigModel>(this.ProtocolsConfigDirectory, new ProtocolType(this.ProtocolType) {
                             Type = String.Format("{0}_{1}", this.ProtocolType, info.GameMod)
-                        }).Parse(this);
+                        });
+                    }
+
+                    if (config != null) {
+                        config.Parse(this);
                     }
 
                     this.OnGameEvent(ProtocolEventType.ProtocolConfigExecuted);

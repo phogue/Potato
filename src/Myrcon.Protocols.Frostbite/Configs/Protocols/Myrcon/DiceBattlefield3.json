@@ -1339,15 +1339,6 @@
         {
             "Index": "0",
             "Rounds": "2",
-            "Name": "XP1_001",
-            "FriendlyName": "Strike at Karkand",
-            "GameMode": {
-                "Name": "ConquestLarge0"
-            }
-        },
-        {
-            "Index": "0",
-            "Rounds": "2",
             "Name": "XP1_002",
             "FriendlyName": "Gulf of Oman",
             "GameMode": {
@@ -1357,53 +1348,8 @@
         {
             "Index": "0",
             "Rounds": "2",
-            "Name": "XP1_003",
-            "FriendlyName": "Sharqi Peninsula",
-            "GameMode": {
-                "Name": "ConquestLarge0"
-            }
-        },  
-        {
-            "Index": "0",
-            "Rounds": "2",
-            "Name": "XP1_004",
-            "FriendlyName": "Wake Island",
-            "GameMode": {
-                "Name": "ConquestLarge0"
-            }
-        }, 
-        {
-            "Index": "0",
-            "Rounds": "2",
-            "Name": "XP1_001",
-            "FriendlyName": "Strike at Karkand",
-            "GameMode": {
-                "Name": "ConquestSmall0"
-            }
-        },
-        {
-            "Index": "0",
-            "Rounds": "2",
             "Name": "XP1_002",
             "FriendlyName": "Gulf of Oman",
-            "GameMode": {
-                "Name": "ConquestSmall0"
-            }
-        },  
-        {
-            "Index": "0",
-            "Rounds": "2",
-            "Name": "XP1_003",
-            "FriendlyName": "Sharqi Peninsula",
-            "GameMode": {
-                "Name": "ConquestSmall0"
-            }
-        },  
-        {
-            "Index": "0",
-            "Rounds": "2",
-            "Name": "XP1_004",
-            "FriendlyName": "Wake Island",
             "GameMode": {
                 "Name": "ConquestSmall0"
             }
@@ -1417,15 +1363,6 @@
                 "Name": "ConquestAssaultLarge0""
             }
         },
-        {
-            "Index": "0",
-            "Rounds": "2",
-            "Name": "XP1_002",
-            "FriendlyName": "Gulf of Oman",
-            "GameMode": {
-                "Name": "ConquestAssaultLarge0""
-            }
-        },  
         {
             "Index": "0",
             "Rounds": "2",
@@ -1453,15 +1390,6 @@
                 "Name": "ConquestAssaultSmall0""
             }
         },
-        {
-            "Index": "0",
-            "Rounds": "2",
-            "Name": "XP1_002",
-            "FriendlyName": "Gulf of Oman",
-            "GameMode": {
-                "Name": "ConquestAssaultSmall0""
-            }
-        },  
         {
             "Index": "0",
             "Rounds": "2",
@@ -1489,15 +1417,6 @@
                 "Name": "ConquestAssaultSmall1""
             }
         },
-        {
-            "Index": "0",
-            "Rounds": "2",
-            "Name": "XP1_002",
-            "FriendlyName": "Gulf of Oman",
-            "GameMode": {
-                "Name": "ConquestAssaultSmall1""
-            }
-        },  
         {
             "Index": "0",
             "Rounds": "2",

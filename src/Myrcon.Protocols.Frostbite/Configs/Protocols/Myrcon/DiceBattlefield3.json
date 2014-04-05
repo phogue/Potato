@@ -1,0 +1,587 @@
+﻿{
+    "Groups": [
+        {
+            "Uid": "1",
+            "Type": "Team",
+            "FriendlyName": "US Army"
+        },
+        {
+            "Uid": "2",
+            "Type": "Team",
+            "FriendlyName": "Russian Army"
+        },
+        {
+            "Uid": "0",
+            "Type": "Squad",
+            "FriendlyName": "None"
+        },
+        {
+            "Uid": "1",
+            "Type": "Squad",
+            "FriendlyName": "Alpha"
+        },
+        {
+            "Uid": "2",
+            "Type": "Squad",
+            "FriendlyName": "Bravo"
+        },
+        {
+            "Uid": "3",
+            "Type": "Squad",
+            "FriendlyName": "Charlie"
+        },
+        {
+            "Uid": "4",
+            "Type": "Squad",
+            "FriendlyName": "Delta"
+        },
+        {
+            "Uid": "5",
+            "Type": "Squad",
+            "FriendlyName": "Echo"
+        },
+        {
+            "Uid": "6",
+            "Type": "Squad",
+            "FriendlyName": "Foxtrot"
+        },
+        {
+            "Uid": "7",
+            "Type": "Squad",
+            "FriendlyName": "Golf"
+        },
+        {
+            "Uid": "8",
+            "Type": "Squad",
+            "FriendlyName": "Hotel"
+        },
+        {
+            "Uid": "9",
+            "Type": "Squad",
+            "FriendlyName": "India"
+        },
+        {
+            "Uid": "10",
+            "Type": "Squad",
+            "FriendlyName": "Juliet"
+        },
+        {
+            "Uid": "11",
+            "Type": "Squad",
+            "FriendlyName": "Kilo"
+        },
+        {
+            "Uid": "12",
+            "Type": "Squad",
+            "FriendlyName": "Lima"
+        },
+        {
+            "Uid": "13",
+            "Type": "Squad",
+            "FriendlyName": "Mike"
+        },
+        {
+            "Uid": "14",
+            "Type": "Squad",
+            "FriendlyName": "November"
+        },
+        {
+            "Uid": "15",
+            "Type": "Squad",
+            "FriendlyName": "Oscar"
+        },
+        {
+            "Uid": "16",
+            "Type": "Squad",
+            "FriendlyName": "Papa"
+        },
+        {
+            "Uid": "17",
+            "Type": "Squad",
+            "FriendlyName": "Quebec"
+        },
+        {
+            "Uid": "18",
+            "Type": "Squad",
+            "FriendlyName": "Romeo"
+        },
+        {
+            "Uid": "19",
+            "Type": "Squad",
+            "FriendlyName": "Sierra"
+        },
+        {
+            "Uid": "20",
+            "Type": "Squad",
+            "FriendlyName": "Tango"
+        },
+        {
+            "Uid": "21",
+            "Type": "Squad",
+            "FriendlyName": "Uniform"
+        },
+        {
+            "Uid": "22",
+            "Type": "Squad",
+            "FriendlyName": "Victor"
+        },
+        {
+            "Uid": "23",
+            "Type": "Squad",
+            "FriendlyName": "Whiskey"
+        },
+        {
+            "Uid": "24",
+            "Type": "Squad",
+            "FriendlyName": "Xray"
+        },
+        {
+            "Uid": "25",
+            "Type": "Squad",
+            "FriendlyName": "Yankee"
+        },
+        {
+            "Uid": "26",
+            "Type": "Squad",
+            "FriendlyName": "Zulu"
+        },
+        {
+            "Uid": "27",
+            "Type": "Squad",
+            "FriendlyName": "Haggard"
+        },
+        {
+            "Uid": "28",
+            "Type": "Squad",
+            "FriendlyName": "Sweetwater"
+        },
+        {
+            "Uid": "29",
+            "Type": "Squad",
+            "FriendlyName": "Preston"
+        },
+        {
+            "Uid": "30",
+            "Type": "Squad",
+            "FriendlyName": "Redford"
+        },
+        {
+            "Uid": "31",
+            "Type": "Squad",
+            "FriendlyName": "Faith"
+        },
+        {
+            "Uid": "32",
+            "Type": "Squad",
+            "FriendlyName": "Celeste"
+        }
+    ],
+    "GameModes": [
+        {
+            "Name": "ConquestLarge0",
+            "FriendlyName": "Conquest Large",
+            "TeamCount": "2",
+            "DefaultGroups": [
+                {
+                    "Uid": "0",
+                    "Type": "Squad"
+                }
+            ]
+        },
+        {
+            "Name": "ConquestSmall0",
+            "FriendlyName": "Conquest Small",
+            "TeamCount": "2",
+            "DefaultGroups": [
+                {
+                    "Uid": "0",
+                    "Type": "Squad"
+                }
+            ]
+        },
+        {
+            "Name": "Domination0",
+            "FriendlyName": "Domination",
+            "TeamCount": "2",
+            "DefaultGroups": [
+                {
+                    "Uid": "0",
+                    "Type": "Squad"
+                }
+            ]
+        },
+        {
+            "Name": "RushLarge0",
+            "FriendlyName": "Rush",
+            "TeamCount": "2",
+            "DefaultGroups": [
+                {
+                    "Uid": "0",
+                    "Type": "Squad"
+                }
+            ]
+        },
+        {
+            "Name": "SquadDeathMatch0",
+            "FriendlyName": "Squad Deathmatch",
+            "TeamCount": "4",
+            "DefaultGroups": [
+                {
+                    "Uid": "0",
+                    "Type": "Squad"
+                }
+            ]
+        },
+        {
+            "Name": "TeamDeathMatch0",
+            "FriendlyName": "Team Deathmatch",
+            "TeamCount": "2",
+            "DefaultGroups": [
+                {
+                    "Uid": "0",
+                    "Type": "Squad"
+                }
+            ]
+        },
+        {
+            "Name": "AirSuperiority0",
+            "FriendlyName": "Air Superiority",
+            "TeamCount": "2",
+            "DefaultGroups": [
+                {
+                    "Uid": "0",
+                    "Type": "Squad"
+                }
+            ]
+        },
+        {
+            "Name": "CaptureTheFlag0",
+            "FriendlyName": "Capture The Flag",
+            "TeamCount": "2",
+            "DefaultGroups": [
+                {
+                    "Uid": "0",
+                    "Type": "Squad"
+                }
+            ]
+        }
+    ],
+    "MapPool": [
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "MP_001",
+            "FriendlyName": "Grand Bazaar",
+            "GameMode": {
+                "Name": "ConquestLarge0"
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "MP_003",
+            "FriendlyName": "Teheran Highway",
+            "GameMode": {
+                "Name": "ConquestLarge0"
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "MP_007",
+            "FriendlyName": "Caspian Border",
+            "GameMode": {
+                "Name": "ConquestLarge0"
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "MP_011",
+            "FriendlyName": "Seine Crossing",
+            "GameMode": {
+                "Name": "ConquestLarge0"
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "MP_012",
+            "FriendlyName": "Operation Firestorm",
+            "GameMode": {
+                "Name": "ConquestLarge0"
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "MP_013",
+            "FriendlyName": "Damavand Peak",
+            "GameMode": {
+                "Name": "ConquestLarge0"
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "MP_017",
+            "FriendlyName": "Noshahr Canals",
+            "GameMode": {
+                "Name": "ConquestLarge0"
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "MP_018",
+            "FriendlyName": "Kharg Island",
+            "GameMode": {
+                "Name": "ConquestLarge0"
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "MP_001",
+            "FriendlyName": "Grand Bazaar",
+            "GameMode": {
+                "Name": "ConquestSmall0"
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "MP_003",
+            "FriendlyName": "Teheran Highway",
+            "GameMode": {
+                "Name": "ConquestSmall0"
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "MP_007",
+            "FriendlyName": "Caspian Border",
+            "GameMode": {
+                "Name": "ConquestSmall0"
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "MP_011",
+            "FriendlyName": "Seine Crossing",
+            "GameMode": {
+                "Name": "ConquestSmall0"
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "MP_012",
+            "FriendlyName": "Operation Firestorm",
+            "GameMode": {
+                "Name": "ConquestSmall0"
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "MP_013",
+            "FriendlyName": "Damavand Peak",
+            "GameMode": {
+                "Name": "ConquestSmall0"
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "MP_017",
+            "FriendlyName": "Noshahr Canals",
+            "GameMode": {
+                "Name": "ConquestSmall0"
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "MP_018",
+            "FriendlyName": "Kharg Island",
+            "GameMode": {
+                "Name": "ConquestSmall0"
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "MP_001",
+            "FriendlyName": "Grand Bazaar",
+            "GameMode": {
+                "Name": "RushLarge0"
+            },
+            "Groups": [
+                {
+                    "Uid": "1",
+                    "Type": "Team",
+                    "FriendlyName": "Attacker"
+                },
+                {
+                    "Uid": "2",
+                    "Type": "Team",
+                    "FriendlyName": "Defender"
+                }
+            ]
+        }, 
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "MP_003",
+            "FriendlyName": "Teheran Highway",
+            "GameMode": {
+                "Name": "RushLarge0"
+            },
+            "Groups": [
+                {
+                    "Uid": "1",
+                    "Type": "Team",
+                    "FriendlyName": "Attacker"
+                },
+                {
+                    "Uid": "2",
+                    "Type": "Team",
+                    "FriendlyName": "Defender"
+                }
+            ]
+        }, 
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "MP_007",
+            "FriendlyName": "Caspian Border",
+            "GameMode": {
+                "Name": "RushLarge0"
+            },
+            "Groups": [
+                {
+                    "Uid": "1",
+                    "Type": "Team",
+                    "FriendlyName": "Attacker"
+                },
+                {
+                    "Uid": "2",
+                    "Type": "Team",
+                    "FriendlyName": "Defender"
+                }
+            ]
+        }, 
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "MP_011",
+            "FriendlyName": "Seine Crossing",
+            "GameMode": {
+                "Name": "RushLarge0"
+            },
+            "Groups": [
+                {
+                    "Uid": "1",
+                    "Type": "Team",
+                    "FriendlyName": "Attacker"
+                },
+                {
+                    "Uid": "2",
+                    "Type": "Team",
+                    "FriendlyName": "Defender"
+                }
+            ]
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "MP_012",
+            "FriendlyName": "Operation Firestorm",
+            "GameMode": {
+                "Name": "RushLarge0"
+            },
+            "Groups": [
+                {
+                    "Uid": "1",
+                    "Type": "Team",
+                    "FriendlyName": "Attacker"
+                },
+                {
+                    "Uid": "2",
+                    "Type": "Team",
+                    "FriendlyName": "Defender"
+                }
+            ]
+        }, 
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "MP_013",
+            "FriendlyName": "Damavand Peak",
+            "GameMode": {
+                "Name": "RushLarge0"
+            },
+            "Groups": [
+                {
+                    "Uid": "1",
+                    "Type": "Team",
+                    "FriendlyName": "Attacker"
+                },
+                {
+                    "Uid": "2",
+                    "Type": "Team",
+                    "FriendlyName": "Defender"
+                }
+            ]
+        }, 
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "MP_017",
+            "FriendlyName": "Noshahr Canals",
+            "GameMode": {
+                "Name": "RushLarge0"
+            },
+            "Groups": [
+                {
+                    "Uid": "1",
+                    "Type": "Team",
+                    "FriendlyName": "Attacker"
+                },
+                {
+                    "Uid": "2",
+                    "Type": "Team",
+                    "FriendlyName": "Defender"
+                }
+            ]
+        }, 
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "MP_018",
+            "FriendlyName": "Kharg Island",
+            "GameMode": {
+                "Name": "RushLarge0"
+            },
+            "Groups": [
+                {
+                    "Uid": "1",
+                    "Type": "Team",
+                    "FriendlyName": "Attacker"
+                },
+                {
+                    "Uid": "2",
+                    "Type": "Team",
+                    "FriendlyName": "Defender"
+                }
+            ]
+        },        
+ 
+
+    ],
+    "Items": [
+    ]
+}

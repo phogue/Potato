@@ -209,7 +209,7 @@
                     "Type": "Squad"
                 }
             ]
-        }, 
+        },
         {
             "Name": "ConquestAssaultSmall0",
             "FriendlyName": "Conquest Assault",
@@ -220,7 +220,7 @@
                     "Type": "Squad"
                 }
             ]
-        }, 
+        },
         {
             "Name": "ConquestAssaultSmall1",
             "FriendlyName": "Conquest Assault #2",
@@ -231,7 +231,7 @@
                     "Type": "Squad"
                 }
             ]
-        },        
+        },
         {
             "Name": "Domination0",
             "FriendlyName": "Domination",
@@ -275,7 +275,7 @@
                     "Type": "Squad"
                 }
             ]
-        },        
+        },
         {
             "Name": "TeamDeathMatch0",
             "FriendlyName": "Team Deathmatch",
@@ -308,7 +308,7 @@
                     "Type": "Squad"
                 }
             ]
-        },        
+        },
         {
             "Name": "AirSuperiority0",
             "FriendlyName": "Air Superiority",
@@ -330,7 +330,7 @@
                     "Type": "Squad"
                 }
             ]
-        },        
+        },
         {
             "Name": "CaptureTheFlag0",
             "FriendlyName": "Capture The Flag",
@@ -352,7 +352,7 @@
                     "Type": "Squad"
                 }
             ]
-        }        
+        }
     ],
     "MapPool": [
         {
@@ -435,7 +435,7 @@
             "GameMode": {
                 "Name": "ConquestLarge0"
             }
-        },        
+        },
         {
             "Index": "0",
             "Rounds": "2",
@@ -516,7 +516,7 @@
             "GameMode": {
                 "Name": "ConquestSmall0"
             }
-        },        
+        },
         {
             "Index": "0",
             "Rounds": "2",
@@ -537,7 +537,7 @@
                     "FriendlyName": "Defender"
                 }
             ]
-        }, 
+        },
         {
             "Index": "0",
             "Rounds": "2",
@@ -558,7 +558,7 @@
                     "FriendlyName": "Defender"
                 }
             ]
-        }, 
+        },
         {
             "Index": "0",
             "Rounds": "2",
@@ -579,7 +579,7 @@
                     "FriendlyName": "Defender"
                 }
             ]
-        }, 
+        },
         {
             "Index": "0",
             "Rounds": "2",
@@ -621,7 +621,7 @@
                     "FriendlyName": "Defender"
                 }
             ]
-        }, 
+        },
         {
             "Index": "0",
             "Rounds": "2",
@@ -642,7 +642,7 @@
                     "FriendlyName": "Defender"
                 }
             ]
-        }, 
+        },
         {
             "Index": "0",
             "Rounds": "2",
@@ -663,7 +663,7 @@
                     "FriendlyName": "Defender"
                 }
             ]
-        }, 
+        },
         {
             "Index": "0",
             "Rounds": "2",
@@ -736,7 +736,7 @@
                     "FriendlyName": "Delta"
                 }
             ]
-        }, 
+        },
         {
             "Index": "0",
             "Rounds": "2",
@@ -860,7 +860,7 @@
                     "FriendlyName": "Delta"
                 }
             ]
-        }, 
+        },
         {
             "Index": "0",
             "Rounds": "2",
@@ -922,7 +922,7 @@
                     "FriendlyName": "Delta"
                 }
             ]
-        }, 
+        },
         {
             "Index": "0",
             "Rounds": "2",
@@ -953,7 +953,7 @@
                     "FriendlyName": "Delta"
                 }
             ]
-        },  
+        },
         {
             "Index": "0",
             "Rounds": "2",
@@ -984,7 +984,7 @@
                     "FriendlyName": "Delta"
                 }
             ]
-        }, 
+        },
         {
             "Index": "0",
             "Rounds": "2",
@@ -1005,7 +1005,7 @@
                     "FriendlyName": "Defender"
                 }
             ]
-        }, 
+        },
         {
             "Index": "0",
             "Rounds": "2",
@@ -1026,7 +1026,7 @@
                     "FriendlyName": "Defender"
                 }
             ]
-        },  
+        },
         {
             "Index": "0",
             "Rounds": "2",
@@ -1047,7 +1047,7 @@
                     "FriendlyName": "Defender"
                 }
             ]
-        }, 
+        },
         {
             "Index": "0",
             "Rounds": "2",
@@ -1068,7 +1068,7 @@
                     "FriendlyName": "Defender"
                 }
             ]
-        }, 
+        },
         {
             "Index": "0",
             "Rounds": "2",
@@ -1110,7 +1110,7 @@
                     "FriendlyName": "Defender"
                 }
             ]
-        }, 
+        },
         {
             "Index": "0",
             "Rounds": "2",
@@ -1152,7 +1152,7 @@
                     "FriendlyName": "Defender"
                 }
             ]
-        },  
+        },
         {
             "Index": "0",
             "Rounds": "2",
@@ -1173,7 +1173,7 @@
                     "FriendlyName": "Defender"
                 }
             ]
-        },         
+        },
         {
             "Index": "0",
             "Rounds": "2",
@@ -1218,7 +1218,7 @@
             "GameMode": {
                 "Name": "TeamDeathMatch0"
             }
-        },  
+        },
         {
             "Index": "0",
             "Rounds": "2",
@@ -1227,7 +1227,7 @@
             "GameMode": {
                 "Name": "TeamDeathMatch0"
             }
-        }, 
+        },
         {
             "Index": "0",
             "Rounds": "2",
@@ -1236,7 +1236,7 @@
             "GameMode": {
                 "Name": "TeamDeathMatch0"
             }
-        }, 
+        },
         {
             "Index": "0",
             "Rounds": "2",
@@ -1299,7 +1299,7 @@
             "GameMode": {
                 "Name": "TeamDeathMatchC0"
             }
-        },  
+        },
         {
             "Index": "0",
             "Rounds": "2",
@@ -1308,7 +1308,7 @@
             "GameMode": {
                 "Name": "TeamDeathMatchC0"
             }
-        }, 
+        },
         {
             "Index": "0",
             "Rounds": "2",
@@ -1317,7 +1317,7 @@
             "GameMode": {
                 "Name": "TeamDeathMatchC0"
             }
-        }, 
+        },
         {
             "Index": "0",
             "Rounds": "2",
@@ -1335,7 +1335,7 @@
             "GameMode": {
                 "Name": "TeamDeathMatchC0"
             }
-        },        
+        },
         {
             "Index": "0",
             "Rounds": "2",
@@ -1344,7 +1344,7 @@
             "GameMode": {
                 "Name": "ConquestLarge0"
             }
-        },  
+        },
         {
             "Index": "0",
             "Rounds": "2",
@@ -1353,14 +1353,14 @@
             "GameMode": {
                 "Name": "ConquestSmall0"
             }
-        },  
+        },
         {
             "Index": "0",
             "Rounds": "2",
             "Name": "XP1_001",
             "FriendlyName": "Strike at Karkand",
             "GameMode": {
-                "Name": "ConquestAssaultLarge0""
+                "Name": "ConquestAssaultLarge0"
             }
         },
         {
@@ -1369,16 +1369,16 @@
             "Name": "XP1_003",
             "FriendlyName": "Sharqi Peninsula",
             "GameMode": {
-                "Name": "ConquestAssaultLarge0""
+                "Name": "ConquestAssaultLarge0"
             }
-        },  
+        },
         {
             "Index": "0",
             "Rounds": "2",
             "Name": "XP1_004",
             "FriendlyName": "Wake Island",
             "GameMode": {
-                "Name": "ConquestAssaultLarge0""
+                "Name": "ConquestAssaultLarge0"
             }
         },
         {
@@ -1387,7 +1387,7 @@
             "Name": "XP1_001",
             "FriendlyName": "Strike at Karkand",
             "GameMode": {
-                "Name": "ConquestAssaultSmall0""
+                "Name": "ConquestAssaultSmall0"
             }
         },
         {
@@ -1396,25 +1396,25 @@
             "Name": "XP1_003",
             "FriendlyName": "Sharqi Peninsula",
             "GameMode": {
-                "Name": "ConquestAssaultSmall0""
+                "Name": "ConquestAssaultSmall0"
             }
-        },  
+        },
         {
             "Index": "0",
             "Rounds": "2",
             "Name": "XP1_004",
             "FriendlyName": "Wake Island",
             "GameMode": {
-                "Name": "ConquestAssaultSmall0""
+                "Name": "ConquestAssaultSmall0"
             }
-        }, 
+        },
         {
             "Index": "0",
             "Rounds": "2",
             "Name": "XP1_001",
             "FriendlyName": "Strike at Karkand",
             "GameMode": {
-                "Name": "ConquestAssaultSmall1""
+                "Name": "ConquestAssaultSmall1"
             }
         },
         {
@@ -1423,16 +1423,16 @@
             "Name": "XP1_003",
             "FriendlyName": "Sharqi Peninsula",
             "GameMode": {
-                "Name": "ConquestAssaultSmall1""
+                "Name": "ConquestAssaultSmall1"
             }
-        },  
+        },
         {
             "Index": "0",
             "Rounds": "2",
             "Name": "XP1_004",
             "FriendlyName": "Wake Island",
             "GameMode": {
-                "Name": "ConquestAssaultSmall1""
+                "Name": "ConquestAssaultSmall1"
             }
         },
         {
@@ -1455,7 +1455,7 @@
                     "FriendlyName": "Defender"
                 }
             ]
-        }, 
+        },
         {
             "Index": "0",
             "Rounds": "2",
@@ -1476,7 +1476,7 @@
                     "FriendlyName": "Defender"
                 }
             ]
-        },  
+        },
         {
             "Index": "0",
             "Rounds": "2",
@@ -1497,7 +1497,7 @@
                     "FriendlyName": "Defender"
                 }
             ]
-        },  
+        },
         {
             "Index": "0",
             "Rounds": "2",
@@ -1580,7 +1580,7 @@
                     "FriendlyName": "Delta"
                 }
             ]
-        }, 
+        },
         {
             "Index": "0",
             "Rounds": "2",
@@ -1611,7 +1611,7 @@
                     "FriendlyName": "Delta"
                 }
             ]
-        }, 
+        },
         {
             "Index": "0",
             "Rounds": "2",
@@ -1684,7 +1684,7 @@
                     "FriendlyName": "Defender"
                 }
             ]
-        },  
+        },
         {
             "Index": "0",
             "Rounds": "2",
@@ -1705,7 +1705,7 @@
                     "FriendlyName": "Defender"
                 }
             ]
-        },  
+        },
         {
             "Index": "0",
             "Rounds": "2",
@@ -1726,7 +1726,7 @@
                     "FriendlyName": "Defender"
                 }
             ]
-        },           
+        },
         {
             "Index": "0",
             "Rounds": "2",
@@ -1735,7 +1735,7 @@
             "GameMode": {
                 "Name": "TeamDeathMatch0"
             }
-        }, 
+        },
         {
             "Index": "0",
             "Rounds": "2",
@@ -1744,7 +1744,7 @@
             "GameMode": {
                 "Name": "TeamDeathMatch0"
             }
-        },  
+        },
         {
             "Index": "0",
             "Rounds": "2",
@@ -1762,7 +1762,7 @@
             "GameMode": {
                 "Name": "TeamDeathMatch0"
             }
-        }, 
+        },
         {
             "Index": "0",
             "Rounds": "2",
@@ -1771,7 +1771,7 @@
             "GameMode": {
                 "Name": "TeamDeathMatchC0"
             }
-        }, 
+        },
         {
             "Index": "0",
             "Rounds": "2",
@@ -1780,7 +1780,7 @@
             "GameMode": {
                 "Name": "TeamDeathMatchC0"
             }
-        },  
+        },
         {
             "Index": "0",
             "Rounds": "2",
@@ -1798,7 +1798,7 @@
             "GameMode": {
                 "Name": "TeamDeathMatchC0"
             }
-        }, 
+        },
         {
             "Index": "0",
             "Rounds": "2",
@@ -1807,7 +1807,7 @@
             "GameMode": {
                 "Name": "Domination0"
             }
-        }, 
+        },
         {
             "Index": "0",
             "Rounds": "2",
@@ -1843,7 +1843,7 @@
             "GameMode": {
                 "Name": "GunMaster0"
             }
-        }, 
+        },
         {
             "Index": "0",
             "Rounds": "2",
@@ -1901,7 +1901,7 @@
                     "FriendlyName": "Delta"
                 }
             ]
-        }, 
+        },
         {
             "Index": "0",
             "Rounds": "2",
@@ -1963,7 +1963,7 @@
                     "FriendlyName": "Delta"
                 }
             ]
-        },         
+        },
         {
             "Index": "0",
             "Rounds": "2",
@@ -1994,7 +1994,7 @@
                     "FriendlyName": "Delta"
                 }
             ]
-        }, 
+        },
         {
             "Index": "0",
             "Rounds": "2",
@@ -2003,7 +2003,7 @@
             "GameMode": {
                 "Name": "TeamDeathMatchC0"
             }
-        },  
+        },
         {
             "Index": "0",
             "Rounds": "2",
@@ -2012,7 +2012,7 @@
             "GameMode": {
                 "Name": "TeamDeathMatchC0"
             }
-        },  
+        },
         {
             "Index": "0",
             "Rounds": "2",
@@ -2021,7 +2021,7 @@
             "GameMode": {
                 "Name": "TeamDeathMatchC0"
             }
-        },  
+        },
         {
             "Index": "0",
             "Rounds": "2",
@@ -2039,21 +2039,12 @@
             "GameMode": {
                 "Name": "ConquestLarge0"
             }
-        },        
+        },
         {
             "Index": "0",
             "Rounds": "2",
             "Name": "XP3_Desert",
-            "FriendlyName": "Bandar Desert",            
-            "GameMode": {
-                "Name": "ConquestLarge0"
-            }
-        }, 
-        {
-            "Index": "0",
-            "Rounds": "2",
-            "Name": "XP3_Shield",
-            "FriendlyName": "Armored Shield",
+            "FriendlyName": "Bandar Desert",
             "GameMode": {
                 "Name": "ConquestLarge0"
             }
@@ -2061,21 +2052,30 @@
         {
             "Index": "0",
             "Rounds": "2",
+            "Name": "XP3_Shield",
+            "FriendlyName": "Armored Shield",
+            "GameMode": {
+                "Name": "ConquestLarge0"
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
             "Name": "XP3_Valley",
             "FriendlyName": "Death Valley",
             "GameMode": {
                 "Name": "ConquestLarge0"
             }
-        },          
+        },
         {
             "Index": "0",
             "Rounds": "2",
             "Name": "XP3_Alborz",
-            "FriendlyName": "Alborz Mountains",            
+            "FriendlyName": "Alborz Mountains",
             "GameMode": {
                 "Name": "ConquestSmall0"
             }
-        },        
+        },
         {
             "Index": "0",
             "Rounds": "2",
@@ -2084,7 +2084,7 @@
             "GameMode": {
                 "Name": "ConquestSmall0"
             }
-        }, 
+        },
         {
             "Index": "0",
             "Rounds": "2",
@@ -2102,54 +2102,12 @@
             "GameMode": {
                 "Name": "ConquestSmall0"
             }
-        }, 
+        },
         {
             "Index": "0",
             "Rounds": "2",
             "Name": "XP3_Alborz",
-            "FriendlyName": "Alborz Mountains",    
-            "GameMode": {
-                "Name": "RushLarge0"
-            },
-            "Groups": [
-                {
-                    "Uid": "1",
-                    "Type": "Team",
-                    "FriendlyName": "Attacker"
-                },
-                {
-                    "Uid": "2",
-                    "Type": "Team",
-                    "FriendlyName": "Defender"
-                }
-            ]
-        },          
-        {
-            "Index": "0",
-            "Rounds": "2",
-            "Name": "XP3_Desert",
-            "FriendlyName": "Bandar Desert",
-            "GameMode": {
-                "Name": "RushLarge0"
-            },
-            "Groups": [
-                {
-                    "Uid": "1",
-                    "Type": "Team",
-                    "FriendlyName": "Attacker"
-                },
-                {
-                    "Uid": "2",
-                    "Type": "Team",
-                    "FriendlyName": "Defender"
-                }
-            ]
-        }, 
-        {
-            "Index": "0",
-            "Rounds": "2",
-            "Name": "XP3_Shield",
-            "FriendlyName": "Armored Shield",
+            "FriendlyName": "Alborz Mountains",
             "GameMode": {
                 "Name": "RushLarge0"
             },
@@ -2169,6 +2127,48 @@
         {
             "Index": "0",
             "Rounds": "2",
+            "Name": "XP3_Desert",
+            "FriendlyName": "Bandar Desert",
+            "GameMode": {
+                "Name": "RushLarge0"
+            },
+            "Groups": [
+                {
+                    "Uid": "1",
+                    "Type": "Team",
+                    "FriendlyName": "Attacker"
+                },
+                {
+                    "Uid": "2",
+                    "Type": "Team",
+                    "FriendlyName": "Defender"
+                }
+            ]
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP3_Shield",
+            "FriendlyName": "Armored Shield",
+            "GameMode": {
+                "Name": "RushLarge0"
+            },
+            "Groups": [
+                {
+                    "Uid": "1",
+                    "Type": "Team",
+                    "FriendlyName": "Attacker"
+                },
+                {
+                    "Uid": "2",
+                    "Type": "Team",
+                    "FriendlyName": "Defender"
+                }
+            ]
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
             "Name": "XP3_Valley",
             "FriendlyName": "Death Valley",
             "GameMode": {
@@ -2186,12 +2186,12 @@
                     "FriendlyName": "Defender"
                 }
             ]
-        }, 
+        },
         {
             "Index": "0",
             "Rounds": "2",
             "Name": "XP3_Alborz",
-            "FriendlyName": "Alborz Mountains",     
+            "FriendlyName": "Alborz Mountains",
             "GameMode": {
                 "Name": "SquadDeathMatch0"
             },
@@ -2279,7 +2279,7 @@
                     "FriendlyName": "Delta"
                 }
             ]
-        },   
+        },
         {
             "Index": "0",
             "Rounds": "2",
@@ -2310,12 +2310,12 @@
                     "FriendlyName": "Delta"
                 }
             ]
-        }, 
+        },
         {
             "Index": "0",
             "Rounds": "2",
             "Name": "XP3_Alborz",
-            "FriendlyName": "Alborz Mountains",    
+            "FriendlyName": "Alborz Mountains",
             "GameMode": {
                 "Name": "SquadRush0"
             },
@@ -2373,7 +2373,7 @@
                     "FriendlyName": "Defender"
                 }
             ]
-        }, 
+        },
         {
             "Index": "0",
             "Rounds": "2",
@@ -2394,25 +2394,25 @@
                     "FriendlyName": "Defender"
                 }
             ]
-        }, 
+        },
         {
             "Index": "0",
             "Rounds": "2",
             "Name": "XP3_Alborz",
-            "FriendlyName": "Alborz Mountains",    
+            "FriendlyName": "Alborz Mountains",
             "GameMode": {
                 "Name": "TeamDeathMatch0"
             }
-        },  
+        },
         {
             "Index": "0",
             "Rounds": "2",
             "Name": "XP3_Desert",
-            "FriendlyName": "Bandar Desert", 
+            "FriendlyName": "Bandar Desert",
             "GameMode": {
                 "Name": "TeamDeathMatch0"
             }
-        }, 
+        },
         {
             "Index": "0",
             "Rounds": "2",
@@ -2421,7 +2421,7 @@
             "GameMode": {
                 "Name": "TeamDeathMatch0"
             }
-        }, 
+        },
         {
             "Index": "0",
             "Rounds": "2",
@@ -2431,24 +2431,24 @@
                 "Name": "TeamDeathMatch0"
             }
         },
-        }    
+        {
             "Index": "0",
             "Rounds": "2",
             "Name": "XP3_Alborz",
-            "FriendlyName": "Alborz Mountains",    
+            "FriendlyName": "Alborz Mountains",
             "GameMode": {
                 "Name": "TeamDeathMatchC0"
             }
-        },  
+        },
         {
             "Index": "0",
             "Rounds": "2",
             "Name": "XP3_Desert",
-            "FriendlyName": "Bandar Desert", 
+            "FriendlyName": "Bandar Desert",
             "GameMode": {
                 "Name": "TeamDeathMatchC0"
             }
-        }, 
+        },
         {
             "Index": "0",
             "Rounds": "2",
@@ -2457,7 +2457,7 @@
             "GameMode": {
                 "Name": "TeamDeathMatchC0"
             }
-        }, 
+        },
         {
             "Index": "0",
             "Rounds": "2",
@@ -2466,25 +2466,25 @@
             "GameMode": {
                 "Name": "TeamDeathMatchC0"
             }
-        }, 
-        }    
+        },
+        {
             "Index": "0",
             "Rounds": "2",
             "Name": "XP3_Alborz",
-            "FriendlyName": "Alborz Mountains",    
+            "FriendlyName": "Alborz Mountains",
             "GameMode": {
                 "Name": "TankSuperiority0"
             }
-        },  
+        },
         {
             "Index": "0",
             "Rounds": "2",
             "Name": "XP3_Desert",
-            "FriendlyName": "Bandar Desert", 
+            "FriendlyName": "Bandar Desert",
             "GameMode": {
                 "Name": "TankSuperiority0"
             }
-        }, 
+        },
         {
             "Index": "0",
             "Rounds": "2",
@@ -2493,7 +2493,7 @@
             "GameMode": {
                 "Name": "TankSuperiority0"
             }
-        }, 
+        },
         {
             "Index": "0",
             "Rounds": "2",
@@ -2520,7 +2520,7 @@
             "GameMode": {
                 "Name": "ConquestLarge0"
             }
-        },   
+        },
         {
             "Index": "0",
             "Rounds": "2",
@@ -2529,7 +2529,7 @@
             "GameMode": {
                 "Name": "ConquestLarge0"
             }
-        }, 
+        },
         {
             "Index": "0",
             "Rounds": "2",
@@ -2547,7 +2547,7 @@
             "GameMode": {
                 "Name": "ConquestSmall0"
             }
-        },   
+        },
         {
             "Index": "0",
             "Rounds": "2",
@@ -2595,7 +2595,7 @@
                     "FriendlyName": "Defender"
                 }
             ]
-        }, 
+        },
         {
             "Index": "0",
             "Rounds": "2",
@@ -2637,7 +2637,7 @@
                     "FriendlyName": "Defender"
                 }
             ]
-        }, 
+        },
         {
             "Index": "0",
             "Rounds": "2",
@@ -2689,7 +2689,7 @@
                     "FriendlyName": "Delta"
                 }
             ]
-        }, 
+        },
         {
             "Index": "0",
             "Rounds": "2",
@@ -2751,7 +2751,7 @@
                     "FriendlyName": "Delta"
                 }
             ]
-        }, 
+        },
         {
             "Index": "0",
             "Rounds": "2",
@@ -2782,7 +2782,7 @@
                     "FriendlyName": "Delta"
                 }
             ]
-        },         
+        },
         {
             "Index": "0",
             "Rounds": "2",
@@ -2803,7 +2803,7 @@
                     "FriendlyName": "Defender"
                 }
             ]
-        }, 
+        },
         {
             "Index": "0",
             "Rounds": "2",
@@ -2845,7 +2845,7 @@
                     "FriendlyName": "Defender"
                 }
             ]
-        }, 
+        },
         {
             "Index": "0",
             "Rounds": "2",
@@ -2875,7 +2875,7 @@
             "GameMode": {
                 "Name": "TeamDeathMatch0"
             }
-        }, 
+        },
         {
             "Index": "0",
             "Rounds": "2",
@@ -2893,7 +2893,7 @@
             "GameMode": {
                 "Name": "TeamDeathMatch0"
             }
-        }, 
+        },
         {
             "Index": "0",
             "Rounds": "2",
@@ -2911,7 +2911,7 @@
             "GameMode": {
                 "Name": "TeamDeathMatchC0"
             }
-        }, 
+        },
         {
             "Index": "0",
             "Rounds": "2",
@@ -2929,7 +2929,7 @@
             "GameMode": {
                 "Name": "TeamDeathMatchC0"
             }
-        }, 
+        },
         {
             "Index": "0",
             "Rounds": "2",
@@ -2938,7 +2938,7 @@
             "GameMode": {
                 "Name": "TeamDeathMatchC0"
             }
-        }, 
+        },
         {
             "Index": "0",
             "Rounds": "2",
@@ -2947,7 +2947,7 @@
             "GameMode": {
                 "Name": "GunMaster0"
             }
-        }, 
+        },
         {
             "Index": "0",
             "Rounds": "2",
@@ -2974,7 +2974,7 @@
             "GameMode": {
                 "Name": "GunMaster0"
             }
-        }, 
+        },
         {
             "Index": "0",
             "Rounds": "2",
@@ -2983,7 +2983,7 @@
             "GameMode": {
                 "Name": "Scavenger0"
             }
-        }, 
+        },
         {
             "Index": "0",
             "Rounds": "2",
@@ -3046,7 +3046,7 @@
             "GameMode": {
                 "Name": "ConquestLarge0"
             }
-        }, 
+        },
         {
             "Index": "0",
             "Rounds": "2",
@@ -3082,7 +3082,7 @@
             "GameMode": {
                 "Name": "ConquestSmall0"
             }
-        }, 
+        },
         {
             "Index": "0",
             "Rounds": "2",
@@ -3145,7 +3145,7 @@
                     "FriendlyName": "Defender"
                 }
             ]
-        }, 
+        },
         {
             "Index": "0",
             "Rounds": "2",
@@ -3166,7 +3166,7 @@
                     "FriendlyName": "Defender"
                 }
             ]
-        },           
+        },
         {
             "Index": "0",
             "Rounds": "2",
@@ -3234,7 +3234,7 @@
                 }
             ]
         },
-        }
+        {
             "Index": "0",
             "Rounds": "2",
             "Name": "XP5_002",
@@ -3264,8 +3264,8 @@
                     "FriendlyName": "Delta"
                 }
             ]
-        },  
-        }
+        },
+        {
             "Index": "0",
             "Rounds": "2",
             "Name": "XP5_003",
@@ -3296,7 +3296,7 @@
                 }
             ]
         },
-        }
+        {
             "Index": "0",
             "Rounds": "2",
             "Name": "XP5_004",
@@ -3347,7 +3347,7 @@
                     "FriendlyName": "Defender"
                 }
             ]
-        }, 
+        },
         {
             "Index": "0",
             "Rounds": "2",
@@ -3428,7 +3428,7 @@
             "GameMode": {
                 "Name": "TeamDeathMatch0"
             }
-        }, 
+        },
         {
             "Index": "0",
             "Rounds": "2",
@@ -3438,6 +3438,7 @@
                 "Name": "TeamDeathMatch0"
             }
         },
+        {
             "Index": "0",
             "Rounds": "2",
             "Name": "XP5_004",
@@ -3445,7 +3446,7 @@
             "GameMode": {
                 "Name": "TeamDeathMatch0"
             }
-        }, 
+        },
         {
             "Index": "0",
             "Rounds": "2",
@@ -3463,7 +3464,7 @@
             "GameMode": {
                 "Name": "TeamDeathMatchC0"
             }
-        }, 
+        },
         {
             "Index": "0",
             "Rounds": "2",
@@ -3473,6 +3474,7 @@
                 "Name": "TeamDeathMatchC0"
             }
         },
+        {
             "Index": "0",
             "Rounds": "2",
             "Name": "XP5_004",
@@ -3481,16 +3483,16 @@
                 "Name": "TeamDeathMatchC0"
             }
         },
-        }    
+        {
             "Index": "0",
             "Rounds": "2",
             "Name": "XP5_001",
-            "FriendlyName": "Operation Riverside", 
+            "FriendlyName": "Operation Riverside",
             "GameMode": {
                 "Name": "AirSuperiority0"
             }
         },
-        }    
+        {
             "Index": "0",
             "Rounds": "2",
             "Name": "XP5_002",
@@ -3498,8 +3500,8 @@
             "GameMode": {
                 "Name": "AirSuperiority0"
             }
-        }, 
-        }    
+        },
+        {
             "Index": "0",
             "Rounds": "2",
             "Name": "XP5_003",
@@ -3508,7 +3510,7 @@
                 "Name": "AirSuperiority0"
             }
         },
-        }    
+        {
             "Index": "0",
             "Rounds": "2",
             "Name": "XP5_004",
@@ -3516,9 +3518,9 @@
             "GameMode": {
                 "Name": "AirSuperiority0"
             }
-        }          
-        
+        }
     ],
     "Items": [
+
     ]
 }

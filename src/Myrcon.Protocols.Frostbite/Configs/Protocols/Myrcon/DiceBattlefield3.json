@@ -2030,9 +2030,480 @@
             "GameMode": {
                 "Name": "TeamDeathMatchC0"
             }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP3_Alborz",
+            "FriendlyName": "Alborz Mountains",
+            "GameMode": {
+                "Name": "ConquestLarge0"
+            }
+        },        
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP3_Desert",
+            "FriendlyName": "Bandar Desert",            
+            "GameMode": {
+                "Name": "ConquestLarge0"
+            }
+        }, 
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP3_Shield",
+            "FriendlyName": "Armored Shield",
+            "GameMode": {
+                "Name": "ConquestLarge0"
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP3_Valley",
+            "FriendlyName": "Death Valley",
+            "GameMode": {
+                "Name": "ConquestLarge0"
+            }
         },          
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP3_Alborz",
+            "FriendlyName": "Alborz Mountains",            
+            "GameMode": {
+                "Name": "ConquestSmall0"
+            }
+        },        
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP3_Desert",
+            "FriendlyName": "Bandar Desert",
+            "GameMode": {
+                "Name": "ConquestSmall0"
+            }
+        }, 
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP3_Shield",
+            "FriendlyName": "Armored Shield",
+            "GameMode": {
+                "Name": "ConquestSmall0"
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP3_Valley",
+            "FriendlyName": "Death Valley",
+            "GameMode": {
+                "Name": "ConquestSmall0"
+            }
+        }, 
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP3_Alborz",
+            "FriendlyName": "Alborz Mountains",    
+            "GameMode": {
+                "Name": "RushLarge0"
+            },
+            "Groups": [
+                {
+                    "Uid": "1",
+                    "Type": "Team",
+                    "FriendlyName": "Attacker"
+                },
+                {
+                    "Uid": "2",
+                    "Type": "Team",
+                    "FriendlyName": "Defender"
+                }
+            ]
+        },          
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP3_Desert",
+            "FriendlyName": "Bandar Desert",
+            "GameMode": {
+                "Name": "RushLarge0"
+            },
+            "Groups": [
+                {
+                    "Uid": "1",
+                    "Type": "Team",
+                    "FriendlyName": "Attacker"
+                },
+                {
+                    "Uid": "2",
+                    "Type": "Team",
+                    "FriendlyName": "Defender"
+                }
+            ]
+        }, 
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP3_Shield",
+            "FriendlyName": "Armored Shield",
+            "GameMode": {
+                "Name": "RushLarge0"
+            },
+            "Groups": [
+                {
+                    "Uid": "1",
+                    "Type": "Team",
+                    "FriendlyName": "Attacker"
+                },
+                {
+                    "Uid": "2",
+                    "Type": "Team",
+                    "FriendlyName": "Defender"
+                }
+            ]
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP3_Valley",
+            "FriendlyName": "Death Valley",
+            "GameMode": {
+                "Name": "RushLarge0"
+            },
+            "Groups": [
+                {
+                    "Uid": "1",
+                    "Type": "Team",
+                    "FriendlyName": "Attacker"
+                },
+                {
+                    "Uid": "2",
+                    "Type": "Team",
+                    "FriendlyName": "Defender"
+                }
+            ]
+        }, 
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP3_Alborz",
+            "FriendlyName": "Alborz Mountains",     
+            "GameMode": {
+                "Name": "SquadDeathMatch0"
+            },
+            "Groups": [
+                {
+                    "Uid": "1",
+                    "Type": "Team",
+                    "FriendlyName": "Alpha"
+                },
+                {
+                    "Uid": "2",
+                    "Type": "Team",
+                    "FriendlyName": "Beta"
+                },
+                {
+                    "Uid": "3",
+                    "Type": "Team",
+                    "FriendlyName": "Charlie"
+                },
+                {
+                    "Uid": "4",
+                    "Type": "Team",
+                    "FriendlyName": "Delta"
+                }
+            ]
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP3_Desert",
+            "FriendlyName": "Bandar Desert",
+            "GameMode": {
+                "Name": "SquadDeathMatch0"
+            },
+            "Groups": [
+                {
+                    "Uid": "1",
+                    "Type": "Team",
+                    "FriendlyName": "Alpha"
+                },
+                {
+                    "Uid": "2",
+                    "Type": "Team",
+                    "FriendlyName": "Beta"
+                },
+                {
+                    "Uid": "3",
+                    "Type": "Team",
+                    "FriendlyName": "Charlie"
+                },
+                {
+                    "Uid": "4",
+                    "Type": "Team",
+                    "FriendlyName": "Delta"
+                }
+            ]
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP3_Shield",
+            "FriendlyName": "Armored Shield",
+            "GameMode": {
+                "Name": "SquadDeathMatch0"
+            },
+            "Groups": [
+                {
+                    "Uid": "1",
+                    "Type": "Team",
+                    "FriendlyName": "Alpha"
+                },
+                {
+                    "Uid": "2",
+                    "Type": "Team",
+                    "FriendlyName": "Beta"
+                },
+                {
+                    "Uid": "3",
+                    "Type": "Team",
+                    "FriendlyName": "Charlie"
+                },
+                {
+                    "Uid": "4",
+                    "Type": "Team",
+                    "FriendlyName": "Delta"
+                }
+            ]
+        },   
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP3_Valley",
+            "FriendlyName": "Death Valley",
+            "GameMode": {
+                "Name": "SquadDeathMatch0"
+            },
+            "Groups": [
+                {
+                    "Uid": "1",
+                    "Type": "Team",
+                    "FriendlyName": "Alpha"
+                },
+                {
+                    "Uid": "2",
+                    "Type": "Team",
+                    "FriendlyName": "Beta"
+                },
+                {
+                    "Uid": "3",
+                    "Type": "Team",
+                    "FriendlyName": "Charlie"
+                },
+                {
+                    "Uid": "4",
+                    "Type": "Team",
+                    "FriendlyName": "Delta"
+                }
+            ]
+        }, 
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP3_Alborz",
+            "FriendlyName": "Alborz Mountains",    
+            "GameMode": {
+                "Name": "SquadRush0"
+            },
+            "Groups": [
+                {
+                    "Uid": "1",
+                    "Type": "Team",
+                    "FriendlyName": "Attacker"
+                },
+                {
+                    "Uid": "2",
+                    "Type": "Team",
+                    "FriendlyName": "Defender"
+                }
+            ]
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP3_Desert",
+            "FriendlyName": "Bandar Desert",
+            "GameMode": {
+                "Name": "SquadRush0"
+            },
+            "Groups": [
+                {
+                    "Uid": "1",
+                    "Type": "Team",
+                    "FriendlyName": "Attacker"
+                },
+                {
+                    "Uid": "2",
+                    "Type": "Team",
+                    "FriendlyName": "Defender"
+                }
+            ]
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP3_Shield",
+            "FriendlyName": "Armored Shield",
+            "GameMode": {
+                "Name": "SquadRush0"
+            },
+            "Groups": [
+                {
+                    "Uid": "1",
+                    "Type": "Team",
+                    "FriendlyName": "Attacker"
+                },
+                {
+                    "Uid": "2",
+                    "Type": "Team",
+                    "FriendlyName": "Defender"
+                }
+            ]
+        }, 
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP3_Valley",
+            "FriendlyName": "Death Valley",
+            "GameMode": {
+                "Name": "SquadRush0"
+            },
+            "Groups": [
+                {
+                    "Uid": "1",
+                    "Type": "Team",
+                    "FriendlyName": "Attacker"
+                },
+                {
+                    "Uid": "2",
+                    "Type": "Team",
+                    "FriendlyName": "Defender"
+                }
+            ]
+        }, 
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP3_Alborz",
+            "FriendlyName": "Alborz Mountains",    
+            "GameMode": {
+                "Name": "TeamDeathMatch0"
+            }
+        },  
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP3_Desert",
+            "FriendlyName": "Bandar Desert", 
+            "GameMode": {
+                "Name": "TeamDeathMatch0"
+            }
+        }, 
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP3_Shield",
+            "FriendlyName": "Armored Shield",
+            "GameMode": {
+                "Name": "TeamDeathMatch0"
+            }
+        }, 
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP3_Valley",
+            "FriendlyName": "Death Valley",
+            "GameMode": {
+                "Name": "TeamDeathMatch0"
+            }
+        },
+        }    
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP3_Alborz",
+            "FriendlyName": "Alborz Mountains",    
+            "GameMode": {
+                "Name": "TeamDeathMatchC0"
+            }
+        },  
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP3_Desert",
+            "FriendlyName": "Bandar Desert", 
+            "GameMode": {
+                "Name": "TeamDeathMatchC0"
+            }
+        }, 
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP3_Shield",
+            "FriendlyName": "Armored Shield",
+            "GameMode": {
+                "Name": "TeamDeathMatchC0"
+            }
+        }, 
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP3_Valley",
+            "FriendlyName": "Death Valley",
+            "GameMode": {
+                "Name": "TeamDeathMatchC0"
+            }
+        }, 
+        }    
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP3_Alborz",
+            "FriendlyName": "Alborz Mountains",    
+            "GameMode": {
+                "Name": "TankSuperiority0"
+            }
+        },  
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP3_Desert",
+            "FriendlyName": "Bandar Desert", 
+            "GameMode": {
+                "Name": "TankSuperiority0"
+            }
+        }, 
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP3_Shield",
+            "FriendlyName": "Armored Shield",
+            "GameMode": {
+                "Name": "TankSuperiority0"
+            }
+        }, 
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP3_Valley",
+            "FriendlyName": "Death Valley",
+            "GameMode": {
+                "Name": "TankSuperiority0"
+            }
+        },           
         
-
     ],
     "Items": [
     ]

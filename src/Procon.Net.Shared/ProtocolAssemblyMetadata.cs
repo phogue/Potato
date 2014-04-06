@@ -32,15 +32,23 @@ namespace Procon.Net.Shared {
         /// <param name="path">The directory path to load the meta data from.</param>
         /// <returns>True if the meta data loaded, false if an error occured or metadata/assembly is missing</returns>
         public bool Load(String path) {
-            bool loaded = true;
-
             this.Directory = new DirectoryInfo(path);
             this.Name = this.Directory.Name;
 
             this.Assembly = new FileInfo(Path.Combine(this.Directory.FullName, this.Name + ".dll"));
             this.Meta = new FileInfo(Path.Combine(this.Directory.FullName, this.Name + ".json"));
 
-            if (this.Assembly.Exists == true && this.Meta.Exists == true) {
+            return this.Load();
+        }
+
+        /// <summary>
+        /// Checks and loads existing information in the object 
+        /// </summary>
+        /// <returns></returns>
+        public bool Load() {
+            bool loaded = true;
+
+            if (this.Assembly != null && this.Assembly.Exists == true && this.Meta != null && this.Meta.Exists == true) {
                 try {
                     using (var stream = new StreamReader(this.Meta.FullName)) {
                         using (JsonReader reader = new JsonTextReader(stream)) {

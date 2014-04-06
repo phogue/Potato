@@ -8,6 +8,7 @@ using Procon.Core.Connections;
 using Procon.Core.Database;
 using Procon.Core.Events;
 using Procon.Core.Packages;
+using Procon.Core.Protocols;
 using Procon.Core.Remote;
 using Procon.Core.Shared;
 using Procon.Core.Shared.Events;
@@ -47,6 +48,11 @@ namespace Procon.Core {
         /// Controller to push events to various sources.
         /// </summary>
         public ICoreController PushEvents { get; protected set; }
+
+        /// <summary>
+        /// Controller to load library of supported protocols
+        /// </summary>
+        public ICoreController Protocols { get; protected set; }
 
         /// <summary>
         /// Tasks to be run by this connection. Primarily used to reattempt connections
@@ -93,6 +99,12 @@ namespace Procon.Core {
             };
 
             this.PushEvents = new PushEventsController();
+
+            this.Protocols = new ProtocolController() {
+                BubbleObjects = new List<ICoreController>() {
+                    this
+                }
+            };
 
             this.Tasks = new List<Timer>() {
                 new Timer(Connection_Tick, this, TimeSpan.FromSeconds(15), TimeSpan.FromSeconds(15)),
@@ -319,6 +331,7 @@ namespace Procon.Core {
             this.CommandServer.Execute();
             this.PushEvents.Execute();
             this.Database.Execute();
+            this.Protocols.Execute();
 
             this.Execute(new Command() {
                 Origin = CommandOrigin.Local
@@ -465,6 +478,7 @@ namespace Procon.Core {
                 list.Add(this.Shared.Events);
                 list.Add(this.Packages);
                 list.Add(this.Database);
+                list.Add(this.Protocols);
             }
             
             return list;
@@ -517,6 +531,9 @@ namespace Procon.Core {
 
             this.PushEvents.Dispose();
             this.PushEvents = null;
+
+            this.Protocols.Dispose();
+            this.Protocols = null;
 
             this.Shared.Variables.Dispose();
             this.Shared.Variables = null;
@@ -829,10 +846,14 @@ namespace Procon.Core {
         /// <returns></returns>
         public ICommandResult InstanceQuery(ICommand command, Dictionary<String, ICommandParameter> parameters) {
             ICommandResult result = null;
-
+            
             if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
                 ICommandResult packages = this.Packages.Tunnel(new Command(command) {
                     CommandType = CommandType.PackagesFetchPackages
+                });
+
+                ICommandResult protocols = this.Protocols.Tunnel(new Command(command) {
+                    CommandType = CommandType.ProtocolsFetchSupportedProtocols
                 });
                 
                 result = new CommandResult() {
@@ -840,7 +861,7 @@ namespace Procon.Core {
                     CommandResultType = CommandResultType.Success,
                     Now = new CommandData() {
                         Connections = this.Connections.Select(connection => connection.ConnectionModel).ToList(),
-                        ProtocolTypes = new List<ProtocolType>(SupportedGameTypes.GetSupportedGames().Select(k => k.Key as ProtocolType)),
+                        ProtocolTypes = new List<ProtocolType>(protocols.Now.ProtocolTypes ?? new List<ProtocolType>()),
                         Repositories = new List<RepositoryModel>(packages.Now.Repositories ?? new List<RepositoryModel>()),
                         Groups = new List<Core.Shared.Models.GroupModel>(this.Shared.Security.Groups),
                         Languages = this.Shared.Languages.LoadedLanguageFiles.Select(language => language.LanguageModel).ToList(),

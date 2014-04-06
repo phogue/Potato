@@ -72,6 +72,7 @@
     <Compile Include="Connections\ConnectionController.cs" />
     <Compile Include="Connections\IConnectionController.cs" />
     <Compile Include="Connections\Plugins\ICorePluginController.cs" />
+    <Compile Include="Protocols\ProtocolController.cs" />
     <Compile Include="Connections\TextCommands\Parsers\Fuzzy\ItemThingReference.cs" />
     <Compile Include="Connections\TextCommands\ITextCommandParser.cs" />
     <Compile Include="Connections\TextCommands\Parsers\Fuzzy\KdrPropertyReference.cs" />

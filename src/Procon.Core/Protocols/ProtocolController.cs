@@ -26,6 +26,13 @@ namespace Procon.Core.Protocols {
             this.Shared = new SharedReferences();
 
             this.Protocols = new List<IProtocolAssemblyMetadata>();
+
+            this.CommandDispatchers.AddRange(new List<ICommandDispatch>() {
+                new CommandDispatch() {
+                    CommandType = CommandType.ProtocolsFetchSupportedProtocols,
+                    Handler = this.ProtocolsFetchSupportedProtocols
+                }
+            });
         }
 
         /// <summary>
@@ -96,6 +103,29 @@ namespace Procon.Core.Protocols {
             this.LoadProtocolsMetadata();
 
             return base.Execute();
+        }
+
+        /// <summary>
+        /// Fetches all of the protocols from the cache
+        /// </summary>
+        public ICommandResult ProtocolsFetchSupportedProtocols(ICommand command, Dictionary<String, ICommandParameter> parameters) {
+            ICommandResult result = null;
+
+            if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
+                // Give a representation of what we know right now
+                result = new CommandResult() {
+                    CommandResultType = CommandResultType.Success,
+                    Success = true,
+                    Now = {
+                        ProtocolTypes = this.Protocols.SelectMany(meta => meta.ProtocolTypes).Cast<ProtocolType>().ToList()
+                    }
+                };
+            }
+            else {
+                result = CommandResult.InsufficientPermissions;
+            }
+
+            return result;
         }
 
         /// <summary>

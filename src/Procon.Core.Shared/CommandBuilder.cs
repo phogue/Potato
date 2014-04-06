@@ -166,6 +166,16 @@ namespace Procon.Core.Shared {
         }
 
         /// <summary>
+        /// Builds a command to send a ProtocolsFetchSupportedProtocols
+        /// </summary>
+        /// <returns>The built command to the dispatch</returns>
+        public static ICommand ProtocolsFetchSupportedProtocols() {
+            return new Command() {
+                CommandType = CommandType.ProtocolsFetchSupportedProtocols
+            };
+        }
+
+        /// <summary>
         /// Builds a command to send a SecurityAccountAuthenticate
         /// </summary>
         /// <param name="username">The username to attach to the command and parameter</param>

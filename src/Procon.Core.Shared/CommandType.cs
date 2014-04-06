@@ -224,7 +224,13 @@ namespace Procon.Core.Shared {
         /// </summary>
         [Description("Checks for the latest versions of all packages from source repositories. This command is dispatched asynchronously, so a later even will then need to be listened for when the packages list finally updates itself.")]
         PackagesFetchPackages,
-        
+
+        /// <summary>
+        /// Fetches the supported protocols from the applicable protocol packages.
+        /// </summary>
+        [Description("Fetches the supported protocols from the applicable protocol packages.")]
+        ProtocolsFetchSupportedProtocols,
+
         /// <summary>
         /// Sets a volatile variable that will not be saved to the config.
         /// </summary>

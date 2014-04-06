@@ -230,6 +230,11 @@ namespace Procon.Core.Shared {
         /// </summary>
         [Description("Fetches the supported protocols from the applicable protocol packages.")]
         ProtocolsFetchSupportedProtocols,
+        /// <summary>
+        /// Checks if a protocol by a specific provider is supported.
+        /// </summary>
+        [Description("Checks if a protocol by a specific provider is supported.")]
+        ProtocolsCheckSupportedProtocol,
 
         /// <summary>
         /// Sets a volatile variable that will not be saved to the config.

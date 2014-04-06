@@ -31,6 +31,20 @@ namespace Procon.Core.Protocols {
                 new CommandDispatch() {
                     CommandType = CommandType.ProtocolsFetchSupportedProtocols,
                     Handler = this.ProtocolsFetchSupportedProtocols
+                },
+                new CommandDispatch() {
+                    CommandType = CommandType.ProtocolsCheckSupportedProtocol,
+                    ParameterTypes = new List<CommandParameterType>() {
+                        new CommandParameterType() {
+                            Name = "provider",
+                            Type = typeof(String)
+                        },
+                        new CommandParameterType() {
+                            Name = "type",
+                            Type = typeof(String)
+                        }
+                    },
+                    Handler = this.ProtocolsCheckSupportedProtocol
                 }
             });
         }
@@ -120,6 +134,43 @@ namespace Procon.Core.Protocols {
                         ProtocolTypes = this.Protocols.SelectMany(meta => meta.ProtocolTypes).Cast<ProtocolType>().ToList()
                     }
                 };
+            }
+            else {
+                result = CommandResult.InsufficientPermissions;
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Checks if a given protocol is supported by the instance
+        /// </summary>
+        public ICommandResult ProtocolsCheckSupportedProtocol(ICommand command, Dictionary<String, ICommandParameter> parameters) {
+            ICommandResult result = null;
+
+            String provider = parameters["provider"].First<String>();
+            String type = parameters["type"].First<String>();
+
+            if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
+                var protocol = this.Protocols.SelectMany(wrapper => wrapper.ProtocolTypes).FirstOrDefault(protocolType => String.Compare(protocolType.Provider, provider, StringComparison.OrdinalIgnoreCase) == 0 && String.Compare(protocolType.Type, type, StringComparison.OrdinalIgnoreCase) == 0);
+
+                if (protocol != null) {
+                    result = new CommandResult() {
+                        CommandResultType = CommandResultType.Success,
+                        Success = true,
+                        Now = {
+                            ProtocolTypes = new List<ProtocolType>() {
+                                protocol as ProtocolType
+                            }
+                        }
+                    };
+                }
+                else {
+                    result = new CommandResult() {
+                        CommandResultType = CommandResultType.DoesNotExists,
+                        Success = false
+                    };
+                }
             }
             else {
                 result = CommandResult.InsufficientPermissions;

@@ -174,6 +174,32 @@ namespace Procon.Core.Shared {
                 CommandType = CommandType.ProtocolsFetchSupportedProtocols
             };
         }
+        
+        /// <summary>
+        /// Builds a command to send a ProtocolsFetchSupportedProtocols
+        /// </summary>
+        /// <returns>The built command to the dispatch</returns>
+        public static ICommand ProtocolsCheckSupportedProtocol(String provider, String type) {
+            return new Command() {
+                CommandType = CommandType.ProtocolsCheckSupportedProtocol,
+                Parameters = new List<ICommandParameter>() {
+                    new CommandParameter() {
+                        Data = {
+                            Content = new List<String>() {
+                                provider
+                            }
+                        }
+                    },
+                    new CommandParameter() {
+                        Data = {
+                            Content = new List<String>() {
+                                type
+                            }
+                        }
+                    }
+                }
+            };
+        }
 
         /// <summary>
         /// Builds a command to send a SecurityAccountAuthenticate

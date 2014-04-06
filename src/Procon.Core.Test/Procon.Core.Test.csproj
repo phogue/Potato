@@ -104,6 +104,7 @@
     <Compile Include="Protocols\TestProtocolController\TestGetProtocolAssemblies.cs" />
     <Compile Include="Protocols\TestProtocolController\TestGetProtocolPackages.cs" />
     <Compile Include="Protocols\TestProtocolController\TestLoadProtocolsMetadata.cs" />
+    <Compile Include="Protocols\TestProtocolController\TestProtocolsCheckSupportedProtocol.cs" />
     <Compile Include="Protocols\TestProtocolController\TestProtocolsFetchSupportedProtocols.cs" />
     <Compile Include="Remote\TestCertificateController\TestVariableLoad.cs" />
     <Compile Include="Remote\TestCertificateController\TestExplicitLoad.cs" />

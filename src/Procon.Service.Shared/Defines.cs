@@ -179,7 +179,7 @@ namespace Procon.Service.Shared {
         /// Searches for a file in some given paths.
         /// </summary>
         /// <param name="file">The file to search for</param>
-        /// <param name="paths">THe paths to search for the file in</param>
+        /// <param name="paths">The paths to search for the file in</param>
         /// <returns>A list of found files</returns>
         public static List<String> SearchPaths(String file, IEnumerable<String> paths) {
             return paths.Where(path => File.Exists(Path.Combine(path, file)) == true).Select(path => Path.Combine(path, file)).ToList();

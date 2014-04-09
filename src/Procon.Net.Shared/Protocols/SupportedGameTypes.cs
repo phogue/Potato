@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Text.RegularExpressions;
 
 namespace Procon.Net.Shared.Protocols {
+    [Obsolete]
     public static class SupportedGameTypes {
 
         /// <summary>

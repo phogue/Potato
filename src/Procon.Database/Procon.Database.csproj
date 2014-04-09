@@ -99,6 +99,9 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\Procon.licenseheader">
+      <Link>Procon.licenseheader</Link>
+    </None>
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>

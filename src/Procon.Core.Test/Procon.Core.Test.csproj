@@ -226,6 +226,9 @@
     <Content Include="Localization\en-UK\Procon.Core.Test.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="..\Procon.licenseheader">
+      <Link>Procon.licenseheader</Link>
+    </None>
     <None Include="packages.config" />
     <Content Include="Remote\Certificates\NoPassword.pfx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

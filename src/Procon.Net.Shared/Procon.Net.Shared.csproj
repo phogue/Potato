@@ -155,6 +155,9 @@
     <Compile Include="Utils\StringExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\Procon.licenseheader">
+      <Link>Procon.licenseheader</Link>
+    </None>
     <None Include="Geolocation\Maxmind\GeoIP.dat">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

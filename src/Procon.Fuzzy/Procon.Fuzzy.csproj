@@ -194,6 +194,9 @@
     <Compile Include="Token.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\Procon.licenseheader">
+      <Link>Procon.licenseheader</Link>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

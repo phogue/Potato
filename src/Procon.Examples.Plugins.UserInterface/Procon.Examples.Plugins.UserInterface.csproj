@@ -62,6 +62,9 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <None Include="..\Procon.licenseheader">
+      <Link>Procon.licenseheader</Link>
+    </None>
     <None Include="Pages\SettingsPageView.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>SettingsPageView.cs</LastGenOutput>

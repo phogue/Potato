@@ -21,6 +21,7 @@ namespace Procon.Core.Shared {
             typeof (String),
             typeof (ConnectionModel),
             typeof (ProtocolType),
+            typeof (IProtocolAssemblyMetadata),
             typeof (Core.Shared.Models.GroupModel),
             typeof (AccountModel),
             typeof (PermissionModel),
@@ -73,6 +74,9 @@ namespace Procon.Core.Shared {
             }
             else if (t == typeof(ConnectionModel) && this.Data.Connections != null) {
                 all = this.Data.Connections.Cast<Object>().ToList();
+            }
+            else if (t == typeof(IProtocolAssemblyMetadata) && this.Data.ProtocolAssemblyMetadatas != null) {
+                all = this.Data.ProtocolAssemblyMetadatas.Cast<Object>().ToList();
             }
             else if (t == typeof(ProtocolType) && this.Data.ProtocolTypes != null) {
                 all = this.Data.ProtocolTypes.Cast<Object>().ToList();

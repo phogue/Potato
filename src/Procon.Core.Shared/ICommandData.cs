@@ -28,6 +28,11 @@ namespace Procon.Core.Shared {
         List<ProtocolType> ProtocolTypes { get; set; }
 
         /// <summary>
+        /// Meta data for a protocol type
+        /// </summary>
+        List<IProtocolAssemblyMetadata> ProtocolAssemblyMetadatas { get; set; }
+
+        /// <summary>
         /// Groups effected by this event.
         /// </summary>
         List<Core.Shared.Models.GroupModel> Groups { get; set; }

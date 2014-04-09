@@ -29,6 +29,8 @@ namespace Procon.Core.Shared {
         /// </summary>
         public List<ProtocolType> ProtocolTypes { get; set; }
 
+        public List<IProtocolAssemblyMetadata> ProtocolAssemblyMetadatas { get; set; }
+
         /// <summary>
         /// Groups effected by this event.
         /// </summary>
@@ -166,6 +168,9 @@ namespace Procon.Core.Shared {
 
             if (this.ProtocolTypes != null) this.ProtocolTypes.Clear();
             this.ProtocolTypes = null;
+
+            if (this.ProtocolAssemblyMetadatas != null) this.ProtocolAssemblyMetadatas.Clear();
+            this.ProtocolAssemblyMetadatas = null;
 
             if (this.Connections != null) this.Connections.Clear();
             this.Connections = null;

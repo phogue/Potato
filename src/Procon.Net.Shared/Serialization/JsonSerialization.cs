@@ -32,6 +32,7 @@ namespace Procon.Net.Shared.Serialization {
                 new InterfaceJsonConverter<IProtocolEventData, ProtocolEventData>(),
                 new InterfaceJsonConverter<IProtocolEventArgs, ProtocolEventArgs>(),
                 new InterfaceJsonConverter<IProtocolType, ProtocolType>(),
+                new InterfaceJsonConverter<IProtocolAssemblyMetadata, ProtocolAssemblyMetadata>(),
                 new InterfaceJsonConverter<IProtocolState, ProtocolState>()
             };
 

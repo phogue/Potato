@@ -54,6 +54,7 @@
     <Compile Include="TestSerialization\TestJson\TestProtocolEventData.cs" />
     <Compile Include="TestSerialization\TestJson\TestClientEventArgs.cs" />
     <Compile Include="TestSerialization\TestJson\TestClientEventData.cs" />
+    <Compile Include="TestShared\TestSandboxProtocolController\TestBubble.cs" />
     <Compile Include="TestShared\TestSandboxProtocolController\TestCreate.cs" />
     <Compile Include="TestShared\TestSandboxProtocolController\TestSandboxedProtocol.cs" />
     <Compile Include="Truths\TestTruths.cs" />

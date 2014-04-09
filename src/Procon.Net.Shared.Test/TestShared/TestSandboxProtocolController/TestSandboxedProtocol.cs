@@ -202,6 +202,20 @@ namespace Procon.Net.Shared.Test.TestShared.TestSandboxProtocolController {
             Assert.IsTrue(called);
         }
 
+        /// <summary>
+        /// Tests the SandboxedProtocol is nulled after a shutdown.
+        /// </summary>
+        [Test]
+        public void TestShutdownSandboxedNulledAfterShutdown() {
+            var controller = new SandboxProtocolController() {
+                SandboxedProtocol = new MockIntegrationTestProtocol()
+            };
+
+            controller.Shutdown();
+
+            Assert.IsNull(controller.SandboxedProtocol);
+        }
+
         [Test]
         public void TestSynchronizeSandboxedNotNull() {
             var called = false;

@@ -50,6 +50,7 @@
     <Compile Include="IClientEventArgs.cs" />
     <Compile Include="IClientEventData.cs" />
     <Compile Include="IClientSetup.cs" />
+    <Compile Include="IProtocolShared.cs" />
     <Compile Include="IProtocolSetupResult.cs" />
     <Compile Include="IProtocolAssemblyMetadata.cs" />
     <Compile Include="IProtocolEventArgs.cs" />
@@ -80,6 +81,7 @@
     <Compile Include="ConnectionState.cs" />
     <Compile Include="ProtocolDeclarationAttribute.cs" />
     <Compile Include="ProtocolSetupResult.cs" />
+    <Compile Include="Sandbox\SandboxProtocolCallback.cs" />
     <Compile Include="Sandbox\ISandboxProtocolController.cs" />
     <Compile Include="Sandbox\SandboxProtocolController.cs" />
     <Compile Include="ProtocolAssemblyMetadata.cs" />

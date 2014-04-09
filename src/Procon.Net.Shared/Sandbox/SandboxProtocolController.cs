@@ -12,6 +12,9 @@ namespace Procon.Net.Shared.Sandbox {
     /// with Procon as the underlying library, but not worry about sandboxing if they dont want to.
     /// </summary>
     public class SandboxProtocolController : MarshalByRefObject, ISandboxProtocolController {
+
+        public SandboxProtocolCallback Bubble { get; set; }
+
         /// <summary>
         /// The protocol instance loaded in the sandboxed appdomain.
         /// </summary>
@@ -41,14 +44,25 @@ namespace Procon.Net.Shared.Sandbox {
             }
         }
 
-        [Obsolete]
-        public string ProtocolsConfigDirectory { get; set; }
+        /// <summary>
+        /// Assigns events from the sandboxed protocol to bubble into the bubble object, provided
+        /// an object has beeen set and a delegate added to the bubble object.
+        /// </summary>
+        public void AssignEvents() {
+            if (this.SandboxedProtocol != null) {
+                this.SandboxedProtocol.ProtocolEvent += (protocol, args) => {
+                    if (this.Bubble != null && this.Bubble.ProtocolEvent != null) {
+                        this.Bubble.ProtocolEvent(this, args);
+                    }
+                };
 
-        [Obsolete]
-        public event Action<IProtocol, IProtocolEventArgs> ProtocolEvent;
-
-        [Obsolete]
-        public event Action<IProtocol, IClientEventArgs> ClientEvent;
+                this.SandboxedProtocol.ClientEvent += (protocol, args) => {
+                    if (this.Bubble != null && this.Bubble.ClientEvent != null) {
+                        this.Bubble.ClientEvent(this, args);
+                    }
+                };
+            }
+        }
 
         public bool Create(String assemblyFile, IProtocolType type) {
             this.SandboxedProtocol = null;
@@ -66,6 +80,8 @@ namespace Procon.Net.Shared.Sandbox {
                     });
 
                 this.SandboxedProtocol = (IProtocol)Activator.CreateInstance(protocolType);
+
+                this.AssignEvents();
             }
             // [Obviously copy/pasted from the plugin controller, it has the same meaning here]
             // We don't do any exception logging here, as simply updating Procon may log a bunch of exceptions
@@ -102,6 +118,8 @@ namespace Procon.Net.Shared.Sandbox {
         public void Shutdown() {
             if (this.SandboxedProtocol != null) {
                 this.SandboxedProtocol.Shutdown();
+
+                this.SandboxedProtocol = null;
             }
         }
 

@@ -59,5 +59,23 @@ namespace Myrcon.Protocols.Test {
                 this.OnSynchronizeHandler();
             }
         }
+
+        /// <summary>
+        /// Mocks a call to the protocol event
+        /// </summary>
+        public void MockProtocolEvent(IProtocolEventArgs args) {
+            if (this.ProtocolEvent != null) {
+                this.ProtocolEvent(this, args);
+            }
+        }
+
+        /// <summary>
+        /// Mocks a call to the client event
+        /// </summary>
+        public void MockClientEvent(IClientEventArgs args) {
+            if (this.ClientEvent != null) {
+                this.ClientEvent(this, args);
+            }
+        }
     }
 }

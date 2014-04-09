@@ -278,22 +278,22 @@ namespace Procon.Core.Connections.Plugins {
             // Load all the plugins.
             this.LoadPlugins();
 
-            if (this.Connection != null && this.Connection.Protocol != null) {
-                this.Connection.Protocol.ClientEvent += Connection_ClientEvent;
-                this.Connection.Protocol.ProtocolEvent += Connection_GameEvent;
+            if (this.Connection != null) {
+                this.Connection.ClientEvent += Connection_ClientEvent;
+                this.Connection.ProtocolEvent += Connection_GameEvent;
             }
 
             // Return the base execution.
             return base.Execute();
         }
 
-        private void Connection_ClientEvent(IProtocol sender, IClientEventArgs e) {
+        private void Connection_ClientEvent(IProtocolShared sender, IClientEventArgs e) {
             if (this.ClientEventStream != null) {
                 this.ClientEventStream.Call(e);
             }
         }
 
-        private void Connection_GameEvent(IProtocol sender, IProtocolEventArgs e) {
+        private void Connection_GameEvent(IProtocolShared sender, IProtocolEventArgs e) {
             if (this.ProtocolEventStream != null) {
                 e.ProtocolState = null;
                 this.ProtocolEventStream.Call(e);

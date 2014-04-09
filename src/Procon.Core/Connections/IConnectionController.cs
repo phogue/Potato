@@ -1,6 +1,8 @@
-﻿using Procon.Core.Shared;
+﻿using System;
+using Procon.Core.Shared;
 using Procon.Core.Shared.Models;
 using Procon.Net.Shared;
+using Procon.Net.Shared.Sandbox;
 
 namespace Procon.Core.Connections {
     /// <summary>
@@ -13,9 +15,14 @@ namespace Procon.Core.Connections {
         ConnectionModel ConnectionModel { get; set; }
 
         /// <summary>
-        ///  The actual game object
+        /// Fired when a protocol event is recieved from the protocol appdomain.
         /// </summary>
-        IProtocolShared Protocol { get; set; }
+        event Action<IProtocolShared, IProtocolEventArgs> ProtocolEvent;
+
+        /// <summary>
+        /// Fired when a client event is recieved from the protocol appdomain.
+        /// </summary>
+        event Action<IProtocolShared, IClientEventArgs> ClientEvent;
 
         /// <summary>
         /// Proxy to the active protocol state

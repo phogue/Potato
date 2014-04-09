@@ -14,6 +14,7 @@ using Procon.Fuzzy.Tokens.Primitive.Temporal;
 using Procon.Net.Shared;
 using Procon.Net.Shared.Models;
 using Procon.Net.Shared.Protocols;
+using Procon.Net.Shared.Sandbox;
 
 #endregion
 
@@ -370,9 +371,11 @@ namespace Procon.Core.Test.TextCommands {
                 },
                 //Languages = languages,
                 Connection = new ConnectionController() {
-                    Protocol = new MockProtocol() {
-                        Additional = "",
-                        Password = ""
+                    Protocol = new SandboxProtocolController() {
+                        SandboxedProtocol = new MockProtocol() {
+                            Additional = "",
+                            Password = ""
+                        }
                     },
                     ConnectionModel = {
                         ProtocolType = new ProtocolType() {

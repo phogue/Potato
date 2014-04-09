@@ -4,6 +4,7 @@ using NUnit.Framework;
 using Procon.Core.Connections;
 using Procon.Core.Shared;
 using Procon.Net.Shared;
+using Procon.Net.Shared.Sandbox;
 
 namespace Procon.Examples.Plugins.TextCommands.Test {
     /// <summary>
@@ -20,7 +21,9 @@ namespace Procon.Examples.Plugins.TextCommands.Test {
         /// <remarks>The plugin will be enabled during this process.</remarks>
         /// <returns></returns>
         protected ConnectionController CreateConnection() {
-            IProtocol protocol = new MockGame();
+            ISandboxProtocolController protocol = new SandboxProtocolController() {
+                SandboxedProtocol = new MockGame()
+            };
 
             protocol.Setup(new ProtocolSetup() {
                 Hostname = "localhost",

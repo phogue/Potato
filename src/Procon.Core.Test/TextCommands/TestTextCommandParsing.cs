@@ -11,6 +11,7 @@ using Procon.Core.Shared;
 using Procon.Core.Shared.Models;
 using Procon.Core.Test.Mocks.Protocols;
 using Procon.Net.Shared.Protocols;
+using Procon.Net.Shared.Sandbox;
 
 #endregion
 
@@ -30,9 +31,11 @@ namespace Procon.Core.Test.TextCommands {
             var textCommands = new TextCommandController() {
                 //Languages = languages,
                 Connection = new ConnectionController() {
-                    Protocol = new MockProtocol() {
-                        Additional = "",
-                        Password = ""
+                    Protocol = new SandboxProtocolController() {
+                        SandboxedProtocol = new MockProtocol() {
+                            Additional = "",
+                            Password = ""
+                        }
                     }
                 }.Execute() as ConnectionController
             };
@@ -155,9 +158,11 @@ namespace Procon.Core.Test.TextCommands {
                 },
                 //Languages = languages,
                 Connection = new ConnectionController() {
-                    Protocol = new MockProtocol() {
-                        Additional = "",
-                        Password = ""
+                    Protocol = new SandboxProtocolController() {
+                        SandboxedProtocol = new MockProtocol() {
+                            Additional = "",
+                            Password = ""
+                        }
                     }
                 }.Execute() as ConnectionController
             };
@@ -210,9 +215,11 @@ namespace Procon.Core.Test.TextCommands {
             var textCommands = new TextCommandController() {
                 //Languages = languages,
                 Connection = new ConnectionController() {
-                    Protocol = new MockProtocol() {
-                        Additional = "",
-                        Password = ""
+                    Protocol = new SandboxProtocolController() {
+                        SandboxedProtocol = new MockProtocol() {
+                            Additional = "",
+                            Password = ""
+                        }
                     }
                 }.Execute() as ConnectionController
             };

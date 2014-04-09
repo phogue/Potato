@@ -25,7 +25,20 @@ namespace Procon.Core.Connections {
     public class ConnectionController : CoreController, ISharedReferenceAccess, IConnectionController {
         public ConnectionModel ConnectionModel { get; set; }
 
-        public IProtocolShared Protocol { get; set; }
+        /// <summary>
+        ///  The actual game object
+        /// </summary>
+        public ISandboxProtocolController Protocol { get; set; }
+
+        /// <summary>
+        /// Fired when a protocol event is recieved from the protocol appdomain.
+        /// </summary>
+        public event Action<IProtocolShared, IProtocolEventArgs> ProtocolEvent;
+
+        /// <summary>
+        /// Fired when a client event is recieved from the protocol appdomain.
+        /// </summary>
+        public event Action<IProtocolShared, IClientEventArgs> ClientEvent;
 
         /// <summary>
         /// The appdomain where the protocol is loaded and operates in.
@@ -155,8 +168,8 @@ namespace Procon.Core.Connections {
             permissions.AddPermission(new SecurityPermission(SecurityPermissionFlag.Execution));
 
             permissions.AddPermission(new DnsPermission(PermissionState.Unrestricted));
-            permissions.AddPermission(new SocketPermission(NetworkAccess.Connect, TransportType.All, "*.*.*.*", SocketPermission.AllPorts));
             permissions.AddPermission(new WebPermission(PermissionState.Unrestricted));
+            permissions.AddPermission(new SocketPermission(NetworkAccess.Connect, TransportType.All, "*.*.*.*", SocketPermission.AllPorts));
 
             permissions.AddPermission(new FileIOPermission(FileIOPermissionAccess.PathDiscovery, AppDomain.CurrentDomain.BaseDirectory));
             permissions.AddPermission(new FileIOPermission(FileIOPermissionAccess.AllAccess, meta.Directory.FullName));
@@ -177,7 +190,30 @@ namespace Procon.Core.Connections {
 
             this.ProtocolFactory = (ISandboxProtocolController)this.AppDomainSandbox.CreateInstanceAndUnwrap(typeof(ISandboxProtocolController).Assembly.FullName, typeof(SandboxProtocolController).FullName);
 
-            // Callbacks! from protocol..
+            this.AssignProtocolEvents();
+        }
+
+        /// <summary>
+        /// Assign all current event handlers.
+        /// </summary>
+        protected void AssignProtocolEvents() {
+            this.UnassignProtocolEvents();
+
+            if (this.Protocol != null) {
+                this.Protocol.Bubble = new SandboxProtocolCallbackProxy() {
+                    ProtocolEvent = Protocol_ProtocolEvent,
+                    ClientEvent = Protocol_ClientEvent
+                };
+            }
+        }
+
+        /// <summary>
+        /// Removes all current event handlers.
+        /// </summary>
+        protected void UnassignProtocolEvents() {
+            if (this.Protocol != null) {
+                this.Protocol.Bubble = null;
+            }
         }
 
         /// <summary>
@@ -207,8 +243,6 @@ namespace Procon.Core.Connections {
             }
 
             this.ConnectionModel.ConnectionGuid = MD5.Guid(String.Format("{0}:{1}:{2}", this.ConnectionModel.ProtocolType, this.ConnectionModel.Hostname, this.ConnectionModel.Port));
-
-            this.AssignEvents();
 
             this.TextCommands = new TextCommandController() {
                 Connection = this
@@ -256,28 +290,6 @@ namespace Procon.Core.Connections {
 
             if (this.Plugins != null) {
                 this.Plugins.Poke();
-            }
-        }
-
-        /// <summary>
-        /// Assign all current event handlers.
-        /// </summary>
-        protected void AssignEvents() {
-            this.UnassignEvents();
-
-            if (this.Protocol != null) {
-                this.Protocol.ClientEvent += Protocol_ClientEvent;
-                this.Protocol.ProtocolEvent += Protocol_ProtocolEvent;
-            }
-        }
-
-        /// <summary>
-        /// Removes all current event handlers.
-        /// </summary>
-        protected void UnassignEvents() {
-            if (this.Protocol != null) {
-                this.Protocol.ClientEvent -= Protocol_ClientEvent;
-                this.Protocol.ProtocolEvent -= Protocol_ProtocolEvent;
             }
         }
 
@@ -558,7 +570,7 @@ namespace Procon.Core.Connections {
             return result;
         }
 
-        private void Protocol_ClientEvent(IProtocol sender, IClientEventArgs e) {
+        private void Protocol_ClientEvent(IProtocolShared sender, IClientEventArgs e) {
             if (e.EventType == ClientEventType.ClientConnectionStateChange) {
                 if (this.Protocol != null) {
                     this.ConnectionModel.ProtocolType = this.Protocol.ProtocolType as ProtocolType;
@@ -593,6 +605,10 @@ namespace Procon.Core.Connections {
                     Stamp = e.Stamp
                 });
             }
+
+            if (this.ClientEvent != null) {
+                this.ClientEvent(sender, e);
+            }
         }
 
         /// <summary>
@@ -602,7 +618,7 @@ namespace Procon.Core.Connections {
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Protocol_ProtocolEvent(IProtocol sender, IProtocolEventArgs e) {
+        private void Protocol_ProtocolEvent(IProtocolShared sender, IProtocolEventArgs e) {
             if (this.Shared.Variables.Get<List<String>>(CommonVariableNames.ProtocolEventsIgnoreList).Contains(e.ProtocolEventType.ToString()) == false) {
                 this.Shared.Events.Log(new GenericEvent() {
                     Name = e.ProtocolEventType.ToString(),
@@ -650,6 +666,10 @@ namespace Procon.Core.Connections {
                     }
                 }
             }
+
+            if (this.ProtocolEvent != null) {
+                this.ProtocolEvent(sender, e);
+            }
         }
 
         public override void Dispose() {
@@ -672,7 +692,7 @@ namespace Procon.Core.Connections {
 
             this.ProtocolFactory = null;
 
-            this.UnassignEvents();
+            this.UnassignProtocolEvents();
 
             // this.Game.Dispose();
             this.Protocol = null;

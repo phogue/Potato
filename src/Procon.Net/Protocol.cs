@@ -57,15 +57,6 @@ namespace Procon.Net {
         /// </summary>
         public IPacketDispatcher PacketDispatcher { get; set; }
 
-        /// <summary>
-        /// This should be moved from here
-        /// </summary>
-        [Obsolete]
-        static Protocol() {
-            // Load all supported game assemblies.
-            SupportedGameTypes.GetSupportedGames();
-        }
-
         protected Protocol() {
             this.Options = new ProtocolSetup();
             this.State = new ProtocolState();

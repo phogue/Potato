@@ -9,16 +9,28 @@ namespace Procon.Net.Shared.Sandbox {
         /// <summary>
         /// Called when ever a dispatched game event occurs.
         /// </summary>
-        public Action<IProtocolShared, IProtocolEventArgs> ProtocolEvent { get; set; }
+        public Action<IProtocolEventArgs> ProtocolEvent { get; set; }
 
         /// <summary>
         /// Called when something occurs with the underlying client. This can
         /// be connections, disconnections, logins or raw packets being recieved.
         /// </summary>
-        public Action<IProtocolShared, IClientEventArgs> ClientEvent { get; set; }
+        public Action<IClientEventArgs> ClientEvent { get; set; }
 
         public override object InitializeLifetimeService() {
             return null;
+        }
+
+        public void FireProtocolEvent(IProtocolEventArgs args) {
+            if (this.ProtocolEvent != null) {
+                this.ProtocolEvent(args);
+            }
+        }
+
+        public void FireClientEvent(IClientEventArgs args) {
+            if (this.ClientEvent != null) {
+                this.ClientEvent(args);
+            }
         }
     }
 }

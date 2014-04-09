@@ -51,14 +51,14 @@ namespace Procon.Net.Shared.Sandbox {
         public void AssignEvents() {
             if (this.SandboxedProtocol != null) {
                 this.SandboxedProtocol.ProtocolEvent += (protocol, args) => {
-                    if (this.Bubble != null && this.Bubble.ProtocolEvent != null) {
-                        this.Bubble.ProtocolEvent(this, args);
+                    if (this.Bubble != null) {
+                        this.Bubble.FireProtocolEvent(args);
                     }
                 };
 
                 this.SandboxedProtocol.ClientEvent += (protocol, args) => {
-                    if (this.Bubble != null && this.Bubble.ClientEvent != null) {
-                        this.Bubble.ClientEvent(this, args);
+                    if (this.Bubble != null) {
+                        this.Bubble.FireClientEvent(args);
                     }
                 };
             }

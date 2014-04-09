@@ -16,12 +16,12 @@ namespace Procon.Core.Connections {
         /// <summary>
         /// Fired when a protocol event is recieved from the protocol appdomain.
         /// </summary>
-        event Action<IProtocolShared, IProtocolEventArgs> ProtocolEvent;
+        event Action<IProtocolEventArgs> ProtocolEvent;
 
         /// <summary>
         /// Fired when a client event is recieved from the protocol appdomain.
         /// </summary>
-        event Action<IProtocolShared, IClientEventArgs> ClientEvent;
+        event Action<IClientEventArgs> ClientEvent;
 
         /// <summary>
         /// Proxy to the active protocol state

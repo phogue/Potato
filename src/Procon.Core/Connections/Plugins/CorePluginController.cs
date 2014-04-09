@@ -287,13 +287,13 @@ namespace Procon.Core.Connections.Plugins {
             return base.Execute();
         }
 
-        private void Connection_ClientEvent(IProtocolShared sender, IClientEventArgs e) {
+        private void Connection_ClientEvent(IClientEventArgs e) {
             if (this.ClientEventStream != null) {
                 this.ClientEventStream.Call(e);
             }
         }
 
-        private void Connection_GameEvent(IProtocolShared sender, IProtocolEventArgs e) {
+        private void Connection_GameEvent(IProtocolEventArgs e) {
             if (this.ProtocolEventStream != null) {
                 e.ProtocolState = null;
                 this.ProtocolEventStream.Call(e);

@@ -33,12 +33,12 @@ namespace Procon.Core.Connections {
         /// <summary>
         /// Fired when a protocol event is recieved from the protocol appdomain.
         /// </summary>
-        public event Action<IProtocolShared, IProtocolEventArgs> ProtocolEvent;
+        public event Action<IProtocolEventArgs> ProtocolEvent;
 
         /// <summary>
         /// Fired when a client event is recieved from the protocol appdomain.
         /// </summary>
-        public event Action<IProtocolShared, IClientEventArgs> ClientEvent;
+        public event Action<IClientEventArgs> ClientEvent;
 
         /// <summary>
         /// The appdomain where the protocol is loaded and operates in.
@@ -201,8 +201,8 @@ namespace Procon.Core.Connections {
         protected void AssignProtocolEvents() {
             this.UnassignProtocolEvents();
 
-            if (this.Protocol != null) {
-                this.Protocol.Bubble = new SandboxProtocolCallbackProxy() {
+            if (this.ProtocolFactory != null) {
+                this.ProtocolFactory.Bubble = new SandboxProtocolCallbackProxy() {
                     ProtocolEvent = Protocol_ProtocolEvent,
                     ClientEvent = Protocol_ClientEvent
                 };
@@ -213,8 +213,8 @@ namespace Procon.Core.Connections {
         /// Removes all current event handlers.
         /// </summary>
         protected void UnassignProtocolEvents() {
-            if (this.Protocol != null) {
-                this.Protocol.Bubble = null;
+            if (this.ProtocolFactory != null) {
+                this.ProtocolFactory.Bubble = null;
             }
         }
 
@@ -572,7 +572,7 @@ namespace Procon.Core.Connections {
             return result;
         }
 
-        private void Protocol_ClientEvent(IProtocolShared sender, IClientEventArgs e) {
+        private void Protocol_ClientEvent(IClientEventArgs e) {
             if (e.EventType == ClientEventType.ClientConnectionStateChange) {
                 if (this.Protocol != null) {
                     this.ConnectionModel.ProtocolType = this.Protocol.ProtocolType as ProtocolType;
@@ -609,7 +609,7 @@ namespace Procon.Core.Connections {
             }
 
             if (this.ClientEvent != null) {
-                this.ClientEvent(sender, e);
+                this.ClientEvent(e);
             }
         }
 
@@ -620,7 +620,7 @@ namespace Procon.Core.Connections {
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Protocol_ProtocolEvent(IProtocolShared sender, IProtocolEventArgs e) {
+        private void Protocol_ProtocolEvent(IProtocolEventArgs e) {
             if (this.Shared.Variables.Get<List<String>>(CommonVariableNames.ProtocolEventsIgnoreList).Contains(e.ProtocolEventType.ToString()) == false) {
                 this.Shared.Events.Log(new GenericEvent() {
                     Name = e.ProtocolEventType.ToString(),
@@ -670,7 +670,7 @@ namespace Procon.Core.Connections {
             }
 
             if (this.ProtocolEvent != null) {
-                this.ProtocolEvent(sender, e);
+                this.ProtocolEvent(e);
             }
         }
 

@@ -7,14 +7,13 @@ namespace Procon.Net.Shared.Sandbox {
     /// </summary>
     public interface ISandboxProtocolCallbackProxy {
         /// <summary>
-        /// Called when ever a dispatched game event occurs.
+        /// Fires a protocol event back across the appdomain
         /// </summary>
-        Action<IProtocolShared, IProtocolEventArgs> ProtocolEvent { get; set; }
+        void FireProtocolEvent(IProtocolEventArgs args);
 
         /// <summary>
-        /// Called when something occurs with the underlying client. This can
-        /// be connections, disconnections, logins or raw packets being recieved.
+        /// Fires a client event back across the appdomain
         /// </summary>
-        Action<IProtocolShared, IClientEventArgs> ClientEvent { get; set; }
+        void FireClientEvent(IClientEventArgs args);
     }
 }

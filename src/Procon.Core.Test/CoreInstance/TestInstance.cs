@@ -1,6 +1,4 @@
-﻿#region
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -8,17 +6,19 @@ using System.Reflection;
 using System.Threading;
 using NUnit.Framework;
 using Newtonsoft.Json.Linq;
+using Procon.Core.Connections;
 using Procon.Core.Events;
 using Procon.Core.Localization;
+using Procon.Core.Protocols;
 using Procon.Core.Security;
 using Procon.Core.Shared;
+using Procon.Core.Shared.Models;
 using Procon.Core.Shared.Serialization;
 using Procon.Core.Test.Mocks.Protocols;
 using Procon.Core.Variables;
+using Procon.Net.Shared;
 using Procon.Net.Shared.Protocols;
 using Procon.Service.Shared;
-
-#endregion
 
 namespace Procon.Core.Test.CoreInstance {
     [TestFixture]
@@ -26,8 +26,6 @@ namespace Procon.Core.Test.CoreInstance {
         [SetUp]
         public void Initialize() {
             SharedReferences.Setup();
-
-            SupportedGameTypes.GetSupportedGames(new List<Assembly>() { typeof(MockProtocol).Assembly });
 
             if (File.Exists(ConfigFileInfo.FullName)) {
                 File.Delete(ConfigFileInfo.FullName);
@@ -52,6 +50,18 @@ namespace Procon.Core.Test.CoreInstance {
                     Languages = new LanguageController()
                 }
             }.Execute();
+
+            ((ProtocolController)instance.Protocols).Protocols.Add(new ProtocolAssemblyMetadata() {
+                Directory = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory),
+                Assembly = new FileInfo("MockProtocol.dll"),
+                ProtocolTypes = new List<IProtocolType>() {
+                    new ProtocolType() {
+                        Name = "Mock Protocol",
+                        Provider = "Myrcon",
+                        Type = "MockProtocol"
+                    }
+                }
+            });
 
             instance.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
@@ -101,6 +111,18 @@ namespace Procon.Core.Test.CoreInstance {
                     Languages = new LanguageController()
                 }
             }.Execute();
+
+            ((ProtocolController)instance.Protocols).Protocols.Add(new ProtocolAssemblyMetadata() {
+                Directory = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory),
+                Assembly = new FileInfo("MockProtocol.dll"),
+                ProtocolTypes = new List<IProtocolType>() {
+                    new ProtocolType() {
+                        Name = "Mock Protocol",
+                        Provider = "Myrcon",
+                        Type = "MockProtocol"
+                    }
+                }
+            });
 
             instance.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
@@ -152,18 +174,18 @@ namespace Procon.Core.Test.CoreInstance {
                 }
             }.Execute();
 
-            // Add a single connection, just so we can validate that it has been removed.
-            instance.Tunnel(new Command() {
-                Origin = CommandOrigin.Local,
-                CommandType = CommandType.InstanceAddConnection,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
-                    "Myrcon",
-                    "MockProtocol",
-                    "1.1.1.1",
-                    27516,
-                    "password",
-                    ""
-                })
+            instance.Connections.Add(new ConnectionController() {
+                ConnectionModel = new ConnectionModel() {
+                    ProtocolType = new ProtocolType() {
+                        Name = "Mock Protocol",
+                        Provider = "Myrcon",
+                        Type = "MockProtocol"
+                    },
+                    Hostname = "1.1.1.1",
+                    Port = 27516,
+                    Arguments = "",
+                    Password = "password"
+                }
             });
 
             instance.WriteConfig();

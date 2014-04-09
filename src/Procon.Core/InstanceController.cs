@@ -14,7 +14,6 @@ using Procon.Core.Shared;
 using Procon.Core.Shared.Events;
 using Procon.Core.Shared.Models;
 using Procon.Net.Shared;
-using Procon.Net.Shared.Protocols;
 using Procon.Net.Shared.Utils;
 using Procon.Service.Shared;
 
@@ -687,8 +686,39 @@ namespace Procon.Core {
                     if (this.Connections.FirstOrDefault(c => c.ConnectionModel.ProtocolType.Type == protocolTypeType && c.ConnectionModel.Hostname == hostName && c.ConnectionModel.Port == port) == null) {
                         // As long as the game type is defined...
 
-                        if (this.Protocols.Tunnel(CommandBuilder.ProtocolsCheckSupportedProtocol(protocolTypeProvider, protocolTypeType)).Success == true) {
+                        var supportCheckResult = this.Protocols.Tunnel(CommandBuilder.ProtocolsCheckSupportedProtocol(protocolTypeProvider, protocolTypeType).SetOrigin(CommandOrigin.Local));
 
+                        if (supportCheckResult.Success == true) {
+                            ConnectionController connection = new ConnectionController() {
+                                Instance = this
+                            };
+
+                            connection.SetupProtocol(supportCheckResult.Now.ProtocolAssemblyMetadatas.First(), supportCheckResult.Now.ProtocolTypes.First(), new ProtocolSetup() {
+                                Hostname = hostName,
+                                Port = port,
+                                Password = password,
+                                Arguments = ArgumentHelper.ToArguments(additional.Wordify())
+                            });
+
+                            lock (this.Connections) {
+                                this.Connections.Add(connection);
+                            }
+
+                            connection.Execute();
+                            connection.AttemptConnection();
+
+                            result = new CommandResult() {
+                                Message = String.Format("Successfully added {0} connection.", protocolTypeType),
+                                CommandResultType = CommandResultType.Success,
+                                Success = true,
+                                Now = {
+                                    Connections = new List<ConnectionModel>() {
+                                        connection.ConnectionModel
+                                    }
+                                }
+                            };
+
+                            this.Shared.Events.Log(GenericEvent.ConvertToGenericEvent(result, GenericEventType.InstanceConnectionAdded));
                         }
                         else {
                             result = new CommandResult() {
@@ -697,7 +727,7 @@ namespace Procon.Core {
                                 Success = false
                             };
                         }
-
+                        /*
                         Type gameType = SupportedGameTypes.GetSupportedGames().Where(g => g.Key.Provider == protocolTypeProvider && g.Key.Type == protocolTypeType).Select(g => g.Value).FirstOrDefault();
 
                         // As long as the game type selected is supported...
@@ -748,6 +778,7 @@ namespace Procon.Core {
                                 Success = false
                             };
                         }
+                        */
                     }
                     else {
                         result = new CommandResult() {

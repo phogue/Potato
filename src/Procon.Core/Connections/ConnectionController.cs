@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Net;
+using System.Security;
+using System.Security.Permissions;
 using Procon.Core.Connections.Plugins;
 using Procon.Core.Connections.TextCommands;
 using Procon.Core.Shared;
@@ -10,7 +13,9 @@ using Procon.Core.Shared.Models;
 using Procon.Net.Shared;
 using Procon.Net.Shared.Actions;
 using Procon.Net.Shared.Models;
+using Procon.Net.Shared.Sandbox;
 using Procon.Net.Shared.Utils;
+using Procon.Service.Shared;
 
 namespace Procon.Core.Connections {
     /// <summary>
@@ -21,6 +26,16 @@ namespace Procon.Core.Connections {
         public ConnectionModel ConnectionModel { get; set; }
 
         public IProtocol Protocol { get; set; }
+
+        /// <summary>
+        /// The appdomain where the protocol is loaded and operates in.
+        /// </summary>
+        public AppDomain AppDomainSandbox { get; protected set; }
+
+        /// <summary>
+        /// Simple protocol factory reference to load classes into the app domain.
+        /// </summary>
+        public ISandboxProtocolController ProtocolFactory { get; protected set; }
 
         /// <summary>
         /// The controller to load up and manage plugins
@@ -107,7 +122,79 @@ namespace Procon.Core.Connections {
         }
 
         public override void WriteConfig(IConfig config) {
-            this.Plugins.WriteConfig(config);
+            if (this.Plugins != null) {
+                this.Plugins.WriteConfig(config);
+            }
+        }
+
+        /// <summary>
+        /// Create the app domain setup options required to create the app domain.
+        /// </summary>
+        /// <returns></returns>
+        public AppDomainSetup CreateAppDomainSetup() {
+            AppDomainSetup setup = new AppDomainSetup {
+                LoaderOptimization = LoaderOptimization.MultiDomain,
+                ApplicationBase = AppDomain.CurrentDomain.BaseDirectory,
+                PrivateBinPath = String.Join(";", new[] {
+                    AppDomain.CurrentDomain.BaseDirectory,
+                    Defines.PackageMyrconProconCoreLibNet40.FullName,
+                    Defines.PackageMyrconProconSharedLibNet40.FullName
+                })
+            };
+
+            return setup;
+        }
+
+        /// <summary>
+        /// Creates the permissions set to apply to the app domain.
+        /// </summary>
+        /// <returns></returns>
+        public PermissionSet CreatePermissionSet(IProtocolAssemblyMetadata meta) {
+            PermissionSet permissions = new PermissionSet(PermissionState.None);
+
+            permissions.AddPermission(new SecurityPermission(SecurityPermissionFlag.Execution));
+
+            permissions.AddPermission(new DnsPermission(PermissionState.Unrestricted));
+            permissions.AddPermission(new SocketPermission(NetworkAccess.Connect, TransportType.All, "*.*.*.*", SocketPermission.AllPorts));
+            permissions.AddPermission(new WebPermission(PermissionState.Unrestricted));
+
+            permissions.AddPermission(new FileIOPermission(FileIOPermissionAccess.PathDiscovery, AppDomain.CurrentDomain.BaseDirectory));
+            permissions.AddPermission(new FileIOPermission(FileIOPermissionAccess.AllAccess, meta.Directory.FullName));
+
+            return permissions;
+        }
+
+        /// <summary>
+        /// Sets everything up to load the plugins, creating the seperate appdomin and permission requirements
+        /// </summary>
+        public void SetupProtocolFactory(IProtocolAssemblyMetadata meta) {
+            AppDomainSetup setup = this.CreateAppDomainSetup();
+
+            PermissionSet permissions = this.CreatePermissionSet(meta);
+
+            // Create the app domain and the plugin factory in the new domain.
+            this.AppDomainSandbox = AppDomain.CreateDomain(String.Format("Procon.Protocols.{0}", this.ConnectionModel != null ? this.ConnectionModel.ConnectionGuid.ToString() : String.Empty), null, setup, permissions);
+
+            this.ProtocolFactory = (ISandboxProtocolController)this.AppDomainSandbox.CreateInstanceAndUnwrap(typeof(ISandboxProtocolController).Assembly.FullName, typeof(SandboxProtocolController).FullName);
+
+            // Callbacks! from protocol..
+        }
+
+        /// <summary>
+        /// Sets up the factory, then attempts to load a specific type into the protocol appdomain.
+        /// </summary>
+        public bool SetupProtocol(IProtocolAssemblyMetadata meta, IProtocolType type, ProtocolSetup setup) {
+            if (this.ProtocolFactory == null) {
+                this.SetupProtocolFactory(meta);
+            }
+
+            if (this.ProtocolFactory.Create(meta.Assembly.FullName, type) == true) {
+                this.Protocol = this.ProtocolFactory;
+
+                this.Protocol.Setup(setup);
+            }
+
+            return this.Protocol != null;
         }
 
         public override ICoreController Execute() {
@@ -574,16 +661,29 @@ namespace Procon.Core.Connections {
             // Now shutdown and null out the game. Note that we want to capture and report
             // events during the shutdown, but then we want to unassign events to the game
             // object before we null it out. We only null it so we dont suppress errors.
-            this.Protocol.Shutdown();
+            if (this.Protocol != null) {
+                this.Protocol.Shutdown();
+            }
+
+            if (this.AppDomainSandbox != null) {
+                AppDomain.Unload(this.AppDomainSandbox);
+                this.AppDomainSandbox = null;
+            }
+
+            this.ProtocolFactory = null;
 
             this.UnassignEvents();
 
             // this.Game.Dispose();
             this.Protocol = null;
 
-            this.TextCommands.Dispose();
+            if (this.TextCommands != null) {
+                this.TextCommands.Dispose();
+            }
 
-            this.Plugins.Dispose();
+            if (this.Plugins != null) {
+                this.Plugins.Dispose();
+            }
 
             base.Dispose();
         }

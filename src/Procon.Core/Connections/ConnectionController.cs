@@ -623,7 +623,6 @@ namespace Procon.Core.Connections {
         /// 
         /// I might put this into it's own class at some point to seperate the GameConnection from an action Procon is taking.
         /// </summary>
-        /// <param name="sender"></param>
         /// <param name="e"></param>
         private void Protocol_ProtocolEvent(IProtocolEventArgs e) {
             if (this.Shared.Variables.Get<List<String>>(CommonVariableNames.ProtocolEventsIgnoreList).Contains(e.ProtocolEventType.ToString()) == false) {

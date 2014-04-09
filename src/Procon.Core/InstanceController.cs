@@ -672,8 +672,8 @@ namespace Procon.Core {
         public ICommandResult InstanceAddConnection(ICommand command, Dictionary<String, ICommandParameter> parameters) {
             ICommandResult result = null;
             
-            String gameTypeProvider = parameters["gameTypeProvider"].First<String>() ?? "";
-            String gameTypeType = parameters["gameTypeType"].First<String>() ?? "";
+            String protocolTypeProvider = parameters["gameTypeProvider"].First<String>() ?? "";
+            String protocolTypeType = parameters["gameTypeType"].First<String>() ?? "";
             String hostName = parameters["hostName"].First<String>() ?? "";
             UInt16 port = parameters["port"].First<UInt16>();
             String password = parameters["password"].First<String>() ?? "";
@@ -684,10 +684,21 @@ namespace Procon.Core {
                 // As long as we have less than the maximum amount of connections...
                 if (this.Connections.Count < this.Shared.Variables.Get(CommonVariableNames.MaximumProtocolConnections, 9000)) {
                     // As long as the connection for that specific game, hostname, and port does not exist...
-                    if (this.Connections.FirstOrDefault(c => c.ConnectionModel.ProtocolType.Type == gameTypeType && c.ConnectionModel.Hostname == hostName && c.ConnectionModel.Port == port) == null) {
+                    if (this.Connections.FirstOrDefault(c => c.ConnectionModel.ProtocolType.Type == protocolTypeType && c.ConnectionModel.Hostname == hostName && c.ConnectionModel.Port == port) == null) {
                         // As long as the game type is defined...
 
-                        Type gameType = SupportedGameTypes.GetSupportedGames().Where(g => g.Key.Provider == gameTypeProvider && g.Key.Type == gameTypeType).Select(g => g.Value).FirstOrDefault();
+                        if (this.Protocols.Tunnel(CommandBuilder.ProtocolsCheckSupportedProtocol(protocolTypeProvider, protocolTypeType)).Success == true) {
+
+                        }
+                        else {
+                            result = new CommandResult() {
+                                Message = String.Format(@"Protocol type ""{0}"" is not supported.", protocolTypeType),
+                                CommandResultType = CommandResultType.DoesNotExists,
+                                Success = false
+                            };
+                        }
+
+                        Type gameType = SupportedGameTypes.GetSupportedGames().Where(g => g.Key.Provider == protocolTypeProvider && g.Key.Type == protocolTypeType).Select(g => g.Value).FirstOrDefault();
 
                         // As long as the game type selected is supported...
                         if (gameType != null) {
@@ -718,7 +729,7 @@ namespace Procon.Core {
                             connection.AttemptConnection();
 
                             result = new CommandResult() {
-                                Message = String.Format("Successfully added {0} connection.", gameTypeType),
+                                Message = String.Format("Successfully added {0} connection.", protocolTypeType),
                                 CommandResultType = CommandResultType.Success,
                                 Success = true,
                                 Now = {
@@ -732,7 +743,7 @@ namespace Procon.Core {
                         }
                         else {
                             result = new CommandResult() {
-                                Message = String.Format(@"Game type ""{0}"" is not supported.", gameTypeType),
+                                Message = String.Format(@"Game type ""{0}"" is not supported.", protocolTypeType),
                                 CommandResultType = CommandResultType.DoesNotExists,
                                 Success = false
                             };
@@ -740,7 +751,7 @@ namespace Procon.Core {
                     }
                     else {
                         result = new CommandResult() {
-                            Message = String.Format(@"Game type ""{0}"" with connection to {1}:{2} has already been added.", gameTypeType, hostName, port),
+                            Message = String.Format(@"Game type ""{0}"" with connection to {1}:{2} has already been added.", protocolTypeType, hostName, port),
                             CommandResultType = CommandResultType.AlreadyExists,
                             Success = false
                         };

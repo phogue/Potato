@@ -1,0 +1,9 @@
+﻿{
+	"ProtocolTypes": [
+		{
+			Provider: "Myrcon",
+			Name: "Test Protocol 8",
+			Type: "MyrconTestProtocol8",
+		}
+	]
+}

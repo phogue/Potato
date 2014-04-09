@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Procon.Net;
+using Procon.Net.Shared;
 using Procon.Net.Shared.Protocols;
 
 namespace Myrcon.Protocols.Frostbite.Battlefield.BattlefieldBadCompany2 {

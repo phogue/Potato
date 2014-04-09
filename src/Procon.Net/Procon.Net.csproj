@@ -63,7 +63,6 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="ProtocolDeclarationAttribute.cs" />
     <Compile Include="PacketDispatcher.cs" />
     <Compile Include="PacketQueue.cs" />
     <Compile Include="PacketDispatch.cs" />

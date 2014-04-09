@@ -1,6 +1,4 @@
-﻿#region
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -8,8 +6,6 @@ using NUnit.Framework;
 using Procon.Core.Connections.Plugins;
 using Procon.Core.Shared;
 using Procon.Service.Shared;
-
-#endregion
 
 namespace Procon.Core.Test.Plugins {
     [TestFixture]
@@ -20,7 +16,7 @@ namespace Procon.Core.Test.Plugins {
         }
 
         /// <summary>
-        ///     Helper to test writing files to various directories and testing the output.
+        /// Helper to test writing files to various directories and testing the output.
         /// </summary>
         /// <param name="path"></param>
         /// <param name="expectedSuccessFlag"></param>
@@ -51,23 +47,15 @@ namespace Procon.Core.Test.Plugins {
         }
 
         /// <summary>
-        ///     Tests that a plugin can write to the plugins directory.
+        /// Tests that a plugin can write to the plugins directory.
         /// </summary>
         [Test]
         public void TestPluginsIsolationAllowedWriteAccessToLogsDirectory() {
             TestPluginsIsolationWriteToDirectory(Defines.LogsDirectory.FullName, true, CommandResultType.Success);
         }
-        /*
+
         /// <summary>
-        ///     Tests that a plugin can write to the plugins directory.
-        /// </summary>
-        [Test]
-        public void TestPluginsIsolationAllowedWriteAccessToPluginsDirectory() {
-            TestPluginsIsolationWriteToDirectory(Defines.PluginsDirectory, true, CommandResultType.Success);
-        }
-        */
-        /// <summary>
-        ///     Makes sure the plugin is not loaded into the current appdomain.
+        /// Makes sure the plugin is not loaded into the current appdomain.
         /// </summary>
         [Test]
         public void TestPluginsIsolationCleanCurrentAppDomain() {
@@ -101,20 +89,12 @@ namespace Procon.Core.Test.Plugins {
 
             // Now make sure our current appdomain is clean of the test plugin
             foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies()) {
-                Assert.IsFalse(assembly.FullName.Contains("TestPlugin"));
+                Assert.IsFalse(assembly.FullName.Contains("Myrcon.Plugins.Test"));
             }
         }
-        /*
+
         /// <summary>
-        ///     Tests that a plugin can write to the plugins directory.
-        /// </summary>
-        [Test]
-        public void TestPluginsIsolationProhibitedWriteAccessToLocalizationDirectory() {
-            TestPluginsIsolationWriteToDirectory(Defines.LocalizationDirectory, false, CommandResultType.Failed);
-        }
-        */
-        /// <summary>
-        ///     Tests that a plugin in the AppDomain cannot write to the root directory of Procon
+        /// Tests that a plugin in the AppDomain cannot write to the root directory of Procon
         /// </summary>
         [Test]
         public void TestPluginsIsolationProhibtedWriteAccessToRootDirectory() {

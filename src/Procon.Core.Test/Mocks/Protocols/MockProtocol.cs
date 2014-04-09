@@ -28,9 +28,11 @@ namespace Procon.Core.Test.Mocks.Protocols {
         public string ProtocolsConfigDirectory { get; set; }
         public event Action<IProtocol, IProtocolEventArgs> ProtocolEvent;
         public event Action<IProtocol, IClientEventArgs> ClientEvent;
-        public void Setup(IProtocolSetup setup) {
+        public IProtocolSetupResult Setup(IProtocolSetup setup) {
             this.Options = setup;
             this.Client.Setup(ClientSetup.FromProtocolSetup(setup));
+
+            return new ProtocolSetupResult();
         }
 
         public List<IPacket> Action(INetworkAction action) {

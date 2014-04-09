@@ -259,7 +259,7 @@ namespace Procon.Net {
             return sent;
         }
 
-        public virtual void Setup(IProtocolSetup setup) {
+        public virtual IProtocolSetupResult Setup(IProtocolSetup setup) {
             this.Options = setup;
             this.Client.Setup(ClientSetup.FromProtocolSetup(setup));
 
@@ -304,6 +304,8 @@ namespace Procon.Net {
                     exception.ToString()
                 }
             });
+
+            return new ProtocolSetupResult();
         }
 
         /// <summary>

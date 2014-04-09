@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Procon.Net;
 using Procon.Net.Shared;
 using Procon.Net.Shared.Actions;
 
@@ -14,7 +13,7 @@ namespace Myrcon.Protocols.Test {
         public string ProtocolsConfigDirectory { get; set; }
         public event Action<IProtocol, IProtocolEventArgs> ProtocolEvent;
         public event Action<IProtocol, IClientEventArgs> ClientEvent;
-        public void Setup(IProtocolSetup setup) {
+        public IProtocolSetupResult Setup(IProtocolSetup setup) {
             throw new NotImplementedException();
         }
 

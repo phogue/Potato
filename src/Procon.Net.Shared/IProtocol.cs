@@ -47,7 +47,7 @@ namespace Procon.Net.Shared {
         /// <summary>
         /// Sets up the protocol, initializing the client
         /// </summary>
-        void Setup(IProtocolSetup setup);
+        IProtocolSetupResult Setup(IProtocolSetup setup);
 
         /// <summary>
         /// Process a generic network action. All packets generated and sent to the server should be returned here.

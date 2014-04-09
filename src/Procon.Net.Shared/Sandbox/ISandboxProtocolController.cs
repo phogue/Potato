@@ -12,10 +12,5 @@ namespace Procon.Net.Shared.Sandbox {
         /// <param name="type"></param>
         /// <returns></returns>
         IProtocol Create(String assemblyFile, IProtocolType type);
-
-        /// <summary>
-        /// Shutdown the protocol, the AppDomain will be unloaded shortly afterwards.
-        /// </summary>
-        new void Shutdown();
     }
 }

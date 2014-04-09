@@ -40,6 +40,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MockClient.cs" />
+    <Compile Include="MockIntegrationTestProtocol.cs" />
     <Compile Include="TestProtocolEight.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

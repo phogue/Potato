@@ -17,12 +17,37 @@ namespace Procon.Net.Shared.Sandbox {
         /// </summary>
         public IProtocol SandboxedProtocol { get; set; }
 
-        public IClient Client { get; private set; }
-        public IProtocolState State { get; private set; }
-        public IProtocolSetup Options { get; private set; }
-        public IProtocolType ProtocolType { get; private set; }
+        public IClient Client {
+            get {
+                return this.SandboxedProtocol != null ? this.SandboxedProtocol.Client : null;
+            }
+        }
+
+        public IProtocolState State {
+            get {
+                return this.SandboxedProtocol != null ? this.SandboxedProtocol.State : null;
+            }
+        }
+
+        public IProtocolSetup Options {
+            get {
+                return this.SandboxedProtocol != null ? this.SandboxedProtocol.Options : null;
+            }
+        }
+
+        public IProtocolType ProtocolType {
+            get {
+                return this.SandboxedProtocol != null ? this.SandboxedProtocol.ProtocolType : null;
+            }
+        }
+
+        [Obsolete]
         public string ProtocolsConfigDirectory { get; set; }
+
+        [Obsolete]
         public event Action<IProtocol, IProtocolEventArgs> ProtocolEvent;
+
+        [Obsolete]
         public event Action<IProtocol, IClientEventArgs> ClientEvent;
 
         public IProtocol Create(String assemblyFile, IProtocolType type) {
@@ -35,7 +60,10 @@ namespace Procon.Net.Shared.Sandbox {
                 // Fetch a list of available game types by their attributes
                 var protocolType = loaded.GetTypes()
                     .Where(loadedType => typeof(IProtocol).IsAssignableFrom(loadedType))
-                    .First(loadedType => (loadedType.GetCustomAttributes(typeof(IProtocolType), false)).Cast<IProtocolType>().FirstOrDefault() == type);
+                    .First(loadedType => {
+                        var firstOrDefault = loadedType.GetCustomAttributes(typeof (IProtocolType), false).Cast<IProtocolType>().FirstOrDefault();
+                        return firstOrDefault != null && String.Equals(firstOrDefault.Provider, type.Provider) && String.Equals(firstOrDefault.Type, type.Type);
+                    });
 
                 this.SandboxedProtocol = (IProtocol)Activator.CreateInstance(protocolType);
             }
@@ -53,48 +81,34 @@ namespace Procon.Net.Shared.Sandbox {
             return this;
         }
 
-        public void Setup(IProtocolSetup setup) {
-            throw new NotImplementedException();
+        public IProtocolSetupResult Setup(IProtocolSetup setup) {
+            return this.SandboxedProtocol != null ? this.SandboxedProtocol.Setup(setup) : null;
         }
 
         public List<IPacket> Action(INetworkAction action) {
-            throw new NotImplementedException();
+            return this.SandboxedProtocol != null ? this.SandboxedProtocol.Action(action) : null;
         }
 
         public IPacket Send(IPacketWrapper packet) {
-            throw new NotImplementedException();
+            return this.SandboxedProtocol != null ? this.SandboxedProtocol.Send(packet) : null;
         }
 
         public void AttemptConnection() {
-            throw new NotImplementedException();
+            if (this.SandboxedProtocol != null) {
+                this.SandboxedProtocol.AttemptConnection();
+            }
         }
 
-        void ISandboxProtocolController.Shutdown() {
-            throw new NotImplementedException();
-        }
-
-        public bool TryEnablePlugin(Guid pluginGuid) {
-            throw new NotImplementedException();
-        }
-
-        public bool TryDisablePlugin(Guid pluginGuid) {
-            throw new NotImplementedException();
-        }
-
-        public void GameEvent(List<IProtocolEventArgs> items) {
-            throw new NotImplementedException();
-        }
-
-        public bool IsPluginEnabled(Guid pluginGuid) {
-            throw new NotImplementedException();
-        }
-
-        void IProtocol.Shutdown() {
-            throw new NotImplementedException();
+        public void Shutdown() {
+            if (this.SandboxedProtocol != null) {
+                this.SandboxedProtocol.Shutdown();
+            }
         }
 
         public void Synchronize() {
-            throw new NotImplementedException();
+            if (this.SandboxedProtocol != null) {
+                this.SandboxedProtocol.Synchronize();
+            }
         }
     }
 }

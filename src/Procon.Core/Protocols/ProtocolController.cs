@@ -20,12 +20,19 @@ namespace Procon.Core.Protocols {
         public List<IProtocolAssemblyMetadata> Protocols { get; set; }
 
         /// <summary>
+        /// The path to the packages folder
+        /// </summary>
+        public DirectoryInfo PackagesDirectory { get; set; }
+
+        /// <summary>
         /// Initializes the protocol controller with default values.
         /// </summary>
         public ProtocolController() : base() {
             this.Shared = new SharedReferences();
 
             this.Protocols = new List<IProtocolAssemblyMetadata>();
+
+            this.PackagesDirectory = Defines.PackagesDirectory;
 
             this.CommandDispatchers.AddRange(new List<ICommandDispatch>() {
                 new CommandDispatch() {
@@ -54,7 +61,7 @@ namespace Procon.Core.Protocols {
         /// </summary>
         /// <returns></returns>
         public List<FileInfo> GetProtocolAssemblies() {
-            return Directory.GetFiles(Defines.PackagesDirectory.FullName, @"*.Protocols.*.dll", SearchOption.AllDirectories)
+            return Directory.GetFiles(this.PackagesDirectory.FullName, @"*.Protocols.*.dll", SearchOption.AllDirectories)
                 .Select(path => new FileInfo(path))
                 .Where(file => Regex.Matches(file.FullName, file.Name.Replace(file.Extension, String.Empty)).Cast<Match>().Count() >= 2)
                 .ToList();
@@ -66,7 +73,7 @@ namespace Procon.Core.Protocols {
         /// <returns></returns>
         public List<DirectoryInfo> GetProtocolPackages(List<FileInfo> assemblies) {
             return assemblies
-                .Select(file => Defines.PackageVersionDirectory(Defines.PackagesDirectory.FullName, file.Name.Replace(file.Extension, String.Empty)))
+                .Select(file => Defines.PackageVersionDirectory(this.PackagesDirectory.FullName, file.Name.Replace(file.Extension, String.Empty)))
                 .Where(path => path != null)
                 .Distinct()
                 .Select(path => new DirectoryInfo(path))
@@ -93,8 +100,8 @@ namespace Procon.Core.Protocols {
             // Search for both files within a single package.
             foreach (DirectoryInfo package in packages) {
                 foreach (String name in names) {
-                    var json = Directory.GetFiles(Defines.PackagesDirectory.FullName, name + ".json", SearchOption.AllDirectories);
-                    var dll = Directory.GetFiles(Defines.PackagesDirectory.FullName, name + ".dll", SearchOption.AllDirectories);
+                    var json = Directory.GetFiles(this.PackagesDirectory.FullName, name + ".json", SearchOption.AllDirectories);
+                    var dll = Directory.GetFiles(this.PackagesDirectory.FullName, name + ".dll", SearchOption.AllDirectories);
 
                     if (json.Length > 0 && dll.Length > 0) {
                         var meta = new ProtocolAssemblyMetadata() {
@@ -152,15 +159,20 @@ namespace Procon.Core.Protocols {
             String type = parameters["type"].First<String>();
 
             if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
-                var protocol = this.Protocols.SelectMany(wrapper => wrapper.ProtocolTypes).FirstOrDefault(protocolType => String.Compare(protocolType.Provider, provider, StringComparison.OrdinalIgnoreCase) == 0 && String.Compare(protocolType.Type, type, StringComparison.OrdinalIgnoreCase) == 0);
+                var meta = this.Protocols.FirstOrDefault(metadata => metadata.ProtocolTypes.Any(protocolType => String.Compare(protocolType.Provider, provider, StringComparison.OrdinalIgnoreCase) == 0 && String.Compare(protocolType.Type, type, StringComparison.OrdinalIgnoreCase) == 0));
 
-                if (protocol != null) {
+                if (meta != null) {
+                    var protocol = meta.ProtocolTypes.FirstOrDefault(protocolType => String.Compare(protocolType.Provider, provider, StringComparison.OrdinalIgnoreCase) == 0 && String.Compare(protocolType.Type, type, StringComparison.OrdinalIgnoreCase) == 0);
+
                     result = new CommandResult() {
                         CommandResultType = CommandResultType.Success,
                         Success = true,
                         Now = {
                             ProtocolTypes = new List<ProtocolType>() {
                                 protocol as ProtocolType
+                            },
+                            ProtocolAssemblyMetadatas = new List<IProtocolAssemblyMetadata>() {
+                                meta
                             }
                         }
                     };

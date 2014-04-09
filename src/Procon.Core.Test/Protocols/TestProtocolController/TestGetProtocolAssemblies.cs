@@ -7,13 +7,26 @@ using Procon.Service.Shared;
 namespace Procon.Core.Test.Protocols.TestProtocolController {
     [TestFixture]
     public class TestGetProtocolAssemblies {
+
+        protected DirectoryInfo TestGetProtocolAssembliesDirectory = new DirectoryInfo(Path.Combine(Defines.PackagesDirectory.FullName, "TestGetProtocolAssemblies"));
+
         /// <summary>
         /// Clears out all files in the packages directory and ensures the packages directory is created.
         /// </summary>
         [SetUp]
         public void CleanPackagesDirectory() {
-            Defines.PackagesDirectory.Delete(true);
-            Defines.PackagesDirectory.Create();
+            this.TestGetProtocolAssembliesDirectory.Refresh();
+
+            if (this.TestGetProtocolAssembliesDirectory.Exists) {
+                this.TestGetProtocolAssembliesDirectory.Delete(true);
+            }
+
+            this.TestGetProtocolAssembliesDirectory.Create();
+        }
+
+        [TearDown]
+        public void TearDownCleanPackagesDirectory() {
+            this.CleanPackagesDirectory();
         }
 
         /// <summary>
@@ -21,12 +34,14 @@ namespace Procon.Core.Test.Protocols.TestProtocolController {
         /// </summary>
         [Test]
         public void TestAllProtocolAssembliesFilesFoundInPackageRoot() {
-            var dll = new FileInfo(Path.Combine(Defines.PackagesDirectory.FullName, "Something.Protocols.Something", "Something.Protocols.Something.dll"));
+            var dll = new FileInfo(Path.Combine(this.TestGetProtocolAssembliesDirectory.FullName, "Something.Protocols.Something", "Something.Protocols.Something.dll"));
             if (dll.Directory != null) dll.Directory.Create();
 
             File.WriteAllText(dll.FullName, @"binary");
 
-            var protocols = new ProtocolController();
+            var protocols = new ProtocolController() {
+                PackagesDirectory = this.TestGetProtocolAssembliesDirectory
+            };
 
             var files = protocols.GetProtocolAssemblies();
 
@@ -39,14 +54,16 @@ namespace Procon.Core.Test.Protocols.TestProtocolController {
         /// </summary>
         [Test]
         public void TestNonProtocolAssemblyNotDiscovered() {
-            var dll = new FileInfo(Path.Combine(Defines.PackagesDirectory.FullName, "Something.Protocols.Something", "Something.Protocols.Something.dll"));
-            var json = new FileInfo(Path.Combine(Defines.PackagesDirectory.FullName, "Something.Protocols.Something", "Something.Protocols.Something.json"));
+            var dll = new FileInfo(Path.Combine(this.TestGetProtocolAssembliesDirectory.FullName, "Something.Protocols.Something", "Something.Protocols.Something.dll"));
+            var json = new FileInfo(Path.Combine(this.TestGetProtocolAssembliesDirectory.FullName, "Something.Protocols.Something", "Something.Protocols.Something.json"));
             if (dll.Directory != null) dll.Directory.Create();
 
             File.WriteAllText(dll.FullName, @"binary");
             File.WriteAllText(json.FullName, @"{ }");
 
-            var protocols = new ProtocolController();
+            var protocols = new ProtocolController() {
+                PackagesDirectory = this.TestGetProtocolAssembliesDirectory
+            };
 
             var files = protocols.GetProtocolAssemblies();
 

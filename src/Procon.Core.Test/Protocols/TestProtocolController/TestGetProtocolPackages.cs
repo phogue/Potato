@@ -8,13 +8,25 @@ using Procon.Service.Shared;
 namespace Procon.Core.Test.Protocols.TestProtocolController {
     [TestFixture]
     public class TestGetProtocolPackages {
+        protected DirectoryInfo TestTestGetProtocolPackages = new DirectoryInfo(Path.Combine(Defines.PackagesDirectory.FullName, "TestGetProtocolPackages"));
+
         /// <summary>
         /// Clears out all files in the packages directory and ensures the packages directory is created.
         /// </summary>
         [SetUp]
         public void CleanPackagesDirectory() {
-            Defines.PackagesDirectory.Delete(true);
-            Defines.PackagesDirectory.Create();
+            this.TestTestGetProtocolPackages.Refresh();
+
+            if (this.TestTestGetProtocolPackages.Exists) {
+                this.TestTestGetProtocolPackages.Delete(true);
+            }
+
+            this.TestTestGetProtocolPackages.Create();
+        }
+
+        [TearDown]
+        public void TearDownCleanPackagesDirectory() {
+            this.CleanPackagesDirectory();
         }
 
         /// <summary>
@@ -22,14 +34,16 @@ namespace Procon.Core.Test.Protocols.TestProtocolController {
         /// </summary>
         [Test]
         public void TestPackageDirectoryReturnedSingleDepth() {
-            DirectoryInfo package = new DirectoryInfo(Path.Combine(Defines.PackagesDirectory.FullName, "Something.Protocols.Something"));
+            DirectoryInfo package = new DirectoryInfo(Path.Combine(this.TestTestGetProtocolPackages.FullName, "Something.Protocols.Something"));
 
             var dll = new FileInfo(Path.Combine(package.FullName, "Something.Protocols.Something.dll"));
             if (dll.Directory != null) dll.Directory.Create();
 
             File.WriteAllText(dll.FullName, @"binary");
 
-            var protocols = new ProtocolController();
+            var protocols = new ProtocolController() {
+                PackagesDirectory = this.TestTestGetProtocolPackages
+            };
 
             var packages = protocols.GetProtocolPackages(new List<FileInfo>() { dll });
 
@@ -42,14 +56,16 @@ namespace Procon.Core.Test.Protocols.TestProtocolController {
         /// </summary>
         [Test]
         public void TestPackageDirectoryReturnedSecondDepth() {
-            DirectoryInfo package = new DirectoryInfo(Path.Combine(Defines.PackagesDirectory.FullName, "Something.Protocols.Something"));
+            DirectoryInfo package = new DirectoryInfo(Path.Combine(this.TestTestGetProtocolPackages.FullName, "Something.Protocols.Something"));
 
             var dll = new FileInfo(Path.Combine(package.FullName, "SubDirectory", "Something.Protocols.Something.dll"));
             if (dll.Directory != null) dll.Directory.Create();
 
             File.WriteAllText(dll.FullName, @"binary");
 
-            var protocols = new ProtocolController();
+            var protocols = new ProtocolController() {
+                PackagesDirectory = this.TestTestGetProtocolPackages
+            };
 
             var packages = protocols.GetProtocolPackages(new List<FileInfo>() { dll });
 
@@ -62,8 +78,8 @@ namespace Procon.Core.Test.Protocols.TestProtocolController {
         /// </summary>
         [Test]
         public void TestLatestPackagePathReturned() {
-            DirectoryInfo latest = new DirectoryInfo(Path.Combine(Defines.PackagesDirectory.FullName, "Something.Protocols.Something.2.0.0"));
-            DirectoryInfo oldest = new DirectoryInfo(Path.Combine(Defines.PackagesDirectory.FullName, "Something.Protocols.Something.1.0.0"));
+            DirectoryInfo latest = new DirectoryInfo(Path.Combine(this.TestTestGetProtocolPackages.FullName, "Something.Protocols.Something.2.0.0"));
+            DirectoryInfo oldest = new DirectoryInfo(Path.Combine(this.TestTestGetProtocolPackages.FullName, "Something.Protocols.Something.1.0.0"));
 
             var latestDll = new FileInfo(Path.Combine(latest.FullName, "SubDirectory", "Something.Protocols.Something.dll"));
             if (latestDll.Directory != null) latestDll.Directory.Create();
@@ -73,7 +89,9 @@ namespace Procon.Core.Test.Protocols.TestProtocolController {
             if (oldestDll.Directory != null) oldestDll.Directory.Create();
             File.WriteAllText(oldestDll.FullName, @"binary");
 
-            var protocols = new ProtocolController();
+            var protocols = new ProtocolController() {
+                PackagesDirectory = this.TestTestGetProtocolPackages
+            };
 
             var packages = protocols.GetProtocolPackages(new List<FileInfo>() { latestDll, oldestDll });
 

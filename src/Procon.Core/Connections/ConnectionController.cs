@@ -174,6 +174,8 @@ namespace Procon.Core.Connections {
             permissions.AddPermission(new FileIOPermission(FileIOPermissionAccess.PathDiscovery, AppDomain.CurrentDomain.BaseDirectory));
             permissions.AddPermission(new FileIOPermission(FileIOPermissionAccess.AllAccess, meta.Directory.FullName));
 
+            permissions.AddPermission(new FileIOPermission(FileIOPermissionAccess.Read | FileIOPermissionAccess.PathDiscovery, Defines.PackageMyrconProconSharedLibNet40.FullName));
+
             return permissions;
         }
 

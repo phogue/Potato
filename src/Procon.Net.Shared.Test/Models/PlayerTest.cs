@@ -46,7 +46,7 @@ namespace Procon.Net.Shared.Test.Models {
         }
 
         /// <summary>
-        /// Tests the ip will be looked up. This test may fail if the database is updated.
+        /// Tests the ip is set when no port is suffixed
         /// </summary>
         [Test]
         public void TestIp() {
@@ -55,12 +55,10 @@ namespace Procon.Net.Shared.Test.Models {
             };
 
             Assert.AreEqual("1.1.1.1", player.Ip);
-            Assert.AreEqual("AU", player.Location.CountryCode);
-            Assert.AreEqual("Australia", player.Location.CountryName);
         }
 
         /// <summary>
-        /// Tests the ip:port will be split, with the port field populated and the ip looked up.
+        /// Tests the ip:port will be split, with the port field populated.
         /// </summary>
         [Test]
         public void TestIpPort() {
@@ -70,8 +68,6 @@ namespace Procon.Net.Shared.Test.Models {
 
             Assert.AreEqual("1.1.1.1", player.Ip);
             Assert.AreEqual("9000", player.Port);
-            Assert.AreEqual("AU", player.Location.CountryCode);
-            Assert.AreEqual("Australia", player.Location.CountryName);
         }
 
         /// <summary>

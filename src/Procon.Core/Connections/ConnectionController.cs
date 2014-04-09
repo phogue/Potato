@@ -25,7 +25,7 @@ namespace Procon.Core.Connections {
     public class ConnectionController : CoreController, ISharedReferenceAccess, IConnectionController {
         public ConnectionModel ConnectionModel { get; set; }
 
-        public IProtocol Protocol { get; set; }
+        public IProtocolShared Protocol { get; set; }
 
         /// <summary>
         /// The appdomain where the protocol is loaded and operates in.

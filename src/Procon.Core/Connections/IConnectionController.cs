@@ -15,7 +15,7 @@ namespace Procon.Core.Connections {
         /// <summary>
         ///  The actual game object
         /// </summary>
-        IProtocol Protocol { get; set; }
+        IProtocolShared Protocol { get; set; }
 
         /// <summary>
         /// Proxy to the active protocol state

@@ -9,6 +9,11 @@
 			Provider: "Myrcon",
 			Name: "Mock Integration Test Protocol",
 			Type: "MockIntegrationTestProtocol",
+		},
+		{
+			Provider: "Myrcon",
+			Name: "Mock Protocol",
+			Type: "MockProtocol",
 		}
 	]
 }

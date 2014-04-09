@@ -100,6 +100,7 @@
     <Compile Include="Plugins\TestPluginsEnabled.cs" />
     <Compile Include="Plugins\TestPluginsIsolation.cs" />
     <Compile Include="Plugins\TestPluginsSerialization.cs" />
+    <Compile Include="Protocols\TestProtocolIsolation.cs" />
     <Compile Include="Protocols\TestProtocolController\TestDispose.cs" />
     <Compile Include="Protocols\TestProtocolController\TestGetProtocolAssemblies.cs" />
     <Compile Include="Protocols\TestProtocolController\TestGetProtocolPackages.cs" />
@@ -171,6 +172,10 @@
     <Compile Include="Variables\TestVariablesSet.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Myrcon.Protocols.Test\Myrcon.Protocols.Test.csproj">
+      <Project>{08CD13AB-C077-49CA-9689-EE75DC59EFAF}</Project>
+      <Name>Myrcon.Protocols.Test</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Procon.Core.Shared\Procon.Core.Shared.csproj">
       <Project>{1B4351C6-BAAD-4075-A322-CAF4FE582392}</Project>
       <Name>Procon.Core.Shared</Name>
@@ -236,7 +241,11 @@
   </PropertyGroup>
   <PropertyGroup>
     <PostBuildEvent>mkdir "$(TargetDir)Packages\Myrcon.Plugins.Test.2.0.0\lib\net40\"
-move /Y "$(TargetDir)Myrcon.Plugins.Test.dll" "$(TargetDir)Packages\Myrcon.Plugins.Test.2.0.0\lib\net40\Myrcon.Plugins.Test.dll"</PostBuildEvent>
+move /Y "$(TargetDir)Myrcon.Plugins.Test.dll" "$(TargetDir)Packages\Myrcon.Plugins.Test.2.0.0\lib\net40\Myrcon.Plugins.Test.dll"
+
+mkdir "$(TargetDir)Packages\Myrcon.Protocols.Test.2.0.0\lib\net40\"
+move /Y "$(TargetDir)Myrcon.Protocols.Test.dll" "$(TargetDir)Packages\Myrcon.Protocols.Test.2.0.0\lib\net40\Myrcon.Protocols.Test.dll"
+move /Y "$(TargetDir)Myrcon.Protocols.Test.json" "$(TargetDir)Packages\Myrcon.Protocols.Test.2.0.0\lib\net40\Myrcon.Protocols.Test.json"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -116,6 +116,67 @@ namespace Procon.Core.Shared {
         }
 
         /// <summary>
+        /// Builds a command to send a InstanceAddConnection signal
+        /// </summary>
+        /// <param name="provider">The protocol provider</param>
+        /// <param name="type">The type of protocol from the provider</param>
+        /// <param name="hostName">The hostname to connect to</param>
+        /// <param name="port">The port of the connection</param>
+        /// <param name="password">The password for authentication</param>
+        /// <param name="arguments">The additional argument parameters for a protocol</param>
+        /// <returns>The built command to the dispatch</returns>
+        public static ICommand InstanceAddConnection(String provider, String type, String hostName, ushort port, String password, String arguments) {
+            return new Command() {
+                CommandType = CommandType.InstanceAddConnection,
+                Parameters = new List<ICommandParameter>() {
+                    new CommandParameter() {
+                        Data = {
+                            Content = new List<String>() {
+                                provider
+                            }
+                        }
+                    },
+                    new CommandParameter() {
+                        Data = {
+                            Content = new List<String>() {
+                                type
+                            }
+                        }
+                    },
+                    new CommandParameter() {
+                        Data = {
+                            Content = new List<String>() {
+                                hostName
+                            }
+                        }
+                    },
+                    new CommandParameter() {
+                        Data = {
+                            Content = new List<String>() {
+                                port.ToString(CultureInfo.InvariantCulture)
+                            }
+                        }
+                    },
+                    new CommandParameter() {
+                        Data = {
+                            Content = new List<String>() {
+                                password
+                            }
+                        }
+                    },
+                    new CommandParameter() {
+                        Data = {
+                            Content = new List<String>() {
+                                arguments
+                            }
+                        }
+                    }
+                }
+            };
+        }
+        
+
+        /// <summary>
         /// Builds a command to send a PackagesMergePackage
         /// </summary>
         /// <param name="packageId">The package id to install</param>

@@ -8,7 +8,7 @@ namespace Procon.Net.Shared.Sandbox {
         /// <summary>
         /// Object to bubble events to
         /// </summary>
-        SandboxProtocolCallback Bubble { get; set; }
+        ISandboxProtocolCallbackProxy Bubble { get; set; }
 
         /// <summary>
         /// Loads a protocol assembly, loads a new IProtocol instance with the setup provided.

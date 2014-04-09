@@ -5,7 +5,7 @@ namespace Procon.Net.Shared.Sandbox {
     /// Callback for to be initialized in the host domain, set and passed into
     /// the sandboxed domain allowing for events to be pushed through.
     /// </summary>
-    public sealed class SandboxProtocolCallback {
+    public sealed class SandboxProtocolCallbackProxy : MarshalByRefObject, ISandboxProtocolCallbackProxy {
         /// <summary>
         /// Called when ever a dispatched game event occurs.
         /// </summary>
@@ -16,5 +16,9 @@ namespace Procon.Net.Shared.Sandbox {
         /// be connections, disconnections, logins or raw packets being recieved.
         /// </summary>
         public Action<IProtocolShared, IClientEventArgs> ClientEvent { get; set; }
+
+        public override object InitializeLifetimeService() {
+            return null;
+        }
     }
 }

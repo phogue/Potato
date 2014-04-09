@@ -25,7 +25,7 @@ namespace Procon.Net.Shared.Test.TestShared.TestSandboxProtocolController {
         public void TestSuccessProtocolEventBubbledThrough() {
             bool called = false;
 
-            this.Controller.Bubble = new SandboxProtocolCallback() {
+            this.Controller.Bubble = new SandboxProtocolCallbackProxy() {
                 ProtocolEvent = (shared, args) => { called = true; }
             };
 
@@ -42,7 +42,7 @@ namespace Procon.Net.Shared.Test.TestShared.TestSandboxProtocolController {
         public void TestSuccessClientEventBubbledThrough() {
             bool called = false;
 
-            this.Controller.Bubble = new SandboxProtocolCallback() {
+            this.Controller.Bubble = new SandboxProtocolCallbackProxy() {
                 ClientEvent = (shared, args) => { called = true; }
             };
 

@@ -81,7 +81,8 @@
     <Compile Include="ConnectionState.cs" />
     <Compile Include="ProtocolDeclarationAttribute.cs" />
     <Compile Include="ProtocolSetupResult.cs" />
-    <Compile Include="Sandbox\SandboxProtocolCallback.cs" />
+    <Compile Include="Sandbox\ISandboxProtocolCallbackProxy.cs" />
+    <Compile Include="Sandbox\SandboxProtocolCallbackProxy.cs" />
     <Compile Include="Sandbox\ISandboxProtocolController.cs" />
     <Compile Include="Sandbox\SandboxProtocolController.cs" />
     <Compile Include="ProtocolAssemblyMetadata.cs" />

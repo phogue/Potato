@@ -13,7 +13,7 @@ namespace Procon.Net.Shared.Sandbox {
     /// </summary>
     public class SandboxProtocolController : MarshalByRefObject, ISandboxProtocolController {
 
-        public SandboxProtocolCallback Bubble { get; set; }
+        public ISandboxProtocolCallbackProxy Bubble { get; set; }
 
         /// <summary>
         /// The protocol instance loaded in the sandboxed appdomain.

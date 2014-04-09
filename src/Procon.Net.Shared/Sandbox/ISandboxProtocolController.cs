@@ -11,6 +11,6 @@ namespace Procon.Net.Shared.Sandbox {
         /// <param name="assemblyFile"></param>
         /// <param name="type"></param>
         /// <returns></returns>
-        IProtocol Create(String assemblyFile, IProtocolType type);
+        bool Create(String assemblyFile, IProtocolType type);
     }
 }

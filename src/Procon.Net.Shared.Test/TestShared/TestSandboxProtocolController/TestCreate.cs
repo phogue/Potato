@@ -35,6 +35,19 @@ namespace Procon.Net.Shared.Test.TestShared.TestSandboxProtocolController {
         }
 
         /// <summary>
+        /// Tests that the return value of Create is true if the sandboxed protocol is loaded correctly.
+        /// </summary>
+        [Test]
+        public void TestSuccessReturnsTrue() {
+            var controller = new SandboxProtocolController();
+
+            var result = controller.Create(this.Meta.Assembly.FullName, this.Meta.ProtocolTypes.FirstOrDefault(type => type.Type == "MyrconTestProtocol8"));
+
+            Assert.IsTrue(result);
+            Assert.IsNotNull(controller.SandboxedProtocol);
+        }
+
+        /// <summary>
         /// Passes in a fake path to load
         /// </summary>
         [Test]
@@ -43,6 +56,19 @@ namespace Procon.Net.Shared.Test.TestShared.TestSandboxProtocolController {
 
             controller.Create("Protocol.dll", this.Meta.ProtocolTypes.FirstOrDefault(type => type.Type == "MyrconTestProtocol8"));
 
+            Assert.IsNull(controller.SandboxedProtocol);
+        }
+
+        /// <summary>
+        /// Tests that the return value of Create is false if the sandboxed protocol is not loaded correctly.
+        /// </summary>
+        [Test]
+        public void TestFailureReturnsFalse() {
+            var controller = new SandboxProtocolController();
+
+            var result = controller.Create("Protocol.dll", this.Meta.ProtocolTypes.FirstOrDefault(type => type.Type == "MyrconTestProtocol8"));
+
+            Assert.IsFalse(result);
             Assert.IsNull(controller.SandboxedProtocol);
         }
 

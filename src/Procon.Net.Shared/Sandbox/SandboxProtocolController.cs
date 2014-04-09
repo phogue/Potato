@@ -50,7 +50,7 @@ namespace Procon.Net.Shared.Sandbox {
         [Obsolete]
         public event Action<IProtocol, IClientEventArgs> ClientEvent;
 
-        public IProtocol Create(String assemblyFile, IProtocolType type) {
+        public bool Create(String assemblyFile, IProtocolType type) {
             this.SandboxedProtocol = null;
 
             try {
@@ -78,7 +78,7 @@ namespace Procon.Net.Shared.Sandbox {
                 this.SandboxedProtocol = null;
             }
 
-            return this;
+            return this.SandboxedProtocol != null;
         }
 
         public IProtocolSetupResult Setup(IProtocolSetup setup) {

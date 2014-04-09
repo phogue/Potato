@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Security;
@@ -174,7 +175,11 @@ namespace Procon.Core.Connections {
             permissions.AddPermission(new FileIOPermission(FileIOPermissionAccess.PathDiscovery, AppDomain.CurrentDomain.BaseDirectory));
             permissions.AddPermission(new FileIOPermission(FileIOPermissionAccess.AllAccess, meta.Directory.FullName));
 
-            permissions.AddPermission(new FileIOPermission(FileIOPermissionAccess.Read | FileIOPermissionAccess.PathDiscovery, Defines.PackageMyrconProconSharedLibNet40.FullName));
+            DirectoryInfo coreSharedPackageDirectory = Defines.PackageContainingPath(Defines.PackageMyrconProconSharedLibNet40.FullName);
+
+            if (coreSharedPackageDirectory != null) {
+                permissions.AddPermission(new FileIOPermission(FileIOPermissionAccess.Read | FileIOPermissionAccess.PathDiscovery, coreSharedPackageDirectory.FullName));
+            }
 
             return permissions;
         }

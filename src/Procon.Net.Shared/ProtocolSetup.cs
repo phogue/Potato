@@ -5,6 +5,7 @@ namespace Procon.Net.Shared {
     /// <summary>
     /// Default setup variables used when creating a new protocol
     /// </summary>
+    [Serializable]
     public class ProtocolSetup : IProtocolSetup {
         public String Hostname { get; set; }
         public ushort Port { get; set; }

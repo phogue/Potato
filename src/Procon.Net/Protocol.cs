@@ -4,7 +4,6 @@ using System.Linq;
 using Procon.Net.Shared;
 using Procon.Net.Shared.Actions;
 using Procon.Net.Shared.Actions.Deferred;
-using Procon.Net.Shared.Protocols;
 
 namespace Procon.Net {
     /// <summary>
@@ -46,11 +45,6 @@ namespace Procon.Net {
             }
         }
         private IProtocolType _gameType;
-
-        /// <summary>
-        /// The base path to look for game configs.
-        /// </summary>
-        public String ProtocolsConfigDirectory { get; set; }
 
         /// <summary>
         /// Handles all packet dispatching.

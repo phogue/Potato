@@ -30,5 +30,10 @@ namespace Procon.Net.Shared {
         /// Convert the variables dictionary to a simple string
         /// </summary>
         String ArgumentsString();
+
+        /// <summary>
+        /// The path for the protocol to look for configs at
+        /// </summary>
+        String ConfigDirectory { get; set; }
     }
 }

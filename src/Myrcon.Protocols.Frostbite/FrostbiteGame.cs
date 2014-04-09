@@ -387,10 +387,10 @@ namespace Myrcon.Protocols.Frostbite {
                     ProtocolConfigModel config = null;
 
                     if (info.GameMod == GameMods.None) {
-                        config = ProtocolConfigLoader.Load<ProtocolConfigModel>(this.ProtocolsConfigDirectory, this.ProtocolType);
+                        config = ProtocolConfigLoader.Load<ProtocolConfigModel>(this.Options.ConfigDirectory, this.ProtocolType);
                     }
                     else {
-                        config = ProtocolConfigLoader.Load<ProtocolConfigModel>(this.ProtocolsConfigDirectory, new ProtocolType(this.ProtocolType) {
+                        config = ProtocolConfigLoader.Load<ProtocolConfigModel>(this.Options.ConfigDirectory, new ProtocolType(this.ProtocolType) {
                             Type = String.Format("{0}_{1}", this.ProtocolType, info.GameMod)
                         });
                     }

@@ -689,6 +689,8 @@ namespace Procon.Core {
                         var supportCheckResult = this.Protocols.Tunnel(CommandBuilder.ProtocolsCheckSupportedProtocol(protocolTypeProvider, protocolTypeType).SetOrigin(CommandOrigin.Local));
 
                         if (supportCheckResult.Success == true) {
+                            IProtocolAssemblyMetadata meta = supportCheckResult.Now.ProtocolAssemblyMetadatas.First();
+                            
                             ConnectionController connection = new ConnectionController() {
                                 Instance = this
                             };
@@ -697,7 +699,8 @@ namespace Procon.Core {
                                 Hostname = hostName,
                                 Port = port,
                                 Password = password,
-                                Arguments = ArgumentHelper.ToArguments(additional.Wordify())
+                                Arguments = ArgumentHelper.ToArguments(additional.Wordify()),
+                                ConfigDirectory = meta.Directory.GetDirectories(Defines.ProtocolsDirectoryName, SearchOption.AllDirectories).Select(directory => directory.FullName).FirstOrDefault()
                             });
 
                             lock (this.Connections) {

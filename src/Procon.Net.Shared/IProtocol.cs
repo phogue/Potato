@@ -6,11 +6,6 @@ namespace Procon.Net.Shared {
     /// </summary>
     public interface IProtocol : IProtocolShared {
         /// <summary>
-        /// The directories to look for game configs in
-        /// </summary>
-        String ProtocolsConfigDirectory { get; set; }
-
-        /// <summary>
         /// Fired when ever a dispatched game event occurs.
         /// </summary>
         event Action<IProtocol, IProtocolEventArgs> ProtocolEvent;

@@ -2,7 +2,6 @@
 using Procon.Core.Shared;
 using Procon.Core.Shared.Models;
 using Procon.Net.Shared;
-using Procon.Net.Shared.Sandbox;
 
 namespace Procon.Core.Connections {
     /// <summary>

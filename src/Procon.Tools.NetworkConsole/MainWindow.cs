@@ -104,7 +104,7 @@ namespace Procon.Tools.NetworkConsole {
                     DirectoryInfo packagePath = Procon.Service.Shared.Defines.PackageContainingPath(gameType.Assembly.Location);
 
                     if (packagePath != null) {
-                        this.ActiveGame.ProtocolsConfigDirectory = packagePath.GetDirectories(Procon.Service.Shared.Defines.ProtocolsDirectoryName, SearchOption.AllDirectories).Select(directory => directory.FullName).FirstOrDefault();
+                        this.ActiveGame.Options.ConfigDirectory = packagePath.GetDirectories(Procon.Service.Shared.Defines.ProtocolsDirectoryName, SearchOption.AllDirectories).Select(directory => directory.FullName).FirstOrDefault();
                     }
 
                     this.protocolTestControl1.ActiveGame = this.ActiveGame;

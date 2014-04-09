@@ -12,6 +12,8 @@ namespace Procon.Net.Shared {
         public String Password { get; set; }
         public IDictionary<String, String> Arguments { get; set; }
 
+        public string ConfigDirectory { get; set; }
+
         /// <summary>
         /// Initializes the setup with default values.
         /// </summary>

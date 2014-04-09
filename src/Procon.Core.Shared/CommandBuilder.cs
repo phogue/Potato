@@ -174,7 +174,70 @@ namespace Procon.Core.Shared {
                 }
             };
         }
-        
+
+        /// <summary>
+        /// Builds a command to send a InstanceRemoveConnection
+        /// </summary>
+        /// <param name="connectionGuid">The connection guid to remove</param>
+        /// <returns>The built command to the dispatch</returns>
+        public static ICommand InstanceRemoveConnection(Guid connectionGuid) {
+            return new Command() {
+                CommandType = CommandType.InstanceRemoveConnection,
+                Parameters = new List<ICommandParameter>() {
+                    new CommandParameter() {
+                        Data = {
+                            Content = new List<String>() {
+                                connectionGuid.ToString()
+                            }
+                        }
+                    }
+                }
+            };
+        }
+
+        /// <summary>
+        /// Builds a command to send a InstanceRemoveConnection
+        /// </summary>
+        /// <param name="provider">The protocol provider</param>
+        /// <param name="type">The type of protocol from the provider</param>
+        /// <param name="hostName">The hostname to connect to</param>
+        /// <param name="port">The port of the connection</param>
+        /// <returns>The built command to the dispatch</returns>
+        public static ICommand InstanceRemoveConnection(String provider, String type, String hostName, ushort port) {
+            return new Command() {
+                CommandType = CommandType.InstanceRemoveConnection,
+                Parameters = new List<ICommandParameter>() {
+                    new CommandParameter() {
+                        Data = {
+                            Content = new List<String>() {
+                                provider
+                            }
+                        }
+                    },
+                    new CommandParameter() {
+                        Data = {
+                            Content = new List<String>() {
+                                type
+                            }
+                        }
+                    },
+                    new CommandParameter() {
+                        Data = {
+                            Content = new List<String>() {
+                                hostName
+                            }
+                        }
+                    },
+                    new CommandParameter() {
+                        Data = {
+                            Content = new List<String>() {
+                                port.ToString(CultureInfo.InvariantCulture)
+                            }
+                        }
+                    }
+                }
+            };
+        }
 
         /// <summary>
         /// Builds a command to send a PackagesMergePackage

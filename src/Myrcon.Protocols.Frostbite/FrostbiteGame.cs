@@ -9,11 +9,16 @@ using Procon.Net.Protocols.PunkBuster;
 using Procon.Net.Protocols.PunkBuster.Packets;
 using Procon.Net.Shared;
 using Procon.Net.Shared.Actions;
+using Procon.Net.Shared.Geolocation;
 using Procon.Net.Shared.Models;
 using Procon.Net.Shared.Utils;
 
 namespace Myrcon.Protocols.Frostbite {
     public abstract class FrostbiteGame : Protocol {
+        /// <summary>
+        /// Used when determining a player's Country Name and Code.
+        /// </summary>
+        protected static readonly IGeolocate Geolocation = new GeolocateIp();
 
         protected const HumanHitLocation Headshot = HumanHitLocation.Head | HumanHitLocation.Neck;
 
@@ -705,6 +710,14 @@ namespace Myrcon.Protocols.Frostbite {
                     if (statePlayer != null) {
                         statePlayer.SlotId = player.SlotId;
                         statePlayer.Ip = player.Ip;
+
+                        Location location = FrostbiteGame.Geolocation.Locate(statePlayer.Ip);
+
+                        if (location != null) {
+                            statePlayer.Location = location;
+                        }
+
+
                     }
                 }
                 else if (pbObject is PunkBusterBeginPlayerList) {

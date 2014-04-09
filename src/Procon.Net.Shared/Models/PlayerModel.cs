@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Procon.Net.Shared.Geolocation;
 using Procon.Net.Shared.Utils;
 
 namespace Procon.Net.Shared.Models {
@@ -10,11 +9,6 @@ namespace Procon.Net.Shared.Models {
     /// </summary>
     [Serializable]
     public sealed class PlayerModel : NetworkModel {
-        /// <summary>
-        /// Used when determining a player's Country Name and Code.
-        /// </summary>
-        public static readonly IGeolocate Geolocation = new GeolocateIp();
-
         /// <summary>
         /// A Unique Identifier.
         /// </summary>
@@ -109,12 +103,6 @@ namespace Procon.Net.Shared.Models {
                 if (value != null && value.Contains(":")) {
                     this._ip = value.Split(':').FirstOrDefault();
                     this.Port = value.Split(':').LastOrDefault();
-                }
-
-                Location location = PlayerModel.Geolocation.Locate(this._ip);
-
-                if (location != null) {
-                    this.Location = location;
                 }
             }
         }

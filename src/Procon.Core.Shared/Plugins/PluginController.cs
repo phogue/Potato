@@ -185,7 +185,7 @@ namespace Procon.Core.Shared.Plugins {
                 config.Create(this.GetType());
                 this.WriteConfig(config);
 
-                config.Save(new FileInfo(Path.Combine(this.ConfigDirectoryInfo.FullName, this.GetType().Namespace + ".xml")));
+                config.Save(new FileInfo(Path.Combine(this.ConfigDirectoryInfo.FullName, this.GetType().Namespace + ".json")));
             }
         }
 

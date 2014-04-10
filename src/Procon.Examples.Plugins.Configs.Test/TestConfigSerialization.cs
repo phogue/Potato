@@ -52,7 +52,7 @@ namespace Procon.Examples.Plugins.Configs.Test {
             // Now shut it down..
             pluginsSaving.Dispose();
 
-            String configPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Configs", connectionGuid.ToString(), pluginGuid.ToString(), "Procon.Examples.Plugins.Configs.xml");
+            String configPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Configs", connectionGuid.ToString(), pluginGuid.ToString(), "Procon.Examples.Plugins.Configs.json");
 
             // See [execution path]/Configs/477b1278-7b48-f5ae-4f91-f9ba12e204e7/bf3b9c62-050a-4d25-bb2e-0bb48a394eb5/Procon.Examples.Configs.xml
             Assert.IsTrue(File.Exists(configPath));
@@ -84,7 +84,7 @@ namespace Procon.Examples.Plugins.Configs.Test {
             // Now shut it down..
             pluginsSaving.Dispose();
 
-            String configPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Configs", connectionGuid.ToString(), pluginGuid.ToString(), "Procon.Examples.Plugins.Configs.xml");
+            String configPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Configs", connectionGuid.ToString(), pluginGuid.ToString(), "Procon.Examples.Plugins.Configs.json");
 
             // See [execution path]/Configs/477b1278-7b48-f5ae-4f91-f9ba12e204e7/bf3b9c62-050a-4d25-bb2e-0bb48a394eb5/Procon.Examples.Configs.xml
             Assert.IsTrue(File.Exists(configPath));

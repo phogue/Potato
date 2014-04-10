@@ -19,6 +19,7 @@
     <file src="..\..\builds\Debug\Packages\Myrcon.Protocols.Frostbite.2.0.0\lib\net40\*.dll" target="lib\net40\" />
     <file src="..\..\builds\Debug\Packages\Myrcon.Protocols.Frostbite.2.0.0\lib\net40\*.xml" target="lib\net40\" />
     <file src="..\..\builds\Debug\Packages\Myrcon.Protocols.Frostbite.2.0.0\lib\net40\*.pdb" target="lib\net40\" />
+    <file src="..\..\builds\Debug\Packages\Myrcon.Protocols.Frostbite.2.0.0\lib\net40\*.json" target="content\" />
     <file src="..\..\builds\Debug\Packages\Myrcon.Protocols.Frostbite.2.0.0\lib\net40\*\**" target="content\" />
   </files>
 </package>

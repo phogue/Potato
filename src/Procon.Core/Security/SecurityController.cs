@@ -1865,7 +1865,8 @@ namespace Procon.Core.Security {
                             CommandType.NetworkProtocolQueryMapPool,
                             CommandType.NetworkProtocolQueryMaps,
                             CommandType.NetworkProtocolQueryPlayers,
-                            CommandType.NetworkProtocolQuerySettings
+                            CommandType.NetworkProtocolQuerySettings,
+                            CommandType.ProtocolsFetchSupportedProtocols
                         };
 
                         foreach (var permission in group.Permissions) {

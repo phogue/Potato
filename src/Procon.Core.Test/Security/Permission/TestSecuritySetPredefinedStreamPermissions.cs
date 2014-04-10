@@ -109,7 +109,8 @@ namespace Procon.Core.Test.Security.Permission {
                 CommandType.NetworkProtocolQueryMapPool,
                 CommandType.NetworkProtocolQueryMaps,
                 CommandType.NetworkProtocolQueryPlayers,
-                CommandType.NetworkProtocolQuerySettings
+                CommandType.NetworkProtocolQuerySettings,
+                CommandType.ProtocolsFetchSupportedProtocols
             };
 
             Assert.IsNotNull(group);

@@ -48,6 +48,7 @@ namespace Procon.Core.Shared.Serialization {
                 new InterfaceJsonConverter<ICommandData, CommandData>(),
                 new InterfaceJsonConverter<ICommandResult, CommandResult>(),
                 new InterfaceJsonConverter<ICommand, Command>(),
+                new InterfaceJsonConverter<IConfigCommand, ConfigCommand>(),
                 new InterfaceJsonConverter<ICommandParameter, CommandParameter>(),
                 new InterfaceJsonConverter<ICommandDispatch, CommandDispatch>()
             }).ToList();

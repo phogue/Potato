@@ -331,46 +331,46 @@ namespace Procon.Core.Test.Security {
             var loadConfig = new Config();
             loadConfig.Load(ConfigFileInfo);
 
-            var commands = loadConfig.RootOf<SecurityController>().Children<JObject>().Select(item => item.ToObject<Command>(JsonSerialization.Minimal)).ToList();
+            var commands = loadConfig.RootOf<SecurityController>().Children<JObject>().Select(item => item.ToObject<IConfigCommand>(JsonSerialization.Minimal)).ToList();
 
-            Assert.AreEqual("SecurityAddGroup", commands[0].Name);
-            Assert.AreEqual("Guest", commands[0].Parameters[0].First<String>());
+            Assert.AreEqual("SecurityAddGroup", commands[0].Command.Name);
+            Assert.AreEqual("Guest", commands[0].Command.Parameters[0].First<String>());
 
-            Assert.AreEqual("SecurityAddGroup", commands[1].Name);
-            Assert.AreEqual("GroupName", commands[1].Parameters[0].First<String>());
+            Assert.AreEqual("SecurityAddGroup", commands[1].Command.Name);
+            Assert.AreEqual("GroupName", commands[1].Command.Parameters[0].First<String>());
 
-            Assert.AreEqual("SecurityGroupSetPermission", commands[2].Name);
-            Assert.AreEqual("GroupName", commands[2].Parameters[0].First<String>());
-            Assert.AreEqual(CommandType.VariablesSet.ToString(), commands[2].Parameters[1].First<String>());
-            Assert.AreEqual("77", commands[2].Parameters[2].First<String>());
+            Assert.AreEqual("SecurityGroupSetPermission", commands[2].Command.Name);
+            Assert.AreEqual("GroupName", commands[2].Command.Parameters[0].First<String>());
+            Assert.AreEqual(CommandType.VariablesSet.ToString(), commands[2].Command.Parameters[1].First<String>());
+            Assert.AreEqual("77", commands[2].Command.Parameters[2].First<String>());
 
-            Assert.AreEqual("SecurityGroupSetPermission", commands[3].Name);
-            Assert.AreEqual("GroupName", commands[3].Parameters[0].First<String>());
-            Assert.AreEqual(CommandType.VariablesSetA.ToString(), commands[3].Parameters[1].First<String>());
-            Assert.AreEqual("88", commands[3].Parameters[2].First<String>());
+            Assert.AreEqual("SecurityGroupSetPermission", commands[3].Command.Name);
+            Assert.AreEqual("GroupName", commands[3].Command.Parameters[0].First<String>());
+            Assert.AreEqual(CommandType.VariablesSetA.ToString(), commands[3].Command.Parameters[1].First<String>());
+            Assert.AreEqual("88", commands[3].Command.Parameters[2].First<String>());
 
-            Assert.AreEqual("SecurityGroupSetPermission", commands[4].Name);
-            Assert.AreEqual("GroupName", commands[4].Parameters[0].First<String>());
-            Assert.AreEqual("CustomPermission", commands[4].Parameters[1].First<String>());
-            Assert.AreEqual("22", commands[4].Parameters[2].First<String>());
+            Assert.AreEqual("SecurityGroupSetPermission", commands[4].Command.Name);
+            Assert.AreEqual("GroupName", commands[4].Command.Parameters[0].First<String>());
+            Assert.AreEqual("CustomPermission", commands[4].Command.Parameters[1].First<String>());
+            Assert.AreEqual("22", commands[4].Command.Parameters[2].First<String>());
 
-            Assert.AreEqual("SecurityGroupAddAccount", commands[5].Name);
-            Assert.AreEqual("GroupName", commands[5].Parameters[0].First<String>());
-            Assert.AreEqual("Phogue", commands[5].Parameters[1].First<String>());
+            Assert.AreEqual("SecurityGroupAddAccount", commands[5].Command.Name);
+            Assert.AreEqual("GroupName", commands[5].Command.Parameters[0].First<String>());
+            Assert.AreEqual("Phogue", commands[5].Command.Parameters[1].First<String>());
 
-            Assert.AreEqual("SecurityAccountSetPasswordHash", commands[6].Name);
-            Assert.AreEqual("Phogue", commands[6].Parameters[0].First<String>());
+            Assert.AreEqual("SecurityAccountSetPasswordHash", commands[6].Command.Name);
+            Assert.AreEqual("Phogue", commands[6].Command.Parameters[0].First<String>());
             // We can only test if this isn't null as it contains a random salt and resulting hash.
-            Assert.IsNotNull(commands[6].Parameters[1].First<String>());
+            Assert.IsNotNull(commands[6].Command.Parameters[1].First<String>());
 
-            Assert.AreEqual("SecurityAccountSetPreferredLanguageCode", commands[7].Name);
-            Assert.AreEqual("Phogue", commands[7].Parameters[0].First<String>());
-            Assert.AreEqual("de-DE", commands[7].Parameters[1].First<String>());
+            Assert.AreEqual("SecurityAccountSetPreferredLanguageCode", commands[7].Command.Name);
+            Assert.AreEqual("Phogue", commands[7].Command.Parameters[0].First<String>());
+            Assert.AreEqual("de-DE", commands[7].Command.Parameters[1].First<String>());
 
-            Assert.AreEqual("SecurityAccountAddPlayer", commands[8].Name);
-            Assert.AreEqual("Phogue", commands[8].Parameters[0].First<String>());
-            Assert.AreEqual(CommonProtocolType.DiceBattlefield3, commands[8].Parameters[1].First<String>());
-            Assert.AreEqual("ABCDEF", commands[8].Parameters[2].First<String>());
+            Assert.AreEqual("SecurityAccountAddPlayer", commands[8].Command.Name);
+            Assert.AreEqual("Phogue", commands[8].Command.Parameters[0].First<String>());
+            Assert.AreEqual(CommonProtocolType.DiceBattlefield3, commands[8].Command.Parameters[1].First<String>());
+            Assert.AreEqual("ABCDEF", commands[8].Command.Parameters[2].First<String>());
         }
     }
 }

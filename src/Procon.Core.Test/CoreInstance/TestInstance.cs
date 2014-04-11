@@ -189,6 +189,8 @@ namespace Procon.Core.Test.CoreInstance {
                 }
             }.Execute();
 
+            instance.Shared.Variables.Tunnel(CommandBuilder.VariablesSet(CommonVariableNames.InstanceConfigPassword, "InstanceConfigurationPassword").SetOrigin(CommandOrigin.Local));
+
             instance.Connections.Add(new ConnectionController() {
                 ConnectionModel = new ConnectionModel() {
                     ProtocolType = new ProtocolType() {
@@ -207,16 +209,18 @@ namespace Procon.Core.Test.CoreInstance {
 
             var loadConfig = new Config();
             loadConfig.Load(ConfigFileInfo);
-            // .Where(item => item.Name == "InstanceAddConnection")
-            var command = loadConfig.RootOf<InstanceController>().Children<JObject>().Select(item => item.ToObject<Command>(JsonSerialization.Minimal)).ToList().Last();
+            
+            var configCommand = loadConfig.RootOf<InstanceController>().Children<JObject>().Select(item => item.ToObject<IConfigCommand>(JsonSerialization.Minimal)).ToList().Last();
 
-            Assert.AreEqual("InstanceAddConnection", command.Name);
-            Assert.AreEqual("Myrcon", command.Parameters[0].First<String>());
-            Assert.AreEqual("MockProtocol", command.Parameters[1].First<String>());
-            Assert.AreEqual("1.1.1.1", command.Parameters[2].First<String>());
-            Assert.AreEqual("27516", command.Parameters[3].First<String>());
-            Assert.AreEqual("password", command.Parameters[4].First<String>());
-            Assert.AreEqual("", command.Parameters[5].First<String>());
+            configCommand.Decrypt("InstanceConfigurationPassword");
+
+            Assert.AreEqual("InstanceAddConnection", configCommand.Command.Name);
+            Assert.AreEqual("Myrcon", configCommand.Command.Parameters[0].First<String>());
+            Assert.AreEqual("MockProtocol", configCommand.Command.Parameters[1].First<String>());
+            Assert.AreEqual("1.1.1.1", configCommand.Command.Parameters[2].First<String>());
+            Assert.AreEqual("27516", configCommand.Command.Parameters[3].First<String>());
+            Assert.AreEqual("password", configCommand.Command.Parameters[4].First<String>());
+            Assert.AreEqual("", configCommand.Command.Parameters[5].First<String>());
 
             instance.Dispose();
         }

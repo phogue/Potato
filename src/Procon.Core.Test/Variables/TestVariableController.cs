@@ -245,19 +245,19 @@ namespace Procon.Core.Test.Variables {
             var loadConfig = new Config();
             loadConfig.Load(ConfigFileInfo);
 
-            var commands = loadConfig.RootOf<VariableController>().Children<JObject>().Select(item => item.ToObject<Command>(JsonSerialization.Minimal)).ToList();
+            var commands = loadConfig.RootOf<VariableController>().Children<JObject>().Select(item => item.ToObject<IConfigCommand>(JsonSerialization.Minimal)).ToList();
 
-            Assert.AreEqual("VariablesSetA", commands[0].Name);
-            Assert.AreEqual("NameToWriteString", commands[0].Parameters[0].First<String>());
-            Assert.AreEqual("this is a string", commands[0].Parameters[1].First<String>());
+            Assert.AreEqual("VariablesSetA", commands[0].Command.Name);
+            Assert.AreEqual("NameToWriteString", commands[0].Command.Parameters[0].First<String>());
+            Assert.AreEqual("this is a string", commands[0].Command.Parameters[1].First<String>());
 
-            Assert.AreEqual("VariablesSetA", commands[1].Name);
-            Assert.AreEqual("NameToWriteInteger", commands[1].Parameters[0].First<String>());
-            Assert.AreEqual("1", commands[1].Parameters[1].First<String>());
+            Assert.AreEqual("VariablesSetA", commands[1].Command.Name);
+            Assert.AreEqual("NameToWriteInteger", commands[1].Command.Parameters[0].First<String>());
+            Assert.AreEqual("1", commands[1].Command.Parameters[1].First<String>());
 
-            Assert.AreEqual("VariablesSetA", commands[2].Name);
-            Assert.AreEqual("MaximumProtocolConnections", commands[2].Parameters[0].First<String>());
-            Assert.AreEqual("10", commands[2].Parameters[1].First<String>());
+            Assert.AreEqual("VariablesSetA", commands[2].Command.Name);
+            Assert.AreEqual("MaximumProtocolConnections", commands[2].Command.Parameters[0].First<String>());
+            Assert.AreEqual("10", commands[2].Command.Parameters[1].First<String>());
         }
     }
 }

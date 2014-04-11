@@ -80,7 +80,8 @@ namespace Procon.Core.Shared {
         /// Allows for an optional child implementation.
         /// </summary>
         /// <param name="config"></param>
-        public virtual void WriteConfig(IConfig config) { }
+        /// <param name="password"></param>
+        public virtual void WriteConfig(IConfig config, string password) { }
 
         public virtual void Poke() {
             
@@ -90,14 +91,15 @@ namespace Procon.Core.Shared {
         /// Loads the specified configuration file.
         /// </summary>
         /// <param name="config"></param>
+        /// <param name="password">The password to decrypt the config commands with</param>
         /// <returns></returns>
-        public virtual ICoreController Execute(IConfig config) {
+        public virtual ICoreController Execute(IConfig config, String password = null) {
             this.TunnelObjects = this.TunnelObjects ?? new List<ICoreController>();
             this.BubbleObjects = this.BubbleObjects ?? new List<ICoreController>();
 
             this.Execute(new Command() {
                 Origin = CommandOrigin.Local
-            }, config);
+            }, config, password);
 
             return this;
         }
@@ -118,10 +120,19 @@ namespace Procon.Core.Shared {
         /// </summary>
         /// <param name="command"></param>
         /// <param name="config"></param>
-        protected void Execute(ICommand command, IConfig config) {
+        /// <param name="password">The password to decrypt encrypted config commands</param>
+        protected void Execute(ICommand command, IConfig config, String password = null) {
             if (config != null && config.Root != null) {
 
-                foreach (var loadedCommand in config.RootOf(this.GetType()).Children<JObject>().Select(item => item.ToObject<Command>(JsonSerialization.Minimal))) {
+                foreach (var loadedConfigCommand in config.RootOf(this.GetType()).Children<JObject>().Select(item => item.ToObject<ConfigCommand>(JsonSerialization.Minimal)).Where(item => item != null)) {
+                    // only attempt a decrypt if we've been given a password. If we don't have a password, we won't bother
+                    // and the command will have a null Command and be skipped anyway.
+                    if (password != null) {
+                        loadedConfigCommand.Decrypt(password);
+                    }
+
+                    var loadedCommand = loadedConfigCommand.Command;
+
                     if (loadedCommand != null && loadedCommand.Name != null) {
                         command.ParseCommandType(loadedCommand.Name);
                         command.Parameters = loadedCommand.Parameters;

@@ -95,7 +95,7 @@ namespace Procon.Core.Shared {
         /// isn't bloated with useless information.
         /// </summary>
         /// <returns></returns>
-        ICommand ToConfigCommand();
+        IConfigCommand ToConfigCommand();
 
         /// <summary>
         /// Parses a command type from an enum if it is valid.

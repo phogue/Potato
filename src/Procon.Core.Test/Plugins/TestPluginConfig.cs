@@ -16,6 +16,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using NUnit.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -23,6 +24,7 @@ using Procon.Core.Connections;
 using Procon.Core.Connections.Plugins;
 using Procon.Core.Shared;
 using Procon.Core.Shared.Models;
+using Procon.Core.Shared.Serialization;
 
 namespace Procon.Core.Test.Plugins {
     [TestFixture]
@@ -82,14 +84,14 @@ namespace Procon.Core.Test.Plugins {
 
             // Now load up the config and ensure it saved what we wanted it too.
 
-            JObject deseralized = JsonConvert.DeserializeObject(File.ReadAllText(this.ConfigFile.FullName)) as JObject;
+            var loadConfig = new Config();
+            loadConfig.Load(this.ConfigFile);
 
-            Assert.IsNotNull(deseralized);
-            Assert.AreEqual("PluginsEnable", deseralized["Procon.Core.Connections.Plugins.CorePluginController"].First.Value<String>("Name"));
+            var commands = loadConfig.RootOf<CorePluginController>().Children<JObject>().Select(item => item.ToObject<IConfigCommand>(JsonSerialization.Minimal)).ToList();
 
-
-            Assert.AreEqual(connectionGuid.ToString(), deseralized["Procon.Core.Connections.Plugins.CorePluginController"].First["ScopeModel"].Value<String>("ConnectionGuid"));
-            Assert.AreEqual(twoPluginGuid.ToString(), deseralized["Procon.Core.Connections.Plugins.CorePluginController"].First["ScopeModel"].Value<String>("PluginGuid"));
+            Assert.AreEqual("PluginsEnable", commands[0].Command.Name);
+            Assert.AreEqual(connectionGuid, commands[0].Command.ScopeModel.ConnectionGuid);
+            Assert.AreEqual(twoPluginGuid, commands[0].Command.ScopeModel.PluginGuid);
         }
     }
 }

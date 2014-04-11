@@ -98,7 +98,7 @@ namespace Procon.Core.Shared {
             this.Parameters = new List<ICommandParameter>(command.Parameters ?? new List<ICommandParameter>());
         }
 
-        public ICommand ToConfigCommand() {
+        public IConfigCommand ToConfigCommand() {
             ICommand command = new Command(this);
 
             // If the scope model does not have any useful information within.
@@ -110,7 +110,9 @@ namespace Procon.Core.Shared {
             // Commands loaded from the config will always run as local commands.
             command.Authentication = null;
 
-            return command;
+            return new ConfigCommand() {
+                Command = command
+            };
         }
 
         public ICommand ParseCommandType(String commandName) {

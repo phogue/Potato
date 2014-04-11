@@ -349,7 +349,7 @@ namespace Procon.Core {
 
             this.Execute(new Command() {
                 Origin = CommandOrigin.Local
-            }, new Config().Load(new DirectoryInfo(Defines.ConfigsDirectory.FullName)));
+            }, new Config().Load(new DirectoryInfo(Defines.ConfigsDirectory.FullName)), this.Shared.Variables.Get<String>(CommonVariableNames.InstanceConfigPassword));
             
             this.Shared.Events.Log(new GenericEvent() {
                 GenericEventType = GenericEventType.InstanceServiceStarted,
@@ -380,7 +380,7 @@ namespace Procon.Core {
         public void WriteConfig() {
             IConfig config = new Config();
             config.Create<InstanceController>();
-            this.WriteConfig(config);
+            this.WriteConfig(config, this.Shared.Variables.Get<String>(CommonVariableNames.InstanceConfigPassword));
 
             config.Save(new FileInfo(Path.Combine(Defines.ConfigsDirectory.FullName, this.GetType().Namespace + ".json")));
         }
@@ -389,22 +389,23 @@ namespace Procon.Core {
         /// Saves all the connections to the config file.
         /// </summary>
         /// <param name="config"></param>
-        public override void WriteConfig(IConfig config) {
-            this.Shared.Variables.WriteConfig(config);
+        /// <param name="password"></param>
+        public override void WriteConfig(IConfig config, String password) {
+            this.Shared.Variables.WriteConfig(config, password);
 
-            this.Shared.Events.WriteConfig(config);
+            this.Shared.Events.WriteConfig(config, password);
 
-            this.Packages.WriteConfig(config);
+            this.Packages.WriteConfig(config, password);
 
-            this.Database.WriteConfig(config);
+            this.Database.WriteConfig(config, password);
 
-            this.Shared.Languages.WriteConfig(config);
+            this.Shared.Languages.WriteConfig(config, password);
 
-            this.Shared.Security.WriteConfig(config);
+            this.Shared.Security.WriteConfig(config, password);
 
-            this.CommandServer.WriteConfig(config);
+            this.CommandServer.WriteConfig(config, password);
             
-            this.PushEvents.WriteConfig(config);
+            this.PushEvents.WriteConfig(config, password);
 
             lock (this.Connections) {
                 foreach (ConnectionController connection in this.Connections) {
@@ -456,9 +457,9 @@ namespace Procon.Core {
                                 }
                             }
                         }
-                    }.ToConfigCommand());
+                    }.ToConfigCommand().Encrypt(password));
 
-                    connection.WriteConfig(config);
+                    connection.WriteConfig(config, password);
                 }
             }
         }

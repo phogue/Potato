@@ -189,7 +189,7 @@ namespace Procon.Core.Shared.Plugins {
             }
         }
 
-        public override void WriteConfig(IConfig config) {
+        public override void WriteConfig(IConfig config, String password = null) {
             // Overwrite this method to write out your config
         }
 

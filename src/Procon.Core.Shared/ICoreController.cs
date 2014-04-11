@@ -82,7 +82,7 @@ namespace Procon.Core.Shared {
         /// <summary>
         /// Appends config items
         /// </summary>
-        void WriteConfig(IConfig config);
+        void WriteConfig(IConfig config, String password = null);
 
         /// <summary>
         /// A set interval Poke

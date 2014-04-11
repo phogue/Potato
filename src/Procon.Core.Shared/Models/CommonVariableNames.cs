@@ -23,6 +23,10 @@ namespace Procon.Core.Shared.Models {
     [Serializable]
     public enum CommonVariableNames {
         /// <summary>
+        /// (string) The password for encrypting/descrypting configs
+        /// </summary>
+        InstanceConfigPassword,
+        /// <summary>
         /// (string) The default language to use when a user does not have 
         /// </summary>
         LocalizationDefaultLanguageCode,

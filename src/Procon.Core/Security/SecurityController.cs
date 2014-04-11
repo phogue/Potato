@@ -345,8 +345,8 @@ namespace Procon.Core.Security {
         /// <summary>
         /// Relies on children classes to implement this.
         /// </summary>
-        public override void WriteConfig(IConfig config) {
-            base.WriteConfig(config);
+        public override void WriteConfig(IConfig config, String password = null) {
+            base.WriteConfig(config, password);
 
             foreach (GroupModel group in this.Groups) {
                 config.Append(new Command() {

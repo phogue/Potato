@@ -26,11 +26,11 @@ namespace Procon.Core.Shared.Test.ExecutableCommands {
         /// </summary>
         [Test]
         public void TestScopeNulledWhenNulled() {
-            ICommand command = new Command() {
+            IConfigCommand command = new Command() {
                 ScopeModel = null
             }.ToConfigCommand();
 
-            Assert.IsNull(command.ScopeModel);
+            Assert.IsNull(command.Command.ScopeModel);
         }
 
         /// <summary>
@@ -38,14 +38,14 @@ namespace Procon.Core.Shared.Test.ExecutableCommands {
         /// </summary>
         [Test]
         public void TestScopeNulledWhenBothEmpty() {
-            ICommand command = new Command() {
+            IConfigCommand command = new Command() {
                 ScopeModel = {
                     ConnectionGuid = Guid.Empty,
                     PluginGuid = Guid.Empty
                 }
             }.ToConfigCommand();
 
-            Assert.IsNull(command.ScopeModel);
+            Assert.IsNull(command.Command.ScopeModel);
         }
 
         /// <summary>
@@ -55,15 +55,15 @@ namespace Procon.Core.Shared.Test.ExecutableCommands {
         public void TestScopeMaintainedWhenConnectionGuidNotEmpty() {
             Guid guid = Guid.NewGuid();
 
-            ICommand command = new Command() {
+            IConfigCommand command = new Command() {
                 ScopeModel = {
                     ConnectionGuid = guid,
                     PluginGuid = Guid.Empty
                 }
             }.ToConfigCommand();
 
-            Assert.IsNotNull(command.ScopeModel);
-            Assert.AreEqual(command.ScopeModel.ConnectionGuid, guid);
+            Assert.IsNotNull(command.Command.ScopeModel);
+            Assert.AreEqual(command.Command.ScopeModel.ConnectionGuid, guid);
         }
 
         /// <summary>
@@ -73,15 +73,15 @@ namespace Procon.Core.Shared.Test.ExecutableCommands {
         public void TestScopeMaintainedWhenPluginGuidNotEmpty() {
             Guid guid = Guid.NewGuid();
 
-            ICommand command = new Command() {
+            IConfigCommand command = new Command() {
                 ScopeModel = {
                     ConnectionGuid = Guid.Empty,
                     PluginGuid = guid
                 }
             }.ToConfigCommand();
 
-            Assert.IsNotNull(command.ScopeModel);
-            Assert.AreEqual(command.ScopeModel.PluginGuid, guid);
+            Assert.IsNotNull(command.Command.ScopeModel);
+            Assert.AreEqual(command.Command.ScopeModel.PluginGuid, guid);
         }
 
         /// <summary>
@@ -89,13 +89,13 @@ namespace Procon.Core.Shared.Test.ExecutableCommands {
         /// </summary>
         [Test]
         public void TestAuthenticationNulled() {
-            ICommand command = new Command() {
+            IConfigCommand command = new Command() {
                 Authentication = new CommandAuthenticationModel() {
                     Uid = "Never seen"
                 }
             }.ToConfigCommand();
 
-            Assert.IsNull(command.Authentication);
+            Assert.IsNull(command.Command.Authentication);
         }
 
         /// <summary>
@@ -103,11 +103,11 @@ namespace Procon.Core.Shared.Test.ExecutableCommands {
         /// </summary>
         [Test]
         public void TestAuthenticationNulledWhenNulled() {
-            ICommand command = new Command() {
+            IConfigCommand command = new Command() {
                 Authentication = null
             }.ToConfigCommand();
 
-            Assert.IsNull(command.Authentication);
+            Assert.IsNull(command.Command.Authentication);
         }
     }
 }

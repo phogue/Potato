@@ -214,7 +214,7 @@ namespace Procon.Core.Variables {
         /// <summary>
         /// Does nothing.  Information about this object is handled via it's parent interface.
         /// </summary>
-        public override void WriteConfig(IConfig config) {
+        public override void WriteConfig(IConfig config, String password = null) {
             foreach (VariableModel archiveVariable in this.ArchiveVariables) {
                 config.Append(CommandBuilder.VariablesSetA(archiveVariable.Name, archiveVariable.ToList<String>()).ToConfigCommand());
             }

@@ -67,6 +67,8 @@
     <Compile Include="ExecutableCommands\TestExecutableProperties.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="AsynchronousExecutableCommands\TestAsynchronousCoreController.cs" />
+    <Compile Include="TestConfigCommand\TestDecrypted.cs" />
+    <Compile Include="TestConfigCommand\TestEncrypt.cs" />
     <Compile Include="TestConfig\TestRootOf.cs" />
     <Compile Include="TestConfig\TestAppend.cs" />
     <Compile Include="TestConfig\TestLoadDirectoryInfo.cs" />

@@ -63,7 +63,7 @@ namespace Procon.Core.Shared {
         protected byte[] DeriveKey(String password, byte[] salt) {
             byte[] key;
 
-            using (var derived = new Rfc2898DeriveBytes(password, salt)) {
+            using (var derived = new Rfc2898DeriveBytes(password, salt, 26000)) {
                 key = derived.GetBytes(32);
             }
 

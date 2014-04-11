@@ -595,13 +595,17 @@ namespace Procon.Core.Connections {
         private void Protocol_ClientEvent(IClientEventArgs e) {
             if (e.EventType == ClientEventType.ClientConnectionStateChange) {
                 if (this.Protocol != null) {
-                    this.ConnectionModel.ProtocolType = this.Protocol.ProtocolType as ProtocolType;
-                    this.ConnectionModel.Hostname = this.Protocol.Options.Hostname;
-                    this.ConnectionModel.Port = this.Protocol.Options.Port;
+                    var options = this.Protocol.Options;
 
-                    // Once connected, sync the connection.
-                    if (e.ConnectionState == ConnectionState.ConnectionLoggedIn) {
-                        this.Protocol.Synchronize();
+                    if (options != null) {
+                        this.ConnectionModel.ProtocolType = this.Protocol.ProtocolType as ProtocolType;
+                        this.ConnectionModel.Hostname = options.Hostname;
+                        this.ConnectionModel.Port = options.Port;
+
+                        // Once connected, sync the connection.
+                        if (e.ConnectionState == ConnectionState.ConnectionLoggedIn) {
+                            this.Protocol.Synchronize();
+                        }
                     }
                 }
 

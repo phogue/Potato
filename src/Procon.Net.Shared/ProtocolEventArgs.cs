@@ -30,6 +30,8 @@ namespace Procon.Net.Shared {
 
         public IProtocolEventData Now { get; set; }
 
+        public IProtocolStateDifference StateDifference { get; set; }
+
         public DateTime Stamp { get; set; }
 
         /// <summary>
@@ -40,6 +42,7 @@ namespace Procon.Net.Shared {
             this.ProtocolType = new ProtocolType();
             this.Then = new ProtocolEventData();
             this.Now = new ProtocolEventData();
+            this.StateDifference = new ProtocolStateDifference();
         }
     }
 }

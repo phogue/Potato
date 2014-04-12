@@ -104,14 +104,19 @@ namespace Procon.Net {
         /// </summary>
         public virtual event Action<IProtocol, IProtocolEventArgs> ProtocolEvent;
 
-        protected void OnGameEvent(ProtocolEventType eventType, IProtocolEventData now = null, IProtocolEventData then = null) {
+        protected void OnGameEvent(ProtocolEventType eventType, IProtocolStateDifference difference, IProtocolEventData now = null, IProtocolEventData then = null) {
             var handler = this.ProtocolEvent;
+
+            // Apply any differences to our state object.
+            this.State.Apply(difference);
+
             if (handler != null) {
                 handler(
                     this,
                     new ProtocolEventArgs() {
                         ProtocolEventType = eventType,
                         ProtocolType = this.ProtocolType as ProtocolType, // Required for serialization. How to get around?
+                        StateDifference = difference ?? new ProtocolStateDifference(),
                         Now = now ?? new ProtocolEventData(),
                         Then = then ?? new ProtocolEventData()
                     }

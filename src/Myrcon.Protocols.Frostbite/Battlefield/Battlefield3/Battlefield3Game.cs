@@ -67,17 +67,14 @@ namespace Myrcon.Protocols.Frostbite.Battlefield.Battlefield3 {
         }
 
         protected override void AdminListPlayersFinalize(List<PlayerModel> players) {
-            // 1. Remove all names in the state list that are not found in the new list (players that have left)
-            this.State.Players.RemoveAll(x => players.Select(y => y.Name).Contains(x.Name) == false);
+            var modified = new List<PlayerModel>();
 
-            // 2. Add or update any new players
+            // We're essentially updating the state here anyway, but we keep the difference
+            // so others can remain in sync
             foreach (PlayerModel player in players) {
                 PlayerModel statePlayer = this.State.Players.Find(x => x.Name == player.Name);
 
-                if (statePlayer == null) {
-                    this.State.Players.Add(player);
-                }
-                else {
+                if (statePlayer != null) {
                     // Already exists, update with any new information we have.
                     statePlayer.Kills = player.Kills;
                     statePlayer.Score = player.Score;
@@ -87,10 +84,22 @@ namespace Myrcon.Protocols.Frostbite.Battlefield.Battlefield3 {
 
                     statePlayer.ModifyGroup(player.Groups.FirstOrDefault(group => group.Type == GroupModel.Team));
                     statePlayer.ModifyGroup(player.Groups.FirstOrDefault(group => group.Type == GroupModel.Squad));
+
+                    modified.Add(statePlayer);
+                }
+                else {
+                    modified.Add(player);
                 }
             }
 
-            this.OnGameEvent(ProtocolEventType.ProtocolPlayerlistUpdated, new ProtocolEventData() {
+            this.OnGameEvent(ProtocolEventType.ProtocolPlayerlistUpdated, new ProtocolStateDifference() {
+                Removed = {
+                    Players = this.State.Players.Where(existing => players.Select(current => current.Uid).Contains(existing.Uid) == false).ToList()
+                },
+                Modified = {
+                    Players = modified
+                }
+            }, new ProtocolEventData() {
                 Players = new List<PlayerModel>(this.State.Players)
             });
         }
@@ -113,10 +122,15 @@ namespace Myrcon.Protocols.Frostbite.Battlefield.Battlefield3 {
                         map.GameMode = mapInfo.GameMode;
                     }
                 }
-                this.State.Maps = maps;
 
                 this.OnGameEvent(
-                    ProtocolEventType.ProtocolMaplistUpdated
+                    ProtocolEventType.ProtocolMaplistUpdated,
+                    new ProtocolStateDifference() {
+                        Override = true,
+                        Modified = {
+                            Maps = maps
+                        }
+                    }
                 );
             }
         }
@@ -141,15 +155,22 @@ namespace Myrcon.Protocols.Frostbite.Battlefield.Battlefield3 {
                 List<BanModel> banList = Battlefield3BanList.Parse(response.Packet.Words.GetRange(1, response.Packet.Words.Count - 1));
 
                 if (banList.Count > 0) {
-                    foreach (BanModel ban in banList)
+                    foreach (BanModel ban in banList) {
                         this.State.Bans.Add(ban);
-
+                    }
+                    
                     this.Send(this.CreatePacket("banList.list {0}", startOffset + 100));
                 }
                 else {
                     // We have recieved the whole banlist in 100 ban increments.. throw event.
                     this.OnGameEvent(
-                        ProtocolEventType.ProtocolBanlistUpdated
+                        ProtocolEventType.ProtocolBanlistUpdated,
+                        new ProtocolStateDifference() {
+                            Override = true,
+                            Modified = {
+                                Bans = this.State.Bans
+                            }
+                        }
                     );
                 }
             }
@@ -195,7 +216,21 @@ namespace Myrcon.Protocols.Frostbite.Battlefield.Battlefield3 {
                     this.State.Players.Add(player);
                 }
 
-                this.OnGameEvent(ProtocolEventType.ProtocolPlayerJoin, new ProtocolEventData() { Players = new List<PlayerModel>() { player } });
+                this.OnGameEvent(
+                    ProtocolEventType.ProtocolPlayerJoin,
+                    new ProtocolStateDifference() {
+                        Override = true,
+                        Modified = {
+                            Players = new List<PlayerModel>() {
+                                player
+                            }
+                        }
+                    }, new ProtocolEventData() {
+                        Players = new List<PlayerModel>() {
+                            player
+                        }
+                    }
+                );
             }
         }
 
@@ -219,31 +254,42 @@ namespace Myrcon.Protocols.Frostbite.Battlefield.Battlefield3 {
                         target.Deaths++;
                     }
 
-                    this.OnGameEvent(ProtocolEventType.ProtocolPlayerKill, new ProtocolEventData() {
-                        Kills = new List<KillModel>() {
-                            new KillModel() {
-                                Scope = {
-                                    Players = new List<PlayerModel>() {
-                                        target
-                                    },
-                                    Items = new List<ItemModel>() {
-                                        new ItemModel() {
-                                            // Servers sends garbage at the end of the round?
-                                            Name = Regex.Replace(request.Packet.Words[3], @"[^\\w\\/_-]+", "")
+                    this.OnGameEvent(
+                        ProtocolEventType.ProtocolPlayerKill,
+                        new ProtocolStateDifference() {
+                            Modified = {
+                                Players = new List<PlayerModel>() {
+                                    killer,
+                                    target
+                                }
+                            }
+                        },
+                        new ProtocolEventData() {
+                            Kills = new List<KillModel>() {
+                                new KillModel() {
+                                    Scope = {
+                                        Players = new List<PlayerModel>() {
+                                            target
+                                        },
+                                        Items = new List<ItemModel>() {
+                                            new ItemModel() {
+                                                // Servers sends garbage at the end of the round?
+                                                Name = Regex.Replace(request.Packet.Words[3], @"[^\\w\\/_-]+", "")
+                                            }
+                                        },
+                                        HumanHitLocations = new List<HumanHitLocation>() {
+                                            headshot == true ? FrostbiteGame.Headshot : FrostbiteGame.Bodyshot
                                         }
                                     },
-                                    HumanHitLocations = new List<HumanHitLocation>() {
-                                        headshot == true ? FrostbiteGame.Headshot : FrostbiteGame.Bodyshot
-                                    }
-                                },
-                                Now = {
-                                    Players = new List<PlayerModel>() {
-                                        killer
+                                    Now = {
+                                        Players = new List<PlayerModel>() {
+                                            killer
+                                        }
                                     }
                                 }
                             }
                         }
-                    });
+                    );
                 }
             }
         }

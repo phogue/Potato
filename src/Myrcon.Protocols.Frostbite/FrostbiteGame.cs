@@ -351,15 +351,24 @@ namespace Myrcon.Protocols.Frostbite {
                     this.State.Settings.Current.FriendlyGameModeNameText = currentMap.GameMode.FriendlyName;
                     this.State.Settings.Current.FriendlyMapNameText = currentMap.FriendlyName;
 
-                    this.OnGameEvent(ProtocolEventType.ProtocolMapChanged, new ProtocolEventData() {
-                        Maps = new List<MapModel>() {
-                            currentMap
+                    this.OnGameEvent(
+                        ProtocolEventType.ProtocolMapChanged,
+                        new ProtocolStateDifference() {
+                            Modified = {
+                                Settings = this.State.Settings
+                            }
+                        },
+                        new ProtocolEventData() {
+                            Maps = new List<MapModel>() {
+                                currentMap
+                            }
+                        },
+                        new ProtocolEventData() {
+                            Maps = new List<MapModel>() {
+                                oldMap
+                            }
                         }
-                    }, new ProtocolEventData() {
-                        Maps = new List<MapModel>() {
-                            oldMap
-                        }
-                    });
+                    );
                 }
             }
         }
@@ -377,7 +386,14 @@ namespace Myrcon.Protocols.Frostbite {
             if (modified == true) {
                 this.State.Settings.Current.RoundIndex = currentRound;
 
-                this.OnGameEvent(ProtocolEventType.ProtocolRoundChanged);
+                this.OnGameEvent(
+                    ProtocolEventType.ProtocolRoundChanged,
+                    new ProtocolStateDifference() {
+                        Modified = {
+                            Settings = this.State.Settings
+                        }
+                    }
+                );
             }
         }
 
@@ -419,14 +435,22 @@ namespace Myrcon.Protocols.Frostbite {
                         config.Parse(this);
                     }
 
-                    this.OnGameEvent(ProtocolEventType.ProtocolConfigExecuted);
+                    this.OnGameEvent(ProtocolEventType.ProtocolConfigExecuted, new ProtocolStateDifference());
                 }
 
-                this.OnGameEvent(ProtocolEventType.ProtocolSettingsUpdated, new ProtocolEventData() {
-                    Settings = new List<Settings>() {
-                        this.State.Settings
+                this.OnGameEvent(
+                    ProtocolEventType.ProtocolSettingsUpdated,
+                    new ProtocolStateDifference() {
+                        Modified = {
+                            Settings = this.State.Settings
+                        }
+                    },
+                    new ProtocolEventData() {
+                        Settings = new List<Settings>() {
+                            this.State.Settings
+                        }
                     }
-                });
+                );
             }
         }
 
@@ -470,20 +494,15 @@ namespace Myrcon.Protocols.Frostbite {
                 }
             }
         }
-        
-        protected virtual void AdminListPlayersFinalize(List<PlayerModel> players) {
 
-            // 1. Remove all names in the state list that are not found in the new list (players that have left)
-            this.State.Players.RemoveAll(x => players.Select(y => y.Name).Contains(x.Name) == false);
+        protected virtual void AdminListPlayersFinalize(List<PlayerModel> players) {
+            var modified = new List<PlayerModel>();
 
             // 2. Add or update any new players
             foreach (PlayerModel player in players) {
                 PlayerModel statePlayer = this.State.Players.Find(x => x.Name == player.Name);
 
-                if (statePlayer == null) {
-                    this.State.Players.Add(player);
-                }
-                else {
+                if (statePlayer != null) {
                     // Already exists, update with any new information we have.
                     statePlayer.Kills = player.Kills;
                     statePlayer.Score = player.Score;
@@ -494,10 +513,22 @@ namespace Myrcon.Protocols.Frostbite {
                     
                     statePlayer.ModifyGroup(player.Groups.FirstOrDefault(group => group.Type == GroupModel.Team));
                     statePlayer.ModifyGroup(player.Groups.FirstOrDefault(group => group.Type == GroupModel.Squad));
+
+                    modified.Add(statePlayer);
+                }
+                else {
+                    modified.Add(player);
                 }
             }
 
-            this.OnGameEvent(ProtocolEventType.ProtocolPlayerlistUpdated, new ProtocolEventData() {
+            this.OnGameEvent(ProtocolEventType.ProtocolPlayerlistUpdated, new ProtocolStateDifference() {
+                Removed = {
+                    Players = this.State.Players.Where(existing => players.Select(current => current.Uid).Contains(existing.Uid) == false).ToList()
+                },
+                Modified = {
+                    Players = modified
+                }
+            }, new ProtocolEventData() {
                 Players = new List<PlayerModel>(this.State.Players)
             });
         }
@@ -511,11 +542,15 @@ namespace Myrcon.Protocols.Frostbite {
         public void AdminSayDispatchHandler(IPacketWrapper request, IPacketWrapper response) {
 
             if (request.Packet.Words.Count >= 3) {
-                this.OnGameEvent(ProtocolEventType.ProtocolChat, new ProtocolEventData() {
-                    Chats = new List<ChatModel>() {
-                        FrostbiteChat.ParseAdminSay(request.Packet.Words.GetRange(1, request.Packet.Words.Count - 1))
+                this.OnGameEvent(
+                    ProtocolEventType.ProtocolChat,
+                    new ProtocolStateDifference(),
+                    new ProtocolEventData() {
+                        Chats = new List<ChatModel>() {
+                            FrostbiteChat.ParseAdminSay(request.Packet.Words.GetRange(1, request.Packet.Words.Count - 1))
+                        }
                     }
-                });
+                );
             }
 
         }
@@ -543,7 +578,13 @@ namespace Myrcon.Protocols.Frostbite {
                 this.State.Maps = maps;
 
                 this.OnGameEvent(
-                    ProtocolEventType.ProtocolMaplistUpdated
+                    ProtocolEventType.ProtocolMaplistUpdated,
+                    new ProtocolStateDifference() {
+                        Override = true,
+                        Modified = {
+                            Maps = maps
+                        }
+                    }
                 );
             }
         }
@@ -576,7 +617,13 @@ namespace Myrcon.Protocols.Frostbite {
                 else {
                     // We have recieved the whole banlist in 100 ban increments.. throw event.
                     this.OnGameEvent(
-                        ProtocolEventType.ProtocolBanlistUpdated
+                        ProtocolEventType.ProtocolBanlistUpdated,
+                        new ProtocolStateDifference() {
+                            Override = true,
+                            Modified = {
+                                Bans = this.State.Bans
+                            }
+                        }
                     );
                 }
             }
@@ -586,9 +633,21 @@ namespace Myrcon.Protocols.Frostbite {
             if (request.Packet.Words.Count >= 1) {
                 BanModel ban = FrostbiteBan.ParseBanAdd(request.Packet.Words.GetRange(1, request.Packet.Words.Count - 1));
 
-                this.State.Bans.Add(ban);
-
-                this.OnGameEvent(ProtocolEventType.ProtocolPlayerBanned, new ProtocolEventData() { Bans = new List<BanModel>() { ban } });
+                this.OnGameEvent(
+                    ProtocolEventType.ProtocolPlayerBanned,
+                    new ProtocolStateDifference() {
+                        Modified = {
+                            Bans = new List<BanModel>() {
+                                ban
+                            }
+                        }
+                    },
+                    new ProtocolEventData() {
+                        Bans = new List<BanModel>() {
+                            ban
+                        }
+                    }
+                );
             }
         }
 
@@ -596,11 +655,21 @@ namespace Myrcon.Protocols.Frostbite {
             if (request.Packet.Words.Count >= 1) {
                 BanModel ban = FrostbiteBan.ParseBanRemove(request.Packet.Words.GetRange(1, request.Packet.Words.Count - 1));
 
-                BanModel stateBan = this.State.Bans.Find(b => (b.Scope.Players.First().Name != null && b.Scope.Players.First().Name == ban.Scope.Players.First().Name)
-                                                         || (b.Scope.Players.First().Uid != null && b.Scope.Players.First().Uid == ban.Scope.Players.First().Uid));
-                this.State.Bans.Remove(stateBan);
-
-                this.OnGameEvent(ProtocolEventType.ProtocolPlayerUnbanned, new ProtocolEventData() { Bans = new List<BanModel>() { ban } });
+                this.OnGameEvent(
+                    ProtocolEventType.ProtocolPlayerUnbanned,
+                    new ProtocolStateDifference() {
+                        Removed = {
+                            Bans = new List<BanModel>() {
+                                ban
+                            }
+                        }
+                    },
+                    new ProtocolEventData() {
+                        Bans = new List<BanModel>() {
+                            ban
+                        }
+                    }
+                );
             }
         }
 
@@ -739,7 +808,7 @@ namespace Myrcon.Protocols.Frostbite {
                     
                 }
                 else if (pbObject is PunkBusterEndPlayerList) {
-                    this.OnGameEvent(ProtocolEventType.ProtocolPlayerlistUpdated);
+                    this.OnGameEvent(ProtocolEventType.ProtocolPlayerlistUpdated, new ProtocolStateDifference());
                 }
             }
         }
@@ -752,36 +821,47 @@ namespace Myrcon.Protocols.Frostbite {
 
                 if (bool.TryParse(request.Packet.Words[4], out headshot) == true) {
 
-                    this.OnGameEvent(ProtocolEventType.ProtocolPlayerKill, new ProtocolEventData() {
-                        Kills = new List<KillModel>() {
-                            new KillModel() {
-                                Scope = {
-                                    Players = new List<PlayerModel>() {
-                                        this.State.Players.Find(x => x.Name == request.Packet.Words[2])
-                                    },
-                                    Items = new List<ItemModel>() {
-                                        new ItemModel() {
-                                            Name = request.Packet.Words[3]
+                    this.OnGameEvent(
+                        ProtocolEventType.ProtocolPlayerKill,
+                        new ProtocolStateDifference() {
+                            Modified = {
+                                Players = new List<PlayerModel>() {
+                                    this.State.Players.Find(x => x.Name == request.Packet.Words[1]),
+                                    this.State.Players.Find(x => x.Name == request.Packet.Words[2])
+                                }
+                            }
+                        },
+                        new ProtocolEventData() {
+                            Kills = new List<KillModel>() {
+                                new KillModel() {
+                                    Scope = {
+                                        Players = new List<PlayerModel>() {
+                                            this.State.Players.Find(x => x.Name == request.Packet.Words[2])
+                                        },
+                                        Items = new List<ItemModel>() {
+                                            new ItemModel() {
+                                                Name = request.Packet.Words[3]
+                                            }
+                                        },
+                                        Points = new List<Point3DModel>() {
+                                            new Point3DModel(request.Packet.Words[8], request.Packet.Words[10], request.Packet.Words[9])
+                                        },
+                                        HumanHitLocations = new List<HumanHitLocation>() {
+                                            headshot == true ? FrostbiteGame.Headshot : FrostbiteGame.Bodyshot
                                         }
                                     },
-                                    Points = new List<Point3DModel>() {
-                                        new Point3DModel(request.Packet.Words[8], request.Packet.Words[10], request.Packet.Words[9])
-                                    },
-                                    HumanHitLocations = new List<HumanHitLocation>() {
-                                        headshot == true ? FrostbiteGame.Headshot : FrostbiteGame.Bodyshot
-                                    }
-                                },
-                                Now = {
-                                    Players = new List<PlayerModel>() {
-                                        this.State.Players.Find(x => x.Name == request.Packet.Words[1])
-                                    },
-                                    Points = new List<Point3DModel>() {
-                                        new Point3DModel(request.Packet.Words[5], request.Packet.Words[7], request.Packet.Words[6])
+                                    Now = {
+                                        Players = new List<PlayerModel>() {
+                                            this.State.Players.Find(x => x.Name == request.Packet.Words[1])
+                                        },
+                                        Points = new List<Point3DModel>() {
+                                            new Point3DModel(request.Packet.Words[5], request.Packet.Words[7], request.Packet.Words[6])
+                                        }
                                     }
                                 }
                             }
                         }
-                    });
+                    );
                 }
             }
         }
@@ -798,8 +878,16 @@ namespace Myrcon.Protocols.Frostbite {
                     this.State.Settings.Maximum.RoundIndex = totalRounds;
 
                     // Maps are the same, only a round change
-                    if (String.Compare(this.State.Settings.Current.MapNameText, request.Packet.Words[1], StringComparison.OrdinalIgnoreCase) == 0)
-                        this.OnGameEvent(ProtocolEventType.ProtocolRoundChanged);
+                    if (String.Compare(this.State.Settings.Current.MapNameText, request.Packet.Words[1], StringComparison.OrdinalIgnoreCase) == 0) {
+                        this.OnGameEvent(
+                            ProtocolEventType.ProtocolRoundChanged,
+                            new ProtocolStateDifference() {
+                                Modified = {
+                                    Settings = this.State.Settings
+                                }
+                            }
+                        );
+                    }
                     else {
                         MapModel selectedMap = this.State.MapPool.Find(x => String.Compare(x.Name, request.Packet.Words[1], StringComparison.OrdinalIgnoreCase) == 0);
 
@@ -811,7 +899,15 @@ namespace Myrcon.Protocols.Frostbite {
                         }
 
                         this.State.Settings.Current.MapNameText = request.Packet.Words[1];
-                        this.OnGameEvent(ProtocolEventType.ProtocolMapChanged);
+
+                        this.OnGameEvent(
+                            ProtocolEventType.ProtocolMapChanged,
+                            new ProtocolStateDifference() {
+                                Modified = {
+                                    Settings = this.State.Settings
+                                }
+                            }
+                        );
                     }
                 }
             }
@@ -864,11 +960,21 @@ namespace Myrcon.Protocols.Frostbite {
 
                     this.State.Players.RemoveAll(x => x.Name == player.Name);
 
-                    this.OnGameEvent(ProtocolEventType.ProtocolPlayerLeave, new ProtocolEventData() {
-                        Players = new List<PlayerModel>() {
-                            player
+                    this.OnGameEvent(
+                        ProtocolEventType.ProtocolPlayerLeave,
+                        new ProtocolStateDifference() {
+                            Removed = {
+                                Players = new List<PlayerModel>() {
+                                    player
+                                }
+                            }
+                        },
+                        new ProtocolEventData() {
+                            Players = new List<PlayerModel>() {
+                                player
+                            }
                         }
-                    });
+                    );
                 }
             }
         }
@@ -896,7 +1002,15 @@ namespace Myrcon.Protocols.Frostbite {
                     chat.Origin = NetworkOrigin.Server;
                 }
 
-                this.OnGameEvent(ProtocolEventType.ProtocolChat, new ProtocolEventData() { Chats = new List<ChatModel>() { chat } });
+                this.OnGameEvent(
+                    ProtocolEventType.ProtocolChat,
+                    new ProtocolStateDifference(),
+                    new ProtocolEventData() {
+                        Chats = new List<ChatModel>() {
+                            chat
+                        }
+                    }
+                );
             }
         }
 
@@ -917,7 +1031,21 @@ namespace Myrcon.Protocols.Frostbite {
                     this.State.Players.Add(statePlayer);
                 }
 
-                this.OnGameEvent(ProtocolEventType.ProtocolPlayerJoin, new ProtocolEventData() { Players = new List<PlayerModel>() { statePlayer } });
+                this.OnGameEvent(
+                    ProtocolEventType.ProtocolPlayerJoin, 
+                    new ProtocolStateDifference() {
+                        Modified = {
+                            Players = new List<PlayerModel>() {
+                                statePlayer
+                            }
+                        }
+                    },
+                    new ProtocolEventData() {
+                        Players = new List<PlayerModel>() {
+                            statePlayer
+                        }
+                    }
+                );
             }
         }
 
@@ -931,7 +1059,21 @@ namespace Myrcon.Protocols.Frostbite {
                 player.Role = spawn.Role;
                 player.Inventory = spawn.Inventory;
 
-                this.OnGameEvent(ProtocolEventType.ProtocolPlayerSpawn, new ProtocolEventData() { Spawns = new List<SpawnModel>() { spawn } });
+                this.OnGameEvent(
+                    ProtocolEventType.ProtocolPlayerSpawn,
+                    new ProtocolStateDifference() {
+                        Modified = {
+                            Players = new List<PlayerModel>() {
+                                player
+                            }
+                        }
+                    },
+                    new ProtocolEventData() {
+                        Spawns = new List<SpawnModel>() {
+                            spawn
+                        }
+                    }
+                );
             }
         }
 
@@ -943,20 +1085,30 @@ namespace Myrcon.Protocols.Frostbite {
                 // Note that this is removed when the player.OnLeave event is fired.
                 //this.State.PlayerList.RemoveAll(x => x.Name == request.Packet.Words[1]);
 
-                this.OnGameEvent(ProtocolEventType.ProtocolPlayerKicked, new ProtocolEventData() {
-                    Kicks = new List<KickModel>() {
-                        new KickModel() {
-                            Now = {
-                                Players = new List<PlayerModel>() {
-                                    player
-                                },
-                                Content = new List<String>() {
-                                    request.Packet.Words[2]
+                this.OnGameEvent(
+                    ProtocolEventType.ProtocolPlayerKicked, 
+                    new ProtocolStateDifference() {
+                        Removed = {
+                            Players = new List<PlayerModel>() {
+                                player
+                            }
+                        }
+                    },
+                    new ProtocolEventData() {
+                        Kicks = new List<KickModel>() {
+                            new KickModel() {
+                                Now = {
+                                    Players = new List<PlayerModel>() {
+                                        player
+                                    },
+                                    Content = new List<String>() {
+                                        request.Packet.Words[2]
+                                    }
                                 }
                             }
                         }
                     }
-                });
+                );
             }
         }
 
@@ -972,11 +1124,21 @@ namespace Myrcon.Protocols.Frostbite {
                     Uid = squadId.ToString(CultureInfo.InvariantCulture)
                 });
 
-                this.OnGameEvent(ProtocolEventType.ProtocolPlayerMoved, new ProtocolEventData() {
-                    Players = new List<PlayerModel>() {
-                        player
+                this.OnGameEvent(
+                    ProtocolEventType.ProtocolPlayerMoved,
+                    new ProtocolStateDifference() {
+                        Modified = {
+                            Players = new List<PlayerModel>() {
+                                player
+                            }
+                        }
+                    },
+                    new ProtocolEventData() {
+                        Players = new List<PlayerModel>() {
+                            player
+                        }
                     }
-                });
+                );
             }
         }
 
@@ -995,11 +1157,21 @@ namespace Myrcon.Protocols.Frostbite {
                     Uid = squadId.ToString(CultureInfo.InvariantCulture)
                 });
 
-                this.OnGameEvent(ProtocolEventType.ProtocolPlayerMoved, new ProtocolEventData() {
-                    Players = new List<PlayerModel>() {
-                        player
+                this.OnGameEvent(
+                    ProtocolEventType.ProtocolPlayerMoved,
+                    new ProtocolStateDifference() {
+                        Modified = {
+                            Players = new List<PlayerModel>() {
+                                player
+                            }
+                        }
+                    },
+                    new ProtocolEventData() {
+                        Players = new List<PlayerModel>() {
+                            player
+                        }
                     }
-                });
+                );
             }
         }
 

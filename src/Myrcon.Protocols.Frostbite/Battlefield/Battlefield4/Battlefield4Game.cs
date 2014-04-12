@@ -79,10 +79,13 @@ namespace Myrcon.Protocols.Frostbite.Battlefield.Battlefield4 {
                     }
                 }
 
-                this.State.Maps = maps;
-
                 this.OnGameEvent(
-                    ProtocolEventType.ProtocolMaplistUpdated
+                    ProtocolEventType.ProtocolMaplistUpdated,
+                    new ProtocolStateDifference() {
+                        Modified = {
+                            Maps = maps
+                        }
+                    }
                 );
             }
         }
@@ -115,7 +118,13 @@ namespace Myrcon.Protocols.Frostbite.Battlefield.Battlefield4 {
                 else {
                     // We have recieved the whole banlist in 100 ban increments.. throw event.
                     this.OnGameEvent(
-                        ProtocolEventType.ProtocolBanlistUpdated
+                        ProtocolEventType.ProtocolBanlistUpdated,
+                        new ProtocolStateDifference() {
+                            Override = true,
+                            Modified = {
+                                Bans = this.State.Bans
+                            }
+                        }
                     );
                 }
             }
@@ -132,17 +141,26 @@ namespace Myrcon.Protocols.Frostbite.Battlefield.Battlefield4 {
         public override void PlayerOnJoinDispatchHandler(IPacketWrapper request, IPacketWrapper response) {
 
             if (request.Packet.Words.Count >= 2) {
-
                 PlayerModel player = new PlayerModel() {
                     Name = request.Packet.Words[1],
                     Uid = request.Packet.Words[2]
                 };
 
-                if (this.State.Players.Find(x => x.Name == player.Name) == null) {
-                    this.State.Players.Add(player);
-                }
-
-                this.OnGameEvent(ProtocolEventType.ProtocolPlayerJoin, new ProtocolEventData() { Players = new List<PlayerModel>() { player } });
+                this.OnGameEvent(
+                    ProtocolEventType.ProtocolPlayerJoin,
+                    new ProtocolStateDifference() {
+                        Modified = {
+                            Players = this.State.Players.Any(item => item.Name == player.Name) ? new List<PlayerModel>() {
+                                player
+                            } : new List<PlayerModel>()
+                        }
+                    }, 
+                    new ProtocolEventData() {
+                        Players = new List<PlayerModel>() {
+                            player
+                        }
+                    }
+                );
             }
         }
 
@@ -165,28 +183,39 @@ namespace Myrcon.Protocols.Frostbite.Battlefield.Battlefield4 {
                         killer.Inventory.Now.Items.Add(item);
                     }
 
-                    this.OnGameEvent(ProtocolEventType.ProtocolPlayerKill, new ProtocolEventData() {
-                        Kills = new List<KillModel>() {
-                            new KillModel() {
-                                Scope = {
-                                    Players = new List<PlayerModel>() {
-                                        victim
+                    this.OnGameEvent(
+                        ProtocolEventType.ProtocolPlayerKill,
+                        new ProtocolStateDifference() {
+                            Modified = {
+                                Players = new List<PlayerModel>() {
+                                    killer,
+                                    victim
+                                }
+                            }
+                        },
+                        new ProtocolEventData() {
+                            Kills = new List<KillModel>() {
+                                new KillModel() {
+                                    Scope = {
+                                        Players = new List<PlayerModel>() {
+                                            victim
+                                        },
+                                        Items = new List<ItemModel>() {
+                                            item
+                                        },
+                                        HumanHitLocations = new List<HumanHitLocation>() {
+                                            headshot == true ? FrostbiteGame.Headshot : FrostbiteGame.Bodyshot
+                                        }
                                     },
-                                    Items = new List<ItemModel>() {
-                                        item
-                                    },
-                                    HumanHitLocations = new List<HumanHitLocation>() {
-                                        headshot == true ? FrostbiteGame.Headshot : FrostbiteGame.Bodyshot
-                                    }
-                                },
-                                Now = {
-                                    Players = new List<PlayerModel>() {
-                                        killer
+                                    Now = {
+                                        Players = new List<PlayerModel>() {
+                                            killer
+                                        }
                                     }
                                 }
                             }
                         }
-                    });
+                    );
                 }
             }
         }

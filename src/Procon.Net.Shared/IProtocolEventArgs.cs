@@ -42,6 +42,12 @@ namespace Procon.Net.Shared {
         IProtocolEventData Now { get; set; }
 
         /// <summary>
+        /// Any modifications or deletions that need to occur on the current state
+        /// to be synchronized.
+        /// </summary>
+        IProtocolStateDifference StateDifference { get; set; }
+
+        /// <summary>
         /// When this event occured.
         /// </summary>
         DateTime Stamp { get; set; }

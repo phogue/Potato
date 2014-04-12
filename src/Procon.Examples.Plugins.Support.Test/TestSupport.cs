@@ -24,7 +24,7 @@ using Procon.Net.Shared.Truths;
 namespace Procon.Examples.Plugins.Support.Test {
     [TestFixture]
     public class TestSupport {
-
+        /*
         /// <summary>
         /// Test for you to debug.
         /// Set a breakpoint within Procon.Examples.Support.TestSupportToKillPlayersUsingBranchBuilder
@@ -45,7 +45,7 @@ namespace Procon.Examples.Plugins.Support.Test {
             });
 
             // Every game event will update the gamestate within the plugin.
-            plugins.PluginFactory.GameEvent(new List<IProtocolEventArgs>() {
+            plugins.PluginFactory.ProtocolEvent(new List<IProtocolEventArgs>() {
                 new ProtocolEventArgs() {
                     ProtocolEventType = ProtocolEventType.ProtocolSettingsUpdated,
                     // This would generally be a persistant object that Procon updates with all known information.
@@ -88,9 +88,9 @@ namespace Procon.Examples.Plugins.Support.Test {
                     PluginGuid = plugins.LoadedPlugins.First().PluginGuid
                 }
             });
-
+            
             // Every game event will update the gamestate within the plugin.
-            plugins.PluginFactory.GameEvent(new List<IProtocolEventArgs>() {
+            plugins.PluginFactory.ProtocolEvent(new List<IProtocolEventArgs>() {
                 new ProtocolEventArgs() {
                     ProtocolEventType = ProtocolEventType.ProtocolSettingsUpdated,
                     // This would generally be a persistant object that Procon updates with all known information.
@@ -135,7 +135,7 @@ namespace Procon.Examples.Plugins.Support.Test {
             });
 
             // Every game event will update the gamestate within the plugin.
-            plugins.PluginFactory.GameEvent(new List<IProtocolEventArgs>() {
+            plugins.PluginFactory.ProtocolEvent(new List<IProtocolEventArgs>() {
                 new ProtocolEventArgs() {
                     ProtocolEventType = ProtocolEventType.ProtocolSettingsUpdated,
                     // This would generally be a persistant object that Procon updates with all known information.
@@ -159,5 +159,6 @@ namespace Procon.Examples.Plugins.Support.Test {
 
             Assert.AreEqual("True", result.Message);
         }
+         * */
     }
 }

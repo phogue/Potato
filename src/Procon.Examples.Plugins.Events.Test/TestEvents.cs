@@ -92,7 +92,7 @@ namespace Procon.Examples.Plugins.Events.Test {
                 }
             });
 
-            plugins.PluginFactory.GameEvent(new List<IProtocolEventArgs>() {
+            plugins.PluginFactory.ProtocolEvent(new List<IProtocolEventArgs>() {
                 new ProtocolEventArgs() {
                     ProtocolEventType = ProtocolEventType.ProtocolChat,
                     Now = {

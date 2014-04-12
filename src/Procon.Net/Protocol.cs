@@ -112,7 +112,6 @@ namespace Procon.Net {
                     new ProtocolEventArgs() {
                         ProtocolEventType = eventType,
                         ProtocolType = this.ProtocolType as ProtocolType, // Required for serialization. How to get around?
-                        ProtocolState = this.State,
                         Now = now ?? new ProtocolEventData(),
                         Then = then ?? new ProtocolEventData()
                     }

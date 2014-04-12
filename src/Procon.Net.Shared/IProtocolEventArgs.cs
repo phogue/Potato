@@ -14,7 +14,6 @@
 // limitations under the License.
 #endregion
 using System;
-using Procon.Net.Shared.Models;
 
 namespace Procon.Net.Shared {
     /// <summary>
@@ -26,12 +25,6 @@ namespace Procon.Net.Shared {
         /// Stores the type of event (PlayerJoin, PlayerLeave etc)
         /// </summary>
         ProtocolEventType ProtocolEventType { get; set; }
-
-        /// <summary>
-        /// Stores everything about the game that we know like
-        /// the current playerlist, all the server info etc.
-        /// </summary>
-        IProtocolState ProtocolState { get; set; }
 
         /// <summary>
         /// The game type itself (BlackOps, BFBC2)

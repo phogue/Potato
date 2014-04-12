@@ -310,7 +310,6 @@ namespace Procon.Core.Connections.Plugins {
 
         private void Connection_GameEvent(IProtocolEventArgs e) {
             if (this.ProtocolEventStream != null) {
-                e.ProtocolState = null;
                 this.ProtocolEventStream.Call(e);
             }
         }
@@ -339,7 +338,7 @@ namespace Procon.Core.Connections.Plugins {
             }.Start();
             
             this.ProtocolEventStream = new ThrottledStream<IProtocolEventArgs>() {
-                FlushTo = this.PluginFactory.GameEvent
+                FlushTo = this.PluginFactory.ProtocolEvent
             }.Start();
         }
 

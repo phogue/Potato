@@ -34,7 +34,6 @@ namespace Procon.Net.Shared.Test.TestSerialization.TestJson {
             Assert.IsNotNull(deseralized.Now);
             Assert.IsNotNull(deseralized.Then);
             Assert.IsNotNull(deseralized.Stamp);
-            Assert.IsNotNull(deseralized.ProtocolState);
             Assert.IsNotNull(deseralized.ProtocolType);
             Assert.AreEqual(ProtocolEventType.None, deseralized.ProtocolEventType);
         }
@@ -111,8 +110,7 @@ namespace Procon.Net.Shared.Test.TestSerialization.TestJson {
                 },
                 ProtocolEventType = ProtocolEventType.ProtocolBanlistUpdated,
                 ProtocolType = new ProtocolType(),
-                Stamp = new DateTime(2000, 10, 10, 10, 10, 10),
-                ProtocolState = new ProtocolState()
+                Stamp = new DateTime(2000, 10, 10, 10, 10, 10)
             };
             var serialized = JsonSerialization.Minimal.Serialize(original);
             var deseralized = JsonSerialization.Minimal.Deserialize<ProtocolEventArgs>(serialized);
@@ -139,7 +137,6 @@ namespace Procon.Net.Shared.Test.TestSerialization.TestJson {
             Assert.IsNotEmpty(deseralized.Then.Settings);
             Assert.IsNotEmpty(deseralized.Then.Spawns);
 
-            Assert.IsNotNull(deseralized.ProtocolState);
             Assert.IsNotNull(deseralized.ProtocolType);
             Assert.AreEqual(new DateTime(2000, 10, 10, 10, 10, 10), deseralized.Stamp);
             Assert.AreEqual(ProtocolEventType.ProtocolBanlistUpdated, deseralized.ProtocolEventType);

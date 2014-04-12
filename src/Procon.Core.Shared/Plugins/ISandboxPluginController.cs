@@ -45,9 +45,9 @@ namespace Procon.Core.Shared.Plugins {
         bool TryDisablePlugin(Guid pluginGuid);
 
         /// <summary>
-        /// Remote proxy to propogate the game event across all enabled plugins and avoid multiple remoting calls.
+        /// Remote proxy to propogate the protocol event across all enabled plugins and avoid multiple remoting calls.
         /// </summary>
-        void GameEvent(List<IProtocolEventArgs> items);
+        void ProtocolEvent(List<IProtocolEventArgs> items);
 
         /// <summary>
         /// Remote proxy to propogate the client event across all enabled plugins and avoid multiple remoting calls.

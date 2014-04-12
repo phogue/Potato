@@ -60,7 +60,7 @@ namespace Procon.Core.Shared.Plugins {
         /// <summary>
         /// The latest GameState that was passed across the AppDomain.
         /// </summary>
-        public IProtocolState GameState { get; set; }
+        public IProtocolState ProtocolState { get; set; }
 
         /// <summary>
         /// All actions awaiting responses from the game networking layer
@@ -247,7 +247,7 @@ namespace Procon.Core.Shared.Plugins {
         }
 
         public virtual void GameEvent(IProtocolEventArgs e) {
-            this.GameState = e.ProtocolState;
+            
         }
 
         public virtual void ClientEvent(IClientEventArgs e) {

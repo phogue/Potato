@@ -50,7 +50,7 @@ namespace Procon.Examples.Plugins.Support {
         }
 
         public ICommandResult TestSupportToKillPlayersUsingBranchBuilder(ICommand command, Dictionary<String, ICommandParameter> parameters) {
-            bool canKillPlayer = this.GameState.Support.Test(BranchBuilder.ProtocolCanKillPlayer());
+            bool canKillPlayer = this.ProtocolState.Support.Test(BranchBuilder.ProtocolCanKillPlayer());
 
             // If we can issue a kill action against a player
             command.Result.Message = canKillPlayer.ToString();
@@ -59,7 +59,7 @@ namespace Procon.Examples.Plugins.Support {
         }
 
         public ICommandResult TestSupportCustomBuildAndTest(ICommand command, Dictionary<String, ICommandParameter> parameters) {
-            bool canKillPlayer = this.GameState.Support.BuildAndTest(new ProtocolAgent(), new CanFlow(), new KillGoal(), new PlayerAgent());
+            bool canKillPlayer = this.ProtocolState.Support.BuildAndTest(new ProtocolAgent(), new CanFlow(), new KillGoal(), new PlayerAgent());
 
             // If we can issue a kill action against a player, but we built the condition ourselves. Allows for
             // very specific checks for a particular protocol that truly has some unique functionality in it.

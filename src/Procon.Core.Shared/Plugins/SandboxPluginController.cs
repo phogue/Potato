@@ -127,7 +127,7 @@ namespace Procon.Core.Shared.Plugins {
             return wasDisabled;
         }
 
-        public void GameEvent(List<IProtocolEventArgs> items) {
+        public void ProtocolEvent(List<IProtocolEventArgs> items) {
             foreach (var item in items) {
                 foreach (var enabledPlugin in this.EnabledPlugins) {
                     enabledPlugin.Value.GameEvent(item);

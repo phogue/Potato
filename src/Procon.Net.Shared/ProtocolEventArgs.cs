@@ -14,7 +14,6 @@
 // limitations under the License.
 #endregion
 using System;
-using Procon.Net.Shared.Models;
 
 namespace Procon.Net.Shared {
     /// <summary>
@@ -25,8 +24,6 @@ namespace Procon.Net.Shared {
     public class ProtocolEventArgs : EventArgs, IProtocolEventArgs {
         public ProtocolEventType ProtocolEventType { get; set; }
 
-        public IProtocolState ProtocolState { get; set; }
-        
         public IProtocolType ProtocolType { get; set; }
 
         public IProtocolEventData Then { get; set; }
@@ -40,7 +37,6 @@ namespace Procon.Net.Shared {
         /// </summary>
         public ProtocolEventArgs() {
             this.Stamp = DateTime.Now;
-            this.ProtocolState = new ProtocolState();
             this.ProtocolType = new ProtocolType();
             this.Then = new ProtocolEventData();
             this.Now = new ProtocolEventData();

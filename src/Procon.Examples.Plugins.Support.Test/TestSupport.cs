@@ -24,7 +24,7 @@ using Procon.Net.Shared.Truths;
 namespace Procon.Examples.Plugins.Support.Test {
     [TestFixture]
     public class TestSupport {
-        /*
+        
         /// <summary>
         /// Test for you to debug.
         /// Set a breakpoint within Procon.Examples.Support.TestSupportToKillPlayersUsingBranchBuilder
@@ -49,13 +49,15 @@ namespace Procon.Examples.Plugins.Support.Test {
                 new ProtocolEventArgs() {
                     ProtocolEventType = ProtocolEventType.ProtocolSettingsUpdated,
                     // This would generally be a persistant object that Procon updates with all known information.
-                    ProtocolState = new ProtocolState() {
-                        Support = Tree.Union(
-                            BranchBuilder.ProtocolCanKillPlayer(),
-                            BranchBuilder.ProtocolKnowsWhenPlayerKillPlayer(),
-                            BranchBuilder.ProtocolKnowsWhenPlayerChatToEveryone(),
-                            BranchBuilder.ProtocolKnowsWhenPlayerChatToGroup()
-                        )
+                    StateDifference = new ProtocolStateDifference() {
+                        Modified = {
+                            Support = Tree.Union(
+                                BranchBuilder.ProtocolCanKillPlayer(),
+                                BranchBuilder.ProtocolKnowsWhenPlayerKillPlayer(),
+                                BranchBuilder.ProtocolKnowsWhenPlayerChatToEveryone(),
+                                BranchBuilder.ProtocolKnowsWhenPlayerChatToGroup()
+                            )
+                        }
                     }
                 }
             });
@@ -94,13 +96,15 @@ namespace Procon.Examples.Plugins.Support.Test {
                 new ProtocolEventArgs() {
                     ProtocolEventType = ProtocolEventType.ProtocolSettingsUpdated,
                     // This would generally be a persistant object that Procon updates with all known information.
-                    ProtocolState = new ProtocolState() {
-                        Support = Tree.Union(
-                            // BranchBuilder.ProtocolCanKillPlayer(),
-                            BranchBuilder.ProtocolKnowsWhenPlayerKillPlayer(),
-                            BranchBuilder.ProtocolKnowsWhenPlayerChatToEveryone(),
-                            BranchBuilder.ProtocolKnowsWhenPlayerChatToGroup()
-                        )
+                    StateDifference = new ProtocolStateDifference() {
+                        Modified = {
+                            Support = Tree.Union(
+                                // BranchBuilder.ProtocolCanKillPlayer(),
+                                BranchBuilder.ProtocolKnowsWhenPlayerKillPlayer(),
+                                BranchBuilder.ProtocolKnowsWhenPlayerChatToEveryone(),
+                                BranchBuilder.ProtocolKnowsWhenPlayerChatToGroup()
+                            )
+                        }
                     }
                 }
             });
@@ -139,13 +143,15 @@ namespace Procon.Examples.Plugins.Support.Test {
                 new ProtocolEventArgs() {
                     ProtocolEventType = ProtocolEventType.ProtocolSettingsUpdated,
                     // This would generally be a persistant object that Procon updates with all known information.
-                    ProtocolState = new ProtocolState() {
-                        Support = Tree.Union(
-                            BranchBuilder.ProtocolCanKillPlayer(),
-                            BranchBuilder.ProtocolKnowsWhenPlayerKillPlayer(),
-                            BranchBuilder.ProtocolKnowsWhenPlayerChatToEveryone(),
-                            BranchBuilder.ProtocolKnowsWhenPlayerChatToGroup()
-                        )
+                    StateDifference = new ProtocolStateDifference() {
+                        Modified = {
+                            Support = Tree.Union(
+                                BranchBuilder.ProtocolCanKillPlayer(),
+                                BranchBuilder.ProtocolKnowsWhenPlayerKillPlayer(),
+                                BranchBuilder.ProtocolKnowsWhenPlayerChatToEveryone(),
+                                BranchBuilder.ProtocolKnowsWhenPlayerChatToGroup()
+                            )
+                        }
                     }
                 }
             });
@@ -159,6 +165,5 @@ namespace Procon.Examples.Plugins.Support.Test {
 
             Assert.AreEqual("True", result.Message);
         }
-         * */
     }
 }

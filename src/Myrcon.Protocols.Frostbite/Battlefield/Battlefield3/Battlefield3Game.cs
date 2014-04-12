@@ -92,7 +92,7 @@ namespace Myrcon.Protocols.Frostbite.Battlefield.Battlefield3 {
                 }
             }
 
-            this.OnGameEvent(ProtocolEventType.ProtocolPlayerlistUpdated, new ProtocolStateDifference() {
+            this.OnProtocolEvent(ProtocolEventType.ProtocolPlayerlistUpdated, new ProtocolStateDifference() {
                 Removed = {
                     Players = this.State.Players.Where(existing => players.Select(current => current.Uid).Contains(existing.Uid) == false).ToList()
                 },
@@ -123,7 +123,7 @@ namespace Myrcon.Protocols.Frostbite.Battlefield.Battlefield3 {
                     }
                 }
 
-                this.OnGameEvent(
+                this.OnProtocolEvent(
                     ProtocolEventType.ProtocolMaplistUpdated,
                     new ProtocolStateDifference() {
                         Override = true,
@@ -163,7 +163,7 @@ namespace Myrcon.Protocols.Frostbite.Battlefield.Battlefield3 {
                 }
                 else {
                     // We have recieved the whole banlist in 100 ban increments.. throw event.
-                    this.OnGameEvent(
+                    this.OnProtocolEvent(
                         ProtocolEventType.ProtocolBanlistUpdated,
                         new ProtocolStateDifference() {
                             Override = true,
@@ -216,7 +216,7 @@ namespace Myrcon.Protocols.Frostbite.Battlefield.Battlefield3 {
                     this.State.Players.Add(player);
                 }
 
-                this.OnGameEvent(
+                this.OnProtocolEvent(
                     ProtocolEventType.ProtocolPlayerJoin,
                     new ProtocolStateDifference() {
                         Override = true,
@@ -254,7 +254,7 @@ namespace Myrcon.Protocols.Frostbite.Battlefield.Battlefield3 {
                         target.Deaths++;
                     }
 
-                    this.OnGameEvent(
+                    this.OnProtocolEvent(
                         ProtocolEventType.ProtocolPlayerKill,
                         new ProtocolStateDifference() {
                             Modified = {

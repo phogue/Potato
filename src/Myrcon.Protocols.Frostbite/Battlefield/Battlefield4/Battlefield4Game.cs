@@ -79,7 +79,7 @@ namespace Myrcon.Protocols.Frostbite.Battlefield.Battlefield4 {
                     }
                 }
 
-                this.OnGameEvent(
+                this.OnProtocolEvent(
                     ProtocolEventType.ProtocolMaplistUpdated,
                     new ProtocolStateDifference() {
                         Modified = {
@@ -117,7 +117,7 @@ namespace Myrcon.Protocols.Frostbite.Battlefield.Battlefield4 {
                 }
                 else {
                     // We have recieved the whole banlist in 100 ban increments.. throw event.
-                    this.OnGameEvent(
+                    this.OnProtocolEvent(
                         ProtocolEventType.ProtocolBanlistUpdated,
                         new ProtocolStateDifference() {
                             Override = true,
@@ -146,7 +146,7 @@ namespace Myrcon.Protocols.Frostbite.Battlefield.Battlefield4 {
                     Uid = request.Packet.Words[2]
                 };
 
-                this.OnGameEvent(
+                this.OnProtocolEvent(
                     ProtocolEventType.ProtocolPlayerJoin,
                     new ProtocolStateDifference() {
                         Modified = {
@@ -183,7 +183,7 @@ namespace Myrcon.Protocols.Frostbite.Battlefield.Battlefield4 {
                         killer.Inventory.Now.Items.Add(item);
                     }
 
-                    this.OnGameEvent(
+                    this.OnProtocolEvent(
                         ProtocolEventType.ProtocolPlayerKill,
                         new ProtocolStateDifference() {
                             Modified = {

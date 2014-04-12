@@ -104,7 +104,7 @@ namespace Procon.Net {
         /// </summary>
         public virtual event Action<IProtocol, IProtocolEventArgs> ProtocolEvent;
 
-        protected void OnGameEvent(ProtocolEventType eventType, IProtocolStateDifference difference, IProtocolEventData now = null, IProtocolEventData then = null) {
+        protected void OnProtocolEvent(ProtocolEventType eventType, IProtocolStateDifference difference, IProtocolEventData now = null, IProtocolEventData then = null) {
             var handler = this.ProtocolEvent;
 
             // Apply any differences to our state object.

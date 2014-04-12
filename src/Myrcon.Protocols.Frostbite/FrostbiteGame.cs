@@ -351,7 +351,7 @@ namespace Myrcon.Protocols.Frostbite {
                     this.State.Settings.Current.FriendlyGameModeNameText = currentMap.GameMode.FriendlyName;
                     this.State.Settings.Current.FriendlyMapNameText = currentMap.FriendlyName;
 
-                    this.OnGameEvent(
+                    this.OnProtocolEvent(
                         ProtocolEventType.ProtocolMapChanged,
                         new ProtocolStateDifference() {
                             Modified = {
@@ -386,7 +386,7 @@ namespace Myrcon.Protocols.Frostbite {
             if (modified == true) {
                 this.State.Settings.Current.RoundIndex = currentRound;
 
-                this.OnGameEvent(
+                this.OnProtocolEvent(
                     ProtocolEventType.ProtocolRoundChanged,
                     new ProtocolStateDifference() {
                         Modified = {
@@ -435,10 +435,10 @@ namespace Myrcon.Protocols.Frostbite {
                         config.Parse(this);
                     }
 
-                    this.OnGameEvent(ProtocolEventType.ProtocolConfigExecuted, new ProtocolStateDifference());
+                    this.OnProtocolEvent(ProtocolEventType.ProtocolConfigExecuted, new ProtocolStateDifference());
                 }
 
-                this.OnGameEvent(
+                this.OnProtocolEvent(
                     ProtocolEventType.ProtocolSettingsUpdated,
                     new ProtocolStateDifference() {
                         Modified = {
@@ -521,7 +521,7 @@ namespace Myrcon.Protocols.Frostbite {
                 }
             }
 
-            this.OnGameEvent(ProtocolEventType.ProtocolPlayerlistUpdated, new ProtocolStateDifference() {
+            this.OnProtocolEvent(ProtocolEventType.ProtocolPlayerlistUpdated, new ProtocolStateDifference() {
                 Removed = {
                     Players = this.State.Players.Where(existing => players.Select(current => current.Uid).Contains(existing.Uid) == false).ToList()
                 },
@@ -542,7 +542,7 @@ namespace Myrcon.Protocols.Frostbite {
         public void AdminSayDispatchHandler(IPacketWrapper request, IPacketWrapper response) {
 
             if (request.Packet.Words.Count >= 3) {
-                this.OnGameEvent(
+                this.OnProtocolEvent(
                     ProtocolEventType.ProtocolChat,
                     new ProtocolStateDifference(),
                     new ProtocolEventData() {
@@ -577,7 +577,7 @@ namespace Myrcon.Protocols.Frostbite {
 
                 this.State.Maps = maps;
 
-                this.OnGameEvent(
+                this.OnProtocolEvent(
                     ProtocolEventType.ProtocolMaplistUpdated,
                     new ProtocolStateDifference() {
                         Override = true,
@@ -616,7 +616,7 @@ namespace Myrcon.Protocols.Frostbite {
                 }
                 else {
                     // We have recieved the whole banlist in 100 ban increments.. throw event.
-                    this.OnGameEvent(
+                    this.OnProtocolEvent(
                         ProtocolEventType.ProtocolBanlistUpdated,
                         new ProtocolStateDifference() {
                             Override = true,
@@ -633,7 +633,7 @@ namespace Myrcon.Protocols.Frostbite {
             if (request.Packet.Words.Count >= 1) {
                 BanModel ban = FrostbiteBan.ParseBanAdd(request.Packet.Words.GetRange(1, request.Packet.Words.Count - 1));
 
-                this.OnGameEvent(
+                this.OnProtocolEvent(
                     ProtocolEventType.ProtocolPlayerBanned,
                     new ProtocolStateDifference() {
                         Modified = {
@@ -655,7 +655,7 @@ namespace Myrcon.Protocols.Frostbite {
             if (request.Packet.Words.Count >= 1) {
                 BanModel ban = FrostbiteBan.ParseBanRemove(request.Packet.Words.GetRange(1, request.Packet.Words.Count - 1));
 
-                this.OnGameEvent(
+                this.OnProtocolEvent(
                     ProtocolEventType.ProtocolPlayerUnbanned,
                     new ProtocolStateDifference() {
                         Removed = {
@@ -808,7 +808,7 @@ namespace Myrcon.Protocols.Frostbite {
                     
                 }
                 else if (pbObject is PunkBusterEndPlayerList) {
-                    this.OnGameEvent(ProtocolEventType.ProtocolPlayerlistUpdated, new ProtocolStateDifference());
+                    this.OnProtocolEvent(ProtocolEventType.ProtocolPlayerlistUpdated, new ProtocolStateDifference());
                 }
             }
         }
@@ -821,7 +821,7 @@ namespace Myrcon.Protocols.Frostbite {
 
                 if (bool.TryParse(request.Packet.Words[4], out headshot) == true) {
 
-                    this.OnGameEvent(
+                    this.OnProtocolEvent(
                         ProtocolEventType.ProtocolPlayerKill,
                         new ProtocolStateDifference() {
                             Modified = {
@@ -879,7 +879,7 @@ namespace Myrcon.Protocols.Frostbite {
 
                     // Maps are the same, only a round change
                     if (String.Compare(this.State.Settings.Current.MapNameText, request.Packet.Words[1], StringComparison.OrdinalIgnoreCase) == 0) {
-                        this.OnGameEvent(
+                        this.OnProtocolEvent(
                             ProtocolEventType.ProtocolRoundChanged,
                             new ProtocolStateDifference() {
                                 Modified = {
@@ -900,7 +900,7 @@ namespace Myrcon.Protocols.Frostbite {
 
                         this.State.Settings.Current.MapNameText = request.Packet.Words[1];
 
-                        this.OnGameEvent(
+                        this.OnProtocolEvent(
                             ProtocolEventType.ProtocolMapChanged,
                             new ProtocolStateDifference() {
                                 Modified = {
@@ -960,7 +960,7 @@ namespace Myrcon.Protocols.Frostbite {
 
                     this.State.Players.RemoveAll(x => x.Name == player.Name);
 
-                    this.OnGameEvent(
+                    this.OnProtocolEvent(
                         ProtocolEventType.ProtocolPlayerLeave,
                         new ProtocolStateDifference() {
                             Removed = {
@@ -1002,7 +1002,7 @@ namespace Myrcon.Protocols.Frostbite {
                     chat.Origin = NetworkOrigin.Server;
                 }
 
-                this.OnGameEvent(
+                this.OnProtocolEvent(
                     ProtocolEventType.ProtocolChat,
                     new ProtocolStateDifference(),
                     new ProtocolEventData() {
@@ -1031,7 +1031,7 @@ namespace Myrcon.Protocols.Frostbite {
                     this.State.Players.Add(statePlayer);
                 }
 
-                this.OnGameEvent(
+                this.OnProtocolEvent(
                     ProtocolEventType.ProtocolPlayerJoin, 
                     new ProtocolStateDifference() {
                         Modified = {
@@ -1059,7 +1059,7 @@ namespace Myrcon.Protocols.Frostbite {
                 player.Role = spawn.Role;
                 player.Inventory = spawn.Inventory;
 
-                this.OnGameEvent(
+                this.OnProtocolEvent(
                     ProtocolEventType.ProtocolPlayerSpawn,
                     new ProtocolStateDifference() {
                         Modified = {
@@ -1085,7 +1085,7 @@ namespace Myrcon.Protocols.Frostbite {
                 // Note that this is removed when the player.OnLeave event is fired.
                 //this.State.PlayerList.RemoveAll(x => x.Name == request.Packet.Words[1]);
 
-                this.OnGameEvent(
+                this.OnProtocolEvent(
                     ProtocolEventType.ProtocolPlayerKicked, 
                     new ProtocolStateDifference() {
                         Removed = {
@@ -1124,7 +1124,7 @@ namespace Myrcon.Protocols.Frostbite {
                     Uid = squadId.ToString(CultureInfo.InvariantCulture)
                 });
 
-                this.OnGameEvent(
+                this.OnProtocolEvent(
                     ProtocolEventType.ProtocolPlayerMoved,
                     new ProtocolStateDifference() {
                         Modified = {
@@ -1157,7 +1157,7 @@ namespace Myrcon.Protocols.Frostbite {
                     Uid = squadId.ToString(CultureInfo.InvariantCulture)
                 });
 
-                this.OnGameEvent(
+                this.OnProtocolEvent(
                     ProtocolEventType.ProtocolPlayerMoved,
                     new ProtocolStateDifference() {
                         Modified = {

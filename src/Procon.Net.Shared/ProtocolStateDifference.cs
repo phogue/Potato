@@ -14,8 +14,8 @@ namespace Procon.Net.Shared {
         /// Initializes the difference with the default values.
         /// </summary>
         public ProtocolStateDifference() {
-            this.Modified = new ProtocolState();
-            this.Removed = new ProtocolState();
+            this.Modified = new ProtocolStateSegment();
+            this.Removed = new ProtocolStateSegment();
         }
     }
 }

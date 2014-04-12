@@ -14,6 +14,7 @@
 // limitations under the License.
 #endregion
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using Procon.Net.Shared.Models;
 using Procon.Net.Shared.Truths;
@@ -58,6 +59,107 @@ namespace Procon.Net.Shared {
             this.Settings = new Settings();
 
             this.Support = new Tree();
+        }
+
+        /// <summary>
+        /// Synchronizes a modified list with a comparator method
+        /// </summary>
+        private static void ModifiedList<T>(List<T> existing, IEnumerable<T> modified, Func<T, T, bool> predicate) {
+            if (modified != null) {
+                var modifiedItems = modified.Select(modifiedItem => new {
+                    Index = existing.FindIndex(item => predicate(item, modifiedItem)),
+                    Item = modifiedItem
+                });
+
+                foreach (var modifiedItem in modifiedItems) {
+                    if (modifiedItem.Index >= 0) {
+                        existing[modifiedItem.Index] = modifiedItem.Item;
+                    }
+                    else {
+                        existing.Add(modifiedItem.Item);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Updates/Overwrites all documents from the modified object
+        /// </summary>
+        /// <param name="modified">The data to find modified items from</param>
+        /// <returns>this</returns>
+        public IProtocolState Modified(IProtocolStateData modified) {
+            ModifiedList(this.Players, modified.Players, (item, modifiedItem) => String.Compare(item.Uid, modifiedItem.Uid, StringComparison.OrdinalIgnoreCase) == 0);
+
+            ModifiedList(this.Maps, modified.Maps, (item, modifiedItem) => item.GameMode != null && modifiedItem.GameMode != null && String.Compare(item.Name, modifiedItem.Name, StringComparison.OrdinalIgnoreCase) == 0 && String.Compare(item.GameMode.Name, modifiedItem.GameMode.Name, StringComparison.OrdinalIgnoreCase) == 0);
+
+            // This looks expensive, but I don't think bans will every contain more than a single player.
+            // This is just here in case they ever do - we don't make the assumption and just test the first
+            // player in the ban.
+            ModifiedList(this.Bans, modified.Bans, (item, modifiedItem) => item.Scope.Players.All(player => modifiedItem.Scope.Players.Any(modifiedPlayer => (String.IsNullOrEmpty(player.Uid) == false && String.IsNullOrEmpty(modifiedPlayer.Uid) == false && String.Compare(player.Uid, modifiedPlayer.Uid, StringComparison.OrdinalIgnoreCase) == 0) ||
+                                                                                                                                                             (String.IsNullOrEmpty(player.Name) == false && String.IsNullOrEmpty(modifiedPlayer.Name) == false && String.Compare(player.Name, modifiedPlayer.Name, StringComparison.OrdinalIgnoreCase) == 0) ||
+                                                                                                                                                             (String.IsNullOrEmpty(player.Ip) == false && String.IsNullOrEmpty(modifiedPlayer.Ip) == false && String.Compare(player.Ip, modifiedPlayer.Ip, StringComparison.OrdinalIgnoreCase) == 0))));
+
+            ModifiedList(this.MapPool, modified.MapPool, (item, modifiedItem) => item.GameMode != null && modifiedItem.GameMode != null && String.Compare(item.Name, modifiedItem.Name, StringComparison.OrdinalIgnoreCase) == 0 && String.Compare(item.GameMode.Name, modifiedItem.GameMode.Name, StringComparison.OrdinalIgnoreCase) == 0);
+
+            ModifiedList(this.GameModePool, modified.GameModePool, (item, modifiedItem) => String.Compare(item.Name, modifiedItem.Name, StringComparison.OrdinalIgnoreCase) == 0);
+
+            ModifiedList(this.Groups, modified.Groups, (item, modifiedItem) => String.Compare(item.Uid, modifiedItem.Uid, StringComparison.OrdinalIgnoreCase) == 0 && String.Compare(item.Type, modifiedItem.Type, StringComparison.OrdinalIgnoreCase) == 0);
+
+            ModifiedList(this.Items, modified.Items, (item, modifiedItem) => String.Compare(item.Name, modifiedItem.Name, StringComparison.OrdinalIgnoreCase) == 0);
+
+            this.Settings = modified.Settings ?? this.Settings;
+
+            this.Support = modified.Support ?? this.Support;
+
+            return this;
+        }
+
+        private static void RemoveList<T>(List<T> existing, IEnumerable<T> removed, Func<T, T, bool> predicate) {
+            if (removed != null) {
+                foreach (var index in removed.Select(removedItem => existing.FindIndex(item => predicate(item, removedItem))).Where(index => index >= 0)) {
+                    existing.RemoveAt(index);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Removes all documents found in the passed state from the current state
+        /// </summary>
+        /// <param name="removed">The data to find removed items from</param>
+        /// <returns>this</returns>
+        public IProtocolState Removed(IProtocolStateData removed) {
+            RemoveList(this.Players, removed.Players, (item, removedItem) => String.Compare(item.Uid, removedItem.Uid, StringComparison.OrdinalIgnoreCase) == 0);
+
+            RemoveList(this.Maps, removed.Maps, (item, removedItem) => item.GameMode != null && removedItem.GameMode != null && String.Compare(item.Name, removedItem.Name, StringComparison.OrdinalIgnoreCase) == 0 && String.Compare(item.GameMode.Name, removedItem.GameMode.Name, StringComparison.OrdinalIgnoreCase) == 0);
+
+            // This looks expensive, but I don't think bans will every contain more than a single player.
+            // This is just here in case they ever do - we don't make the assumption and just test the first
+            // player in the ban.
+            RemoveList(this.Bans, removed.Bans, (item, removedItem) => item.Scope.Players.All(player => removedItem.Scope.Players.Any(modifiedPlayer => (String.IsNullOrEmpty(player.Uid) == false && String.IsNullOrEmpty(modifiedPlayer.Uid) == false && String.Compare(player.Uid, modifiedPlayer.Uid, StringComparison.OrdinalIgnoreCase) == 0) ||
+                                                                                                                                                             (String.IsNullOrEmpty(player.Name) == false && String.IsNullOrEmpty(modifiedPlayer.Name) == false && String.Compare(player.Name, modifiedPlayer.Name, StringComparison.OrdinalIgnoreCase) == 0) ||
+                                                                                                                                                             (String.IsNullOrEmpty(player.Ip) == false && String.IsNullOrEmpty(modifiedPlayer.Ip) == false && String.Compare(player.Ip, modifiedPlayer.Ip, StringComparison.OrdinalIgnoreCase) == 0))));
+
+            RemoveList(this.MapPool, removed.MapPool, (item, removedItem) => item.GameMode != null && removedItem.GameMode != null && String.Compare(item.Name, removedItem.Name, StringComparison.OrdinalIgnoreCase) == 0 && String.Compare(item.GameMode.Name, removedItem.GameMode.Name, StringComparison.OrdinalIgnoreCase) == 0);
+
+            RemoveList(this.GameModePool, removed.GameModePool, (item, removedItem) => String.Compare(item.Name, removedItem.Name, StringComparison.OrdinalIgnoreCase) == 0);
+
+            RemoveList(this.Groups, removed.Groups, (item, removedItem) => String.Compare(item.Uid, removedItem.Uid, StringComparison.OrdinalIgnoreCase) == 0 && String.Compare(item.Type, removedItem.Type, StringComparison.OrdinalIgnoreCase) == 0);
+
+            RemoveList(this.Items, removed.Items, (item, removedItem) => String.Compare(item.Name, removedItem.Name, StringComparison.OrdinalIgnoreCase) == 0);
+
+            return this;
+        }
+
+        public IProtocolState Apply(IProtocolStateDifference difference) {
+            if (difference.Modified != null) {
+                this.Modified(difference.Modified);
+            }
+
+            if (difference.Removed != null) {
+                this.Removed(difference.Removed);
+            }
+
+            return this;
         }
     }
 }

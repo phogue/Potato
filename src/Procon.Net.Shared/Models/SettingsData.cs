@@ -16,7 +16,8 @@
 using System;
 
 namespace Procon.Net.Shared.Models {
-    /// <summary>
+    /// <summary>Holds variables of settings on a server</summary>
+    /// <remarks>
     /// Note that the property names will more than likely lengthen to very specific for their task.
     /// 
     /// We originally had a very good implementation by Cameron to handle generic additions by protocols to
@@ -32,7 +33,7 @@ namespace Procon.Net.Shared.Models {
     /// 
     /// In all, I expect this class will have several hundred property names and if it means that conversion needs
     /// to be done in one location (protocol implementation) rather than within a plugin then it'll all be worth it.
-    /// </summary>
+    /// </remarks>
     [Serializable]
     public sealed class SettingsData {
         /// <summary>

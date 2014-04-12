@@ -47,6 +47,8 @@
     </Compile>
     <Compile Include="Actions\INetworkAction.cs" />
     <Compile Include="ClientSetup.cs" />
+    <Compile Include="IProtocolStateData.cs" />
+    <Compile Include="ProtocolStateSegment.cs" />
     <Compile Include="IClientEventArgs.cs" />
     <Compile Include="IClientEventData.cs" />
     <Compile Include="IClientSetup.cs" />
@@ -57,6 +59,7 @@
     <Compile Include="IProtocolEventData.cs" />
     <Compile Include="IProtocolSetup.cs" />
     <Compile Include="IProtocolState.cs" />
+    <Compile Include="IProtocolStateDifference.cs" />
     <Compile Include="Models\BanModel.cs" />
     <Compile Include="Models\ChatModel.cs" />
     <Compile Include="Models\INetworkModel.cs" />
@@ -81,6 +84,7 @@
     <Compile Include="ConnectionState.cs" />
     <Compile Include="ProtocolDeclarationAttribute.cs" />
     <Compile Include="ProtocolSetupResult.cs" />
+    <Compile Include="ProtocolStateDifference.cs" />
     <Compile Include="Sandbox\ISandboxProtocolCallbackProxy.cs" />
     <Compile Include="Sandbox\SandboxProtocolCallbackProxy.cs" />
     <Compile Include="Sandbox\ISandboxProtocolController.cs" />

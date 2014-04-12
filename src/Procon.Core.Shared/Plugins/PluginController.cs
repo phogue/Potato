@@ -73,6 +73,8 @@ namespace Procon.Core.Shared.Plugins {
 
             this.DeferredActions = new ConcurrentDictionary<Guid, IDeferredAction>();
 
+            this.ProtocolState = new ProtocolState();
+
             this.CommandDispatchers.Add(new CommandDispatch() {
                 CommandType = CommandType.TextCommandsExecute,
                 CommandAttributeType = CommandAttributeType.Executed,
@@ -247,7 +249,10 @@ namespace Procon.Core.Shared.Plugins {
         }
 
         public virtual void GameEvent(IProtocolEventArgs e) {
-            
+            // Apply any changes to the protocol state for this plugin
+            if (e.StateDifference != null) {
+                this.ProtocolState.Apply(e.StateDifference);
+            }
         }
 
         public virtual void ClientEvent(IClientEventArgs e) {

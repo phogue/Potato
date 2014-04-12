@@ -435,7 +435,10 @@ namespace Myrcon.Protocols.Frostbite {
                         config.Parse(this);
                     }
 
-                    this.OnProtocolEvent(ProtocolEventType.ProtocolConfigExecuted, new ProtocolStateDifference());
+                    this.OnProtocolEvent(ProtocolEventType.ProtocolConfigExecuted, new ProtocolStateDifference() {
+                        Override = true,
+                        Modified = this.State
+                    });
                 }
 
                 this.OnProtocolEvent(

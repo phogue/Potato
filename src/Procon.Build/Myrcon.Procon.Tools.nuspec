@@ -6,12 +6,11 @@
 		<title>Myrcon Procon Tools</title>
 		<authors>Myrcon Pty. Ltd.</authors>
 		<owners>Myrcon Pty. Ltd.</owners>
-		<licenseUrl>https://github.com/Myrcon/Procon-2</licenseUrl>
+		<licenseUrl>http://www.apache.org/licenses/LICENSE-2.0.html</licenseUrl>
 		<projectUrl>https://myrcon.com</projectUrl>
 		<iconUrl>https://myrcon.com/assets/images/logo.ico</iconUrl>
 		<requireLicenseAcceptance>true</requireLicenseAcceptance>
 		<description>Procon. More Pro than con. Professional Connection. Pro-Connection. Professional Con.</description>
-		<releaseNotes>Summary of changes made in this release of the package.</releaseNotes>
 		<copyright>Copyright 2014</copyright>
 		<tags>Procon Tools Developer Myrcon</tags>
     <dependencies>

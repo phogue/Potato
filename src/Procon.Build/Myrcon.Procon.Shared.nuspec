@@ -6,12 +6,12 @@
 		<title>Myrcon Procon Shared</title>
 		<authors>Myrcon Pty. Ltd.</authors>
 		<owners>Myrcon Pty. Ltd.</owners>
-		<licenseUrl>http://LICENSE_URL_HERE_OR_DELETE_THIS_LINE</licenseUrl>
+		<licenseUrl>http://www.apache.org/licenses/LICENSE-2.0.html</licenseUrl>
     <projectUrl>https://myrcon.com</projectUrl>
 		<iconUrl>https://myrcon.com/assets/images/logo.ico</iconUrl>
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
-		<description>Procon. More Pro than con. Professional Connection. Pro-Connection. Professional Con.</description>
-		<releaseNotes>Summary of changes made in this release of the package.</releaseNotes>
+    <summary>The shared achitecture between the core and a plugin or protocol.</summary>
+		<description>The shared achitecture between the core and a plugin or protocol.</description>
 		<copyright>Copyright 2014</copyright>
 		<tags>Procon Shared Myrcon</tags>
 	</metadata>

@@ -6,12 +6,12 @@
 		<title>Myrcon Procon Core</title>
 		<authors>Myrcon Pty. Ltd.</authors>
 		<owners>Myrcon Pty. Ltd.</owners>
-		<licenseUrl>http://LICENSE_URL_HERE_OR_DELETE_THIS_LINE</licenseUrl>
+		<licenseUrl>http://www.apache.org/licenses/LICENSE-2.0.html</licenseUrl>
     <projectUrl>https://myrcon.com</projectUrl>
 		<iconUrl>https://myrcon.com/assets/images/logo.ico</iconUrl>
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
-		<description>Procon. More Pro than con. Professional Connection. Pro-Connection. Professional Con.</description>
-		<releaseNotes>Summary of changes made in this release of the package.</releaseNotes>
+    <summary>The core of Procon, which runs just about everything.</summary>
+		<description>The core of Procon, which runs just about everything.</description>
 		<copyright>Copyright 2014</copyright>
 		<tags>Procon Core Myrcon</tags>
     <dependencies>

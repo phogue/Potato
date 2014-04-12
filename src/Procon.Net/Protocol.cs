@@ -286,6 +286,12 @@ namespace Procon.Net {
 
                 this.State.Settings.Current.ConnectionState = state;
 
+                this.OnProtocolEvent(ProtocolEventType.ProtocolSettingsUpdated, new ProtocolStateDifference() {
+                    Modified = {
+                        Settings = this.State.Settings
+                    }
+                });
+
                 if (state == ConnectionState.ConnectionReady) {
                     this.Login(this.Options.Password);
                 }

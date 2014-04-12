@@ -19,6 +19,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Runtime.Remoting.Lifetime;
 using System.Security;
 using System.Security.Permissions;
 using Procon.Core.Connections.Plugins;
@@ -312,6 +313,15 @@ namespace Procon.Core.Connections {
 
             if (this.Plugins != null) {
                 this.Plugins.Poke();
+            }
+
+            // Update the lease on the protocol AppDomain
+            if (this.ProtocolFactory != null) {
+                ILease lease = ((MarshalByRefObject)this.ProtocolFactory).GetLifetimeService() as ILease;
+
+                if (lease != null) {
+                    lease.Renew(lease.InitialLeaseTime);
+                }
             }
         }
 

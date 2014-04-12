@@ -184,9 +184,7 @@ namespace Myrcon.Protocols.Frostbite.Battlefield.Battlefield3 {
 
                 if (player != null && uint.TryParse(response.Packet.Words[1], out ping) == true) {
                     // Sometimes the protocol sends through the max value of uint. We ignore everything above 1000.
-                    if (ping < 1000) {
-                        player.Ping = ping;
-                    }
+                    player.Ping = ping > 1000 ? 0 : ping;
                 }
             }
         }

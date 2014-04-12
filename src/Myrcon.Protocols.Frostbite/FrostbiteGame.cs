@@ -520,6 +520,8 @@ namespace Myrcon.Protocols.Frostbite {
                     modified.Add(statePlayer);
                 }
                 else {
+                    player.Ping = player.Ping > 1000 ? 0 : player.Ping;
+
                     modified.Add(player);
                 }
             }
@@ -952,7 +954,7 @@ namespace Myrcon.Protocols.Frostbite {
                         statePlayer.Kills = player.Kills;
                         statePlayer.Deaths = player.Deaths;
                         statePlayer.ClanTag = player.ClanTag;
-                        statePlayer.Ping = player.Ping;
+                        statePlayer.Ping = player.Ping > 1000 ? 0 : player.Ping;
                         statePlayer.Uid = player.Uid;
 
                         statePlayer.ModifyGroup(player.Groups.FirstOrDefault(group => group.Type == GroupModel.Team));

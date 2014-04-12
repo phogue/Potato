@@ -74,9 +74,7 @@ namespace Procon.Core.Connections {
         /// <summary>
         /// Proxy to the active protocol state
         /// </summary>
-        public IProtocolState ProtocolState {
-            get { return this.Protocol != null ? this.Protocol.State : null; }
-        }
+        public IProtocolState ProtocolState { get; set; }
 
         /// <summary>
         /// Text command controller to pipe all text chats through for analysis of text commands.
@@ -97,6 +95,8 @@ namespace Procon.Core.Connections {
             this.Shared = new SharedReferences();
 
             this.ConnectionModel = new ConnectionModel();
+
+            this.ProtocolState = new ProtocolState();
 
             this.CommandDispatchers.AddRange(new List<ICommandDispatch>() {
                 new CommandDispatch() {
@@ -302,7 +302,7 @@ namespace Procon.Core.Connections {
             base.Poke();
 
             if (this.Protocol != null) {
-                if (this.Protocol.State != null && this.Protocol.State.Settings.Current.ConnectionState == ConnectionState.ConnectionDisconnected) {
+                if (this.ProtocolState != null && this.ProtocolState.Settings.Current.ConnectionState == ConnectionState.ConnectionDisconnected) {
                     this.AttemptConnection();
                 }
                 else {
@@ -410,7 +410,7 @@ namespace Procon.Core.Connections {
                         }
                     },
                     Now = new CommandData() {
-                        Players = new List<PlayerModel>(this.Protocol.State.Players)
+                        Players = new List<PlayerModel>(this.ProtocolState.Players)
                     }
                 };
             }
@@ -438,7 +438,7 @@ namespace Procon.Core.Connections {
                     },
                     Now = new CommandData() {
                         Settings = new List<Settings>() {
-                            this.Protocol.State.Settings
+                            this.ProtocolState.Settings
                         }
                     }
                 };
@@ -466,7 +466,7 @@ namespace Procon.Core.Connections {
                         }
                     },
                     Now = new CommandData() {
-                        Bans = new List<BanModel>(this.Protocol.State.Bans)
+                        Bans = new List<BanModel>(this.ProtocolState.Bans)
                     }
                 };
             }
@@ -493,7 +493,7 @@ namespace Procon.Core.Connections {
                         }
                     },
                     Now = new CommandData() {
-                        Maps = new List<MapModel>(this.Protocol.State.Maps)
+                        Maps = new List<MapModel>(this.ProtocolState.Maps)
                     }
                 };
             }
@@ -520,7 +520,7 @@ namespace Procon.Core.Connections {
                         }
                     },
                     Now = new CommandData() {
-                        Maps = new List<MapModel>(this.Protocol.State.MapPool)
+                        Maps = new List<MapModel>(this.ProtocolState.MapPool)
                     }
                 };
             }
@@ -644,6 +644,10 @@ namespace Procon.Core.Connections {
         /// </summary>
         /// <param name="e"></param>
         private void Protocol_ProtocolEvent(IProtocolEventArgs e) {
+            if (e.StateDifference != null) {
+                this.ProtocolState.Apply(e.StateDifference);
+            }
+
             if (this.Shared.Variables.Get<List<String>>(CommonVariableNames.ProtocolEventsIgnoreList).Contains(e.ProtocolEventType.ToString()) == false) {
                 this.Shared.Events.Log(new GenericEvent() {
                     Name = e.ProtocolEventType.ToString(),

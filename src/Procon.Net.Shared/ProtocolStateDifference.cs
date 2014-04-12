@@ -6,7 +6,16 @@ namespace Procon.Net.Shared {
     /// </summary>
     [Serializable]
     public class ProtocolStateDifference : IProtocolStateDifference {
+        public bool Override { get; set; }
         public IProtocolStateData Modified { get; set; }
         public IProtocolStateData Removed { get; set; }
+
+        /// <summary>
+        /// Initializes the difference with the default values.
+        /// </summary>
+        public ProtocolStateDifference() {
+            this.Modified = new ProtocolState();
+            this.Removed = new ProtocolState();
+        }
     }
 }

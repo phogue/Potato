@@ -150,9 +150,33 @@ namespace Procon.Net.Shared {
             return this;
         }
 
+        /// <summary>
+        /// Sets the data (list copied) provided the source list is not null.
+        /// </summary>
+        /// <param name="set">The data to override</param>
+        /// <returns>this</returns>
+        public IProtocolState Set(IProtocolStateData set) {
+            if (set.Players != null) this.Players = set.Players;
+            if (set.Maps != null) this.Maps = set.Maps;
+            if (set.Bans != null) this.Bans = set.Bans;
+            if (set.MapPool != null) this.MapPool = set.MapPool;
+            if (set.GameModePool != null) this.GameModePool = set.GameModePool;
+            if (set.Groups != null) this.Groups = set.Groups;
+            if (set.Items != null) this.Items = set.Items;
+            if (set.Settings != null) this.Settings = set.Settings;
+            if (set.Support != null) this.Support = set.Support;
+
+            return this;
+        }
+
         public IProtocolState Apply(IProtocolStateDifference difference) {
             if (difference.Modified != null) {
-                this.Modified(difference.Modified);
+                if (difference.Override == true) {
+                    this.Set(difference.Modified);
+                }
+                else {
+                    this.Modified(difference.Modified);
+                }
             }
 
             if (difference.Removed != null) {

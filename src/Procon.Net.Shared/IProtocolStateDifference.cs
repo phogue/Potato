@@ -4,6 +4,11 @@
     /// </summary>
     public interface IProtocolStateDifference {
         /// <summary>
+        /// Override all modifications. Will *set* the list, not update it.
+        /// </summary>
+        bool Override { get; set; }
+
+        /// <summary>
         /// Any data that exists in the current state but has been modified. If the data
         /// is not found then it will be inserted.
         /// </summary>

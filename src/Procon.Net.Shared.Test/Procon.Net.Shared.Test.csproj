@@ -50,6 +50,8 @@
     <Compile Include="Models\TestModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestProtocolAssemblyMetadata\TestLoad.cs" />
+    <Compile Include="TestProtocolState\TestRemoveList.cs" />
+    <Compile Include="TestProtocolState\TestModifiedList.cs" />
     <Compile Include="TestProtocolState\TestSet.cs" />
     <Compile Include="TestProtocolState\TestRemove.cs" />
     <Compile Include="TestProtocolState\TestUpdate.cs" />

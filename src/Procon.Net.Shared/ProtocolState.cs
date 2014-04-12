@@ -64,10 +64,10 @@ namespace Procon.Net.Shared {
         /// <summary>
         /// Synchronizes a modified list with a comparator method
         /// </summary>
-        private static void ModifiedList<T>(List<T> existing, IEnumerable<T> modified, Func<T, T, bool> predicate) {
+        public static void ModifiedList<T>(List<T> existing, IEnumerable<T> modified, Func<T, T, bool> predicate) {
             if (modified != null) {
-                var modifiedItems = modified.Select(modifiedItem => new {
-                    Index = existing.FindIndex(item => predicate(item, modifiedItem)),
+                var modifiedItems = modified.Where(item => Object.Equals(default(T), item) == false).Select(modifiedItem => new {
+                    Index = existing.FindIndex(item => Object.Equals(default(T), item) == false && predicate(item, modifiedItem)),
                     Item = modifiedItem
                 });
 
@@ -114,9 +114,12 @@ namespace Procon.Net.Shared {
             return this;
         }
 
-        private static void RemoveList<T>(List<T> existing, IEnumerable<T> removed, Func<T, T, bool> predicate) {
+        /// <summary>
+        /// Synchronizes a modified list with a comparator method
+        /// </summary>
+        public static void RemoveList<T>(List<T> existing, IEnumerable<T> removed, Func<T, T, bool> predicate) {
             if (removed != null) {
-                foreach (var index in removed.Select(removedItem => existing.FindIndex(item => predicate(item, removedItem))).Where(index => index >= 0)) {
+                foreach (var index in removed.Where(item => Object.Equals(default(T), item) == false).Select(removedItem => existing.FindIndex(item => Object.Equals(default(T), item) == false && predicate(item, removedItem))).Where(index => index >= 0)) {
                     existing.RemoveAt(index);
                 }
             }

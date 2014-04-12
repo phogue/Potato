@@ -181,6 +181,14 @@ namespace Myrcon.Protocols.Frostbite.Battlefield.Battlefield4 {
                     if (killer != null) {
                         killer.Inventory.Now.Items.Clear();
                         killer.Inventory.Now.Items.Add(item);
+
+                        if (victim != null) {
+                            victim.Deaths++;
+
+                            if (killer.Uid != victim.Uid) {
+                                killer.Kills++;
+                            }
+                        }
                     }
 
                     this.OnProtocolEvent(

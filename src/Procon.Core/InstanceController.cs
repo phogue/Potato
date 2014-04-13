@@ -746,58 +746,6 @@ namespace Procon.Core {
                                 Success = false
                             };
                         }
-                        /*
-                        Type gameType = SupportedGameTypes.GetSupportedGames().Where(g => g.Key.Provider == protocolTypeProvider && g.Key.Type == protocolTypeType).Select(g => g.Value).FirstOrDefault();
-
-                        // As long as the game type selected is supported...
-                        if (gameType != null) {
-                            IProtocol game = (IProtocol) Activator.CreateInstance(gameType);
-                            game.Setup(new ProtocolSetup() {
-                                Hostname = hostName,
-                                Port = port,
-                                Password = password,
-                                Arguments = ArgumentHelper.ToArguments(additional.Wordify())
-                            });
-
-                            DirectoryInfo packagePath = Defines.PackageContainingPath(gameType.Assembly.Location);
-
-                            if (packagePath != null) {
-                                game.ProtocolsConfigDirectory = packagePath.GetDirectories(Defines.ProtocolsDirectoryName, SearchOption.AllDirectories).Select(directory => directory.FullName).FirstOrDefault();
-                            }
-
-                            ConnectionController connection = new ConnectionController() {
-                                Protocol = game,
-                                Instance = this
-                            };
-
-                            lock (this.Connections) {
-                                this.Connections.Add(connection);
-                            }
-
-                            connection.Execute();
-                            connection.AttemptConnection();
-
-                            result = new CommandResult() {
-                                Message = String.Format("Successfully added {0} connection.", protocolTypeType),
-                                CommandResultType = CommandResultType.Success,
-                                Success = true,
-                                Now = {
-                                    Connections = new List<ConnectionModel>() {
-                                        connection.ConnectionModel
-                                    }
-                                }
-                            };
-
-                            this.Shared.Events.Log(GenericEvent.ConvertToGenericEvent(result, GenericEventType.InstanceConnectionAdded));
-                        }
-                        else {
-                            result = new CommandResult() {
-                                Message = String.Format(@"Game type ""{0}"" is not supported.", protocolTypeType),
-                                CommandResultType = CommandResultType.DoesNotExists,
-                                Success = false
-                            };
-                        }
-                        */
                     }
                     else {
                         result = new CommandResult() {

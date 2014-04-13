@@ -81,7 +81,7 @@ namespace Procon.Core.Shared {
         /// </summary>
         /// <param name="config"></param>
         /// <param name="password"></param>
-        public virtual void WriteConfig(IConfig config, string password) { }
+        public virtual void WriteConfig(IConfig config, string password = null) { }
 
         public virtual void Poke() {
             

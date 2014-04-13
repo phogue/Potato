@@ -46,8 +46,16 @@
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Actions\INetworkAction.cs" />
+    <Compile Include="Client.cs" />
     <Compile Include="ClientSetup.cs" />
     <Compile Include="IProtocolStateData.cs" />
+    <Compile Include="MarkManager.cs" />
+    <Compile Include="PacketDispatch.cs" />
+    <Compile Include="PacketDispatcher.cs" />
+    <Compile Include="PacketQueue.cs" />
+    <Compile Include="PacketStream.cs" />
+    <Compile Include="Protocol.cs" />
+    <Compile Include="ProtocolConfigLoader.cs" />
     <Compile Include="ProtocolStateSegment.cs" />
     <Compile Include="IClientEventArgs.cs" />
     <Compile Include="IClientEventData.cs" />
@@ -133,6 +141,7 @@
     <Compile Include="Serialization\InterfaceJsonConverter.cs" />
     <Compile Include="Serialization\JsonSerialization.cs" />
     <Compile Include="Serialization\JsonSerializerExtensions.cs" />
+    <Compile Include="TCPClient.cs" />
     <Compile Include="Truths\Agents\EveryoneAgent.cs" />
     <Compile Include="Truths\Agents\GroupAgent.cs" />
     <Compile Include="Truths\Agents\ObjectiveAgent.cs" />
@@ -152,6 +161,7 @@
     <Compile Include="Truths\Tree.cs" />
     <Compile Include="Truths\Truth.cs" />
     <Compile Include="Truths\BranchBuilder.cs" />
+    <Compile Include="UDPClient.cs" />
     <Compile Include="Utils\BCrypt.cs" />
     <Compile Include="Utils\HTTP\Mime.cs" />
     <Compile Include="Utils\MD5.cs" />

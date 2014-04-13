@@ -24,7 +24,7 @@ namespace Procon.Net.Protocols.CommandServer {
     /// Handles a https client issuing a command server request
     /// </summary>
     /// <remarks>We can recycle this from the client since a client does not matter where the origin/server is.</remarks>
-    public class CommandServerClient : Procon.Net.TcpClient {
+    public class CommandServerClient : TcpClient {
 
         /// <summary>
         /// The loaded CommandServer.pfx certificate to encrypt incoming stream

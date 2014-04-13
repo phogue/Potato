@@ -59,28 +59,8 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ClientTest.cs" />
-    <Compile Include="GameTest.cs" />
-    <Compile Include="Mocks\Game\MockActionChatNullResultGame.cs" />
-    <Compile Include="Mocks\Game\MockActionDispatchGame.cs" />
-    <Compile Include="Mocks\MockGame.cs" />
-    <Compile Include="PacketDispatcherTest.cs" />
-    <Compile Include="Mocks\MockPacketDispatcher.cs" />
-    <Compile Include="PacketDispatchTest.cs" />
     <Compile Include="Protocols\PunkBuster\PunkBusterTest.cs" />
-    <Compile Include="UdpClientTest.cs" />
-    <Compile Include="MarkManagerTest.cs" />
-    <Compile Include="Mocks\MockPacketSerializer.cs" />
-    <Compile Include="Mocks\MockTcpClient.cs" />
-    <Compile Include="Mocks\MockPacket.cs" />
-    <Compile Include="Mocks\MockTcpListener.cs" />
-    <Compile Include="Mocks\MockUdpClient.cs" />
-    <Compile Include="Mocks\MockUdpListener.cs" />
-    <Compile Include="PacketQueueTest.cs" />
-    <Compile Include="PacketStreamTest.cs" />
-    <Compile Include="PacketTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TcpClientTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Procon.Net.Shared\Procon.Net.Shared.csproj">

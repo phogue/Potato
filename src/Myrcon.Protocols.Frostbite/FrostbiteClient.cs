@@ -19,7 +19,7 @@ using Procon.Net;
 using Procon.Net.Shared;
 
 namespace Myrcon.Protocols.Frostbite {
-    public class FrostbiteClient : Procon.Net.TcpClient {
+    public class FrostbiteClient : TcpClient {
 
         /// <summary>
         /// Queue of packets

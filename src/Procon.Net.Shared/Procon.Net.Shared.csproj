@@ -162,7 +162,6 @@
     <Compile Include="Truths\Truth.cs" />
     <Compile Include="Truths\BranchBuilder.cs" />
     <Compile Include="UDPClient.cs" />
-    <Compile Include="Utils\BCrypt.cs" />
     <Compile Include="Utils\HTTP\Mime.cs" />
     <Compile Include="Utils\MD5.cs" />
     <Compile Include="Utils\Network.cs" />

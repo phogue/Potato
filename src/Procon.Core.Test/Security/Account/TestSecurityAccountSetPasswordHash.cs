@@ -39,7 +39,7 @@ namespace Procon.Core.Test.Security.Account {
             security.Tunnel(CommandBuilder.SecurityAddGroup("GroupName").SetOrigin(CommandOrigin.Local));
             security.Tunnel(CommandBuilder.SecurityGroupAddAccount("GroupName", "Phogue").SetOrigin(CommandOrigin.Local));
 
-            ICommandResult result = security.Tunnel(CommandBuilder.SecurityAccountSetPasswordHash("Phogue", BCrypt.HashPassword("password", BCrypt.GenerateSalt()))
+            ICommandResult result = security.Tunnel(CommandBuilder.SecurityAccountSetPasswordHash("Phogue", BCrypt.Net.BCrypt.HashPassword("password", BCrypt.Net.BCrypt.GenerateSalt()))
                 .SetOrigin(CommandOrigin.Remote)
                 .SetAuthentication(new CommandAuthenticationModel() {
                     Username = "Phogue"
@@ -56,7 +56,7 @@ namespace Procon.Core.Test.Security.Account {
         [Test]
         public void TestSetSuccess() {
             String generatedPassword = StringExtensions.RandomString(10);
-            String generatedPasswordHash = BCrypt.HashPassword(generatedPassword, BCrypt.GenerateSalt());
+            String generatedPasswordHash = BCrypt.Net.BCrypt.HashPassword(generatedPassword, BCrypt.Net.BCrypt.GenerateSalt());
 
             var security = new SecurityController();
             security.Tunnel(CommandBuilder.SecurityAddGroup("GroupName").SetOrigin(CommandOrigin.Local));
@@ -84,7 +84,7 @@ namespace Procon.Core.Test.Security.Account {
             security.Tunnel(CommandBuilder.SecurityGroupAddAccount("GroupName", "Phogue").SetOrigin(CommandOrigin.Local));
 
             // Now change the password of the account.
-            ICommandResult result = security.Tunnel(CommandBuilder.SecurityAccountSetPasswordHash("DoesNotExist", BCrypt.HashPassword("password", BCrypt.GenerateSalt())).SetOrigin(CommandOrigin.Local));
+            ICommandResult result = security.Tunnel(CommandBuilder.SecurityAccountSetPasswordHash("DoesNotExist", BCrypt.Net.BCrypt.HashPassword("password", BCrypt.Net.BCrypt.GenerateSalt())).SetOrigin(CommandOrigin.Local));
 
             // Validate that we could not set a password and the result returned false.
             Assert.IsFalse(result.Success);

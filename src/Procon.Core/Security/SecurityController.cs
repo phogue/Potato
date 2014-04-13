@@ -20,7 +20,6 @@ using Procon.Core.Shared;
 using Procon.Core.Shared.Events;
 using Procon.Core.Shared.Models;
 using Procon.Net.Shared.Protocols;
-using Procon.Net.Shared.Utils;
 
 namespace Procon.Core.Security {
     /// <summary>
@@ -1643,7 +1642,7 @@ namespace Procon.Core.Security {
 
                 if (account != null) {
                     if (password.Length > 0) {
-                        account.PasswordHash = BCrypt.HashPassword(password, BCrypt.GenerateSalt());
+                        account.PasswordHash = BCrypt.Net.BCrypt.HashPassword(password, BCrypt.Net.BCrypt.GenerateSalt());
 
                         result = new CommandResult() {
                             Success = true,
@@ -1739,7 +1738,7 @@ namespace Procon.Core.Security {
 
                 if (account != null) {
                     if (account.PasswordHash.Length > 0) {
-                        if (BCrypt.CheckPassword(passwordPlainText, account.PasswordHash) == true) {
+                        if (String.CompareOrdinal(account.PasswordHash, BCrypt.Net.BCrypt.HashPassword(passwordPlainText, account.PasswordHash)) == 0) {
                             result = new CommandResult() {
                                 Success = true,
                                 CommandResultType = CommandResultType.Success,

@@ -32,6 +32,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="BCrypt.Net">
+      <HintPath>..\packages\BCrypt-Official.0.1.109\lib\BCrypt.Net.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Newtonsoft.Json.6.0.1\lib\net40\Newtonsoft.Json.dll</HintPath>
@@ -54,6 +57,7 @@
     <Compile Include="ICommandRequest.cs" />
     <Compile Include="ICommandResult.cs" />
     <Compile Include="IConfigCommand.cs" />
+    <Compile Include="Models\AccountAccessToken.cs" />
     <Compile Include="Models\CommandAuthenticationModel.cs" />
     <Compile Include="CommandDirection.cs" />
     <Compile Include="IConfig.cs" />
@@ -137,6 +141,9 @@
       <Link>Procon.licenseheader</Link>
     </None>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="LICENSE.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

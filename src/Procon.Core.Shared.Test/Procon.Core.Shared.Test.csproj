@@ -78,6 +78,9 @@
     <Compile Include="TestConfig\TestLoadFileInfo.cs" />
     <Compile Include="TestConfig\TestSave.cs" />
     <Compile Include="TestConfig\TestUnion.cs" />
+    <Compile Include="TestModels\TestAccountAccessToken\TestDispose.cs" />
+    <Compile Include="TestModels\TestAccountAccessToken\TestAuthenticate.cs" />
+    <Compile Include="TestModels\TestAccountAccessToken\TestGenerate.cs" />
     <Compile Include="TestThrottledStream.cs" />
   </ItemGroup>
   <ItemGroup>

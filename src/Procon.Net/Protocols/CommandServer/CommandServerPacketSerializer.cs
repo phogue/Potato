@@ -83,10 +83,10 @@ namespace Procon.Net.Protocols.CommandServer {
 
                 if (headers.Length > 0) {
                     List<String> status = headers.First().Wordify();
-
+                    
                     var headerValues = packet.Header.Split(new [] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries).Skip(1).ToDictionary(
-                        line => line.Split(new [] { ": " }, 2, StringSplitOptions.RemoveEmptyEntries).FirstOrDefault(),
-                        line => line.Split(new [] { ": " }, 2, StringSplitOptions.RemoveEmptyEntries).LastOrDefault()
+                        line => (line.Split(new[] { ":" }, 2, StringSplitOptions.RemoveEmptyEntries).FirstOrDefault() ?? "").Trim(),
+                        line => (line.Split(new[] { ":" }, 2, StringSplitOptions.RemoveEmptyEntries).LastOrDefault() ?? "").Trim()
                     );
 
                     if (status.Count == 3 && headerValues.ContainsKey("Host") == true) {
@@ -95,7 +95,12 @@ namespace Procon.Net.Protocols.CommandServer {
                         packet.ProtocolVersion = new Version(status[2].Replace("HTTP/", ""));
 
                         foreach (var header in headerValues) {
-                            packet.Headers[header.Key] = header.Value;
+                            try {
+                                packet.Headers.Set(header.Key, header.Value);
+                            }
+                            catch {
+                                packet.Headers.Set(header.Key, "");
+                            }
                         }
                     }
                 }

@@ -18,7 +18,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
-using Newtonsoft.Json;
 using Procon.Core.Shared;
 using Procon.Core.Shared.Remote;
 using Procon.Net.Protocols.CommandServer;

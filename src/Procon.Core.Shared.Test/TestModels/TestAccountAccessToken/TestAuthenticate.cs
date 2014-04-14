@@ -6,13 +6,13 @@ namespace Procon.Core.Shared.Test.TestModels.TestAccountAccessToken {
     [TestFixture]
     public class TestAuthenticate {
 
-        public AccountAccessTokenModel Valid { get; set; }
+        public AccessTokenModel Valid { get; set; }
 
         public const String Identifer = "identifer";
 
         [SetUp]
         public void Setup() {
-            this.Valid = new AccountAccessTokenModel() {
+            this.Valid = new AccessTokenModel() {
                 Account = new AccountModel() {
                     PasswordHash = "Password Hash"
                 }

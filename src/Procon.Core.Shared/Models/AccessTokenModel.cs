@@ -12,10 +12,11 @@ namespace Procon.Core.Shared.Models {
     ///     <para>A token is validated by checking the derivation of the three generated items matches the token</para> 
     /// </remarks>
     [Serializable]
-    public class AccountAccessTokenModel : CoreModel, IDisposable {
+    public class AccessTokenModel : CoreModel, IDisposable {
         /// <summary>
         /// The id of the session
         /// </summary>
+        [JsonIgnore]
         public Guid Id { get; set; }
 
         /// <summary>
@@ -39,6 +40,7 @@ namespace Procon.Core.Shared.Models {
         /// <summary>
         /// The maximum age in seconds that a token can go without being touched before it is considered expired.
         /// </summary>
+        [JsonIgnore]
         public int ExpiredWindowSeconds {
             get { return _expiredWindowSeconds; }
             set { _expiredWindowSeconds = Math.Abs(value); }
@@ -49,7 +51,7 @@ namespace Procon.Core.Shared.Models {
         /// <summary>
         /// Initializes the basics, like a new guid.
         /// </summary>
-        public AccountAccessTokenModel() {
+        public AccessTokenModel() {
             this.Id = Guid.NewGuid();
             this.LastTouched = DateTime.Now;
 

@@ -13,7 +13,7 @@ namespace Procon.Core.Shared.Test.TestModels.TestAccountAccessToken {
         /// </summary>
         [Test]
         public void TestNullTokenReturnedWhenAccountEmpty() {
-            AccountAccessTokenModel accessToken = new AccountAccessTokenModel();
+            AccessTokenModel accessToken = new AccessTokenModel();
 
             var token = accessToken.Generate(TestGenerate.Identifer);
 
@@ -25,7 +25,7 @@ namespace Procon.Core.Shared.Test.TestModels.TestAccountAccessToken {
         /// </summary>
         [Test]
         public void TestNullTokenReturnedWhenAccountHashNull() {
-            AccountAccessTokenModel accessToken = new AccountAccessTokenModel() {
+            AccessTokenModel accessToken = new AccessTokenModel() {
                 Account = new AccountModel() {
                     PasswordHash = null
                 }
@@ -41,7 +41,7 @@ namespace Procon.Core.Shared.Test.TestModels.TestAccountAccessToken {
         /// </summary>
         [Test]
         public void TestNullTokenReturnedWhenAccountHashEmpty() {
-            AccountAccessTokenModel accessToken = new AccountAccessTokenModel() {
+            AccessTokenModel accessToken = new AccessTokenModel() {
                 Account = new AccountModel() {
                     PasswordHash = ""
                 }
@@ -57,7 +57,7 @@ namespace Procon.Core.Shared.Test.TestModels.TestAccountAccessToken {
         /// </summary>
         [Test]
         public void TestNullTokenReturnedWhenIdentiferNull() {
-            AccountAccessTokenModel accessToken = new AccountAccessTokenModel() {
+            AccessTokenModel accessToken = new AccessTokenModel() {
                 Account = new AccountModel() {
                     PasswordHash = "password"
                 }
@@ -73,7 +73,7 @@ namespace Procon.Core.Shared.Test.TestModels.TestAccountAccessToken {
         /// </summary>
         [Test]
         public void TestNullTokenReturnedWhenIdentiferEmpty() {
-            AccountAccessTokenModel accessToken = new AccountAccessTokenModel() {
+            AccessTokenModel accessToken = new AccessTokenModel() {
                 Account = new AccountModel() {
                     PasswordHash = "password"
                 }
@@ -89,7 +89,7 @@ namespace Procon.Core.Shared.Test.TestModels.TestAccountAccessToken {
         /// </summary>
         [Test]
         public void TestGoodTokenReturnedWhenAllCredentialsPassed() {
-            AccountAccessTokenModel accessToken = new AccountAccessTokenModel() {
+            AccessTokenModel accessToken = new AccessTokenModel() {
                 Account = new AccountModel() {
                     PasswordHash = "password"
                 }
@@ -105,7 +105,7 @@ namespace Procon.Core.Shared.Test.TestModels.TestAccountAccessToken {
         /// </summary>
         [Test]
         public void TestReturnedTokenIsRandom() {
-            AccountAccessTokenModel accessToken = new AccountAccessTokenModel() {
+            AccessTokenModel accessToken = new AccessTokenModel() {
                 Account = new AccountModel() {
                     PasswordHash = "password"
                 }
@@ -124,7 +124,7 @@ namespace Procon.Core.Shared.Test.TestModels.TestAccountAccessToken {
         /// </summary>
         [Test]
         public void TestLastTouchedResetToCurrentDateTime() {
-            AccountAccessTokenModel accessToken = new AccountAccessTokenModel() {
+            AccessTokenModel accessToken = new AccessTokenModel() {
                 Account = new AccountModel() {
                     PasswordHash = "password"
                 },

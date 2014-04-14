@@ -57,7 +57,7 @@
     <Compile Include="ICommandRequest.cs" />
     <Compile Include="ICommandResult.cs" />
     <Compile Include="IConfigCommand.cs" />
-    <Compile Include="Models\AccountAccessToken.cs" />
+    <Compile Include="Models\AccessTokenModel.cs" />
     <Compile Include="Models\CommandAuthenticationModel.cs" />
     <Compile Include="CommandDirection.cs" />
     <Compile Include="IConfig.cs" />
@@ -77,6 +77,7 @@
     <Compile Include="CommandResultType.cs" />
     <Compile Include="Models\CommandScopeModel.cs" />
     <Compile Include="CommandType.cs" />
+    <Compile Include="Models\AccessTokenTransportModel.cs" />
     <Compile Include="Models\LanguageEntryModel.cs" />
     <Compile Include="Database\DatabaseModel.cs" />
     <Compile Include="Database\Migrations\IMigration.cs" />

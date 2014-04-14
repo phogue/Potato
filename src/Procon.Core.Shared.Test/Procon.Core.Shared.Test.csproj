@@ -58,6 +58,7 @@
     <Compile Include="ExecutableCommands\TestCommandAttribute.cs" />
     <Compile Include="ExecutableCommands\TestCommandConfig.cs" />
     <Compile Include="ExecutableCommands\TestCommandData.cs" />
+    <Compile Include="TestCommandParameter\TestDateTimeConversion.cs" />
     <Compile Include="TestCommandParameter\TestStringConversion.cs" />
     <Compile Include="TestCommandParameter\TestEnumConversion.cs" />
     <Compile Include="TestCommandParameter\TestIntegerConversion.cs" />

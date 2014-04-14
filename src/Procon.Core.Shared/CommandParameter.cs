@@ -188,6 +188,9 @@ namespace Procon.Core.Shared {
             if (conversionType == typeof (Guid)) {
                 changed = Guid.Parse((String)value);
             }
+            else if (conversionType == typeof(DateTime)) {
+                changed = DateTime.Parse((String)value);
+            }
             else {
                 changed = System.Convert.ChangeType(value, conversionType);
             }

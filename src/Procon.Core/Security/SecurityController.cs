@@ -310,6 +310,10 @@ namespace Procon.Core.Security {
                         new CommandParameterType() {
                             Name = "passwordPlainText",
                             Type = typeof(String)
+                        },
+                        new CommandParameterType() {
+                            Name = "identifier",
+                            Type = typeof(String)
                         }
                     },
                     Handler = this.SecurityAccountAuthenticate
@@ -1830,6 +1834,35 @@ namespace Procon.Core.Security {
         }
 
         /// <summary>
+        /// Helper for creating an access token.
+        /// </summary>
+        /// <param name="account">The account to create the access token for</param>
+        /// <param name="identifier">The identifying peice of information to mixin with the token</param>
+        /// <returns>An access token for transport, or null if the user can't have tokens or something went wrong while making the token.</returns>
+        protected AccessTokenTransportModel GenerateAccessToken(AccountModel account, String identifier) {
+            AccessTokenTransportModel accessTokenTransport = null;
+
+            var accessToken = new AccessTokenModel() {
+                Account = account,
+                ExpiredWindowSeconds = this.Shared.Variables.Get(CommonVariableNames.SecurityMaximumAccessTokenLastTouchedLengthSeconds, 172800)
+            };
+
+            var token = accessToken.Generate(identifier);
+
+            if (String.IsNullOrEmpty(token) == false) {
+                // Save the token hash for future authentication.
+                this.Tunnel(CommandBuilder.SecurityAccountAppendAccessToken(account.Username, accessToken.Id, accessToken.TokenHash, accessToken.LastTouched).SetOrigin(CommandOrigin.Local));
+
+                accessTokenTransport = new AccessTokenTransportModel() {
+                    Id = accessToken.Id,
+                    Token = token
+                };
+            }
+
+            return accessTokenTransport;
+        }
+
+        /// <summary>
         /// Authenticates an account
         /// </summary>
         /// <param name="command"></param>
@@ -1849,7 +1882,7 @@ namespace Procon.Core.Security {
                     if (account.PasswordHash.Length > 0) {
                         if (String.CompareOrdinal(account.PasswordHash, BCrypt.Net.BCrypt.HashPassword(passwordPlainText, account.PasswordHash)) == 0) {
 
-                            // todo generate token. Edit command result to accept a token?
+                            var accessTokenTransport = this.GenerateAccessToken(account, identifier);
 
                             result = new CommandResult() {
                                 Success = true,
@@ -1859,6 +1892,9 @@ namespace Procon.Core.Security {
                                     Accounts = new List<AccountModel>() {
                                         account
                                     },
+                                    AccessTokens = accessTokenTransport != null ? new List<AccessTokenTransportModel>() {
+                                        accessTokenTransport
+                                    } : null,
                                     Groups = new List<GroupModel>() {
                                         account.Group
                                     }

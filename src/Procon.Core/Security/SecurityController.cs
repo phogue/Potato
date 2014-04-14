@@ -279,6 +279,28 @@ namespace Procon.Core.Security {
                     Handler = this.SecurityAccountSetPasswordHash
                 },
                 new CommandDispatch() {
+                    CommandType = CommandType.SecurityAccountAppendAccessToken,
+                    ParameterTypes = new List<CommandParameterType>() {
+                        new CommandParameterType() {
+                            Name = "username",
+                            Type = typeof(String)
+                        },
+                        new CommandParameterType() {
+                            Name = "id",
+                            Type = typeof(Guid)
+                        },
+                        new CommandParameterType() {
+                            Name = "tokenHash",
+                            Type = typeof(String)
+                        },
+                        new CommandParameterType() {
+                            Name = "lastTouched",
+                            Type = typeof(DateTime)
+                        }
+                    },
+                    Handler = this.SecurityAccountAppendAccessToken
+                },
+                new CommandDispatch() {
                     CommandType = CommandType.SecurityAccountAuthenticate,
                     ParameterTypes = new List<CommandParameterType>() {
                         new CommandParameterType() {
@@ -291,6 +313,24 @@ namespace Procon.Core.Security {
                         }
                     },
                     Handler = this.SecurityAccountAuthenticate
+                },
+                new CommandDispatch() {
+                    CommandType = CommandType.SecurityAccountAuthenticateToken,
+                    ParameterTypes = new List<CommandParameterType>() {
+                        new CommandParameterType() {
+                            Name = "id",
+                            Type = typeof(Guid)
+                        },
+                        new CommandParameterType() {
+                            Name = "token",
+                            Type = typeof(String)
+                        },
+                        new CommandParameterType() {
+                            Name = "identifier",
+                            Type = typeof(String)
+                        }
+                    },
+                    Handler = this.SecurityAccountAuthenticateToken
                 },
                 new CommandDispatch() {
                     CommandType = CommandType.SecurityAccountSetPreferredLanguageCode,
@@ -1722,6 +1762,74 @@ namespace Procon.Core.Security {
         }
 
         /// <summary>
+        /// Appends an access token onto an accounts acceptable token list.
+        /// </summary>
+        public ICommandResult SecurityAccountAppendAccessToken(ICommand command, Dictionary<String, ICommandParameter> parameters) {
+            ICommandResult result = null;
+
+            String username = parameters["username"].First<String>();
+            Guid id = parameters["id"].First<Guid>();
+            String tokenHash = parameters["tokenHash"].First<String>();
+            DateTime lastTouched = parameters["lastTouched"].First<DateTime>();
+
+            if (this.DispatchPermissionsCheck(command, command.Name).Success == true) {
+                AccountModel account = this.Groups.SelectMany(g => g.Accounts).FirstOrDefault(a => String.Compare(a.Username, username, StringComparison.OrdinalIgnoreCase) == 0);
+                
+                if (account != null) {
+                    if (id != Guid.Empty && tokenHash.Length > 0 && lastTouched > DateTime.Now.AddSeconds(-1 * Math.Abs(this.Shared.Variables.Get(CommonVariableNames.SecurityMaximumAccessTokenLastTouchedLengthSeconds, 172800)))) {
+                        AccountAccessToken existing = account.AccessTokens.FirstOrDefault(accessToken => accessToken.Id == id);
+
+                        // Upsert the token hash
+                        if (existing != null) {
+                            existing.TokenHash = tokenHash;
+                            existing.LastTouched = lastTouched;
+                        }
+                        else {
+                            account.AccessTokens.Add(new AccountAccessToken() {
+                                Id = id,
+                                Account = account,
+                                TokenHash = tokenHash,
+                                LastTouched = lastTouched,
+                                ExpiredWindowSeconds = this.Shared.Variables.Get(CommonVariableNames.SecurityMaximumAccessTokenLastTouchedLengthSeconds, 172800)
+                            });
+                        }
+
+                        // Keep removing token hashes if we've added too many
+                        while (account.AccessTokens.Count > 0 && account.AccessTokens.Count > this.Shared.Variables.Get(CommonVariableNames.SecurityMaximumAccessTokensPerAccount, 5)) {
+                            // Remove the token that was touched the longest ago.
+                            account.AccessTokens.Remove(account.AccessTokens.OrderBy(accessToken => accessToken.LastTouched).First());
+                        }
+
+                        result = new CommandResult() {
+                            Success = true,
+                            CommandResultType = CommandResultType.Success,
+                            Message = String.Format(@"Successfully added token hash to account ""{0}"".", account.Username)
+                        };
+                    }
+                    else {
+                        result = new CommandResult() {
+                            Success = false,
+                            CommandResultType = CommandResultType.InvalidParameter,
+                            Message = "An id or tokenHash must not be empty and a lastTouched not expired"
+                        };
+                    }
+                }
+                else {
+                    result = new CommandResult() {
+                        Message = String.Format(@"Account with username ""{0}"" does not exists.", username),
+                        Success = false,
+                        CommandResultType = CommandResultType.DoesNotExists
+                    };
+                }
+            }
+            else {
+                result = CommandResult.InsufficientPermissions;
+            }
+
+            return result;
+        }
+
+        /// <summary>
         /// Authenticates an account
         /// </summary>
         /// <param name="command"></param>
@@ -1739,6 +1847,9 @@ namespace Procon.Core.Security {
                 if (account != null) {
                     if (account.PasswordHash.Length > 0) {
                         if (String.CompareOrdinal(account.PasswordHash, BCrypt.Net.BCrypt.HashPassword(passwordPlainText, account.PasswordHash)) == 0) {
+
+                            // todo generate token. Edit command result to accept a token?
+
                             result = new CommandResult() {
                                 Success = true,
                                 CommandResultType = CommandResultType.Success,
@@ -1764,16 +1875,16 @@ namespace Procon.Core.Security {
                     else {
                         result = new CommandResult() {
                             Success = false,
-                            CommandResultType = CommandResultType.DoesNotExists,
-                            Message = String.Format(@"A password has not been setup for account with username ""{0}"".", account.Username)
+                            CommandResultType = CommandResultType.Failed,
+                            Message = "Invalid username or password."
                         };
                     }
                 }
                 else {
                     result = new CommandResult() {
-                        Message = String.Format(@"Account with username ""{0}"" does not exists.", username),
                         Success = false,
-                        CommandResultType = CommandResultType.DoesNotExists
+                        CommandResultType = CommandResultType.Failed,
+                        Message = "Invalid username or password."
                     };
                 }
             }
@@ -1783,6 +1894,59 @@ namespace Procon.Core.Security {
 
             return result;
         }
+
+        /// <summary>
+        /// Authenticates an account against a access token
+        /// </summary>
+        public ICommandResult SecurityAccountAuthenticateToken(ICommand command, Dictionary<String, ICommandParameter> parameters) {
+            ICommandResult result = null;
+
+            Guid id = parameters["id"].First<Guid>();
+            String token = parameters["token"].First<String>();
+            String identifier = parameters["identifier"].First<String>();
+
+            if (this.DispatchPermissionsCheck(command, command.Name).Success == true) {
+                AccountAccessToken accountAccessToken = this.Groups.SelectMany(group => group.Accounts).SelectMany(account => account.AccessTokens).FirstOrDefault(accessToken => accessToken.Id == id);
+
+                if (accountAccessToken != null) {
+                    if (accountAccessToken.Authenticate(id, token, identifier)) {
+                        result = new CommandResult() {
+                            Success = true,
+                            CommandResultType = CommandResultType.Success,
+                            Message = String.Format(@"Successfully authenticated against account with username ""{0}"".", accountAccessToken.Account.Username),
+                            Scope = {
+                                Accounts = new List<AccountModel>() {
+                                    accountAccessToken.Account
+                                },
+                                Groups = new List<GroupModel>() {
+                                    accountAccessToken.Account.Group
+                                }
+                            }
+                        };
+                    }
+                    else {
+                        result = new CommandResult() {
+                            Success = false,
+                            CommandResultType = CommandResultType.Failed,
+                            Message = "Invalid id or token."
+                        };
+                    }
+                }
+                else {
+                    result = new CommandResult() {
+                        Success = false,
+                        CommandResultType = CommandResultType.Failed,
+                            Message = "Invalid id or token."
+                    };
+                }
+            }
+            else {
+                result = CommandResult.InsufficientPermissions;
+            }
+
+            return result;
+        }
+
 
         /// <summary>
         /// procon.private.account.setPreferredLanguageCode "Phogue" "en"

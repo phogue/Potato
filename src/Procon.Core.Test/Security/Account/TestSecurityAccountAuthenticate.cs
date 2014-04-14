@@ -91,7 +91,7 @@ namespace Procon.Core.Test.Security.Account {
 
             // Validate that we get nothing back.
             Assert.IsFalse(result.Success);
-            Assert.AreEqual(CommandResultType.DoesNotExists, result.CommandResultType);
+            Assert.AreEqual(CommandResultType.Failed, result.CommandResultType);
         }
 
         /// <summary>
@@ -150,7 +150,7 @@ namespace Procon.Core.Test.Security.Account {
 
             // Validate that we couldn't login because the server does not have a password set for it yet.
             Assert.IsFalse(result.Success);
-            Assert.AreEqual(result.CommandResultType, CommandResultType.DoesNotExists);
+            Assert.AreEqual(CommandResultType.Failed, result.CommandResultType);
         }
     }
 }

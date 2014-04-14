@@ -165,6 +165,11 @@ namespace Procon.Core.Shared {
         [Description("Checks if an account can execute a given command")]
         SecurityAccountAuthenticate,
         /// <summary>
+        /// Authenticates a token against a users list of allowed tokens
+        /// </summary>
+        [Description("Checks if an account can execute a given command")]
+        SecurityAccountAuthenticateToken,
+        /// <summary>
         /// Sets a new password for an account, updating the password hash
         /// with the new hashed password.
         /// </summary>
@@ -175,6 +180,11 @@ namespace Procon.Core.Shared {
         /// </summary>
         [Description("Modifies the password hash (literal) for the account")]
         SecurityAccountSetPasswordHash,
+        /// <summary>
+        /// Appends an access token onto the list of allowed tokens for an account.
+        /// </summary>
+        [Description("Appends an access token onto the list of allowed tokens for an account.")]
+        SecurityAccountAppendAccessToken,
         /// <summary>
         /// Sets the default language to use on an account
         /// </summary>

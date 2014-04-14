@@ -35,6 +35,16 @@ namespace Procon.Core.Shared.Models {
         public String PasswordPlainText { get; set; }
 
         /// <summary>
+        /// The id of the supplied access token.
+        /// </summary>
+        public Guid TokenId { get; set; }
+
+        /// <summary>
+        /// The token, as a replacement for the password.
+        /// </summary>
+        public String Token { get; set; }
+
+        /// <summary>
         /// The game type of the initiators player Uid
         /// </summary>
         public String GameType { get; set; }

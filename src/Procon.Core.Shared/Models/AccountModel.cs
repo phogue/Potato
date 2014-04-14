@@ -54,6 +54,12 @@ namespace Procon.Core.Shared.Models {
         public GroupModel Group { get; set; }
 
         /// <summary>
+        /// List of access tokens generated for this account.
+        /// </summary>
+        [JsonIgnore]
+        public List<AccountAccessToken> AccessTokens { get; set; } 
+
+        /// <summary>
         /// Initializes the account with default values.
         /// </summary>
         public AccountModel()
@@ -62,6 +68,7 @@ namespace Procon.Core.Shared.Models {
             this.PasswordHash = String.Empty;
             this.PreferredLanguageCode = String.Empty;
             this.Players = new List<AccountPlayerModel>();
+            this.AccessTokens = new List<AccountAccessToken>();
         }
 
         public  void Dispose() {
@@ -71,6 +78,9 @@ namespace Procon.Core.Shared.Models {
 
             this.Players.Clear();
             this.Players = null;
+
+            this.AccessTokens.Clear();
+            this.AccessTokens = null;
 
             this.Username = null;
             this.PreferredLanguageCode = null;

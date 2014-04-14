@@ -510,7 +510,7 @@ namespace Procon.Core.Shared {
                     new CommandParameter() {
                         Data = {
                             Content = new List<String>() {
-                                lastTouched.ToString(CultureInfo.InvariantCulture.DateTimeFormat.UniversalSortableDateTimePattern)
+                                lastTouched.ToUniversalTime().ToString(CultureInfo.InvariantCulture.DateTimeFormat.UniversalSortableDateTimePattern)
                             }
                         }
                     }

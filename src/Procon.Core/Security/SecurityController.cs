@@ -392,139 +392,27 @@ namespace Procon.Core.Security {
             base.WriteConfig(config, password);
 
             foreach (GroupModel group in this.Groups) {
-                config.Append(new Command() {
-                    CommandType = CommandType.SecurityAddGroup,
-                    Parameters = new List<ICommandParameter>() {
-                        new CommandParameter() {
-                            Data = {
-                                Content = new List<String>() {
-                                    group.Name
-                                }
-                            }
-                        }
-                    }
-                }.ToConfigCommand());
-
+                config.Append(CommandBuilder.SecurityAddGroup(group.Name).ToConfigCommand());
 
                 foreach (PermissionModel permission in group.Permissions) {
                     if (permission.Authority.HasValue == true) {
-                        config.Append(new Command() {
-                            CommandType = CommandType.SecurityGroupSetPermission,
-                            Parameters = new List<ICommandParameter>() {
-                                new CommandParameter() {
-                                    Data = {
-                                        Content = new List<String>() {
-                                            group.Name
-                                        }
-                                    }
-                                },
-                                new CommandParameter() {
-                                    Data = {
-                                        Content = new List<String>() {
-                                            permission.Name
-                                        }
-                                    }
-                                },
-                                new CommandParameter() {
-                                    Data = {
-                                        Content = new List<String>() {
-                                            permission.Authority.ToString()
-                                        }
-                                    }
-                                }
-                            }
-                        }.ToConfigCommand());
+                        config.Append(CommandBuilder.SecurityGroupSetPermission(group.Name, permission.Name, permission.Authority.Value).ToConfigCommand());
                     }
                 }
 
                 foreach (AccountModel account in group.Accounts) {
-                    config.Append(new Command() {
-                        CommandType = CommandType.SecurityGroupAddAccount,
-                        Parameters = new List<ICommandParameter>() {
-                            new CommandParameter() {
-                                Data = {
-                                    Content = new List<String>() {
-                                        group.Name
-                                    }
-                                }
-                            },
-                            new CommandParameter() {
-                                Data = {
-                                    Content = new List<String>() {
-                                        account.Username
-                                    }
-                                }
-                            }
-                        }
-                    }.ToConfigCommand());
+                    config.Append(CommandBuilder.SecurityGroupAddAccount(group.Name, account.Username).ToConfigCommand());
 
-                    config.Append(new Command() {
-                        CommandType = CommandType.SecurityAccountSetPasswordHash,
-                        Parameters = new List<ICommandParameter>() {
-                            new CommandParameter() {
-                                Data = {
-                                    Content = new List<String>() {
-                                        account.Username
-                                    }
-                                }
-                            },
-                            new CommandParameter() {
-                                Data = {
-                                    Content = new List<String>() {
-                                        account.PasswordHash
-                                    }
-                                }
-                            }
-                        }
-                    }.ToConfigCommand());
+                    config.Append(CommandBuilder.SecurityAccountSetPasswordHash(account.Username, account.PasswordHash).ToConfigCommand());
 
-                    config.Append(new Command() {
-                        CommandType = CommandType.SecurityAccountSetPreferredLanguageCode,
-                        Parameters = new List<ICommandParameter>() {
-                            new CommandParameter() {
-                                Data = {
-                                    Content = new List<String>() {
-                                        account.Username
-                                    }
-                                }
-                            },
-                            new CommandParameter() {
-                                Data = {
-                                    Content = new List<String>() {
-                                        account.PreferredLanguageCode
-                                    }
-                                }
-                            }
-                        }
-                    }.ToConfigCommand());
+                    config.Append(CommandBuilder.SecurityAccountSetPreferredLanguageCode(account.Username, account.PreferredLanguageCode).ToConfigCommand());
 
                     foreach (AccountPlayerModel assignment in account.Players) {
-                        config.Append(new Command() {
-                            CommandType = CommandType.SecurityAccountAddPlayer,
-                            Parameters = new List<ICommandParameter>() {
-                                new CommandParameter() {
-                                    Data = {
-                                        Content = new List<String>() {
-                                            account.Username
-                                        }
-                                    }
-                                },
-                                new CommandParameter() {
-                                    Data = {
-                                        Content = new List<String>() {
-                                            assignment.ProtocolType
-                                        }
-                                    }
-                                },
-                                new CommandParameter() {
-                                    Data = {
-                                        Content = new List<String>() {
-                                            assignment.Uid
-                                        }
-                                    }
-                                }
-                            }
-                        }.ToConfigCommand());
+                        config.Append(CommandBuilder.SecurityAccountAddPlayer(account.Username, assignment.ProtocolType, assignment.Uid).ToConfigCommand());
+                    }
+
+                    foreach (AccessTokenModel token in account.AccessTokens) {
+                        config.Append(CommandBuilder.SecurityAccountAppendAccessToken(account.Username, token.Id, token.TokenHash, token.LastTouched).ToConfigCommand());
                     }
                 }
             }

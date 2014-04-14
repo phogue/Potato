@@ -262,11 +262,7 @@ namespace Procon.Service.Shared.Packages {
 
                 this.OnBeforeSourcePackageFetch();
 
-                var latest = manager.SourceRepository.GetPackages()
-                    .Where(package => package.Id == packageId)
-                    .OrderByDescending(package => package.Version)
-                    .Take(1)
-                    .ToList();
+                var latest = manager.SourceRepository.GetPackages().Where(package => package.Id == packageId && package.IsLatestVersion == true).ToList();
 
                 this.OnBeforeLocalPackageFetch();
 

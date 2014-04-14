@@ -136,6 +136,7 @@
     <Compile Include="Security\Account\TestSecurityRemoveAccount.cs" />
     <Compile Include="Security\Permission\TestSecuritySetPredefinedAdministratorsPermissions.cs" />
     <Compile Include="Security\Permission\TestSecuritySetPredefinedStreamPermissions.cs" />
+    <Compile Include="Security\TestPoke.cs" />
     <Compile Include="TestHelpers.cs" />
     <Compile Include="CoreInstance\TestCommandInstanceRemoveConnection.cs" />
     <Compile Include="Events\TestEvents.cs" />

@@ -386,6 +386,21 @@ namespace Procon.Core.Security {
         }
 
         /// <summary>
+        /// Remove any expired access tokens
+        /// </summary>
+        public override void Poke() {
+            base.Poke();
+
+            // When we should remove expired tokens
+            var expiredThreshold = DateTime.Now.AddSeconds(-1 * Math.Abs(this.Shared.Variables.Get(CommonVariableNames.SecurityMaximumAccessTokenLastTouchedLengthSeconds, 172800)));
+
+            foreach (AccountModel account in this.Groups.SelectMany(group => group.Accounts)) {
+                // Remove all tokens that were last touched beyond the threshold
+                account.AccessTokens.RemoveAll(token => token.LastTouched < expiredThreshold);
+            }
+        }
+
+        /// <summary>
         /// Relies on children classes to implement this.
         /// </summary>
         public override void WriteConfig(IConfig config, String password = null) {

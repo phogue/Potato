@@ -152,5 +152,84 @@ namespace Procon.Core.Test.Security.Account {
             Assert.IsFalse(result.Success);
             Assert.AreEqual(CommandResultType.Failed, result.CommandResultType);
         }
+
+        /// <summary>
+        /// Tests we get a token back when authenticating with an identifier.
+        /// </summary>
+        [Test]
+        public void TestAuthenticationSuccessTokenGenerated() {
+            String generatedAuthenticatePassword = StringExtensions.RandomString(10);
+
+            var security = new SecurityController();
+            security.Tunnel(CommandBuilder.SecurityAddGroup("GroupName").SetOrigin(CommandOrigin.Local));
+            security.Tunnel(CommandBuilder.SecurityGroupAddAccount("GroupName", "Phogue").SetOrigin(CommandOrigin.Local));
+            security.Tunnel(CommandBuilder.SecurityAccountSetPassword("Phogue", generatedAuthenticatePassword).SetOrigin(CommandOrigin.Local));
+            security.Tunnel(CommandBuilder.SecurityGroupSetPermission("GroupName", CommandType.SecurityAccountAuthenticate, 50).SetOrigin(CommandOrigin.Local));
+
+            ICommandResult result = security.Tunnel(CommandBuilder.SecurityAccountAuthenticate("Phogue", generatedAuthenticatePassword, "192.168.1.1").SetOrigin(CommandOrigin.Remote).SetAuthentication(new CommandAuthenticationModel() {
+                Username = "Phogue"
+            }));
+
+            Assert.IsNotEmpty(result.Scope.AccessTokens);
+        }
+
+        /// <summary>
+        /// Tests that we can authenticate with the token that was generated.
+        /// </summary>
+        [Test]
+        public void TestAuthenticationSuccessCanThenAuthenticateWithToken() {
+            String generatedAuthenticatePassword = StringExtensions.RandomString(10);
+
+            var security = new SecurityController();
+            security.Tunnel(CommandBuilder.SecurityAddGroup("GroupName").SetOrigin(CommandOrigin.Local));
+            security.Tunnel(CommandBuilder.SecurityGroupAddAccount("GroupName", "Phogue").SetOrigin(CommandOrigin.Local));
+            security.Tunnel(CommandBuilder.SecurityAccountSetPassword("Phogue", generatedAuthenticatePassword).SetOrigin(CommandOrigin.Local));
+            security.Tunnel(CommandBuilder.SecurityGroupSetPermission("GroupName", CommandType.SecurityAccountAuthenticate, 50).SetOrigin(CommandOrigin.Local));
+            security.Tunnel(CommandBuilder.SecurityGroupSetPermission("GroupName", CommandType.SecurityAccountAuthenticateToken, 50).SetOrigin(CommandOrigin.Local));
+
+            ICommandResult result = security.Tunnel(CommandBuilder.SecurityAccountAuthenticate("Phogue", generatedAuthenticatePassword, "192.168.1.1").SetOrigin(CommandOrigin.Remote).SetAuthentication(new CommandAuthenticationModel() {
+                Username = "Phogue"
+            }));
+
+            AccessTokenTransportModel token = result.Scope.AccessTokens.First();
+
+            result = security.Tunnel(CommandBuilder.SecurityAccountAuthenticateToken(token.Id, token.Token, "192.168.1.1").SetOrigin(CommandOrigin.Remote).SetAuthentication(new CommandAuthenticationModel() {
+                Token = token.Token,
+                TokenId = token.Id
+            }));
+
+            Assert.IsTrue(result.Success);
+            Assert.AreEqual(CommandResultType.Success, result.CommandResultType);
+        }
+
+        /// <summary>
+        /// Tests that authenticating with a generated token will fail with a different identifier
+        /// </summary>
+        /// <remarks>This is tested more thoroughly elsewhere, but this is just testing the entire process.</remarks>
+        [Test]
+        public void TestAuthenticationFailureWhenAuthenticateWithTokenDifferentIdentifier() {
+            String generatedAuthenticatePassword = StringExtensions.RandomString(10);
+
+            var security = new SecurityController();
+            security.Tunnel(CommandBuilder.SecurityAddGroup("GroupName").SetOrigin(CommandOrigin.Local));
+            security.Tunnel(CommandBuilder.SecurityGroupAddAccount("GroupName", "Phogue").SetOrigin(CommandOrigin.Local));
+            security.Tunnel(CommandBuilder.SecurityAccountSetPassword("Phogue", generatedAuthenticatePassword).SetOrigin(CommandOrigin.Local));
+            security.Tunnel(CommandBuilder.SecurityGroupSetPermission("GroupName", CommandType.SecurityAccountAuthenticate, 50).SetOrigin(CommandOrigin.Local));
+            security.Tunnel(CommandBuilder.SecurityGroupSetPermission("GroupName", CommandType.SecurityAccountAuthenticateToken, 50).SetOrigin(CommandOrigin.Local));
+
+            ICommandResult result = security.Tunnel(CommandBuilder.SecurityAccountAuthenticate("Phogue", generatedAuthenticatePassword, "192.168.1.1").SetOrigin(CommandOrigin.Remote).SetAuthentication(new CommandAuthenticationModel() {
+                Username = "Phogue"
+            }));
+
+            AccessTokenTransportModel token = result.Scope.AccessTokens.First();
+
+            result = security.Tunnel(CommandBuilder.SecurityAccountAuthenticateToken(token.Id, token.Token, "192.168.1.2").SetOrigin(CommandOrigin.Remote).SetAuthentication(new CommandAuthenticationModel() {
+                Token = token.Token,
+                TokenId = token.Id
+            }));
+
+            Assert.IsFalse(result.Success);
+            Assert.AreEqual(CommandResultType.Failed, result.CommandResultType);
+        }
     }
 }

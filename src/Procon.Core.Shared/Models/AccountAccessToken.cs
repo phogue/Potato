@@ -35,13 +35,25 @@ namespace Procon.Core.Shared.Models {
         /// touched for longer than 48 hours are removed and the user will need to authenticate again.
         /// </summary>
         public DateTime LastTouched { get; set; }
-        
+
+        /// <summary>
+        /// The maximum age in seconds that a token can go without being touched before it is considered expired.
+        /// </summary>
+        public int ExpiredWindowSeconds {
+            get { return _expiredWindowSeconds; }
+            set { _expiredWindowSeconds = Math.Abs(value); }
+        }
+
+        private int _expiredWindowSeconds;
+
         /// <summary>
         /// Initializes the basics, like a new guid.
         /// </summary>
         public AccountAccessToken() {
             this.Id = Guid.NewGuid();
             this.LastTouched = DateTime.Now;
+
+            this.ExpiredWindowSeconds = 172800;
         }
 
         /// <summary>
@@ -115,7 +127,7 @@ namespace Procon.Core.Shared.Models {
             // 5. If.. for some reason.. we don't have a token for them to validate against..
             // 6. If we don't know who owns this token?
             // 7. If the owner does not have a password hash set (accounts don't require a password hash set, but we need one here)
-            if (this.Id == id && this.LastTouched > DateTime.Now.AddDays(-2) && String.IsNullOrEmpty(token) == false && String.IsNullOrEmpty(identifer) == false && String.IsNullOrEmpty(this.TokenHash) == false && this.Account != null && String.IsNullOrEmpty(this.Account.PasswordHash) == false) {
+            if (this.Id == id && this.LastTouched > DateTime.Now.AddSeconds(-1 * this.ExpiredWindowSeconds) && String.IsNullOrEmpty(token) == false && String.IsNullOrEmpty(identifer) == false && String.IsNullOrEmpty(this.TokenHash) == false && this.Account != null && String.IsNullOrEmpty(this.Account.PasswordHash) == false) {
                 authenticated = String.CompareOrdinal(this.TokenHash, BCrypt.Net.BCrypt.HashPassword(this.ShaHash(token + this.Account.PasswordHash + identifer), this.TokenHash)) == 0;
 
                 if (authenticated == true) {

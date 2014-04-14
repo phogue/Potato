@@ -206,7 +206,7 @@ namespace Procon.Core.Test.Remote.TestCommandServerController {
             var responseCommandResult = JsonConvert.DeserializeObject<CommandResult>(packet.Content);
 
             Assert.IsFalse(responseCommandResult.Success);
-            Assert.AreEqual(CommandResultType.InsufficientPermissions, responseCommandResult.CommandResultType);
+            Assert.AreEqual(CommandResultType.Failed, responseCommandResult.CommandResultType);
         }
 
         /// <summary>

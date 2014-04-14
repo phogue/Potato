@@ -201,6 +201,13 @@ namespace Procon.Core.Remote {
             else if (command.Authentication.TokenId != Guid.Empty && String.IsNullOrEmpty(command.Authentication.Token) == false) {
                 result = this.Shared.Security.Tunnel(CommandBuilder.SecurityAccountAuthenticateToken(command.Authentication.TokenId, command.Authentication.Token, this.ExtractIdentifer(request)).SetOrigin(CommandOrigin.Remote));
             }
+            else {
+                result = new CommandResult() {
+                    Success = false,
+                    CommandResultType = CommandResultType.Failed,
+                    Message = "Invalid username or password"
+                };
+            }
 
             return result;
         }
@@ -244,11 +251,7 @@ namespace Procon.Core.Remote {
                 }
                 else {
                     // They are not authorized to login or issue this command.
-                    response = CommandServerSerializer.CompleteResponsePacket(CommandServerSerializer.ResponseContentType(command), response, new CommandResult() {
-                        Success = false,
-                        CommandResultType = CommandResultType.InsufficientPermissions,
-                        Message = "Invalid username or password"
-                    });
+                    response = CommandServerSerializer.CompleteResponsePacket(CommandServerSerializer.ResponseContentType(command), response, authentication);
                 }
             }
             else {

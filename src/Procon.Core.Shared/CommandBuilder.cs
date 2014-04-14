@@ -428,6 +428,50 @@ namespace Procon.Core.Shared {
         }
 
         /// <summary>
+        /// Builds a command to send a SecurityAccountAppendAccessToken
+        /// </summary>
+        /// <param name="username">The username to attach to the command and parameter</param>
+        /// <param name="id">The id of the token, which the user must supply much like a username</param>
+        /// <param name="tokenHash">The hash of the token to validate against, substitute for a password</param>
+        /// <param name="lastTouched">When the token was last used</param>
+        /// <returns>The build command to dispatch</returns>
+        public static ICommand SecurityAccountAppendAccessToken(String username, Guid id, String tokenHash, DateTime lastTouched) {
+            return new Command() {
+                CommandType = CommandType.SecurityAccountAppendAccessToken,
+                Parameters = new List<ICommandParameter>() {
+                    new CommandParameter() {
+                        Data = {
+                            Content = new List<String>() {
+                                username
+                            }
+                        }
+                    },
+                    new CommandParameter() {
+                        Data = {
+                            Content = new List<String>() {
+                                id.ToString()
+                            }
+                        }
+                    },
+                    new CommandParameter() {
+                        Data = {
+                            Content = new List<String>() {
+                                tokenHash
+                            }
+                        }
+                    },
+                    new CommandParameter() {
+                        Data = {
+                            Content = new List<String>() {
+                                lastTouched.ToString()
+                            }
+                        }
+                    }
+                }
+            };
+        }
+        
+        /// <summary>
         /// Builds a command to send a VariablesSet
         /// </summary>
         /// <param name="name">The name of the variable to set</param>

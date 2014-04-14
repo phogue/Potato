@@ -37,7 +37,8 @@ namespace Procon.Service.Shared.Test.TestServicePackages {
             sources.TryAdd("localhost", new MockPackageRepository(new List<IPackage>() {
                 new DataServicePackage() {
                     Id = "A",
-                    Version = "1.0.0"
+                    Version = "1.0.0",
+                    IsLatestVersion = true
                 }
             }));
 
@@ -66,7 +67,8 @@ namespace Procon.Service.Shared.Test.TestServicePackages {
             sources.TryAdd("localhost", new MockPackageRepository(new List<IPackage>() {
                 new DataServicePackage() {
                     Id = "A",
-                    Version = "2.0.0"
+                    Version = "2.0.0",
+                    IsLatestVersion = true
                 }
             }));
 
@@ -100,7 +102,8 @@ namespace Procon.Service.Shared.Test.TestServicePackages {
             sources.TryAdd("localhost", new MockPackageRepository(new List<IPackage>() {
                 new DataServicePackage() {
                     Id = "A",
-                    Version = "1.0.0"
+                    Version = "1.0.0",
+                    IsLatestVersion = true
                 }
             }));
 
@@ -200,7 +203,8 @@ namespace Procon.Service.Shared.Test.TestServicePackages {
             sources.TryAdd("localhost", new MockPackageRepository(new List<IPackage>() {
                 new DataServicePackage() {
                     Id = "A",
-                    Version = "1.0.0"
+                    Version = "1.0.0",
+                    IsLatestVersion = true
                 }
             }));
 
@@ -230,7 +234,8 @@ namespace Procon.Service.Shared.Test.TestServicePackages {
             sources.TryAdd("localhost", new MockPackageRepository(new List<IPackage>() {
                 new DataServicePackage() {
                     Id = "A",
-                    Version = "2.0.0"
+                    Version = "2.0.0",
+                    IsLatestVersion = true
                 }
             }));
 

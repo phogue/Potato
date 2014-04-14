@@ -184,6 +184,28 @@ namespace Procon.Core.Remote {
         }
 
         /// <summary>
+        /// Authenticate the command given the request information.
+        /// </summary>
+        /// <remarks>
+        ///     <para>This command only checks if the user is authenticated with our system, not if they can execute the command. This is accomplished while executing the command.</para>
+        /// </remarks>
+        /// <param name="request">The request information</param>
+        /// <param name="command">The command to authenticate</param>
+        /// <returns>The result of authentication</returns>
+        protected ICommandResult Authenticate(CommandServerPacket request, ICommand command) {
+            ICommandResult result = null;
+
+            if (String.IsNullOrEmpty(command.Authentication.Username) == false && String.IsNullOrEmpty(command.Authentication.PasswordPlainText) == false) {
+                result = this.Shared.Security.Tunnel(CommandBuilder.SecurityAccountAuthenticate(command.Authentication.Username, command.Authentication.PasswordPlainText, this.ExtractIdentifer(request)).SetOrigin(CommandOrigin.Remote));
+            }
+            else if (command.Authentication.TokenId != Guid.Empty && String.IsNullOrEmpty(command.Authentication.Token) == false) {
+                result = this.Shared.Security.Tunnel(CommandBuilder.SecurityAccountAuthenticateToken(command.Authentication.TokenId, command.Authentication.Token, this.ExtractIdentifer(request)).SetOrigin(CommandOrigin.Remote));
+            }
+
+            return result;
+        }
+
+        /// <summary>
         /// Called when a packet is recieved from the listening command server.
         /// </summary>
         /// <param name="client">The client to send back the response</param>
@@ -205,7 +227,37 @@ namespace Procon.Core.Remote {
             ICommand command = CommandServerSerializer.DeserializeCommand(request);
 
             if (command != null) {
+                ICommandResult authentication = this.Authenticate(request, command);
+
+                if (authentication.Success == true) {
+                    // If all they wanted to do was check the authentication..
+                    if (String.CompareOrdinal(command.Name, CommandType.SecurityAccountAuthenticate.ToString()) == 0) {
+                        // Success
+                        response = CommandServerSerializer.CompleteResponsePacket(CommandServerSerializer.ResponseContentType(command), response, authentication);
+                    }
+                    else {
+                        // Propagate their command
+                        ICommandResult result = this.Tunnel(command);
+
+                        response = CommandServerSerializer.CompleteResponsePacket(CommandServerSerializer.ResponseContentType(command), response, result);
+                    }
+                }
+                else {
+                    // They are not authorized to login or issue this command.
+                    response = CommandServerSerializer.CompleteResponsePacket(CommandServerSerializer.ResponseContentType(command), response, new CommandResult() {
+                        Success = false,
+                        CommandResultType = CommandResultType.InsufficientPermissions,
+                        Message = "Invalid username or password"
+                    });
+                }
+                /*
                 if (this.Shared.Security.Tunnel(CommandBuilder.SecurityAccountAuthenticate(command.Authentication.Username, command.Authentication.PasswordPlainText, this.ExtractIdentifer(request)).SetOrigin(CommandOrigin.Remote)).Success == true) {
+                    // Now dispatch the command
+                    ICommandResult result = this.Tunnel(command);
+
+                    response = CommandServerSerializer.CompleteResponsePacket(CommandServerSerializer.ResponseContentType(command), response, result);
+                }
+                else if (this.Shared.Security.Tunnel(CommandBuilder.SecurityAccountAuthenticateToken(command.Authentication.TokenId, command.Authentication.Token, this.ExtractIdentifer(request)).SetOrigin(CommandOrigin.Remote)).Success == true) {
                     // Now dispatch the command
                     ICommandResult result = this.Tunnel(command);
 
@@ -219,6 +271,7 @@ namespace Procon.Core.Remote {
                         Message = "Invalid username or password"
                     });
                 }
+                */
             }
             else {
                 // Something wrong during deserialization, issue a bad request.

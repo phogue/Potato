@@ -124,7 +124,8 @@ namespace Procon.Core {
                 new Timer(Connection_Tick, this, TimeSpan.FromSeconds(15), TimeSpan.FromSeconds(15)),
                 new Timer(Events_Tick, this, TimeSpan.FromSeconds(60), TimeSpan.FromSeconds(60)),
                 new Timer(CommandServer_Tick, this, TimeSpan.FromSeconds(60), TimeSpan.FromSeconds(60)),
-                new Timer(Packages_Tick, this, TimeSpan.FromSeconds(5), TimeSpan.FromMinutes(60))
+                new Timer(Packages_Tick, this, TimeSpan.FromSeconds(5), TimeSpan.FromMinutes(60)),
+                new Timer(Security_Tick, this, TimeSpan.FromSeconds(60), TimeSpan.FromSeconds(60))
             };
 
             this.EventsConsole = new EventsConsoleController();
@@ -330,6 +331,16 @@ namespace Procon.Core {
                 this.Shared.Variables.Variable(CommonVariableNames.PackagesRepositoryUri).Value = this.Shared.Variables.Get(CommonVariableNames.PackagesDefaultSourceRepositoryUri, Defines.PackagesDefaultSourceRepositoryUri);
 
                 this.Packages.Poke();
+            }
+        }
+
+        /// <summary>
+        /// Removes all expired access tokens every 60 seconds.
+        /// </summary>
+        /// <param name="state"></param>
+        protected void Security_Tick(Object state) {
+            if (this.Shared != null && this.Shared.Security != null) {
+                this.Shared.Security.Poke();
             }
         }
 

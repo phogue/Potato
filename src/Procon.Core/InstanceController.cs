@@ -390,7 +390,7 @@ namespace Procon.Core {
         /// </summary>
         /// <param name="config"></param>
         /// <param name="password"></param>
-        public override void WriteConfig(IConfig config, String password) {
+        public override void WriteConfig(IConfig config, String password = null) {
             this.Shared.Variables.WriteConfig(config, password);
 
             this.Shared.Events.WriteConfig(config, password);

@@ -269,7 +269,7 @@ namespace Procon.Core.Connections.Plugins {
             Directory.CreateDirectory(Path.Combine(Defines.ConfigsDirectory.FullName, this.Connection != null ? this.Connection.ConnectionModel.ConnectionGuid.ToString() : Guid.Empty.ToString()));
         }
 
-        public override void WriteConfig(IConfig config, string password) {
+        public override void WriteConfig(IConfig config, string password = null) {
             foreach (PluginModel plugin in this.LoadedPlugins.Where(plugin => plugin.IsEnabled == true)) {
                 config.Append(new Command() {
                     CommandType = CommandType.PluginsEnable,

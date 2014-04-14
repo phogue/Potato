@@ -53,13 +53,15 @@ namespace Procon.Examples.Plugins.Configs {
         /// <param name="parameters"></param>
         /// <returns></returns>
         protected ICommandResult ThisIsJustACommand(ICommand command, Dictionary<String, ICommandParameter> parameters) {
+// ReSharper disable UnusedVariable
             String param1 = parameters["param1"].First<String>();
             String param2 = parameters["param2"].First<String>();
+// ReSharper restore UnusedVariable
 
             return command.Result;
         }
 
-        public override void WriteConfig(IConfig config, string password) {
+        public override void WriteConfig(IConfig config, string password = null) {
             base.WriteConfig(config, password);
 
             // Writing configs may seem a little bit convoluted in Procon 2, but you should

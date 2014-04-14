@@ -173,7 +173,27 @@ namespace Procon.Core.Shared {
             }
 
             return all;
-        } 
+        }
+
+        /// <summary>
+        /// Converts a value to a specific type. Essentially a wrapper for Convert.ChangeType but
+        /// checks for other common classes to convert to.
+        /// </summary>
+        /// <param name="value">The value to be changed</param>
+        /// <param name="conversionType">The type to be changed to</param>
+        /// <returns></returns>
+        public Object ChangeType(Object value, Type conversionType) {
+            Object changed = null;
+
+            if (conversionType == typeof (Guid)) {
+                changed = Guid.Parse((String)value);
+            }
+            else {
+                changed = System.Convert.ChangeType(value, conversionType);
+            }
+
+            return changed;
+        }
 
         public bool HasOne<T>(bool convert = true) {
             return this.HasOne(typeof(T), convert);
@@ -191,7 +211,7 @@ namespace Procon.Core.Shared {
                 }
                 else if (this.HasOne<String>(false) == true) {
                     try {
-                        hasOne = System.Convert.ChangeType(this.First<String>(false), t) != null;
+                        hasOne = this.ChangeType(this.First<String>(false), t) != null;
                     }
                     catch {
                         hasOne = false;
@@ -226,7 +246,7 @@ namespace Procon.Core.Shared {
                     List<String> strings = this.All<String>();
 
                     try {
-                        hasMany = strings.Select(s => System.Convert.ChangeType(s, t)).Count(e => e != null) == strings.Count;
+                        hasMany = strings.Select(s => this.ChangeType(s, t)).Count(e => e != null) == strings.Count;
                     }
                     catch {
                         hasMany = false;
@@ -262,7 +282,7 @@ namespace Procon.Core.Shared {
                     // Else can we convert a list of strings to their type?
                 else {
                     try {
-                        result = System.Convert.ChangeType(this.First<String>(), t);
+                        result = this.ChangeType(this.First<String>(), t);
                     }
                     catch {
                         result = null;
@@ -291,7 +311,7 @@ namespace Procon.Core.Shared {
                 // Else can we convert a list of strings to their type?
                 else {
                     try {
-                        result = this.All<String>().Select(s => System.Convert.ChangeType(s, t)).Where(e => e != null).ToList();
+                        result = this.All<String>().Select(s => this.ChangeType(s, t)).Where(e => e != null).ToList();
                     }
                     catch {
                         result = null;

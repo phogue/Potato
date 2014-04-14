@@ -27,6 +27,15 @@ namespace Procon.Core.Shared {
         ICommandData Data { get; set; }
 
         /// <summary>
+        /// Converts a value to a specific type. Essentially a wrapper for Convert.ChangeType but
+        /// checks for other common classes to convert to.
+        /// </summary>
+        /// <param name="value">The value to be changed</param>
+        /// <param name="conversionType">The type to be changed to</param>
+        /// <returns>The changed type</returns>
+        Object ChangeType(Object value, Type conversionType);
+
+        /// <summary>
         /// Checks if this parameter has a specific data type.
         /// </summary>
         /// <returns></returns>

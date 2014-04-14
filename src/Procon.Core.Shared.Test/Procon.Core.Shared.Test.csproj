@@ -58,7 +58,9 @@
     <Compile Include="ExecutableCommands\TestCommandAttribute.cs" />
     <Compile Include="ExecutableCommands\TestCommandConfig.cs" />
     <Compile Include="ExecutableCommands\TestCommandData.cs" />
-    <Compile Include="ExecutableCommands\TestCommandParameter.cs" />
+    <Compile Include="TestCommandParameter\TestStringConversion.cs" />
+    <Compile Include="TestCommandParameter\TestEnumConversion.cs" />
+    <Compile Include="TestCommandParameter\TestIntegerConversion.cs" />
     <Compile Include="ExecutableCommands\TestExecutableBasic.cs" />
     <Compile Include="ExecutableCommands\TestExecutableEnum.cs" />
     <Compile Include="ExecutableCommands\TestExecutableExecuted.cs" />
@@ -67,6 +69,7 @@
     <Compile Include="ExecutableCommands\TestExecutableProperties.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="AsynchronousExecutableCommands\TestAsynchronousCoreController.cs" />
+    <Compile Include="TestCommandParameter\TestGuidConversion.cs" />
     <Compile Include="TestConfigCommand\TestDecrypted.cs" />
     <Compile Include="TestConfigCommand\TestEncrypt.cs" />
     <Compile Include="TestConfig\TestRootOf.cs" />
@@ -103,6 +106,7 @@
     </None>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

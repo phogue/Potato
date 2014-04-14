@@ -169,6 +169,21 @@ namespace Procon.Core.Remote {
         }
 
         /// <summary>
+        /// Pulls the identifer out of the request (endpoint address)
+        /// </summary>
+        /// <param name="request">The request received from the client</param>
+        /// <returns>The extracted identifer or an empty string if none exists</returns>
+        protected String ExtractIdentifer(CommandServerPacket request) {
+            var identifer = "";
+
+            if (request != null && request.Packet != null && request.Packet.RemoteEndPoint != null && request.Packet.RemoteEndPoint.Address != null) {
+                identifer = request.Packet.RemoteEndPoint.Address.ToString();
+            }
+
+            return identifer;
+        }
+
+        /// <summary>
         /// Called when a packet is recieved from the listening command server.
         /// </summary>
         /// <param name="client">The client to send back the response</param>
@@ -186,11 +201,11 @@ namespace Procon.Core.Remote {
                     { HttpRequestHeader.Connection, "close" }
                 }
             };
-
+            
             ICommand command = CommandServerSerializer.DeserializeCommand(request);
 
             if (command != null) {
-                if (this.Shared.Security.Tunnel(CommandBuilder.SecurityAccountAuthenticate(command.Authentication.Username, command.Authentication.PasswordPlainText).SetOrigin(CommandOrigin.Remote)).Success == true) {
+                if (this.Shared.Security.Tunnel(CommandBuilder.SecurityAccountAuthenticate(command.Authentication.Username, command.Authentication.PasswordPlainText, this.ExtractIdentifer(request)).SetOrigin(CommandOrigin.Remote)).Success == true) {
                     // Now dispatch the command
                     ICommandResult result = this.Tunnel(command);
 

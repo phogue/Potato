@@ -345,8 +345,9 @@ namespace Procon.Core.Shared {
         /// </summary>
         /// <param name="username">The username to attach to the command and parameter</param>
         /// <param name="passwordPlainText">The plain text password to add as a parameter</param>
+        /// <param name="identifier">An identifying peice of information about the user attempting authentication (ip)</param>
         /// <returns>The build command to dispatch</returns>
-        public static ICommand SecurityAccountAuthenticate(String username, String passwordPlainText) {
+        public static ICommand SecurityAccountAuthenticate(String username, String passwordPlainText, String identifier) {
             return new Command() {
                 Authentication = {
                     Username = username
@@ -364,6 +365,13 @@ namespace Procon.Core.Shared {
                         Data = {
                             Content = new List<String>() {
                                 passwordPlainText
+                            }
+                        }
+                    },
+                    new CommandParameter() {
+                        Data = {
+                            Content = new List<String>() {
+                                identifier
                             }
                         }
                     }

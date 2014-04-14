@@ -43,7 +43,7 @@ namespace Procon.Core.Test.Security.Account {
             security.Tunnel(CommandBuilder.SecurityGroupSetPermission("GroupName", CommandType.SecurityAccountAuthenticate, 50).SetOrigin(CommandOrigin.Local));
 
             // Now authenticate against an empty security object which has no accounts.
-            ICommandResult result = security.Tunnel(CommandBuilder.SecurityAccountAuthenticate("Phogue", generatedAuthenticatePassword).SetOrigin(CommandOrigin.Remote).SetAuthentication(new CommandAuthenticationModel() {
+            ICommandResult result = security.Tunnel(CommandBuilder.SecurityAccountAuthenticate("Phogue", generatedAuthenticatePassword, String.Empty).SetOrigin(CommandOrigin.Remote).SetAuthentication(new CommandAuthenticationModel() {
                 Username = "Phogue"
             }));
 
@@ -66,7 +66,7 @@ namespace Procon.Core.Test.Security.Account {
             security.Tunnel(CommandBuilder.SecurityGroupSetPermission("GroupName", CommandType.SecurityAccountAuthenticate, 50).SetOrigin(CommandOrigin.Local));
 
             // Now authenticate against an empty security object which has no accounts.
-            ICommandResult result = security.Tunnel(CommandBuilder.SecurityAccountAuthenticate("Phogue", generatedAuthenticatePassword).SetOrigin(CommandOrigin.Remote).SetAuthentication(new CommandAuthenticationModel() {
+            ICommandResult result = security.Tunnel(CommandBuilder.SecurityAccountAuthenticate("Phogue", generatedAuthenticatePassword, String.Empty).SetOrigin(CommandOrigin.Remote).SetAuthentication(new CommandAuthenticationModel() {
                 Username = "Phogue"
             }));
 
@@ -87,7 +87,7 @@ namespace Procon.Core.Test.Security.Account {
             security.Tunnel(CommandBuilder.SecurityGroupAddAccount("GroupName", "ThisExists").SetOrigin(CommandOrigin.Local));
 
             // Now authenticate against an empty security object which has no accounts.
-            ICommandResult result = security.Tunnel(CommandBuilder.SecurityAccountAuthenticate("DoesNotExist", generatedAuthenticatePassword).SetOrigin(CommandOrigin.Local));
+            ICommandResult result = security.Tunnel(CommandBuilder.SecurityAccountAuthenticate("DoesNotExist", generatedAuthenticatePassword, String.Empty).SetOrigin(CommandOrigin.Local));
 
             // Validate that we get nothing back.
             Assert.IsFalse(result.Success);
@@ -110,7 +110,7 @@ namespace Procon.Core.Test.Security.Account {
             security.Tunnel(CommandBuilder.SecurityAccountSetPassword("Phogue", generatedSetPassword).SetOrigin(CommandOrigin.Local));
 
             // Now validate that we can authenticate against the newly set password.
-            ICommandResult result = security.Tunnel(CommandBuilder.SecurityAccountAuthenticate("Phogue", generatedAuthenticatePassword).SetOrigin(CommandOrigin.Local));
+            ICommandResult result = security.Tunnel(CommandBuilder.SecurityAccountAuthenticate("Phogue", generatedAuthenticatePassword, String.Empty).SetOrigin(CommandOrigin.Local));
 
             // Validate that we could authenticate with our new password.
             Assert.IsFalse(result.Success);
@@ -128,7 +128,7 @@ namespace Procon.Core.Test.Security.Account {
             security.Tunnel(CommandBuilder.SecurityGroupAddAccount("GroupName", "Phogue").SetOrigin(CommandOrigin.Local));
             security.Tunnel(CommandBuilder.SecurityAccountSetPassword("Phogue", "password").SetOrigin(CommandOrigin.Local));
 
-            ICommandResult result = security.Tunnel(CommandBuilder.SecurityAccountAuthenticate("Phogue", "password").SetOrigin(CommandOrigin.Local).SetOrigin(CommandOrigin.Remote).SetAuthentication(new CommandAuthenticationModel() {
+            ICommandResult result = security.Tunnel(CommandBuilder.SecurityAccountAuthenticate("Phogue", "password", String.Empty).SetOrigin(CommandOrigin.Local).SetOrigin(CommandOrigin.Remote).SetAuthentication(new CommandAuthenticationModel() {
                 Username = "Phogue"
             }));
 
@@ -146,7 +146,7 @@ namespace Procon.Core.Test.Security.Account {
             security.Tunnel(CommandBuilder.SecurityGroupAddAccount("GroupName", "Phogue").SetOrigin(CommandOrigin.Local));
 
             // Now send an empty password through to authenticate against.
-            ICommandResult result = security.Tunnel(CommandBuilder.SecurityAccountAuthenticate("Phogue", String.Empty).SetOrigin(CommandOrigin.Local));
+            ICommandResult result = security.Tunnel(CommandBuilder.SecurityAccountAuthenticate("Phogue", String.Empty, String.Empty).SetOrigin(CommandOrigin.Local));
 
             // Validate that we couldn't login because the server does not have a password set for it yet.
             Assert.IsFalse(result.Success);

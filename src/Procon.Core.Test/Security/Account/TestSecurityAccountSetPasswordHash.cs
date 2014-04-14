@@ -66,7 +66,7 @@ namespace Procon.Core.Test.Security.Account {
             security.Tunnel(CommandBuilder.SecurityAccountSetPasswordHash("Phogue", generatedPasswordHash).SetOrigin(CommandOrigin.Local));
 
             // Now validate that we can authenticate against the newly set password.
-            ICommandResult result = security.Tunnel(CommandBuilder.SecurityAccountAuthenticate("Phogue", generatedPassword).SetOrigin(CommandOrigin.Local));
+            ICommandResult result = security.Tunnel(CommandBuilder.SecurityAccountAuthenticate("Phogue", generatedPassword, String.Empty).SetOrigin(CommandOrigin.Local));
 
             // Validate that we could authenticate with our new password.
             Assert.IsTrue(result.Success);

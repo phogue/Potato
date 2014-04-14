@@ -39,7 +39,7 @@ namespace Procon.Core.Connections {
     /// Handles connections, plugins and text commands for a single game server.
     /// </summary>
     [Serializable]
-    public class ConnectionController : CoreController, ISharedReferenceAccess, IConnectionController {
+    public class ConnectionController : AsynchronousCoreController, ISharedReferenceAccess, IConnectionController {
         public ConnectionModel ConnectionModel { get; set; }
 
         /// <summary>

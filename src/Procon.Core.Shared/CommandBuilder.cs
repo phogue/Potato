@@ -372,6 +372,45 @@ namespace Procon.Core.Shared {
         }
 
         /// <summary>
+        /// Builds a command to send a SecurityAccountAuthenticateToken
+        /// </summary>
+        /// <param name="id">The id of the token the user wants to validate against.</param>
+        /// <param name="token">The token to validate against, like a password.</param>
+        /// <param name="identifier">An identifying peice of infomation about the the user attempting authentication (ip)</param>
+        /// <returns>The build command to dispatch</returns>
+        public static ICommand SecurityAccountAuthenticateToken(Guid id, String token, String identifier) {
+            return new Command() {
+                Authentication = {
+                    TokenId = id
+                },
+                CommandType = CommandType.SecurityAccountAuthenticateToken,
+                Parameters = new List<ICommandParameter>() {
+                    new CommandParameter() {
+                        Data = {
+                            Content = new List<String>() {
+                                id.ToString()
+                            }
+                        }
+                    },
+                    new CommandParameter() {
+                        Data = {
+                            Content = new List<String>() {
+                                token
+                            }
+                        }
+                    },
+                    new CommandParameter() {
+                        Data = {
+                            Content = new List<String>() {
+                                identifier
+                            }
+                        }
+                    }
+                }
+            };
+        }
+
+        /// <summary>
         /// Builds a command to send a SecurityAccountSetPassword
         /// </summary>
         /// <param name="username">The username to attach to the command and parameter</param>
@@ -463,7 +502,7 @@ namespace Procon.Core.Shared {
                     new CommandParameter() {
                         Data = {
                             Content = new List<String>() {
-                                lastTouched.ToString()
+                                lastTouched.ToString(CultureInfo.InvariantCulture.DateTimeFormat.UniversalSortableDateTimePattern)
                             }
                         }
                     }

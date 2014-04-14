@@ -29,147 +29,65 @@ namespace Procon.Core.Shared {
     /// </summary>
     [Serializable]
     public sealed class CommandData : ICommandData {
-        /// <summary>
-        /// List of strings to use as general content (localization(s), html etc.)
-        /// </summary>
         public List<String> Content { get; set; }
 
-        /// <summary>
-        /// Connections effected by this event.
-        /// </summary>
         public List<ConnectionModel> Connections { get; set; }
 
-        /// <summary>
-        /// Game types attached to this event.
-        /// </summary>
         public List<ProtocolType> ProtocolTypes { get; set; }
 
         public List<IProtocolAssemblyMetadata> ProtocolAssemblyMetadatas { get; set; }
 
-        /// <summary>
-        /// Groups effected by this event.
-        /// </summary>
         public List<Core.Shared.Models.GroupModel> Groups { get; set; }
 
-        /// <summary>
-        /// Accounts effected by this event.
-        /// </summary>
         public List<AccountModel> Accounts { get; set; }
 
-        /// <summary>
-        /// Permissions effected by this event.
-        /// </summary>
+        public List<AccessTokenTransportModel> AccessTokens { get; set; }
+
         public List<PermissionModel> Permissions { get; set; }
 
-        /// <summary>
-        /// Account players effected by this event.
-        /// </summary>
         public List<AccountPlayerModel> AccountPlayers { get; set; }
 
-        /// <summary>
-        /// Variables effected by this event.
-        /// </summary>
         public List<VariableModel> Variables { get; set; }
 
-        /// <summary>
-        /// Languages effected by this event.
-        /// </summary>
         public List<LanguageModel> Languages { get; set; }
 
-        /// <summary>
-        /// Text commands effected by this event.
-        /// </summary>
         public List<TextCommandModel> TextCommands { get; set; }
 
-        /// <summary>
-        /// The results of any text commands matches
-        /// </summary>
         public List<TextCommandMatchModel> TextCommandMatches { get; set; }
 
-        /// <summary>
-        /// Variables effected by this event.
-        /// </summary>
         public List<IGenericEvent> Events { get; set; }
 
-        /// <summary>
-        /// Repositories effected by this event.
-        /// </summary>
         public List<RepositoryModel> Repositories { get; set; }
 
-        /// <summary>
-        /// Packages effected by this event.
-        /// </summary>
         public List<PackageWrapperModel> Packages { get; set; }
 
-        /// <summary>
-        /// The plugins attached to this event
-        /// </summary>
         public List<PluginModel> Plugins { get; set; }
 
-        /// <summary>
-        /// The network actions attached to this event, if any.
-        /// </summary>
         public List<INetworkAction> NetworkActions { get; set; } 
 
-        /// <summary>
-        /// The chats attached to this event, if any.
-        /// </summary>
         public List<ChatModel> Chats { get; set; }
 
-        /// <summary>
-        /// The players attached to this event, if any.
-        /// </summary>
         public List<PlayerModel> Players { get; set; }
 
-        /// <summary>
-        /// The kills attached to this event, if any.
-        /// </summary>
         public List<KillModel> Kills { get; set; }
 
-        /// <summary>
-        /// The moves attached to this event, if any.
-        /// </summary>
         public List<MoveModel> Moves { get; set; }
 
-        /// <summary>
-        /// The spawns attached to this event, if any.
-        /// </summary>
         public List<SpawnModel> Spawns { get; set; }
 
-        /// <summary>
-        /// The kicks attached to this event, if any.
-        /// </summary>
         public List<KickModel> Kicks { get; set; }
 
-        /// <summary>
-        /// The bans attached to this event, if any.
-        /// </summary>
         public List<BanModel> Bans { get; set; }
 
-        /// <summary>
-        /// The settings attached to this event, if any. If any, if any. If any. Hai Ike.
-        /// </summary>
         public List<Settings> Settings { get; set; }
 
-        /// <summary>
-        /// The maps attached to this event, if any.
-        /// </summary>
         public List<MapModel> Maps { get; set; }
 
-        /// <summary>
-        /// The command results attached to this event, if any.
-        /// </summary>
         public List<ICommandResult> CommandResults { get; set; }
 
-        /// <summary>
-        /// The raw packets attached to this command or event, if any.
-        /// </summary>
         [JsonIgnore]
         public List<IPacket> Packets { get; set; }
 
-        /// <summary>
-        /// A query or query result.
-        /// </summary>
         [JsonIgnore]
         public List<IDatabaseObject> Queries { get; set; }
 
@@ -195,6 +113,9 @@ namespace Procon.Core.Shared {
 
             if (this.Accounts != null) this.Accounts.Clear();
             this.Accounts = null;
+
+            if (this.AccessTokens != null) this.AccessTokens.Clear();
+            this.AccessTokens = null;
 
             if (this.Permissions != null) this.Permissions.Clear();
             this.Permissions = null;

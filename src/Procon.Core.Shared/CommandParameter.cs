@@ -39,6 +39,7 @@ namespace Procon.Core.Shared {
             typeof (IProtocolAssemblyMetadata),
             typeof (Core.Shared.Models.GroupModel),
             typeof (AccountModel),
+            typeof (AccessTokenTransportModel),
             typeof (PermissionModel),
             typeof (AccountPlayerModel),
             typeof (VariableModel),
@@ -101,6 +102,9 @@ namespace Procon.Core.Shared {
             }
             else if (t == typeof(AccountModel) && this.Data.Accounts != null) {
                 all = this.Data.Accounts.Cast<Object>().ToList();
+            }
+            else if (t == typeof(AccessTokenTransportModel) && this.Data.AccessTokens != null) {
+                all = this.Data.AccessTokens.Cast<Object>().ToList();
             }
             else if (t == typeof(PermissionModel) && this.Data.Permissions != null) {
                 all = this.Data.Permissions.Cast<Object>().ToList();

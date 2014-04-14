@@ -250,28 +250,6 @@ namespace Procon.Core.Remote {
                         Message = "Invalid username or password"
                     });
                 }
-                /*
-                if (this.Shared.Security.Tunnel(CommandBuilder.SecurityAccountAuthenticate(command.Authentication.Username, command.Authentication.PasswordPlainText, this.ExtractIdentifer(request)).SetOrigin(CommandOrigin.Remote)).Success == true) {
-                    // Now dispatch the command
-                    ICommandResult result = this.Tunnel(command);
-
-                    response = CommandServerSerializer.CompleteResponsePacket(CommandServerSerializer.ResponseContentType(command), response, result);
-                }
-                else if (this.Shared.Security.Tunnel(CommandBuilder.SecurityAccountAuthenticateToken(command.Authentication.TokenId, command.Authentication.Token, this.ExtractIdentifer(request)).SetOrigin(CommandOrigin.Remote)).Success == true) {
-                    // Now dispatch the command
-                    ICommandResult result = this.Tunnel(command);
-
-                    response = CommandServerSerializer.CompleteResponsePacket(CommandServerSerializer.ResponseContentType(command), response, result);
-                }
-                else {
-                    // They are not authorized to login or issue this command.
-                    response = CommandServerSerializer.CompleteResponsePacket(CommandServerSerializer.ResponseContentType(command), response, new CommandResult() {
-                        Success = false,
-                        CommandResultType = CommandResultType.InsufficientPermissions,
-                        Message = "Invalid username or password"
-                    });
-                }
-                */
             }
             else {
                 // Something wrong during deserialization, issue a bad request.

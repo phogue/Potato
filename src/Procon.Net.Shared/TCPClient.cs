@@ -119,6 +119,8 @@ namespace Procon.Net.Shared {
                 if (packetData != null && packetData.Length > 0) {
                     wrapper = this.PacketSerializer.Deserialize(packetData);
 
+                    wrapper.Packet.RemoteEndPoint = this.RemoteEndPoint;
+
                     this.PacketStream.Shift((uint)packetSize);
                 }
             }

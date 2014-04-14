@@ -1777,7 +1777,7 @@ namespace Procon.Core.Security {
                 
                 if (account != null) {
                     if (id != Guid.Empty && tokenHash.Length > 0 && lastTouched > DateTime.Now.AddSeconds(-1 * Math.Abs(this.Shared.Variables.Get(CommonVariableNames.SecurityMaximumAccessTokenLastTouchedLengthSeconds, 172800)))) {
-                        AccountAccessToken existing = account.AccessTokens.FirstOrDefault(accessToken => accessToken.Id == id);
+                        AccountAccessTokenModel existing = account.AccessTokens.FirstOrDefault(accessToken => accessToken.Id == id);
 
                         // Upsert the token hash
                         if (existing != null) {
@@ -1785,7 +1785,7 @@ namespace Procon.Core.Security {
                             existing.LastTouched = lastTouched;
                         }
                         else {
-                            account.AccessTokens.Add(new AccountAccessToken() {
+                            account.AccessTokens.Add(new AccountAccessTokenModel() {
                                 Id = id,
                                 Account = account,
                                 TokenHash = tokenHash,
@@ -1840,6 +1840,7 @@ namespace Procon.Core.Security {
 
             String username = parameters["username"].First<String>();
             String passwordPlainText = parameters["passwordPlainText"].First<String>();
+            String identifier = parameters["identifier"].First<String>();
 
             if (this.DispatchPermissionsCheck(command, command.Name).Success == true) {
                 AccountModel account = this.Groups.SelectMany(g => g.Accounts).FirstOrDefault(a => String.Compare(a.Username, username, StringComparison.OrdinalIgnoreCase) == 0);
@@ -1906,7 +1907,7 @@ namespace Procon.Core.Security {
             String identifier = parameters["identifier"].First<String>();
 
             if (this.DispatchPermissionsCheck(command, command.Name).Success == true) {
-                AccountAccessToken accountAccessToken = this.Groups.SelectMany(group => group.Accounts).SelectMany(account => account.AccessTokens).FirstOrDefault(accessToken => accessToken.Id == id);
+                AccountAccessTokenModel accountAccessToken = this.Groups.SelectMany(group => group.Accounts).SelectMany(account => account.AccessTokens).FirstOrDefault(accessToken => accessToken.Id == id);
 
                 if (accountAccessToken != null) {
                     if (accountAccessToken.Authenticate(id, token, identifier)) {

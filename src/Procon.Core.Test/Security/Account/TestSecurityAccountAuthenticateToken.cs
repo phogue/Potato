@@ -56,7 +56,7 @@ namespace Procon.Core.Test.Security.Account {
         public void TestCannotAuthenticateAgainstDifferentTokenId() {
             const string identifier = "192.168.1.1";
 
-            AccountAccessToken accessToken = new AccountAccessToken() {
+            AccountAccessTokenModel accessToken = new AccountAccessTokenModel() {
                 Account = new AccountModel() {
                     Username = "Phogue",
                     PasswordHash = "MyPasswordHash"
@@ -87,7 +87,7 @@ namespace Procon.Core.Test.Security.Account {
         public void TestSetSuccessCanAuthenticateAgainst() {
             const string identifier = "192.168.1.1";
 
-            AccountAccessToken accessToken = new AccountAccessToken() {
+            AccountAccessTokenModel accessToken = new AccountAccessTokenModel() {
                 Account = new AccountModel() {
                     Username = "Phogue",
                     PasswordHash = "MyPasswordHash"
@@ -118,7 +118,7 @@ namespace Procon.Core.Test.Security.Account {
         public void TestModifiedPasswordHashAfterSettingInvalidatesToken() {
             const string identifier = "192.168.1.1";
 
-            AccountAccessToken accessToken = new AccountAccessToken() {
+            AccountAccessTokenModel accessToken = new AccountAccessTokenModel() {
                 Account = new AccountModel() {
                     Username = "Phogue",
                     PasswordHash = "MyPasswordHash"
@@ -152,7 +152,7 @@ namespace Procon.Core.Test.Security.Account {
         public void TestModifiedIdentiferAfterSettingInvalidatesToken() {
             const string identifier = "192.168.1.1";
 
-            AccountAccessToken accessToken = new AccountAccessToken() {
+            AccountAccessTokenModel accessToken = new AccountAccessTokenModel() {
                 Account = new AccountModel() {
                     Username = "Phogue",
                     PasswordHash = "MyPasswordHash"

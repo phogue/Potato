@@ -12,7 +12,7 @@ namespace Procon.Core.Shared.Models {
     ///     <para>A token is validated by checking the derivation of the three generated items matches the token</para> 
     /// </remarks>
     [Serializable]
-    public class AccountAccessToken : CoreModel, IDisposable {
+    public class AccountAccessTokenModel : CoreModel, IDisposable {
         /// <summary>
         /// The id of the session
         /// </summary>
@@ -49,7 +49,7 @@ namespace Procon.Core.Shared.Models {
         /// <summary>
         /// Initializes the basics, like a new guid.
         /// </summary>
-        public AccountAccessToken() {
+        public AccountAccessTokenModel() {
             this.Id = Guid.NewGuid();
             this.LastTouched = DateTime.Now;
 

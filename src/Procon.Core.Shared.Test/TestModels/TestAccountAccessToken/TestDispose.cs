@@ -11,7 +11,7 @@ namespace Procon.Core.Shared.Test.TestModels.TestAccountAccessToken {
         /// </summary>
         [Test]
         public void TestAllValuesDefaulted() {
-            AccountAccessToken accessToken = new AccountAccessToken() {
+            AccountAccessTokenModel accessToken = new AccountAccessTokenModel() {
                 Account = new AccountModel(),
                 TokenHash = "Something",
                 LastTouched = DateTime.Now,

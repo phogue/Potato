@@ -151,7 +151,7 @@ namespace Procon.Core.Connections {
             }));
         }
 
-        public override void WriteConfig(IConfig config, string password) {
+        public override void WriteConfig(IConfig config, string password = null) {
             if (this.Plugins != null) {
                 this.Plugins.WriteConfig(config, password);
             }

@@ -45,7 +45,7 @@ namespace Procon.Examples.Plugins.Events.Test {
             plugins.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.PluginsEnable,
-                ScopeModel = {
+                Scope = {
                     PluginGuid = plugins.LoadedPlugins.First().PluginGuid
                 }
             });
@@ -87,7 +87,7 @@ namespace Procon.Examples.Plugins.Events.Test {
             plugins.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.PluginsEnable,
-                ScopeModel = {
+                Scope = {
                     PluginGuid = plugins.LoadedPlugins.First().PluginGuid
                 }
             });
@@ -140,7 +140,7 @@ namespace Procon.Examples.Plugins.Events.Test {
             plugins.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.PluginsEnable,
-                ScopeModel = {
+                Scope = {
                     PluginGuid = plugins.LoadedPlugins.First().PluginGuid
                 }
             });
@@ -169,7 +169,7 @@ namespace Procon.Examples.Plugins.Events.Test {
             plugins.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.PluginsEnable,
-                ScopeModel = {
+                Scope = {
                     PluginGuid = plugins.LoadedPlugins.First().PluginGuid
                 }
             });

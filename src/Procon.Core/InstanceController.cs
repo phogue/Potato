@@ -489,9 +489,9 @@ namespace Procon.Core {
         protected override IList<ICoreController> TunnelExecutableObjects(ICommand command) {
             List<ICoreController> list = new List<ICoreController>();
 
-            if (command.ScopeModel != null && command.ScopeModel.ConnectionGuid != Guid.Empty) {
+            if (command.Scope != null && command.Scope.ConnectionGuid != Guid.Empty) {
                 // Focus only on the connection.
-                this.Connections.Where(connection => connection.ConnectionModel.ConnectionGuid == command.ScopeModel.ConnectionGuid).ToList().ForEach(list.Add);
+                this.Connections.Where(connection => connection.ConnectionModel.ConnectionGuid == command.Scope.ConnectionGuid).ToList().ForEach(list.Add);
             }
             else {
                 // Add all of the connections.

@@ -41,7 +41,7 @@ namespace Procon.Core.Shared {
         /// <summary>
         /// The scope that this commands execution should be limited to.
         /// </summary>
-        CommandScopeModel ScopeModel { get; set; }
+        CommandScopeModel Scope { get; set; }
 
         /// <summary>
         /// Where the command came from

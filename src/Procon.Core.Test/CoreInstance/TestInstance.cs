@@ -158,7 +158,7 @@ namespace Procon.Core.Test.CoreInstance {
             ICommandResult result = instance.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.VariablesSet,
-                ScopeModel = {
+                Scope = {
                     ConnectionGuid = instance.Connections.First().ConnectionModel.ConnectionGuid
                 },
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {

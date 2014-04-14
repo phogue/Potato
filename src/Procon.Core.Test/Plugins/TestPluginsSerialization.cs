@@ -43,7 +43,7 @@ namespace Procon.Core.Test.Plugins {
             plugins.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.PluginsEnable,
-                ScopeModel = {
+                Scope = {
                     PluginGuid = plugins.LoadedPlugins.First().PluginGuid
                 }
             });

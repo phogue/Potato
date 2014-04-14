@@ -1215,7 +1215,7 @@ namespace Procon.Core.Shared {
         public static ICommand PluginsEnable(Guid pluginGuid) {
             return new Command() {
                 CommandType = CommandType.PluginsEnable,
-                ScopeModel = {
+                Scope = {
                     PluginGuid = pluginGuid
                 }
             };

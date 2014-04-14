@@ -63,7 +63,7 @@ namespace Procon.Examples.Plugins.TextCommands.Test {
             connection.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.PluginsEnable,
-                ScopeModel = {
+                Scope = {
                     PluginGuid = connection.Plugins.LoadedPlugins.First().PluginGuid
                 }
             });

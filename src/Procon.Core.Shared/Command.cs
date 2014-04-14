@@ -42,7 +42,7 @@ namespace Procon.Core.Shared {
 
         public Guid CommandGuid { get; set; }
 
-        public CommandScopeModel ScopeModel { get; set; }
+        public CommandScopeModel Scope { get; set; }
 
         public CommandOrigin Origin { get; set; }
         
@@ -63,7 +63,7 @@ namespace Procon.Core.Shared {
 
             this.Authentication = new CommandAuthenticationModel();
 
-            this.ScopeModel = new CommandScopeModel();
+            this.Scope = new CommandScopeModel();
         }
 
         public ICommand SetOrigin(CommandOrigin origin) {
@@ -79,7 +79,7 @@ namespace Procon.Core.Shared {
         }
 
         public ICommand SetScope(CommandScopeModel scope) {
-            this.ScopeModel = scope;
+            this.Scope = scope;
 
             return this;
         }
@@ -94,7 +94,7 @@ namespace Procon.Core.Shared {
             this.Name = command.Name;
             this.Authentication = command.Authentication;
             this.Origin = command.Origin;
-            this.ScopeModel = command.ScopeModel;
+            this.Scope = command.Scope;
             this.Parameters = new List<ICommandParameter>(command.Parameters ?? new List<ICommandParameter>());
         }
 
@@ -102,9 +102,9 @@ namespace Procon.Core.Shared {
             ICommand command = new Command(this);
 
             // If the scope model does not have any useful information within.
-            if (this.ScopeModel != null && this.ScopeModel.ConnectionGuid == Guid.Empty && this.ScopeModel.PluginGuid == Guid.Empty) {
+            if (this.Scope != null && this.Scope.ConnectionGuid == Guid.Empty && this.Scope.PluginGuid == Guid.Empty) {
                 // Null it out. This avoids storing empty GUID's for no reason.
-                command.ScopeModel = null;
+                command.Scope = null;
             }
 
             // Commands loaded from the config will always run as local commands.

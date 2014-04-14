@@ -179,11 +179,11 @@ namespace Procon.Core.Shared.Plugins {
         protected override IList<ICoreController> TunnelExecutableObjects(ICommand command) {
             List<ICoreController> list = new List<ICoreController>();
 
-            if (command.ScopeModel != null && command.ScopeModel.PluginGuid != Guid.Empty) {
+            if (command.Scope != null && command.Scope.PluginGuid != Guid.Empty) {
                 IPluginController enabledPlugin;
 
                 // Get the enabled plugin if it exists.
-                if (this.EnabledPlugins.TryGetValue(command.ScopeModel.PluginGuid, out enabledPlugin) == true) {
+                if (this.EnabledPlugins.TryGetValue(command.Scope.PluginGuid, out enabledPlugin) == true) {
                     list.Add(enabledPlugin);
                 }
                 // else the plugin isn't enabled

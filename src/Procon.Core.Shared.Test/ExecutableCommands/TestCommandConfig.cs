@@ -27,10 +27,10 @@ namespace Procon.Core.Shared.Test.ExecutableCommands {
         [Test]
         public void TestScopeNulledWhenNulled() {
             IConfigCommand command = new Command() {
-                ScopeModel = null
+                Scope = null
             }.ToConfigCommand();
 
-            Assert.IsNull(command.Command.ScopeModel);
+            Assert.IsNull(command.Command.Scope);
         }
 
         /// <summary>
@@ -39,13 +39,13 @@ namespace Procon.Core.Shared.Test.ExecutableCommands {
         [Test]
         public void TestScopeNulledWhenBothEmpty() {
             IConfigCommand command = new Command() {
-                ScopeModel = {
+                Scope = {
                     ConnectionGuid = Guid.Empty,
                     PluginGuid = Guid.Empty
                 }
             }.ToConfigCommand();
 
-            Assert.IsNull(command.Command.ScopeModel);
+            Assert.IsNull(command.Command.Scope);
         }
 
         /// <summary>
@@ -56,14 +56,14 @@ namespace Procon.Core.Shared.Test.ExecutableCommands {
             Guid guid = Guid.NewGuid();
 
             IConfigCommand command = new Command() {
-                ScopeModel = {
+                Scope = {
                     ConnectionGuid = guid,
                     PluginGuid = Guid.Empty
                 }
             }.ToConfigCommand();
 
-            Assert.IsNotNull(command.Command.ScopeModel);
-            Assert.AreEqual(command.Command.ScopeModel.ConnectionGuid, guid);
+            Assert.IsNotNull(command.Command.Scope);
+            Assert.AreEqual(command.Command.Scope.ConnectionGuid, guid);
         }
 
         /// <summary>
@@ -74,14 +74,14 @@ namespace Procon.Core.Shared.Test.ExecutableCommands {
             Guid guid = Guid.NewGuid();
 
             IConfigCommand command = new Command() {
-                ScopeModel = {
+                Scope = {
                     ConnectionGuid = Guid.Empty,
                     PluginGuid = guid
                 }
             }.ToConfigCommand();
 
-            Assert.IsNotNull(command.Command.ScopeModel);
-            Assert.AreEqual(command.Command.ScopeModel.PluginGuid, guid);
+            Assert.IsNotNull(command.Command.Scope);
+            Assert.AreEqual(command.Command.Scope.PluginGuid, guid);
         }
 
         /// <summary>

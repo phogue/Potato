@@ -90,8 +90,8 @@ namespace Procon.Core.Test.Plugins {
             var commands = loadConfig.RootOf<CorePluginController>().Children<JObject>().Select(item => item.ToObject<IConfigCommand>(JsonSerialization.Minimal)).ToList();
 
             Assert.AreEqual("PluginsEnable", commands[0].Command.Name);
-            Assert.AreEqual(connectionGuid, commands[0].Command.ScopeModel.ConnectionGuid);
-            Assert.AreEqual(twoPluginGuid, commands[0].Command.ScopeModel.PluginGuid);
+            Assert.AreEqual(connectionGuid, commands[0].Command.Scope.ConnectionGuid);
+            Assert.AreEqual(twoPluginGuid, commands[0].Command.Scope.PluginGuid);
         }
     }
 }

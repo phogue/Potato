@@ -49,7 +49,7 @@ namespace Procon.Core.Test.Plugins {
             ICommandResult result = plugins.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.PluginsEnable,
-                ScopeModel = {
+                Scope = {
                     PluginGuid = plugins.LoadedPlugins.First().PluginGuid
                 }
             });
@@ -75,7 +75,7 @@ namespace Procon.Core.Test.Plugins {
             plugins.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.PluginsEnable,
-                ScopeModel = {
+                Scope = {
                     PluginGuid = plugins.LoadedPlugins.First().PluginGuid
                 }
             });
@@ -83,7 +83,7 @@ namespace Procon.Core.Test.Plugins {
             ICommandResult result = plugins.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.PluginsEnable,
-                ScopeModel = {
+                Scope = {
                     PluginGuid = plugins.LoadedPlugins.First().PluginGuid
                 }
             });
@@ -107,7 +107,7 @@ namespace Procon.Core.Test.Plugins {
             ICommandResult result = plugins.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.PluginsEnable,
-                ScopeModel = {
+                Scope = {
                     PluginGuid = plugins.LoadedPlugins.First().PluginGuid
                 }
             });
@@ -146,7 +146,7 @@ namespace Procon.Core.Test.Plugins {
             ICommandResult result = plugins.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.PluginsEnable,
-                ScopeModel = {
+                Scope = {
                     PluginGuid = Guid.NewGuid()
                 }
             });
@@ -173,7 +173,7 @@ namespace Procon.Core.Test.Plugins {
                     Username = "Phogue"
                 },
                 CommandType = CommandType.PluginsEnable,
-                ScopeModel = {
+                Scope = {
                     PluginGuid = plugins.LoadedPlugins.First().PluginGuid
                 }
             });

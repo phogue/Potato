@@ -106,7 +106,7 @@ namespace Procon.Core.Shared.Plugins {
 
         public override void BeginBubble(ICommand command, Action<ICommandResult> completed = null) {
             // There isn't much point in bubbling up if we just need to come back down here.
-            if (command.ScopeModel != null && command.ScopeModel.PluginGuid == this.PluginGuid) {
+            if (command.Scope != null && command.Scope.PluginGuid == this.PluginGuid) {
                 base.BeginTunnel(command, completed);
             }
             else if (this.BubbleObjects != null) {
@@ -116,7 +116,7 @@ namespace Procon.Core.Shared.Plugins {
 
         public override ICommandResult Bubble(ICommand command) {
             // There isn't much point in bubbling up if we just need to come back down here.
-            if (command.ScopeModel != null && command.ScopeModel.PluginGuid == this.PluginGuid) {
+            if (command.Scope != null && command.Scope.PluginGuid == this.PluginGuid) {
                 command.Result = this.Tunnel(command);
             }
             else if (this.BubbleObjects != null) {
@@ -137,7 +137,7 @@ namespace Procon.Core.Shared.Plugins {
         public virtual ICommandResult Action(INetworkAction action) {
             return this.Bubble(new Command() {
                 Name = action.ActionType.ToString(),
-                ScopeModel = new CommandScopeModel() {
+                Scope = new CommandScopeModel() {
                     ConnectionGuid = this.ConnectionGuid
                 },
                 Parameters = new List<ICommandParameter>() {

@@ -68,7 +68,7 @@ namespace Procon.Examples.Plugins.TextCommands {
                 // If you wanted to follow the execution of this eventually you will find yourself in Procon.Core.Connections.TextCommands.TextCommandController.RegisterTextCommand
                 this.Bubble(new Command() {
                     CommandType = CommandType.TextCommandsRegister,
-                    ScopeModel = new CommandScopeModel() {
+                    Scope = new CommandScopeModel() {
                         ConnectionGuid = this.ConnectionGuid
                     },
                     Parameters = new List<ICommandParameter>() {
@@ -96,7 +96,7 @@ namespace Procon.Examples.Plugins.TextCommands {
                 // Register a route command, which is a very specific format of text command
                 this.Bubble(new Command() {
                     CommandType = CommandType.TextCommandsRegister,
-                    ScopeModel = new CommandScopeModel() {
+                    Scope = new CommandScopeModel() {
                         ConnectionGuid = this.ConnectionGuid
                     },
                     Parameters = new List<ICommandParameter>() {

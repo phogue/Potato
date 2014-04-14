@@ -27,6 +27,16 @@ namespace Procon.Core.Shared.Models {
         /// </summary>
         InstanceConfigPassword,
         /// <summary>
+        /// (int) The maximum number of tokens allowed per account.
+        /// </summary>
+        /// <remarks>Default used is 5 if not set.</remarks>
+        SecurityMaximumAccessTokensPerAccount,
+        /// <summary>
+        /// (int) The maximum amount of time a token can go without being touched before it is considered expired.
+        /// </summary>
+        /// <remarks>Default used is 172800 (2 days) if not set.</remarks>
+        SecurityMaximumAccessTokenLastTouchedLengthSeconds,
+        /// <summary>
         /// (string) The default language to use when a user does not have 
         /// </summary>
         LocalizationDefaultLanguageCode,

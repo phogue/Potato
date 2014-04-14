@@ -13,6 +13,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
+using System;
 using NUnit.Framework;
 using Procon.Core.Security;
 using Procon.Core.Shared;
@@ -122,6 +124,42 @@ namespace Procon.Core.Test.Security.Account {
             // Validate the account was fetched successfully
             Assert.IsNotNull(account);
             Assert.AreEqual("Phogue", account.Username);
+        }
+
+        [Test]
+        public void TestByTokenId() {
+            Guid tokenId = Guid.NewGuid();
+
+            var security = new SecurityController();
+            security.Tunnel(CommandBuilder.SecurityAddGroup("GroupName").SetOrigin(CommandOrigin.Local));
+            security.Tunnel(CommandBuilder.SecurityGroupAddAccount("GroupName", "Phogue").SetOrigin(CommandOrigin.Local));
+            security.Tunnel(CommandBuilder.SecurityAccountAddPlayer("Phogue", CommonProtocolType.DiceBattlefield3, "ABCDEF").SetOrigin(CommandOrigin.Local));
+            security.Tunnel(CommandBuilder.SecurityAccountAppendAccessToken("Phogue", tokenId, "Token Hash", DateTime.Now).SetOrigin(CommandOrigin.Local));
+
+            AccountModel account = security.GetAccount(tokenId);
+
+            // Validate the account was fetched successfully
+            Assert.IsNotNull(account);
+            Assert.AreEqual("Phogue", account.Username);
+        }
+
+        /// <summary>
+        /// Tests that if no account exists with the specified access token, no account is returned.
+        /// </summary>
+        [Test]
+        public void TestByTokenIdDoesNotExist() {
+            Guid tokenId = Guid.NewGuid();
+
+            var security = new SecurityController();
+            security.Tunnel(CommandBuilder.SecurityAddGroup("GroupName").SetOrigin(CommandOrigin.Local));
+            security.Tunnel(CommandBuilder.SecurityGroupAddAccount("GroupName", "Phogue").SetOrigin(CommandOrigin.Local));
+            security.Tunnel(CommandBuilder.SecurityAccountAddPlayer("Phogue", CommonProtocolType.DiceBattlefield3, "ABCDEF").SetOrigin(CommandOrigin.Local));
+            security.Tunnel(CommandBuilder.SecurityAccountAppendAccessToken("Phogue", tokenId, "Token Hash", DateTime.Now).SetOrigin(CommandOrigin.Local));
+
+            AccountModel account = security.GetAccount(Guid.NewGuid());
+
+            // Validate the account was not found
+            Assert.IsNull(account);
         }
     }
 }

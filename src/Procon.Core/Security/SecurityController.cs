@@ -1046,7 +1046,7 @@ namespace Procon.Core.Security {
         /// <param name="command"></param>
         /// <returns></returns>
         public AccountModel GetAccount(ICommand command) {
-            return this.GetAccount(command.Authentication.Username) ?? this.GetAccount(command.Authentication.GameType, command.Authentication.Uid);
+            return this.GetAccount(command.Authentication.Username) ?? this.GetAccount(command.Authentication.TokenId) ?? this.GetAccount(command.Authentication.GameType, command.Authentication.Uid);
         }
 
         /// <summary>
@@ -1067,6 +1067,14 @@ namespace Procon.Core.Security {
         public AccountModel GetAccount(String username) {
             return this.Groups.SelectMany(group => group.Accounts)
                               .FirstOrDefault(account => String.Compare(account.Username, username, StringComparison.OrdinalIgnoreCase) == 0);
+        }
+
+        /// <summary>
+        /// Retrieves an account who has an access token matching the guid specified.
+        /// </summary>
+        public AccountModel GetAccount(Guid tokenId) {
+            return this.Groups.SelectMany(group => group.Accounts)
+                              .FirstOrDefault(account => account.AccessTokens.Any(accessToken => accessToken.Id == tokenId));
         }
 
         #region Group

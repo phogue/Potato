@@ -14,6 +14,7 @@
 // limitations under the License.
 #endregion
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using Potato.Core.Shared;
@@ -31,18 +32,18 @@ namespace Potato.Core.Variables {
         /// Anything in this list is volatile and will not be saved on
         /// exit.
         /// </summary>
-        public List<VariableModel> VolatileVariables { get; set; }
-
+        public ConcurrentDictionary<String, VariableModel> VolatileVariables { get; set; }
+        
         /// <summary>
         /// Anything in this list will be saved to the config
         /// </summary>
-        public List<VariableModel> ArchiveVariables { get; set; }
+        public ConcurrentDictionary<String, VariableModel> ArchiveVariables { get; set; }
 
         /// <summary>
         /// Anything in this list will be saved to the config, but saved as a volatile set. The variable
         /// value will only last until the instance is restarted and the config consumed.
         /// </summary>
-        public List<VariableModel> FlashVariables { get; set; }
+        public ConcurrentDictionary<String, VariableModel> FlashVariables { get; set; }
 
         public SharedReferences Shared { get; private set; }
 
@@ -51,9 +52,9 @@ namespace Potato.Core.Variables {
         /// </summary>
         public VariableController() : base() {
             this.Shared = new SharedReferences();
-            this.VolatileVariables = new List<VariableModel>();
-            this.ArchiveVariables = new List<VariableModel>();
-            this.FlashVariables = new List<VariableModel>();
+            this.VolatileVariables = new ConcurrentDictionary<String, VariableModel>();
+            this.ArchiveVariables = new ConcurrentDictionary<String, VariableModel>();
+            this.FlashVariables = new ConcurrentDictionary<String, VariableModel>();
 
             this.CommandDispatchers.AddRange(new List<ICommandDispatch>() {
                 new CommandDispatch() {
@@ -196,12 +197,12 @@ namespace Potato.Core.Variables {
         /// Information about this object is handled via it's parent interface.
         /// </summary>
         public override void Dispose() {
-            foreach (VariableModel variable in this.VolatileVariables) {
-                variable.Dispose();
+            foreach (var variable in this.VolatileVariables) {
+                variable.Value.Dispose();
             }
 
-            foreach (VariableModel archiveVariable in this.ArchiveVariables) {
-                archiveVariable.Dispose();
+            foreach (var archiveVariable in this.ArchiveVariables) {
+                archiveVariable.Value.Dispose();
             }
 
             this.VolatileVariables.Clear();
@@ -215,12 +216,13 @@ namespace Potato.Core.Variables {
         /// Does nothing.  Information about this object is handled via it's parent interface.
         /// </summary>
         public override void WriteConfig(IConfig config, String password = null) {
-            foreach (VariableModel archiveVariable in this.ArchiveVariables) {
-                config.Append(CommandBuilder.VariablesSetA(archiveVariable.Name, archiveVariable.ToList<String>()).ToConfigCommand());
+            // Use the .Value.Name to maintain the case
+            foreach (var archiveVariable in this.ArchiveVariables) {
+                config.Append(CommandBuilder.VariablesSetA(archiveVariable.Value.Name, archiveVariable.Value.ToList<String>()).ToConfigCommand());
             }
 
-            foreach (VariableModel flashVariable in this.FlashVariables) {
-                config.Append(CommandBuilder.VariablesSet(flashVariable.Name, flashVariable.ToList<String>()).ToConfigCommand());
+            foreach (var flashVariable in this.FlashVariables) {
+                config.Append(CommandBuilder.VariablesSet(flashVariable.Value.Name, flashVariable.Value.ToList<String>()).ToConfigCommand());
             }
         }
 
@@ -234,17 +236,9 @@ namespace Potato.Core.Variables {
         /// <param name="name">The name of the variable object</param>
         /// <returns>The variable, if available. False otherwise.</returns>
         public VariableModel Variable(String name) {
-            VariableModel variable = this.VolatileVariables.Find(x => String.Compare(x.Name, name, StringComparison.InvariantCultureIgnoreCase) == 0);
-
-            if (variable == null) {
-                variable = new VariableModel() {
-                    Name = name
-                };
-
-                this.VolatileVariables.Add(variable);
-            }
-
-            return variable;
+            return this.VolatileVariables.GetOrAdd(name.ToLowerInvariant(), s => new VariableModel() {
+                Name = name
+            });
         }
 
         /// <summary>
@@ -424,15 +418,12 @@ namespace Potato.Core.Variables {
                     // All good.
                     var variable = volatileSetResult.Now.Variables.First();
 
-                    if (this.ArchiveVariables.Find(x => x.Name == variable.Name) == null) {
-                        this.ArchiveVariables.Add(variable);
-                    }
-                    else {
-                        this.ArchiveVariables.Find(x => x.Name == variable.Name).Value = variable.Value;
-                    }
+                    // Upsert he archive variable
+                    this.ArchiveVariables.AddOrUpdate(variable.Name.ToLowerInvariant(), s => variable, (s, model) => variable);
 
-                    // Remove the archived value
-                    this.FlashVariables.RemoveAll(v => v.Name == variable.Name);
+                    // Remove the flash value (so archive + flash are not being saved)
+                    VariableModel removed;
+                    this.FlashVariables.TryRemove(variable.Name.ToLowerInvariant(), out removed);
 
                     result = new CommandResult() {
                         Success = true,
@@ -479,15 +470,11 @@ namespace Potato.Core.Variables {
                     // All good.
                     var variable = volatileSetResult.Now.Variables.First();
 
-                    if (this.FlashVariables.Find(v => v.Name == variable.Name) == null) {
-                        this.FlashVariables.Add(variable);
-                    }
-                    else {
-                        this.FlashVariables.Find(v => v.Name == variable.Name).Value = variable.Value;
-                    }
+                    this.FlashVariables.AddOrUpdate(variable.Name.ToLowerInvariant(), s => variable, (s, model) => variable);
 
-                    // Remove the archived value
-                    this.ArchiveVariables.RemoveAll(v => v.Name == variable.Name);
+                    // Remove the archived value (so archive + flash are not being saved)
+                    VariableModel removed;
+                    this.ArchiveVariables.TryRemove(variable.Name.ToLowerInvariant(), out removed);
 
                     result = new CommandResult() {
                         Success = true,

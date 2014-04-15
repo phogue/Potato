@@ -50,7 +50,7 @@ namespace Potato.Core.Test.Variables {
                 PropertyTwo = "two"
             });
 
-            var value = variables.ArchiveVariables.First(v => v.Name == "key").ToType<VariableComplexValue>();
+            var value = variables.ArchiveVariables.Values.First(v => v.Name == "key").ToType<VariableComplexValue>();
 
             Assert.AreEqual(1, value.PropertyOne);
             Assert.AreEqual("two", value.PropertyTwo);

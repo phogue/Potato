@@ -85,7 +85,7 @@ namespace Potato.Core.Test.Variables {
                 })
             });
 
-            VariableModel volatileVariable = variables.VolatileVariables.First();
+            VariableModel volatileVariable = variables.VolatileVariables.Values.First();
 
             variables.Dispose();
 
@@ -105,13 +105,13 @@ namespace Potato.Core.Test.Variables {
             var variables = new VariableController();
 
             // Validate the VariableModel does not exist first.
-            Assert.IsNull(variables.VolatileVariables.Find(v => v.Name == CommonVariableNames.TextCommandPrivatePrefix.ToString()));
+            Assert.IsNull(variables.VolatileVariables.Values.FirstOrDefault(v => v.Name == CommonVariableNames.TextCommandPrivatePrefix.ToString()));
 
             // Fetch the VariableModel. This should create and add the VariableModel.
             variables.Variable(CommonVariableNames.TextCommandPrivatePrefix);
 
             // Now validate that the VariableModel has been added.
-            Assert.IsNotNull(variables.VolatileVariables.Find(v => v.Name == CommonVariableNames.TextCommandPrivatePrefix.ToString()));
+            Assert.IsNotNull(variables.VolatileVariables.Values.First(v => v.Name == CommonVariableNames.TextCommandPrivatePrefix.ToString()));
         }
 
         /// <summary>
@@ -125,13 +125,13 @@ namespace Potato.Core.Test.Variables {
             var variables = new VariableController();
 
             // Validate the VariableModel does not exist first.
-            Assert.IsNull(variables.VolatileVariables.Find(v => v.Name == key));
+            Assert.IsNull(variables.VolatileVariables.Values.FirstOrDefault(v => v.Name == key));
 
             // Fetch the VariableModel. This should create and add the VariableModel.
             variables.Variable(key);
 
             // Now validate that the VariableModel has been added.
-            Assert.IsNotNull(variables.VolatileVariables.Find(v => v.Name == key));
+            Assert.IsNotNull(variables.VolatileVariables.Values.First(v => v.Name == key));
         }
 
         /// <summary>
@@ -188,9 +188,9 @@ namespace Potato.Core.Test.Variables {
             loadConfig.Load(ConfigFileInfo);
             loadVariables.Execute(loadConfig);
 
-            Assert.AreEqual("this is a string", loadVariables.ArchiveVariables.First(v => v.Name == "KeyToWriteString").ToType<String>());
-            Assert.AreEqual(1, loadVariables.ArchiveVariables.First(v => v.Name == "KeyToWriteInteger").ToType<int>());
-            Assert.AreEqual(10, loadVariables.ArchiveVariables.First(v => v.Name == "MaximumProtocolConnections").ToType<int>());
+            Assert.AreEqual("this is a string", loadVariables.ArchiveVariables.Values.First(v => v.Name == "KeyToWriteString").ToType<String>());
+            Assert.AreEqual(1, loadVariables.ArchiveVariables.Values.First(v => v.Name == "KeyToWriteInteger").ToType<int>());
+            Assert.AreEqual(10, loadVariables.ArchiveVariables.Values.First(v => v.Name == "MaximumProtocolConnections").ToType<int>());
         }
 
         /// <summary>

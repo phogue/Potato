@@ -889,7 +889,7 @@ namespace Potato.Core {
                         Repositories = new List<RepositoryModel>(packages.Now.Repositories ?? new List<RepositoryModel>()),
                         Groups = new List<Core.Shared.Models.GroupModel>(this.Shared.Security.Groups),
                         Languages = this.Shared.Languages.LoadedLanguageFiles.Select(language => language.LanguageModel).ToList(),
-                        Variables = new List<VariableModel>(this.Shared.Variables.VolatileVariables)
+                        Variables = new List<VariableModel>(this.Shared.Variables.VolatileVariables.Values)
                     }
                 };
             }

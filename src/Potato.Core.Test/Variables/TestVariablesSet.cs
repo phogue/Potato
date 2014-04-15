@@ -123,14 +123,12 @@ namespace Potato.Core.Test.Variables {
         /// </summary>
         [Test]
         public void TestOverrideExisting() {
-            var variables = new VariableController() {
-                VolatileVariables = new List<VariableModel>() {
-                    new VariableModel() {
-                        Name = "key",
-                        Value = "initial value"
-                    }
-                }
-            };
+            var variables = new VariableController();
+
+            variables.VolatileVariables.TryAdd("key", new VariableModel() {
+                Name = "key",
+                Value = "initial value"
+            });
 
             // Set the value of a empty key
             ICommandResult result = variables.Tunnel(new Command() {
@@ -153,15 +151,13 @@ namespace Potato.Core.Test.Variables {
         /// </summary>
         [Test]
         public void TestReadOnly() {
-            var variables = new VariableController() {
-                VolatileVariables = new List<VariableModel>() {
-                    new VariableModel() {
-                        Name = "key",
-                        Value = "value",
-                        Readonly = true
-                    }
-                }
-            };
+            var variables = new VariableController();
+
+            variables.VolatileVariables.TryAdd("key", new VariableModel() {
+                Name = "key",
+                Value = "value",
+                Readonly = true
+            });
 
             // Set the value of a empty key
             ICommandResult result = variables.Tunnel(new Command() {

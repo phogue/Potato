@@ -43,7 +43,7 @@ namespace Potato.Core.Test.Variables {
             Assert.IsTrue(result.Success);
             Assert.AreEqual(CommandResultType.Success, result.CommandResultType);
             Assert.AreEqual("value", variables.Get("key", String.Empty));
-            Assert.AreEqual("value", variables.FlashVariables.First(v => v.Name == "key").ToType<String>());
+            Assert.AreEqual("value", variables.FlashVariables.Values.First(v => v.Name == "key").ToType<String>());
         }
 
 
@@ -87,7 +87,7 @@ namespace Potato.Core.Test.Variables {
 
             // Validate that the command was successful and the key was set to the passed value.
             Assert.AreEqual("value", variables.Get(CommonVariableNames.MaximumProtocolConnections, String.Empty));
-            Assert.AreEqual("value", variables.FlashVariables.First(v => v.Name == CommonVariableNames.MaximumProtocolConnections.ToString()).ToType<String>());
+            Assert.AreEqual("value", variables.FlashVariables.Values.First(v => v.Name == CommonVariableNames.MaximumProtocolConnections.ToString()).ToType<String>());
         }
 
         /// <summary>
@@ -104,7 +104,7 @@ namespace Potato.Core.Test.Variables {
             Assert.IsTrue(result.Success);
             Assert.AreEqual(CommandResultType.Success, result.CommandResultType);
             Assert.AreEqual("value", variables.Get("key", String.Empty));
-            Assert.AreEqual("value", variables.FlashVariables.First(v => v.Name == "key").ToType<String>());
+            Assert.AreEqual("value", variables.FlashVariables.Values.First(v => v.Name == "key").ToType<String>());
 
             result = variables.Tunnel(CommandBuilder.VariablesSetF("key", "changed value").SetOrigin(CommandOrigin.Local));
 
@@ -112,7 +112,7 @@ namespace Potato.Core.Test.Variables {
             Assert.IsTrue(result.Success);
             Assert.AreEqual(CommandResultType.Success, result.CommandResultType);
             Assert.AreEqual("changed value", variables.Get("key", String.Empty));
-            Assert.AreEqual("changed value", variables.FlashVariables.First(v => v.Name == "key").ToType<String>());
+            Assert.AreEqual("changed value", variables.FlashVariables.Values.First(v => v.Name == "key").ToType<String>());
         }
 
         /// <summary>

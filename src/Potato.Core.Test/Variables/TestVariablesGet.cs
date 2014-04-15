@@ -16,6 +16,7 @@
 #region
 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
@@ -45,16 +46,14 @@ namespace Potato.Core.Test.Variables {
         /// </summary>
         [Test]
         public void TestEmptyValueWithDefault() {
-            var variables = new VariableController() {
-                VolatileVariables = new List<VariableModel>() {
-                    new VariableModel() {
-                        Name = "key",
-                        Value = ""
-                    }
-                }
-            };
+            var variables = new VariableController();
 
-            Assert.AreEqual(10, variables.VolatileVariables.First().ToType(10));
+            variables.VolatileVariables.TryAdd("key", new VariableModel() {
+                Name = "key",
+                Value = ""
+            });
+
+            Assert.AreEqual(10, variables.VolatileVariables.Values.First().ToType(10));
         }
 
         /// <summary>
@@ -62,14 +61,12 @@ namespace Potato.Core.Test.Variables {
         /// </summary>
         [Test]
         public void TestValue() {
-            var variables = new VariableController() {
-                VolatileVariables = new List<VariableModel>() {
-                    new VariableModel() {
-                        Name = "key",
-                        Value = "value"
-                    }
-                }
-            };
+            var variables = new VariableController();
+
+            variables.VolatileVariables.TryAdd("key", new VariableModel() {
+                Name = "key",
+                Value = "value"
+            });
 
             ICommandResult result = variables.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
@@ -89,14 +86,12 @@ namespace Potato.Core.Test.Variables {
         /// </summary>
         [Test]
         public void TestValueCommonName() {
-            var variables = new VariableController() {
-                VolatileVariables = new List<VariableModel>() {
-                    new VariableModel() {
-                        Name = CommonVariableNames.MaximumProtocolConnections.ToString(),
-                        Value = "value"
-                    }
-                }
-            };
+            var variables = new VariableController();
+
+            variables.VolatileVariables.TryAdd(CommonVariableNames.MaximumProtocolConnections.ToString().ToLowerInvariant(), new VariableModel() {
+                Name = CommonVariableNames.MaximumProtocolConnections.ToString(),
+                Value = "value"
+            });
 
             var value = variables.Tunnel(CommandBuilder.VariablesGet(CommonVariableNames.MaximumProtocolConnections).SetOrigin(CommandOrigin.Local)).Now.Variables.First().ToType<String>();
 
@@ -108,17 +103,15 @@ namespace Potato.Core.Test.Variables {
         /// </summary>
         [Test]
         public void TestValueComplexValue() {
-            var variables = new VariableController() {
-                VolatileVariables = new List<VariableModel>() {
-                    new VariableModel() {
-                        Name = "key",
-                        Value = new VariableComplexValue() {
-                            PropertyOne = 1,
-                            PropertyTwo = "two"
-                        }
-                    }
+            var variables = new VariableController();
+
+            variables.VolatileVariables.TryAdd("key", new VariableModel() {
+                Name = "key",
+                Value = new VariableComplexValue() {
+                    PropertyOne = 1,
+                    PropertyTwo = "two"
                 }
-            };
+            });
 
             VariableComplexValue value = variables.Get(new Command() {
                 Origin = CommandOrigin.Local
@@ -133,14 +126,15 @@ namespace Potato.Core.Test.Variables {
         /// </summary>
         [Test]
         public void TestValueEmptyKey() {
-            var variables = new VariableController() {
-                VolatileVariables = new List<VariableModel>() {
-                    new VariableModel() {
-                        Name = "key",
-                        Value = "value"
-                    }
+            var variables = new VariableController();
+
+            variables.VolatileVariables.TryAdd("key", new VariableModel() {
+                Name = "key",
+                Value = new VariableModel() {
+                    Name = "key",
+                    Value = "value"
                 }
-            };
+            });
 
             ICommandResult result = variables.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
@@ -162,14 +156,16 @@ namespace Potato.Core.Test.Variables {
             var variables = new VariableController() {
                 Shared = {
                     Security = new SecurityController().Execute() as SecurityController,
-                },
-                VolatileVariables = new List<VariableModel>() {
-                    new VariableModel() {
-                        Name = "key",
-                        Value = "value"
-                    }
                 }
             };
+
+            variables.VolatileVariables.TryAdd("key", new VariableModel() {
+                Name = "key",
+                Value = new VariableModel() {
+                    Name = "key",
+                    Value = "value"
+                }
+            });
 
             ICommandResult result = variables.Tunnel(new Command() {
                 CommandType = CommandType.VariablesGet,
@@ -192,14 +188,15 @@ namespace Potato.Core.Test.Variables {
         /// </summary>
         [Test]
         public void TestInvalidTypeCastNoDefault() {
-            var variables = new VariableController() {
-                VolatileVariables = new List<VariableModel>() {
-                    new VariableModel() {
-                        Name = "key",
-                        Value = "10!"
-                    }
+            var variables = new VariableController();
+
+            variables.VolatileVariables.TryAdd("key", new VariableModel() {
+                Name = "key",
+                Value = new VariableModel() {
+                    Name = "key",
+                    Value = "10!"
                 }
-            };
+            });
 
             Assert.AreNotEqual(10, variables.Get<int>("key"));
         }
@@ -209,14 +206,15 @@ namespace Potato.Core.Test.Variables {
         /// </summary>
         [Test]
         public void TestInvalidTypeCastWithDefault() {
-            var variables = new VariableController() {
-                VolatileVariables = new List<VariableModel>() {
-                    new VariableModel() {
-                        Name = "key",
-                        Value = "10!"
-                    }
+            var variables = new VariableController();
+
+            variables.VolatileVariables.TryAdd("key", new VariableModel() {
+                Name = "key",
+                Value = new VariableModel() {
+                    Name = "key",
+                    Value = "10!"
                 }
-            };
+            });
 
             Assert.AreEqual(10, variables.Get("key", 10));
         }
@@ -226,14 +224,15 @@ namespace Potato.Core.Test.Variables {
         /// </summary>
         [Test]
         public void TesValueValidTypeCast() {
-            var variables = new VariableController() {
-                VolatileVariables = new List<VariableModel>() {
-                    new VariableModel() {
-                        Name = "key",
-                        Value = "10"
-                    }
+            var variables = new VariableController();
+
+            variables.VolatileVariables.TryAdd("key", new VariableModel() {
+                Name = "key",
+                Value = new VariableModel() {
+                    Name = "key",
+                    Value = "10"
                 }
-            };
+            });
 
             Assert.AreEqual(10, variables.Get<int>("key"));
         }

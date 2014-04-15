@@ -163,3 +163,4 @@ $RECYCLE.BIN/
 !/src/Potato.Core.Test/Remote/Certificates/NoPassword.pfx
 !/src/Potato.Core.Test/Remote/Certificates/Password.pfx
 !/src/Potato.Database.Shared/Serializers/Sql
+!/src/Potato*/Packages

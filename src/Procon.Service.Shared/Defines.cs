@@ -26,9 +26,9 @@ namespace Procon.Service.Shared {
     public static class Defines {
 
         /// <summary>
-        /// The typename of the instance controller in the Procon.Core assembly.
+        /// The typename of the potato controller in the Procon.Core assembly.
         /// </summary>
-        public static readonly String TypeProconCoreInstanceController = "Procon.Core.InstanceController";
+        public static readonly String TypeProconCorePotatoController = "Procon.Core.PotatoController";
 
         // Filenames
 

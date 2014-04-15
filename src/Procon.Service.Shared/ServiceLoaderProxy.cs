@@ -42,7 +42,7 @@ namespace Procon.Service.Shared {
                     Defines.PackageMyrconProconCoreLibNet40.FullName,
                     Defines.PackageMyrconProconSharedLibNet40.FullName
                 }).First(),
-                Defines.TypeProconCoreInstanceController,
+                Defines.TypeProconCorePotatoController,
                 false,
                 BindingFlags.Instance | BindingFlags.Public | BindingFlags.CreateInstance,
                 null,

@@ -85,7 +85,7 @@ namespace Procon.Core.Connections {
         /// <summary>
         /// The instance of procon that owns this connection.
         /// </summary>
-        public InstanceController Instance { get; set; }
+        public PotatoController Instance { get; set; }
 
         public SharedReferences Shared { get; private set; }
 

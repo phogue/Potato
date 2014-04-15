@@ -33,7 +33,7 @@ namespace Procon.Core.Test.CoreInstance {
         /// </summary>
         [Test]
         public void TestResultInsufficientPermissions() {
-            InstanceController instance = new InstanceController();
+            PotatoController instance = new PotatoController();
 
             ICommandResult result = instance.Tunnel(CommandBuilder.InstanceServiceRestart().SetOrigin(CommandOrigin.Remote).SetAuthentication(new CommandAuthenticationModel() {
                 Username = "Phogue"
@@ -50,7 +50,7 @@ namespace Procon.Core.Test.CoreInstance {
         /// </summary>
         [Test]
         public void TestResultSuccess() {
-            InstanceController instance = new InstanceController();
+            PotatoController instance = new PotatoController();
 
             ICommandResult result = instance.Tunnel(CommandBuilder.InstanceServiceRestart().SetOrigin(CommandOrigin.Local));
 
@@ -65,7 +65,7 @@ namespace Procon.Core.Test.CoreInstance {
         /// </summary>
         [Test]
         public void TestMessageLogged() {
-            InstanceController instance = new InstanceController();
+            PotatoController instance = new PotatoController();
 
             instance.Tunnel(CommandBuilder.InstanceServiceRestart().SetOrigin(CommandOrigin.Local));
 
@@ -81,7 +81,7 @@ namespace Procon.Core.Test.CoreInstance {
         [Test]
         public void TestEventLogged() {
             EventsController events = new EventsController();
-            InstanceController instance = new InstanceController {
+            PotatoController instance = new PotatoController {
                 Shared = {
                     Events = events
                 }

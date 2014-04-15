@@ -36,7 +36,7 @@ namespace Procon.Core {
     /// <summary>
     /// The core controller of Procon, an instance of Procon.
     /// </summary>
-    public class InstanceController : CoreController, ISharedReferenceAccess, IService {
+    public class PotatoController : CoreController, ISharedReferenceAccess, IService {
         /// <summary>
         /// List of game connections
         /// </summary>
@@ -89,7 +89,7 @@ namespace Procon.Core {
         /// <summary>
         /// Creates a new instance of Procon, setting up command server, packages and tasks
         /// </summary>
-        public InstanceController() : base() {
+        public PotatoController() : base() {
             this.Shared = new SharedReferences();
 
             this.Connections = new List<IConnectionController>();
@@ -390,7 +390,7 @@ namespace Procon.Core {
         /// </summary>
         public void WriteConfig() {
             IConfig config = new Config();
-            config.Create<InstanceController>();
+            config.Create<PotatoController>();
             this.WriteConfig(config, this.Shared.Variables.Get<String>(CommonVariableNames.InstanceConfigPassword));
 
             config.Save(new FileInfo(Path.Combine(Defines.ConfigsDirectory.FullName, this.GetType().Namespace + ".json")));

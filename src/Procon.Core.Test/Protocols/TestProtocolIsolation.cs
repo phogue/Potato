@@ -33,7 +33,7 @@ namespace Procon.Core.Test.Protocols {
         /// </summary>
         [Test]
         public void TestIsolationSuccessOnLoad() {
-            var instance = (InstanceController)new InstanceController().Execute();
+            var instance = (PotatoController)new PotatoController().Execute();
 
             var meta = ((ProtocolController)instance.Protocols).Protocols.First(m => m.Name == "Myrcon.Protocols.Test");
 

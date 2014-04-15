@@ -41,7 +41,7 @@ namespace Procon.Core.Test.CoreInstance {
         /// </summary>
         [Test]
         public void TestInstanceRemoveConnectionByGuidSuccess() {
-            var instance = (InstanceController)new InstanceController().Execute();
+            var instance = (PotatoController)new PotatoController().Execute();
 
             instance.Connections.Add(new ConnectionController() {
                 ConnectionModel = new ConnectionModel() {
@@ -73,7 +73,7 @@ namespace Procon.Core.Test.CoreInstance {
         /// </summary>
         [Test]
         public void TestInstanceRemoveConnectionDoesNotExist() {
-            var instance = (InstanceController)new InstanceController().Execute();
+            var instance = (PotatoController)new PotatoController().Execute();
 
             ICommandResult result = instance.Tunnel(CommandBuilder.InstanceRemoveConnection("Myrcon", "MockProtocol", "1.1.1.1", 27516).SetOrigin(CommandOrigin.Local));
 
@@ -89,7 +89,7 @@ namespace Procon.Core.Test.CoreInstance {
         /// </summary>
         [Test]
         public void TestInstanceRemoveConnectionInsufficientPermissions() {
-            var instance = (InstanceController)new InstanceController().Execute();
+            var instance = (PotatoController)new PotatoController().Execute();
 
             ICommandResult result = instance.Tunnel(CommandBuilder.InstanceRemoveConnection("Myrcon", "MockProtocol", "1.1.1.1", 27516).SetOrigin(CommandOrigin.Remote).SetAuthentication(new CommandAuthenticationModel() {
                 Username = "Phogue"
@@ -107,7 +107,7 @@ namespace Procon.Core.Test.CoreInstance {
         /// </summary>
         [Test]
         public void TestInstanceRemoveConnectionByDetailsSuccess() {
-            var instance = (InstanceController)new InstanceController().Execute();
+            var instance = (PotatoController)new PotatoController().Execute();
 
             instance.Connections.Add(new ConnectionController() {
                 ConnectionModel = new ConnectionModel() {

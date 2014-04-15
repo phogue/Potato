@@ -57,7 +57,7 @@ namespace Procon.Core.Test.CoreInstance {
         public void TestInstanceCommandScopeNoScope() {
             var variables = new VariableController();
 
-            var instance = (InstanceController)new InstanceController() {
+            var instance = (PotatoController)new PotatoController() {
                 Shared = {
                     Variables = variables,
                     Security = new SecurityController(),
@@ -118,7 +118,7 @@ namespace Procon.Core.Test.CoreInstance {
         public void TestInstanceCommandScopeWithConnectionScope() {
             var variables = new VariableController();
 
-            var instance = (InstanceController)new InstanceController() {
+            var instance = (PotatoController)new PotatoController() {
                 Shared = {
                     Variables = variables,
                     Security = new SecurityController(),
@@ -180,7 +180,7 @@ namespace Procon.Core.Test.CoreInstance {
         /// <remarks>We test individual controllers configs in other unit tests.</remarks>
         [Test]
         public void TestInstanceConfigWritten() {
-            var instance = (InstanceController)new InstanceController() {
+            var instance = (PotatoController)new PotatoController() {
                 Shared = {
                     Variables = new VariableController().Execute() as VariableController,
                     Security = new SecurityController().Execute() as SecurityController,
@@ -210,7 +210,7 @@ namespace Procon.Core.Test.CoreInstance {
             var loadConfig = new Config();
             loadConfig.Load(ConfigFileInfo);
             
-            var configCommand = loadConfig.RootOf<InstanceController>().Children<JObject>().Select(item => item.ToObject<IConfigCommand>(JsonSerialization.Minimal)).ToList().Last();
+            var configCommand = loadConfig.RootOf<PotatoController>().Children<JObject>().Select(item => item.ToObject<IConfigCommand>(JsonSerialization.Minimal)).ToList().Last();
 
             configCommand.Decrypt("InstanceConfigurationPassword");
 
@@ -233,7 +233,7 @@ namespace Procon.Core.Test.CoreInstance {
         public void TestInstanceDispose() {
             var requestWait = new AutoResetEvent(false);
 
-            var instance = (InstanceController)new InstanceController() {
+            var instance = (PotatoController)new PotatoController() {
                 Shared = {
                     Variables = new VariableController(),
                     Security = new SecurityController(),

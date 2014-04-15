@@ -45,7 +45,7 @@ namespace Procon.Core.Test.CoreInstance {
         /// </summary>
         [Test]
         public void TestInstanceAddConnectionDuplicate() {
-            var instance = (InstanceController)new InstanceController().Execute();
+            var instance = (PotatoController)new PotatoController().Execute();
 
             instance.Connections.Add(new ConnectionController() {
                 ConnectionModel = new ConnectionModel() {
@@ -87,7 +87,7 @@ namespace Procon.Core.Test.CoreInstance {
         [Test]
         public void TestInstanceAddConnectionExceedMaximumConnectionLimit() {
             var variables = new VariableController();
-            var instance = (InstanceController)new InstanceController() {
+            var instance = (PotatoController)new PotatoController() {
                 Shared = {
                     Variables = variables
                 }
@@ -112,7 +112,7 @@ namespace Procon.Core.Test.CoreInstance {
         /// </summary>
         [Test]
         public void TestInstanceAddConnectionProtocolTypeDoesNotExist() {
-            var instance = (InstanceController)new InstanceController().Execute();
+            var instance = (PotatoController)new PotatoController().Execute();
 
             ICommandResult result = instance.Tunnel(CommandBuilder.InstanceAddConnection("Myrcon", "la la la", "1.1.1.1", 27516, "password", "").SetOrigin(CommandOrigin.Local));
 
@@ -128,7 +128,7 @@ namespace Procon.Core.Test.CoreInstance {
         /// </summary>
         [Test]
         public void TestInstanceAddConnectionInsufficientPermissions() {
-            var instance = (InstanceController)new InstanceController().Execute();
+            var instance = (PotatoController)new PotatoController().Execute();
 
             ICommandResult result = instance.Tunnel(CommandBuilder.InstanceAddConnection("Myrcon", "MockProtocol", "1.1.1.1", 27516, "password", "").SetOrigin(CommandOrigin.Remote).SetAuthentication(new CommandAuthenticationModel() {
                 Username = "Phogue"
@@ -146,7 +146,7 @@ namespace Procon.Core.Test.CoreInstance {
         /// </summary>
         [Test]
         public void TestInstanceAddConnectionSuccess() {
-            var instance = (InstanceController)new InstanceController().Execute();
+            var instance = (PotatoController)new PotatoController().Execute();
 
             ((ProtocolController)instance.Protocols).Protocols.Add(new ProtocolAssemblyMetadata() {
                 Directory = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory),

@@ -171,7 +171,10 @@ namespace Potato.Core.Events {
             return base.Execute();
         }
 
-        public void MasterEvents_EventLogged(object sender, IGenericEvent e) {
+        /// <summary>
+        /// Called whenever an event is logged.
+        /// </summary>
+        protected void MasterEvents_EventLogged(object sender, IGenericEvent e) {
             foreach (var endPoint in this.EndPoints) {
                 endPoint.Value.Append(e);
             }

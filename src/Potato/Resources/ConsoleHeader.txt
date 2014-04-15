@@ -33,7 +33,7 @@
 
 
    Programmer: Geoff "Phogue" Green
-               @Potato
+               @procon
                http://au.linkedin.com/in/phogue/
 
    Copyright 2014 Myrcon Pty. Ltd.

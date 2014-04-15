@@ -13,11 +13,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Threading;
 using NUnit.Framework;
 using Newtonsoft.Json.Linq;
@@ -29,15 +29,13 @@ using Procon.Core.Security;
 using Procon.Core.Shared;
 using Procon.Core.Shared.Models;
 using Procon.Core.Shared.Serialization;
-using Procon.Core.Test.Mocks.Protocols;
 using Procon.Core.Variables;
 using Procon.Net.Shared;
-using Procon.Net.Shared.Protocols;
 using Procon.Service.Shared;
 
-namespace Procon.Core.Test.CoreInstance {
+namespace Procon.Core.Test.TestPotato {
     [TestFixture]
-    public class TestInstance {
+    public class TestPotato {
         [SetUp]
         public void Initialize() {
             SharedReferences.Setup();
@@ -54,7 +52,7 @@ namespace Procon.Core.Test.CoreInstance {
         ///     executable objects in the instance. The VariableModel should be set.
         /// </summary>
         [Test]
-        public void TestInstanceCommandScopeNoScope() {
+        public void TestPotatoCommandScopeNoScope() {
             var variables = new VariableController();
 
             var instance = (PotatoController)new PotatoController() {
@@ -80,7 +78,7 @@ namespace Procon.Core.Test.CoreInstance {
 
             instance.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
-                CommandType = CommandType.InstanceAddConnection,
+                CommandType = CommandType.PotatoAddConnection,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     "Myrcon",
                     "MockProtocol",
@@ -115,7 +113,7 @@ namespace Procon.Core.Test.CoreInstance {
         ///     bypass the instance executable objects and execute only on the connection.
         /// </summary>
         [Test]
-        public void TestInstanceCommandScopeWithConnectionScope() {
+        public void TestPotatoCommandScopeWithConnectionScope() {
             var variables = new VariableController();
 
             var instance = (PotatoController)new PotatoController() {
@@ -141,7 +139,7 @@ namespace Procon.Core.Test.CoreInstance {
 
             instance.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
-                CommandType = CommandType.InstanceAddConnection,
+                CommandType = CommandType.PotatoAddConnection,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     "Myrcon",
                     "MockProtocol",
@@ -179,7 +177,7 @@ namespace Procon.Core.Test.CoreInstance {
         /// </summary>
         /// <remarks>We test individual controllers configs in other unit tests.</remarks>
         [Test]
-        public void TestInstanceConfigWritten() {
+        public void TestPotatoConfigWritten() {
             var instance = (PotatoController)new PotatoController() {
                 Shared = {
                     Variables = new VariableController().Execute() as VariableController,
@@ -189,7 +187,7 @@ namespace Procon.Core.Test.CoreInstance {
                 }
             }.Execute();
 
-            instance.Shared.Variables.Tunnel(CommandBuilder.VariablesSet(CommonVariableNames.InstanceConfigPassword, "InstanceConfigurationPassword").SetOrigin(CommandOrigin.Local));
+            instance.Shared.Variables.Tunnel(CommandBuilder.VariablesSet(CommonVariableNames.PotatoConfigPassword, "PotatoConfigurationPassword").SetOrigin(CommandOrigin.Local));
 
             instance.Connections.Add(new ConnectionController() {
                 ConnectionModel = new ConnectionModel() {
@@ -212,9 +210,9 @@ namespace Procon.Core.Test.CoreInstance {
             
             var configCommand = loadConfig.RootOf<PotatoController>().Children<JObject>().Select(item => item.ToObject<IConfigCommand>(JsonSerialization.Minimal)).ToList().Last();
 
-            configCommand.Decrypt("InstanceConfigurationPassword");
+            configCommand.Decrypt("PotatoConfigurationPassword");
 
-            Assert.AreEqual("InstanceAddConnection", configCommand.Command.Name);
+            Assert.AreEqual("PotatoAddConnection", configCommand.Command.Name);
             Assert.AreEqual("Myrcon", configCommand.Command.Parameters[0].First<String>());
             Assert.AreEqual("MockProtocol", configCommand.Command.Parameters[1].First<String>());
             Assert.AreEqual("1.1.1.1", configCommand.Command.Parameters[2].First<String>());
@@ -230,7 +228,7 @@ namespace Procon.Core.Test.CoreInstance {
         /// </summary>
         /// <remarks>The controllers have their own individual dispose methods that are tested.</remarks>
         [Test]
-        public void TestInstanceDispose() {
+        public void TestPotatoDispose() {
             var requestWait = new AutoResetEvent(false);
 
             var instance = (PotatoController)new PotatoController() {
@@ -245,7 +243,7 @@ namespace Procon.Core.Test.CoreInstance {
             // Add a single connection, just so we can validate that it has been removed.
             instance.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
-                CommandType = CommandType.InstanceAddConnection,
+                CommandType = CommandType.PotatoAddConnection,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
                     "MockProtocol",
                     "1.1.1.1",

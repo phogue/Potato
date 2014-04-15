@@ -13,6 +13,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -25,9 +26,9 @@ using Procon.Core.Variables;
 using Procon.Net.Shared;
 using Procon.Service.Shared;
 
-namespace Procon.Core.Test.CoreInstance {
+namespace Procon.Core.Test.TestPotato {
     [TestFixture]
-    public class TestCommandInstanceAddConnection {
+    public class TestPotatoAddConnection {
         [SetUp]
         public void Initialize() {
             SharedReferences.Setup();
@@ -44,7 +45,7 @@ namespace Procon.Core.Test.CoreInstance {
         ///     Tests that we cannot add the same connection twice.
         /// </summary>
         [Test]
-        public void TestInstanceAddConnectionDuplicate() {
+        public void TestPotatoAddConnectionDuplicate() {
             var instance = (PotatoController)new PotatoController().Execute();
 
             instance.Connections.Add(new ConnectionController() {
@@ -72,7 +73,7 @@ namespace Procon.Core.Test.CoreInstance {
             });
 
             // Now readd the same connection we just added.
-            ICommandResult result = instance.Tunnel(CommandBuilder.InstanceAddConnection("Myrcon", "MockProtocol", "1.1.1.1", 27516, "password", "").SetOrigin(CommandOrigin.Local));
+            ICommandResult result = instance.Tunnel(CommandBuilder.PotatoAddConnection("Myrcon", "MockProtocol", "1.1.1.1", 27516, "password", "").SetOrigin(CommandOrigin.Local));
 
             Assert.IsFalse(result.Success);
             Assert.AreEqual(CommandResultType.AlreadyExists, result.CommandResultType);
@@ -85,7 +86,7 @@ namespace Procon.Core.Test.CoreInstance {
         ///     imposed by a VariableModel.
         /// </summary>
         [Test]
-        public void TestInstanceAddConnectionExceedMaximumConnectionLimit() {
+        public void TestPotatoAddConnectionExceedMaximumConnectionLimit() {
             var variables = new VariableController();
             var instance = (PotatoController)new PotatoController() {
                 Shared = {
@@ -98,7 +99,7 @@ namespace Procon.Core.Test.CoreInstance {
                 Origin = CommandOrigin.Local
             }, CommonVariableNames.MaximumProtocolConnections, 0);
 
-            ICommandResult result = instance.Tunnel(CommandBuilder.InstanceAddConnection("Myrcon", "MockProtocol", "1.1.1.1", 27516, "password", "").SetOrigin(CommandOrigin.Local));
+            ICommandResult result = instance.Tunnel(CommandBuilder.PotatoAddConnection("Myrcon", "MockProtocol", "1.1.1.1", 27516, "password", "").SetOrigin(CommandOrigin.Local));
 
             Assert.IsFalse(result.Success);
             Assert.AreEqual(CommandResultType.LimitExceeded, result.CommandResultType);
@@ -111,10 +112,10 @@ namespace Procon.Core.Test.CoreInstance {
         ///     Tests we receive a DoesNotExist status when a game type is not supported (or exist..)
         /// </summary>
         [Test]
-        public void TestInstanceAddConnectionProtocolTypeDoesNotExist() {
+        public void TestPotatoAddConnectionProtocolTypeDoesNotExist() {
             var instance = (PotatoController)new PotatoController().Execute();
 
-            ICommandResult result = instance.Tunnel(CommandBuilder.InstanceAddConnection("Myrcon", "la la la", "1.1.1.1", 27516, "password", "").SetOrigin(CommandOrigin.Local));
+            ICommandResult result = instance.Tunnel(CommandBuilder.PotatoAddConnection("Myrcon", "la la la", "1.1.1.1", 27516, "password", "").SetOrigin(CommandOrigin.Local));
 
             Assert.IsFalse(result.Success);
             Assert.AreEqual(CommandResultType.DoesNotExists, result.CommandResultType);
@@ -127,10 +128,10 @@ namespace Procon.Core.Test.CoreInstance {
         ///     supplied does not have permissions to add the connection.
         /// </summary>
         [Test]
-        public void TestInstanceAddConnectionInsufficientPermissions() {
+        public void TestPotatoAddConnectionInsufficientPermissions() {
             var instance = (PotatoController)new PotatoController().Execute();
 
-            ICommandResult result = instance.Tunnel(CommandBuilder.InstanceAddConnection("Myrcon", "MockProtocol", "1.1.1.1", 27516, "password", "").SetOrigin(CommandOrigin.Remote).SetAuthentication(new CommandAuthenticationModel() {
+            ICommandResult result = instance.Tunnel(CommandBuilder.PotatoAddConnection("Myrcon", "MockProtocol", "1.1.1.1", 27516, "password", "").SetOrigin(CommandOrigin.Remote).SetAuthentication(new CommandAuthenticationModel() {
                 Username = "Phogue"
             }));
 
@@ -145,7 +146,7 @@ namespace Procon.Core.Test.CoreInstance {
         ///     Tests that a connection can be added.
         /// </summary>
         [Test]
-        public void TestInstanceAddConnectionSuccess() {
+        public void TestPotatoAddConnectionSuccess() {
             var instance = (PotatoController)new PotatoController().Execute();
 
             ((ProtocolController)instance.Protocols).Protocols.Add(new ProtocolAssemblyMetadata() {
@@ -160,7 +161,7 @@ namespace Procon.Core.Test.CoreInstance {
                 }
             });
 
-            ICommandResult result = instance.Tunnel(CommandBuilder.InstanceAddConnection("Myrcon", "MockProtocol", "1.1.1.1", 27516, "password", "").SetOrigin(CommandOrigin.Local));
+            ICommandResult result = instance.Tunnel(CommandBuilder.PotatoAddConnection("Myrcon", "MockProtocol", "1.1.1.1", 27516, "password", "").SetOrigin(CommandOrigin.Local));
 
             Assert.IsTrue(result.Success);
             Assert.AreEqual(CommandResultType.Success, result.CommandResultType);

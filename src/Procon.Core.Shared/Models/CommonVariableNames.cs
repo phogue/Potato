@@ -25,7 +25,7 @@ namespace Procon.Core.Shared.Models {
         /// <summary>
         /// (string) The password for encrypting/descrypting configs
         /// </summary>
-        InstanceConfigPassword,
+        PotatoConfigPassword,
         /// <summary>
         /// (int) The maximum number of tokens allowed per account.
         /// </summary>

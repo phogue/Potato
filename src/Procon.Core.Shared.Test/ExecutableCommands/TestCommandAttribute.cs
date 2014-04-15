@@ -28,11 +28,11 @@ namespace Procon.Core.Shared.Test.ExecutableCommands {
         [Test]
         public void TestCommandAttributeNameAliasFromCommandType() {
             var command = new CommandDispatch() {
-                CommandType = CommandType.InstanceAddConnection
+                CommandType = CommandType.PotatoAddConnection
             };
 
-            Assert.AreEqual("InstanceAddConnection", command.Name);
-            Assert.AreEqual(CommandType.InstanceAddConnection, command.CommandType);
+            Assert.AreEqual("PotatoAddConnection", command.Name);
+            Assert.AreEqual(CommandType.PotatoAddConnection, command.CommandType);
         }
 
         /// <summary>
@@ -51,10 +51,10 @@ namespace Procon.Core.Shared.Test.ExecutableCommands {
         /// </summary>
         [Test]
         public void TestCommandAttributeParseValidCommandType() {
-            ICommandDispatch command = new CommandDispatch().ParseCommandType("InstanceAddConnection");
+            ICommandDispatch command = new CommandDispatch().ParseCommandType("PotatoAddConnection");
 
-            Assert.AreEqual("InstanceAddConnection", command.Name);
-            Assert.AreEqual(CommandType.InstanceAddConnection, command.CommandType);
+            Assert.AreEqual("PotatoAddConnection", command.Name);
+            Assert.AreEqual(CommandType.PotatoAddConnection, command.CommandType);
         }
     }
 }

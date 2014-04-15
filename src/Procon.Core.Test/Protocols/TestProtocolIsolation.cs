@@ -40,7 +40,7 @@ namespace Procon.Core.Test.Protocols {
             var protocol = meta.ProtocolTypes.First(p => p.Type == "MockProtocol");
 
             // Now readd the same connection we just added.
-            ICommandResult result = instance.Tunnel(CommandBuilder.InstanceAddConnection(protocol.Provider, protocol.Type, "1.1.1.1", 27516, "password", "").SetOrigin(CommandOrigin.Local));
+            ICommandResult result = instance.Tunnel(CommandBuilder.PotatoAddConnection(protocol.Provider, protocol.Type, "1.1.1.1", 27516, "password", "").SetOrigin(CommandOrigin.Local));
 
             Assert.IsTrue(result.Success);
             Assert.AreEqual(CommandResultType.Success, result.CommandResultType);

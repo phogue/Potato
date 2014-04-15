@@ -29,27 +29,27 @@ namespace Procon.Core.Shared {
         None,
         /// <summary>
         /// General query to fetch all of the connections, security group and variables. Anything in
-        /// the Instance class pretty much.
+        /// the Potato class pretty much.
         /// </summary>
-        [Description("General query to fetch all of the connections, security group and variables. Anything in the Instance class pretty much.")]
-        InstanceQuery,
+        [Description("General query to fetch all of the connections, security group and variables. Anything in the Potato class pretty much.")]
+        PotatoQuery,
         /// <summary>
         /// Sends a signal to the service controller to restart Procon, applying any updates.
         /// </summary>
         [Description("Sends a signal to the service controller to restart Procon, applying any updates.")]
-        InstanceServiceRestart,
+        PotatoServiceRestart,
         /// <summary>
         /// Sends a signal to the service controller to stop Procon, install/update a package to
         /// the latest version and then start Procon.
         /// </summary>
         [Description("Sends a signal to the service controller to stop Procon, install/update a package to the latest version and then start Procon.")]
-        InstanceServiceMergePackage,
+        PotatoServiceMergePackage,
         /// <summary>
         /// Sends a signal to the service controller to stop Procon, uninstall a package if it is installed
         /// and then start Procon.
         /// </summary>
         [Description("Sends a signal to the service controller to stop Procon, uninstall a package if it is installed and then start Procon.")]
-        InstanceServiceUninstallPackage,
+        PotatoServiceUninstallPackage,
         /// <summary>
         /// Queries information related specificy to a connection. Note that this will essentially query all
         /// other list queries below (NetworkProtocolQuery*) and populate a single request with the results.
@@ -61,12 +61,12 @@ namespace Procon.Core.Shared {
         /// Adds a new protocol connection
         /// </summary>
         [Description("Adds a new protocol connection")]
-        InstanceAddConnection,
+        PotatoAddConnection,
         /// <summary>
         /// Removes a protocol connection
         /// </summary>
         [Description("Removes a protocol connection")]
-        InstanceRemoveConnection,
+        PotatoRemoveConnection,
 
         /// <summary>
         /// Pulls a localized text from the localization controller.

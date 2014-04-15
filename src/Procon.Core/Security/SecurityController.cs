@@ -1969,7 +1969,7 @@ namespace Procon.Core.Security {
                             CommandType.SecurityAccountAuthenticate,
                             CommandType.VariablesSetF,
                             CommandType.VariablesGet,
-                            CommandType.InstanceQuery,
+                            CommandType.PotatoQuery,
                             CommandType.PackagesFetchPackages,
                             CommandType.ConnectionQuery,
                             CommandType.NetworkProtocolQueryBans,

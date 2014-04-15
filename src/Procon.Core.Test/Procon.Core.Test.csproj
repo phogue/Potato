@@ -84,9 +84,9 @@
     <Compile Include="Database\Helpers\TestMigrationTrackerHelper.cs" />
     <Compile Include="Database\TestDatabaseController.cs" />
     <Compile Include="Database\TestDatabaseMigrationController.cs" />
-    <Compile Include="CoreInstance\TestCommandInstanceServiceMergePackage.cs" />
-    <Compile Include="CoreInstance\TestCommandInstanceServiceRestart.cs" />
-    <Compile Include="CoreInstance\TestCommandInstanceServiceUninstallPackage.cs" />
+    <Compile Include="TestPotato\TestPotatoServiceMergePackage.cs" />
+    <Compile Include="TestPotato\TestPotatoServiceRestart.cs" />
+    <Compile Include="TestPotato\TestPotatoServiceUninstallPackage.cs" />
     <Compile Include="Events\TestEventsLog.cs" />
     <Compile Include="Packages\Mocks\MockExceptionPackageRepository.cs" />
     <Compile Include="Packages\Mocks\MockPackageRepository.cs" />
@@ -138,7 +138,7 @@
     <Compile Include="Security\Permission\TestSecuritySetPredefinedStreamPermissions.cs" />
     <Compile Include="Security\TestPoke.cs" />
     <Compile Include="TestHelpers.cs" />
-    <Compile Include="CoreInstance\TestCommandInstanceRemoveConnection.cs" />
+    <Compile Include="TestPotato\TestPotatoRemoveConnection.cs" />
     <Compile Include="Events\TestEvents.cs" />
     <Compile Include="Events\TestEventsCommands.cs" />
     <Compile Include="Events\TestPushEventsController.cs" />
@@ -146,8 +146,8 @@
     <Compile Include="Events\TestPushEventsEndPoint.cs" />
     <Compile Include="Localization\TestLocalization.cs" />
     <Compile Include="Remote\TestRemote.cs" />
-    <Compile Include="CoreInstance\TestInstance.cs" />
-    <Compile Include="CoreInstance\TestCommandInstanceAddConnection.cs" />
+    <Compile Include="TestPotato\TestPotato.cs" />
+    <Compile Include="TestPotato\TestPotatoAddConnection.cs" />
     <Compile Include="TextCommands\Fuzzy\TestFuzzyBasicMonthTemporal.cs" />
     <Compile Include="TextCommands\Fuzzy\TestFuzzyBasicTemporal.cs" />
     <Compile Include="TextCommands\Fuzzy\TestFuzzySetsObjectMatching.cs" />

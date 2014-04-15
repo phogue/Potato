@@ -73,24 +73,24 @@ namespace Procon.Core.Shared {
         }
 
         /// <summary>
-        /// Builds a command to send a InstanceServiceRestart signal
+        /// Builds a command to send a PotatoServiceRestart signal
         /// </summary>
         /// <returns>The built command to the dispatch</returns>
-        public static ICommand InstanceServiceRestart() {
+        public static ICommand PotatoServiceRestart() {
             return new Command() {
-                CommandType = CommandType.InstanceServiceRestart
+                CommandType = CommandType.PotatoServiceRestart
             };
         }
 
         /// <summary>
-        /// Builds a command to send a InstanceServiceMergePackage signal
+        /// Builds a command to send a PotatoServiceMergePackage signal
         /// </summary>
         /// <param name="uri">The uri of the repository to find the package source in</param>
         /// <param name="packageId">The package id to install</param>
         /// <returns>The built command to the dispatch</returns>
-        public static ICommand InstanceServiceMergePackage(String uri, String packageId) {
+        public static ICommand PotatoServiceMergePackage(String uri, String packageId) {
             return new Command() {
-                CommandType = CommandType.InstanceServiceMergePackage,
+                CommandType = CommandType.PotatoServiceMergePackage,
                 Parameters = new List<ICommandParameter>() {
                     new CommandParameter() {
                         Data = {
@@ -111,13 +111,13 @@ namespace Procon.Core.Shared {
         }
 
         /// <summary>
-        /// Builds a command to send a InstanceServiceUninstallPackage signal
+        /// Builds a command to send a PotatoServiceUninstallPackage signal
         /// </summary>
         /// <param name="packageId">The package id to uninstall</param>
         /// <returns>The built command to the dispatch</returns>
-        public static ICommand InstanceServiceUninstallPackage(String packageId) {
+        public static ICommand PotatoServiceUninstallPackage(String packageId) {
             return new Command() {
-                CommandType = CommandType.InstanceServiceUninstallPackage,
+                CommandType = CommandType.PotatoServiceUninstallPackage,
                 Parameters = new List<ICommandParameter>() {
                     new CommandParameter() {
                         Data = {
@@ -131,7 +131,7 @@ namespace Procon.Core.Shared {
         }
 
         /// <summary>
-        /// Builds a command to send a InstanceAddConnection signal
+        /// Builds a command to send a PotatoAddConnection signal
         /// </summary>
         /// <param name="provider">The protocol provider</param>
         /// <param name="type">The type of protocol from the provider</param>
@@ -140,9 +140,9 @@ namespace Procon.Core.Shared {
         /// <param name="password">The password for authentication</param>
         /// <param name="arguments">The additional argument parameters for a protocol</param>
         /// <returns>The built command to the dispatch</returns>
-        public static ICommand InstanceAddConnection(String provider, String type, String hostName, ushort port, String password, String arguments) {
+        public static ICommand PotatoAddConnection(String provider, String type, String hostName, ushort port, String password, String arguments) {
             return new Command() {
-                CommandType = CommandType.InstanceAddConnection,
+                CommandType = CommandType.PotatoAddConnection,
                 Parameters = new List<ICommandParameter>() {
                     new CommandParameter() {
                         Data = {
@@ -191,13 +191,13 @@ namespace Procon.Core.Shared {
         }
 
         /// <summary>
-        /// Builds a command to send a InstanceRemoveConnection
+        /// Builds a command to send a PotatoRemoveConnection
         /// </summary>
         /// <param name="connectionGuid">The connection guid to remove</param>
         /// <returns>The built command to the dispatch</returns>
-        public static ICommand InstanceRemoveConnection(Guid connectionGuid) {
+        public static ICommand PotatoRemoveConnection(Guid connectionGuid) {
             return new Command() {
-                CommandType = CommandType.InstanceRemoveConnection,
+                CommandType = CommandType.PotatoRemoveConnection,
                 Parameters = new List<ICommandParameter>() {
                     new CommandParameter() {
                         Data = {
@@ -211,16 +211,16 @@ namespace Procon.Core.Shared {
         }
 
         /// <summary>
-        /// Builds a command to send a InstanceRemoveConnection
+        /// Builds a command to send a PotatoRemoveConnection
         /// </summary>
         /// <param name="provider">The protocol provider</param>
         /// <param name="type">The type of protocol from the provider</param>
         /// <param name="hostName">The hostname to connect to</param>
         /// <param name="port">The port of the connection</param>
         /// <returns>The built command to the dispatch</returns>
-        public static ICommand InstanceRemoveConnection(String provider, String type, String hostName, ushort port) {
+        public static ICommand PotatoRemoveConnection(String provider, String type, String hostName, ushort port) {
             return new Command() {
-                CommandType = CommandType.InstanceRemoveConnection,
+                CommandType = CommandType.PotatoRemoveConnection,
                 Parameters = new List<ICommandParameter>() {
                     new CommandParameter() {
                         Data = {

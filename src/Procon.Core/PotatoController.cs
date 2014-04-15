@@ -132,7 +132,7 @@ namespace Procon.Core {
 
             this.CommandDispatchers.AddRange(new List<ICommandDispatch>() {
                 new CommandDispatch() {
-                    CommandType = CommandType.InstanceServiceMergePackage,
+                    CommandType = CommandType.PotatoServiceMergePackage,
                     ParameterTypes = new List<CommandParameterType>() {
                         new CommandParameterType() {
                             Name = "uri",
@@ -143,24 +143,24 @@ namespace Procon.Core {
                             Type = typeof(String)
                         }
                     },
-                    Handler = this.InstanceServiceMergePackage
+                    Handler = this.PotatoServiceMergePackage
                 },
                 new CommandDispatch() {
-                    CommandType = CommandType.InstanceServiceUninstallPackage,
+                    CommandType = CommandType.PotatoServiceUninstallPackage,
                     ParameterTypes = new List<CommandParameterType>() {
                         new CommandParameterType() {
                             Name = "packageId",
                             Type = typeof(String)
                         }
                     },
-                    Handler = this.InstanceServiceUninstallPackage
+                    Handler = this.PotatoServiceUninstallPackage
                 },
                 new CommandDispatch() {
-                    CommandType = CommandType.InstanceServiceRestart,
-                    Handler = this.InstanceServiceRestart
+                    CommandType = CommandType.PotatoServiceRestart,
+                    Handler = this.PotatoServiceRestart
                 },
                 new CommandDispatch() {
-                    CommandType = CommandType.InstanceAddConnection,
+                    CommandType = CommandType.PotatoAddConnection,
                     ParameterTypes = new List<CommandParameterType>() {
                         new CommandParameterType() {
                             Name = "gameTypeProvider",
@@ -187,20 +187,20 @@ namespace Procon.Core {
                             Type = typeof(String)
                         }
                     },
-                    Handler = this.InstanceAddConnection
+                    Handler = this.PotatoAddConnection
                 },
                 new CommandDispatch() {
-                    CommandType = CommandType.InstanceRemoveConnection,
+                    CommandType = CommandType.PotatoRemoveConnection,
                     ParameterTypes = new List<CommandParameterType>() {
                         new CommandParameterType() {
                             Name = "connectionGuid",
                             Type = typeof(String)
                         }
                     },
-                    Handler = this.InstanceRemoveConnectionByGuid
+                    Handler = this.PotatoRemoveConnectionByGuid
                 },
                 new CommandDispatch() {
-                    CommandType = CommandType.InstanceRemoveConnection,
+                    CommandType = CommandType.PotatoRemoveConnection,
                     ParameterTypes = new List<CommandParameterType>() {
                         new CommandParameterType() {
                             Name = "gameTypeProvider",
@@ -219,11 +219,11 @@ namespace Procon.Core {
                             Type = typeof(UInt16)
                         }
                     },
-                    Handler = this.InstanceRemoveConnectionByDetails
+                    Handler = this.PotatoRemoveConnectionByDetails
                 },
                 new CommandDispatch() {
-                    CommandType = CommandType.InstanceQuery,
-                    Handler = this.InstanceQuery
+                    CommandType = CommandType.PotatoQuery,
+                    Handler = this.PotatoQuery
                 }
             });
         }
@@ -360,10 +360,10 @@ namespace Procon.Core {
 
             this.Execute(new Command() {
                 Origin = CommandOrigin.Local
-            }, new Config().Load(new DirectoryInfo(Defines.ConfigsDirectory.FullName)), this.Shared.Variables.Get<String>(CommonVariableNames.InstanceConfigPassword));
+            }, new Config().Load(new DirectoryInfo(Defines.ConfigsDirectory.FullName)), this.Shared.Variables.Get<String>(CommonVariableNames.PotatoConfigPassword));
             
             this.Shared.Events.Log(new GenericEvent() {
-                GenericEventType = GenericEventType.InstanceServiceStarted,
+                GenericEventType = GenericEventType.PotatoServiceStarted,
                 Message = @"The service has started successfully."
             });
 
@@ -391,7 +391,7 @@ namespace Procon.Core {
         public void WriteConfig() {
             IConfig config = new Config();
             config.Create<PotatoController>();
-            this.WriteConfig(config, this.Shared.Variables.Get<String>(CommonVariableNames.InstanceConfigPassword));
+            this.WriteConfig(config, this.Shared.Variables.Get<String>(CommonVariableNames.PotatoConfigPassword));
 
             config.Save(new FileInfo(Path.Combine(Defines.ConfigsDirectory.FullName, this.GetType().Namespace + ".json")));
         }
@@ -420,10 +420,10 @@ namespace Procon.Core {
 
             lock (this.Connections) {
                 foreach (ConnectionController connection in this.Connections) {
-                    // This command is executed in the Instance object.
+                    // This command is executed in the Potato object.
                     // I had to write this comment because I kept moving it to the actual connection and failing oh so hard.
                     config.Append(new Command() {
-                        CommandType = CommandType.InstanceAddConnection,
+                        CommandType = CommandType.PotatoAddConnection,
                         Parameters = new List<ICommandParameter>() {
                             new CommandParameter() {
                                 Data = {
@@ -576,7 +576,7 @@ namespace Procon.Core {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public ICommandResult InstanceServiceRestart(ICommand command, Dictionary<String, ICommandParameter> parameters) {
+        public ICommandResult PotatoServiceRestart(ICommand command, Dictionary<String, ICommandParameter> parameters) {
             ICommandResult result = null;
 
             // As long as the current account is allowed to execute this command...
@@ -591,7 +591,7 @@ namespace Procon.Core {
                     Success = true
                 };
 
-                this.Shared.Events.Log(GenericEvent.ConvertToGenericEvent(result, GenericEventType.InstanceServiceRestarting));
+                this.Shared.Events.Log(GenericEvent.ConvertToGenericEvent(result, GenericEventType.PotatoServiceRestarting));
             }
             else {
                 result = CommandResult.InsufficientPermissions;
@@ -606,7 +606,7 @@ namespace Procon.Core {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public ICommandResult InstanceServiceMergePackage(ICommand command, Dictionary<String, ICommandParameter> parameters) {
+        public ICommandResult PotatoServiceMergePackage(ICommand command, Dictionary<String, ICommandParameter> parameters) {
             ICommandResult result = null;
 
             String uri = parameters["uri"].First<String>();
@@ -629,7 +629,7 @@ namespace Procon.Core {
                         Success = true
                     };
 
-                    this.Shared.Events.Log(GenericEvent.ConvertToGenericEvent(result, GenericEventType.InstanceServiceMergePackage));
+                    this.Shared.Events.Log(GenericEvent.ConvertToGenericEvent(result, GenericEventType.PotatoServiceMergePackage));
                 }
                 else {
                     result = new CommandResult() {
@@ -652,7 +652,7 @@ namespace Procon.Core {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public ICommandResult InstanceServiceUninstallPackage(ICommand command, Dictionary<String, ICommandParameter> parameters) {
+        public ICommandResult PotatoServiceUninstallPackage(ICommand command, Dictionary<String, ICommandParameter> parameters) {
             ICommandResult result = null;
 
             String packageId = parameters["packageId"].First<String>();
@@ -673,7 +673,7 @@ namespace Procon.Core {
                         Success = true
                     };
 
-                    this.Shared.Events.Log(GenericEvent.ConvertToGenericEvent(result, GenericEventType.InstanceServiceUninstallPackage));
+                    this.Shared.Events.Log(GenericEvent.ConvertToGenericEvent(result, GenericEventType.PotatoServiceUninstallPackage));
                 }
                 else {
                     result = new CommandResult() {
@@ -695,7 +695,7 @@ namespace Procon.Core {
         /// </summary>
         /// <param name="command"></param>
         /// <param name="parameters"></param>
-        public ICommandResult InstanceAddConnection(ICommand command, Dictionary<String, ICommandParameter> parameters) {
+        public ICommandResult PotatoAddConnection(ICommand command, Dictionary<String, ICommandParameter> parameters) {
             ICommandResult result = null;
             
             String protocolTypeProvider = parameters["gameTypeProvider"].First<String>() ?? "";
@@ -719,7 +719,7 @@ namespace Procon.Core {
                             IProtocolAssemblyMetadata meta = supportCheckResult.Now.ProtocolAssemblyMetadatas.First();
                             
                             ConnectionController connection = new ConnectionController() {
-                                Instance = this
+                                Potato = this
                             };
 
                             connection.SetupProtocol(supportCheckResult.Now.ProtocolAssemblyMetadatas.First(), supportCheckResult.Now.ProtocolTypes.First(), new ProtocolSetup() {
@@ -748,7 +748,7 @@ namespace Procon.Core {
                                 }
                             };
 
-                            this.Shared.Events.Log(GenericEvent.ConvertToGenericEvent(result, GenericEventType.InstanceConnectionAdded));
+                            this.Shared.Events.Log(GenericEvent.ConvertToGenericEvent(result, GenericEventType.PotatoConnectionAdded));
                         }
                         else {
                             result = new CommandResult() {
@@ -781,7 +781,7 @@ namespace Procon.Core {
             return result;
         }
 
-        protected ICommandResult InstanceRemoveConnection(ICommand command, IConnectionController connection) {
+        protected ICommandResult PotatoRemoveConnection(ICommand command, IConnectionController connection) {
             ICommandResult result = null;
 
             // As long as the current account is allowed to execute this command...
@@ -804,7 +804,7 @@ namespace Procon.Core {
                         }
                     };
 
-                    this.Shared.Events.Log(GenericEvent.ConvertToGenericEvent(result, GenericEventType.InstanceConnectionRemoved));
+                    this.Shared.Events.Log(GenericEvent.ConvertToGenericEvent(result, GenericEventType.PotatoConnectionRemoved));
 
                     connection.Dispose();
                 }
@@ -829,12 +829,12 @@ namespace Procon.Core {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public ICommandResult InstanceRemoveConnectionByGuid(ICommand command, Dictionary<String, ICommandParameter> parameters) {
+        public ICommandResult PotatoRemoveConnectionByGuid(ICommand command, Dictionary<String, ICommandParameter> parameters) {
             String connectionGuid = parameters["connectionGuid"].First<String>();
 
             IConnectionController connection = this.Connections.FirstOrDefault(x => String.Compare(x.ConnectionModel.ConnectionGuid.ToString(), connectionGuid, StringComparison.OrdinalIgnoreCase) == 0);
 
-            return this.InstanceRemoveConnection(command, connection);
+            return this.PotatoRemoveConnection(command, connection);
         }
 
         /// <summary>
@@ -842,7 +842,7 @@ namespace Procon.Core {
         /// </summary>
         /// <param name="command"></param>
         /// <param name="parameters"></param>
-        public ICommandResult InstanceRemoveConnectionByDetails(ICommand command, Dictionary<String, ICommandParameter> parameters) {
+        public ICommandResult PotatoRemoveConnectionByDetails(ICommand command, Dictionary<String, ICommandParameter> parameters) {
             String gameTypeProvider = parameters["gameTypeProvider"].First<String>();
             String gameTypeType = parameters["gameTypeType"].First<String>();
             String hostName = parameters["hostName"].First<String>();
@@ -855,7 +855,7 @@ namespace Procon.Core {
                 c.ConnectionModel.Port == port
             );
 
-            return this.InstanceRemoveConnection(command, connection);
+            return this.PotatoRemoveConnection(command, connection);
         }
 
         /// <summary>
@@ -864,7 +864,7 @@ namespace Procon.Core {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public ICommandResult InstanceQuery(ICommand command, Dictionary<String, ICommandParameter> parameters) {
+        public ICommandResult PotatoQuery(ICommand command, Dictionary<String, ICommandParameter> parameters) {
             ICommandResult result = null;
             
             if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {

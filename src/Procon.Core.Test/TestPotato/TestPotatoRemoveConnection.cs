@@ -13,6 +13,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System.IO;
 using System.Linq;
 using NUnit.Framework;
@@ -22,9 +23,9 @@ using Procon.Core.Shared.Models;
 using Procon.Net.Shared;
 using Procon.Service.Shared;
 
-namespace Procon.Core.Test.CoreInstance {
+namespace Procon.Core.Test.TestPotato {
     [TestFixture]
-    public class TestCommandInstanceRemoveConnection {
+    public class TestPotatoRemoveConnection {
         [SetUp]
         public void Initialize() {
             SharedReferences.Setup();
@@ -40,7 +41,7 @@ namespace Procon.Core.Test.CoreInstance {
         ///     Tests that a connection can be removed.
         /// </summary>
         [Test]
-        public void TestInstanceRemoveConnectionByGuidSuccess() {
+        public void TestPotatoRemoveConnectionByGuidSuccess() {
             var instance = (PotatoController)new PotatoController().Execute();
 
             instance.Connections.Add(new ConnectionController() {
@@ -58,7 +59,7 @@ namespace Procon.Core.Test.CoreInstance {
             // Make sure we have at least one connection added.
             Assert.AreEqual(1, instance.Connections.Count);
 
-            ICommandResult result = instance.Tunnel(CommandBuilder.InstanceRemoveConnection(instance.Connections.First().ConnectionModel.ConnectionGuid).SetOrigin(CommandOrigin.Local));
+            ICommandResult result = instance.Tunnel(CommandBuilder.PotatoRemoveConnection(instance.Connections.First().ConnectionModel.ConnectionGuid).SetOrigin(CommandOrigin.Local));
 
             Assert.IsTrue(result.Success);
             Assert.AreEqual(CommandResultType.Success, result.CommandResultType);
@@ -72,10 +73,10 @@ namespace Procon.Core.Test.CoreInstance {
         ///     a connection on an empty instance object.
         /// </summary>
         [Test]
-        public void TestInstanceRemoveConnectionDoesNotExist() {
+        public void TestPotatoRemoveConnectionDoesNotExist() {
             var instance = (PotatoController)new PotatoController().Execute();
 
-            ICommandResult result = instance.Tunnel(CommandBuilder.InstanceRemoveConnection("Myrcon", "MockProtocol", "1.1.1.1", 27516).SetOrigin(CommandOrigin.Local));
+            ICommandResult result = instance.Tunnel(CommandBuilder.PotatoRemoveConnection("Myrcon", "MockProtocol", "1.1.1.1", 27516).SetOrigin(CommandOrigin.Local));
 
             Assert.IsFalse(result.Success);
             Assert.AreEqual(CommandResultType.DoesNotExists, result.CommandResultType);
@@ -88,10 +89,10 @@ namespace Procon.Core.Test.CoreInstance {
         ///     supplied does not have permissions to add the connection.
         /// </summary>
         [Test]
-        public void TestInstanceRemoveConnectionInsufficientPermissions() {
+        public void TestPotatoRemoveConnectionInsufficientPermissions() {
             var instance = (PotatoController)new PotatoController().Execute();
 
-            ICommandResult result = instance.Tunnel(CommandBuilder.InstanceRemoveConnection("Myrcon", "MockProtocol", "1.1.1.1", 27516).SetOrigin(CommandOrigin.Remote).SetAuthentication(new CommandAuthenticationModel() {
+            ICommandResult result = instance.Tunnel(CommandBuilder.PotatoRemoveConnection("Myrcon", "MockProtocol", "1.1.1.1", 27516).SetOrigin(CommandOrigin.Remote).SetAuthentication(new CommandAuthenticationModel() {
                 Username = "Phogue"
             }));
 
@@ -106,7 +107,7 @@ namespace Procon.Core.Test.CoreInstance {
         ///     Tests that a connection can be removed.
         /// </summary>
         [Test]
-        public void TestInstanceRemoveConnectionByDetailsSuccess() {
+        public void TestPotatoRemoveConnectionByDetailsSuccess() {
             var instance = (PotatoController)new PotatoController().Execute();
 
             instance.Connections.Add(new ConnectionController() {
@@ -124,7 +125,7 @@ namespace Procon.Core.Test.CoreInstance {
             // Make sure we have at least one connection added.
             Assert.IsNotEmpty(instance.Connections);
 
-            ICommandResult result = instance.Tunnel(CommandBuilder.InstanceRemoveConnection("Myrcon", "MockProtocol", "1.1.1.1", 27516).SetOrigin(CommandOrigin.Local));
+            ICommandResult result = instance.Tunnel(CommandBuilder.PotatoRemoveConnection("Myrcon", "MockProtocol", "1.1.1.1", 27516).SetOrigin(CommandOrigin.Local));
 
             Assert.IsTrue(result.Success);
             Assert.AreEqual(CommandResultType.Success, result.CommandResultType);

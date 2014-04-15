@@ -13,15 +13,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System.Linq;
 using NUnit.Framework;
 using Procon.Core.Events;
 using Procon.Core.Shared;
 using Procon.Core.Shared.Models;
 
-namespace Procon.Core.Test.CoreInstance {
+namespace Procon.Core.Test.TestPotato {
     [TestFixture]
-    public class TestCommandInstanceServiceMergePackage {
+    public class TestPotatoServiceRestart {
         [SetUp]
         public void Initialize() {
             SharedReferences.Setup();
@@ -35,42 +36,12 @@ namespace Procon.Core.Test.CoreInstance {
         public void TestResultInsufficientPermissions() {
             PotatoController instance = new PotatoController();
 
-            ICommandResult result = instance.Tunnel(CommandBuilder.InstanceServiceMergePackage("localhost", "id").SetOrigin(CommandOrigin.Remote).SetAuthentication(new CommandAuthenticationModel() {
+            ICommandResult result = instance.Tunnel(CommandBuilder.PotatoServiceRestart().SetOrigin(CommandOrigin.Remote).SetAuthentication(new CommandAuthenticationModel() {
                 Username = "Phogue"
             }));
 
             Assert.IsFalse(result.Success);
             Assert.AreEqual(CommandResultType.InsufficientPermissions, result.CommandResultType);
-
-            instance.Dispose();
-        }
-
-        /// <summary>
-        /// Tests that passing in an empty uri will result in an invalid parameter status
-        /// </summary>
-        [Test]
-        public void TestResultInvalidParameterUri() {
-            PotatoController instance = new PotatoController();
-
-            ICommandResult result = instance.Tunnel(CommandBuilder.InstanceServiceMergePackage("", "id").SetOrigin(CommandOrigin.Local));
-
-            Assert.IsFalse(result.Success);
-            Assert.AreEqual(CommandResultType.InvalidParameter, result.CommandResultType);
-
-            instance.Dispose();
-        }
-
-        /// <summary>
-        /// Tests that passing in an empty packageId will result in an invalid parameter status
-        /// </summary>
-        [Test]
-        public void TestResultInvalidParameterPackageId() {
-            PotatoController instance = new PotatoController();
-
-            ICommandResult result = instance.Tunnel(CommandBuilder.InstanceServiceMergePackage("localhost", "").SetOrigin(CommandOrigin.Local));
-
-            Assert.IsFalse(result.Success);
-            Assert.AreEqual(CommandResultType.InvalidParameter, result.CommandResultType);
 
             instance.Dispose();
         }
@@ -82,7 +53,7 @@ namespace Procon.Core.Test.CoreInstance {
         public void TestResultSuccess() {
             PotatoController instance = new PotatoController();
 
-            ICommandResult result = instance.Tunnel(CommandBuilder.InstanceServiceMergePackage("localhost", "id").SetOrigin(CommandOrigin.Local));
+            ICommandResult result = instance.Tunnel(CommandBuilder.PotatoServiceRestart().SetOrigin(CommandOrigin.Local));
 
             Assert.IsTrue(result.Success);
             Assert.AreEqual(CommandResultType.Success, result.CommandResultType);
@@ -91,18 +62,16 @@ namespace Procon.Core.Test.CoreInstance {
         }
 
         /// <summary>
-        /// Tests that a service message is set when successfully executing a merge package command.
+        /// Tests that a service message is set when successfully executing a restart command.
         /// </summary>
         [Test]
         public void TestMessageLogged() {
             PotatoController instance = new PotatoController();
 
-            instance.Tunnel(CommandBuilder.InstanceServiceMergePackage("localhost", "id").SetOrigin(CommandOrigin.Local));
+            instance.Tunnel(CommandBuilder.PotatoServiceRestart().SetOrigin(CommandOrigin.Local));
 
             Assert.IsNotNull(instance.ServiceMessage);
-            Assert.AreEqual("merge", instance.ServiceMessage.Name);
-            Assert.AreEqual("localhost", instance.ServiceMessage.Arguments["uri"]);
-            Assert.AreEqual("id", instance.ServiceMessage.Arguments["packageid"]);
+            Assert.AreEqual("restart", instance.ServiceMessage.Name);
 
             instance.Dispose();
         }
@@ -119,10 +88,10 @@ namespace Procon.Core.Test.CoreInstance {
                 }
             };
 
-            instance.Tunnel(CommandBuilder.InstanceServiceMergePackage("localhost", "id").SetOrigin(CommandOrigin.Local));
+            instance.Tunnel(CommandBuilder.PotatoServiceRestart().SetOrigin(CommandOrigin.Local));
 
             Assert.IsNotEmpty(events.LoggedEvents);
-            Assert.AreEqual("InstanceServiceMergePackage", events.LoggedEvents.First().Name);
+            Assert.AreEqual("PotatoServiceRestarting", events.LoggedEvents.First().Name);
 
             instance.Dispose();
         }

@@ -85,7 +85,7 @@ namespace Procon.Core.Connections {
         /// <summary>
         /// The instance of procon that owns this connection.
         /// </summary>
-        public PotatoController Instance { get; set; }
+        public PotatoController Potato { get; set; }
 
         public SharedReferences Shared { get; private set; }
 
@@ -276,7 +276,7 @@ namespace Procon.Core.Connections {
             };
 
             // Go up to the the instance that owns this connection
-            this.BubbleObjects.Add(this.Instance);
+            this.BubbleObjects.Add(this.Potato);
 
             // Go down to the text commands or plugins owned by this connection.
             this.TunnelObjects.Add(this.TextCommands);

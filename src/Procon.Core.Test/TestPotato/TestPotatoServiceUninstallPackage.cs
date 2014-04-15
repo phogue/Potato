@@ -13,15 +13,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System.Linq;
 using NUnit.Framework;
 using Procon.Core.Events;
 using Procon.Core.Shared;
 using Procon.Core.Shared.Models;
 
-namespace Procon.Core.Test.CoreInstance {
+namespace Procon.Core.Test.TestPotato {
     [TestFixture]
-    public class TestCommandInstanceServiceRestart {
+    public class TestPotatoServiceUninstallPackage {
         [SetUp]
         public void Initialize() {
             SharedReferences.Setup();
@@ -35,12 +36,27 @@ namespace Procon.Core.Test.CoreInstance {
         public void TestResultInsufficientPermissions() {
             PotatoController instance = new PotatoController();
 
-            ICommandResult result = instance.Tunnel(CommandBuilder.InstanceServiceRestart().SetOrigin(CommandOrigin.Remote).SetAuthentication(new CommandAuthenticationModel() {
+            ICommandResult result = instance.Tunnel(CommandBuilder.PotatoServiceUninstallPackage("id").SetOrigin(CommandOrigin.Remote).SetAuthentication(new CommandAuthenticationModel() {
                 Username = "Phogue"
             }));
 
             Assert.IsFalse(result.Success);
             Assert.AreEqual(CommandResultType.InsufficientPermissions, result.CommandResultType);
+
+            instance.Dispose();
+        }
+
+        /// <summary>
+        /// Tests that passing in an empty packageId will result in an invalid parameter status
+        /// </summary>
+        [Test]
+        public void TestResultInvalidParameterPackageId() {
+            PotatoController instance = new PotatoController();
+
+            ICommandResult result = instance.Tunnel(CommandBuilder.PotatoServiceUninstallPackage("").SetOrigin(CommandOrigin.Local));
+
+            Assert.IsFalse(result.Success);
+            Assert.AreEqual(CommandResultType.InvalidParameter, result.CommandResultType);
 
             instance.Dispose();
         }
@@ -52,7 +68,7 @@ namespace Procon.Core.Test.CoreInstance {
         public void TestResultSuccess() {
             PotatoController instance = new PotatoController();
 
-            ICommandResult result = instance.Tunnel(CommandBuilder.InstanceServiceRestart().SetOrigin(CommandOrigin.Local));
+            ICommandResult result = instance.Tunnel(CommandBuilder.PotatoServiceUninstallPackage("id").SetOrigin(CommandOrigin.Local));
 
             Assert.IsTrue(result.Success);
             Assert.AreEqual(CommandResultType.Success, result.CommandResultType);
@@ -61,16 +77,17 @@ namespace Procon.Core.Test.CoreInstance {
         }
 
         /// <summary>
-        /// Tests that a service message is set when successfully executing a restart command.
+        /// Tests that a service message is set when successfully executing a merge package command.
         /// </summary>
         [Test]
         public void TestMessageLogged() {
             PotatoController instance = new PotatoController();
 
-            instance.Tunnel(CommandBuilder.InstanceServiceRestart().SetOrigin(CommandOrigin.Local));
+            instance.Tunnel(CommandBuilder.PotatoServiceUninstallPackage("id").SetOrigin(CommandOrigin.Local));
 
             Assert.IsNotNull(instance.ServiceMessage);
-            Assert.AreEqual("restart", instance.ServiceMessage.Name);
+            Assert.AreEqual("uninstall", instance.ServiceMessage.Name);
+            Assert.AreEqual("id", instance.ServiceMessage.Arguments["packageid"]);
 
             instance.Dispose();
         }
@@ -87,10 +104,10 @@ namespace Procon.Core.Test.CoreInstance {
                 }
             };
 
-            instance.Tunnel(CommandBuilder.InstanceServiceRestart().SetOrigin(CommandOrigin.Local));
+            instance.Tunnel(CommandBuilder.PotatoServiceUninstallPackage("id").SetOrigin(CommandOrigin.Local));
 
             Assert.IsNotEmpty(events.LoggedEvents);
-            Assert.AreEqual("InstanceServiceRestarting", events.LoggedEvents.First().Name);
+            Assert.AreEqual("PotatoServiceUninstallPackage", events.LoggedEvents.First().Name);
 
             instance.Dispose();
         }

@@ -102,7 +102,7 @@ namespace Procon.Core.Test.Security.Permission {
                 CommandType.SecurityAccountAuthenticate,
                 CommandType.VariablesSetF,
                 CommandType.VariablesGet,
-                CommandType.InstanceQuery,
+                CommandType.PotatoQuery,
                 CommandType.PackagesFetchPackages,
                 CommandType.ConnectionQuery,
                 CommandType.NetworkProtocolQueryBans,

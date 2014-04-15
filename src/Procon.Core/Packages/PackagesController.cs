@@ -114,7 +114,7 @@ namespace Procon.Core.Packages {
                             // Send command as local. Users may be granted permission to install a package
                             // from a known package repository (this method) but not have permission to install from an
                             // arbitrary source (InstanceServiceMergePackage)
-                            this.Bubble(CommandBuilder.InstanceServiceMergePackage(repository.Uri, package.Id).SetOrigin(CommandOrigin.Local));
+                            this.Bubble(CommandBuilder.PotatoServiceMergePackage(repository.Uri, package.Id).SetOrigin(CommandOrigin.Local));
 
                             result = new CommandResult() {
                                 Message = String.Format("Dispatched merge signal on package id {0}.", packageId),
@@ -182,7 +182,7 @@ namespace Procon.Core.Packages {
                             // Send command as local. Users may be granted permission to install a package
                             // from a known package repository (this method) but not have permission to uninstall from an
                             // arbitrary source (InstanceServiceMergePackage)
-                            this.Bubble(CommandBuilder.InstanceServiceUninstallPackage(package.Id).SetOrigin(CommandOrigin.Local));
+                            this.Bubble(CommandBuilder.PotatoServiceUninstallPackage(package.Id).SetOrigin(CommandOrigin.Local));
 
                             result = new CommandResult() {
                                 Message = String.Format("Dispatched uninstall signal on package id {0}.", packageId),

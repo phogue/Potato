@@ -30,27 +30,27 @@ namespace Procon.Core.Shared.Events {
         /// <summary>
         /// A connection has been added.
         /// </summary>
-        InstanceConnectionAdded,
+        PotatoConnectionAdded,
         /// <summary>
         /// A connection has been removed.
         /// </summary>
-        InstanceConnectionRemoved,
+        PotatoConnectionRemoved,
         /// <summary>
         /// The instance has started up.
         /// </summary>
-        InstanceServiceStarted,
+        PotatoServiceStarted,
         /// <summary>
         /// The instance has posted a restart signal.
         /// </summary>
-        InstanceServiceRestarting,
+        PotatoServiceRestarting,
         /// <summary>
         /// The instance has posted a merge package signal.
         /// </summary>
-        InstanceServiceMergePackage,
+        PotatoServiceMergePackage,
         /// <summary>
         /// The instance has posted an uninstall package signal.
         /// </summary>
-        InstanceServiceUninstallPackage,
+        PotatoServiceUninstallPackage,
 
         /// <summary>
         /// A new group has been added.

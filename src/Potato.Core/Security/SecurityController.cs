@@ -1967,17 +1967,16 @@ namespace Potato.Core.Security {
                         // A list of permissions to keep as "1", all others will be nulled out.
                         List<CommandType> permissions = new List<CommandType>() {
                             CommandType.SecurityAccountAuthenticate,
-                            CommandType.VariablesSetF,
-                            CommandType.VariablesGet,
+                            CommandType.EventsEstablishJsonStream,
                             CommandType.PotatoQuery,
+                            CommandType.ProtocolsFetchSupportedProtocols,
                             CommandType.PackagesFetchPackages,
                             CommandType.ConnectionQuery,
                             CommandType.NetworkProtocolQueryBans,
                             CommandType.NetworkProtocolQueryMapPool,
                             CommandType.NetworkProtocolQueryMaps,
                             CommandType.NetworkProtocolQueryPlayers,
-                            CommandType.NetworkProtocolQuerySettings,
-                            CommandType.ProtocolsFetchSupportedProtocols
+                            CommandType.NetworkProtocolQuerySettings
                         };
 
                         foreach (var permission in group.Permissions) {

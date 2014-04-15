@@ -114,7 +114,7 @@ namespace Potato.Core.Events {
                             Interval = this.Shared.Variables.Get(VariableModel.NamespaceVariableName(pushEventsGroupName, CommonVariableNames.EventPushIntervalSeconds), 1),
 
                             // Defaults to Xml serialization
-                            ContentType = Mime.ToMimeType(this.Shared.Variables.Get(VariableModel.NamespaceVariableName(pushEventsGroupName, CommonVariableNames.EventPushContentType), Mime.ApplicationXml), Mime.ApplicationXml)
+                            ContentType = Mime.ToMimeType(this.Shared.Variables.Get(VariableModel.NamespaceVariableName(pushEventsGroupName, CommonVariableNames.EventPushContentType), Mime.ApplicationJson), Mime.ApplicationJson)
                         };
 
                         // Now make sure we don't already push to this Uri with the same interval.
@@ -127,7 +127,7 @@ namespace Potato.Core.Events {
                         this.EndPoints[pushEventsGroupName].StreamKey = this.Shared.Variables.Get(VariableModel.NamespaceVariableName(pushEventsGroupName, CommonVariableNames.EventPushStreamKey), String.Empty);
                         this.EndPoints[pushEventsGroupName].Uri = new Uri(this.Shared.Variables.Get(VariableModel.NamespaceVariableName(pushEventsGroupName, CommonVariableNames.EventsPushUri), String.Empty));
                         this.EndPoints[pushEventsGroupName].Interval = this.Shared.Variables.Get(VariableModel.NamespaceVariableName(pushEventsGroupName, CommonVariableNames.EventPushIntervalSeconds), 1);
-                        this.EndPoints[pushEventsGroupName].ContentType = Mime.ToMimeType(this.Shared.Variables.Get(VariableModel.NamespaceVariableName(pushEventsGroupName, CommonVariableNames.EventPushContentType), Mime.ApplicationXml), Mime.ApplicationXml);
+                        this.EndPoints[pushEventsGroupName].ContentType = Mime.ToMimeType(this.Shared.Variables.Get(VariableModel.NamespaceVariableName(pushEventsGroupName, CommonVariableNames.EventPushContentType), Mime.ApplicationJson), Mime.ApplicationJson);
                     }
                 }
             }

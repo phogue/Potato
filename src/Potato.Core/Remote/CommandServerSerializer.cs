@@ -82,7 +82,7 @@ namespace Potato.Core.Remote {
             // If no response type was specified elsewhere
             if (String.IsNullOrEmpty(contentType) == true) {
                 // Then assume they want whatever data serialized and returned in whatever the request format was.
-                contentType = command.Request.Tags.ContainsKey(HttpRequestHeader.ContentType.ToString()) == true ? command.Request.Tags[HttpRequestHeader.ContentType.ToString()].ToLower() : Mime.ApplicationXml;
+                contentType = command.Request.Tags.ContainsKey(HttpRequestHeader.ContentType.ToString()) == true ? command.Request.Tags[HttpRequestHeader.ContentType.ToString()].ToLower() : Mime.ApplicationJson;
             }
 
             return contentType;

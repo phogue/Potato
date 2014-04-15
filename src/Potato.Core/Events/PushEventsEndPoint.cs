@@ -76,7 +76,7 @@ namespace Potato.Core.Events {
             this.EventsStream = new List<IGenericEvent>();
             this.Pushing = false;
             this.Interval = 1;
-            this.ContentType = Mime.ApplicationXml;
+            this.ContentType = Mime.ApplicationJson;
             this.Uri = new Uri("http://localhost/");
         }
 

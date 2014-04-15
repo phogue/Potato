@@ -76,7 +76,7 @@ namespace Potato.Core.Test.Remote.TestCommandServerSerializer {
         }
 
         /// <summary>
-        /// Tests that supplying a nulled result and not supplying a header will result in ApplicationXml
+        /// Tests that supplying a nulled result and not supplying a header will result in ApplicationJson
         /// </summary>
         [Test]
         public void TestRequestAndResponseALlNullApplicationXml() {
@@ -89,7 +89,7 @@ namespace Potato.Core.Test.Remote.TestCommandServerSerializer {
                 }
             });
 
-            Assert.AreEqual(Mime.ApplicationXml, contentType);
+            Assert.AreEqual(Mime.ApplicationJson, contentType);
         }
     }
 }

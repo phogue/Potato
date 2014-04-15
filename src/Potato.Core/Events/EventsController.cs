@@ -233,9 +233,6 @@ namespace Potato.Core.Events {
         /// <summary>
         /// Fetches all events after a passed id, as well as after a certain date.
         /// </summary>
-        /// <param name="command"></param>
-        /// <param name="parameters"></param>
-        /// <returns></returns>
         public ICommandResult EventsFetchAfterEventId(ICommand command, Dictionary<String, ICommandParameter> parameters) {
             ICommandResult result = null;
 

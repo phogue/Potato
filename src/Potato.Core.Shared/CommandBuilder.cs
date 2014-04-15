@@ -789,6 +789,56 @@ namespace Potato.Core.Shared {
         }
 
         /// <summary>
+        /// Builds a command to send a EventsEstablishJsonStream
+        /// </summary>
+        /// <param name="name">The name of the group to setup as a stream</param>
+        /// <param name="uri">The uri to push events to</param>
+        /// <param name="key">The key to authenticate with the endpoint. This value is just passed onto the server for authentication.</param>
+        /// <param name="interval">How frequent (in seconds) that events should be pushed</param>
+        /// <param name="inclusive">A list of events the end point wants pushed</param>
+        /// <returns>The built command to dispatch</returns>
+        public static ICommand EventsEstablishJsonStream(String name, String uri, String key, int interval, List<String> inclusive) {
+            return new Command() {
+                CommandType = CommandType.EventsEstablishJsonStream,
+                Parameters = new List<ICommandParameter>() {
+                    new CommandParameter() {
+                        Data = {
+                            Content = new List<String>() {
+                                name
+                            }
+                        }
+                    },
+                    new CommandParameter() {
+                        Data = {
+                            Content = new List<String>() {
+                                uri
+                            }
+                        }
+                    },
+                    new CommandParameter() {
+                        Data = {
+                            Content = new List<String>() {
+                                key
+                            }
+                        }
+                    },
+                    new CommandParameter() {
+                        Data = {
+                            Content = new List<String>() {
+                                interval.ToString(CultureInfo.InvariantCulture)
+                            }
+                        }
+                    },
+                    new CommandParameter() {
+                        Data = {
+                            Content = inclusive
+                        }
+                    }
+                }
+            };
+        }
+        
+        /// <summary>
         /// Builds a command to send a SecurityAddGroup
         /// </summary>
         /// <param name="groupName">The name of the group create+add</param>

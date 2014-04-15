@@ -15,6 +15,8 @@
 #endregion
 using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
 using System.Threading;
 using Potato.Core.Shared;
 using Potato.Core.Shared.Events;
@@ -51,7 +53,63 @@ namespace Potato.Core.Events {
             this.Shared = new SharedReferences();
             this.EndPoints = new Dictionary<String, IPushEventsEndPoint>();
             this.Tasks = new List<Timer>();
-            
+
+            this.CommandDispatchers.AddRange(new List<ICommandDispatch>() {
+                new CommandDispatch() {
+                    CommandType = CommandType.EventsEstablishJsonStream,
+                    ParameterTypes = new List<CommandParameterType>() {
+                        new CommandParameterType() {
+                            Name = "name",
+                            Type = typeof(String)
+                        },
+                        new CommandParameterType() {
+                            Name = "uri",
+                            Type = typeof(String)
+                        },
+                        new CommandParameterType() {
+                            Name = "key",
+                            Type = typeof(String)
+                        },
+                        new CommandParameterType() {
+                            Name = "interval",
+                            Type = typeof(int)
+                        },
+                        new CommandParameterType() {
+                            IsList = true,
+                            Name = "inclusive",
+                            Type = typeof(String)
+                        }
+                    },
+                    Handler = this.EventsEstablishJsonStream
+                },
+                new CommandDispatch() {
+                    CommandType = CommandType.EventsEstablishJsonStream,
+                    ParameterTypes = new List<CommandParameterType>() {
+                        new CommandParameterType() {
+                            Name = "name",
+                            Type = typeof(String)
+                        },
+                        new CommandParameterType() {
+                            Name = "uri",
+                            Type = typeof(String)
+                        },
+                        new CommandParameterType() {
+                            Name = "key",
+                            Type = typeof(String)
+                        },
+                        new CommandParameterType() {
+                            Name = "interval",
+                            Type = typeof(int)
+                        },
+                        new CommandParameterType() {
+                            Name = "inclusive",
+                            Type = typeof(String)
+                        }
+                    },
+                    Handler = this.EventsEstablishJsonStream
+                }
+            });
+
             this.GroupedVariableListener = new GroupedVariableListener() {
                 GroupsVariableName = CommonVariableNames.EventsPushConfigGroups.ToString(),
                 ListeningVariablesNames = new List<String>() {
@@ -118,7 +176,7 @@ namespace Potato.Core.Events {
                             ContentType = Mime.ToMimeType(this.Shared.Variables.Get(VariableModel.NamespaceVariableName(pushEventsGroupName, CommonVariableNames.EventPushContentType), Mime.ApplicationJson), Mime.ApplicationJson),
 
                             // Defaults to empty list.
-                            InclusiveNames = this.Shared.Variables.Get(VariableModel.NamespaceVariableName(pushEventsGroupName, CommonVariableNames.EventPushInclusiveNames), new List<String>())
+                            InclusiveNames = this.Shared.Variables.Variable(VariableModel.NamespaceVariableName(pushEventsGroupName, CommonVariableNames.EventPushInclusiveNames)).ToList<String>()
                         };
 
                         // Now make sure we don't already push to this Uri with the same interval.
@@ -132,7 +190,7 @@ namespace Potato.Core.Events {
                         this.EndPoints[pushEventsGroupName].Uri = new Uri(this.Shared.Variables.Get(VariableModel.NamespaceVariableName(pushEventsGroupName, CommonVariableNames.EventsPushUri), String.Empty));
                         this.EndPoints[pushEventsGroupName].Interval = this.Shared.Variables.Get(VariableModel.NamespaceVariableName(pushEventsGroupName, CommonVariableNames.EventPushIntervalSeconds), 1);
                         this.EndPoints[pushEventsGroupName].ContentType = Mime.ToMimeType(this.Shared.Variables.Get(VariableModel.NamespaceVariableName(pushEventsGroupName, CommonVariableNames.EventPushContentType), Mime.ApplicationJson), Mime.ApplicationJson);
-                        this.EndPoints[pushEventsGroupName].InclusiveNames = this.Shared.Variables.Get(VariableModel.NamespaceVariableName(pushEventsGroupName, CommonVariableNames.EventPushInclusiveNames), new List<String>());
+                        this.EndPoints[pushEventsGroupName].InclusiveNames = this.Shared.Variables.Variable(VariableModel.NamespaceVariableName(pushEventsGroupName, CommonVariableNames.EventPushInclusiveNames)).ToList<String>();
                     }
                 }
             }
@@ -178,6 +236,49 @@ namespace Potato.Core.Events {
             foreach (var endPoint in this.EndPoints) {
                 endPoint.Value.Append(e);
             }
+        }
+
+        /// <summary>
+        /// Establishes a json stream to an endpoint
+        /// </summary>
+        public ICommandResult EventsEstablishJsonStream(ICommand command, Dictionary<String, ICommandParameter> parameters) {
+            ICommandResult result = null;
+
+            String name = parameters["name"].First<String>();
+            String uri = parameters["uri"].First<String>();
+            String key = parameters["key"].First<String>();
+            int interval = parameters["interval"].First<int>();
+            List<String> inclusive = parameters["inclusive"].All<String>();
+
+            if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
+                this.Shared.Variables.Tunnel(CommandBuilder.VariablesSetF(VariableModel.NamespaceVariableName(name, CommonVariableNames.EventPushContentType), Mime.ApplicationJson).SetOrigin(CommandOrigin.Local));
+
+                this.Shared.Variables.Tunnel(CommandBuilder.VariablesSetF(VariableModel.NamespaceVariableName(name, CommonVariableNames.EventsPushUri), uri).SetOrigin(CommandOrigin.Local));
+                this.Shared.Variables.Tunnel(CommandBuilder.VariablesSetF(VariableModel.NamespaceVariableName(name, CommonVariableNames.EventPushIntervalSeconds), interval.ToString(CultureInfo.InvariantCulture)).SetOrigin(CommandOrigin.Local));
+                this.Shared.Variables.Tunnel(CommandBuilder.VariablesSetF(VariableModel.NamespaceVariableName(name, CommonVariableNames.EventPushStreamKey), key).SetOrigin(CommandOrigin.Local));
+                this.Shared.Variables.Tunnel(CommandBuilder.VariablesSetF(VariableModel.NamespaceVariableName(name, CommonVariableNames.EventPushInclusiveNames), inclusive).SetOrigin(CommandOrigin.Local));
+
+                ICommandResult uris = this.Shared.Variables.Tunnel(CommandBuilder.VariablesGet(CommonVariableNames.EventsPushConfigGroups).SetOrigin(CommandOrigin.Local));
+
+                var content = uris.Now.Content ?? new List<String>();
+
+                // If the name has not been registered already..
+                if (uris.Success == true && content.Contains(name) == false) {
+                    this.Shared.Variables.Tunnel(CommandBuilder.VariablesSetF(CommonVariableNames.EventsPushConfigGroups, content.Union(new List<String>() {
+                        name
+                    }).ToList()).SetOrigin(CommandOrigin.Local));
+                }
+
+                result = new CommandResult() {
+                    Success = true,
+                    CommandResultType = CommandResultType.Success
+                };
+            }
+            else {
+                result = CommandResult.InsufficientPermissions;
+            }
+
+            return result;
         }
 
         public override void Dispose() {

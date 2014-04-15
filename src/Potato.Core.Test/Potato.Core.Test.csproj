@@ -84,6 +84,7 @@
     <Compile Include="Database\Helpers\TestMigrationTrackerHelper.cs" />
     <Compile Include="Database\TestDatabaseController.cs" />
     <Compile Include="Database\TestDatabaseMigrationController.cs" />
+    <Compile Include="Events\TestEventsController\TestEventsEstablishJsonStream.cs" />
     <Compile Include="TestPotato\TestPotatoServiceMergePackage.cs" />
     <Compile Include="TestPotato\TestPotatoServiceRestart.cs" />
     <Compile Include="TestPotato\TestPotatoServiceUninstallPackage.cs" />

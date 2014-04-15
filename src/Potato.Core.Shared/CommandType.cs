@@ -283,6 +283,11 @@ namespace Potato.Core.Shared {
         VariablesGet,
 
         /// <summary>
+        /// Sets up a json end point to push all inclusive events.
+        /// </summary>
+        [Description("Sets up a json end point to push all inclusive events.")]
+        EventsEstablishJsonStream,
+        /// <summary>
         /// Fetches all events after an event id, provided the events remain in the stream.
         /// </summary>
         [Description("Fetches all events after an event id, provided the events remain in the stream.")]

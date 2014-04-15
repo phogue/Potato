@@ -13,15 +13,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
-#region
-
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading;
-using System.Xml.Linq;
 using NUnit.Framework;
 using Newtonsoft.Json;
 using Potato.Core.Events;
@@ -29,8 +25,6 @@ using Potato.Core.Shared;
 using Potato.Core.Shared.Events;
 using Potato.Core.Shared.Models;
 using Potato.Service.Shared;
-
-#endregion
 
 namespace Potato.Core.Test.Events {
     [TestFixture]

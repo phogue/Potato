@@ -54,6 +54,12 @@ namespace Potato.Core.Events {
         String ContentType { get; set; }
 
         /// <summary>
+        /// A list of names the event must match to be appended to this stream. Anything not in this list
+        /// won't be pushed to the end point.
+        /// </summary>
+        List<String> InclusiveNames { get; set; }
+
+        /// <summary>
         /// List of objects to serialize to xml passing through as content as POST.
         /// </summary>
         List<IGenericEvent> EventsStream { get; set; }

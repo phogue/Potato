@@ -58,7 +58,8 @@ namespace Potato.Core.Events {
                     CommonVariableNames.EventsPushUri.ToString(),
                     CommonVariableNames.EventPushIntervalSeconds.ToString(),
                     CommonVariableNames.EventPushContentType.ToString(),
-                    CommonVariableNames.EventPushStreamKey.ToString()
+                    CommonVariableNames.EventPushStreamKey.ToString(),
+                    CommonVariableNames.EventPushInclusiveNames.ToString()
                 }
             };
         }
@@ -68,7 +69,7 @@ namespace Potato.Core.Events {
         /// 
         /// This will also setup the empty namespace group.
         /// </summary>
-        protected void AssignEvents() {
+        public void AssignEvents() {
             // Remove all current handlers, also clears the list in this.ListeningVariables
             this.UnassignEvents();
 
@@ -81,7 +82,7 @@ namespace Potato.Core.Events {
         /// <summary>
         /// Removes all current event handlers.
         /// </summary>
-        protected void UnassignEvents() {
+        public void UnassignEvents() {
             this.GroupedVariableListener.VariablesModified -= GroupedVariableListenerOnVariablesModified;
             this.GroupedVariableListener.UnassignEvents();
 
@@ -93,7 +94,7 @@ namespace Potato.Core.Events {
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="pushEventsGroupNames"></param>
-        private void GroupedVariableListenerOnVariablesModified(GroupedVariableListener sender, List<String> pushEventsGroupNames) {
+        public void GroupedVariableListenerOnVariablesModified(GroupedVariableListener sender, List<String> pushEventsGroupNames) {
             foreach (String pushEventsGroupName in pushEventsGroupNames) {
                 String pushUri = this.Shared.Variables.Get(VariableModel.NamespaceVariableName(pushEventsGroupName, CommonVariableNames.EventsPushUri), String.Empty);
 
@@ -114,7 +115,10 @@ namespace Potato.Core.Events {
                             Interval = this.Shared.Variables.Get(VariableModel.NamespaceVariableName(pushEventsGroupName, CommonVariableNames.EventPushIntervalSeconds), 1),
 
                             // Defaults to Xml serialization
-                            ContentType = Mime.ToMimeType(this.Shared.Variables.Get(VariableModel.NamespaceVariableName(pushEventsGroupName, CommonVariableNames.EventPushContentType), Mime.ApplicationJson), Mime.ApplicationJson)
+                            ContentType = Mime.ToMimeType(this.Shared.Variables.Get(VariableModel.NamespaceVariableName(pushEventsGroupName, CommonVariableNames.EventPushContentType), Mime.ApplicationJson), Mime.ApplicationJson),
+
+                            // Defaults to empty list.
+                            InclusiveNames = this.Shared.Variables.Get(VariableModel.NamespaceVariableName(pushEventsGroupName, CommonVariableNames.EventPushInclusiveNames), new List<String>())
                         };
 
                         // Now make sure we don't already push to this Uri with the same interval.
@@ -128,6 +132,7 @@ namespace Potato.Core.Events {
                         this.EndPoints[pushEventsGroupName].Uri = new Uri(this.Shared.Variables.Get(VariableModel.NamespaceVariableName(pushEventsGroupName, CommonVariableNames.EventsPushUri), String.Empty));
                         this.EndPoints[pushEventsGroupName].Interval = this.Shared.Variables.Get(VariableModel.NamespaceVariableName(pushEventsGroupName, CommonVariableNames.EventPushIntervalSeconds), 1);
                         this.EndPoints[pushEventsGroupName].ContentType = Mime.ToMimeType(this.Shared.Variables.Get(VariableModel.NamespaceVariableName(pushEventsGroupName, CommonVariableNames.EventPushContentType), Mime.ApplicationJson), Mime.ApplicationJson);
+                        this.EndPoints[pushEventsGroupName].InclusiveNames = this.Shared.Variables.Get(VariableModel.NamespaceVariableName(pushEventsGroupName, CommonVariableNames.EventPushInclusiveNames), new List<String>());
                     }
                 }
             }
@@ -148,7 +153,7 @@ namespace Potato.Core.Events {
         /// Fired whenever an endpoint is ready to be pushed.
         /// </summary>
         /// <param name="sender"></param>
-        private static void OnTick(object sender) {
+        public void OnTick(object sender) {
             IPushEventsEndPoint endPoint = sender as PushEventsEndPoint;
 
             if (endPoint != null) {
@@ -166,7 +171,7 @@ namespace Potato.Core.Events {
             return base.Execute();
         }
 
-        private void MasterEvents_EventLogged(object sender, IGenericEvent e) {
+        public void MasterEvents_EventLogged(object sender, IGenericEvent e) {
             foreach (var endPoint in this.EndPoints) {
                 endPoint.Value.Append(e);
             }

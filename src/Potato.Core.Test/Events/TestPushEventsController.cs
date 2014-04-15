@@ -117,12 +117,18 @@ namespace Potato.Core.Test.Events {
                 CommandType = CommandType.VariablesSet
             }, CommonVariableNames.EventPushIntervalSeconds, 10);
 
+            variables.Set(new Command() {
+                Origin = CommandOrigin.Local,
+                CommandType = CommandType.VariablesSet
+            }, CommonVariableNames.EventPushInclusiveNames, new List<String>() { "EventName" });
+
             // Validate the end point has been added.
             Assert.IsTrue(pushEvents.EndPoints.ContainsKey(String.Empty));
             Assert.AreEqual("http://localhost/pushme.php", pushEvents.EndPoints[String.Empty].Uri.ToString());
             Assert.AreEqual(10, pushEvents.EndPoints[String.Empty].Interval);
 
             events.Log(new GenericEvent() {
+                Name = "EventName",
                 Message = "Yo."
             });
 
@@ -158,18 +164,24 @@ namespace Potato.Core.Test.Events {
                 CommandType = CommandType.VariablesSet
             }, CommonVariableNames.EventPushIntervalSeconds, 1);
 
+            variables.Set(new Command() {
+                Origin = CommandOrigin.Local,
+                CommandType = CommandType.VariablesSet
+            }, CommonVariableNames.EventPushInclusiveNames, new List<String>() { "EventName" });
+
             // Validate the end point has been added.
             Assert.IsTrue(pushEvents.EndPoints.ContainsKey(String.Empty));
             Assert.AreEqual("http://localhost/pushme.php", pushEvents.EndPoints[String.Empty].Uri.ToString());
             Assert.AreEqual(1, pushEvents.EndPoints[String.Empty].Interval);
 
             events.Log(new GenericEvent() {
+                Name = "EventName",
                 Message = "Yo."
             });
 
             pushEvents.EndPoints[String.Empty].PushCompleted += sender => requestWait.Set();
 
-            Assert.IsTrue(requestWait.WaitOne(60000));
+            Assert.IsTrue(requestWait.WaitOne(5000));
             Assert.AreEqual(0, pushEvents.EndPoints[String.Empty].EventsStream.Count);
         }
 

@@ -15,6 +15,7 @@
 #endregion
 #region
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -42,13 +43,37 @@ namespace Potato.Core.Test.Events {
         /// </summary>
         [Test]
         public void TestPushEventsAppendSuccess() {
-            var pushEndPoint = new PushEventsEndPoint();
+            var pushEndPoint = new PushEventsEndPoint() {
+                InclusiveNames = new List<String>() {
+                    "EventName"
+                }
+            };
 
             pushEndPoint.Append(new GenericEvent() {
-                Message = "What up?"
+                Name = "EventName",
+                Message = "Yo."
             });
 
             Assert.AreEqual(1, pushEndPoint.EventsStream.Count);
+        }
+
+        /// <summary>
+        /// Tests that an event not in the inclusive names will not be added.
+        /// </summary>
+        [Test]
+        public void TestPushEventsAppendNonInclusiveEventNotPushed() {
+            var pushEndPoint = new PushEventsEndPoint() {
+                InclusiveNames = new List<String>() {
+                    "EventName"
+                }
+            };
+
+            pushEndPoint.Append(new GenericEvent() {
+                Name = "DifferentEventName",
+                Message = "Yo."
+            });
+
+            Assert.AreEqual(0, pushEndPoint.EventsStream.Count);
         }
 
         /// <summary>
@@ -79,9 +104,14 @@ namespace Potato.Core.Test.Events {
         [Test]
         public void TestPushEventsRequestFailCleanupOccurs() {
             var requestWait = new AutoResetEvent(false);
-            var pushEndPoint = new PushEventsEndPoint();
+            var pushEndPoint = new PushEventsEndPoint() {
+                InclusiveNames = new List<String>() {
+                    "EventName"
+                }
+            };
 
             pushEndPoint.Append(new GenericEvent() {
+                Name = "EventName",
                 Message = "What up?"
             });
 
@@ -89,7 +119,7 @@ namespace Potato.Core.Test.Events {
 
             pushEndPoint.Push();
 
-            Assert.IsTrue(requestWait.WaitOne(60000));
+            Assert.IsTrue(requestWait.WaitOne(1000));
             Assert.AreEqual(0, pushEndPoint.EventsStream.Count);
         }
 

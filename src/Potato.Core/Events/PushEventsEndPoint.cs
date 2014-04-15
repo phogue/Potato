@@ -26,40 +26,20 @@ namespace Potato.Core.Events {
     /// An end point to push grouped events to via http/https
     /// </summary>
     public class PushEventsEndPoint : IPushEventsEndPoint {
-        /// <summary>
-        /// The identifier of this stream
-        /// </summary>
         public String Id { get; set; }
 
-        /// <summary>
-        /// The stream key (temporary password) specified by the stream end point when setting up.
-        /// </summary>
         public String StreamKey { get; set; }
 
-        /// <summary>
-        /// Simple flag to determine if a push is in progress.
-        /// </summary>
         public bool Pushing { get; set; }
 
-        /// <summary>
-        /// The url to push data to.
-        /// </summary>
         public Uri Uri { get; set; }
 
-        /// <summary>
-        /// The interval in seconds to push events
-        /// </summary>
         public int Interval { get; set; }
 
-        /// <summary>
-        /// The content type of the data to be pushed. This determines how the events list should be
-        /// serialized for this end point. The default is xml serialization.
-        /// </summary>
         public String ContentType { get; set; }
 
-        /// <summary>
-        /// List of objects to serialize to xml passing through as content as POST.
-        /// </summary>
+        public List<String> InclusiveNames { get; set; }
+
         public List<IGenericEvent> EventsStream { get; set; }
 
         /// <summary>
@@ -78,6 +58,7 @@ namespace Potato.Core.Events {
             this.Interval = 1;
             this.ContentType = Mime.ApplicationJson;
             this.Uri = new Uri("http://localhost/");
+            this.InclusiveNames = new List<String>();
         }
 
         /// <summary>
@@ -87,9 +68,11 @@ namespace Potato.Core.Events {
         public void Append(IGenericEvent item) {
             if (this.EventsStream != null) {
                 lock (this.EventsStream) {
-                    item.Disposed += GenericEventArgs_Disposed;
+                    if (this.InclusiveNames.Contains(item.Name) == true) {
+                        item.Disposed += GenericEventArgs_Disposed;
 
-                    this.EventsStream.Add(item);
+                        this.EventsStream.Add(item);
+                    }
                 }
             }
         }

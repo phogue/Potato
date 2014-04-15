@@ -17,7 +17,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.ComponentModel;
-using Procon.Net.Shared.Models;
+using Potato.Net.Shared.Models;
 
 namespace Myrcon.Protocols.Frostbite.Objects {
     [Serializable]

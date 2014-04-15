@@ -18,11 +18,11 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using Myrcon.Protocols.Frostbite.Objects;
-using Procon.Net;
-using Procon.Net.Shared;
-using Procon.Net.Shared.Actions;
-using Procon.Net.Shared.Models;
-using Procon.Net.Shared.Protocols;
+using Potato.Net;
+using Potato.Net.Shared;
+using Potato.Net.Shared.Actions;
+using Potato.Net.Shared.Models;
+using Potato.Net.Shared.Protocols;
 
 namespace Myrcon.Protocols.Frostbite.MedalOfHonor {
     [ProtocolDeclaration(Type = CommonProtocolType.DiceMedalOfHonor2010, Name = "Medal of Honor 2010", Provider = "Myrcon")]

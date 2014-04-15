@@ -15,7 +15,7 @@
 #endregion
 using System;
 using System.Net.Sockets;
-using Procon.Net.Shared;
+using Potato.Net.Shared;
 
 namespace Myrcon.Protocols.Test {
     public class MockClient : IClient {

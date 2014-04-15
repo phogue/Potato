@@ -17,8 +17,8 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.ComponentModel;
-using Procon.Net.Shared.Actions;
-using Procon.Net.Shared.Models;
+using Potato.Net.Shared.Actions;
+using Potato.Net.Shared.Models;
 
 namespace Myrcon.Protocols.Frostbite.Objects {
     public static class FrostbiteChat {
@@ -103,7 +103,7 @@ namespace Myrcon.Protocols.Frostbite.Objects {
             chat.Origin = NetworkOrigin.Reflected;
             chat.Now.Players = new List<PlayerModel>() {
                 new PlayerModel() {
-                    Name = "Procon"
+                    Name = "Potato"
                 }
             };
 

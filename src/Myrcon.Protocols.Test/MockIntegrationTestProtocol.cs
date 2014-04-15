@@ -15,8 +15,8 @@
 #endregion
 using System;
 using System.Collections.Generic;
-using Procon.Net.Shared;
-using Procon.Net.Shared.Actions;
+using Potato.Net.Shared;
+using Potato.Net.Shared.Actions;
 
 namespace Myrcon.Protocols.Test {
     [ProtocolDeclaration(Type = "MockIntegrationTestProtocol", Name = "Mock Integration Test Protocol", Provider = "Myrcon")]

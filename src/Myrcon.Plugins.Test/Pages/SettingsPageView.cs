@@ -26,7 +26,7 @@
 
 namespace Myrcon.Plugins.Test.Pages
 {
-#line 1 "C:\Users\P\Documents\Projects\clients\myrcon\procon\Procon-2\src\TestPlugin\Pages\SettingsPageView.tt"
+#line 1 "C:\Users\P\Documents\Projects\clients\myrcon\Potato\Potato-2\src\TestPlugin\Pages\SettingsPageView.tt"
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "10.0.0.0")]
     public partial class SettingsPageView : SettingsPageViewBase
     {

@@ -17,9 +17,9 @@ using System;
 using System.Collections.Generic;
 using Myrcon.Plugins.Test.Pages;
 using Myrcon.Plugins.Test.Properties;
-using Procon.Core.Shared;
-using Procon.Net.Shared.Models;
-using Procon.Net.Shared.Utils.HTTP;
+using Potato.Core.Shared;
+using Potato.Net.Shared.Models;
+using Potato.Net.Shared.Utils.HTTP;
 
 namespace Myrcon.Plugins.Test.Tests {
 

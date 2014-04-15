@@ -13,7 +13,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
-using Procon.Net.Shared;
+using Potato.Net.Shared;
 
 namespace Myrcon.Protocols.Frostbite.Battlefield {
     public abstract class BattlefieldGame : FrostbiteGame {

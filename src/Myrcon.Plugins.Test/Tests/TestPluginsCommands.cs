@@ -15,7 +15,7 @@
 #endregion
 using System;
 using System.Collections.Generic;
-using Procon.Core.Shared;
+using Potato.Core.Shared;
 
 namespace Myrcon.Plugins.Test.Tests {
     public class TestPluginsCommands : CoreController {

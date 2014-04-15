@@ -17,15 +17,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Myrcon.Plugins.Test.Tests;
-using Procon.Core.Shared;
-using Procon.Core.Shared.Events;
-using Procon.Core.Shared.Models;
-using Procon.Core.Shared.Plugins;
-using Procon.Net.Shared;
-using Procon.Net.Shared.Actions;
-using Procon.Net.Shared.Actions.Deferred;
-using Procon.Net.Shared.Models;
-using Procon.Net.Shared.Utils;
+using Potato.Core.Shared;
+using Potato.Core.Shared.Events;
+using Potato.Core.Shared.Models;
+using Potato.Core.Shared.Plugins;
+using Potato.Net.Shared;
+using Potato.Net.Shared.Actions;
+using Potato.Net.Shared.Actions.Deferred;
+using Potato.Net.Shared.Models;
+using Potato.Net.Shared.Utils;
 
 namespace Myrcon.Plugins.Test {
 

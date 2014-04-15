@@ -15,7 +15,7 @@
 #endregion
 using System;
 using System.Collections.Generic;
-using Procon.Net.Shared.Models;
+using Potato.Net.Shared.Models;
 
 namespace Myrcon.Protocols.Frostbite.Objects {
     [Serializable]

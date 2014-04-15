@@ -19,14 +19,14 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using Myrcon.Protocols.Frostbite.Objects;
-using Procon.Net;
-using Procon.Net.Protocols.PunkBuster;
-using Procon.Net.Protocols.PunkBuster.Packets;
-using Procon.Net.Shared;
-using Procon.Net.Shared.Actions;
-using Procon.Net.Shared.Geolocation;
-using Procon.Net.Shared.Models;
-using Procon.Net.Shared.Utils;
+using Potato.Net;
+using Potato.Net.Protocols.PunkBuster;
+using Potato.Net.Protocols.PunkBuster.Packets;
+using Potato.Net.Shared;
+using Potato.Net.Shared.Actions;
+using Potato.Net.Shared.Geolocation;
+using Potato.Net.Shared.Models;
+using Potato.Net.Shared.Utils;
 
 namespace Myrcon.Protocols.Frostbite {
     public abstract class FrostbiteGame : Protocol {

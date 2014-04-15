@@ -17,7 +17,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Security;
-using Procon.Core.Shared;
+using Potato.Core.Shared;
 
 namespace Myrcon.Plugins.Test.Tests {
     public class TestPluginsIsolation : CoreController {

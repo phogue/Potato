@@ -16,8 +16,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Procon.Net.Shared.Actions;
-using Procon.Net.Shared.Models;
+using Potato.Net.Shared.Actions;
+using Potato.Net.Shared.Models;
 
 namespace Myrcon.Protocols.Frostbite.Objects {
     [Serializable]
@@ -35,7 +35,7 @@ namespace Myrcon.Protocols.Frostbite.Objects {
                         Name = words[1]
                     });
                 }
-                // Procon 2.0 considers ip banning as obsolete
+                // Potato 2.0 considers ip banning as obsolete
                 //else if (String.Compare(words[0], "ip") == 0) {
                 //    this.IpAddress = words[1];
                 //}

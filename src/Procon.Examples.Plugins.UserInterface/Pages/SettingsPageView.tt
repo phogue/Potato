@@ -1,2 +1,0 @@
-﻿<#@ template debug="false" hostspecific="false" language="C#" #>
-<h2>Settings</h2><b><#= this.MyStringyVariable #></b><# foreach (Procon.Net.Models.Player player in this.MyListOfPlayers) { #><#= player.Name #> (Score: <#= player.Score #>)<br/><# } #>

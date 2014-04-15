@@ -28,7 +28,7 @@ namespace Myrcon.Plugins.Test.Pages
     using System;
     
     
-    #line 1 "C:\Users\P\Documents\Projects\clients\myrcon\procon\Procon-2\src\Myrcon.Plugins.Test\Pages\IndexPageView.tt"
+    #line 1 "C:\Users\P\Documents\Projects\clients\myrcon\Potato\Potato-2\src\Myrcon.Plugins.Test\Pages\IndexPageView.tt"
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "10.0.0.0")]
     public partial class IndexPageView : IndexPageViewBase
     {
@@ -63,33 +63,33 @@ namespace Myrcon.Plugins.Test.Pages
                     ">\r\n\t\t\t\t</form>\r\n\t\t\t\t\r\n\t\t\t\t<h3>Here\'s the result of the multiplication: {{ Mathem" +
                     "atics.Result }}</h3>\r\n\t\t\t\t<div ng-if=\"Mathematics.Result != 0\">\r\n\t\t\t\t\t<p>The pro" +
                     "cess this just went through:</p>\r\n\t\t\t\t\t<ul>\r\n\t\t\t\t\t\t<li>Angular.Submit()</li>\r\n\t\t" +
-                    "\t\t\t\t<li>Through the sandbox between Procon.UI Window and this plugins iframe wit" +
-                    "h postMessage</li>\r\n\t\t\t\t\t\t<li>Emitted via websocket to the Procon UI</li>\r\n\t\t\t\t\t" +
-                    "\t<li>Credentials attached and the command, sent to a running Procon 2 C# Instanc" +
-                    "e</li>\r\n\t\t\t\t\t\t<li>Deserialized by Procon 2, routed to a specific connection</li>" +
+                    "\t\t\t\t<li>Through the sandbox between Potato.UI Window and this plugins iframe wit" +
+                    "h postMessage</li>\r\n\t\t\t\t\t\t<li>Emitted via websocket to the Potato UI</li>\r\n\t\t\t\t\t" +
+                    "\t<li>Credentials attached and the command, sent to a running Potato 2 C# Instanc" +
+                    "e</li>\r\n\t\t\t\t\t\t<li>Deserialized by Potato 2, routed to a specific connection</li>" +
                     "\r\n\t\t\t\t\t\t<li>Crosses the sandbox into the Plugin AppDomain</li>\r\n\t\t\t\t\t\t<li>Routes" +
                     " the command \"TestPluginSimpleMultiplyByTwoCommand\" at https://github.com/Myrcon" +
-                    "/Procon-2/blob/master/src/Myrcon.Plugins.Test/Tests/TestPluginsWebUi.cs </li>\r\n\t" +
+                    "/Potato-2/blob/master/src/Myrcon.Plugins.Test/Tests/TestPluginsWebUi.cs </li>\r\n\t" +
                     "\t\t\t\t\t<li>Multiplies the number.</li>\r\n\t\t\t\t\t\t<li>Reverse of above.</li>\r\n\t\t\t\t\t</u" +
                     "l>\r\n\t\t\t\t</div>\r\n            </script>\r\n\r\n            <script type=\"text/ng-templ" +
                     "ate\" id=\"/about.html\">\r\n                <h2>About</h2>\r\n\t\t\t\t<p>This plugin is ma" +
                     "de by Geoff to demonstrate making a basic plugin UI.</p>\r\n            </script>\r" +
                     "\n\r\n            <script type=\"text/ng-template\" id=\"/widget/overview.html\">\r\n    " +
                     "            <h2>This is a plugin panel generated from the C# instance</h2>\r\n\t\t\t\t" +
-                    "<p>You can see this text being pulled from procon at https://github.com/Myrcon/P" +
+                    "<p>You can see this text being pulled from Potato at https://github.com/Myrcon/P" +
                     "rocon-2/blob/master/src/Myrcon.Plugins.Test/Pages/IndexPageView.tt </p>\r\n\t\t\t\t<p>" +
-                    "Panels like this will be displayed around Procon. It\'s entirely up to the plugin" +
+                    "Panels like this will be displayed around Potato. It\'s entirely up to the plugin" +
                     " developer what content and functionality shows up in this little panel.</p>\r\n  " +
                     "          </script>\r\n\r\n            <script type=\"text/ng-template\" id=\"/widget/s" +
                     "ettings.html\">\r\n                <h2>This is a plugin panel generated from the C#" +
-                    " instance</h2>\r\n\t\t\t\t<p>You can see this text being pulled from procon at https:/" +
-                    "/github.com/Myrcon/Procon-2/blob/master/src/Myrcon.Plugins.Test/Pages/IndexPageV" +
-                    "iew.tt </p>\r\n\t\t\t\t<p>Procon 2 is very broad on its protocol. This panel could be " +
+                    " instance</h2>\r\n\t\t\t\t<p>You can see this text being pulled from Potato at https:/" +
+                    "/github.com/Myrcon/Potato-2/blob/master/src/Myrcon.Plugins.Test/Pages/IndexPageV" +
+                    "iew.tt </p>\r\n\t\t\t\t<p>Potato 2 is very broad on its protocol. This panel could be " +
                     "used to display game-specific functionality of settings</p>\r\n            </scrip" +
                     "t>\r\n\r\n            <script type=\"text/ng-template\" id=\"/widget/player.html\">\r\n   " +
                     "             <h2>This is a plugin panel generated from the C# instance</h2>\r\n\t\t\t" +
-                    "\t<p>You can see this text being pulled from procon at https://github.com/Myrcon/" +
-                    "Procon-2/blob/master/src/Myrcon.Plugins.Test/Pages/IndexPageView.tt </p>\r\n\t\t\t\t<p" +
+                    "\t<p>You can see this text being pulled from Potato at https://github.com/Myrcon/" +
+                    "Potato-2/blob/master/src/Myrcon.Plugins.Test/Pages/IndexPageView.tt </p>\r\n\t\t\t\t<p" +
                     ">This panel could be used to display additional infromation, statistics etc. abo" +
                     "ut this particular player.</p>\r\n            </script>\r\n\t\t</div>\r\n\t</body>\r\n</htm" +
                     "l>");

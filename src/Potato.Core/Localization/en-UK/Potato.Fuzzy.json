@@ -1,0 +1,360 @@
+﻿{
+    "Potato.Core.Localization.LanguageConfig": [
+        {
+            "LanguageCode": "en-UK",
+            "CountryCode": "GB",
+            "EnglishName": "English (UK)",
+            "NativeName": "English (UK)"
+        }
+    ],
+    "Potato.Fuzzy.Tokens.Object.NumericPropertyObjectToken": [
+        { "Name": "Ping", "Text": "ping" },
+        { "Name": "Score", "Text": "score" },
+        { "Name": "Kills", "Text": "kills" },
+        { "Name": "Deaths", "Text": "deaths" },
+        { "Name": "Kdr", "Text": "kdr" },
+        { "Name": "Kdr", "Text": "ratio" }
+    ],
+    "Potato.Fuzzy.Tokens.Object.SelfReflectionThingObjectToken": [
+        { "Text": "me" },
+        { "Text": "my" },
+        { "Text": "have I" },
+        { "Text": "will I" },
+        { "Text": "am I" },
+        { "Text": "I" }
+    ],
+    "Potato.Fuzzy.Tokens.Object.ThingObjectToken": [
+        { "Name": "Players", "Text": "everyone", "Value": "Player" },
+        { "Name": "Players", "Text": "players", "Value": "Player" },
+        { "Name": "Players", "Text": "all players", "Value": "Player" },
+        { "Name": "Players", "Text": "every player", "Value": "Player" },
+        { "Name": "Maps", "Text": "all maps", "Value": "Map" },
+        { "Name": "Maps", "Text": "every map", "Value": "Map" }
+    ],
+    "Potato.Fuzzy.Tokens.Operator.Logical.Equality.EqualsEqualityLogicalOperatorToken": [
+        { "Text": "=" },
+        { "Text": "==" },
+        { "Text": "equal" },
+        { "Text": "equals" },
+        { "Text": "equal to" },
+        { "Text": "eq" }
+    ],
+    "Potato.Fuzzy.Tokens.Operator.Logical.Equality.GreaterThanEqualityLogicalOperatorToken": [
+        { "Text": "greater than" },
+        { "Text": ">" },
+        { "Text": "over" },
+        { "Text": "bigger than" },
+        { "Text": "more than" },
+        { "Text": "above" },
+        { "Text": "gt" }
+    ],
+    "Potato.Fuzzy.Tokens.Operator.Logical.Equality.GreaterThanEqualToEqualityLogicalOperatorToken": [
+        { "Text": ">=" },
+        { "Text": "gteq" }
+    ],
+    "Potato.Fuzzy.Tokens.Operator.Logical.Equality.LessThanEqualityLogicalOperatorToken": [
+        { "Text": "less than" },
+        { "Text": "<" },
+        { "Text": "lower than" },
+        { "Text": "smaller than" },
+        { "Text": "under" },
+        { "Text": "lt" }
+    ],
+    "Potato.Fuzzy.Tokens.Operator.Logical.Equality.LessThanEqualToEqualityLogicalOperatorToken": [
+        { "Text": "<=" },
+        { "Text": "lteq" }
+    ],
+    "Potato.Fuzzy.Tokens.Operator.Logical.AndLogicalOperatorToken": [
+        { "Text": "and" },
+        { "Text": "in" },
+        { "Text": "using" },
+        { "Text": "using a" },
+        { "Text": "from" }
+    ],
+    "Potato.Fuzzy.Tokens.Operator.Logical.ExcludingLogicalOperatorToken": [
+        { "Text": "exclude" },
+        { "Text": "excluding" },
+        { "Text": "but" },
+        { "Text": "but not" },
+        { "Text": "but not on" },
+        { "Text": "but not in" },
+        { "Text": "not from" },
+        { "Text": "not using" },
+        { "Text": "not on" },
+        { "Text": "not in" },
+        { "Text": "except" },
+        { "Text": "outside" }
+    ],
+    "Potato.Fuzzy.Tokens.Operator.Logical.NotLogicalOperatorToken": [
+        { "Text": "not" }
+    ],
+    "Potato.Fuzzy.Tokens.Operator.Logical.OrLogicalOperatorToken": [
+        { "Text": "or" }
+    ],
+    "Potato.Fuzzy.Tokens.Operator.Arithmetic.SecondOrder.DivisionSecondOrderArithmeticToken": [
+        { "Text": "divide" },
+        { "Text": "divide by" },
+        { "Text": "divided" },
+        { "Text": "divided by" }
+    ],
+    "Potato.Fuzzy.Tokens.Operator.Arithmetic.SecondOrder.MultiplicationSecondOrderArithmeticToken": [
+        { "Text": "times" },
+        { "Text": "x" },
+        { "Text": "multiply" },
+        { "Text": "multiply by" },
+        { "Text": "multiplied" },
+        { "Text": "multiplied by" }
+    ],
+    "Potato.Fuzzy.Tokens.Operator.Arithmetic.SecondOrder.PowerSecondOrderArithmeticToken": [
+        { "Text": "to the power of" },
+        { "Text": "to the power" },
+        { "Text": "power of" },
+        { "Text": "pow" }
+    ],
+    "Potato.Fuzzy.Tokens.Operator.Arithmetic.ThirdOrder.AdditionThirdOrderArithmeticOperatorToken": [
+        { "Text": "add" },
+        { "Text": "plus" },
+        { "Text": "combine" },
+        { "Text": "sum" }
+    ],
+    "Potato.Fuzzy.Tokens.Operator.Arithmetic.ThirdOrder.SubtractionThirdOrderArithmeticOperatorToken": [
+        { "Text": "take" },
+        { "Text": "minus" }
+    ],
+    "Potato.Fuzzy.Tokens.Primitive.Numeric.FloatNumericPrimitiveToken": [
+        { "Regex": "^(?<value>[-+]?[0-9]+[ ]?[\\.,]?[ ]?[0-9]*)$" },
+        { "Text": "couple", "Value": "2" },
+        { "Text": "a couple", "Value": "2" },
+        { "Text": "dozen", "Value": "12" },
+        { "Text": "a dozen", "Value": "12" },
+        { "Text": "zero", "Value": "0" },
+        { "Text": "one", "Value": "1" },
+        { "Text": "two", "Value": "2" },
+        { "Text": "three", "Value": "3" },
+        { "Text": "four", "Value": "4" },
+        { "Text": "five", "Value": "5" },
+        { "Text": "six", "Value": "6" },
+        { "Text": "seven", "Value": "7" },
+        { "Text": "eight", "Value": "8" },
+        { "Text": "nine", "Value": "9" },
+        { "Text": "ten", "Value": "10" },
+        { "Text": "eleven", "Value": "11" },
+        { "Text": "twelve", "Value": "12" },
+        { "Text": "thirteen", "Value": "13" },
+        { "Text": "fourteen", "Value": "14" },
+        { "Text": "fifteen", "Value": "15" },
+        { "Text": "sixteen", "Value": "16" },
+        { "Text": "seventeen", "Value": "17" },
+        { "Text": "eighteen", "Value": "18" },
+        { "Text": "nineteen", "Value": "19" },
+        { "Text": "twenty", "Value": "20" },
+        { "Text": "thirty", "Value": "30" },
+        { "Text": "forty", "Value": "40" },
+        { "Text": "fifty", "Value": "50" },
+        { "Text": "sixty", "Value": "60" },
+        { "Text": "seventy", "Value": "70" },
+        { "Text": "eighty", "Value": "80" },
+        { "Text": "ninety", "Value": "90" }
+    ],
+    "Potato.Fuzzy.Tokens.Primitive.Numeric.OrdinalNumericPrimitiveToken": [
+        { "Regex": "^(?<value>[0-9]*)\'?(st|nd|th)$" }
+    ],
+    "Potato.Fuzzy.Tokens.Primitive.Numeric.Cardinal.MultiplicandCardinalNumericPrimitiveToken": [
+        { "Text": "hundred", "Value": "100" },
+        { "Text": "thousand", "Value": "1000" },
+        { "Text": "million", "Value": "1000000" }
+    ],
+    "Potato.Fuzzy.Tokens.Primitive.Temporal.Units.Meridiem.PostMeridiemUnitsTemporalPrimitiveToken": [
+        { "Text": "p.m" },
+        { "Text": "pm" }
+    ],
+    "Potato.Fuzzy.Tokens.Primitive.Temporal.Units.Meridiem.AnteMeridiemUnitsTemporalPrimitiveToken": [
+        { "Text": "a.m" },
+        { "Text": "am" }
+    ],
+    "Potato.Fuzzy.Tokens.Primitive.Temporal.Units.DaysUnitTemporalPrimitiveToken": [
+        { "Text": "day" },
+        { "Text": "days" }
+    ],
+    "Potato.Fuzzy.Tokens.Primitive.Temporal.Units.HoursUnitTemporalPrimitiveToken": [
+        { "Text": "hour" },
+        { "Text": "hours" },
+        { "Text": "hrs" }
+    ],
+    "Potato.Fuzzy.Tokens.Primitive.Temporal.Units.MinutesUnitTemporalPrimitiveToken": [
+        { "Text": "minute" },
+        { "Text": "minutes" },
+        { "Text": "mins" }
+    ],
+    "Potato.Fuzzy.Tokens.Primitive.Temporal.Units.MonthsUnitTemporalPrimitiveToken": [
+        { "Text": "month" },
+        { "Text": "months" }
+    ],
+    "Potato.Fuzzy.Tokens.Primitive.Temporal.Units.SecondsUnitTemporalPrimitiveToken": [
+        { "Text": "second" },
+        { "Text": "seconds" },
+        { "Text": "secs" }
+    ],
+    "Potato.Fuzzy.Tokens.Primitive.Temporal.Units.WeeksUnitTemporalPrimitiveToken": [
+        { "Text": "week" },
+        { "Text": "weeks" }
+    ],
+    "Potato.Fuzzy.Tokens.Primitive.Temporal.Units.YearsUnitTemporalPrimitiveToken": [
+        { "Text": "year" },
+        { "Text": "years" }
+    ],
+    "Potato.Fuzzy.Tokens.Primitive.Temporal.Variable.Days.SundayDaysVariableTemporalPrimitiveToken": [
+        { "Text": "sunday" },
+        { "Text": "sun" }
+    ],
+    "Potato.Fuzzy.Tokens.Primitive.Temporal.Variable.Days.MondayDaysVariableTemporalPrimitiveToken": [
+        { "Text": "monday" },
+        { "Text": "mon" }
+    ],
+    "Potato.Fuzzy.Tokens.Primitive.Temporal.Variable.Days.TuesdayDaysVariableTemporalPrimitiveToken": [
+        { "Text": "tuesday" },
+        { "Text": "tues" }
+    ],
+    "Potato.Fuzzy.Tokens.Primitive.Temporal.Variable.Days.WednesdayDaysVariableTemporalPrimitiveToken": [
+        { "Text": "wednesday" },
+        { "Text": "wed" }
+    ],
+    "Potato.Fuzzy.Tokens.Primitive.Temporal.Variable.Days.ThursdayDaysVariableTemporalPrimitiveToken": [
+        { "Text": "thursday" },
+        { "Text": "thurs" }
+    ],
+    "Potato.Fuzzy.Tokens.Primitive.Temporal.Variable.Days.FridayDaysVariableTemporalPrimitiveToken": [
+        { "Text": "friday" },
+        { "Text": "fri" }
+    ],
+    "Potato.Fuzzy.Tokens.Primitive.Temporal.Variable.Days.SaturdayDaysVariableTemporalPrimitiveToken": [
+        { "Text": "saturday" },
+        { "Text": "sat" }
+    ],
+    "Potato.Fuzzy.Tokens.Primitive.Temporal.Variable.Months.JanuaryMonthsVariableTemporalPrimitiveToken": [
+        { "Text": "january" },
+        { "Text": "jan" }
+    ],
+    "Potato.Fuzzy.Tokens.Primitive.Temporal.Variable.Months.FebruaryMonthsVariableTemporalPrimitiveToken": [
+        { "Text": "february" },
+        { "Text": "feb" }
+    ],
+    "Potato.Fuzzy.Tokens.Primitive.Temporal.Variable.Months.MarchMonthsVariableTemporalPrimitiveToken": [
+        { "Text": "march" },
+        { "Text": "mar" }
+    ],
+    "Potato.Fuzzy.Tokens.Primitive.Temporal.Variable.Months.AprilMonthsVariableTemporalPrimitiveToken": [
+        { "Text": "april" },
+        { "Text": "apr" }
+    ],
+    "Potato.Fuzzy.Tokens.Primitive.Temporal.Variable.Months.MayMonthsVariableTemporalPrimitiveToken": [
+        { "Text": "may" }
+    ],
+    "Potato.Fuzzy.Tokens.Primitive.Temporal.Variable.Months.JuneMonthsVariableTemporalPrimitiveToken": [
+        { "Text": "june" },
+        { "Text": "jun" }
+    ],
+    "Potato.Fuzzy.Tokens.Primitive.Temporal.Variable.Months.JulyMonthsVariableTemporalPrimitiveToken": [
+        { "Text": "july" },
+        { "Text": "jul" }
+    ],
+    "Potato.Fuzzy.Tokens.Primitive.Temporal.Variable.Months.AugustMonthsVariableTemporalPrimitiveToken": [
+        { "Text": "august" },
+        { "Text": "aug" }
+    ],
+    "Potato.Fuzzy.Tokens.Primitive.Temporal.Variable.Months.SeptemberMonthsVariableTemporalPrimitiveToken": [
+        { "Text": "september" },
+        { "Text": "sept" }
+    ],
+    "Potato.Fuzzy.Tokens.Primitive.Temporal.Variable.Months.OctoberMonthsVariableTemporalPrimitiveToken": [
+        { "Text": "october" },
+        { "Text": "oct" }
+    ],
+    "Potato.Fuzzy.Tokens.Primitive.Temporal.Variable.Months.NovemberMonthsVariableTemporalPrimitiveToken": [
+        { "Text": "november" },
+        { "Text": "nov" }
+    ],
+    "Potato.Fuzzy.Tokens.Primitive.Temporal.Variable.Months.DecemberMonthsVariableTemporalPrimitiveToken": [
+        { "Text": "december" },
+        { "Text": "dec" }
+    ],
+    "Potato.Fuzzy.Tokens.Primitive.Temporal.Variable.Date.Day.TodayDayVariableTemporalPrimitiveToken": [
+        { "Text": "today" }
+    ],
+    "Potato.Fuzzy.Tokens.Primitive.Temporal.Variable.Date.Day.TomorrowDayVariableTemporalPrimitiveToken": [
+        { "Text": "tomorrow" }
+    ],
+    "Potato.Fuzzy.Tokens.Primitive.Temporal.Variable.Date.Day.YesterdayDayVariableTemporalPrimitiveToken": [
+        { "Text": "yesterday" }
+    ],
+    "Potato.Fuzzy.Tokens.Syntax.Prepositions.Adpositions.AtAdpositionsPrepositionsSyntaxToken": [
+        { "Text": "at" }
+    ],
+    "Potato.Fuzzy.Tokens.Syntax.Prepositions.Adpositions.ForAdpositionsPrepositionsSyntaxToken": [
+        { "Text": "for" }
+    ],
+    "Potato.Fuzzy.Tokens.Syntax.Prepositions.Adpositions.InAdpositionsPrepositionsSyntaxToken": [
+        { "Text": "in" }
+    ],
+    "Potato.Fuzzy.Tokens.Syntax.Prepositions.OnPrepositionsSyntaxToken": [
+        { "Text": "on" }
+    ],
+    "Potato.Fuzzy.Tokens.Syntax.Prepositions.UntilPrepositionsSyntaxToken": [
+        { "Text": "until" }
+    ],
+    "Potato.Fuzzy.Tokens.Syntax.Articles.IndefiniteArticlesSyntaxToken": [
+        { "Text": "a" },
+        { "Text": "an" }
+    ],
+    "Potato.Fuzzy.Tokens.Syntax.Articles.DefiniteArticlesSyntaxToken": [
+        { "Text": "the" }
+    ],
+    "Potato.Fuzzy.Tokens.Syntax.Adjectives.LastAdjectiveSyntaxToken": [
+        { "Text": "last" }
+    ],
+    "Potato.Fuzzy.Tokens.Syntax.Adjectives.NextAdjectiveSyntaxToken": [
+        { "Text": "next" }
+    ],
+    "Potato.Fuzzy.Tokens.Syntax.Adjectives.ThisAdjectiveSyntaxToken": [
+        { "Text": "this" }
+    ],
+    "Potato.Fuzzy.Tokens.Syntax.Adjectives.EveryAdjectiveSyntaxToken": [
+        { "Text": "every" }
+    ],
+    "Potato.Fuzzy.Tokens.Syntax.Punctuation.Parentheses.OpenParenthesesPunctuationSyntaxToken": [
+        { "Text": "(" }
+    ],
+    "Potato.Fuzzy.Tokens.Syntax.Punctuation.Parentheses.ClosedParenthesesPunctuationSyntaxToken": [
+        { "Text": ")" }
+    ],
+    "Potato.Fuzzy.Tokens.Syntax.Punctuation.QuestionmarkPunctuationSyntaxToken": [
+        { "Text": "?" }
+    ],
+    "Potato.Fuzzy.Tokens.Syntax.Punctuation.PeriodPunctuationSyntaxToken": [
+        { "Text": "." }
+    ],
+    "Potato.Fuzzy.Tokens.Syntax.Punctuation.HyphenPunctuationSyntaxToken": [
+        { "Text": "-" }
+    ],
+    "Potato.Fuzzy.Tokens.Syntax.Punctuation.ForwardSlashPunctuationSyntaxToken": [
+        { "Text": "/" }
+    ],
+    "Potato.Fuzzy.Tokens.Syntax.Punctuation.ExclamationPunctuationSyntaxToken": [
+        { "Text": "!" }
+    ],
+    "Potato.Fuzzy.Tokens.Syntax.Punctuation.CommaPunctuationSyntaxToken": [
+        { "Text": "," }
+    ],
+    "Potato.Fuzzy.Tokens.Syntax.Punctuation.ColonPunctuationSyntaxToken": [
+        { "Text": ":" }
+    ],
+    "Potato.Fuzzy.Tokens.Syntax.Typography.PlusTypographySyntaxToken": [
+        { "Text": "+" }
+    ],
+    "Potato.Fuzzy.Tokens.Syntax.Typography.AsteriskTypographySyntaxToken": [
+        { "Text": "*" }
+    ],
+    "Potato.Fuzzy.Tokens.Syntax.Typography.CaretTypographySyntaxToken": [
+        { "Text": "^" }
+    ]
+}

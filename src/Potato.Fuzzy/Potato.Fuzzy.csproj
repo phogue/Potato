@@ -1,0 +1,210 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{4B55557F-C2AA-4047-9ED9-3E4BBF9CF670}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Potato.Fuzzy</RootNamespace>
+    <AssemblyName>Potato.Fuzzy</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\builds\Debug\Packages\Myrcon.Potato.Core.2.0.0\lib\net40\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <DocumentationFile>..\..\builds\Documentation\Potato.Fuzzy.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\builds\Release\Packages\Myrcon.Potato.Core.2.0.0\lib\net40\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.6.0.1\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\CommonAssemblyInfo.cs">
+      <Link>Properties\CommonAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="IFuzzyState.cs" />
+    <Compile Include="Models\MatchModel.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Sentence.cs" />
+    <Compile Include="Tokens\Object\INumericPropertyReference.cs" />
+    <Compile Include="Tokens\Object\IThingReference.cs" />
+    <Compile Include="Tokens\Object\NumericPropertyObjectToken.cs" />
+    <Compile Include="Tokens\Operator\Arithmetic\ArithmeticOperatorToken.cs" />
+    <Compile Include="Tokens\Operator\Arithmetic\FirstOrder\FirstOrderArithmeticToken.cs" />
+    <Compile Include="Tokens\Operator\Arithmetic\SecondOrder\PowerSecondOrderArithmeticToken.cs" />
+    <Compile Include="Tokens\Operator\Arithmetic\SecondOrder\DivisionSecondOrderArithmeticToken.cs" />
+    <Compile Include="Tokens\Operator\Arithmetic\SecondOrder\MultiplicationSecondOrderArithmeticToken.cs" />
+    <Compile Include="Tokens\Operator\Arithmetic\SecondOrder\SecondOrderArithmeticToken.cs" />
+    <Compile Include="Tokens\Operator\Arithmetic\ThirdOrder\AdditionThirdOrderArithmeticOperatorToken.cs" />
+    <Compile Include="Tokens\Operator\Arithmetic\ThirdOrder\SubtractionThirdOrderArithmeticOperatorToken.cs" />
+    <Compile Include="Tokens\Operator\Arithmetic\ThirdOrder\ThirdOrderArithmeticOperatorToken.cs" />
+    <Compile Include="Tokens\Primitive\Numeric\Cardinal\CardinalNumericPrimitiveToken.cs" />
+    <Compile Include="Tokens\Primitive\Numeric\Cardinal\MultiplicandCardinalNumericPrimitiveToken.cs" />
+    <Compile Include="Tokens\Primitive\Numeric\OrdinalNumericPrimitiveToken.cs" />
+    <Compile Include="Tokens\Primitive\Temporal\FuzzyDateTimePattern.cs" />
+    <Compile Include="Tokens\Primitive\Temporal\TimeModifier.cs" />
+    <Compile Include="Tokens\Primitive\Temporal\Variable\Days\DaysVariableTemporalPrimitiveToken.cs" />
+    <Compile Include="Tokens\Primitive\Temporal\Variable\Days\FridayDaysVariableTemporalPrimitiveToken.cs" />
+    <Compile Include="Tokens\Primitive\Temporal\Variable\Days\MondayDaysVariableTemporalPrimitiveToken.cs" />
+    <Compile Include="Tokens\Primitive\Temporal\Variable\Days\SaturdayDaysVariableTemporalPrimitiveToken.cs" />
+    <Compile Include="Tokens\Primitive\Temporal\Variable\Days\SundayDaysVariableTemporalPrimitiveToken.cs" />
+    <Compile Include="Tokens\Primitive\Temporal\Variable\Days\ThursdayDaysVariableTemporalPrimitiveToken.cs" />
+    <Compile Include="Tokens\Primitive\Temporal\Variable\Days\TuesdayDaysVariableTemporalPrimitiveToken.cs" />
+    <Compile Include="Tokens\Primitive\Temporal\Variable\Days\WednesdayDaysVariableTemporalPrimitiveToken.cs" />
+    <Compile Include="Tokens\Primitive\Temporal\Variable\Months\AprilMonthsVariableTemporalPrimitiveToken.cs" />
+    <Compile Include="Tokens\Primitive\Temporal\Variable\Months\AugustMonthsVariableTemporalPrimitiveToken.cs" />
+    <Compile Include="Tokens\Primitive\Temporal\Variable\Months\DecemberMonthsVariableTemporalPrimitiveToken.cs" />
+    <Compile Include="Tokens\Primitive\Temporal\Variable\Months\FebruaryMonthsVariableTemporalPrimitiveToken.cs" />
+    <Compile Include="Tokens\Primitive\Temporal\Variable\Months\JanuaryMonthsVariableTemporalPrimitiveToken.cs" />
+    <Compile Include="Tokens\Primitive\Temporal\Variable\Months\JulyMonthsVariableTemporalPrimitiveToken.cs" />
+    <Compile Include="Tokens\Primitive\Temporal\Variable\Months\JuneMonthsVariableTemporalPrimitiveToken.cs" />
+    <Compile Include="Tokens\Primitive\Temporal\Variable\Months\MarchMonthsVariableTemporalPrimitiveToken.cs" />
+    <Compile Include="Tokens\Primitive\Temporal\Variable\Months\MayMonthsVariableTemporalPrimitiveToken.cs" />
+    <Compile Include="Tokens\Primitive\Temporal\Variable\Months\MonthMonthsVariableTemporalPrimitiveToken.cs" />
+    <Compile Include="Tokens\Primitive\Temporal\Variable\Months\NovemberMonthsVariableTemporalPrimitiveToken.cs" />
+    <Compile Include="Tokens\Primitive\Temporal\Variable\Months\OctoberMonthsVariableTemporalPrimitiveToken.cs" />
+    <Compile Include="Tokens\Primitive\Temporal\Variable\Months\SeptemberMonthsVariableTemporalPrimitiveToken.cs" />
+    <Compile Include="Tokens\Primitive\Temporal\TemporalInterval.cs" />
+    <Compile Include="Tokens\Primitive\Temporal\TemporalToken.cs" />
+    <Compile Include="Tokens\Primitive\Temporal\TimeType.cs" />
+    <Compile Include="Tokens\Primitive\Temporal\Units\DaysUnitTemporalPrimitiveToken.cs" />
+    <Compile Include="Tokens\Primitive\Temporal\Units\HoursUnitTemporalPrimitiveToken.cs" />
+    <Compile Include="Tokens\Primitive\Temporal\Units\Meridiem\AnteMeridiemUnitsTemporalPrimitiveToken.cs" />
+    <Compile Include="Tokens\Primitive\Temporal\Units\Meridiem\MeridiemUnitsTemporalPrimitiveToken.cs" />
+    <Compile Include="Tokens\Primitive\Temporal\Units\Meridiem\PostMeridiemUnitsTemporalPrimitiveToken.cs" />
+    <Compile Include="Tokens\Primitive\Temporal\Units\MinutesUnitTemporalPrimitiveToken.cs" />
+    <Compile Include="Tokens\Primitive\Temporal\Units\MonthsUnitTemporalPrimitiveToken.cs" />
+    <Compile Include="Tokens\Primitive\Temporal\Units\SecondsUnitTemporalPrimitiveToken.cs" />
+    <Compile Include="Tokens\Primitive\Temporal\Units\UnitTemporalPrimitiveToken.cs" />
+    <Compile Include="Tokens\Primitive\Temporal\Units\WeeksUnitTemporalPrimitiveToken.cs" />
+    <Compile Include="Tokens\Primitive\Temporal\Units\YearsUnitTemporalPrimitiveToken.cs" />
+    <Compile Include="Tokens\Primitive\Temporal\Variable\DateTimeTemporalPrimitiveToken.cs" />
+    <Compile Include="Tokens\Primitive\Temporal\Variable\Date\DateVariableTemporalPrimitiveToken.cs" />
+    <Compile Include="Tokens\Primitive\Temporal\Variable\Date\Day\DayVariableTemporalPrimitiveToken.cs" />
+    <Compile Include="Tokens\Primitive\Temporal\Variable\Date\Day\TodayDayVariableTemporalPrimitiveToken.cs" />
+    <Compile Include="Tokens\Primitive\Temporal\Variable\Date\Day\TomorrowDayVariableTemporalPrimitiveToken.cs" />
+    <Compile Include="Tokens\Primitive\Temporal\Variable\Date\Day\YesterdayDayVariableTemporalPrimitiveToken.cs" />
+    <Compile Include="Tokens\Primitive\Temporal\Variable\Date\Month\MonthVariableTemporalPrimitiveToken.cs" />
+    <Compile Include="Tokens\Primitive\Temporal\Variable\Date\Year\YearVariableTemporalToken.cs" />
+    <Compile Include="Tokens\Primitive\Temporal\Variable\Time\Hour\HourVariableTemporalPrimitiveToken.cs" />
+    <Compile Include="Tokens\Primitive\Temporal\Variable\Time\Minute\MinuteVariableTemporalPrimitiveToken.cs" />
+    <Compile Include="Tokens\Primitive\Temporal\Variable\Time\Second\SecondVariableTemporalPrimitiveToken.cs" />
+    <Compile Include="Tokens\Primitive\Temporal\Variable\Time\TimeVariableTemporalPrimitiveToken.cs" />
+    <Compile Include="Tokens\Object\SelfReflectionThingObjectToken.cs" />
+    <Compile Include="Tokens\Primitive\StringPrimitiveToken.cs" />
+    <Compile Include="Tokens\Object\MethodObjectToken.cs" />
+    <Compile Include="Tokens\Object\ObjectToken.cs" />
+    <Compile Include="Tokens\Object\PropertyObjectToken.cs" />
+    <Compile Include="Tokens\Object\ThingObjectToken.cs" />
+    <Compile Include="Tokens\Operator\Logical\AndLogicalOperatorToken.cs" />
+    <Compile Include="Tokens\Operator\Logical\Equality\EqualityLogicalOperatorToken.cs" />
+    <Compile Include="Tokens\Operator\Logical\Equality\EqualsEqualityLogicalOperatorToken.cs" />
+    <Compile Include="Tokens\Operator\Logical\Equality\GreaterThanEqualityLogicalOperatorToken.cs" />
+    <Compile Include="Tokens\Operator\Logical\Equality\GreaterThanEqualToEqualityLogicalOperatorToken.cs" />
+    <Compile Include="Tokens\Operator\Logical\Equality\LessThanEqualityLogicalOperatorToken.cs" />
+    <Compile Include="Tokens\Operator\Logical\Equality\LessThanEqualToEqualityLogicalOperatorToken.cs" />
+    <Compile Include="Tokens\Operator\Logical\ExcludingLogicalOperatorToken.cs" />
+    <Compile Include="Tokens\Operator\Logical\LogicalOperatorToken.cs" />
+    <Compile Include="Tokens\Operator\Logical\NotLogicalOperatorToken.cs" />
+    <Compile Include="Tokens\Operator\Logical\OrLogicalOperatorToken.cs" />
+    <Compile Include="Tokens\Operator\OperatorToken.cs" />
+    <Compile Include="Tokens\Primitive\Numeric\FloatNumericPrimitiveToken.cs" />
+    <Compile Include="Tokens\Primitive\Numeric\NumericPrimitiveToken.cs" />
+    <Compile Include="Tokens\Primitive\PrimitiveToken.cs" />
+    <Compile Include="Tokens\Syntax\Adjectives\AdjectiveSyntaxToken.cs" />
+    <Compile Include="Tokens\Syntax\Adjectives\EveryAdjectiveSyntaxToken.cs" />
+    <Compile Include="Tokens\Syntax\Adjectives\LastAdjectiveSyntaxToken.cs" />
+    <Compile Include="Tokens\Syntax\Adjectives\NextAdjectiveSyntaxToken.cs" />
+    <Compile Include="Tokens\Syntax\Adjectives\ThisAdjectiveSyntaxToken.cs" />
+    <Compile Include="Tokens\Syntax\Articles\ArticlesSyntaxToken.cs" />
+    <Compile Include="Tokens\Syntax\Articles\DefiniteArticlesSyntaxToken.cs" />
+    <Compile Include="Tokens\Syntax\Articles\IndefiniteArticlesSyntaxToken.cs" />
+    <Compile Include="Tokens\Syntax\Prepositions\Adpositions\AdpositionsPrepositionsSyntaxToken.cs" />
+    <Compile Include="Tokens\Syntax\Prepositions\Adpositions\AtAdpositionsPrepositionsSyntaxToken.cs" />
+    <Compile Include="Tokens\Syntax\Prepositions\Adpositions\ForAdpositionsPrepositionsSyntaxToken.cs" />
+    <Compile Include="Tokens\Syntax\Prepositions\Adpositions\InAdpositionsPrepositionsSyntaxToken.cs" />
+    <Compile Include="Tokens\Syntax\Prepositions\UntilPrepositionsSyntaxToken.cs" />
+    <Compile Include="Tokens\Syntax\Prepositions\OnPrepositionsSyntaxToken.cs" />
+    <Compile Include="Tokens\Syntax\Prepositions\PrepositionsSyntaxToken.cs" />
+    <Compile Include="Tokens\Syntax\Punctuation\ColonPunctuationSyntaxToken.cs" />
+    <Compile Include="Tokens\Syntax\Punctuation\CommaPunctuationSyntaxToken.cs" />
+    <Compile Include="Tokens\Syntax\Punctuation\ExclamationPunctuationSyntaxToken.cs" />
+    <Compile Include="Tokens\Syntax\Punctuation\ForwardSlashPunctuationSyntaxToken.cs" />
+    <Compile Include="Tokens\Syntax\Punctuation\HyphenPunctuationSyntaxToken.cs" />
+    <Compile Include="Tokens\Syntax\Punctuation\Parentheses\ClosedParenthesesPunctuationSyntaxToken.cs" />
+    <Compile Include="Tokens\Syntax\Punctuation\Parentheses\OpenParenthesesPunctuationSyntaxToken.cs" />
+    <Compile Include="Tokens\Syntax\Punctuation\Parentheses\ParenthesesPunctuationSyntaxToken.cs" />
+    <Compile Include="Tokens\Syntax\Punctuation\PeriodPunctuationSyntaxToken.cs" />
+    <Compile Include="Tokens\Syntax\Punctuation\PunctuationSyntaxToken.cs" />
+    <Compile Include="Tokens\Syntax\Punctuation\QuestionMarkPunctuationSyntaxToken.cs" />
+    <Compile Include="Tokens\Syntax\SyntaxToken.cs" />
+    <Compile Include="Tokens\Syntax\Typography\AsteriskTypographySyntaxToken.cs" />
+    <Compile Include="Tokens\Syntax\Typography\CaretTypographySyntaxToken.cs" />
+    <Compile Include="Tokens\Syntax\Typography\PlusTypographySyntaxToken.cs" />
+    <Compile Include="Tokens\Syntax\Typography\TypographySyntaxToken.cs" />
+    <Compile Include="Tokens\TokenMethodMetadata.cs" />
+    <Compile Include="Tokens\TokenParameter.cs" />
+    <Compile Include="Tokens\TokenReflection.cs" />
+    <Compile Include="Utils\ListExtensions.cs" />
+    <Compile Include="Utils\MatchDictionaryKey.cs" />
+    <Compile Include="Utils\ObjectExtensions.cs" />
+    <Compile Include="Utils\StringExtensions.cs" />
+    <Compile Include="Phrase.cs" />
+    <Compile Include="Token.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Potato.licenseheader">
+      <Link>Potato.licenseheader</Link>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -13,7 +13,7 @@
     <description>Basic plugin to test the plugin architecture at runtime</description>
     <releaseNotes>Summary of changes made in this release of the package.</releaseNotes>
     <copyright>Copyright 2014</copyright>
-    <tags>Procon Plugins Test</tags>
+    <tags>Potato Plugins Test</tags>
   </metadata>
   <files>
     <file src="..\..\builds\Debug\Packages\Myrcon.Plugins.Test.2.0.0\lib\net40\*.dll" target="lib\net40\" />

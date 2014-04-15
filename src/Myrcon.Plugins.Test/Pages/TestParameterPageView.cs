@@ -26,7 +26,7 @@
 
 namespace Myrcon.Plugins.Test.Pages
 {
-#line 1 "C:\Users\P\Documents\Projects\clients\myrcon\procon\Procon-2\src\TestPlugin\Pages\TestParameterPageView.tt"
+#line 1 "C:\Users\P\Documents\Projects\clients\myrcon\Potato\Potato-2\src\TestPlugin\Pages\TestParameterPageView.tt"
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "10.0.0.0")]
     public partial class TestParameterPageView : TestParameterPageViewBase
     {
@@ -34,40 +34,40 @@ namespace Myrcon.Plugins.Test.Pages
         {
             this.Write("Welcome <b>");
             
-            #line 2 "C:\Users\P\Documents\Projects\clients\myrcon\procon\Procon-2\src\TestPlugin\Pages\TestParameterPageView.tt"
+            #line 2 "C:\Users\P\Documents\Projects\clients\myrcon\Potato\Potato-2\src\TestPlugin\Pages\TestParameterPageView.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(this.Player.Name));
             
             #line default
             #line hidden
             this.Write("</b> to the parameter test of this plugin. Your score is: ");
             
-            #line 2 "C:\Users\P\Documents\Projects\clients\myrcon\procon\Procon-2\src\TestPlugin\Pages\TestParameterPageView.tt"
+            #line 2 "C:\Users\P\Documents\Projects\clients\myrcon\Potato\Potato-2\src\TestPlugin\Pages\TestParameterPageView.tt"
  if (this.Player.Score >= 100) { 
             
             #line default
             #line hidden
             this.Write("<b>");
             
-            #line 2 "C:\Users\P\Documents\Projects\clients\myrcon\procon\Procon-2\src\TestPlugin\Pages\TestParameterPageView.tt"
+            #line 2 "C:\Users\P\Documents\Projects\clients\myrcon\Potato\Potato-2\src\TestPlugin\Pages\TestParameterPageView.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(this.Player.Score));
             
             #line default
             #line hidden
             this.Write("</b>");
             
-            #line 2 "C:\Users\P\Documents\Projects\clients\myrcon\procon\Procon-2\src\TestPlugin\Pages\TestParameterPageView.tt"
+            #line 2 "C:\Users\P\Documents\Projects\clients\myrcon\Potato\Potato-2\src\TestPlugin\Pages\TestParameterPageView.tt"
  } else { 
             
             #line default
             #line hidden
             
-            #line 2 "C:\Users\P\Documents\Projects\clients\myrcon\procon\Procon-2\src\TestPlugin\Pages\TestParameterPageView.tt"
+            #line 2 "C:\Users\P\Documents\Projects\clients\myrcon\Potato\Potato-2\src\TestPlugin\Pages\TestParameterPageView.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(this.Player.Score));
             
             #line default
             #line hidden
             
-            #line 2 "C:\Users\P\Documents\Projects\clients\myrcon\procon\Procon-2\src\TestPlugin\Pages\TestParameterPageView.tt"
+            #line 2 "C:\Users\P\Documents\Projects\clients\myrcon\Potato\Potato-2\src\TestPlugin\Pages\TestParameterPageView.tt"
  } 
             
             #line default

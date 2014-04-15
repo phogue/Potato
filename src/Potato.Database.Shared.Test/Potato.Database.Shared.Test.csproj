@@ -1,0 +1,127 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{D7DA532C-7168-4D54-B413-EE31E107C187}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Potato.Database.Shared.Test</RootNamespace>
+    <AssemblyName>Potato.Database.Shared.Test</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\builds\Tests\Potato.Database.Shared.Test\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="nunit.framework, Version=2.6.3.13283, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <HintPath>..\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <CodeAnalysisDependentAssemblyPaths Condition=" '$(VS100COMNTOOLS)' != '' " Include="$(VS100COMNTOOLS)..\IDE\PrivateAssemblies">
+      <Visible>False</Visible>
+    </CodeAnalysisDependentAssemblyPaths>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="MySql\TestSerializerMySqlAlterExplicit.cs" />
+    <Compile Include="MySql\TestSerializerMySqlAlterImplicit.cs" />
+    <Compile Include="SqLite\TestSerializerSqLiteAlterImplicit.cs" />
+    <Compile Include="SqLite\TestSerializerSqLiteAlterExplicit.cs" />
+    <Compile Include="SqLite\TestSerializerSqLiteCreateExplicit.cs" />
+    <Compile Include="SqLite\TestSerializerSqLiteCreateImplicit.cs" />
+    <Compile Include="SqLite\TestSerializerSqLiteDropExplicit.cs" />
+    <Compile Include="SqLite\TestSerializerSqLiteDropImplicit.cs" />
+    <Compile Include="SqLite\TestSerializerSqLiteFindExplicit.cs" />
+    <Compile Include="SqLite\TestSerializerSqLiteFindImplicit.cs" />
+    <Compile Include="SqLite\TestSerializerSqLiteMergeExplicit.cs" />
+    <Compile Include="SqLite\TestSerializerSqLiteMergeImplicit.cs" />
+    <Compile Include="SqLite\TestSerializerSqLiteModifyExplicit.cs" />
+    <Compile Include="SqLite\TestSerializerSqLiteModifyImplicit.cs" />
+    <Compile Include="SqLite\TestSerializerSqLiteRemoveExplicit.cs" />
+    <Compile Include="SqLite\TestSerializerSqLiteRemoveImplicit.cs" />
+    <Compile Include="SqLite\TestSerializerSqLiteSaveExplicit.cs" />
+    <Compile Include="SqLite\TestSerializerSqLiteSaveImplicit.cs" />
+    <Compile Include="MongoDb\TestSerializerMongoDbMergeImplicit.cs" />
+    <Compile Include="MongoDb\TestSerializerMongoDbCreateImplicit.cs" />
+    <Compile Include="MongoDb\TestSerializerMongoDbDropImplicit.cs" />
+    <Compile Include="MongoDb\TestSerializerMongoDbSaveImplicit.cs" />
+    <Compile Include="MongoDb\TestSerializerMongoDbModifyImplicit.cs" />
+    <Compile Include="MongoDb\TestSerializerMongoDbRemoveImplicit.cs" />
+    <Compile Include="MongoDb\TestSerializerMongoDbRemoveExplicit.cs" />
+    <Compile Include="MongoDb\TestSerializerMongoDbModifyExplicit.cs" />
+    <Compile Include="MongoDb\TestSerializerMongoDbSaveExplicit.cs" />
+    <Compile Include="MongoDb\TestSerializerMongoDbDropExplicit.cs" />
+    <Compile Include="MongoDb\TestSerializerMongoDbCreateExplicit.cs" />
+    <Compile Include="MongoDb\TestSerializerMongoDbMergeExplicit.cs" />
+    <Compile Include="MySql\TestSerializerMySqlMergeExplicit.cs" />
+    <Compile Include="MySql\TestSerializerMySqlMergeImplicit.cs" />
+    <Compile Include="TestSerializerAlter.cs" />
+    <Compile Include="TestSerializerMerge.cs" />
+    <Compile Include="MySql\TestSerializerMySqlModifyExplicit.cs" />
+    <Compile Include="MySql\TestSerializerMySqlModifyImplicit.cs" />
+    <Compile Include="TestSerializerModify.cs" />
+    <Compile Include="MySql\TestSerializerMySqlSaveImplicit.cs" />
+    <Compile Include="MySql\TestSerializerMySqlSaveExplicit.cs" />
+    <Compile Include="TestSerializerSave.cs" />
+    <Compile Include="MySql\TestSerializerMySqlRemoveExplicit.cs" />
+    <Compile Include="MySql\TestSerializerMySqlRemoveImplicit.cs" />
+    <Compile Include="TestSerializerRemove.cs" />
+    <Compile Include="MySql\TestSerializerMySqlDropExplicit.cs" />
+    <Compile Include="MySql\TestSerializerMySqlDropImplicit.cs" />
+    <Compile Include="TestSerializerDrop.cs" />
+    <Compile Include="MongoDb\TestSerializerMongoDbFindImplicit.cs" />
+    <Compile Include="MongoDb\TestSerializerMongoDbFindExplicit.cs" />
+    <Compile Include="MySql\TestSerializerMySqlCreateImplicit.cs" />
+    <Compile Include="MySql\TestSerializerMySqlCreateExplicit.cs" />
+    <Compile Include="MySql\TestSerializerMySqlFindExplicit.cs" />
+    <Compile Include="MySql\TestSerializerMySqlFindImplicit.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestSerializerCreate.cs" />
+    <Compile Include="TestSerializerFind.cs" />
+    <Compile Include="Utils\TestDatabaseObjectUtils.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Potato.Database.Shared\Potato.Database.Shared.csproj">
+      <Project>{F6F1BD6C-1743-492A-A18C-810E2C5601F2}</Project>
+      <Name>Potato.Database.Shared</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Potato.licenseheader">
+      <Link>Potato.licenseheader</Link>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

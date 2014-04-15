@@ -14,7 +14,7 @@
 // limitations under the License.
 #endregion
 using System;
-using Procon.Net.Shared.Models;
+using Potato.Net.Shared.Models;
 
 namespace Myrcon.Protocols.Frostbite.Objects {
     [Serializable]

@@ -1,14 +1,14 @@
-﻿angular.module('procon.sandbox.program', [
+﻿angular.module('Potato.sandbox.program', [
     'ngRoute',
-// Procon.Sandbox contains a few angular overrides
+// Potato.Sandbox contains a few angular overrides
 // so your script can function within the sandbox.
-    'procon.sandbox',
-// Procon.Sandbox.Shared provides functionality to communicate between the main window and the iframe
+    'Potato.sandbox',
+// Potato.Sandbox.Shared provides functionality to communicate between the main window and the iframe
 // the plugin displays in
-    'procon.sandbox.shared'
+    'Potato.sandbox.shared'
 ])
 .run(['$rootScope', 'MessageClient', function ($rootScope, MessageClient) {
-    console.log('Starting procon.sandbox.program..');
+    console.log('Starting Potato.sandbox.program..');
 
     // BEGIN IGNORE
     // I'll think of a better way of handling this at not-2am
@@ -40,7 +40,7 @@
     });
 } ])
 
-// Much easier than inline messy objects. You can see Procon.Core doing something similar in it's own CommandBuilder.
+// Much easier than inline messy objects. You can see Potato.Core doing something similar in it's own CommandBuilder.
 .service('CommandBuilder', function () {
     // Builds the required data/command to send to our plugin for this command.
     this.TestPluginSimpleMultiplyByTwoCommand = function (number) {

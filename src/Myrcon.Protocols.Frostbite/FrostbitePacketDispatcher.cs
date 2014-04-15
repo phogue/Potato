@@ -14,8 +14,8 @@
 // limitations under the License.
 #endregion
 using System;
-using Procon.Net;
-using Procon.Net.Shared;
+using Potato.Net;
+using Potato.Net.Shared;
 
 namespace Myrcon.Protocols.Frostbite {
     public class FrostbitePacketDispatcher : PacketDispatcher {

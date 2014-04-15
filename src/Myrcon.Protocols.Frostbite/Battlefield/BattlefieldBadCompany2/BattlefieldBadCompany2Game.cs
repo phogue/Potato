@@ -15,9 +15,9 @@
 #endregion
 using System;
 using System.Collections.Generic;
-using Procon.Net;
-using Procon.Net.Shared;
-using Procon.Net.Shared.Protocols;
+using Potato.Net;
+using Potato.Net.Shared;
+using Potato.Net.Shared.Protocols;
 
 namespace Myrcon.Protocols.Frostbite.Battlefield.BattlefieldBadCompany2 {
     [ProtocolDeclaration(Type = CommonProtocolType.DiceBattlefieldBadCompany2, Name = "Battlefield: Bad Company 2", Provider = "Myrcon")]

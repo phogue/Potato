@@ -18,11 +18,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Myrcon.Protocols.Frostbite.Battlefield.Battlefield3.Objects;
-using Procon.Net;
-using Procon.Net.Shared;
-using Procon.Net.Shared.Actions;
-using Procon.Net.Shared.Models;
-using Procon.Net.Shared.Protocols;
+using Potato.Net;
+using Potato.Net.Shared;
+using Potato.Net.Shared.Actions;
+using Potato.Net.Shared.Models;
+using Potato.Net.Shared.Protocols;
 
 namespace Myrcon.Protocols.Frostbite.Battlefield.Battlefield3 {
     [ProtocolDeclaration(Type = CommonProtocolType.DiceBattlefield3, Name = "Battlefield 3", Provider = "Myrcon")]

@@ -15,8 +15,8 @@
 #endregion
 using System;
 using System.Collections.Generic;
-using Procon.Net.Shared.Actions;
-using Procon.Net.Shared.Models;
+using Potato.Net.Shared.Actions;
+using Potato.Net.Shared.Models;
 
 namespace Myrcon.Protocols.Frostbite.Battlefield.Battlefield4.Objects {
     [Serializable]

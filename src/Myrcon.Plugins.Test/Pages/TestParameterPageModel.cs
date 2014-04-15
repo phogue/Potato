@@ -13,7 +13,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
-using Procon.Net.Shared.Models;
+using Potato.Net.Shared.Models;
 
 namespace Myrcon.Plugins.Test.Pages {
     public partial class TestParameterPageView {

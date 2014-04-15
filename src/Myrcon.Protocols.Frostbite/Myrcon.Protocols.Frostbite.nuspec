@@ -13,7 +13,7 @@
     <description>Protocol implementation for Frostbite based games</description>
     <releaseNotes>Summary of changes made in this release of the package.</releaseNotes>
     <copyright>Copyright 2014</copyright>
-    <tags>Procon Protocol Frostbite</tags>
+    <tags>Potato Protocol Frostbite</tags>
   </metadata>
   <files>
     <file src="..\..\builds\Debug\Packages\Myrcon.Protocols.Frostbite.2.0.0\lib\net40\*.dll" target="lib\net40\" />

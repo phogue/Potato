@@ -20,10 +20,10 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyDescription("")]
-[assembly: AssemblyTitle("Procon.Net.Protocols.Myrcon.Frostbite")]
+[assembly: AssemblyTitle("Potato.Net.Protocols.Myrcon.Frostbite")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Myrcon Pty. Ltd.")]
-[assembly: AssemblyProduct("Procon")]
+[assembly: AssemblyProduct("Potato")]
 [assembly: AssemblyCopyright("Copyright © Myrcon Pty. Ltd. 2013")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

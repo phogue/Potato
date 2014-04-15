@@ -15,8 +15,8 @@
 #endregion
 using System;
 using System.Collections.Generic;
-using Procon.Net;
-using Procon.Net.Shared;
+using Potato.Net;
+using Potato.Net.Shared;
 
 namespace Myrcon.Protocols.Frostbite {
     public class FrostbiteClient : TcpClient {

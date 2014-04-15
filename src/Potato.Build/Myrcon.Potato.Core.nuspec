@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<package >
+	<metadata>
+		<id>Myrcon.Potato.Core</id>
+		<version>$version$</version>
+		<title>Myrcon Potato Core</title>
+		<authors>Myrcon Pty. Ltd.</authors>
+		<owners>Myrcon Pty. Ltd.</owners>
+		<licenseUrl>http://www.apache.org/licenses/LICENSE-2.0.html</licenseUrl>
+    <projectUrl>https://myrcon.com</projectUrl>
+		<iconUrl>https://myrcon.com/assets/images/logo.ico</iconUrl>
+		<requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <summary>The core of Potato, which runs just about everything.</summary>
+		<description>The core of Potato, which runs just about everything.</description>
+		<copyright>Copyright 2014</copyright>
+		<tags>Potato Core Myrcon</tags>
+    <dependencies>
+      <dependency id="Myrcon.Potato.Shared" version="$version$" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="..\..\builds\Debug\Packages\Myrcon.Potato.Core.2.0.0\lib\net40\*.dll" target="lib\net40\" />
+    <file src="..\..\builds\Debug\Packages\Myrcon.Potato.Core.2.0.0\lib\net40\*.xml" target="lib\net40\" />
+    <file src="..\..\builds\Debug\Packages\Myrcon.Potato.Core.2.0.0\lib\net40\*.pdb" target="lib\net40\" />
+    <file src="..\..\builds\Debug\Packages\Myrcon.Potato.Core.2.0.0\lib\net40\*\**" target="content\" />
+  </files>
+</package>

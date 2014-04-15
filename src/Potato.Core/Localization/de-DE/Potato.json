@@ -1,0 +1,10 @@
+﻿{
+	"Potato.Core.Localization.LanguageConfig": [
+		{
+			"LanguageCode": "de-DE",
+			"CountryCode": "DE",
+			"EnglishName": "German",
+			"NativeName": "Deutsch"
+		}
+	]
+}

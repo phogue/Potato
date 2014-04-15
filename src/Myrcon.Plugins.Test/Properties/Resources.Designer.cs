@@ -61,10 +61,10 @@ namespace Myrcon.Plugins.Test.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to angular.module(&apos;procon.sandbox.plugin&apos;, [
+        ///   Looks up a localized string similar to angular.module(&apos;Potato.sandbox.plugin&apos;, [
         ///    &apos;ngRoute&apos;,
-        ///    &apos;procon.sandbox&apos;,
-        ///    &apos;procon.sandbox.shared&apos;
+        ///    &apos;Potato.sandbox&apos;,
+        ///    &apos;Potato.sandbox.shared&apos;
         ///])
         ///// COmment.
         ///.run(function (MessageClient) {

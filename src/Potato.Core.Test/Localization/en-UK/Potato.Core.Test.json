@@ -1,0 +1,17 @@
+﻿{
+	"Potato.Core.Localization.LanguageConfig": [
+		{
+			"LanguageCode": "en-UK",
+			"CountryCode": "GB",
+			"EnglishName": "English (UK)",
+			"NativeName": "English (UK)"
+		}
+	],
+	"Potato.Core.Test": [
+		{ "Name": "TestName", "Text": "PotatoCoreTestEnglishTestValue" }
+	],
+	"Potato.Core.Test.Localization": [
+		{ "Name": "TestFormat", "Text": "Hello {0}!" },
+		{ "Name": "TestName", "Text": "PotatoCoreTestLocalizationEnglishTestValue" }
+	]
+}

@@ -16,7 +16,7 @@
 using System;
 using System.Collections.Generic;
 using Myrcon.Protocols.Frostbite.Objects;
-using Procon.Net.Shared.Models;
+using Potato.Net.Shared.Models;
 
 namespace Myrcon.Protocols.Frostbite.Battlefield.Battlefield4.Objects {
     [Serializable]

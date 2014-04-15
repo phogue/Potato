@@ -23,7 +23,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Myrcon Pty. Ltd.")]
-[assembly: AssemblyProduct("Procon")]
+[assembly: AssemblyProduct("Potato")]
 [assembly: AssemblyCopyright("Copyright © Myrcon Pty. Ltd. 2013")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

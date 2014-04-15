@@ -16,7 +16,7 @@
 using System;
 using System.Linq;
 using System.Text;
-using Procon.Net.Shared;
+using Potato.Net.Shared;
 
 namespace Myrcon.Protocols.Frostbite {
     public class FrostbitePacketSerializer : IPacketSerializer {

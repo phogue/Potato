@@ -159,7 +159,7 @@ $RECYCLE.BIN/
 !/src/packages/repositories.config
 
 # Keep unit test daemon certificate
-!/src/Procon.Core.Test/Certificates/CommandServer.pfx
-!/src/Procon.Core.Test/Remote/Certificates/NoPassword.pfx
-!/src/Procon.Core.Test/Remote/Certificates/Password.pfx
-!/src/Procon.Database.Shared/Serializers/Sql
+!/src/Potato.Core.Test/Certificates/CommandServer.pfx
+!/src/Potato.Core.Test/Remote/Certificates/NoPassword.pfx
+!/src/Potato.Core.Test/Remote/Certificates/Password.pfx
+!/src/Potato.Database.Shared/Serializers/Sql

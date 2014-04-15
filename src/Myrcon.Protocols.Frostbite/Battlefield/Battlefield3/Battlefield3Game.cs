@@ -93,6 +93,7 @@ namespace Myrcon.Protocols.Frostbite.Battlefield.Battlefield3 {
             }
 
             this.OnProtocolEvent(ProtocolEventType.ProtocolPlayerlistUpdated, new ProtocolStateDifference() {
+                Override = true,
                 Removed = {
                     Players = this.State.Players.Where(existing => players.Select(current => current.Uid).Contains(existing.Uid) == false).ToList()
                 },

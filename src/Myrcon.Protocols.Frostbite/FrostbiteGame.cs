@@ -527,6 +527,7 @@ namespace Myrcon.Protocols.Frostbite {
             }
 
             this.OnProtocolEvent(ProtocolEventType.ProtocolPlayerlistUpdated, new ProtocolStateDifference() {
+                Override = true,
                 Removed = {
                     Players = this.State.Players.Where(existing => players.Select(current => current.Uid).Contains(existing.Uid) == false).ToList()
                 },

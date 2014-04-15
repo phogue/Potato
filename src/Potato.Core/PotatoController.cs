@@ -112,7 +112,11 @@ namespace Potato.Core {
                 }
             };
 
-            this.PushEvents = new PushEventsController();
+            this.PushEvents = new PushEventsController() {
+                BubbleObjects = new List<ICoreController>() {
+                    this
+                }
+            };
 
             this.Protocols = new ProtocolController() {
                 BubbleObjects = new List<ICoreController>() {

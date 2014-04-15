@@ -206,25 +206,26 @@ namespace Procon.Core.Events {
 
                 List<IGenericEvent> flushEvents = null;
 
-                lock (this.LoggedEvents) {
-                    DateTime before = now - TimeSpan.FromSeconds(this.Shared.Variables.Get(CommonVariableNames.MaximumEventsTimeSeconds, 30));
+                DateTime before = now - TimeSpan.FromSeconds(this.Shared.Variables.Get(CommonVariableNames.MaximumEventsTimeSeconds, 30));
 
+                lock (this.LoggedEvents) {
                     // All events are appended to the Events list, so we
                     // remove all events until we find one that isn't old enough.
+                    // Provided the event is not ignored (don't write ignored events)
                     flushEvents = this.LoggedEvents.Where(e => e.Stamp < before).Where(e => this.Shared.Variables.Get(CommonVariableNames.EventsLogIgnoredNames, this.DefaultEventsLogIgnoredNames).Contains(e.Name) == false).ToList();
                 }
 
                 // Don't hold up other threads attempting to log an event.
                 this.WriteEventsList(flushEvents);
 
-                // Now remove all of the events we just wrote to disk.
+                // Now remove all old events. This differs from the events we wrote to disk, as we may
+                // have ignored some of the events but we still need to get rid of old events.
                 lock (this.LoggedEvents) {
-                    foreach (GenericEvent removeEvent in flushEvents) {
-                        this.LoggedEvents.Remove(removeEvent);
-
-                        // Dispose each event we just wrote to disk and removed from the Events list.
-                        removeEvent.Dispose();
-                    }
+                    var flushed = this.LoggedEvents.Where(e => e.Stamp < before).ToList();
+                    flushed.ForEach(e => {
+                        e.Dispose();
+                        this.LoggedEvents.Remove(e);
+                    });
                 }
             }
         }

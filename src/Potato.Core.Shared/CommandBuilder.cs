@@ -700,7 +700,43 @@ namespace Potato.Core.Shared {
         /// <param name="name">The name of the variable to set</param>
         /// <param name="value">The value to assign to the variable</param>
         /// <returns>The built command to dispatch</returns>
+        public static ICommand VariablesSetF(String name, List<String> value) {
+            return new Command() {
+                CommandType = CommandType.VariablesSetF,
+                Parameters = new List<ICommandParameter>() {
+                    new CommandParameter() {
+                        Data = {
+                            Content = new List<String>() {
+                                name
+                            }
+                        }
+                    },
+                    new CommandParameter() {
+                        Data = {
+                            Content = value
+                        }
+                    }
+                }
+            };
+        }
+
+        /// <summary>
+        /// Builds a command to send a VariablesSetF
+        /// </summary>
+        /// <param name="name">The name of the variable to set</param>
+        /// <param name="value">The value to assign to the variable</param>
+        /// <returns>The built command to dispatch</returns>
         public static ICommand VariablesSetF(CommonVariableNames name, String value) {
+            return VariablesSetF(name.ToString(), value);
+        }
+
+        /// <summary>
+        /// Builds a command to send a VariablesSetF
+        /// </summary>
+        /// <param name="name">The name of the variable to set</param>
+        /// <param name="value">The value to assign to the variable</param>
+        /// <returns>The built command to dispatch</returns>
+        public static ICommand VariablesSetF(CommonVariableNames name, List<String> value) {
             return VariablesSetF(name.ToString(), value);
         }
 

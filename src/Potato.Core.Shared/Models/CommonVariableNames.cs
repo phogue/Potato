@@ -142,6 +142,10 @@ namespace Potato.Core.Shared.Models {
         /// </summary>
         EventPushStreamKey,
         /// <summary>
+        /// List[String] A list of events the end point should send. If an event is not in this list, it won't be sent across the stream.
+        /// </summary>
+        EventPushInclusiveNames,
+        /// <summary>
         /// List[String] A list of ignored event names that won't be logged to the file.
         /// </summary>
         EventsLogIgnoredNames,

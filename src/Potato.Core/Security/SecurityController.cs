@@ -453,7 +453,7 @@ namespace Potato.Core.Security {
                         result = new CommandResult() {
                             Success = true,
                             CommandResultType = CommandResultType.Success,
-                            Message = String.Format(@"Group ""{0}"" created successfully.", groupName),
+                            Message = String.Format(@"Group ""{0}"" created.", groupName),
                             Now = new CommandData() {
                                 Groups = new List<GroupModel>() {
                                     group
@@ -511,7 +511,7 @@ namespace Potato.Core.Security {
                                 result = new CommandResult() {
                                     Success = true,
                                     CommandResultType = CommandResultType.Success,
-                                    Message = String.Format(@"Group ""{0}"" successfully removed.", groupName),
+                                    Message = String.Format(@"Group ""{0}"" removed.", groupName),
                                     Then = new CommandData() {
                                         Groups = new List<GroupModel>() {
                                         group.Clone() as GroupModel
@@ -586,7 +586,7 @@ namespace Potato.Core.Security {
                             result = new CommandResult() {
                                 Success = true,
                                 CommandResultType = CommandResultType.Success,
-                                Message = String.Format(@"Account ""{0}"" successfully removed.", account.Username),
+                                Message = String.Format(@"Account ""{0}"" removed.", account.Username),
                                 Then = new CommandData() {
                                     Accounts = new List<AccountModel>() {
                                         account.Clone() as AccountModel
@@ -662,7 +662,7 @@ namespace Potato.Core.Security {
                         result = new CommandResult() {
                             Success = true,
                             CommandResultType = CommandResultType.Success,
-                            Message = String.Format(@"Player with UID of ""{0}"" in game type ""{1}"" successfully removed from account ""{2}"".", player.Uid, player.ProtocolType, player.Account.Username),
+                            Message = String.Format(@"Player with UID of ""{0}"" in game type ""{1}"" removed from account ""{2}"".", player.Uid, player.ProtocolType, player.Account.Username),
                             Then = new CommandData() {
                                 AccountPlayers = new List<AccountPlayerModel>() {
                                     player.Clone() as AccountPlayerModel
@@ -1023,7 +1023,7 @@ namespace Potato.Core.Security {
                         result = new CommandResult() {
                             Success = true,
                             CommandResultType = CommandResultType.Success,
-                            Message = String.Format(@"Permission ""{0}"" successfully set to {1}.", permission.Name, permission.Authority),
+                            Message = String.Format(@"Permission ""{0}"" set to {1}.", permission.Name, permission.Authority),
                             Scope = new CommandData() {
                                 Groups = new List<GroupModel>() {
                                     group
@@ -1103,7 +1103,7 @@ namespace Potato.Core.Security {
                     result = new CommandResult() {
                         Success = true,
                         CommandResultType = CommandResultType.Success,
-                        Message = String.Format(@"Permission ""{0}"" successfully appended trait {1}.", permission.Name, trait),
+                        Message = String.Format(@"Permission ""{0}"" appended trait {1}.", permission.Name, trait),
                         Scope = new CommandData() {
                             Groups = new List<GroupModel>() {
                                 group
@@ -1161,7 +1161,7 @@ namespace Potato.Core.Security {
                         result = new CommandResult() {
                             Success = true,
                             CommandResultType = CommandResultType.Success,
-                            Message = String.Format(@"Permission ""{0}"" successfully appended trait {1}.", permission.Name, trait),
+                            Message = String.Format(@"Permission ""{0}"" appended trait {1}.", permission.Name, trait),
                             Scope = new CommandData() {
                                 Groups = new List<GroupModel>() {
                                     group
@@ -1241,7 +1241,7 @@ namespace Potato.Core.Security {
                     result = new CommandResult() {
                         Success = true,
                         CommandResultType = CommandResultType.Success,
-                        Message = String.Format(@"Permission ""{0}"" successfully set the description {1}.", permission.Name, description),
+                        Message = String.Format(@"Permission ""{0}"" set the description {1}.", permission.Name, description),
                         Scope = new CommandData() {
                             Groups = new List<GroupModel>() {
                                 group
@@ -1371,7 +1371,7 @@ namespace Potato.Core.Security {
                                 result = new CommandResult() {
                                     Success = true,
                                     CommandResultType = CommandResultType.Success,
-                                    Message = String.Format(@"Account ""{0}"" successfully added to group ""{1}"".", account.Username, group.Name),
+                                    Message = String.Format(@"Account ""{0}"" added to group ""{1}"".", account.Username, group.Name),
                                     Scope = new CommandData() {
                                         Groups = new List<GroupModel>() {
                                         group
@@ -1402,7 +1402,7 @@ namespace Potato.Core.Security {
                                 result = new CommandResult() {
                                     Success = true,
                                     CommandResultType = CommandResultType.Success,
-                                    Message = String.Format(@"Account ""{0}"" successfully added to group ""{1}"".", account.Username, group.Name),
+                                    Message = String.Format(@"Account ""{0}"" added to group ""{1}"".", account.Username, group.Name),
                                     Scope = new CommandData() {
                                         Accounts = new List<AccountModel>() {
                                         account
@@ -1498,7 +1498,7 @@ namespace Potato.Core.Security {
                             result = new CommandResult() {
                                 Success = true,
                                 CommandResultType = CommandResultType.Success,
-                                Message = String.Format(@"Player with UID of ""{0}"" in game type ""{1}"" successfully added to account ""{2}"".", player.Uid, player.ProtocolType, account.Username),
+                                Message = String.Format(@"Player with UID of ""{0}"" in game type ""{1}"" added to account ""{2}"".", player.Uid, player.ProtocolType, account.Username),
                                 Scope = new CommandData() {
                                     Accounts = new List<AccountModel>() {
                                         account
@@ -1532,7 +1532,7 @@ namespace Potato.Core.Security {
                             result = new CommandResult() {
                                 Success = true,
                                 CommandResultType = CommandResultType.Success,
-                                Message = String.Format(@"Player with UID of ""{0}"" in game type ""{1}"" successfully added to account ""{2}"".", player.Uid, player.ProtocolType, account.Username),
+                                Message = String.Format(@"Player with UID of ""{0}"" in game type ""{1}"" added to account ""{2}"".", player.Uid, player.ProtocolType, account.Username),
                                 Scope = new CommandData() {
                                     AccountPlayers = new List<AccountPlayerModel>() {
                                         player
@@ -1922,7 +1922,7 @@ namespace Potato.Core.Security {
                         result = new CommandResult() {
                             Success = true,
                             CommandResultType = CommandResultType.Success,
-                            Message = String.Format(@"Account with username ""{0}"" successfully set preferred language to ""{1}"".", account.Username, language.LanguageCode)
+                            Message = String.Format(@"Account with username ""{0}"" set preferred language to ""{1}"".", account.Username, language.LanguageCode)
                         };
                     }
                     else {
@@ -1986,7 +1986,7 @@ namespace Potato.Core.Security {
                         result = new CommandResult() {
                             Success = true,
                             CommandResultType = CommandResultType.Success,
-                            Message = String.Format(@"Group with name ""{0}"" successfully set permissions to predefined stream setup.", group.Name)
+                            Message = String.Format(@"Group with name ""{0}"" set permissions to predefined stream setup.", group.Name)
                         };
                     }
                     else {
@@ -2032,7 +2032,7 @@ namespace Potato.Core.Security {
                         result = new CommandResult() {
                             Success = true,
                             CommandResultType = CommandResultType.Success,
-                            Message = String.Format(@"Group with name ""{0}"" successfully set permissions to predefined administrator setup.", group.Name)
+                            Message = String.Format(@"Group with name ""{0}"" set permissions to predefined administrator setup.", group.Name)
                         };
                     }
                     else {

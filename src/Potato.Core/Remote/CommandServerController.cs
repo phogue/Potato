@@ -238,7 +238,7 @@ namespace Potato.Core.Remote {
 
                 if (authentication.Success == true) {
                     // If all they wanted to do was check the authentication..
-                    if (String.CompareOrdinal(command.Name, CommandType.SecurityAccountAuthenticate.ToString()) == 0) {
+                    if (String.CompareOrdinal(command.Name, CommandType.SecurityAccountAuthenticate.ToString()) == 0 || String.CompareOrdinal(command.Name, CommandType.SecurityAccountAuthenticateToken.ToString()) == 0) {
                         // Success
                         response = CommandServerSerializer.CompleteResponsePacket(CommandServerSerializer.ResponseContentType(command), response, authentication);
                     }

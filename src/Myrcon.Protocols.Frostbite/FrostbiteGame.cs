@@ -1355,13 +1355,17 @@ namespace Myrcon.Protocols.Frostbite {
         protected override List<IPacketWrapper> ActionMove(INetworkAction action) {
             List<IPacketWrapper> wrappers = new List<IPacketWrapper>();
 
+            if (action.Now.Groups == null) {
+                action.Now.Groups = new List<GroupModel>();
+            }
+
             if (action.Scope.Players != null) {
                 // admin.movePlayer <name: player name> <teamId: Team ID> <squadId: Squad ID> <forceKill: boolean>
                 bool forceMove = (action.ActionType == NetworkActionType.NetworkPlayerMoveForce || action.ActionType == NetworkActionType.NetworkPlayerMoveRotateForce);
 
-                MapModel selectedMap = this.State.MapPool.Find(x => String.Compare(x.Name, this.State.Settings.Current.MapNameText, StringComparison.OrdinalIgnoreCase) == 0);
+                MapModel selectedMap = this.State.MapPool.Find(map => String.Compare(map.Name, this.State.Settings.Current.MapNameText, StringComparison.OrdinalIgnoreCase) == 0 && map.GameMode != null && String.Compare(map.GameMode.Name, this.State.Settings.Current.GameModeNameText, StringComparison.OrdinalIgnoreCase) == 0);
 
-                foreach (PlayerModel movePlayer in action.Scope.Players.Select(scopePlayer => this.State.Players.First(player => player.Uid == scopePlayer.Uid)).Where(movePlayer => movePlayer != null)) {
+                foreach (PlayerModel movePlayer in action.Scope.Players.Select(scopePlayer => this.State.Players.FirstOrDefault(player => player.Uid == scopePlayer.Uid)).Where(movePlayer => movePlayer != null)) {
                     if (selectedMap != null) {
                         // If they are just looking to rotate the player through the teams
                         if (action.ActionType == NetworkActionType.NetworkPlayerMoveRotate || action.ActionType == NetworkActionType.NetworkPlayerMoveRotateForce) {
@@ -1370,9 +1374,11 @@ namespace Myrcon.Protocols.Frostbite {
 
                             int.TryParse(movePlayer.Groups.First(group => @group.Type == GroupModel.Team).Uid, out currentTeamId);
 
+                            var teams = selectedMap.Groups.Count(group => @group.Type == GroupModel.Team);
+
                             // Avoid divide by 0 error - shouldn't ever be encountered though.
-                            if (selectedMap.GameMode != null && selectedMap.GameMode.TeamCount > 0) {
-                                int newTeamId = (currentTeamId + 1) % (selectedMap.GameMode.TeamCount + 1);
+                            if (selectedMap.GameMode != null && teams > 0) {
+                                int newTeamId = (currentTeamId + 1) % (teams + 1);
 
                                 action.Now.Groups.Add(new GroupModel() {
                                     Type = GroupModel.Team,
@@ -1386,6 +1392,32 @@ namespace Myrcon.Protocols.Frostbite {
                             if (selectedMap.GameMode.DefaultGroups.Find(group => @group.Type == GroupModel.Squad) != null) {
                                 action.Now.Groups.Add(selectedMap.GameMode.DefaultGroups.Find(group => @group.Type == GroupModel.Squad));
                             }
+                        }
+                    }
+
+                    // Fix up the team uid
+                    if (action.Now.Groups.FirstOrDefault(group => @group.Type == GroupModel.Team) == null) {
+                        if (movePlayer.Groups.FirstOrDefault(group => @group.Type == GroupModel.Team) != null) {
+                            // No destination team set, use the players current team.
+                            action.Now.Groups.Add(movePlayer.Groups.First(group => @group.Type == GroupModel.Team));
+                        }
+                        else {
+                            // Panic, set team uid to 1.
+                            action.Now.Groups.Add(new GroupModel() {
+                                Uid = "1"
+                            });
+                        }
+                    }
+
+                    // Fix up the squad uid
+                    if (action.Now.Groups.FirstOrDefault(group => @group.Type == GroupModel.Squad) == null) {
+                        if (selectedMap != null && selectedMap.GameMode != null && selectedMap.GameMode.DefaultGroups.FirstOrDefault(group => @group.Type == GroupModel.Squad) != null) {
+                            action.Now.Groups.Add(selectedMap.GameMode.DefaultGroups.First(group => @group.Type == GroupModel.Squad));
+                        }
+                        else {
+                            action.Now.Groups.Add(new GroupModel() {
+                                Uid = "0"
+                            });
                         }
                     }
 

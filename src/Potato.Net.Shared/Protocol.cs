@@ -212,6 +212,7 @@ namespace Potato.Net.Shared {
                 case NetworkActionType.NetworkPlayerMoveRotate:
                 case NetworkActionType.NetworkPlayerMoveRotateForce:
                 case NetworkActionType.NetworkPlayerMove:
+                case NetworkActionType.NetworkPlayerMoveForce:
                     wrappers = this.ActionMove(action);
                     break;
                 case NetworkActionType.NetworkPacketSend:

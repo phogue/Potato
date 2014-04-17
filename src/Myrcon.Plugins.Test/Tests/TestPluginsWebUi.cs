@@ -62,10 +62,6 @@ namespace Myrcon.Plugins.Test.Tests {
                     Handler = this.TestPluginSimpleMultiplyByTwoCommand
                 },
                 new CommandDispatch() {
-                    Name = "/settings",
-                    Handler = this.TestPluginSettings
-                },
-                new CommandDispatch() {
                     Name = "/test/parameters",
                     ParameterTypes = new List<CommandParameterType>() {
                         new CommandParameterType() {
@@ -134,23 +130,6 @@ namespace Myrcon.Plugins.Test.Tests {
 
             command.Result.Message = String.Format("{0}", number * 2);
             command.Result.CommandResultType = CommandResultType.Success;
-
-            return command.Result;
-        }
-
-        protected ICommandResult TestPluginSettings(ICommand command, Dictionary<String, ICommandParameter> parameters) {
-            SettingsPageView index = new SettingsPageView();
-
-            command.Result = new CommandResult() {
-                Now = new CommandData() {
-                    Content = new List<string>() {
-                        index.TransformText()
-                    }
-                },
-                ContentType = Mime.TextHtml,
-                CommandResultType = CommandResultType.Success,
-                Success = true
-            };
 
             return command.Result;
         }

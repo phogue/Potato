@@ -1,14 +1,14 @@
-﻿angular.module('Potato.sandbox.program', [
+﻿angular.module('peeler.sandbox.program', [
     'ngRoute',
-// Potato.Sandbox contains a few angular overrides
+// peeler.Sandbox contains a few angular overrides
 // so your script can function within the sandbox.
-    'Potato.sandbox',
-// Potato.Sandbox.Shared provides functionality to communicate between the main window and the iframe
+    'peeler.sandbox',
+// peeler.Sandbox.Shared provides functionality to communicate between the main window and the iframe
 // the plugin displays in
-    'Potato.sandbox.shared'
+    'peeler.sandbox.shared'
 ])
 .run(['$rootScope', 'MessageClient', function ($rootScope, MessageClient) {
-    console.log('Starting Potato.sandbox.program..');
+    console.log('Starting peeler.sandbox.program..');
 
     // BEGIN IGNORE
     // I'll think of a better way of handling this at not-2am

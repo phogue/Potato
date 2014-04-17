@@ -42,12 +42,12 @@
 					<p>The process this just went through:</p>
 					<ul>
 						<li>Angular.Submit()</li>
-						<li>Through the sandbox between Potato.UI Window and this plugins iframe with postMessage</li>
-						<li>Emitted via websocket to the Potato UI</li>
-						<li>Credentials attached and the command, sent to a running Potato 2 C# Instance</li>
-						<li>Deserialized by Potato 2, routed to a specific connection</li>
+						<li>Through the sandbox between Peeler Window and this plugins iframe with postMessage</li>
+						<li>Emitted via websocket to the Peeler</li>
+						<li>Credentials attached and the command, sent to a running Potato C# Instance</li>
+						<li>Deserialized by the Potato, routed to a specific connection</li>
 						<li>Crosses the sandbox into the Plugin AppDomain</li>
-						<li>Routes the command "TestPluginSimpleMultiplyByTwoCommand" at https://github.com/Myrcon/Potato-2/blob/master/src/Myrcon.Plugins.Test/Tests/TestPluginsWebUi.cs </li>
+						<li>Routes the command "TestPluginSimpleMultiplyByTwoCommand" at https://github.com/Myrcon/Procon-2-Potato/blob/master/src/Myrcon.Plugins.Test/Tests/TestPluginsWebUi.cs </li>
 						<li>Multiplies the number.</li>
 						<li>Reverse of above.</li>
 					</ul>
@@ -61,19 +61,19 @@
 
             <script type="text/ng-template" id="/widget/overview.html">
                 <h2>This is a plugin panel generated from the C# instance</h2>
-				<p>You can see this text being pulled from Potato at https://github.com/Myrcon/Potato-2/blob/master/src/Myrcon.Plugins.Test/Pages/IndexPageView.tt </p>
+				<p>You can see this text being pulled from Potato at https://github.com/Myrcon/Procon-2-Potato/blob/master/src/Myrcon.Plugins.Test/Pages/IndexPageView.tt </p>
 				<p>Panels like this will be displayed around Potato. It's entirely up to the plugin developer what content and functionality shows up in this little panel.</p>
             </script>
 
             <script type="text/ng-template" id="/widget/settings.html">
                 <h2>This is a plugin panel generated from the C# instance</h2>
-				<p>You can see this text being pulled from Potato at https://github.com/Myrcon/Potato-2/blob/master/src/Myrcon.Plugins.Test/Pages/IndexPageView.tt </p>
+				<p>You can see this text being pulled from Potato at https://github.com/Myrcon/Procon-2-Potato/blob/master/src/Myrcon.Plugins.Test/Pages/IndexPageView.tt </p>
 				<p>Potato 2 is very broad on its protocol. This panel could be used to display game-specific functionality of settings</p>
             </script>
 
             <script type="text/ng-template" id="/widget/player.html">
                 <h2>This is a plugin panel generated from the C# instance</h2>
-				<p>You can see this text being pulled from Potato at https://github.com/Myrcon/Potato-2/blob/master/src/Myrcon.Plugins.Test/Pages/IndexPageView.tt </p>
+				<p>You can see this text being pulled from Potato at https://github.com/Myrcon/Procon-2-Potato/blob/master/src/Myrcon.Plugins.Test/Pages/IndexPageView.tt </p>
 				<p>This panel could be used to display additional infromation, statistics etc. about this particular player.</p>
             </script>
 		</div>

@@ -92,6 +92,10 @@ namespace Potato.Core.Shared.Events {
         /// A player has been removed from an account
         /// </summary>
         SecurityPlayerRemoved,
+        /// <summary>
+        /// A token has been authenticated against ("the user is online" event)
+        /// </summary>
+        SecurityAccountTokenAuthenticated,
 
         /// <summary>
         /// The command server has started up, listening for incoming connections

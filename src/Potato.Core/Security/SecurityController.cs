@@ -1871,6 +1871,10 @@ namespace Potato.Core.Security {
                                 }
                             }
                         };
+
+                        if (this.Shared.Events != null) {
+                            this.Shared.Events.Log(GenericEvent.ConvertToGenericEvent(result, GenericEventType.SecurityAccountTokenAuthenticated));
+                        }
                     }
                     else {
                         result = new CommandResult() {

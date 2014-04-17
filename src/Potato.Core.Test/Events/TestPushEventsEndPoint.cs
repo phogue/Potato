@@ -119,7 +119,7 @@ namespace Potato.Core.Test.Events {
 
             pushEndPoint.Push();
 
-            Assert.IsTrue(requestWait.WaitOne(1000));
+            Assert.IsTrue(requestWait.WaitOne(10000));
             Assert.AreEqual(0, pushEndPoint.EventsStream.Count);
         }
 

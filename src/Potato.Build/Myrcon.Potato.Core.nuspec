@@ -13,7 +13,7 @@
     <summary>The core of Potato, which runs just about everything.</summary>
 		<description>The core of Potato, which runs just about everything.</description>
 		<copyright>Copyright 2014</copyright>
-		<tags>Potato Core Myrcon</tags>
+		<tags>Procon Potato Core Myrcon</tags>
     <dependencies>
       <dependency id="Myrcon.Potato.Shared" version="$version$" />
     </dependencies>

@@ -12,7 +12,7 @@
 		<requireLicenseAcceptance>true</requireLicenseAcceptance>
 		<description>Potato. More Pro than con. Professional Connection. Pro-Connection. Professional Con.</description>
 		<copyright>Copyright 2014</copyright>
-		<tags>Potato Tools Developer Myrcon</tags>
+		<tags>Procon Potato Tools Developer Myrcon</tags>
     <dependencies>
       <dependency id="Myrcon.Potato.Core" version="$version$" />
     </dependencies>

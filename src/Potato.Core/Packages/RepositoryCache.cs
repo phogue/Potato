@@ -101,15 +101,16 @@ namespace Potato.Core.Packages {
                     repository.CacheStamp = DateTime.Now;
 
                     try {
+                        var query = this.GetCachedSourceRepository(repository.Uri).GetPackages();
+
+                        Defines.PackageRequiredTags.ForEach(tag => query = query.Where(package => package.Tags != null && package.Tags.Contains(tag)));
+
                         // Append all available packages for this repository.
                         new AvailableCacheBuilder() {
                             Cache = cache,
-                            Source = this.GetCachedSourceRepository(repository.Uri)
-                                           .GetPackages()
-                                           .Where(package => package.Tags != null && package.Tags.Contains(Defines.PackageRequiredTag) && package.IsLatestVersion == true)
-                                           .ToList()
-                                           .OrderByDescending(pack => pack.Version)
-                                           .ToList()
+                            Source = query.ToList()
+                                          .OrderByDescending(pack => pack.Version)
+                                          .ToList()
                         }.Build();
 
                         // Update all available packages with those that are installed.

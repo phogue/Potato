@@ -56,7 +56,7 @@ namespace Potato.Core.Test.Packages {
                     new DataServicePackage() {
                         Id = "A",
                         Version = "1.0.0",
-                        Tags = "Potato Tag2"
+                        Tags = "Procon Potato Tag2"
                     }
                 }
             );
@@ -100,7 +100,7 @@ namespace Potato.Core.Test.Packages {
                 new DataServicePackage() {
                     Id = "A",
                     Version = "1.0.0",
-                    Tags = "Potato Tag2",
+                    Tags = "Procon Potato Tag2",
                     IsLatestVersion = true
                 }
             }));
@@ -127,7 +127,7 @@ namespace Potato.Core.Test.Packages {
                 new DataServicePackage() {
                     Id = "A",
                     Version = "1.0.0",
-                    Tags = "Potato Tag2",
+                    Tags = "Procon Potato Tag2",
                     IsLatestVersion = true
                 }
             }));
@@ -153,7 +153,7 @@ namespace Potato.Core.Test.Packages {
                 new DataServicePackage() {
                     Id = "A",
                     Version = "1.0.0",
-                    Tags = "Potato Tag2",
+                    Tags = "Procon Potato Tag2",
                     IsLatestVersion = true
                 }
             }));
@@ -185,7 +185,7 @@ namespace Potato.Core.Test.Packages {
                 new DataServicePackage() {
                     Id = "B",
                     Version = "1.0.0",
-                    Tags = "Potato Tag2",
+                    Tags = "Procon Potato Tag2",
                     IsLatestVersion = true
                 },
                 new DataServicePackage() {
@@ -213,7 +213,7 @@ namespace Potato.Core.Test.Packages {
                 new DataServicePackage() {
                     Id = "A",
                     Version = "1.0.0",
-                    Tags = "Potato Tag2"
+                    Tags = "Procon Potato Tag2"
                 }
             });
 
@@ -223,7 +223,7 @@ namespace Potato.Core.Test.Packages {
                 new DataServicePackage() {
                     Id = "A",
                     Version = "1.0.0",
-                    Tags = "Potato Tag2",
+                    Tags = "Procon Potato Tag2",
                     IsLatestVersion = true
                 }
             }));
@@ -246,7 +246,7 @@ namespace Potato.Core.Test.Packages {
                 new DataServicePackage() {
                     Id = "A",
                     Version = "1.0.0",
-                    Tags = "Potato Tag2"
+                    Tags = "Procon Potato Tag2"
                 }
             });
 
@@ -256,7 +256,7 @@ namespace Potato.Core.Test.Packages {
                 new DataServicePackage() {
                     Id = "A",
                     Version = "2.0.0",
-                    Tags = "Potato Tag2",
+                    Tags = "Procon Potato Tag2",
                     IsLatestVersion = true
                 }
             }));

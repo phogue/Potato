@@ -129,7 +129,7 @@ namespace Potato.Service.Shared {
         /// <summary>
         /// The default source repository uri to download core updates to Potato.
         /// </summary>
-        public static readonly String PackagesDefaultSourceRepositoryUri = "https://repo.myrcon.com/Potato";
+        public static readonly String PackagesDefaultSourceRepositoryUri = "https://repo.myrcon.com/procon";
 
         /// <summary>
         /// The tag required by Potato to cache on. If the package does not have this tag then it won't
@@ -137,7 +137,10 @@ namespace Potato.Service.Shared {
         /// though, so a dependency can still be downloaded. Only tags with "Potato" will appear to the user
         /// to download though.
         /// </summary>
-        public static readonly String PackageRequiredTag = "Potato";
+        public static readonly List<String> PackageRequiredTags = new List<string>() {
+            "Procon",
+            "Potato"
+        };
 
         /// <summary>
         /// Package id for the core of Potato

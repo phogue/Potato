@@ -13,9 +13,11 @@
     // BEGIN IGNORE
     // I'll think of a better way of handling this at not-2am
 
+    var $body = angular.element(document.querySelector('body'));
+
     $rootScope.$on('$viewContentLoaded', function () {
         MessageClient.emit('sandbox.set-height', {
-            Height: $('body').height()
+            Height: $body.offsetHeight
         });
     });
 
@@ -81,7 +83,7 @@
 } ])
 
 .controller('MenuController', ['$scope', '$location', function ($scope, $location) {
-    $scope.isActive = function(viewLocation) {
+    $scope.isActive = function (viewLocation) {
         var active = (viewLocation === $location.path());
         return active;
     };

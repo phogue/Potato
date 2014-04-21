@@ -14,6 +14,7 @@
 // limitations under the License.
 #endregion
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 
@@ -56,7 +57,7 @@ namespace Potato.Core.Shared.Models {
         /// <summary>
         /// List of access tokens generated for this account.
         /// </summary>
-        public List<AccessTokenModel> AccessTokens { get; set; } 
+        public ConcurrentDictionary<Guid, AccessTokenModel> AccessTokens { get; set; } 
 
         /// <summary>
         /// Initializes the account with default values.
@@ -67,7 +68,7 @@ namespace Potato.Core.Shared.Models {
             this.PasswordHash = String.Empty;
             this.PreferredLanguageCode = String.Empty;
             this.Players = new List<AccountPlayerModel>();
-            this.AccessTokens = new List<AccessTokenModel>();
+            this.AccessTokens = new ConcurrentDictionary<Guid, AccessTokenModel>();
         }
 
         public  void Dispose() {

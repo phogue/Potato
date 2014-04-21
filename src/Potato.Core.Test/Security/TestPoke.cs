@@ -37,7 +37,7 @@ namespace Potato.Core.Test.Security {
             security.Poke();
 
             Assert.AreEqual(1, security.Groups.First(group => group.Name == "GroupName").Accounts.First().AccessTokens.Count);
-            Assert.AreEqual("Token Hash Two", security.Groups.First(group => group.Name == "GroupName").Accounts.First().AccessTokens.First().TokenHash);
+            Assert.AreEqual("Token Hash Two", security.Groups.First(group => group.Name == "GroupName").Accounts.First().AccessTokens.First().Value.TokenHash);
         }
 
         /// <summary>

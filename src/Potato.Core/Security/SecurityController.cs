@@ -396,7 +396,10 @@ namespace Potato.Core.Security {
 
             foreach (AccountModel account in this.Groups.SelectMany(group => group.Accounts)) {
                 // Remove all tokens that were last touched beyond the threshold
-                account.AccessTokens.RemoveAll(token => token.LastTouched < expiredThreshold);
+                foreach (var tokenId in account.AccessTokens.Where(token => token.Value.LastTouched < expiredThreshold).Select(token => token.Key)) {
+                    AccessTokenModel removed;
+                    account.AccessTokens.TryRemove(tokenId, out removed);
+                }
             }
         }
 
@@ -426,7 +429,7 @@ namespace Potato.Core.Security {
                         config.Append(CommandBuilder.SecurityAccountAddPlayer(account.Username, assignment.ProtocolType, assignment.Uid).ToConfigCommand());
                     }
 
-                    foreach (AccessTokenModel token in account.AccessTokens) {
+                    foreach (var token in account.AccessTokens.Select(token => token.Value)) {
                         config.Append(CommandBuilder.SecurityAccountAppendAccessToken(account.Username, token.Id, token.TokenHash, token.LastTouched).ToConfigCommand());
                     }
                 }
@@ -977,7 +980,7 @@ namespace Potato.Core.Security {
         /// </summary>
         public AccountModel GetAccount(Guid tokenId) {
             return this.Groups.SelectMany(group => group.Accounts)
-                              .FirstOrDefault(account => account.AccessTokens.Any(accessToken => accessToken.Id == tokenId));
+                              .FirstOrDefault(account => account.AccessTokens.ContainsKey(tokenId));
         }
 
         #region Group
@@ -1692,27 +1695,28 @@ namespace Potato.Core.Security {
                 
                 if (account != null) {
                     if (id != Guid.Empty && tokenHash.Length > 0 && lastTouched > DateTime.Now.AddSeconds(-1 * Math.Abs(this.Shared.Variables.Get(CommonVariableNames.SecurityMaximumAccessTokenLastTouchedLengthSeconds, 172800)))) {
-                        AccessTokenModel existing = account.AccessTokens.FirstOrDefault(accessToken => accessToken.Id == id);
 
                         // Upsert the token hash
-                        if (existing != null) {
-                            existing.TokenHash = tokenHash;
-                            existing.LastTouched = lastTouched;
-                        }
-                        else {
-                            account.AccessTokens.Add(new AccessTokenModel() {
-                                Id = id,
-                                Account = account,
-                                TokenHash = tokenHash,
-                                LastTouched = lastTouched,
-                                ExpiredWindowSeconds = this.Shared.Variables.Get(CommonVariableNames.SecurityMaximumAccessTokenLastTouchedLengthSeconds, 172800)
-                            });
-                        }
+                        account.AccessTokens.AddOrUpdate(id, guid => new AccessTokenModel() {
+                            Id = id,
+                            Account = account,
+                            TokenHash = tokenHash,
+                            LastTouched = lastTouched,
+                            ExpiredWindowSeconds = this.Shared.Variables.Get(CommonVariableNames.SecurityMaximumAccessTokenLastTouchedLengthSeconds, 172800)
+                        }, (guid, model) => {
+                            model.TokenHash = tokenHash;
+                            model.LastTouched = lastTouched;
+
+                            return model;
+                        });
 
                         // Keep removing token hashes if we've added too many
                         while (account.AccessTokens.Count > 0 && account.AccessTokens.Count > this.Shared.Variables.Get(CommonVariableNames.SecurityMaximumAccessTokensPerAccount, 5)) {
+                            var oldestId = account.AccessTokens.OrderBy(accessToken => accessToken.Value.LastTouched).First();
+
                             // Remove the token that was touched the longest ago.
-                            account.AccessTokens.Remove(account.AccessTokens.OrderBy(accessToken => accessToken.LastTouched).First());
+                            AccessTokenModel removed;
+                            account.AccessTokens.TryRemove(oldestId.Key, out removed);
                         }
 
                         result = new CommandResult() {
@@ -1854,7 +1858,7 @@ namespace Potato.Core.Security {
             String identifier = parameters["identifier"].First<String>();
 
             if (this.DispatchPermissionsCheck(command, command.Name).Success == true) {
-                AccessTokenModel accountAccessToken = this.Groups.SelectMany(group => group.Accounts).SelectMany(account => account.AccessTokens).FirstOrDefault(accessToken => accessToken.Id == id);
+                AccessTokenModel accountAccessToken = this.Groups.SelectMany(group => group.Accounts).Where(account => account.AccessTokens.ContainsKey(id)).SelectMany(account => account.AccessTokens).Where(accessToken => accessToken.Key == id).Select(accessToken => accessToken.Value).FirstOrDefault();
 
                 if (accountAccessToken != null) {
                     if (accountAccessToken.Authenticate(id, token, identifier)) {

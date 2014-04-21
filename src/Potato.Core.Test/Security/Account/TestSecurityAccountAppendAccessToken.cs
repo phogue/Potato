@@ -163,7 +163,7 @@ namespace Potato.Core.Test.Security.Account {
             security.Tunnel(CommandBuilder.SecurityAccountAppendAccessToken("Phogue", id, "TokenHashOne", DateTime.Now).SetOrigin(CommandOrigin.Local));
             security.Tunnel(CommandBuilder.SecurityAccountAppendAccessToken("Phogue", id, "TokenHashTwo", DateTime.Now).SetOrigin(CommandOrigin.Local));
 
-            Assert.AreEqual("TokenHashTwo", security.Groups.SelectMany(group => @group.Accounts).First(account => account.Username == "Phogue").AccessTokens.First().TokenHash);
+            Assert.AreEqual("TokenHashTwo", security.Groups.SelectMany(group => @group.Accounts).First(account => account.Username == "Phogue").AccessTokens.First().Value.TokenHash);
         }
 
         /// <summary>
@@ -187,7 +187,7 @@ namespace Potato.Core.Test.Security.Account {
 
             // Test that we have the maximum and the oldest token isn't in the list.
             Assert.AreEqual(5, security.Groups.SelectMany(group => @group.Accounts).First(account => account.Username == "Phogue").AccessTokens.Count);
-            Assert.IsNull(security.Groups.SelectMany(group => @group.Accounts).First(account => account.Username == "Phogue").AccessTokens.FirstOrDefault(token => token.Id == oldest));
+            Assert.IsNull(security.Groups.SelectMany(group => @group.Accounts).First(account => account.Username == "Phogue").AccessTokens.Where(token => token.Key == oldest).Select(token => token.Value).FirstOrDefault());
         }
 
     }

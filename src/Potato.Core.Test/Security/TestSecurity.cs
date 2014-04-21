@@ -231,9 +231,9 @@ namespace Potato.Core.Test.Security {
             Assert.AreEqual(77, lastGroup.Permissions.First(permission => permission.Name == CommandType.VariablesSet.ToString()).Authority);
             Assert.AreEqual(88, lastGroup.Permissions.First(permission => permission.Name == CommandType.VariablesSetA.ToString()).Authority);
             Assert.AreEqual("Phogue", loadSecurity.Groups.SelectMany(group => group.Accounts).First().Username);
-            Assert.AreEqual(Guid.Parse("f380eb1e-1438-48c0-8c3d-ad55f2d40538"), loadSecurity.Groups.SelectMany(group => group.Accounts).First().AccessTokens.First().Id);
-            Assert.AreEqual("Token Hash", loadSecurity.Groups.SelectMany(group => group.Accounts).First().AccessTokens.First().TokenHash);
-            Assert.AreEqual(DateTime.Parse("2024-04-14 20:51:00 PM"), loadSecurity.Groups.SelectMany(group => group.Accounts).First().AccessTokens.First().LastTouched);
+            Assert.AreEqual(Guid.Parse("f380eb1e-1438-48c0-8c3d-ad55f2d40538"), loadSecurity.Groups.SelectMany(group => group.Accounts).First().AccessTokens.First().Value.Id);
+            Assert.AreEqual("Token Hash", loadSecurity.Groups.SelectMany(group => group.Accounts).First().AccessTokens.First().Value.TokenHash);
+            Assert.AreEqual(DateTime.Parse("2024-04-14 20:51:00 PM"), loadSecurity.Groups.SelectMany(group => group.Accounts).First().AccessTokens.First().Value.LastTouched);
             Assert.AreEqual("de-DE", loadSecurity.Groups.Last().Accounts.First().PreferredLanguageCode);
             Assert.AreEqual(CommonProtocolType.DiceBattlefield3, loadSecurity.Groups.SelectMany(group => group.Accounts).SelectMany(account => account.Players).First().ProtocolType);
             Assert.AreEqual("ABCDEF", loadSecurity.Groups.SelectMany(group => group.Accounts).SelectMany(account => account.Players).First().Uid);

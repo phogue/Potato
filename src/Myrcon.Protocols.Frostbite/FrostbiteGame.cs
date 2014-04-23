@@ -1344,7 +1344,19 @@ namespace Myrcon.Protocols.Frostbite {
                 }
             }
             else if (action.ActionType == NetworkActionType.NetworkPlayerUnban) {
-                wrappers.Add(this.CreatePacket("banList.remove guid \"{0}\"", action.Scope.Players.First().Uid));
+                var player = action.Scope.Players.FirstOrDefault();
+
+                if (player != null) {
+                    if (String.IsNullOrEmpty(player.Uid) == false) {
+                        wrappers.Add(this.CreatePacket("banList.remove guid \"{0}\"", player.Uid));
+                    }
+                    else if (String.IsNullOrEmpty(player.Name) == false) {
+                        wrappers.Add(this.CreatePacket("banList.remove name \"{0}\"", player.Name));
+                    }
+                    else if (String.IsNullOrEmpty(player.Ip) == false) {
+                        wrappers.Add(this.CreatePacket("banList.remove ip \"{0}\"", player.Ip));
+                    }
+                }
             }
 
             wrappers.Add(this.CreatePacket("banList.save"));

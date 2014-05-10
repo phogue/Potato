@@ -1,8 +1,8 @@
 ﻿{
     "Potato.Core.Localization.LanguageConfig": [
         {
-            "LanguageCode": "en-UK",
-            "CountryCode": "GB",
+            "LanguageCode": "en-GB",
+            "CountryCode": "UK",
             "EnglishName": "English (UK)",
             "NativeName": "English (UK)"
         }

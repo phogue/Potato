@@ -231,7 +231,7 @@
     <Content Include="Localization\de-DE\Potato.Core.Test.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Localization\en-UK\Potato.Core.Test.json">
+    <Content Include="Localization\en-GB\Potato.Core.Test.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="..\Potato.licenseheader">

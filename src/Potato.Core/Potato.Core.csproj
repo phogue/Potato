@@ -159,13 +159,13 @@
     <Content Include="Localization\de-DE\Potato.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Localization\en-UK\Potato.Fuzzy.json">
+    <Content Include="Localization\en-GB\Potato.Fuzzy.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Localization\en-UK\Potato.json">
+    <Content Include="Localization\en-GB\Potato.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Localization\en-UK\Potato.Net.json">
+    <Content Include="Localization\en-GB\Potato.Net.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="..\Potato.licenseheader">

@@ -67,7 +67,7 @@ namespace Potato.Core.Test.Localization {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.LanguageLocalize,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
-                    "en-UK",
+                    "en-GB",
                     "Potato.Core.Test.Localization",
                     "TestName"
                 })
@@ -92,7 +92,7 @@ namespace Potato.Core.Test.Localization {
                     new CommandParameter() {
                         Data = {
                             Content = new List<String>() {
-                                "en-UK"
+                                "en-GB"
                             }
                         }
                     },
@@ -119,7 +119,7 @@ namespace Potato.Core.Test.Localization {
                     }
                 }
 
-                //TestHelpers.ObjectListToContentList(new List<Object>() { "en-UK", "Potato.Core.Test.Localization", "TestFormat", new object[] { "World" } })
+                //TestHelpers.ObjectListToContentList(new List<Object>() { "en-GB", "Potato.Core.Test.Localization", "TestFormat", new object[] { "World" } })
             });
 
             Assert.IsTrue(result.Success);
@@ -182,7 +182,7 @@ namespace Potato.Core.Test.Localization {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.LanguageLocalize,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
-                    "en-UK",
+                    "en-GB",
                     "Potato.Core.Test",
                     "TestName"
                 })
@@ -204,7 +204,7 @@ namespace Potato.Core.Test.Localization {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.LanguageLocalize,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
-                    "en-UK",
+                    "en-GB",
                     "Potato.Core.Test.Localization",
                     "TestFormat"
                 })
@@ -233,7 +233,7 @@ namespace Potato.Core.Test.Localization {
                 },
                 Origin = CommandOrigin.Remote,
                 Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
-                    "en-UK",
+                    "en-GB",
                     "Potato.Core.Test.Localization",
                     "TestKey"
                 })

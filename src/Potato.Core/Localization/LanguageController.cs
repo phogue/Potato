@@ -151,7 +151,7 @@ namespace Potato.Core.Localization {
 
             this.AssignEvents();
 
-            this.Shared.Variables.Variable(CommonVariableNames.LocalizationDefaultLanguageCode).Value = "en-UK";
+            this.Shared.Variables.Variable(CommonVariableNames.LocalizationDefaultLanguageCode).Value = "en-GB";
 
             this.LoadDefaultLanguage();
 
@@ -184,7 +184,7 @@ namespace Potato.Core.Localization {
         }
         
         protected void LoadDefaultLanguage() {
-            String languageCode = this.Shared.Variables.Variable(CommonVariableNames.LocalizationDefaultLanguageCode).ToType("en-UK");
+            String languageCode = this.Shared.Variables.Variable(CommonVariableNames.LocalizationDefaultLanguageCode).ToType("en-GB");
 
             LanguageConfig language = this.LoadedLanguageFiles.FirstOrDefault(lang => lang.LanguageModel.LanguageCode == languageCode);
 

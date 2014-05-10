@@ -1924,22 +1924,18 @@ namespace Potato.Core.Security {
                 if (account != null) {
                     LanguageModel language = this.Shared.Languages.LoadedLanguageFiles.Where(l => l.LanguageModel.LanguageCode == languageCode).Select(l => l.LanguageModel).FirstOrDefault();
 
+                    // If we have the language code we fixup the casing just to be pretty and stuff.
                     if (language != null) {
-                        account.PreferredLanguageCode = language.LanguageCode;
+                        languageCode = language.LanguageCode;
+                    }
 
-                        result = new CommandResult() {
-                            Success = true,
-                            CommandResultType = CommandResultType.Success,
-                            Message = String.Format(@"Account with username ""{0}"" set preferred language to ""{1}"".", account.Username, language.LanguageCode)
-                        };
-                    }
-                    else {
-                        result = new CommandResult() {
-                            Success = false,
-                            CommandResultType = CommandResultType.DoesNotExists,
-                            Message = String.Format(@"Language with code ""{0}"" does not exist.", languageCode)
-                        };
-                    }
+                    account.PreferredLanguageCode = languageCode;
+
+                    result = new CommandResult() {
+                        Success = true,
+                        CommandResultType = CommandResultType.Success,
+                        Message = String.Format(@"Account with username ""{0}"" set preferred language to ""{1}"".", account.Username, languageCode)
+                    };
                 }
                 else {
                     result = new CommandResult() {

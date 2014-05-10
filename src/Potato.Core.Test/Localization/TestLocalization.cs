@@ -128,11 +128,12 @@ namespace Potato.Core.Test.Localization {
         }
 
         /// <summary>
-        ///     Tests that a localization will fail if the specified language code does not exist.
+        /// Tests localization will fail if the language code does not exist and no fallback is available.
         /// </summary>
         [Test]
-        public void TestEnglishLocalizationControllerGetDoesNotExist() {
+        public void TestEnglishLocalizationControllerGetDoesNotExistWhenNoDefaultPresent() {
             var language = (LanguageController)new LanguageController().Execute();
+            language.Default = null;
 
             ICommandResult result = language.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
@@ -146,6 +147,28 @@ namespace Potato.Core.Test.Localization {
 
             Assert.IsFalse(result.Success);
             Assert.AreEqual(CommandResultType.DoesNotExists, result.CommandResultType);
+        }
+
+        /// <summary>
+        /// Tests a non-existant language code will fall back to the default (english)
+        /// </summary>
+        [Test]
+        public void TestEnglishLocalizationControllerGetDoesNotExist() {
+            var language = (LanguageController)new LanguageController().Execute();
+
+            ICommandResult result = language.Tunnel(new Command() {
+                Origin = CommandOrigin.Local,
+                CommandType = CommandType.LanguageLocalize,
+                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                    "zu-ZU",
+                    "Potato.Core.Test.Localization",
+                    "TestName"
+                })
+            });
+
+            Assert.IsTrue(result.Success);
+            Assert.AreEqual(CommandResultType.Success, result.CommandResultType);
+            Assert.AreEqual("PotatoCoreTestLocalizationEnglishTestValue", result.Now.Content.First());
         }
 
         /// <summary>

@@ -110,7 +110,8 @@ namespace Potato.Core.Test.Security.Account {
         }
 
         /// <summary>
-        ///     Test setting the preferred language for an account works.
+        /// Tests that setting a language code that does not exist will still set the preferred language code
+        /// of the account to whatever the string was.
         /// </summary>
         [Test]
         public void TestLanguageDoesNotExist() {
@@ -119,12 +120,12 @@ namespace Potato.Core.Test.Security.Account {
             security.Tunnel(CommandBuilder.SecurityGroupAddAccount("GroupName", "Phogue").SetOrigin(CommandOrigin.Local));
 
             // Now change the language of the account.
-            ICommandResult result = security.Tunnel(CommandBuilder.SecurityAccountSetPreferredLanguageCode("ThisDoesNotExist", "zu-ZU").SetOrigin(CommandOrigin.Local));
+            ICommandResult result = security.Tunnel(CommandBuilder.SecurityAccountSetPreferredLanguageCode("Phogue", "zu-ZU").SetOrigin(CommandOrigin.Local));
 
             // Make sure it was successful.
-            Assert.IsFalse(result.Success);
-            Assert.AreEqual(result.CommandResultType, CommandResultType.DoesNotExists);
-            Assert.AreEqual(security.Groups.Last().Accounts.First().PreferredLanguageCode, String.Empty);
+            Assert.IsTrue(result.Success);
+            Assert.AreEqual(CommandResultType.Success, result.CommandResultType);
+            Assert.AreEqual("zu-ZU", security.Groups.Last().Accounts.First().PreferredLanguageCode);
         }
     }
 }

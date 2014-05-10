@@ -30,7 +30,7 @@ namespace Potato.Core.Localization {
         /// <summary>
         /// The default language to fall back on
         /// </summary>
-        public LanguageConfig Default { get; protected set; }
+        public LanguageConfig Default { get; set; }
 
         /// <summary>
         /// A list of all the languages loaded.
@@ -233,7 +233,7 @@ namespace Potato.Core.Localization {
             ICommandResult result = null;
 
             if (command.Origin == CommandOrigin.Local || this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
-                LanguageConfig language = this.LoadedLanguageFiles.FirstOrDefault(lang => lang.LanguageModel.LanguageCode == languageCode);
+                LanguageConfig language = this.LoadedLanguageFiles.FirstOrDefault(lang => lang.LanguageModel.LanguageCode == languageCode) ?? this.Default;
 
                 if (language != null) {
                     result = new CommandResult() {
@@ -250,7 +250,7 @@ namespace Potato.Core.Localization {
                     result = new CommandResult() {
                         Success = false,
                         CommandResultType = CommandResultType.DoesNotExists,
-                        Message = String.Format(@"Language with the code ""{0}"" does not exist.", languageCode)
+                        Message = String.Format(@"Language with the code ""{0}"" does not exist and no default language specified.", languageCode)
                     };
                 }
             }

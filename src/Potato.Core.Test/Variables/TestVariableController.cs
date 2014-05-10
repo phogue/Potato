@@ -247,17 +247,13 @@ namespace Potato.Core.Test.Variables {
 
             var commands = loadConfig.RootOf<VariableController>().Children<JObject>().Select(item => item.ToObject<IConfigCommand>(JsonSerialization.Minimal)).ToList();
 
-            Assert.AreEqual("VariablesSetA", commands[0].Command.Name);
-            Assert.AreEqual("NameToWriteString", commands[0].Command.Parameters[0].First<String>());
-            Assert.AreEqual("this is a string", commands[0].Command.Parameters[1].First<String>());
-
-            Assert.AreEqual("VariablesSetA", commands[1].Command.Name);
-            Assert.AreEqual("NameToWriteInteger", commands[1].Command.Parameters[0].First<String>());
-            Assert.AreEqual("1", commands[1].Command.Parameters[1].First<String>());
-
-            Assert.AreEqual("VariablesSetA", commands[2].Command.Name);
-            Assert.AreEqual("MaximumProtocolConnections", commands[2].Command.Parameters[0].First<String>());
-            Assert.AreEqual("10", commands[2].Command.Parameters[1].First<String>());
+            // Order is not maintained so we can only check that the values in some disorder are output.
+            // Nope, not perfect.
+            foreach (var command in commands) {
+                Assert.AreEqual("VariablesSetA", command.Command.Name);
+                Assert.IsTrue(new List<String>() { "NameToWriteString", "NameToWriteInteger", "MaximumProtocolConnections" }.Contains(command.Command.Parameters[0].First<String>()));
+                Assert.IsTrue(new List<String>() { "this is a string", "1", "10" }.Contains(command.Command.Parameters[1].First<String>()));
+            }
         }
     }
 }

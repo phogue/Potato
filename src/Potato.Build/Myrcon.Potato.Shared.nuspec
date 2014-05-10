@@ -16,9 +16,9 @@
 		<tags>Procon Potato Shared Myrcon</tags>
 	</metadata>
 	<files>
-		<file src="..\..\builds\Debug\Packages\Myrcon.Potato.Shared.2.0.0\lib\net40\*.dll" target="lib\net40\" />
-		<file src="..\..\builds\Debug\Packages\Myrcon.Potato.Shared.2.0.0\lib\net40\*.xml" target="lib\net40\" />
-		<file src="..\..\builds\Debug\Packages\Myrcon.Potato.Shared.2.0.0\lib\net40\*.pdb" target="lib\net40\" />
-    <file src="..\..\builds\Debug\Packages\Myrcon.Potato.Shared.2.0.0\lib\net40\*\**" target="content\" />
+		<file src="..\..\builds\Release\Packages\Myrcon.Potato.Shared.2.0.0\lib\net40\*.dll" target="lib\net40\" />
+		<file src="..\..\builds\Release\Packages\Myrcon.Potato.Shared.2.0.0\lib\net40\*.xml" target="lib\net40\" />
+		<file src="..\..\builds\Release\Packages\Myrcon.Potato.Shared.2.0.0\lib\net40\*.pdb" target="lib\net40\" />
+    <file src="..\..\builds\Release\Packages\Myrcon.Potato.Shared.2.0.0\lib\net40\*\**" target="content\" />
 	</files>
 </package>

@@ -100,7 +100,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{514F9052
 	ProjectSection(SolutionItems) = preProject
 		Potato.Build\Myrcon.Potato.Core.nuspec = Potato.Build\Myrcon.Potato.Core.nuspec
 		Potato.Build\Myrcon.Potato.Shared.nuspec = Potato.Build\Myrcon.Potato.Shared.nuspec
-		Potato.Build\Myrcon.Potato.Tools.nuspec = Potato.Build\Myrcon.Potato.Tools.nuspec
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Potato.Service.Shared.Test", "Potato.Service.Shared.Test\Potato.Service.Shared.Test.csproj", "{6A5D59E2-4FBC-42A8-BF96-04F3E1B5B53D}"

@@ -129,7 +129,7 @@ namespace Potato.Service.Shared {
         /// <summary>
         /// The default source repository uri to download core updates to Potato.
         /// </summary>
-        public static readonly String PackagesDefaultSourceRepositoryUri = "https://repo.myrcon.com/procon";
+        public static readonly String PackagesDefaultSourceRepositoryUri = "https://teamcity.myrcon.com/nuget";
 
         /// <summary>
         /// The tag required by Potato to cache on. If the package does not have this tag then it won't

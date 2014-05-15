@@ -101,7 +101,7 @@ namespace Potato.Core.Packages {
                     repository.CacheStamp = DateTime.Now;
 
                     try {
-                        var query = this.GetCachedSourceRepository(repository.Uri).GetPackages();
+                        var query = this.GetCachedSourceRepository(repository.Uri).GetPackages().Where(package => package.IsLatestVersion == true);
 
                         Defines.PackageRequiredTags.ForEach(tag => query = query.Where(package => package.Tags != null && package.Tags.Contains(tag)));
 

@@ -17,7 +17,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using System.Xml.Linq;
 using Newtonsoft.Json.Linq;
 using Potato.Fuzzy.Models;
 using Potato.Fuzzy.Tokens.Object;
@@ -52,8 +51,10 @@ using Potato.Fuzzy.Tokens.Syntax.Typography;
 using Potato.Fuzzy.Utils;
 
 namespace Potato.Fuzzy.Tokens {
+    /// <summary>
+    /// Handles loading and caching the various tokens, as well as ordering them for parsing/executing.
+    /// </summary>
     public static class TokenReflection {
-
         /// <summary>
         /// A reduction method that will take multiple tokens and merge them together. It may also
         /// perform additional calculations, like merging [Number, Plus, Number] would result in a
@@ -192,6 +193,9 @@ namespace Potato.Fuzzy.Tokens {
 
         };
 
+        /// <summary>
+        /// A list of handlers to reduce tokens to more specialized tokens.
+        /// </summary>
         public static readonly Dictionary<TokenMethodMetadata, ReduceDelegateHandler> TokenReduceHandlers = new Dictionary<TokenMethodMetadata, ReduceDelegateHandler>() {
 
             // Potato.Fuzzy.Tokens.Primitive.Temporal.Variable.Date.DateVariableTemporalPrimitiveToken
@@ -1348,6 +1352,10 @@ namespace Potato.Fuzzy.Tokens {
             return token;
         }
 
+        /// <summary>
+        /// Creates a decendant phrase from another phrase, combining/reducing tokens
+        /// </summary>
+        /// <returns></returns>
         public static Phrase CreateDescendants<T>(IFuzzyState state, Phrase phrase, out List<T> created) where T : Token, new() {
 
             var list = (from element in TokenReflection.SelectMatchDescendants(state.Document, typeof(T))
@@ -1362,18 +1370,12 @@ namespace Potato.Fuzzy.Tokens {
             return phrase;
         }
 
+        /// <summary>
+        /// Creates a decendant phrase from another phrase, combining/reducing tokens
+        /// </summary>
+        /// <returns></returns>
         public static Phrase CreateDescendants<T>(IFuzzyState state, Phrase phrase) where T : Token, new() {
             phrase.AddRange(TokenReflection.SelectMatchDescendants(state.Document, typeof(T)).Select(element => TokenReflection.CreateToken<T>(element, phrase)).Where(token => token != null));
-
-            /*
-            var list = from element in TokenReflection.SelectMatchDescendants(state.Document, typeof(T))
-                       let token = TokenReflection.CreateToken<T>(element, phrase)
-                       where token != null
-                       select token;
-
-            phrase.AddRange(list.Cast<Token>());
-            */
-            // list.ToList().ForEach(phrase.Add);
 
             return phrase;
         }

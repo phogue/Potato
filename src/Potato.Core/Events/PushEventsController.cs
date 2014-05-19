@@ -260,7 +260,7 @@ namespace Potato.Core.Events {
 
                 ICommandResult uris = this.Shared.Variables.Tunnel(CommandBuilder.VariablesGet(CommonVariableNames.EventsPushConfigGroups).SetOrigin(CommandOrigin.Local));
 
-                var content = uris.Now.Variables != null ? uris.Now.Variables.SelectMany(variable => variable.ToList<String>()) : new List<String>();
+                var content = uris.Now.Variables != null ? uris.Now.Variables.SelectMany(variable => variable.ToList<String>()).ToList() : new List<String>();
 
                 // If the name has not been registered already..
                 if (uris.Success == true && content.Contains(name) == false) {

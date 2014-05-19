@@ -152,7 +152,7 @@ namespace Potato.Core.Test.Events.TestEventsController {
                 "EventName2"
             }).SetOrigin(CommandOrigin.Local));
 
-            Assert.AreEqual(2, pushEvents.Shared.Variables.Variable(CommonVariableNames.EventsPushConfigGroups).ToList<String>().Count);
+            Assert.AreEqual(2, pushEvents.Shared.Variables.FlashVariables.First(archive => archive.Key.ToLower() == CommonVariableNames.EventsPushConfigGroups.ToString().ToLower()).Value.ToList<String>().Count);
         }
     }
 }

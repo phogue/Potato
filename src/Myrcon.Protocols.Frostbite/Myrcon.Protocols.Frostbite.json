@@ -9,16 +9,6 @@
 			Provider: "Myrcon",
 			Name: "Battlefield 3",
 			Type: "DiceBattlefield3",
-		},
-		{
-			Provider: "Myrcon",
-			Name: "Battlefield: Bad Company 2",
-			Type: "DiceBattlefieldBadCompany2",
-		},
-		{
-			Provider: "Myrcon",
-			Name: "Medal of Honor 2010",
-			Type: "DiceMedalOfHonor2010",
 		}
 	]
 }

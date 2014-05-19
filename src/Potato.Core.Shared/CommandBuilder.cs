@@ -305,6 +305,46 @@ namespace Potato.Core.Shared {
         }
 
         /// <summary>
+        /// Builds a command to send a PackagesAppendRepository
+        /// </summary>
+        /// <param name="uri">The uri of the repository to append</param>
+        /// <returns>The built command to the dispatch</returns>
+        public static ICommand PackagesAppendRepository(String uri) {
+            return new Command() {
+                CommandType = CommandType.PackagesAppendRepository,
+                Parameters = new List<ICommandParameter>() {
+                    new CommandParameter() {
+                        Data = {
+                            Content = new List<String>() {
+                                uri
+                            }
+                        }
+                    }
+                }
+            };
+        }
+
+        /// <summary>
+        /// Builds a command to send a PackagesRemoveRepository
+        /// </summary>
+        /// <param name="uri">The uri of the repository to remove</param>
+        /// <returns>The built command to the dispatch</returns>
+        public static ICommand PackagesRemoveRepository(String uri) {
+            return new Command() {
+                CommandType = CommandType.PackagesRemoveRepository,
+                Parameters = new List<ICommandParameter>() {
+                    new CommandParameter() {
+                        Data = {
+                            Content = new List<String>() {
+                                uri
+                            }
+                        }
+                    }
+                }
+            };
+        }
+
+        /// <summary>
         /// Builds a command to send a ProtocolsFetchSupportedProtocols
         /// </summary>
         /// <returns>The built command to the dispatch</returns>

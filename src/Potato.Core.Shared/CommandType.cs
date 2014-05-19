@@ -249,6 +249,17 @@ namespace Potato.Core.Shared {
         /// </summary>
         [Description("Checks for the latest versions of all packages from source repositories. This command is dispatched asynchronously, so a later even will then need to be listened for when the packages list finally updates itself.")]
         PackagesFetchPackages,
+        /// <summary>
+        /// Appends a new repository url to fetch packages from.
+        /// </summary>
+        [Description("Appends a new repository url to fetch packages from.")]
+        PackagesAppendRepository,
+        /// <summary>
+        /// Removes a repository from the list to the fetched.
+        /// </summary>
+        [Description("Removes a repository from the list to the fetched.")]
+        PackagesRemoveRepository,
+
 
         /// <summary>
         /// Fetches the supported protocols from the applicable protocol packages.

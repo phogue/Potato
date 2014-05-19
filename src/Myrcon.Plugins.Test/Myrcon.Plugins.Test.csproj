@@ -104,7 +104,9 @@
     <None Include="..\Potato.licenseheader">
       <Link>Potato.licenseheader</Link>
     </None>
-    <None Include="Myrcon.Plugins.Test.nuspec" />
+    <None Include="Myrcon.Plugins.Test.nuspec">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Pages\TestParameterPageView.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>TestParameterPageView.cs</LastGenOutput>

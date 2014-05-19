@@ -22,6 +22,7 @@ using Potato.Core.Shared;
 using Potato.Core.Shared.Events;
 using Potato.Core.Shared.Models;
 using Potato.Core.Variables;
+using Potato.Net.Shared.Utils;
 using Potato.Service.Shared;
 
 namespace Potato.Core.Packages {
@@ -88,6 +89,26 @@ namespace Potato.Core.Packages {
                 new CommandDispatch() {
                     CommandType = CommandType.PackagesFetchPackages,
                     Handler = this.PackagesFetchPackages
+                },
+                new CommandDispatch() {
+                    CommandType = CommandType.PackagesAppendRepository,
+                    ParameterTypes = new List<CommandParameterType>() {
+                        new CommandParameterType() {
+                            Name = "uri",
+                            Type = typeof(String)
+                        }
+                    },
+                    Handler = this.PackagesAppendRepository
+                },
+                new CommandDispatch() {
+                    CommandType = CommandType.PackagesRemoveRepository,
+                    ParameterTypes = new List<CommandParameterType>() {
+                        new CommandParameterType() {
+                            Name = "uri",
+                            Type = typeof(String)
+                        }
+                    },
+                    Handler = this.PackagesRemoveRepository
                 }
             });
         }
@@ -259,7 +280,83 @@ namespace Potato.Core.Packages {
 
             return result;
         }
-        
+
+        /// <summary>
+        /// Runs through the various set/get variable queries on behalf of the executor to establish 
+        /// a new repository url to fetch packages from.
+        /// </summary>
+        /// <returns></returns>
+        public ICommandResult PackagesAppendRepository(ICommand command, Dictionary<String, ICommandParameter> parameters) {
+            ICommandResult result = null;
+
+            String uri = parameters["uri"].First<String>();
+            
+            if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
+                var sluggedUri = uri.Slug();
+
+                this.Shared.Variables.Tunnel(CommandBuilder.VariablesSetA(VariableModel.NamespaceVariableName(sluggedUri, CommonVariableNames.PackagesRepositoryUri), uri).SetOrigin(CommandOrigin.Local));
+
+                ICommandResult uris = this.Shared.Variables.Tunnel(CommandBuilder.VariablesGet(CommonVariableNames.PackagesConfigGroups).SetOrigin(CommandOrigin.Local));
+
+                var content = uris.Now.Variables != null ? uris.Now.Variables.SelectMany(variable => variable.ToList<String>()).ToList() : new List<String>();
+
+                // If the name has not been registered already..
+                if (uris.Success == true && content.Contains(sluggedUri) == false) {
+                    this.Shared.Variables.Tunnel(CommandBuilder.VariablesSetA(CommonVariableNames.PackagesConfigGroups, content.Union(new List<String>() {
+                        sluggedUri
+                    }).ToList()).SetOrigin(CommandOrigin.Local));
+                }
+
+                result = new CommandResult() {
+                    Success = true,
+                    CommandResultType = CommandResultType.Success
+                };
+            }
+            else {
+                result = CommandResult.InsufficientPermissions;
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Runs through the various set/get variable queries on behalf of the executor to remove
+        /// a url from the list of repositories to fetch.
+        /// </summary>
+        /// <returns></returns>
+        public ICommandResult PackagesRemoveRepository(ICommand command, Dictionary<String, ICommandParameter> parameters) {
+            ICommandResult result = null;
+
+            String uri = parameters["uri"].First<String>();
+            
+            if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
+                var sluggedUri = uri.Slug();
+
+                this.Shared.Variables.Tunnel(CommandBuilder.VariablesSetA(VariableModel.NamespaceVariableName(sluggedUri, CommonVariableNames.PackagesRepositoryUri), "").SetOrigin(CommandOrigin.Local));
+
+                ICommandResult uris = this.Shared.Variables.Tunnel(CommandBuilder.VariablesGet(CommonVariableNames.PackagesConfigGroups).SetOrigin(CommandOrigin.Local));
+
+                var content = uris.Now.Variables != null ? uris.Now.Variables.SelectMany(variable => variable.ToList<String>()).ToList() : new List<String>();
+
+                // If the name has not been registered already..
+                if (uris.Success == true && content.Contains(sluggedUri) == true) {
+                    content.RemoveAll(item => item == sluggedUri);
+
+                    this.Shared.Variables.Tunnel(CommandBuilder.VariablesSetA(CommonVariableNames.PackagesConfigGroups, content).SetOrigin(CommandOrigin.Local));
+                }
+
+                result = new CommandResult() {
+                    Success = true,
+                    CommandResultType = CommandResultType.Success
+                };
+            }
+            else {
+                result = CommandResult.InsufficientPermissions;
+            }
+
+            return result;
+        }
+
         /// <summary>
         /// Fetches all of the packages from the source, essentially rebuilding the Repositories.Packages
         /// with what is known locally and remotely about the packages.

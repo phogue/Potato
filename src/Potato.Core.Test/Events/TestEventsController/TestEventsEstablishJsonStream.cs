@@ -114,5 +114,45 @@ namespace Potato.Core.Test.Events.TestEventsController {
                 "EventTwo"
             }, pushEvents.EndPoints.First().Value.InclusiveNames);
         }
+
+        /// <summary>
+        /// Tests that two end points can be established (both unique)
+        /// </summary>
+        [Test]
+        public void TestSuccessTwoEndPointsEstablished() {
+            var pushEvents = new PushEventsController();
+
+            pushEvents.Execute();
+
+            pushEvents.Tunnel(CommandBuilder.EventsEstablishJsonStream("id1", "http://localhost/", "key1", 10, new List<String>() {
+                "EventName1"
+            }).SetOrigin(CommandOrigin.Local));
+
+            pushEvents.Tunnel(CommandBuilder.EventsEstablishJsonStream("id2", "http://lolcatshost/", "key2", 20, new List<String>() {
+                "EventName2"
+            }).SetOrigin(CommandOrigin.Local));
+
+            Assert.AreEqual(2, pushEvents.EndPoints.Count);
+        }
+
+        /// <summary>
+        /// Tests that two end points are saved to the config
+        /// </summary>
+        [Test]
+        public void TestSuccessTwoEndPointsSaved() {
+            var pushEvents = new PushEventsController();
+
+            pushEvents.Execute();
+
+            pushEvents.Tunnel(CommandBuilder.EventsEstablishJsonStream("id1", "http://localhost/", "key1", 10, new List<String>() {
+                "EventName1"
+            }).SetOrigin(CommandOrigin.Local));
+
+            pushEvents.Tunnel(CommandBuilder.EventsEstablishJsonStream("id2", "http://lolcatshost/", "key2", 20, new List<String>() {
+                "EventName2"
+            }).SetOrigin(CommandOrigin.Local));
+
+            Assert.AreEqual(2, pushEvents.Shared.Variables.Variable(CommonVariableNames.EventsPushConfigGroups).ToList<String>().Count);
+        }
     }
 }

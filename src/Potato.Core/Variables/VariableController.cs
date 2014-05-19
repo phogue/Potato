@@ -218,11 +218,21 @@ namespace Potato.Core.Variables {
         public override void WriteConfig(IConfig config, String password = null) {
             // Use the .Value.Name to maintain the case
             foreach (var archiveVariable in this.ArchiveVariables) {
-                config.Append(CommandBuilder.VariablesSetA(archiveVariable.Value.Name, archiveVariable.Value.ToList<String>()).ToConfigCommand());
+                // Don't save empty values, even empty values in a list.
+                var values = archiveVariable.Value.ToList<String>().Where(item => item.Length > 0).ToList();
+
+                if (values.Count > 0) {
+                    config.Append(CommandBuilder.VariablesSetA(archiveVariable.Value.Name, values).ToConfigCommand());
+                }
             }
 
             foreach (var flashVariable in this.FlashVariables) {
-                config.Append(CommandBuilder.VariablesSet(flashVariable.Value.Name, flashVariable.Value.ToList<String>()).ToConfigCommand());
+                // Don't save empty values, even empty values in a list.
+                var values = flashVariable.Value.ToList<String>().Where(item => item.Length > 0).ToList();
+
+                if (values.Count > 0) {
+                    config.Append(CommandBuilder.VariablesSet(flashVariable.Value.Name, values).ToConfigCommand());
+                }
             }
         }
 

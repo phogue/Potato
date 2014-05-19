@@ -217,6 +217,16 @@ namespace Potato.Core.Test.Variables {
                 })
             });
 
+            // Empty strings should not be written. No point saving nothing.
+            variables.Tunnel(new Command() {
+                Origin = CommandOrigin.Local,
+                CommandType = CommandType.VariablesSetA,
+                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                    "NameToignore",
+                    ""
+                })
+            });
+
             variables.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.VariablesSet,

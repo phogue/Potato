@@ -13,6 +13,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,7 +23,7 @@ using Potato.Core.Shared;
 using Potato.Core.Shared.Models;
 using Potato.Core.Variables;
 
-namespace Potato.Core.Test.Packages {
+namespace Potato.Core.Test.Packages.TestPackagesController {
     /// <summary>
     /// Tests the packages controller's basic functionality, setting up remote repositories, polling etc.
     /// </summary>
@@ -30,7 +31,7 @@ namespace Potato.Core.Test.Packages {
     ///     <para>While we use Nuget packages for testing we do not validate any of Nuget's processes</para>
     /// </remarks>
     [TestFixture]
-    public class TestPackagesController {
+    public class TestPackageGroupSetup {
         [SetUp]
         public void Initialize() {
             SharedReferences.Setup();
@@ -40,7 +41,7 @@ namespace Potato.Core.Test.Packages {
         /// Tests the grouped repository setting can be setup via variables.
         /// </summary>
         [Test]
-        public void TestPackageGroupSetup() {
+        public void TestPackageGroupSetupLinear() {
             var variables = new VariableController();
 
             var @namespace = "";

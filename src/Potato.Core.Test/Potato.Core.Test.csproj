@@ -92,11 +92,11 @@
     <Compile Include="Packages\Mocks\MockExceptionPackageRepository.cs" />
     <Compile Include="Packages\Mocks\MockPackageRepository.cs" />
     <Compile Include="Packages\TestBuildRepositoryCache.cs" />
-    <Compile Include="Packages\TestCommandPackagesFetchPackages.cs" />
-    <Compile Include="Packages\TestCommandPackagesMergePackage.cs" />
-    <Compile Include="Packages\TestCommandPackagesUninstallPackage.cs" />
+    <Compile Include="Packages\TestPackagesController\TestPackagesFetchPackages.cs" />
+    <Compile Include="Packages\TestPackagesController\TestPackagesMergePackage.cs" />
+    <Compile Include="Packages\TestPackagesController\TestPackagesUninstallPackage.cs" />
     <Compile Include="Packages\TestPackageCacheBuilders.cs" />
-    <Compile Include="Packages\TestPackagesController.cs" />
+    <Compile Include="Packages\TestPackagesController\TestPackageGroupSetup.cs" />
     <Compile Include="Packages\TestRepositoryCache.cs" />
     <Compile Include="Plugins\TestPluginConfig.cs" />
     <Compile Include="Plugins\TestPlugins.cs" />

@@ -13,6 +13,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System.Collections.Generic;
 using NUnit.Framework;
 using NuGet;
@@ -21,9 +22,9 @@ using Potato.Core.Shared;
 using Potato.Core.Shared.Models;
 using Potato.Core.Test.Packages.Mocks;
 
-namespace Potato.Core.Test.Packages {
+namespace Potato.Core.Test.Packages.TestPackagesController {
     [TestFixture]
-    public class TestCommandPackagesUninstallPackage {
+    public class TestPackagesMergePackage {
         [SetUp]
         public void Initialize() {
             SharedReferences.Setup();
@@ -37,7 +38,7 @@ namespace Potato.Core.Test.Packages {
         public void TestResultInsufficientPermissions() {
             PackagesController packages = new PackagesController();
 
-            ICommandResult result = packages.Tunnel(CommandBuilder.PackagesUninstallPackage("id").SetOrigin(CommandOrigin.Remote).SetAuthentication(new CommandAuthenticationModel() {
+            ICommandResult result = packages.Tunnel(CommandBuilder.PackagesMergePackage("id").SetOrigin(CommandOrigin.Remote).SetAuthentication(new CommandAuthenticationModel() {
                 Username = "Phogue"
             }));
 
@@ -52,7 +53,7 @@ namespace Potato.Core.Test.Packages {
         public void TestResultInvalidParameter() {
             PackagesController packages = new PackagesController();
 
-            ICommandResult result = packages.Tunnel(CommandBuilder.PackagesUninstallPackage("").SetOrigin(CommandOrigin.Local));
+            ICommandResult result = packages.Tunnel(CommandBuilder.PackagesMergePackage("").SetOrigin(CommandOrigin.Local));
 
             Assert.IsFalse(result.Success);
             Assert.AreEqual(CommandResultType.InvalidParameter, result.CommandResultType);
@@ -65,17 +66,53 @@ namespace Potato.Core.Test.Packages {
         public void TestResultDoesNotExists() {
             PackagesController packages = new PackagesController();
 
-            ICommandResult result = packages.Tunnel(CommandBuilder.PackagesUninstallPackage("this-does-not-exist").SetOrigin(CommandOrigin.Local));
+            ICommandResult result = packages.Tunnel(CommandBuilder.PackagesMergePackage("this-does-not-exist").SetOrigin(CommandOrigin.Local));
 
             Assert.IsFalse(result.Success);
             Assert.AreEqual(CommandResultType.DoesNotExists, result.CommandResultType);
         }
 
         /// <summary>
-        /// Tests uninstalling a package that is available but not currently installed will result in a AlreadyExists error.
+        /// Tests that updating/installing a package with an identical version will result in an AlreadyExists error.
         /// </summary>
         [Test]
         public void TestResultAlreadyExists() {
+            var cache = new RepositoryCache();
+            var localRepository = new MockPackageRepository(new List<IPackage>() {
+                new DataServicePackage() {
+                    Id = "A",
+                    Version = "1.0.0",
+                    Tags = "Procon Potato Tag2"
+                }
+            });
+
+            cache.Add("localhost");
+
+            cache.SourceRepositories.TryAdd("localhost", new MockPackageRepository(new List<IPackage>() {
+                new DataServicePackage() {
+                    Id = "A",
+                    Version = "1.0.0",
+                    Tags = "Procon Potato Tag2"
+                }
+            }));
+
+            cache.Build(localRepository);
+
+            PackagesController packages = new PackagesController() {
+                Cache = cache
+            };
+
+            ICommandResult result = packages.Tunnel(CommandBuilder.PackagesMergePackage("A").SetOrigin(CommandOrigin.Local));
+
+            Assert.IsFalse(result.Success);
+            Assert.AreEqual(CommandResultType.AlreadyExists, result.CommandResultType);
+        }
+
+        /// <summary>
+        /// Tests the merge command will succeed if the package is not currently installed.
+        /// </summary>
+        [Test]
+        public void TestResultUninstalledSuccess() {
             var cache = new RepositoryCache();
             var localRepository = new MockPackageRepository();
 
@@ -96,50 +133,14 @@ namespace Potato.Core.Test.Packages {
                 Cache = cache
             };
 
-            ICommandResult result = packages.Tunnel(CommandBuilder.PackagesUninstallPackage("A").SetOrigin(CommandOrigin.Local));
-
-            Assert.IsFalse(result.Success);
-            Assert.AreEqual(CommandResultType.AlreadyExists, result.CommandResultType);
-        }
-
-        /// <summary>
-        /// Tests the merge command will succeed if the package is currently installed.
-        /// </summary>
-        [Test]
-        public void TestResultInstalledSuccess() {
-            var cache = new RepositoryCache();
-            var localRepository = new MockPackageRepository(new List<IPackage>() {
-                new DataServicePackage() {
-                    Id = "A",
-                    Version = "1.0.0",
-                    Tags = "Procon Potato Tag2"
-                }
-            });
-
-            cache.Add("localhost");
-
-            cache.SourceRepositories.TryAdd("localhost", new MockPackageRepository(new List<IPackage>() {
-                new DataServicePackage() {
-                    Id = "A",
-                    Version = "1.0.0",
-                    Tags = "Procon Potato Tag2"
-                }
-            }));
-
-            cache.Build(localRepository);
-
-            PackagesController packages = new PackagesController() {
-                Cache = cache
-            };
-
-            ICommandResult result = packages.Tunnel(CommandBuilder.PackagesUninstallPackage("A").SetOrigin(CommandOrigin.Local));
+            ICommandResult result = packages.Tunnel(CommandBuilder.PackagesMergePackage("A").SetOrigin(CommandOrigin.Local));
 
             Assert.IsTrue(result.Success);
             Assert.AreEqual(CommandResultType.Success, result.CommandResultType);
         }
 
         /// <summary>
-        /// Tests the uninstall command will succeed if an update is available for the package.
+        /// Tests the merge command will succeed if an update is available for the package.
         /// </summary>
         [Test]
         public void TestResultUpdateAvailableSuccess() {
@@ -148,7 +149,7 @@ namespace Potato.Core.Test.Packages {
                 new DataServicePackage() {
                     Id = "A",
                     Version = "1.0.0",
-                    Tags = "Procon Potato Tag2"
+                    Tags = "Potato Tag2"
                 }
             });
 
@@ -158,7 +159,8 @@ namespace Potato.Core.Test.Packages {
                 new DataServicePackage() {
                     Id = "A",
                     Version = "2.0.0",
-                    Tags = "Procon Potato Tag2"
+                    Tags = "Procon Potato Tag2",
+                    IsLatestVersion = true
                 }
             }));
 
@@ -168,7 +170,7 @@ namespace Potato.Core.Test.Packages {
                 Cache = cache
             };
 
-            ICommandResult result = packages.Tunnel(CommandBuilder.PackagesUninstallPackage("A").SetOrigin(CommandOrigin.Local));
+            ICommandResult result = packages.Tunnel(CommandBuilder.PackagesMergePackage("A").SetOrigin(CommandOrigin.Local));
 
             Assert.IsTrue(result.Success);
             Assert.AreEqual(CommandResultType.Success, result.CommandResultType);

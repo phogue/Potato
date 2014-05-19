@@ -13,14 +13,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using NUnit.Framework;
 using Potato.Core.Packages;
 using Potato.Core.Shared;
 using Potato.Core.Shared.Models;
 
-namespace Potato.Core.Test.Packages {
+namespace Potato.Core.Test.Packages.TestPackagesController {
     [TestFixture]
-    public class TestCommandPackagesFetchPackages {
+    public class TestPackagesFetchPackages {
         [SetUp]
         public void Initialize() {
             SharedReferences.Setup();

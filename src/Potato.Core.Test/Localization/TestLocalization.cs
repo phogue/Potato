@@ -51,7 +51,7 @@ namespace Potato.Core.Test.Localization {
                 })
             });
 
-            Assert.IsTrue(result.Success);
+            Assert.IsFalse(result.Success);
             Assert.AreEqual(CommandResultType.Success, result.CommandResultType);
             Assert.AreEqual("PotatoCoreTestDeutschTestValue", result.Now.Content.First());
         }

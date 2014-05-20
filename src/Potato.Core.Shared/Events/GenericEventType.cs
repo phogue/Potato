@@ -110,6 +110,14 @@ namespace Potato.Core.Shared.Events {
         /// The repository controller has rebuilt what it knows about the packages (local, remote, updated etc.)
         /// </summary>
         PackagesCacheRebuilt,
+        /// <summary>
+        /// A repository has been appended to the repository list
+        /// </summary>
+        PackagesRepositoryAppended,
+        /// <summary>
+        /// A repository has been removed to the repository list
+        /// </summary>
+        PackagesRepositoryRemoved,
 
         /// <summary>
         /// A variable has been set

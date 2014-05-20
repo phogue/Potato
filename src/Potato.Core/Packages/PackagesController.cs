@@ -305,12 +305,25 @@ namespace Potato.Core.Packages {
                     this.Shared.Variables.Tunnel(CommandBuilder.VariablesSetA(CommonVariableNames.PackagesConfigGroups, content.Union(new List<String>() {
                         sluggedUri
                     }).ToList()).SetOrigin(CommandOrigin.Local));
-                }
 
-                result = new CommandResult() {
-                    Success = true,
-                    CommandResultType = CommandResultType.Success
-                };
+                    result = new CommandResult() {
+                        Success = true,
+                        CommandResultType = CommandResultType.Success,
+                        Now = {
+                            Repositories = this.Cache.Repositories.Where(repository => repository.Slug == sluggedUri).ToList()
+                        }
+                    };
+
+                    if (this.Shared.Events != null) {
+                        this.Shared.Events.Log(GenericEvent.ConvertToGenericEvent(result, GenericEventType.PackagesRepositoryAppended));
+                    }
+                }
+                else {
+                    result = new CommandResult() {
+                        Success = true,
+                        CommandResultType = CommandResultType.Success
+                    };
+                }
             }
             else {
                 result = CommandResult.InsufficientPermissions;
@@ -332,6 +345,9 @@ namespace Potato.Core.Packages {
             if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
                 var sluggedUri = uri.Slug();
 
+                // Store a copy of the repositories being removed so they can be included in the event.
+                var repositories = this.Cache.Repositories.Where(repository => repository.Slug == sluggedUri).ToList();
+
                 this.Shared.Variables.Tunnel(CommandBuilder.VariablesSetA(VariableModel.NamespaceVariableName(sluggedUri, CommonVariableNames.PackagesRepositoryUri), "").SetOrigin(CommandOrigin.Local));
 
                 ICommandResult uris = this.Shared.Variables.Tunnel(CommandBuilder.VariablesGet(CommonVariableNames.PackagesConfigGroups).SetOrigin(CommandOrigin.Local));
@@ -340,15 +356,29 @@ namespace Potato.Core.Packages {
 
                 // If the name has not been registered already..
                 if (uris.Success == true && content.Contains(sluggedUri) == true) {
+
                     content.RemoveAll(item => item == sluggedUri);
 
                     this.Shared.Variables.Tunnel(CommandBuilder.VariablesSetA(CommonVariableNames.PackagesConfigGroups, content).SetOrigin(CommandOrigin.Local));
-                }
 
-                result = new CommandResult() {
-                    Success = true,
-                    CommandResultType = CommandResultType.Success
-                };
+                    result = new CommandResult() {
+                        Success = true,
+                        CommandResultType = CommandResultType.Success,
+                        Then = {
+                            Repositories = repositories
+                        }
+                    };
+
+                    if (this.Shared.Events != null) {
+                        this.Shared.Events.Log(GenericEvent.ConvertToGenericEvent(result, GenericEventType.PackagesRepositoryRemoved));
+                    }
+                }
+                else {
+                    result = new CommandResult() {
+                        Success = true,
+                        CommandResultType = CommandResultType.Success
+                    };
+                }
             }
             else {
                 result = CommandResult.InsufficientPermissions;

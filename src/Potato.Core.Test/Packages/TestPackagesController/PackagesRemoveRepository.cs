@@ -16,9 +16,11 @@
 
 using System;
 using System.Linq;
+using System.Threading;
 using NUnit.Framework;
 using Potato.Core.Packages;
 using Potato.Core.Shared;
+using Potato.Core.Shared.Events;
 using Potato.Core.Shared.Models;
 
 namespace Potato.Core.Test.Packages.TestPackagesController {
@@ -55,6 +57,28 @@ namespace Potato.Core.Test.Packages.TestPackagesController {
 
             Assert.IsTrue(result.Success);
             Assert.AreEqual(CommandResultType.Success, result.CommandResultType);
+        }
+
+        /// <summary>
+        /// Tests removing a uri will fire a repository removed event
+        /// </summary>
+        [Test]
+        public void TestResultSuccessEventListed() {
+            var wait = new AutoResetEvent(false);
+
+            PackagesController packages = (PackagesController)new PackagesController().Execute();
+
+            packages.Shared.Events.EventLogged += (sender, @event) => {
+                if (@event.GenericEventType == GenericEventType.PackagesRepositoryRemoved && @event.Then.Repositories.First().Uri == "https://teamcity.myrcon.com/nuget") {
+                    wait.Set();
+                }
+            };
+
+            packages.Tunnel(CommandBuilder.PackagesAppendRepository("https://teamcity.myrcon.com/nuget").SetOrigin(CommandOrigin.Local));
+
+            packages.Tunnel(CommandBuilder.PackagesRemoveRepository("https://teamcity.myrcon.com/nuget").SetOrigin(CommandOrigin.Local));
+
+            Assert.IsTrue(wait.WaitOne(5000));
         }
 
         /// <summary>

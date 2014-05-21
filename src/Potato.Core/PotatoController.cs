@@ -87,9 +87,16 @@ namespace Potato.Core {
         public SharedReferences Shared { get; private set; }
 
         /// <summary>
+        /// A simple time stamp showing how old a Potato is. The time is set in the constructor.
+        /// </summary>
+        public DateTime InstantiatedStamp { get; set; }
+
+        /// <summary>
         /// Creates a new instance of Potato, setting up command server, packages and tasks
         /// </summary>
         public PotatoController() : base() {
+            this.InstantiatedStamp = DateTime.Now;
+
             this.Shared = new SharedReferences();
 
             this.Connections = new List<IConnectionController>();
@@ -228,6 +235,10 @@ namespace Potato.Core {
                 new CommandDispatch() {
                     CommandType = CommandType.PotatoQuery,
                     Handler = this.PotatoQuery
+                },
+                new CommandDispatch() {
+                    CommandType = CommandType.PotatoPing,
+                    Handler = this.PotatoPing
                 }
             });
         }
@@ -890,6 +901,31 @@ namespace Potato.Core {
                         Groups = new List<Core.Shared.Models.GroupModel>(this.Shared.Security.Groups),
                         Languages = this.Shared.Languages.LoadedLanguageFiles.Select(language => language.LanguageModel).ToList(),
                         Variables = new List<VariableModel>(this.Shared.Variables.VolatileVariables.Values)
+                    }
+                };
+            }
+            else {
+                result = CommandResult.InsufficientPermissions;
+            }
+
+            return result;
+        }
+        
+        /// <summary>
+        /// Queries this instance for a response and uptime
+        /// </summary>
+        /// <returns></returns>
+        public ICommandResult PotatoPing(ICommand command, Dictionary<String, ICommandParameter> parameters) {
+            ICommandResult result = null;
+            
+            if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
+                result = new CommandResult() {
+                    Success = true,
+                    CommandResultType = CommandResultType.Success,
+                    Now = {
+                        Content = new List<String>() {
+                            Convert.ToInt32((DateTime.Now - this.InstantiatedStamp).TotalMilliseconds).ToString(CultureInfo.InvariantCulture)
+                        }
                     }
                 };
             }

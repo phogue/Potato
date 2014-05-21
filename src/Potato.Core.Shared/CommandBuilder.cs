@@ -83,6 +83,16 @@ namespace Potato.Core.Shared {
         }
 
         /// <summary>
+        /// Builds a command to send a PotatoPing signal
+        /// </summary>
+        /// <returns>The built command to the dispatch</returns>
+        public static ICommand PotatoPing() {
+            return new Command() {
+                CommandType = CommandType.PotatoPing
+            };
+        }
+
+        /// <summary>
         /// Builds a command to send a PotatoServiceMergePackage signal
         /// </summary>
         /// <param name="uri">The uri of the repository to find the package source in</param>

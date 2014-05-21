@@ -99,6 +99,7 @@ namespace Potato.Core.Test.Security.Permission {
             var group = security.Groups.FirstOrDefault(item => item.Name == "GroupName");
 
             List<CommandType> permissions = new List<CommandType>() {
+                CommandType.PotatoPing,
                 CommandType.SecurityAccountAuthenticate,
                 CommandType.EventsEstablishJsonStream,
                 CommandType.PotatoQuery,

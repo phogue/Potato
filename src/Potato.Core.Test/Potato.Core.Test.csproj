@@ -87,6 +87,7 @@
     <Compile Include="Events\TestEventsController\TestEventsEstablishJsonStream.cs" />
     <Compile Include="Packages\TestPackagesController\PackagesRemoveRepository.cs" />
     <Compile Include="Packages\TestPackagesController\PackagesAppendRepository.cs" />
+    <Compile Include="TestPotato\TestPotatoPing.cs" />
     <Compile Include="TestPotato\TestPotatoServiceMergePackage.cs" />
     <Compile Include="TestPotato\TestPotatoServiceRestart.cs" />
     <Compile Include="TestPotato\TestPotatoServiceUninstallPackage.cs" />

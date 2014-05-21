@@ -28,6 +28,11 @@ namespace Potato.Core.Shared {
         /// </summary>
         None,
         /// <summary>
+        /// Simple ping to fetch the uptime of the server. It's used to see if the server is online, accepting commands and provide a simple uptime.
+        /// </summary>
+        [Description("Simple ping to fetch the uptime of the server. It's used to see if the server is online, accepting commands and provide a simple uptime.")]
+        PotatoPing,
+        /// <summary>
         /// General query to fetch all of the connections, security group and variables. Anything in
         /// the Potato class pretty much.
         /// </summary>

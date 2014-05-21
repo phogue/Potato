@@ -1970,6 +1970,7 @@ namespace Potato.Core.Security {
                     if (group.IsGuest == false) {
                         // A list of permissions to keep as "1", all others will be nulled out.
                         List<CommandType> permissions = new List<CommandType>() {
+                            CommandType.PotatoPing,
                             CommandType.SecurityAccountAuthenticate,
                             CommandType.EventsEstablishJsonStream,
                             CommandType.PotatoQuery,

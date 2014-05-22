@@ -72,8 +72,8 @@
     <Compile Include="TestProtocolState\TestRemoveList.cs" />
     <Compile Include="TestProtocolState\TestModifiedList.cs" />
     <Compile Include="TestProtocolState\TestSet.cs" />
-    <Compile Include="TestProtocolState\TestRemove.cs" />
-    <Compile Include="TestProtocolState\TestUpdate.cs" />
+    <Compile Include="TestProtocolState\TestRemoved.cs" />
+    <Compile Include="TestProtocolState\TestModified.cs" />
     <Compile Include="TestSerialization\TestJson\TestProtocolEventArgs.cs" />
     <Compile Include="TestSerialization\TestJson\TestProtocolEventData.cs" />
     <Compile Include="TestSerialization\TestJson\TestClientEventArgs.cs" />

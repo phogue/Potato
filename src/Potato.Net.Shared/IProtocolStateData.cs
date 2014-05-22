@@ -13,7 +13,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
-using System.Collections.Generic;
+
+using System;
+using System.Collections.Concurrent;
 using Potato.Net.Shared.Models;
 using Potato.Net.Shared.Truths;
 
@@ -25,37 +27,37 @@ namespace Potato.Net.Shared {
         /// <summary>
         /// All current information about each player in the server
         /// </summary>
-        List<PlayerModel> Players { get; set; }
+        ConcurrentDictionary<String, PlayerModel> Players { get; set; }
 
         /// <summary>
         /// The current maplist
         /// </summary>
-        List<MapModel> Maps { get; set; }
+        ConcurrentDictionary<String, MapModel> Maps { get; set; }
 
         /// <summary>
         /// The current banlist
         /// </summary>
-        List<BanModel> Bans { get; set; }
+        ConcurrentDictionary<String, BanModel> Bans { get; set; }
 
         /// <summary>
         /// List of available maps for this game
         /// </summary>
-        List<MapModel> MapPool { get; set; }
+        ConcurrentDictionary<String, MapModel> MapPool { get; set; }
 
         /// <summary>
         /// List of available game modes for this game.
         /// </summary>
-        List<GameModeModel> GameModePool { get; set; }
+        ConcurrentDictionary<String, GameModeModel> GameModePool { get; set; }
 
         /// <summary>
         /// List of potential groups available 
         /// </summary>
-        List<GroupModel> Groups { get; set; }
+        ConcurrentDictionary<String, GroupModel> Groups { get; set; }
 
         /// <summary>
         /// List of potential items available in this game.
         /// </summary>
-        List<ItemModel> Items { get; set; }
+        ConcurrentDictionary<String, ItemModel> Items { get; set; }
 
         /// <summary>
         /// Various settings that are sent by the server.

@@ -14,11 +14,11 @@
 // limitations under the License.
 #endregion
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Myrcon.Protocols.Frostbite.Battlefield.Battlefield3.Objects;
-using Potato.Net;
 using Potato.Net.Shared;
 using Potato.Net.Shared.Actions;
 using Potato.Net.Shared.Models;
@@ -61,18 +61,19 @@ namespace Myrcon.Protocols.Frostbite.Battlefield.Battlefield3 {
         protected override void AuxiliarySynchronize() {
             base.AuxiliarySynchronize();
 
-            foreach (PlayerModel player in this.State.Players) {
-                this.SendPlayerPingPacket(player.Name);
+            foreach (var player in this.State.Players) {
+                this.SendPlayerPingPacket(player.Value.Name);
             }
         }
 
         protected override void AdminListPlayersFinalize(List<PlayerModel> players) {
-            var modified = new List<PlayerModel>();
+            var modified = new ConcurrentDictionary<String, PlayerModel>();
 
             // We're essentially updating the state here anyway, but we keep the difference
             // so others can remain in sync
             foreach (PlayerModel player in players) {
-                PlayerModel statePlayer = this.State.Players.Find(x => x.Name == player.Name);
+                PlayerModel statePlayer;
+                this.State.Players.TryGetValue(player.Uid, out statePlayer);
 
                 if (statePlayer != null) {
                     // Already exists, update with any new information we have.
@@ -85,23 +86,23 @@ namespace Myrcon.Protocols.Frostbite.Battlefield.Battlefield3 {
                     statePlayer.ModifyGroup(player.Groups.FirstOrDefault(group => group.Type == GroupModel.Team));
                     statePlayer.ModifyGroup(player.Groups.FirstOrDefault(group => group.Type == GroupModel.Squad));
 
-                    modified.Add(statePlayer);
+                    modified.AddOrUpdate(player.Uid, id => statePlayer, (id, model) => statePlayer);
                 }
                 else {
-                    modified.Add(player);
+                    modified.TryAdd(player.Uid, player);
                 }
             }
 
             this.OnProtocolEvent(ProtocolEventType.ProtocolPlayerlistUpdated, new ProtocolStateDifference() {
                 Override = true,
                 Removed = {
-                    Players = this.State.Players.Where(existing => players.Select(current => current.Uid).Contains(existing.Uid) == false).ToList()
+                    Players = new ConcurrentDictionary<String, PlayerModel>(this.State.Players.Where(existing => players.Select(current => current.Uid).Contains(existing.Key) == false).ToDictionary(item => item.Key, item => item.Value))
                 },
                 Modified = {
                     Players = modified
                 }
             }, new ProtocolEventData() {
-                Players = new List<PlayerModel>(this.State.Players)
+                Players = new List<PlayerModel>(this.State.Players.Values)
             });
         }
 
@@ -113,23 +114,33 @@ namespace Myrcon.Protocols.Frostbite.Battlefield.Battlefield3 {
 
         public override void MapListListDispatchHandler(IPacketWrapper request, IPacketWrapper response) {
             if (request.Packet.Words.Count >= 1) {
+                ConcurrentDictionary<String, MapModel> modified = new ConcurrentDictionary<String, MapModel>();
 
+                // todo since the parsers are generally all that change from game to game, perhaps this should go into
+                // todo another virtual method of FrostbiteGame.
                 List<MapModel> maps = Battlefield3FrostbiteMapList.Parse(response.Packet.Words.GetRange(1, response.Packet.Words.Count - 1));
 
                 foreach (MapModel map in maps) {
-                    MapModel mapInfo = this.State.MapPool.Find(x => String.Compare(x.Name, map.Name, StringComparison.OrdinalIgnoreCase) == 0);
+                    var closureMap = map;
+
+                    MapModel mapInfo = this.State.MapPool.Values.FirstOrDefault(m => String.Compare(m.Name, closureMap.Name, StringComparison.OrdinalIgnoreCase) == 0 && String.Compare(m.GameMode.Name, closureMap.GameMode.Name, StringComparison.OrdinalIgnoreCase) == 0);
+
                     if (mapInfo != null) {
-                        map.FriendlyName = mapInfo.FriendlyName;
-                        map.GameMode = mapInfo.GameMode;
+                        closureMap.FriendlyName = mapInfo.FriendlyName;
+                        closureMap.GameMode = mapInfo.GameMode;
                     }
+
+                    modified.AddOrUpdate(String.Format("{0}/{1}", closureMap.GameMode.Name, closureMap.Name), id => closureMap, (id, model) => closureMap);
                 }
+
+                // this.State.Maps = maps;
 
                 this.OnProtocolEvent(
                     ProtocolEventType.ProtocolMaplistUpdated,
                     new ProtocolStateDifference() {
                         Override = true,
                         Modified = {
-                            Maps = maps
+                            Maps = modified
                         }
                     }
                 );
@@ -157,7 +168,9 @@ namespace Myrcon.Protocols.Frostbite.Battlefield.Battlefield3 {
 
                 if (banList.Count > 0) {
                     foreach (BanModel ban in banList) {
-                        this.State.Bans.Add(ban);
+                        var closureBan = ban;
+                        var key = String.Format("{0}/{1}", ban.Scope.Times.First().Context, ban.Scope.Players.First().Uid ?? ban.Scope.Players.First().Name ?? ban.Scope.Players.First().Ip);
+                        this.State.Bans.AddOrUpdate(key, id => closureBan, (id, model) => closureBan);
                     }
                     
                     this.Send(this.CreatePacket("banList.list {0}", startOffset + 100));
@@ -180,7 +193,7 @@ namespace Myrcon.Protocols.Frostbite.Battlefield.Battlefield3 {
         public void PlayerPingResponseDispatchHandler(IPacketWrapper request, IPacketWrapper response) {
 
             if (request.Packet.Words.Count >= 2 && response != null && response.Packet.Words.Count >= 2) {
-                PlayerModel player = this.State.Players.FirstOrDefault(p => p.Name == request.Packet.Words[1]);
+                PlayerModel player = this.State.Players.Select(p => p.Value).FirstOrDefault(p => p.Name == request.Packet.Words[1]);
                 uint ping = 0;
 
                 if (player != null && uint.TryParse(response.Packet.Words[1], out ping) == true) {
@@ -211,18 +224,14 @@ namespace Myrcon.Protocols.Frostbite.Battlefield.Battlefield3 {
                     Uid = request.Packet.Words[2]
                 };
 
-                if (this.State.Players.Find(x => x.Name == player.Name) == null) {
-                    this.State.Players.Add(player);
-                }
-
                 this.OnProtocolEvent(
                     ProtocolEventType.ProtocolPlayerJoin,
                     new ProtocolStateDifference() {
                         Override = true,
                         Modified = {
-                            Players = new List<PlayerModel>() {
-                                player
-                            }
+                            Players = new ConcurrentDictionary<String, PlayerModel>(new Dictionary<String, PlayerModel>() {
+                                { player.Uid, player }
+                            })
                         }
                     }, new ProtocolEventData() {
                         Players = new List<PlayerModel>() {
@@ -241,26 +250,26 @@ namespace Myrcon.Protocols.Frostbite.Battlefield.Battlefield3 {
 
                 if (bool.TryParse(request.Packet.Words[4], out headshot) == true) {
 
-                    PlayerModel killer = this.State.Players.FirstOrDefault(p => p.Name == request.Packet.Words[1]);
-                    PlayerModel target = this.State.Players.FirstOrDefault(p => p.Name == request.Packet.Words[1]);
+                    var killer = this.State.Players.Select(p => p.Value).FirstOrDefault(p => p.Name == request.Packet.Words[1]);
+                    var victim = this.State.Players.Select(p => p.Value).FirstOrDefault(p => p.Name == request.Packet.Words[2]);
 
-                    if (killer != null && target != null) {
+                    if (killer != null && victim != null) {
                         // If not a suicide.
-                        if (killer.Uid != target.Uid) {
+                        if (killer.Uid != victim.Uid) {
                             killer.Kills++;
                         }
 
-                        target.Deaths++;
+                        victim.Deaths++;
                     }
 
                     this.OnProtocolEvent(
                         ProtocolEventType.ProtocolPlayerKill,
                         new ProtocolStateDifference() {
                             Modified = {
-                                Players = new List<PlayerModel>() {
-                                    killer,
-                                    target
-                                }
+                                Players = new ConcurrentDictionary<String, PlayerModel>(new Dictionary<String, PlayerModel>() {
+                                    { killer != null ? killer.Uid : "", killer },
+                                    { victim != null ? victim.Uid : "", victim }
+                                })
                             }
                         },
                         new ProtocolEventData() {
@@ -268,7 +277,7 @@ namespace Myrcon.Protocols.Frostbite.Battlefield.Battlefield3 {
                                 new KillModel() {
                                     Scope = {
                                         Players = new List<PlayerModel>() {
-                                            target
+                                            victim
                                         },
                                         Items = new List<ItemModel>() {
                                             new ItemModel() {
@@ -297,9 +306,11 @@ namespace Myrcon.Protocols.Frostbite.Battlefield.Battlefield3 {
             List<IPacketWrapper> wrappers = new List<IPacketWrapper>();
 
             foreach (MapModel map in action.Now.Maps) {
+                var closureMap = map;
+
                 if (action.ActionType == NetworkActionType.NetworkMapAppend) {
                     // mapList.add <map: string> <gamemode: string> <rounds: integer> [index: integer]
-                    wrappers.Add(this.CreatePacket("mapList.add \"{0}\" \"{1}\" {2}", map.Name, map.GameMode.Name, map.Rounds));
+                    wrappers.Add(this.CreatePacket("mapList.add \"{0}\" \"{1}\" {2}", map.Name, closureMap.GameMode.Name, map.Rounds));
 
                     wrappers.Add(this.CreatePacket("mapList.save"));
 
@@ -313,16 +324,16 @@ namespace Myrcon.Protocols.Frostbite.Battlefield.Battlefield3 {
                 }
                 else if (action.ActionType == NetworkActionType.NetworkMapInsert) {
                     // mapList.add <map: string> <gamemode: string> <rounds: integer> [index: integer]
-                    wrappers.Add(this.CreatePacket("mapList.add \"{0}\" \"{1}\" {2} {3}", map.Name, map.GameMode.Name, map.Rounds, map.Index));
+                    wrappers.Add(this.CreatePacket("mapList.add \"{0}\" \"{1}\" {2} {3}", map.Name, closureMap.GameMode.Name, map.Rounds, map.Index));
 
                     wrappers.Add(this.CreatePacket("mapList.save"));
 
                     wrappers.Add(this.CreatePacket("mapList.list"));
                 }
                 else if (action.ActionType == NetworkActionType.NetworkMapRemove) {
-                    var matchingMaps = this.State.Maps.Where(x => x.Name == map.Name).OrderByDescending(x => x.Index);
+                    var matchingMaps = this.State.Maps.Where(m => m.Value.Name == closureMap.Name).OrderByDescending(m => m.Value.Index);
 
-                    wrappers.AddRange(matchingMaps.Select(match => this.CreatePacket("mapList.remove {0}", match.Index)));
+                    wrappers.AddRange(matchingMaps.Select(match => this.CreatePacket("mapList.remove {0}", match.Value.Index)));
 
                     wrappers.Add(this.CreatePacket("mapList.save"));
 

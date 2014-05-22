@@ -420,7 +420,7 @@ namespace Potato.Core.Connections {
                         }
                     },
                     Now = new CommandData() {
-                        Players = new List<PlayerModel>(this.ProtocolState.Players)
+                        Players = new List<PlayerModel>(this.ProtocolState.Players.Values)
                     }
                 };
             }
@@ -476,7 +476,7 @@ namespace Potato.Core.Connections {
                         }
                     },
                     Now = new CommandData() {
-                        Bans = new List<BanModel>(this.ProtocolState.Bans)
+                        Bans = new List<BanModel>(this.ProtocolState.Bans.Values)
                     }
                 };
             }
@@ -503,7 +503,7 @@ namespace Potato.Core.Connections {
                         }
                     },
                     Now = new CommandData() {
-                        Maps = new List<MapModel>(this.ProtocolState.Maps)
+                        Maps = new List<MapModel>(this.ProtocolState.Maps.Values)
                     }
                 };
             }
@@ -530,7 +530,7 @@ namespace Potato.Core.Connections {
                         }
                     },
                     Now = new CommandData() {
-                        Maps = new List<MapModel>(this.ProtocolState.MapPool)
+                        Maps = new List<MapModel>(this.ProtocolState.MapPool.Values)
                     }
                 };
             }

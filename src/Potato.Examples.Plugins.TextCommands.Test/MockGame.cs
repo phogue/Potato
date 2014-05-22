@@ -15,7 +15,6 @@
 #endregion
 using System;
 using System.Collections.Generic;
-using Potato.Net;
 using Potato.Net.Shared;
 using Potato.Net.Shared.Actions;
 using Potato.Net.Shared.Models;
@@ -26,17 +25,16 @@ namespace Potato.Examples.Plugins.TextCommands.Test {
             
             this.Client = new MockClient();
 
-            this.State.Players.AddRange(new List<PlayerModel>() {
-                new PlayerModel() {
-                    Name = "Phogue",
-                    Uid = "EA_1",
-                    Score = 50
-                },
-                new PlayerModel() {
-                    Name = "Zaeed",
-                    Uid = "EA_2",
-                    Score = 0
-                }
+            this.State.Players.TryAdd("EA_1", new PlayerModel() {
+                Name = "Phogue",
+                Uid = "EA_1",
+                Score = 50
+            });
+
+            this.State.Players.TryAdd("EA_2", new PlayerModel() {
+                Name = "Zaeed",
+                Uid = "EA_2",
+                Score = 0
             });
         }
 

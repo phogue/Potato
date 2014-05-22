@@ -14,11 +14,11 @@
 // limitations under the License.
 #endregion
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Myrcon.Protocols.Frostbite.Battlefield.Battlefield4.Objects;
-using Potato.Net;
 using Potato.Net.Shared;
 using Potato.Net.Shared.Actions;
 using Potato.Net.Shared.Models;
@@ -67,23 +67,28 @@ namespace Myrcon.Protocols.Frostbite.Battlefield.Battlefield4 {
 
         public override void MapListListDispatchHandler(IPacketWrapper request, IPacketWrapper response) {
             if (request.Packet.Words.Count >= 1) {
+                ConcurrentDictionary<String, MapModel> modified = new ConcurrentDictionary<String, MapModel>();
 
                 List<MapModel> maps = Battlefield4FrostbiteMapList.Parse(response.Packet.Words.GetRange(1, response.Packet.Words.Count - 1));
 
                 foreach (MapModel map in maps) {
-                    MapModel mapInfo = this.State.MapPool.Find(item => String.Compare(item.Name, map.Name, StringComparison.OrdinalIgnoreCase) == 0 && String.Compare(item.GameMode.Name, map.GameMode.Name, StringComparison.OrdinalIgnoreCase) == 0);
+                    var closureMap = map;
+
+                    MapModel mapInfo = this.State.MapPool.Values.FirstOrDefault(m => String.Compare(m.Name, closureMap.Name, StringComparison.OrdinalIgnoreCase) == 0 && String.Compare(m.GameMode.Name, closureMap.GameMode.Name, StringComparison.OrdinalIgnoreCase) == 0);
 
                     if (mapInfo != null) {
-                        map.FriendlyName = mapInfo.FriendlyName;
-                        map.GameMode = mapInfo.GameMode;
+                        closureMap.FriendlyName = mapInfo.FriendlyName;
+                        closureMap.GameMode = mapInfo.GameMode;
                     }
+
+                    modified.AddOrUpdate(String.Format("{0}/{1}", closureMap.GameMode.Name, closureMap.Name), id => closureMap, (id, model) => closureMap);
                 }
 
                 this.OnProtocolEvent(
                     ProtocolEventType.ProtocolMaplistUpdated,
                     new ProtocolStateDifference() {
                         Modified = {
-                            Maps = maps
+                            Maps = modified
                         }
                     }
                 );
@@ -110,8 +115,11 @@ namespace Myrcon.Protocols.Frostbite.Battlefield.Battlefield4 {
                 List<BanModel> banList = Battlefield4BanList.Parse(response.Packet.Words.GetRange(1, response.Packet.Words.Count - 1));
 
                 if (banList.Count > 0) {
-                    foreach (BanModel ban in banList)
-                        this.State.Bans.Add(ban);
+                    foreach (BanModel ban in banList) {
+                        var closureBan = ban;
+                        var key = String.Format("{0}/{1}", ban.Scope.Times.First().Context, ban.Scope.Players.First().Uid ?? ban.Scope.Players.First().Name ?? ban.Scope.Players.First().Ip);
+                        this.State.Bans.AddOrUpdate(key, id => closureBan, (id, model) => closureBan);
+                    }
 
                     this.Send(this.CreatePacket("banList.list {0}", startOffset + 100));
                 }
@@ -150,9 +158,9 @@ namespace Myrcon.Protocols.Frostbite.Battlefield.Battlefield4 {
                     ProtocolEventType.ProtocolPlayerJoin,
                     new ProtocolStateDifference() {
                         Modified = {
-                            Players = this.State.Players.Any(item => item.Name == player.Name) ? new List<PlayerModel>() {
-                                player
-                            } : new List<PlayerModel>()
+                            Players = new ConcurrentDictionary<String, PlayerModel>(new Dictionary<String, PlayerModel>() {
+                                { player.Uid, player }
+                            })
                         }
                     }, 
                     new ProtocolEventData() {
@@ -172,10 +180,10 @@ namespace Myrcon.Protocols.Frostbite.Battlefield.Battlefield4 {
 
                 if (bool.TryParse(request.Packet.Words[4], out headshot) == true) {
 
-                    ItemModel item = this.State.Items.FirstOrDefault(i => i.Name == Regex.Replace(request.Packet.Words[3], @"[^\w\/_-]+", ""));
+                    ItemModel item = this.State.Items.Select(i => i.Value).FirstOrDefault(i => i.Name == Regex.Replace(request.Packet.Words[3], @"[^\w\/_-]+", ""));
 
-                    PlayerModel killer = this.State.Players.Find(x => x.Name == request.Packet.Words[1]);
-                    PlayerModel victim = this.State.Players.Find(x => x.Name == request.Packet.Words[2]);
+                    var killer = this.State.Players.Select(p => p.Value).FirstOrDefault(p => p.Name == request.Packet.Words[1]);
+                    var victim = this.State.Players.Select(p => p.Value).FirstOrDefault(p => p.Name == request.Packet.Words[2]);
 
                     // Assign the item to the player, overwriting everything else attached to this killer.
                     if (killer != null) {
@@ -195,10 +203,10 @@ namespace Myrcon.Protocols.Frostbite.Battlefield.Battlefield4 {
                         ProtocolEventType.ProtocolPlayerKill,
                         new ProtocolStateDifference() {
                             Modified = {
-                                Players = new List<PlayerModel>() {
-                                    killer,
-                                    victim
-                                }
+                                Players = new ConcurrentDictionary<String, PlayerModel>(new Dictionary<String, PlayerModel>() {
+                                    { killer != null ? killer.Uid : "", killer },
+                                    { victim != null ? victim.Uid : "", victim }
+                                })
                             }
                         },
                         new ProtocolEventData() {
@@ -232,9 +240,11 @@ namespace Myrcon.Protocols.Frostbite.Battlefield.Battlefield4 {
             List<IPacketWrapper> wrappers = new List<IPacketWrapper>();
 
             foreach (MapModel map in action.Now.Maps) {
+                var closureMap = map;
+
                 if (action.ActionType == NetworkActionType.NetworkMapAppend) {
                     // mapList.add <map: string> <gamemode: string> <rounds: integer> [index: integer]
-                    wrappers.Add(this.CreatePacket("mapList.add \"{0}\" \"{1}\" {2}", map.Name, map.GameMode.Name, map.Rounds));
+                    wrappers.Add(this.CreatePacket("mapList.add \"{0}\" \"{1}\" {2}", map.Name, closureMap.GameMode.Name, map.Rounds));
 
                     wrappers.Add(this.CreatePacket("mapList.save"));
 
@@ -248,16 +258,16 @@ namespace Myrcon.Protocols.Frostbite.Battlefield.Battlefield4 {
                 }
                 else if (action.ActionType == NetworkActionType.NetworkMapInsert) {
                     // mapList.add <map: string> <gamemode: string> <rounds: integer> [index: integer]
-                    wrappers.Add(this.CreatePacket("mapList.add \"{0}\" \"{1}\" {2} {3}", map.Name, map.GameMode.Name, map.Rounds, map.Index));
+                    wrappers.Add(this.CreatePacket("mapList.add \"{0}\" \"{1}\" {2} {3}", map.Name, closureMap.GameMode.Name, map.Rounds, map.Index));
 
                     wrappers.Add(this.CreatePacket("mapList.save"));
 
                     wrappers.Add(this.CreatePacket("mapList.list"));
                 }
                 else if (action.ActionType == NetworkActionType.NetworkMapRemove) {
-                    var matchingMaps = this.State.Maps.Where(x => x.Name == map.Name).OrderByDescending(x => x.Index);
+                    var matchingMaps = this.State.Maps.Where(m => m.Value.Name == closureMap.Name).OrderByDescending(m => m.Value.Index);
 
-                    wrappers.AddRange(matchingMaps.Select(match => this.CreatePacket("mapList.remove {0}", match.Index)));
+                    wrappers.AddRange(matchingMaps.Select(match => this.CreatePacket("mapList.remove {0}", match.Value.Index)));
 
                     wrappers.Add(this.CreatePacket("mapList.save"));
 

@@ -14,12 +14,12 @@
 // limitations under the License.
 #endregion
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
 using Myrcon.Protocols.Frostbite.Objects;
-using Potato.Net;
 using Potato.Net.Protocols.PunkBuster;
 using Potato.Net.Protocols.PunkBuster.Packets;
 using Potato.Net.Shared;
@@ -340,12 +340,12 @@ namespace Myrcon.Protocols.Frostbite {
             var modified = this.State.Settings.Current.MapNameText != name || this.State.Settings.Current.GameModeNameText != gameModeName;
 
             if (modified == true) {
-                MapModel oldMap = this.State.MapPool.Find(map => String.Compare(map.Name, this.State.Settings.Current.MapNameText, StringComparison.OrdinalIgnoreCase) == 0 && String.Compare(map.GameMode.Name, this.State.Settings.Current.GameModeNameText, StringComparison.OrdinalIgnoreCase) == 0);
+                MapModel oldMap = this.State.MapPool.Select(m => m.Value).FirstOrDefault(map => String.Compare(map.Name, this.State.Settings.Current.MapNameText, StringComparison.OrdinalIgnoreCase) == 0 && String.Compare(map.GameMode.Name, this.State.Settings.Current.GameModeNameText, StringComparison.OrdinalIgnoreCase) == 0);
 
                 this.State.Settings.Current.MapNameText = name;
                 this.State.Settings.Current.GameModeNameText = gameModeName;
 
-                MapModel currentMap = this.State.MapPool.Find(map => String.Compare(map.Name, this.State.Settings.Current.MapNameText, StringComparison.OrdinalIgnoreCase) == 0 && String.Compare(map.GameMode.Name, this.State.Settings.Current.GameModeNameText, StringComparison.OrdinalIgnoreCase) == 0);
+                MapModel currentMap = this.State.MapPool.Select(m => m.Value).FirstOrDefault(map => String.Compare(map.Name, this.State.Settings.Current.MapNameText, StringComparison.OrdinalIgnoreCase) == 0 && String.Compare(map.GameMode.Name, this.State.Settings.Current.GameModeNameText, StringComparison.OrdinalIgnoreCase) == 0);
 
                 if (currentMap != null) {
                     this.State.Settings.Current.FriendlyGameModeNameText = currentMap.GameMode.FriendlyName;
@@ -499,11 +499,14 @@ namespace Myrcon.Protocols.Frostbite {
         }
 
         protected virtual void AdminListPlayersFinalize(List<PlayerModel> players) {
-            var modified = new List<PlayerModel>();
+            var modified = new ConcurrentDictionary<String, PlayerModel>();
 
             // 2. Add or update any new players
             foreach (PlayerModel player in players) {
-                PlayerModel statePlayer = this.State.Players.Find(x => x.Name == player.Name);
+                PlayerModel statePlayer;
+                this.State.Players.TryGetValue(player.Uid, out statePlayer);
+
+                player.Ping = player.Ping > 1000 ? 0 : player.Ping;
 
                 if (statePlayer != null) {
                     // Already exists, update with any new information we have.
@@ -511,31 +514,29 @@ namespace Myrcon.Protocols.Frostbite {
                     statePlayer.Score = player.Score;
                     statePlayer.Deaths = player.Deaths;
                     statePlayer.ClanTag = player.ClanTag;
-                    statePlayer.Ping = player.Ping > 1000 ? 0 : player.Ping;
+                    statePlayer.Ping = player.Ping;
                     statePlayer.Uid = player.Uid;
-                    
+
                     statePlayer.ModifyGroup(player.Groups.FirstOrDefault(group => group.Type == GroupModel.Team));
                     statePlayer.ModifyGroup(player.Groups.FirstOrDefault(group => group.Type == GroupModel.Squad));
 
-                    modified.Add(statePlayer);
+                    modified.AddOrUpdate(player.Uid, id => statePlayer, (id, model) => statePlayer);
                 }
                 else {
-                    player.Ping = player.Ping > 1000 ? 0 : player.Ping;
-
-                    modified.Add(player);
+                    modified.TryAdd(player.Uid, player);
                 }
             }
 
             this.OnProtocolEvent(ProtocolEventType.ProtocolPlayerlistUpdated, new ProtocolStateDifference() {
                 Override = true,
                 Removed = {
-                    Players = this.State.Players.Where(existing => players.Select(current => current.Uid).Contains(existing.Uid) == false).ToList()
+                    Players = new ConcurrentDictionary<String, PlayerModel>(this.State.Players.Where(existing => players.Select(current => current.Uid).Contains(existing.Key) == false).ToDictionary(item => item.Key, item => item.Value))
                 },
                 Modified = {
                     Players = modified
                 }
             }, new ProtocolEventData() {
-                Players = new List<PlayerModel>(this.State.Players)
+                Players = new List<PlayerModel>(this.State.Players.Values)
             });
         }
 
@@ -569,26 +570,31 @@ namespace Myrcon.Protocols.Frostbite {
 
         public virtual void MapListListDispatchHandler(IPacketWrapper request, IPacketWrapper response) {
             if (request.Packet.Words.Count >= 1) {
+                ConcurrentDictionary<String, MapModel> modified = new ConcurrentDictionary<String, MapModel>();
 
                 List<MapModel> maps = FrostbiteMapList.Parse(response.Packet.Words.GetRange(1, response.Packet.Words.Count - 1));
 
                 foreach (MapModel map in maps) {
-                    MapModel mapInfo = this.State.MapPool.Find(item => String.Compare(item.Name, map.Name, StringComparison.OrdinalIgnoreCase) == 0 && String.Compare(item.GameMode.Name, map.GameMode.Name, StringComparison.OrdinalIgnoreCase) == 0);
+                    var closureMap = map;
+
+                    MapModel mapInfo = this.State.MapPool.Values.FirstOrDefault(m => String.Compare(m.Name, closureMap.Name, StringComparison.OrdinalIgnoreCase) == 0 && String.Compare(m.GameMode.Name, closureMap.GameMode.Name, StringComparison.OrdinalIgnoreCase) == 0);
 
                     if (mapInfo != null) {
-                        map.FriendlyName = mapInfo.FriendlyName;
-                        map.GameMode     = mapInfo.GameMode;
+                        closureMap.FriendlyName = mapInfo.FriendlyName;
+                        closureMap.GameMode = mapInfo.GameMode;
                     }
+
+                    modified.AddOrUpdate(String.Format("{0}/{1}", closureMap.GameMode.Name, closureMap.Name), id => closureMap, (id, model) => closureMap);
                 }
 
-                this.State.Maps = maps;
+                // this.State.Maps = maps;
 
                 this.OnProtocolEvent(
                     ProtocolEventType.ProtocolMaplistUpdated,
                     new ProtocolStateDifference() {
                         Override = true,
                         Modified = {
-                            Maps = maps
+                            Maps = modified
                         }
                     }
                 );
@@ -615,8 +621,11 @@ namespace Myrcon.Protocols.Frostbite {
                 List<BanModel> banList = FrostbiteBanList.Parse(response.Packet.Words.GetRange(1, response.Packet.Words.Count - 1));
 
                 if (banList.Count > 0) {
-                    foreach (BanModel ban in banList)
-                        this.State.Bans.Add(ban);
+                    foreach (BanModel ban in banList) {
+                        var closureBan = ban;
+                        var key = String.Format("{0}/{1}", ban.Scope.Times.First().Context, ban.Scope.Players.First().Uid ?? ban.Scope.Players.First().Name ?? ban.Scope.Players.First().Ip);
+                        this.State.Bans.AddOrUpdate(key, id => closureBan, (id, model) => closureBan);
+                    }
 
                     this.Send(this.CreatePacket("banList.list {0}", startOffset + 100));
                 }
@@ -643,9 +652,9 @@ namespace Myrcon.Protocols.Frostbite {
                     ProtocolEventType.ProtocolPlayerBanned,
                     new ProtocolStateDifference() {
                         Modified = {
-                            Bans = new List<BanModel>() {
-                                ban
-                            }
+                            Bans = new ConcurrentDictionary<String, BanModel>(new Dictionary<String, BanModel>() {
+                                { String.Format("{0}/{1}", ban.Scope.Times.First().Context, ban.Scope.Players.First().Uid ?? ban.Scope.Players.First().Name ?? ban.Scope.Players.First().Ip), ban }
+                            })
                         }
                     },
                     new ProtocolEventData() {
@@ -665,9 +674,9 @@ namespace Myrcon.Protocols.Frostbite {
                     ProtocolEventType.ProtocolPlayerUnbanned,
                     new ProtocolStateDifference() {
                         Removed = {
-                            Bans = new List<BanModel>() {
-                                ban
-                            }
+                            Bans = new ConcurrentDictionary<String, BanModel>(new Dictionary<String, BanModel>() {
+                                { String.Format("{0}/{1}", ban.Scope.Times.First().Context, ban.Scope.Players.First().Uid ?? ban.Scope.Players.First().Name ?? ban.Scope.Players.First().Ip), ban }
+                            })
                         }
                     },
                     new ProtocolEventData() {
@@ -795,7 +804,7 @@ namespace Myrcon.Protocols.Frostbite {
                 if (pbObject is PunkBusterPlayer) {
                     PunkBusterPlayer player = pbObject as PunkBusterPlayer;
 
-                    PlayerModel statePlayer = this.State.Players.Find(x => x.Name == player.Name);
+                    PlayerModel statePlayer = this.State.Players.Select(p => p.Value).FirstOrDefault(p => p.Name == player.Name);
 
                     if (statePlayer != null) {
                         statePlayer.SlotId = player.SlotId;
@@ -826,15 +835,17 @@ namespace Myrcon.Protocols.Frostbite {
                 bool headshot = false;
 
                 if (bool.TryParse(request.Packet.Words[4], out headshot) == true) {
+                    var killer = this.State.Players.Select(p => p.Value).FirstOrDefault(p => p.Name == request.Packet.Words[1]);
+                    var victim = this.State.Players.Select(p => p.Value).FirstOrDefault(p => p.Name == request.Packet.Words[2]);
 
                     this.OnProtocolEvent(
                         ProtocolEventType.ProtocolPlayerKill,
                         new ProtocolStateDifference() {
                             Modified = {
-                                Players = new List<PlayerModel>() {
-                                    this.State.Players.Find(x => x.Name == request.Packet.Words[1]),
-                                    this.State.Players.Find(x => x.Name == request.Packet.Words[2])
-                                }
+                                Players = new ConcurrentDictionary<String, PlayerModel>(new Dictionary<String, PlayerModel>() {
+                                    { killer != null ? killer.Uid : "", killer },
+                                    { victim != null ? victim.Uid : "", victim }
+                                })
                             }
                         },
                         new ProtocolEventData() {
@@ -842,7 +853,7 @@ namespace Myrcon.Protocols.Frostbite {
                                 new KillModel() {
                                     Scope = {
                                         Players = new List<PlayerModel>() {
-                                            this.State.Players.Find(x => x.Name == request.Packet.Words[2])
+                                            victim
                                         },
                                         Items = new List<ItemModel>() {
                                             new ItemModel() {
@@ -858,7 +869,7 @@ namespace Myrcon.Protocols.Frostbite {
                                     },
                                     Now = {
                                         Players = new List<PlayerModel>() {
-                                            this.State.Players.Find(x => x.Name == request.Packet.Words[1])
+                                            killer
                                         },
                                         Points = new List<Point3DModel>() {
                                             new Point3DModel(request.Packet.Words[5], request.Packet.Words[7], request.Packet.Words[6])
@@ -895,7 +906,7 @@ namespace Myrcon.Protocols.Frostbite {
                         );
                     }
                     else {
-                        MapModel selectedMap = this.State.MapPool.Find(x => String.Compare(x.Name, request.Packet.Words[1], StringComparison.OrdinalIgnoreCase) == 0);
+                        MapModel selectedMap = this.State.MapPool.Select(m => m.Value).FirstOrDefault(x => String.Compare(x.Name, request.Packet.Words[1], StringComparison.OrdinalIgnoreCase) == 0);
 
                         if (selectedMap != null) {
                             this.State.Settings.Current.GameModeNameText = selectedMap.GameMode.Name;
@@ -927,7 +938,9 @@ namespace Myrcon.Protocols.Frostbite {
         public virtual void PlayerOnJoinDispatchHandler(IPacketWrapper request, IPacketWrapper response) {
 
             if (request.Packet.Words.Count >= 2) {
-
+                // todo this is blanked out to follow a "no unique id, no existence" type of policy instead of juggling different states of players
+                // todo I need to look into older frostbite games to see if this will present a problem.
+                /*
                 PlayerModel player = new PlayerModel() {
                     Name = request.Packet.Words[1]
                 };
@@ -935,6 +948,7 @@ namespace Myrcon.Protocols.Frostbite {
                 if (this.State.Players.Find(x => x.Name == player.Name) == null) {
                     this.State.Players.Add(player);
                 }
+                */
             }
         }
 
@@ -946,7 +960,7 @@ namespace Myrcon.Protocols.Frostbite {
                 PlayerModel player = FrostbitePlayers.Parse(request.Packet.Words.GetRange(2, request.Packet.Words.Count - 2)).FirstOrDefault();
 
                 if (player != null) {
-                    PlayerModel statePlayer = this.State.Players.Find(x => x.Name == player.Name);
+                    PlayerModel statePlayer = this.State.Players.Select(p => p.Value).FirstOrDefault(p => p.Name == player.Name);
 
                     if (statePlayer != null) {
                         // Already exists, update with any new information we have.
@@ -964,15 +978,13 @@ namespace Myrcon.Protocols.Frostbite {
                         player = statePlayer;
                     }
 
-                    this.State.Players.RemoveAll(x => x.Name == player.Name);
-
                     this.OnProtocolEvent(
                         ProtocolEventType.ProtocolPlayerLeave,
                         new ProtocolStateDifference() {
                             Removed = {
-                                Players = new List<PlayerModel>() {
-                                    player
-                                }
+                                Players = new ConcurrentDictionary<String, PlayerModel>(new Dictionary<String, PlayerModel>() {
+                                    { player.Uid, player }
+                                })
                             }
                         },
                         new ProtocolEventData() {
@@ -994,13 +1006,13 @@ namespace Myrcon.Protocols.Frostbite {
                 // If it was directed towards a specific player.
                 if (chat.Scope.Groups != null && chat.Scope.Groups.Any(group => group.Type == GroupModel.Player) == true) {
                     chat.Scope.Players = new List<PlayerModel>() {
-                        this.State.Players.FirstOrDefault(player => player.Uid == chat.Scope.Groups.First(group => @group.Type == GroupModel.Player).Uid)
+                        this.State.Players.Select(p => p.Value).FirstOrDefault(player => player.Uid == chat.Scope.Groups.First(group => @group.Type == GroupModel.Player).Uid)
                     };
                 }
 
-                if (chat.Now.Players != null && chat.Now.Players.Count > 0 && this.State.Players.Find(x => x.Name == chat.Now.Players.First().Name) != null) {
+                if (chat.Now.Players != null && chat.Now.Players.Count > 0 && this.State.Players.Select(p => p.Value).FirstOrDefault(p => p.Name == chat.Now.Players.First().Name) != null) {
                     chat.Now.Players = new List<PlayerModel>() {
-                        this.State.Players.Find(x => x.Name == chat.Now.Players.First().Name)
+                        this.State.Players.Select(p => p.Value).FirstOrDefault(p => p.Name == chat.Now.Players.First().Name)
                     };
                 }
                 else {
@@ -1023,7 +1035,7 @@ namespace Myrcon.Protocols.Frostbite {
         public virtual void PlayerOnAuthenticatedDispatchHandler(IPacketWrapper request, IPacketWrapper response) {
 
             if (request.Packet.Words.Count >= 3) {
-                PlayerModel statePlayer = this.State.Players.Find(x => x.Name == request.Packet.Words[1]);
+                PlayerModel statePlayer = this.State.Players.Select(p => p.Value).FirstOrDefault(p => p.Name == request.Packet.Words[1]);
 
                 if (statePlayer != null) {
                     statePlayer.Uid = request.Packet.Words[2];
@@ -1033,17 +1045,15 @@ namespace Myrcon.Protocols.Frostbite {
                         Name = request.Packet.Words[1],
                         Uid = request.Packet.Words[2]
                     };
-
-                    this.State.Players.Add(statePlayer);
                 }
 
                 this.OnProtocolEvent(
                     ProtocolEventType.ProtocolPlayerJoin, 
                     new ProtocolStateDifference() {
                         Modified = {
-                            Players = new List<PlayerModel>() {
-                                statePlayer
-                            }
+                            Players = new ConcurrentDictionary<String, PlayerModel>(new Dictionary<String, PlayerModel>() {
+                                { statePlayer.Uid, statePlayer }
+                            })
                         }
                     },
                     new ProtocolEventData() {
@@ -1059,7 +1069,7 @@ namespace Myrcon.Protocols.Frostbite {
 
             SpawnModel spawn = FrostbiteSpawn.Parse(request.Packet.Words.GetRange(1, request.Packet.Words.Count - 1));
 
-            PlayerModel player = this.State.Players.Find(x => x.Name == spawn.Player.Name);
+            PlayerModel player = this.State.Players.Select(p => p.Value).FirstOrDefault(p => p.Name == spawn.Player.Name);
 
             if (player != null) {
                 player.Role = spawn.Role;
@@ -1069,9 +1079,9 @@ namespace Myrcon.Protocols.Frostbite {
                     ProtocolEventType.ProtocolPlayerSpawn,
                     new ProtocolStateDifference() {
                         Modified = {
-                            Players = new List<PlayerModel>() {
-                                player
-                            }
+                            Players = new ConcurrentDictionary<String, PlayerModel>(new Dictionary<String, PlayerModel>() {
+                                { player.Uid, player }
+                            })
                         }
                     },
                     new ProtocolEventData() {
@@ -1085,7 +1095,7 @@ namespace Myrcon.Protocols.Frostbite {
 
         public void PlayerOnKickedDispatchHandler(IPacketWrapper request, IPacketWrapper response) {
 
-            PlayerModel player = this.State.Players.Find(x => x.Name == request.Packet.Words[1]);
+            PlayerModel player = this.State.Players.Select(p => p.Value).FirstOrDefault(p => p.Name == request.Packet.Words[1]);
 
             if (player != null) {
                 // Note that this is removed when the player.OnLeave event is fired.
@@ -1095,9 +1105,9 @@ namespace Myrcon.Protocols.Frostbite {
                     ProtocolEventType.ProtocolPlayerKicked, 
                     new ProtocolStateDifference() {
                         Removed = {
-                            Players = new List<PlayerModel>() {
-                                player
-                            }
+                            Players = new ConcurrentDictionary<String, PlayerModel>(new Dictionary<String, PlayerModel>() {
+                                { player.Uid, player }
+                            })
                         }
                     },
                     new ProtocolEventData() {
@@ -1120,7 +1130,7 @@ namespace Myrcon.Protocols.Frostbite {
 
         public void PlayerOnSquadChangeDispatchHandler(IPacketWrapper request, IPacketWrapper response) {
 
-            PlayerModel player = this.State.Players.Find(x => x.Name == request.Packet.Words[1]);
+            PlayerModel player = this.State.Players.Select(p => p.Value).FirstOrDefault(p => p.Name == request.Packet.Words[1]);
             int teamId = 0, squadId = 0;
 
             if (player != null && int.TryParse(request.Packet.Words[2], out teamId) == true && int.TryParse(request.Packet.Words[3], out squadId) == true) {
@@ -1134,9 +1144,9 @@ namespace Myrcon.Protocols.Frostbite {
                     ProtocolEventType.ProtocolPlayerMoved,
                     new ProtocolStateDifference() {
                         Modified = {
-                            Players = new List<PlayerModel>() {
-                                player
-                            }
+                            Players = new ConcurrentDictionary<String, PlayerModel>(new Dictionary<String, PlayerModel>() {
+                                { player.Uid, player }
+                            })
                         }
                     },
                     new ProtocolEventData() {
@@ -1149,7 +1159,7 @@ namespace Myrcon.Protocols.Frostbite {
         }
 
         public void PlayerOnTeamChangeDispatchHandler(IPacketWrapper request, IPacketWrapper response) {
-            PlayerModel player = this.State.Players.Find(x => x.Name == request.Packet.Words[1]);
+            PlayerModel player = this.State.Players.Select(p => p.Value).FirstOrDefault(p => p.Name == request.Packet.Words[1]);
             int teamId = 0, squadId = 0;
 
             if (player != null && int.TryParse(request.Packet.Words[2], out teamId) == true && int.TryParse(request.Packet.Words[3], out squadId) == true) {
@@ -1167,9 +1177,9 @@ namespace Myrcon.Protocols.Frostbite {
                     ProtocolEventType.ProtocolPlayerMoved,
                     new ProtocolStateDifference() {
                         Modified = {
-                            Players = new List<PlayerModel>() {
-                                player
-                            }
+                            Players = new ConcurrentDictionary<String, PlayerModel>(new Dictionary<String, PlayerModel>() {
+                                { player.Uid, player }
+                            })
                         }
                     },
                     new ProtocolEventData() {
@@ -1375,71 +1385,78 @@ namespace Myrcon.Protocols.Frostbite {
                 // admin.movePlayer <name: player name> <teamId: Team ID> <squadId: Squad ID> <forceKill: boolean>
                 bool forceMove = (action.ActionType == NetworkActionType.NetworkPlayerMoveForce || action.ActionType == NetworkActionType.NetworkPlayerMoveRotateForce);
 
-                MapModel selectedMap = this.State.MapPool.Find(map => String.Compare(map.Name, this.State.Settings.Current.MapNameText, StringComparison.OrdinalIgnoreCase) == 0 && map.GameMode != null && String.Compare(map.GameMode.Name, this.State.Settings.Current.GameModeNameText, StringComparison.OrdinalIgnoreCase) == 0);
+                MapModel selectedMap = this.State.MapPool.Select(m => m.Value).FirstOrDefault(map => String.Compare(map.Name, this.State.Settings.Current.MapNameText, StringComparison.OrdinalIgnoreCase) == 0 && map.GameMode != null && String.Compare(map.GameMode.Name, this.State.Settings.Current.GameModeNameText, StringComparison.OrdinalIgnoreCase) == 0);
 
-                foreach (PlayerModel movePlayer in action.Scope.Players.Select(scopePlayer => this.State.Players.FirstOrDefault(player => player.Uid == scopePlayer.Uid)).Where(movePlayer => movePlayer != null)) {
-                    if (selectedMap != null) {
-                        // If they are just looking to rotate the player through the teams
-                        if (action.ActionType == NetworkActionType.NetworkPlayerMoveRotate || action.ActionType == NetworkActionType.NetworkPlayerMoveRotateForce) {
+                foreach (var movePlayer in action.Scope.Players) {
+                    // Lookup the player from the state. The command may only include basic information, or just include
+                    // the Uid and nothing more.
+                    PlayerModel stateMovePlayer;
+                    this.State.Players.TryGetValue(movePlayer.Uid, out stateMovePlayer);
 
-                            int currentTeamId = -1;
+                    if (stateMovePlayer != null) {
+                        if (selectedMap != null) {
+                            // If they are just looking to rotate the player through the teams
+                            if (action.ActionType == NetworkActionType.NetworkPlayerMoveRotate || action.ActionType == NetworkActionType.NetworkPlayerMoveRotateForce) {
 
-                            int.TryParse(movePlayer.Groups.First(group => @group.Type == GroupModel.Team).Uid, out currentTeamId);
+                                int currentTeamId = -1;
 
-                            var teams = selectedMap.Groups.Count(group => @group.Type == GroupModel.Team);
+                                int.TryParse(stateMovePlayer.Groups.First(group => @group.Type == GroupModel.Team).Uid, out currentTeamId);
 
-                            // Avoid divide by 0 error - shouldn't ever be encountered though.
-                            if (selectedMap.GameMode != null && teams > 0) {
-                                int newTeamId = (currentTeamId + 1) % (teams + 1);
+                                var teams = selectedMap.Groups.Count(group => @group.Type == GroupModel.Team);
 
+                                // Avoid divide by 0 error - shouldn't ever be encountered though.
+                                if (selectedMap.GameMode != null && teams > 0) {
+                                    int newTeamId = (currentTeamId + 1) % (teams + 1);
+
+                                    action.Now.Groups.Add(new GroupModel() {
+                                        Type = GroupModel.Team,
+                                        Uid = newTeamId == 0 ? "1" : newTeamId.ToString(CultureInfo.InvariantCulture)
+                                    });
+                                }
+                            }
+
+                            // Now check if the destination squad is supported.
+                            if (selectedMap.GameMode != null && (selectedMap.GameMode.Name == "SQDM" || selectedMap.GameMode.Name == "SQRUSH")) {
+                                if (selectedMap.GameMode.DefaultGroups.Find(group => @group.Type == GroupModel.Squad) != null) {
+                                    action.Now.Groups.Add(selectedMap.GameMode.DefaultGroups.Find(group => @group.Type == GroupModel.Squad));
+                                }
+                            }
+                        }
+
+                        // Fix up the team uid
+                        if (action.Now.Groups.FirstOrDefault(group => @group.Type == GroupModel.Team) == null) {
+                            if (stateMovePlayer.Groups.FirstOrDefault(group => @group.Type == GroupModel.Team) != null) {
+                                // No destination team set, use the players current team.
+                                action.Now.Groups.Add(stateMovePlayer.Groups.First(group => @group.Type == GroupModel.Team));
+                            }
+                            else {
+                                // Panic, set team uid to 1.
                                 action.Now.Groups.Add(new GroupModel() {
-                                    Type = GroupModel.Team,
-                                    Uid = newTeamId == 0 ? "1" : newTeamId.ToString(CultureInfo.InvariantCulture)
+                                    Uid = "1"
                                 });
                             }
                         }
 
-                        // Now check if the destination squad is supported.
-                        if (selectedMap.GameMode != null && (selectedMap.GameMode.Name == "SQDM" || selectedMap.GameMode.Name == "SQRUSH")) {
-                            if (selectedMap.GameMode.DefaultGroups.Find(group => @group.Type == GroupModel.Squad) != null) {
-                                action.Now.Groups.Add(selectedMap.GameMode.DefaultGroups.Find(group => @group.Type == GroupModel.Squad));
+                        // Fix up the squad uid
+                        if (action.Now.Groups.FirstOrDefault(group => @group.Type == GroupModel.Squad) == null) {
+                            if (selectedMap != null && selectedMap.GameMode != null && selectedMap.GameMode.DefaultGroups.FirstOrDefault(group => @group.Type == GroupModel.Squad) != null) {
+                                action.Now.Groups.Add(selectedMap.GameMode.DefaultGroups.First(group => @group.Type == GroupModel.Squad));
+                            }
+                            else {
+                                action.Now.Groups.Add(new GroupModel() {
+                                    Uid = "0"
+                                });
                             }
                         }
-                    }
 
-                    // Fix up the team uid
-                    if (action.Now.Groups.FirstOrDefault(group => @group.Type == GroupModel.Team) == null) {
-                        if (movePlayer.Groups.FirstOrDefault(group => @group.Type == GroupModel.Team) != null) {
-                            // No destination team set, use the players current team.
-                            action.Now.Groups.Add(movePlayer.Groups.First(group => @group.Type == GroupModel.Team));
-                        }
-                        else {
-                            // Panic, set team uid to 1.
-                            action.Now.Groups.Add(new GroupModel() {
-                                Uid = "1"
-                            });
-                        }
+                        wrappers.Add(this.CreatePacket(
+                            "admin.movePlayer \"{0}\" {1} {2} {3}",
+                            stateMovePlayer.Name,
+                            action.Now.Groups.First(group => @group.Type == GroupModel.Team).Uid,
+                            action.Now.Groups.First(group => @group.Type == GroupModel.Squad).Uid,
+                            FrostbiteConverter.BoolToString(forceMove)
+                        ));
                     }
-
-                    // Fix up the squad uid
-                    if (action.Now.Groups.FirstOrDefault(group => @group.Type == GroupModel.Squad) == null) {
-                        if (selectedMap != null && selectedMap.GameMode != null && selectedMap.GameMode.DefaultGroups.FirstOrDefault(group => @group.Type == GroupModel.Squad) != null) {
-                            action.Now.Groups.Add(selectedMap.GameMode.DefaultGroups.First(group => @group.Type == GroupModel.Squad));
-                        }
-                        else {
-                            action.Now.Groups.Add(new GroupModel() {
-                                Uid = "0"
-                            });
-                        }
-                    }
-
-                    wrappers.Add(this.CreatePacket(
-                        "admin.movePlayer \"{0}\" {1} {2} {3}",
-                        movePlayer.Name,
-                        action.Now.Groups.First(group => @group.Type == GroupModel.Team).Uid,
-                        action.Now.Groups.First(group => @group.Type == GroupModel.Squad).Uid,
-                        FrostbiteConverter.BoolToString(forceMove)
-                    ));
                 }
             }
 
@@ -1450,6 +1467,8 @@ namespace Myrcon.Protocols.Frostbite {
             List<IPacketWrapper> wrappers = new List<IPacketWrapper>();
 
             foreach (MapModel map in action.Now.Maps) {
+                var closureMap = map;
+
                 if (action.ActionType == NetworkActionType.NetworkMapAppend) {
                     wrappers.Add(this.CreatePacket("mapList.append \"{0}\" {1}", map.Name, map.Rounds));
 
@@ -1470,9 +1489,9 @@ namespace Myrcon.Protocols.Frostbite {
                     wrappers.Add(this.CreatePacket("mapList.list rounds"));
                 }
                 else if (action.ActionType == NetworkActionType.NetworkMapRemove) {
-                    var matchingMaps = this.State.Maps.Where(x => x.Name == map.Name).OrderByDescending(x => x.Index);
+                    var matchingMaps = this.State.Maps.Where(m => m.Value.Name == closureMap.Name).OrderByDescending(m => m.Value.Index);
 
-                    wrappers.AddRange(matchingMaps.Select(match => this.CreatePacket("mapList.remove {0}", match.Index)));
+                    wrappers.AddRange(matchingMaps.Select(match => this.CreatePacket("mapList.remove {0}", match.Value.Index)));
 
                     wrappers.Add(this.CreatePacket("mapList.save"));
 

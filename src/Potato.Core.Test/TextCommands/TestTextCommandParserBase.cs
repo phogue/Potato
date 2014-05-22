@@ -16,6 +16,7 @@
 #region
 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
@@ -411,27 +412,23 @@ namespace Potato.Core.Test.TextCommands {
                 TextCommandTest
             });
 
-            textCommandController.Connection.ProtocolState.Players.AddRange(new List<PlayerModel>() {
-                PlayerPhogue,
-                PlayerImisnew2,
-                PlayerPhilK,
-                PlayerMorpheus,
-                PlayerIke,
-                PlayerPapaCharlie9,
-                PlayerEBassie,
-                PlayerZaeed,
-                PlayerPhogueIsAButterfly,
-                PlayerSayaNishino,
-                PlayerMrDiacritic
-            });
+            textCommandController.Connection.ProtocolState.Players.TryAdd(PlayerPhogue.Uid, PlayerPhogue);
+            textCommandController.Connection.ProtocolState.Players.TryAdd(PlayerImisnew2.Uid, PlayerImisnew2);
+            textCommandController.Connection.ProtocolState.Players.TryAdd(PlayerPhilK.Uid, PlayerPhilK);
+            textCommandController.Connection.ProtocolState.Players.TryAdd(PlayerMorpheus.Uid, PlayerMorpheus);
+            textCommandController.Connection.ProtocolState.Players.TryAdd(PlayerIke.Uid, PlayerIke);
+            textCommandController.Connection.ProtocolState.Players.TryAdd(PlayerPapaCharlie9.Uid, PlayerPapaCharlie9);
+            textCommandController.Connection.ProtocolState.Players.TryAdd(PlayerEBassie.Uid, PlayerEBassie);
+            textCommandController.Connection.ProtocolState.Players.TryAdd(PlayerZaeed.Uid, PlayerZaeed);
+            textCommandController.Connection.ProtocolState.Players.TryAdd(PlayerPhogueIsAButterfly.Uid, PlayerPhogueIsAButterfly);
+            textCommandController.Connection.ProtocolState.Players.TryAdd(PlayerSayaNishino.Uid, PlayerSayaNishino);
+            textCommandController.Connection.ProtocolState.Players.TryAdd(PlayerMrDiacritic.Uid, PlayerMrDiacritic);
 
-            textCommandController.Connection.ProtocolState.Items = textCommandController.Connection.ProtocolState.Players.SelectMany(player => player.Inventory.Now.Items).ToList();
+            textCommandController.Connection.ProtocolState.Items = new ConcurrentDictionary<String, ItemModel>(textCommandController.Connection.ProtocolState.Players.Values.SelectMany(player => player.Inventory.Now.Items).ToDictionary(i => i.Name, i => i));
 
-            textCommandController.Connection.ProtocolState.MapPool.AddRange(new List<MapModel>() {
-                MapPortValdez,
-                MapValparaiso,
-                MapPanamaCanal
-            });
+            textCommandController.Connection.ProtocolState.MapPool.TryAdd(String.Format("{0}/{1}", MapPortValdez.GameMode.Name, MapPortValdez.Name), MapPortValdez);
+            textCommandController.Connection.ProtocolState.MapPool.TryAdd(String.Format("{0}/{1}", MapValparaiso.GameMode.Name, MapValparaiso.Name), MapValparaiso);
+            textCommandController.Connection.ProtocolState.MapPool.TryAdd(String.Format("{0}/{1}", MapPanamaCanal.GameMode.Name, MapPanamaCanal.Name), MapPanamaCanal);
 
             return textCommandController;
         }
@@ -488,7 +485,7 @@ namespace Potato.Core.Test.TextCommands {
         /// <param name="primaryCommand">The command to check against - the returning primary command must be this</param>
         /// <param name="players">The list of players that must be in the resulting matched players (nothing more, nothing less)</param>
         /// <param name="maps">The list of maps that must be in the resulting matched maps (nothing more, nothing less)</param>
-        protected static void AssertExecutedCommandAgainstPlayerListMapList(ICommandResult args, TextCommandModel primaryCommand, List<PlayerModel> players, List<MapModel> maps) {
+        protected static void AssertExecutedCommandAgainstPlayerListMapList(ICommandResult args, TextCommandModel primaryCommand, ICollection<PlayerModel> players, ICollection<MapModel> maps) {
             Assert.AreEqual(primaryCommand, args.Now.TextCommands.First(), String.Format("Has not used the '{0}' command", primaryCommand.PluginCommand));
             Assert.AreEqual(players.Count, args.Now.TextCommandMatches.First().Players != null ? args.Now.TextCommandMatches.First().Players.Count : 0, "Incorrect numbers of players returned");
             Assert.AreEqual(maps.Count, args.Now.TextCommandMatches.First().Maps != null ? args.Now.TextCommandMatches.First().Maps.Count : 0, "Incorrect numbers of maps returned");
@@ -510,7 +507,7 @@ namespace Potato.Core.Test.TextCommands {
         /// <param name="primaryCommand">The command to check against - the returning primary command must be this</param>
         /// <param name="players">The list of players that must be in the resulting matched players (nothing more, nothing less)</param>
         /// <param name="maps">The list of maps that must be in the resulting matched maps (nothing more, nothing less)</param>
-        protected static void AssertCommandPlayerListMapList(TextCommandController textCommandController, String command, TextCommandModel primaryCommand, List<PlayerModel> players, List<MapModel> maps) {
+        protected static void AssertCommandPlayerListMapList(TextCommandController textCommandController, String command, TextCommandModel primaryCommand, ICollection<PlayerModel> players, List<MapModel> maps) {
             ICommandResult args = ExecuteTextCommand(textCommandController, command);
 
             AssertExecutedCommandAgainstPlayerListMapList(args, primaryCommand, players, maps);

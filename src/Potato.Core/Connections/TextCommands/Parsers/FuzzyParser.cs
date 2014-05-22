@@ -50,7 +50,7 @@ namespace Potato.Core.Connections.TextCommands.Parsers {
         }
 
         protected void ParseMapNames(Phrase phrase) {
-            var mapNames = this.Connection.ProtocolState.MapPool.Select(map => new {
+            var mapNames = this.Connection.ProtocolState.MapPool.Values.Select(map => new {
                 map,
                 Similarity = Math.Max(map.FriendlyName.DePluralStringSimularity(phrase.Text), map.Name.DePluralStringSimularity(phrase.Text))
             })
@@ -75,9 +75,9 @@ namespace Potato.Core.Connections.TextCommands.Parsers {
         protected void ParsePlayerNames(Phrase phrase) {
 
             // We should cache this some where.
-            int maximumNameLength = this.Connection.ProtocolState.Players.Count > 0 ? this.Connection.ProtocolState.Players.Max(player => player.Name.Length) : 0;
+            int maximumNameLength = this.Connection.ProtocolState.Players.Count > 0 ? this.Connection.ProtocolState.Players.Values.Max(player => player.Name.Length) : 0;
 
-            var playerNames = this.Connection.ProtocolState.Players.Select(player => new {
+            var playerNames = this.Connection.ProtocolState.Players.Values.Select(player => new {
                 player,
                 Similarity = Math.Max(player.NameStripped.DePluralStringSimularity(phrase.Text), player.Name.DePluralStringSimularity(phrase.Text))
             })
@@ -100,7 +100,7 @@ namespace Potato.Core.Connections.TextCommands.Parsers {
         }
 
         protected void ParseCountryNames(Phrase phrase) {
-            var playerCountries = this.Connection.ProtocolState.Players.Select(player => new {
+            var playerCountries = this.Connection.ProtocolState.Players.Values.Select(player => new {
                 player,
                 Similarity = player.Location.CountryName.StringSimularitySubsetBonusRatio(phrase.Text)
             })
@@ -126,7 +126,7 @@ namespace Potato.Core.Connections.TextCommands.Parsers {
             // Select all items that match our phrase. We don't deal with
             // items individually as many items share many tags, so you'll always need to deal
             // with them as sets.
-            var items = this.Connection.ProtocolState.Items.Select(item => new {
+            var items = this.Connection.ProtocolState.Items.Values.Select(item => new {
                 item,
                 Similarity = Math.Max(item.FriendlyName.StringSimularitySubsetBonusRatio(phrase.Text), item.Tags.Select(tag => tag.StringSimularitySubsetBonusRatio(phrase.Text)).Max())
             }).Where(@t => @t.Similarity >= 60)
@@ -155,12 +155,12 @@ namespace Potato.Core.Connections.TextCommands.Parsers {
                 if (thing != null) {
                     if (thing.Name == "Players") {
                         thing.Reference = new PlayerThingReference() {
-                            Players = new List<PlayerModel>(this.Connection.ProtocolState.Players)
+                            Players = new List<PlayerModel>(this.Connection.ProtocolState.Players.Values)
                         };
                     }
                     else if (thing.Name == "Maps") {
                         thing.Reference = new MapThingReference() {
-                            Maps = new List<MapModel>(this.Connection.ProtocolState.MapPool)
+                            Maps = new List<MapModel>(this.Connection.ProtocolState.MapPool.Values)
                         };
                     }
                 }

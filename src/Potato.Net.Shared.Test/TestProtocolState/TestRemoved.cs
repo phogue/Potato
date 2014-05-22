@@ -23,12 +23,12 @@ using Potato.Net.Shared.Models;
 
 namespace Potato.Net.Shared.Test.TestProtocolState {
     [TestFixture]
-    public class TestSet {
+    public class TestRemoved {
 
         // Players
 
         [Test]
-        public void TestSinglePlayersSet() {
+        public void TestSinglePlayersRemoved() {
             var state = new ProtocolState();
 
             state.Players.TryAdd("1", new PlayerModel() {
@@ -48,16 +48,16 @@ namespace Potato.Net.Shared.Test.TestProtocolState {
                 Score = 1
             });
 
-            state.Set(segment);
+            state.Removed(segment);
 
             Assert.AreEqual(1, state.Players.Count);
-            Assert.AreEqual(1, state.Players.First().Value.Score);
+            Assert.AreEqual(2, state.Players.First().Value.Score);
         }
 
         // Maps
 
         [Test]
-        public void TestSingleMapsSet() {
+        public void TestSingleMapsRemoved() {
             var state = new ProtocolState();
 
             state.Maps.TryAdd("gamemode1/map1", new MapModel() {
@@ -83,13 +83,13 @@ namespace Potato.Net.Shared.Test.TestProtocolState {
                 GameMode = new GameModeModel() {
                     Name = "gamemode1"
                 },
-                FriendlyName = "Fun Map 1"
+                FriendlyName = "Boring Map 1"
             });
 
-            state.Set(segment);
+            state.Removed(segment);
 
             Assert.AreEqual(1, state.Maps.Count);
-            Assert.AreEqual("Fun Map 1", state.Maps.First().Value.FriendlyName);
+            Assert.AreEqual("Boring Map 2", state.Maps.First().Value.FriendlyName);
         }
 
         [Test]
@@ -119,19 +119,19 @@ namespace Potato.Net.Shared.Test.TestProtocolState {
                 GameMode = new GameModeModel() {
                     Name = "gamemode1"
                 },
-                FriendlyName = "Fun First Map"
+                FriendlyName = "First Map"
             });
 
-            state.Set(segment);
+            state.Removed(segment);
 
             Assert.AreEqual(1, state.Maps.Count);
-            Assert.AreEqual("Fun First Map", state.Maps.First().Value.FriendlyName);
+            Assert.AreEqual("Second Map", state.Maps.First().Value.FriendlyName);
         }
 
         // Bans
 
         [Test]
-        public void TestSingleUidBansSet() {
+        public void TestSingleUidBansRemoved() {
             var state = new ProtocolState();
 
             state.Bans.TryAdd("Permanent/Uid/1", new BanModel() {
@@ -168,11 +168,11 @@ namespace Potato.Net.Shared.Test.TestProtocolState {
             var segment = new ProtocolStateSegment() {
                 Bans = new ConcurrentDictionary<String, BanModel>()
             };
-            segment.Bans.TryAdd("Round/Uid/1", new BanModel() {
+            segment.Bans.TryAdd("Permanent/Uid/1", new BanModel() {
                 Scope = {
                     Times = {
                         new TimeSubsetModel() {
-                            Context = TimeSubsetContext.Round
+                            Context = TimeSubsetContext.Permanent
                         }
                     },
                     Players = new List<PlayerModel>() {
@@ -184,14 +184,14 @@ namespace Potato.Net.Shared.Test.TestProtocolState {
                 }
             });
 
-            state.Set(segment);
+            state.Removed(segment);
 
             Assert.AreEqual(1, state.Bans.Count);
-            Assert.AreEqual(TimeSubsetContext.Round, state.Bans.First().Value.Scope.Times.First().Context);
+            Assert.AreEqual(TimeSubsetContext.Time, state.Bans.First().Value.Scope.Times.First().Context);
         }
 
         [Test]
-        public void TestSingleIpBansSet() {
+        public void TestSingleIpBansRemoved() {
             var state = new ProtocolState();
 
             state.Bans.TryAdd("Permanent/Ip/1", new BanModel() {
@@ -232,7 +232,7 @@ namespace Potato.Net.Shared.Test.TestProtocolState {
                 Scope = {
                     Times = {
                         new TimeSubsetModel() {
-                            Context = TimeSubsetContext.Time
+                            Context = TimeSubsetContext.Permanent
                         }
                     },
                     Players = new List<PlayerModel>() {
@@ -244,14 +244,14 @@ namespace Potato.Net.Shared.Test.TestProtocolState {
                 }
             });
 
-            state.Set(segment);
+            state.Removed(segment);
 
             Assert.AreEqual(1, state.Bans.Count);
             Assert.AreEqual(TimeSubsetContext.Time, state.Bans.First().Value.Scope.Times.First().Context);
         }
 
         [Test]
-        public void TestSingleNameBansSet() {
+        public void TestSingleNameBansRemoved() {
             var state = new ProtocolState();
 
             state.Bans.TryAdd("Permanent/Name/1", new BanModel() {
@@ -288,13 +288,11 @@ namespace Potato.Net.Shared.Test.TestProtocolState {
             var segment = new ProtocolStateSegment() {
                 Bans = new ConcurrentDictionary<String, BanModel>()
             };
-            // Technically it would have an incorrect key, so next sync it would be
-            // removed because it does not exist..
             segment.Bans.TryAdd("Permanent/Name/1", new BanModel() {
                 Scope = {
                     Times = {
                         new TimeSubsetModel() {
-                            Context = TimeSubsetContext.Time
+                            Context = TimeSubsetContext.Permanent
                         }
                     },
                     Players = new List<PlayerModel>() {
@@ -306,7 +304,7 @@ namespace Potato.Net.Shared.Test.TestProtocolState {
                 }
             });
 
-            state.Set(segment);
+            state.Removed(segment);
 
             Assert.AreEqual(1, state.Bans.Count);
             Assert.AreEqual(TimeSubsetContext.Time, state.Bans.First().Value.Scope.Times.First().Context);
@@ -315,7 +313,7 @@ namespace Potato.Net.Shared.Test.TestProtocolState {
         // MapPool
 
         [Test]
-        public void TestSingleMapPoolSet() {
+        public void TestSingleMapPoolRemoved() {
             var state = new ProtocolState();
 
             state.MapPool.TryAdd("gamemode1/map1", new MapModel() {
@@ -341,13 +339,13 @@ namespace Potato.Net.Shared.Test.TestProtocolState {
                 GameMode = new GameModeModel() {
                     Name = "gamemode1"
                 },
-                FriendlyName = "Fun Map 1"
+                FriendlyName = "Boring Map 1"
             });
 
-            state.Set(segment);
+            state.Removed(segment);
 
             Assert.AreEqual(1, state.MapPool.Count);
-            Assert.AreEqual("Fun Map 1", state.MapPool.First().Value.FriendlyName);
+            Assert.AreEqual("Boring Map 2", state.MapPool.First().Value.FriendlyName);
         }
 
         [Test]
@@ -377,19 +375,21 @@ namespace Potato.Net.Shared.Test.TestProtocolState {
                 GameMode = new GameModeModel() {
                     Name = "gamemode1"
                 },
-                FriendlyName = "Fun First Map"
+                FriendlyName = "First Map"
             });
 
-            state.Set(segment);
+            state.Removed(segment);
 
             Assert.AreEqual(1, state.MapPool.Count);
-            Assert.AreEqual("Fun First Map", state.MapPool.First().Value.FriendlyName);
+            Assert.AreEqual("Second Map", state.MapPool.First().Value.FriendlyName);
         }
+
+
 
         // GameModePool
 
         [Test]
-        public void TestSingleGameModePoolSet() {
+        public void TestSingleGameModePoolRemoved() {
             var state = new ProtocolState();
 
             state.GameModePool.TryAdd("gamemode1", new GameModeModel() {
@@ -406,19 +406,19 @@ namespace Potato.Net.Shared.Test.TestProtocolState {
             };
             segment.GameModePool.TryAdd("gamemode1", new GameModeModel() {
                 Name = "gamemode 1",
-                FriendlyName = "Fun GameMode 1"
+                FriendlyName = "Boring GameMode 1"
             });
 
-            state.Set(segment);
+            state.Removed(segment);
 
             Assert.AreEqual(1, state.GameModePool.Count);
-            Assert.AreEqual("Fun GameMode 1", state.GameModePool.First().Value.FriendlyName);
+            Assert.AreEqual("Boring GameMode 2", state.GameModePool.First().Value.FriendlyName);
         }
 
         // Groups
 
         [Test]
-        public void TestSingleGroupPoolSet() {
+        public void TestSingleGroupPoolRemoved() {
             var state = new ProtocolState();
 
             state.Groups.TryAdd("Team/1", new GroupModel() {
@@ -438,19 +438,19 @@ namespace Potato.Net.Shared.Test.TestProtocolState {
             segment.Groups.TryAdd("Team/1", new GroupModel() {
                 Uid = "1",
                 Type = GroupModel.Team,
-                FriendlyName = "Fun Group 1"
+                FriendlyName = "Boring Group 1"
             });
 
-            state.Set(segment);
+            state.Removed(segment);
 
             Assert.AreEqual(1, state.Groups.Count);
-            Assert.AreEqual("Fun Group 1", state.Groups.First().Value.FriendlyName);
+            Assert.AreEqual("Boring Group 2", state.Groups.First().Value.FriendlyName);
         }
 
         // Items
 
         [Test]
-        public void TestSingleItemPoolSet() {
+        public void TestSingleItemPoolRemoved() {
             var state = new ProtocolState();
 
             state.Items.TryAdd("1", new ItemModel() {
@@ -467,13 +467,13 @@ namespace Potato.Net.Shared.Test.TestProtocolState {
             };
             segment.Items.TryAdd("1", new ItemModel() {
                 Name = "1",
-                FriendlyName = "Fun Item 1"
+                FriendlyName = "Boring Item 1"
             });
 
-            state.Set(segment);
+            state.Removed(segment);
 
             Assert.AreEqual(1, state.Items.Count);
-            Assert.AreEqual("Fun Item 1", state.Items.First().Value.FriendlyName);
+            Assert.AreEqual("Boring Item 2", state.Items.First().Value.FriendlyName);
         }
     }
 }

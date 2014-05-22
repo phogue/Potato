@@ -13,16 +13,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
-#region
 
 using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
 using Potato.Core.Connections.TextCommands;
-using Potato.Net.Shared.Actions;
 using Potato.Net.Shared.Models;
-
-#endregion
 
 namespace Potato.Core.Test.TextCommands.Fuzzy {
     [TestFixture]
@@ -34,7 +30,7 @@ namespace Potato.Core.Test.TextCommands.Fuzzy {
         public void TestKickEveryoneWithExclusionOnPhoguePhilImpliedJoin() {
             TextCommandController textCommandController = CreateTextCommandController();
 
-            AssertCommandPlayerListMapList(textCommandController, "kick everyone but not phogue phil", TextCommandKick, textCommandController.Connection.ProtocolState.Players.Except(new List<PlayerModel>() {
+            AssertCommandPlayerListMapList(textCommandController, "kick everyone but not phogue phil", TextCommandKick, textCommandController.Connection.ProtocolState.Players.Values.Except(new List<PlayerModel>() {
                 PlayerPhogue,
                 PlayerPhilK
             }).ToList(), new List<MapModel>());

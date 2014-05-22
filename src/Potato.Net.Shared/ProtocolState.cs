@@ -14,8 +14,7 @@
 // limitations under the License.
 #endregion
 using System;
-using System.Linq;
-using System.Collections.Generic;
+using System.Collections.Concurrent;
 using Potato.Net.Shared.Models;
 using Potato.Net.Shared.Truths;
 
@@ -25,19 +24,19 @@ namespace Potato.Net.Shared {
     /// </summary>
     [Serializable]
     public sealed class ProtocolState : IProtocolState {
-        public List<PlayerModel> Players { get; set; }
+        public ConcurrentDictionary<String, PlayerModel> Players { get; set; }
 
-        public List<MapModel> Maps { get; set; }
+        public ConcurrentDictionary<String, MapModel> Maps { get; set; }
 
-        public List<BanModel> Bans { get; set; }
+        public ConcurrentDictionary<String, BanModel> Bans { get; set; }
 
-        public List<MapModel> MapPool { get; set; }
+        public ConcurrentDictionary<String, MapModel> MapPool { get; set; }
 
-        public List<GameModeModel> GameModePool { get; set; }
+        public ConcurrentDictionary<String, GameModeModel> GameModePool { get; set; }
 
-        public List<GroupModel> Groups { get; set; }
+        public ConcurrentDictionary<String, GroupModel> Groups { get; set; }
 
-        public List<ItemModel> Items { get; set; } 
+        public ConcurrentDictionary<String, ItemModel> Items { get; set; } 
 
         public Settings Settings { get; set; }
 
@@ -47,14 +46,14 @@ namespace Potato.Net.Shared {
         /// Initializes the gamestate with the default values.
         /// </summary>
         public ProtocolState() {
-            this.Players = new List<PlayerModel>();
-            this.Maps = new List<MapModel>();
-            this.Bans = new List<BanModel>();
+            this.Players = new ConcurrentDictionary<String, PlayerModel>();
+            this.Maps = new ConcurrentDictionary<String, MapModel>();
+            this.Bans = new ConcurrentDictionary<String, BanModel>();
 
-            this.MapPool = new List<MapModel>();
-            this.GameModePool = new List<GameModeModel>();
-            this.Groups = new List<GroupModel>();
-            this.Items = new List<ItemModel>();
+            this.MapPool = new ConcurrentDictionary<String, MapModel>();
+            this.GameModePool = new ConcurrentDictionary<String, GameModeModel>();
+            this.Groups = new ConcurrentDictionary<String, GroupModel>();
+            this.Items = new ConcurrentDictionary<String, ItemModel>();
 
             this.Settings = new Settings();
 
@@ -64,20 +63,11 @@ namespace Potato.Net.Shared {
         /// <summary>
         /// Synchronizes a modified list with a comparator method
         /// </summary>
-        public static void ModifiedList<T>(List<T> existing, IEnumerable<T> modified, Func<T, T, bool> predicate) {
+        public static void ModifiedDictionary<T>(ConcurrentDictionary<String, T> existing, ConcurrentDictionary<String, T> modified) {
             if (modified != null) {
-                var modifiedItems = modified.Where(item => Object.Equals(default(T), item) == false).Select(modifiedItem => new {
-                    Index = existing.FindIndex(item => Object.Equals(default(T), item) == false && predicate(item, modifiedItem)),
-                    Item = modifiedItem
-                });
-
-                foreach (var modifiedItem in modifiedItems) {
-                    if (modifiedItem.Index >= 0) {
-                        existing[modifiedItem.Index] = modifiedItem.Item;
-                    }
-                    else {
-                        existing.Add(modifiedItem.Item);
-                    }
+                foreach (var item in modified) {
+                    var closuredItem = item;
+                    existing.AddOrUpdate(item.Key, id => closuredItem.Value, (id, model) => closuredItem.Value);
                 }
             }
         }
@@ -88,24 +78,19 @@ namespace Potato.Net.Shared {
         /// <param name="modified">The data to find modified items from</param>
         /// <returns>this</returns>
         public IProtocolState Modified(IProtocolStateData modified) {
-            ModifiedList(this.Players, modified.Players, (item, modifiedItem) => String.Compare(item.Uid, modifiedItem.Uid, StringComparison.OrdinalIgnoreCase) == 0);
+            ModifiedDictionary(this.Players, modified.Players);
 
-            ModifiedList(this.Maps, modified.Maps, (item, modifiedItem) => item.GameMode != null && modifiedItem.GameMode != null && String.Compare(item.Name, modifiedItem.Name, StringComparison.OrdinalIgnoreCase) == 0 && String.Compare(item.GameMode.Name, modifiedItem.GameMode.Name, StringComparison.OrdinalIgnoreCase) == 0);
+            ModifiedDictionary(this.Maps, modified.Maps);
 
-            // This looks expensive, but I don't think bans will every contain more than a single player.
-            // This is just here in case they ever do - we don't make the assumption and just test the first
-            // player in the ban.
-            ModifiedList(this.Bans, modified.Bans, (item, modifiedItem) => item.Scope.Players.All(player => modifiedItem.Scope.Players.Any(modifiedPlayer => (String.IsNullOrEmpty(player.Uid) == false && String.IsNullOrEmpty(modifiedPlayer.Uid) == false && String.Compare(player.Uid, modifiedPlayer.Uid, StringComparison.OrdinalIgnoreCase) == 0) ||
-                                                                                                                                                             (String.IsNullOrEmpty(player.Name) == false && String.IsNullOrEmpty(modifiedPlayer.Name) == false && String.Compare(player.Name, modifiedPlayer.Name, StringComparison.OrdinalIgnoreCase) == 0) ||
-                                                                                                                                                             (String.IsNullOrEmpty(player.Ip) == false && String.IsNullOrEmpty(modifiedPlayer.Ip) == false && String.Compare(player.Ip, modifiedPlayer.Ip, StringComparison.OrdinalIgnoreCase) == 0))));
+            ModifiedDictionary(this.Bans, modified.Bans);
 
-            ModifiedList(this.MapPool, modified.MapPool, (item, modifiedItem) => item.GameMode != null && modifiedItem.GameMode != null && String.Compare(item.Name, modifiedItem.Name, StringComparison.OrdinalIgnoreCase) == 0 && String.Compare(item.GameMode.Name, modifiedItem.GameMode.Name, StringComparison.OrdinalIgnoreCase) == 0);
+            ModifiedDictionary(this.MapPool, modified.MapPool);
 
-            ModifiedList(this.GameModePool, modified.GameModePool, (item, modifiedItem) => String.Compare(item.Name, modifiedItem.Name, StringComparison.OrdinalIgnoreCase) == 0);
+            ModifiedDictionary(this.GameModePool, modified.GameModePool);
 
-            ModifiedList(this.Groups, modified.Groups, (item, modifiedItem) => String.Compare(item.Uid, modifiedItem.Uid, StringComparison.OrdinalIgnoreCase) == 0 && String.Compare(item.Type, modifiedItem.Type, StringComparison.OrdinalIgnoreCase) == 0);
+            ModifiedDictionary(this.Groups, modified.Groups);
 
-            ModifiedList(this.Items, modified.Items, (item, modifiedItem) => String.Compare(item.Name, modifiedItem.Name, StringComparison.OrdinalIgnoreCase) == 0);
+            ModifiedDictionary(this.Items, modified.Items);
 
             this.Settings = modified.Settings ?? this.Settings;
 
@@ -117,10 +102,11 @@ namespace Potato.Net.Shared {
         /// <summary>
         /// Synchronizes a modified list with a comparator method
         /// </summary>
-        public static void RemoveList<T>(List<T> existing, IEnumerable<T> removed, Func<T, T, bool> predicate) {
+        public static void RemoveDictionary<T>(ConcurrentDictionary<String, T> existing, ConcurrentDictionary<String, T> removed) {
             if (removed != null) {
-                foreach (var index in removed.Where(item => Object.Equals(default(T), item) == false).Select(removedItem => existing.FindIndex(item => Object.Equals(default(T), item) == false && predicate(item, removedItem))).Where(index => index >= 0)) {
-                    existing.RemoveAt(index);
+                foreach (var item in removed) {
+                    T removedItem = default(T);
+                    existing.TryRemove(item.Key, out removedItem);
                 }
             }
         }
@@ -131,24 +117,19 @@ namespace Potato.Net.Shared {
         /// <param name="removed">The data to find removed items from</param>
         /// <returns>this</returns>
         public IProtocolState Removed(IProtocolStateData removed) {
-            RemoveList(this.Players, removed.Players, (item, removedItem) => String.Compare(item.Uid, removedItem.Uid, StringComparison.OrdinalIgnoreCase) == 0);
+            RemoveDictionary(this.Players, removed.Players);
 
-            RemoveList(this.Maps, removed.Maps, (item, removedItem) => item.GameMode != null && removedItem.GameMode != null && String.Compare(item.Name, removedItem.Name, StringComparison.OrdinalIgnoreCase) == 0 && String.Compare(item.GameMode.Name, removedItem.GameMode.Name, StringComparison.OrdinalIgnoreCase) == 0);
+            RemoveDictionary(this.Maps, removed.Maps);
 
-            // This looks expensive, but I don't think bans will every contain more than a single player.
-            // This is just here in case they ever do - we don't make the assumption and just test the first
-            // player in the ban.
-            RemoveList(this.Bans, removed.Bans, (item, removedItem) => item.Scope.Players.All(player => removedItem.Scope.Players.Any(modifiedPlayer => (String.IsNullOrEmpty(player.Uid) == false && String.IsNullOrEmpty(modifiedPlayer.Uid) == false && String.Compare(player.Uid, modifiedPlayer.Uid, StringComparison.OrdinalIgnoreCase) == 0) ||
-                                                                                                                                                             (String.IsNullOrEmpty(player.Name) == false && String.IsNullOrEmpty(modifiedPlayer.Name) == false && String.Compare(player.Name, modifiedPlayer.Name, StringComparison.OrdinalIgnoreCase) == 0) ||
-                                                                                                                                                             (String.IsNullOrEmpty(player.Ip) == false && String.IsNullOrEmpty(modifiedPlayer.Ip) == false && String.Compare(player.Ip, modifiedPlayer.Ip, StringComparison.OrdinalIgnoreCase) == 0))));
+            RemoveDictionary(this.Bans, removed.Bans);
 
-            RemoveList(this.MapPool, removed.MapPool, (item, removedItem) => item.GameMode != null && removedItem.GameMode != null && String.Compare(item.Name, removedItem.Name, StringComparison.OrdinalIgnoreCase) == 0 && String.Compare(item.GameMode.Name, removedItem.GameMode.Name, StringComparison.OrdinalIgnoreCase) == 0);
+            RemoveDictionary(this.MapPool, removed.MapPool);
 
-            RemoveList(this.GameModePool, removed.GameModePool, (item, removedItem) => String.Compare(item.Name, removedItem.Name, StringComparison.OrdinalIgnoreCase) == 0);
+            RemoveDictionary(this.GameModePool, removed.GameModePool);
 
-            RemoveList(this.Groups, removed.Groups, (item, removedItem) => String.Compare(item.Uid, removedItem.Uid, StringComparison.OrdinalIgnoreCase) == 0 && String.Compare(item.Type, removedItem.Type, StringComparison.OrdinalIgnoreCase) == 0);
+            RemoveDictionary(this.Groups, removed.Groups);
 
-            RemoveList(this.Items, removed.Items, (item, removedItem) => String.Compare(item.Name, removedItem.Name, StringComparison.OrdinalIgnoreCase) == 0);
+            RemoveDictionary(this.Items, removed.Items);
 
             return this;
         }

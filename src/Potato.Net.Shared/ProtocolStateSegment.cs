@@ -14,7 +14,7 @@
 // limitations under the License.
 #endregion
 using System;
-using System.Collections.Generic;
+using System.Collections.Concurrent;
 using Potato.Net.Shared.Models;
 using Potato.Net.Shared.Truths;
 
@@ -24,19 +24,19 @@ namespace Potato.Net.Shared {
     /// </summary>
     [Serializable]
     public sealed class ProtocolStateSegment : IProtocolStateData {
-        public List<PlayerModel> Players { get; set; }
+        public ConcurrentDictionary<String, PlayerModel> Players { get; set; }
 
-        public List<MapModel> Maps { get; set; }
+        public ConcurrentDictionary<String, MapModel> Maps { get; set; }
 
-        public List<BanModel> Bans { get; set; }
+        public ConcurrentDictionary<String, BanModel> Bans { get; set; }
 
-        public List<MapModel> MapPool { get; set; }
+        public ConcurrentDictionary<String, MapModel> MapPool { get; set; }
 
-        public List<GameModeModel> GameModePool { get; set; }
+        public ConcurrentDictionary<String, GameModeModel> GameModePool { get; set; }
 
-        public List<GroupModel> Groups { get; set; }
+        public ConcurrentDictionary<String, GroupModel> Groups { get; set; }
 
-        public List<ItemModel> Items { get; set; } 
+        public ConcurrentDictionary<String, ItemModel> Items { get; set; } 
 
         public Settings Settings { get; set; }
 

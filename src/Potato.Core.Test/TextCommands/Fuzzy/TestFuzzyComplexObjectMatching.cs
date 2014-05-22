@@ -40,28 +40,28 @@ namespace Potato.Core.Test.TextCommands.Fuzzy {
         public void TestComplexKickAllPlayers() {
             TextCommandController textCommandController = CreateTextCommandController();
 
-            AssertCommandPlayerListMapList(textCommandController, "kick all players", TextCommandKick, textCommandController.Connection.ProtocolState.Players, new List<MapModel>());
+            AssertCommandPlayerListMapList(textCommandController, "kick all players", TextCommandKick, textCommandController.Connection.ProtocolState.Players.Values, new List<MapModel>());
         }
 
         [Test]
         public void TestComplexKickEveryoneExceptMe() {
             TextCommandController textCommandController = CreateTextCommandController();
 
-            AssertCommandPlayerListMapList(textCommandController, "kick everyone except me", TextCommandKick, textCommandController.Connection.ProtocolState.Players.Where(player => player != PlayerPhogue).ToList(), new List<MapModel>());
+            AssertCommandPlayerListMapList(textCommandController, "kick everyone except me", TextCommandKick, textCommandController.Connection.ProtocolState.Players.Values.Where(player => player != PlayerPhogue).ToList(), new List<MapModel>());
         }
 
         [Test]
         public void TestComplexKickEveryoneExceptPhogue() {
             TextCommandController textCommandController = CreateTextCommandController();
 
-            AssertCommandPlayerListMapList(textCommandController, "kick everyone except phogue", TextCommandKick, textCommandController.Connection.ProtocolState.Players.Where(player => player != PlayerPhogue).ToList(), new List<MapModel>());
+            AssertCommandPlayerListMapList(textCommandController, "kick everyone except phogue", TextCommandKick, textCommandController.Connection.ProtocolState.Players.Values.Where(player => player != PlayerPhogue).ToList(), new List<MapModel>());
         }
 
         [Test]
         public void TestComplexKickEveryoneExceptPhogueOnAllMapsButPortValdez() {
             TextCommandController textCommandController = CreateTextCommandController();
 
-            AssertCommandPlayerListMapList(textCommandController, "kick everyone except phogue on all maps but port valdez", TextCommandKick, textCommandController.Connection.ProtocolState.Players.Where(player => player != PlayerPhogue).ToList(), new List<MapModel>() {
+            AssertCommandPlayerListMapList(textCommandController, "kick everyone except phogue on all maps but port valdez", TextCommandKick, textCommandController.Connection.ProtocolState.Players.Values.Where(player => player != PlayerPhogue).ToList(), new List<MapModel>() {
                 MapValparaiso,
                 MapPanamaCanal
             });
@@ -71,7 +71,7 @@ namespace Potato.Core.Test.TextCommands.Fuzzy {
         public void TestComplexKickEveryoneNotUsingC4() {
             TextCommandController textCommandController = CreateTextCommandController();
 
-            AssertCommandPlayerListMapList(textCommandController, "kick everyone not using C4", TextCommandKick, textCommandController.Connection.ProtocolState.Players.Where(player => player != PlayerImisnew2).ToList(), new List<MapModel>());
+            AssertCommandPlayerListMapList(textCommandController, "kick everyone not using C4", TextCommandKick, textCommandController.Connection.ProtocolState.Players.Values.Where(player => player != PlayerImisnew2).ToList(), new List<MapModel>());
         }
 
         [Test]
@@ -195,7 +195,7 @@ namespace Potato.Core.Test.TextCommands.Fuzzy {
         public void TestComplexKickPlayersNotFromAustralia() {
             TextCommandController textCommandController = CreateTextCommandController();
 
-            AssertCommandPlayerListMapList(textCommandController, "kick everyone not from australia", TextCommandKick, textCommandController.Connection.ProtocolState.Players.Except(new List<PlayerModel>() {
+            AssertCommandPlayerListMapList(textCommandController, "kick everyone not from australia", TextCommandKick, textCommandController.Connection.ProtocolState.Players.Values.Except(new List<PlayerModel>() {
                 PlayerPhogue,
                 PlayerZaeed,
                 PlayerPhogueIsAButterfly

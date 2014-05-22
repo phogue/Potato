@@ -182,13 +182,13 @@ namespace Potato.Core.Connections.TextCommands {
         /// <param name="speaker"></param>
         /// <returns></returns>
         protected PlayerModel GetAccountNetworkPlayer(ICommand command, AccountModel speaker) {
-            PlayerModel player = this.Connection.ProtocolState.Players.FirstOrDefault(p => p.Uid == command.Authentication.Uid);
+            PlayerModel player = this.Connection.ProtocolState.Players.Values.FirstOrDefault(p => p.Uid == command.Authentication.Uid);
 
             if (speaker != null) {
                 AccountPlayerModel accountPlayer = speaker.Players.FirstOrDefault(p => p.ProtocolType == this.Connection.ConnectionModel.ProtocolType.Type);
 
                 if (accountPlayer != null) {
-                    player = this.Connection.ProtocolState.Players.FirstOrDefault(p => p.Uid == accountPlayer.Uid);
+                    player = this.Connection.ProtocolState.Players.Values.FirstOrDefault(p => p.Uid == accountPlayer.Uid);
                 }
             }
 

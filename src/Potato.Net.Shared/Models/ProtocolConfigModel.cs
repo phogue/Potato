@@ -14,6 +14,7 @@
 // limitations under the License.
 #endregion
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 
 namespace Potato.Net.Shared.Models {
@@ -47,10 +48,17 @@ namespace Potato.Net.Shared.Models {
         /// </summary>
         /// <param name="game">The game to load this config into</param>
         public virtual void Parse(IProtocol game) {
-            game.State.MapPool = this.MapPool ?? new List<MapModel>();
-            game.State.GameModePool = this.GameModes ?? new List<GameModeModel>();
-            game.State.Groups = this.Groups ?? new List<GroupModel>();
-            game.State.Items = this.Items ?? new List<ItemModel>();
+            game.State.MapPool = new ConcurrentDictionary<string, MapModel>();
+            (this.MapPool ?? new List<MapModel>()).ForEach(map => game.State.MapPool.TryAdd(map.GameMode.Name + "/" + map.Name, map));
+
+            game.State.GameModePool = new ConcurrentDictionary<string, GameModeModel>();
+            (this.GameModes ?? new List<GameModeModel>()).ForEach(gameMode => game.State.GameModePool.TryAdd(gameMode.Name, gameMode));
+
+            game.State.Groups = new ConcurrentDictionary<string, GroupModel>();
+            (this.Groups ?? new List<GroupModel>()).ForEach(group => game.State.Groups.TryAdd(group.Type + "/" + group.Uid, group));
+
+            game.State.Items = new ConcurrentDictionary<string, ItemModel>();
+            (this.Items ?? new List<ItemModel>()).ForEach(item => game.State.Items.TryAdd(item.Name, item));
         }
     }
 }

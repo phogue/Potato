@@ -154,5 +154,30 @@ namespace Potato.Core.Test.Events.TestEventsController {
 
             Assert.AreEqual(2, pushEvents.Shared.Variables.FlashVariables.First(archive => archive.Key.ToLower() == CommonVariableNames.EventsPushConfigGroups.ToString().ToLower()).Value.ToList<String>().Count);
         }
+
+        /// <summary>
+        /// Bugfix where a config name already existed in EventsPushConfigGroups so the variable
+        /// wouldn't be added and saved to the flash value. This logic made sense when dealing with
+        /// archive values, because the value would always be there on next save, but it did mean
+        /// that every second load the UI wouldn't hear from the loaded service because the EventsPushConfigGroups
+        /// was never saved.
+        /// </summary>
+        [Test]
+        public void TestSuccessPreviouslySetupWillReflash() {
+            var pushEvents = new PushEventsController();
+
+            // Set an existing value for the EventsPushConfigGroups
+            pushEvents.Shared.Variables.Tunnel(CommandBuilder.VariablesSet(CommonVariableNames.EventsPushConfigGroups, "id1").SetOrigin(CommandOrigin.Local));
+
+            pushEvents.Execute();
+
+            // Setup a end point to use previously set EventsPushConfigGroups id
+            pushEvents.Tunnel(CommandBuilder.EventsEstablishJsonStream("id1", "http://localhost/", "key1", 10, new List<String>() {
+                "EventName1"
+            }).SetOrigin(CommandOrigin.Local));
+
+            // This id should be set in the config.
+            Assert.AreEqual(1, pushEvents.Shared.Variables.FlashVariables.First(archive => archive.Key.ToLower() == CommonVariableNames.EventsPushConfigGroups.ToString().ToLower()).Value.ToList<String>().Count);
+        }
     }
 }

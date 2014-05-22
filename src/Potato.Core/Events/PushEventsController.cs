@@ -263,7 +263,9 @@ namespace Potato.Core.Events {
                 var content = uris.Now.Variables != null ? uris.Now.Variables.SelectMany(variable => variable.ToList<String>()).ToList() : new List<String>();
 
                 // If the name has not been registered already..
-                if (uris.Success == true && content.Contains(name) == false) {
+                // We always need to set the flash variable. We may have loaded
+                // from a flash variable, which is why we know of the host already.
+                if (uris.Success == true) {
                     this.Shared.Variables.Tunnel(CommandBuilder.VariablesSetF(CommonVariableNames.EventsPushConfigGroups, content.Union(new List<String>() {
                         name
                     }).ToList()).SetOrigin(CommandOrigin.Local));

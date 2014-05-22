@@ -354,7 +354,9 @@ namespace Potato.Service.Shared {
         /// </summary>
         public void WriteConfig_Tick(object state) {
             if (this.Observer.Status == ServiceStatusType.Started && this.ServiceLoaderProxy != null) {
-                this.WriteServiceConfig();
+                this.SignalMessage(new ServiceMessage() {
+                    Name = "write"
+                });
             }
         }
 
@@ -412,6 +414,9 @@ namespace Potato.Service.Shared {
                     }
                     else if (String.Compare(message.Name, "result", StringComparison.OrdinalIgnoreCase) == 0) {
                         this.OnResult(message);
+                    }
+                    else if (String.Compare(message.Name, "write", StringComparison.OrdinalIgnoreCase) == 0) {
+                        this.WriteServiceConfig();
                     }
                     else {
                         processed = false;

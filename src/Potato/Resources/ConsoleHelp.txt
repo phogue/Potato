@@ -4,6 +4,7 @@
 +-------------------+------+----------+--------+-------+-----------+
 | start             |  -   |    -     |   x    |   x   |     -     |
 | restart           |  x   |    x     |   x    |   x   |     -     |
+| write             |  x   |    -     |   -    |   -   |     -     |
 | merge             |  x   |    x     |   x    |   x   |     -     |
 | uninstall         |  x   |    x     |   x    |   x   |     -     |
 | stop              |  x   |    x     |   -    |   -   |     -     |
@@ -17,6 +18,7 @@ Information
 | stats             | Statistics running on the current instance.  |
 | help              | This display.                                |
 | merge             | Installs/Updates a package to latest version.|
+| write             | Writes the config to disk.                   |
 | uninstall         | Removes the package and unused dependencies. |
 +-------------------+----------------------------------------------+
 

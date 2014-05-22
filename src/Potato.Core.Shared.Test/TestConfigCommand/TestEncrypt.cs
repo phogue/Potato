@@ -92,5 +92,27 @@ namespace Potato.Core.Shared.Test.TestConfigCommand {
 
             Assert.AreEqual(CommandType.ConnectionQuery.ToString(), command.Command.Name);
         }
+
+        /// <summary>
+        /// Tests the integrity of the decrypted data
+        /// </summary>
+        [Test]
+        public void TestEncryptedCanBeDecryptedInMemoryIntegrityWithComplexPassword() {
+            const string password = "G1cK6yn3muCor0kL1g";
+
+            IConfigCommand command = new ConfigCommand() {
+                Command = new Command() {
+                    CommandType = CommandType.ConnectionQuery
+                }
+            };
+
+            command.Encrypt(password);
+
+            Assert.IsNull(command.Command);
+
+            command.Decrypt(password);
+
+            Assert.AreEqual(CommandType.ConnectionQuery.ToString(), command.Command.Name);
+        }
     }
 }

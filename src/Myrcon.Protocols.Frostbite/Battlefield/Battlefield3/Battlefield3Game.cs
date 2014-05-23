@@ -242,66 +242,6 @@ namespace Myrcon.Protocols.Frostbite.Battlefield.Battlefield3 {
             }
         }
 
-        public override void PlayerOnKillDispatchHandler(IPacketWrapper request, IPacketWrapper response) {
-
-            if (request.Packet.Words.Count >= 5) {
-
-                bool headshot = false;
-
-                if (bool.TryParse(request.Packet.Words[4], out headshot) == true) {
-
-                    var killer = this.State.Players.Select(p => p.Value).FirstOrDefault(p => p.Name == request.Packet.Words[1]);
-                    var victim = this.State.Players.Select(p => p.Value).FirstOrDefault(p => p.Name == request.Packet.Words[2]);
-
-                    if (killer != null && victim != null) {
-                        // If not a suicide.
-                        if (killer.Uid != victim.Uid) {
-                            killer.Kills++;
-                        }
-
-                        victim.Deaths++;
-                    }
-
-                    this.OnProtocolEvent(
-                        ProtocolEventType.ProtocolPlayerKill,
-                        new ProtocolStateDifference() {
-                            Modified = {
-                                Players = new ConcurrentDictionary<String, PlayerModel>(new Dictionary<String, PlayerModel>() {
-                                    { killer != null ? killer.Uid : "", killer },
-                                    { victim != null ? victim.Uid : "", victim }
-                                })
-                            }
-                        },
-                        new ProtocolEventData() {
-                            Kills = new List<KillModel>() {
-                                new KillModel() {
-                                    Scope = {
-                                        Players = new List<PlayerModel>() {
-                                            victim
-                                        },
-                                        Items = new List<ItemModel>() {
-                                            new ItemModel() {
-                                                // Servers sends garbage at the end of the round?
-                                                Name = Regex.Replace(request.Packet.Words[3], @"[^\\w\\/_-]+", "")
-                                            }
-                                        },
-                                        HumanHitLocations = new List<HumanHitLocation>() {
-                                            headshot == true ? FrostbiteGame.Headshot : FrostbiteGame.Bodyshot
-                                        }
-                                    },
-                                    Now = {
-                                        Players = new List<PlayerModel>() {
-                                            killer
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    );
-                }
-            }
-        }
-
         protected override List<IPacketWrapper> ActionMap(INetworkAction action) {
             List<IPacketWrapper> wrappers = new List<IPacketWrapper>();
 

@@ -35,9 +35,15 @@ namespace Myrcon.Protocols.Frostbite {
         /// </summary>
         protected static readonly IGeolocate Geolocation = new GeolocateIp();
 
-        protected const HumanHitLocation Headshot = HumanHitLocation.Head | HumanHitLocation.Neck;
+        /// <summary>
+        /// Flags showing a headshot (neck/head)
+        /// </summary>
+        public const HumanHitLocation Headshot = HumanHitLocation.Head | HumanHitLocation.Neck;
 
-        protected const HumanHitLocation Bodyshot = HumanHitLocation.LeftHand | HumanHitLocation.LeftFoot | HumanHitLocation.RightHand | HumanHitLocation.RightFoot | HumanHitLocation.LowerLeftArm | HumanHitLocation.LowerLeftLeg | HumanHitLocation.LowerRightArm | HumanHitLocation.LowerRightLeg | HumanHitLocation.UpperLeftArm | HumanHitLocation.UpperLeftLeg | HumanHitLocation.UpperRightArm | HumanHitLocation.UpperRightLeg | HumanHitLocation.LowerTorso | HumanHitLocation.UpperTorso;
+        /// <summary>
+        /// Flags showing a body shot, which is just anything not covered by FrostbiteGame.Headshot
+        /// </summary>
+        public const HumanHitLocation Bodyshot = HumanHitLocation.LeftHand | HumanHitLocation.LeftFoot | HumanHitLocation.RightHand | HumanHitLocation.RightFoot | HumanHitLocation.LowerLeftArm | HumanHitLocation.LowerLeftLeg | HumanHitLocation.LowerRightArm | HumanHitLocation.LowerRightLeg | HumanHitLocation.UpperLeftArm | HumanHitLocation.UpperLeftLeg | HumanHitLocation.UpperRightArm | HumanHitLocation.UpperRightLeg | HumanHitLocation.LowerTorso | HumanHitLocation.UpperTorso;
 
         protected List<String> ServerInfoParameters = new List<String>();
 

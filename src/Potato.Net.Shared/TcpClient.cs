@@ -204,8 +204,8 @@ namespace Potato.Net.Shared {
             catch (SocketException se) {
                 this.Shutdown(se);
             }
-            catch (Exception e) {
-                this.Shutdown(e);
+            catch {
+                this.Shutdown(new Exception("Could not establish connection to endpoint"));
             }
         }
 

@@ -85,6 +85,7 @@
     <Compile Include="Database\TestDatabaseController.cs" />
     <Compile Include="Database\TestDatabaseMigrationController.cs" />
     <Compile Include="Events\TestEventsController\TestEventsEstablishJsonStream.cs" />
+    <Compile Include="Localization\TestFindOptimalLanguageConfig.cs" />
     <Compile Include="Packages\TestPackagesController\PackagesRemoveRepository.cs" />
     <Compile Include="Packages\TestPackagesController\PackagesAppendRepository.cs" />
     <Compile Include="TestPotato\TestPotatoPing.cs" />

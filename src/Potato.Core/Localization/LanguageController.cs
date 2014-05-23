@@ -295,6 +295,21 @@ namespace Potato.Core.Localization {
             return this.Localize(command, languageCode, @namespace, name, new object[] { });
         }
 
+        /// <summary>
+        /// Finds the best matching (exact) language config.
+        /// </summary>
+        /// <param name="languageCode">The language code of the config to find</param>
+        /// <returns>The found language config, or default if no match can be found</returns>
+        public LanguageConfig FindOptimalLanguageConfig(String languageCode) {
+            var found = this.LoadedLanguageFiles.Find(config => config.LanguageModel.LanguageCode.ToLowerInvariant() == languageCode.ToLowerInvariant());
+            
+            // todo this should be expanded to find "en_us" given "en", "en-us" given "en-gb" and no en-us available.
+            // I'd prefer the LanguageModel implemented a method to split the languageCode
+            // named them different like "IsoXXLanguageCode" and "IsoXXCountryCode"
+
+            return found ?? this.Default;
+        }
+
         public override void Dispose() {
 
             this.UnassignEvents();

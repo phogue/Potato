@@ -117,7 +117,7 @@ namespace Potato.Core.Connections.TextCommands {
             LanguageConfig selectedLanguage = null;
 
             if (speakerAccount != null && speakerAccount.PreferredLanguageCode != String.Empty) {
-                selectedLanguage = this.Shared.Languages.LoadedLanguageFiles.Find(language => language.LanguageModel.LanguageCode == speakerAccount.PreferredLanguageCode);
+                selectedLanguage = this.Shared.Languages.FindOptimalLanguageConfig(speakerAccount.PreferredLanguageCode);
             }
             else {
                 selectedLanguage = this.Shared.Languages.Default;

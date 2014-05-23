@@ -21,7 +21,6 @@ using Potato.Core.Connections.TextCommands.Parsers.Route;
 using Potato.Core.Shared;
 using Potato.Core.Shared.Models;
 using Potato.Fuzzy.Utils;
-using Potato.Net.Shared.Actions;
 using Potato.Net.Shared.Models;
 
 namespace Potato.Core.Connections.TextCommands.Parsers {

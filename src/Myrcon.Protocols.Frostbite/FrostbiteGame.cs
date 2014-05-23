@@ -1197,9 +1197,21 @@ namespace Myrcon.Protocols.Frostbite {
             }
         }
 
+        /// <summary>
+        /// Called when a password hash returns an invalid response. We pipe this up as a connection
+        /// failure with a invalid password description.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="response"></param>
         public void InvalidPasswordHashDispatchHandler(IPacketWrapper request, IPacketWrapper response) {
+            this.OnClientEvent(ClientEventType.ClientConnectionFailure, new ClientEventData() {
+                Exceptions = new List<String>() {
+                    "Invalid password"
+                }
+            });
+
+            // Shutdown the connection, nothing else to do here but reconnect with a new password.
             this.Shutdown();
-            //this.Client.ConnectionState = ConnectionState.Ready;
         }
 
         #endregion

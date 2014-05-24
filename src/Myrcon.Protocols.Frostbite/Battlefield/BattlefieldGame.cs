@@ -20,6 +20,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Potato.Net.Shared;
+using Potato.Net.Shared.Actions;
 using Potato.Net.Shared.Models;
 
 namespace Myrcon.Protocols.Frostbite.Battlefield {
@@ -104,6 +105,73 @@ namespace Myrcon.Protocols.Frostbite.Battlefield {
                     );
                 }
             }
+        }
+
+        protected override List<IPacketWrapper> ActionMap(INetworkAction action) {
+            List<IPacketWrapper> wrappers = new List<IPacketWrapper>();
+
+            // If it's centered around a list of maps (adding, removing etc)
+            if (action.Now.Maps != null && action.Now.Maps.Count > 0) {
+                foreach (MapModel map in action.Now.Maps) {
+                    var closureMap = map;
+
+                    if (action.ActionType == NetworkActionType.NetworkMapAppend) {
+                        // mapList.add <map: string> <gamemode: string> <rounds: integer> [index: integer]
+                        wrappers.Add(this.CreatePacket("mapList.add \"{0}\" \"{1}\" {2}", map.Name, closureMap.GameMode.Name, map.Rounds));
+
+                        wrappers.Add(this.CreatePacket("mapList.save"));
+
+                        wrappers.Add(this.CreatePacket("mapList.list"));
+                    }
+                    // Added by Imisnew2 - You should check this phogue!
+                    else if (action.ActionType == NetworkActionType.NetworkMapChangeMode) {
+                        if (map.GameMode != null) {
+                            wrappers.Add(this.CreatePacket("admin.setPlaylist \"{0}\"", map.GameMode.Name));
+                        }
+                    }
+                    else if (action.ActionType == NetworkActionType.NetworkMapInsert) {
+                        // mapList.add <map: string> <gamemode: string> <rounds: integer> [index: integer]
+                        wrappers.Add(this.CreatePacket("mapList.add \"{0}\" \"{1}\" {2} {3}", map.Name, closureMap.GameMode.Name, map.Rounds, map.Index));
+
+                        wrappers.Add(this.CreatePacket("mapList.save"));
+
+                        wrappers.Add(this.CreatePacket("mapList.list"));
+                    }
+                    else if (action.ActionType == NetworkActionType.NetworkMapRemove) {
+                        var matchingMaps = this.State.Maps.Where(m => m.Value.Name == closureMap.Name).OrderByDescending(m => m.Value.Index);
+
+                        wrappers.AddRange(matchingMaps.Select(match => this.CreatePacket("mapList.remove {0}", match.Value.Index)));
+
+                        wrappers.Add(this.CreatePacket("mapList.save"));
+
+                        wrappers.Add(this.CreatePacket("mapList.list"));
+                    }
+                    else if (action.ActionType == NetworkActionType.NetworkMapRemoveIndex) {
+                        wrappers.Add(this.CreatePacket("mapList.remove {0}", map.Index));
+
+                        wrappers.Add(this.CreatePacket("mapList.list"));
+                    }
+                    else if (action.ActionType == NetworkActionType.NetworkMapNextIndex) {
+                        wrappers.Add(this.CreatePacket("mapList.setNextMapIndex {0}", map.Index));
+                    }
+                }
+            }
+            else {
+                // The action does not need a map to function
+                if (action.ActionType == NetworkActionType.NetworkMapRestart || action.ActionType == NetworkActionType.NetworkMapRoundRestart) {
+                    wrappers.Add(this.CreatePacket("mapList.restartRound"));
+                }
+                else if (action.ActionType == NetworkActionType.NetworkMapNext || action.ActionType == NetworkActionType.NetworkMapRoundNext) {
+                    wrappers.Add(this.CreatePacket("mapList.runNextRound"));
+                }
+                else if (action.ActionType == NetworkActionType.NetworkMapClear) {
+                    wrappers.Add(this.CreatePacket("mapList.clear"));
+
+                    wrappers.Add(this.CreatePacket("mapList.save"));
+                }
+            }
+
+            return wrappers;
         }
     }
 }

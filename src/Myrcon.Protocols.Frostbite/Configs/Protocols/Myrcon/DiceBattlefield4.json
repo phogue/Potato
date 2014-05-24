@@ -180,6 +180,7 @@
         {
             "Name": "ConquestLarge0",
             "FriendlyName": "Conquest Large",
+            "AbbreviatedName": "CQ-L",
             "TeamCount": "2",
             "DefaultGroups": [
                 {
@@ -191,6 +192,7 @@
         {
             "Name": "ConquestSmall0",
             "FriendlyName": "Conquest Small",
+            "AbbreviatedName": "CQ-S",
             "TeamCount": "2",
             "DefaultGroups": [
                 {
@@ -202,6 +204,7 @@
         {
             "Name": "Domination0",
             "FriendlyName": "Domination",
+            "AbbreviatedName": "DOM",
             "TeamCount": "2",
             "DefaultGroups": [
                 {
@@ -213,6 +216,7 @@
         {
             "Name": "Elimination0",
             "FriendlyName": "Elimination",
+            "AbbreviatedName": "ELIM",
             "TeamCount": "2",
             "DefaultGroups": [
                 {
@@ -224,6 +228,7 @@
         {
             "Name": "Obliteration",
             "FriendlyName": "Obliteration",
+            "AbbreviatedName": "OB",
             "TeamCount": "2",
             "DefaultGroups": [
                 {
@@ -235,6 +240,7 @@
         {
             "Name": "RushLarge0",
             "FriendlyName": "Rush",
+            "AbbreviatedName": "RUSH",
             "TeamCount": "2",
             "DefaultGroups": [
                 {
@@ -246,6 +252,7 @@
         {
             "Name": "SquadDeathMatch0",
             "FriendlyName": "Squad Deathmatch",
+            "AbbreviatedName": "SQDM",
             "TeamCount": "4",
             "DefaultGroups": [
                 {
@@ -257,6 +264,7 @@
         {
             "Name": "TeamDeathMatch0",
             "FriendlyName": "Team Deathmatch",
+            "AbbreviatedName": "TDM",
             "TeamCount": "2",
             "DefaultGroups": [
                 {
@@ -268,6 +276,7 @@
         {
             "Name": "AirSuperiority0",
             "FriendlyName": "Air Superiority",
+            "AbbreviatedName": "AIR",
             "TeamCount": "2",
             "DefaultGroups": [
                 {
@@ -279,6 +288,7 @@
         {
             "Name": "CaptureTheFlag0",
             "FriendlyName": "Capture The Flag",
+            "AbbreviatedName": "CTF",
             "TeamCount": "2",
             "DefaultGroups": [
                 {
@@ -290,6 +300,7 @@
         {
             "Name": "CarrierAssaultSmall0",
             "FriendlyName": "Carrier Assault Small",
+            "AbbreviatedName": "CA-S",
             "TeamCount": "2",
             "DefaultGroups": [
                 {
@@ -301,6 +312,7 @@
         {
             "Name": "CarrierAssaultLarge0",
             "FriendlyName": "Carrier Assault Large",
+            "AbbreviatedName": "CA-L",
             "TeamCount": "2",
             "DefaultGroups": [
                 {

@@ -81,6 +81,7 @@
     <Compile Include="TestShared\TestSandboxProtocolController\TestBubble.cs" />
     <Compile Include="TestShared\TestSandboxProtocolController\TestCreate.cs" />
     <Compile Include="TestShared\TestSandboxProtocolController\TestSandboxedProtocol.cs" />
+    <Compile Include="TestStatistics\TestPlayers.cs" />
     <Compile Include="Truths\TestTruths.cs" />
     <Compile Include="Truths\TestTruthsStaticTree.cs" />
     <Compile Include="Truths\TestTruthsMerge.cs" />

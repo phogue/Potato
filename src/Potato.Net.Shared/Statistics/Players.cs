@@ -38,7 +38,7 @@ namespace Potato.Net.Shared.Statistics {
             foreach (PlayerModel player in players.Values) {
                 var deviations = ((value(player) - mean) / standardDeviation);
 
-                if (deviations >= 3.0) {
+                if (deviations >= 2.0f) {
                     player.Outliers.Add(new OutlierModel() {
                         Field = field,
                         Mean = mean,

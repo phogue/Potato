@@ -26,14 +26,14 @@ namespace Potato.Net.Shared.Utils {
         /// Finds the mean value given a function defining the value from an object to use. 
         /// </summary>
         public static float Mean<T>(this ICollection<T> items, Func<T, float> value) {
-            return items.Select(value).Average(r => r);
+            return items.Select(value).DefaultIfEmpty().Average(r => r);
         }
 
         /// <summary>
         /// Finds the mean value given a function defining the value from an object to use. 
         /// </summary>
         public static float Mean<T>(this ICollection<T> items, Func<T, int> value) {
-            return items.Select(value).Average(r => (float)r);
+            return items.Select(value).DefaultIfEmpty().Average(r => (float)r);
         }
 
         /// <summary>

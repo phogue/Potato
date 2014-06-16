@@ -24,6 +24,13 @@ namespace Potato.Net.Shared.Test.Utils.CollectionExtensions {
     [TestFixture]
     public class TestMean {
         [Test]
+        public void TestEmptySet() {
+            ConcurrentDictionary<String, PlayerModel> samples = new ConcurrentDictionary<String, PlayerModel>();
+
+            Assert.AreEqual(0.0f, samples.Values.Mean(model => model.Kills));
+        }
+
+        [Test]
         public void TestIntegerMeanCalculatedCorrectly() {
             ConcurrentDictionary<String, PlayerModel> samples = new ConcurrentDictionary<String, PlayerModel>();
             samples.TryAdd("1", new PlayerModel() {

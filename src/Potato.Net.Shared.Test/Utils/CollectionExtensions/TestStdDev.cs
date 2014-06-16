@@ -25,6 +25,13 @@ namespace Potato.Net.Shared.Test.Utils.CollectionExtensions {
     [TestFixture]
     public class TestStdDev {
         [Test]
+        public void TestNoItemsReturnsZero() {
+            ConcurrentDictionary<String, PlayerModel> samples = new ConcurrentDictionary<String, PlayerModel>();
+
+            Assert.AreEqual(0.0f, samples.Values.StdDev(model => model.Kills, 0));
+        }
+
+        [Test]
         public void TestIntegerStandardDeviationCalculatedCorrectly() {
             ConcurrentDictionary<String, PlayerModel> samples = new ConcurrentDictionary<String, PlayerModel>();
             samples.TryAdd("1", new PlayerModel() {

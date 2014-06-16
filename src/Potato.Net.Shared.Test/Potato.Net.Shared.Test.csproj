@@ -85,6 +85,8 @@
     <Compile Include="Truths\TestTruthsStaticTree.cs" />
     <Compile Include="Truths\TestTruthsMerge.cs" />
     <Compile Include="UdpClientTest.cs" />
+    <Compile Include="Utils\CollectionExtensions\TestStdDev.cs" />
+    <Compile Include="Utils\CollectionExtensions\TestMean.cs" />
     <Compile Include="Utils\StringExtensions\StringExtensionsTest.cs" />
     <Compile Include="Utils\StringExtensions\WordifyTest.cs" />
     <Compile Include="Utils\TestNetwork.cs" />

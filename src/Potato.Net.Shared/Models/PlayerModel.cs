@@ -129,6 +129,11 @@ namespace Potato.Net.Shared.Models {
         public String Port { get; set; }
 
         /// <summary>
+        /// A list of outlier data for this player
+        /// </summary>
+        public List<OutlierModel> Outliers { get; set; } 
+
+        /// <summary>
         /// Initializes all defaults values for the player
         /// </summary>
         public PlayerModel() {
@@ -138,6 +143,7 @@ namespace Potato.Net.Shared.Models {
             this.Groups = new List<GroupModel>();
             this.Location = new Location();
             this.Inventory = new InventoryModel();
+            this.Outliers = new List<OutlierModel>();
         }
 
         /// <summary>

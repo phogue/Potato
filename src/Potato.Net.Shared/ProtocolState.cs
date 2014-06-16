@@ -153,6 +153,16 @@ namespace Potato.Net.Shared {
             return this;
         }
 
+        /// <summary>
+        /// Rebuild/synchronize the state. Rebuilds the current statistic information about players
+        /// </summary>
+        /// <returns></returns>
+        public IProtocolState Redefine() {
+            Statistics.Players.Outliers(this.Players);
+
+            return this;
+        }
+
         public IProtocolState Apply(IProtocolStateDifference difference) {
             if (difference.Modified != null) {
                 if (difference.Override == true) {
@@ -166,6 +176,8 @@ namespace Potato.Net.Shared {
             if (difference.Removed != null) {
                 this.Removed(difference.Removed);
             }
+
+            this.Redefine();
 
             return this;
         }

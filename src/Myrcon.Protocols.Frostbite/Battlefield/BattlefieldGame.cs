@@ -54,57 +54,66 @@ namespace Myrcon.Protocols.Frostbite.Battlefield {
                 if (bool.TryParse(request.Packet.Words[4], out headshot) == true) {
                     ItemModel item = this.State.Items.Select(i => i.Value).FirstOrDefault(i => i.Name == Regex.Replace(request.Packet.Words[3], @"[^\w\/_-]+", "")) ?? new ItemModel() { Name = request.Packet.Words[3] };
 
-                    var killer = this.State.Players.Select(p => p.Value).FirstOrDefault(p => p.Name == request.Packet.Words[1]) ?? new PlayerModel() { Name = request.Packet.Words[1] };
-                    var victim = this.State.Players.Select(p => p.Value).FirstOrDefault(p => p.Name == request.Packet.Words[2]) ?? new PlayerModel() { Name = request.Packet.Words[2] };
+                    var killer = this.State.Players.Select(p => p.Value).FirstOrDefault(p => p.Name == request.Packet.Words[1]);
+                    var victim = this.State.Players.Select(p => p.Value).FirstOrDefault(p => p.Name == request.Packet.Words[2]);
 
-                    // Assign the item to the player, overwriting everything else attached to this killer.
-                    killer.Inventory.Now.Items.Clear();
-                    killer.Inventory.Now.Items.Add(item);
+                    if (killer != null && victim != null) {
+                        // Assign the item to the player, overwriting everything else attached to this killer.
+                        killer.Inventory.Now.Items.Clear();
+                        killer.Inventory.Now.Items.Add(item);
 
-                    victim.Deaths++;
+                        victim.Deaths++;
 
-                    // If this wasn't an inside job.
-                    if (killer.Uid != victim.Uid) {
-                        killer.Kills++;
-                    }
-
-                    var difference = new ProtocolStateDifference() {
-                        Modified = {
-                            Players = new ConcurrentDictionary<String, PlayerModel>()
+                        // If this wasn't an inside job.
+                        if (killer.Uid != victim.Uid) {
+                            killer.Kills++;
                         }
-                    };
 
-                    difference.Modified.Players.AddOrUpdate(killer.Uid, id => killer, (id, model) => killer);
-                    difference.Modified.Players.AddOrUpdate(victim.Uid, id => victim, (id, model) => victim);
+                        var difference = new ProtocolStateDifference() {
+                            Modified = {
+                                Players = new ConcurrentDictionary<String, PlayerModel>()
+                            }
+                        };
 
-                    this.ApplyProtocolStateDifference(difference);
+                        difference.Modified.Players.AddOrUpdate(killer.Uid, id => killer, (id, model) => killer);
+                        difference.Modified.Players.AddOrUpdate(victim.Uid, id => victim, (id, model) => victim);
 
-                    this.OnProtocolEvent(
-                        ProtocolEventType.ProtocolPlayerKill,
-                        difference,
-                        new ProtocolEventData() {
-                            Kills = new List<KillModel>() {
-                                new KillModel() {
-                                    Scope = {
-                                        Players = new List<PlayerModel>() {
-                                            victim
+                        this.ApplyProtocolStateDifference(difference);
+
+                        // We've updated the state, now fetch the players from the state with all of the statistics information attached.
+                        PlayerModel stateKiller = null;
+                        PlayerModel stateVictim = null;
+
+                        this.State.Players.TryGetValue(killer.Uid, out stateKiller);
+                        this.State.Players.TryGetValue(victim.Uid, out stateVictim);
+
+                        this.OnProtocolEvent(
+                            ProtocolEventType.ProtocolPlayerKill,
+                            difference,
+                            new ProtocolEventData() {
+                                Kills = new List<KillModel>() {
+                                    new KillModel() {
+                                        Scope = {
+                                            Players = new List<PlayerModel>() {
+                                                stateVictim
+                                            },
+                                            Items = new List<ItemModel>() {
+                                                item
+                                            },
+                                            HumanHitLocations = new List<HumanHitLocation>() {
+                                                headshot == true ? FrostbiteGame.Headshot : FrostbiteGame.Bodyshot
+                                            }
                                         },
-                                        Items = new List<ItemModel>() {
-                                            item
-                                        },
-                                        HumanHitLocations = new List<HumanHitLocation>() {
-                                            headshot == true ? FrostbiteGame.Headshot : FrostbiteGame.Bodyshot
-                                        }
-                                    },
-                                    Now = {
-                                        Players = new List<PlayerModel>() {
-                                            killer
+                                        Now = {
+                                            Players = new List<PlayerModel>() {
+                                                stateKiller
+                                            }
                                         }
                                     }
                                 }
                             }
-                        }
-                    );
+                        );
+                    }
                 }
             }
         }

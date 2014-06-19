@@ -25,6 +25,18 @@ namespace Myrcon.Protocols.Frostbite.Test.TestConfig {
         public static String ConfigDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Configs/Protocols/Myrcon");
 
         /// <summary>
+        /// Checks all configs can be loaded (no json errors)
+        /// </summary>
+        [Test]
+        public void TestJsonIntegrity() {
+            foreach (var file in Directory.EnumerateFiles(TestLoad.ConfigDirectory, "*.json", SearchOption.AllDirectories)) {
+                var config = ProtocolConfigLoader.Load<ProtocolConfigModel>(file);
+
+                Assert.IsNotNull(config, "Failed to load config {0}. Validate json structure.", Path.GetFileName(file));
+            }
+        }
+
+        /// <summary>
         /// Loads all game configs and ensures all maps have a game mode.
         /// </summary>
         [Test]

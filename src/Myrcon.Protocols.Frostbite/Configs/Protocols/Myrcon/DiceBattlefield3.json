@@ -2579,7 +2579,7 @@
             "Name": "XP4_Rubble",
             "FriendlyName": "Talah Market",
             "GameMode": {
-                "Name": "ConquestAssualtLarge0"
+                "Name": "ConquestLarge0"
             }
         },
         {
@@ -2588,7 +2588,7 @@
             "Name": "XP4_Rubble",
             "FriendlyName": "Talah Market",
             "GameMode": {
-                "Name": "ConquestAssualtSmall0"
+                "Name": "ConquestSmall0"
             }
         },
         {
@@ -3189,7 +3189,7 @@
             "Name": "XP5_001",
             "FriendlyName": "Operation Riverside",
             "GameMode": {
-                "Name": "CaptureTheFlag"
+                "Name": "CaptureTheFlag0"
             }
         },
         {
@@ -3198,7 +3198,7 @@
             "Name": "XP5_002",
             "FriendlyName": "Nebandan Flats",
             "GameMode": {
-                "Name": "CaptureTheFlag"
+                "Name": "CaptureTheFlag0"
             }
         },
         {
@@ -3207,7 +3207,7 @@
             "Name": "XP5_003",
             "FriendlyName": "Kiasar Railroad",
             "GameMode": {
-                "Name": "CaptureTheFlag"
+                "Name": "CaptureTheFlag0"
             }
         },
         {

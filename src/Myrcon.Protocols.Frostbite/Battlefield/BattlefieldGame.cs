@@ -77,6 +77,8 @@ namespace Myrcon.Protocols.Frostbite.Battlefield {
                     difference.Modified.Players.AddOrUpdate(killer.Uid, id => killer, (id, model) => killer);
                     difference.Modified.Players.AddOrUpdate(victim.Uid, id => victim, (id, model) => victim);
 
+                    this.ApplyProtocolStateDifference(difference);
+
                     this.OnProtocolEvent(
                         ProtocolEventType.ProtocolPlayerKill,
                         difference,

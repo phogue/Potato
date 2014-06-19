@@ -84,13 +84,17 @@ namespace Myrcon.Protocols.Frostbite.Battlefield.Battlefield4 {
                     modified.AddOrUpdate(String.Format("{0}/{1}", closureMap.GameMode.Name, closureMap.Name), id => closureMap, (id, model) => closureMap);
                 }
 
+                IProtocolStateDifference difference = new ProtocolStateDifference() {
+                    Modified = {
+                        Maps = modified
+                    }
+                };
+
+                this.ApplyProtocolStateDifference(difference);
+
                 this.OnProtocolEvent(
                     ProtocolEventType.ProtocolMaplistUpdated,
-                    new ProtocolStateDifference() {
-                        Modified = {
-                            Maps = modified
-                        }
-                    }
+                    difference
                 );
             }
         }
@@ -124,15 +128,19 @@ namespace Myrcon.Protocols.Frostbite.Battlefield.Battlefield4 {
                     this.Send(this.CreatePacket("banList.list {0}", startOffset + 100));
                 }
                 else {
+                    IProtocolStateDifference difference = new ProtocolStateDifference() {
+                        Override = true,
+                        Modified = {
+                            Bans = this.State.Bans
+                        }
+                    };
+
+                    this.ApplyProtocolStateDifference(difference);
+
                     // We have recieved the whole banlist in 100 ban increments.. throw event.
                     this.OnProtocolEvent(
                         ProtocolEventType.ProtocolBanlistUpdated,
-                        new ProtocolStateDifference() {
-                            Override = true,
-                            Modified = {
-                                Bans = this.State.Bans
-                            }
-                        }
+                        difference
                     );
                 }
             }
@@ -154,15 +162,19 @@ namespace Myrcon.Protocols.Frostbite.Battlefield.Battlefield4 {
                     Uid = request.Packet.Words[2]
                 };
 
+                IProtocolStateDifference difference = new ProtocolStateDifference() {
+                    Modified = {
+                        Players = new ConcurrentDictionary<String, PlayerModel>(new Dictionary<String, PlayerModel>() {
+                            { player.Uid, player }
+                        })
+                    }
+                };
+
+                this.ApplyProtocolStateDifference(difference);
+
                 this.OnProtocolEvent(
                     ProtocolEventType.ProtocolPlayerJoin,
-                    new ProtocolStateDifference() {
-                        Modified = {
-                            Players = new ConcurrentDictionary<String, PlayerModel>(new Dictionary<String, PlayerModel>() {
-                                { player.Uid, player }
-                            })
-                        }
-                    }, 
+                    difference, 
                     new ProtocolEventData() {
                         Players = new List<PlayerModel>() {
                             player

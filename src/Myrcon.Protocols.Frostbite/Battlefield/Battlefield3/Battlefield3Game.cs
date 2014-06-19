@@ -93,7 +93,7 @@ namespace Myrcon.Protocols.Frostbite.Battlefield.Battlefield3 {
                 }
             }
 
-            this.OnProtocolEvent(ProtocolEventType.ProtocolPlayerlistUpdated, new ProtocolStateDifference() {
+            IProtocolStateDifference difference = new ProtocolStateDifference() {
                 Override = true,
                 Removed = {
                     Players = new ConcurrentDictionary<String, PlayerModel>(this.State.Players.Where(existing => players.Select(current => current.Uid).Contains(existing.Key) == false).ToDictionary(item => item.Key, item => item.Value))
@@ -101,7 +101,11 @@ namespace Myrcon.Protocols.Frostbite.Battlefield.Battlefield3 {
                 Modified = {
                     Players = modified
                 }
-            }, new ProtocolEventData() {
+            };
+
+            this.ApplyProtocolStateDifference(difference);
+
+            this.OnProtocolEvent(ProtocolEventType.ProtocolPlayerlistUpdated, difference, new ProtocolEventData() {
                 Players = new List<PlayerModel>(this.State.Players.Values)
             });
         }
@@ -133,16 +137,18 @@ namespace Myrcon.Protocols.Frostbite.Battlefield.Battlefield3 {
                     modified.AddOrUpdate(String.Format("{0}/{1}", closureMap.GameMode.Name, closureMap.Name), id => closureMap, (id, model) => closureMap);
                 }
 
-                // this.State.Maps = maps;
+                IProtocolStateDifference difference = new ProtocolStateDifference() {
+                    Override = true,
+                    Modified = {
+                        Maps = modified
+                    }
+                };
+
+                this.ApplyProtocolStateDifference(difference);
 
                 this.OnProtocolEvent(
                     ProtocolEventType.ProtocolMaplistUpdated,
-                    new ProtocolStateDifference() {
-                        Override = true,
-                        Modified = {
-                            Maps = modified
-                        }
-                    }
+                    difference
                 );
             }
         }
@@ -176,15 +182,19 @@ namespace Myrcon.Protocols.Frostbite.Battlefield.Battlefield3 {
                     this.Send(this.CreatePacket("banList.list {0}", startOffset + 100));
                 }
                 else {
+                    IProtocolStateDifference difference = new ProtocolStateDifference() {
+                        Override = true,
+                        Modified = {
+                            Bans = this.State.Bans
+                        }
+                    };
+
+                    this.ApplyProtocolStateDifference(difference);
+
                     // We have recieved the whole banlist in 100 ban increments.. throw event.
                     this.OnProtocolEvent(
                         ProtocolEventType.ProtocolBanlistUpdated,
-                        new ProtocolStateDifference() {
-                            Override = true,
-                            Modified = {
-                                Bans = this.State.Bans
-                            }
-                        }
+                        difference
                     );
                 }
             }
@@ -224,16 +234,21 @@ namespace Myrcon.Protocols.Frostbite.Battlefield.Battlefield3 {
                     Uid = request.Packet.Words[2]
                 };
 
+                IProtocolStateDifference difference = new ProtocolStateDifference() {
+                    Override = true,
+                    Modified = {
+                        Players = new ConcurrentDictionary<String, PlayerModel>(new Dictionary<String, PlayerModel>() {
+                            { player.Uid, player }
+                        })
+                    }
+                };
+
+                this.ApplyProtocolStateDifference(difference);
+
                 this.OnProtocolEvent(
                     ProtocolEventType.ProtocolPlayerJoin,
-                    new ProtocolStateDifference() {
-                        Override = true,
-                        Modified = {
-                            Players = new ConcurrentDictionary<String, PlayerModel>(new Dictionary<String, PlayerModel>() {
-                                { player.Uid, player }
-                            })
-                        }
-                    }, new ProtocolEventData() {
+                    difference,
+                    new ProtocolEventData() {
                         Players = new List<PlayerModel>() {
                             player
                         }

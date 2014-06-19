@@ -100,15 +100,23 @@ namespace Potato.Net.Shared {
         }
 
         /// <summary>
+        /// Helper to apply the difference generated from an event.
+        /// </summary>
+        /// <param name="difference">The difference object to apply to the protocols state</param>
+        protected void ApplyProtocolStateDifference(IProtocolStateDifference difference) {
+            if (this.State != null) {
+                // Apply any differences to our state object.
+                this.State.Apply(difference);
+            }
+        }
+
+        /// <summary>
         /// Fired when ever a dispatched game event occurs.
         /// </summary>
         public virtual event Action<IProtocol, IProtocolEventArgs> ProtocolEvent;
 
         protected void OnProtocolEvent(ProtocolEventType eventType, IProtocolStateDifference difference, IProtocolEventData now = null, IProtocolEventData then = null) {
             var handler = this.ProtocolEvent;
-
-            // Apply any differences to our state object.
-            this.State.Apply(difference);
 
             if (handler != null) {
                 handler(
@@ -287,11 +295,15 @@ namespace Potato.Net.Shared {
 
                 this.State.Settings.Current.ConnectionState = state;
 
-                this.OnProtocolEvent(ProtocolEventType.ProtocolSettingsUpdated, new ProtocolStateDifference() {
+                IProtocolStateDifference difference = new ProtocolStateDifference() {
                     Modified = {
                         Settings = this.State.Settings
                     }
-                });
+                };
+
+                this.ApplyProtocolStateDifference(difference);
+
+                this.OnProtocolEvent(ProtocolEventType.ProtocolSettingsUpdated, difference);
 
                 if (state == ConnectionState.ConnectionReady) {
                     this.Login(this.Options.Password);

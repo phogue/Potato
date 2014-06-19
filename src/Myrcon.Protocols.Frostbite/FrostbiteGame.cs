@@ -357,13 +357,17 @@ namespace Myrcon.Protocols.Frostbite {
                     this.State.Settings.Current.FriendlyGameModeNameText = currentMap.GameMode.FriendlyName;
                     this.State.Settings.Current.FriendlyMapNameText = currentMap.FriendlyName;
 
+                    IProtocolStateDifference difference = new ProtocolStateDifference() {
+                        Modified = {
+                            Settings = this.State.Settings
+                        }
+                    };
+
+                    this.ApplyProtocolStateDifference(difference);
+
                     this.OnProtocolEvent(
                         ProtocolEventType.ProtocolMapChanged,
-                        new ProtocolStateDifference() {
-                            Modified = {
-                                Settings = this.State.Settings
-                            }
-                        },
+                        difference,
                         new ProtocolEventData() {
                             Maps = new List<MapModel>() {
                                 currentMap
@@ -392,13 +396,17 @@ namespace Myrcon.Protocols.Frostbite {
             if (modified == true) {
                 this.State.Settings.Current.RoundIndex = currentRound;
 
+                IProtocolStateDifference difference = new ProtocolStateDifference() {
+                    Modified = {
+                        Settings = this.State.Settings
+                    }
+                };
+
+                this.ApplyProtocolStateDifference(difference);
+
                 this.OnProtocolEvent(
                     ProtocolEventType.ProtocolRoundChanged,
-                    new ProtocolStateDifference() {
-                        Modified = {
-                            Settings = this.State.Settings
-                        }
-                    }
+                    difference
                 );
             }
         }
@@ -408,7 +416,7 @@ namespace Myrcon.Protocols.Frostbite {
         public void ServerInfoDispatchHandler(IPacketWrapper request, IPacketWrapper response) {
 
             if (response != null) {
-
+                IProtocolStateDifference difference = null;
                 FrostbiteServerInfo info = new FrostbiteServerInfo().Parse(response.Packet.Words.GetRange(1, response.Packet.Words.Count - 1), this.ServerInfoParameters);
 
                 this.UpdateSettingsMap(info.Map, info.GameMode);
@@ -441,19 +449,27 @@ namespace Myrcon.Protocols.Frostbite {
                         config.Parse(this);
                     }
 
-                    this.OnProtocolEvent(ProtocolEventType.ProtocolConfigExecuted, new ProtocolStateDifference() {
+                    difference = new ProtocolStateDifference() {
                         Override = true,
                         Modified = this.State
-                    });
+                    };
+
+                    this.ApplyProtocolStateDifference(difference);
+
+                    this.OnProtocolEvent(ProtocolEventType.ProtocolConfigExecuted, difference);
                 }
+
+                difference = new ProtocolStateDifference() {
+                    Modified = {
+                        Settings = this.State.Settings
+                    }
+                };
+
+                this.ApplyProtocolStateDifference(difference);
 
                 this.OnProtocolEvent(
                     ProtocolEventType.ProtocolSettingsUpdated,
-                    new ProtocolStateDifference() {
-                        Modified = {
-                            Settings = this.State.Settings
-                        }
-                    },
+                    difference,
                     new ProtocolEventData() {
                         Settings = new List<Settings>() {
                             this.State.Settings
@@ -533,7 +549,7 @@ namespace Myrcon.Protocols.Frostbite {
                 }
             }
 
-            this.OnProtocolEvent(ProtocolEventType.ProtocolPlayerlistUpdated, new ProtocolStateDifference() {
+            IProtocolStateDifference difference = new ProtocolStateDifference() {
                 Override = true,
                 Removed = {
                     Players = new ConcurrentDictionary<String, PlayerModel>(this.State.Players.Where(existing => players.Select(current => current.Uid).Contains(existing.Key) == false).ToDictionary(item => item.Key, item => item.Value))
@@ -541,7 +557,11 @@ namespace Myrcon.Protocols.Frostbite {
                 Modified = {
                     Players = modified
                 }
-            }, new ProtocolEventData() {
+            };
+
+            this.ApplyProtocolStateDifference(difference);
+
+            this.OnProtocolEvent(ProtocolEventType.ProtocolPlayerlistUpdated, difference, new ProtocolEventData() {
                 Players = new List<PlayerModel>(this.State.Players.Values)
             });
         }
@@ -593,16 +613,18 @@ namespace Myrcon.Protocols.Frostbite {
                     modified.AddOrUpdate(String.Format("{0}/{1}", closureMap.GameMode.Name, closureMap.Name), id => closureMap, (id, model) => closureMap);
                 }
 
-                // this.State.Maps = maps;
+                IProtocolStateDifference difference = new ProtocolStateDifference() {
+                    Override = true,
+                    Modified = {
+                        Maps = modified
+                    }
+                };
+
+                this.ApplyProtocolStateDifference(difference);
 
                 this.OnProtocolEvent(
                     ProtocolEventType.ProtocolMaplistUpdated,
-                    new ProtocolStateDifference() {
-                        Override = true,
-                        Modified = {
-                            Maps = modified
-                        }
-                    }
+                    difference
                 );
             }
         }
@@ -636,15 +658,19 @@ namespace Myrcon.Protocols.Frostbite {
                     this.Send(this.CreatePacket("banList.list {0}", startOffset + 100));
                 }
                 else {
+                    IProtocolStateDifference difference = new ProtocolStateDifference() {
+                        Override = true,
+                        Modified = {
+                            Bans = this.State.Bans
+                        }
+                    };
+
+                    this.ApplyProtocolStateDifference(difference);
+
                     // We have recieved the whole banlist in 100 ban increments.. throw event.
                     this.OnProtocolEvent(
                         ProtocolEventType.ProtocolBanlistUpdated,
-                        new ProtocolStateDifference() {
-                            Override = true,
-                            Modified = {
-                                Bans = this.State.Bans
-                            }
-                        }
+                        difference
                     );
                 }
             }
@@ -654,15 +680,19 @@ namespace Myrcon.Protocols.Frostbite {
             if (request.Packet.Words.Count >= 1) {
                 BanModel ban = FrostbiteBan.ParseBanAdd(request.Packet.Words.GetRange(1, request.Packet.Words.Count - 1));
 
+                IProtocolStateDifference difference = new ProtocolStateDifference() {
+                    Modified = {
+                        Bans = new ConcurrentDictionary<String, BanModel>(new Dictionary<String, BanModel>() {
+                            { String.Format("{0}/{1}", ban.Scope.Times.First().Context, ban.Scope.Players.First().Uid ?? ban.Scope.Players.First().Name ?? ban.Scope.Players.First().Ip), ban }
+                        })
+                    }
+                };
+
+                this.ApplyProtocolStateDifference(difference);
+
                 this.OnProtocolEvent(
                     ProtocolEventType.ProtocolPlayerBanned,
-                    new ProtocolStateDifference() {
-                        Modified = {
-                            Bans = new ConcurrentDictionary<String, BanModel>(new Dictionary<String, BanModel>() {
-                                { String.Format("{0}/{1}", ban.Scope.Times.First().Context, ban.Scope.Players.First().Uid ?? ban.Scope.Players.First().Name ?? ban.Scope.Players.First().Ip), ban }
-                            })
-                        }
-                    },
+                    difference,
                     new ProtocolEventData() {
                         Bans = new List<BanModel>() {
                             ban
@@ -676,15 +706,19 @@ namespace Myrcon.Protocols.Frostbite {
             if (request.Packet.Words.Count >= 1) {
                 BanModel ban = FrostbiteBan.ParseBanRemove(request.Packet.Words.GetRange(1, request.Packet.Words.Count - 1));
 
+                IProtocolStateDifference difference = new ProtocolStateDifference() {
+                    Removed = {
+                        Bans = new ConcurrentDictionary<String, BanModel>(new Dictionary<String, BanModel>() {
+                            { String.Format("{0}/{1}", ban.Scope.Times.First().Context, ban.Scope.Players.First().Uid ?? ban.Scope.Players.First().Name ?? ban.Scope.Players.First().Ip), ban }
+                        })
+                    }
+                };
+
+                this.ApplyProtocolStateDifference(difference);
+
                 this.OnProtocolEvent(
                     ProtocolEventType.ProtocolPlayerUnbanned,
-                    new ProtocolStateDifference() {
-                        Removed = {
-                            Bans = new ConcurrentDictionary<String, BanModel>(new Dictionary<String, BanModel>() {
-                                { String.Format("{0}/{1}", ban.Scope.Times.First().Context, ban.Scope.Players.First().Uid ?? ban.Scope.Players.First().Name ?? ban.Scope.Players.First().Ip), ban }
-                            })
-                        }
-                    },
+                    difference,
                     new ProtocolEventData() {
                         Bans = new List<BanModel>() {
                             ban
@@ -844,16 +878,20 @@ namespace Myrcon.Protocols.Frostbite {
                     var killer = this.State.Players.Select(p => p.Value).FirstOrDefault(p => p.Name == request.Packet.Words[1]);
                     var victim = this.State.Players.Select(p => p.Value).FirstOrDefault(p => p.Name == request.Packet.Words[2]);
 
+                    IProtocolStateDifference difference = new ProtocolStateDifference() {
+                        Modified = {
+                            Players = new ConcurrentDictionary<String, PlayerModel>(new Dictionary<String, PlayerModel>() {
+                                { killer != null ? killer.Uid : "", killer },
+                                { victim != null ? victim.Uid : "", victim }
+                            })
+                        }
+                    };
+
+                    this.ApplyProtocolStateDifference(difference);
+
                     this.OnProtocolEvent(
                         ProtocolEventType.ProtocolPlayerKill,
-                        new ProtocolStateDifference() {
-                            Modified = {
-                                Players = new ConcurrentDictionary<String, PlayerModel>(new Dictionary<String, PlayerModel>() {
-                                    { killer != null ? killer.Uid : "", killer },
-                                    { victim != null ? victim.Uid : "", victim }
-                                })
-                            }
-                        },
+                        difference,
                         new ProtocolEventData() {
                             Kills = new List<KillModel>() {
                                 new KillModel() {
@@ -902,13 +940,17 @@ namespace Myrcon.Protocols.Frostbite {
 
                     // Maps are the same, only a round change
                     if (String.Compare(this.State.Settings.Current.MapNameText, request.Packet.Words[1], StringComparison.OrdinalIgnoreCase) == 0) {
+                        IProtocolStateDifference difference = new ProtocolStateDifference() {
+                            Modified = {
+                                Settings = this.State.Settings
+                            }
+                        };
+
+                        this.ApplyProtocolStateDifference(difference);
+
                         this.OnProtocolEvent(
                             ProtocolEventType.ProtocolRoundChanged,
-                            new ProtocolStateDifference() {
-                                Modified = {
-                                    Settings = this.State.Settings
-                                }
-                            }
+                            difference
                         );
                     }
                     else {
@@ -923,13 +965,17 @@ namespace Myrcon.Protocols.Frostbite {
 
                         this.State.Settings.Current.MapNameText = request.Packet.Words[1];
 
+                        IProtocolStateDifference difference = new ProtocolStateDifference() {
+                            Modified = {
+                                Settings = this.State.Settings
+                            }
+                        };
+
+                        this.ApplyProtocolStateDifference(difference);
+
                         this.OnProtocolEvent(
                             ProtocolEventType.ProtocolMapChanged,
-                            new ProtocolStateDifference() {
-                                Modified = {
-                                    Settings = this.State.Settings
-                                }
-                            }
+                            difference
                         );
                     }
                 }
@@ -984,15 +1030,19 @@ namespace Myrcon.Protocols.Frostbite {
                         player = statePlayer;
                     }
 
+                    IProtocolStateDifference difference = new ProtocolStateDifference() {
+                        Removed = {
+                            Players = new ConcurrentDictionary<String, PlayerModel>(new Dictionary<String, PlayerModel>() {
+                                { player.Uid, player }
+                            })
+                        }
+                    };
+
+                    this.ApplyProtocolStateDifference(difference);
+
                     this.OnProtocolEvent(
                         ProtocolEventType.ProtocolPlayerLeave,
-                        new ProtocolStateDifference() {
-                            Removed = {
-                                Players = new ConcurrentDictionary<String, PlayerModel>(new Dictionary<String, PlayerModel>() {
-                                    { player.Uid, player }
-                                })
-                            }
-                        },
+                        difference,
                         new ProtocolEventData() {
                             Players = new List<PlayerModel>() {
                                 player
@@ -1053,15 +1103,19 @@ namespace Myrcon.Protocols.Frostbite {
                     };
                 }
 
+                IProtocolStateDifference difference = new ProtocolStateDifference() {
+                    Modified = {
+                        Players = new ConcurrentDictionary<String, PlayerModel>(new Dictionary<String, PlayerModel>() {
+                            { statePlayer.Uid, statePlayer }
+                        })
+                    }
+                };
+
+                this.ApplyProtocolStateDifference(difference);
+
                 this.OnProtocolEvent(
-                    ProtocolEventType.ProtocolPlayerJoin, 
-                    new ProtocolStateDifference() {
-                        Modified = {
-                            Players = new ConcurrentDictionary<String, PlayerModel>(new Dictionary<String, PlayerModel>() {
-                                { statePlayer.Uid, statePlayer }
-                            })
-                        }
-                    },
+                    ProtocolEventType.ProtocolPlayerJoin,
+                    difference,
                     new ProtocolEventData() {
                         Players = new List<PlayerModel>() {
                             statePlayer
@@ -1081,15 +1135,19 @@ namespace Myrcon.Protocols.Frostbite {
                 player.Role = spawn.Role;
                 player.Inventory = spawn.Inventory;
 
+                IProtocolStateDifference difference = new ProtocolStateDifference() {
+                    Modified = {
+                        Players = new ConcurrentDictionary<String, PlayerModel>(new Dictionary<String, PlayerModel>() {
+                            { player.Uid, player }
+                        })
+                    }
+                };
+
+                this.ApplyProtocolStateDifference(difference);
+
                 this.OnProtocolEvent(
                     ProtocolEventType.ProtocolPlayerSpawn,
-                    new ProtocolStateDifference() {
-                        Modified = {
-                            Players = new ConcurrentDictionary<String, PlayerModel>(new Dictionary<String, PlayerModel>() {
-                                { player.Uid, player }
-                            })
-                        }
-                    },
+                    difference,
                     new ProtocolEventData() {
                         Spawns = new List<SpawnModel>() {
                             spawn
@@ -1107,15 +1165,19 @@ namespace Myrcon.Protocols.Frostbite {
                 // Note that this is removed when the player.OnLeave event is fired.
                 //this.State.PlayerList.RemoveAll(x => x.Name == request.Packet.Words[1]);
 
+                IProtocolStateDifference difference = new ProtocolStateDifference() {
+                    Removed = {
+                        Players = new ConcurrentDictionary<String, PlayerModel>(new Dictionary<String, PlayerModel>() {
+                            { player.Uid, player }
+                        })
+                    }
+                };
+
+                this.ApplyProtocolStateDifference(difference);
+
                 this.OnProtocolEvent(
-                    ProtocolEventType.ProtocolPlayerKicked, 
-                    new ProtocolStateDifference() {
-                        Removed = {
-                            Players = new ConcurrentDictionary<String, PlayerModel>(new Dictionary<String, PlayerModel>() {
-                                { player.Uid, player }
-                            })
-                        }
-                    },
+                    ProtocolEventType.ProtocolPlayerKicked,
+                    difference,
                     new ProtocolEventData() {
                         Kicks = new List<KickModel>() {
                             new KickModel() {
@@ -1146,15 +1208,19 @@ namespace Myrcon.Protocols.Frostbite {
                     Uid = squadId.ToString(CultureInfo.InvariantCulture)
                 });
 
+                IProtocolStateDifference difference = new ProtocolStateDifference() {
+                    Modified = {
+                        Players = new ConcurrentDictionary<String, PlayerModel>(new Dictionary<String, PlayerModel>() {
+                            { player.Uid, player }
+                        })
+                    }
+                };
+
+                this.ApplyProtocolStateDifference(difference);
+
                 this.OnProtocolEvent(
                     ProtocolEventType.ProtocolPlayerMoved,
-                    new ProtocolStateDifference() {
-                        Modified = {
-                            Players = new ConcurrentDictionary<String, PlayerModel>(new Dictionary<String, PlayerModel>() {
-                                { player.Uid, player }
-                            })
-                        }
-                    },
+                    difference,
                     new ProtocolEventData() {
                         Players = new List<PlayerModel>() {
                             player
@@ -1179,15 +1245,19 @@ namespace Myrcon.Protocols.Frostbite {
                     Uid = squadId.ToString(CultureInfo.InvariantCulture)
                 });
 
+                IProtocolStateDifference difference = new ProtocolStateDifference() {
+                    Modified = {
+                        Players = new ConcurrentDictionary<String, PlayerModel>(new Dictionary<String, PlayerModel>() {
+                            { player.Uid, player }
+                        })
+                    }
+                };
+
+                this.ApplyProtocolStateDifference(difference);
+
                 this.OnProtocolEvent(
                     ProtocolEventType.ProtocolPlayerMoved,
-                    new ProtocolStateDifference() {
-                        Modified = {
-                            Players = new ConcurrentDictionary<String, PlayerModel>(new Dictionary<String, PlayerModel>() {
-                                { player.Uid, player }
-                            })
-                        }
-                    },
+                    difference,
                     new ProtocolEventData() {
                         Players = new List<PlayerModel>() {
                             player

@@ -1,4 +1,4 @@
-﻿{
+{
     "Groups": [
         {
             "Uid": "1",
@@ -3208,7 +3208,7 @@
             "Name": "XP3_UrbanGdn",
             "FriendlyName": "Lumphini Garden",
             "GameMode": {
-                "Name": "Chainlink0""
+                "Name": "Chainlink0"
             }
         },
         {

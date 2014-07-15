@@ -1,4 +1,4 @@
-﻿{
+{
     "Groups": [
         {
             "Uid": "1",
@@ -215,8 +215,8 @@
         },
         {
             "Name": "Elimination0",
-            "FriendlyName": "Elimination",
-            "AbbreviatedName": "ELIM",
+            "FriendlyName": "Defuse",
+            "AbbreviatedName": "DEFUSE",
             "TeamCount": "2",
             "DefaultGroups": [
                 {
@@ -320,7 +320,19 @@
                     "Type": "Squad"
                 }
             ]
-        }
+        },
+        {
+            "Name": "Chainlink0",
+            "FriendlyName": "Chain Link",
+            "AbbreviatedName": "CHAIN",
+            "TeamCount": "2",
+            "DefaultGroups": [
+                {
+                    "Uid": "0",
+                    "Type": "Squad"
+                }
+            ]
+        }        
     ],
     "MapPool": [
         {
@@ -1426,7 +1438,7 @@
             "Name": "XP1_001",
             "FriendlyName": "Silk Road",
             "GameMode": {
-                "Name": "ConquestLarge0"
+                "Name": "ConquestSmall0"
             }
         },
         {
@@ -1435,7 +1447,7 @@
             "Name": "XP1_002",
             "FriendlyName": "Altai Range",
             "GameMode": {
-                "Name": "ConquestLarge0"
+                "Name": "ConquestSmall0"
             }
         },
         {
@@ -1444,7 +1456,7 @@
             "Name": "XP1_003",
             "FriendlyName": "Guilin Peaks",
             "GameMode": {
-                "Name": "ConquestLarge0"
+                "Name": "ConquestSmall0"
             }
         },
         {
@@ -1453,7 +1465,7 @@
             "Name": "XP1_004",
             "FriendlyName": "Dragon Pass",
             "GameMode": {
-                "Name": "ConquestLarge0"
+                "Name": "ConquestSmall0"
             }
         },
         {
@@ -2471,7 +2483,7 @@
         {
             "Index": "0",
             "Rounds": "2",
-            "Name": "XP1_001",
+            "Name": "XP2_001",
             "FriendlyName": "Lost Islands",
             "GameMode": {
                 "Name": "RushLarge0"
@@ -2492,7 +2504,7 @@
         {
             "Index": "0",
             "Rounds": "2",
-            "Name": "XP1_002",
+            "Name": "XP2_002",
             "FriendlyName": "Nansha Strike",
             "GameMode": {
                 "Name": "RushLarge0"
@@ -2513,7 +2525,7 @@
         {
             "Index": "0",
             "Rounds": "2",
-            "Name": "XP1_003",
+            "Name": "XP2_003",
             "FriendlyName": "Wave Breaker",
             "GameMode": {
                 "Name": "RushLarge0"
@@ -2534,7 +2546,7 @@
         {
             "Index": "0",
             "Rounds": "2",
-            "Name": "XP1_004",
+            "Name": "XP2_004",
             "FriendlyName": "Operation Mortar",
             "GameMode": {
                 "Name": "RushLarge0"
@@ -2555,7 +2567,7 @@
         {
             "Index": "0",
             "Rounds": "2",
-            "Name": "XP1_001",
+            "Name": "XP2_001",
             "FriendlyName": "Lost Islands",
             "GameMode": {
                 "Name": "SquadDeathMatch0"
@@ -2586,7 +2598,7 @@
         {
             "Index": "0",
             "Rounds": "2",
-            "Name": "XP1_002",
+            "Name": "XP2_002",
             "FriendlyName": "Nansha Strike",
             "GameMode": {
                 "Name": "SquadDeathMatch0"
@@ -2617,7 +2629,7 @@
         {
             "Index": "0",
             "Rounds": "2",
-            "Name": "XP1_003",
+            "Name": "XP2_003",
             "FriendlyName": "Wave Breaker",
             "GameMode": {
                 "Name": "SquadDeathMatch0"
@@ -2648,7 +2660,7 @@
         {
             "Index": "0",
             "Rounds": "2",
-            "Name": "XP1_004",
+            "Name": "XP2_004",
             "FriendlyName": "Operation Mortar",
             "GameMode": {
                 "Name": "SquadDeathMatch0"
@@ -2679,7 +2691,7 @@
         {
             "Index": "0",
             "Rounds": "2",
-            "Name": "XP1_001",
+            "Name": "XP2_001",
             "FriendlyName": "Lost Islands",
             "GameMode": {
                 "Name": "TeamDeathMatch0"
@@ -2688,7 +2700,7 @@
         {
             "Index": "0",
             "Rounds": "2",
-            "Name": "XP1_002",
+            "Name": "XP2_002",
             "FriendlyName": "Nansha Strike",
             "GameMode": {
                 "Name": "TeamDeathMatch0"
@@ -2697,7 +2709,7 @@
         {
             "Index": "0",
             "Rounds": "2",
-            "Name": "XP1_003",
+            "Name": "XP2_003",
             "FriendlyName": "Wave Breaker",
             "GameMode": {
                 "Name": "TeamDeathMatch0"
@@ -2706,12 +2718,508 @@
         {
             "Index": "0",
             "Rounds": "2",
-            "Name": "XP1_004",
+            "Name": "XP2_004",
             "FriendlyName": "Operation Mortar",
             "GameMode": {
                 "Name": "TeamDeathMatch0"
             }
-        }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP3_MarketPl",
+            "FriendlyName": "Market Place",
+            "GameMode": {
+                "Name": "ConquestLarge0"
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP3_Prpganda",
+            "FriendlyName": "Propaganda",
+            "GameMode": {
+                "Name": "ConquestLarge0"
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP3_UrbanGdn",
+            "FriendlyName": "Lumphini Garden",
+            "GameMode": {
+                "Name": "ConquestLarge0"
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP3_WtrFront",
+            "FriendlyName": "Sunken Dragon",
+            "GameMode": {
+                "Name": "ConquestLarge0"
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP3_MarketPl",
+            "FriendlyName": "Market Place",
+            "GameMode": {
+                "Name": "ConquestSmall0"
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP3_Prpganda",
+            "FriendlyName": "Propaganda",
+            "GameMode": {
+                "Name": "ConquestSmall0"
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP3_UrbanGdn",
+            "FriendlyName": "Lumphini Garden",
+            "GameMode": {
+                "Name": "ConquestSmall0"
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP3_WtrFront",
+            "FriendlyName": "Sunken Dragon",
+            "GameMode": {
+                "Name": "ConquestSmall0"
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP3_MarketPl",
+            "FriendlyName": "Market Place",
+            "GameMode": {
+                "Name": "Domination0"
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP3_Prpganda",
+            "FriendlyName": "Propaganda",
+            "GameMode": {
+                "Name": "Domination0"
+            }
+        },  
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP3_UrbanGdn",
+            "FriendlyName": "Lumphini Garden",
+            "GameMode": {
+                "Name": "Domination0"
+            }
+        }, 
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP3_WtrFront",
+            "FriendlyName": "Sunken Dragon",
+            "GameMode": {
+                "Name": "Domination0"
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP3_MarketPl",
+            "FriendlyName": "Market Place",
+            "GameMode": {
+                "Name": "Elimination0"
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP3_Prpganda",
+            "FriendlyName": "Propaganda",
+            "GameMode": {
+                "Name": "Elimination0"
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP3_UrbanGdn",
+            "FriendlyName": "Lumphini Garden",
+            "GameMode": {
+                "Name": "Elimination0"
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP3_WtrFront",
+            "FriendlyName": "Sunken Dragon",
+            "GameMode": {
+                "Name": "Elimination0"
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP3_MarketPl",
+            "FriendlyName": "Market Place",
+            "GameMode": {
+                "Name": "Obliteration"
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP3_Prpganda",
+            "FriendlyName": "Propaganda",
+            "GameMode": {
+                "Name": "Obliteration"
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP3_UrbanGdn",
+            "FriendlyName": "Lumphini Garden",
+            "GameMode": {
+                "Name": "Obliteration"
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP3_WtrFront",
+            "FriendlyName": "Sunken Dragon",
+            "GameMode": {
+                "Name": "Obliteration"
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP3_MarketPl",
+            "FriendlyName": "Market Place",
+            "GameMode": {
+                "Name": "RushLarge0"
+            },
+            "Groups": [
+                {
+                    "Uid": "1",
+                    "Type": "Team",
+                    "FriendlyName": "Attacker"
+                },
+                {
+                    "Uid": "2",
+                    "Type": "Team",
+                    "FriendlyName": "Defender"
+                }
+            ]
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP3_Prpganda",
+            "FriendlyName": "Propaganda",
+            "GameMode": {
+                "Name": "RushLarge0"
+            },
+            "Groups": [
+                {
+                    "Uid": "1",
+                    "Type": "Team",
+                    "FriendlyName": "Attacker"
+                },
+                {
+                    "Uid": "2",
+                    "Type": "Team",
+                    "FriendlyName": "Defender"
+                }
+            ]
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP3_UrbanGdn",
+            "FriendlyName": "Lumphini Garden",
+            "GameMode": {
+                "Name": "RushLarge0"
+            },
+            "Groups": [
+                {
+                    "Uid": "1",
+                    "Type": "Team",
+                    "FriendlyName": "Attacker"
+                },
+                {
+                    "Uid": "2",
+                    "Type": "Team",
+                    "FriendlyName": "Defender"
+                }
+            ]
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP3_WtrFront",
+            "FriendlyName": "Sunken Dragon",
+            "GameMode": {
+                "Name": "RushLarge0"
+            },
+            "Groups": [
+                {
+                    "Uid": "1",
+                    "Type": "Team",
+                    "FriendlyName": "Attacker"
+                },
+                {
+                    "Uid": "2",
+                    "Type": "Team",
+                    "FriendlyName": "Defender"
+                }
+            ]
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP3_MarketPl",
+            "FriendlyName": "Market Place",
+            "GameMode": {
+                "Name": "SquadDeathMatch0"
+            },
+            "Groups": [
+                {
+                    "Uid": "1",
+                    "Type": "Team",
+                    "FriendlyName": "Alpha"
+                },
+                {
+                    "Uid": "2",
+                    "Type": "Team",
+                    "FriendlyName": "Beta"
+                },
+                {
+                    "Uid": "3",
+                    "Type": "Team",
+                    "FriendlyName": "Charlie"
+                },
+                {
+                    "Uid": "4",
+                    "Type": "Team",
+                    "FriendlyName": "Delta"
+                }
+            ]
+        },         
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP3_Prpganda",
+            "FriendlyName": "Propaganda",
+            "GameMode": {
+                "Name": "SquadDeathMatch0"
+            },
+            "Groups": [
+                {
+                    "Uid": "1",
+                    "Type": "Team",
+                    "FriendlyName": "Alpha"
+                },
+                {
+                    "Uid": "2",
+                    "Type": "Team",
+                    "FriendlyName": "Beta"
+                },
+                {
+                    "Uid": "3",
+                    "Type": "Team",
+                    "FriendlyName": "Charlie"
+                },
+                {
+                    "Uid": "4",
+                    "Type": "Team",
+                    "FriendlyName": "Delta"
+                }
+            ]
+        },        
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP3_UrbanGdn",
+            "FriendlyName": "Lumphini Garden",
+            "GameMode": {
+                "Name": "SquadDeathMatch0"
+            },
+            "Groups": [
+                {
+                    "Uid": "1",
+                    "Type": "Team",
+                    "FriendlyName": "Alpha"
+                },
+                {
+                    "Uid": "2",
+                    "Type": "Team",
+                    "FriendlyName": "Beta"
+                },
+                {
+                    "Uid": "3",
+                    "Type": "Team",
+                    "FriendlyName": "Charlie"
+                },
+                {
+                    "Uid": "4",
+                    "Type": "Team",
+                    "FriendlyName": "Delta"
+                }
+            ]
+        },        
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP3_WtrFront",
+            "FriendlyName": "Sunken Dragon",
+            "GameMode": {
+                "Name": "SquadDeathMatch0"
+            },
+            "Groups": [
+                {
+                    "Uid": "1",
+                    "Type": "Team",
+                    "FriendlyName": "Alpha"
+                },
+                {
+                    "Uid": "2",
+                    "Type": "Team",
+                    "FriendlyName": "Beta"
+                },
+                {
+                    "Uid": "3",
+                    "Type": "Team",
+                    "FriendlyName": "Charlie"
+                },
+                {
+                    "Uid": "4",
+                    "Type": "Team",
+                    "FriendlyName": "Delta"
+                }
+            ]
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP3_MarketPl",
+            "FriendlyName": "Market Place",
+            "GameMode": {
+                "Name": "TeamDeathMatch0"
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP3_Prpganda",
+            "FriendlyName": "Propaganda",
+            "GameMode": {
+                "Name": "TeamDeathMatch0"
+            }
+        }, 
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP3_UrbanGdn",
+            "FriendlyName": "Lumphini Garden",
+            "GameMode": {
+                "Name": "TeamDeathMatch0"
+            }
+        }, 
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP3_WtrFront",
+            "FriendlyName": "Sunken Dragon",
+            "GameMode": {
+                "Name": "TeamDeathMatch0"
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP3_MarketPl",
+            "FriendlyName": "Market Place",
+            "GameMode": {
+                "Name": "CaptureTheFlag0"
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP3_Prpganda",
+            "FriendlyName": "Propaganda",
+            "GameMode": {
+                "Name": "CaptureTheFlag0"
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP3_UrbanGdn",
+            "FriendlyName": "Lumphini Garden",
+            "GameMode": {
+                "Name": "CaptureTheFlag0"
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP3_WtrFront",
+            "FriendlyName": "Sunken Dragon",
+            "GameMode": {
+                "Name": "CaptureTheFlag0"
+            }
+        }, 
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP3_MarketPl",
+            "FriendlyName": "Market Place",
+            "GameMode": {
+                "Name": "Chainlink0"
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP3_Prpganda",
+            "FriendlyName": "Propaganda",
+            "GameMode": {
+                "Name": "Chainlink0"
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP3_UrbanGdn",
+            "FriendlyName": "Lumphini Garden",
+            "GameMode": {
+                "Name": "Chainlink0"
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP3_WtrFront",
+            "FriendlyName": "Sunken Dragon",
+            "GameMode": {
+                "Name": "Chainlink0"
+            }
+        }                                                                                                                                                                                                                                          
     ],
     "Items": [
         {

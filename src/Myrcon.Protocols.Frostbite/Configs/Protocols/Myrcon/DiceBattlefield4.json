@@ -3461,6 +3461,76 @@
             ]
         },
         {
+            "Name": "U_AR160",
+            "FriendlyName": "AR160",
+            "Tags": [
+                "Assault", "Primary", "AssaultRifle"
+            ]
+        },
+        {
+            "Name": "U_AR160_M26_Buck",
+            "FriendlyName": "M26 Mass under AR160",
+            "Tags": [
+                "Assault", "Attachment", "Shotgun"
+            ]
+        },
+        {
+            "Name": "U_AR160_M26_Flechette",
+            "FriendlyName": "M26 Mass Dart under AR160",
+            "Tags": [
+                "Assault", "Attachment", "Shotgun"
+            ]
+        },
+        {
+            "Name": "U_AR160_M26_Frag",
+            "FriendlyName": "M26 Mass Frag under AR160",
+            "Tags": [
+                "Assault", "Attachment", "Shotgun", "ProjectileExplosive"
+            ]
+        },
+        {
+            "Name": "U_AR160_M26_Slug",
+            "FriendlyName": "M26 Mass Slug under AR160",
+            "Tags": [
+                "Assault", "Attachment", "Shotgun"
+            ]
+        },
+        {
+            "Name": "U_AR160_M320_FLASH",
+            "FriendlyName": "M320 FB under AR160",
+            "Tags": [
+                "Assault", "Attachment", "Impact", "Grenade"
+            ]
+        },
+        {
+            "Name": "U_AR160_M320_HE",
+            "FriendlyName": "M320 HE under AR160",
+            "Tags": [
+                "Assault", "Attachment", "ProjectileExplosive", "Grenade"
+            ]
+        },
+        {
+            "Name": "U_AR160_M320_LVG",
+            "FriendlyName": "M320 LVG under AR160",
+            "Tags": [
+                "Assault", "Attachment", "ProjectileExplosive", "Grenade"
+            ]
+        },
+        {
+            "Name": "U_AR160_M320_SHG",
+            "FriendlyName": "M320 Dart under AR160",
+            "Tags": [
+                "Assault", "Attachment", "Shotgun"
+            ]
+        },
+        {
+            "Name": "U_AR160_M320_SMK",
+            "FriendlyName": "M320 SMK under AR160",
+            "Tags": [
+                "Assault", "Attachment", "Impact", "Grenade"
+            ]
+        },        
+        {
             "Name": "U_ASVAL",
             "FriendlyName": "AS VAL",
             "Tags": [
@@ -3474,6 +3544,27 @@
                 "General", "RocketLauncher", "ProjectileExplosive", "BattlePickup"
             ]
         },
+        {
+            "Name": "U_AWS",
+            "FriendlyName": "AWS",
+            "Tags": [
+                "Support", "Primary", "LMG"
+            ]
+        },        
+        {
+            "Name": "U_BallisticShield",
+            "FriendlyName": "Ballistic Shield",
+            "Tags": [
+                "Support", "Gadget", "None"
+            ]
+        },
+        {
+            "Name": "U_Bulldog",
+            "FriendlyName": "Bulldog",
+            "Tags": [
+                "Assault", "Primary", "AssaultRifle"
+            ]
+        },        
         {
             "Name": "U_C4",
             "FriendlyName": "C4",
@@ -3516,6 +3607,13 @@
                 "Recon", "Primary", "SniperRifle"
             ]
         },
+        {
+            "Name": "U_CS5",
+            "FriendlyName": "CS5",
+            "Tags": [
+                "Recon", "Primary", "SniperRifle"
+            ]
+        },        
         {
             "Name": "U_CZ805",
             "FriendlyName": "CZ-805",
@@ -3614,6 +3712,13 @@
                 "Assault", "Gadget", "None"
             ]
         },
+        {
+            "Name": "U_DesertEagle",
+            "FriendlyName": "Desert Eagle",
+            "Tags": [
+                "General", "Handgun"
+            ]
+        },        
         {
             "Name": "U_F2000",
             "FriendlyName": "F2000",
@@ -4196,6 +4301,13 @@
             ]
         },
         {
+            "Name": "U_MPX",
+            "FriendlyName": "MPX",
+            "Tags": [
+                "Engineer", "Primary", "SMG"
+            ]
+        },        
+        {
             "Name": "U_MX4",
             "FriendlyName": "MX4",
             "Tags": [
@@ -4342,6 +4454,13 @@
                 "General", "Handgun"
             ]
         },
+        {
+            "Name": "XP3/Gameplay/Vehicles/RAWR/RAWR",
+            "FriendlyName": "RAWR",
+            "Tags": [
+                "General", "Primary", "ProjectileExplosive", "Grenade", "BattlePickup"
+            ]
+        },        
         {
             "Name": "U_Repairtool",
             "FriendlyName": "Repair Tool",
@@ -4595,6 +4714,20 @@
             ]
         },
         {
+            "Name": "U_SR2",
+            "FriendlyName": "SR2",
+            "Tags": [
+                "Engineer", "Primary", "SMG"
+            ]
+        }, 
+        {
+            "Name": "U_SR338",
+            "FriendlyName": "SR338",
+            "Tags": [
+                "Recon", "Primary", "SniperRifle"
+            ]
+        },        
+        {
             "Name": "U_SRAW",
             "FriendlyName": "FGM-172 SRAW",
             "Tags": [
@@ -4700,6 +4833,13 @@
             ]
         },
         {
+            "Name": "U_SW40",
+            "FriendlyName": "SW40",
+            "Tags": [
+                "General", "Auxiliary", "Handgun"
+            ]
+        },        
+        {
             "Name": "U_Taurus44",
             "FriendlyName": ".44 Magnum",
             "Tags": [
@@ -4748,6 +4888,13 @@
                 "Engineer", "Primary", "SMG"
             ]
         },
+        {
+            "Name": "U_Unica6",
+            "FriendlyName": "Unica 6",
+            "Tags": [
+                "General", "Handgun"
+            ]
+        },        
         {
             "Name": "U_USAS-12",
             "FriendlyName": "USAS-12",

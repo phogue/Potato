@@ -1,4 +1,5 @@
 ﻿#region Copyright
+
 // Copyright 2014 Myrcon Pty. Ltd.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,7 +13,9 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 #endregion
+
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -27,11 +30,9 @@ using Potato.Net.Shared.Actions;
 using Potato.Net.Shared.Protocols;
 
 namespace Potato.Tools.NetworkConsole {
-    using Potato.Net;
     using Potato.Tools.NetworkConsole.Utils;
 
     public partial class MainWindow : Form {
-
         private Dictionary<IProtocolType, Type> Games { get; set; }
 
         // Console
@@ -59,7 +60,6 @@ namespace Potato.Tools.NetworkConsole {
         }
 
         private void Form1_Load(object sender, EventArgs e) {
-
             this.lblVersion.Text = "Version: " + Assembly.GetExecutingAssembly().GetName().Version.ToString();
 
             this.Games = SupportedGameTypes.GetSupportedGames();
@@ -97,18 +97,15 @@ namespace Potato.Tools.NetworkConsole {
         }
 
         private void btnConnect_Click(object sender, EventArgs e) {
-
-            if (this.ActiveGame == null || (this.ActiveGame != null && this.ActiveGame.State != null && this.ActiveGame.State.Settings.Current.ConnectionState == ConnectionState.ConnectionDisconnected))
-            {
-
+            if (this.ActiveGame == null || (this.ActiveGame != null && this.ActiveGame.State != null && this.ActiveGame.State.Settings.Current.ConnectionState == ConnectionState.ConnectionDisconnected)) {
                 ushort port = 10156;
 
-                if (ushort.TryParse(this.txtPort.Text, out port) == true && this.Games.Any(game => game.Key.Type == (string)this.cboGames.SelectedItem) == true) {
+                if (ushort.TryParse(this.txtPort.Text, out port) == true && this.Games.Any(game => game.Key.Type == (string) this.cboGames.SelectedItem) == true) {
                     this.txtPort.BackColor = SystemColors.Window;
 
-                    Type gameType = this.Games.First(game => game.Key.Type == (string)this.cboGames.SelectedItem).Value;
+                    Type gameType = this.Games.First(game => game.Key.Type == (string) this.cboGames.SelectedItem).Value;
 
-                    this.ActiveGame = (Protocol)Activator.CreateInstance(gameType);
+                    this.ActiveGame = (Protocol) Activator.CreateInstance(gameType);
 
                     this.ActiveGame.Setup(new ProtocolSetup() {
                         Hostname = "localhost",
@@ -137,7 +134,7 @@ namespace Potato.Tools.NetworkConsole {
             }
         }
 
-        void ActiveGame_ClientEvent(IProtocol sender, IClientEventArgs e) {
+        private void ActiveGame_ClientEvent(IProtocol sender, IClientEventArgs e) {
             if (this.InvokeRequired == true) {
                 this.Invoke(new Action<Protocol, ClientEventArgs>(this.ActiveGame_ClientEvent), sender, e);
                 return;
@@ -177,7 +174,7 @@ namespace Potato.Tools.NetworkConsole {
             if (this.chkAnchorScrollbar.Checked == true) {
                 this.rtbConsole.ScrollToCaret();
             }
-            
+
             if (consoleBoxLines > 100 && this.rtbConsole.Focused == false) {
                 for (int i = 0; i < consoleBoxLines - 100; i++) {
                     this.rtbConsole.Select(0, this.rtbConsole.Lines[0].Length + 1);
@@ -202,7 +199,6 @@ namespace Potato.Tools.NetworkConsole {
         }
 
         private void Execute(string commandText) {
-
             if (this.ActiveGame != null) {
                 this.ActiveGame.Action(new NetworkAction() {
                     ActionType = NetworkActionType.NetworkPacketSend,
@@ -217,7 +213,6 @@ namespace Potato.Tools.NetworkConsole {
 
         private void txtConsoleText_KeyDown(object sender, KeyEventArgs e) {
             if (e.KeyData == Keys.Enter) {
-
                 this.btnSend_Click(null, null);
 
                 e.SuppressKeyPress = true;
@@ -239,7 +234,6 @@ namespace Potato.Tools.NetworkConsole {
                 }
             }
             else if (e.KeyData == Keys.Down) {
-
                 if (this.CommandHistoryCurrentNode != null && this.CommandHistoryCurrentNode.Previous != null) {
                     this.CommandHistoryCurrentNode = this.CommandHistoryCurrentNode.Previous;
                     this.txtConsoleText.Text = this.CommandHistoryCurrentNode.Value;
@@ -265,8 +259,6 @@ namespace Potato.Tools.NetworkConsole {
         }
 
         private void txtHostname_TextChanged(object sender, EventArgs e) {
-
         }
-        
     }
 }

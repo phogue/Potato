@@ -1,5 +1,7 @@
 # Procon Potato (Procon 2) #
-----------
+**Packages Build Status**: [![Packages Build Status](http://teamcity.myrcon.com/app/rest/builds/buildType:(id:Myrcon_Procon2_NugetPackagesRelease)/statusIcon)](http://teamcity.myrcon.com/viewType.html?buildTypeId=Myrcon_Procon2_NugetPackagesRelease)  
+**Service Build Status**: [![Service Build Status](http://teamcity.myrcon.com/app/rest/builds/buildType:(id:Myrcon_Procon2_ServiceRelease)/statusIcon)](http://teamcity.myrcon.com/viewType.html?buildTypeId=Myrcon_Procon2_ServiceRelease)  
+**Pull Requests/Debug Build Status**: [![Debug Build Status](http://teamcity.myrcon.com/app/rest/builds/buildType:(id:Myrcon_Procon2_PullRequest)/statusIcon)](http://teamcity.myrcon.com/viewType.html?buildTypeId=Myrcon_Procon2_PullRequest)  
 
 Procon Potato is developed by [Myrcon Ptd. Ltd.](https://myrcon.com "Official homepage of Myrcon Ptd. Ltd.").
 

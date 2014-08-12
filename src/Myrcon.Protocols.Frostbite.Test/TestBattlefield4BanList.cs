@@ -22,7 +22,7 @@ using NUnit.Framework;
 
 namespace Myrcon.Protocols.Frostbite.Test {
     [TestFixture]
-    public class TestFrostbiteBanList {
+    public class TestBattlefield4BanList {
 
         /// <summary>
         /// Tests parsing 

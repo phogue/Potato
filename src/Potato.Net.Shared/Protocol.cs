@@ -224,9 +224,13 @@ namespace Potato.Net.Shared {
                     wrappers = this.ActionMove(action);
                     break;
                 case NetworkActionType.NetworkPacketSend:
-                    wrappers.AddRange(action.Now.Content.Select(text => this.CreatePacket(text)));
+                    if (action.Now.Content != null) {
+                        wrappers.AddRange(action.Now.Content.Select(text => this.CreatePacket(text)));
+                    }
 
-                    wrappers.AddRange(action.Now.Packets.Select(this.WrapPacket));
+                    if (action.Now.Packets != null) {
+                        wrappers.AddRange(action.Now.Packets.Select(this.WrapPacket));
+                    }
                     break;
             }
 

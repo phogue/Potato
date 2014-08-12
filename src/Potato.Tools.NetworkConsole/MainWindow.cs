@@ -18,35 +18,48 @@
 
 using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Globalization;
-using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using System.Reflection;
 using System.Timers;
+using Potato.Core.Connections;
+using Potato.Core.Protocols;
+using Potato.Core.Shared;
+using Potato.Core.Variables;
 using Potato.Net.Shared;
 using Potato.Net.Shared.Actions;
-using Potato.Net.Shared.Protocols;
 
 namespace Potato.Tools.NetworkConsole {
-    using Potato.Tools.NetworkConsole.Utils;
-
     public partial class MainWindow : Form {
-        private Dictionary<IProtocolType, Type> Games { get; set; }
+        /// <summary>
+        ///  The actual game object loaded and operated on within a sandbox
+        /// </summary>
+        public ConnectionController Connection { get; set; }
+
+        public VariableController Variables { get; set; }
+
+        private ProtocolController ProtocolController { get; set; }
 
         // Console
-        private LinkedList<string> CommandHistory { get; set; }
-        private LinkedListNode<string> CommandHistoryCurrentNode { get; set; }
-
-        private Protocol ActiveGame { get; set; }
+        private LinkedList<String> CommandHistory { get; set; }
+        private LinkedListNode<String> CommandHistoryCurrentNode { get; set; }
 
         private System.Timers.Timer Timer { get; set; }
 
-        public MainWindow() {
+        public MainWindow(IEnumerable<String> args) {
             InitializeComponent();
 
             this.CommandHistory = new LinkedList<string>();
+
+            this.Variables = new VariableController();
+            this.Variables.ParseArguments(new List<String>(args));
+
+            this.ProtocolController = new ProtocolController();
+            this.ProtocolController.Execute();
+
+            this.Connection = new ConnectionController();
+            this.Connection.Execute();
+            this.Connection.ClientEvent += new Action<IClientEventArgs>(Connection_ClientEvent);
 
             this.Timer = new System.Timers.Timer(10000);
             this.Timer.Elapsed += new ElapsedEventHandler(Timer_Elapsed);
@@ -54,89 +67,76 @@ namespace Potato.Tools.NetworkConsole {
         }
 
         private void Timer_Elapsed(object sender, ElapsedEventArgs e) {
-            if (this.ActiveGame != null && this.protocolTest1.IsTestRunning == false) {
-                this.ActiveGame.Synchronize();
+            this.Connection.Poke();
+        }
+
+        private void CreateProtocol() {
+            ushort port = 10156;
+
+            if (ushort.TryParse(this.txtPort.Text, out port) == true && String.IsNullOrEmpty(this.txtHostname.Text) == false) {
+                var selectedProtocolMetadata = this.ProtocolController.Protocols.FirstOrDefault(protocolAssemblyMetadata => protocolAssemblyMetadata.ProtocolTypes.Select(protocolType => String.Format("{0} - {1} ({2})", protocolType.Provider, protocolType.Name, protocolType.Type)).Contains((string)this.cboGames.SelectedItem));
+
+                if (selectedProtocolMetadata != null) {
+
+                    var selectedProtocolType = selectedProtocolMetadata.ProtocolTypes.FirstOrDefault(protocolType => String.Format("{0} - {1} ({2})", protocolType.Provider, protocolType.Name, protocolType.Type) == (string)this.cboGames.SelectedItem);
+
+                    if (selectedProtocolType != null) {
+
+                        this.Connection.SetupProtocol(selectedProtocolMetadata, selectedProtocolType, new ProtocolSetup() {
+                            Hostname = this.txtHostname.Text,
+                            Password = this.txtPassword.Text,
+                            Port = port
+                        });
+
+                        this.Connection.AttemptConnection();
+                    }
+                }
             }
         }
 
         private void Form1_Load(object sender, EventArgs e) {
-            this.lblVersion.Text = "Version: " + Assembly.GetExecutingAssembly().GetName().Version.ToString();
+            this.lblVersion.Text = @"Version: " + Assembly.GetExecutingAssembly().GetName().Version;
 
-            this.Games = SupportedGameTypes.GetSupportedGames();
-            /*
-            Regex supportedGamesNamespame = new Regex(@"^Potato\.Net\.Protocols.*");
+            this.cboGames.Items.AddRange(this.ProtocolController.Protocols.SelectMany(protocolAssemblyMetadata => protocolAssemblyMetadata.ProtocolTypes).Select(protocolMetadataType => String.Format("{0} - {1} ({2})", protocolMetadataType.Provider, protocolMetadataType.Name, protocolMetadataType.Type)).Distinct().Cast<Object>().ToArray());
 
-            this.Games = (from gameType in Assembly.GetAssembly(typeof(Game)).GetTypes()
-                          where gameType != null &&
-                          gameType.IsClass == true &&
-                          gameType.IsAbstract == false &&
-                          gameType.Namespace != null &&
-                          supportedGamesNamespame.IsMatch(gameType.Namespace) == true &&
-                          typeof(Game).IsAssignableFrom(gameType) == true &&
-                          String.Compare(gameType.Name, typeof(Game).Name) != 0
-                          select gameType).ToDictionary(x => x.Name);
-            */
-            this.cboGames.Items.AddRange(this.Games.Select(game => game.Key.Type).ToArray());
+            this.txtHostname.Text = this.Variables.Get("Hostname", "");
+            this.txtPort.Text = this.Variables.Get("Port", "");
+            this.txtPassword.Text = this.Variables.Get("Password", "");
+            this.txtAdditional.Text = this.Variables.Get("Additional", "");
 
-            ConnectionDetails cd = new ConnectionDetails().Read();
-            this.txtHostname.Text = cd.Hostname;
-            this.txtPort.Text = cd.Port > 0 ? cd.Port.ToString(CultureInfo.InvariantCulture) : String.Empty;
-            this.txtPassword.Text = cd.Password;
-            this.txtAdditional.Text = cd.Additional;
+            var protocolProvider = this.Variables.Get("ProtocolProvider", "");
+            var protocolType = this.Variables.Get("ProtocolType", "");
 
-            if (this.cboGames.Items.Contains(cd.GameName) == true) {
-                this.cboGames.SelectedIndex = this.cboGames.Items.IndexOf(cd.GameName);
+            var result = this.ProtocolController.Tunnel(CommandBuilder.ProtocolsCheckSupportedProtocol(protocolProvider, protocolType).SetOrigin(CommandOrigin.Local));
+
+            if (result.Success == true && result.Now.ProtocolAssemblyMetadatas.Count > 0 && result.Now.ProtocolTypes.Count > 0) {
+                var type = result.Now.ProtocolTypes.First();
+
+                var name = String.Format("{0} - {1} ({2})", type.Provider, type.Name, type.Type);
+
+                this.cboGames.SelectedIndex = this.cboGames.Items.Contains(name) == true ? this.cboGames.Items.IndexOf(name) : 0;
             }
             else {
                 this.cboGames.SelectedIndex = 0;
             }
 
-            if (cd.IsLoaded == false) {
-                MessageBox.Show(@"This tool is designed to aid developers with expanding Potato's protocol repertoire, but can also be used for basic administration.  It's not pretty and it's not supposed to be." + Environment.NewLine + Environment.NewLine + "This message will not appear after you have sucessfully connected to a server.", "Potato 2 - Protocol Test Console", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            if (this.Variables.Get("Connect", false) == true) {
+                this.CreateProtocol();
             }
         }
 
         private void btnConnect_Click(object sender, EventArgs e) {
-            if (this.ActiveGame == null || (this.ActiveGame != null && this.ActiveGame.State != null && this.ActiveGame.State.Settings.Current.ConnectionState == ConnectionState.ConnectionDisconnected)) {
-                ushort port = 10156;
-
-                if (ushort.TryParse(this.txtPort.Text, out port) == true && this.Games.Any(game => game.Key.Type == (string) this.cboGames.SelectedItem) == true) {
-                    this.txtPort.BackColor = SystemColors.Window;
-
-                    Type gameType = this.Games.First(game => game.Key.Type == (string) this.cboGames.SelectedItem).Value;
-
-                    this.ActiveGame = (Protocol) Activator.CreateInstance(gameType);
-
-                    this.ActiveGame.Setup(new ProtocolSetup() {
-                        Hostname = "localhost",
-                        Port = 9000,
-                        Password = this.txtPassword.Text
-                    });
-
-                    DirectoryInfo packagePath = Potato.Service.Shared.Defines.PackageContainingPath(gameType.Assembly.Location);
-
-                    if (packagePath != null) {
-                        this.ActiveGame.Options.ConfigDirectory = packagePath.GetDirectories(Potato.Service.Shared.Defines.ProtocolsDirectoryName, SearchOption.AllDirectories).Select(directory => directory.FullName).FirstOrDefault();
-                    }
-
-                    this.protocolTestControl1.ActiveGame = this.ActiveGame;
-
-                    this.ActiveGame.ClientEvent += ActiveGame_ClientEvent;
-
-                    this.ActiveGame.AttemptConnection();
-                }
-                else {
-                    this.txtPort.BackColor = ControlPaint.LightLight(Color.Maroon);
-                }
+            if (this.Connection.ProtocolState.Settings.Current.ConnectionState == ConnectionState.ConnectionDisconnected) {
+                this.CreateProtocol();
             }
-            else if (this.ActiveGame != null) {
-                this.ActiveGame.Shutdown();
+            else {
+                this.Connection.Protocol.Shutdown();
             }
         }
 
-        private void ActiveGame_ClientEvent(IProtocol sender, IClientEventArgs e) {
+        private void Connection_ClientEvent(IClientEventArgs e) {
             if (this.InvokeRequired == true) {
-                this.Invoke(new Action<Protocol, ClientEventArgs>(this.ActiveGame_ClientEvent), sender, e);
+                this.Invoke(new Action<IClientEventArgs>(this.Connection_ClientEvent), e);
                 return;
             }
 
@@ -145,22 +145,22 @@ namespace Potato.Tools.NetworkConsole {
                     this.ConsoleAppendLine("State: ^6{0}", e.ConnectionState.ToString());
 
                     if (e.ConnectionState == ConnectionState.ConnectionDisconnected) {
-                        this.btnConnect.Text = "Connect";
+                        this.btnConnect.Text = @"Connect";
                         this.pnlConnection.Enabled = true;
                     }
                     else {
                         this.pnlConnection.Enabled = false;
-                        this.btnConnect.Text = "Disconnect";
+                        this.btnConnect.Text = @"Disconnect";
                     }
                 }
                 else if (e.EventType == ClientEventType.ClientConnectionFailure || e.EventType == ClientEventType.ClientSocketException) {
                     this.ConsoleAppendLine("^1Error: {0}", e.Now.Exceptions.FirstOrDefault());
                 }
-                else if (e.EventType == ClientEventType.ClientPacketSent) {
-                    this.ConsoleAppendLine("^2SEND: {0}", e.Now.Packets.FirstOrDefault().DebugText);
+                else if (e.EventType == ClientEventType.ClientPacketSent && e.Now.Packets.Count > 0) {
+                    this.ConsoleAppendLine("^2SEND: {0}", e.Now.Packets.First().DebugText);
                 }
-                else if (e.EventType == ClientEventType.ClientPacketReceived) {
-                    this.ConsoleAppendLine("^5RECV: {0}", e.Now.Packets.FirstOrDefault().DebugText);
+                else if (e.EventType == ClientEventType.ClientPacketReceived && e.Now.Packets.Count > 0) {
+                    this.ConsoleAppendLine("^5RECV: {0}", e.Now.Packets.First().DebugText);
                 }
             }
         }
@@ -186,29 +186,18 @@ namespace Potato.Tools.NetworkConsole {
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e) {
-            if (this.ActiveGame != null) {
-                new ConnectionDetails() {
-                    GameName = this.cboGames.SelectedItem.ToString(),
-                    Hostname = this.ActiveGame.Options.Hostname,
-                    Port = this.ActiveGame.Options.Port,
-                    Password = this.ActiveGame.Options.Password
-                }.Write();
-
-                this.ActiveGame.Shutdown();
-            }
+            this.Connection.Dispose();
         }
 
         private void Execute(string commandText) {
-            if (this.ActiveGame != null) {
-                this.ActiveGame.Action(new NetworkAction() {
-                    ActionType = NetworkActionType.NetworkPacketSend,
-                    Now = {
-                        Content = {
-                            commandText
-                        }
+            this.Connection.Protocol.Action(new NetworkAction() {
+                ActionType = NetworkActionType.NetworkPacketSend,
+                Now = {
+                    Content = new List<String>() {
+                        commandText
                     }
-                });
-            }
+                }
+            });
         }
 
         private void txtConsoleText_KeyDown(object sender, KeyEventArgs e) {

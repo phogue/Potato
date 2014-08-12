@@ -20,7 +20,6 @@ using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
 using System.Xml.Linq;
-using Potato.Net;
 using Potato.Net.Shared;
 using Potato.Tools.NetworkConsole.Utils;
 using ConnectionState = Potato.Net.Shared.ConnectionState;

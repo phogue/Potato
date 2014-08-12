@@ -42,12 +42,12 @@
             this.tabConsole = new System.Windows.Forms.TabPage();
             this.chkVerboseLogging = new System.Windows.Forms.CheckBox();
             this.chkAnchorScrollbar = new System.Windows.Forms.CheckBox();
+            this.rtbConsole = new Potato.Tools.NetworkConsole.Controls.CodRichTextBox();
             this.btnSend = new System.Windows.Forms.Button();
             this.txtConsoleText = new System.Windows.Forms.TextBox();
             this.tabProtocolTest = new System.Windows.Forms.TabPage();
-            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.rtbConsole = new Potato.Tools.NetworkConsole.Controls.CodRichTextBox();
             this.protocolTestControl1 = new Potato.Tools.NetworkConsole.Controls.ProtocolTestControl();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.pnlConnection.SuspendLayout();
             this.tbcPanels.SuspendLayout();
             this.tabConsole.SuspendLayout();
@@ -86,17 +86,17 @@
             // 
             // txtAdditional
             // 
-            this.txtAdditional.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtAdditional.Location = new System.Drawing.Point(469, 20);
+            this.txtAdditional.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtAdditional.Location = new System.Drawing.Point(626, 20);
             this.txtAdditional.Name = "txtAdditional";
-            this.txtAdditional.Size = new System.Drawing.Size(355, 20);
+            this.txtAdditional.Size = new System.Drawing.Size(198, 20);
             this.txtAdditional.TabIndex = 14;
             // 
             // label1
             // 
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(467, 4);
+            this.label1.Location = new System.Drawing.Point(623, 4);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(129, 13);
             this.label1.TabIndex = 13;
@@ -104,11 +104,13 @@
             // 
             // cboGames
             // 
+            this.cboGames.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.cboGames.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cboGames.FormattingEnabled = true;
             this.cboGames.Location = new System.Drawing.Point(10, 20);
             this.cboGames.Name = "cboGames";
-            this.cboGames.Size = new System.Drawing.Size(143, 21);
+            this.cboGames.Size = new System.Drawing.Size(300, 21);
             this.cboGames.TabIndex = 12;
             // 
             // lblGameType
@@ -122,8 +124,9 @@
             // 
             // lblPassword
             // 
+            this.lblPassword.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblPassword.AutoSize = true;
-            this.lblPassword.Location = new System.Drawing.Point(360, 4);
+            this.lblPassword.Location = new System.Drawing.Point(517, 4);
             this.lblPassword.Name = "lblPassword";
             this.lblPassword.Size = new System.Drawing.Size(56, 13);
             this.lblPassword.TabIndex = 10;
@@ -131,15 +134,17 @@
             // 
             // txtPassword
             // 
-            this.txtPassword.Location = new System.Drawing.Point(363, 20);
+            this.txtPassword.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtPassword.Location = new System.Drawing.Point(520, 20);
             this.txtPassword.Name = "txtPassword";
             this.txtPassword.Size = new System.Drawing.Size(100, 20);
             this.txtPassword.TabIndex = 9;
             // 
             // lblHostname
             // 
+            this.lblHostname.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblHostname.AutoSize = true;
-            this.lblHostname.Location = new System.Drawing.Point(159, 4);
+            this.lblHostname.Location = new System.Drawing.Point(316, 4);
             this.lblHostname.Name = "lblHostname";
             this.lblHostname.Size = new System.Drawing.Size(58, 13);
             this.lblHostname.TabIndex = 5;
@@ -147,7 +152,8 @@
             // 
             // txtHostname
             // 
-            this.txtHostname.Location = new System.Drawing.Point(159, 20);
+            this.txtHostname.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtHostname.Location = new System.Drawing.Point(316, 20);
             this.txtHostname.Name = "txtHostname";
             this.txtHostname.Size = new System.Drawing.Size(145, 20);
             this.txtHostname.TabIndex = 4;
@@ -155,15 +161,17 @@
             // 
             // txtPort
             // 
-            this.txtPort.Location = new System.Drawing.Point(310, 20);
+            this.txtPort.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtPort.Location = new System.Drawing.Point(467, 20);
             this.txtPort.Name = "txtPort";
             this.txtPort.Size = new System.Drawing.Size(47, 20);
             this.txtPort.TabIndex = 7;
             // 
             // lblPort
             // 
+            this.lblPort.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblPort.AutoSize = true;
-            this.lblPort.Location = new System.Drawing.Point(307, 4);
+            this.lblPort.Location = new System.Drawing.Point(464, 4);
             this.lblPort.Name = "lblPort";
             this.lblPort.Size = new System.Drawing.Size(29, 13);
             this.lblPort.TabIndex = 6;
@@ -231,6 +239,21 @@
             this.chkAnchorScrollbar.Text = "Anchor Scrollbar";
             this.chkAnchorScrollbar.UseVisualStyleBackColor = true;
             // 
+            // rtbConsole
+            // 
+            this.rtbConsole.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.rtbConsole.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.rtbConsole.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.rtbConsole.Location = new System.Drawing.Point(6, 6);
+            this.rtbConsole.Name = "rtbConsole";
+            this.rtbConsole.ReadOnly = true;
+            this.rtbConsole.Size = new System.Drawing.Size(808, 538);
+            this.rtbConsole.TabIndex = 3;
+            this.rtbConsole.Text = "";
+            this.rtbConsole.WordWrap = false;
+            // 
             // btnSend
             // 
             this.btnSend.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
@@ -263,21 +286,6 @@
             this.tabProtocolTest.TabIndex = 8;
             this.tabProtocolTest.Text = "Protocol Test";
             this.tabProtocolTest.UseVisualStyleBackColor = true;
-            // 
-            // rtbConsole
-            // 
-            this.rtbConsole.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.rtbConsole.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.rtbConsole.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.rtbConsole.Location = new System.Drawing.Point(6, 6);
-            this.rtbConsole.Name = "rtbConsole";
-            this.rtbConsole.ReadOnly = true;
-            this.rtbConsole.Size = new System.Drawing.Size(808, 538);
-            this.rtbConsole.TabIndex = 3;
-            this.rtbConsole.Text = "";
-            this.rtbConsole.WordWrap = false;
             // 
             // protocolTestControl1
             // 

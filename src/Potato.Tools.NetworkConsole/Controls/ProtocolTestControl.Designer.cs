@@ -102,8 +102,6 @@
             // 
             this.chkConnectionIsolation.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.chkConnectionIsolation.AutoSize = true;
-            this.chkConnectionIsolation.Checked = true;
-            this.chkConnectionIsolation.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkConnectionIsolation.Location = new System.Drawing.Point(422, 444);
             this.chkConnectionIsolation.Name = "chkConnectionIsolation";
             this.chkConnectionIsolation.Size = new System.Drawing.Size(122, 17);

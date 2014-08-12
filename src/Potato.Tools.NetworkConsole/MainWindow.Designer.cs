@@ -289,7 +289,7 @@
             // 
             // protocolTestControl1
             // 
-            this.protocolTestControl1.ActiveGame = null;
+            this.protocolTestControl1.Connection = null;
             this.protocolTestControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.protocolTestControl1.IsTestRunning = false;
             this.protocolTestControl1.Location = new System.Drawing.Point(0, 0);

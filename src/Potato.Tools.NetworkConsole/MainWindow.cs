@@ -89,6 +89,8 @@ namespace Potato.Tools.NetworkConsole {
                         });
 
                         this.Connection.AttemptConnection();
+
+                        this.protocolTestControl1.Connection = this.Connection;
                     }
                 }
             }

@@ -20,6 +20,7 @@ using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
 using System.Xml.Linq;
+using Potato.Core.Connections;
 using Potato.Net.Shared;
 using Potato.Tools.NetworkConsole.Utils;
 using ConnectionState = Potato.Net.Shared.ConnectionState;
@@ -30,21 +31,22 @@ namespace Potato.Tools.NetworkConsole.Controls {
 
         public bool IsTestRunning { get; set; }
 
-        public Protocol ActiveGame {
+        public ConnectionController Connection {
             get {
-                return this._activeGame;
+                return this._connection;
             }
             set {
-                this._activeGame = value;
+                this._connection = value;
 
                 // Assign events.
-                if (this._activeGame != null) {
-                    this._activeGame.ProtocolEvent += m_activeGame_GameEvent;
-                    this._activeGame.ClientEvent += m_activeGame_ClientEvent;
+                if (this._connection != null) {
+                    this._connection.ProtocolEvent += new Action<IProtocolEventArgs>(_connection_ProtocolEvent);
+                    this._connection.ClientEvent += new Action<IClientEventArgs>(_connection_ClientEvent);
                 }
             }
         }
-        private Protocol _activeGame;
+
+        private ConnectionController _connection;
 
         /// <summary>
         /// 
@@ -55,10 +57,9 @@ namespace Potato.Tools.NetworkConsole.Controls {
             InitializeComponent();
         }
 
-
-        private void m_activeGame_ClientEvent(IProtocol sender, IClientEventArgs e) {
+        private void _connection_ClientEvent(IClientEventArgs e) {
             if (this.InvokeRequired == true) {
-                this.Invoke(new Action<Protocol, ClientEventArgs>(this.m_activeGame_ClientEvent), sender, e);
+                this.Invoke(new Action<ClientEventArgs>(this._connection_ClientEvent), e);
                 return;
             }
 
@@ -67,16 +68,15 @@ namespace Potato.Tools.NetworkConsole.Controls {
             }
         }
 
-        private void m_activeGame_GameEvent(IProtocol sender, IProtocolEventArgs e) {
+        private void _connection_ProtocolEvent(IProtocolEventArgs e) {
             if (this.InvokeRequired == true) {
-                this.Invoke(new Action<Protocol, IProtocolEventArgs>(this.m_activeGame_GameEvent), sender, e);
+                this.Invoke(new Action<IProtocolEventArgs>(this._connection_ProtocolEvent), e);
                 return;
             }
 
             if (e.ProtocolEventType == ProtocolEventType.ProtocolPlayerlistUpdated) {
 
             }
-
         }
 
         public void ConsoleAppendLine(string format, params object[] parameters) {
@@ -157,7 +157,7 @@ namespace Potato.Tools.NetworkConsole.Controls {
 
         private void btnRun_Click(object sender, EventArgs e) {
 
-            if (this.ActiveGame != null && this.ProtocolTestRun != null && this.IsTestRunning == false) {
+            if (this.Connection != null && this.ProtocolTestRun != null && this.IsTestRunning == false) {
                 this.rtbProtocolTestOutput.Text = String.Empty;
 
                 if (this.ProtocolTestRun.ConnecionIsolation == true) {
@@ -178,10 +178,10 @@ namespace Potato.Tools.NetworkConsole.Controls {
 
                     // No specific test selected, run them all.
                     if (tests.Count == 0) {
-                        this.ProtocolTestRun.Execute(this.ActiveGame);
+                        this.ProtocolTestRun.Execute(this.Connection.Protocol);
                     }
                     else {
-                        this.ProtocolTestRun.Execute(this.ActiveGame, tests);
+                        this.ProtocolTestRun.Execute(this.Connection.Protocol, tests);
                     }
 
                     this.ProtocolTestRun.TestBegin -= new Net.Utils.Tests.ProtocolTestRun.TestEventHandler(ProtocolTestRun_TestBegin);
@@ -198,7 +198,7 @@ namespace Potato.Tools.NetworkConsole.Controls {
 
             test.TestEvent -= new ProtocolUnitTest.TestEventHandler(Test_TestEvent);
             test.TestSetup -= new ProtocolUnitTest.TestEventHandler(Test_TestSetup);
-            this.ActiveGame.ClientEvent -= ActiveGame_ClientEvent;
+            this.Connection.ClientEvent -= new Action<IClientEventArgs>(Connection_ClientEvent);
         }
 
         protected void ProtocolTestRun_TestFailed(ProtocolTestRun sender, ProtocolUnitTestEventArgs e) {
@@ -237,12 +237,12 @@ namespace Potato.Tools.NetworkConsole.Controls {
         }
 
         protected void Test_TestSetup(ProtocolUnitTest sender, ProtocolUnitTestEventArgs args) {
-            this.ActiveGame.ClientEvent += ActiveGame_ClientEvent;
+            this.Connection.ClientEvent += new Action<IClientEventArgs>(Connection_ClientEvent);
         }
 
-        protected void ActiveGame_ClientEvent(IProtocol sender, IClientEventArgs e) {
+        protected void Connection_ClientEvent(IClientEventArgs e) {
             if (this.InvokeRequired == true) {
-                this.Invoke(new Action<Protocol, ClientEventArgs>(this.ActiveGame_ClientEvent), sender, e);
+                this.Invoke(new Action<ClientEventArgs>(this.Connection_ClientEvent), e);
                 return;
             }
 
@@ -253,10 +253,10 @@ namespace Potato.Tools.NetworkConsole.Controls {
                 this.ConsoleAppendLine("^1Error: {0}", e.Now.Exceptions.FirstOrDefault());
             }
             else if (e.EventType == ClientEventType.ClientPacketSent) {
-                this.ConsoleAppendLine("^2SEND: {0}", e.Now.Packets.FirstOrDefault().DebugText);
+                this.ConsoleAppendLine("^2SEND: {0}", e.Now.Packets.First().DebugText);
             }
             else if (e.EventType == ClientEventType.ClientPacketReceived) {
-                this.ConsoleAppendLine("^5RECV: {0}", e.Now.Packets.FirstOrDefault().DebugText);
+                this.ConsoleAppendLine("^5RECV: {0}", e.Now.Packets.First().DebugText);
             }
         }
 

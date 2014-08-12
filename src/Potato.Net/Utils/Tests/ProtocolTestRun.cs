@@ -18,6 +18,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Serialization;
 using Potato.Net.Shared;
+using Potato.Net.Shared.Sandbox;
 
 namespace Potato.Net.Utils.Tests {
 
@@ -133,7 +134,7 @@ namespace Potato.Net.Utils.Tests {
         /// </summary>
         /// <param name="game"></param>
         /// <param name="tests"></param>
-        public void Execute(Protocol game, List<ProtocolUnitTest> tests) {
+        public void Execute(ISandboxProtocolController game, List<ProtocolUnitTest> tests) {
             this.Start = DateTime.Now;
 
             this.ReplaceText();
@@ -165,7 +166,7 @@ namespace Potato.Net.Utils.Tests {
         /// Executes all of the tests.
         /// </summary>
         /// <param name="game"></param>
-        public void Execute(Protocol game) {
+        public void Execute(ISandboxProtocolController game) {
             this.Execute(game, this.Tests);
         }
 

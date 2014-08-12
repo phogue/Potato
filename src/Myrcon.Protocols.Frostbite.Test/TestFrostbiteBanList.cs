@@ -17,12 +17,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Myrcon.Protocols.Frostbite.Battlefield;
 using Myrcon.Protocols.Frostbite.Battlefield.Battlefield4.Objects;
-using Myrcon.Protocols.Frostbite.Objects;
 using NUnit.Framework;
-using Potato.Net.Shared;
-using Potato.Net.Shared.Models;
 
 namespace Myrcon.Protocols.Frostbite.Test {
     [TestFixture]

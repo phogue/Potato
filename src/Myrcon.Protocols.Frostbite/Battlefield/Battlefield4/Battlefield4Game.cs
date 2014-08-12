@@ -120,9 +120,11 @@ namespace Myrcon.Protocols.Frostbite.Battlefield.Battlefield4 {
 
                 if (banList.Count > 0) {
                     foreach (BanModel ban in banList) {
-                        var closureBan = ban;
-                        var key = String.Format("{0}/{1}", ban.Scope.Times.First().Context, ban.Scope.Players.First().Uid ?? ban.Scope.Players.First().Name ?? ban.Scope.Players.First().Ip);
-                        this.State.Bans.AddOrUpdate(key, id => closureBan, (id, model) => closureBan);
+                        if (ban.Scope.Times.Count > 0 && ban.Scope.Players.Count > 0) {
+                            var closureBan = ban;
+                            var key = String.Format("{0}/{1}", ban.Scope.Times.First().Context, ban.Scope.Players.First().Uid ?? ban.Scope.Players.First().Name ?? ban.Scope.Players.First().Ip);
+                            this.State.Bans.AddOrUpdate(key, id => closureBan, (id, model) => closureBan);
+                        }
                     }
 
                     this.Send(this.CreatePacket("banList.list {0}", startOffset + 100));

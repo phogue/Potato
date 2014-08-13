@@ -21,60 +21,32 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 using System.Reflection;
-using System.Timers;
-using Potato.Core.Connections;
-using Potato.Core.Protocols;
 using Potato.Core.Shared;
-using Potato.Core.Variables;
 using Potato.Net.Shared;
 using Potato.Net.Shared.Actions;
+using Potato.Tools.NetworkConsole.Models;
 
 namespace Potato.Tools.NetworkConsole {
     public partial class MainWindow : Form {
-        /// <summary>
-        ///  The actual game object loaded and operated on within a sandbox
-        /// </summary>
-        public ConnectionController Connection { get; set; }
 
-        public VariableController Variables { get; set; }
-
-        private ProtocolController ProtocolController { get; set; }
-
-        // Console
-        private LinkedList<String> CommandHistory { get; set; }
-        private LinkedListNode<String> CommandHistoryCurrentNode { get; set; }
-
-        private System.Timers.Timer Timer { get; set; }
+        public NetworkConsoleModel NetworkConsoleModel { get; set; }
 
         public MainWindow(IEnumerable<String> args) {
             InitializeComponent();
 
-            this.CommandHistory = new LinkedList<string>();
+            this.NetworkConsoleModel = new NetworkConsoleModel();
+            this.NetworkConsoleModel.ParseArguments(args);
 
-            this.Variables = new VariableController();
-            this.Variables.ParseArguments(new List<String>(args));
+            this.NetworkConsoleModel.Connection.ClientEvent += new Action<IClientEventArgs>(Connection_ClientEvent);
 
-            this.ProtocolController = new ProtocolController();
-            this.ProtocolController.Execute();
-
-            this.Connection = new ConnectionController();
-            this.Connection.Execute();
-            this.Connection.ClientEvent += new Action<IClientEventArgs>(Connection_ClientEvent);
-
-            this.Timer = new System.Timers.Timer(10000);
-            this.Timer.Elapsed += new ElapsedEventHandler(Timer_Elapsed);
-            this.Timer.Start();
-        }
-
-        private void Timer_Elapsed(object sender, ElapsedEventArgs e) {
-            this.Connection.Poke();
+            this.protocolTestControl1.NetworkConsoleModel = this.NetworkConsoleModel;
         }
 
         private void CreateProtocol() {
             ushort port = 10156;
 
             if (ushort.TryParse(this.txtPort.Text, out port) == true && String.IsNullOrEmpty(this.txtHostname.Text) == false) {
-                var selectedProtocolMetadata = this.ProtocolController.Protocols.FirstOrDefault(protocolAssemblyMetadata => protocolAssemblyMetadata.ProtocolTypes.Select(protocolType => String.Format("{0} - {1} ({2})", protocolType.Provider, protocolType.Name, protocolType.Type)).Contains((string)this.cboGames.SelectedItem));
+                var selectedProtocolMetadata = this.NetworkConsoleModel.ProtocolController.Protocols.FirstOrDefault(protocolAssemblyMetadata => protocolAssemblyMetadata.ProtocolTypes.Select(protocolType => String.Format("{0} - {1} ({2})", protocolType.Provider, protocolType.Name, protocolType.Type)).Contains((string)this.cboGames.SelectedItem));
 
                 if (selectedProtocolMetadata != null) {
 
@@ -82,15 +54,13 @@ namespace Potato.Tools.NetworkConsole {
 
                     if (selectedProtocolType != null) {
 
-                        this.Connection.SetupProtocol(selectedProtocolMetadata, selectedProtocolType, new ProtocolSetup() {
+                        this.NetworkConsoleModel.Connection.SetupProtocol(selectedProtocolMetadata, selectedProtocolType, new ProtocolSetup() {
                             Hostname = this.txtHostname.Text,
                             Password = this.txtPassword.Text,
                             Port = port
                         });
 
-                        this.Connection.AttemptConnection();
-
-                        this.protocolTestControl1.Connection = this.Connection;
+                        this.NetworkConsoleModel.Connection.AttemptConnection();
                     }
                 }
             }
@@ -99,17 +69,17 @@ namespace Potato.Tools.NetworkConsole {
         private void Form1_Load(object sender, EventArgs e) {
             this.lblVersion.Text = @"Version: " + Assembly.GetExecutingAssembly().GetName().Version;
 
-            this.cboGames.Items.AddRange(this.ProtocolController.Protocols.SelectMany(protocolAssemblyMetadata => protocolAssemblyMetadata.ProtocolTypes).Select(protocolMetadataType => String.Format("{0} - {1} ({2})", protocolMetadataType.Provider, protocolMetadataType.Name, protocolMetadataType.Type)).Distinct().Cast<Object>().ToArray());
+            this.cboGames.Items.AddRange(this.NetworkConsoleModel.ProtocolController.Protocols.SelectMany(protocolAssemblyMetadata => protocolAssemblyMetadata.ProtocolTypes).Select(protocolMetadataType => String.Format("{0} - {1} ({2})", protocolMetadataType.Provider, protocolMetadataType.Name, protocolMetadataType.Type)).Distinct().Cast<Object>().ToArray());
 
-            this.txtHostname.Text = this.Variables.Get("Hostname", "");
-            this.txtPort.Text = this.Variables.Get("Port", "");
-            this.txtPassword.Text = this.Variables.Get("Password", "");
-            this.txtAdditional.Text = this.Variables.Get("Additional", "");
+            this.txtHostname.Text = this.NetworkConsoleModel.Variables.Get("Hostname", "");
+            this.txtPort.Text = this.NetworkConsoleModel.Variables.Get("Port", "");
+            this.txtPassword.Text = this.NetworkConsoleModel.Variables.Get("Password", "");
+            this.txtAdditional.Text = this.NetworkConsoleModel.Variables.Get("Additional", "");
 
-            var protocolProvider = this.Variables.Get("ProtocolProvider", "");
-            var protocolType = this.Variables.Get("ProtocolType", "");
+            var protocolProvider = this.NetworkConsoleModel.Variables.Get("ProtocolProvider", "");
+            var protocolType = this.NetworkConsoleModel.Variables.Get("ProtocolType", "");
 
-            var result = this.ProtocolController.Tunnel(CommandBuilder.ProtocolsCheckSupportedProtocol(protocolProvider, protocolType).SetOrigin(CommandOrigin.Local));
+            var result = this.NetworkConsoleModel.ProtocolController.Tunnel(CommandBuilder.ProtocolsCheckSupportedProtocol(protocolProvider, protocolType).SetOrigin(CommandOrigin.Local));
 
             if (result.Success == true && result.Now.ProtocolAssemblyMetadatas.Count > 0 && result.Now.ProtocolTypes.Count > 0) {
                 var type = result.Now.ProtocolTypes.First();
@@ -122,17 +92,17 @@ namespace Potato.Tools.NetworkConsole {
                 this.cboGames.SelectedIndex = 0;
             }
 
-            if (this.Variables.Get("Connect", false) == true) {
+            if (this.NetworkConsoleModel.Variables.Get("Connect", false) == true) {
                 this.CreateProtocol();
             }
         }
 
         private void btnConnect_Click(object sender, EventArgs e) {
-            if (this.Connection.ProtocolState.Settings.Current.ConnectionState == ConnectionState.ConnectionDisconnected) {
+            if (this.NetworkConsoleModel.Connection.ProtocolState.Settings.Current.ConnectionState == ConnectionState.ConnectionDisconnected) {
                 this.CreateProtocol();
             }
             else {
-                this.Connection.Protocol.Shutdown();
+                this.NetworkConsoleModel.Connection.Protocol.Shutdown();
             }
         }
 
@@ -188,11 +158,11 @@ namespace Potato.Tools.NetworkConsole {
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e) {
-            this.Connection.Dispose();
+            this.NetworkConsoleModel.Connection.Dispose();
         }
 
         private void Execute(string commandText) {
-            this.Connection.Protocol.Action(new NetworkAction() {
+            this.NetworkConsoleModel.Connection.Protocol.Action(new NetworkAction() {
                 ActionType = NetworkActionType.NetworkPacketSend,
                 Now = {
                     Content = new List<String>() {
@@ -211,23 +181,23 @@ namespace Potato.Tools.NetworkConsole {
             else if (e.KeyData == Keys.Up) {
                 e.SuppressKeyPress = true;
 
-                if (this.CommandHistoryCurrentNode == null && this.CommandHistory.First != null) {
-                    this.CommandHistoryCurrentNode = this.CommandHistory.First;
-                    this.txtConsoleText.Text = this.CommandHistoryCurrentNode.Value;
+                if (this.NetworkConsoleModel.CommandHistoryCurrentNode == null && this.NetworkConsoleModel.CommandHistory.First != null) {
+                    this.NetworkConsoleModel.CommandHistoryCurrentNode = this.NetworkConsoleModel.CommandHistory.First;
+                    this.txtConsoleText.Text = this.NetworkConsoleModel.CommandHistoryCurrentNode.Value;
 
                     this.txtConsoleText.Select(this.txtConsoleText.Text.Length, 0);
                 }
-                else if (this.CommandHistoryCurrentNode != null && this.CommandHistoryCurrentNode.Next != null) {
-                    this.CommandHistoryCurrentNode = this.CommandHistoryCurrentNode.Next;
-                    this.txtConsoleText.Text = this.CommandHistoryCurrentNode.Value;
+                else if (this.NetworkConsoleModel.CommandHistoryCurrentNode != null && this.NetworkConsoleModel.CommandHistoryCurrentNode.Next != null) {
+                    this.NetworkConsoleModel.CommandHistoryCurrentNode = this.NetworkConsoleModel.CommandHistoryCurrentNode.Next;
+                    this.txtConsoleText.Text = this.NetworkConsoleModel.CommandHistoryCurrentNode.Value;
 
                     this.txtConsoleText.Select(this.txtConsoleText.Text.Length, 0);
                 }
             }
             else if (e.KeyData == Keys.Down) {
-                if (this.CommandHistoryCurrentNode != null && this.CommandHistoryCurrentNode.Previous != null) {
-                    this.CommandHistoryCurrentNode = this.CommandHistoryCurrentNode.Previous;
-                    this.txtConsoleText.Text = this.CommandHistoryCurrentNode.Value;
+                if (this.NetworkConsoleModel.CommandHistoryCurrentNode != null && this.NetworkConsoleModel.CommandHistoryCurrentNode.Previous != null) {
+                    this.NetworkConsoleModel.CommandHistoryCurrentNode = this.NetworkConsoleModel.CommandHistoryCurrentNode.Previous;
+                    this.txtConsoleText.Text = this.NetworkConsoleModel.CommandHistoryCurrentNode.Value;
 
                     this.txtConsoleText.Select(this.txtConsoleText.Text.Length, 0);
                 }
@@ -239,11 +209,11 @@ namespace Potato.Tools.NetworkConsole {
         private void btnSend_Click(object sender, EventArgs e) {
             this.Execute(this.txtConsoleText.Text);
 
-            this.CommandHistory.AddFirst(this.txtConsoleText.Text);
-            if (this.CommandHistory.Count > 20) {
-                this.CommandHistory.RemoveLast();
+            this.NetworkConsoleModel.CommandHistory.AddFirst(this.txtConsoleText.Text);
+            if (this.NetworkConsoleModel.CommandHistory.Count > 20) {
+                this.NetworkConsoleModel.CommandHistory.RemoveLast();
             }
-            this.CommandHistoryCurrentNode = null;
+            this.NetworkConsoleModel.CommandHistoryCurrentNode = null;
 
             this.txtConsoleText.Clear();
             this.txtConsoleText.Focus();

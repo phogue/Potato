@@ -20,10 +20,9 @@ using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
 using System.Xml.Linq;
-using Potato.Core.Connections;
 using Potato.Net.Shared;
+using Potato.Tools.NetworkConsole.Models;
 using Potato.Tools.NetworkConsole.Utils;
-using ConnectionState = Potato.Net.Shared.ConnectionState;
 using Potato.Net.Utils.Tests;
 
 namespace Potato.Tools.NetworkConsole.Controls {
@@ -31,22 +30,7 @@ namespace Potato.Tools.NetworkConsole.Controls {
 
         public bool IsTestRunning { get; set; }
 
-        public ConnectionController Connection {
-            get {
-                return this._connection;
-            }
-            set {
-                this._connection = value;
-
-                // Assign events.
-                if (this._connection != null) {
-                    this._connection.ProtocolEvent += new Action<IProtocolEventArgs>(_connection_ProtocolEvent);
-                    this._connection.ClientEvent += new Action<IClientEventArgs>(_connection_ClientEvent);
-                }
-            }
-        }
-
-        private ConnectionController _connection;
+        public NetworkConsoleModel NetworkConsoleModel { get; set; }
 
         /// <summary>
         /// 
@@ -55,28 +39,6 @@ namespace Potato.Tools.NetworkConsole.Controls {
 
         public ProtocolTestControl() {
             InitializeComponent();
-        }
-
-        private void _connection_ClientEvent(IClientEventArgs e) {
-            if (this.InvokeRequired == true) {
-                this.Invoke(new Action<ClientEventArgs>(this._connection_ClientEvent), e);
-                return;
-            }
-
-            if (e.ConnectionState == ConnectionState.ConnectionConnected) {
-
-            }
-        }
-
-        private void _connection_ProtocolEvent(IProtocolEventArgs e) {
-            if (this.InvokeRequired == true) {
-                this.Invoke(new Action<IProtocolEventArgs>(this._connection_ProtocolEvent), e);
-                return;
-            }
-
-            if (e.ProtocolEventType == ProtocolEventType.ProtocolPlayerlistUpdated) {
-
-            }
         }
 
         public void ConsoleAppendLine(string format, params object[] parameters) {
@@ -157,7 +119,7 @@ namespace Potato.Tools.NetworkConsole.Controls {
 
         private void btnRun_Click(object sender, EventArgs e) {
 
-            if (this.Connection != null && this.ProtocolTestRun != null && this.IsTestRunning == false) {
+            if (this.NetworkConsoleModel.Connection != null && this.ProtocolTestRun != null && this.IsTestRunning == false) {
                 this.rtbProtocolTestOutput.Text = String.Empty;
 
                 if (this.ProtocolTestRun.ConnecionIsolation == true) {
@@ -171,6 +133,7 @@ namespace Potato.Tools.NetworkConsole.Controls {
                 
                 ThreadPool.QueueUserWorkItem(delegate {
                     this.IsTestRunning = true;
+                    this.NetworkConsoleModel.SynchornizationEnabled = false;
 
                     this.ProtocolTestRun.TestBegin += new Net.Utils.Tests.ProtocolTestRun.TestEventHandler(ProtocolTestRun_TestBegin);
                     this.ProtocolTestRun.TestSuccess += new Net.Utils.Tests.ProtocolTestRun.TestEventHandler(ProtocolTestRun_TestSuccess);
@@ -178,10 +141,10 @@ namespace Potato.Tools.NetworkConsole.Controls {
 
                     // No specific test selected, run them all.
                     if (tests.Count == 0) {
-                        this.ProtocolTestRun.Execute(this.Connection.Protocol);
+                        this.ProtocolTestRun.Execute(this.NetworkConsoleModel.Connection.Protocol);
                     }
                     else {
-                        this.ProtocolTestRun.Execute(this.Connection.Protocol, tests);
+                        this.ProtocolTestRun.Execute(this.NetworkConsoleModel.Connection.Protocol, tests);
                     }
 
                     this.ProtocolTestRun.TestBegin -= new Net.Utils.Tests.ProtocolTestRun.TestEventHandler(ProtocolTestRun_TestBegin);
@@ -189,6 +152,7 @@ namespace Potato.Tools.NetworkConsole.Controls {
                     this.ProtocolTestRun.TestFailed -= new Net.Utils.Tests.ProtocolTestRun.TestEventHandler(ProtocolTestRun_TestFailed);
 
                     this.IsTestRunning = false;
+                    this.NetworkConsoleModel.SynchornizationEnabled = true;
                 });
             }
         }
@@ -198,7 +162,7 @@ namespace Potato.Tools.NetworkConsole.Controls {
 
             test.TestEvent -= new ProtocolUnitTest.TestEventHandler(Test_TestEvent);
             test.TestSetup -= new ProtocolUnitTest.TestEventHandler(Test_TestSetup);
-            this.Connection.ClientEvent -= new Action<IClientEventArgs>(Connection_ClientEvent);
+            this.NetworkConsoleModel.Connection.ClientEvent -= new Action<IClientEventArgs>(Connection_ClientEvent);
         }
 
         protected void ProtocolTestRun_TestFailed(ProtocolTestRun sender, ProtocolUnitTestEventArgs e) {
@@ -237,7 +201,7 @@ namespace Potato.Tools.NetworkConsole.Controls {
         }
 
         protected void Test_TestSetup(ProtocolUnitTest sender, ProtocolUnitTestEventArgs args) {
-            this.Connection.ClientEvent += new Action<IClientEventArgs>(Connection_ClientEvent);
+            this.NetworkConsoleModel.Connection.ClientEvent += new Action<IClientEventArgs>(Connection_ClientEvent);
         }
 
         protected void Connection_ClientEvent(IClientEventArgs e) {

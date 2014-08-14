@@ -101,6 +101,8 @@ namespace Potato.Net.Utils.Tests {
                     }
                 };
 
+                ISandboxProtocolCallbackProxy originalBubbleProxy = game.Bubble;
+
                 game.Bubble = new SandboxProtocolCallbackProxy() {
                     ClientEvent = new Action<IClientEventArgs>(handler)
                 };
@@ -111,7 +113,7 @@ namespace Potato.Net.Utils.Tests {
                     this.OnTestEvent(new ProtocolUnitTestEventArgs() { Message = "Timeout on client disconnection." });
                 }
 
-                game.Bubble = null;
+                game.Bubble = originalBubbleProxy;
             }
 
             return disconnected;
@@ -136,6 +138,8 @@ namespace Potato.Net.Utils.Tests {
                     }
                 };
 
+                ISandboxProtocolCallbackProxy originalBubbleProxy = game.Bubble;
+
                 game.Bubble = new SandboxProtocolCallbackProxy() {
                     ClientEvent = new Action<IClientEventArgs>(handler)
                 };
@@ -146,7 +150,7 @@ namespace Potato.Net.Utils.Tests {
                     this.OnTestEvent(new ProtocolUnitTestEventArgs() { Message = "Timeout on client connection + login. (check end point & credentials)" });
                 }
 
-                game.Bubble = null;
+                game.Bubble = originalBubbleProxy;
             }
 
             return loggedIn;
@@ -199,6 +203,8 @@ namespace Potato.Net.Utils.Tests {
                         }
                     };
 
+                    ISandboxProtocolCallbackProxy originalBubbleProxy = game.Bubble;
+
                     game.Bubble = new SandboxProtocolCallbackProxy() {
                         ClientEvent = new Action<IClientEventArgs>(handler)
                     };
@@ -219,7 +225,7 @@ namespace Potato.Net.Utils.Tests {
                         this.OnTestEvent(new ProtocolUnitTestEventArgs() { Message = String.Format("Expecting: {0}; Received: {1}", String.Join(", ", expecting), String.Join(", ", unmatchedReceived.ToArray())) });
                     }
 
-                    game.Bubble = null;
+                    game.Bubble = originalBubbleProxy;
                 }
             }
             this.End = DateTime.Now;

@@ -14,6 +14,8 @@
 // limitations under the License.
 #endregion
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Potato.Config.Core;
 using Potato.Service.Shared;
 
@@ -26,7 +28,7 @@ namespace Potato.Config {
     /// Really this is just supposed to run initially by hosts to create the certificate
     /// and initial accounts for the user. 
     /// </remarks>
-    public class Program {
+    public static class Program {
         static void Main(string[] args) {
             var arguments = ArgumentHelper.ToArguments(args);
 
@@ -34,7 +36,7 @@ namespace Potato.Config {
                 // Split the command/arguments.
                 var command = arguments[@"command"];
 
-                arguments.Remove(@"command");
+                arguments = ArgumentHelper.ScrubAlphaNumericKeys(arguments);
 
                 // Create a service to at least handle output to the console for signals.
                 ServiceController service = new ServiceController {
@@ -57,7 +59,8 @@ namespace Potato.Config {
                         foreach (var item in message.Arguments) {
                             Console.WriteLine(@"{0}: {1}", item.Key, item.Value);
                         }
-                    }
+                    },
+                    Arguments = new List<String>(args)
                 };
 
                 // See if we can process the command without loading up the Potato instance (e.g certificate generaton)

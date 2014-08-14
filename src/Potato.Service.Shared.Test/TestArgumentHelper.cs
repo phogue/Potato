@@ -341,5 +341,47 @@ namespace Potato.Service.Shared.Test {
             Assert.AreEqual("B", values[1]);
             Assert.AreEqual("C", values[2]);
         }
+
+        /// <summary>
+        /// Tests that if all keys are numeric, then the arguments remain unchanged.
+        /// </summary>
+        [Test]
+        public void TestScrubAlphaNumericKeysUnchangedWhenOnlyNumeric() {
+            var arguments = ArgumentHelper.ToArguments(new List<String>() {
+                "A",
+                "B",
+                "C"
+            });
+
+            arguments = ArgumentHelper.ScrubAlphaNumericKeys(arguments);
+
+            List<String> values = new List<String>(arguments.Values);
+
+            Assert.AreEqual("A", values[0]);
+            Assert.AreEqual("B", values[1]);
+            Assert.AreEqual("C", values[2]);
+        }
+
+        /// <summary>
+        /// Tests that if all keys are numeric, then the arguments remain unchanged.
+        /// </summary>
+        [Test]
+        public void TestScrubAlphaNumericKeysRemovedNonNumericKeys() {
+            var arguments = ArgumentHelper.ToArguments(new List<String>() {
+                "--Password",
+                "mySecretPassword",
+                "A",
+                "B",
+                "C"
+            });
+
+            arguments = ArgumentHelper.ScrubAlphaNumericKeys(arguments);
+
+            List<String> values = new List<String>(arguments.Values);
+
+            Assert.AreEqual("A", values[0]);
+            Assert.AreEqual("B", values[1]);
+            Assert.AreEqual("C", values[2]);
+        }
     }
 }

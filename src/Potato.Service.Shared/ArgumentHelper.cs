@@ -16,6 +16,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 
 namespace Potato.Service.Shared {
     /// <summary>
@@ -105,6 +106,25 @@ namespace Potato.Service.Shared {
             }
 
             return value;
+        }
+
+        /// <summary>
+        /// Scrubs all non-generated keys from the dictionary, leaving only numeric indexes
+        /// </summary>
+        /// <returns></returns>
+        public static IDictionary<String, String> ScrubAlphaNumericKeys(IDictionary<String, String> arguments) {
+            // Remove all non-numeric keys for a single command to be passed through to Procon
+            var alphaNumericKeys = arguments.Keys.Where(key => {
+                int n = 0;
+
+                return int.TryParse(key, out n) == false;
+            }).ToList();
+
+            foreach (var key in alphaNumericKeys) {
+                arguments.Remove(key);
+            }
+
+            return arguments;
         }
     }
 }

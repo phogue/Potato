@@ -17,7 +17,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Serialization;
-using Potato.Net.Shared;
 using Potato.Net.Shared.Sandbox;
 
 namespace Potato.Net.Utils.Tests {

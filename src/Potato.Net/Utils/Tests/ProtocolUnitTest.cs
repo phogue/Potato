@@ -216,7 +216,7 @@ namespace Potato.Net.Utils.Tests {
                     if ((success = success && expectedResults.WaitOne(this.Timeout * 1000)) == false) {
                         String[] expecting = command.Responses.Where(response => response.Found == false).Select(response => response.ToString()).Union(command.Requests.Where(request => request.Found == false).Select(request => request.ToString())).ToArray();
 
-                        this.OnTestEvent(new ProtocolUnitTestEventArgs() { Message = String.Format("Expecting: {0}; Recieved: {1}", String.Join(", ", expecting), String.Join(", ", unmatchedReceived.ToArray())) });
+                        this.OnTestEvent(new ProtocolUnitTestEventArgs() { Message = String.Format("Expecting: {0}; Received: {1}", String.Join(", ", expecting), String.Join(", ", unmatchedReceived.ToArray())) });
                     }
 
                     game.Bubble = null;

@@ -13,14 +13,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System;
 using System.Collections.Generic;
-using Potato.Net.Shared.Actions;
 using Potato.Net.Shared.Models;
 
-namespace Myrcon.Protocols.Frostbite.Battlefield.Battlefield4.Objects {
+namespace Myrcon.Protocols.Frostbite.Generations.Second.Objects {
     [Serializable]
-    public class Battlefield4FrostbiteMapList {
+    public class SecondFrostbiteMapList {
 
         public static List<MapModel> Parse(List<string> words) {
             List<MapModel> maps = new List<MapModel>();

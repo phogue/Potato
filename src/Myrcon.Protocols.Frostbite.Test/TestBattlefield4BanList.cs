@@ -17,7 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Myrcon.Protocols.Frostbite.Battlefield.Battlefield4.Objects;
+using Myrcon.Protocols.Frostbite.Generations.Second.Objects;
 using NUnit.Framework;
 
 namespace Myrcon.Protocols.Frostbite.Test {
@@ -29,7 +29,7 @@ namespace Myrcon.Protocols.Frostbite.Test {
         /// </summary>
         [Test]
         public void TestParseBanListItemName() {
-            var bans = Battlefield4BanList.Parse(new List<String>() {
+            var bans = SecondFrostbiteBanList.Parse(new List<String>() {
                 "name",
                 "Phil_k",
                 "perm",

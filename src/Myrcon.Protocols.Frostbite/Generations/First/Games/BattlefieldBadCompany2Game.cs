@@ -13,17 +13,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System;
 using System.Collections.Generic;
-using Potato.Net;
 using Potato.Net.Shared;
 using Potato.Net.Shared.Protocols;
 
-namespace Myrcon.Protocols.Frostbite.Battlefield.BattlefieldBadCompany2 {
+namespace Myrcon.Protocols.Frostbite.Generations.First.Games {
     [ProtocolDeclaration(Type = CommonProtocolType.DiceBattlefieldBadCompany2, Name = "Battlefield: Bad Company 2", Provider = "Myrcon")]
-    public class BFBC2Game : BattlefieldGame {
+    public class BattlefieldBadCompany2Game : FirstGame {
 
-        public BFBC2Game() : base() {
+        public BattlefieldBadCompany2Game() : base() {
             ServerInfoParameters = new List<String>() {
                 "ServerName",       "PlayerCount",   "MaxPlayerCount",   "GameMode",
                 "Map",              "CurrentRound",  "TotalRounds",      "TeamScores",

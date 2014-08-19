@@ -13,22 +13,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using Myrcon.Protocols.Frostbite.Objects;
-using Potato.Net;
 using Potato.Net.Shared;
 using Potato.Net.Shared.Actions;
 using Potato.Net.Shared.Models;
 using Potato.Net.Shared.Protocols;
 
-namespace Myrcon.Protocols.Frostbite.MedalOfHonor {
+namespace Myrcon.Protocols.Frostbite.Generations.First.Games {
     [ProtocolDeclaration(Type = CommonProtocolType.DiceMedalOfHonor2010, Name = "Medal of Honor 2010", Provider = "Myrcon")]
-    public class MohGame : FrostbiteGame {
+    public class MedalOfHonorGame : FirstGame {
 
-        public MohGame() : base() {
+        public MedalOfHonorGame() : base() {
             ServerInfoParameters = new List<String>() {
                 "ServerName",       "PlayerCount",   "MaxPlayerCount",   "GameMode",
                 "Map",              "CurrentRound",  "TotalRounds",      "TeamScores",

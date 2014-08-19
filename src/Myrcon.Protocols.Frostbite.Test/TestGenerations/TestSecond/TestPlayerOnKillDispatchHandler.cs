@@ -17,12 +17,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Myrcon.Protocols.Frostbite.Battlefield;
+using Myrcon.Protocols.Frostbite.Generations.Second.Games;
 using NUnit.Framework;
 using Potato.Net.Shared;
 using Potato.Net.Shared.Models;
 
-namespace Myrcon.Protocols.Frostbite.Test.TestBattlefield {
+namespace Myrcon.Protocols.Frostbite.Test.TestGenerations.TestSecond {
     [TestFixture]
     public class TestPlayerOnKillDispatchHandler {
 
@@ -33,7 +33,7 @@ namespace Myrcon.Protocols.Frostbite.Test.TestBattlefield {
         public void TestInsufficentWordsResultsInEmptyEvent() {
             var called = false;
 
-            var protocol = new BattlefieldGame();
+            var protocol = new SecondGame();
 
             protocol.ProtocolEvent += (protocol1, args) => { called = true; };
 
@@ -53,7 +53,7 @@ namespace Myrcon.Protocols.Frostbite.Test.TestBattlefield {
         [Test]
         public void TestWords4NotABooleanResultsInEmptyEvent() {
             var called = false;
-            var protocol = new BattlefieldGame();
+            var protocol = new SecondGame();
 
             protocol.ProtocolEvent += (protocol1, args) => { called = true; };
 
@@ -83,7 +83,7 @@ namespace Myrcon.Protocols.Frostbite.Test.TestBattlefield {
         [Test]
         public void TestPassingThroughCorrectFormatResultsInEvent() {
             var called = false;
-            var protocol = new BattlefieldGame();
+            var protocol = new SecondGame();
 
             protocol.State.Players.TryAdd("EA_1", new PlayerModel() {
                 Name = "Phogue",
@@ -128,7 +128,7 @@ namespace Myrcon.Protocols.Frostbite.Test.TestBattlefield {
         [Test]
         public void TestAKnownItemResultsInThatItemInTheKillerInventory() {
             var called = false;
-            var protocol = new BattlefieldGame();
+            var protocol = new SecondGame();
 
             protocol.State.Players.TryAdd("EA_1", new PlayerModel() {
                 Name = "Phogue",
@@ -183,7 +183,7 @@ namespace Myrcon.Protocols.Frostbite.Test.TestBattlefield {
         [Test]
         public void TestAnUnknownItemResultsInThatItemInTheKillerInventory() {
             var called = false;
-            var protocol = new BattlefieldGame();
+            var protocol = new SecondGame();
 
             protocol.State.Players.TryAdd("EA_1", new PlayerModel() {
                 Name = "Phogue",
@@ -234,7 +234,7 @@ namespace Myrcon.Protocols.Frostbite.Test.TestBattlefield {
         [Test]
         public void TestAKnownPlayerWillBeUsedAsTheKiller() {
             var called = false;
-            var protocol = new BattlefieldGame();
+            var protocol = new SecondGame();
 
             protocol.State.Players.TryAdd("EA_1", new PlayerModel() {
                 Name = "Phogue",
@@ -285,7 +285,7 @@ namespace Myrcon.Protocols.Frostbite.Test.TestBattlefield {
         [Test]
         public void TestAnUnknownPlayerKillerWillResultInNoEvent() {
             var called = false;
-            var protocol = new BattlefieldGame();
+            var protocol = new SecondGame();
 
             protocol.State.Players.TryAdd("EA_2", new PlayerModel() {
                 Name = "Zaeed",
@@ -324,7 +324,7 @@ namespace Myrcon.Protocols.Frostbite.Test.TestBattlefield {
         [Test]
         public void TestAKnownKillerWillHaveTheirKillsIncremented() {
             var called = false;
-            var protocol = new BattlefieldGame();
+            var protocol = new SecondGame();
 
             protocol.State.Players.TryAdd("EA_1", new PlayerModel() {
                 Name = "Phogue",
@@ -375,7 +375,7 @@ namespace Myrcon.Protocols.Frostbite.Test.TestBattlefield {
         [Test]
         public void TestAKnownPlayerWillBeUsedAsTheVictim() {
             var called = false;
-            var protocol = new BattlefieldGame();
+            var protocol = new SecondGame();
 
             protocol.State.Players.TryAdd("EA_1", new PlayerModel() {
                 Name = "Phogue",
@@ -426,7 +426,7 @@ namespace Myrcon.Protocols.Frostbite.Test.TestBattlefield {
         [Test]
         public void TestAnUnknownPlayerVictimWillResultInNoEvent() {
             var called = false;
-            var protocol = new BattlefieldGame();
+            var protocol = new SecondGame();
 
             protocol.State.Players.TryAdd("EA_2", new PlayerModel() {
                 Name = "Phogue",
@@ -465,7 +465,7 @@ namespace Myrcon.Protocols.Frostbite.Test.TestBattlefield {
         [Test]
         public void TestAKnownVictimWillHaveTheirDeathsIncremented() {
             var called = false;
-            var protocol = new BattlefieldGame();
+            var protocol = new SecondGame();
 
             protocol.State.Players.TryAdd("EA_1", new PlayerModel() {
                 Name = "Phogue",
@@ -520,7 +520,7 @@ namespace Myrcon.Protocols.Frostbite.Test.TestBattlefield {
         /// </summary>
         [Test]
         public void TestHeadshotTrueYieldsCorrectFlags() {
-            var protocol = new BattlefieldGame();
+            var protocol = new SecondGame();
 
             protocol.ProtocolEvent += (protocol1, args) => Assert.AreEqual(FrostbiteGame.Headshot, args.Now.Kills.First().Scope.HumanHitLocations.First());
 
@@ -547,7 +547,7 @@ namespace Myrcon.Protocols.Frostbite.Test.TestBattlefield {
         /// </summary>
         [Test]
         public void TestHeadshotFalseYieldsCorrectFlags() {
-            var protocol = new BattlefieldGame();
+            var protocol = new SecondGame();
 
             protocol.ProtocolEvent += (protocol1, args) => Assert.AreEqual(FrostbiteGame.Bodyshot, args.Now.Kills.First().Scope.HumanHitLocations.First());
 

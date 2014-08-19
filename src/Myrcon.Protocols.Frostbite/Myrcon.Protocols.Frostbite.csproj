@@ -52,22 +52,20 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Battlefield\Battlefield3\Battlefield3Game.cs" />
-    <Compile Include="Battlefield\Battlefield3\Objects\Battlefield3FrostbiteMapList.cs" />
-    <Compile Include="Battlefield\Battlefield3\Objects\Battlefield3PlayerList.cs" />
-    <Compile Include="Battlefield\Battlefield3\Objects\Battlefield3BanList.cs" />
-    <Compile Include="Battlefield\Battlefield4\Battlefield4Game.cs" />
-    <Compile Include="Battlefield\Battlefield4\Objects\Battlefield4BanList.cs" />
-    <Compile Include="Battlefield\Battlefield4\Objects\Battlefield4FrostbiteMapList.cs" />
-    <Compile Include="Battlefield\Battlefield4\Objects\Battlefield4PlayerList.cs" />
-    <Compile Include="Battlefield\BattlefieldBadCompany2\BattlefieldBadCompany2Game.cs" />
-    <Compile Include="Battlefield\BattlefieldGame.cs" />
+    <Compile Include="Generations\First\Games\FirstGame.cs" />
+    <Compile Include="Generations\Second\Games\Battlefield3Game.cs" />
+    <Compile Include="Generations\Second\Games\Battlefield4Game.cs" />
+    <Compile Include="Generations\Second\Objects\SecondFrostbiteBanList.cs" />
+    <Compile Include="Generations\Second\Objects\SecondFrostbiteMapList.cs" />
+    <Compile Include="Generations\Second\Objects\SecondFrostbitePlayerList.cs" />
+    <Compile Include="Generations\First\Games\BattlefieldBadCompany2Game.cs" />
+    <Compile Include="Generations\Second\Games\SecondGame.cs" />
     <Compile Include="FrostbiteClient.cs" />
     <Compile Include="FrostbiteGame.cs" />
     <Compile Include="FrostbitePacket.cs" />
     <Compile Include="FrostbitePacketDispatcher.cs" />
     <Compile Include="FrostbitePacketSerializer.cs" />
-    <Compile Include="MedalOfHonor\MedalOfHonorGame.cs" />
+    <Compile Include="Generations\First\Games\MedalOfHonorGame.cs" />
     <Compile Include="Objects\FrostbiteBan.cs" />
     <Compile Include="Objects\FrostbiteBanList.cs" />
     <Compile Include="Objects\FrostbiteChat.cs" />
@@ -116,6 +114,7 @@
     </None>
     <None Include="Myrcon.Protocols.Frostbite.nuspec" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

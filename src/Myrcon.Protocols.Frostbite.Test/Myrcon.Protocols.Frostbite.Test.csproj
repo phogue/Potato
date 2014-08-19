@@ -39,8 +39,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TestBattlefield\TestBattlefield4\TestBanListListDispatchHandler.cs" />
-    <Compile Include="TestBattlefield\TestPlayerOnKillDispatchHandler.cs" />
+    <Compile Include="TestGenerations\TestSecond\TestBanListListDispatchHandler.cs" />
+    <Compile Include="TestGenerations\TestSecond\TestPlayerOnKillDispatchHandler.cs" />
     <Compile Include="TestConfig\TestLoad.cs" />
     <Compile Include="TestBattlefield4BanList.cs" />
   </ItemGroup>

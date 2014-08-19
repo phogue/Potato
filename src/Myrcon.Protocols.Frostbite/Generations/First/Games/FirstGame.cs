@@ -23,13 +23,13 @@ using Potato.Net.Shared;
 using Potato.Net.Shared.Actions;
 using Potato.Net.Shared.Models;
 
-namespace Myrcon.Protocols.Frostbite.Battlefield {
+namespace Myrcon.Protocols.Frostbite.Generations.First.Games {
     /// <summary>
     /// The base battlefield game that handles methods used by the majority of implementations.
     /// Some protocol types may require further specialization, but the most common function
     /// will always be placed here.
     /// </summary>
-    public class BattlefieldGame : FrostbiteGame {
+    public class FirstGame : FrostbiteGame {
 
         public void ServerOnLevelLoadedDispatchHandler(IPacketWrapper request, IPacketWrapper response) {
             if (request.Packet.Words.Count >= 5) {

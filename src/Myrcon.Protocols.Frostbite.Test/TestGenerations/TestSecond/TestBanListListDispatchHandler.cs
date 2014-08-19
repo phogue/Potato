@@ -13,13 +13,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System;
 using System.Collections.Generic;
-using Myrcon.Protocols.Frostbite.Battlefield.Battlefield4;
+using Myrcon.Protocols.Frostbite.Generations.Second.Games;
 using NUnit.Framework;
 using Potato.Net.Shared;
 
-namespace Myrcon.Protocols.Frostbite.Test.TestBattlefield.TestBattlefield4 {
+namespace Myrcon.Protocols.Frostbite.Test.TestGenerations.TestSecond {
     [TestFixture]
     public class TestBanListListDispatchHandler {
         /// <summary>
@@ -29,7 +30,7 @@ namespace Myrcon.Protocols.Frostbite.Test.TestBattlefield.TestBattlefield4 {
         public void TestInsufficentWordsResultsInEmptyEvent() {
             var called = false;
 
-            var protocol = new Battlefield4Game();
+            var protocol = new SecondGame();
 
             protocol.ProtocolEvent += (protocol1, args) => { called = true; };
 
@@ -47,7 +48,7 @@ namespace Myrcon.Protocols.Frostbite.Test.TestBattlefield.TestBattlefield4 {
         /// </summary>
         [Test]
         public void TestBanlistWithIpBanPassedAndIgnored() {
-            var protocol = new Battlefield4Game();
+            var protocol = new SecondGame();
 
             var request = new FrostbitePacket() {
                 Packet = new Packet() {

@@ -90,11 +90,6 @@
       <Name>Potato.Net.Shared</Name>
       <Private>False</Private>
     </ProjectReference>
-    <ProjectReference Include="..\Potato.Net\Potato.Net.csproj">
-      <Project>{65C1DB17-18E0-4AC5-8709-3F7E04B88CA1}</Project>
-      <Name>Potato.Net</Name>
-      <Private>False</Private>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="README.txt" />

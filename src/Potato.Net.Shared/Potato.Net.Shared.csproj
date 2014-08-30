@@ -94,6 +94,11 @@
     <Compile Include="ProtocolDeclarationAttribute.cs" />
     <Compile Include="ProtocolSetupResult.cs" />
     <Compile Include="ProtocolStateDifference.cs" />
+    <Compile Include="Protocols\PunkBuster\IPunkBuster.cs" />
+    <Compile Include="Protocols\PunkBuster\Packets\PunkBusterBeginPlayerList.cs" />
+    <Compile Include="Protocols\PunkBuster\Packets\PunkBusterEndPlayerList.cs" />
+    <Compile Include="Protocols\PunkBuster\Packets\PunkBusterPlayer.cs" />
+    <Compile Include="Protocols\PunkBuster\PunkBusterSerializer.cs" />
     <Compile Include="Sandbox\ISandboxProtocolCallbackProxy.cs" />
     <Compile Include="Sandbox\SandboxProtocolCallbackProxy.cs" />
     <Compile Include="Sandbox\ISandboxProtocolController.cs" />

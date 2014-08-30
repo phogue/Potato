@@ -14,8 +14,8 @@
 // limitations under the License.
 #endregion
 using NUnit.Framework;
-using Potato.Net.Protocols.PunkBuster;
-using Potato.Net.Protocols.PunkBuster.Packets;
+using Potato.Net.Shared.Protocols.PunkBuster;
+using Potato.Net.Shared.Protocols.PunkBuster.Packets;
 
 namespace Potato.Net.Test.Protocols.PunkBuster {
     [TestFixture]

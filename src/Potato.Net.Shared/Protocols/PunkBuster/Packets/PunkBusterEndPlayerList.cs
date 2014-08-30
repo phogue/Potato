@@ -13,16 +13,23 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System.Text.RegularExpressions;
 
-namespace Potato.Net.Protocols.PunkBuster.Packets {
-    public class PunkBusterBeginPlayerList : IPunkBuster {
+namespace Potato.Net.Shared.Protocols.PunkBuster.Packets {
+    public class PunkBusterEndPlayerList : IPunkBuster {
+
+        /// <summary>
+        /// The total number of players at the end of the player list.
+        /// </summary>
+        public int PlayerCount { get; set; }
+
         /// <summary>
         /// Deserialize a regular expression match object into the the object.
         /// </summary>
         /// <param name="data"></param>
         public void Deserialize(Match data) {
-            
+            this.PlayerCount = int.Parse(data.Groups["PlayerCount"].Value);
         }
     }
 }

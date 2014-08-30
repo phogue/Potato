@@ -20,12 +20,12 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using Myrcon.Protocols.Frostbite.Objects;
-using Potato.Net.Protocols.PunkBuster;
-using Potato.Net.Protocols.PunkBuster.Packets;
 using Potato.Net.Shared;
 using Potato.Net.Shared.Actions;
 using Potato.Net.Shared.Geolocation;
 using Potato.Net.Shared.Models;
+using Potato.Net.Shared.Protocols.PunkBuster;
+using Potato.Net.Shared.Protocols.PunkBuster.Packets;
 using Potato.Net.Shared.Utils;
 
 namespace Myrcon.Protocols.Frostbite {

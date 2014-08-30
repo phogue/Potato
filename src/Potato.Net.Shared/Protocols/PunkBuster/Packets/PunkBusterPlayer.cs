@@ -13,22 +13,42 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
+using System;
 using System.Text.RegularExpressions;
 
-namespace Potato.Net.Protocols.PunkBuster.Packets {
-    public class PunkBusterEndPlayerList : IPunkBuster {
+namespace Potato.Net.Shared.Protocols.PunkBuster.Packets {
+    public class PunkBusterPlayer : IPunkBuster {
 
         /// <summary>
-        /// The total number of players at the end of the player list.
+        /// Slot Id of the player.
         /// </summary>
-        public int PlayerCount { get; set; }
+        public uint SlotId { get; set; }
+
+        /// <summary>
+        /// The players IP
+        /// </summary>
+        public String Ip { get; set; }
+
+        /// <summary>
+        /// The players name
+        /// </summary>
+        public String Name { get; set; }
+
+        /// <summary>
+        /// The players PunkBuster Guid
+        /// </summary>
+        public String Guid { get; set; }
 
         /// <summary>
         /// Deserialize a regular expression match object into the the object.
         /// </summary>
         /// <param name="data"></param>
         public void Deserialize(Match data) {
-            this.PlayerCount = int.Parse(data.Groups["PlayerCount"].Value);
+            this.SlotId = uint.Parse(data.Groups["SlotId"].Value);
+            this.Ip = data.Groups["Ip"].Value;
+            this.Name = data.Groups["Name"].Value;
+            this.Guid = data.Groups["Guid"].Value;
         }
     }
 }

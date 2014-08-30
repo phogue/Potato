@@ -13,12 +13,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
+
 using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using Potato.Net.Protocols.PunkBuster.Packets;
+using Potato.Net.Shared.Protocols.PunkBuster.Packets;
 
-namespace Potato.Net.Protocols.PunkBuster {
+namespace Potato.Net.Shared.Protocols.PunkBuster {
     public class PunkBusterSerializer {
 
         private static readonly Dictionary<Regex, Type> Commands = new Dictionary<Regex, Type>() {

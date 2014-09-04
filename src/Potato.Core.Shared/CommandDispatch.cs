@@ -15,6 +15,7 @@
 #endregion
 using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace Potato.Core.Shared {
     /// <summary>
@@ -36,6 +37,8 @@ namespace Potato.Core.Shared {
             }
         }
         private CommandType _mCommandType;
+
+        public Regex NamePattern { get; set; }
 
         public CommandAttributeType CommandAttributeType { get; set; }
 
@@ -66,7 +69,7 @@ namespace Potato.Core.Shared {
         }
         
         public bool CanDispatch(CommandAttributeType attributeType, ICommand command) {
-            return this.CommandAttributeType == attributeType && this.Name == command.Name;
+            return this.CommandAttributeType == attributeType && (this.NamePattern == null ? this.Name == command.Name : this.NamePattern.IsMatch(command.Name));
         }
 
         public Dictionary<String, ICommandParameter> BuildParameterDictionary(IList<ICommandParameter> parameters) {

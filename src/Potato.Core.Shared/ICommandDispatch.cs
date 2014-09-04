@@ -15,6 +15,7 @@
 #endregion
 using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace Potato.Core.Shared {
     /// <summary>
@@ -30,6 +31,11 @@ namespace Potato.Core.Shared {
         /// The command to be executed, will be converted to a string in Name
         /// </summary>
         CommandType CommandType { get; set; }
+
+        /// <summary>
+        /// The pattern to use for command handling. If set then a command name will be tested against this name
+        /// </summary>
+        Regex NamePattern { get; set; }
 
         /// <summary>
         /// When in the execution we want to capture the command (before, as the handler or after)

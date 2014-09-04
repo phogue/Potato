@@ -147,7 +147,7 @@ namespace Potato.Net.Protocols.CommandServer {
                 String acceptEncoding = request.Headers[HttpRequestHeader.AcceptEncoding].ToLowerInvariant();
 
                 if (acceptEncoding.Contains("gzip") == true) {
-                    response.Headers[HttpRequestHeader.ContentEncoding] = "gzip";
+                    response.Headers[HttpResponseHeader.ContentEncoding] = "gzip";
                 }
                 else if (acceptEncoding.Contains("deflate") == true) {
                     response.Headers[HttpRequestHeader.ContentEncoding] = "deflate";

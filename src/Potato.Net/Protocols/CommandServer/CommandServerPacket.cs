@@ -49,7 +49,7 @@ namespace Potato.Net.Protocols.CommandServer {
         /// All of the headers for this http request/response.
         /// </summary>
         public WebHeaderCollection Headers { get; set; }
-
+        
         /// <summary>
         /// The post/get data attached to the request.
         /// </summary>
@@ -65,6 +65,14 @@ namespace Potato.Net.Protocols.CommandServer {
         /// </summary>
         public String Content { get; set; }
 
+        /// <summary>
+        /// Basic strings supplied for http authorization
+        /// </summary>
+        public String[] Authorization { get; set; }
+
+        /// <summary>
+        /// The base packet in this request
+        /// </summary>
         public IPacket Packet { get; set; }
 
         /// <summary>

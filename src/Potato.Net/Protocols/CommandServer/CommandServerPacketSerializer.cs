@@ -70,6 +70,29 @@ namespace Potato.Net.Protocols.CommandServer {
             return query;
         }
 
+        /// <summary>
+        /// Parses the contents of a HttpRequestHeader.Authorization header value
+        /// </summary>
+        /// <param name="raw">The contents of the key</param>
+        /// <returns>The authorization credentials or an empty array if none can be found</returns>
+        protected static String[] ParseAuthorizationHeader(String raw) {
+            String[] credentials = new String[0];
+
+            if (String.IsNullOrEmpty(raw) == false) {
+                var parts = raw.Split(' ');
+
+                if (parts.Length == 2 && parts.First().Trim().Equals("Basic", StringComparison.InvariantCultureIgnoreCase)) {
+                    var parsed = Encoding.ASCII.GetString(Convert.FromBase64String(parts.Last().Trim())).Split(':');
+
+                    if (parsed.Length == 2) {
+                        credentials = parsed;
+                    }
+                }
+            }
+
+            return credentials;
+        }
+
         protected static void Parse(CommandServerPacket packet, byte[] packetData) {
             String[] packetStringData = Regex.Split(Encoding.UTF8.GetString(packetData), @"\r\n\r\n");
 
@@ -101,6 +124,14 @@ namespace Potato.Net.Protocols.CommandServer {
                             catch {
                                 packet.Headers.Set(header.Key, "");
                             }
+                        }
+
+                        if (packet.Headers[HttpRequestHeader.Authorization] != null) {
+                            packet.Authorization = ParseAuthorizationHeader(packet.Headers[HttpRequestHeader.Authorization]);
+                        }
+
+                        if (String.IsNullOrEmpty(packet.Content) && packet.Headers[HttpRequestHeader.ContentLength] == null) {
+                            packet.Headers.Set(HttpRequestHeader.ContentLength, "");
                         }
                     }
                 }
@@ -144,8 +175,8 @@ namespace Potato.Net.Protocols.CommandServer {
         protected byte[] SerializeContent(CommandServerPacket packet) {
             byte[] data = Encoding.UTF8.GetBytes(packet.Content);
 
-            if (packet.Headers[HttpRequestHeader.ContentEncoding] != null) {
-                String contentEncoding = packet.Headers[HttpRequestHeader.ContentEncoding].ToLowerInvariant();
+            if (packet.Headers[HttpResponseHeader.ContentEncoding] != null) {
+                String contentEncoding = packet.Headers[HttpResponseHeader.ContentEncoding].ToLowerInvariant();
 
                 if (contentEncoding.Contains("gzip") == true) {
                     data = CommandServerPacketSerializer.GzipCompress(data);
@@ -168,8 +199,8 @@ namespace Potato.Net.Protocols.CommandServer {
             StringBuilder builder = new StringBuilder();
 
             // Ensure a couple of headers are through..
-            packet.Headers[HttpRequestHeader.Connection] = "close";
-            packet.Headers[HttpRequestHeader.ContentLength] = content.Length.ToString(CultureInfo.InvariantCulture);
+            packet.Headers[HttpResponseHeader.Connection] = "close";
+            packet.Headers[HttpResponseHeader.ContentLength] = content.Length.ToString(CultureInfo.InvariantCulture);
 
             builder.AppendFormat("HTTP/{0}.{1} {2} {3}\r\n", packet.ProtocolVersion.Major, packet.ProtocolVersion.Minor, (int)packet.StatusCode, packet.StatusCode);
             builder.Append(packet.Headers);
@@ -219,10 +250,10 @@ namespace Potato.Net.Protocols.CommandServer {
                 }
                 else {
                     length += packet.Header.Length;
-                }
 
-                // The header/content separator.
-                length += 4;
+                    // The header/content separator.
+                    length += 4;
+                }
             }
 
             return length;

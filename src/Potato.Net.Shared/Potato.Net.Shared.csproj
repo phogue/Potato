@@ -169,6 +169,7 @@
     <Compile Include="Truths\BranchBuilder.cs" />
     <Compile Include="UDPClient.cs" />
     <Compile Include="Utils\CollectionExtensions.cs" />
+    <Compile Include="Utils\HTTP\Method.cs" />
     <Compile Include="Utils\HTTP\Mime.cs" />
     <Compile Include="Utils\MD5.cs" />
     <Compile Include="Utils\Network.cs" />

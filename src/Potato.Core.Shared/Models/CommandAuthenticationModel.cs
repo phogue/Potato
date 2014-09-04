@@ -63,5 +63,18 @@ namespace Potato.Core.Shared.Models {
             this.Uid = null;
             this.PasswordPlainText = null;
         }
+
+        /// <summary>
+        /// Checks if any combination of required values for authentication exist
+        /// todo unit test
+        /// </summary>
+        /// <returns>True if this object can be used for authentication, false if no authentication exists.</returns>
+        public bool Valid() {
+            var account = String.IsNullOrEmpty(this.Username) == false && String.IsNullOrEmpty(this.PasswordPlainText) == false;
+            var token = TokenId != Guid.Empty && String.IsNullOrEmpty(this.Token) == false;
+            var player = String.IsNullOrEmpty(this.GameType) == false && String.IsNullOrEmpty(this.Uid) == false;
+
+            return account || token || player;
+        }
     }
 }

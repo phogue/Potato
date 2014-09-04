@@ -86,5 +86,14 @@ namespace Potato.Net.Shared.Utils.HTTP {
 
             return mimeType;
         }
+
+        /// <summary>
+        /// Fetch the default mime type to use (if none is specified) given a method
+        /// </summary>
+        /// <param name="method">The method of the request (GET, POST, etc)</param>
+        /// <returns>The default mime type</returns>
+        public static String DefaultMimeTypeGivenMethod(String method) {
+            return Method.Equals(method, Method.Get) ? Mime.TextHtml : Mime.ApplicationJson;
+        }
     }
 }

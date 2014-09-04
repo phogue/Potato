@@ -20,6 +20,7 @@ using NUnit.Framework;
 using Potato.Core.Remote;
 using Potato.Core.Shared;
 using Potato.Core.Shared.Remote;
+using Potato.Net.Protocols.CommandServer;
 using Potato.Net.Shared.Utils.HTTP;
 
 namespace Potato.Core.Test.Remote.TestCommandServerSerializer {
@@ -34,7 +35,7 @@ namespace Potato.Core.Test.Remote.TestCommandServerSerializer {
                 Result = new CommandResult() {
                     ContentType = Mime.ApplicationJson
                 }
-            });
+            }, new CommandServerPacket());
 
             Assert.AreEqual(Mime.ApplicationJson, contentType);
         }
@@ -53,7 +54,7 @@ namespace Potato.Core.Test.Remote.TestCommandServerSerializer {
                         { HttpRequestHeader.ContentType.ToString(), Mime.ApplicationJson }
                     }
                 }
-            });
+            }, new CommandServerPacket());
 
             Assert.AreEqual(Mime.ApplicationJson, contentType);
         }
@@ -70,7 +71,7 @@ namespace Potato.Core.Test.Remote.TestCommandServerSerializer {
                         { HttpRequestHeader.ContentType.ToString(), Mime.ApplicationJson }
                     }
                 }
-            });
+            }, new CommandServerPacket());
 
             Assert.AreEqual(Mime.ApplicationJson, contentType);
         }
@@ -87,7 +88,7 @@ namespace Potato.Core.Test.Remote.TestCommandServerSerializer {
 
                     }
                 }
-            });
+            }, new CommandServerPacket());
 
             Assert.AreEqual(Mime.ApplicationJson, contentType);
         }

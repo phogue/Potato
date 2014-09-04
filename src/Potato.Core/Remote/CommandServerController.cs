@@ -15,11 +15,13 @@
 #endregion
 using System;
 using System.Net;
+using Potato.Core.Remote.Interface;
 using Potato.Core.Shared;
 using Potato.Core.Shared.Events;
 using Potato.Core.Shared.Models;
 using Potato.Net.Protocols.CommandServer;
 using Potato.Net.Shared;
+using Potato.Net.Shared.Utils.HTTP;
 
 namespace Potato.Core.Remote {
     /// <summary>
@@ -36,7 +38,15 @@ namespace Potato.Core.Remote {
         /// </summary>
         public ICertificateController Certificate { get; set; }
 
+        /// <summary>
+        /// A reference to the shared reference of static variables.
+        /// </summary>
         public SharedReferences Shared { get; private set; }
+
+        /// <summary>
+        /// The basic interface for a local user to interact with
+        /// </summary>
+        public ICoreController Interface { get; set; }
 
         /// <summary>
         /// Initalizes the command server controller with default values
@@ -44,6 +54,7 @@ namespace Potato.Core.Remote {
         public CommandServerController() : base() {
             this.Shared = new SharedReferences();
             this.Certificate = new CertificateController();
+            this.Interface = new InterfaceController();
         }
 
         public override ICoreController Execute() {
@@ -51,9 +62,13 @@ namespace Potato.Core.Remote {
             this.Shared.Variables.Variable(CommonVariableNames.CommandServerPort).PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(OnPropertyChanged);
             this.Shared.Variables.Variable(CommonVariableNames.CommandServerCertificatePath).PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(OnPropertyChanged);
 
+            this.TunnelObjects.Add(this.Interface);
+
             // Copy for unit testing purposes if variables is modified.
             this.Certificate.Shared.Variables = this.Shared.Variables;
             this.Certificate.Execute();
+
+            this.Interface.Execute();
 
             this.Configure();
 
@@ -227,7 +242,7 @@ namespace Potato.Core.Remote {
                 Method = request.Method,
                 StatusCode = HttpStatusCode.NotFound,
                 Headers = new WebHeaderCollection() {
-                    { HttpRequestHeader.Connection, "close" }
+                    { HttpResponseHeader.Connection, "close" }
                 }
             };
             
@@ -240,18 +255,29 @@ namespace Potato.Core.Remote {
                     // If all they wanted to do was check the authentication..
                     if (String.CompareOrdinal(command.Name, CommandType.SecurityAccountAuthenticate.ToString()) == 0 || String.CompareOrdinal(command.Name, CommandType.SecurityAccountAuthenticateToken.ToString()) == 0) {
                         // Success
-                        response = CommandServerSerializer.CompleteResponsePacket(CommandServerSerializer.ResponseContentType(command), response, authentication);
+                        response = CommandServerSerializer.CompleteResponsePacket(CommandServerSerializer.ResponseContentType(command, request), response, authentication);
+                    }
+                    else if (Method.Equals(request.Method, Method.Get)) {
+                        // Propagate their command
+                        ICommandResult result = this.Interface.Tunnel(command);
+
+                        response = CommandServerSerializer.CompleteResponsePacket(CommandServerSerializer.ResponseContentType(command, request), response, result);
                     }
                     else {
                         // Propagate their command
                         ICommandResult result = this.Tunnel(command);
 
-                        response = CommandServerSerializer.CompleteResponsePacket(CommandServerSerializer.ResponseContentType(command), response, result);
+                        response = CommandServerSerializer.CompleteResponsePacket(CommandServerSerializer.ResponseContentType(command, request), response, result);
                     }
                 }
                 else {
                     // They are not authorized to login or issue this command.
-                    response = CommandServerSerializer.CompleteResponsePacket(CommandServerSerializer.ResponseContentType(command), response, authentication);
+                    response = CommandServerSerializer.CompleteResponsePacket(CommandServerSerializer.ResponseContentType(command, request), response, authentication);
+
+                    response.StatusCode = HttpStatusCode.Unauthorized;
+
+                    // Apply return header
+                    response.Headers.Add(HttpResponseHeader.WwwAuthenticate, String.Format(@"Basic realm=""{0}""", request.Request.Host));
                 }
             }
             else {

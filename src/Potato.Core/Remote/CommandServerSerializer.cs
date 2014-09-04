@@ -39,10 +39,13 @@ namespace Potato.Core.Remote {
             ICommand command = null;
 
             try {
-                switch (request.Headers[HttpRequestHeader.ContentType].ToLower()) {
-                    default:
-                        command = Core.Shared.Serialization.JsonSerialization.Minimal.Deserialize<Command>(request.Content);
-                        break;
+                if (String.IsNullOrEmpty(request.Content)) {
+                    command = new Command() {
+                        Name = request.Request.LocalPath
+                    };
+                }
+                else {
+                    command = Core.Shared.Serialization.JsonSerialization.Minimal.Deserialize<Command>(request.Content);
                 }
 
                 if (command != null) {
@@ -57,6 +60,12 @@ namespace Potato.Core.Remote {
                             request.Packet
                         }
                     };
+
+                    // If no valid authentication exists after deserialization but we have http authorization
+                    if (command.Authentication.Valid() == false && request.Authorization.Length == 2) {
+                        command.Authentication.Username = request.Authorization.First();
+                        command.Authentication.PasswordPlainText = request.Authorization.Last();
+                    }
 
                     commandRequest.AppendTags(request.Headers);
                     commandRequest.AppendTags(request.Query);
@@ -75,14 +84,15 @@ namespace Potato.Core.Remote {
         /// Extracts the content type from the command and it's result.
         /// </summary>
         /// <param name="command">The command that has been dispatched for execution</param>
+        /// <param name="request"></param>
         /// <returns></returns>
-        public static String ResponseContentType(ICommand command) {
+        public static String ResponseContentType(ICommand command, CommandServerPacket request) {
             String contentType = command.Result != null ? command.Result.ContentType : null;
             
             // If no response type was specified elsewhere
             if (String.IsNullOrEmpty(contentType) == true) {
                 // Then assume they want whatever data serialized and returned in whatever the request format was.
-                contentType = command.Request.Tags.ContainsKey(HttpRequestHeader.ContentType.ToString()) == true ? command.Request.Tags[HttpRequestHeader.ContentType.ToString()].ToLower() : Mime.ApplicationJson;
+                contentType = command.Request.Tags.ContainsKey(HttpRequestHeader.ContentType.ToString()) == true ? command.Request.Tags[HttpRequestHeader.ContentType.ToString()].ToLower() : Mime.DefaultMimeTypeGivenMethod(request.Method);
             }
 
             return contentType;
@@ -100,12 +110,12 @@ namespace Potato.Core.Remote {
                 case Mime.ApplicationJavascript:
                 case Mime.TextCss:
                 case Mime.TextHtml:
-                    response.Headers.Add(HttpRequestHeader.ContentType, contentType);
+                    response.Headers.Add(HttpResponseHeader.ContentType, contentType);
                     response.Content = result.Now.Content != null ? result.Now.Content.FirstOrDefault() : "";
                     response.StatusCode = HttpStatusCode.OK;
                     break;
                 default:
-                    response.Headers.Add(HttpRequestHeader.ContentType, Mime.ApplicationJson);
+                    response.Headers.Add(HttpResponseHeader.ContentType, Mime.ApplicationJson);
 
                     using (StringWriter writer = new StringWriter()) {
                         Core.Shared.Serialization.JsonSerialization.Minimal.Serialize(writer, result);

@@ -160,6 +160,13 @@ namespace Potato.Core.Shared.Models {
         /// <summary>
         /// (String) The full default uri of the source respository to download core Potato updates from.
         /// </summary>
-        PackagesDefaultSourceRepositoryUri
+        PackagesDefaultSourceRepositoryUri,
+        /// <summary>
+        /// (bool) True to serve all requests from disk, false to serve from cache loaded on startup.
+        /// </summary>
+        /// <remarks>
+        ///     <para>This option should only be set to true if working on the interface files. There are performance and possibly security concerns from running this set to true in production.</para>
+        /// </remarks>
+        InterfaceServeFromFile
     }
 }

@@ -15,7 +15,7 @@
 #endregion
 using System;
 using System.Net;
-using Potato.Core.Remote.Interface;
+using Potato.Core.Interface;
 using Potato.Core.Shared;
 using Potato.Core.Shared.Events;
 using Potato.Core.Shared.Models;

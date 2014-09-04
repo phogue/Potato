@@ -78,6 +78,11 @@ namespace Potato.Service.Shared {
         public static readonly String ProtocolsDirectoryName = "Protocols";
 
         /// <summary>
+        /// The name of the interface folder
+        /// </summary>
+        public static readonly String InterfaceDirectoryName = "Interface";
+
+        /// <summary>
         /// The base directory, given from the current AppDomain.
         /// </summary>
         public static readonly DirectoryInfo BaseDirectory = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);
@@ -163,6 +168,19 @@ namespace Potato.Service.Shared {
                 return new DirectoryInfo(Path.Combine(Defines.PackageVersionDirectory(Defines.PackagesDirectory.FullName, Defines.PackageMyrconPotatoCore) ?? "", "lib", "net40"));
             }
         }
+
+        /// <summary>
+        /// The full install path of latest Potato core library content files
+        /// </summary>
+        /// <remarks>
+        ///     <para>This is not a readonly property as the packages may be redownloaded/updated during the execution</para>
+        /// </remarks>
+        public static DirectoryInfo PackageMyrconPotatoCoreContent {
+            get {
+                return new DirectoryInfo(Path.Combine(Defines.PackageVersionDirectory(Defines.PackagesDirectory.FullName, Defines.PackageMyrconPotatoCore) ?? "", "content"));
+            }
+        }
+        
 
         /// <summary>
         /// The full install path for the latest Potato shared library

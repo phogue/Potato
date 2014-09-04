@@ -75,7 +75,7 @@
     <Compile Include="Connections\ConnectionController.cs" />
     <Compile Include="Connections\IConnectionController.cs" />
     <Compile Include="Connections\Plugins\ICorePluginController.cs" />
-    <Compile Include="Remote\Interface\InterfaceController.cs" />
+    <Compile Include="Interface\InterfaceController.cs" />
     <Compile Include="Protocols\ProtocolController.cs" />
     <Compile Include="Connections\TextCommands\Parsers\Fuzzy\ItemThingReference.cs" />
     <Compile Include="Connections\TextCommands\ITextCommandParser.cs" />
@@ -104,17 +104,6 @@
     <Compile Include="Remote\CertificateController.cs" />
     <Compile Include="Remote\CommandServerSerializer.cs" />
     <Compile Include="Remote\ICertificateController.cs" />
-    <Compile Include="Remote\Interface\Pages\IndexPageModel.cs" />
-    <Compile Include="Remote\Interface\Pages\IndexPageView.cs">
-      <DependentUpon>IndexPageView.tt</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
     <Compile Include="SharedReferences.cs" />
     <Compile Include="Database\DatabaseController.cs" />
     <Compile Include="Events\EventsConsoleController.cs" />
@@ -167,6 +156,12 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Interface\assets\css\style.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Interface\index.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="LICENSE.txt" />
     <Content Include="Localization\de-DE\Potato.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -180,21 +175,10 @@
     <Content Include="Localization\en-GB\Potato.Net.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <CodeAnalysisDictionary Include="Remote\Interface\Assets\Style.css" />
     <None Include="..\Potato.licenseheader">
       <Link>Potato.licenseheader</Link>
     </None>
     <None Include="packages.config" />
-    <None Include="Remote\Interface\Pages\IndexPageView.tt">
-      <Generator>TextTemplatingFilePreprocessor</Generator>
-      <LastGenOutput>IndexPageView.cs</LastGenOutput>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

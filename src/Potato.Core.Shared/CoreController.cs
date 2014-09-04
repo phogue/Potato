@@ -203,7 +203,7 @@ namespace Potato.Core.Shared {
             IList<ICoreController> propogationList = direction == CommandDirection.Tunnel ? this.TunnelExecutableObjects(command) : this.BubbleExecutableObjects(command);
 
             if (propogationList != null) {
-                foreach (CoreController executable in propogationList) {
+                foreach (ICoreController executable in propogationList) {
                     if (executable != null) {
                         command.Result = executable.PropogateExecuted(command, direction);
                     }

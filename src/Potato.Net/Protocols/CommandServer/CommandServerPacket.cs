@@ -82,6 +82,7 @@ namespace Potato.Net.Protocols.CommandServer {
             this.Headers = new WebHeaderCollection();
             this.Query = new NameValueCollection();
             this.Content = String.Empty;
+            this.Authorization = new string[0];
 
             this.Packet = new Packet();
         }

@@ -285,7 +285,7 @@ namespace Potato.Core.Remote {
                 response.StatusCode = HttpStatusCode.BadRequest;
             }
 
-            this.CommandServerListener.Respond(client, request, response);
+            CommandServerListener.Respond(client, request, response);
         }
     }
 }

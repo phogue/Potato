@@ -101,8 +101,10 @@ namespace Potato.Net.Protocols.CommandServer {
             return started;
         }
 
-        // Process the client connection. 
-        protected static void AcceptTcpClientCallback(IAsyncResult ar) {
+        /// <summary>
+        /// Process the client connection. 
+        /// </summary>
+        private static void AcceptTcpClientCallback(IAsyncResult ar) {
 
             // Get the listener that handles the client request.
             CommandServerListener commandServerListener = (CommandServerListener)ar.AsyncState;
@@ -115,7 +117,7 @@ namespace Potato.Net.Protocols.CommandServer {
                     commandServerListener.Clients.TryAdd(client.RemoteEndPoint.ToString(), client);
 
                     // Listen for events on our new client
-                    client.PacketReceived += commandServerListener.client_PacketReceived;
+                    client.PacketReceived += commandServerListener.ClientPacketReceived;
                     client.ConnectionStateChanged += commandServerListener.client_ConnectionStateChanged;
 
                     // k, go. Now start reading.
@@ -139,7 +141,7 @@ namespace Potato.Net.Protocols.CommandServer {
         /// <param name="sender">The client that received the response.</param>
         /// <param name="request">The original packet received by the listener.</param>
         /// <param name="response">The response to send to the server.</param>
-        public void Respond(IClient sender, CommandServerPacket request, CommandServerPacket response) {
+        public static void Respond(IClient sender, CommandServerPacket request, CommandServerPacket response) {
             response.Method = request.Method;
             response.ProtocolVersion = request.ProtocolVersion;
 
@@ -168,7 +170,7 @@ namespace Potato.Net.Protocols.CommandServer {
             }
         }
 
-        protected void client_PacketReceived(IClient sender, IPacketWrapper packet) {
+        private void ClientPacketReceived(IClient sender, IPacketWrapper packet) {
             // Bubble the packet for processing.
             this.OnPacketReceived(sender, packet as CommandServerPacket);
         }
@@ -180,7 +182,7 @@ namespace Potato.Net.Protocols.CommandServer {
         /// <param name="newState"></param>
         protected void client_ConnectionStateChanged(IClient sender, ConnectionState newState) {
             if (newState == ConnectionState.ConnectionDisconnected) {
-                sender.PacketReceived -= this.client_PacketReceived;
+                sender.PacketReceived -= this.ClientPacketReceived;
                 sender.ConnectionStateChanged -= this.client_ConnectionStateChanged;
 
                 CommandServerClient removed = null;
@@ -188,7 +190,7 @@ namespace Potato.Net.Protocols.CommandServer {
             }
         }
 
-        protected virtual void OnPacketReceived(IClient client, CommandServerPacket request) {
+        private void OnPacketReceived(IClient client, CommandServerPacket request) {
             var handler = PacketReceived;
 
             if (handler != null) {
@@ -196,7 +198,7 @@ namespace Potato.Net.Protocols.CommandServer {
             }
         }
 
-        protected virtual void OnListenerException(Exception exception) {
+        private void OnListenerException(Exception exception) {
             var handler = ListenerException;
 
             if (handler != null) {
@@ -204,7 +206,7 @@ namespace Potato.Net.Protocols.CommandServer {
             }
         }
 
-        protected virtual void OnBeginException(Exception exception) {
+        private void OnBeginException(Exception exception) {
             var handler = BeginException;
 
             if (handler != null) {
@@ -227,7 +229,7 @@ namespace Potato.Net.Protocols.CommandServer {
                 if (this.Clients != null) {
                     foreach (var client in this.Clients) {
                         client.Value.Shutdown();
-                        client.Value.PacketReceived -= this.client_PacketReceived;
+                        client.Value.PacketReceived -= this.ClientPacketReceived;
                         client.Value.ConnectionStateChanged -= this.client_ConnectionStateChanged;
                     }
 

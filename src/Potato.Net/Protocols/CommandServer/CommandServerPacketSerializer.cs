@@ -44,10 +44,20 @@ namespace Potato.Net.Protocols.CommandServer {
             this.PacketHeaderSize = 14;
         }
 
+        /// <summary>
+        /// Parses the get query string into a NameValueCollection
+        /// </summary>
+        /// <param name="packet">The packe to check for a query string</param>
+        /// <returns>The name value collection</returns>
         protected static NameValueCollection ParseGet(CommandServerPacket packet) {
             return HttpUtility.ParseQueryString(packet.Request.Query);
         }
 
+        /// <summary>
+        /// Parses the post data into a NameValueCollection
+        /// </summary>
+        /// <param name="packet">The packe to check for a query string</param>
+        /// <returns>The name value collection</returns>
         protected static NameValueCollection ParsePost(CommandServerPacket packet) {
             NameValueCollection query = new NameValueCollection();
 
@@ -58,6 +68,10 @@ namespace Potato.Net.Protocols.CommandServer {
             return query;
         }
 
+        /// <summary>
+        /// Combines various name value collectons into a single name value collecton
+        /// </summary>
+        /// todo move to extension method?
         protected static NameValueCollection CombineNameValueCollections(params NameValueCollection[] collections) {
             NameValueCollection query = new NameValueCollection();
 
@@ -93,6 +107,11 @@ namespace Potato.Net.Protocols.CommandServer {
             return credentials;
         }
 
+        /// <summary>
+        /// Parses packet data into a CommandServerPacket
+        /// </summary>
+        /// <param name="packet">The packet to populate</param>
+        /// <param name="packetData">The raw data to deseralize</param>
         protected static void Parse(CommandServerPacket packet, byte[] packetData) {
             String[] packetStringData = Regex.Split(Encoding.UTF8.GetString(packetData), @"\r\n\r\n");
 
@@ -138,6 +157,9 @@ namespace Potato.Net.Protocols.CommandServer {
             }
         }
 
+        /// <summary>
+        /// Compresses a byte stream using Gzip
+        /// </summary>
         protected static byte[] GzipCompress(byte[] data) {
             byte[] compressedData;
 
@@ -152,6 +174,9 @@ namespace Potato.Net.Protocols.CommandServer {
             return compressedData;
         }
 
+        /// <summary>
+        /// Compresses a byte stream using Deflate
+        /// </summary>
         protected static byte[] DeflateCompress(byte[] data) {
             byte[] compressedData;
 
@@ -172,7 +197,7 @@ namespace Potato.Net.Protocols.CommandServer {
         /// </summary>
         /// <param name="packet"></param>
         /// <returns></returns>
-        protected byte[] SerializeContent(CommandServerPacket packet) {
+        protected static byte[] SerializeContent(CommandServerPacket packet) {
             byte[] data = Encoding.UTF8.GetBytes(packet.Content);
 
             if (packet.Headers[HttpResponseHeader.ContentEncoding] != null) {
@@ -195,7 +220,7 @@ namespace Potato.Net.Protocols.CommandServer {
         /// <param name="packet"></param>
         /// <param name="content"></param>
         /// <returns></returns>
-        protected byte[] SerializeHeader(CommandServerPacket packet, byte[] content) {
+        protected static byte[] SerializeHeader(CommandServerPacket packet, byte[] content) {
             StringBuilder builder = new StringBuilder();
 
             // Ensure a couple of headers are through..
@@ -214,8 +239,8 @@ namespace Potato.Net.Protocols.CommandServer {
             byte[] serialized = null;
 
             if (commandServerWrapper != null) {
-                byte[] content = this.SerializeContent(commandServerWrapper);
-                byte[] header = this.SerializeHeader(commandServerWrapper, content);
+                byte[] content = SerializeContent(commandServerWrapper);
+                byte[] header = SerializeHeader(commandServerWrapper, content);
                 serialized = new byte[header.Length + content.Length];
 
                 Array.Copy(header, serialized, header.Length);

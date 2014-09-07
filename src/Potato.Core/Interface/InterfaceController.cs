@@ -121,7 +121,7 @@ namespace Potato.Core.Interface {
             var file = command.Name.Equals("/") ? "/index.html" : command.Name;
 
             byte[] contents = this.FetchFileContents(file);
-
+            
             result = new CommandResult() {
                 Now = new CommandData() {
                     Content = new List<String>() {
@@ -129,7 +129,7 @@ namespace Potato.Core.Interface {
                         Encoding.UTF8.GetString(contents)
                     }
                 },
-                ContentType = Mime.TextHtml,
+                ContentType = Mime.ToMimeType(new FileInfo(file).Extension, Mime.TextHtml),
                 CommandResultType = CommandResultType.Success,
                 Success = true
             };

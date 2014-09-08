@@ -151,6 +151,15 @@ $RECYCLE.BIN/
 .DS_Store
 
 # =========================
+# IDE (Webstorm)
+# =========================
+.idea
+node_modules
+bower_components
+_public
+_build
+
+# =========================
 # Procon specific
 # =========================
 

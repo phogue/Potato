@@ -3219,7 +3219,431 @@
             "GameMode": {
                 "Name": "Chainlink0"
             }
-        }                                                                                                                                                                                                                                          
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP4_Arctic",
+            "FriendlyName": "Arctic Research",
+            "GameMode": {
+                "Name": "ConquestLarge0"
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP4_SubBase",
+            "FriendlyName": "Sub Base",
+            "GameMode": {
+                "Name": "ConquestLarge0"
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP4_Titan",
+            "FriendlyName": "Titan",
+            "GameMode": {
+                "Name": "ConquestLarge0"
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP4_WalkerFactory",
+            "FriendlyName": "Walker Factory",
+            "GameMode": {
+                "Name": "ConquestLarge0"
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP4_Arctic",
+            "FriendlyName": "Arctic Research",
+            "GameMode": {
+                "Name": "ConquestSmall0"
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP4_SubBase",
+            "FriendlyName": "Sub Base",
+            "GameMode": {
+                "Name": "ConquestSmall0"
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP4_Titan",
+            "FriendlyName": "Titan",
+            "GameMode": {
+                "Name": "ConquestSmall0"
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP4_WalkerFactory",
+            "FriendlyName": "Walker Factory",
+            "GameMode": {
+                "Name": "ConquestSmall0"
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP4_Arctic",
+            "FriendlyName": "Arctic Research",
+            "GameMode": {
+                "Name": "Domination0"
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP4_SubBase",
+            "FriendlyName": "Sub Base",
+            "GameMode": {
+                "Name": "Domination0"
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP4_Titan",
+            "FriendlyName": "Titan",
+            "GameMode": {
+                "Name": "Domination0"
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP4_WalkerFactory",
+            "FriendlyName": "Walker Factory",
+            "GameMode": {
+                "Name": "Domination0"
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP4_Arctic",
+            "FriendlyName": "Arctic Research",
+            "GameMode": {
+                "Name": "Elimination0"
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP4_SubBase",
+            "FriendlyName": "Sub Base",
+            "GameMode": {
+                "Name": "Elimination0"
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP4_Titan",
+            "FriendlyName": "Titan",
+            "GameMode": {
+                "Name": "Elimination0"
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP4_WalkerFactory",
+            "FriendlyName": "Walker Factory",
+            "GameMode": {
+                "Name": "Elimination0"
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP4_Arctic",
+            "FriendlyName": "Arctic Research",
+            "GameMode": {
+                "Name": "Obliteration"
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP4_SubBase",
+            "FriendlyName": "Sub Base",
+            "GameMode": {
+                "Name": "Obliteration"
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP4_Titan",
+            "FriendlyName": "Titan",
+            "GameMode": {
+                "Name": "Obliteration"
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP4_WalkerFactory",
+            "FriendlyName": "Walker Factory",
+            "GameMode": {
+                "Name": "Obliteration"
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP4_Arctic",
+            "FriendlyName": "Arctic Research",
+            "GameMode": {
+                "Name": "RushLarge0"
+            },
+            "Groups": [
+                {
+                    "Uid": "1",
+                    "Type": "Team",
+                    "FriendlyName": "Attacker"
+                },
+                {
+                    "Uid": "2",
+                    "Type": "Team",
+                    "FriendlyName": "Defender"
+                }
+            ]
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP4_SubBase",
+            "FriendlyName": "Sub Base",
+            "GameMode": {
+                "Name": "RushLarge0"
+            },
+            "Groups": [
+                {
+                    "Uid": "1",
+                    "Type": "Team",
+                    "FriendlyName": "Attacker"
+                },
+                {
+                    "Uid": "2",
+                    "Type": "Team",
+                    "FriendlyName": "Defender"
+                }
+            ]
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP4_Titan",
+            "FriendlyName": "Titan",
+            "GameMode": {
+                "Name": "RushLarge0"
+            },
+            "Groups": [
+                {
+                    "Uid": "1",
+                    "Type": "Team",
+                    "FriendlyName": "Attacker"
+                },
+                {
+                    "Uid": "2",
+                    "Type": "Team",
+                    "FriendlyName": "Defender"
+                }
+            ]
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP4_WalkerFactory",
+            "FriendlyName": "Walker Factory",
+            "GameMode": {
+                "Name": "RushLarge0"
+            },
+            "Groups": [
+                {
+                    "Uid": "1",
+                    "Type": "Team",
+                    "FriendlyName": "Attacker"
+                },
+                {
+                    "Uid": "2",
+                    "Type": "Team",
+                    "FriendlyName": "Defender"
+                }
+            ]
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP4_Arctic",
+            "FriendlyName": "Arctic Research",
+            "GameMode": {
+                "Name": "SquadDeathMatch0"
+            },
+            "Groups": [
+                {
+                    "Uid": "1",
+                    "Type": "Team",
+                    "FriendlyName": "Alpha"
+                },
+                {
+                    "Uid": "2",
+                    "Type": "Team",
+                    "FriendlyName": "Beta"
+                },
+                {
+                    "Uid": "3",
+                    "Type": "Team",
+                    "FriendlyName": "Charlie"
+                },
+                {
+                    "Uid": "4",
+                    "Type": "Team",
+                    "FriendlyName": "Delta"
+                }
+            ]
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP4_SubBase",
+            "FriendlyName": "Sub Base",
+            "GameMode": {
+                "Name": "SquadDeathMatch0"
+            },
+            "Groups": [
+                {
+                    "Uid": "1",
+                    "Type": "Team",
+                    "FriendlyName": "Alpha"
+                },
+                {
+                    "Uid": "2",
+                    "Type": "Team",
+                    "FriendlyName": "Beta"
+                },
+                {
+                    "Uid": "3",
+                    "Type": "Team",
+                    "FriendlyName": "Charlie"
+                },
+                {
+                    "Uid": "4",
+                    "Type": "Team",
+                    "FriendlyName": "Delta"
+                }
+            ]
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP4_Titan",
+            "FriendlyName": "Titan",
+            "GameMode": {
+                "Name": "SquadDeathMatch0"
+            },
+            "Groups": [
+                {
+                    "Uid": "1",
+                    "Type": "Team",
+                    "FriendlyName": "Alpha"
+                },
+                {
+                    "Uid": "2",
+                    "Type": "Team",
+                    "FriendlyName": "Beta"
+                },
+                {
+                    "Uid": "3",
+                    "Type": "Team",
+                    "FriendlyName": "Charlie"
+                },
+                {
+                    "Uid": "4",
+                    "Type": "Team",
+                    "FriendlyName": "Delta"
+                }
+            ]
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP4_WalkerFactory",
+            "FriendlyName": "Walker Factory",
+            "GameMode": {
+                "Name": "SquadDeathMatch0"
+            },
+            "Groups": [
+                {
+                    "Uid": "1",
+                    "Type": "Team",
+                    "FriendlyName": "Alpha"
+                },
+                {
+                    "Uid": "2",
+                    "Type": "Team",
+                    "FriendlyName": "Beta"
+                },
+                {
+                    "Uid": "3",
+                    "Type": "Team",
+                    "FriendlyName": "Charlie"
+                },
+                {
+                    "Uid": "4",
+                    "Type": "Team",
+                    "FriendlyName": "Delta"
+                }
+            ]
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP4_Arctic",
+            "FriendlyName": "Arctic Research",
+            "GameMode": {
+                "Name": "TeamDeathMatch0"
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP4_SubBase",
+            "FriendlyName": "Sub Base",
+            "GameMode": {
+                "Name": "TeamDeathMatch0"
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP4_Titan",
+            "FriendlyName": "Titan",
+            "GameMode": {
+                "Name": "TeamDeathMatch0"
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP4_WalkerFactory",
+            "FriendlyName": "Walker Factory",
+            "GameMode": {
+                "Name": "TeamDeathMatch0"
+            }
+        }
     ],
     "Items": [
         {

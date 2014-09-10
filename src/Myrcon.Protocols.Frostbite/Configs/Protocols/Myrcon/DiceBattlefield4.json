@@ -3224,7 +3224,7 @@
             "Index": "0",
             "Rounds": "2",
             "Name": "XP4_Arctic",
-            "FriendlyName": "Arctic Research",
+            "FriendlyName": "Operation Whiteout",
             "GameMode": {
                 "Name": "ConquestLarge0"
             }
@@ -3233,7 +3233,7 @@
             "Index": "0",
             "Rounds": "2",
             "Name": "XP4_SubBase",
-            "FriendlyName": "Sub Base",
+            "FriendlyName": "Hammerhead",
             "GameMode": {
                 "Name": "ConquestLarge0"
             }
@@ -3242,7 +3242,7 @@
             "Index": "0",
             "Rounds": "2",
             "Name": "XP4_Titan",
-            "FriendlyName": "Titan",
+            "FriendlyName": "Giants Of Karelia",
             "GameMode": {
                 "Name": "ConquestLarge0"
             }
@@ -3250,8 +3250,8 @@
         {
             "Index": "0",
             "Rounds": "2",
-            "Name": "XP4_WalkerFactory",
-            "FriendlyName": "Walker Factory",
+            "Name": "XP4_Wlkrftry",
+            "FriendlyName": "Hangar 21",
             "GameMode": {
                 "Name": "ConquestLarge0"
             }
@@ -3260,7 +3260,7 @@
             "Index": "0",
             "Rounds": "2",
             "Name": "XP4_Arctic",
-            "FriendlyName": "Arctic Research",
+            "FriendlyName": "Operation Whiteout",
             "GameMode": {
                 "Name": "ConquestSmall0"
             }
@@ -3269,7 +3269,7 @@
             "Index": "0",
             "Rounds": "2",
             "Name": "XP4_SubBase",
-            "FriendlyName": "Sub Base",
+            "FriendlyName": "Hammerhead",
             "GameMode": {
                 "Name": "ConquestSmall0"
             }
@@ -3278,7 +3278,7 @@
             "Index": "0",
             "Rounds": "2",
             "Name": "XP4_Titan",
-            "FriendlyName": "Titan",
+            "FriendlyName": "Giants Of Karelia",
             "GameMode": {
                 "Name": "ConquestSmall0"
             }
@@ -3286,8 +3286,8 @@
         {
             "Index": "0",
             "Rounds": "2",
-            "Name": "XP4_WalkerFactory",
-            "FriendlyName": "Walker Factory",
+            "Name": "XP4_Wlkrftry",
+            "FriendlyName": "Hangar 21",
             "GameMode": {
                 "Name": "ConquestSmall0"
             }
@@ -3296,7 +3296,7 @@
             "Index": "0",
             "Rounds": "2",
             "Name": "XP4_Arctic",
-            "FriendlyName": "Arctic Research",
+            "FriendlyName": "Operation Whiteout",
             "GameMode": {
                 "Name": "Domination0"
             }
@@ -3305,7 +3305,7 @@
             "Index": "0",
             "Rounds": "2",
             "Name": "XP4_SubBase",
-            "FriendlyName": "Sub Base",
+            "FriendlyName": "Hammerhead",
             "GameMode": {
                 "Name": "Domination0"
             }
@@ -3314,7 +3314,7 @@
             "Index": "0",
             "Rounds": "2",
             "Name": "XP4_Titan",
-            "FriendlyName": "Titan",
+            "FriendlyName": "Giants Of Karelia",
             "GameMode": {
                 "Name": "Domination0"
             }
@@ -3322,8 +3322,8 @@
         {
             "Index": "0",
             "Rounds": "2",
-            "Name": "XP4_WalkerFactory",
-            "FriendlyName": "Walker Factory",
+            "Name": "XP4_Wlkrftry",
+            "FriendlyName": "Hangar 21",
             "GameMode": {
                 "Name": "Domination0"
             }
@@ -3332,7 +3332,7 @@
             "Index": "0",
             "Rounds": "2",
             "Name": "XP4_Arctic",
-            "FriendlyName": "Arctic Research",
+            "FriendlyName": "Operation Whiteout",
             "GameMode": {
                 "Name": "Elimination0"
             }
@@ -3341,7 +3341,7 @@
             "Index": "0",
             "Rounds": "2",
             "Name": "XP4_SubBase",
-            "FriendlyName": "Sub Base",
+            "FriendlyName": "Hammerhead",
             "GameMode": {
                 "Name": "Elimination0"
             }
@@ -3350,7 +3350,7 @@
             "Index": "0",
             "Rounds": "2",
             "Name": "XP4_Titan",
-            "FriendlyName": "Titan",
+            "FriendlyName": "Giants Of Karelia",
             "GameMode": {
                 "Name": "Elimination0"
             }
@@ -3358,8 +3358,8 @@
         {
             "Index": "0",
             "Rounds": "2",
-            "Name": "XP4_WalkerFactory",
-            "FriendlyName": "Walker Factory",
+            "Name": "XP4_Wlkrftry",
+            "FriendlyName": "Hangar 21",
             "GameMode": {
                 "Name": "Elimination0"
             }
@@ -3368,7 +3368,7 @@
             "Index": "0",
             "Rounds": "2",
             "Name": "XP4_Arctic",
-            "FriendlyName": "Arctic Research",
+            "FriendlyName": "Operation Whiteout",
             "GameMode": {
                 "Name": "Obliteration"
             }
@@ -3377,7 +3377,7 @@
             "Index": "0",
             "Rounds": "2",
             "Name": "XP4_SubBase",
-            "FriendlyName": "Sub Base",
+            "FriendlyName": "Hammerhead",
             "GameMode": {
                 "Name": "Obliteration"
             }
@@ -3386,7 +3386,7 @@
             "Index": "0",
             "Rounds": "2",
             "Name": "XP4_Titan",
-            "FriendlyName": "Titan",
+            "FriendlyName": "Giants Of Karelia",
             "GameMode": {
                 "Name": "Obliteration"
             }
@@ -3394,8 +3394,8 @@
         {
             "Index": "0",
             "Rounds": "2",
-            "Name": "XP4_WalkerFactory",
-            "FriendlyName": "Walker Factory",
+            "Name": "XP4_Wlkrftry",
+            "FriendlyName": "Hangar 21",
             "GameMode": {
                 "Name": "Obliteration"
             }
@@ -3404,7 +3404,7 @@
             "Index": "0",
             "Rounds": "2",
             "Name": "XP4_Arctic",
-            "FriendlyName": "Arctic Research",
+            "FriendlyName": "Operation Whiteout",
             "GameMode": {
                 "Name": "RushLarge0"
             },
@@ -3425,7 +3425,7 @@
             "Index": "0",
             "Rounds": "2",
             "Name": "XP4_SubBase",
-            "FriendlyName": "Sub Base",
+            "FriendlyName": "Hammerhead",
             "GameMode": {
                 "Name": "RushLarge0"
             },
@@ -3446,7 +3446,7 @@
             "Index": "0",
             "Rounds": "2",
             "Name": "XP4_Titan",
-            "FriendlyName": "Titan",
+            "FriendlyName": "Giants Of Karelia",
             "GameMode": {
                 "Name": "RushLarge0"
             },
@@ -3466,8 +3466,8 @@
         {
             "Index": "0",
             "Rounds": "2",
-            "Name": "XP4_WalkerFactory",
-            "FriendlyName": "Walker Factory",
+            "Name": "XP4_Wlkrftry",
+            "FriendlyName": "Hangar 21",
             "GameMode": {
                 "Name": "RushLarge0"
             },
@@ -3488,7 +3488,7 @@
             "Index": "0",
             "Rounds": "2",
             "Name": "XP4_Arctic",
-            "FriendlyName": "Arctic Research",
+            "FriendlyName": "Operation Whiteout",
             "GameMode": {
                 "Name": "SquadDeathMatch0"
             },
@@ -3519,7 +3519,7 @@
             "Index": "0",
             "Rounds": "2",
             "Name": "XP4_SubBase",
-            "FriendlyName": "Sub Base",
+            "FriendlyName": "Hammerhead",
             "GameMode": {
                 "Name": "SquadDeathMatch0"
             },
@@ -3550,7 +3550,7 @@
             "Index": "0",
             "Rounds": "2",
             "Name": "XP4_Titan",
-            "FriendlyName": "Titan",
+            "FriendlyName": "Giants Of Karelia",
             "GameMode": {
                 "Name": "SquadDeathMatch0"
             },
@@ -3580,8 +3580,8 @@
         {
             "Index": "0",
             "Rounds": "2",
-            "Name": "XP4_WalkerFactory",
-            "FriendlyName": "Walker Factory",
+            "Name": "XP4_Wlkrftry",
+            "FriendlyName": "Hangar 21",
             "GameMode": {
                 "Name": "SquadDeathMatch0"
             },
@@ -3612,7 +3612,7 @@
             "Index": "0",
             "Rounds": "2",
             "Name": "XP4_Arctic",
-            "FriendlyName": "Arctic Research",
+            "FriendlyName": "Operation Whiteout",
             "GameMode": {
                 "Name": "TeamDeathMatch0"
             }
@@ -3621,7 +3621,7 @@
             "Index": "0",
             "Rounds": "2",
             "Name": "XP4_SubBase",
-            "FriendlyName": "Sub Base",
+            "FriendlyName": "Hammerhead",
             "GameMode": {
                 "Name": "TeamDeathMatch0"
             }
@@ -3630,7 +3630,7 @@
             "Index": "0",
             "Rounds": "2",
             "Name": "XP4_Titan",
-            "FriendlyName": "Titan",
+            "FriendlyName": "Giants Of Karelia",
             "GameMode": {
                 "Name": "TeamDeathMatch0"
             }
@@ -3638,8 +3638,8 @@
         {
             "Index": "0",
             "Rounds": "2",
-            "Name": "XP4_WalkerFactory",
-            "FriendlyName": "Walker Factory",
+            "Name": "XP4_Wlkrftry",
+            "FriendlyName": "Hangar 21",
             "GameMode": {
                 "Name": "TeamDeathMatch0"
             }

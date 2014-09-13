@@ -3643,6 +3643,42 @@
             "GameMode": {
                 "Name": "TeamDeathMatch0"
             }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP4_Arctic",
+            "FriendlyName": "Operation Whiteout",
+            "GameMode": {
+                "Name": "CaptureTheFlag0"
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP4_SubBase",
+            "FriendlyName": "Hammerhead",
+            "GameMode": {
+                "Name": "CaptureTheFlag0"
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP4_Titan",
+            "FriendlyName": "Giants Of Karelia",
+            "GameMode": {
+                "Name": "CaptureTheFlag0"
+            }
+        },
+        {
+            "Index": "0",
+            "Rounds": "2",
+            "Name": "XP4_Wlkrftry",
+            "FriendlyName": "Hangar 21",
+            "GameMode": {
+                "Name": "CaptureTheFlag0"
+            }
         }
     ],
     "Items": [

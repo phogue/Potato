@@ -32,7 +32,7 @@ namespace Potato.Core.Test.Remote.TestCommandServerController {
         /// even though the authentication would have failed.
         /// </summary>
         [Test]
-        public void TestSimpleCommandSuccess() {
+        public void TestSimpleCommandReturnsUnauthorizedIfAuthorizationFails() {
             CommandServerPacket packet = null;
 
             CommandServerController commandServer = new CommandServerController() {
@@ -42,6 +42,7 @@ namespace Potato.Core.Test.Remote.TestCommandServerController {
             commandServer.OnPacketReceived(new MockCommandServerClient() {
                 SentCallback = wrapper => { packet = wrapper as CommandServerPacket; }
             }, new CommandServerPacket() {
+                Request = new Uri("http://localhost/"),
                 Headers = new WebHeaderCollection() {
                     { HttpRequestHeader.ContentType, Mime.ApplicationJson }
                 },
@@ -51,7 +52,7 @@ namespace Potato.Core.Test.Remote.TestCommandServerController {
             });
 
             Assert.IsNotNull(packet);
-            Assert.AreEqual(HttpStatusCode.OK, packet.StatusCode);
+            Assert.AreEqual(HttpStatusCode.Unauthorized, packet.StatusCode);
         }
 
         /// <summary>
@@ -189,6 +190,7 @@ namespace Potato.Core.Test.Remote.TestCommandServerController {
             commandServer.OnPacketReceived(new MockCommandServerClient() {
                 SentCallback = wrapper => { packet = wrapper as CommandServerPacket; }
             }, new CommandServerPacket() {
+                Request = new Uri("http://localhost/"),
                 Headers = new WebHeaderCollection() {
                     { HttpRequestHeader.ContentType, Mime.ApplicationJson }
                 },
@@ -289,6 +291,7 @@ namespace Potato.Core.Test.Remote.TestCommandServerController {
             commandServer.OnPacketReceived(new MockCommandServerClient() {
                 SentCallback = wrapper => { packet = wrapper as CommandServerPacket; }
             }, new CommandServerPacket() {
+                Request = new Uri("http://localhost/"),
                 Headers = new WebHeaderCollection() {
                     { HttpRequestHeader.ContentType, Mime.ApplicationJson }
                 },
@@ -298,7 +301,7 @@ namespace Potato.Core.Test.Remote.TestCommandServerController {
             });
 
             Assert.IsNotNull(packet);
-            Assert.AreEqual("close", packet.Headers[HttpRequestHeader.Connection]);
+            Assert.AreEqual("close", packet.Headers[HttpResponseHeader.Connection]);
         }
     }
 }

@@ -82,10 +82,12 @@ namespace Potato.Core.Interface {
         /// Loads all of the files in the interface directory so files can be served from memory
         /// </summary>
         public void BuildStaticCache() {
-            foreach (String path in Directory.GetFiles(this.StaticInterfacePath.FullName, "*", SearchOption.AllDirectories)) {
-                var contents = File.ReadAllBytes(path);
+            if (Directory.Exists(StaticInterfacePath.FullName)) {
+                foreach (String path in Directory.GetFiles(this.StaticInterfacePath.FullName, "*", SearchOption.AllDirectories)) {
+                    var contents = File.ReadAllBytes(path);
 
-                this.StaticCache.AddOrUpdate(path.ReplaceFirst(this.StaticInterfacePath.FullName, "").Slug(), key => contents, (key, value) => contents);
+                    this.StaticCache.AddOrUpdate(path.ReplaceFirst(this.StaticInterfacePath.FullName, "").Slug(), key => contents, (key, value) => contents);
+                }
             }
         }
 

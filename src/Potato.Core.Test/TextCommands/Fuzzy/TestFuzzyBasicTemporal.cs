@@ -51,7 +51,7 @@ namespace Potato.Core.Test.TextCommands.Fuzzy {
 
         [Test]
         public void TestTemporalKickEveryoneFor1Year() {
-            AssertTemporalCommand(CreateTextCommandController(), "kick everyone for 1 year", TextCommandKick, new TimeSpan(TimeSpan.TicksPerDay * 365));
+            AssertTemporalCommand(CreateTextCommandController(), "kick everyone for 1 year", TextCommandKick, DateTime.Now.AddYears(1) - DateTime.Now);
         }
 
         [Test]
@@ -81,7 +81,7 @@ namespace Potato.Core.Test.TextCommands.Fuzzy {
 
         [Test]
         public void TestTemporalKickEveryoneForAYear() {
-            AssertTemporalCommand(CreateTextCommandController(), "kick everyone for a year", TextCommandKick, new TimeSpan(TimeSpan.TicksPerDay * 365));
+            AssertTemporalCommand(CreateTextCommandController(), "kick everyone for a year", TextCommandKick, DateTime.Now.AddYears(1) - DateTime.Now);
         }
 
         [Test]
@@ -101,7 +101,7 @@ namespace Potato.Core.Test.TextCommands.Fuzzy {
 
         [Test]
         public void TestTemporalKickEveryoneForOneYear() {
-            AssertTemporalCommand(CreateTextCommandController(), "kick everyone for one year", TextCommandKick, new TimeSpan(TimeSpan.TicksPerDay * 365));
+            AssertTemporalCommand(CreateTextCommandController(), "kick everyone for one year", TextCommandKick, DateTime.Now.AddYears(1) - DateTime.Now);
         }
 
         [Test]

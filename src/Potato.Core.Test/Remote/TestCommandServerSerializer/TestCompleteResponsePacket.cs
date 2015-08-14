@@ -45,7 +45,7 @@ namespace Potato.Core.Test.Remote.TestCommandServerSerializer {
 
             Assert.AreEqual("A", array["Now"]["Content"].First().Value<String>());
             Assert.AreEqual(HttpStatusCode.OK, packet.StatusCode);
-            Assert.AreEqual(Mime.ApplicationJson, packet.Headers[HttpRequestHeader.ContentType]);
+            Assert.AreEqual(Mime.ApplicationJson, packet.Headers[HttpResponseHeader.ContentType]);
         }
 
         /// <summary>
@@ -63,7 +63,7 @@ namespace Potato.Core.Test.Remote.TestCommandServerSerializer {
 
             Assert.AreEqual("A", packet.Content);
             Assert.AreEqual(HttpStatusCode.OK, packet.StatusCode);
-            Assert.AreEqual(Mime.TextHtml, packet.Headers[HttpRequestHeader.ContentType]);
+            Assert.AreEqual(Mime.TextHtml, packet.Headers[HttpResponseHeader.ContentType]);
         }
     }
 }
